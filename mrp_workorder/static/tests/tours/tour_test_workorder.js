@@ -67,7 +67,7 @@ tour.register('test_add_component', {test: true}, [
     },
     // go to Elon Musk step (second one since 'extra')
     {trigger: '.o_tablet_step:nth-child(2)'},
-    {trigger: 'span[name="qty_done"]'},
+    {trigger: '.o_selected:contains("Elon")'},
     {
         trigger: '.o_tablet_client_action',
         run: function () {
@@ -80,7 +80,7 @@ tour.register('test_add_component', {test: true}, [
     },
     // go to metal cylinder step
     {trigger: '.btn[name="action_next"]'},
-    {trigger: 'span[name="component_id"]:contains("Metal")'},
+    {trigger: 'div[name="component_id"]:contains("Metal")'},
     {
         trigger: '.o_tablet_client_action',
         run: function () {
@@ -91,7 +91,7 @@ tour.register('test_add_component', {test: true}, [
             helper.assertCurrentCheck('Register Consumed Materials "Metal cylinder"');
         }
     }, {
-        trigger: 'input[name="qty_done"]',
+        trigger: 'input[id="qty_done"]',
         position: 'bottom',
         run: 'text 1',
     }, {
@@ -138,7 +138,7 @@ tour.register('test_add_component', {test: true}, [
     },
     {trigger: '.btn[name=action_next]'},
     {
-        trigger: 'span[name="component_id"]:contains("Metal")',
+        trigger: 'div[name="component_id"]:contains("Metal")',
         run: function () {
             helper.assertCheckLength(4);
             helper.assertValidatedCheckLength(2);
@@ -150,7 +150,7 @@ tour.register('test_add_component', {test: true}, [
     {trigger: '.btn[name=action_next]'},
     // go back to the first not done check
     {
-        trigger: 'span[name="component_id"]:contains("extra")',
+        trigger: 'div[name="component_id"]:contains("extra")',
         run: function () {
             helper.assertComponent('extra', 'editable', 3, 3);
             helper.assertCheckLength(4);
@@ -177,7 +177,7 @@ tour.register('test_add_component', {test: true}, [
     // we do not have it twice
     {trigger: '.o_tablet_step:nth-child(2)'},
     {
-        trigger: 'span[name="component_id"]:contains("Elon")',
+        trigger: 'div[name="component_id"]:contains("Elon")',
         run: function () {
             helper.assertCheckLength(5);
             helper.assertValidatedCheckLength(4);
@@ -194,7 +194,16 @@ tour.register('test_add_component', {test: true}, [
             helper.assertDoneButton(true);
         }
     },
-    {trigger: '.btn[name=action_generate_serial]'},
+    {
+        trigger: "input[id='finished_lot_id']",
+        position: 'bottom',
+        run: 'text F0001',
+    },
+    {
+        trigger: '.ui-menu-item > a:contains("F0001")',
+        in_modal: false,
+        auto: true,
+    },
     {trigger: '.btn[name=do_finish]'},
     {trigger: '.o_searchview_input'},
 ]);
@@ -250,7 +259,7 @@ tour.register('test_add_step', {test: true}, [
             helper.assertCurrentCheck('New step from manufacturing feedback');
         }
     },
-    {trigger: 'span[name=additional_note]:contains("why am I adding a step")'},
+    {trigger: 'div[name=additional_note]:contains("why am I adding a step")'},
     {trigger: '.o_tablet_client_action'},
     {trigger: '.o_tablet_step:nth-child(1)'},
     {
@@ -263,7 +272,7 @@ tour.register('test_add_step', {test: true}, [
             helper.assertComponent('Metal cylinder', 'editable', 2, 2);
         }
     },
-    {trigger: 'button[title=menu]'},
+    {trigger: 'button[name=openMenuPopup]'},
     {trigger: '.o_tablet_popups'},
     {trigger: '.btn:contains("Update Instruction")'},
     {trigger: '.modal-title:contains("Update Instruction")'},
@@ -271,17 +280,12 @@ tour.register('test_add_step', {test: true}, [
         trigger: 'input#comment',
         run: 'text my reason',
     },
-    // {
-    //     trigger: '.note-editable.odoo-editor-editable',
-    //     run: 'text coucou',
-    // },
-    // { trigger: 'input'},
+
     {trigger: '.btn-primary[name="process"]'},
     {trigger: '.o_tablet_client_action'},
     {trigger: '.btn[name=action_next]'},
-    {trigger: 'span[name=additional_note]:contains("why am I adding a step")'},
+    {trigger: 'div[name=additional_note]:contains("why am I adding a step")'},
     {trigger: '.btn[name=action_next]'},
-    // {trigger: 'p:contains("coucou")'},
     {trigger: '.btn[name=action_generate_serial]'},
     {trigger: '.btn[name=do_finish]'},
     {trigger: '.o_searchview_input'},

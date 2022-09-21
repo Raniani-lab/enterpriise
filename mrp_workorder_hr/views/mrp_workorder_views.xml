@@ -8,7 +8,7 @@
             <xpath expr="//div[hasclass('o_workorder_bar_right')]" position="inside">
                 <field name="allow_employee" invisible="1"/>
                 <span style="width:auto; display:block;">
-                    <button class="btn-secondary btn-link workorder_event o_unblock" attrs="{'invisible': [('allow_employee', '=', False)]}" name="popupEmployeeManagement">
+                    <button class="btn-secondary btn-link o_unblock" type="workorder_event" attrs="{'invisible': [('allow_employee', '=', False)]}" name="popupEmployeeManagement">
                         <span attrs="{'invisible': [('employee_name', '!=', False)]}">Log In </span>
                         <field name="employee_name" attrs="{'invisible': [('employee_name', '=', False)]}" readonly="1" class="me-2"/>
                         <field name="employee_ids" widget="kanban.many2many_avatar_employee" readonly="1" options="{'no_create': True}"/>

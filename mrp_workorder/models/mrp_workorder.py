@@ -518,12 +518,15 @@ class MrpProductionWorkcenterLine(models.Model):
         while ele:
             sorted_check_list.append(ele.id)
             ele = ele.next_check_id
-
         data = {
             'mrp.workorder': self.read(self._get_fields_for_tablet(), load=False)[0],
             'quality.check': self.check_ids._get_fields_for_tablet(sorted_check_list),
             'operation': self.operation_id.read(self.operation_id._get_fields_for_tablet())[0] if self.operation_id else {},
             'working_state': self.workcenter_id.working_state,
+            'views': {
+                'workorder': self.env.ref('mrp_workorder.mrp_workorder_view_form_tablet').id,
+                'check': self.env.ref('mrp_workorder.quality_check_view_form_tablet').id,
+            },
         }
         return data
 

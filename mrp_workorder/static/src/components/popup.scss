@@ -1,11 +1,17 @@
 $wo-border-separation: solid 1px rgba(60, 60, 60, 0.1);
 
 .o_tablet_popups {
+    height: 100%;
     width: 100%;
-    height: 100vh;
     position: absolute;
     top: 0;
+    left: 0;
+    z-index: 10;
     background-color: rgba(60, 60, 60, 0.4);
+
+    &.o_unblock {
+        z-index: 100;
+    }
 
     .popup {
         z-index: 1200;

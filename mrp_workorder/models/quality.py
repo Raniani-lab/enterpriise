@@ -235,6 +235,7 @@ class QualityCheck(models.Model):
                     value['component_id'] = point.component_id.id
         return super(QualityCheck, self).create(values)
 
+    @api.depends('test_type_id', 'component_id', 'component_id.name', 'workorder_id', 'workorder_id.name')
     def _compute_title(self):
         super()._compute_title()
         for check in self:

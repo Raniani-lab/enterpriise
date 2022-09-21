@@ -10,7 +10,7 @@ from odoo.addons.mrp.tests.common import TestMrpCommon
 class TestTabletWorkorderHr(TestMrpCommon, HttpCase):
     def _get_client_action_url(self, workorder_id):
         action = self.env["ir.actions.actions"]._for_xml_id("mrp_workorder.tablet_client_action")
-        return '/web#action=%s&active_id=%s' % (action['id'], workorder_id)
+        return '/web?debug=assets#action=%s&active_id=%s' % (action['id'], workorder_id)
 
     def test_production_with_employee(self):
         self.env['mrp.workcenter'].search([]).write({
@@ -81,8 +81,3 @@ class TestTabletWorkorderHr(TestMrpCommon, HttpCase):
         self.assertEqual(len(wo.time_ids), 2)
         self.assertTrue(wo.time_ids[0].employee_id, employee1)
         self.assertTrue(wo.time_ids[1].employee_id, employee2)
-        # activities = production.bom_id.activity_ids
-        # self.assertEqual(len(activities), 1, 'should be 2 activities')
-        # activity = activities[0]
-        # self.assertEqual(activity.summary, 'BoM feedback Instruction 3 (%s)' % production.name)
-        # self.assertEqual(activity.note, Markup('<b>New Instruction suggested by Thomas Nific</b><br><p>my new instruction</p><br><b>Reason: my reason</b>'))

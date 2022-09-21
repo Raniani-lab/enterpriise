@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="quality_mrp_workorder.quality_check_view_form_tablet_inherit_quality"/>
         <field name="arch" type="xml">
           <xpath expr="//field[@name='measure']" position="attributes">
-            <!-- <attribute name="widget">iot_measure</attribute> -->
+            <attribute name="widget">iot_measure</attribute>
             <attribute name="options">{'ip_field': 'ip', 'identifier': 'identifier'}</attribute>
           </xpath>
         </field>

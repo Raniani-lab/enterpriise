@@ -13,10 +13,10 @@
                 <field name="device_name" readonly="1"
                        attrs="{'invisible': ['|', ('test_type', 'not in', ['measure', 'picture', 'printer']), ('identifier', '=', False)]}"/>
             </xpath>
-            <!-- <field name="picture" position="attributes"> -->
-            <!--     <attribute name="widget">iot_picture</attribute> -->
-            <!--     <attribute name="options">{'ip_field': 'ip', 'identifier': 'identifier'}</attribute> -->
-            <!-- </field> -->
+            <field name="picture" position="attributes">
+                <attribute name="widget">iot_picture</attribute>
+                <attribute name="options">{'ip_field': 'ip', 'identifier': 'identifier'}</attribute>
+            </field>
         </field>
     </record>
 

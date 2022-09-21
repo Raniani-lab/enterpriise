@@ -81,6 +81,12 @@
         }
     }
 
+    .o_knowledge_embedded_view_placeholder {
+        .o_knowledge_embedded_view_placeholder_cover {
+            @include o-position-absolute(0, 0, 0, 0);
+            background: radial-gradient($white, transparent);
+        }
+    }
 }
 
 @include media-breakpoint-down(sm) {

@@ -1,0 +1,23 @@
+.o_knowledge_behavior_type_embedded_view {
+    .o_view_controller {
+        display: flex;
+        flex-direction: column;
+        flex-grow: 1;
+        .fa {
+            font-family: "FontAwesome";
+        }
+    }
+    .o_content {
+        flex-grow: 1;
+        flex-basis: 0 !important;
+        overflow: auto;
+    }
+    .o_view_nocontent_empty_folder:before {
+        @extend %o-nocontent-empty-document;
+    }
+    .o_knowledge_embedded_view_resizer {
+        min-height: 15px;
+        background: $o-gray-200;
+        cursor: row-resize;
+    }
+}

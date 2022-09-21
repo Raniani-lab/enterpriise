@@ -11,9 +11,9 @@ import { useService } from "@web/core/utils/hooks";
 import { ArticleBehavior } from "@knowledge/components/behaviors/article_behavior/article_behavior";
 import { ArticlesStructureBehavior } from "@knowledge/components/behaviors/articles_structure_behavior/articles_structure_behavior";
 import { FileBehavior } from "@knowledge/components/behaviors/file_behavior/file_behavior";
+import { EmbeddedViewBehavior } from "@knowledge/components/behaviors/embedded_view_behavior/embedded_view_behavior";
 import { TemplateBehavior } from "@knowledge/components/behaviors/template_behavior/template_behavior";
 import { TableOfContentBehavior } from "@knowledge/components/behaviors/table_of_content_behavior/table_of_content_behavior";
-
 
 const {
     App,
@@ -38,6 +38,9 @@ const behaviorTypes = {
     },
     o_knowledge_behavior_type_articles_structure: {
         Behavior: ArticlesStructureBehavior
+    },
+    o_knowledge_behavior_type_embedded_view: {
+        Behavior: EmbeddedViewBehavior
     },
 };
 

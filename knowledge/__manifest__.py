@@ -16,6 +16,7 @@
     'data': [
         'data/article_templates.xml',
         'data/ir_config_parameter_data.xml',
+        'data/behaviors_templates.xml',
         'data/knowledge_data.xml',
         'data/ir_actions_data.xml',
         'data/mail_templates.xml',
@@ -53,6 +54,7 @@
             'knowledge/static/src/js/knowledge_views.js',
             'knowledge/static/src/webclient/commands/*.js',
             'knowledge/static/src/models/**/*.js',
+            'knowledge/static/src/js/knowledge_utils.js',
             'knowledge/static/src/js/knowledge_plugin.js',
             'knowledge/static/src/views/*.js',
             'knowledge/static/src/xml/chatter_topbar.xml',
@@ -67,6 +69,7 @@
             'knowledge/static/src/js/tools/knowledge_tools.js',
             'knowledge/static/src/js/tools/tree_panel_mixin.js',
             'knowledge/static/src/js/knowledge_frontend.js',
+            'knowledge/static/src/xml/knowledge_frontend.xml',
         ],
         'web.assets_common': [
             'knowledge/static/src/js/tools/knowledge_tools.js',

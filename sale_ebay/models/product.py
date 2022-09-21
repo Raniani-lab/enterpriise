@@ -87,7 +87,7 @@ class ProductTemplate(models.Model):
     ebay_start_date = fields.Datetime('Start Date', readonly=1, copy=False)
     ebay_quantity_sold = fields.Integer(related='product_variant_ids.ebay_quantity_sold', store=True, readonly=False, copy=False)
     ebay_fixed_price = fields.Float(related='product_variant_ids.ebay_fixed_price', store=True, readonly=False)
-    ebay_quantity = fields.Integer(related='product_variant_ids.ebay_quantity', store=True, readonly=False)
+    ebay_quantity = fields.Integer(related='product_variant_ids.ebay_quantity', store=True, readonly=False, default=1)
     ebay_last_sync = fields.Datetime(string="Last update", copy=False)
     ebay_template_id = fields.Many2one('mail.template', string='Description Template',
         ondelete='set null')

@@ -7,7 +7,7 @@
         button and logs in, the user will be redirected to the backend of the
         article and will be able to load the embedded view iif the user has
         enough rights (see ACL & record rules). -->
-        <div class="o_knowledge_embedded_view_placeholder d-flex flex-column flex-grow-1 position-relative bg-white border">
+        <div class="o_knowledge_embedded_view_placeholder d-flex flex-column flex-grow-1 position-relative bg-white">
             <div class="d-flex border-bottom p-5 pb-0">
                 <div class="mb-3 p-3 bg-light w-25 me-auto"/>
                 <div class="mb-3 p-3 bg-light w-50"/>

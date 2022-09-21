@@ -387,6 +387,18 @@
         </field>
     </record>
 
+    <record id="knowledge_article_view_tree_items" model="ir.ui.view">
+        <field name="name">knowledge.article.view.tree.embedded</field>
+        <field name="model">knowledge.article</field>
+        <field name="arch" type="xml">
+            <tree create="1" editable="bottom">
+                <field name="icon" attrs="{'readonly': True }"/>
+                <field name="name"/>
+                <button name="action_home_page" type="object" string="Open" icon="fa-external-link" />
+            </tree>
+        </field>
+    </record>
+
     <record id="knowledge_article_view_kanban" model="ir.ui.view">
         <field name="name">knowledge.article.view.kanban</field>
         <field name="model">knowledge.article</field>
@@ -440,9 +452,37 @@
         </field>
     </record>
 
+    <record id="knowledge_article_view_kanban_items" model="ir.ui.view">
+        <field name="name">knowledge.article.view.kanban.embedded</field>
+        <field name="model">knowledge.article</field>
+        <field name="arch" type="xml">
+            <kanban create="1" class="o_knowledge_article_kanban_view">
+                <field name="icon" invisible="1"/>
+                <field name="is_locked" invisible="1"/>
+                <field name="is_user_favorite" invisible="1"/>
+                <field name="user_has_write_access" invisible="1"/>
+                <field name="article_url" invisible="1"/>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="oe_kanban_global_click">
+                            <div class="o_knowledge_kanban_card d-flex flex-column">
+                                <div class="d-flex align-items-center">
+                                    <div class="flex-grow-1 lead text-truncate">
+                                        <field name="display_name"/>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
     <record id="knowledge_article_view_search" model="ir.ui.view">
         <field name="name">knowledge.article.view.search</field>
         <field name="model">knowledge.article</field>
+        <field name="priority">1</field>
         <field name="arch" type="xml">
             <search>
                 <field name="name"/>
@@ -472,6 +512,25 @@
         </field>
     </record>
 
+    <record id="knowledge_article_view_search_items" model="ir.ui.view">
+        <field name="name">knowledge.article.view.search.embedded</field>
+        <field name="model">knowledge.article</field>
+        <field name="priority">2</field>
+        <field name="arch" type="xml">
+            <search>
+                <field name="name"/>
+                <field name="root_article_id"/>
+                <field name="body"/>
+                <field name="last_edition_uid"/>
+
+                <filter name="filter_active" string="Archived"
+                    domain="[('active', '=', False)]"/>
+                <filter name="filter_favorites" string="My Favorites"
+                    domain="[('is_user_favorite', '=', True)]"/>
+            </search>
+        </field>
+    </record>
+
     <record id="knowledge_article_action" model="ir.actions.act_window">
         <field name="name">Articles</field>
         <field name="res_model">knowledge.article</field>
@@ -494,22 +553,31 @@
     </record>
 
     <!-- Action window for article items -->
-    <record id="knowledge_article_item_action" model="ir.actions.act_window" >
+    <record id="knowledge_article_item_action" model="ir.actions.act_window">
         <field name="name">Article Items</field>
         <field name="res_model">knowledge.article</field>
         <field name="view_mode">tree,kanban,form</field>
-<!--        TODO: When calling this action window, should force the domain to
-            [('parent_id', '=', active_id), ('is_article_item', '=', True)]
-            Or just remove the menu items calling this act_window
-                + remove default filter on "knowledge_article_action"
-                + uncomment next line + remove context line.-->
-<!--        <field name="domain">[('parent_id', '=', active_id), ('is_article_item', '=', True)]</field>-->
-        <field name="context">{'search_default_filter_not_is_article_item': 1}</field>
+        <field name="domain">[('parent_id', '=', active_id), ('is_article_item', '=', True)]</field>
+        <field name="search_view_id" ref="knowledge_article_view_search_items"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">
                 Create a new article item
             </p>
         </field>
+    </record>
+
+    <record id="knowledge_article_view_items_kanban" model="ir.actions.act_window.view">
+        <field name="sequence" eval="1"/>
+        <field name="view_mode">kanban</field>
+        <field name="view_id" ref="knowledge_article_view_kanban_items"/>
+        <field name="act_window_id" ref="knowledge_article_item_action"/>
+    </record>
+
+    <record id="knowledge_article_view_items_tree" model="ir.actions.act_window.view">
+        <field name="sequence" eval="2"/>
+        <field name="view_mode">tree</field>
+        <field name="view_id" ref="knowledge_article_view_tree_items"/>
+        <field name="act_window_id" ref="knowledge_article_item_action"/>
     </record>
 
     <record id="knowledge_article_action_trashed_tree" model="ir.actions.act_window.view">

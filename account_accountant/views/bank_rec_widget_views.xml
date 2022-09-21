@@ -1,8 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <data>
-
-
         <record id="view_bank_statement_form_bank_rec_widget" model="ir.ui.view">
             <field name="name">account.bank.statement.form.bank_rec_widget</field>
             <field name="model">account.bank.statement</field>
@@ -123,7 +121,6 @@
                                    t-value="record.to_check.raw_value and 'bg-warning' or (record.is_reconciled.raw_value and 'o_status_green' or '')"/>
 
                                 <div class="flex_column">
-
                                     <!-- Row 1 -->
                                     <div class="flex_row">
                                         <div id="row1_col1">
@@ -133,14 +130,14 @@
                                         </div>
                                         <div id="row1_col2" class="ms-1">
                                             <span t-att-class="!(record.statement_complete.raw_value and record.statement_valid.raw_value) and 'text-danger' or ''">
-                                                <field name="statement_id" />
+                                                <field name="statement_id"/>
                                             </span>
                                             <strong>
                                                 <field name="partner_id"/>
                                             </strong>
                                         </div>
                                         <div id="row1_col3" t-att-class="text_amount_class">
-                                                <field name="amount"/>
+                                            <field name="amount"/>
                                         </div>
                                     </div>
 

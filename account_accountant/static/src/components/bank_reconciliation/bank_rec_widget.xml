@@ -33,7 +33,7 @@
     </t>
 
     <t t-name="account_accountant.BankRecWidgetGlobalInfo" owl="1">
-        <div t-if="data and data.balance_amount" class="text-nowrap d-flex">
+        <div t-if="data and data.balance_amount" class="text-nowrap d-flex ms-2">
             <span class="text-900"
                   style="font-size: 18px;">Balance: </span>
             <span class="btn btn-secondary p-0"

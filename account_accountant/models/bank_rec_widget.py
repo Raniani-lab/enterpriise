@@ -1431,7 +1431,11 @@ class BankRecWidget(models.Model):
         self.ensure_one()
 
         # Cleanup a previously selected model.
-        self.line_ids = [Command.unlink(x.id) for x in self.line_ids if x.flag != 'liquidity' and x.reconcile_model_id != reco_model]
+        self.line_ids = [
+            Command.unlink(x.id)
+            for x in self.line_ids
+            if x.flag != 'liquidity' and x.reconcile_model_id and x.reconcile_model_id != reco_model
+        ]
         self._lines_widget_recompute_taxes()
 
         # Compute the residual balance on which apply the newly selected model.

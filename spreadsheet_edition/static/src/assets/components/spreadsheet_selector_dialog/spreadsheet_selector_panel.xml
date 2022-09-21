@@ -12,7 +12,7 @@
             </div>
         </div>
         <div class="o-sp-dialog-items">
-            <div class="o-sp-dialog-item o-sp-dialog-item-blank">
+            <div t-if="props.displayBlank" class="o-sp-dialog-item o-sp-dialog-item-blank">
                 <img tabindex="0" t-on-focus="() => this._selectItem(false)" t-att-class="{ selected: state.selectedSpreadsheetId === false }" src="spreadsheet/static/img/spreadsheet.svg" t-att-title="Blank"/>
                 <div class="o-sp-dialog-item-label">Blank spreadsheet</div>
             </div>

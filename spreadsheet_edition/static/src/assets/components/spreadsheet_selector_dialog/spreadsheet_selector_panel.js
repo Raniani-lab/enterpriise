@@ -30,7 +30,7 @@ export class SpreadsheetSelectorPanel extends Component {
             selectedSpreadsheetId: false,
             pagerProps: {
                 offset: 0,
-                limit: DEFAULT_LIMIT,
+                limit: this.props.displayBlank ? DEFAULT_LIMIT : DEFAULT_LIMIT + 1,
                 total: 0,
             },
         });
@@ -108,6 +108,13 @@ export class SpreadsheetSelectorPanel extends Component {
 
 SpreadsheetSelectorPanel.template = "spreadsheet_edition.SpreadsheetSelectorPanel";
 SpreadsheetSelectorPanel.components = { Pager };
+SpreadsheetSelectorPanel.defaultProps = {
+    displayBlank: true,
+};
 SpreadsheetSelectorPanel.props = {
     onSpreadsheetSelected: Function,
+    displayBlank: {
+        type: Boolean,
+        optional: true,
+    },
 };

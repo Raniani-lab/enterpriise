@@ -21,7 +21,7 @@ patch(MainComponent.prototype, 'stock_barcode_quality_control', {
             return bus.trigger('do-action', {
                 action: res,
                 options: {
-                    on_close: this._onRefreshState.bind(this, this.props.id),
+                    on_close: this._onRefreshState.bind(this, { recordId: this.props.id }),
                 },
             });
         } else {

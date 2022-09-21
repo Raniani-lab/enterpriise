@@ -462,29 +462,29 @@ export default class BarcodeModel extends EventBus {
     }
 
     /**
-     * @param {integer} [recordId] if provided, it will define the record's page as current page
+     * @param {integer} [lineId] if provided, it will define the line record's page as current page
      */
-    async displayBarcodeLines(recordId) {
+    async displayBarcodeLines(lineId) {
         this.view = 'barcodeLines';
-        if (recordId) { // If we pass a record id...
+        if (lineId) { // If we pass a record id...
             // ... checks if the record still exist...
-            const res = await this.orm.search(this.lineModel, [['id', '=', recordId]]);
+            const res = await this.orm.search(this.lineModel, [['id', '=', lineId]]);
             if (!res.length) { // The record was deleted, we remove the corresponding line.
-                const lineIndex = this.currentState.lines.findIndex(l => l.id == recordId);
+                const lineIndex = this.currentState.lines.findIndex(l => l.id == lineId);
                 this.currentState.lines.splice(lineIndex, 1);
                 this._groupLinesByPage(this.currentState);
             }
             if (this.pages.length > 1) { // ... then looks to go to this record's page...
                 for (const [index, page] of this.pages.entries()) {
                     const lineIds = page.lines.map(line => line.id);
-                    if (lineIds.includes(recordId)) {
+                    if (lineIds.includes(lineId)) {
                         this.pageIndex = index;
                         break;
                     }
                 }
             }
             // ... and add this record on the scanned lines list.
-            const line = this.currentState.lines.find(line => line.id === recordId);
+            const line = this.currentState.lines.find(line => line.id === lineId);
             if (line) {
                 this.selectLine(line);
                 if (this.record.picking_type_code === 'incoming') {

@@ -8617,7 +8617,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }
         self._validate_payslip(payslip, payslip_results)
 
-    def test_simple_holiday_pay_recovery_half_days(self):
+    def test_simple_n1_holiday_pay_recovery_half_days(self):
         # Check that half days AND full days are taken into account
         self.contract.date_start = datetime.date(2022, 1, 1)
         self.employee.l10n_be_holiday_pay_to_recover_n1 = 1000
@@ -8649,20 +8649,20 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         payslip_results = {
             'BASIC': 2650.0,
-            'HolPayRecN1': -186.68,
+            'HolPayRecN1': -126.19,
             'ATN.INT': 5.0,
             'ATN.MOB': 4.0,
-            'SALARY': 2472.32,
-            'ONSS': -323.13,
-            'EmpBonus.1': 86.93,
-            'ONSSTOTAL': 236.2,
+            'SALARY': 2532.81,
+            'ONSS': -331.04,
+            'EmpBonus.1': 72.94,
+            'ONSSTOTAL': 258.1,
             'ATN.CAR': 162.42,
-            'GROSSIP': 2398.54,
+            'GROSSIP': 2437.13,
             'IP.PART': -662.5,
-            'GROSS': 1736.04,
-            'P.P': -188.27,
-            'P.P.DED': 28.81,
-            'PPTOTAL': 159.46,
+            'GROSS': 1774.63,
+            'P.P': -207.53,
+            'P.P.DED': 24.17,
+            'PPTOTAL': 183.36,
             'ATN.CAR.2': -162.42,
             'ATN.INT.2': -5.0,
             'ATN.MOB.2': -4.0,
@@ -8671,15 +8671,338 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'REP.FEES': 150.0,
             'IP': 662.5,
             'IP.DED': -49.69,
-            'NET': 2130.78,
+            'NET': 2145.48,
             'REMUNERATION': 1987.5,
-            'ONSSEMPLOYERBASIC': 618.82,
-            'ONSSEMPLOYERFFE': 1.73,
-            'ONSSEMPLOYERMFFE': 2.47,
-            'ONSSEMPLOYERCPAE': 5.69,
-            'ONSSEMPLOYERRESTREINT': 41.78,
-            'ONSSEMPLOYERUNEMP': 2.47,
-            'ONSSEMPLOYER': 672.97,
+            'ONSSEMPLOYERBASIC': 633.96,
+            'ONSSEMPLOYERFFE': 1.77,
+            'ONSSEMPLOYERMFFE': 2.53,
+            'ONSSEMPLOYERCPAE': 5.83,
+            'ONSSEMPLOYERRESTREINT': 42.8,
+            'ONSSEMPLOYERUNEMP': 2.53,
+            'ONSSEMPLOYER': 689.43,
+            'CO2FEE': 28.17,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_simple_n1_holiday_pay_recovery_higher_salary(self):
+        # Check that half days AND full days are taken into account
+        self.contract.date_start = datetime.date(2022, 1, 1)
+        # Employee received 10€ for 5 days of holidays from previous employer
+        # The salary being higher in his current company, the HolidayPayRecN1 shouldn't exceed 10€
+        self.employee.l10n_be_holiday_pay_to_recover_n1 = 10
+        self.employee.l10n_be_holiday_pay_number_of_days_n1 = 5
+
+        self.env['resource.calendar.leaves'].create([{
+            'name': "Legal Leave Half Day",
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'resource_id': self.employee.resource_id.id,
+            'date_from': datetime.datetime(2022, 7, 22, 6, 0, 0), # utc + 2
+            'date_to': datetime.datetime(2022, 7, 22, 10, 0, 0),
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('hr_work_entry_contract.work_entry_type_legal_leave').id
+        }, {
+            'name': "Legal Leave Whole Day",
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'resource_id': self.employee.resource_id.id,
+            'date_from': datetime.datetime(2022, 7, 20, 6, 0, 0),
+            'date_to': datetime.datetime(2022, 7, 20, 19, 0, 0),
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('hr_work_entry_contract.work_entry_type_legal_leave').id
+        }])
+
+        payslip = self._generate_payslip(datetime.date(2022, 7, 1), datetime.date(2022, 7, 31))
+        self.assertEqual(payslip._get_worked_days_line_number_of_hours('LEAVE120'), 7.6 + 4)
+        self.assertEqual(payslip._get_worked_days_line_amount('LEAVE120'), 122.31 + 64.37)
+
+        payslip_results = {
+            'BASIC': 2650.0,
+            'HolPayRecN1': -10.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2649.0,
+            'ONSS': -346.22,
+            'EmpBonus.1': 46.06,
+            'ONSSTOTAL': 300.16,
+            'ATN.CAR': 162.42,
+            'GROSSIP': 2511.26,
+            'IP.PART': -662.5,
+            'GROSS': 1848.76,
+            'P.P': -239.63,
+            'P.P.DED': 15.27,
+            'PPTOTAL': 224.36,
+            'ATN.CAR.2': -162.42,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -15.39,
+            'MEAL_V_EMP': -21.8,
+            'REP.FEES': 150.0,
+            'IP': 662.5,
+            'IP.DED': -49.69,
+            'NET': 2178.6,
+            'REMUNERATION': 1987.5,
+            'ONSSEMPLOYERBASIC': 663.04,
+            'ONSSEMPLOYERFFE': 1.85,
+            'ONSSEMPLOYERMFFE': 2.65,
+            'ONSSEMPLOYERCPAE': 6.09,
+            'ONSSEMPLOYERRESTREINT': 44.77,
+            'ONSSEMPLOYERUNEMP': 2.65,
+            'ONSSEMPLOYER': 721.06,
+            'CO2FEE': 28.17,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_simple_n1_holiday_pay_recovery_lower_salary(self):
+        self.contract.date_start = datetime.date(2022, 1, 1)
+        # Employee received 10 000€ for 2 days of holidays from the previous employer
+        # The salary being lower in his current company, the HolidayPayRecN1 shouldn't exceed the employee cost for the 5 days
+        self.employee.l10n_be_holiday_pay_to_recover_n1 = 10000
+        self.employee.l10n_be_holiday_pay_number_of_days_n1 = 2
+
+        self.env['resource.calendar.leaves'].create([{
+            'name': "Legal Leave Full Week",
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'resource_id': self.employee.resource_id.id,
+            'date_from': datetime.datetime(2022, 7, 18, 6, 0, 0),
+            'date_to': datetime.datetime(2022, 7, 22, 19, 0, 0),
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('hr_work_entry_contract.work_entry_type_legal_leave').id
+        }])
+
+        payslip = self._generate_payslip(datetime.date(2022, 7, 1), datetime.date(2022, 7, 31))
+        self.assertEqual(payslip._get_worked_days_line_number_of_hours('LEAVE120'), 7.6 * 5)
+        self.assertEqual(payslip._get_worked_days_line_amount('LEAVE120'), 611.54)
+
+        payslip_results = {
+            'BASIC': 2650.0,
+            'HolPayRecN1': -252.38,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2406.62,
+            'ONSS': -314.55,
+            'EmpBonus.1': 102.13,
+            'ONSSTOTAL': 212.42,
+            'ATN.CAR': 162.42,
+            'GROSSIP': 2356.62,
+            'IP.PART': -662.5,
+            'GROSS': 1694.12,
+            'P.P': -169.01,
+            'P.P.DED': 33.84,
+            'PPTOTAL': 135.17,
+            'ATN.CAR.2': -162.42,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -15.39,
+            'MEAL_V_EMP': -17.44,
+            'REP.FEES': 150.0,
+            'IP': 662.5,
+            'IP.DED': -49.69,
+            'NET': 2117.52,
+            'REMUNERATION': 1987.5,
+            'ONSSEMPLOYERBASIC': 602.38,
+            'ONSSEMPLOYERFFE': 1.68,
+            'ONSSEMPLOYERMFFE': 2.41,
+            'ONSSEMPLOYERCPAE': 5.54,
+            'ONSSEMPLOYERRESTREINT': 40.67,
+            'ONSSEMPLOYERUNEMP': 2.41,
+            'ONSSEMPLOYER': 655.08,
+            'CO2FEE': 28.17,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_simple_n_holiday_pay_recovery_half_days(self):
+        # Check that half days AND full days are taken into account
+        self.contract.date_start = datetime.date(2021, 1, 1)
+        self.employee.l10n_be_holiday_pay_to_recover_n = 1000
+        self.employee.l10n_be_holiday_pay_number_of_days_n = 5
+
+        self.env['resource.calendar.leaves'].create([{
+            'name': "Legal Leave Half Day",
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'resource_id': self.employee.resource_id.id,
+            'date_from': datetime.datetime(2022, 7, 22, 6, 0, 0), # utc + 2
+            'date_to': datetime.datetime(2022, 7, 22, 10, 0, 0),
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('hr_work_entry_contract.work_entry_type_legal_leave').id
+        }, {
+            'name': "Legal Leave Whole Day",
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'resource_id': self.employee.resource_id.id,
+            'date_from': datetime.datetime(2022, 7, 20, 6, 0, 0),
+            'date_to': datetime.datetime(2022, 7, 20, 19, 0, 0),
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('hr_work_entry_contract.work_entry_type_legal_leave').id
+        }])
+
+        payslip = self._generate_payslip(datetime.date(2022, 7, 1), datetime.date(2022, 7, 31))
+        self.assertEqual(payslip._get_worked_days_line_number_of_hours('LEAVE120'), 7.6 + 4)
+        self.assertEqual(payslip._get_worked_days_line_amount('LEAVE120'), 122.31 + 64.37)
+
+        payslip_results = {
+            'BASIC': 2650.0,
+            'HolPayRecN': -126.19,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2532.81,
+            'ONSS': -331.04,
+            'EmpBonus.1': 72.94,
+            'ONSSTOTAL': 258.1,
+            'ATN.CAR': 162.42,
+            'GROSSIP': 2437.13,
+            'IP.PART': -662.5,
+            'GROSS': 1774.63,
+            'P.P': -207.53,
+            'P.P.DED': 24.17,
+            'PPTOTAL': 183.36,
+            'ATN.CAR.2': -162.42,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -15.39,
+            'MEAL_V_EMP': -21.8,
+            'REP.FEES': 150.0,
+            'IP': 662.5,
+            'IP.DED': -49.69,
+            'NET': 2145.48,
+            'REMUNERATION': 1987.5,
+            'ONSSEMPLOYERBASIC': 633.96,
+            'ONSSEMPLOYERFFE': 1.77,
+            'ONSSEMPLOYERMFFE': 2.53,
+            'ONSSEMPLOYERCPAE': 5.83,
+            'ONSSEMPLOYERRESTREINT': 42.8,
+            'ONSSEMPLOYERUNEMP': 2.53,
+            'ONSSEMPLOYER': 689.43,
+            'CO2FEE': 28.17,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_simple_n_holiday_pay_recovery_higher_salary(self):
+        # Check that half days AND full days are taken into account
+        self.contract.date_start = datetime.date(2021, 1, 1)
+        # Employee received 10€ for 5 days of holidays from previous employer
+        # The salary being higher in his current company, the HolidayPayRecN1 shouldn't exceed 10€
+        self.employee.l10n_be_holiday_pay_to_recover_n = 10
+        self.employee.l10n_be_holiday_pay_number_of_days_n = 5
+
+        self.env['resource.calendar.leaves'].create([{
+            'name': "Legal Leave Half Day",
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'resource_id': self.employee.resource_id.id,
+            'date_from': datetime.datetime(2022, 7, 22, 6, 0, 0), # utc + 2
+            'date_to': datetime.datetime(2022, 7, 22, 10, 0, 0),
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('hr_work_entry_contract.work_entry_type_legal_leave').id
+        }, {
+            'name': "Legal Leave Whole Day",
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'resource_id': self.employee.resource_id.id,
+            'date_from': datetime.datetime(2022, 7, 20, 6, 0, 0),
+            'date_to': datetime.datetime(2022, 7, 20, 19, 0, 0),
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('hr_work_entry_contract.work_entry_type_legal_leave').id
+        }])
+
+        payslip = self._generate_payslip(datetime.date(2022, 7, 1), datetime.date(2022, 7, 31))
+        self.assertEqual(payslip._get_worked_days_line_number_of_hours('LEAVE120'), 7.6 + 4)
+        self.assertEqual(payslip._get_worked_days_line_amount('LEAVE120'), 122.31 + 64.37)
+
+        payslip_results = {
+            'BASIC': 2650.0,
+            'HolPayRecN': -10.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2649.0,
+            'ONSS': -346.22,
+            'EmpBonus.1': 46.06,
+            'ONSSTOTAL': 300.16,
+            'ATN.CAR': 162.42,
+            'GROSSIP': 2511.26,
+            'IP.PART': -662.5,
+            'GROSS': 1848.76,
+            'P.P': -239.63,
+            'P.P.DED': 15.27,
+            'PPTOTAL': 224.36,
+            'ATN.CAR.2': -162.42,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -15.39,
+            'MEAL_V_EMP': -21.8,
+            'REP.FEES': 150.0,
+            'IP': 662.5,
+            'IP.DED': -49.69,
+            'NET': 2178.6,
+            'REMUNERATION': 1987.5,
+            'ONSSEMPLOYERBASIC': 663.04,
+            'ONSSEMPLOYERFFE': 1.85,
+            'ONSSEMPLOYERMFFE': 2.65,
+            'ONSSEMPLOYERCPAE': 6.09,
+            'ONSSEMPLOYERRESTREINT': 44.77,
+            'ONSSEMPLOYERUNEMP': 2.65,
+            'ONSSEMPLOYER': 721.06,
+            'CO2FEE': 28.17,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+    def test_simple_n_holiday_pay_recovery_lower_salary(self):
+        self.contract.date_start = datetime.date(2021, 1, 1)
+        # Employee received 10 000€ for 2 days of holidays from the previous employer
+        # The salary being lower in his current company, the HolidayPayRecN1 shouldn't exceed the employee cost for the 5 days
+        self.employee.l10n_be_holiday_pay_to_recover_n = 10000
+        self.employee.l10n_be_holiday_pay_number_of_days_n = 2
+
+        self.env['resource.calendar.leaves'].create([{
+            'name': "Legal Leave Full Week",
+            'calendar_id': self.resource_calendar_38_hours_per_week.id,
+            'company_id': self.env.company.id,
+            'resource_id': self.employee.resource_id.id,
+            'date_from': datetime.datetime(2022, 7, 18, 6, 0, 0),
+            'date_to': datetime.datetime(2022, 7, 22, 19, 0, 0),
+            'time_type': "leave",
+            'work_entry_type_id': self.env.ref('hr_work_entry_contract.work_entry_type_legal_leave').id
+        }])
+
+        payslip = self._generate_payslip(datetime.date(2022, 7, 1), datetime.date(2022, 7, 31))
+        self.assertEqual(payslip._get_worked_days_line_number_of_hours('LEAVE120'), 7.6 * 5)
+        self.assertEqual(payslip._get_worked_days_line_amount('LEAVE120'), 611.54)
+
+        payslip_results = {
+            'BASIC': 2650.0,
+            'HolPayRecN': -252.38,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2406.62,
+            'ONSS': -314.55,
+            'EmpBonus.1': 102.13,
+            'ONSSTOTAL': 212.42,
+            'ATN.CAR': 162.42,
+            'GROSSIP': 2356.62,
+            'IP.PART': -662.5,
+            'GROSS': 1694.12,
+            'P.P': -169.01,
+            'P.P.DED': 33.84,
+            'PPTOTAL': 135.17,
+            'ATN.CAR.2': -162.42,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -15.39,
+            'MEAL_V_EMP': -17.44,
+            'REP.FEES': 150.0,
+            'IP': 662.5,
+            'IP.DED': -49.69,
+            'NET': 2117.52,
+            'REMUNERATION': 1987.5,
+            'ONSSEMPLOYERBASIC': 602.38,
+            'ONSSEMPLOYERFFE': 1.68,
+            'ONSSEMPLOYERMFFE': 2.41,
+            'ONSSEMPLOYERCPAE': 5.54,
+            'ONSSEMPLOYERRESTREINT': 40.67,
+            'ONSSEMPLOYERUNEMP': 2.41,
+            'ONSSEMPLOYER': 655.08,
             'CO2FEE': 28.17,
         }
         self._validate_payslip(payslip, payslip_results)

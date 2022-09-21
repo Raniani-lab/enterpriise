@@ -23,5 +23,9 @@ class Task(models.Model):
             'views': [(False, 'form')],
             'type': 'ir.actions.act_window',
             'target': 'new',
-            'context': {**self.env.context, 'to_convert': self.ids},
+            'context': {
+                **self.env.context,
+                'to_convert': self.ids,
+                'dialog_size': 'medium',
+            },
         }

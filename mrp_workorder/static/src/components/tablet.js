@@ -1,15 +1,15 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { useService, useBus } from "@web/core/utils/hooks";
-import ViewsWidget from '@mrp_workorder/widgets/views_widget';
+import { useBus, useService } from "@web/core/utils/hooks";
+import { View } from "@web/views/view";
 import DocumentViewer from '@mrp_workorder/components/viewer';
 import StepComponent from '@mrp_workorder/components/step';
 import ViewsWidgetAdapter from '@mrp_workorder/components/views_widget_adapter';
 import MenuPopup from '@mrp_workorder/components/menuPopup';
 import SummaryStep from '@mrp_workorder/components/summary_step';
 
-const {useState, useEffect, onWillStart, EventBus, Component, markup} = owl;
+const { EventBus, useState, useEffect, onWillStart, Component, markup} = owl;
 
 /**
  * Main Component
@@ -36,16 +36,14 @@ class Tablet extends Component {
         });
         this.workorderId = this.props.action.context.active_id;
         this.additionalContext = this.props.action.context;
-        this.ViewsWidget = ViewsWidget;
-        this.bus = new EventBus();
-        this.bus.on('refresh', this, async () => {
+        this.workorderBus = new EventBus();
+        useBus(this.workorderBus, "refresh", async () => {
             await this.getState();
             this.render();
         });
-        this.bus.on('workorder_event', this, (method) => {
-            this[method]();
+        useBus(this.workorderBus, "workorder_event", (ev) => {
+            this[ev.detail]();
         });
-        this.bus.on('exit', this, this.exit);
         this.barcode = useService('barcode');
         useBus(this.barcode.bus, 'barcode_scanned', (event) => this._onBarcodeScanned(event.detail.barcode));
         onWillStart(async () => {
@@ -62,7 +60,7 @@ class Tablet extends Component {
         if (selectedLine) {
             // If a line is selected, checks if this line is entirely visible
             // and if it's not, scrolls until the line is.
-            const headerHeight = document.querySelector('.o_legacy_form_view').offsetHeight.height;
+            const headerHeight = document.querySelector('.o_form_view').offsetHeight.height;
             const lineRect = selectedLine.getBoundingClientRect();
             const page = document.querySelector('.o_tablet_timeline');
             // Computes the real header's height (the navbar is present if the page was refreshed).
@@ -86,6 +84,7 @@ class Tablet extends Component {
             'get_workorder_data',
             [this.workorderId],
         );
+        this.viewsId = this.data['views'];
         this.steps = this.data['quality.check'];
         this.state.workingState = this.data.working_state;
         if (this.steps.length && this.steps.every(step => step.quality_state !== 'none')) {
@@ -105,7 +104,7 @@ class Tablet extends Component {
     }
 
     async exit(ev) {
-        await new Promise(resolve => this.bus.trigger('save', resolve));
+        await new Promise((resolve) => this.workorderBus.trigger("force_save", { resolve }));
         this._buttonClick('button_pending');
         this.env.config.historyBack();
     }
@@ -121,12 +120,17 @@ class Tablet extends Component {
     }
 
     async saveCurrentStep(newId) {
-        await new Promise(resolve => this.bus.trigger('save', resolve));
-        this.orm.write(
-            'mrp.workorder',
-            [this.workorderId],
-            {current_quality_check_id: newId},
+        await new Promise((resolve) =>
+            this.workorderBus.trigger("force_save_workorder", { resolve })
         );
+        if (this.state.selectedStepId) {
+            await new Promise((resolve) =>
+                this.workorderBus.trigger("force_save_check", { resolve })
+            );
+        }
+        await this.orm.write("mrp.workorder", [this.workorderId], {
+            current_quality_check_id: newId,
+        });
         this.state.selectedStepId = newId;
     }
 
@@ -171,23 +175,25 @@ class Tablet extends Component {
         );
     }
 
-    get viewsWidgetData() {
+    get views() {
         const data = {
             workorder: {
-                model: 'mrp.workorder',
-                view: 'mrp_workorder.mrp_workorder_view_form_tablet',
-                additionalContext: this.additionalContext,
-                params: {currentId: this.workorderId},
-                currentId: this.workorderId,
-                bus: this.bus
+                type: 'workorder_form',
+                mode: 'edit',
+                resModel: 'mrp.workorder',
+                viewId: this.viewsId.workorder,
+                resId: this.workorderId,
+                display: { controlPanel: false },
+                workorderBus: this.workorderBus,
             },
             check: {
-                model: 'quality.check',
-                view: 'mrp_workorder.quality_check_view_form_tablet',
-                additionalContext: this.additionalContext,
-                params: {currentId: this.state.selectedStepId},
-                currentId: this.state.selectedStepId,
-                bus: this.bus
+                type: 'workorder_form',
+                mode: 'edit',
+                resModel: 'quality.check',
+                viewId: this.viewsId.check,
+                resId: this.state.selectedStepId,
+                display: { controlPanel: false },
+                workorderBus: this.workorderBus,
             },
         };
         return data;
@@ -250,6 +256,7 @@ Tablet.components = {
     ViewsWidgetAdapter,
     MenuPopup,
     SummaryStep,
+    View,
 };
 
 registry.category('actions').add('tablet_client_action', Tablet);

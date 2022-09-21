@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { useService } from "@web/core/utils/hooks";
+import { useBus, useService } from "@web/core/utils/hooks";
 import Tablet from '@mrp_workorder/components/tablet';
 import { SelectionPopup } from '@mrp_workorder_hr/components/popup';
 import { WorkingEmployeePopup } from '@mrp_workorder_hr/components/working_employee_popup';
@@ -28,7 +28,7 @@ patch(Tablet.prototype, 'mrp_workorder_hr', {
         this.state.tabletEmployeeIds = [];
         this.employee = this.props.action.context.employee_id;
         this.actionRedirect = false;
-        this.bus.on('popupEmployeeManagement', this, this.popupEmployeeManagement);
+        useBus(this.workorderBus, "popupEmployeeManagement", this.popupEmployeeManagement);
         onMounted(() => this.checkEmployeeLogged());
     },
 

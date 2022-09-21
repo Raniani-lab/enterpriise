@@ -30,35 +30,35 @@ function assertDoneButton(present = false) {
 }
 
 function assertQtyToProduce(qty_producing, qty_remaining) {
-    let $qty_producing = $('span[name="qty_producing"]');
+    let $qty_producing = $('input[id="qty_producing"]');
     if ($qty_producing.length === 0) {
-        $qty_producing = $('input[name="qty_producing"]');
-        assert(Number($qty_producing[0].value), qty_producing, `wrong quantity done`);
-    } else {
+        $qty_producing = $('div[name="qty_producing"]');
         assert(Number($qty_producing[0].textContent), qty_producing, `wrong quantity done`);
+    } else {
+        assert(Number($qty_producing[0].value), qty_producing, `wrong quantity done`);
     }
     assert($qty_producing.length, 1, `no qty_producing`);
 
-    const $qty_remaining = $('span[name="qty_remaining"]');
+    const $qty_remaining = $('div[name="qty_remaining"]');
     assert($qty_remaining.length, 1, `no qty_remaining`);
     assert(Number($qty_remaining[0].textContent), qty_remaining, `wrong quantity remaining`);
 }
 
 function assertComponent(name, style, qty_done, qty_remaining) {
     assertIn(style, ['readonly', 'editable']);
-    const $label = $('span[name="component_id"] > span');
+    const $label = $('div[name="component_id"] > span');
     assert($label.length, 1, `no field`);
     assert($label[0].textContent, name, `wrong component name`);
     if (style === 'readonly') {
-        const $qty_done = $('span[name="qty_done"]');
+        const $qty_done = $('div[name="qty_done"]');
         assert($qty_done.length, 1, `no qty_done`);
         assert(Number($qty_done[0].textContent), qty_done, `wrong quantity done`);
     } else {
-        const $qty_done = $('input[name="qty_done"]');
+        const $qty_done = $('input[id="qty_done"]');
         assert($qty_done.length, 1, `no qty_done`);
         assert(Number($qty_done[0].value), qty_done, `wrong quantity done`);
     }
-    const $qty_remaining = $('span[name="component_remaining_qty"]');
+    const $qty_remaining = $('div[name="component_remaining_qty"]');
     assert($qty_remaining.length, 1, `no qty_remaining`);
     assert(Number($qty_remaining[0].textContent), qty_remaining, `wrong quantity remaining`);
 }

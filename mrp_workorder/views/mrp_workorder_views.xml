@@ -111,7 +111,7 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
                 <field name="current_quality_check_id" invisible="1"/>
                 <div class="o_workorder_bar">
                     <div class="o_workorder_bar_left o_workorder_bar_content">
-                        <button name="exit" class="btn btn-secondary o_exit workorder_event fa fa-arrow-left o_unblock" title="back"/>
+                        <button name="exit" type="workorder_event" class="btn btn-secondary o_exit fa fa-arrow-left o_unblock" title="back"/>
                         <div class="o_workorder_field">
                             <field name="production_id" options="{'no_open': True}" readonly="1"/> - <field name="name" readonly="1"/>
                         </div>
@@ -131,7 +131,7 @@ if env.user.has_group('mrp.group_mrp_workorder_dependencies'):
                 </div>
                 <div class="o_workorder_bar">
                     <div class="o_workorder_bar_left o_workorder_action o_workorder_bar_content">
-                        <button name="openMenuPopup" t-att-disabled="isBlocked" class="btn btn-secondary o_workorder_icon_btn fa fa-bars workorder_event" title="menu"/>
+                        <button name="openMenuPopup" t-att-disabled="isBlocked" class="btn btn-secondary o_workorder_icon_btn fa fa-bars" type="workorder_event" title="menu"/>
                         <span groups="mrp_workorder.group_mrp_wo_tablet_timer">
                             <button name="button_pending" type="object" class="btn btn-secondary" attrs="{'invisible': ['|', ('is_user_working', '=', False), ('working_state', '=', 'blocked')]}" barcode_trigger="pause" string="PAUSE"/>
                             <button name="button_start" type="object" class="btn btn-warning" attrs="{'invisible': ['|', '|', ('is_user_working', '=', True), ('working_state', '=', 'blocked'), ('state', '=', ('done', 'cancel'))]}" barcode_trigger="pause" string="CONTINUE"/>

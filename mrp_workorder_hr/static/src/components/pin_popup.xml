@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
     <t t-name="mrp_workorder_hr.PinPopup" owl="1">
         <div role="dialog">
-            <div class="popup centered  text-black">
+            <div class="popup centered text-black">
                 <header class="title">
                     Password ?
                 </header>

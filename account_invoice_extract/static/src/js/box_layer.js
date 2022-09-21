@@ -46,18 +46,6 @@ export class BoxLayer extends Component {
     get isOnPDF() {
         return this.props.mode === 'pdf';
     }
-
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
-
-    onMouseDown(e) {
-        // For the date fields, we want to lose the focus so that the calendar dropdown closes.
-        // For other fields, we want to keep the focus so that the box doesn't disappear after a click.
-        if (!['date', 'due_date'].includes(e.target.getAttribute('data-field-name'))) {
-            e.preventDefault();
-        }
-    }
 };
 
 BoxLayer.components = { Box };

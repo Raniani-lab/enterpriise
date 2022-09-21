@@ -10,12 +10,6 @@ class DashboardSelectorPanel extends SpreadsheetSelectorPanel {
         this.actionTag = "action_edit_dashboard";
     }
 
-    setup() {
-        super.setup();
-        // We do not have the blank spreadsheet in this panel.
-        this.state.pagerProps.limit = 10;
-    }
-
     /**
      * Fetch spreadsheets according to the search domain and the pager
      * offset given as parameter.
@@ -45,8 +39,6 @@ class DashboardSelectorPanel extends SpreadsheetSelectorPanel {
         return this.orm.searchCount("spreadsheet.dashboard", []);
     }
 }
-
-DashboardSelectorPanel.template = "spreadsheet_dashboard_edition.SpreadsheetSelectorPanel";
 
 patch(SpreadsheetSelectorDialog, "spreadsheet_dashboard_edition.DashboardSelectorPanel", {
     components: { ...SpreadsheetSelectorDialog.components, DashboardSelectorPanel },

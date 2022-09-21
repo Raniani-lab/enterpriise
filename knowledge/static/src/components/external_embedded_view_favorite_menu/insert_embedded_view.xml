@@ -4,5 +4,8 @@
         <DropdownItem onSelected.bind="_onInsertEmbeddedViewInArticle">
             Insert view in article
         </DropdownItem>
+        <DropdownItem onSelected.bind="_onInsertViewLinkInArticle">
+            Insert link in article
+        </DropdownItem>
     </t>
 </templates>

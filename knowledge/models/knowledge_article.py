@@ -1979,6 +1979,34 @@ class Article(models.Model):
             'body': self.body + Markup('<p><br></p>') + Markup(embedded_view) + Markup('<p><br></p>')
         })
 
+    def append_view_link(self, act_window_id_or_xml_id, view_type, name, context=None):
+        """
+        Append a new HTML tag to the body of the article that will be recognized
+        as a view link by the editor. This tag will contain all data needed to
+        open the given view.
+        :param int | str act_window_id_or_xml_id: id or xml id of the action
+        :param str view_type: type of the view ('kanban', 'list', ...)
+        :param str name: display name
+        :param dict context: context of the view
+        """
+        self.ensure_one()
+        action_data = self._extract_act_window_data(act_window_id_or_xml_id, name)
+        link = self.env['ir.qweb']._render(
+            'knowledge.knowledge_view_link', {
+                'behavior_props': json.dumps({
+                    'act_window': action_data,
+                    'context': context or {},
+                    'name': name,
+                    'view_type': view_type,
+                })
+            },
+            minimal_qcontext=True,
+            raise_if_not_found=False
+        )
+        self.write({
+            'body': self.body + Markup('<p><br></p>') + Markup(link) + Markup('<p><br></p>')
+        })
+
     def render_embedded_view(self, act_window_id_or_xml_id, view_type, name, context=None):
         """
         Returns the HTML tag that will be recognized by the editor as an embedded view.

@@ -25,6 +25,7 @@ const EmbeddedViewRendererPatch = {
         this._super(...arguments);
         if (this.env.searchModel) {
             useBus(this.env.searchModel, 'insert-embedded-view', this._insertEmbeddedView.bind(this));
+            useBus(this.env.searchModel, 'insert-view-link', this._insertViewLink.bind(this));
             this.orm = useService('orm');
             this.actionService = useService('action');
             this.addDialog = useOwnedDialogs();
@@ -59,6 +60,30 @@ const EmbeddedViewRendererPatch = {
         this._openArticleSelector(async id => {
             const context = Object.assign({}, this._getViewContext(), this._getViewState());
             await this.orm.call('knowledge.article', 'append_embedded_view',
+                [[id],
+                config.actionId,
+                config.viewType,
+                config.getDisplayName(),
+                context]
+            );
+            this.actionService.doAction('knowledge.ir_actions_server_knowledge_home_page', {
+                additionalContext: {
+                    res_id: id
+                }
+            });
+        });
+    },
+    /**
+     * Inserts a new link in the article redirecting the user to the current view.
+     */
+    _insertViewLink: function () {
+        const config = this.env.config;
+        if (config.actionType !== 'ir.actions.act_window') {
+            return;
+        }
+        this._openArticleSelector(async id => {
+            const context = Object.assign({}, this._getViewContext(), this._getViewState());
+            await this.orm.call('knowledge.article', 'append_view_link',
                 [[id],
                 config.actionId,
                 config.viewType,

@@ -11,6 +11,9 @@ export class InsertEmbeddedViewMenu extends Component {
     _onInsertEmbeddedViewInArticle () {
         this.env.searchModel.trigger('insert-embedded-view');
     }
+    _onInsertViewLinkInArticle () {
+        this.env.searchModel.trigger('insert-view-link');
+    }
 }
 
 InsertEmbeddedViewMenu.props = {};

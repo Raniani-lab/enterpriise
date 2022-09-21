@@ -10,7 +10,7 @@
 For that purpose it adds a dashboard view to the revenues report
     """,
     'category': 'Marketing/Events',
-    'depends': ['event_sale', 'web_dashboard'],
+    'depends': ['event_sale'],
     'data': [
         'report/event_sale_report_views.xml',
     ],

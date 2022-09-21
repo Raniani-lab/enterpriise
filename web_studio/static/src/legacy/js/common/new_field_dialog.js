@@ -310,7 +310,7 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
      */
     _onSelectionInputBlur: function (ev) {
         var $input = $(ev.currentTarget);
-        var val = $input.closest('li').data('value');
+        var val = $input.closest('li')[0].dataset.value;  // use dataset to always get the string
         var index = _.findIndex(this.selection, function (el) { return el[0] === val; });
         this.selection[index][1] = $input.val();
         this.renderElement();

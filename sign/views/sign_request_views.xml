@@ -86,17 +86,17 @@
         <field name="name">sign.request.tree</field>
         <field name="model">sign.request</field>
         <field name="arch" type="xml">
-            <tree sample="1" js_class="sign_list" decoration-info="state in ('shared', 'sent')" decoration-muted="state in ('refused', 'canceled')">
-                <field name="reference"/>
-                <field name="template_id" optional="hide"/>
-                <field name="state"/>
-                <field name="request_item_ids" string="Contacts" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                <field name="progress"/>
+            <tree multi_edit="1" sample="1" js_class="sign_list" decoration-info="state in ('shared', 'sent')" decoration-muted="state in ('refused', 'canceled')">
+                <field name="reference" readonly="1"/>
+                <field name="template_id" readonly="1" optional="hide"/>
+                <field name="state" readonly="1"/>
+                <field name="request_item_ids" string="Contacts" widget="many2many_tags" readonly="1" options="{'color_field': 'color'}"/>
+                <field name="progress" readonly="1"/>
                 <field name="template_tags" string="Tags" widget="many2many_tags"/>
-                <field name="create_date" string="Create date"/>
-                <field name="need_my_signature" invisible="1"/>
-                <field name="create_uid" invisible="1"/>
-                <field name="activity_exception_decoration" widget="activity_exception"/>
+                <field name="create_date" string="Create date" readonly="1"/>
+                <field name="need_my_signature" readonly="1" invisible="1"/>
+                <field name="create_uid" readonly="1" invisible="1"/>
+                <field name="activity_exception_decoration" widget="activity_exception" readonly="1"/>
                 <button name="unlink" states="shared" string="Stop Sharing" type="object"/>
                 <button name="get_completed_document" states="signed" string="Download" type="object"/>
                 <button name="go_to_signable_document" string="sign" type="object" attrs="{'invisible': ['|', ('need_my_signature', '=', False), ('state', '!=', 'sent')]}"/>
@@ -142,6 +142,8 @@
                     <div class="alert alert-warning" role="alert" attrs="{'invisible': [('integrity', '=', True)]}">
                         The integrity of the document's history cannot be verified. This could mean that signature values or the underlying PDF document may have been modified after the fact.
                     </div>
+                    <label for="template_tags" class="p-0 m-0 me-2">Tags:</label>
+                    <field name="template_tags" widget="many2many_tags" options="{'color_field': 'color'}" placeholder="Add document tags here"/>
 
                     <field name="request_item_ids" context="{'default_sign_request_id': id}" nolabel="1"/>
                     <field name="cc_partner_ids">

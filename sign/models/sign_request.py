@@ -96,7 +96,7 @@ class SignRequest(models.Model):
     communication_company_id = fields.Many2one('res.company', string="Company used for communication")
 
     sign_log_ids = fields.One2many('sign.log', 'sign_request_id', string="Logs", help="Activity logs linked to this request")
-    template_tags = fields.Many2many('sign.template.tag', string='Template Tags', related='template_id.tag_ids')
+    template_tags = fields.Many2many('sign.template.tag', string='Tags')
     cc_partner_ids = fields.Many2many('res.partner', string='Copy to', compute='_compute_cc_partners')
     message = fields.Html('sign.message')
     message_cc = fields.Html('sign.message_cc')
@@ -161,6 +161,7 @@ class SignRequest(models.Model):
         for sign_request in sign_requests:
             if not sign_request.request_item_ids:
                 raise ValidationError(_("A valid sign request needs at least one sign request item"))
+            sign_request.template_tags = [Command.set(sign_request.template_id.tag_ids.ids)]
             sign_request.attachment_ids.write({'res_model': sign_request._name, 'res_id': sign_request.id})
             sign_request.message_subscribe(partner_ids=sign_request.request_item_ids.partner_id.ids)
             self.env['sign.log'].sudo().create({'sign_request_id': sign_request.id, 'action': 'create'})

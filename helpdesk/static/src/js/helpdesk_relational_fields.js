@@ -5,7 +5,7 @@ import FieldRegistry from 'web.field_registry';
 
 const HelpdeskSlaMany2ManyTags = FieldMany2ManyTags.extend({
     fieldsToFetch: Object.assign({}, FieldMany2ManyTags.prototype.fieldsToFetch, {
-        status: {type: 'selection'},
+        status: { type: 'selection', selection: [] },
     }),
     tag_template: "FieldSlaMany2ManyTagIcon",
 });

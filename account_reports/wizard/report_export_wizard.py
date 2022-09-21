@@ -85,8 +85,13 @@ class ReportExportWizardOption(models.TransientModel):
             report_options = json.loads(report_action['data']['options'])
 
             # file_generator functions are always public for ir_actions_account_report_download
-            check_method_name(report_action['data']['file_generator'])
-            generation_function = getattr(self.export_wizard_id.report_id, report_action['data']['file_generator'])
+            file_generator = report_action['data']['file_generator']
+            check_method_name(file_generator)
+            report = self.export_wizard_id.report_id
+            if report.custom_handler_model_id and hasattr(self.env[report.custom_handler_model_name], file_generator):
+                generation_function = getattr(self.env[report.custom_handler_model_name], file_generator)
+            else:
+                generation_function = getattr(report, file_generator)
             export_result = generation_function(report_options)
 
             # We use the options from the action, as the action may have added or modified

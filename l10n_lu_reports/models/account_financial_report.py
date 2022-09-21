@@ -86,7 +86,7 @@ class LuxembourgishFinancialReportCustomHandler(models.AbstractModel):
             if float_compare(amount, 0.0, 2) != 0 or required:
                 values.update({field: {'value': _format_amount(amount), 'field_type': 'number'}})
                 # The parent needs to be added even if at 0, if some child lines are filled in
-                if parent_code and not values.get(parent_code):
+                if parent_field and not values.get(parent_field):
                     values.update({parent_field: {'value': '0,00', 'field_type': 'number'}})
 
         report = self.env['account.report'].browse(options['report_id'])

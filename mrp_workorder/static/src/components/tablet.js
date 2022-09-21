@@ -103,12 +103,6 @@ class Tablet extends Component {
         this.state.selectedStepId = 0;
     }
 
-    async _buttonClick(method) {
-        const res = await this.orm.call('mrp.workorder', method, [this.workorderId]);
-        await this.getState();
-        return res;
-    }
-
     async selectStep(id) {
         await this.saveCurrentStep(id);
     }

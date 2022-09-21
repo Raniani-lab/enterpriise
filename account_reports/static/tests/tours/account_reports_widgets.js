@@ -53,6 +53,7 @@ tour.register('account_reports_widgets', {
             content: 'wait for footnote to be saved',
             trigger: '.footnote#footnote1 .text:contains(1. My awesome footnote!)',
             extra_trigger: '.o_account_reports_footnote_sup a[href="#footnote1"]',
+            run: function(){},
         },
         {
             content: "change date filter",
@@ -61,40 +62,33 @@ tour.register('account_reports_widgets', {
         },
         {
             content: "change date filter",
-            trigger: ".dropdown-item.js_account_report_date_filter[data-filter='last_year']",
-            extra_trigger: ".dropdown-item.js_account_report_date_filter[data-filter='last_year']",
+            trigger: ".o_account_reports_filter_date .dropdown-item.js_account_report_date_filter[data-filter='last_year']",
+            extra_trigger: ".o_account_reports_filter_date > button.show",
             run: 'click'
         },
         {
             content: "wait refresh",
-            trigger: ".o_account_reports_level2:last() .o_account_report_column_value:contains('')",
-            extra_trigger: ".o_account_reports_filter_date:not(.show)"
+            trigger: ".o_account_reports_header_hierarchy th:contains('2019')",
+            run: function(){},
         },
         {
             content: "change comparison filter",
             trigger: ".o_account_reports_filter_date_cmp > button",
-            extra_trigger: ".o_account_reports_filter_date_cmp > button",
         },
         {
             content: "change comparison filter",
             trigger: ".dropdown-item.js_foldable_trigger[data-filter='previous_period']",
-            extra_trigger: ".dropdown-item.js_foldable_trigger[data-filter='previous_period']",
+            extra_trigger: ".o_account_reports_filter_date_cmp > button.show",
         },
         {
             content: "wait for Apply button and click on it",
             trigger: ".js_account_report_date_cmp_filter[data-filter='previous_period']",
-            extra_trigger: ".js_account_report_date_cmp_filter[data-filter='previous_period']",
             run: 'click',
         },
         {
             content: "wait refresh, report should have 4 columns",
             trigger: "th + th + th + th",
-            extra_trigger: "th + th + th + th",
-        },
-        {
-            content: "change boolean filter",
-            trigger: ".o_account_reports_filter_bool > button",
-            extra_trigger: ".o_account_reports_filter_bool > button",
+            run: function(){},
         },
         {
             title: "export xlsx",

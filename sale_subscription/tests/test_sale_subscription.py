@@ -1650,3 +1650,67 @@ class TestSubscription(TestSubscriptionCommon):
             # 100 * [1 - ((1 - 0.831) * 0.9)] = ~84%
             discount = [round(v, 2) for v in upsell_so.order_line.mapped('discount')]
             self.assertAlmostEqual(discount, [84.71, 84.71, 0])
+
+    def test_negative_discount(self):
+        """ Upselling a renewed order before it started should create a negative discount to invoice the previous
+            period
+        """
+        with freeze_time("2022-01-01"):
+            self.subscription.start_date = False
+            self.subscription.next_invoice_date = False
+            self.subscription.write({
+                'partner_id': self.partner.id,
+                'recurrence_id': self.recurrence_year.id,
+            })
+            subscription_2 = self.subscription.copy()
+            (self.subscription|subscription_2).action_confirm()
+            self.env['sale.order']._cron_recurring_create_invoice()
+
+        with freeze_time("2022-09-10"):
+            action = self.subscription.prepare_renewal_order()
+            renewal_so = self.env['sale.order'].browse(action['res_id'])
+            renewal_so.action_confirm()
+            renewal_so._create_recurring_invoice()
+            self.assertEqual(renewal_so.start_date, datetime.date(2023, 1, 1))
+            self.assertEqual(renewal_so.next_invoice_date, datetime.date(2024, 1, 1))
+            action = self.subscription.prepare_renewal_order()
+            renewal_so_2 = self.env['sale.order'].browse(action['res_id'])
+            renewal_so_2.action_confirm()
+            # We don't invoice renewal_so_2 yet to see what happens.
+            self.assertEqual(renewal_so_2.start_date, datetime.date(2023, 1, 1))
+            self.assertEqual(renewal_so_2.next_invoice_date, datetime.date(2023, 1, 1))
+
+        with freeze_time("2022-10-2"):
+            self.env['sale.order']._cron_recurring_create_invoice()
+            action = renewal_so.prepare_upsell_order()
+            upsell_so = self.env['sale.order'].browse(action['res_id'])
+            upsell_so.order_line.filtered(lambda l: not l.display_type).product_uom_qty = 1
+
+            action = renewal_so_2.prepare_upsell_order()
+            upsell_so_2 = self.env['sale.order'].browse(action['res_id'])
+            upsell_so_2.order_line.filtered(lambda l: not l.display_type).product_uom_qty = 1
+            parents = upsell_so.order_line.mapped('parent_line_id')
+            line_match = [
+                renewal_so.order_line[0],
+                renewal_so.order_line[1],
+            ]
+            for idx in range(2):
+                self.assertEqual(parents[idx], line_match[idx])
+            self.assertEqual(self.subscription.order_line.mapped('product_uom_qty'), [1, 1])
+            self.assertEqual(renewal_so.order_line.mapped('product_uom_qty'), [1, 1])
+            upsell_so.action_confirm()
+            self.assertEqual(upsell_so.order_line.mapped('product_uom_qty'), [1.0, 1.0, 0])
+            self.assertEqual(renewal_so.order_line.mapped('product_uom_qty'), [2, 2])
+            self.assertEqual(upsell_so.order_line.mapped('discount'), [-24.93, -24.93, 0])
+            self.assertEqual(upsell_so.start_date, datetime.date(2022, 10, 2))
+            self.assertEqual(upsell_so.next_invoice_date, datetime.date(2024, 1, 1))
+            self.assertEqual(upsell_so_2.amount_untaxed, 32)
+            # upsell_so_2.order_line.flush()
+            line = upsell_so_2.order_line.filtered('display_type')
+            self.assertEqual(line.display_type, 'line_note')
+            self.assertFalse(line.product_uom_qty)
+            self.assertFalse(line.price_unit)
+            self.assertFalse(line.customer_lead)
+            self.assertFalse(line.product_id)
+            with self.assertRaises(ValidationError):
+                upsell_so_2.action_confirm()

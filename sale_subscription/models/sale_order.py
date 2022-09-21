@@ -585,24 +585,27 @@ class SaleOrder(models.Model):
         """
         When confirming an upsell order, the recurring product lines must be updated
         """
-        existing_line_ids = self.subscription_id.order_line.ids
+        for so in self:
+            if so.subscription_id.invoice_count == 0:
+                raise ValidationError(_("You can not upsell a subscription that has not been invoiced yet. "
+                                        "Please, update directly the %s contract or invoice it first.", so.name))
+        existing_line_ids = self.subscription_id.order_line
         dummy, update_values = self.update_existing_subscriptions()
-        updated_line_ids = {val[1] for val in update_values}
-        new_lines_ids = set(self.subscription_id.order_line.ids) - set(existing_line_ids)
+        updated_line_ids = self.env['sale.order.line'].browse({val[1] for val in update_values})
+        new_lines_ids = self.subscription_id.order_line - existing_line_ids
         # Example: with a new yearly line starting in june when the expected next invoice date is december,
         # discount is 50% and the default next_invoice_date will be in june too.
         # We need to get the default next_invoice_date that was saved on the upsell because the compute has no way
         # to differentiate new line created by an upsell and new line created by the user.
         for upsell in self:
             upsell.subscription_id.message_post(body=_("The upsell  %s has been confirmed.", upsell._get_html_link()))
-        for line in self.subscription_id.order_line.with_context(skip_line_status_compute=True):
-            if line.id in (updated_line_ids | new_lines_ids):
-                # The upsell invoice will take care of the invoicing for this period
-                line.qty_to_invoice = 0
-                line.qty_invoiced = line.product_uom_qty
-                # We force the invoice status because the current period will be invoiced by the upsell flow
-                # when the upsell so is invoiced
-                line.invoice_status = 'no'
+        for line in (updated_line_ids | new_lines_ids).with_context(skip_line_status_compute=True):
+            # The upsell invoice will take care of the invoicing for this period
+            line.qty_to_invoice = 0
+            line.qty_invoiced = line.product_uom_qty
+            # We force the invoice status because the current period will be invoiced by the upsell flow
+            # when the upsell so is invoiced
+            line.invoice_status = 'no'
 
     def _confirm_renew(self):
         """

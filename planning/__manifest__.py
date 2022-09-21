@@ -48,6 +48,8 @@
             'planning/static/src/scss/planning_gantt.scss',
             'planning/static/src/js/tours/planning.js',
             'planning/static/src/xml/**/*',
+            'planning/static/src/views/**/*.js',
+            'planning/static/src/views/**/*.xml',
         ],
         'web.assets_frontend': [
             'planning/static/src/scss/planning_calendar_report.scss',

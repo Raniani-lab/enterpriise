@@ -7,6 +7,7 @@
         <field name="context">{
             'search_default_production_id': [active_id],
             'default_production_id': active_id,
+            'search_default_quality_checks': 1,
          }
         </field>
     </record>

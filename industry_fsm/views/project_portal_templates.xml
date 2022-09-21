@@ -2,7 +2,7 @@
 <odoo>
 
     <template id="portal_task_sign_button" name="Sign Button With Dialog">
-        <a t-if="task.has_to_be_signed()" role="button" class="btn btn-primary btn-block w-100 me-1" data-bs-toggle="modal" data-bs-target="#modalaccept" href="#">
+        <a t-if="task.has_to_be_signed()" role="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#modalaccept" href="#">
             <i class="fa fa-check me-1"/>Sign
         </a>
         <!-- modal relative to the sign action -->
@@ -39,7 +39,7 @@
             <attribute name="t-if">(not task.is_fsm and timesheets and allow_timesheets) or (task.is_fsm and task.allow_worksheets and task.comment)</attribute>
         </xpath>
         <xpath expr="//li[@id='nav-report']" position="before">
-            <li class="list-group-item">
+            <li class="list-group-item d-grid flex-grow-1 align-items-center">
                 <t t-call="industry_fsm.portal_task_sign_button"/>
             </li>
         </xpath>

@@ -113,7 +113,7 @@ class AccountOnlineAccount(models.Model):
                 break
             data['next_data'] = resp_json.get('next_data') or {}
 
-        return self.env['account.bank.statement']._online_sync_bank_statement(transactions, self)
+        return self.env['account.bank.statement.line']._online_sync_bank_statement(transactions, self)
 
 
 class AccountOnlineLink(models.Model):

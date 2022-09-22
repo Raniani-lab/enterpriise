@@ -14,6 +14,7 @@
         <field name="arch" type="xml">
             <form class="h-100 o_knowledge_form_view" js_class="knowledge_article_view_form" disable_autofocus="1">
                 <field name="active" invisible="1"/>
+                <field name="article_properties_is_empty" invisible="1"/>
                 <field name="category" invisible="1"/>
                 <field name="is_article_item" invisible="1"/>
                 <field name="is_locked" invisible="1" readonly="1"/>
@@ -139,6 +140,11 @@
                                         attrs="{'invisible': [('id', '=', False)]}" t-on-click="toggleChatter">
                                         <i class="rounded-circle text-center fa fa-comments" title="Open chatter"/>
                                     </a>
+                                    <a role="button" class="btn btn-light btn-properties me-1" data-hotkey="d"
+                                        attrs="{'invisible': ['|', ('id', '=', False), ('is_article_item', '=', False)]}"
+                                       t-on-click="toggleProperties">
+                                        <i class="rounded-circle text-center fa fa-cog" title="Show Properties"/>
+                                    </a>
                                     <div class="o-dropdown dropdown o-dropdown--no-caret" attrs="{'invisible': [('id', '=', False)]}">
                                         <a role="button" class="btn btn-light dropdown-toggle" data-bs-toggle="dropdown"
                                            aria-haspopup="true" aria-expanded="false" data-hotkey="p">
@@ -217,7 +223,7 @@
                                 </button>
                             </div>
                             <div class="flex-grow-1 position-relative">
-                                <div class="o_scroll_view">
+                                <div class="o_scroll_view o_knowledge_main_view">
                                     <div class="row p-0 m-0" style="min-height: 100%">
                                         <div class="d-flex col-12 col-lg position-relative p-0">
                                             <div class="o_scroll_view_lg">
@@ -235,14 +241,19 @@
                                                     <div class="o_knowledge_icon_cover_buttons text-muted bg-white d-print-none mt-2"
                                                          attrs="{'invisible': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}">
                                                         <a role="button" attrs="{'invisible': [('icon', '!=', False)]}"
-                                                           class="btn btn-secondary me-2 ps-1 o_knowledge_add_icon"
+                                                           class="btn btn-secondary me-2 ps-1 o_knowledge_add_icon o_knowledge_option_button"
                                                            t-on-click="addIcon">
-                                                            <i class="fa fa-fw fa-smile-o" style="font-size: 1.5em;" title="Add icon"/> Add icon
+                                                            <i class="fa fa-fw fa-smile-o" style="font-size: 1.5rem;" title="Add icon"/> Add icon
                                                         </a>
                                                         <a role="button" attrs="{'invisible': [('cover', '!=', False)]}"
                                                            t-on-click="addCover"
-                                                           class="btn btn-secondary o_knowledge_add_cover">
-                                                            <i class="fa fa-fw fa-picture-o" style="font-size: 1.5em;" title="Add cover"/> Add cover
+                                                           class="btn btn-secondary o_knowledge_add_cover o_knowledge_option_button">
+                                                            <i class="fa fa-fw fa-picture-o" style="font-size: 1.5rem;" title="Add cover"/> Add cover
+                                                        </a>
+                                                        <a role="button" attrs="{'invisible': ['|', ('is_article_item', '=', False), ('article_properties_is_empty', '=', False)]}"
+                                                           t-on-click="addProperties"
+                                                           class="btn btn-secondary o_knowledge_add_properties o_knowledge_option_button">
+                                                            <i class="fa fa-fw fa-cog" style="font-size: 1.5rem;" title="Add properties"/> Add Properties
                                                         </a>
                                                     </div>
 
@@ -278,13 +289,20 @@
                                                     </div>
                                                     <!-- Article body -->
                                                     <div class="o_knowledge_editor">
-                                                        <field name="article_properties" nolabel="1" class="d-block"
-                                                            attrs="{'invisible': ['|', ('parent_id', '=', False), ('is_article_item', '=', False)]}"/>
                                                         <field name="body" widget="html" no_label="1"
                                                             options="{'resizable': False, 'knowledge_commands': true}"
                                                             attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}"/>
                                                     </div>
                                                 </div>
+                                            </div>
+                                        </div>
+                                        <!-- Properties -->
+                                        <div class="o_knowledge_properties col-12 col-lg-2 position-relative d-print-none p-0 border-start d-none"
+                                             attrs="{'invisible': [('is_article_item', '=', False)]}">
+                                            <div class="m-2 o_scroll_view_lg">
+                                                <h3 class="mt-2 mb-4">Property Fields</h3>
+                                                <field name="article_properties" nolabel="1" class="d-block"
+                                                       attrs="{'readonly': ['|', ('is_locked', '=', True), ('user_can_write', '=', False)]}"/>
                                             </div>
                                         </div>
                                         <!-- Chatter -->

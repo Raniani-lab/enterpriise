@@ -159,7 +159,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         this.id = this.props.id;
         const globalFilter = this.id && this.getters.getGlobalFilter(this.id);
         if (globalFilter) {
-            this.state.label = globalFilter.label;
+            this.state.label = _t(globalFilter.label);
             this.state.type = globalFilter.type;
             this.state.date.type = globalFilter.rangeType;
             this.state.date.defaultsToCurrentPeriod = globalFilter.defaultsToCurrentPeriod;

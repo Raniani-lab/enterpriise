@@ -52,15 +52,3 @@ class TestAccountTaxcloud(TestAccountTaxcloudCommon):
                 1,
                 "Taxcloud should have generated a unique tax rate for the line.",
             )
-
-
-class TestAccountTaxcloudNeutralize(TransactionCase):
-    def test_account_taxcloud_neutralize(self):
-        company = self.env['res.company'].create({
-            'name': 'Test Company',
-            'taxcloud_api_id': 'Fake Taxcloud API for tests',
-            'currency_id': self.ref('base.USD')
-        })
-
-        self.env['res.company']._neutralize()
-        self.assertFalse(company.taxcloud_api_id)

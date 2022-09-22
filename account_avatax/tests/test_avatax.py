@@ -2,6 +2,7 @@ from unittest.mock import patch
 
 from odoo.exceptions import UserError
 from odoo.tests.common import tagged
+from odoo.modules.neutralize import get_neutralization_queries
 from .common import TestAccountAvataxCommon
 
 
@@ -178,7 +179,7 @@ class TestAccountAvalaraSalesTaxAdministration(TestAccountAvataxCommon):
 
     def test_disable_avatax_neutralize(self):
         """ORM's neutralization feature works."""
-        self.env['account.fiscal.position']._neutralize()
+        self.cr.execute(next(get_neutralization_queries(['account_avatax'])))
         with patch('odoo.addons.account_avatax.lib.avatax_client.AvataxClient.request') as mocked_request:
             self._create_invoice()
             mocked_request.assert_not_called()

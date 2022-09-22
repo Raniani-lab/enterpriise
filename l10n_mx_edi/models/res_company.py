@@ -59,9 +59,3 @@ class ResCompany(models.Model):
         string="Fiscal Regime",
         help="It is used to fill Mexican XML CFDI required field "
         "Comprobante.Emisor.RegimenFiscal.")
-
-    def _neutralize(self):
-        super()._neutralize()
-        self.flush_model()
-        self.invalidate_model()
-        self.env.cr.execute("UPDATE res_company SET l10n_mx_edi_pac_test_env = true")

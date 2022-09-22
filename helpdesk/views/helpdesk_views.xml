@@ -530,6 +530,7 @@
             <tree string="Tickets" multi_edit="1" sample="1" default_order="priority desc, sla_deadline, id">
                 <field name="company_id" invisible="1"/>
                 <field name="use_sla" invisible="1"/>
+                <field name="fold" invisible="1"/>
                 <field name="ticket_ref" string="ID" readonly="1" optional="show"/>
                 <field name="priority" optional="show" widget="priority"/>
                 <field name="name" string="Name" readonly="1"/>
@@ -541,7 +542,7 @@
                 <field name="company_id" groups="base.group_multi_company" optional="hide" readonly="1" invisible="not context.get('default_team_id', False)"/>
                 <field name="activity_ids" widget="list_activity" optional="show"/>
                 <field name="sla_status_ids" widget="helpdesk_sla_many2many_tags" attrs="{'invisible': [('use_sla', '=', False)]}" options="{'color_field': 'color'}" string="SLAs" optional="hide" readonly="1"/>
-                <field name="sla_deadline" attrs="{'invisible': [('use_sla', '=', False)]}" optional="show" widget="remaining_days"/>
+                <field name="sla_deadline" attrs="{'invisible': ['|', ('use_sla', '=', False), ('fold', '=', True)]}" optional="show" widget="remaining_days"/>
                 <field name="create_date" optional="hide" readonly="1" string="Creation Date"/>
                 <field name="write_date" optional="hide" readonly="1"/>
                 <field name="ticket_type_id" options="{'no_create_edit': True}" optional="hide"/>
@@ -600,6 +601,7 @@
                 <field name="use_rating"/>
                 <field name="rating_count"/>
                 <field name="rating_avg"/>
+                <field name="fold"/>
                 <progressbar field="kanban_state" colors='{"done": "success", "blocked": "danger", "normal": "200"}'/>
                 <templates>
                     <t t-name="kanban-box">
@@ -630,7 +632,7 @@
                                     <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
                                 </div>
                                 <field name="use_sla" invisible="1"/>
-                                <div t-if="record.sla_deadline.raw_value &amp;&amp; record.use_sla.raw_value">
+                                <div t-if="record.sla_deadline.raw_value &amp;&amp; record.use_sla.raw_value &amp;&amp; !record.fold.raw_value">
                                     <t t-if="luxon.DateTime.fromISO(record.sla_deadline.raw_value) &lt; luxon.DateTime.local()" t-set="red" t-value="'oe_kanban_text_red'"/>
                                     <span t-attf-class="{{red}}">
                                         <field name="sla_deadline" widget="remaining_days"/>
@@ -705,10 +707,11 @@
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <field name="kanban_state" widget="state_selection"/>
                     <field name="use_sla" invisible="1"/>
+                    <field name="fold" invisible="1"/>
                     <div class="oe_title">
                         <h1><field name="name" class="field_name" placeholder="e.g. Product arrived damaged"/></h1>
                         <field name="sla_status_ids" widget="helpdesk_sla_many2many_tags" attrs="{'invisible': [('use_sla', '=', False)]}" options="{'color_field': 'color', 'no_edit_color': True}" readonly="1" groups="helpdesk.group_use_sla"/>
-                        <span attrs="{'invisible': ['|', ('sla_deadline', '=', False), ('use_sla', '=', False)]}" groups="helpdesk.group_use_sla" class="mx-2 text-muted">
+                        <span attrs="{'invisible': ['|', '|', ('sla_deadline', '=', False), ('use_sla', '=', False), ('fold', '=', True)]}" groups="helpdesk.group_use_sla" class="mx-2 text-muted">
                             <i class="fa fa-lg fa-clock-o me-2" aria-label="Sla Deadline" title="Sla Deadline"/>
                             <field name="sla_deadline" widget="remaining_days"/>
                         </span>

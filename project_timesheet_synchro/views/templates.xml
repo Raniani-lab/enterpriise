@@ -16,8 +16,14 @@
             })"/>;
         </script>
 
-        <t t-call-assets="web.assets_common"/>
-        <t t-call-assets="web.assets_backend"/>
+        <t t-if="request.httprequest.cookies.get('color_scheme') == 'dark'">
+          <t t-call-assets="web.dark_mode_assets_common"/>
+          <t t-call-assets="web.dark_mode_assets_backend"/>
+        </t>
+        <t t-else="">
+          <t t-call-assets="web.assets_common"/>
+          <t t-call-assets="web.assets_backend"/>
+        </t>
         <t t-call="web.conditional_assets_tests"/>
         <t t-call-assets="project_timesheet_synchro.assets_timesheet_app"/>
 

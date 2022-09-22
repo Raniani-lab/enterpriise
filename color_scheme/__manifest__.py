@@ -20,21 +20,25 @@ This module allows to changing UI color schemes.
     'assets': {
 
         # ========= Dark Mode =========
-        'web._assets_primary_variables': [
-            ('before', 'web_enterprise/static/src/legacy/scss/primary_variables.scss', 'color_scheme/static/src/mode_dark/primary_variables.scss'),
+        "color_scheme.dark_mode_variables": [
+            # web._assets_primary_variables
+            ('before', 'web_enterprise/static/src/scss/primary_variables.scss', 'color_scheme/static/src/mode_dark/primary_variables.scss'),
             ('before', 'web_enterprise/static/src/**/**/*.variables.scss', 'color_scheme/static/src/mode_dark/**/**/*.variables.scss'),
+            # web._assets_secondary_variables
+            ('before', 'web/static/src/scss/secondary_variables.scss', 'color_scheme/static/src/mode_dark/secondary_variables.scss'),
         ],
-        'web._assets_secondary_variables': [
-            ('before', 'web/static/src/legacy/scss/secondary_variables.scss', 'color_scheme/static/src/mode_dark/secondary_variables.scss')
+        "web.dark_mode_assets_common": [
+            ('include', 'color_scheme.dark_mode_variables'),
         ],
-
-        'web._assets_backend_helpers': [
-            ('before', 'web_enterprise/static/src/legacy/scss/bootstrap_overridden.scss', 'color_scheme/static/src/mode_dark/bootstrap_overridden.scss'),
-            'color_scheme/static/src/mode_dark/bs_functions_overridden.scss'
-        ],
-
-        "web.assets_backend": [
+        "web.dark_mode_assets_backend": [
+            ('include', 'color_scheme.dark_mode_variables'),
+            # web._assets_backend_helpers
+            ('before', 'web_enterprise/static/src/scss/bootstrap_overridden.scss', 'color_scheme/static/src/mode_dark/bootstrap_overridden.scss'),
+            ('after', 'web/static/lib/bootstrap/scss/_functions.scss', 'color_scheme/static/src/mode_dark/bs_functions_overridden.scss'),
+            # assets_backend
             'color_scheme/static/src/mode_dark/**/**/*.scss',
+        ],
+        "web.assets_backend": [
             'color_scheme/static/src/mode_dark/js/*.js',
         ],
     },

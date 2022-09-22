@@ -22,7 +22,12 @@ class SaleOrder(models.Model):
         self.env.flush_all()
         self.env.cr.flush()
 
-    def _test_demo_create_invoices(self, automatic=True):
+    # Mocking for '_process_invoices_to_send'
+    # Otherwise the whole sending mail process will be triggered and we don't want it in the post_init hook
+    def _mock_process_invoices_to_send(self, account_moves, auto_commit):
+        account_moves.is_move_sent = True
+
+    def _test_demo_create_invoices(self, automatic=False):
         self._create_recurring_invoice(automatic=automatic)
         self.invoice_ids.filtered(lambda inv: inv.state == 'draft')._post(False)
 

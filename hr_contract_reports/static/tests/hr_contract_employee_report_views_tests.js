@@ -3,7 +3,6 @@
 import { click, getFixture, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { clickOnDataset } from "@web/../tests/views/graph_view_tests";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
-import { GraphController } from "@web/views/graph/graph_controller";
 
 let serverData;
 let target;
@@ -148,55 +147,4 @@ QUnit.module("HrContractEmployeeReport", (hooks) => {
         }
     );
 
-    QUnit.test(
-        "click on HrContractEmployeeReportPieChart opens 'hr.contract' list view",
-        async function (assert) {
-            let graph = null;
-            patchWithCleanup(GraphController.prototype, {
-                setup() {
-                    graph = this;
-                    this._super(...arguments);
-                },
-            });
-
-            const dashboard = await makeView({
-                type: "dashboard",
-                resModel: "test_report",
-                serverData,
-                arch: `
-                <dashboard>
-                    <widget name="contract_employee_report_pie_chart" attrs="{'measure': 'sold', 'groupby': 'categ_id'}"/>
-                </dashboard>
-            `,
-                mockRPC: async (route, args) => {
-                    const { method, model } = args;
-                    if (method === "search_read") {
-                        assert.step(method);
-                        assert.strictEqual(model, "hr.contract.employee.report");
-                        return [{ id: 1 }, { id: 2 }];
-                    }
-                },
-            });
-            const doAction = dashboard.env.services.action.doAction;
-            patchWithCleanup(dashboard.env.services.action, {
-                doAction: (actionRequest, options) => {
-                    const { domain, res_model, views } = actionRequest;
-                    if (res_model) {
-                        assert.step(`doAction ${res_model}`);
-                        assert.deepEqual(domain, [["id", "in", [1, 2]]]);
-                        assert.deepEqual(views, [
-                            [false, "list"],
-                            [false, "form"],
-                        ]);
-                        return;
-                    }
-                    doAction(actionRequest, options);
-                },
-            });
-            assert.containsOnce(target, ".o_widget_contract_employee_report_pie_chart");
-
-            await clickOnDataset(graph);
-            assert.verifySteps(["search_read", "doAction hr.contract"]);
-        }
-    );
 });

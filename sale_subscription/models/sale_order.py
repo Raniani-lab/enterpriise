@@ -1052,7 +1052,7 @@ class SaleOrder(models.Model):
 
     def _create_recurring_invoice(self, automatic=False, batch_size=30):
         automatic = bool(automatic)
-        auto_commit = automatic and not bool(config['test_enable'] or not config['test_file'])
+        auto_commit = automatic and not bool(config['test_enable'] or config['test_file'])
         Mail = self.env['mail.mail']
         today = fields.Date.today()
         stages_in_progress = self.env['sale.order.stage'].search([('category', '=', 'progress')])
@@ -1110,11 +1110,12 @@ class SaleOrder(models.Model):
                 try:
                     invoice = subscription.with_context(recurring_automatic=automatic)._create_invoices()
                     lines_to_reset_qty |= invoiceable_lines
-                except TransactionRollbackError:
-                    raise
-                except Exception:
+                except Exception as e:
                     if auto_commit:
                         self.env.cr.rollback()
+                    elif isinstance(e, TransactionRollbackError):
+                        # the transaction is broken we should raise the exception
+                        raise
                     # we suppose that the payment is run only once a day
                     email_context = subscription._get_subscription_mail_payment_context()
                     error_message = _("Error during renewal of contract %s (Payment not recorded)", subscription.name)

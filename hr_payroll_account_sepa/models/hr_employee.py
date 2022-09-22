@@ -27,8 +27,11 @@ class HrEmployee(models.Model):
               FROM hr_employee emp
          LEFT JOIN res_partner_bank acc
                 ON acc.id=emp.bank_account_id
+              JOIN hr_contract con
+                ON con.employee_id=emp.id
              WHERE emp.company_id IN %s
                AND emp.active=TRUE
+               AND con.state='open'
         ''', (tuple(self.env.companies.ids),))
 
         def valid_iban(iban):

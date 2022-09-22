@@ -52,8 +52,8 @@
     }
     .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_icon,
     .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_icon_cover_buttons,
-    .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_editor .oe_form_field .note-editable,
-    .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_editor .oe_form_field .o_readonly,
+    .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_editor .o_field_html .note-editable,
+    .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_editor .o_field_html .o_readonly,
     .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_editor .o_field_properties {
         width: 100%;
         max-width: 750px;
@@ -394,8 +394,8 @@
         }
         .o_knowledge_icon.o_large,
         .o_knowledge_icon_cover_buttons,
-        .o_knowledge_editor .oe_form_field .note-editable,
-        .o_knowledge_editor .oe_form_field .o_readonly,
+        .o_knowledge_editor .o_field_html .note-editable,
+        .o_knowledge_editor .o_field_html .o_readonly,
         .o_knowledge_editor .o_field_properties {
             padding-left: 3rem !important; // gutter size of the editor
             padding-right: 3rem !important;
@@ -407,8 +407,8 @@
     .o_knowledge_form_view {
         .o_knowledge_icon,
         .o_knowledge_icon_cover_buttons,
-        .o_knowledge_editor .oe_form_field .note-editable,
-        .o_knowledge_editor .oe_form_field .o_readonly,
+        .o_knowledge_editor .o_field_html .note-editable,
+        .o_knowledge_editor .o_field_html .o_readonly,
         .o_knowledge_editor .o_field_properties {
             padding-left: 1rem !important; // gutter size of the editor
             padding-right: 1rem !important;

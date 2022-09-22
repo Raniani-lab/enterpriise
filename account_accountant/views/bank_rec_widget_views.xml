@@ -593,9 +593,11 @@
             <field name="inherit_id" ref="account.view_bank_statement_tree"/>
             <field name="arch" type="xml">
                 <tree position="attributes">
-                    <attribute name="action">action_open_bank_reconcile_widget</attribute>
-                    <attribute name="type">object</attribute>
+                    <attribute name="editable">top</attribute>
                 </tree>
+                <field name="name" position="attributes">
+                    <attribute name="widget">bank_rec_widget_open</attribute>
+                </field>
             </field>
         </record>
     </data>

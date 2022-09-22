@@ -1,6 +1,5 @@
 /** @odoo-module */
 
-import { qweb as QWeb } from 'web.core';
 import { DocumentSelector } from '@web_editor/components/media_dialog/document_selector';
 import { TABS, MediaDialog } from '@web_editor/components/media_dialog/media_dialog';
 import { patch } from '@web/core/utils/patch';
@@ -31,18 +30,10 @@ export class KnowledgeDocumentSelector extends DocumentSelector {
 
     static async createElements(...args) {
         const files = await DocumentSelector.createElements(...args);
-        return files.map(file => {
-            const extension = (file.title && file.title.split('.').pop()) || file.dataset.mimetype;
-            const fileEl = $(QWeb.render('knowledge.file_block', {
-                img: {
-                    name: file.title,
-                    extension: extension,
-                },
-            }))[0];
-            file.classList.add(...DocumentSelector.mediaSpecificClasses);
-            fileEl.querySelector('.o_knowledge_file_image').replaceChildren(file);
-            return fileEl;
-        });
+        for (const file of files) {
+            file.classList.add('o_is_knowledge_file');
+        }
+        return files;
     }
 }
 KnowledgeDocumentSelector.mediaSpecificClasses = [];

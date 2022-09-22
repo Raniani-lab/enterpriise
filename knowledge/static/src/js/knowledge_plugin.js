@@ -9,17 +9,15 @@ export class KnowledgePlugin {
      * @param {Element} editable
      */
     cleanForSave(editable) {
-        for (const node of editable.querySelectorAll('.o_knowledge_toolbar_anchor')) {
-            if (node.oKnowledgeToolbar) {
-                node.oKnowledgeToolbar.removeToolbar();
-            }
-            while (node.firstChild) {
-                node.removeChild(node.lastChild);
-            }
-        }
         for (const node of editable.querySelectorAll('.o_knowledge_behavior_anchor')) {
             if (node.oKnowledgeBehavior) {
-                node.oKnowledgeBehavior.removeBehavior();
+                node.oKnowledgeBehavior.destroy();
+                delete node.oKnowledgeBehavior;
+            }
+
+            const nodesToRemove = node.querySelectorAll('.o_knowledge_clean_for_save');
+            for (const node of nodesToRemove) {
+                node.remove();
             }
         }
     }

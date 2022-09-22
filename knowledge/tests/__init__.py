@@ -6,6 +6,7 @@ from . import test_knowledge_article_constraints
 from . import test_knowledge_article_internals
 from . import test_knowledge_article_permissions
 from . import test_knowledge_article_sequence
+from . import test_knowledge_editor_commands
 from . import test_knowledge_form_ui
 from . import test_knowledge_performance_http
 from . import test_knowledge_performance

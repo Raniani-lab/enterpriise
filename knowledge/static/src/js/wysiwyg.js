@@ -3,24 +3,40 @@
 import { qweb as QWeb, _t } from 'web.core';
 import Wysiwyg from 'web_editor.wysiwyg';
 import { KnowledgeArticleLinkModal } from './wysiwyg/knowledge_article_link.js';
-import { preserveCursor, setCursorStart } from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
+import { preserveCursor } from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
 
 Wysiwyg.include({
     /**
      * @override
      */
     init: function (parent, options) {
-        if (options.knowledge_commands) {
+        if (options.knowledgeCommands) {
             /**
-             * knowledge_commands is a view option from a field_html that
+             * knowledgeCommands is a view option from a field_html that
              * indicates that knowledge-specific commands should be loaded.
              * powerboxFilters is an array of functions used to filter commands
              * displayed in the powerbox.
              */
             options.powerboxFilters = options.powerboxFilters ? options.powerboxFilters : [];
+            options.powerboxFilters.push(this._filterKnowledgeCommandGroupInTable);
             options.powerboxFilters.push(this._filterKnowledgeCommandGroupInTemplate);
         }
         this._super.apply(this, arguments);
+    },
+    /**
+     * Prevent usage of commands from the group "Knowledge" inside the tables.
+     * @param {Array[Object]} commands commands available in this wysiwyg
+     * @returns {Array[Object]} commands which can be used after the filter was applied
+     */
+    _filterKnowledgeCommandGroupInTable: function (commands) {
+        let anchor = document.getSelection().anchorNode;
+        if (anchor.nodeType !== Node.ELEMENT_NODE) {
+            anchor = anchor.parentElement;
+        }
+        if (anchor && anchor.closest('table')) {
+            commands = commands.filter(command => command.category !== 'Knowledge');
+        }
+        return commands;
     },
     /**
      * Prevent usage of commands from the group "Knowledge" inside the block
@@ -29,15 +45,15 @@ Wysiwyg.include({
      * Knowledge, where knowledge-specific commands may not be available.
      * i.e.: prevent usage /template in a /template block
      *
-     * @param {Array} commands commands available in this wysiwyg
-     * @returns {Array} commands which can be used after the filter was applied
+     * @param {Array[Object]} commands commands available in this wysiwyg
+     * @returns {Array[Object]} commands which can be used after the filter was applied
      */
     _filterKnowledgeCommandGroupInTemplate: function (commands) {
         let anchor = document.getSelection().anchorNode;
         if (anchor.nodeType !== Node.ELEMENT_NODE) {
             anchor = anchor.parentElement;
         }
-        if (anchor && anchor.closest('.o_knowledge_template')) {
+        if (anchor && anchor.closest('.o_knowledge_content')) {
             commands = commands.filter(command => command.category !== 'Knowledge');
         }
         return commands;
@@ -52,21 +68,21 @@ Wysiwyg.include({
         categories.push({ name: 'Media', priority: 50 });
         commands.push({
             category: 'Media',
-            name: 'Article',
+            name: _t('Article'),
             priority: 10,
-            description: 'Link an article.',
+            description: _t('Link an article.'),
             fontawesome: 'fa-file',
             callback: () => {
                 this._insertArticleLink();
             },
         });
-        if (this.options.knowledge_commands) {
+        if (this.options.knowledgeCommands) {
             categories.push({ name: 'Knowledge', priority: 10 });
             commands.push({
                 category: 'Knowledge',
-                name: 'File',
+                name: _t('File'),
                 priority: 20,
-                description: 'Embed a file.',
+                description: _t('Embed a file.'),
                 fontawesome: 'fa-file',
                 callback: () => {
                     this.openMediaDialog({
@@ -79,9 +95,9 @@ Wysiwyg.include({
                 }
             }, {
                 category: 'Knowledge',
-                name: "Template",
+                name: _t('Template'),
                 priority: 10,
-                description: "Add a template section.",
+                description: _t('Add a template section.'),
                 fontawesome: 'fa-pencil-square',
                 callback: () => {
                     this._insertTemplate();
@@ -142,14 +158,17 @@ Wysiwyg.include({
      * @see KnowledgeBehavior
      *
      * @param {Element} anchor
+     * @param {Object} props
      */
-    _notifyNewBehaviors(anchor) {
+    _notifyNewBehavior(anchor, props=null) {
         const behaviorsData = [];
         const type = Array.from(anchor.classList).find(className => className.startsWith('o_knowledge_behavior_type_'));
         if (type) {
             behaviorsData.push({
                 anchor: anchor,
-                type: type,
+                behaviorType: type,
+                setCursor: true,
+                props: props || {},
             });
         }
         this.$editable.trigger('refresh_behaviors', { behaviorsData: behaviorsData});
@@ -158,9 +177,11 @@ Wysiwyg.include({
      * Insert a /toc block (table of content)
      */
     _insertTableOfContent: function () {
-        const tableOfContentBlock = $(QWeb.render('knowledge.knowledge_table_of_content_wrapper', {}))[0];
+        const tableOfContentBlock = $(QWeb.render('knowledge.abstract_behavior', {
+            behaviorType: "o_knowledge_behavior_type_toc",
+        }))[0];
         const [container] = this.odooEditor.execCommand('insert', tableOfContentBlock);
-        this._notifyNewBehaviors(container);
+        this._notifyNewBehavior(container);
     },
     /**
      * Insert a /structure block.
@@ -172,17 +193,17 @@ Wysiwyg.include({
         }))[0];
         const [container] = this.odooEditor.execCommand('insert', articlesStructureBlock);
         this._notifyNewToolbars(container);
-        this._notifyNewBehaviors(container);
+        this._notifyNewBehavior(container);
     },
     /**
      * Insert a /template block
      */
     _insertTemplate() {
-        const templateBlock = $(QWeb.render('knowledge.template_block', {}))[0];
+        const templateBlock = $(QWeb.render('knowledge.abstract_behavior', {
+            behaviorType: "o_knowledge_behavior_type_template",
+        }))[0];
         const [container] = this.odooEditor.execCommand('insert', templateBlock);
-        setCursorStart(container.querySelector('.o_knowledge_content > p'));
-        this._notifyNewToolbars(container);
-        this._notifyNewBehaviors(container);
+        this._notifyNewBehavior(container);
     },
     /**
      * Insert a /article block (through a dialog)
@@ -200,7 +221,7 @@ Wysiwyg.include({
                 dialog.close();
                 restoreSelection();
                 const [anchor] = this.odooEditor.execCommand('insert', articleLinkBlock);
-                this._notifyNewBehaviors(anchor);
+                this._notifyNewBehavior(anchor);
             }
         });
         dialog.on('closed', this, () => {
@@ -216,16 +237,23 @@ Wysiwyg.include({
      * @override
      */
     _onMediaDialogSave(params, element) {
-        const result = this._super(...arguments);
-        if (!result) {
-            return;
+        if (element.classList.contains('o_is_knowledge_file')) {
+            params.restoreSelection();
+            element.classList.remove('o_is_knowledge_file');
+            element.classList.add('o_image');
+            const extension = (element.title && element.title.split('.').pop()) || element.dataset.mimetype;
+            const fileBlock = $(QWeb.render('knowledge.abstract_behavior', {
+                behaviorType: "o_knowledge_behavior_type_file",
+            }))[0];
+            const [container] = this.odooEditor.execCommand('insert', fileBlock);
+            this._notifyNewBehavior(container, {
+                fileName: element.title,
+                fileImage: element.outerHTML,
+                fileExtension: extension,
+            });
+            // need to set cursor (anchor.sibling)
+        } else {
+            return this._super(...arguments);
         }
-        const [container] = result;
-        if (container.classList.contains('o_knowledge_file')) {
-            setCursorStart(container.nextElementSibling);
-            this._notifyNewToolbars(container);
-            this._notifyNewBehaviors(container);
-        }
-        return result;
     },
 });

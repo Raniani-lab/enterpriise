@@ -106,9 +106,11 @@
         </ul>
     </li>
 </ul>
-<div class="o_knowledge_template o_knowledge_toolbars_container o_knowledge_behavior_anchor o_knowledge_behavior_type_contents_container">
-    <div class="o_knowledge_toolbar_anchor o_knowledge_toolbar_type_template"></div>
-    <div class="o_knowledge_content">
+<div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_template">
+    <div class="d-flex">
+        <div class="o_knowledge_template_label align-middle">Template</div>
+    </div>
+    <div class="o_knowledge_content" data-prop-name="content">
         <p>
             Hello there, I am a template
             <br />
@@ -138,15 +140,14 @@
         </ul>
     </li>
 </ul>
-<div class="o_knowledge_file o_knowledge_toolbars_container o_knowledge_behavior_anchor o_knowledge_behavior_type_contents_container">
-    <div class="o_knowledge_file_image">
-        <a href="https://www.odoo.com/web/content/31413934?download=true" class="o_image" title="Onboarding.pdf" alt="Onboarding.pdf" data-mimetype="application/pdf"></a>
+<div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_file">
+    <div class="o_knowledge_file_image" data-prop-name="fileImage">
+        <a href="https://www.odoo.com/web/content/31413934?download=true" title="Onboarding.pdf" data-mimetype="application/pdf" class="o_image"></a>
     </div>
     <div class="o_knowledge_file_description">
-        <div class="o_knowledge_file_name">Odoo Survival Guide</div>
-        <div class="o_knowledge_file_extension">pdf</div>
+        <div class="o_knowledge_file_name" data-prop-name="fileName">Odoo Survival Guide</div>
+        <div class="o_knowledge_file_extension" data-prop-name="fileExtension">pdf</div>
     </div>
-    <div class="o_knowledge_toolbar_anchor o_knowledge_toolbar_type_file mt-auto ms-auto"></div>
 </div>
 <p><br /></p>
 <p>

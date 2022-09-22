@@ -41,19 +41,18 @@
     'assets': {
         'web.assets_backend': [
             'knowledge/static/src/scss/knowledge_common.scss',
-            'knowledge/static/src/components/*/*.scss',
-            'knowledge/static/src/components/*/*.js',
-            'knowledge/static/src/components/*/*.xml',
             'knowledge/static/src/scss/knowledge_views.scss',
             'knowledge/static/src/scss/knowledge_editor.scss',
             'knowledge/static/src/xml/knowledge_editor.xml',
             'knowledge/static/src/scss/knowledge_blocks.scss',
+            'knowledge/static/src/components/**/*.scss',
+            'knowledge/static/src/components/**/*.xml',
+            'knowledge/static/src/components/**/*.js',
             'knowledge/static/src/js/knowledge_controller.js',
             'knowledge/static/src/js/knowledge_renderers.js',
             'knowledge/static/src/js/knowledge_views.js',
             'knowledge/static/src/webclient/commands/*.js',
-            'knowledge/static/src/models/*.js',
-            'knowledge/static/src/models/*/*.js',
+            'knowledge/static/src/models/**/*.js',
             'knowledge/static/src/js/form_controller.js',
             'knowledge/static/src/js/form_renderer.js',
             'knowledge/static/src/js/knowledge_article_structure_mixin.js',
@@ -70,6 +69,8 @@
             'knowledge/static/src/xml/chatter_topbar.xml',
             'knowledge/static/src/xml/knowledge_command_palette.xml',
             'knowledge/static/src/xml/knowledge_toolbars.xml',
+            'knowledge/static/src/services/*.js',
+            'knowledge/static/src/macros/*.js',
         ],
         'web.assets_frontend': [
             'knowledge/static/src/scss/knowledge_common.scss',
@@ -84,22 +85,21 @@
             'knowledge/static/src/js/tools/tree_panel_mixin.js',
         ],
         'web_editor.assets_wysiwyg': [
-            'knowledge/static/src/js/wysiwyg/knowledge_article_link.js',
-            'knowledge/static/src/xml/knowledge_editor.xml',
+            'knowledge/static/src/js/wysiwyg/*.js',
             'knowledge/static/src/js/wysiwyg.js',
+            'knowledge/static/src/xml/knowledge_editor.xml',
             'knowledge/static/src/js/knowledge_toolbars_edit.js',
-            'knowledge/static/src/js/knowledge_clipboard_whitelist.js'
+            'knowledge/static/src/js/knowledge_clipboard_whitelist.js',
         ],
         'web.assets_tests': [
-            'knowledge/static/tests/tours/*.js',
+            'knowledge/static/tests/tours/**/*.js',
         ],
         'web.qunit_suite_tests': [
             'knowledge/static/tests/knowledge_article_command_structure.js',
             'knowledge/static/tests/knowledge_article_command_toc.js',
-            'knowledge/static/tests/test_services.js',
         ],
-        'web.qunit_mobile_suite_tests': [
-            'knowledge/static/tests/test_services.js',
+        'web.tests_assets': [
+            'knowledge/static/tests/knowledge_service_mock.js',
         ],
     },
 }

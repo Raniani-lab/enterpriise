@@ -20,7 +20,7 @@ const HEADINGS = [
  */
  const fetchValidHeadings = (element) => {
     const templateHeadings = Array.from(element.querySelectorAll(
-        HEADINGS.map((heading) => `.o_knowledge_template ${heading}`).join(',')
+        HEADINGS.map((heading) => `.o_knowledge_behavior_type_template ${heading}`).join(',')
     ));
 
     return Array.from(element.querySelectorAll(HEADINGS.join(',')))

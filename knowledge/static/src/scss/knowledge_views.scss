@@ -40,12 +40,12 @@
         max-width: 70vw;
     }
 
-    .o_knowledge_add_icon, .o_knowledge_add_cover {
+    .o_knowledge_option_button {
         visibility: hidden;
         opacity: 0;
         transition: visibility 0.4s, opacity 0.4s linear;
     }
-    .o_knowledge_body:hover .o_knowledge_add_icon, .o_knowledge_body:hover .o_knowledge_add_cover {
+    .o_knowledge_body:hover .o_knowledge_option_button {
         visibility: visible;
         opacity: 1;
     }
@@ -281,6 +281,25 @@
             color: $gray-400 !important;
         }
     }
+
+    .o_knowledge_properties {
+        min-width: 250px;
+        .o_property_field {
+            flex-direction: column !important;
+            padding: 0 !important;
+            margin-bottom: 1rem;
+            .o_td_label {
+                width: 100% !important;
+                padding: 0px !important;
+            }
+            .o_property_field_value {
+                padding: 0rem !important;
+            }
+        }
+        .o_field_property_add {
+            margin-left: 0 !important;
+        }
+    }
 }
 
 .o_knowledge_select2 {
@@ -318,11 +337,19 @@
 
 @include media-breakpoint-down(xl) {
     .o_knowledge_form_view {
-        .o_scroll_view_lg {
+        .o_scroll_view_lg, .o_knowledge_properties {
             width: 100%;
         }
-        .o_knowledge_chatter {
+        .o_knowledge_chatter, .o_knowledge_properties {
             border-top: 1px solid $border-color;
+        }
+        .o_knowledge_properties {
+            .o_property_field {
+                flex-direction: row !important;
+                label {
+                    font-size: $o-font-size-base;
+                }
+            }
         }
     }
 }
@@ -388,7 +415,7 @@
         .o_knowledge_aside {
             width: 100%;
         }
-        .o_knowledge_add_icon, .o_knowledge_add_cover {
+        .o_knowledge_option_button {
             visibility: visible;
             opacity: 1;
         }

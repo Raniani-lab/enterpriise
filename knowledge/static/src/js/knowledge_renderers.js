@@ -48,6 +48,11 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             if (body) {
                 body.focus();
             }
+            // If the article has some properties set,
+            // we should display the property panel that is hidden by default.
+            if (!this.props.record.data.article_properties_is_empty) {
+                this.toggleProperties();
+            }
         });
         onWillUnmount(() => {
             this.messaging.messagingBus.removeEventListener('knowledge_add_emoji', this._onAddEmoji);
@@ -73,6 +78,18 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     addIcon() {
         const icon = emojisRandomPickerSource[Math.floor(Math.random() * emojisRandomPickerSource.length)].unicode;
         this._renderEmoji(icon, this.resId);
+    }
+
+    /**
+     * Open the Properties Panel and start to add the first property field.
+     */
+    addProperties(event) {
+        this.root.el.querySelector('.o_knowledge_add_properties').classList.add('d-none');
+        const propertiesPanel = this.root.el.querySelector('.o_knowledge_properties');
+        propertiesPanel.classList.remove('d-none');
+        this._scrollToElement(this.root.el.querySelector('.o_knowledge_main_view'), propertiesPanel);
+        this.root.el.querySelector('.btn-properties').classList.add('active');
+        this.root.el.querySelector('.o_field_property_add > button').click();
     }
 
     /**
@@ -158,6 +175,18 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             chatter.classList.toggle('d-none');
             this.root.el.querySelector('.btn-chatter').classList.toggle('active');
         }
+    }
+
+    /**
+     * Show/hide the Property Fields right panel.
+     */
+    toggleProperties() {
+        const propertiesPanel = this.root.el.querySelector('.o_knowledge_properties');
+        propertiesPanel.classList.toggle('d-none');
+        if (!propertiesPanel.classList.contains('d-none')) {
+            this._scrollToElement(this.root.el.querySelector('.o_knowledge_main_view'), propertiesPanel);
+        }
+        this.root.el.querySelector('.btn-properties').classList.toggle('active');
     }
 
     /**
@@ -695,6 +724,11 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             emojiPickerPopoverAnchorRef: { el: ev.target.closest('.o_article_emoji_dropdown .o_article_emoji') },
             emojiPickerPopoverView: {},
         });
+    }
+
+    _scrollToElement(container, element) {
+        const rect = element.getBoundingClientRect();
+        container.scrollTo(rect.left, rect.top);
     }
 }
 

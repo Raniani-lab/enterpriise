@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="documents.SearchPanel" t-inherit="web.SearchPanel" t-inherit-mode="primary" owl="1">
+    <t t-name="documents.SearchPanelContent" t-inherit="web.SearchPanelContent" t-inherit-mode="primary" owl="1">
         <xpath expr="//div[hasclass('o_search_panel')]" position="inside">
             <span class="o_resize" t-on-click.stop.prevent="" t-on-mousedown.stop.prevent="_onStartResize"/>
         </xpath>
@@ -14,6 +14,8 @@
             </div>
         </xpath>
     </t>
+
+    <t t-name="documents.SearchPanel.Regular" t-inherit="documents.SearchPanelContent" t-inherit-mode="primary" owl="1"/>
 
     <t t-name="documents.SearchPanel.Category" t-inherit="web.SearchPanel.Category" t-inherit-mode="primary" owl="1">
         <xpath expr="//li[contains(@class, 'o_search_panel_category_value')]" position="attributes">
@@ -52,7 +54,7 @@
         </xpath>
     </t>
 
-    <t t-name="documents.SearchPanel.Mobile" t-inherit="web.SearchPanel" t-inherit-mode="primary" owl="1">
+    <t t-name="documents.SearchPanelContent.Small" t-inherit="documents.SearchPanelContent" t-inherit-mode="primary" owl="1">
         <xpath expr="//li[contains(@class, 'o_search_panel_filter_group')]" position="attributes">
             <attribute name="t-on-touchstart">(ev) => this.onSectionValueTouchStart(ev, section, null, groupId)</attribute>
             <attribute name="t-on-touchend">(ev) => this.onSectionValueTouchEnd()</attribute>
@@ -60,13 +62,22 @@
         </xpath>
     </t>
 
-    <t t-name="documents.SearchPanelEnterprise.Mobile" t-inherit="web_enterprise.SearchPanel" t-inherit-mode="primary" owl="1">
-        <xpath expr="//div//t[@t-call='web.SearchPanel']" position="replace">
-            <t t-call="documents.SearchPanel.Mobile"/>
+    <t t-name="documents.SearchPanel.Small" t-inherit="web.SearchPanel.Small" t-inherit-mode="primary" owl="1">
+        <xpath expr="//t[@t-call='web.SearchPanelContent']" position="replace">
+            <t t-call="documents.SearchPanelContent.Small"/>
         </xpath>
     </t>
 
-    <t t-name="documents.SearchPanel.Category.Mobile" t-inherit="web.SearchPanel.Category" t-inherit-mode="primary" owl="1">
+    <t t-name="documents.SearchPanel" t-inherit="web.SearchPanel" t-inherit-mode="primary" owl="1">
+        <xpath expr="//t[@t-call='web.SearchPanel.Regular']" position="replace">
+            <t t-call="documents.SearchPanel.Regular"/>
+        </xpath>
+        <xpath expr="//t[@t-call='web.SearchPanel.Small']" position="replace">
+            <t t-call="documents.SearchPanel.Small"/>
+        </xpath>
+    </t>
+
+    <t t-name="documents.SearchPanel.Category.Small" t-inherit="web.SearchPanel.Category" t-inherit-mode="primary" owl="1">
         <xpath expr="//li[contains(@class, 'o_search_panel_category_value')]" position="attributes">
             <attribute name="t-on-touchstart">(ev) => this.onSectionValueTouchStart(ev, section, value.id, null)</attribute>
             <attribute name="t-on-touchend">(ev) => this.onSectionValueTouchEnd()</attribute>
@@ -74,7 +85,7 @@
         </xpath>
     </t>
 
-    <t t-name="documents.SearchPanel.FiltersGroup.Mobile" t-inherit="web.SearchPanel.FiltersGroup" t-inherit-mode="primary" owl="1">
+    <t t-name="documents.SearchPanel.FiltersGroup.Small" t-inherit="web.SearchPanel.FiltersGroup" t-inherit-mode="primary" owl="1">
         <xpath expr="//li[contains(@class, 'o_search_panel_filter_value')]" position="attributes">
             <attribute name="t-on-touchstart">(ev) => this.onSectionValueTouchStart(ev, section, valueId, null)</attribute>
             <attribute name="t-on-touchend">(ev) => this.onSectionValueTouchEnd()</attribute>

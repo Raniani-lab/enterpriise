@@ -19,41 +19,32 @@ This module modifies the web addon to provide Enterprise design and responsivene
     ],
     'assets': {
         'web._assets_primary_variables': [
-            ('after', 'web/static/src/legacy/scss/primary_variables.scss', 'web_enterprise/static/src/**/**/*.variables.scss'),
-            ('before', 'web/static/src/legacy/scss/primary_variables.scss', 'web_enterprise/static/src/legacy/scss/primary_variables.scss'),
+            ('after', 'web/static/src/scss/primary_variables.scss', 'web_enterprise/static/src/**/**/*.variables.scss'),
+            ('before', 'web/static/src/scss/primary_variables.scss', 'web_enterprise/static/src/scss/primary_variables.scss'),
         ],
         'web._assets_secondary_variables': [
-            'web_enterprise/static/src/legacy/scss/secondary_variables.scss',
+            ('before', 'web/static/src/scss/secondary_variables.scss', 'web_enterprise/static/src/scss/secondary_variables.scss'),
         ],
         'web._assets_backend_helpers': [
-            ('before', 'web/static/src/legacy/scss/bootstrap_overridden.scss', 'web_enterprise/static/src/legacy/scss/bootstrap_overridden.scss'),
+            ('before', 'web/static/src/scss/bootstrap_overridden.scss', 'web_enterprise/static/src/scss/bootstrap_overridden.scss'),
         ],
         'web.assets_common': [
-            ('replace', 'web/static/src/legacy/scss/ui_extra.scss', 'web_enterprise/static/src/legacy/scss/ui.scss'),
-
             'web_enterprise/static/fonts/fonts.scss',
+            'web_enterprise/static/src/webclient/home_menu/home_menu_background.scss',
             'web_enterprise/static/src/webclient/navbar/navbar.scss',
         ],
         'web.assets_frontend': [
-            ('replace', 'web/static/src/legacy/scss/ui_extra.scss', 'web_enterprise/static/src/legacy/scss/ui.scss'),
-
             'web_enterprise/static/fonts/fonts.scss',
+            'web_enterprise/static/src/webclient/home_menu/home_menu_background.scss',
             'web_enterprise/static/src/webclient/navbar/navbar.scss',
         ],
         'web.assets_backend': [
-            ('replace', 'web/static/src/webclient/webclient_extra.scss', 'web_enterprise/static/src/webclient/webclient.scss'),
-
             ('replace', 'web/static/src/legacy/scss/fields_extra.scss', 'web_enterprise/static/src/legacy/scss/fields.scss'),
             ('replace', 'web/static/src/legacy/scss/form_view_extra.scss', 'web_enterprise/static/src/legacy/scss/form_view.scss'),
             ('replace', 'web/static/src/legacy/scss/list_view_extra.scss', 'web_enterprise/static/src/legacy/scss/list_view.scss'),
-            ('replace', 'web/static/src/search/search_panel/search_view_extra.scss', 'web_enterprise/static/src/legacy/scss/search_view.scss'),
-            ('replace', 'web/static/src/views/form/form_view_extra.scss', 'web_enterprise/static/src/views/form/form_view.scss'),
-            ('replace', 'web/static/src/views/list/list_view_extra.scss', 'web_enterprise/static/src/views/list/list_view.scss'),
 
             'web_enterprise/static/src/legacy/scss/dropdown.scss',
             'web_enterprise/static/src/legacy/scss/base_settings_mobile.scss',
-            'web_enterprise/static/src/legacy/scss/search_panel_mobile.scss',
-            'web_enterprise/static/src/legacy/scss/control_panel_layout.scss',
             'web_enterprise/static/src/legacy/scss/control_panel_mobile.scss',
             'web_enterprise/static/src/legacy/scss/kanban_view.scss',
             'web_enterprise/static/src/legacy/scss/touch_device.scss',
@@ -61,8 +52,9 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/src/legacy/scss/modal_mobile.scss',
             'web_enterprise/static/src/legacy/scss/promote_studio.scss',
             'web_enterprise/static/src/legacy/scss/web_calendar_mobile.scss',
-            'web_enterprise/static/src/search/**/*.scss',
             'web_enterprise/static/src/webclient/**/*.scss',
+            ('remove', 'web_enterprise/static/src/webclient/home_menu/home_menu_background.scss'), # already in _assets_common_styles
+            ('remove', 'web_enterprise/static/src/webclient/navbar/navbar.scss'), # already in _assets_common_styles
             'web_enterprise/static/src/views/**/*.scss',
 
             # Allows events to be added to the ListRenderer before it is extended.
@@ -72,8 +64,6 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/src/legacy/js/apps.js',
 
             'web_enterprise/static/src/core/**/*',
-            'web_enterprise/static/src/search/**/*.js',
-            'web_enterprise/static/src/search/**/*.xml',
             'web_enterprise/static/src/webclient/**/*.js',
             'web_enterprise/static/src/webclient/**/*.xml',
             'web_enterprise/static/src/views/**/*.js',

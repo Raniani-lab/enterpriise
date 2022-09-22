@@ -587,7 +587,7 @@ var ManualLineRenderer = Widget.extend(FieldManagerMixin, {
         var self = this;
         this._rpc({
             model: 'account.move.line',
-            method: 'open_move',
+            method: 'action_open_business_doc',
             args: [parseInt(event.target.dataset.line_id)],
         }).then(function (actionData){
             return self.do_action(actionData);

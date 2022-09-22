@@ -5,4 +5,3 @@ from . import test_edi_xmls
 from . import test_edi_digiflow
 from . import test_edi_sunat
 from . import test_edi_iap
-from . import test_neutralize

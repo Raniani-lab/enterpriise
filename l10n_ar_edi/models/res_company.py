@@ -214,16 +214,3 @@ class ResCompany(models.Model):
             cert_file = get_module_resource('l10n_ar_edi', 'demo', 'cert%d.crt' % random.randint(1, 10))
             rec.l10n_ar_afip_ws_crt = base64.b64encode(open(cert_file, 'rb').read())
             _logger.log(25, 'Setting demo certificate from %s to %s in %s company' % (old, rec.l10n_ar_afip_ws_crt_fname, rec.name))
-
-    def _neutralize(self):
-        super()._neutralize()
-        self.env.flush_all()
-        self.env.invalidate_all()
-        self.env.cr.execute("""
-            UPDATE res_company SET l10n_ar_afip_ws_environment = 'testing'
-        """)
-        self.env.cr.execute("""
-            DELETE FROM ir_attachment
-            WHERE res_model = 'res.company'
-            AND res_field IN ('l10n_ar_afip_ws_crt', 'l10n_ar_afip_ws_key')
-        """)

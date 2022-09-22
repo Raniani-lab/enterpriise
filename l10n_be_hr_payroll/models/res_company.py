@@ -77,13 +77,3 @@ class ResCompany(models.Model):
                 ],
             })
         return vals
-
-    def _neutralize(self):
-        super()._neutralize()
-        self.flush_model()
-        self.invalidate_model()
-        self.env.cr.execute("""
-            UPDATE res_company
-            SET onss_expeditor_number = 'dummy',
-                onss_pem_passphrase = 'dummy'
-        """)

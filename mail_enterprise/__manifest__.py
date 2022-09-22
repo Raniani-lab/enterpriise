@@ -20,7 +20,7 @@ screen devices.
         ],
         'mail.assets_discuss_public': [
             'mail_enterprise/static/src/components/*/*',
-            'web_enterprise/static/src/core/action_swiper/*',
+            'web/static/src/core/action_swiper/*',
             'web_mobile/static/src/js/core/mixins.js',
             'web_mobile/static/src/js/core/session.js',
             'web_mobile/static/src/js/services/core.js',

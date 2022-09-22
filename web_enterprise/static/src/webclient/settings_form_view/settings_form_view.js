@@ -4,7 +4,7 @@ import { settingsFormView } from "@web/webclient/settings_form_view/settings_for
 import { SettingsFormRenderer } from "@web/webclient/settings_form_view/settings_form_renderer";
 import { SettingsPage } from "@web/webclient/settings_form_view/settings/settings_page";
 import { registry } from "@web/core/registry";
-import { ActionSwiper } from "@web_enterprise/core/action_swiper/action_swiper";
+import { ActionSwiper } from "@web/core/action_swiper/action_swiper";
 
 export class EnterpriseSettingsPage extends SettingsPage {
     getCurrentIndex() {

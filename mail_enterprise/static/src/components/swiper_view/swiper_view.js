@@ -3,7 +3,7 @@
 import { useUpdate } from '@mail/component_hooks/use_update';
 import { registerMessagingComponent } from '@mail/utils/messaging_component';
 
-import { ActionSwiper } from "@web_enterprise/core/action_swiper/action_swiper";
+import { ActionSwiper } from "@web/core/action_swiper/action_swiper";
 
 const { Component } = owl;
 

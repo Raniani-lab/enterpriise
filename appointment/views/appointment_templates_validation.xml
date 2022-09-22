@@ -20,8 +20,8 @@
                         </t>
                     </h1>
                     <div class="oe_structure"/>
-                    <div class="o_appointment_validation_details row justify-content-between mb48">
-                        <div t-attf-class="col-12 pt-2 o_not_editable {{'col-md-8' if show_user_details else ''}}">
+                    <div class="o_appointment_validation_details row justify-content-between pt-3 mb48">
+                        <div t-attf-class="col-12 o_not_editable {{'col-md-8 pe-md-4 pe-lg-5' if staff_user else ''}}">
                             <div class="alert alert-info pb16" t-if="state == 'new'" role="status">
                                 <p class="mb-0">
                                     <strong>Your appointment has been successfully booked!</strong>
@@ -105,30 +105,36 @@
                             </div>
                             <div t-if="appointment_type" t-out="appointment_type.message_confirmation" class="mt-4"/>
                         </div>
-                        <div t-if="show_user_details" class="col-12 col-md-4 ps-md-3 ps-lg-5">
-                            <article class="card o_appointment_user_short_card border-1 shadow-sm mt-2" itemscope="itemscope" itemtype="http://schema.org/Employee">
-                                <header class="overflow-hidden bg-secondary rounded-top">
+                        <div t-if="staff_user" class="col-12 col-md-4">
+                            <article class="card o_appointment_user_short_card border-1 shadow-sm" itemscope="itemscope" itemtype="http://schema.org/Employee">
+                                <header t-if="appointment_type.avatars_display == 'show'" class="overflow-hidden bg-secondary rounded-top">
                                     <img t-attf-src="/appointment/#{appointment_type.id}/avatar?user_id=#{staff_user.id}"
-                                            class="w-100 h-100 o_object_fit_cover o_appointment_avatar_background"/>
+                                         class="w-100 h-100 o_object_fit_cover o_appointment_avatar_background"/>
                                 </header>
                                 <main class="card-body">
                                     <h2 class="mb-0" t-out="staff_user.name"/>
-                                    <div class="o_wappointment_card_user_fct text-black-25 h6">
-                                        <div t-field="staff_user.function" placeholder="Add a function here..."/>
+                                    <div class="o_appointment_card_user_fct text-black-50 h6">
+                                        <div t-field="staff_user.partner_id.function" placeholder="Add a function here..."/>
+                                    </div>
+                                    <div t-if="staff_user.email" class="fs-6 lh-lg d-flex">
+                                        <i class="fa fa-envelope o_appointment_fa_width text-center fs-5 me-2 pt-1"/>
+                                        <span class="overflow-auto"><t t-out="staff_user.email"/></span>
+                                    </div>
+                                    <div t-if="staff_user.partner_id.phone" class="fs-6 lh-lg d-flex">
+                                        <i class="fa fa-phone o_appointment_fa_width text-center fs-5 me-2 pt-1"/>
+                                        <t t-out="staff_user.partner_id.phone"/>
                                     </div>
                                 </main>
                             </article>
                         </div>
                     </div>
-                    <div class="o_appointment_validation_bottom_btns pt-4 mb-5 row">
-                        <div class="col-12 col-md-4 col-lg-3">
+                    <div class="o_appointment_validation_bottom_btns gx-0 pt-4 mb-5 row">
+                        <div class="col-12 col-md-8 col-lg-6">
                             <a role="button" class="btn btn-block o_outlook_calendar" t-attf-href="/calendar/ics/#{event.access_token}.ics">
                                 <img src="/appointment/static/src/img/outlook-calendar.svg" alt="Outlook"/>
                                 Add to iCal/Outlook
                             </a>
-                        </div>
-                        <div class="col-12 pt-3 pt-md-0 col-md-4 col-lg-3">
-                            <a role="button" class="btn btn-block o_google_calendar" t-att-href="google_url">
+                            <a role="button" class="ms-3 btn btn-block o_google_calendar" t-att-href="google_url">
                                 <img src="/appointment/static/src/img/google-calendar.svg" alt="Google Agenda"/>
                                 Add to Google Agenda
                             </a>

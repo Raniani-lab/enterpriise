@@ -16,15 +16,15 @@
                         </span>
                     </h1>
                     <div class="oe_structure"/>
-                    <div class="oe_structure pb32 pt-3 o_appointment_attendee_form">
-                        <div class="d-flex row justify-content-between mt16">
+                    <div class="oe_structure mb32 py-3 o_appointment_attendee_form">
+                        <div class="d-flex row justify-content-between">
                             <form class="appointment_submit_form col-lg-7 col-md-12"
                                 t-attf-action="/appointment/#{appointment_type.id}/submit?#{keep_query('*')}"
                                 method="POST">
                                 <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <input type="hidden" name="datetime_str" t-att-value="datetime_str"/>
                                 <input type="hidden" name="duration_str" t-att-value="duration_str"/>
-                                <div class="mb-3 mt-1">
+                                <div class="mb-3">
                                     <label class="pb-2" for="name">Your Name*</label>
                                     <div>
                                         <input type="char" class="form-control" name="name" required="1"
@@ -108,46 +108,53 @@
                                 </div>
                             </form>
                             <div class="col-lg-4 col-md-12 mb-5 mb-lg-0 pt-3 pt-lg-0">
-                                <t t-if="is_chosen_assign_method or appointment_type.category != 'website'">
-                                    <h2 class="pb-3">You will meet with</h2>
-                                    <t t-if="appointment_type.avatars_display == 'show'">
-                                        <article class="card o_appointment_user_short_card border-1 shadow-sm mb-3" itemscope="itemscope" itemtype="http://schema.org/Employee">
-                                            <header class="overflow-hidden bg-secondary rounded-top">
-                                                <img t-attf-src="/appointment/#{appointment_type.id}/avatar?user_id=#{staff_user.id}"
-                                                        class="w-100 h-100 rounded-top o_object_fit_cover o_appointment_avatar_background"/>
-                                            </header>
-                                            <main class="card-body">
-                                                <h2 class="mb-0" t-out="staff_user.name"/>
-                                                <div class="o_wappointment_card_user_fct text-black-25 h6">
-                                                    <div t-field="staff_user.partner_id.function" placeholder="Add a function here..."/>
-                                                </div>
-                                            </main>
-                                        </article>
-                                    </t>
-                                    <t t-else="">
-                                        <h2 t-out="staff_user.name"/>
-                                        <div class="text-muted o_wappointment_card_user_fct h6 mb-0">
+                                <article t-if="is_chosen_assign_method or appointment_type.category != 'website'"
+                                    class="card o_appointment_user_short_card border-1 shadow-sm mb-3"
+                                    itemscope="itemscope"
+                                    itemtype="http://schema.org/Employee">
+                                    <header t-if="appointment_type.avatars_display == 'show'" class="overflow-hidden bg-secondary rounded-top">
+                                        <img t-attf-src="/appointment/#{appointment_type.id}/avatar?user_id=#{staff_user.id}"
+                                             class="w-100 h-100 rounded-top o_object_fit_cover o_appointment_avatar_background"/>
+                                    </header>
+                                    <main class="card-body">
+                                        <h2 class="mb-0" t-out="staff_user.name"/>
+                                        <div class="o_appointment_card_user_fct text-black-50 h6">
                                             <div t-field="staff_user.partner_id.function" placeholder="Add a function here..."/>
                                         </div>
-                                    </t>
-                                </t>
-                                <div t-else="" class="h2 pb-2">Meeting Details</div>
-                                <div class="pt-3 text-muted">
-                                    <t t-if="is_chosen_assign_method"> for a </t>
-                                    <strong t-out="duration" t-options="{'widget': 'duration', 'unit': 'hour', 'round': 'minute'}"/>
-                                    <strong class="" t-out="appointment_type.name"/> appointment,
-                                    on <strong class="" t-out="date_locale"/>
-                                    at <strong class="" t-out="time_locale"/>
-                                    (<strong t-out="request.session.timezone or appointment_type.timezone"/>)
-                                </div>
-                                <div class="d-flex pt-4 text-muted o_appointment_details_location">
-                                    <i class="fa fa-map-marker fw-bold me-2 mt-1"/>
-                                    <span t-if="appointment_type.location_id">
-                                        <div t-att-class="str(appointment_type.location_id.contact_address).strip() and 'fw-bold' or ''"
-                                             t-field="appointment_type.location_id" t-options="{'widget': 'contact', 'fields': ['name']}"/>
-                                        <div t-field="appointment_type.location_id" t-options="{'widget': 'contact', 'fields': ['address'], 'no_marker': true}"/>
-                                    </span>
-                                    <span t-else="" class="o_not_editable">Online</span>
+                                        <div t-if="staff_user.email" class="fs-6 lh-lg d-flex">
+                                            <i class="fa fa-envelope o_appointment_fa_width text-center fs-5 me-2 pt-1"/>
+                                            <span class="overflow-auto"><t t-out="staff_user.email"/></span>
+                                        </div>
+                                        <div t-if="staff_user.partner_id.phone" class="fs-6 lh-lg d-flex">
+                                            <i class="fa fa-phone o_appointment_fa_width text-center fs-5 me-2 pt-1"/>
+                                            <t t-out="staff_user.partner_id.phone"/>
+                                        </div>
+                                    </main>
+                                </article>
+                                <div class="o_appointment_attendee_form_details">
+                                    <div class="d-flex pt-3 fs-6 lh-lg">
+                                        <i class="fa fa-calendar o_appointment_fa_width text-center fs-5 me-2"/>
+                                        <span class="lh-base">
+                                            <t t-out="date_locale"/> at <t t-out="time_locale"/><br/>
+                                            <span class="text-muted"> (<t t-out="request.session.timezone or appointment_type.timezone"/>)</span>
+                                        </span>
+                                    </div>
+                                    <div class="d-flex fs-6 lh-lg pt-1">
+                                        <i class="fa fa-clock-o o_appointment_fa_width text-center fs-5 me-2 mt-1"/>
+                                        <span t-out="duration" t-options="{'widget': 'duration', 'unit': 'hour', 'round': 'minute'}"/>
+                                    </div>
+                                    <div class="d-flex pt-1 fs-6 lh-lg">
+                                        <i class="fa fa-map-marker o_appointment_fa_width text-center fs-5 me-2 mt-1"/>
+                                        <span t-if="appointment_type.location_id">
+                                            <div t-att-class="str(appointment_type.location_id.contact_address).strip() and 'fw-bold' or ''"
+                                                t-field="appointment_type.location_id"
+                                                t-options="{'widget': 'contact', 'fields': ['name']}"/>
+                                            <div class="lh-base"
+                                                t-field="appointment_type.location_id"
+                                                t-options="{'widget': 'contact', 'fields': ['address'], 'no_marker': true}"/>
+                                        </span>
+                                        <span t-else="" class="o_not_editable">Online</span>
+                                    </div>
                                 </div>
                             </div>
                         </div>

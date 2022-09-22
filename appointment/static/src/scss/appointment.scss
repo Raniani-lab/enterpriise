@@ -96,18 +96,9 @@
         @media screen and (min-device-width: 769px) {
             min-height: 45em;
         }
-        .o_appointment_details_duration, .o_appointment_details_location {
-            font-size: 1rem;
-            line-height: 2rem;
-            .fa {
-                text-align: center;
-                font-size: 1.5rem;
-                width: 1.5rem !important;
-            }
-            .o_appointment_details_location_description {
-                line-height: 1.4rem;
-            }
-        }
+    }
+    .o_appointment_fa_width {
+        width: 1.5rem !important;
     }
     .o_appointment_no_slot_month_helper {
         > * {
@@ -145,6 +136,9 @@
             &::placeholder {
                 color:darkgray;
             }
+        }
+        .o_appointment_attendee_form_details {
+            padding-left: calc(1px + 1.25rem);
         }
     }
     .o_appointment_user_short_card {

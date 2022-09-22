@@ -96,7 +96,7 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
         if (element.classList.contains('img-fluid')) {
             this.destroyBoxLayers();
             const boxLayerApp = this.createBoxLayerApp({
-                boxes: this.state.visibleBoxes[0],
+                boxes: this.state.visibleBoxes[0] || [],
                 mode: 'img',
                 pageLayer: element,
             });
@@ -126,7 +126,7 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
                 }
                 if (!existingBoxLayer) {
                     const boxLayerApp = this.createBoxLayerApp({
-                        boxes: this.state.visibleBoxes[pageNum],
+                        boxes: this.state.visibleBoxes[pageNum] || [],
                         mode: 'pdf',
                         pageLayer: pageLayer,
                     });

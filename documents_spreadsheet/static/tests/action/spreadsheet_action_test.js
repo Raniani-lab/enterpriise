@@ -184,9 +184,28 @@ QUnit.module(
         });
 
         QUnit.test("notify user window", async function (assert) {
+            const { env } = await createSpreadsheet();
+            env.notifyUser({ text: "this is a notification", tag: "notif" });
+            await nextTick();
+            const dialog = document.querySelector(".o_dialog");
+            assert.ok(dialog !== undefined, "Dialog can be opened");
+            const notif = document.querySelector("div.o_notification");
+            assert.ok(notif !== undefined, "the notification exists");
+            assert.equal(
+                notif.querySelector("div.o_notification_content").textContent,
+                "this is a notification",
+                "Can set dialog content"
+            );
+            assert.ok(
+                notif.classList.contains("border-warning"),
+                "NotifyUser generates a warning notification"
+            );
+        });
+
+        QUnit.test("raise error window", async function (assert) {
             assert.expect(4);
             const { env } = await createSpreadsheet();
-            env.notifyUser("this is a notification");
+            env.raiseError("this is a notification");
             await nextTick();
             const dialog = document.querySelector(".o_dialog");
             assert.ok(dialog !== undefined, "Dialog can be opened");
@@ -212,7 +231,7 @@ QUnit.module(
 
             const { model, env } = await createSpreadsheet();
             selectCell(model, "F4");
-            env.notifyUser("Notification");
+            env.raiseError("Notification");
             await nextTick();
             await dom.click(document.body.querySelector(".modal-footer .btn-primary"));
             await nextTick();

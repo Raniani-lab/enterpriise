@@ -17,12 +17,15 @@ const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
 const { Spreadsheet, Model } = spreadsheet;
 
+const tags = new Set();
+
 export default class SpreadsheetComponent extends LegacyComponent {
     setup() {
         this.orm = useService("orm");
         const user = useService("user");
         this.ui = useService("ui");
         this.action = useService("action");
+        this.notifications = useService("notification");
 
         this.props.exposeSpreadsheet(this);
 
@@ -32,6 +35,7 @@ export default class SpreadsheetComponent extends LegacyComponent {
             download: this._download.bind(this),
             getLinesNumber: this._getLinesNumber.bind(this),
             notifyUser: this.notifyUser.bind(this),
+            raiseError: this.raiseError.bind(this),
             editText: this.editText.bind(this),
             askConfirmation: this.askConfirmation.bind(this),
             loadCurrencies: this.loadCurrencies.bind(this),
@@ -296,11 +300,25 @@ export default class SpreadsheetComponent extends LegacyComponent {
     }
 
     /**
-     * Open a dialog to display a message to the user.
+     * Adds a notification to display to the user
+     * @param {{text: string, tag: string}} notification 
+     */
+    notifyUser(notification) {
+        if (tags.has(notification.tag)) return;
+        this.notifications.add(notification.text, {
+            type: "warning",
+            sticky: true,
+            onClose: () => tags.delete(notification.tag),
+        });
+        tags.add(notification.tag);
+    }
+
+    /**
+     * Open a dialog to display an error message to the user.
      *
      * @param {string} content Content to display
      */
-    notifyUser(content) {
+    raiseError(content) {
         this.dialogContent = content;
         this.confirmDialog = this.closeDialog;
         this.state.dialog.isDisplayed = true;

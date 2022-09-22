@@ -9,7 +9,8 @@
             <field name="step_type" position="after">
                 <field name="helpdesk_team_id" attrs="{
                     'invisible': [('step_type', '!=', 'create_ticket')],
-                    'required': [('step_type', '=', 'create_ticket')]}"/>
+                    'required': [('step_type', '=', 'create_ticket')]}"
+                    options="{'no_open': True}"/>
             </field>
         </field>
     </record>

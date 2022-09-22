@@ -2,7 +2,6 @@
 
 import { patch } from "@web/core/utils/patch";
 import { SaleOrderLineProductField } from '@sale/js/sale_product_field';
-import { deserializeDateTime } from "@web/core/l10n/dates";
 
 
 patch(SaleOrderLineProductField.prototype, 'sale_renting', {
@@ -104,10 +103,6 @@ patch(SaleOrderLineProductField.prototype, 'sale_renting', {
                 onClose: async (closeInfo) => {
                     const record = this.props.record;
                     if (closeInfo && !closeInfo.special) {
-                        // HOTE: to remove after controller is also migrated
-                        closeInfo.rentalConfiguration.start_date = deserializeDateTime(closeInfo.rentalConfiguration.start_date.toJSON());
-                        closeInfo.rentalConfiguration.return_date = deserializeDateTime(closeInfo.rentalConfiguration.return_date.toJSON());
-
                         record.update(closeInfo.rentalConfiguration);
                     } else {
                         if (!record.data.start_date || !record.data.return_date) {

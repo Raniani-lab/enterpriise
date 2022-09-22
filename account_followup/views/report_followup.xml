@@ -7,11 +7,8 @@
                     <tr>
                         <t t-foreach="header_line" t-as="cell">
                             <th t-att-class="'o_account_report_column_header ' + (cell.get('class', ''))"
-                                t-att-colspan="cell.get('colspan')"
-                                t-att-style="cell.get('style', '')"
-                                t-att-title="cell.get('title')"
-                                t-att-data-toggle="cell.get('data-toggle')">
-                                <t t-call="{{cell.get('template', 'account_reports.cell_template')}}"/>
+                                t-att-style="cell.get('style', '')">
+                                <t t-call="{{cell.get('template', 'account_followup.cell_template_followup_report')}}"/>
                             </th>
                         </t>
                     </tr>
@@ -20,14 +17,8 @@
         </template>
 
         <template id="cell_template_followup_report">
-            <div style="text-align: center;">
-                <t t-if="cell.get('blocked') != None">
-                    <input t-if="cell['blocked'] == False" type="checkbox" name="blocked" value="True"/>
-                    <input t-if="cell['blocked'] == True" type="checkbox" name="blocked" value="True" checked="checked"/>
-                </t>
-                <t t-if="cell.get('blocked') == None">
-                    <t t-esc="cell.get('name')"/>
-                </t>
+            <div t-att-class="classes" t-att-style="style">
+                <t t-esc="cell.get('name')"/>
             </div>
         </template>
 
@@ -106,7 +97,7 @@
                 <attribute name="class"/>
             </xpath>
             <xpath expr="//table[hasclass('o_account_reports_table')]" position="replace">
-                <table class="o_account_reports_table" t-att-width="'100%'">
+                <table class="o_account_reports_table" t-att-width="'100%'" style="page-break-inside: avoid">
                     <t t-call="account_followup.table_header_template_followup_report"/>
                     <t t-if="lines.get('lines')">
                         <t t-call="account_reports.line_template">

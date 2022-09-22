@@ -72,7 +72,7 @@
                 },
                 "A20": {
                     "style": 2,
-                    "content": "Country",
+                    "content": "=_t(\"Country\")",
                     "border": 2
                 },
                 "A21": {
@@ -122,7 +122,7 @@
                 },
                 "A33": {
                     "style": 2,
-                    "content": "Lost Reason",
+                    "content": "=_t(\"Lost Reason\")",
                     "border": 2
                 },
                 "A34": {
@@ -172,7 +172,7 @@
                 },
                 "A46": {
                     "style": 2,
-                    "content": "Campaign",
+                    "content": "=_t(\"Campaign\")",
                     "border": 2
                 },
                 "A47": {
@@ -222,7 +222,7 @@
                 },
                 "A59": {
                     "style": 2,
-                    "content": "Sales Team",
+                    "content": "=_t(\"Sales Team\")",
                     "border": 2
                 },
                 "A60": {
@@ -271,7 +271,7 @@
                 },
                 "B20": {
                     "style": 6,
-                    "content": "# Leads",
+                    "content": "=_t(\"# Leads\")",
                     "border": 2
                 },
                 "B21": {
@@ -321,7 +321,7 @@
                 },
                 "B33": {
                     "style": 6,
-                    "content": "# Leads",
+                    "content": "=_t(\"# Leads\")",
                     "border": 2
                 },
                 "B34": {
@@ -374,7 +374,7 @@
                 },
                 "B46": {
                     "style": 6,
-                    "content": "# Leads",
+                    "content": "=_t(\"# Leads\")",
                     "border": 2
                 },
                 "B47": {
@@ -424,7 +424,7 @@
                 },
                 "B59": {
                     "style": 6,
-                    "content": "# Leads",
+                    "content": "=_t(\"# Leads\")",
                     "border": 2
                 },
                 "B60": {
@@ -478,7 +478,7 @@
                 },
                 "C20": {
                     "style": 6,
-                    "content": "Revenue",
+                    "content": "=_t(\"Revenue\")",
                     "border": 2
                 },
                 "C21": {
@@ -528,7 +528,7 @@
                 },
                 "C33": {
                     "style": 6,
-                    "content": "Revenue",
+                    "content": "=_t(\"Revenue\")",
                     "border": 2
                 },
                 "C34": {
@@ -581,7 +581,7 @@
                 },
                 "C46": {
                     "style": 6,
-                    "content": "Revenue",
+                    "content": "=_t(\"Revenue\")",
                     "border": 2
                 },
                 "C47": {
@@ -631,7 +631,7 @@
                 },
                 "C59": {
                     "style": 6,
-                    "content": "Revenue",
+                    "content": "=_t(\"Revenue\")",
                     "border": 2
                 },
                 "C60": {
@@ -694,7 +694,7 @@
                 },
                 "E20": {
                     "style": 2,
-                    "content": "Tag",
+                    "content": "=_t(\"Tag\")",
                     "border": 2
                 },
                 "E21": {
@@ -744,7 +744,7 @@
                 },
                 "E33": {
                     "style": 2,
-                    "content": "Medium",
+                    "content": "=_t(\"Medium\")",
                     "border": 2
                 },
                 "E34": {
@@ -794,7 +794,7 @@
                 },
                 "E46": {
                     "style": 2,
-                    "content": "Source",
+                    "content": "=_t(\"Source\")",
                     "border": 2
                 },
                 "E47": {
@@ -844,7 +844,7 @@
                 },
                 "E59": {
                     "style": 2,
-                    "content": "Salesperson",
+                    "content": "=_t(\"Salesperson\")",
                     "border": 2
                 },
                 "E60": {
@@ -893,7 +893,7 @@
                 },
                 "F20": {
                     "style": 6,
-                    "content": "# Leads",
+                    "content": "=_t(\"# Leads\")",
                     "border": 2
                 },
                 "F21": {
@@ -943,7 +943,7 @@
                 },
                 "F33": {
                     "style": 6,
-                    "content": "# Leads",
+                    "content": "=_t(\"# Leads\")",
                     "border": 2
                 },
                 "F34": {
@@ -993,7 +993,7 @@
                 },
                 "F46": {
                     "style": 6,
-                    "content": "# Leads",
+                    "content": "=_t(\"# Leads\")",
                     "border": 2
                 },
                 "F47": {
@@ -1043,7 +1043,7 @@
                 },
                 "F59": {
                     "style": 6,
-                    "content": "# Leads",
+                    "content": "=_t(\"# Leads\")",
                     "border": 2
                 },
                 "F60": {
@@ -1097,7 +1097,7 @@
                 },
                 "G20": {
                     "style": 6,
-                    "content": "Revenue",
+                    "content": "=_t(\"Revenue\")",
                     "border": 2
                 },
                 "G21": {
@@ -1147,7 +1147,7 @@
                 },
                 "G33": {
                     "style": 6,
-                    "content": "Revenue",
+                    "content": "=_t(\"Revenue\")",
                     "border": 2
                 },
                 "G34": {
@@ -1197,7 +1197,7 @@
                 },
                 "G46": {
                     "style": 6,
-                    "content": "Revenue",
+                    "content": "=_t(\"Revenue\")",
                     "border": 2
                 },
                 "G47": {
@@ -1247,7 +1247,7 @@
                 },
                 "G59": {
                     "style": 6,
-                    "content": "Revenue",
+                    "content": "=_t(\"Revenue\")",
                     "border": 2
                 },
                 "G60": {
@@ -1552,47 +1552,47 @@
             "cells": {
                 "A1": {
                     "style": 8,
-                    "content": "KPI"
+                    "content": "=_t(\"KPI\")"
                 },
                 "A2": {
                     "style": 8,
-                    "content": "Won leads"
+                    "content": "=_t(\"Won leads\")"
                 },
                 "A3": {
                     "style": 8,
-                    "content": "Total leads"
+                    "content": "=_t(\"Total leads\")"
                 },
                 "A4": {
                     "style": 8,
-                    "content": "Close rate"
+                    "content": "=_t(\"Close rate\")"
                 },
                 "A5": {
                     "style": 8,
-                    "content": "Average deal size"
+                    "content": "=_t(\"Average deal size\")"
                 },
                 "A6": {
                     "style": 8,
-                    "content": "Revenue"
+                    "content": "=_t(\"Revenue\")"
                 },
                 "A7": {
                     "style": 8,
-                    "content": "Total days to win"
+                    "content": "=_t(\"Total days to win\")"
                 },
                 "A8": {
                     "style": 8,
-                    "content": "Total days to assign"
+                    "content": "=_t(\"Total days to assign\")"
                 },
                 "A9": {
                     "style": 8,
-                    "content": "Days to win"
+                    "content": "=_t(\"Days to win\")"
                 },
                 "A10": {
                     "style": 8,
-                    "content": "Days to assign"
+                    "content": "=_t(\"Days to assign\")"
                 },
                 "B1": {
                     "style": 8,
-                    "content": "Current period"
+                    "content": "=_t(\"Current period\")"
                 },
                 "B2": {
                     "style": 7,
@@ -1632,7 +1632,7 @@
                 },
                 "C1": {
                     "style": 8,
-                    "content": "Previous period"
+                    "content": "=_t(\"Previous period\")"
                 },
                 "C2": {
                     "style": 7,
@@ -1673,7 +1673,7 @@
                 },
                 "D1": {
                     "style": 8,
-                    "content": "Current period"
+                    "content": "=_t(\"Current period\")"
                 },
                 "D2": {
                     "style": 7,
@@ -1705,15 +1705,15 @@
                 },
                 "D9": {
                     "style": 7,
-                    "content": "=IFERROR(CONCATENATE(ROUND(B9,1),\" days\"))"
+                    "content": "=IFERROR(CONCATENATE(ROUND(B9,1),_t(\" days\")))"
                 },
                 "D10": {
                     "style": 7,
-                    "content": "=IFERROR(CONCATENATE(ROUND(B10,1),\" days\"))"
+                    "content": "=IFERROR(CONCATENATE(ROUND(B10,1),_t(\" days\")))"
                 },
                 "E1": {
                     "style": 8,
-                    "content": "Previous period"
+                    "content": "=_t(\"Previous period\")"
                 },
                 "E2": {
                     "style": 7,

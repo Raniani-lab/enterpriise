@@ -72,7 +72,7 @@
                 },
                 "A20": {
                     "style": 2,
-                    "content": "Opportunity",
+                    "content": "=_t(\"Opportunity\")",
                     "border": 2
                 },
                 "A21": {
@@ -122,7 +122,7 @@
                 },
                 "A33": {
                     "style": 2,
-                    "content": "Salesperson",
+                    "content": "=_t(\"Salesperson\")",
                     "border": 2
                 },
                 "A34": {
@@ -172,7 +172,7 @@
                 },
                 "A46": {
                     "style": 2,
-                    "content": "Country",
+                    "content": "=_t(\"Country\")",
                     "border": 2
                 },
                 "A47": {
@@ -219,7 +219,7 @@
                 },
                 "A59": {
                     "style": 2,
-                    "content": "Medium",
+                    "content": "=_t(\"Medium\")",
                     "border": 2
                 },
                 "A60": {
@@ -264,7 +264,7 @@
                 },
                 "B20": {
                     "style": 2,
-                    "content": "Stage",
+                    "content": "=_t(\"Stage\")",
                     "border": 2
                 },
                 "B21": {
@@ -304,7 +304,7 @@
                 },
                 "B33": {
                     "style": 8,
-                    "content": "# Leads",
+                    "content": "=_t(\"# Leads\")",
                     "border": 2
                 },
                 "B34": {
@@ -344,7 +344,7 @@
                 },
                 "B46": {
                     "style": 8,
-                    "content": "# Leads",
+                    "content": "=_t(\"# Leads\")",
                     "border": 2
                 },
                 "B47": {
@@ -391,7 +391,7 @@
                 },
                 "B59": {
                     "style": 8,
-                    "content": "# Leads",
+                    "content": "=_t(\"# Leads\")",
                     "border": 2
                 },
                 "B60": {
@@ -441,7 +441,7 @@
                 },
                 "C20": {
                     "style": 2,
-                    "content": "Salesperson",
+                    "content": "=_t(\"Salesperson\")",
                     "border": 2
                 },
                 "C21": {
@@ -491,7 +491,7 @@
                 },
                 "C33": {
                     "style": 8,
-                    "content": "Revenue",
+                    "content": "=_t(\"Revenue\")",
                     "border": 2
                 },
                 "C34": {
@@ -541,7 +541,7 @@
                 },
                 "C46": {
                     "style": 8,
-                    "content": "Revenue",
+                    "content": "=_t(\"Revenue\")",
                     "border": 2
                 },
                 "C47": {
@@ -588,7 +588,7 @@
                 },
                 "C59": {
                     "style": 8,
-                    "content": "Revenue",
+                    "content": "=_t(\"Revenue\")",
                     "border": 2
                 },
                 "C60": {
@@ -682,7 +682,7 @@
                 },
                 "E20": {
                     "style": 2,
-                    "content": "Country",
+                    "content": "=_t(\"Country\")",
                     "border": 2
                 },
                 "E21": {
@@ -737,7 +737,7 @@
                 },
                 "E33": {
                     "style": 2,
-                    "content": "Sales Team",
+                    "content": "=_t(\"Sales Team\")",
                     "border": 2
                 },
                 "E34": {
@@ -787,7 +787,7 @@
                 },
                 "E46": {
                     "style": 2,
-                    "content": "City",
+                    "content": "=_t(\"City\")",
                     "border": 2
                 },
                 "E47": {
@@ -837,7 +837,7 @@
                 },
                 "E59": {
                     "style": 2,
-                    "content": "Source",
+                    "content": "=_t(\"Source\")",
                     "border": 2
                 },
                 "E60": {
@@ -882,7 +882,7 @@
                 },
                 "F20": {
                     "style": 8,
-                    "content": "Revenue",
+                    "content": "=_t(\"Revenue\")",
                     "border": 2
                 },
                 "F21": {
@@ -931,7 +931,7 @@
                 },
                 "F33": {
                     "style": 8,
-                    "content": "# Leads",
+                    "content": "=_t(\"# Leads\")",
                     "border": 2
                 },
                 "F34": {
@@ -981,7 +981,7 @@
                 },
                 "F46": {
                     "style": 8,
-                    "content": "# Leads",
+                    "content": "=_t(\"# Leads\")",
                     "border": 2
                 },
                 "F47": {
@@ -1031,7 +1031,7 @@
                 },
                 "F59": {
                     "style": 8,
-                    "content": "# Leads",
+                    "content": "=_t(\"# Leads\")",
                     "border": 2
                 },
                 "F60": {
@@ -1130,7 +1130,7 @@
                 },
                 "G33": {
                     "style": 8,
-                    "content": "Revenue",
+                    "content": "=_t(\"Revenue\")",
                     "border": 2
                 },
                 "G34": {
@@ -1180,7 +1180,7 @@
                 },
                 "G46": {
                     "style": 8,
-                    "content": "Revenue",
+                    "content": "=_t(\"Revenue\")",
                     "border": 2
                 },
                 "G47": {
@@ -1230,7 +1230,7 @@
                 },
                 "G59": {
                     "style": 8,
-                    "content": "Revenue",
+                    "content": "=_t(\"Revenue\")",
                     "border": 2
                 },
                 "G60": {
@@ -1550,29 +1550,29 @@
             "cells": {
                 "A1": {
                     "style": 2,
-                    "content": "KPI"
+                    "content": "=_t(\"KPI\")"
                 },
                 "A2": {
-                    "content": "Expected count"
+                    "content": "=_t(\"Expected count\")"
                 },
                 "A3": {
-                    "content": "Closed count"
+                    "content": "=_t(\"Closed count\")"
                 },
                 "A4": {
-                    "content": "Expected revenue"
+                    "content": "=_t(\"Expected revenue\")"
                 },
                 "A5": {
-                    "content": "Closed revenue"
+                    "content": "=_t(\"Closed revenue\")"
                 },
                 "A6": {
-                    "content": "Percentage closed"
+                    "content": "=_t(\"Percentage closed\")"
                 },
                 "A7": {
-                    "content": "To close"
+                    "content": "=_t(\"To close\")"
                 },
                 "B1": {
                     "style": 2,
-                    "content": "Current"
+                    "content": "=_t(\"Current\")"
                 },
                 "B2": {
                     "content": "=ODOO.PIVOT(1,\"__count\")"
@@ -1595,7 +1595,7 @@
                 },
                 "C1": {
                     "style": 2,
-                    "content": "Previous"
+                    "content": "=_t(\"Previous\")"
                 },
                 "C2": {
                     "content": "=ODOO.PIVOT(2,\"__count\")"
@@ -1618,7 +1618,7 @@
                 },
                 "D1": {
                     "style": 2,
-                    "content": "Current"
+                    "content": "=_t(\"Current\")"
                 },
                 "D2": {
                     "style": 7,
@@ -1647,7 +1647,7 @@
                 },
                 "E1": {
                     "style": 2,
-                    "content": "Previous"
+                    "content": "=_t(\"Previous\")"
                 },
                 "E2": {
                     "style": 7,

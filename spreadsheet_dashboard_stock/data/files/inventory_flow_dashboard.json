@@ -60,7 +60,7 @@
                 },
                 "A20": {
                     "style": 2,
-                    "content": "Warehouse",
+                    "content": "=_t(\"Warehouse\")",
                     "border": 2
                 },
                 "A21": {
@@ -110,7 +110,7 @@
                 },
                 "A33": {
                     "style": 2,
-                    "content": "Product",
+                    "content": "=_t(\"Product\")",
                     "border": 2
                 },
                 "A34": {
@@ -159,7 +159,7 @@
                 },
                 "B20": {
                     "style": 6,
-                    "content": "Moves",
+                    "content": "=_t(\"Moves\")",
                     "border": 2
                 },
                 "B21": {
@@ -213,7 +213,7 @@
                 },
                 "B33": {
                     "style": 6,
-                    "content": "Moves",
+                    "content": "=_t(\"Moves\")",
                     "border": 2
                 },
                 "B34": {
@@ -267,7 +267,7 @@
                 },
                 "C20": {
                     "style": 6,
-                    "content": "Quantity",
+                    "content": "=_t(\"Quantity\")",
                     "border": 2
                 },
                 "C21": {
@@ -321,7 +321,7 @@
                 },
                 "C33": {
                     "style": 6,
-                    "content": "Quantity",
+                    "content": "=_t(\"Quantity\")",
                     "border": 2
                 },
                 "C34": {
@@ -376,7 +376,7 @@
                 },
                 "E20": {
                     "style": 2,
-                    "content": "Location",
+                    "content": "=_t(\"Location\")",
                     "border": 2
                 },
                 "E21": {
@@ -426,7 +426,7 @@
                 },
                 "E33": {
                     "style": 2,
-                    "content": "Partner",
+                    "content": "=_t(\"Partner\")",
                     "border": 2
                 },
                 "E34": {
@@ -475,7 +475,7 @@
                 },
                 "F20": {
                     "style": 6,
-                    "content": "Moves",
+                    "content": "=_t(\"Moves\")",
                     "border": 2
                 },
                 "F21": {
@@ -529,7 +529,7 @@
                 },
                 "F33": {
                     "style": 6,
-                    "content": "Moves",
+                    "content": "=_t(\"Moves\")",
                     "border": 2
                 },
                 "F34": {
@@ -583,7 +583,7 @@
                 },
                 "G20": {
                     "style": 6,
-                    "content": "Quantity",
+                    "content": "=_t(\"Quantity\")",
                     "border": 2
                 },
                 "G21": {
@@ -637,7 +637,7 @@
                 },
                 "G33": {
                     "style": 6,
-                    "content": "Quantity",
+                    "content": "=_t(\"Quantity\")",
                     "border": 2
                 },
                 "G34": {
@@ -834,23 +834,23 @@
             "cells": {
                 "A1": {
                     "style": 2,
-                    "content": "KPI"
+                    "content": "=_t(\"KPI\")"
                 },
                 "A2": {
-                    "content": "Avg cycle time"
+                    "content": "=_t(\"Avg cycle time\")"
                 },
                 "A3": {
-                    "content": "Avg delay"
+                    "content": "=_t(\"Avg delay\")"
                 },
                 "A4": {
-                    "content": "Product quantity"
+                    "content": "=_t(\"Product quantity\")"
                 },
                 "B1": {
                     "style": 2,
-                    "content": "Current"
+                    "content": "=_t(\"Current\")"
                 },
                 "B2": {
-                    "content": "-3"
+                    "content": "=_t(\"-3\")"
                 },
                 "B3": {
                     "content": "=ODOO.PIVOT(5,\"delay\")"
@@ -860,7 +860,7 @@
                 },
                 "C1": {
                     "style": 2,
-                    "content": "Previous"
+                    "content": "=_t(\"Previous\")"
                 },
                 "C2": {
                     "content": "=ODOO.PIVOT(6,\"cycle_time\")"
@@ -873,15 +873,15 @@
                 },
                 "D1": {
                     "style": 2,
-                    "content": "Current"
+                    "content": "=_t(\"Current\")"
                 },
                 "D2": {
                     "style": 8,
-                    "content": "=CONCATENATE(ROUNDUP(B2),\" days\")"
+                    "content": "=CONCATENATE(ROUNDUP(B2),_t(\" days\"))"
                 },
                 "D3": {
                     "style": 8,
-                    "content": "=CONCATENATE(ROUNDUP(B3),\" days\")"
+                    "content": "=CONCATENATE(ROUNDUP(B3),_t(\" days\"))"
                 },
                 "D4": {
                     "style": 7,
@@ -889,7 +889,7 @@
                 },
                 "E1": {
                     "style": 2,
-                    "content": "Previous"
+                    "content": "=_t(\"Previous\")"
                 },
                 "E2": {
                     "style": 7,

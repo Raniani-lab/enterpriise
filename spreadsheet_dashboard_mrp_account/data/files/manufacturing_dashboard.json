@@ -68,7 +68,7 @@
                 },
                 "A32": {
                     "style": 2,
-                    "content": "Product",
+                    "content": "=_t(\"Product\")",
                     "border": 2
                 },
                 "A33": {
@@ -118,7 +118,7 @@
                 },
                 "A45": {
                     "style": 2,
-                    "content": "Responsible",
+                    "content": "=_t(\"Responsible\")",
                     "border": 2
                 },
                 "A46": {
@@ -175,7 +175,7 @@
                 },
                 "B32": {
                     "style": 6,
-                    "content": "Orders",
+                    "content": "=_t(\"Orders\")",
                     "border": 2
                 },
                 "B33": {
@@ -229,7 +229,7 @@
                 },
                 "B45": {
                     "style": 6,
-                    "content": "Orders",
+                    "content": "=_t(\"Orders\")",
                     "border": 2
                 },
                 "B46": {
@@ -291,7 +291,7 @@
                 },
                 "C32": {
                     "style": 6,
-                    "content": "Quantity Produced",
+                    "content": "=_t(\"Quantity Produced\")",
                     "border": 2
                 },
                 "C33": {
@@ -345,7 +345,7 @@
                 },
                 "C45": {
                     "style": 6,
-                    "content": "Quantity Produced",
+                    "content": "=_t(\"Quantity Produced\")",
                     "border": 2
                 },
                 "C46": {
@@ -408,7 +408,7 @@
                 },
                 "E32": {
                     "style": 2,
-                    "content": "Operation Type",
+                    "content": "=_t(\"Operation Type\")",
                     "border": 2
                 },
                 "E33": {
@@ -461,7 +461,7 @@
                 },
                 "F32": {
                     "style": 6,
-                    "content": "Orders",
+                    "content": "=_t(\"Orders\")",
                     "border": 2
                 },
                 "F33": {
@@ -519,7 +519,7 @@
                 },
                 "G32": {
                     "style": 6,
-                    "content": "Quantity Produced",
+                    "content": "=_t(\"Quantity Produced\")",
                     "border": 2
                 },
                 "G33": {
@@ -836,32 +836,32 @@
             "cells": {
                 "A1": {
                     "style": 2,
-                    "content": "KPI"
+                    "content": "=_t(\"KPI\")"
                 },
                 "A2": {
-                    "content": "Manufacturing orders"
+                    "content": "=_t(\"Manufacturing orders\")"
                 },
                 "A3": {
-                    "content": "Total quantity"
+                    "content": "=_t(\"Total quantity\")"
                 },
                 "A4": {
-                    "content": "Total time (min)"
+                    "content": "=_t(\"Total time (min)t\")"
                 },
                 "A5": {
-                    "content": "Available time (min)"
+                    "content": "=_t(\"Available time (min)t\")"
                 },
                 "A6": {
-                    "content": "Productive time (min)"
+                    "content": "=_t(\"Productive time (min)t\")"
                 },
                 "A7": {
-                    "content": "OEE"
+                    "content": "=_t(\"OEE\")"
                 },
                 "A8": {
-                    "content": "Average cost / unit"
+                    "content": "=_t(\"Average cost / unitt\")"
                 },
                 "B1": {
                     "style": 2,
-                    "content": "Current"
+                    "content": "=_t(\"Current\")"
                 },
                 "B2": {
                     "content": "=ODOO.PIVOT(5,\"__count\")"
@@ -886,7 +886,7 @@
                 },
                 "C1": {
                     "style": 2,
-                    "content": "Previous"
+                    "content": "=_t(\"Previous\")"
                 },
                 "C2": {
                     "content": "=ODOO.PIVOT(6,\"__count\")"
@@ -911,7 +911,7 @@
                 },
                 "D1": {
                     "style": 2,
-                    "content": "Current"
+                    "content": "=_t(\"Current\")"
                 },
                 "D2": {
                     "style": 7,
@@ -941,7 +941,7 @@
                 },
                 "E1": {
                     "style": 2,
-                    "content": "Previous"
+                    "content": "=_t(\"Previous\")"
                 },
                 "E2": {
                     "style": 7,

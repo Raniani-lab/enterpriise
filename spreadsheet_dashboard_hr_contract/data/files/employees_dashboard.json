@@ -54,7 +54,7 @@
                 },
                 "A20": {
                     "style": 2,
-                    "content": "Department",
+                    "content": "=_t(\"Department\")",
                     "border": 2
                 },
                 "A21": {
@@ -99,7 +99,7 @@
                 },
                 "B20": {
                     "style": 5,
-                    "content": "Hires",
+                    "content": "=_t(\"Hires\")",
                     "border": 2
                 },
                 "B21": {
@@ -139,7 +139,7 @@
                 },
                 "C20": {
                     "style": 5,
-                    "content": "Employees",
+                    "content": "=_t(\"Employees\")",
                     "border": 2
                 },
                 "C21": {
@@ -184,7 +184,7 @@
                 },
                 "E20": {
                     "style": 2,
-                    "content": "Job Position",
+                    "content": "=_t(\"Job Position\")",
                     "border": 2
                 },
                 "E21": {
@@ -224,7 +224,7 @@
                 },
                 "F20": {
                     "style": 5,
-                    "content": "Contracts",
+                    "content": "=_t(\"Contracts\")",
                     "border": 2
                 },
                 "F21": {
@@ -443,7 +443,7 @@
             ],
             "cells": {
                 "A1": {
-                    "content": "Employees"
+                    "content": "=_t(\"Employees\")"
                 },
                 "A5": {
                     "style": 7

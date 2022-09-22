@@ -78,7 +78,7 @@
                 },
                 "A20": {
                     "style": 2,
-                    "content": "Name",
+                    "content": "=_t(\"Name\")",
                     "border": 2
                 },
                 "A21": {
@@ -128,7 +128,7 @@
                 },
                 "A33": {
                     "style": 2,
-                    "content": "Job Position",
+                    "content": "=_t(\"Job Position\")",
                     "border": 2
                 },
                 "A34": {
@@ -178,7 +178,7 @@
                 },
                 "A46": {
                     "style": 2,
-                    "content": "Medium",
+                    "content": "=_t(\"Medium\")",
                     "border": 2
                 },
                 "A47": {
@@ -228,7 +228,7 @@
                 },
                 "A59": {
                     "style": 2,
-                    "content": "Company",
+                    "content": "=_t(\"Company\")",
                     "border": 2
                 },
                 "A60": {
@@ -273,7 +273,7 @@
                 },
                 "B20": {
                     "style": 2,
-                    "content": "Position",
+                    "content": "=_t(\"Position\")",
                     "border": 2
                 },
                 "B21": {
@@ -313,7 +313,7 @@
                 },
                 "B33": {
                     "style": 8,
-                    "content": "Applications",
+                    "content": "=_t(\"Applications\")",
                     "border": 2
                 },
                 "B34": {
@@ -353,7 +353,7 @@
                 },
                 "B46": {
                     "style": 8,
-                    "content": "Applications",
+                    "content": "=_t(\"Applications\")",
                     "border": 2
                 },
                 "B47": {
@@ -403,7 +403,7 @@
                 },
                 "B59": {
                     "style": 8,
-                    "content": "Applications",
+                    "content": "=_t(\"Applications\")",
                     "border": 2
                 },
                 "B60": {
@@ -472,7 +472,7 @@
                 },
                 "C33": {
                     "style": 8,
-                    "content": "Hired",
+                    "content": "=_t(\"Hired\")",
                     "border": 2
                 },
                 "C34": {
@@ -512,7 +512,7 @@
                 },
                 "C46": {
                     "style": 8,
-                    "content": "Hired",
+                    "content": "=_t(\"Hired\")",
                     "border": 2
                 },
                 "C47": {
@@ -562,7 +562,7 @@
                 },
                 "C59": {
                     "style": 8,
-                    "content": "Hired",
+                    "content": "=_t(\"Hired\")",
                     "border": 2
                 },
                 "C60": {
@@ -612,7 +612,7 @@
                 },
                 "D20": {
                     "style": 2,
-                    "content": "Department",
+                    "content": "=_t(\"Department\")",
                     "border": 2
                 },
                 "D21": {
@@ -652,7 +652,7 @@
                 },
                 "D33": {
                     "style": 8,
-                    "content": "Rate",
+                    "content": "=_t(\"Rate\")",
                     "border": 2
                 },
                 "D34": {
@@ -702,7 +702,7 @@
                 },
                 "D46": {
                     "style": 8,
-                    "content": "Rate",
+                    "content": "=_t(\"Rate\")",
                     "border": 2
                 },
                 "D47": {
@@ -752,7 +752,7 @@
                 },
                 "D59": {
                     "style": 8,
-                    "content": "Rate",
+                    "content": "=_t(\"Rate\")",
                     "border": 2
                 },
                 "D60": {
@@ -826,7 +826,7 @@
                 },
                 "F20": {
                     "style": 2,
-                    "content": "Recruiter",
+                    "content": "=_t(\"Recruiter\")",
                     "border": 2
                 },
                 "F21": {
@@ -871,7 +871,7 @@
                 },
                 "F33": {
                     "style": 2,
-                    "content": "Recruiter",
+                    "content": "=_t(\"Recruiter\")",
                     "border": 2
                 },
                 "F34": {
@@ -921,7 +921,7 @@
                 },
                 "F46": {
                     "style": 2,
-                    "content": "Source",
+                    "content": "=_t(\"Source\")",
                     "border": 2
                 },
                 "F47": {
@@ -966,7 +966,7 @@
                 },
                 "G20": {
                     "style": 2,
-                    "content": "Stage",
+                    "content": "=_t(\"Stage\")",
                     "border": 2
                 },
                 "G21": {
@@ -1006,7 +1006,7 @@
                 },
                 "G33": {
                     "style": 8,
-                    "content": "Applications",
+                    "content": "=_t(\"Applications\")",
                     "border": 2
                 },
                 "G34": {
@@ -1056,7 +1056,7 @@
                 },
                 "G46": {
                     "style": 8,
-                    "content": "Applications",
+                    "content": "=_t(\"Applications\")",
                     "border": 2
                 },
                 "G47": {
@@ -1125,7 +1125,7 @@
                 },
                 "H33": {
                     "style": 8,
-                    "content": "Hired",
+                    "content": "=_t(\"Hired\")",
                     "border": 2
                 },
                 "H34": {
@@ -1175,7 +1175,7 @@
                 },
                 "H46": {
                     "style": 8,
-                    "content": "Hired",
+                    "content": "=_t(\"Hired\")",
                     "border": 2
                 },
                 "H47": {
@@ -1225,7 +1225,7 @@
                 },
                 "I20": {
                     "style": 2,
-                    "content": "Date",
+                    "content": "=_t(\"Date\")",
                     "border": 2
                 },
                 "I21": {
@@ -1280,7 +1280,7 @@
                 },
                 "I33": {
                     "style": 8,
-                    "content": "Rate",
+                    "content": "=_t(\"Rate\")",
                     "border": 2
                 },
                 "I34": {
@@ -1330,7 +1330,7 @@
                 },
                 "I46": {
                     "style": 8,
-                    "content": "Rate",
+                    "content": "=_t(\"Rate\")",
                     "border": 2
                 },
                 "I47": {
@@ -1682,31 +1682,31 @@
                 },
                 "A2": {
                     "style": 7,
-                    "content": "New applicants"
+                    "content": "=_t(\"New applicants\")"
                 },
                 "A3": {
                     "style": 7,
-                    "content": "Hired"
+                    "content": "=_t(\"Hired\")"
                 },
                 "A4": {
                     "style": 7,
-                    "content": "Hired by referral"
+                    "content": "=_t(\"Hired by referral\")"
                 },
                 "A5": {
                     "style": 7,
-                    "content": "Referral rate"
+                    "content": "=_t(\"Referral rate\")"
                 },
                 "A6": {
                     "style": 7,
-                    "content": "Hired ratio"
+                    "content": "=_t(\"Hired ratio\")"
                 },
                 "A7": {
                     "style": 7,
-                    "content": "Process duration"
+                    "content": "=_t(\"Process duration\")"
                 },
                 "B1": {
                     "style": 11,
-                    "content": "Current"
+                    "content": "=_t(\"Current\")"
                 },
                 "B2": {
                     "style": 7,
@@ -1735,7 +1735,7 @@
                 },
                 "C1": {
                     "style": 11,
-                    "content": "Previous"
+                    "content": "=_t(\"Previous\")"
                 },
                 "C2": {
                     "style": 7,

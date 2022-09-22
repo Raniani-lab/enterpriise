@@ -21,6 +21,10 @@
         <field name="comment">The PLM manager manages products lifecycle management</field>
     </record>
 
+    <record id="base.default_user" model="res.users">
+        <field name="groups_id" eval="[(4, ref('mrp_plm.group_plm_manager'))]"/>
+    </record>
+
     <record model="res.users" id="base.user_root">
        <field eval="[(4,ref('mrp_plm.group_plm_manager'))]" name="groups_id"/>
     </record>

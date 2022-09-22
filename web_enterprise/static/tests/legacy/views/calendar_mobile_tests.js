@@ -193,7 +193,7 @@ odoo.define('web_enterprise.calendar_mobile_tests', function (require) {
                 'Panel should contains 3 span (1 label (USER) + 2 resources (user 1/2)');
 
             const calendarSidebar = calendar.el.querySelector('.o_calendar_sidebar');
-            const calendarElement = calendar.el.querySelector('.o_calendar_view');
+            const calendarElement = calendar.el.querySelector('.o_legacy_calendar_view');
             assert.isVisible(calendarElement, "the calendar should be visible");
             assert.isNotVisible(calendarSidebar, "the panel with other calendar shouldn't be visible");
             otherCalendarPanel = calendar.el.querySelector('.o_other_calendar_panel');

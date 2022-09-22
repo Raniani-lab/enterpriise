@@ -60,7 +60,7 @@ async function openView(viewType, options = {}) {
         { sequence: 1 }
     );
     serviceRegistry.add("spreadsheet_collaborative", makeFakeSpreadsheetService());
-    serviceRegistry.add('spreadsheetLinkMenuCell', spreadsheetLinkMenuCellService);
+    serviceRegistry.add("spreadsheetLinkMenuCell", spreadsheetLinkMenuCellService);
     const webClient = await createWebClient({
         serverData,
         mockRPC: options.mockRPC,
@@ -76,7 +76,7 @@ async function insertInSpreadsheetAndClickLink(target) {
     patchWithCleanup(Grid.prototype, {
         setup() {
             this._super();
-            this.hoveredCell = {col : 0, row : 0};
+            this.hoveredCell = { col: 0, row: 0 };
         },
     });
     await click(target, ".o_favorite_menu button");
@@ -155,8 +155,8 @@ QUnit.module(
                     return true;
                 },
             };
-            registry.category('services').add('multi_tab', multiTabService);
-            registry.category('services').add('bus_service', busService);
+            registry.category("services").add("multi_tab", multiTabService);
+            registry.category("services").add("bus_service", busService);
         },
     },
     () => {

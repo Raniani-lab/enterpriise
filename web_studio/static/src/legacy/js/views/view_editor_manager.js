@@ -39,6 +39,7 @@ const editorsRegistry = registry.category("studio_editors");
 const viewRegistry = registry.category("views");
 
 const CONVERTED_VIEWS = [
+    "calendar",
     "cohort",
     "dashboard",
     "graph",

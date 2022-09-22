@@ -26,7 +26,7 @@
                     </div>
                     <t t-call="planning.planning_shift_notification"/>
                     <div id="calendar_employee" class="o_calendar_container">
-                        <div class="o_calendar_view" >
+                        <div class="o_legacy_calendar_view" >
                             <span class="employee_slots_fullcalendar_data" t-att-value="json.dumps(employee_slots_fullcalendar_data)"/>
                             <span class="planning_token" t-att-value="planning_token" />
                             <span class="employee_token" t-att-value="employee_token" />

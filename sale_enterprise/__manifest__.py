@@ -9,7 +9,7 @@
     'description': """
 Contains advanced features for sale management
     """,
-    'depends': ['sale', 'web_dashboard'],
+    'depends': ['sale'],
     'data': [
         'report/sale_report_views.xml',
     ],

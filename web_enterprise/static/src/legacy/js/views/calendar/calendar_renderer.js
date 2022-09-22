@@ -318,7 +318,7 @@ CalendarRenderer.include({
      */
     _toggleSidePanel: async function () {
         this.isSidePanelVisible = !this.isSidePanelVisible;
-        this.$('.o_calendar_view').toggleClass('d-none', this.isSidePanelVisible);
+        this.$('.o_legacy_calendar_view').toggleClass('d-none', this.isSidePanelVisible);
         this.$('.o_calendar_sidebar_container').toggleClass('d-none', !this.isSidePanelVisible);
         this._renderOtherCalendar();
     },

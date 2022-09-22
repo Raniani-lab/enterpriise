@@ -44,7 +44,6 @@ This module modifies the web addon to provide Enterprise design and responsivene
             ('replace', 'web/static/src/legacy/scss/list_view_extra.scss', 'web_enterprise/static/src/legacy/scss/list_view.scss'),
 
             'web_enterprise/static/src/legacy/scss/dropdown.scss',
-            'web_enterprise/static/src/legacy/scss/base_settings_mobile.scss',
             'web_enterprise/static/src/legacy/scss/control_panel_mobile.scss',
             'web_enterprise/static/src/legacy/scss/kanban_view.scss',
             'web_enterprise/static/src/legacy/scss/touch_device.scss',
@@ -88,7 +87,6 @@ This module modifies the web addon to provide Enterprise design and responsivene
         'web.qunit_mobile_suite_tests': [
             'web_enterprise/static/tests/views/disable_patch.js',
             'web_enterprise/static/tests/mobile/**/*.js',
-            'web_enterprise/static/tests/webclient/settings_form_view_mobile_tests.js',
 
             'web_enterprise/static/tests/legacy/action_manager_mobile_tests.js',
             'web_enterprise/static/tests/legacy/control_panel_mobile_tests.js',

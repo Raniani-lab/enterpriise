@@ -1686,11 +1686,6 @@ msgid "Transaction Currency"
 msgstr ""
 
 #. module: account_accountant
-#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
-msgid "Transaction Date"
-msgstr ""
-
-#. module: account_accountant
 #: code:addons/account_accountant/models/account_move.py:0
 #, python-format
 msgid "Transfer Accounts"

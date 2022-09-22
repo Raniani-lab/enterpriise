@@ -74,7 +74,7 @@
                             domain="[('is_reconciled', '=', False), ('to_check', '=', False)]"/>
                     <filter name="to_check" string="To Check" domain="[('to_check', '=', True)]"/>
                     <separator/>
-                    <filter name="date" string="Transaction Date" date="date"/>
+                    <filter name="date" string="Date" date="date"/>
                     <separator/>
                     <filter name="statement_group" string="Statement" context="{'group_by': 'statement_id'}"/>
                     <filter name="journal_group" string="Journal" context="{'group_by': 'journal_id'}"/>

@@ -15,8 +15,8 @@
                     <div t-att-class="'badge rounded-pill border-0 o_readonly_modifier o_required_modifier o_field_widget fs-6 ' + this.getColorFromState(batch.state)">
                         <t t-out="batch.state"/>
                     </div>
-                    <div class="o_hr_payroll_dashboard_batch text-end" >
-                        <t t-esc="batch.name"/> <br/> <span t-esc="batch.payslip_count" class="text-nowrap"/>
+                    <div class="o_hr_payroll_dashboard_batch text-end mw-75" >
+                        <t t-esc="batch.name" class="mw-100"/> <br/> <span t-esc="batch.payslip_count" class="text-nowrap"/>
                     </div>
                 </a>
             </ul>

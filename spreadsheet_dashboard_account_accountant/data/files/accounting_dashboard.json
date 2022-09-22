@@ -49,70 +49,70 @@
                 },
                 "A19": {
                     "style": 2,
-                    "content": "Cash",
+                    "content": "=_t(\"Cash\")",
                     "border": 1
                 },
                 "A20": {
                     "style": 3,
-                    "content": "Cash received",
+                    "content": "=_t(\"Cash received\")",
                     "border": 2
                 },
                 "A21": {
-                    "content": "Cash spent"
+                    "content": "=_t(\"Cash spent\")"
                 },
                 "A22": {
                     "style": 3,
-                    "content": "Cash surplus"
+                    "content": "=_t(\"Cash surplus\")"
                 },
                 "A23": {
-                    "content": "Closing bank balance"
+                    "content": "=_t(\"Closing bank balance\")"
                 },
                 "A25": {
                     "style": 2,
-                    "content": "Performance",
+                    "content": "=_t(\"Performance\")",
                     "border": 1
                 },
                 "A26": {
                     "style": 3,
-                    "content": "Gross profit margin",
+                    "content": "=_t(\"Gross profit margin\")",
                     "border": 2
                 },
                 "A27": {
-                    "content": "Net profit margin"
+                    "content": "=_t(\"Net profit margin\")"
                 },
                 "A28": {
                     "style": 3,
-                    "content": "Return on investments"
+                    "content": "=_t(\"Return on investments\")"
                 },
                 "A29": {
-                    "content": "Working capital"
+                    "content": "=_t(\"Working capital\")"
                 },
                 "A30": {
                     "style": 3,
-                    "content": "Financial independence"
+                    "content": "=_t(\"Financial independence\")"
                 },
                 "A31": {
-                    "content": "Quick ratio"
+                    "content": "=_t(\"Quick ratio\")"
                 },
                 "A33": {
                     "style": 2,
-                    "content": "Position",
+                    "content": "=_t(\"Position\")",
                     "border": 1
                 },
                 "A34": {
                     "style": 3,
-                    "content": "Average debtors days",
+                    "content": "=_t(\"Average debtors days\")",
                     "border": 2
                 },
                 "A35": {
-                    "content": "Average creditors days"
+                    "content": "=_t(\"Average creditors days\")"
                 },
                 "A36": {
                     "style": 3,
-                    "content": "Short term cash forecast"
+                    "content": "=_t(\"Short term cash forecast\")"
                 },
                 "A37": {
-                    "content": "Current assets to liabilities"
+                    "content": "=_t(\"Current assets to liabilities\")"
                 },
                 "B1": {
                     "style": 4
@@ -497,44 +497,44 @@
                 },
                 "F19": {
                     "style": 2,
-                    "content": "Profitability",
+                    "content": "=_t(\"Profitability\")",
                     "border": 1
                 },
                 "F20": {
                     "style": 3,
-                    "content": "Income",
+                    "content": "=_t(\"Income\")",
                     "border": 2
                 },
                 "F21": {
-                    "content": "Cost of revenue"
+                    "content": "=_t(\"Cost of revenue\")"
                 },
                 "F22": {
                     "style": 3,
-                    "content": "Gross profit"
+                    "content": "=_t(\"Gross profit\")"
                 },
                 "F23": {
-                    "content": "Expenses"
+                    "content": "=_t(\"Expenses\")"
                 },
                 "F24": {
                     "style": 3,
-                    "content": "Net profit"
+                    "content": "=_t(\"Net profit\")"
                 },
                 "F26": {
                     "style": 2,
-                    "content": "Balance sheet",
+                    "content": "=_t(\"Balance sheet\")",
                     "border": 1
                 },
                 "F27": {
                     "style": 3,
-                    "content": "Receivable",
+                    "content": "=_t(\"Receivable\")",
                     "border": 2
                 },
                 "F28": {
-                    "content": "Payables"
+                    "content": "=_t(\"Payables\")"
                 },
                 "F29": {
                     "style": 3,
-                    "content": "Net assets"
+                    "content": "=_t(\"Net assets\")"
                 },
                 "G19": {
                     "style": 4,
@@ -890,119 +890,119 @@
             "cells": {
                 "A1": {
                     "style": 2,
-                    "content": "KPIS"
+                    "content": "=_t(\"KPIS\")"
                 },
                 "A2": {
-                    "content": "Current income"
+                    "content": "=_t(\"Current income\")"
                 },
                 "A3": {
-                    "content": "Previous income"
+                    "content": "=_t(\"Previous income\")"
                 },
                 "A4": {
-                    "content": "Receivables"
+                    "content": "=_t(\"Receivables\")"
                 },
                 "A5": {
-                    "content": "Current expense"
+                    "content": "=_t(\"Current expense\")"
                 },
                 "A6": {
-                    "content": "Previous expense"
+                    "content": "=_t(\"Previous expense\")"
                 },
                 "A7": {
-                    "content": "Payables"
+                    "content": "=_t(\"Payables\")"
                 },
                 "A9": {
                     "style": 5,
-                    "content": "Year"
+                    "content": "=_t(\"Year\")"
                 },
                 "A10": {
                     "style": 2,
-                    "content": "Cash"
+                    "content": "=_t(\"Cash\")"
                 },
                 "A11": {
-                    "content": "Cash received"
+                    "content": "=_t(\"Cash received\")"
                 },
                 "A12": {
-                    "content": "Cash spent"
+                    "content": "=_t(\"Cash spent\")"
                 },
                 "A13": {
-                    "content": "Cash surplus"
+                    "content": "=_t(\"Cash surplus\")"
                 },
                 "A14": {
-                    "content": "Closing bank balance"
+                    "content": "=_t(\"Closing bank balance\")"
                 },
                 "A15": {
                     "style": 2,
-                    "content": "Performance"
+                    "content": "=_t(\"Performance\")"
                 },
                 "A16": {
-                    "content": "Gross profit margin"
+                    "content": "=_t(\"Gross profit margin\")"
                 },
                 "A17": {
-                    "content": "Net profit margin"
+                    "content": "=_t(\"Net profit margin\")"
                 },
                 "A18": {
-                    "content": "Return on investments"
+                    "content": "=_t(\"Return on investments\")"
                 },
                 "A19": {
-                    "content": "Working capital"
+                    "content": "=_t(\"Working capital\")"
                 },
                 "A20": {
-                    "content": "Financial independence"
+                    "content": "=_t(\"Financial independence\")"
                 },
                 "A21": {
-                    "content": "Quick ratio"
+                    "content": "=_t(\"Quick ratio\")"
                 },
                 "A22": {
                     "style": 2,
-                    "content": "Position"
+                    "content": "=_t(\"Position\")"
                 },
                 "A23": {
-                    "content": "Average debtors days"
+                    "content": "=_t(\"Average debtors days\")"
                 },
                 "A24": {
-                    "content": "Average creditors days"
+                    "content": "=_t(\"Average creditors days\")"
                 },
                 "A25": {
-                    "content": "Short term cash forecast"
+                    "content": "=_t(\"Short term cash forecast\")"
                 },
                 "A26": {
-                    "content": "Current assets to liabilities"
+                    "content": "=_t(\"Current assets to liabilities\")"
                 },
                 "A27": {
                     "style": 2,
-                    "content": "Profitability"
+                    "content": "=_t(\"Profitability\")"
                 },
                 "A28": {
-                    "content": "Income"
+                    "content": "=_t(\"Income\")"
                 },
                 "A29": {
-                    "content": "Cost of revenue"
+                    "content": "=_t(\"Cost of revenue\")"
                 },
                 "A30": {
-                    "content": "Gross profit"
+                    "content": "=_t(\"Gross profit\")"
                 },
                 "A31": {
-                    "content": "Expenses"
+                    "content": "=_t(\"Expenses\")"
                 },
                 "A32": {
-                    "content": "Net profit"
+                    "content": "=_t(\"Net profit\")"
                 },
                 "A33": {
                     "style": 2,
-                    "content": "Balance sheet"
+                    "content": "=_t(\"Balance sheet\")"
                 },
                 "A34": {
-                    "content": "Receivable"
+                    "content": "=_t(\"Receivable\")"
                 },
                 "A35": {
-                    "content": "Payables"
+                    "content": "=_t(\"Payables\")"
                 },
                 "A36": {
-                    "content": "Net assets"
+                    "content": "=_t(\"Net assets\")"
                 },
                 "A37": {
                     "style": 2,
-                    "content": "Other variables"
+                    "content": "=_t(\"Other variables\")"
                 },
                 "A38": {
                     "style": 6,
@@ -1122,7 +1122,7 @@
                 },
                 "B9": {
                     "style": 5,
-                    "content": "Code"
+                    "content": "=_t(\"Code\")"
                 },
                 "B10": {
                     "style": 2
@@ -1190,7 +1190,7 @@
                 },
                 "B29": {
                     "style": 6,
-                    "content": "COS"
+                    "content": "COS\")"
                 },
                 "B30": {
                     "style": 6,
@@ -1198,7 +1198,7 @@
                 },
                 "B31": {
                     "style": 6,
-                    "content": "EXP"
+                    "content": "EXP\")"
                 },
                 "B32": {
                     "style": 6,
@@ -1880,7 +1880,7 @@
                 },
                 "F9": {
                     "style": 5,
-                    "content": "Accounts"
+                    "content": "=_t(\"Accounts\")"
                 },
                 "F10": {
                     "style": 2

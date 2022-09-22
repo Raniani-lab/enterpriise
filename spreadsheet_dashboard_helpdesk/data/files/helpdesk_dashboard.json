@@ -60,7 +60,7 @@
                 },
                 "A20": {
                     "style": 2,
-                    "content": "Team",
+                    "content": "=_t(\"Team\")",
                     "border": 2
                 },
                 "A21": {
@@ -110,7 +110,7 @@
                 },
                 "A33": {
                     "style": 2,
-                    "content": "Ticket Type",
+                    "content": "=_t(\"Ticket Type\")",
                     "border": 2
                 },
                 "A34": {
@@ -213,7 +213,7 @@
                 },
                 "C20": {
                     "style": 7,
-                    "content": "Tickets",
+                    "content": "=_t(\"Tickets\")",
                     "border": 2
                 },
                 "C21": {
@@ -257,7 +257,7 @@
                 },
                 "C33": {
                     "style": 7,
-                    "content": "Tickets",
+                    "content": "=_t(\"Tickets\")",
                     "border": 2
                 },
                 "C34": {
@@ -317,7 +317,7 @@
                 },
                 "E20": {
                     "style": 2,
-                    "content": "Agent",
+                    "content": "=_t(\"Agent\")",
                     "border": 2
                 },
                 "E21": {
@@ -367,7 +367,7 @@
                 },
                 "E33": {
                     "style": 2,
-                    "content": "Customer",
+                    "content": "=_t(\"Customer\")",
                     "border": 2
                 },
                 "E34": {
@@ -470,7 +470,7 @@
                 },
                 "G20": {
                     "style": 7,
-                    "content": "Tickets",
+                    "content": "=_t(\"Tickets\")",
                     "border": 2
                 },
                 "G21": {
@@ -524,7 +524,7 @@
                 },
                 "G33": {
                     "style": 7,
-                    "content": "Tickets",
+                    "content": "=_t(\"Tickets\")",
                     "border": 2
                 },
                 "G34": {
@@ -775,31 +775,31 @@
             "cells": {
                 "A1": {
                     "style": 8,
-                    "content": "KPI"
+                    "content": "=_t(\"KPI\")"
                 },
                 "A2": {
                     "style": 6,
-                    "content": "Tickets"
+                    "content": "=_t(\"Tickets\")"
                 },
                 "A3": {
                     "style": 6,
-                    "content": "Hours to assign"
+                    "content": "=_t(\"Hours to assign\")"
                 },
                 "A4": {
                     "style": 6,
-                    "content": "Hours to respond"
+                    "content": "=_t(\"Hours to respond\")"
                 },
                 "A5": {
                     "style": 6,
-                    "content": "Hours to close"
+                    "content": "=_t(\"Hours to close\")"
                 },
                 "A6": {
                     "style": 6,
-                    "content": "Rating"
+                    "content": "=_t(\"Rating\")"
                 },
                 "B1": {
                     "style": 8,
-                    "content": "Current"
+                    "content": "=_t(\"Current\")"
                 },
                 "B2": {
                     "style": 6,
@@ -823,7 +823,7 @@
                 },
                 "C1": {
                     "style": 8,
-                    "content": "Previous"
+                    "content": "=_t(\"Previous\")"
                 },
                 "C2": {
                     "style": 6,
@@ -847,7 +847,7 @@
                 },
                 "D1": {
                     "style": 8,
-                    "content": "Current"
+                    "content": "=_t(\"Current\")"
                 },
                 "D2": {
                     "style": 6,
@@ -871,7 +871,7 @@
                 },
                 "E1": {
                     "style": 8,
-                    "content": "Previous"
+                    "content": "=_t(\"Previous\")"
                 },
                 "E2": {
                     "style": 6,

@@ -63,7 +63,7 @@
                 },
                 "A20": {
                     "style": 3,
-                    "content": "Category",
+                    "content": "=_t(\"Category\")",
                     "border": 2
                 },
                 "A21": {
@@ -113,7 +113,7 @@
                 },
                 "A33": {
                     "style": 3,
-                    "content": "Salesperson",
+                    "content": "=_t(\"Salesperson\")",
                     "border": 2
                 },
                 "A34": {
@@ -162,7 +162,7 @@
                 },
                 "B20": {
                     "style": 7,
-                    "content": "Ordered",
+                    "content": "=_t(\"Ordered\")",
                     "border": 2
                 },
                 "B21": {
@@ -216,7 +216,7 @@
                 },
                 "B33": {
                     "style": 7,
-                    "content": "Ordered",
+                    "content": "=_t(\"Ordered\")",
                     "border": 2
                 },
                 "B34": {
@@ -270,7 +270,7 @@
                 },
                 "C20": {
                     "style": 7,
-                    "content": "Revenue",
+                    "content": "=_t(\"Revenue\")",
                     "border": 2
                 },
                 "C21": {
@@ -324,7 +324,7 @@
                 },
                 "C33": {
                     "style": 7,
-                    "content": "Revenue",
+                    "content": "=_t(\"Revenue\")",
                     "border": 2
                 },
                 "C34": {
@@ -379,7 +379,7 @@
                 },
                 "E20": {
                     "style": 3,
-                    "content": "Product",
+                    "content": "=_t(\"Product\")",
                     "border": 2
                 },
                 "E21": {
@@ -429,7 +429,7 @@
                 },
                 "E33": {
                     "style": 3,
-                    "content": "Customer",
+                    "content": "=_t(\"Customer\")",
                     "border": 2
                 },
                 "E34": {
@@ -478,7 +478,7 @@
                 },
                 "F20": {
                     "style": 7,
-                    "content": "Ordered",
+                    "content": "=_t(\"Ordered\")",
                     "border": 2
                 },
                 "F21": {
@@ -532,7 +532,7 @@
                 },
                 "F33": {
                     "style": 7,
-                    "content": "Ordered",
+                    "content": "=_t(\"Ordered\")",
                     "border": 2
                 },
                 "F34": {
@@ -586,7 +586,7 @@
                 },
                 "G20": {
                     "style": 7,
-                    "content": "Revenue",
+                    "content": "=_t(\"Revenue\")",
                     "border": 2
                 },
                 "G21": {
@@ -640,7 +640,7 @@
                 },
                 "G33": {
                     "style": 7,
-                    "content": "Revenue",
+                    "content": "=_t(\"Revenue\")",
                     "border": 2
                 },
                 "G34": {
@@ -845,29 +845,29 @@
             "cells": {
                 "A1": {
                     "style": 3,
-                    "content": "KPI"
+                    "content": "=_t(\"KPI\")"
                 },
                 "A2": {
-                    "content": "Quotations"
+                    "content": "=_t(\"Quotations\")"
                 },
                 "A3": {
-                    "content": "Orders"
+                    "content": "=_t(\"Orders\")"
                 },
                 "A4": {
-                    "content": "Ordered Qty"
+                    "content": "=_t(\"Ordered Qty\")"
                 },
                 "A5": {
-                    "content": "Picked-up Qty"
+                    "content": "=_t(\"Picked-up Qty\")"
                 },
                 "A6": {
-                    "content": "Returned Qty"
+                    "content": "=_t(\"Returned Qty\")"
                 },
                 "A7": {
-                    "content": "Revenue"
+                    "content": "=_t(\"Revenue\")"
                 },
                 "B1": {
                     "style": 3,
-                    "content": "Current"
+                    "content": "=_t(\"Current\")"
                 },
                 "B2": {
                     "content": "=ODOO.PIVOT(7,\"__count\",\"state\",\"draft\")"
@@ -889,7 +889,7 @@
                 },
                 "C1": {
                     "style": 3,
-                    "content": "Previous"
+                    "content": "=_t(\"Previous\")"
                 },
                 "C2": {
                     "content": "=ODOO.PIVOT(8,\"__count\",\"state\",\"draft\")"
@@ -911,7 +911,7 @@
                 },
                 "D1": {
                     "style": 3,
-                    "content": "Current"
+                    "content": "=_t(\"Current\")"
                 },
                 "D2": {
                     "style": 8,
@@ -939,7 +939,7 @@
                 },
                 "E1": {
                     "style": 3,
-                    "content": "Previous"
+                    "content": "=_t(\"Previous\")"
                 },
                 "E2": {
                     "style": 8,

@@ -575,7 +575,7 @@
                     <field name="amount_residual"
                            string="Open Amount"/>
 
-                    <button name="action_open_business_doc_from_aml"
+                    <button name="action_open_business_doc"
                             type="object"
                             string="View"
                             class="btn btn-sm btn-secondary"/>

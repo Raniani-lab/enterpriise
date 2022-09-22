@@ -6,7 +6,7 @@ import re
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.osv import expression
-from odoo.tools.misc import formatLang, format_date, parse_date, frozendict
+from odoo.tools.misc import formatLang, format_date, parse_date, frozendict, get_lang
 from odoo.tools import html2plaintext
 
 
@@ -148,12 +148,13 @@ class AccountReconciliation(models.AbstractModel):
                 AND move.state = 'posted'
             )
         """.format(inner_where=is_partner and 'AND l.partner_id = p.id' or ' ')
+        lang = self.env.user.lang or get_lang(self.env).code
         query = ("""
             SELECT {select} account_id, account_name, account_code, max_date
             FROM (
                     SELECT {inner_select}
                         a.id AS account_id,
-                        a.name AS account_name,
+                        {account_name} AS account_name,
                         a.code AS account_code,
                         MAX(l.write_date) AS max_date
                     FROM
@@ -187,6 +188,7 @@ class AccountReconciliation(models.AbstractModel):
                 group_by2=is_partner and ', p.last_time_entries_checked' or ' ',
                 order_by=is_partner and 'ORDER BY p.last_time_entries_checked' or 'ORDER BY a.code',
                 outer_where=is_partner and 'WHERE (last_time_entries_checked IS NULL OR max_date > last_time_entries_checked)' or ' ',
+                account_name=f"COALESCE(a.name->>'{lang}', a.name->>'en_US')" if self.pool['account.account'].name.translate else 'a.name'
             ))
         self.env['account.move.line'].flush_model()
         self.env['account.account'].flush_model()

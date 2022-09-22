@@ -439,10 +439,10 @@ class WorksheetTemplate(models.Model):
         t_root.append(qweb_arch)
         return etree.tostring(t_root)
 
-    def _generate_qweb_report_template(self):
+    def _generate_qweb_report_template(self, form_view_id=False):
         for worksheet_template in self:
             report_name = worksheet_template.model_id.model.replace('.', '_')
-            new_arch = self._get_qweb_arch(worksheet_template.model_id, report_name)
+            new_arch = self._get_qweb_arch(worksheet_template.model_id, report_name, form_view_id)
             if worksheet_template.report_view_id:  # update existing one
                 worksheet_template.report_view_id.write({'arch': new_arch})
             else:  # create the new one

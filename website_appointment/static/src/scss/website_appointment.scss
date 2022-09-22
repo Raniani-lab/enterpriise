@@ -20,11 +20,8 @@
                 font-size: 28px;
             }
             .o_wappointment_card_location, .o_wappointment_card_staff_users {
-                .fa {
-                    width: 2.75rem;
-                }
                 .fa::before {
-                    width: 1.5rem;
+                    width: 2rem;
                     display: block;
                 }
             }
@@ -38,7 +35,7 @@
                         object-fit: cover;
                         border: 2px solid #FFFFFF;
                         &:first-child {
-                            margin-left: 0.25rem;
+                            margin-left: 0px;
                         }
                         &:only-child {
                             margin-right: 0.5rem;
@@ -58,12 +55,12 @@
 }
 
 .o_wappointment_navbar {
-    height: 65px;
+    min-height: 65px;
     .navbar-brand {
         color: inherit;
-        &:hover  {
-            color: map-get($theme-colors, 'primary') !important;
-        }
+    }
+    .o_wappointment_navbar_link:hover {
+        color: map-get($theme-colors, 'primary') !important;
     }
 }
 

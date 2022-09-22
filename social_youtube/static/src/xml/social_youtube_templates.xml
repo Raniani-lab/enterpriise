@@ -1,32 +1,52 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="social_youtube.YoutubeUploadField">
-        <div t-if="widget.mode !== 'readonly'" class="o_field_binary_file o_social_youtube_field" aria-atomic="true">
-            <input type="text" class="o_input o_social_youtube_upload_filename"
-                readonly="readonly"
-                t-att-name="widget.name"
-                t-att-tabindex="widget.attrs.tabindex"
-                t-att-autofocus="widget.attrs.autofocus"/>
-
-            <div class="o_social_youtube_upload_bar d-none w-100 position-relative">
-                <div class="position-absolute fw-bold w-100 h-100 text-center">
-                    <span class="fa fa-spin fa-spinner me-1"></span>
-                    <span class="o_social_youtube_upload_text">Uploading... 0%</span>
+    <t t-name="social_youtube.YoutubeUploadField" owl="1">
+        <t t-if="props.readonly">
+            <div class="o_social_youtube_field">
+                <span type="text" class="o_social_youtube_upload_filename"
+                    t-att-class="{'d-none': !this.props.value}"
+                    t-out="this.props.value"/>
+            </div>
+        </t>
+        <t t-else="">
+            <div class="o_field_widget o_field_binary_file o_social_youtube_field o_social_youtube_field" aria-atomic="true">
+                <input type="text" class="o_input o_social_youtube_upload_filename"
+                    t-att-class="{'d-none': !this.props.value}"
+                    readonly="readonly"
+                    t-att-name="this.props.name"
+                    t-att-value="this.props.value"/>
+                <div class="o_social_youtube_upload_bar w-100 position-relative"
+                    t-att-class="{'d-none': !this.state.uploading}">
+                    <div class="position-absolute fw-bold w-100 h-100 text-center">
+                        <span class="fa fa-spin fa-spinner me-1"></span>
+                        <span class="o_social_youtube_upload_text" t-out="this.state.socialYoutubeText"/>
+                    </div>
+                    <div class="o_social_youtube_upload_progress h-100"
+                        t-attf-style="width: {{this.state.uploadProgress}}%;"/>
                 </div>
-                <div class="o_social_youtube_upload_progress h-100"/>
-            </div>
-            <button type="button" class="btn btn-primary o_select_file_button" title="Select">Upload Video</button>
-            <button type="button" class="btn btn-secondary fa fa-trash-o o_clear_file_button" title="Clear" aria-label="Clear"/>
+                <button type="button"
+                    class="btn btn-primary o_select_file_button"
+                    t-att-class="{'d-none': this.state.uploading || this.props.value}"
+                    t-on-click="() => {this.fileInputRef.el.click()}"
+                    title="Select">Upload Video</button>
+                <button type="button"
+                    class="btn btn-secondary fa fa-trash-o o_clear_file_button"
+                    t-att-class="{'d-none': !this.props.value}"
+                    title="Clear"
+                    aria-label="Clear"
+                    t-on-click="this._onClearClick"/>
 
-            <div class="o_hidden_input_file" aria-atomic="true">
-                <form class="o_form_binary_form o_social_youtube_upload_form" method="post" enctype="multipart/form-data">
-                    <input type="file" class="o_input_file" name="file" accept="video/*"/>
-                </form>
+                <div class="o_hidden_input_file" aria-atomic="true" >
+                    <form method="post"
+                        enctype="multipart/form-data"
+                        class="o_form_binary_form o_social_youtube_upload_form">
+                        <input type="file" class="o_input_file" name="file" accept="video/*"
+                            t-ref="fileInput"
+                            t-on-change="this._onFileChanged"/>
+                    </form>
+                </div>
             </div>
-        </div>
-        <div t-else="" class="o_social_youtube_field">
-            <span type="text" class="o_social_youtube_upload_filename"/>
-        </div>
+        </t>
     </t>
 
     <t t-name="social.StreamPostCommentsOriginalPost" t-extend="social.StreamPostCommentsOriginalPost">

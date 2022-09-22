@@ -10,8 +10,7 @@ from odoo.exceptions import ValidationError
 from odoo.addons.website.tools import MockRequest
 from odoo.tests import tagged
 
-@tagged('post_install', '-at_install')
-class TestSignController(SignRequestCommon, HttpCase):
+class TestSignControllerCommon(SignRequestCommon, HttpCase):
     def setUp(self):
         super().setUp()
         self.SignController = Sign()
@@ -29,6 +28,9 @@ class TestSignController(SignRequestCommon, HttpCase):
         }
         return self.url_open(url, data=json.dumps(data).encode(), headers=headers)
 
+
+@tagged('post_install', '-at_install')
+class TestSignController(TestSignControllerCommon):
     # test float auto_field display
     def test_sign_controller_float(self):
         sign_request = self.create_sign_request_no_item(signer=self.partner_1, cc_partners=self.partner_4)
@@ -73,7 +75,7 @@ class TestSignController(SignRequestCommon, HttpCase):
         sign_vals = self.create_sign_values(sign_request.template_id.sign_item_ids, sign_request_item.role_id.id)
         with patch('odoo.addons.iap.models.iap_account.IapAccount.get_credits', lambda self, x: 10):
             response = self._json_url_open(
-                '/sign/sign/%d/%s' % (sign_request_item.id, sign_request_item.access_token),
+                '/sign/sign/%d/%s' % (sign_request.id, sign_request_item.access_token),
                 data={'signature': sign_vals}
             ).json()['result']
 
@@ -89,9 +91,9 @@ class TestSignController(SignRequestCommon, HttpCase):
         self.assertEqual(sign_request_item.role_id.auth_method, 'sms')
 
         sign_vals = self.create_sign_values(sign_request.template_id.sign_item_ids, sign_request_item.role_id.id)
-        with patch('odoo.addons.sms.models.sms_api.SmsApi', lambda x: 0):
+        with patch('odoo.addons.iap.models.iap_account.IapAccount.get_credits', lambda self, x: 0):
             response = self._json_url_open(
-                '/sign/sign/%d/%s' % (sign_request_item.id, sign_request_item.access_token),
+                '/sign/sign/%d/%s' % (sign_request.id, sign_request_item.access_token),
                 data={'signature': sign_vals}
             ).json()['result']
 

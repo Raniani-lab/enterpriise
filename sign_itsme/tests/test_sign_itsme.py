@@ -10,10 +10,10 @@ from odoo import Command
 from odoo.tests import tagged
 from odoo.exceptions import ValidationError
 
-from odoo.addons.sign.tests.test_sign_controllers import TestSignController
+from odoo.addons.sign.tests.test_sign_controllers import TestSignControllerCommon
 
 @tagged('post_install', '-at_install')
-class SignItsmeCommon(TestSignController):
+class SignItsmeCommon(TestSignControllerCommon):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
@@ -161,7 +161,7 @@ class SignItsmeCommon(TestSignController):
         with patch('odoo.addons.sign_itsme.controllers.main.jsonrpc', lambda url, params: {'success': True, 'url': url}):
             with patch('odoo.addons.iap.models.iap_account.IapAccount.get_credits', lambda self, x: 10):
                 response = self._json_url_open(
-                    '/sign/sign/%d/%s' % (sign_request_item.id, sign_request_item.access_token),
+                    '/sign/sign/%d/%s' % (sign_request.id, sign_request_item.access_token),
                     data={'signature': sign_vals},
                     headers={"Referer": 'abc'}
                 ).json()['result']
@@ -180,7 +180,7 @@ class SignItsmeCommon(TestSignController):
         sign_vals = self.create_sign_values(sign_request.template_id.sign_item_ids, sign_request_item.role_id.id)
         with patch('odoo.addons.iap.models.iap_account.IapAccount.get_credits', lambda self, service: 0):
             response = self._json_url_open(
-                '/sign/sign/%d/%s' % (sign_request_item.id, sign_request_item.access_token),
+                '/sign/sign/%d/%s' % (sign_request.id, sign_request_item.access_token),
                 data={'signature': sign_vals},
                 headers={"Referer": 'abc'}
             ).json()['result']

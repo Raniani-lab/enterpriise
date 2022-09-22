@@ -34,11 +34,11 @@
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['not_enough_credit'])]}">
                     You don't have enough credit to extract data from your invoice.
-                    <button type="object" name="buy_credits" class="btn btn-link" data-hotkey="v">
+                    <button type="object" name="buy_credits" class="btn btn-link">
                         <i class="fa fa-fw o_button_icon fa-arrow-right"/>
                         Buy credits
                     </button>
-                    <button type="object" name="action_manual_send_for_digitization" class="btn btn-link" data-hotkey="v">
+                    <button type="object" name="action_manual_send_for_digitization" class="btn btn-link">
                         <i class="fa fa-fw o_button_icon fa-arrow-right"/>
                         Resend For Digitization
                     </button>
@@ -61,7 +61,7 @@
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['extract_not_ready'])]}">
                     The data extraction is not finished yet. The extraction usually takes between 5 and 10 seconds.
-                    <button type="object" name="check_status" class="btn btn-link" data-hotkey="v">
+                    <button type="object" name="check_status" class="btn btn-link">
                         <i class="fa fa-fw o_button_icon fa-arrow-right"/>
                         Refresh
                     </button>
@@ -73,7 +73,7 @@
                             ('extract_state', 'not in', ['error_status']),
                             ('extract_status_code', '&gt;', 99)]}">
                     <field name="extract_error_message" class="oe_inline" style="width:auto !important;"/>
-                    <button type="object" name="action_manual_send_for_digitization" class="btn btn-link" data-hotkey="v">
+                    <button type="object" name="action_manual_send_for_digitization" class="btn btn-link">
                         <i class="fa fa-fw o_button_icon fa-arrow-right"/>
                         Resend For Digitization
                     </button>

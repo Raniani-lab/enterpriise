@@ -16,8 +16,28 @@ class PaymentTransaction(models.Model):
         for tx in self:
             tx.renewal_allowed = tx.state in ('done', 'authorized')
 
-    def _reconcile_after_done(self):
-        res = super()._reconcile_after_done()
+    def _get_invoiced_subscription_transaction(self):
+        # create the invoices for the transactions that are not yet linked to invoice
+        # `_do_payment` do link an invoice to the payment transaction
+        # calling `super()._invoice_sale_orders()` would create a second invoice for the next period
+        # instead of the current period and would reconcile the payment with the new invoice
+        def _filter_invoiced_subscription(self):
+            self.ensure_one()
+            # we look for tx with one invoice
+            if len(self.invoice_ids) != 1:
+                return False
+            return any(self.invoice_ids.mapped('invoice_line_ids.sale_line_ids.order_id.is_subscription'))
+
+        return self.filtered(_filter_invoiced_subscription)
+
+    def _invoice_sale_orders(self):
+        """ Override of payment to increase next_invoice_date when needed. """
+        transaction_to_invoice = self - self._get_invoiced_subscription_transaction()
+        # Update the next_invoice_date of SOL when the payment_mode is 'success_payment'
+        # We have to do it here because when a client confirms and pay a SO from the portal with success_payment
+        # The next_invoice_date won't be update by the reconcile_pending_transaction callback (do_payment is not called)
+        # Create invoice
+        res = super(PaymentTransaction, transaction_to_invoice)._invoice_sale_orders()
         if str2bool(self.env['ir.config_parameter'].sudo().get_param('sale.automatic_invoice')):
             today = fields.Date.today()
             order_to_update_ids = self.env['sale.order']
@@ -25,6 +45,7 @@ class PaymentTransaction(models.Model):
                 if order.recurrence_id and order.payment_token_id and order.start_date <= order.next_invoice_date <= today:
                     order_to_update_ids |= order
             order_to_update_ids._update_next_invoice_date()
+            order_to_update_ids.order_line._reset_subscription_qty_to_invoice()
         return res
 
 

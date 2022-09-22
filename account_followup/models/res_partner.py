@@ -119,8 +119,8 @@ class ResPartner(models.Model):
         today = fields.Date.context_today(self)
         for partner in self:
             max_followup = partner._included_unreconciled_aml_max_followup()
-            max_aml_delay = max_followup.get('max_delay')
-            next_followup_delay = max_followup.get('next_followup_delay')
+            max_aml_delay = max_followup.get('max_delay') or 0
+            next_followup_delay = max_followup.get('next_followup_delay') or 0
             has_overdue_invoices = max_followup.get('has_overdue_invoices')
             most_delayed_aml = max_followup.get('most_delayed_aml')
             highest_followup_line = max_followup.get('highest_followup_line')
@@ -130,7 +130,7 @@ class ResPartner(models.Model):
             if has_overdue_invoices and most_delayed_aml:
                 new_status = 'with_overdue_invoices'
             next_followup_date_exceeded = today >= partner.followup_next_action_date if partner.followup_next_action_date else True
-            if max_aml_delay >= (next_followup_delay or 0) and next_followup_date_exceeded:
+            if max_aml_delay >= next_followup_delay and next_followup_date_exceeded:
                 new_status = 'in_need_of_action'
             partner.followup_status = new_status
 
@@ -431,7 +431,7 @@ class ResPartner(models.Model):
                    AND line.balance > 0
                    AND line.blocked IS FALSE
                    AND line.company_id = %(company_id)s
-                   AND COALESCE(ful.delay, -999) < partner.followup_delay
+                   AND COALESCE(ful.delay, -999) <= partner.followup_delay
                    AND COALESCE(line.date_maturity, line.date) + COALESCE(ful.delay, -999) <= %(current_date)s
                  LIMIT 1
             ) in_need_of_action_aml ON true
@@ -446,7 +446,6 @@ class ResPartner(models.Model):
                    AND move.state = 'posted'
                    AND line.reconciled IS NOT TRUE
                    AND line.balance > 0
-                   AND line.blocked IS FALSE
                    AND line.company_id = %(company_id)s
                    AND COALESCE(line.date_maturity, line.date) <= %(current_date)s
                  LIMIT 1

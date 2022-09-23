@@ -14,9 +14,6 @@ import {
     triggerEvent,
 } from "@web/../tests/helpers/utils";
 import {
-    applyGroup,
-    selectGroup,
-    toggleAddCustomGroup,
     toggleFavoriteMenu,
     toggleFilterMenu,
     toggleGroupByMenu,
@@ -119,8 +116,7 @@ QUnit.module(
                         [3, "graph"],
                         [4, "calendar"],
                         [5, "pivot"],
-                        [6, "dashboard"],
-                        [7, "map"],
+                        [6, "map"],
                     ],
                 },
             };
@@ -137,11 +133,7 @@ QUnit.module(
                         <field name="bar" type="row"/>
                         <field name="probability" type="measure"/>
                     </pivot>`,
-                "partner,6,dashboard": /*xml*/ `
-                    <dashboard>
-                        <view type="graph" ref="view_graph_xml_id"/>
-                    </dashboard>`,
-                "partner,7,map": `<map></map>`,
+                "partner,6,map": `<map></map>`,
                 "partner,false,search": /*xml*/ `
                     <search>
                         <field name="foo"/>
@@ -313,53 +305,6 @@ QUnit.module(
                 "It should display the two measures"
             );
         });
-
-        QUnit.test("simple dashboard view", async function (assert) {
-            serviceRegistry.add("user", makeFakeUserService());
-            const webClient = await openView("dashboard");
-            await insertInSpreadsheetAndClickLink(target);
-            assert.strictEqual(getCurrentViewType(webClient), "dashboard");
-        });
-
-        QUnit.test(
-            "dashboard view with custom chart type, group by and measure",
-            async function (assert) {
-                serviceRegistry.add("user", makeFakeUserService());
-
-                const webClient = await openView("dashboard");
-                await click(target, ".fa-pie-chart");
-
-                // custom group by
-                await toggleGroupByMenu(target);
-                const { afterNextRender } = owl.App;
-                await afterNextRender(async () => await toggleAddCustomGroup(target));
-                await selectGroup(target, "bar");
-                await applyGroup(target);
-
-                // count measure
-                await toggleMenu(target, "Measures");
-                await toggleMenuItem(target, "Count");
-
-                await insertInSpreadsheetAndClickLink(target);
-                const action = getCurrentAction(webClient);
-                assert.containsOnce(target, ".fa-pie-chart.active");
-                assert.deepEqual(
-                    action.context.graph.graph_mode,
-                    "pie",
-                    "It should be a pie chart"
-                );
-                assert.deepEqual(
-                    action.context.graph.graph_groupbys,
-                    ["bar"],
-                    "It should be grouped by bar"
-                );
-                assert.deepEqual(
-                    action.context.graph.graph_measure,
-                    "__count",
-                    "It should have the same measure"
-                );
-            }
-        );
 
         QUnit.test("map view", async function (assert) {
             const webClient = await openView("map");

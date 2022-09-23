@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.3+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-19 14:02+0000\n"
-"PO-Revision-Date: 2022-04-19 14:02+0000\n"
+"POT-Creation-Date: 2022-09-23 08:24+0000\n"
+"PO-Revision-Date: 2022-09-23 08:24+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -61,16 +61,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_loyalty_taxcloud.field_account_move_line__price_taxcloud
 #: model:ir.model.fields,field_description:sale_loyalty_taxcloud.field_sale_order_line__price_taxcloud
 msgid "Taxcloud Price"
-msgstr ""
-
-#. module: sale_loyalty_taxcloud
-#: model:ir.model.fields,help:sale_loyalty_taxcloud.field_account_move_line__price_taxcloud
-msgid "Technical field to hold prices for TaxCloud."
-msgstr ""
-
-#. module: sale_loyalty_taxcloud
-#: model:ir.model.fields,help:sale_loyalty_taxcloud.field_sale_order_line__price_taxcloud
-msgid "Technical fields to hold prices for TaxCloud."
 msgstr ""
 
 #. module: sale_loyalty_taxcloud

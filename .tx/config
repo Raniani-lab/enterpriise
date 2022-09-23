@@ -117,11 +117,6 @@ file_filter = account_online_synchronization/i18n/<lang>.po
 source_file = account_online_synchronization/i18n/account_online_synchronization.pot
 source_lang = en
 
-[odoo-16.account_predictive_bills]
-file_filter = account_predictive_bills/i18n/<lang>.po
-source_file = account_predictive_bills/i18n/account_predictive_bills.pot
-source_lang = en
-
 [odoo-16.account_reports]
 file_filter = account_reports/i18n/<lang>.po
 source_file = account_reports/i18n/account_reports.pot
@@ -170,11 +165,6 @@ source_lang = en
 [odoo-16.appointment_crm]
 file_filter = appointment_crm/i18n/<lang>.po
 source_file = appointment_crm/i18n/appointment_crm.pot
-source_lang = en
-
-[odoo-16.appointment_hr]
-file_filter = appointment_hr/i18n/<lang>.po
-source_file = appointment_hr/i18n/appointment_hr.pot
 source_lang = en
 
 [odoo-16.approvals]
@@ -297,6 +287,11 @@ file_filter = documents_project/i18n/<lang>.po
 source_file = documents_project/i18n/documents_project.pot
 source_lang = en
 
+[odoo-16.documents_project_sale]
+file_filter = documents_project_sale/i18n/<lang>.po
+source_file = documents_project_sale/i18n/documents_project_sale.pot
+source_lang = en
+
 [odoo-16.documents_sign]
 file_filter = documents_sign/i18n/<lang>.po
 source_file = documents_sign/i18n/documents_sign.pot
@@ -345,11 +340,6 @@ source_lang = en
 [odoo-16.helpdesk_fsm]
 file_filter = helpdesk_fsm/i18n/<lang>.po
 source_file = helpdesk_fsm/i18n/helpdesk_fsm.pot
-source_lang = en
-
-[odoo-16.helpdesk_fsm_report]
-file_filter = helpdesk_fsm_report/i18n/<lang>.po
-source_file = helpdesk_fsm_report/i18n/helpdesk_fsm_report.pot
 source_lang = en
 
 [odoo-16.helpdesk_mail_plugin]
@@ -677,11 +667,6 @@ file_filter = product_unspsc/i18n/<lang>.po
 source_file = product_unspsc/i18n/product_unspsc.pot
 source_lang = en
 
-[odoo-16.project_account_asset]
-file_filter = project_account_asset/i18n/<lang>.po
-source_file = project_account_asset/i18n/project_account_asset.pot
-source_lang = en
-
 [odoo-16.project_account_budget]
 file_filter = project_account_budget/i18n/<lang>.po
 source_file = project_account_budget/i18n/project_account_budget.pot
@@ -705,11 +690,6 @@ source_lang = en
 [odoo-16.project_holidays]
 file_filter = project_holidays/i18n/<lang>.po
 source_file = project_holidays/i18n/project_holidays.pot
-source_lang = en
-
-[odoo-16.project_hr_payroll_account]
-file_filter = project_hr_payroll_account/i18n/<lang>.po
-source_file = project_hr_payroll_account/i18n/project_hr_payroll_account.pot
 source_lang = en
 
 [odoo-16.project_sale_subscription]
@@ -745,11 +725,6 @@ source_lang = en
 [odoo-16.quality_control]
 file_filter = quality_control/i18n/<lang>.po
 source_file = quality_control/i18n/quality_control.pot
-source_lang = en
-
-[odoo-16.quality_control_iot]
-file_filter = quality_control_iot/i18n/<lang>.po
-source_file = quality_control_iot/i18n/quality_control_iot.pot
 source_lang = en
 
 [odoo-16.quality_control_picking_batch]
@@ -807,11 +782,6 @@ file_filter = sale_enterprise/i18n/<lang>.po
 source_file = sale_enterprise/i18n/sale_enterprise.pot
 source_lang = en
 
-[odoo-16.sale_intrastat]
-file_filter = sale_intrastat/i18n/<lang>.po
-source_file = sale_intrastat/i18n/sale_intrastat.pot
-source_lang = en
-
 [odoo-16.sale_loyalty_taxcloud]
 file_filter = sale_loyalty_taxcloud/i18n/<lang>.po
 source_file = sale_loyalty_taxcloud/i18n/sale_loyalty_taxcloud.pot
@@ -820,11 +790,6 @@ source_lang = en
 [odoo-16.sale_planning]
 file_filter = sale_planning/i18n/<lang>.po
 source_file = sale_planning/i18n/sale_planning.pot
-source_lang = en
-
-[odoo-16.sale_project_forecast]
-file_filter = sale_project_forecast/i18n/<lang>.po
-source_file = sale_project_forecast/i18n/sale_project_forecast.pot
 source_lang = en
 
 [odoo-16.sale_purchase_inter_company_rules]
@@ -975,6 +940,11 @@ source_lang = en
 [odoo-16.stock_barcode_picking_batch]
 file_filter = stock_barcode_picking_batch/i18n/<lang>.po
 source_file = stock_barcode_picking_batch/i18n/stock_barcode_picking_batch.pot
+source_lang = en
+
+[odoo-16.stock_barcode_product_expiry]
+file_filter = stock_barcode_product_expiry/i18n/<lang>.po
+source_file = stock_barcode_product_expiry/i18n/stock_barcode_product_expiry.pot
 source_lang = en
 
 [odoo-16.stock_enterprise]

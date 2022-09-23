@@ -4,16 +4,26 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
-"PO-Revision-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"PO-Revision-Date: 2022-09-23 08:22+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
+
+#. module: knowledge
+#: code:addons/knowledge/models/knowledge_article.py:0
+#, python-format
+msgid ""
+"\n"
+"            Deleted articles are stored in Trash an extra\n"
+"            <b>%(threshold)s</b> days\n"
+"            before being permanently removed for your database"
+msgstr ""
 
 #. module: knowledge
 #. openerp-web
@@ -64,7 +74,7 @@ msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "<i class=\"fa fa-fw fa-archive\"/> Send to Trash"
+msgid "<i class=\"fa fa-fw fa-archive\"/> Delete"
 msgstr ""
 
 #. module: knowledge
@@ -153,7 +163,11 @@ msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "<i class=\"fa fa-trash pe-2\" title=\"Trash\"/>"
+msgid ""
+"<i class=\"fa fa-trash\"/>\n"
+"                                            <span class=\"ps-2 flex-grow-1 text-truncate\">\n"
+"                                                Open the Trash\n"
+"                                            </span>"
 msgstr ""
 
 #. module: knowledge
@@ -237,7 +251,7 @@ msgid ""
 "                <font class=\"text-o-color-2\">shortcuts</font>\n"
 "            </span>\n"
 "            you create for yourself.\n"
-"            Unstar ⭐ this page at the top to remove it from your favorites.\n"
+"            Unstar this page at the top to remove it from your favorites.\n"
 "        </span>"
 msgstr ""
 
@@ -423,9 +437,21 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid ""
 "<span style=\"font-size: 14px;\">\n"
+"        See the\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">Menu</font>\n"
+"        </span>\n"
+"        there, on the left?\n"
+"    </span>"
+msgstr ""
+
+#. module: knowledge
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
+msgid ""
+"<span style=\"font-size: 14px;\">\n"
 "        This is where you and your team can centralize your\n"
 "        <font class=\"text-o-color-2\" style=\"font-weight: bolder;\">Knowledge</font>\n"
-"        and best practices! 🚀\n"
+"        and best practices!\n"
 "    </span>"
 msgstr ""
 
@@ -460,7 +486,7 @@ msgid ""
 "<span style=\"font-size: 14px;\">\n"
 "        Want to go\n"
 "        <span style=\"font-style: italic;\">even</span>\n"
-"        faster? ⚡️\n"
+"        faster?\n"
 "    </span>\n"
 "    <br/>\n"
 "    <span style=\"font-size: 14px;\">\n"
@@ -474,18 +500,6 @@ msgid ""
 "        </span>\n"
 "        (Ctrl + k/⌘ + k) then search through articles by starting your query with\n"
 "        \"<span style=\"font-weight: bolder;\">?</span>\".\n"
-"    </span>"
-msgstr ""
-
-#. module: knowledge
-#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
-msgid ""
-"<span style=\"font-size: 14px;\">\n"
-"        👈 See the\n"
-"        <span style=\"font-weight: bolder;\">\n"
-"            <font class=\"text-o-color-2\">Menu</font>\n"
-"        </span>\n"
-"        there, on the left?\n"
 "    </span>"
 msgstr ""
 
@@ -516,28 +530,28 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid ""
 "<span style=\"font-size: 14px;\">From this box, files can be previewed, "
-"forwarded and downloaded. 📁</span>"
+"forwarded and downloaded.</span>"
 msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid ""
 "<span style=\"font-size: 14px;\">From your document, find this article by "
-"clicking on the 📗 icon in the chatter.</span>"
+"clicking on the book icon in the chatter.</span>"
 msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid ""
-"<span style=\"font-size: 14px;\">Got it? Now let's try advanced features "
-"🧠</span>"
+"<span style=\"font-size: 14px;\">Got it? Now let's try advanced "
+"features</span>"
 msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid ""
 "<span style=\"font-size: 14px;\">Need this document somewhere? Come back "
-"here by clicking on the 📗 icon in the chatter.</span>"
+"here by clicking on the book icon in the chatter.</span>"
 msgstr ""
 
 #. module: knowledge
@@ -555,19 +569,14 @@ msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
-msgid "<span style=\"font-size: 14px;\">Try the following 👇</span>"
+msgid "<span style=\"font-size: 14px;\">Try the following</span>"
 msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid ""
 "<span style=\"font-size: 14px;\">You can use the template as a description, "
-"a message or simply copy it to your clipboard! 👌</span>"
-msgstr ""
-
-#. module: knowledge
-#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
-msgid "<span style=\"font-size: 48px;\">🚀</span>"
+"a message or simply copy it to your clipboard!</span>"
 msgstr ""
 
 #. module: knowledge
@@ -1257,11 +1266,11 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid ""
-"Hello there, I am a template 👋\n"
+"Hello there, I am a template\n"
 "            <br/>\n"
 "            Use the buttons at the top-right of this box to re-use my content.\n"
 "            <br/>\n"
-"            No more time wasted! 🔥"
+"            No more time wasted!"
 msgstr ""
 
 #. module: knowledge
@@ -1559,7 +1568,7 @@ msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
-msgid "Navigation Basics 🐣"
+msgid "Navigation Basics"
 msgstr ""
 
 #. module: knowledge
@@ -1604,6 +1613,12 @@ msgid "No Article found. Create \"%s\""
 msgstr ""
 
 #. module: knowledge
+#: code:addons/knowledge/models/knowledge_article.py:0
+#, python-format
+msgid "No Article in Trash"
+msgstr ""
+
+#. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_favorite_action
 msgid "No Favorites yet!"
 msgstr ""
@@ -1638,11 +1653,6 @@ msgstr ""
 #: code:addons/knowledge/static/src/xml/knowledge_editor.xml:0
 #, python-format
 msgid "No heading found in this document."
-msgstr ""
-
-#. module: knowledge
-#: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_action_trashed
-msgid "No trashed articles yet!"
 msgstr ""
 
 #. module: knowledge
@@ -1749,7 +1759,6 @@ msgid "Remove Member"
 msgstr ""
 
 #. module: knowledge
-#: model:ir.actions.server,name:knowledge.ir_action_server_action_remove_from_trash
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "Remove from Trash"
 msgstr ""
@@ -1972,8 +1981,7 @@ msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid ""
-"This article has been sent to trash. It will be definitively deleted on"
+msgid "This Article is in Trash and will be deleted on the"
 msgstr ""
 
 #. module: knowledge
@@ -2000,7 +2008,6 @@ msgstr ""
 
 #. module: knowledge
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_action_trashed
-#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "Trash"
 msgstr ""
 
@@ -2152,7 +2159,7 @@ msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
-msgid "Who has access to what? 🕵️"
+msgid "Who has access to what?"
 msgstr ""
 
 #. module: knowledge

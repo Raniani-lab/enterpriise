@@ -150,6 +150,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('BILL/2016/10/0001',   '02/01/2017',   100.0,         '',         '',         '',         '',         '',          ''),
                 ('Total partner_a',               '',   100.0,      100.0,      100.0,       600.0,     300.0,      100.0,      1300.0),
                 ('partner_b',                     '',    50.0,      50.0,        50.0,       300.0,     150.0,       50.0,       650.0),
+                ('Total Aged Payable',            '',   150.0,      150.0,      150.0,      900.0,      450.0,      150.0,      1950.0),
             ],
         )
 
@@ -173,6 +174,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('BILL/2016/10/0001',   '02/01/2017',   100.0,         '',         '',         '',         '',         '',          ''),
                 ('Total partner_a',               '',   100.0,      100.0,      100.0,      600.0,      300.0,      100.0,      1300.0),
                 ('partner_b',                     '',    50.0,       50.0,       50.0,      300.0,      150.0,       50.0,       650.0),
+                ('Total Aged Payable',            '',   150.0,      150.0,      150.0,      900.0,      450.0,      150.0,      1950.0),
             ],
         )
 
@@ -196,6 +198,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('BILL/2016/10/0001',   '11/03/2016',       '',         '',         '',       100.0,         '',         '',          ''),
                 ('BILL/2016/11/0001',   '11/03/2016',       '',         '',         '',       500.0,         '',         '',          ''),
                 ('Total partner_a',               '',    100.0,      100.0,      100.0,       600.0,      300.0,      100.0,      1300.0),
+                ('Total Aged Payable',            '',    150.0,      150.0,      150.0,       900.0,      450.0,      150.0,      1950.0),
             ],
         )
 
@@ -212,6 +215,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
         misc_move.action_post()
 
         options = self._generate_options(self.report, fields.Date.from_string('2017-03-01'), fields.Date.from_string('2017-04-01'))
+        self.env.company.totals_below_sections = False
 
         self.assertLinesValues(
             # pylint: disable=C0326
@@ -230,6 +234,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
         """ Test the filter on top allowing to filter on res.partner. """
         options = self._generate_options(self.report, fields.Date.from_string('2017-02-01'), fields.Date.from_string('2017-02-01'))
         options['partner_ids'] = self.partner_a.ids
+        self.env.company.totals_below_sections = False
 
         self.assertLinesValues(
             # pylint: disable=C0326
@@ -246,6 +251,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
         """ Test the filter on top allowing to filter on res.partner.category. """
         options = self._generate_options(self.report, fields.Date.from_string('2017-02-01'), fields.Date.from_string('2017-02-01'))
         options['partner_categories'] = self.partner_category_a.ids
+        self.env.company.totals_below_sections = False
 
         self.assertLinesValues(
             # pylint: disable=C0326
@@ -262,6 +268,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
     def test_aged_payable_reconciliation_date(self):
         """ Check the values at a date before some reconciliations are done. """
         options = self._generate_options(self.report, fields.Date.from_string('2016-10-31'), fields.Date.from_string('2016-10-31'))
+        self.env.company.totals_below_sections = False
 
         self.assertLinesValues(
             # pylint: disable=C0326
@@ -311,6 +318,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('BILL/2016/10/0001',   '01/02/2017',      '',       50.0,         '',          '',        '',         '',          ''),
                 ('BILL/2016/10/0001',   '02/01/2017',    50.0,         '',         '',          '',        '',         '',          ''),
                 ('Total partner_b',               '',    50.0,       50.0,       50.0,       300.0,     150.0,       50.0,       650.0),
+                ('Total Aged Payable',            '',   150.0,      150.0,      150.0,      900.0,      450.0,      150.0,      1950.0),
             ],
         )
 
@@ -342,6 +350,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('BILL/2016/10/0001',   '10/04/2016',      '',         '',         '',          '',      50.0,         '',          ''),
                 ('BILL/2016/10/0001',   '01/01/2016',      '',         '',         '',          '',        '',       50.0,          ''),
                 ('Total partner_b',               '',    50.0,       50.0,       50.0,       300.0,     150.0,       50.0,       650.0),
+                ('Total Aged Payable',            '',   150.0,      150.0,      150.0,      900.0,      450.0,      150.0,      1950.0),
             ],
         )
 
@@ -381,6 +390,7 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('BILL/2016/10/0001',   '01/01/2016',      '',         '',         '',         '',         '',      100.0,          ''),
                 ('BILL/2016/10/0001',   '02/01/2017',   100.0,         '',         '',         '',         '',         '',          ''),
                 ('Total partner_a',               '',   100.0,      100.0,      100.0,       600.0,     300.0,      100.0,      1300.0),
+                ('Total Aged Payable',            '',   150.0,      150.0,      150.0,      900.0,      450.0,      150.0,      1950.0),
             ],
         )
 
@@ -412,5 +422,6 @@ class TestAgedPayableReport(TestAccountReportsCommon):
                 ('BILL/2016/10/0001',    '10/04/2016',      '',         '',         '',         '',       50.0,         '',          ''),
                 ('BILL/2016/10/0001',    '01/01/2016',      '',         '',         '',         '',         '',       50.0,          ''),
                 ('Total partner_b',                '',    50.0,       50.0,       50.0,      300.0,      150.0,       50.0,       650.0),
+                ('Total Aged Payable',             '',   150.0,      150.0,      150.0,      900.0,      450.0,      150.0,      1950.0),
             ],
         )

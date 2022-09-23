@@ -1747,18 +1747,19 @@ class AccountReport(models.Model):
 
             # Gather the lines needing the totals
             lines_needing_total_below = set()
-            for line_dict in lines:
+            for line_dict, child_dict in zip(lines, lines[1:] + [None]):
                 line_markup = self._parse_line_id(line_dict['id'])[-1][0]
 
                 if line_markup != 'total':
                     # If we are on the first level of a groupby, wee need to add the total below section now.
                     # Sublevels (if any) will be handled by _expand_groupby.
-                    if line_dict.get('unfoldable') and not line_markup.startswith('groupby'):
+                    has_child = child_dict and child_dict.get('parent_id') == line_dict['id']
+                    if (line_dict.get('unfoldable') or has_child) and not line_markup.startswith('groupby'):
                         lines_needing_total_below.add(line_dict['id'])
 
                     # All lines that are parent of other lines need to receive a total if thery're not a groupby themselves
                     line_parent_id = line_dict.get('parent_id')
-                    if line_parent_id and not self._parse_line_id(line_dict['id'])[-1][0].startswith('groupby'):
+                    if line_parent_id and not line_markup.startswith('groupby'):
                         lines_needing_total_below.add(line_parent_id)
 
             # Inject the totals

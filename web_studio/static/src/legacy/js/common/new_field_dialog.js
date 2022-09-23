@@ -265,6 +265,10 @@ var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
             if (newSelection) {
                 this.selection.push([newSelection, newSelection]);
             }
+            if (!this.selection.length) {
+                this.trigger_up('warning', {title: _t('You must have at least one option set')});
+                return;
+            }
             values.selection = JSON.stringify(this.selection);
         } else if (this.type === 'related') {
             var selectedField = this.fieldSelector.getSelectedField();

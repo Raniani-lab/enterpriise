@@ -4580,7 +4580,7 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('add a selection field in non debug', async function (assert) {
-        assert.expect(8);
+        assert.expect(14);
 
         // inline selection edition is only available in non debug mode
         var initialDebugMode = odoo.debug;
@@ -4599,6 +4599,8 @@ QUnit.module('ViewEditorManager', {
             },
         });
 
+        testUtils.mock.intercept(vem, 'warning', assert.step.bind(assert, 'warning'), true);
+
         await testUtils.dom.dragAndDrop(
             vem.$('.o_web_studio_new_fields .o_web_studio_field_selection'),
             vem.$('.o_web_studio_hook:first'));
@@ -4606,6 +4608,17 @@ QUnit.module('ViewEditorManager', {
             "a modal should be opened");
         assert.containsNone($, '.modal .o_web_studio_selection_editor',
             "there should be no selection editor");
+
+        // saving selection with no values should show a warning and not save
+        assert.containsNone($, '.modal .o_web_studio_selection_editor > li',
+            "there should be 0 selection value");
+        assert.verifySteps([]);  // making sure no warning was triggered before clicking on Confirm
+        await testUtils.dom.click($('.modal button:contains("Confirm")'));
+        assert.verifySteps(["warning"]);  // make sure a warning was triggered
+        assert.containsNone($, '.modal .o_web_studio_selection_editor > li',
+            "there should still be 0 selection value")
+        assert.containsOnce($, '.modal .o_web_studio_field_dialog_form',
+            "a modal should still be opened");
 
         // add a new value (with ENTER)
         await testUtils.fields.editAndTrigger($('.modal .o_web_studio_selection_new_value input'),
@@ -4634,7 +4647,7 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('add a selection field in debug', async function (assert) {
-        assert.expect(14);
+        assert.expect(20);
 
         // Dialog to edit selection values is only available in debug mode
         var initialDebugMode = odoo.debug;
@@ -4655,9 +4668,22 @@ QUnit.module('ViewEditorManager', {
         });
 
 
+        testUtils.mock.intercept(vem, 'warning', assert.step.bind(assert, 'warning'), true);
+
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_selection'), $('.o_web_studio_hook:first'));
         assert.strictEqual($('.modal .o_web_studio_field_dialog_form').length, 1, "a modal should be opened");
         assert.strictEqual($('.modal .o_web_studio_selection_editor').length, 0, "there should be no selection editor");
+
+        // saving selection with no values should show a warning and not save
+        assert.containsNone($, '.modal .o_web_studio_selection_editor > li',
+            "there should be 0 selection value");
+        assert.verifySteps([]);  // making sure no warning was triggered before clicking on Confirm
+        await testUtils.dom.click($('.modal button:contains("Confirm")'));
+        assert.verifySteps(["warning"]);  // make sure a warning was triggered
+        assert.containsNone($, '.modal .o_web_studio_selection_editor > li',
+            "there should still be 0 selection value")
+        assert.containsOnce($, '.modal .o_web_studio_field_dialog_form',
+            "a modal should still be opened");
 
         // add a new value (with ENTER)
         $('.modal .o_web_studio_selection_new_value input')

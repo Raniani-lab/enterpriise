@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
-"PO-Revision-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"PO-Revision-Date: 2022-09-23 08:22+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -43,6 +43,12 @@ msgstr ""
 #: code:addons/sign/controllers/main.py:0
 #, python-format
 msgid "%s validated the signature by SMS with the phone number %s."
+msgstr ""
+
+#. module: sign
+#: code:addons/sign/models/sign_request.py:0
+#, python-format
+msgid "%s: missing credits for extra-authentication"
 msgstr ""
 
 #. module: sign
@@ -156,6 +162,11 @@ msgstr ""
 msgid ""
 "<i class=\"fa fa-arrow-right\"/>\n"
 "                                                Preview"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
+msgid "<i class=\"fa fa-arrow-right\"/> Buy credits"
 msgstr ""
 
 #. module: sign
@@ -470,7 +481,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
 msgid ""
-"Allow signatories to confirm their identity using itsme® (available in "
+"Allow signatories to provide their identity using itsme® (available in "
 "Belgium and the Netherlands)."
 msgstr ""
 
@@ -1422,6 +1433,7 @@ msgstr ""
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_refused
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
 msgid "Hello"
@@ -1503,6 +1515,23 @@ msgstr ""
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
+msgid ""
+"If you do not want to receive these notifications anymore, you can disable the extra-authentication step in the \n"
+"                        <code>\n"
+"                            Sign &gt; Configuration &gt; Roles\n"
+"                        </code> \n"
+"                        menu."
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
+msgid ""
+"If you wish, you can request the document again after buying more credits "
+"for the operation."
 msgstr ""
 
 #. module: sign
@@ -2842,6 +2871,11 @@ msgid "Signed Documents"
 msgstr ""
 
 #. module: sign
+#: model:ir.model.fields,field_description:sign.field_sign_request_item__signed_without_extra_auth
+msgid "Signed Without Extra Authentication"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 msgid "Signed document"
 msgstr ""
@@ -3151,6 +3185,7 @@ msgstr ""
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
 msgid "The document"
 msgstr ""
 
@@ -3636,6 +3671,11 @@ msgid "What about those conversions I see?"
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
+msgid "Why am I seeing this?"
+msgstr ""
+
+#. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
@@ -3686,8 +3726,20 @@ msgid "You cannot reassign this signatory"
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
+msgid "You have less than 20 credits remaining for"
+msgstr ""
+
+#. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_refused
 msgid "You have refused the document"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
+msgid ""
+"You have templates or requests using a role with an extra-authentication step with few credits remaining.<br/>\n"
+"                To remove this warning, disable the extra-authentication step in the <code>Configuration &gt; Roles</code> menu, or buy credits."
 msgstr ""
 
 #. module: sign
@@ -3792,6 +3844,23 @@ msgid "and:"
 msgstr ""
 
 #. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
+msgid "authentication step will be skipped if you are out of credits."
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
+msgid "authentication. The"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
+msgid ""
+"because you don't have enough credits for this operation. \n"
+"                    The signatory was able to finish signing, but was not asked to authenticate fully."
+msgstr ""
+
+#. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
@@ -3835,6 +3904,11 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 msgid "has been edited, completed and signed by"
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
+msgid "has been signed by"
 msgstr ""
 
 #. module: sign
@@ -3907,6 +3981,11 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "we've got a list of consumption for 1000 kg of paper usage."
+msgstr ""
+
+#. module: sign
+#: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
+msgid "without the requested extra-authentification step ("
 msgstr ""
 
 #. module: sign

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:48+0000\n"
-"PO-Revision-Date: 2022-09-20 09:48+0000\n"
+"POT-Creation-Date: 2022-09-23 08:23+0000\n"
+"PO-Revision-Date: 2022-09-23 08:23+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -201,18 +201,4 @@ msgstr ""
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_rejection_form
 msgid "payments from the batch have been removed."
-msgstr ""
-
-#. module: account_accountant_batch_payment
-#. openerp-web
-#: code:addons/account_accountant_batch_payment/static/src/components/bank_reconciliation/bank_rec_widget_batch_reject_dialog.xml:0
-#, python-format
-msgid "props.close"
-msgstr ""
-
-#. module: account_accountant_batch_payment
-#. openerp-web
-#: code:addons/account_accountant_batch_payment/static/src/components/bank_reconciliation/bank_rec_widget_batch_reject_dialog.xml:0
-#, python-format
-msgid "props.kanbanActionFn"
 msgstr ""

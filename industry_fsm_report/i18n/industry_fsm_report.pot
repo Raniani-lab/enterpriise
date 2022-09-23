@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:49+0000\n"
-"PO-Revision-Date: 2022-09-20 09:49+0000\n"
+"POT-Creation-Date: 2022-09-23 08:24+0000\n"
+"PO-Revision-Date: 2022-09-23 08:24+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -38,13 +38,6 @@ msgid "By Worksheet Template"
 msgstr ""
 
 #. module: industry_fsm_report
-#: model:ir.model.fields,help:industry_fsm_report.field_project_project__worksheet_template_id
-msgid ""
-"Choose a default worksheet template for this project (you can change it "
-"individually on each task)."
-msgstr ""
-
-#. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__worksheet_color
 msgid "Color"
 msgstr ""
@@ -57,6 +50,13 @@ msgstr ""
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_project_form_inherit_industry_fsm_report
 msgid "Create reports to be signed off by your customers"
+msgstr ""
+
+#. module: industry_fsm_report
+#: model:ir.model.fields,help:industry_fsm_report.field_project_task__worksheet_template_id
+msgid ""
+"Create templates for each type of intervention you have and customize their "
+"content with your own custom fields."
 msgstr ""
 
 #. module: industry_fsm_report

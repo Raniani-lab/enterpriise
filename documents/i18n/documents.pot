@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
-"PO-Revision-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"PO-Revision-Date: 2022-09-23 08:22+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -62,120 +62,6 @@ msgstr ""
 #: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
 #, python-format
 msgid "(%s/%sMB)"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/list/documents_list_renderer.xml:0
-#, python-format
-msgid "(ev) => record.onDragStart(ev)"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/list/documents_list_renderer.xml:0
-#: code:addons/documents/static/src/views/list/documents_list_renderer.xml:0
-#, python-format
-msgid "(ev) => record.onRecordClick(ev)"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
-#, python-format
-msgid "(ev) => this.onDragEnter(section, value, ev)"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
-#, python-format
-msgid "(ev) => this.onDragEnter(section, values.get(valueId), ev)"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
-#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
-#, python-format
-msgid "(ev) => this.onDragLeave(section, ev)"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
-#, python-format
-msgid "(ev) => this.onDragStartFolder(value, ev)"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
-#, python-format
-msgid "(ev) => this.onDrop(section, value, ev)"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
-#, python-format
-msgid "(ev) => this.onDrop(section, values.get(valueId), ev)"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
-#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
-#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
-#, python-format
-msgid "(ev) => this.onSectionValueTouchEnd()"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
-#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
-#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
-#, python-format
-msgid "(ev) => this.onSectionValueTouchMove()"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
-#, python-format
-msgid "(ev) => this.onSectionValueTouchStart(ev, section, null, groupId)"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
-#, python-format
-msgid "(ev) => this.onSectionValueTouchStart(ev, section, value.id, null)"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
-#, python-format
-msgid "(ev) => this.onSectionValueTouchStart(ev, section, valueId, null)"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/kanban/documents_kanban_controller.xml:0
-#, python-format
-msgid ""
-"(model.useSampleModel ? 'o_view_sample_data' : '') + ' o_documents_content "
-"o_documents_kanban'"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/list/documents_list_controller.xml:0
-#, python-format
-msgid ""
-"(model.useSampleModel ? 'o_view_sample_data' : '') + ' o_documents_content'"
 msgstr ""
 
 #. module: documents
@@ -2821,13 +2707,6 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/fields/documents_tags_color_widget.xml:0
-#, python-format
-msgid "background-color: {{tag.group_hex_color || '#4A4F59'}}"
-msgstr ""
-
-#. module: documents
-#. openerp-web
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
@@ -2940,23 +2819,6 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/list/documents_list_renderer.xml:0
-#, python-format
-msgid ""
-"o_list_renderer o_documents_list_view o_documents_view "
-"o_renderer_with_searchpanel overflow-auto position-relative"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/kanban/documents_kanban_renderer.xml:0
-#: code:addons/documents/static/src/views/list/documents_list_renderer.xml:0
-#, python-format
-msgid "onDrop"
-msgstr ""
-
-#. module: documents
-#. openerp-web
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "owner_id"
@@ -3006,14 +2868,6 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/list/documents_list_renderer.xml:0
-#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
-#, python-format
-msgid "true"
-msgstr ""
-
-#. module: documents
-#. openerp-web
 #: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
 #, python-format
 msgid "unnamed"
@@ -3024,20 +2878,4 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "url"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
-#, python-format
-msgid "value.display_name"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
-#, python-format
-msgid ""
-"{{supportedEditionFields.includes(section.fieldName) ? "
-"'o_documents_search_panel_editable' : ''}}"
 msgstr ""

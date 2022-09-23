@@ -9,7 +9,7 @@
     'description': """
 Contains the enterprise views for Stock management
     """,
-    'depends': ['stock', 'web_dashboard', 'web_cohort', 'web_map'],
+    'depends': ['stock', 'web_cohort', 'web_map'],
     'data': [
         'security/ir.model.access.csv',
         'security/stock_enterprise_security.xml',

@@ -42,8 +42,8 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
             **current,
         }
 
+        lang = self.env.user.lang or get_lang(self.env).code
         if self.pool['account.account'].name.translate:
-            lang = self.env.user.lang or get_lang(self.env).code
             account_name = f"COALESCE(account.name->>'{lang}', account.name->>'en_US')"
         else:
             account_name = 'account.name'

@@ -242,7 +242,7 @@ class SaleOrder(models.Model):
             if not so.is_subscription and not so.subscription_management == 'upsell':
                 so.next_invoice_date = False
                 continue
-            elif not so.next_invoice_date and so.state not in ('sent', 'draft'):
+            elif not so.next_invoice_date and so.state == 'sale':
                 # Define a default next invoice date.
                 # It is increased manually by _update_next_invoice_date when necessary
                 so.next_invoice_date = so.start_date or fields.Date.today()

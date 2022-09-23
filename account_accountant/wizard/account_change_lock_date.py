@@ -33,6 +33,15 @@ class AccountChangeLockDate(models.TransientModel):
 
     def change_lock_date(self):
         if self.user_has_groups('account.group_account_manager'):
+            if any(
+                    lock_date > fields.Date.context_today(self)
+                    for lock_date in (
+                            self.fiscalyear_lock_date,
+                            self.tax_lock_date,
+                    )
+                    if lock_date
+            ):
+                raise UserError(_('You cannot set a lock date in the future.'))
             self.env.company.sudo().write(self._prepare_lock_date_values())
         else:
             raise UserError(_('Only Billing Administrators are allowed to change lock dates!'))

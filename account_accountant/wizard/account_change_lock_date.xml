@@ -13,14 +13,17 @@
                                 <div class="text-muted mb-3" colspan="2">
                                     <i>Lock specific journal entries</i>
                                 </div>
-                                <field name="period_lock_date" placeholder="Pick a date to lock"/>
-                                <field name="tax_lock_date" placeholder="Pick a date to lock"/>
+                                <field name="period_lock_date" placeholder="Pick a date to lock"
+                                       options="{'datepicker': {'warn_future': true}}" />
+                                <field name="tax_lock_date" placeholder="Pick a date to lock"
+                                       options="{'datepicker': {'warn_future': true}}" />
                             </group>
                             <group string="Accounting Period Closing">
                                 <div class="text-muted mb-3" colspan="2">
                                     <i>Lock all journal entries</i>
                                 </div>
-                                <field name="fiscalyear_lock_date" placeholder="Pick a date to lock"/>
+                                <field name="fiscalyear_lock_date" placeholder="Pick a date to lock"
+                                       options="{'datepicker': {'warn_future': true}}" />
                             </group>
                         </group>
                     </sheet>

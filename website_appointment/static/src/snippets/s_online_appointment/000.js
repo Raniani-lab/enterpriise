@@ -15,13 +15,13 @@ const OnlineAppointmentCtaWidget = publicWidget.Widget.extend({
         const selectedAppointments = ev.target.dataset.appointmentTypes;
         const nbSelectedAppointments = JSON.parse(selectedAppointments);
         if (nbSelectedAppointments === 1) {
-            url += `/${selectedAppointments[0]}`;
+            url += `/${encodeURIComponent(selectedAppointments[0])}`;
             const selectedUsers = ev.target.dataset.staffUsers;
             if (JSON.parse(selectedUsers).length) {
-                url += `?filter_staff_user_ids=${selectedUsers}`;
+                url += `?filter_staff_user_ids=${encodeURIComponent(selectedUsers)}`;
             }
         } else if (nbSelectedAppointments > 1) {
-            url += `?filter_appointment_type_ids=${selectedAppointments}`;
+            url += `?filter_appointment_type_ids=${encodeURIComponent(selectedAppointments)}`;
         }
         window.location = url;
     },

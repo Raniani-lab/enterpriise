@@ -4,38 +4,36 @@ import { FormController } from "@web/views/form/form_controller";
 
 import { useService } from "@web/core/utils/hooks";
 
-const { onWillUpdateProps, useSubEnv } = owl;
+const { onWillUpdateProps } = owl;
 
 export class ShareFormController extends FormController {
     setup() {
         super.setup(...arguments);
-        const notificationService = useService('notification');
-        const _t = this.env._t;
+        this.notificationService = useService('notification');
         
         this.props.setShareResId(this.props.resId);
         onWillUpdateProps((nextProps) => {
             this.props.setShareResId(nextProps.resId);
         });
-        // Override onClickViewButton to copy the data to the clipboard
-        const previousOnClickViewButton = this.env.onClickViewButton;
-        const self = this;
-        useSubEnv({
-            async onClickViewButton({ clickParams }) {
-                if (clickParams.special === "save") {
-                    // Copy the share link to the clipboard
-                    navigator.clipboard.writeText(self.model.root.data.full_url);
-                    // Show a notification to the user about the copy to clipboard
-                    notificationService.add(
-                        _t("The share url has been copied to your clipboard."),
-                        {
-                            type: "success",
-                        },
-                    );
-                    self.props.setShouldDelete(false);
-                }
-                return previousOnClickViewButton(...arguments);
-            }
-        });
+    }
+
+    /**
+     * @override
+     */
+    async beforeExecuteActionButton(clickParams) {
+        if (clickParams.special === "save") {
+            // Copy the share link to the clipboard
+            navigator.clipboard.writeText(this.model.root.data.full_url);
+            // Show a notification to the user about the copy to clipboard
+            this.notificationService.add(
+                this.env._t("The share url has been copied to your clipboard."),
+                {
+                    type: "success",
+                },
+            );
+            this.props.setShouldDelete(false);
+        }
+        return super.beforeExecuteActionButton(...arguments);
     }
 };
 ShareFormController.props = {

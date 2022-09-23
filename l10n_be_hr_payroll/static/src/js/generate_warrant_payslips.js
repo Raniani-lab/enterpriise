@@ -6,28 +6,26 @@ import { FormController } from "@web/views/form/form_controller";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
-const { useSubEnv } = owl;
-
 export class GenerateCommissionPayslipsFormController extends FormController {
     setup(){
         super.setup();
         this.orm = useService("orm");
-        this.actionService = useService("action");
-        const onClickViewButton = this.env.onClickViewButton;
-        useSubEnv({
-            onClickViewButton: async (params) => {
-                if (params.clickParams.name === 'export_warrant_payslips') {
-                    if (this.props.saveRecord) {
-                        await this.props.saveRecord(this.model.root, { stayInEdit: true });
-                    } else {
-                        await this.model.root.save({ stayInEdit: true });
-                    }
-                    await this.downloadExportedCSV();
-                } else {
-                    await onClickViewButton(params);
-                }
+    }
+
+    /**
+     * @override
+     */
+    async beforeExecuteActionButton(clickParams) {
+        if (clickParams.name === 'export_warrant_payslips') {
+            if (this.props.saveRecord) {
+                await this.props.saveRecord(this.model.root, { stayInEdit: true });
+            } else {
+                await this.model.root.save({ stayInEdit: true });
             }
-        })
+            await this.downloadExportedCSV();
+            return false;
+        }
+        return super.beforeExecuteActionButton(...arguments);
     }
 
     async downloadExportedCSV() {

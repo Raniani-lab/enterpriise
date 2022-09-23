@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from datetime import timedelta
+
 from odoo.addons.iap.tools import iap_tools
 from odoo import api, fields, models, _lt, _
 from odoo.exceptions import AccessError, UserError
@@ -223,6 +225,8 @@ class HrApplicant(models.Model):
                 title=_("CV is being Digitized"))
         self.extract_state = 'waiting_upload'
         self.env.ref('hr_recruitment_extract.ir_cron_ocr_parse')._trigger()
+        # OCR usually takes between 5 and 10 seconds to process the file. Thus, we wait a bit before we update the status
+        self.env.ref('hr_recruitment_extract.ir_cron_update_ocr_status')._trigger(fields.Datetime.now() + timedelta(seconds=10))
 
     def action_send_for_digitization(self):
         if any(not applicant.is_first_stage for applicant in self):

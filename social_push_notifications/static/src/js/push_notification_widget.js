@@ -95,7 +95,7 @@ publicWidget.registry.NotificationWidget =  publicWidget.Widget.extend({
 
         var messaging = firebase.messaging();
         var baseWorkerUrl = '/social_push_notifications/static/src/js/push_service_worker.js';
-        navigator.serviceWorker.register(baseWorkerUrl + '?senderId=' + config.firebase_sender_id)
+        navigator.serviceWorker.register(baseWorkerUrl + '?senderId=' + encodeURIComponent(config.firebase_sender_id))
             .then(function (registration) {
                 messaging.useServiceWorker(registration);
                 messaging.usePublicVapidKey(config.firebase_push_certificate_key);

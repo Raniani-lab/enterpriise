@@ -490,7 +490,9 @@ class L10nLuYearlyTaxReportManual(models.Model):
         "report_section_007", "report_section_008", "report_section_009", "report_section_010", "report_section_011",
         "report_section_013", "report_section_202", "report_section_077", "report_section_078", "report_section_079",
         "report_section_081", "report_section_082", "report_section_083", "report_section_085", "report_section_086",
-        "report_section_087", "report_section_404", "report_section_405", "report_section_406")
+        "report_section_087", "report_section_404", "report_section_405", "report_section_406", "report_section_472",
+        "report_section_455", "report_section_456", "report_section_457", "report_section_458", "report_section_459",
+        "report_section_460", "report_section_461")
     def _compute_totals(self):
         for record in self:
             record.report_section_472_rest = record.report_section_472 - record.report_section_001 - record.report_section_002 - record.report_section_003 - record.report_section_004 - record.report_section_005 - record.report_section_007
@@ -607,9 +609,12 @@ class L10nLuYearlyTaxReportManual(models.Model):
         def _set_monthly_totals(record, lines, is_LU=False):
             if is_LU:
                 for ln in lines:
-                    split_line_code = ln.get('line_code') and ln['line_code'].split('_')[1] or ""
-                    if split_line_code in monthly_totals:
-                        record[f'report_section_{ln["line_code"].split("_")[1]}'] = ln['columns'][0]['no_format']
+                    model, ln_id = report_id._get_model_info_from_id(ln.get('id'))
+                    if model == 'account.report.line':
+                        line = self.env[model].browse(ln_id)
+                        split_line_code = line.code and line.code.split('_')[1]
+                        if split_line_code in monthly_totals:
+                            record[f'report_section_{split_line_code}'] = ln['columns'][0]['no_format']
             else:
                 for mt in monthly_totals:
                     record[f'report_section_{mt}'] += 0
@@ -617,7 +622,8 @@ class L10nLuYearlyTaxReportManual(models.Model):
         monthly_totals = {'472', '455', '456', '457', '458', '459', '460', '461'}
         for record in self:
             if record.company_ids:
-                options = self.env.ref('l10n_lu.tax_report')._get_options({
+                report_id = self.env.ref('l10n_lu.tax_report')
+                options = report_id.with_context(allowed_company_ids=record.company_ids.ids)._get_options({
                     'date': {
                         'string': self.year,
                         'period_type': 'fiscalyear',
@@ -628,9 +634,9 @@ class L10nLuYearlyTaxReportManual(models.Model):
                     },
                 })
                 if self.env.company.account_fiscal_country_id.code == "LU":
-                    lines = self.env.ref('l10n_lu.tax_report')._get_lines(options)
+                    lines = report_id._get_lines(options)
                 else:
-                    lines = self.env.ref('l10n_lu.tax_report')._get_lines(options)
+                    lines = self.env.ref('account.generic.tax.report').with_context(allowed_company_ids=record.company_ids.ids)._get_lines(options)
                 _set_monthly_totals(record, lines, self.env.company.account_fiscal_country_id.code == "LU")
             else:
                 _set_monthly_totals(record, [])
@@ -721,8 +727,8 @@ class L10nLuYearlyTaxReportManual(models.Model):
             },
             'declaration_type': 'TVA_DECA',
         })
-        form = self._get_lu_electronic_report_values(options)['forms'][0]
-        form['field_values'] = self.env['l10n_lu.generate.tax.report']._remove_zero_fields(form['field_values'])
+        form = self.env['l10n_lu.tax.report.handler'].get_tax_electronic_report_values(options)['forms'][0]
+        form['field_values'] = self.env['l10n_lu.generate.tax.report']._remove_zero_fields(form['field_values'], options['report_id'])
         date_from = fields.Date.from_string(options['date']['date_from'])
         date_to = fields.Date.from_string(options['date']['date_to'])
         self.env['l10n_lu.generate.tax.report']._adapt_to_annual_report(form, date_from, date_to)

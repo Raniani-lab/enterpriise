@@ -229,16 +229,14 @@ class Task(models.Model):
 
     def action_project_sharing_view_invoices(self):
         """ Action used only in project sharing feature """
-        if self.user_has_groups('base.group_portal'):
-            return {
-                "name": "Portal Invoices",
-                "type": "ir.actions.act_url",
-                "url":
-                    self.env['account.move'].search([('id', 'in', self.sale_order_id.sudo().invoice_ids.ids)], limit=1).get_portal_url()
-                    if self.portal_invoice_count == 1
-                    else f"/my/projects/{self.project_id.id}/task/{self.id}/invoices",
-            }
-        return self.action_project_sharing_view_invoices()
+        return {
+            "name": "Portal Invoices",
+            "type": "ir.actions.act_url",
+            "url":
+                self.env['account.move'].search([('id', 'in', self.sale_order_id.sudo().invoice_ids.ids)], limit=1).get_portal_url()
+                if self.portal_invoice_count == 1
+                else f"/my/projects/{self.project_id.id}/task/{self.id}/invoices",
+        }
 
     def action_fsm_create_quotation(self):
         view_form_id = self.env.ref('sale.view_order_form').id
@@ -277,16 +275,14 @@ class Task(models.Model):
     def action_project_sharing_view_quotations(self):
         """ Action used only in project sharing feature """
         self.ensure_one()
-        if self.user_has_groups('base.group_portal'):
-            return {
-                "name": "Portal Quotations",
-                "type": "ir.actions.act_url",
-                "url":
-                    self.env['sale.order'].search([('task_id', '=', self.id)], limit=1).get_portal_url()
-                    if self.portal_quotation_count == 1
-                    else f"/my/projects/{self.project_id.id}/task/{self.id}/quotes",
-            }
-        return self.action_fsm_view_quotations()
+        return {
+            "name": "Portal Quotations",
+            "type": "ir.actions.act_url",
+            "url":
+                self.env['sale.order'].search([('task_id', '=', self.id)], limit=1).get_portal_url()
+                if self.portal_quotation_count == 1
+                else f"/my/projects/{self.project_id.id}/task/{self.id}/quotes",
+        }
 
     def action_fsm_view_material(self):
         if not self.partner_id:

@@ -98,7 +98,7 @@ class Task(models.Model):
                 is_not_timesheet_line = is_not_timesheet_line and sale_line_id.product_id.id not in employee_mapping_product_ids
             is_not_empty = sale_line_id.product_uom_qty != 0
             is_not_service_from_so = sale_line_id != task.sale_line_id
-            is_task_related = sale_line_id.task_id == task
+            is_task_related = sale_line_id.task_id == (task or task._origin)
             return all([is_not_timesheet_line, is_not_empty, is_not_service_from_so, is_task_related])
 
         employee_mapping_timesheet_product_ids = {}  # keys = project_id, value = list of timesheet_product_id

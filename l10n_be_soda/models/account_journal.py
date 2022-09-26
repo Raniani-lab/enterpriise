@@ -23,7 +23,7 @@ class AccountJournal(models.Model):
 
     def _l10n_be_check_soda_format(self, attachment):
         try:
-            return attachment.mimetype == 'application/xml' and \
+            return attachment.mimetype in ('application/xml', 'text/xml') and \
                    etree.parse(io.BytesIO(attachment.raw)).getroot().tag == 'SocialDocument'
         except etree.XMLSyntaxError:
             return False
@@ -38,10 +38,10 @@ class AccountJournal(models.Model):
             if parsed_attachment.find('.//EntNum').text != journal_company_vat:
                 if len(attachments) == 1:
                     message = _('The SODA Entry could not be created: \n'
-                                'the VAT from the document doesn\'t match the one from the company\'s journal.')
+                                'The company VAT number found in the document doesn\'t match the one from the company\'s journal.')
                 else:
                     message = _('The SODA Entry could not be created: \n'
-                                'the VAT from at least one document doesn\'t match the one from the company\'s journal.')
+                                'The company VAT number found in at least one document doesn\'t match the one from the company\'s journal.')
                 raise UserError(message)
             # account.move.ref is SocialNumber+SequenceNumber : check that this move has not already been imported
             ref = "%s-%s" % (parsed_attachment.find('.//Source').text, parsed_attachment.find('.//SeqNumber').text)

@@ -7,7 +7,7 @@ from odoo.tools import file_open
 
 
 @tagged('post_install_l10n', 'post_install', '-at_install')
-class TestCodaFile(AccountTestInvoicingCommon):
+class TestSodaFile(AccountTestInvoicingCommon):
 
     @classmethod
     def setUpClass(cls, chart_template_ref='l10n_be.l10nbe_chart_template'):

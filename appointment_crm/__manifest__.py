@@ -23,8 +23,7 @@ Allow to generate lead from Scheduled Appointments through your Website
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'appointment_crm/static/src/js/calendar_renderer.js',
-            'appointment_crm/static/src/xml/**/*',
+            'appointment_crm/static/src/views/**/*',
         ],
     },
 }

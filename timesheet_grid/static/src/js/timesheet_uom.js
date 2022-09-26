@@ -62,8 +62,8 @@ odoo.define('timesheet_grid.timesheet_uom', function (require) {
     }
 
     const timesheetUomGridService = {
-        dependencies: ["legacy_timesheet_uom"],
-        start(env, { legacy_timesheet_uom: timesheet_uom }) {
+        dependencies: ["timesheet_uom"],
+        start(env, { timesheet_uom }) {
             const widgetName = timesheet_uom.widget || 'float_factor';
 
             /**

@@ -47,7 +47,9 @@ class TimerService {
     }
 
     setTimer(timeElapsed, timerStart, serverTime) {
+        this.clearTimer();
         this.addFloatTime(timeElapsed);
+        this.timeElapsed = this.toSeconds;
         if (timerStart && serverTime) {
             const dateStart = timerStart;
             const { hours, minutes, seconds } = this.getInterval(dateStart, serverTime)
@@ -97,7 +99,7 @@ class TimerService {
         const currentTime = DateTime.now().plus({ seconds: this.offset });
         const timeElapsed = this.getInterval(timerStart, currentTime);
         const { seconds } = timeElapsed.toDuration(["seconds", "milliseconds"]).toObject();
-        this.addSeconds(seconds - this.toSeconds);
+        this.addSeconds(seconds - this.toSeconds + this.timeElapsed);
     }
 
     clearTimer() {
@@ -116,6 +118,6 @@ export const timerService = {
     start(env, { orm }) {
         return new TimerService(orm);
     }
-}
+};
 
 registry.category('services').add('timer', timerService);

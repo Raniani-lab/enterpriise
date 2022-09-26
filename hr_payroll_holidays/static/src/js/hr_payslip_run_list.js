@@ -3,7 +3,7 @@
 import { registry } from '@web/core/registry';
 import { listView } from '@web/views/list/list_view';
 import { ListController } from "@web/views/list/list_controller";
-import { useTimeOffToDefer } from '@hr_payroll_holidays/js/hr_work_entries_controller_mixin_owl';
+import { useTimeOffToDefer } from '@hr_payroll_holidays/views/hooks';
 
 export class PayslipRunController extends ListController {
     setup() {

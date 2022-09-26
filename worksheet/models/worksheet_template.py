@@ -427,7 +427,7 @@ class WorksheetTemplate(models.Model):
                         container_row.append(container_col)
                         for field_node in col_node.xpath('./field'):
                             new_container_col = self._add_field_node_to_container(field_node, form_view_fields, container_col)
-                        container_row.append(new_container_col)
+                            container_row.append(new_container_col)
                     qweb_arch.append(container_row)
                 # pattern C: whe have a field inside an element group --> field take full width
                 else:

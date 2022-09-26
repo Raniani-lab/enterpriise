@@ -27,15 +27,13 @@ class Task(models.Model):
 
     def action_project_sharing_view_ticket(self):
         self.ensure_one()
-        if self.env.user.share:
-            if not self.display_helpdesk_ticket_button:
-                return {}
-            return {
-                "name": "Portal Ticket",
-                "type": "ir.actions.act_url",
-                "url": self.helpdesk_ticket_id.get_portal_url(),
-            }
-        return self.action_view_ticket()
+        if not self.display_helpdesk_ticket_button:
+            return {}
+        return {
+            "name": "Portal Ticket",
+            "type": "ir.actions.act_url",
+            "url": self.helpdesk_ticket_id.get_portal_url(),
+        }
 
     def write(self, vals):
         previous_states = None

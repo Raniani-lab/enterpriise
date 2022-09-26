@@ -87,7 +87,7 @@
             <field name="name">account.online.link.tree</field>
             <field name="model">account.online.link</field>
             <field name="arch" type="xml">
-                <tree decoration-danger="state != 'connected'" create="false">
+                <tree decoration-danger="state != 'connected'" create="false" js_class="online_sync_tree">
                     <field name="name" readonly="1"/>
                     <field name="state"/>
                     <field name="last_refresh" readonly="1"/>
@@ -107,7 +107,7 @@
               </p>
               <p>
                 To create a synchronization with your banking institution,<br/>
-                please click on <b>Add a Bank Account</b> in <b>Configuration</b> menu.
+                please click on <b>Add a Bank Account</b>.
               </p>
             </field>
         </record>

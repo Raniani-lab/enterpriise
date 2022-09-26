@@ -16,7 +16,7 @@ tour.register("test_sign_flow_tour",{
 }, {
     content: 'Search template "template_1_roles"',
     trigger: ".o_cp_searchview input",
-    run: "text template_1_role (v2)",
+    run: "text template_1_role(2)",
     position: "bottom",
 }, {
     content: "Search Document Name",

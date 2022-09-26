@@ -224,11 +224,13 @@ class SignTemplate(models.Model):
 
     @api.model
     def _get_copy_name(self, name):
-        regex = re.compile(r' \(v(\d+)\)$')
+        regex = re.compile(r'(.*?)((?:\(\d+\))?)((?:\.pdf)?)$')
         match = regex.search(name)
-        version = str(int(match.group(1)) + 1) if match else "2"
-        index = match.start() if match else len(name)
-        return name[:index] + " (v" + version + ")"
+        name_doc = match.group(1)
+        name_ver = match.group(2)
+        name_ext = match.group(3)
+        version = int(name_ver[1:-1]) + 1 if name_ver else 2
+        return f"{name_doc}({version}){name_ext}"
 
     @api.model
     def rotate_pdf(self, template_id=None):

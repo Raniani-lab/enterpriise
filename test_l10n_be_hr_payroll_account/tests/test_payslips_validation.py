@@ -8624,15 +8624,15 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB': 4.0,
             'SALARY': 2659.0,
             'ONSS': -347.53,
-            'EmpBonus.1': 43.75,
-            'ONSSTOTAL': 303.78,
+            'EmpBonus.1': 70.36,
+            'ONSSTOTAL': 277.17,
             'ATN.CAR': 162.42,
-            'GROSSIP': 2517.64,
+            'GROSSIP': 2544.26,
             'IP.PART': -662.5,
-            'GROSS': 1855.14,
-            'P.P': -239.63,
-            'P.P.DED': 14.5,
-            'PPTOTAL': 225.13,
+            'GROSS': 1881.76,
+            'P.P': -252.47,
+            'P.P.DED': 23.32,
+            'PPTOTAL': 229.15,
             'ATN.CAR.2': -162.42,
             'ATN.INT.2': -5.0,
             'ATN.MOB.2': -4.0,
@@ -8641,7 +8641,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'REP.FEES': 150.0,
             'IP': 662.5,
             'IP.DED': -49.69,
-            'NET': 2180.94,
+            'NET': 2203.54,
             'REMUNERATION': 1987.5,
             'ONSSEMPLOYERBASIC': 665.55,
             'ONSSEMPLOYERFFE': 1.86,
@@ -8658,7 +8658,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
         net_account_move_line = payslip.move_id.line_ids.filtered(lambda l: l.name == 'Net Salary')
         self.assertAlmostEqual(net_account_move_line.debit, 0.0, places=2)
-        self.assertAlmostEqual(net_account_move_line.credit, 2180.94, places=2)
+        self.assertAlmostEqual(net_account_move_line.credit, 2203.54, places=2)
 
         refund_action = payslip.refund_sheet()
         refund = self.env['hr.payslip'].browse(refund_action['domain'][0][2])
@@ -8668,15 +8668,15 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'ATN.MOB': -4.0,
             'SALARY': -2659.0,
             'ONSS': 347.53,
-            'EmpBonus.1': -43.75,
-            'ONSSTOTAL': -303.78,
+            'EmpBonus.1': -70.36,
+            'ONSSTOTAL': -277.17,
             'ATN.CAR': -162.42,
-            'GROSSIP': -2517.64,
+            'GROSSIP': -2544.26,
             'IP.PART': 662.5,
-            'GROSS': -1855.14,
-            'P.P': 239.63,
-            'P.P.DED': -14.5,
-            'PPTOTAL': -225.13,
+            'GROSS': -1881.76,
+            'P.P': 252.47,
+            'P.P.DED': -23.32,
+            'PPTOTAL': -229.15,
             'ATN.CAR.2': 162.42,
             'ATN.INT.2': 5.0,
             'ATN.MOB.2': 4.0,
@@ -8685,7 +8685,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'REP.FEES': -150.0,
             'IP': -662.5,
             'IP.DED': 49.69,
-            'NET': -2180.94,
+            'NET': -2203.54,
             'REMUNERATION': -1987.5,
             'ONSSEMPLOYERBASIC': -665.55,
             'ONSSEMPLOYERFFE': -1.86,
@@ -8701,5 +8701,5 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         refund.action_payslip_done()
 
         net_account_move_line = refund.move_id.line_ids.filtered(lambda l: l.name == 'Net Salary')
-        self.assertAlmostEqual(net_account_move_line.debit, 2180.94, places=2)
+        self.assertAlmostEqual(net_account_move_line.debit, 2203.54, places=2)
         self.assertAlmostEqual(net_account_move_line.credit, 0.0, places=2)

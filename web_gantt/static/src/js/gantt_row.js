@@ -965,6 +965,14 @@ var GanttRow = Widget.extend({
                         }
                     });
                     var diff = Math.round((ui.size.width - ui.originalSize.width) / resizeSnappingWidth * self.viewInfo.activeScaleInfo.interval);
+                    // Sometimes the difference (diff) can be falsely rounded (see planning/work entries), 
+                    // leading to changes in the start/end_dates. With the code below the difference 
+                    // will always be one of the cell precisions or 0 making the computation more robust. 
+                    var precisions = self.SCALES[self.state.scale].cellPrecisions;
+                    var smallest_precision = Math.min(...Object.entries(precisions).map(([key, value]) => value));
+                    if (diff % smallest_precision != 0) {
+                        diff = Math.floor(diff/smallest_precision) * smallest_precision;
+                    }
                     var direction = ui.position.left ? 'left' : 'right';
                     if (diff) { // do not perform write if nothing change
                         self._saveResizeChanges(pill.id, diff, direction);

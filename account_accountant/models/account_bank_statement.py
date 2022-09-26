@@ -58,16 +58,16 @@ class AccountBankStatementLine(models.Model):
         }
 
     def action_open_recon_st_line(self):
-        return {
-            'name': _("Reconciliation of %s", self[:1].payment_ref),
-            'type': 'ir.actions.act_window',
-            'res_model': 'account.bank.statement.line',
-            'context': dict(self._context, return_mode=True, create=False, search_panel=False),
-            'view_mode': 'kanban',
-            'views': [(self.env.ref('account_accountant.view_bank_statement_line_kanban_bank_rec_widget').id, 'kanban')],
-            'domain': [('id', 'in', self.ids)],
-            'target': 'inline',
-        }
+        self.ensure_one()
+        return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
+            name=self.name,
+            default_context={
+                'default_statement_id': self.statement_id.id,
+                'default_journal_id': self.journal_id.id,
+                'default_st_line_id': self.id,
+                'search_default_id': self.id,
+            },
+        )
 
     @api.model
     def _cron_try_auto_reconcile_statement_lines(self, batch_size=None):

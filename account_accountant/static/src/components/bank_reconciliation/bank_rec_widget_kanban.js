@@ -19,9 +19,9 @@ export class BankRecKanbanRecord extends KanbanRecord {
     getRecordClasses() {
         const classes = super.getRecordClasses();
         if (this.props.record.resId === this.props.selectedStLineId) {
-            return `${classes} o_bank_rec_selected_st_line`;
+            return `${classes} o_bank_rec_st_line o_bank_rec_selected_st_line`;
         }
-        return classes;
+        return `${classes} o_bank_rec_st_line`;
     }
 }
 KanbanRecord.props = [

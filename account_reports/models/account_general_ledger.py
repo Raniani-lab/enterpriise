@@ -87,9 +87,6 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             'aml_values': self._get_aml_values(report, options, account_ids_to_expand),
         }
 
-    def _caret_options_initializer(self):
-        return self.env['account.generic.tax.report.handler']._caret_options_initializer()
-
     def _tax_declaration_lines(self, report, options, tax_type):
         labels_replacement = {
             'debit': _("Base Amount"),

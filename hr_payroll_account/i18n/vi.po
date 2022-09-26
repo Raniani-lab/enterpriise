@@ -3,17 +3,15 @@
 # 	* hr_payroll_account
 # 
 # Translators:
-# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2019
-# Duy BQ <duybq86@gmail.com>, 2019
-# Dung Nguyen Thi <dungnt@trobz.com>, 2019
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 09:36+0000\n"
-"Last-Translator: Dung Nguyen Thi <dungnt@trobz.com>, 2019\n"
+"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"PO-Revision-Date: 2022-09-22 05:47+0000\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,7 +20,6 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: hr_payroll_account
-#: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_contract_view_form
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_salary_rule_view_form
 msgid "Accounting"
 msgstr "Kế toán"
@@ -35,14 +32,13 @@ msgstr "Bút toán Kế toán"
 #. module: hr_payroll_account
 #: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
 #: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
-#: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
-#: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
 #, python-format
 msgid "Adjustment Entry"
 msgstr "Bút toán Điều chỉnh"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_contract__analytic_account_id
+#: model:ir.model.fields,field_description:hr_payroll_account.field_hr_contract_history__analytic_account_id
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_salary_rule__analytic_account_id
 msgid "Analytic Account"
 msgstr "Tài khoản phân tích"
@@ -50,8 +46,19 @@ msgstr "Tài khoản phân tích"
 #. module: hr_payroll_account
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_run_view_form
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_view_form
+msgid "Are you sure you want to proceed ?"
+msgstr "Bạn có chắc chắn muốn tiếp tục không?"
+
+#. module: hr_payroll_account
+#: model:ir.model,name:hr_payroll_account.model_hr_contract_history
+msgid "Contract history"
+msgstr "Lịch sử hợp đồng"
+
+#. module: hr_payroll_account
+#: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_run_view_form
+#: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_view_form
 msgid "Create Draft Entry"
-msgstr ""
+msgstr "Tạo bút toán nháp"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_salary_rule__account_credit
@@ -74,6 +81,18 @@ msgid "Employee Contract"
 msgstr "Hợp đồng nhân viên"
 
 #. module: hr_payroll_account
+#: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
+#, python-format
+msgid ""
+"Incorrect journal: The journal must be in the same currency as the company"
+msgstr "Sổ không chính xác: Sổ phải sử dụng cùng đơn vị tiền tệ với công ty"
+
+#. module: hr_payroll_account
+#: model:ir.model,name:hr_payroll_account.model_account_journal
+msgid "Journal"
+msgstr "Sổ nhật ký"
+
+#. module: hr_payroll_account
 #: model:ir.model.fields,help:hr_payroll_account.field_hr_payslip__date
 msgid "Keep empty to use the period of the validation(Payslip) date."
 msgstr "Để trống để sử dụng chu kỳ theo ngày xác nhận phiếu lương."
@@ -81,19 +100,20 @@ msgstr "Để trống để sử dụng chu kỳ theo ngày xác nhận phiếu 
 #. module: hr_payroll_account
 #: model:ir.model.fields,field_description:hr_payroll_account.field_hr_salary_rule__not_computed_in_net
 msgid "Not computed in net accountably"
-msgstr ""
+msgstr "Không được tính toán trong kế toán ròng"
 
 #. module: hr_payroll_account
 #: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
 #, python-format
 msgid "One of the contract for these payslips has no structure type."
-msgstr ""
+msgstr "Một hợp đồng của các phiếu lương này không có loại cấu trúc."
 
 #. module: hr_payroll_account
 #: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
 #, python-format
 msgid "One of the payroll structures has no account journal defined on it."
 msgstr ""
+"Một trong những cấu trúc bảng lương không có sổ kế toán được xác định."
 
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_hr_payslip
@@ -109,7 +129,7 @@ msgstr "Sổ nhật ký Lương"
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_hr_salary_rule
 msgid "Salary Rule"
-msgstr ""
+msgstr "Quy tắc lương"
 
 #. module: hr_payroll_account
 #: model:ir.model,name:hr_payroll_account.model_hr_payroll_structure
@@ -117,21 +137,11 @@ msgid "Salary Structure"
 msgstr "Cấu trúc lương"
 
 #. module: hr_payroll_account
-#: model_terms:ir.ui.view,arch_db:hr_payroll_account.hr_payslip_run_view_form
-msgid "Set to Draft"
-msgstr "Thiết lập về nháp"
-
-#. module: hr_payroll_account
 #: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
 #, python-format
-msgid "The Expense Journal \"%s\" has not properly configured the Credit Account!"
-msgstr "Sổ nhật ký \"%s\" không được cấu hình phù cho cho Tài khoản ghi Có!"
-
-#. module: hr_payroll_account
-#: code:addons/hr_payroll_account/models/hr_payroll_account.py:0
-#, python-format
-msgid "The Expense Journal \"%s\" has not properly configured the Debit Account!"
-msgstr "Sổ nhật ký \"%s\" không được cấu hình phù cho cho Tài khoản ghi Nợ!"
+msgid ""
+"The Expense Journal \"%s\" has not properly configured the default Account!"
+msgstr ""
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,help:hr_payroll_account.field_hr_salary_rule__not_computed_in_net
@@ -141,3 +151,7 @@ msgid ""
 "in the accounting. For example, if you want to display the value of your "
 "representation fees, you can check this field."
 msgstr ""
+"Trường này cho phép bạn xóa giá trị của quy tắc này trong quy tắc \"Lương "
+"ròng\" ở cấp độ kế toán để hiển thị rõ ràng giá trị của quy tắc này trong kế"
+" toán. Ví dụ, nếu bạn muốn hiển thị giá trị của phí đại điện của bạn, bạn có"
+" thể chọn trường này."

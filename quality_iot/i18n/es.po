@@ -3,30 +3,35 @@
 # 	* quality_iot
 # 
 # Translators:
-# Martin Trigaux, 2019
-# Jesús Alan Ramos Rodríguez <alan.ramos@jarsa.com.mx>, 2019
-# Vivian Montana <vmo@odoo.com>, 2019
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.4+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-12 11:29+0000\n"
-"PO-Revision-Date: 2019-08-26 09:37+0000\n"
-"Last-Translator: Vivian Montana <vmo@odoo.com>, 2019\n"
+"POT-Creation-Date: 2022-09-23 08:24+0000\n"
+"PO-Revision-Date: 2022-09-22 05:48+0000\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: es\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: quality_iot
 #. openerp-web
-#: code:addons/quality_iot/static/src/js/iot_picture.js:31
+#: code:addons/quality_iot/static/src/iot_picture/iot_picture.js:0
 #, python-format
 msgid "Capture image..."
-msgstr ""
+msgstr "Capturar imagen"
+
+#. module: quality_iot
+#. openerp-web
+#: code:addons/quality_iot/static/src/iot_picture/iot_picture.js:0
+#, python-format
+msgid "Connection to device failed"
+msgstr "La conexión al dispositivo falló"
 
 #. module: quality_iot
 #: model:ir.model.fields,field_description:quality_iot.field_quality_point__device_id
@@ -34,14 +39,41 @@ msgid "Device"
 msgstr "Dispositivo"
 
 #. module: quality_iot
+#: model:ir.model.fields,field_description:quality_iot.field_quality_check__device_name
+msgid "Device Name: "
+msgstr "Nombre del Dispositivo:"
+
+#. module: quality_iot
+#: model:ir.model.fields,field_description:quality_iot.field_quality_check__ip
+msgid "Domain Address"
+msgstr "Dirección de dominio"
+
+#. module: quality_iot
 #: model:ir.model,name:quality_iot.model_iot_device
 msgid "IOT Device"
 msgstr "Dispositivo IOT"
 
 #. module: quality_iot
+#: model:ir.model.fields,field_description:quality_iot.field_quality_check__identifier
+msgid "Identifier"
+msgstr "Identificador"
+
+#. module: quality_iot
+#. openerp-web
+#: code:addons/quality_iot/static/src/iot_picture/iot_picture.js:0
+#, python-format
+msgid "Please check if the device is still connected."
+msgstr "Compruebe si el dispositivo todavía está conectado."
+
+#. module: quality_iot
 #: model:ir.model.fields,field_description:quality_iot.field_iot_device__qcp_test_type
 msgid "Qcp Test Type"
-msgstr ""
+msgstr "Tipo de Prueba Qcp"
+
+#. module: quality_iot
+#: model:ir.model,name:quality_iot.model_quality_check
+msgid "Quality Check"
+msgstr "Control de calidad"
 
 #. module: quality_iot
 #: model:ir.model,name:quality_iot.model_quality_point

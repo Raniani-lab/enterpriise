@@ -3,22 +3,30 @@
 # 	* web_gantt
 # 
 # Translators:
-# Martin Trigaux, 2019
-# Leon Grill <leg@odoo.com>, 2019
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-23 11:39+0000\n"
-"PO-Revision-Date: 2019-08-26 09:38+0000\n"
-"Last-Translator: Leon Grill <leg@odoo.com>, 2019\n"
+"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"PO-Revision-Date: 2022-09-22 05:49+0000\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: de\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
+
+#. module: web_gantt
+#. openerp-web
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
+#, python-format
+msgid "&nbsp;"
+msgstr "&nbsp;"
 
 #. module: web_gantt
 #. openerp-web
@@ -32,14 +40,14 @@ msgstr "Hinzufügen"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Add record"
-msgstr ""
+msgstr "Datensatz hinzufügen"
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/js/gantt_controller.js:0
 #, python-format
 msgid "Are you sure to delete this record?"
-msgstr ""
+msgstr "Sind Sie sicher, dass Sie diesen Datensatz löschen wollen?"
 
 #. module: web_gantt
 #: model:ir.model,name:web_gantt.model_base
@@ -51,7 +59,7 @@ msgstr "Basis"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Collapse rows"
-msgstr ""
+msgstr "Zeilen ausblenden"
 
 #. module: web_gantt
 #. openerp-web
@@ -73,7 +81,7 @@ msgstr "Tag"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Expand rows"
-msgstr ""
+msgstr "Zeilen erweitern"
 
 #. module: web_gantt
 #. openerp-web
@@ -90,23 +98,62 @@ msgid "Gantt View"
 msgstr "Gantt-Ansicht"
 
 #. module: web_gantt
+#: code:addons/web_gantt/models/ir_ui_view.py:0
+#, python-format
+msgid "Gantt child can only be field or template, got %s"
+msgstr ""
+
+#. module: web_gantt
+#: code:addons/web_gantt/models/ir_ui_view.py:0
+#, python-format
+msgid "Gantt must have a 'date_start' attribute"
+msgstr ""
+
+#. module: web_gantt
+#: code:addons/web_gantt/models/ir_ui_view.py:0
+#, python-format
+msgid "Gantt must have a 'date_stop' attribute"
+msgstr "Gantt muss ein 'date_stop'-Attribut haben"
+
+#. module: web_gantt
+#: code:addons/web_gantt/models/ir_ui_view.py:0
+#, python-format
+msgid ""
+"Gantt must have a 'dependency_inverted_field' attribute once the "
+"'dependency_field' is specified"
+msgstr ""
+
+#. module: web_gantt
+#: code:addons/web_gantt/models/ir_ui_view.py:0
+#, python-format
+msgid "Gantt view can contain only one templates tag"
+msgstr ""
+
+#. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/js/gantt_model.js:0
 #, python-format
-msgid "Grouping by date is not supported, ignoring it"
-msgstr ""
+msgid "Grouping by date is not supported"
+msgstr "Gruppierung nach Datum wird nicht unterstützt"
 
 #. module: web_gantt
 #: code:addons/web_gantt/models/models.py:0
 #, python-format
 msgid "Insufficient fields for Gantt View!"
-msgstr ""
+msgstr "Unzureichende Felder für die Gantt-Ansicht!"
 
 #. module: web_gantt
-#. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_model.js:0
+#: code:addons/web_gantt/models/ir_ui_view.py:0
 #, python-format
-msgid "Invalid group by"
+msgid "Invalid attributes (%s) in gantt view. Attributes must be in (%s)"
+msgstr ""
+"Ungültige Attribute (%s) in der Gantt-Ansicht. Attribute müssen in (%s) "
+"stehen."
+
+#. module: web_gantt
+#: code:addons/web_gantt/models/ir_ui_view.py:0
+#, python-format
+msgid "Invalid default_scale '%s' in gantt"
 msgstr ""
 
 #. module: web_gantt
@@ -149,28 +196,36 @@ msgstr "Planung"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Plan existing"
-msgstr ""
+msgstr "Bestehender Plan"
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Previous"
-msgstr "Vorherige"
+msgstr "Zurück"
+
+#. module: web_gantt
+#: code:addons/web_gantt/models/models.py:0
+#, python-format
+msgid ""
+"Records that are in the past cannot be automatically rescheduled. They "
+"should be manually rescheduled instead."
+msgstr ""
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Start:"
-msgstr ""
+msgstr "Start:"
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Stop:"
-msgstr ""
+msgstr "Stop:"
 
 #. module: web_gantt
 #. openerp-web
@@ -184,7 +239,12 @@ msgstr "Heute"
 #: code:addons/web_gantt/static/src/js/gantt_model.js:0
 #, python-format
 msgid "Undefined %s"
-msgstr ""
+msgstr "Undefiniert  %s"
+
+#. module: web_gantt
+#: model:ir.model,name:web_gantt.model_ir_ui_view
+msgid "View"
+msgstr "Ansicht"
 
 #. module: web_gantt
 #. openerp-web
@@ -199,3 +259,17 @@ msgstr "Woche"
 #, python-format
 msgid "Year"
 msgstr "Jahr"
+
+#. module: web_gantt
+#: code:addons/web_gantt/models/models.py:0
+#, python-format
+msgid "You cannot reschedule %s towards %s."
+msgstr ""
+
+#. module: web_gantt
+#: code:addons/web_gantt/models/models.py:0
+#, python-format
+msgid ""
+"You cannot reschedule tasks that do not follow a direct dependency path. "
+"Only the first task has been automatically rescheduled."
+msgstr ""

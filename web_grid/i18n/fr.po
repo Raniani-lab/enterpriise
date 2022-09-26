@@ -3,28 +3,26 @@
 # 	* web_grid
 # 
 # Translators:
-# Eloïse Stilmant <est@odoo.com>, 2019
-# Nathan Grognet <ngr@odoo.com>, 2019
-# Martin Trigaux, 2019
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-09 11:59+0000\n"
-"PO-Revision-Date: 2019-08-26 09:38+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"PO-Revision-Date: 2022-09-22 05:49+0000\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: fr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: web_grid
 #: model:ir.model,name:web_grid.model_ir_actions_act_window_view
 msgid "Action Window View"
-msgstr ""
+msgstr "Vue de la Fenêtre d'Action"
 
 #. module: web_grid
 #. openerp-web
@@ -32,6 +30,13 @@ msgstr ""
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "Add a Line"
+msgstr "Ajouter une ligne"
+
+#. module: web_grid
+#. openerp-web
+#: code:addons/web_grid/static/src/xml/grid_view.xml:0
+#, python-format
+msgid "Add a line"
 msgstr "Ajouter une ligne"
 
 #. module: web_grid
@@ -65,12 +70,28 @@ msgstr "Tarifs"
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
+#: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "Next"
 msgstr "Suivant"
 
 #. module: web_grid
 #. openerp-web
+#: code:addons/web_grid/static/src/js/grid_controller.js:0
+#, python-format
+msgid "No activities found"
+msgstr "Aucune activité trouvée"
+
+#. module: web_grid
+#. openerp-web
+#: code:addons/web_grid/static/src/xml/grid_view.xml:0
+#, python-format
+msgid "None"
+msgstr "Aucun"
+
+#. module: web_grid
+#. openerp-web
+#: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "Previous"
@@ -78,20 +99,23 @@ msgstr "Précedent"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:0
+#: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "See all the records aggregated in this cell"
 msgstr "Voir tous les enregistrements agrégés dans cette cellule"
 
 #. module: web_grid
 #: code:addons/web_grid/models/models.py:0
+#: code:addons/web_grid/models/models.py:0
 #, python-format
 msgid "The field used as readonly type must have a group_operator attribute."
 msgstr ""
+"Le champ utilisé comme type en lecture seule doit avoir un attribut "
+"group_operator."
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:0
+#: code:addons/web_grid/static/src/js/grid_model.js:0
 #, python-format
 msgid ""
 "The sectioned grid view can't handle groups with different columns sets"
@@ -114,29 +138,6 @@ msgid "Total"
 msgstr "Total"
 
 #. module: web_grid
-#. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:0
-#, python-format
-msgid "Total (%s)"
-msgstr "Total (%s)"
-
-#. module: web_grid
-#. openerp-web
-#: code:addons/web_grid/static/src/js/grid_controller.js:0
-#, python-format
-msgid "Undefined"
-msgstr "Indéfini"
-
-#. module: web_grid
-#. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:0
-#: code:addons/web_grid/static/src/js/grid_renderer.js:0
-#: code:addons/web_grid/static/src/js/grid_renderer.js:0
-#, python-format
-msgid "Unknown"
-msgstr "Inconnu"
-
-#. module: web_grid
 #: model:ir.model,name:web_grid.model_ir_ui_view
 msgid "View"
 msgstr "Vue"
@@ -156,3 +157,11 @@ msgid ""
 msgstr ""
 "Semaine %(weeknumber)s\n"
 "%(week_start)s - %(week_end)s"
+
+#. module: web_grid
+#. openerp-web
+#: code:addons/web_grid/static/src/xml/grid_view.xml:0
+#: code:addons/web_grid/static/src/xml/grid_view.xml:0
+#, python-format
+msgid "\\u00A0"
+msgstr "\\u00A0"

@@ -3,17 +3,15 @@
 # 	* helpdesk_fsm
 # 
 # Translators:
-# Andy Cheng <andy.cheng@richsoda.com>, 2019
-# 敬雲 林 <chingyun@yuanchih-consult.com>, 2019
-# Martin Trigaux, 2019
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-23 11:38+0000\n"
-"PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"POT-Creation-Date: 2022-09-20 09:48+0000\n"
+"PO-Revision-Date: 2022-09-22 05:46+0000\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,7 +20,16 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: helpdesk_fsm
-#: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_team__use_fsm
+#: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__company_id
+msgid "Company"
+msgstr "公司"
+
+#. module: helpdesk_fsm
+#: model:ir.model,name:helpdesk_fsm.model_helpdesk_ticket_convert_wizard
+msgid "Convert Helpdesk Tickets to Tasks"
+msgstr ""
+
+#. module: helpdesk_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_ticket__use_fsm
 msgid "Convert tickets into Field Service tasks"
 msgstr ""
@@ -34,8 +41,9 @@ msgstr ""
 
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.create_fsm_task_view_form
+#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_ticket_view_form
 msgid "Create Task"
-msgstr "創建任務"
+msgstr "建立任務"
 
 #. module: helpdesk_fsm
 #: code:addons/helpdesk_fsm/models/helpdesk.py:0
@@ -70,19 +78,24 @@ msgid "Display Name"
 msgstr "顯示名稱"
 
 #. module: helpdesk_fsm
-#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_team_view_form
-msgid "Field Service"
+#: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task__display_helpdesk_ticket_button
+msgid "Display Ticket"
 msgstr ""
+
+#. module: helpdesk_fsm
+#: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_team__fsm_project_id
+msgid "FSM Project"
+msgstr ""
+
+#. module: helpdesk_fsm
+#: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_ticket__use_fsm
+msgid "Field Service"
+msgstr "現場服務"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_ticket__fsm_task_count
 msgid "Fsm Task Count"
 msgstr ""
-
-#. module: helpdesk_fsm
-#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.project_task_view_form
-msgid "Helpdesk"
-msgstr "服務台"
 
 #. module: helpdesk_fsm
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_team
@@ -115,23 +128,13 @@ msgid "Last Updated on"
 msgstr "最後更新於"
 
 #. module: helpdesk_fsm
-#: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_team__use_fsm
-#: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_ticket__use_fsm
-msgid "Onsite Interventions"
-msgstr ""
-
-#. module: helpdesk_fsm
-#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_team_view_form
-msgid "Plan Field Service tasks from tickets"
-msgstr ""
-
-#. module: helpdesk_fsm
-#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_ticket_view_form
-msgid "Plan Intervention"
+#: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task__helpdesk_ticket_id
+msgid "Original Ticket"
 msgstr ""
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__project_id
+#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_team_view_form
 msgid "Project"
 msgstr "專案"
 
@@ -146,18 +149,36 @@ msgid "Related ticket"
 msgstr ""
 
 #. module: helpdesk_fsm
+#: code:addons/helpdesk_fsm/controllers/portal.py:0
 #: model:ir.model,name:helpdesk_fsm.model_project_task
+#, python-format
 msgid "Task"
 msgstr "任務"
 
 #. module: helpdesk_fsm
+#: model:mail.message.subtype,description:helpdesk_fsm.mt_team_ticket_task_done
+#: model:mail.message.subtype,description:helpdesk_fsm.mt_ticket_task_done
+#: model:mail.message.subtype,name:helpdesk_fsm.mt_team_ticket_task_done
+#: model:mail.message.subtype,name:helpdesk_fsm.mt_ticket_task_done
+msgid "Task Done"
+msgstr ""
+
+#. module: helpdesk_fsm
+#: code:addons/helpdesk_fsm/wizard/create_task.py:0
+#, python-format
+msgid "Task created"
+msgstr ""
+
+#. module: helpdesk_fsm
+#: code:addons/helpdesk_fsm/controllers/portal.py:0
+#: code:addons/helpdesk_fsm/models/helpdesk.py:0
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_ticket__fsm_task_ids
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_ticket_view_form
+#, python-format
 msgid "Tasks"
 msgstr "任務"
 
 #. module: helpdesk_fsm
-#: code:addons/helpdesk_fsm/models/helpdesk.py:0
 #: code:addons/helpdesk_fsm/wizard/create_task.py:0
 #, python-format
 msgid "Tasks from Tickets"
@@ -169,18 +190,15 @@ msgid "Tasks generated from this ticket"
 msgstr ""
 
 #. module: helpdesk_fsm
-#: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task__helpdesk_ticket_id
+#: code:addons/helpdesk_fsm/controllers/portal.py:0
+#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.project_sharing_inherit_project_task_view_form
+#, python-format
 msgid "Ticket"
 msgstr "門票"
 
 #. module: helpdesk_fsm
-#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.project_task_view_form
+#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.project_sharing_inherit_project_task_view_form
 msgid "Ticket from this task"
-msgstr ""
-
-#. module: helpdesk_fsm
-#: model:ir.model.fields,help:helpdesk_fsm.field_project_task__helpdesk_ticket_id
-msgid "Ticket this task was generated from"
 msgstr ""
 
 #. module: helpdesk_fsm
@@ -189,11 +207,6 @@ msgid "Ticket's customer, will be linked to the task"
 msgstr ""
 
 #. module: helpdesk_fsm
-#: model_terms:ir.ui.view,arch_db:helpdesk_fsm.project_task_view_form
-msgid "Tickets"
-msgstr "入場券"
-
-#. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__name
 msgid "Title"
-msgstr "稱謂"
+msgstr "標題"

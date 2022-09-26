@@ -3,24 +3,17 @@
 # 	* sale_ebay
 # 
 # Translators:
-# Mustafa Rawi <mustafa@cubexco.com>, 2019
-# Akram Alfusayal <akram_ma@hotmail.com>, 2019
-# amrnegm <amrnegm.01@gmail.com>, 2019
-# Martin Trigaux, 2019
-# Osoul <baruni@osoul.ly>, 2019
-# Mohammed Albasha <m.albasha.ma@gmail.com>, 2019
-# Ghaith Gammar <g.gammar@saharaifs.net>, 2019
-# Osama Ahmaro <osamaahmaro@gmail.com>, 2019
-# Ali Alrehawi <alrehawi@hotmail.com>, 2019
-# Shaima Safar <shaima.safar@open-inside.com>, 2019
+# Mustafa Rawi <mustafa@cubexco.com>, 2022
+# Martin Trigaux, 2022
+# Malaz Abuidris <msea@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-23 11:39+0000\n"
-"PO-Revision-Date: 2019-08-26 09:38+0000\n"
-"Last-Translator: Shaima Safar <shaima.safar@open-inside.com>, 2019\n"
+"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"PO-Revision-Date: 2022-09-22 05:48+0000\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2022\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -45,8 +38,8 @@ msgid ""
 " You need to have at least 2 variations selected for a multi-variations listing.\n"
 " Or if you try to delete a variation, you cannot do it by unselecting it. Setting the quantity to 0 is the safest method to make a variation unavailable."
 msgstr ""
-" يجب اختيار موديلين اثنين على الأقل لتتمكن من تسجيل المنتج بالقوائم على أنه متعدد الموديلات.\n"
-"أو إذا كنت تحاول حذف موديل، فلا يمكنك فعل هذا بإلغاء تحديده. تعيين الكمية بالقيمة 0 هي أفضل طريقة لجعل إحدى الموديلات غير متاح."
+" عليك تحديد متغيرين اثنين على الأقل لتتمكن من تسجيل المنتج في القوائم على أنه متعدد المتغيرات.\n"
+"أو إذا كنت تحاول حذف متغير، فلا يمكنك فعل هذا بإلغاء تحديده. تعيين الكمية بالقيمة 0 هي أفضل طريقة لجعل أحد المتغيرات غير متاح. "
 
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__days_10
@@ -76,7 +69,7 @@ msgstr "7 أيام"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Sales Team</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">فريق المبيعات</span> "
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -95,8 +88,25 @@ msgstr "<span class=\"o_form_label\">حساب eBay</span>"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid ""
+"<span class=\"o_form_label\">eBay Marketplace Account Deletion/Closure "
+"Notifications</span>"
+msgstr "<span class=\"o_form_label\">إشعارات الإغلاق/الحذف لحساب سوق eBay</span> "
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">eBay Options</span>"
 msgstr "<span class=\"o_form_label\">خيارات eBay</span>"
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "Activate Other Currencies"
+msgstr "تفعيل عملات أخرى"
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "Add other countries"
+msgstr "إضافة دول أخرى "
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:0
@@ -119,12 +129,6 @@ msgid "Auction"
 msgstr "مزاد"
 
 #. module: sale_ebay
-#: model:ir.model.fields,field_description:sale_ebay.field_res_country__ebay_available
-#: model:ir.model.fields,field_description:sale_ebay.field_res_currency__ebay_available
-msgid "Availability To Use For eBay API"
-msgstr "إمكانية الاستخدم لواجهة برمجة تطبيق eBay"
-
-#. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_buy_it_now_price
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_buy_it_now_price
 msgid "Buy It Now Price"
@@ -133,7 +137,7 @@ msgstr "سعر الشراء الحالي"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
 msgid "Cancel"
-msgstr "إلغاء"
+msgstr "إلغاء "
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_category_id
@@ -170,7 +174,7 @@ msgstr "الكود"
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_res_config_settings
 msgid "Config Settings"
-msgstr "ضبط الإعدادات"
+msgstr "تهيئة الإعدادات "
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:0
@@ -182,6 +186,11 @@ msgstr "قم بإعداد مكون eBay الآن"
 #: model:ir.model,name:sale_ebay.model_res_partner
 msgid "Contact"
 msgstr "جهة الاتصال"
+
+#. module: sale_ebay
+#: model:ir.actions.act_window,name:sale_ebay.action_country_all_form
+msgid "Countries"
+msgstr "الدول"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -246,7 +255,12 @@ msgstr "مفتاح المطور"
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__display_name
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__display_name
 msgid "Display Name"
-msgstr "الاسم المعروض"
+msgstr "اسم العرض "
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "Documentation"
+msgstr "التوثيق"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_listing_duration
@@ -261,6 +275,8 @@ msgid ""
 "Ebay Synchronisation could not confirm because of the following error:\n"
 "%s"
 msgstr ""
+"تعذر تأكيد مزامنة Ebay بسبب الخطأ التالي: \n"
+"%s "
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/sale_order.py:0
@@ -269,25 +285,27 @@ msgid ""
 "Ebay could not synchronize order:\n"
 "%s"
 msgstr ""
+"لم يتمكن Ebay من مزامنة الطلب: \n"
+"%s "
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_orders_sync_ir_actions_server
 #: model:ir.cron,cron_name:sale_ebay.ir_cron_sale_ebay_orders_sync
 #: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_orders_sync
 msgid "Ebay: get new orders"
-msgstr ""
+msgstr "Ebay: احصل على طلبات جديدة "
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_orders_recovery
 msgid "Ebay: orders recovery"
-msgstr ""
+msgstr "Ebay: استعادة الطلبات "
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_stock_sync_ir_actions_server
 #: model:ir.cron,cron_name:sale_ebay.ir_cron_sale_ebay_stock_sync
 #: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_stock_sync
-msgid "Ebay: synchronise stock (for 'get new orders' synchronisation)"
-msgstr ""
+msgid "Ebay: synchronise stock"
+msgstr "Ebay: مزامنة المخزون "
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_categories_ir_actions_server
@@ -295,16 +313,6 @@ msgstr ""
 #: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_categories
 msgid "Ebay: update categories"
 msgstr "Ebay: تحديث الفئات"
-
-#. module: sale_ebay
-#: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_status_10_ir_actions_server
-#: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_status_5_ir_actions_server
-#: model:ir.cron,cron_name:sale_ebay.ir_cron_sale_ebay_status_10
-#: model:ir.cron,cron_name:sale_ebay.ir_cron_sale_ebay_status_5
-#: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_status_10
-#: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_status_5
-msgid "Ebay: update product status"
-msgstr "Ebay: تحديث حالة المنتج"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
@@ -319,7 +327,7 @@ msgid ""
 " No Variant Set To Be Listed On eBay."
 msgstr ""
 "حدث خطأ.\n"
-"لم يُحدد موديل لإدراجه بالقوائم على eBay."
+"لم لم يتم تحديد متغير لإدراجه في eBay. "
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:0
@@ -349,12 +357,17 @@ msgstr "الاسم الكامل"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_gallery_plus
 msgid "Gallery Plus"
-msgstr "جاليري بلاس"
+msgstr "Gallery Plus"
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "Generate Token"
+msgstr "إنشاء رمز "
 
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__gtc
 msgid "Good 'Til Cancelled (only for fixed price)"
-msgstr "صالح حتى الإلغاء (بسعر ثابت فقط)"
+msgstr "صالح حتى الإلغاء (للسعر الثابت فقط) "
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__id
@@ -364,6 +377,12 @@ msgstr "صالح حتى الإلغاء (بسعر ثابت فقط)"
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__id
 msgid "ID"
 msgstr "المُعرف"
+
+#. module: sale_ebay
+#: model:ir.model.fields,help:sale_ebay.field_res_country__ebay_available
+#: model:ir.model.fields,help:sale_ebay.field_res_currency__ebay_available
+msgid "If activated, can be used for eBay."
+msgstr "إذا كان مفعلاً، يمكن استخدامه لـ eBay. "
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -377,8 +396,8 @@ msgid ""
 "Impossible to revise a listing into a multi-variations listing.\n"
 " Create a new listing."
 msgstr ""
-"لا يمكن مراجعة قائمة بنظام قوائم متعدد الموديلات.\n"
-"أنشئ قائمة جديدة."
+"لا يمكن مراجعة قائمة بنظام قوائم متعدد المتغيرات.\n"
+"قم بإنشاء قائمة جديدة. "
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_item_condition_id
@@ -417,12 +436,12 @@ msgstr "آخر تحديث في"
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_last_sync
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_last_sync
 msgid "Last update"
-msgstr "اخر تحديث"
+msgstr "آخر تحديث"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__leaf_category
 msgid "Leaf Category"
-msgstr "Leaf Category"
+msgstr "أصغر فئة ممكنة "
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
@@ -458,7 +477,12 @@ msgstr "نوع قائمة"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_location
 msgid "Location"
-msgstr "المكان"
+msgstr "الموقع "
+
+#. module: sale_ebay
+#: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_account_deletion_endpoint
+msgid "Marketplace account deletion notification endpoint"
+msgstr "نقطة نهاية إشعار حذف حساب السوق "
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -482,35 +506,43 @@ msgstr "الاسم"
 #: code:addons/sale_ebay/models/sale_ebay.py:0
 #, python-format
 msgid "No Business Policies"
-msgstr "لا سياسات الأعمال"
+msgstr "لا توجد سياسات للأعمال "
 
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__ebay_category__category_type__ebay
 msgid "Official eBay Category"
-msgstr "الفئة الرسمية من eBay"
+msgstr "الفئة eBay الرسمية "
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:0
 #, python-format
 msgid "One parameter is missing."
-msgstr "هناك باراميتر واحد مفقود."
+msgstr "هناك معيار واحد مفقود. "
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:0
 #, python-format
 msgid "Or the condition is not compatible with the category."
-msgstr "أو قد يكون الشرط قد متوافق مع الفئة."
+msgstr "أو قد يكون الشرط غير متوافق مع الفئة. "
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_out_of_stock
 msgid "Out Of Stock"
-msgstr "نفذت الكمية"
+msgstr "نفدت الكمية "
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_seller_payment_policy_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_seller_payment_policy_id
 msgid "Payment Policy"
-msgstr "سياسة السداد"
+msgstr "سياسة الدفع "
+
+#. module: sale_ebay
+#: code:addons/sale_ebay/models/res_config_settings.py:0
+#, python-format
+msgid ""
+"Please provide your ebay production keys before enabling the account "
+"deletion notifications."
+msgstr "يرجى التزويد بمفتاح إنتاج ebay قبل تمكين إشعارات حذف الحساب. "
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -529,7 +561,7 @@ msgid "Private Listing"
 msgstr "قائمة خاصة"
 
 #. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_product_product
+#: model:ir.model,name:sale_ebay.model_product_template
 msgid "Product"
 msgstr "المنتج"
 
@@ -539,15 +571,15 @@ msgid "Product Categories"
 msgstr "فئات المنتجات"
 
 #. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_product_template
-msgid "Product Template"
-msgstr "قالب المنتج"
+#: model:ir.model,name:sale_ebay.model_product_product
+msgid "Product Variant"
+msgstr "متغير المنتج "
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/sale_order.py:0
 #, python-format
 msgid "Product created from eBay transaction %s"
-msgstr ""
+msgstr "المنتج الذي تم إنشاؤه من معاملة ebay %s "
 
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__res_config_settings__ebay_domain__prod
@@ -557,7 +589,7 @@ msgstr "الإنتاج"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_app_id
 msgid "Production App Key"
-msgstr "مفتاح تطبيقات الإنتاج"
+msgstr "مفتاح تطبيق الإنتاج "
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_cert_id
@@ -567,12 +599,7 @@ msgstr "مفتاح اعتماد الإنتاج"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_token
 msgid "Production Token"
-msgstr "الرمز السري للإنتاج"
-
-#. module: sale_ebay
-#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "Products & Transactions"
-msgstr "المنتجات والمعاملات"
+msgstr "رمز الإنتاج "
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_use
@@ -594,18 +621,18 @@ msgstr "الكمية المباعة"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Relist Item"
-msgstr "إعادة تسجيل السلعة بقائمة"
+msgstr "إعادة إدراج السلعة "
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_seller_return_policy_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_seller_return_policy_id
 msgid "Return Policy"
-msgstr "سياسة العائدات"
+msgstr "سياسة الإرجاع "
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Revise Item"
-msgstr "تنقيح السلعة"
+msgstr "مراجعة السلعة "
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_sale_order
@@ -620,7 +647,7 @@ msgstr "فريق المبيعات"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Sales Team to manage eBay sales"
-msgstr ""
+msgstr "فريق المبيعات لإدارة مبيعات ebay "
 
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__res_config_settings__ebay_domain__sand
@@ -640,7 +667,7 @@ msgstr "مفتاح اعتماد Sandbox"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sandbox_token
 msgid "Sandbox Token"
-msgstr "الرمز السري لـSandbox"
+msgstr "رمز Sandbox "
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
@@ -699,19 +726,26 @@ msgid "Sync now"
 msgstr "المزامنة الآن"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:0
 #: code:addons/sale_ebay/models/sale_order.py:0
 #, python-format
 msgid "The Buyer Chose The Following Delivery Method :\n"
-msgstr "اختار المشتري طريقة التسليم التالية:\n"
+msgstr "قام المشتري باختيار طريقة التوصيل التالية:\n"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:0
-#: code:addons/sale_ebay/models/product.py:0
 #: code:addons/sale_ebay/models/sale_order.py:0
 #, python-format
 msgid "The Buyer Posted :\n"
-msgstr "نشر المشتري:\n"
+msgstr "قام المشتري بنشر:\n"
+
+#. module: sale_ebay
+#: code:addons/sale_ebay/models/res_config_settings.py:0
+#, python-format
+msgid ""
+"The python 'cryptography' module is not installed on your server.\n"
+"It is necessary to support eBay account deletion notifications, please contact your system administrator to install it."
+msgstr ""
+"تطبيق 'التشفير' لدى بايثون غير مثبت في خادمك. \n"
+"إنه ضروري لدعم إشعارات حذف حساب. يرجى التواصل مع مدير النظام ليقوم بتثبيته. "
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_subtitle
@@ -720,14 +754,14 @@ msgid ""
 "The subtitle is restricted to 55 characters. Fees can be claimed by eBay for"
 " this feature"
 msgstr ""
-"يجب أن يقتصر العنوان الفرعي على 55 حرفًا فقط. قد يطالب eBay برسوم إضافية "
-"مقابل هذه الخاصية"
+"يجب أن يقتصر العنوان الفرعي على 55 حرف فقط. قد يطالب eBay برسوم إضافية مقابل"
+" هذه الخاصية "
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_title
 #: model:ir.model.fields,help:sale_ebay.field_product_template__ebay_title
 msgid "The title is restricted to 80 characters"
-msgstr "يجب أن يقتصر العنوان على 80 حرفًا فقط"
+msgstr "يجب أن يقتصر العنوان على 80 حرف فقط "
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_category_2_id
@@ -748,12 +782,21 @@ msgid ""
 " the date of the oldest order you wish to synchronize in the format \"YYYY-"
 "MM-DD\"."
 msgstr ""
+"تاريخ آخر مزامنة غير موجود في معايير نظامك. قم بإنشاء سجل لمعايير النظام "
+"بالمفتاح \"ebay_last_sync\" والقيمة المحددة لتاريخ أقدم طلب ترغب في مزامنته "
+"بصيغة \"YYYY-MM-DD\". "
 
 #. module: sale_ebay
-#: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_template_id
-#: model:ir.model.fields,help:sale_ebay.field_product_template__ebay_template_id
-msgid "This field contains the template that will be used."
-msgstr "يحتوي هذا الحقل على القالب الذي سيتم استخدامه."
+#: code:addons/sale_ebay/models/res_partner.py:0
+#, python-format
+msgid ""
+"This is an automated notification as a deletion request has been received from eBay concerning the account \"%s (%s)\". The account has been anonymised already and his portal access revoked (if they had any).\n"
+"\n"
+"However, personal information might remain in linked documents, please review them according to laws that apply."
+msgstr ""
+"هذا إشعار مؤتمت حيث أنه قد تم استلام طلب حذف من eBay متعلق بالحساب \"%s (%s)\". تم جعل الحساب مجهولاً بالفعل وإبطال إمكانية الوصول إلى البوابة (إن وجد). \n"
+"\n"
+"ولكن قد تبقى المعلومات الشخصية في مستندات مرتبطة. يرجى مراجعتها وفقاً للقوانين المنطبقة. "
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_title
@@ -783,9 +826,20 @@ msgid "Use eBay"
 msgstr "استخدام eBay"
 
 #. module: sale_ebay
+#: model:ir.model.fields,field_description:sale_ebay.field_res_country__ebay_available
+#: model:ir.model.fields,field_description:sale_ebay.field_res_currency__ebay_available
+msgid "Use on eBay"
+msgstr "الاستخدام في eBay "
+
+#. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Variants"
-msgstr "الموديلات"
+msgstr "المتغيرات "
+
+#. module: sale_ebay
+#: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_verification_token
+msgid "Verification Token"
+msgstr "رمز التحقق "
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_zip_code
@@ -806,6 +860,7 @@ msgstr "فئة eBay"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_description
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_description
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "eBay Description"
 msgstr "وصف eBay"
 
@@ -843,6 +898,11 @@ msgid "eBay Listing ID"
 msgstr "معرف قائمة eBay"
 
 #. module: sale_ebay
+#: model:mail.activity.type,summary:sale_ebay.ebay_GDPR_notification
+msgid "eBay Odoo connector notification - account deletion"
+msgstr "إشعار موصل شحن eBay في أودو - حذف الحساب "
+
+#. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_policy
 msgid "eBay Policy"
 msgstr "سياسة eBay"
@@ -867,12 +927,22 @@ msgstr "معرف مستخدم eBay"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_variant_url
 msgid "eBay Variant URL"
-msgstr "رابط موديل eBay"
+msgstr "رابط متغير eBay "
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_site
 msgid "eBay Website"
 msgstr "موقع eBay"
+
+#. module: sale_ebay
+#: model:mail.activity.type,name:sale_ebay.ebay_GDPR_notification
+msgid "eBay connector: account deletion notification"
+msgstr "موصل eBay: إشعار حذف الحساب "
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "eBay documentation"
+msgstr "توثيق eBay "
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/sale_ebay.py:0
@@ -881,30 +951,28 @@ msgid ""
 "eBay error: Impossible to synchronize the categories. \n"
 "'%s'"
 msgstr ""
-"خطأ من eBay: تعذّرت مزامنة الفئات. \n"
-"'%s'"
-
-#. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:0
-#: code:addons/sale_ebay/models/product.py:0
-#, python-format
-msgid ""
-"eBay error: Impossible to synchronize the products. \n"
-"'%s'"
-msgstr ""
-"خطأ من eBay: تعذّرت مزامنة المنتجات. \n"
-"'%s'"
+"خطأ من eBay: لا يمكن مزامنة الفئات. \n"
+"'%s' "
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:0
 #, python-format
 msgid "eBay is unreachable. Please try again later."
-msgstr "تعذّر الوصول لـeBay. برجاء المحاولة مرة أخرى لاحقًا."
+msgstr "تعذّر الوصول إلى eBay. يرجى المحاولة مجدداً لاحقاً. "
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay parameters"
-msgstr "باراميترز eBay"
+msgstr "معايير eBay "
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid ""
+"eBay requires supporting customer account deletion/closure notifications.\n"
+"                                Please follow the"
+msgstr ""
+"يتطلب eBay دعم إشعارات إغلاق/حذف حسابات العملاء.\n"
+"                                يرجى تتبع "
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_url
@@ -915,32 +983,32 @@ msgstr "رابط eBay"
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_end_items_listings
 msgid "eBay: End product listings"
-msgstr ""
+msgstr "eBay: قوائم المنتجات النهائية "
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_list_items
 msgid "eBay: List products"
-msgstr ""
+msgstr "eBay: إدراج المنتجات في القوائم "
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_relist_items
 msgid "eBay: Relist products"
-msgstr ""
+msgstr "eBay: إعادة إدراج المنتجات في القوائم "
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_revise_items
 msgid "eBay: Revise products"
-msgstr ""
+msgstr "eBay: مراجعة المنتجات "
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_unlink_items_listings
 msgid "eBay: Unlink product listings"
-msgstr ""
+msgstr "eBay: إلغاء ربط قوائم المنتجات "
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_ebay_update_carrier
 msgid "eBay: Update carrier information"
-msgstr ""
+msgstr "eBay: تحديث معلومات شركة الشحن "
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_currency
@@ -950,4 +1018,9 @@ msgstr "عملة eBay"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sales_team
 msgid "ebay Sales Team"
-msgstr ""
+msgstr "فريق مبيعات eBay "
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "to setup this mechanism."
+msgstr "لضبط هذه الآلية. "

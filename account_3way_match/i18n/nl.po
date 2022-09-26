@@ -3,17 +3,15 @@
 # 	* account_3way_match
 # 
 # Translators:
-# Martin Trigaux, 2019
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-09 11:58+0000\n"
-"PO-Revision-Date: 2019-08-26 09:34+0000\n"
-"Last-Translator: Yenthe Van Ginneken <yenthespam@gmail.com>, 2019\n"
+"POT-Creation-Date: 2021-07-12 07:57+0000\n"
+"PO-Revision-Date: 2022-09-22 05:44+0000\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,13 +20,19 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: account_3way_match
+#: model:ir.model.fields,help:account_3way_match.field_account_bank_statement_line__release_to_pay_manual
 #: model:ir.model.fields,help:account_3way_match.field_account_move__release_to_pay_manual
+#: model:ir.model.fields,help:account_3way_match.field_account_payment__release_to_pay_manual
 msgid ""
 "  * Yes: you should pay the bill, you have received the products\n"
 "  * No, you should not pay the bill, you have not received the products\n"
 "  * Exception, there is a difference between received and billed quantities\n"
 "This status is defined automatically, but you can force it by ticking the 'Force Status' checkbox."
 msgstr ""
+"  * Ja: je moet de factuur betalen, je hebt de producten ontvangen\n"
+"  * Nee, je hoeft de factuur niet te betalen, je hebt de producten niet ontvangen\n"
+"  * Fout, er is een verschil tussen de ontvangen en gefactureerde hoeveelheden\n"
+"De status wordt automatisch ingesteld, maar kan geforceerd worden door  'Forceer status' aan te vinken."
 
 #. module: account_3way_match
 #: model_terms:ir.ui.view,arch_db:account_3way_match.account_invoice_filter_inherit_account_3way_match
@@ -48,16 +52,22 @@ msgid "Exception"
 msgstr "Fout"
 
 #. module: account_3way_match
+#: model:ir.model.fields,field_description:account_3way_match.field_account_bank_statement_line__force_release_to_pay
 #: model:ir.model.fields,field_description:account_3way_match.field_account_move__force_release_to_pay
+#: model:ir.model.fields,field_description:account_3way_match.field_account_payment__force_release_to_pay
 msgid "Force Status"
 msgstr "Forceer status"
 
 #. module: account_3way_match
+#: model:ir.model.fields,help:account_3way_match.field_account_bank_statement_line__force_release_to_pay
 #: model:ir.model.fields,help:account_3way_match.field_account_move__force_release_to_pay
+#: model:ir.model.fields,help:account_3way_match.field_account_payment__force_release_to_pay
 msgid ""
 "Indicates whether the 'Should Be Paid' status is defined automatically or "
 "manually."
 msgstr ""
+"Geeft aan of de 'Zou betaald moeten zijn' status automatisch of handmatig is"
+" gedefinieerd."
 
 #. module: account_3way_match
 #: model:ir.model,name:account_3way_match.model_account_journal
@@ -66,13 +76,13 @@ msgstr "Dagboek"
 
 #. module: account_3way_match
 #: model:ir.model,name:account_3way_match.model_account_move
-msgid "Journal Entries"
-msgstr "Boekingen"
+msgid "Journal Entry"
+msgstr "Boeking"
 
 #. module: account_3way_match
 #: model:ir.model,name:account_3way_match.model_account_move_line
 msgid "Journal Item"
-msgstr "Boeking"
+msgstr "Boekingsregel"
 
 #. module: account_3way_match
 #: model:ir.model.fields.selection,name:account_3way_match.selection__account_move__release_to_pay__no
@@ -82,9 +92,11 @@ msgid "No"
 msgstr "Nee"
 
 #. module: account_3way_match
+#: model:ir.model.fields,field_description:account_3way_match.field_account_bank_statement_line__release_to_pay
 #: model:ir.model.fields,field_description:account_3way_match.field_account_move__release_to_pay
+#: model:ir.model.fields,field_description:account_3way_match.field_account_payment__release_to_pay
 msgid "Release To Pay"
-msgstr ""
+msgstr "Vrijgeven voor betaling"
 
 #. module: account_3way_match
 #: model:ir.model.fields,field_description:account_3way_match.field_account_move_line__can_be_paid
@@ -92,12 +104,16 @@ msgid "Release to Pay"
 msgstr "Vrijgeven voor betaling"
 
 #. module: account_3way_match
+#: model:ir.model.fields,field_description:account_3way_match.field_account_bank_statement_line__release_to_pay_manual
 #: model:ir.model.fields,field_description:account_3way_match.field_account_move__release_to_pay_manual
+#: model:ir.model.fields,field_description:account_3way_match.field_account_payment__release_to_pay_manual
 msgid "Should Be Paid"
 msgstr "Moet betaald worden"
 
 #. module: account_3way_match
+#: model:ir.model.fields,help:account_3way_match.field_account_bank_statement_line__release_to_pay
 #: model:ir.model.fields,help:account_3way_match.field_account_move__release_to_pay
+#: model:ir.model.fields,help:account_3way_match.field_account_payment__release_to_pay
 msgid ""
 "This field can take the following values :\n"
 "  * Yes: you should pay the bill, you have received the products\n"
@@ -106,8 +122,8 @@ msgid ""
 "This status is defined automatically, but you can force it by ticking the 'Force Status' checkbox."
 msgstr ""
 "De velden kunnen de volgende waarden bevatten:\n"
-"  * Ja: u moet de factuur betalen, u heeft de producten ontvangen\n"
-"  * Nee, u hoeft de factuur niet te betalen, u heeft de producten niet ontvangen\n"
+"  * Ja: je moet de factuur betalen, je hebt de producten ontvangen\n"
+"  * Nee, je hoeft de factuur niet te betalen, je hebt de producten niet ontvangen\n"
 "  * Fout, er is een verschil tussen de ontvangen en gefactureerde hoeveelheden\n"
 "De status wordt automatisch ingesteld, maar kan geforceerd worden door  'Forceer status' aan te vinken."
 

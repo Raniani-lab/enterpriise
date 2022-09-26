@@ -3,35 +3,38 @@
 # 	* social_twitter
 # 
 # Translators:
-# Martin Trigaux, 2019
-# Xavier Belmere <Info@cartmeleon.com>, 2019
-# Nathan Noël <nathan070@me.com>, 2019
-# Cécile Collart <cco@odoo.com>, 2019
-# Olivier Lenoir <olivier.lenoir@free.fr>, 2019
-# Eloïse Stilmant <est@odoo.com>, 2019
+# Cécile Collart <cco@odoo.com>, 2022
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-10-01 12:16+0000\n"
-"PO-Revision-Date: 2019-09-23 14:03+0000\n"
-"Last-Translator: Eloïse Stilmant <est@odoo.com>, 2019\n"
+"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"PO-Revision-Date: 2022-09-22 05:49+0000\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: fr\n"
-"Plural-Forms: nplurals=2; plural=(n > 1);\n"
+"Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_post_template.py:0
+#, python-format
+msgid "%s / %s characters to fit in a Tweet"
+msgstr ""
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.twitter_preview
-msgid ""
-"<b class=\"text-900\">Twitter Account</b>\n"
-"                        <span class=\"text-600\">@twitteraccount · 11m</span>"
+msgid "11m"
 msgstr ""
-"<b class=\"text-900\">Compte Twitter</b>\n"
-"                        <span class=\"text-600\">@comptetwitter · 11m</span>"
+
+#. module: social_twitter
+#: model_terms:ir.ui.view,arch_db:social_twitter.twitter_preview
+msgid "<b class=\"text-900\">Twitter Account</b>"
+msgstr ""
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
@@ -44,12 +47,68 @@ msgid "<i class=\"fa fa-heart\" title=\"Likes\"/>"
 msgstr "<i class=\"fa fa-heart\" title=\"Likes\"/>"
 
 #. module: social_twitter
+#: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
+msgid ""
+"<i class=\"fa fa-pencil\" title=\"Quote a tweet\"/>\n"
+"                                    <span>Quote Tweet</span>"
+msgstr ""
+
+#. module: social_twitter
+#: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
+msgid "<i class=\"fa fa-retweet\" title=\"Retweet a tweet\"/>"
+msgstr ""
+
+#. module: social_twitter
+#: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
+msgid "<span class=\"fst-italic\">Empty tweet</span>"
+msgstr ""
+
+#. module: social_twitter
+#: model_terms:ir.ui.view,arch_db:social_twitter.twitter_preview
+msgid "@twitteraccount ·"
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "A retweet already exists"
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "An error occurred (%s)"
+msgstr ""
+
+#. module: social_twitter
 #. openerp-web
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 #, python-format
 msgid "Author Image"
 msgstr "Auteur de l'image"
+
+#. module: social_twitter
+#. openerp-web
+#: code:addons/social_twitter/static/src/js/stream_post_twitter_quote.js:0
+#, python-format
+msgid "Cancel"
+msgstr "Annuler"
+
+#. module: social_twitter
+#: model:ir.model.fields,help:social_twitter.field_res_config_settings__twitter_use_own_account
+msgid ""
+"Check this if you want to use your personal Twitter Developer Account "
+"instead of the provided one."
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "Code %i"
+msgstr ""
 
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_res_config_settings
@@ -59,12 +118,12 @@ msgstr "Paramètres de config"
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.res_config_settings_view_form
 msgid "Consumer Key"
-msgstr ""
+msgstr "La clé du consommateur"
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.res_config_settings_view_form
 msgid "Consumer Secret Key"
-msgstr ""
+msgstr "Clé secrète du consommateur"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_twitter_account__create_uid
@@ -84,17 +143,33 @@ msgstr "Description"
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_twitter_account__display_name
 msgid "Display Name"
-msgstr "Afficher Nom"
+msgstr "Nom affiché"
 
 #. module: social_twitter
-#: model:ir.model.fields,field_description:social_twitter.field_social_post__display_twitter_preview
+#: model:ir.model.fields,field_description:social_twitter.field_social_post__has_twitter_accounts
+#: model:ir.model.fields,field_description:social_twitter.field_social_post_template__has_twitter_accounts
 msgid "Display Twitter Preview"
 msgstr "Afficher l'aperçu Twitter"
 
 #. module: social_twitter
+#. openerp-web
+#: code:addons/social_twitter/static/src/js/stream_post_kanban_controller.js:0
+#: code:addons/social_twitter/static/src/js/stream_post_twitter_quote.js:0
+#, python-format
+msgid "Error"
+msgstr "Erreur"
+
+#. module: social_twitter
+#. openerp-web
+#: code:addons/social_twitter/static/src/js/stream_post_twitter_quote.js:0
+#, python-format
+msgid "Error while sending the data to the server."
+msgstr ""
+
+#. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_likes
 msgid "Favorites of"
-msgstr ""
+msgstr "Favoris de"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_twitter_account__id
@@ -105,6 +180,12 @@ msgstr "ID"
 #: model:ir.model.fields,field_description:social_twitter.field_social_twitter_account__image
 msgid "Image"
 msgstr "Image"
+
+#. module: social_twitter
+#: model:ir.model.fields,field_description:social_twitter.field_social_post__is_twitter_post_limit_exceed
+#: model:ir.model.fields,field_description:social_twitter.field_social_post_template__is_twitter_post_limit_exceed
+msgid "Is Twitter Post Limit Exceed"
+msgstr ""
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_keyword
@@ -134,6 +215,24 @@ msgid "Likes"
 msgstr "Aime"
 
 #. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid ""
+"Looks like this Tweet is a duplicate. Edit its content and try posting "
+"again."
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream.py:0
+#, python-format
+msgid ""
+"Looks like you've made too many requests. Please wait a few minutes before "
+"giving it another try."
+msgstr ""
+"Il semble que vous ayez fait trop de demandes. Veuillez patienter quelques "
+"minutes avant de réessayer."
+
+#. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_media__media_type
 msgid "Media Type"
 msgstr "Type de Média"
@@ -149,9 +248,54 @@ msgid "Name"
 msgstr "Nom"
 
 #. module: social_twitter
+#: code:addons/social_twitter/models/social_stream.py:0
+#, python-format
+msgid "Please select a Twitter account for this stream type."
+msgstr "Veuillez sélectionner un compte Twitter pour ce type de flux."
+
+#. module: social_twitter
+#. openerp-web
+#: code:addons/social_twitter/static/src/js/stream_post_twitter_quote.js:0
+#, python-format
+msgid "Post"
+msgstr "Publier"
+
+#. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.twitter_preview
 msgid "Post Image"
 msgstr "Image de la Publication"
+
+#. module: social_twitter
+#. openerp-web
+#: code:addons/social_twitter/static/src/js/stream_post_twitter_quote.js:0
+#, python-format
+msgid "Quote a Tweet"
+msgstr ""
+
+#. module: social_twitter
+#: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_quoted_tweet_author_link
+msgid "Quoted tweet author Link"
+msgstr ""
+
+#. module: social_twitter
+#: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_quoted_tweet_author_name
+msgid "Quoted tweet author Name"
+msgstr ""
+
+#. module: social_twitter
+#: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_quoted_tweet_message
+msgid "Quoted tweet message"
+msgstr ""
+
+#. module: social_twitter
+#: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_quoted_tweet_profile_image_url
+msgid "Quoted tweet profile image URL"
+msgstr ""
+
+#. module: social_twitter
+#: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
+msgid "RT"
+msgstr ""
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_retweet_count
@@ -159,9 +303,18 @@ msgid "Re-tweets"
 msgstr "Re-tweets"
 
 #. module: social_twitter
+#: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
+msgid "Retweet"
+msgstr ""
+
+#. module: social_twitter
+#: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
+msgid "Retweet or Quote"
+msgstr ""
+
+#. module: social_twitter
 #. openerp-web
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
-#: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 #, python-format
 msgid "Retweets"
 msgstr "Retweets"
@@ -169,17 +322,17 @@ msgstr "Retweets"
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream__twitter_searched_keyword
 msgid "Search Keyword"
-msgstr ""
+msgstr "Recherche par Mot-clé"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream__twitter_followed_account_search
 msgid "Search User"
-msgstr ""
+msgstr "Recherche par Utilisateur"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_twitter_account__twitter_searched_by_id
 msgid "Searched by"
-msgstr ""
+msgstr "Recherche par"
 
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_account
@@ -202,6 +355,11 @@ msgid "Social Post"
 msgstr "Publication"
 
 #. module: social_twitter
+#: model:ir.model,name:social_twitter.model_social_post_template
+msgid "Social Post Template"
+msgstr ""
+
+#. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_stream
 msgid "Social Stream"
 msgstr "Flux social"
@@ -209,11 +367,27 @@ msgstr "Flux social"
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_stream_post
 msgid "Social Stream Post"
-msgstr ""
+msgstr "Publication du Flux Social"
 
 #. module: social_twitter
 #: model:ir.model,name:social_twitter.model_social_twitter_account
 msgid "Social Twitter Account"
+msgstr "Compte Twitter social"
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream.py:0
+#, python-format
+msgid ""
+"The keyword you've typed in does not look valid. Please try again with other"
+" words."
+msgstr ""
+"Le mot-clé que vous avez saisi ne semble pas valide. Veuillez réessayer avec"
+" d'autres mots."
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "The tweet is empty. Add a message and try posting again."
 msgstr ""
 
 #. module: social_twitter
@@ -223,18 +397,13 @@ msgid ""
 "The url that this service requested returned an error. Please contact the "
 "author of the app."
 msgstr ""
+"L'URL demandée par ce service a renvoyé une erreur. Veuillez contacter "
+"l'auteur de l'application."
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_follow
 msgid "Tweets of"
-msgstr ""
-
-#. module: social_twitter
-#. openerp-web
-#: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
-#, python-format
-msgid "Twiter Profile Image"
-msgstr ""
+msgstr "Tweets de"
 
 #. module: social_twitter
 #: model:ir.model.fields.selection,name:social_twitter.selection__social_media__media_type__twitter
@@ -243,13 +412,13 @@ msgid "Twitter"
 msgstr "Twitter"
 
 #. module: social_twitter
-#: model_terms:ir.ui.view,arch_db:social_twitter.res_config_settings_view_form
-msgid "Twitter Account Configuration"
-msgstr ""
-
-#. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_author_id
 msgid "Twitter Author ID"
+msgstr "Identifiant de l'auteur Twitter"
+
+#. module: social_twitter
+#: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_can_retweet
+msgid "Twitter Can Retweet"
 msgstr ""
 
 #. module: social_twitter
@@ -258,77 +427,114 @@ msgstr ""
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_comments_count
 #, python-format
 msgid "Twitter Comments"
-msgstr ""
+msgstr "Commentaires Twitter"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_res_config_settings__twitter_consumer_key
 msgid "Twitter Consumer Key"
-msgstr ""
+msgstr "Clé consommateur Twitter"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_res_config_settings__twitter_consumer_secret_key
 msgid "Twitter Consumer Secret Key"
+msgstr "Clé secrète du consommateur Twitter"
+
+#. module: social_twitter
+#: model_terms:ir.ui.view,arch_db:social_twitter.res_config_settings_view_form
+msgid "Twitter Developer Account"
 msgstr ""
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream__twitter_followed_account_id
 msgid "Twitter Followed Account"
-msgstr ""
+msgstr "Compte Twitter"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_twitter_account__twitter_id
 msgid "Twitter ID"
-msgstr ""
+msgstr "Twitter ID"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_likes_count
 msgid "Twitter Likes"
-msgstr ""
+msgstr "J'aime Twitter"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_account__twitter_oauth_token
 msgid "Twitter OAuth Token"
-msgstr ""
+msgstr "Jeton Twitter OAuth"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_account__twitter_oauth_token_secret
 msgid "Twitter OAuth Token Secret"
+msgstr "Twitter OAuth Token Secret"
+
+#. module: social_twitter
+#: model:ir.model.fields,field_description:social_twitter.field_social_post__twitter_post_limit_message
+#: model:ir.model.fields,field_description:social_twitter.field_social_post_template__twitter_post_limit_message
+msgid "Twitter Post Limit Message"
 msgstr ""
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_post__twitter_preview
+#: model:ir.model.fields,field_description:social_twitter.field_social_post_template__twitter_preview
 msgid "Twitter Preview"
-msgstr ""
+msgstr "Aperçu Twitter"
+
+#. module: social_twitter
+#. openerp-web
+#: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
+#, python-format
+msgid "Twitter Profile Image"
+msgstr "Image de profil Twitter"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_profile_image_url
 msgid "Twitter Profile Image URL"
+msgstr "URL de l'image de profil Twitter"
+
+#. module: social_twitter
+#: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_quoted_tweet_id_str
+msgid "Twitter Quoted Tweet ID"
 msgstr ""
 
 #. module: social_twitter
-#: model:ir.model.fields,field_description:social_twitter.field_social_account__twitter_screen_name
-msgid "Twitter Screen ID"
+#: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_retweeted_tweet_id_str
+msgid "Twitter Retweet ID"
 msgstr ""
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_screen_name
 msgid "Twitter Screen Name"
-msgstr ""
+msgstr "Nom d'écran Twitter"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_tweet_id
 msgid "Twitter Tweet ID"
-msgstr ""
+msgstr "Twitter Tweet ID"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_account__twitter_user_id
 msgid "Twitter User ID"
-msgstr ""
+msgstr "Identifiant utilisateur Twitter"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_user_likes
 msgid "Twitter User Likes"
+msgstr "Likes des utilisateurs de Twitter"
+
+#. module: social_twitter
+#: code:addons/social_twitter/controllers/main.py:0
+#, python-format
+msgid "Twitter did not provide a valid access token or it may have expired."
 msgstr ""
+"Twitter n'a pas fourni de jeton d'accès valide ou il a peut-être expiré."
+
+#. module: social_twitter
+#: code:addons/social_twitter/controllers/main.py:0
+#, python-format
+msgid "Twitter did not provide a valid access token."
+msgstr "Twitter n'a pas fourni de jeton d'accès valide."
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_live_post__twitter_tweet_id
@@ -336,15 +542,28 @@ msgid "Twitter tweet id"
 msgstr "Id du tweet"
 
 #. module: social_twitter
+#: code:addons/social_twitter/controllers/main.py:0
+#, python-format
+msgid "Unauthorized. Please contact your administrator."
+msgstr "Non autorisé. Veuillez contacter votre administrateur."
+
+#. module: social_twitter
+#: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
+msgid "Undo Retweet"
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "Unknown error"
+msgstr "Erreur inconnue"
+
+#. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_res_config_settings__twitter_use_own_account
 msgid "Use your own Twitter Account"
 msgstr "Utiliser votre propre compte Twitter"
-
-#. module: social_twitter
-#: model_terms:ir.ui.view,arch_db:social_twitter.res_config_settings_view_form
-msgid "Use your own Twitter Developer Account on our Social app"
-msgstr ""
-"Utiliser votre propre Compte Développeur Twitter sur notre application"
 
 #. module: social_twitter
 #: model:ir.model.fields,help:social_twitter.field_social_media__media_type
@@ -356,10 +575,50 @@ msgstr ""
 "certaines fonctionnalités à un média spécifique (Facebook, Twitter,...) "
 
 #. module: social_twitter
+#: code:addons/social_twitter/models/social_account.py:0
+#, python-format
+msgid ""
+"We could not upload your image, try reducing its size and posting it again "
+"(error: %s)."
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#: code:addons/social_twitter/models/social_stream_post.py:0
+#, python-format
+msgid "You are not authenticated"
+msgstr ""
+
+#. module: social_twitter
+#. openerp-web
+#: code:addons/social_twitter/static/src/js/stream_post_twitter_comments.js:0
+#, python-format
+msgid ""
+"You can comment only three times a tweet as it may be considered as spamming"
+" by Twitter"
+msgstr ""
+
+#. module: social_twitter
+#: model:ir.model.constraint,message:social_twitter.constraint_social_stream_post_tweet_uniq
+msgid "You can not store two times the same tweet on the same stream!"
+msgstr ""
+
+#. module: social_twitter
+#: code:addons/social_twitter/models/social_stream.py:0
+#, python-format
+msgid ""
+"You cannot create a Stream from this Twitter account.\n"
+"It may be because it's protected. To solve this, please make sure you follow it before trying again."
+msgstr ""
+"Vous ne pouvez pas créer un flux à partir de ce compte Twitter.\n"
+"C'est peut-être parce qu'il est protégé. Pour résoudre ce problème, assurez-vous de le suivre avant d'essayer à nouveau."
+
+#. module: social_twitter
 #: code:addons/social_twitter/models/social_media.py:0
 #, python-format
 msgid "You don't have an active subscription. Please buy one here: %s"
-msgstr ""
+msgstr "Vous n'avez pas d'abonnement actif. Veuillez en acheter un ici: %s"
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_media.py:0

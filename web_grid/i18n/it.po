@@ -3,24 +3,21 @@
 # 	* web_grid
 # 
 # Translators:
-# Francesco Garganese <francesco.garganese@aeromnia.aero>, 2019
-# Martin Trigaux, 2019
-# Sergio Zanchetta <primes2h@gmail.com>, 2019
-# Paolo Valier, 2019
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-09 11:59+0000\n"
-"PO-Revision-Date: 2019-08-26 09:38+0000\n"
-"Last-Translator: Paolo Valier, 2019\n"
+"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"PO-Revision-Date: 2022-09-22 05:49+0000\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: it\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: web_grid
 #: model:ir.model,name:web_grid.model_ir_actions_act_window_view
@@ -34,6 +31,13 @@ msgstr "Vista finestra azione"
 #, python-format
 msgid "Add a Line"
 msgstr "Aggiungi una Riga"
+
+#. module: web_grid
+#. openerp-web
+#: code:addons/web_grid/static/src/xml/grid_view.xml:0
+#, python-format
+msgid "Add a line"
+msgstr "Aggiungi riga"
 
 #. module: web_grid
 #: model:ir.model,name:web_grid.model_base
@@ -66,12 +70,28 @@ msgstr "Griglia"
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
+#: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "Next"
 msgstr "Succ"
 
 #. module: web_grid
 #. openerp-web
+#: code:addons/web_grid/static/src/js/grid_controller.js:0
+#, python-format
+msgid "No activities found"
+msgstr "Nessuna attività trovata"
+
+#. module: web_grid
+#. openerp-web
+#: code:addons/web_grid/static/src/xml/grid_view.xml:0
+#, python-format
+msgid "None"
+msgstr "Nessuna"
+
+#. module: web_grid
+#. openerp-web
+#: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "Previous"
@@ -79,12 +99,13 @@ msgstr "Precedente"
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:0
+#: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "See all the records aggregated in this cell"
-msgstr ""
+msgstr "Vedi tutti i record aggregati della cella"
 
 #. module: web_grid
+#: code:addons/web_grid/models/models.py:0
 #: code:addons/web_grid/models/models.py:0
 #, python-format
 msgid "The field used as readonly type must have a group_operator attribute."
@@ -92,7 +113,7 @@ msgstr ""
 
 #. module: web_grid
 #. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:0
+#: code:addons/web_grid/static/src/js/grid_model.js:0
 #, python-format
 msgid ""
 "The sectioned grid view can't handle groups with different columns sets"
@@ -113,29 +134,6 @@ msgid "Total"
 msgstr "Totale"
 
 #. module: web_grid
-#. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:0
-#, python-format
-msgid "Total (%s)"
-msgstr "Totale (%s)"
-
-#. module: web_grid
-#. openerp-web
-#: code:addons/web_grid/static/src/js/grid_controller.js:0
-#, python-format
-msgid "Undefined"
-msgstr "Non definito"
-
-#. module: web_grid
-#. openerp-web
-#: code:addons/web_grid/static/src/js/grid_renderer.js:0
-#: code:addons/web_grid/static/src/js/grid_renderer.js:0
-#: code:addons/web_grid/static/src/js/grid_renderer.js:0
-#, python-format
-msgid "Unknown"
-msgstr "Sconosciuto"
-
-#. module: web_grid
 #: model:ir.model,name:web_grid.model_ir_ui_view
 msgid "View"
 msgstr "Visualizza"
@@ -153,3 +151,13 @@ msgid ""
 "Week %(weeknumber)s\n"
 "%(week_start)s - %(week_end)s"
 msgstr ""
+"Settimana %(weeknumber)s\n"
+"%(week_start)s - %(week_end)s"
+
+#. module: web_grid
+#. openerp-web
+#: code:addons/web_grid/static/src/xml/grid_view.xml:0
+#: code:addons/web_grid/static/src/xml/grid_view.xml:0
+#, python-format
+msgid "\\u00A0"
+msgstr "\\u00A0"

@@ -3,25 +3,21 @@
 # 	* currency_rate_live
 # 
 # Translators:
-# Martin Trigaux, 2019
-# Paolo Valier, 2019
-# Francesco Arillotta <frarillotta@gmail.com>, 2019
-# Sergio Zanchetta <primes2h@gmail.com>, 2019
-# Léonie Bouchat <lbo@odoo.com>, 2019
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: Léonie Bouchat <lbo@odoo.com>, 2019\n"
+"POT-Creation-Date: 2022-06-09 14:10+0000\n"
+"PO-Revision-Date: 2022-09-22 05:45+0000\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: it\n"
-"Plural-Forms: nplurals=2; plural=(n != 1);\n"
+"Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
 
 #. module: currency_rate_live
 #: model_terms:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
@@ -36,6 +32,21 @@ msgstr ""
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__boc
 msgid "Bank Of Canada"
 msgstr "Banca del Canada"
+
+#. module: currency_rate_live
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__bcrp
+msgid "Bank of Peru"
+msgstr "Banca di Peru"
+
+#. module: currency_rate_live
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__cbegy
+msgid "Central Bank of Egypt"
+msgstr ""
+
+#. module: currency_rate_live
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__mindicador
+msgid "Chilean mindicador.cl"
+msgstr "mindicador.cl - Cile"
 
 #. module: currency_rate_live
 #: model:ir.model,name:currency_rate_live.model_res_company
@@ -81,13 +92,6 @@ msgid "Interval Unit"
 msgstr "Unità di Intervallo"
 
 #. module: currency_rate_live
-#: model:ir.model.fields,field_description:currency_rate_live.field_res_company__last_currency_sync_date
-#: model:ir.model.fields,field_description:currency_rate_live.field_res_config_settings__last_currency_sync_date
-#: model_terms:ir.ui.view,arch_db:currency_rate_live.res_config_settings_view_form
-msgid "Last Sync Date"
-msgstr "Data ultima sincronizzazione"
-
-#. module: currency_rate_live
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__manually
 msgid "Manually"
 msgstr "Manualmente"
@@ -101,6 +105,11 @@ msgstr "Banca messicana"
 #: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_interval_unit__monthly
 msgid "Monthly"
 msgstr "Mensile"
+
+#. module: currency_rate_live
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__bnr
+msgid "National Bank Of Romania"
+msgstr "Banca nazionale della Romania"
 
 #. module: currency_rate_live
 #: model:ir.model.fields,field_description:currency_rate_live.field_res_company__currency_next_execution_date
@@ -125,14 +134,14 @@ msgid "Service Provider"
 msgstr "Provider Servizio"
 
 #. module: currency_rate_live
-#: code:addons/currency_rate_live/models/res_config_settings.py:0
-#, python-format
-msgid ""
-"Unable to connect to the online exchange rate platform %s. The web service "
-"may be temporary down."
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__tcmb
+msgid "Turkey Republic Central Bank"
 msgstr ""
-"Impossibile connettersi alla piattaforma di tasso di cambio online%s. Il "
-"servizio web potrebbe essere temporaneamente fuori servizio."
+
+#. module: currency_rate_live
+#: model:ir.model.fields.selection,name:currency_rate_live.selection__res_company__currency_provider__cbuae
+msgid "UAE Central Bank"
+msgstr ""
 
 #. module: currency_rate_live
 #: code:addons/currency_rate_live/models/res_config_settings.py:0

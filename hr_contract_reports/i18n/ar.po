@@ -3,20 +3,16 @@
 # 	* hr_contract_reports
 # 
 # Translators:
-# Mustafa Rawi <mustafa@cubexco.com>, 2019
-# Martin Trigaux, 2019
-# Osoul <baruni@osoul.ly>, 2019
-# Mohammed Ibrahim <m.ibrahim@mussder.com>, 2019
-# Osama Ahmaro <osamaahmaro@gmail.com>, 2019
-# Shaima Safar <shaima.safar@open-inside.com>, 2019
+# Martin Trigaux, 2022
+# Malaz Abuidris <msea@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server saas~15.2+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-23 11:38+0000\n"
-"PO-Revision-Date: 2019-08-26 09:36+0000\n"
-"Last-Translator: Shaima Safar <shaima.safar@open-inside.com>, 2019\n"
+"POT-Creation-Date: 2022-04-19 09:53+0000\n"
+"PO-Revision-Date: 2022-09-22 05:46+0000\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2022\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,18 +23,18 @@ msgstr ""
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__count_employee_exit
 msgid "# Departure Employee"
-msgstr ""
+msgstr "عدد الموظفين المغادرين "
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__count_new_employee
 msgid "# New Employees"
-msgstr ""
+msgstr "عدد الموظفين الجدد "
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__company_id
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_search
 msgid "Company"
-msgstr "الشركة"
+msgstr "الشركة "
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__contract_id
@@ -48,7 +44,7 @@ msgstr "العقد"
 #. module: hr_contract_reports
 #: model:ir.model,name:hr_contract_reports.model_hr_contract_employee_report
 msgid "Contract and Employee Analysis Report"
-msgstr ""
+msgstr "تقرير العقد وتحليل الموظفين "
 
 #. module: hr_contract_reports
 #: model:ir.ui.menu,name:hr_contract_reports.menu_report_contract_employee_all
@@ -63,7 +59,7 @@ msgstr "التاريخ"
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__date_end_contract
 msgid "Date Last Contract Ended"
-msgstr ""
+msgstr "تاريخ انتهاء آخر عقد "
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__department_id
@@ -74,23 +70,23 @@ msgstr "القسم"
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Departure Employees"
-msgstr ""
+msgstr "الموظفين المغادرين "
 
 #. module: hr_contract_reports
-#: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__departure_reason
+#: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__departure_reason_id
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Departure Reason"
-msgstr ""
+msgstr "سبب المغادرة"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__display_name
 msgid "Display Name"
-msgstr "الاسم المعروض"
+msgstr "اسم العرض "
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__age_sum
 msgid "Duration Contract"
-msgstr ""
+msgstr "مدة العقد"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__employee_id
@@ -103,18 +99,14 @@ msgstr "الموظف"
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_graph
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_pivot
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_search
+#: model_terms:ir.ui.view,arch_db:hr_contract_reports.hr_contract_employee_report_view_tree
 msgid "Employees Analysis"
-msgstr ""
-
-#. module: hr_contract_reports
-#: model:ir.model.fields.selection,name:hr_contract_reports.selection__hr_contract_employee_report__departure_reason__fired
-msgid "Fired"
-msgstr ""
+msgstr "تحليل الموظفيين"
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_search
 msgid "Group By"
-msgstr "تجميع حسب"
+msgstr "التجميع حسب "
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__id
@@ -129,7 +121,7 @@ msgstr "آخر 365 يوم"
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Last Contract Ended"
-msgstr ""
+msgstr "انتهاء آخر عقد "
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report____last_update
@@ -139,72 +131,62 @@ msgstr "آخر تعديل في"
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Max Date in Months"
-msgstr ""
+msgstr "أقصى تاريخ بالأشهر"
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Mean Contract Duration"
-msgstr ""
+msgstr "متوسط مدة العقود"
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Min Date in Months"
-msgstr ""
+msgstr "أقل تاريخ بالأشهر"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__start_date_months
 msgid "Months of first date of this month since 01/01/1970"
-msgstr ""
+msgstr "عدد الأشهر منذ أول تاريخ لهذا الشهر في 01/01/1970"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__end_date_months
 msgid "Months of last date of this month since 01/01/1970"
-msgstr ""
+msgstr "عدد الأشهر منذ أخر تاريخ لهذا الشهر في 01/01/1970"
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "New Employees"
-msgstr ""
-
-#. module: hr_contract_reports
-#: model:ir.model.fields.selection,name:hr_contract_reports.selection__hr_contract_employee_report__departure_reason__resigned
-msgid "Resigned"
-msgstr ""
-
-#. module: hr_contract_reports
-#: model:ir.model.fields.selection,name:hr_contract_reports.selection__hr_contract_employee_report__departure_reason__retired
-msgid "Retired"
-msgstr ""
+msgstr "موظفيين جدد"
 
 #. module: hr_contract_reports
 #: model_terms:ir.actions.act_window,help:hr_contract_reports.contract_employee_report_action
 msgid "This report performs analysis on your contracts."
-msgstr ""
+msgstr "يقوم هذا التقرير بإجراء تحليل لعقودك. "
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Total Contract Length"
-msgstr ""
+msgstr "مجموع مدة العقود"
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Total Contracts"
-msgstr ""
+msgstr "مجموع العقود"
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Total Employees"
-msgstr ""
+msgstr "إجمالي الموظفين"
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard
 msgid "Turnover Rate"
-msgstr ""
+msgstr "معدل دورة رأس المال "
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__wage
 msgid "Wage"
-msgstr "المرتب"
+msgstr "الأجر "
 
 #. module: hr_contract_reports
 #: model_terms:ir.ui.view,arch_db:hr_contract_reports.contract_employee_report_view_dashboard

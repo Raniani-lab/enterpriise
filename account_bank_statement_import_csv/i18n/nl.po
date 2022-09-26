@@ -3,18 +3,16 @@
 # 	* account_bank_statement_import_csv
 # 
 # Translators:
-# Yenthe Van Ginneken <yenthespam@gmail.com>, 2019
-# Martin Trigaux, 2019
-# Wynand Tastenhoye <wta@odoo.com>, 2019
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2019
+# Martin Trigaux, 2022
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server saas~15.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:04+0000\n"
-"PO-Revision-Date: 2019-08-26 09:34+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2019\n"
+"POT-Creation-Date: 2022-06-09 14:09+0000\n"
+"PO-Revision-Date: 2022-09-22 05:45+0000\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,17 +23,11 @@ msgstr ""
 #. module: account_bank_statement_import_csv
 #: model:ir.model,name:account_bank_statement_import_csv.model_base_import_import
 msgid "Base Import"
-msgstr "Basis import functionaliteit"
-
-#. module: account_bank_statement_import_csv
-#: model_terms:ir.ui.view,arch_db:account_bank_statement_import_csv.account_bank_statement_import_csv
-msgid "Comma Separated values (CSV)"
-msgstr "Comma Separated values (CSV)"
+msgstr "Basis importfunctionaliteit"
 
 #. module: account_bank_statement_import_csv
 #. openerp-web
 #: code:addons/account_bank_statement_import_csv/static/src/js/import_bank_stmt.js:0
-#: model:ir.model,name:account_bank_statement_import_csv.model_account_bank_statement_import
 #, python-format
 msgid "Import Bank Statement"
 msgstr "Bankafschriften importeren"
@@ -46,8 +38,15 @@ msgid "Journal"
 msgstr "Dagboek"
 
 #. module: account_bank_statement_import_csv
-#. openerp-web
-#: code:addons/account_bank_statement_import_csv/static/src/js/import_bank_stmt.js:0
+#: code:addons/account_bank_statement_import_csv/models/account_journal.py:0
 #, python-format
-msgid "Reconciliation on Bank Statements"
-msgstr "Afletteren van bankafschriften"
+msgid "Mixing CSV files with other file types is not allowed."
+msgstr ""
+"Het combineren van CSV bestanden met andere type bestanden is niet "
+"toegestaan."
+
+#. module: account_bank_statement_import_csv
+#: code:addons/account_bank_statement_import_csv/models/account_journal.py:0
+#, python-format
+msgid "Only one CSV file can be selected."
+msgstr "Je kunt maar één CSV bestand selecteren."

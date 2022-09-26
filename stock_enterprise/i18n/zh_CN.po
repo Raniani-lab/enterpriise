@@ -3,21 +3,15 @@
 # 	* stock_enterprise
 # 
 # Translators:
-# Martin Trigaux, 2019
-# Jeffery CHEN <jeffery9@gmail.com>, 2019
-# guohuadeng <guohuadeng@hotmail.com>, 2019
-# diaojiaolou <124412206@qq.com>, 2019
-# snow wang <147156565@qq.com>, 2019
-# inspur qiuguodong <qiuguodong@inspur.com>, 2019
-# liAnGjiA <liangjia@qq.com>, 2019
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 09:38+0000\n"
-"Last-Translator: liAnGjiA <liangjia@qq.com>, 2019\n"
+"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"PO-Revision-Date: 2022-09-22 05:49+0000\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,6 +23,16 @@ msgstr ""
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__assigned
 msgid "Available"
 msgstr "可用"
+
+#. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
+msgid "Average Cycle Time (Days)"
+msgstr "平均周期时间（天）"
+
+#. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
+msgid "Average Delay (Days)"
+msgstr "平均延误时间（天）"
 
 #. module: stock_enterprise
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__cancel
@@ -53,7 +57,7 @@ msgstr "客户"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
 msgid "Cycle Time"
-msgstr "周期"
+msgstr "周期时间"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__cycle_time
@@ -63,7 +67,7 @@ msgstr "周期(天)"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
 msgid "Days"
-msgstr "天"
+msgstr "天数"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_form_view
@@ -140,14 +144,9 @@ msgid "Internal"
 msgstr "内部"
 
 #. module: stock_enterprise
-#: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__inventory_id
-msgid "Inventory Adjustment"
-msgstr "库存调整"
-
-#. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__is_late
 msgid "Is Late"
-msgstr "迟到"
+msgstr "延迟中"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__is_backorder
@@ -157,12 +156,7 @@ msgstr "是欠单"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report____last_update
 msgid "Last Modified on"
-msgstr "最后更改日"
-
-#. module: stock_enterprise
-#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
-msgid "Month"
-msgstr "月"
+msgstr "最后修改日"
 
 #. module: stock_enterprise
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__draft
@@ -170,9 +164,14 @@ msgid "New"
 msgstr "新建"
 
 #. module: stock_enterprise
+#: model_terms:ir.actions.act_window,help:stock_enterprise.stock_report_dashboard_action
+msgid "No data yet!"
+msgstr "还没有数据耶！"
+
+#. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__operation_type
 msgid "Operation Type"
-msgstr "操作类型"
+msgstr "作业类型"
 
 #. module: stock_enterprise
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__partially_available
@@ -183,6 +182,11 @@ msgstr "部分可用"
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__partner_id
 msgid "Partner"
 msgstr "业务伙伴"
+
+#. module: stock_enterprise
+#: model:ir.ui.menu,name:stock_enterprise.stock_dashboard_menuitem
+msgid "Performance"
+msgstr "效能"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__picking_name
@@ -206,7 +210,6 @@ msgstr "产品数量"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_enterprise_move_tree_view
-#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
 msgid "Quantity"
 msgstr "数量"
 
@@ -224,12 +227,12 @@ msgstr "收据延迟"
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__reference
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_map_view
 msgid "Reference"
-msgstr "编号"
+msgstr "参考"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_cohort_view
 msgid "Report"
-msgstr "报表"
+msgstr "报告"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_map_view
@@ -239,17 +242,12 @@ msgstr "安排的日期"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__state
 msgid "Status"
-msgstr "省份"
+msgstr "状态"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
 msgid "Stock Overview"
 msgstr "库存概览"
-
-#. module: stock_enterprise
-#: model:ir.model,name:stock_enterprise.model_report_stock_quantity
-msgid "Stock Quantity Report"
-msgstr ""
 
 #. module: stock_enterprise
 #: model:ir.model,name:stock_enterprise.model_stock_report
@@ -273,7 +271,7 @@ msgstr "收货所需的时间(天)。通过比较收货单的创建日期与其�
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__date_done
 msgid "Transfer Date"
-msgstr "转移日期"
+msgstr "调拔日期"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__picking_id
@@ -302,14 +300,8 @@ msgstr "等待可用量"
 
 #. module: stock_enterprise
 #: model:ir.actions.act_window,name:stock_enterprise.stock_report_dashboard_action
-#: model:ir.ui.menu,name:stock_enterprise.stock_dashboard_menuitem
 msgid "Warehouse Analysis"
-msgstr ""
-
-#. module: stock_enterprise
-#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
-msgid "Week"
-msgstr "周"
+msgstr "仓库分析"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view

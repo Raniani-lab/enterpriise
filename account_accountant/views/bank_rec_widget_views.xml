@@ -7,14 +7,20 @@
             <field name="priority">100</field>
             <field name="arch" type="xml">
                 <form string="Bank Statement">
-                    <group>
-                        <field name="currency_id" invisible="1"/>
-                        <field name="journal_id" invisible="1"/> <!--required for computing name -->
-                        <field name="name" required="1" />
-                        <field name="balance_start"/>
-                        <field name="balance_end_real" />
-                        <field name="attachment_ids" widget="many2many_binary"/>
-                    </group>
+                    <sheet>
+                        <group>
+                            <field name="currency_id" invisible="1"/>
+                            <field name="journal_id" invisible="1"/> <!--required for computing name -->
+                            <field name="name" required="1" />
+                            <field name="balance_start"/>
+                            <field name="balance_end_real" />
+                            <field name="attachment_ids" widget="many2many_binary"/>
+                        </group>
+                    </sheet>
+                    <footer>
+                        <button string="Save" special="save" data-hotkey="v" class="oe_highlight"/>
+                        <button string="Discard" special="cancel" data-hotkey="z"/>
+                    </footer>
                 </form>
             </field>
         </record>
@@ -39,6 +45,7 @@
                     <field name="name"
                            string="Transaction"
                            filter_domain="['|', '|', '|', '|', '|', '|', ('payment_ref', 'ilike', self), ('narration', 'ilike', self), ('partner_id', 'ilike', self), ('partner_name', 'ilike', self), ('partner_bank_id', 'ilike', self), ('account_number', 'ilike', self), ('amount', 'ilike', self)]"/>
+                    <field name="id" invisible="1"/>
                     <field name="payment_ref"/>
                     <field name="date"/>
                     <field name="statement_id"/>
@@ -98,19 +105,16 @@
                     <field name="foreign_currency_id" invisible="1"/>
                     <templates>
                         <t t-name="kanban-box">
-                            <t t-set="card_color" t-value="0"/>
-                            <t t-if="record.to_check.raw_value" t-set="card_color" t-value="2"/>
-                            <t t-if="record.is_reconciled.raw_value" t-set="card_color" t-value="10"/>
-                            <t t-if="record.state.raw_value != 'posted'" t-set="card_color" t-value="1"/>
                             <div t-if="!record.statement_complete.raw_value"
                                  class="statement_separator text-center">
                                 <a role="button" class="btn btn-secondary btn-sm"
                                    context="{'split_line_id':active_id}"
+                                   tabindex="-1"
                                    type="action" name="%(account_accountant.action_bank_statement_form_bank_rec_widget)d">
                                     Statement
                                 </a>
                             </div>
-                            <div t-attf-class="oe_kanban_card oe_kanban_global_click o_bank_rec_st_line_kanban_card {{kanban_color(card_color)}}"
+                            <div t-attf-class="oe_kanban_card oe_kanban_global_click o_bank_rec_st_line_kanban_card"
                                  t-att-st-line-id="record.id.raw_value"
                                  t-att-st-line-todo="!record.is_reconciled.raw_value || record.to_check.raw_value"
                                  style="width:100%">
@@ -128,39 +132,34 @@
                                                 <field name="date"/>
                                             </strong>
                                         </div>
-                                        <div id="row1_col2" class="ms-1">
-                                            <span t-att-class="!(record.statement_complete.raw_value and record.statement_valid.raw_value) and 'text-danger' or ''">
-                                                <field name="statement_id"/>
-                                            </span>
-                                            <strong class="ps-2">
+                                        <div t-attf-id="row1_col2{{record.statement_id.raw_value and '_statement' or ''}}"
+                                             class="text-truncate ms-1">
+                                            <em class="ps-2">
                                                 <field name="partner_id"/>
-                                            </strong>
+                                            </em>
+                                        </div>
+                                        <div t-if="record.statement_id.raw_value"
+                                             id="row1_statement"
+                                             t-attf-class="text-truncate {{!(record.statement_complete.raw_value and record.statement_valid.raw_value) and 'text-danger' or ''}}">
+                                            <field name="statement_id"/>
                                         </div>
                                         <div id="row1_col3" t-att-class="text_amount_class">
-                                            <field name="amount"/>
+                                            <strong>
+                                                <field name="amount"/>
+                                            </strong>
                                         </div>
                                     </div>
 
                                     <!-- Row 2 -->
                                     <div class="flex_row">
-                                        <div id="row2_col1">
+                                        <div id="row2_col1" class="text-truncate">
                                             <field name="payment_ref"/>
                                         </div>
                                         <div id="row2_col2">
                                             <div class="o_field_many2manytags o_field_widget d-flex flex-row flex-nowrap">
-                                                <div t-if="record.to_check.raw_value"
-                                                     class="badge rounded-pill"
-                                                     style="background-color: #FFAB4A; margin-right: 0px !important">
-                                                    <span class="o_badge_text">
-                                                        <span class="o_tag_badge_text">To check</span>
-                                                    </span>
-                                                </div>
-                                                <div t-if="record.is_reconciled.raw_value"
-                                                     class="badge rounded-pill"
-                                                     style="background-color: #28a745; margin-right: 0px !important">
-                                                    <span class="o_badge_text">
-                                                        <span class="o_tag_badge_text" style="color: white">Matched</span>
-                                                    </span>
+                                                <span t-if="record.to_check.raw_value" class="badge text-bg-warning border-0 fw-normal">To check</span>
+                                                <div t-if="record.is_reconciled.raw_value" class="badge text-bg-success border-0 fw-normal">
+                                                    <i class="fa fa-check"/> Matched
                                                 </div>
                                             </div>
                                         </div>
@@ -182,6 +181,7 @@
                       decoration-muted="state == 'draft'"
                       default_order="internal_index desc">
                     <!--Invisible fields-->
+                    <field name="id" invisible="1"/>
                     <field name="statement_complete" invisible="1"/>
                     <field name="statement_valid" invisible="1"/>
                     <field name="state" invisible="1"/>
@@ -228,9 +228,12 @@
                                 'st_line_journal_id':journal_id}"
                            decoration-danger="statement_complete == False or statement_valid == False"
                     />
-                    <button class="journal_item_matching_button" title="Match"
-                            type="object" name="action_open_recon_st_line" string="Match"
-                            attrs="{'invisible':[('is_reconciled', '=', True)]}">
+                    <button class="journal_item_matching_button"
+                            title="Match"
+                            type="object"
+                            name="action_open_recon_st_line"
+                            string="Match"
+                            attrs="{'invisible':[('id', '=', False)]}">
 
                     </button>
                 </tree>

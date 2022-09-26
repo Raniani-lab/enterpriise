@@ -90,7 +90,7 @@ class LuxembourgishFinancialReportCustomHandler(models.AbstractModel):
                     values.update({parent_field: {'value': '0,00', 'field_type': 'number'}})
 
         report = self.env['account.report'].browse(options['report_id'])
-        lu_template_values = report.get_electronic_report_values(options)
+        lu_template_values = self.get_electronic_report_values(options)
 
         # Add comparison filter to get data from last year
         report._init_options_comparison(options, {**options, 'comparison': {
@@ -159,6 +159,7 @@ class LuxembourgishFinancialReportCustomHandler(models.AbstractModel):
             'file_content':  "<?xml version='1.0' encoding='UTF-8'?>" + content,
             'file_type': 'xml',
         }
+
     def get_xml_2_0_report_values(self, options, references=False):
         """Returns the formatted report values for this financial report.
            (Balance sheet: https://ecdf-developer.b2g.etat.lu/ecdf/forms/popup/CA_BILAN_COMP/2020/en/2/preview),

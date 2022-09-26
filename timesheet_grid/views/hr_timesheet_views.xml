@@ -10,7 +10,6 @@
             <field name="arch" type="xml">
                 <xpath expr="/tree" position="attributes">
                     <attribute name="decoration-muted">validated</attribute>
-                    <attribute name="js_class">timesheet_tree</attribute>
                     <attribute name="sample">1</attribute>
                 </xpath>
                 <xpath expr="/tree" position="inside">
@@ -100,29 +99,26 @@
             <field name="mode">primary</field>
             <field name="arch" type="xml">
                 <kanban position="attributes">
-                    <attribute name="js_class">timesheet_kanban_view</attribute>
                     <attribute name="sample">1</attribute>
                 </kanban>
                 <xpath expr="/kanban" position="inside">
                     <field name="validated" invisible="1"/>
                     <field name="timer_start" invisible="1"/>
                     <field name="display_timer" invisible="1"/>
+                    <field name="is_timer_running" invisible="1"/>
                 </xpath>
                 <xpath expr="//div/span[@name='duration']" position="replace"/>
                 <xpath expr="//div[hasclass('o_kanban_record_headings')]" position="after">
                     <div attrs="{ 'invisible': ['|', ('validated', '=', True), ('display_timer', '!=', False)]}">
                         <field name="unit_amount" widget="timesheet_uom" options="{'force_button': true}"/>
                     </div>
-                    <span class="o_kanban_timer_start d-flex align-items-center justify-content-center" attrs="{ 'invisible': ['|', ('validated', '=', True), ('display_timer', '=', False)] }">
-                        <span class="o_time_duration mt-1">
-                            <field name="duration_unit_amount" widget="timesheet_uom_hours" decoration-danger="duration_unit_amount &gt; 24 or unit_amount &lt; 0"/>
-                        </span>
-                        <span class="o_kanban_timer_toggle">
-                            <field name="is_timer_running" widget="timer_toggle_button"/>
-                        </span>
-                    </span>
-                    <div attrs="{'invisible': [('validated', '=', False)]}">
-                        <field name="unit_amount_validate" widget="timesheet_uom"/>
+                    <div class="ms-1">
+                        <div attrs="{ 'invisible': ['|', ('validated', '=', True), ('display_timer', '=', False)] }">
+                            <field name="duration_unit_amount" widget="timesheet_uom_hour_toggle" decoration-danger="duration_unit_amount &gt; 24 or unit_amount &lt; 0"/>
+                        </div>
+                        <div attrs="{'invisible': [('validated', '=', False)]}">
+                            <field name="unit_amount_validate" widget="timesheet_uom"/>
+                        </div>
                     </div>
                  </xpath>
                  <xpath expr="//div[hasclass('o_kanban_record_bottom')]" position="inside">

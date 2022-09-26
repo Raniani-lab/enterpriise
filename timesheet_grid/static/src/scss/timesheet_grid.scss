@@ -11,20 +11,3 @@
         width: 2% !important;
     }
 }
-
-.o_kanban_timer_start {
-    min-width: 5rem;
-    // The play and stop button will appear on the mouse hover
-    &:hover {
-        > .o_kanban_timer_toggle {
-            display: inline-block;
-        }
-        > .o_time_duration {
-            display: none;
-        }
-    }
-
-    .o_kanban_timer_toggle {
-        display: none;
-    }
-}

@@ -1402,28 +1402,28 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             inv_line1_with_epd_rec_lines,
             [
                 {
-                    'amount_currency': 1623.6,
+                    'amount_currency': 1645.2,
                     'discount_amount_currency': 0.0,
                     'discount_balance': 0.0,
                     'discount_date': False,
                     'date_maturity': fields.Date.from_string('2016-12-06'),
                 },
                 {
-                    'amount_currency': 3247.2,
-                    'discount_amount_currency': 3103.2,
-                    'discount_balance': 517.2,
+                    'amount_currency': 3290.4,
+                    'discount_amount_currency': 3146.4,
+                    'discount_balance': 524.4,
                     'discount_date': fields.Date.from_string('2016-12-11'),
                     'date_maturity': fields.Date.from_string('2016-12-21'),
                 },
                 {
-                    'amount_currency': 6494.4,
-                    'discount_amount_currency': 5918.4,
-                    'discount_balance': 986.4,
+                    'amount_currency': 6580.8,
+                    'discount_amount_currency': 6004.8,
+                    'discount_balance': 1000.8,
                     'discount_date': fields.Date.from_string('2017-01-05'),
                     'date_maturity': fields.Date.from_string('2017-01-10'),
                 },
                 {
-                    'amount_currency': 4870.8,
+                    'amount_currency': 4935.6,
                     'discount_amount_currency': 0.0,
                     'discount_balance': 0.0,
                     'discount_date': False,
@@ -1458,28 +1458,28 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             inv_line2_with_epd_rec_lines,
             [
                 {
-                    'amount_currency': 162.36,
+                    'amount_currency': 164.52,
                     'discount_amount_currency': 0.0,
                     'discount_balance': 0.0,
                     'discount_date': False,
                     'date_maturity': fields.Date.from_string('2017-01-25'),
                 },
                 {
-                    'amount_currency': 324.72,
-                    'discount_amount_currency': 310.32,
-                    'discount_balance': 77.58,
+                    'amount_currency': 329.04,
+                    'discount_amount_currency': 314.64,
+                    'discount_balance': 78.66,
                     'discount_date': fields.Date.from_string('2017-01-30'),
                     'date_maturity': fields.Date.from_string('2017-02-09'),
                 },
                 {
-                    'amount_currency': 649.44,
-                    'discount_amount_currency': 591.84,
-                    'discount_balance': 147.96,
+                    'amount_currency': 658.08,
+                    'discount_amount_currency': 600.48,
+                    'discount_balance': 150.12,
                     'discount_date': fields.Date.from_string('2017-02-24'),
                     'date_maturity': fields.Date.from_string('2017-03-01'),
                 },
                 {
-                    'amount_currency': 487.08,
+                    'amount_currency': 493.56,
                     'discount_amount_currency': 0.0,
                     'discount_balance': 0.0,
                     'discount_date': False,
@@ -1488,13 +1488,13 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             ],
         )
 
-        # inv1: 1623.6 + 3247.2 + 5918.4 (epd) + 4870.8
-        # inv2: 162.36 + 310.32 (epd)
+        # inv1: 1645.2 + 3290.4 + 6004.8 (epd) + 4935.6
+        # inv2: 164.52 + 314.64 (epd)
         st_line = self._create_st_line(
-            4030.0, # instead of 4033.17 (rate 1:4)
+            4088.79, # instead of 4033.17 (rate 1:4)
             date='2017-01-04',
             foreign_currency_id=self.currency_data_2['currency'].id,
-            amount_currency=16132.68,
+            amount_currency=16355.16,
         )
 
         wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
@@ -1507,13 +1507,13 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         foreign_exch_acc = self.env.company.expense_currency_exchange_account_id
         self.assertRecordValues(wizard.line_ids, [
             # pylint: disable=C0326
-            {'flag': 'liquidity',       'amount_currency': 4030.0,      'balance': 4030.0,      'account_id': liquidity_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -1623.6,     'balance': -405.58,     'account_id': receivable_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -3247.2,     'balance': -811.16,     'account_id': receivable_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -6494.4,     'balance': -1622.32,    'account_id': receivable_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -4870.8,     'balance': -1216.74,    'account_id': receivable_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -162.36,     'balance': -40.56,      'account_id': receivable_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -324.72,     'balance': -81.12,      'account_id': receivable_acc.id},
-            {'flag': 'early_payment',   'amount_currency': 590.40,      'balance': 99.6,        'account_id': early_pay_acc.id},
-            {'flag': 'early_payment',   'amount_currency': 0.0,         'balance': 47.88,       'account_id': foreign_exch_acc.id},
+            {'flag': 'liquidity',       'amount_currency': 4088.79,     'balance': 4088.79,    'account_id': liquidity_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -1645.2,     'balance': -411.3,     'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -3290.4,     'balance': -822.6,     'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -6580.8,     'balance': -1645.2,    'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -4935.6,     'balance': -1233.9,    'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -164.52,     'balance': -41.13,     'account_id': receivable_acc.id},
+            {'flag': 'new_aml',         'amount_currency': -329.04,     'balance': -82.26,     'account_id': receivable_acc.id},
+            {'flag': 'early_payment',   'amount_currency': 590.40,      'balance': 99.6,       'account_id': early_pay_acc.id},
+            {'flag': 'early_payment',   'amount_currency': 0.0,         'balance': 48.00,      'account_id': foreign_exch_acc.id},
         ])

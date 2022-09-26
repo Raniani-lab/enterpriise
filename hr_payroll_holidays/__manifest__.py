@@ -22,8 +22,7 @@
     'auto_install': True,
     'assets': {
         'web.assets_backend': [
-            'hr_payroll_holidays/static/src/js/**/*',
-            'hr_payroll_holidays/static/src/xml/**/*',
+            'hr_payroll_holidays/static/src/**/*',
         ],
     },
     'license': 'OEEL-1',

@@ -2,7 +2,7 @@
 
 import { patch } from "@web/core/utils/patch";
 import { PayslipListController } from "@hr_payroll/js/payslip_list";
-import { useTimeOffToDefer } from '@hr_payroll_holidays/js/hr_work_entries_controller_mixin_owl';
+import { useTimeOffToDefer } from '@hr_payroll_holidays/views/hooks';
 
 patch(PayslipListController.prototype, 'hr_payroll_holidays_payslip_holidays_list_controller', {
     setup() {

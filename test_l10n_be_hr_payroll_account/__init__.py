@@ -94,5 +94,6 @@ def _generate_payslips(cr, registry):
                 'module': prefix,
                 'res_id': log.id,
                 'model': 'hr.employee.skill.log',
+                'noupdate': True,
             })
         env['ir.model.data'].create(data_vals)

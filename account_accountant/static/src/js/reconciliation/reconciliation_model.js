@@ -14,7 +14,7 @@ var _t = core._t;
  */
 var ManualModel = BasicModel.extend({
     avoidCreate: false,
-    quickCreateFields: ['account_id', 'journal_id', 'amount', 'analytic_distribution', 'name', 'tax_ids', 'force_tax_included', 'date', 'to_check'],
+    quickCreateFields: ['account_id', 'journal_id', 'amount', 'analytic_account_id', 'name', 'tax_ids', 'force_tax_included', 'date', 'to_check'],
 
     modes: ['create', 'match'],
 
@@ -1125,7 +1125,10 @@ var ManualModel = BasicModel.extend({
                 result.journal_id = prop.journal_id.id;
             }
         }
-        if (prop.analytic_distribution) result.analytic_distribution = prop.analytic_distribution;
+        if (prop.analytic_account_id) {
+            result.analytic_distribution = {};
+            result.analytic_distribution[prop.analytic_account_id.id] = 100;
+        }
         if (prop.tax_ids && prop.tax_ids.length) result.tax_ids = [[6, null, _.pluck(prop.tax_ids, 'id')]];
         if (prop.tax_tag_ids && prop.tax_tag_ids.length) result.tax_tag_ids = [[6, null, _.pluck(prop.tax_tag_ids, 'id')]];
         if (prop.tax_repartition_line_id) result.tax_repartition_line_id = prop.tax_repartition_line_id;
@@ -1225,7 +1228,7 @@ var ManualModel = BasicModel.extend({
             'name': values.name || line.st_line.name,
             'account_id': account,
             'account_code': account ? this.accounts[account.id] : '',
-            'analytic_distribution': values.analytic_distribution,
+            'analytic_account_id': this._formatNameGet(values.analytic_account_id),
             'journal_id': this._formatNameGet(values.journal_id),
             'tax_ids': this._formatMany2ManyTagsTax(values.tax_ids || []),
             'tax_tag_ids': this._formatMany2ManyTagsTax(values.tax_tag_ids || []),

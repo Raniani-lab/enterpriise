@@ -760,7 +760,7 @@ var ManualLineRenderer = Widget.extend(FieldManagerMixin, {
     },
 
     /**
-     * create account_id, tax_ids, analytic_distribution, name and amount fields
+     * create account_id, tax_ids, analytic_account_id, name and amount fields
      *
      * @private
      * @param {object} state - statement line
@@ -784,8 +784,10 @@ var ManualLineRenderer = Widget.extend(FieldManagerMixin, {
             name: 'tax_ids',
             domain: [['company_id', '=', state.st_line.company_id]],
         }, {
-            type: 'char',
-            name: 'analytic_distribution',
+            relation: 'account.analytic.account',
+            type: 'many2one',
+            name: 'analytic_account_id',
+            domain: ["|", ['company_id', '=', state.st_line.company_id], ['company_id', '=', false]],
         }, {
             type: 'boolean',
             name: 'force_tax_included',
@@ -820,8 +822,8 @@ var ManualLineRenderer = Widget.extend(FieldManagerMixin, {
             self.fields.tax_ids = new relational_fields.FieldMany2ManyTags(self,
                 'tax_ids', record, {mode: 'edit', additionalContext: {append_type_to_tax_name: true}});
 
-            self.fields.analytic_distribution = new basic_fields.FieldChar(self,
-                'analytic_distribution', record, {mode: 'edit'});
+            self.fields.analytic_account_id = new relational_fields.FieldMany2One(self,
+                'analytic_account_id', record, {mode: 'edit', attrs: {options:{quick_create: false, no_create_edit: true}}});
 
             self.fields.force_tax_included = new basic_fields.FieldBoolean(self,
                 'force_tax_included', record, {mode: 'edit'});
@@ -843,7 +845,7 @@ var ManualLineRenderer = Widget.extend(FieldManagerMixin, {
                 .then(addRequiredStyle.bind(self, self.fields.account_id));
             self.fields.journal_id.appendTo($create.find('.create_journal_id .o_td_field'));
             self.fields.tax_ids.appendTo($create.find('.create_tax_id .o_td_field'));
-            self.fields.analytic_distribution.appendTo($create.find('.create_analytic_distribution .o_td_field'));
+            self.fields.analytic_account_id.appendTo($create.find('.create_analytic_account_id .o_td_field'));
             self.fields.force_tax_included.appendTo($create.find('.create_force_tax_included .o_td_field'));
             self.fields.name.appendTo($create.find('.create_label .o_td_field'))
                 .then(addRequiredStyle.bind(self, self.fields.name));

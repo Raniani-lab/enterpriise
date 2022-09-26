@@ -565,7 +565,10 @@ class AccountReconciliation(models.AbstractModel):
             for m2o_name in ('account_id', 'journal_id', 'partner_id', 'analytic_account_id'):
                 if line.get(m2o_name) and not isinstance(line[m2o_name], dict):
                     m2o_record = self.env[self.env['account.move.line']._fields[m2o_name].comodel_name].browse(line[m2o_name])
-                    line[m2o_name] = {'display_name': m2o_record.display_name, 'id': m2o_record.id}
+                    if m2o_name == 'analytic_account_id':
+                        line['analytic_distribution'] = {m2o_record.id: 100}
+                    else:
+                        line[m2o_name] = {'display_name': m2o_record.display_name, 'id': m2o_record.id}
                     if m2o_name == 'account_id':
                         line['account_code'] = m2o_record.code
             for x2m_name in ('tax_ids', 'tax_tag_ids'):

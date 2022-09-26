@@ -147,14 +147,15 @@ class HelpdeskSLAStatus(models.Model):
     @api.depends('deadline', 'reached_datetime')
     def _compute_exceeded_hours(self):
         for status in self:
-            if status.reached_datetime and status.deadline and status.ticket_id.team_id.resource_calendar_id:
-                if status.reached_datetime <= status.deadline:
-                    start_dt = status.reached_datetime
+            if status.deadline and status.ticket_id.team_id.resource_calendar_id:
+                reached_datetime = status.reached_datetime or fields.Datetime.now()
+                if reached_datetime <= status.deadline:
+                    start_dt = reached_datetime
                     end_dt = status.deadline
                     factor = -1
                 else:
                     start_dt = status.deadline
-                    end_dt = status.reached_datetime
+                    end_dt = reached_datetime
                     factor = 1
                 duration_data = status.ticket_id.team_id.resource_calendar_id.get_work_duration_data(start_dt, end_dt, compute_leaves=True)
                 status.exceeded_hours = duration_data['hours'] * factor

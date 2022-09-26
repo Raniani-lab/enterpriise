@@ -173,7 +173,7 @@
                     <td class="o_td_label"><label class="o_form_label">Taxes</label></td>
                     <td class="o_td_field"></td>
                 </tr>
-                <tr class="create_analytic_distribution" t-if="group_acc">
+                <tr class="create_analytic_account_id" t-if="group_acc">
                     <td class="o_td_label"><label class="o_form_label">Analytic</label></td>
                     <td class="o_td_field"></td>
                 </tr>

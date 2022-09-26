@@ -8655,3 +8655,91 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'CO2FEE': 28.17,
         }
         self._validate_payslip(payslip, payslip_results)
+
+    def test_refund_accounting_entries(self):
+        payslip = self._generate_payslip(datetime.date(2022, 8, 1), datetime.date(2022, 8, 31))
+        payslip_results = {
+            'BASIC': 2650.0,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 2659.0,
+            'ONSS': -347.53,
+            'EmpBonus.1': 70.36,
+            'ONSSTOTAL': 277.17,
+            'ATN.CAR': 162.42,
+            'GROSSIP': 2544.26,
+            'IP.PART': -662.5,
+            'GROSS': 1881.76,
+            'P.P': -252.47,
+            'P.P.DED': 23.32,
+            'PPTOTAL': 229.15,
+            'ATN.CAR.2': -162.42,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -15.39,
+            'MEAL_V_EMP': -25.07,
+            'REP.FEES': 150.0,
+            'IP': 662.5,
+            'IP.DED': -49.69,
+            'NET': 2203.54,
+            'REMUNERATION': 1987.5,
+            'ONSSEMPLOYERBASIC': 665.55,
+            'ONSSEMPLOYERFFE': 1.86,
+            'ONSSEMPLOYERMFFE': 2.66,
+            'ONSSEMPLOYERCPAE': 6.12,
+            'ONSSEMPLOYERRESTREINT': 44.94,
+            'ONSSEMPLOYERUNEMP': 2.66,
+            'ONSSEMPLOYER': 723.78,
+            'CO2FEE': 28.17,
+        }
+        self._validate_payslip(payslip, payslip_results)
+
+        payslip.action_payslip_done()
+
+        net_account_move_line = payslip.move_id.line_ids.filtered(lambda l: l.name == 'Net Salary')
+        self.assertAlmostEqual(net_account_move_line.debit, 0.0, places=2)
+        self.assertAlmostEqual(net_account_move_line.credit, 2203.54, places=2)
+
+        refund_action = payslip.refund_sheet()
+        refund = self.env['hr.payslip'].browse(refund_action['domain'][0][2])
+        payslip_results = {
+            'BASIC': -2650.0,
+            'ATN.INT': -5.0,
+            'ATN.MOB': -4.0,
+            'SALARY': -2659.0,
+            'ONSS': 347.53,
+            'EmpBonus.1': -70.36,
+            'ONSSTOTAL': -277.17,
+            'ATN.CAR': -162.42,
+            'GROSSIP': -2544.26,
+            'IP.PART': 662.5,
+            'GROSS': -1881.76,
+            'P.P': 252.47,
+            'P.P.DED': -23.32,
+            'PPTOTAL': -229.15,
+            'ATN.CAR.2': 162.42,
+            'ATN.INT.2': 5.0,
+            'ATN.MOB.2': 4.0,
+            'M.ONSS': 15.39,
+            'MEAL_V_EMP': 25.07,
+            'REP.FEES': -150.0,
+            'IP': -662.5,
+            'IP.DED': 49.69,
+            'NET': -2203.54,
+            'REMUNERATION': -1987.5,
+            'ONSSEMPLOYERBASIC': -665.55,
+            'ONSSEMPLOYERFFE': -1.86,
+            'ONSSEMPLOYERMFFE': -2.66,
+            'ONSSEMPLOYERCPAE': -6.12,
+            'ONSSEMPLOYERRESTREINT': -44.94,
+            'ONSSEMPLOYERUNEMP': -2.66,
+            'ONSSEMPLOYER': -723.78,
+            'CO2FEE': -28.17,
+        }
+        self._validate_payslip(refund, payslip_results)
+
+        refund.action_payslip_done()
+
+        net_account_move_line = refund.move_id.line_ids.filtered(lambda l: l.name == 'Net Salary')
+        self.assertAlmostEqual(net_account_move_line.debit, 2203.54, places=2)
+        self.assertAlmostEqual(net_account_move_line.credit, 0.0, places=2)

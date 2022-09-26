@@ -4378,7 +4378,7 @@ class AccountReportCustomHandler(models.AbstractModel):
         in the same format as the one used in _caret_options_initializer_default (defined on 'account.report').
         If the result is empty, the engine will use the default caret options.
         """
-        return {}
+        return self.env['account.report']._caret_options_initializer_default()
 
     def _custom_options_initializer(self, report, options, previous_options=None):
         """ To be overridden to add report-specific _init_options... code to the report. """

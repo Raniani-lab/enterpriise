@@ -91,7 +91,7 @@
             </field>
             <field name="partner_id" position="after">
                 <label for="action_fsm_navigate" attrs="{'invisible': [('is_fsm', '=', False)]}"/>
-                <div class="oe_read_only" attrs="{'invisible': [('is_fsm', '=', False)]}">
+                <div attrs="{'invisible': [('is_fsm', '=', False)]}">
                     <button
                         name="action_fsm_navigate" type="object" class="btn btn-link ps-0 pt-0 pb-2"
                         icon="fa-arrow-right" string="Navigate To" colspan="2"

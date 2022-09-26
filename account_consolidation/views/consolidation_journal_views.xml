@@ -89,8 +89,8 @@
                                        options="{'no_create': True, 'no_open': True}"
                                        attrs="{'readonly': [('auto_generated', '=', True)]}"
                                        invisible="context.get('default_period_id', False)"/>
-                                <label class="oe_read_only" for="rate_consolidation" attrs="{'invisible': [('auto_generated', '=', False)]}"/>
-                                <div class="oe_read_only" attrs="{'invisible': [('auto_generated', '=', False)]}">
+                                <label for="rate_consolidation" attrs="{'invisible': [('auto_generated', '=', False)]}"/>
+                                <div attrs="{'invisible': [('auto_generated', '=', False)]}">
                                     <field name="rate_consolidation" class="oe_inline"/>
                                     <span class="o_form_label oe_inline">%</span>
                                 </div>

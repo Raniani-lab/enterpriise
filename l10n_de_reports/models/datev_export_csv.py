@@ -360,7 +360,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             account = partner.property_account_receivable_id if account.account_type == 'asset_receivable' else partner.property_account_payable_id
             fname = "property_account_receivable_id"         if account.account_type == 'asset_receivable' else "property_account_payable_id"
             prop = self.env['ir.property']._get(fname, "res.partner", partner.id)
-            if prop:
+            if prop == account:
                 return str(account.code).ljust(len_param - 1, '0')
             if account.account_type == 'asset_receivable':
                 param_start = self.env['ir.config_parameter'].sudo().get_param('l10n_de.datev_start_count', "100000000")[:9]

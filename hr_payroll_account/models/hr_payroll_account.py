@@ -111,7 +111,7 @@ class HrPayslip(models.Model):
         precision = self.env['decimal.precision'].precision_get('Payroll')
         new_lines = []
         for line in self.line_ids.filtered(lambda line: line.category_id):
-            amount = -line.total if self.credit_note else line.total
+            amount = line.total
             if line.code == 'NET': # Check if the line is the 'Net Salary'.
                 for tmp_line in self.line_ids.filtered(lambda line: line.category_id):
                     if tmp_line.salary_rule_id.not_computed_in_net: # Check if the rule must be computed in the 'Net Salary' or not.
@@ -123,7 +123,6 @@ class HrPayslip(models.Model):
                 continue
             debit_account_id = line.salary_rule_id.account_debit.id
             credit_account_id = line.salary_rule_id.account_credit.id
-
             if debit_account_id: # If the rule has a debit account.
                 debit = amount if amount > 0.0 else 0.0
                 credit = -amount if amount < 0.0 else 0.0

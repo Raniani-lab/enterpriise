@@ -21,16 +21,16 @@
                     </div>
                     <label for="mtbf" string="Mean Time Between Failure"/>
                     <div class="o_row">
-                        <field name="mtbf" class="oe_read_only"/> days
+                        <field name="mtbf" /> days
                     </div>
                     <label for="estimated_next_failure" string="Estimated Next Failure"/>
                     <div class="o_row">
-                        <field name="estimated_next_failure" class="oe_read_only"/>
+                        <field name="estimated_next_failure" />
                     </div>
-                    <field name="latest_failure_date" string="Latest Failure" class="oe_read_only"/>
+                    <field name="latest_failure_date" string="Latest Failure" />
                     <label for="mttr" string="Mean Time To Repair"/>
                     <div class="o_row">
-                        <field name="mttr" class="oe_read_only"/> days
+                        <field name="mttr" /> days
                     </div>
                 </group>
             </xpath>

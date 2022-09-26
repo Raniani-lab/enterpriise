@@ -97,7 +97,7 @@
                                         context="{'tree_view_ref': 'marketing_automation.ir_model_view_tree_marketing'}"/>
                                 </div>
                                 <div class="col-xs-12 col-md-9 o_td_label">
-                                    <label for="mailing_filter_id" string="Filter" class="oe_read_only me-4"/>
+                                    <label for="mailing_filter_id" string="Filter" class="me-4"/>
                                     <field name="mailing_filter_id"
                                         widget="mailing_filter"
                                         options="{'no_create': '1', 'no_open': '1', 'domain_field': 'domain', 'model_field': 'model_id'}"
@@ -118,10 +118,7 @@
                     <div class="o_ma_hierarchy">
                         <div class="o_ma_hierarchy_title" attrs="{'invisible': [('marketing_activity_ids', '=', [])]}">Workflow</div>
                         <div class="o_ma_hierarchy_readonly oe_read_only" attrs="{'invisible': [('marketing_activity_ids', '!=', [])]}">
-                            <h3>No activity added</h3>
-                            <p>
-                                Click on 'Edit' button to add new activity in workflow.
-                            </p>
+                            <h3>No activity for this campaign.</h3>
                         </div>
                         <field name="marketing_activity_ids" widget="hierarchy_kanban" mode="kanban" nolabel="1"
                             class="o_ma_hierarchy_container o_ma_campaign_hierarchy"

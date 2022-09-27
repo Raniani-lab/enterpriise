@@ -421,7 +421,7 @@
                                     <field name="form_partner_id"
                                            string="Partner"
                                            options="{'no_open': True, 'no_quick_create': True}"
-                                           attrs="{'readonly': [('form_flag', 'in', ('liquidity', 'tax_line', 'new_aml'))], 'invisible': [('form_index', '=', False)]}"/>
+                                           attrs="{'readonly': [('form_flag', 'in', ('tax_line', 'new_aml'))], 'invisible': [('form_index', '=', False)]}"/>
                                     <label for="button_form_partner_receivable"
                                            string=""
                                            attrs="{'invisible': ['|', '|', '|', '|', ('form_index', '=', False), ('form_partner_id', '=', False), ('form_partner_receivable_account_id', '=', False), ('form_partner_payable_account_id', '=', False), ('form_flag', 'not in', ('auto_balance', 'manual'))]}"/>
@@ -451,15 +451,17 @@
                                     <field name="analytic_distribution_stored_char" invisible="1"/>
                                     <field name="analytic_distribution" widget="analytic_distribution" groups="analytic.group_analytic_accounting"
                                            attrs="{'invisible': ['|', ('form_flag', '=', 'liquidity'), ('form_index', '=', False)]}"/>
+                                    <field name="form_date"
+                                           attrs="{'invisible': ['|', ('form_flag', '!=', 'liquidity'), ('form_index', '=', False)], 'required': [('form_flag', '=', 'liquidity')]}"/>/>
                                 </group>
                                 <group>
                                     <field name="form_name"
                                            string="Label"
-                                           attrs="{'readonly': [('form_flag', '=', 'liquidity')], 'invisible': [('form_index', '=', False)]}"/>
+                                           attrs="{'invisible': [('form_index', '=', False)], 'required': [('form_flag', '=', 'liquidity')]}"/>
 
                                     <label for="form_amount_currency"
                                            string="Amount Currency"
-                                           attrs="{'readonly': [('form_flag', '=', 'liquidity')], 'invisible': ['|', ('form_single_currency_mode', '=', True), ('form_index', '=', False)]}"/>
+                                           attrs="{'invisible': ['|', ('form_single_currency_mode', '=', True), ('form_index', '=', False)]}"/>
                                     <div class="d-flex">
                                         <span class="o_form_label"
                                               attrs="{'invisible': ['|', '|', ('form_single_currency_mode', '=', True), ('form_force_negative_sign', '=', False), ('form_index', '=', False)]}">-</span>
@@ -477,13 +479,13 @@
 
                                     <label for="form_balance"
                                            string="Amount"
-                                           attrs="{'readonly': [('form_flag', '=', 'liquidity')], 'invisible': [('form_index', '=', False)]}"/>
+                                           attrs="{'invisible': [('form_index', '=', False)]}"/>
                                     <div class="d-flex">
                                         <span class="o_form_label"
                                               attrs="{'invisible': ['|', ('form_force_negative_sign', '=', False), ('form_index', '=', False)]}">-</span>
                                         <field name="form_balance"
                                                options="{'no_symbol': True}"
-                                               attrs="{'readonly': [('form_flag', '=', 'liquidity')], 'invisible': [('form_index', '=', False)]}"/>
+                                               attrs="{'readonly': [('form_flag', '=', 'liquidity'), ('form_single_currency_mode', '=', False)], 'invisible': [('form_index', '=', False)]}"/>
                                         <span class="ml4 mr4">in</span>
                                         <field name="company_currency_id" style="width: 120px"/>
                                     </div>

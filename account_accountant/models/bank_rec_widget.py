@@ -113,6 +113,7 @@ class BankRecWidget(models.Model):
     form_index = fields.Char()
     form_flag = fields.Char()
     form_name = fields.Char()
+    form_date = fields.Date()
     form_account_id = fields.Many2one(
         comodel_name='account.account',
         domain="['|', ('company_id', '=', company_id), ('deprecated', '=', False)]",
@@ -681,8 +682,23 @@ class BankRecWidget(models.Model):
     def _onchange_form_name(self):
         line = self._lines_widget_get_line_in_edit_form()
         if line:
-            self._lines_widget_form_turn_auto_balance_into_manual_line(line)
-            line.name = self.form_name
+
+            if line.flag == 'liquidity':
+                self.st_line_id.payment_ref = self.form_name
+                self.invalidate_model(fnames=['partner_id'])
+                self._action_reset_wizard()
+                self._action_focus_liquidity_line(field_clicked='name')
+            else:
+                self._lines_widget_form_turn_auto_balance_into_manual_line(line)
+                line.name = self.form_name
+
+    @api.onchange('form_date')
+    def _onchange_form_date(self):
+        line = self._lines_widget_get_line_in_edit_form()
+        if line and line.flag == 'liquidity':
+            self.st_line_id.date = self.form_date
+            self._action_reset_wizard()
+            self._action_focus_liquidity_line(field_clicked='date')
 
     @api.onchange('form_account_id')
     def _onchange_form_account_id(self):
@@ -704,6 +720,13 @@ class BankRecWidget(models.Model):
     def _onchange_form_partner_id(self):
         line = self._lines_widget_get_line_in_edit_form()
         if not line:
+            return
+
+        if line.flag == 'liquidity':
+            self.st_line_id.partner_id = self.form_partner_id
+            self.invalidate_model(fnames=['partner_id'])
+            self._action_reset_wizard()
+            self._action_focus_liquidity_line(field_clicked='partner_id')
             return
 
         self._lines_widget_form_turn_auto_balance_into_manual_line(line)
@@ -792,6 +815,12 @@ class BankRecWidget(models.Model):
         if not line:
             return
 
+        if line.flag == 'liquidity':
+            self.st_line_id.amount = self.form_amount_currency
+            self._action_reset_wizard()
+            self._action_focus_liquidity_line(field_clicked='amount_currency')
+            return
+
         self._lines_widget_form_turn_auto_balance_into_manual_line(line)
 
         if line.flag == 'new_aml':
@@ -842,6 +871,12 @@ class BankRecWidget(models.Model):
     def _onchange_form_balance(self):
         line = self._lines_widget_get_line_in_edit_form()
         if not line:
+            return
+
+        if line.flag == 'liquidity':
+            self.st_line_id.amount = self.form_balance
+            self._action_reset_wizard()
+            self._action_focus_liquidity_line(field_clicked='debit')
             return
 
         self._lines_widget_form_turn_auto_balance_into_manual_line(line)
@@ -1352,6 +1387,16 @@ class BankRecWidget(models.Model):
     def _action_clear_manual_operations_form(self):
         self.form_index = None
 
+    def _action_reset_wizard(self):
+        self.ensure_one()
+        self.invalidate_model(fnames=['line_ids'])
+        self._action_trigger_matching_rules()
+
+    def _action_focus_liquidity_line(self, field_clicked=None):
+        self.ensure_one()
+        liquidity_line = self.line_ids.filtered(lambda x: x.flag == 'liquidity')
+        self._action_mount_line_in_edit(liquidity_line.index, field_clicked=field_clicked)
+
     def _action_trigger_matching_rules(self):
         self.ensure_one()
 
@@ -1387,6 +1432,7 @@ class BankRecWidget(models.Model):
         self.form_index = line.index
         self.form_flag = line.flag
         self.form_name = line.name
+        self.form_date = line.date
         self.form_account_id = line.account_id
         self.form_partner_id = line.partner_id
         self.form_currency_id = line.currency_id

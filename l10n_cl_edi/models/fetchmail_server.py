@@ -173,7 +173,7 @@ class FetchmailServer(models.Model):
                 continue
             document_type_code = self._get_document_type_from_xml(dte)
             document_type = self.env['l10n_latam.document.type'].search(
-                [('code', '=', document_type_code)], limit=1)
+                [('code', '=', document_type_code), ('country_id.code', '=', 'CL')], limit=1)
             zfill = self._get_doc_number_padding(company_id)
             name = '{} {}'.format(document_type.doc_code_prefix, document_number.zfill(zfill))
             move = self.env['account.move'].sudo().search([
@@ -230,7 +230,8 @@ class FetchmailServer(models.Model):
             document_number = self._get_document_number(dte_xml)
             document_type_code = self._get_document_type_from_xml(dte_xml)
             xml_total_amount = float(dte_xml.findtext('.//ns0:MntTotal', namespaces=XML_NAMESPACES))
-            document_type = self.env['l10n_latam.document.type'].search([('code', '=', document_type_code)], limit=1)
+            document_type = self.env['l10n_latam.document.type'].search(
+                [('code', '=', document_type_code), ('country_id.code', '=', 'CL')], limit=1)
             if not document_type:
                 _logger.info('DTE has been discarded! Document type %s not found' % document_type_code)
                 continue

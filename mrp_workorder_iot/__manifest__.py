@@ -20,7 +20,7 @@
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'mrp_workorder_iot/static/**/*',
+            'mrp_workorder_iot/static/src/**/*',
         ],
     }
 }

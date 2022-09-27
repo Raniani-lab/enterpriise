@@ -3,8 +3,10 @@
 
 from odoo.tests.common import TransactionCase
 
+from odoo.addons.hr_timesheet.tests.test_timesheet import TestCommonTimesheet
 
-class TestHelpdeskTimesheetCommon(TransactionCase):
+
+class TestHelpdeskTimesheetCommon(TestCommonTimesheet):
 
     @classmethod
     def setUpClass(cls):

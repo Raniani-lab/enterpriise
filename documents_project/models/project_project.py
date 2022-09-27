@@ -186,7 +186,7 @@ class ProjectProject(models.Model):
         return {
             'res_model': 'documents.document',
             'type': 'ir.actions.act_window',
-            'name': _("%s's Documents", self.name),
+            'name': _("%(project_name)s's Documents", project_name=self.name),
             'domain': [
             '|',
                 '&',

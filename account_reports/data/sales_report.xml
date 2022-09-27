@@ -31,7 +31,7 @@
             <div class="btn-group dropdown o_filter_component">
                 <t t-set="codes" t-value="options.get('ec_tax_filter_selection', [])"/>
                 <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle"
-                        data-toggle="dropdown">
+                        data-bs-toggle="dropdown">
                     <t t-set="names" t-value="[c.get('name')[:1] for c in codes if c and c.get('selected')]"/>
                     <span class="fa fa-filter"/>
                     Codes:

@@ -173,9 +173,9 @@ class SendCloud:
 
     def _validate_partner_details(self, partner):
         if not partner.phone:
-            raise UserError(_('%s phone required', partner.name))
+            raise UserError(_('%(partner_name)s phone required', partner_name=partner.name))
         if not partner.email:
-            raise UserError(_('%s email required', partner.name))
+            raise UserError(_('%(partner_name)s email required', partner_name=partner.name))
         if not all([partner.street, partner.city, partner.zip, partner.country_id]):
             raise UserError(_('The %s address needs to have the street, city, zip, and country', partner.name))
 

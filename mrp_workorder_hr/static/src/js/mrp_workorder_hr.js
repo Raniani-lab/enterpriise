@@ -130,6 +130,9 @@ TabletKanbanController.include({
     },
 
     _onBarcodeScanned: function (barcode) {
+        if (!this.employees) {
+            return;
+        }
         const employee = this.employees.find(e => e.barcode == barcode);
         if (employee) {
             this.selectEmployee(employee.id);

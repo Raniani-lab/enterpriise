@@ -7,7 +7,7 @@ import { WorkingEmployeePopup } from '@mrp_workorder_hr/components/working_emplo
 import { patch } from 'web.utils';
 import { PinPopup } from '@mrp_workorder_hr/components/pin_popup';
 
-const { useState, onMounted } = owl;
+const { onMounted } = owl;
 
 patch(Tablet.prototype, 'mrp_workorder_hr', {
     setup() {
@@ -25,9 +25,7 @@ patch(Tablet.prototype, 'mrp_workorder_hr', {
             isShown: false,
             data: {},
         };
-        this.state = useState({
-            tabletEmployeeIds: [],
-        });
+        this.state.tabletEmployeeIds = [];
         this.employee = this.props.action.context.employee_id;
         this.actionRedirect = false;
         this.bus.on('popupEmployeeManagement', this, this.popupEmployeeManagement);
@@ -80,7 +78,7 @@ patch(Tablet.prototype, 'mrp_workorder_hr', {
             this.actionRedirect = this.startEmployee;
             return;
         }
-        this.state.tabletEmployeeIds += employeeId;
+        this.state.tabletEmployeeIds.push(employeeId);
         await this.orm.call(
             'mrp.workorder',
             'start_employee',
@@ -132,7 +130,7 @@ patch(Tablet.prototype, 'mrp_workorder_hr', {
     },
 
     _onBarcodeScanned(barcode) {
-        const employee = this.employeeList.find(e => e.barcode === barcode);
+        const employee = this.data.employee_list.find(e => e.barcode === barcode);
         if (employee) {
             this.startEmployee(employee.id);
         } else {

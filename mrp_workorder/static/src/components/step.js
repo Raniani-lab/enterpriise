@@ -3,9 +3,14 @@
 const { Component } = owl;
 
 class StepComponent extends Component {
-
-    get isSelected() {
-        return this.props.step.id === this.props.selectedStepId;
+    get stepClass() {
+        if (this.props.step.id === this.props.selectedStepId) {
+            return "o_selected o_highlight";
+        } else if (this.props.step.is_deleted) {
+            return "o_deleted";
+        } else {
+            return "";
+        }
     }
 
     selectStep() {
@@ -14,7 +19,7 @@ class StepComponent extends Component {
 
     get title() {
         return this.props.step.title || this.props.step.test_type;
-    } 
+    }
 
 }
 

@@ -211,6 +211,7 @@ class QualityCheck(models.Model):
     is_user_working = fields.Boolean(related="workorder_id.is_user_working")
     consumption = fields.Selection(related="workorder_id.consumption")
     working_state = fields.Selection(related="workorder_id.working_state")
+    is_deleted = fields.Boolean('Deleted in production')
 
     # Computed fields
     title = fields.Char('Title', compute='_compute_title')
@@ -331,7 +332,6 @@ class QualityCheck(models.Model):
 
     def add_check_in_chain(self, activity=True):
         self.ensure_one()
-        self.title = 'New step from manufacturing feedback'
         self._insert_in_chain('after', self.workorder_id.current_quality_check_id)
         if self.workorder_id.production_id.bom_id and activity:
             body = Markup(_("<b>New Step suggested by %s</b><br/>"
@@ -523,6 +523,7 @@ class QualityCheck(models.Model):
             'additional',
             'worksheet_document',
             'worksheet_page',
+            'is_deleted',
         ]
 
     def _get_fields_for_tablet(self, sorted_check_list):

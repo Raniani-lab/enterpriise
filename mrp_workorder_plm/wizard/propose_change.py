@@ -45,20 +45,21 @@ class ProposeChange(models.TransientModel):
 
     def _do_update_step(self):
         eco = self._get_eco()
-        self.step_id.note = self.note
+        super()._do_update_step(notify_bom=False)
         # get the step on the new bom related to the one we want to update
         new_step = eco.new_bom_id.operation_ids.quality_point_ids.filtered(lambda p: p._get_comparison_values() == self.step_id.point_id._get_comparison_values())
         new_step.note = self.note
 
     def _do_remove_step(self):
         eco = self._get_eco()
+        super()._do_remove_step(notify_bom=False)
         # get the step on the new bom related to the one we want to delete
         new_step = eco.new_bom_id.operation_ids.quality_point_ids.filtered(lambda p: p._get_comparison_values() == self.step_id.point_id._get_comparison_values())
         new_step.unlink()
 
     def _do_set_picture(self):
         eco = self._get_eco()
-        self.step_id.worksheet_document = self.picture
+        super()._do_set_picture(notify_bom=False)
         # get the step on the new bom related to the one we want to delete
         new_step = eco.new_bom_id.operation_ids.quality_point_ids.filtered(lambda p: p._get_comparison_values() == self.step_id.point_id._get_comparison_values())
         new_step.note = Markup("<img class='img-fluid' src=%s/>") % self.image_url(self, 'picture')

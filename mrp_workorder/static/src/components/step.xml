@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <t t-name="mrp_workorder.StepComponent" owl="1">
-        <div class="list-group-item o_tablet_step" t-att-class="isSelected ? 'o_selected o_highlight' : ''" t-on-click="selectStep">
+        <div class="list-group-item o_tablet_step" t-att-class="stepClass" t-on-click="selectStep">
             <div class="row">
                 <div class="col-9 o_step_title">
                     <t t-esc="title"/>

@@ -56,10 +56,10 @@ tour.register('rental_product_configurator_tour', {
 
 // Editing a custom desk => reopen the rental wizard
 {
-    trigger: 'span[name="product_template_id"] span:contains("Customizable Desk (TEST)")',
+    trigger: '[name="product_template_id"] span:contains("Customizable Desk (TEST)")',
 }, {
     trigger: 'button.fa-calendar',
-    extra_trigger: '.fa-calendar',
+    extra_trigger: '[data-tooltip*=Customizable]',
 },{
     trigger: 'div[name="qty_to_reserve"] input',
     run: 'text 2',

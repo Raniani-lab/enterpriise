@@ -6,7 +6,6 @@ const QWeb = core.qweb;
 
 const Context = require('web.Context');
 const data_manager = require('web.data_manager');
-const time = require('web.time');
 
 const QtyAtDateWidget = require('sale_stock.QtyAtDateWidget');
 
@@ -37,8 +36,8 @@ QtyAtDateWidget.include({
         if (!this.data.is_rental || !this.data.return_date || !this.data.start_date) {
             return this._super();
         }
-        this.data.stock_end_date = this.data.return_date.clone().add(this.getSession().getTZOffset(this.data.return_date), 'minutes').format(time.getLangDateFormat());
-        this.data.stock_start_date = this.data.start_date.clone().add(this.getSession().getTZOffset(this.data.start_date), 'minutes').format(time.getLangDateFormat());
+        this.data.stock_end_date = this.data.return_date;
+        this.data.stock_start_date = this.data.start_date;
         const $content = $(QWeb.render('sale_stock_renting.QtyDetailPopOver', {
             data: this.data,
         }));

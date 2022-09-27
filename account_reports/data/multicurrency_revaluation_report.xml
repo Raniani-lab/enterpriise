@@ -4,7 +4,7 @@
     <template id="multicurrency_report_search_template" inherit_id="account_reports.search_template" primary="True">
         <xpath expr="//div[@id='extra_options_dropdown']" position="before">
             <div class="btn-group dropdown o_account_reports_filter_currency" t-if="options.get('currency_rates')">
-                <button type="button" class="dropdown-toggle btn btn-secondary" data-toggle="dropdown">
+                <button type="button" class="dropdown-toggle btn btn-secondary" data-bs-toggle="dropdown">
                     <span class="fa fa-line-chart"/> Exchange Rates
                 </button>
                 <div class="dropdown-menu o_filters_menu" role="menu">

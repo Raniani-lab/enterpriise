@@ -2,7 +2,7 @@
 <odoo>
     <data>
         <template id="search_template_intrastat_type">
-            <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
                 <span class="fa fa-filter"/>
                 Types:
                 <t t-set="type_value">All</t>
@@ -25,7 +25,7 @@
         </template>
 
         <template id="search_template_intrastat_extended">
-            <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
                 <span class="fa fa-filter"/> Options:
                 <t t-if="options['intrastat_extended']">Extended</t>
                 <t t-if="not options['intrastat_extended']">Standard</t>
@@ -39,7 +39,7 @@
         </template>
 
         <template id="search_template_vat">
-            <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-toggle="dropdown">
+            <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
                 <span class="fa fa-filter"/> Partners:
                 <t t-if="options['intrastat_with_vat']">With VAT numbers</t>
                 <t t-if="not options['intrastat_with_vat']">All</t>

@@ -26,7 +26,7 @@ patch(PhoneField.prototype, "voip.PhoneField", {
         if (ev.target.matches("a")) {
             ev.stopImmediatePropagation();
         }
-        if (!this.props.readonly || !this.voip.canCall) {
+        if (!this.voip.canCall) {
             return;
         }
         ev.preventDefault();

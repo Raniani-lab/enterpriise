@@ -56,9 +56,9 @@ QUnit.module('voip', (hooks) => {
             resId: 1,
         });
 
-        assert.containsOnce(target, ".o_field_phone .o_phone_link");
-        assert.strictEqual(target.querySelector(".o_field_phone .o_phone_link").textContent, "yop");
-        assert.hasAttrValue(target.querySelector(".o_field_phone .o_phone_link"), "href", "tel:yop");
+        assert.containsOnce(target, ".o_field_phone a.o_form_uri");
+        assert.strictEqual(target.querySelector(".o_field_phone a").textContent, "yop");
+        assert.hasAttrValue(target.querySelector(".o_field_phone a"), "href", "tel:yop");
     });
 
     QUnit.test('PhoneField in form view on normal screens', async function (assert) {
@@ -98,8 +98,8 @@ QUnit.module('voip', (hooks) => {
 
         assert.containsN(target, 'tbody td:not(.o_list_record_selector)', 5);
         assert.strictEqual(target.querySelector('tbody td:not(.o_list_record_selector)').innerText, 'yop\nSMS');
-        assert.containsN(target, 'div.o_field_phone.o_field_widget > a.o_form_uri.o_phone_link', 5);
-        assert.hasAttrValue(target.querySelector(".o_phone_link"), 'href', 'tel:yop');
+        assert.containsN(target, 'div.o_field_phone.o_field_widget a.o_form_uri', 5);
+        assert.hasAttrValue(target.querySelector("a"), 'href', 'tel:yop');
 
         // Edit a line and check the result
         await click(target.querySelector(".o_data_cell"));
@@ -111,8 +111,8 @@ QUnit.module('voip', (hooks) => {
         await click(target.querySelector(".o_list_button_save"));
         assert.containsNone(target, ".o_selected_row");
         assert.strictEqual(target.querySelector('tbody td:not(.o_list_record_selector)').innerText, 'new\nSMS');
-        assert.containsN(target, 'div.o_field_phone.o_field_widget > a.o_form_uri.o_phone_link', 5);
-        assert.hasAttrValue(target.querySelector(".o_phone_link"), 'href', 'tel:new');
+        assert.containsN(target, 'div.o_field_phone.o_field_widget a.o_form_uri', 5);
+        assert.hasAttrValue(target.querySelector("a"), 'href', 'tel:new');
     });
 
     QUnit.test("click on phone field link triggers call once", async function (assert) {

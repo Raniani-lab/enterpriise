@@ -27,7 +27,7 @@ function applyInclude(Activity) {
           sign_directly_without_mail: false,
           default_activity_id: $(ev.currentTarget).data("activity-id"),
         },
-        on_close: this._reload.bind(this, { activity: true, thread: true }),
+        on_close: this._reload.bind(this),
       });
     },
   });

@@ -252,7 +252,7 @@ class ProviderFedex(models.Model):
             # Commodities for customs declaration (international shipping)
             if 'INTERNATIONAL' in self.fedex_service_type  or (picking.partner_id.country_id.code == 'IN' and picking.picking_type_id.warehouse_id.partner_id.country_id.code == 'IN'):
 
-                commodities = self._get_commodities_from_order(order)
+                commodities = self._get_commodities_from_stock_move_lines(picking.move_line_ids)
                 for commodity in commodities:
                     srm.commodities(self, commodity, _convert_curr_iso_fdx(order_currency.name))
 

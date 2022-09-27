@@ -29,7 +29,7 @@ tour.register('rental_order_with_sale_product_matrix_tour', {
 // Adding a rental product
 {
     trigger: 'a:contains("Add a product")',
-    extra_trigger: '.o_field_many2one[name="product_template_id"] .o_external_button',
+    extra_trigger: '[name="name"][data-tooltip*="floor protection"]',
 }, {
     trigger: 'div[name="product_template_id"] input',
     run: 'text Projector',
@@ -43,7 +43,7 @@ tour.register('rental_order_with_sale_product_matrix_tour', {
 // Adding a sale product with a matrix
 {
     trigger: 'a:contains("Add a product")',
-    extra_trigger: '.o_field_many2one[name="product_template_id"] .o_external_button',
+    extra_trigger: '[name="name"][data-tooltip*="Projector"]',
 }, {
     trigger: 'div[name="product_template_id"] input',
     run: 'text Matrix',

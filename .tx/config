@@ -907,6 +907,16 @@ file_filter = social_youtube/i18n/<lang>.po
 source_file = social_youtube/i18n/social_youtube.pot
 source_lang = en
 
+[odoo-16.spreadsheet_dashboard_account_accountant]
+file_filter = spreadsheet_dashboard_account_accountant/i18n/<lang>.po
+source_file = spreadsheet_dashboard_account_accountant/i18n/spreadsheet_dashboard_account_accountant.pot
+source_lang = en
+
+[odoo-16.spreadsheet_dashboard_crm]
+file_filter = spreadsheet_dashboard_crm/i18n/<lang>.po
+source_file = spreadsheet_dashboard_crm/i18n/spreadsheet_dashboard_crm.pot
+source_lang = en
+
 [odoo-16.spreadsheet_dashboard_documents]
 file_filter = spreadsheet_dashboard_documents/i18n/<lang>.po
 source_file = spreadsheet_dashboard_documents/i18n/spreadsheet_dashboard_documents.pot
@@ -915,6 +925,36 @@ source_lang = en
 [odoo-16.spreadsheet_dashboard_edition]
 file_filter = spreadsheet_dashboard_edition/i18n/<lang>.po
 source_file = spreadsheet_dashboard_edition/i18n/spreadsheet_dashboard_edition.pot
+source_lang = en
+
+[odoo-16.spreadsheet_dashboard_helpdesk]
+file_filter = spreadsheet_dashboard_helpdesk/i18n/<lang>.po
+source_file = spreadsheet_dashboard_helpdesk/i18n/spreadsheet_dashboard_helpdesk.pot
+source_lang = en
+
+[odoo-16.spreadsheet_dashboard_hr_contract]
+file_filter = spreadsheet_dashboard_hr_contract/i18n/<lang>.po
+source_file = spreadsheet_dashboard_hr_contract/i18n/spreadsheet_dashboard_hr_contract.pot
+source_lang = en
+
+[odoo-16.spreadsheet_dashboard_hr_referral]
+file_filter = spreadsheet_dashboard_hr_referral/i18n/<lang>.po
+source_file = spreadsheet_dashboard_hr_referral/i18n/spreadsheet_dashboard_hr_referral.pot
+source_lang = en
+
+[odoo-16.spreadsheet_dashboard_mrp_account]
+file_filter = spreadsheet_dashboard_mrp_account/i18n/<lang>.po
+source_file = spreadsheet_dashboard_mrp_account/i18n/spreadsheet_dashboard_mrp_account.pot
+source_lang = en
+
+[odoo-16.spreadsheet_dashboard_sale_renting]
+file_filter = spreadsheet_dashboard_sale_renting/i18n/<lang>.po
+source_file = spreadsheet_dashboard_sale_renting/i18n/spreadsheet_dashboard_sale_renting.pot
+source_lang = en
+
+[odoo-16.spreadsheet_dashboard_stock]
+file_filter = spreadsheet_dashboard_stock/i18n/<lang>.po
+source_file = spreadsheet_dashboard_stock/i18n/spreadsheet_dashboard_stock.pot
 source_lang = en
 
 [odoo-16.spreadsheet_edition]

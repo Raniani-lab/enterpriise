@@ -1,12 +1,15 @@
 /** @odoo-module **/
 
-import { addRecordMethods } from '@mail/model/model_core';
+import { registerPatch } from '@mail/model/model_core';
 import core from 'web.core';
 
-addRecordMethods('Chatter', {
-    onClickChatterSearchArticle(event) {
-        core.bus.trigger("openMainPalette", {
-            searchValue: "?",
-        });
+registerPatch({
+    name: 'Chatter',
+    recordMethods: {
+        onClickChatterSearchArticle(event) {
+            core.bus.trigger("openMainPalette", {
+                searchValue: "?",
+            });
+        },
     },
 });

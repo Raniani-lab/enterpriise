@@ -5,9 +5,6 @@
         <field name="model">quality.check</field>
         <field name="inherit_id" ref="mrp_workorder.quality_check_view_form_tablet"/>
         <field name="arch" type="xml">
-            <xpath expr="//form" position="attributes">
-                <attribute name="js_class">pedal_form</attribute>
-            </xpath>
             <xpath expr="//field[@name='production_id']" position="after">
                 <field name="ip" invisible="1"/>
                 <field name="identifier" invisible="1"/>

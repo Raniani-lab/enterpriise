@@ -215,6 +215,7 @@ class XmlPolizasExportWizard(models.TransientModel):
             WHERE {where_clause}
             ORDER BY account_move_line.date, account_move_line.id
         '''
+        self.env['account.move.line'].flush_model()
         self.env.cr.execute(query, where_params)
 
         result = self._cr.dictfetchall()

@@ -11,7 +11,7 @@
                 </attribute>
             </xpath>
             <xpath expr="//p[@name='explanation-text']" position="after">
-                <div name='detailed-explanation-text'>
+                <div name='detailed-explanation-text' invisible="not context.get('display_detailed_backorder', False)">
                     <p>You have processed less products than the initial demand:</p>
                     <p class="text-info fw-bold ms-2"
                        attrs="{'invisible': [('empty_move_count', '&lt;=', 0)]}">

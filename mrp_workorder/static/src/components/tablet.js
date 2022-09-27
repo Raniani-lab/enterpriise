@@ -1,8 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { useService } from "@web/core/utils/hooks";
-import core from "web.core";
+import { useService, useBus } from "@web/core/utils/hooks";
 import ViewsWidget from '@mrp_workorder/widgets/views_widget';
 import DocumentViewer from '@mrp_workorder/components/viewer';
 import StepComponent from '@mrp_workorder/components/step';
@@ -47,7 +46,8 @@ class Tablet extends Component {
             this[method]();
         });
         this.bus.on('exit', this, this.exit);
-        core.bus.on('barcode_scanned', this, this._onBarcodeScanned);
+        this.barcode = useService('barcode');
+        useBus(this.barcode.bus, 'barcode_scanned', (event) => this._onBarcodeScanned(event.detail.barcode));
         onWillStart(async () => {
             await this._onWillStart();
         });
@@ -235,23 +235,10 @@ class Tablet extends Component {
     }
 
     _onBarcodeScanned(barcode) {
-        const commands = {
-            'O-BTN.pause': this._buttonClick.bind(this, 'action_pending'),
-            'O-BTN.next': this.validate.bind(this),
-            'O-BTN.prev': this.previousStep.bind(this),
-            'O-BTN.skip': this.nextStep.bind(this),
-            'O-BTN.cloWO': this._buttonClick.bind(this, 'do_finish'),
-            'O-BTN.cloMO': this._buttonClick.bind(this, 'action_open_manufacturing_order'),
-            'O-BTN.pass': this._buttonClick.bind(this, 'do_pass'),
-            'O-BTN.fail': this._buttonClick.bind(this, 'do_fail'),
-            'O-BTN.record': this.recordProduction.bind(this),
-        };
-        if (commands[barcode]) {
-            commands[barcode]();
-        } else {
-            this.orm.call('quality.check', 'on_barcode_scanned', [this.state.selectedStepId]);
+        if (barcode.startsWith('O-BTN.') || barcode.startsWith('O-CMD.')) {
+            // Do nothing. It's already handled by the barcode service.
+            return;
         }
-
     }
 }
 

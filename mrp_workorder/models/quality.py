@@ -504,14 +504,9 @@ class QualityCheck(models.Model):
             new_next.previous_check_id = self
             relative.next_check_id = self
 
-    def _get_fields_for_tablet(self, sorted_check_list):
-        """ List of fields on the quality check object that are needed by the tablet
-        client action. The purpose of this function is to be overridden in order
-        to inject new fields to the client action.
-        """
-        if sorted_check_list:
-            self = self.browse(sorted_check_list)
-        field_list = [
+    @api.model
+    def _get_fields_list_for_tablet(self):
+        return [
             'lot_id',
             'move_id',
             'move_line_id',
@@ -528,4 +523,12 @@ class QualityCheck(models.Model):
             'worksheet_document',
             'worksheet_page',
         ]
-        return self.read(field_list, load=False)
+
+    def _get_fields_for_tablet(self, sorted_check_list):
+        """ List of fields on the quality check object that are needed by the tablet
+        client action. The purpose of this function is to be overridden in order
+        to inject new fields to the client action.
+        """
+        if sorted_check_list:
+            self = self.browse(sorted_check_list)
+        return self.read(self._get_fields_list_for_tablet(), load=False)

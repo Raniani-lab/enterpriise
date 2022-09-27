@@ -1,11 +1,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 {
-    'name': "Sepa Direct Debit Payment Provider",
+    'name': "Payment Provider: Sepa Direct Debit",
     'version': '2.0',
     'category': 'Accounting/Accounting',
-    'summary': "Payment Provider: Sepa Direct Debit",
-    'description': """Sepa Direct Debit Payment Provider""",
+    'sequence': 350,
+    'summary': "A payment provider for enabling Sepa Direct Debit in the EU.",
     'depends': ['account_sepa_direct_debit', 'account_payment', 'sms'],
     'data': [
         'views/payment_provider_views.xml',
@@ -15,7 +15,7 @@
         'data/mail_template_data.xml',
         'data/payment_provider_data.xml',
     ],
-    'installable': True,
+    'application': True,
     'uninstall_hook': 'uninstall_hook',
     'assets': {
         'web.assets_common': [

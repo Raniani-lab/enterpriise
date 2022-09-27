@@ -450,6 +450,7 @@
                                            attrs="{'invisible': ['|', ('form_flag', 'in', ('liquidity', 'new_aml', 'tax_line')), ('form_index', '=', False)]}"/>
                                     <field name="analytic_distribution_stored_char" invisible="1"/>
                                     <field name="analytic_distribution" widget="analytic_distribution" groups="analytic.group_analytic_accounting"
+                                           options="{'account_field': 'form_account_id', 'business_domain': 'general'}"
                                            attrs="{'invisible': ['|', ('form_flag', '=', 'liquidity'), ('form_index', '=', False)]}"/>
                                     <field name="form_date"
                                            attrs="{'invisible': ['|', ('form_flag', '!=', 'liquidity'), ('form_index', '=', False)], 'required': [('form_flag', '=', 'liquidity')]}"/>/>
@@ -569,7 +570,8 @@
                     <field name="analytic_distribution_stored_char" invisible="1"/>
                     <field name="analytic_distribution" widget="analytic_distribution"
                            groups="analytic.group_analytic_accounting"
-                           optional="hidden"/>
+                           optional="hidden"
+                           options="{'account_field': 'account_id', 'business_domain': 'general'}"/>
                     <field name="amount_residual_currency"
                            decoration-danger="amount_residual_currency &lt; 0"
                            groups="base.group_multi_currency"

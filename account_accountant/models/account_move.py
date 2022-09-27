@@ -28,6 +28,12 @@ class AccountMove(models.Model):
             }
         )
 
+    def action_open_business_doc(self):
+        if self.statement_line_id:
+            return self.action_open_bank_reconciliation_widget()
+        else:
+            return super().action_open_business_doc()
+
     def _get_mail_thread_data_attachments(self):
         res = super()._get_mail_thread_data_attachments()
         res += self.statement_line_id.statement_id.attachment_ids

@@ -307,7 +307,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
                 account_move_line.quantity AS line_quantity,
                 CASE WHEN account_move_line.price_subtotal = 0 THEN account_move_line.price_unit * account_move_line.quantity ELSE account_move_line.price_subtotal END AS value,
                 COALESCE(product_country.code, %s) AS intrastat_product_origin_country_code,
-                product_country.name AS intrastat_product_origin_country_name,
+                COALESCE(product_country.name->>'{self.env.user.lang or get_lang(self.env).code}', product_country.name->>'en_US') AS intrastat_product_origin_country_name,
                 CASE WHEN partner.vat IS NOT NULL THEN partner.vat
                      WHEN partner.vat IS NULL AND partner.is_company IS FALSE THEN %s
                      ELSE 'QV999999999999'

@@ -34,6 +34,10 @@
         &.o_selected {
             background-color: #f4a46057;
         }
+        &.o_deleted {
+            background-color: #a3363657;
+            text-decoration: line-through;
+        }
 
         .o_barcode_product_ref {
             font-size: 1.1em;

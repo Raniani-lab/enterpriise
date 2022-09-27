@@ -228,11 +228,11 @@ tour.register('test_add_step', {test: true}, [
     {trigger: '.btn:contains("Add a Step")'},
     {trigger: '.modal-title:contains("Add a Step")'},
     {
-        trigger: "div[name=name] input",
+        trigger: "div[name=title] input",
         position: 'bottom',
         run: 'text my very new step',
     }, {
-        trigger: "div[name=additional_note] textarea",
+        trigger: "div[name=note] p",
         position: 'bottom',
         run: 'text why am I adding a step',
     },
@@ -256,10 +256,10 @@ tour.register('test_add_step', {test: true}, [
             helper.assertCheckLength(2);
             helper.assertValidatedCheckLength(0);
             helper.assertQtyToProduce(1, 1);
-            helper.assertCurrentCheck('New step from manufacturing feedback');
+            helper.assertCurrentCheck("my very new step");
         }
     },
-    {trigger: 'div[name=additional_note]:contains("why am I adding a step")'},
+    {trigger: 'div[name=note]:contains("why am I adding a step")'},
     {trigger: '.o_tablet_client_action'},
     {trigger: '.o_tablet_step:nth-child(1)'},
     {
@@ -284,7 +284,7 @@ tour.register('test_add_step', {test: true}, [
     {trigger: '.btn-primary[name="process"]'},
     {trigger: '.o_tablet_client_action'},
     {trigger: '.btn[name=action_next]'},
-    {trigger: 'div[name=additional_note]:contains("why am I adding a step")'},
+    {trigger: 'div[name=note]:contains("why am I adding a step")'},
     {trigger: '.btn[name=action_next]'},
     {trigger: '.btn[name=action_generate_serial]'},
     {trigger: '.btn[name=do_finish]'},

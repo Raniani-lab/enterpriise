@@ -9,6 +9,7 @@
                     <group>
                         <field name="change_type" invisible="1"/>
                         <field name="step_id" invisible="1"/>
+                        <field name="title" attrs="{'invisible': [('change_type', '!=', 'update_step')]}"/>
                         <field name="note" attrs="{'invisible': [('change_type', '!=', 'update_step')]}"/>
                         <field name="comment" attrs="{'invisible': [('change_type', '=', 'set_picture')]}"/>
                         <field name="picture" attrs="{'invisible': [('change_type', '!=', 'set_picture')]}" widget="image"/>

@@ -37,7 +37,6 @@
     'assets': {
         'web.assets_backend': [
             'planning/static/src/js/planning_mixins.js',
-            'planning/static/src/js/calendar/*.js',
             'planning/static/src/js/planning_gantt_controller.js',
             'planning/static/src/js/planning_gantt_row.js',
             'planning/static/src/js/planning_gantt_renderer.js',

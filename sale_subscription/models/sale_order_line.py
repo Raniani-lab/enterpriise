@@ -154,8 +154,9 @@ class SaleOrderLine(models.Model):
 
     def _get_subscription_qty_invoiced(self, last_invoice_date=None, next_invoice_date=None):
         result = {}
+        amount_sign = {'out_invoice': 1, 'out_refund': -1}
         for line in self:
-            if line.temporal_type != 'subscription' or line.order_id.state not in ['sale', 'done'] or not line.order_id.recurrence_id:
+            if line.temporal_type != 'subscription' or line.order_id.state not in ['sale', 'done']:
                 continue
             qty_invoiced = 0.0
             last_period_start = line.order_id.next_invoice_date and line.order_id.next_invoice_date - get_timedelta(line.order_id.recurrence_id.duration, line.order_id.recurrence_id.unit)
@@ -169,7 +170,8 @@ class SaleOrderLine(models.Model):
                           start_date <= l.subscription_start_date <= day_before_end_date and
                           l.subscription_end_date == day_before_end_date)
             for invoice_line in related_invoice_lines:
-                qty_invoiced += invoice_line.product_uom_id._compute_quantity(invoice_line.quantity, line.product_uom)
+                line_sign = amount_sign.get(invoice_line.move_id.move_type, 1)
+                qty_invoiced += line_sign * invoice_line.product_uom_id._compute_quantity(invoice_line.quantity, line.product_uom)
             result[line.id] = qty_invoiced
         return result
 
@@ -222,7 +224,7 @@ class SaleOrderLine(models.Model):
                             duration=round(self.order_id.recurrence_id.duration),
                             unit=self.order_id.recurrence_id.unit)
             lang_code = self.order_id.partner_id.lang
-            if self.invoice_lines:
+            if self.qty_invoiced:
                 # We need to invoice the next period: last_invoice_date will be today once this invoice is created. We use get_timedelta to avoid gaps
                 new_period_start = self.order_id.next_invoice_date
             else:

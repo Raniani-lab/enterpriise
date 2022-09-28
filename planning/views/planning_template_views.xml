@@ -67,7 +67,7 @@
                                         <div class="row">
                                             <strong class="col-12">
                                                 <i class="fa fa-clock-o" role="img" aria-label="Hours" title="Hours"/>
-                                                <field name="name" />
+                                                <field name="name" class="ms-2"/>
                                             </strong>
                                             <strong class="col-12">
                                                 <field name="role_id" />

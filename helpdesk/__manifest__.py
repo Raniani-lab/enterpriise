@@ -67,11 +67,9 @@ Features:
         'web.assets_backend': [
             'helpdesk/static/src/scss/helpdesk.scss',
             'helpdesk/static/src/css/portal_helpdesk.css',
-            'helpdesk/static/src/js/helpdesk_relational_fields.js',
             'helpdesk/static/src/components/**/*',
             'helpdesk/static/src/views/**/*',
             'helpdesk/static/src/js/tours/helpdesk.js',
-            'helpdesk/static/src/xml/**/*',
         ],
         'web.qunit_suite_tests': [
             'helpdesk/static/tests/**/*',

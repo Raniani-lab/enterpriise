@@ -2,8 +2,7 @@
 
 import { SelectionPopup } from '@mrp_workorder_hr/components/popup';
 import { PinPopup } from '@mrp_workorder_hr/components/pin_popup';
-import core from "web.core";
-import { useService } from "@web/core/utils/hooks";
+import { useBus, useService } from "@web/core/utils/hooks";
 import { patch } from "@web/core/utils/patch";
 import {MrpWorkorderKanbanController} from '@mrp_workorder/views/kanban/mrp_workorder_kanban_controller';
 
@@ -26,6 +25,8 @@ patch(MrpWorkorderKanbanController.prototype, 'mrp_workorder_hr', {
             }
         });
         this.notification = useService('notification');
+        this.barcode = useService("barcode");
+        useBus(this.barcode.bus, 'barcode_scanned', (event) => this._onBarcodeScanned(event.detail.barcode));
         this.workcenterId = this.props.context.default_workcenter_id;
         this.workcenter = false;
         this.employee = useState({
@@ -65,7 +66,6 @@ patch(MrpWorkorderKanbanController.prototype, 'mrp_workorder_hr', {
         if (this.employeeId) {
             this.selectEmployee(this.employeeId);
         }
-        core.bus.on('barcode_scanned', this, this._onBarcodeScanned);
     },
 
     // destroy: function () {
@@ -130,7 +130,7 @@ patch(MrpWorkorderKanbanController.prototype, 'mrp_workorder_hr', {
         };
     },
 
-    _onBarcodeScanned: function (barcode) {
+    _onBarcodeScanned(barcode) {
         const employee = this.employees.find(e => e.barcode === barcode);
         if (employee) {
             this.selectEmployee(employee.id);

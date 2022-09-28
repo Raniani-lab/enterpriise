@@ -880,7 +880,7 @@ class JournalReportCustomHandler(models.AbstractModel):
             'date_from': params and params.get('date_from') or options.get('date', {}).get('date_from'),
             'date_to': params and params.get('date_to') or options.get('date', {}).get('date_to'),
         })
-        domain = self._get_options_domain(new_options, 'strict_range') + [('tax_tag_ids', 'in', [tag_id])] + self.env['account.move.line']._get_tax_exigible_domain()
+        domain = self.env['account.report'].browse(options['report_id'])._get_options_domain(new_options, 'strict_range') + [('tax_tag_ids', 'in', [tag_id])] + self.env['account.move.line']._get_tax_exigible_domain()
 
         return {
             'type': 'ir.actions.act_window',
@@ -938,7 +938,7 @@ class JournalReportCustomHandler(models.AbstractModel):
                 ctx['search_default_journal_id'] = selected_journals
 
         return {
-            'name': self._get_action_name(params),
+            'name': params.get('name'),
             'view_mode': 'tree,pivot,graph,kanban',
             'res_model': 'account.move.line',
             'views': [(self.env.ref('account.view_move_line_tree').id, 'list')],

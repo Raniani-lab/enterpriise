@@ -12,6 +12,8 @@ const { useState, onWillStart } = owl;
 
 export class ReferralKanbanRenderer extends KanbanRenderer {
     setup() {
+        super.setup();
+
         this.orm = useService('orm');
         this.companyId = session.user_context.allowed_company_ids[0];
         this.state = useState({

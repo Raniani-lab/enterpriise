@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, fields, _
+from odoo import api, models, fields, _
 from odoo.addons.l10n_eu_oss.models.eu_tax_map import EU_TAX_MAP
 from odoo.exceptions import UserError
 
@@ -102,11 +102,12 @@ class OSSTaxReportCustomHandlerOss(models.AbstractModel):
                 'name': _('XML'),
                 'sequence': 3,
                 'action': 'export_file',
-                'action_param': '_export_to_xml',
+                'action_param': 'eu_oss_export_to_xml',
                 'file_export_type': _('XML'),
             })
 
-    def _export_to_xml(self, options):
+    @api.model
+    def eu_oss_export_to_xml(self, options):
         report = self.env['account.report'].browse(options['report_id'])
         oss_import_report = self.env.ref('l10n_eu_oss_reports.oss_imports_report')
         eu_countries = self.env.ref('base.europe').country_ids

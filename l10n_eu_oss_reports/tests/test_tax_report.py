@@ -122,7 +122,7 @@ class OSSTaxReportTest(TestAccountReportsCommon):
         """
 
         self.assertXmlTreeEqual(
-            self.get_xml_tree_from_string(self.env[report.custom_handler_model_name]._export_to_xml(options)['file_content']),
+            self.get_xml_tree_from_string(self.env[report.custom_handler_model_name].eu_oss_export_to_xml(options)['file_content']),
             self.get_xml_tree_from_string(expected_xml)
         )
 

@@ -1,6 +1,5 @@
 /** @odoo-module **/
 
-import { useComponentToModel } from '@mail/component_hooks/use_component_to_model';
 import { registerMessagingComponent } from '@mail/utils/messaging_component';
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
@@ -11,7 +10,6 @@ class SignRequest extends LegacyComponent {
      */
      setup() {
         super.setup();
-        useComponentToModel({ fieldName: 'component' });
     }
 
     //--------------------------------------------------------------------------

@@ -94,13 +94,13 @@ class Article(models.Model):
         default=0,  # Set default=0 to avoid false values and messed up sequence order inside same parent
         help="The sequence is computed only among the articles that have the same parent.")
     root_article_id = fields.Many2one(
-        'knowledge.article', string="Subject", recursive=True,
+        'knowledge.article', string="Menu Article", recursive=True,
         compute="_compute_root_article_id", store=True, compute_sudo=True, tracking=10,
         help="The subject is the title of the highest parent in the article hierarchy.")
     # categories and ownership
     category = fields.Selection(
         [('workspace', 'Workspace'), ('private', 'Private'), ('shared', 'Shared')],
-        compute="_compute_category", compute_sudo=True, store=True,
+        compute="_compute_category", compute_sudo=True, store=True, string="Section",
         help='Used to categozie articles in UI, depending on their main permission definitions.')
         # Stored to improve performance when loading the article tree. (avoid looping through members if 'workspace')
     # Same as write_uid/_date but limited to the body

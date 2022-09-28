@@ -614,11 +614,9 @@ class AnalyticLine(models.Model):
 
         day = column_value.split('/')[0]
         if len(line) > 1 or len(line) == 1 and line.validated:  # copy the last line as adjustment
-            line[0].copy({
-                'name': '/',
-                column_field: day,
-                cell_field: change
-            })
+            line[0].copy(self._prepare_duplicate_timesheet_line_values(
+                column_field, day, cell_field, change)
+            )
         elif len(line) == 1:  # update existing line
             line.write({
                 cell_field: line[cell_field] + change
@@ -626,11 +624,9 @@ class AnalyticLine(models.Model):
         else:  # create new one
             line_in_domain = self.search(row_domain, limit=1)
             if line_in_domain:
-                line_in_domain.copy({
-                    'name': '/',
-                    column_field: day,
-                    cell_field: change,
-                })
+                line_in_domain.copy(self._prepare_duplicate_timesheet_line_values(
+                    column_field, day, cell_field, change)
+                )
             else:
                 project, task = self._get_project_task_from_domain(domain)
 
@@ -646,6 +642,14 @@ class AnalyticLine(models.Model):
                     }])
 
         return False
+
+    def _prepare_duplicate_timesheet_line_values(self, column_field, day, cell_field, change):
+        # Prepares all values that should be set/modified when duplicating the current analytic line
+        return {
+            'name': '/',
+            column_field: day,
+            cell_field: change,
+        }
 
     def _get_adjust_grid_domain(self, column_value):
         # span is always daily and value is an iso range

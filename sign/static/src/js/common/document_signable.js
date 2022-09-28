@@ -1279,26 +1279,22 @@ export const SignableDocument = Document.extend({
           type.auto_value &&
           !$signatureItem.data("signature")
         ) {
-          this.adjustSignatureSize(type.auto_value, $signatureItem).then(
-            (data) => {
-              this.adjustSignatureSize(type.frame_value, $signatureItem).then(
-                (frame_data) => {
-                  $signatureItem
-                    .data("signature", data)
-                    .empty()
-                    .append($("<span/>").addClass("o_sign_helper"));
-                  if (frame_data) {
-                    $signatureItem
-                      .data({
-                        frameHash: "0",
-                        frame: frame_data,
-                      })
-                      .append($("<img/>", { src: $signatureItem.data("frame"), class: 'o_sign_frame'}));
-                  }
-                  $signatureItem.append($("<img/>", { src: $signatureItem.data("signature") }));
-                  $signatureItem.trigger("input");
-                }
-              );
+          Promise.all([this.adjustSignatureSize(type.auto_value, $signatureItem), this.adjustSignatureSize(type.frame_value, $signatureItem)])
+            .then(([data, frame_data]) => {
+              $signatureItem
+                .data("signature", data)
+                .empty()
+                .append($("<span/>").addClass("o_sign_helper"));
+              if (frame_data) {
+                $signatureItem
+                  .data({
+                    frameHash: "0",
+                    frame: frame_data,
+                  })
+                  .append($("<img/>", { src: $signatureItem.data("frame"), class: 'o_sign_frame'}));
+              }
+              $signatureItem.append($("<img/>", { src: $signatureItem.data("signature") }));
+              $signatureItem.trigger("input");
             }
           );
         } else if (
@@ -1411,9 +1407,9 @@ export const SignableDocument = Document.extend({
                   item.data("responsible") === this.role
                 ) {
                   promise.push(
-                    this.adjustSignatureSize(signature, item).then((data) => {
-                      this.adjustSignatureSize(frame, item).then((frame_data) => {
-                        item
+                    Promise.all([this.adjustSignatureSize(signature, item), this.adjustSignatureSize(frame, item)])
+                    .then(([data, frame_data]) => {
+                      item
                         .data("signature", data)
                         .empty()
                         .append($("<span/>").addClass("o_sign_helper"));
@@ -1427,7 +1423,6 @@ export const SignableDocument = Document.extend({
                           item.removeData("frame");
                         }
                         item.append($("<img/>", { src: item.data("signature") }));
-                      })
                     })
                   );
                 }

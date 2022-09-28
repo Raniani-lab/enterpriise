@@ -25,6 +25,7 @@ class SaleOrder(models.Model):
         string="Next Action", compute='_compute_rental_status', store=True)
 
     has_late_lines = fields.Boolean(compute="_compute_has_late_lines")
+    has_rented_products = fields.Boolean(compute="_compute_has_rented_products")
 
     @api.depends('is_rental_order', 'next_action_date', 'rental_status')
     def _compute_has_late_lines(self):
@@ -59,6 +60,13 @@ class SaleOrder(models.Model):
                 order.has_returnable_lines = False
                 order.rental_status = order.state if order.is_rental_order else False
                 order.next_action_date = False
+
+    @api.depends('state', 'order_line')
+    def _compute_has_rented_products(self):
+        for so in self:
+            so.has_rented_products = so.is_rental_order and any(
+                so.order_line.product_template_id.mapped('rent_ok')
+            )
 
     # PICKUP / RETURN : rental.processing wizard
 

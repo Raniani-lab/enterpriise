@@ -12,6 +12,7 @@
                 <field name="has_returnable_lines" invisible="1"/>
                 <field name="has_late_lines" invisible="1"/>
                 <field name="rental_status" invisible="1"/>
+                <field name="has_rented_products" invisible="1"/>
             </header>
             <button name="action_quotation_send" position="before">
                 <button name="open_pickup" type="object" class="btn-primary" string="PICKUP" data-hotkey="y"
@@ -38,22 +39,27 @@
             <xpath expr="//div[@name='button_box']" position="after">
                 <div class="badge rounded-pill text-bg-info float-end fs-6 border-0"
                     attrs="{'invisible': [
+                    '|', ('has_rented_products', '=', False),
                     '|', ('state', 'not in', ['sale', 'done']),
                     '|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', True)]}">Confirmed</div>
                 <div class="badge rounded-pill text-bg-info float-end fs-6 border-0"
                     attrs="{'invisible': [
+                    '|', ('has_rented_products', '=', False),
                     '|', ('state', 'not in', ['sale', 'done']),
                     '|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', False)]}">Late Pickup</div>
                 <div class="badge rounded-pill text-bg-warning float-end fs-6 border-0"
                     attrs="{'invisible': [
+                    '|', ('has_rented_products', '=', False),
                     '|', ('state', 'not in', ['sale', 'done']),
                     '|', ('rental_status', '!=', 'return'), ('has_late_lines', '=', True)]}">Picked-up</div>
                 <div class="badge rounded-pill text-bg-danger float-end fs-6 border-0"
                     attrs="{'invisible': [
+                    '|', ('has_rented_products', '=', False),
                     '|', ('state', 'not in', ['sale', 'done']),
                     '|', ('rental_status', '!=', 'return'), ('has_late_lines', '=', False)]}">Late Return</div>
                 <div class="badge rounded-pill text-bg-success float-end fs-6 border-0"
                     attrs="{'invisible': [
+                    '|', ('has_rented_products', '=', False),
                     '|', ('state', 'not in', ['sale', 'done']), ('rental_status', '!=', 'returned')]}">Returned</div>
             </xpath>
             <xpath expr="//notebook/page[@name='order_lines']/field/tree/field[@name='product_uom_qty']" position='after'>
@@ -141,6 +147,7 @@
             <tree sample="1"
                 decoration-info="rental_status in ['draft', 'sent']"
                 decoration-muted="rental_status == 'cancel'">
+                <field name="has_rented_products" invisible="1"/>
                 <field name="has_late_lines" invisible="1"/>
                 <field name="name" readonly="1" decoration-bf="1"/>
                 <field name="date_order" widget='date'/>
@@ -153,7 +160,8 @@
                 <field name="rental_status" widget='badge'
                     decoration-info="rental_status == 'draft' or rental_status == 'sent'"
                     decoration-warning="rental_status == 'pickup'"
-                    decoration-success="rental_status == 'return'"/>
+                    decoration-success="rental_status == 'return'"
+                    attrs="{'invisible': [('has_rented_products', '=', False)]}"/>
                 <field name="state" invisible="1"/>
                 <field name="currency_id" invisible="1"/>
             </tree>
@@ -174,6 +182,7 @@
             <field name="state" position="after">
                 <field name="next_action_date"/>
                 <field name="has_late_lines"/>
+                <field name="has_rented_products"/>
             </field>
             <xpath expr="//div[hasclass('oe_kanban_bottom_left')]" position="replace">
                 <div class="oe_kanban_bottom_left text-muted">
@@ -202,7 +211,9 @@
             </xpath>
             <xpath expr="//div[hasclass('oe_kanban_bottom_right')]/field[@name='state']" position="after">
                 <field name="rental_status" widget="label_selection"
-                    attrs="{'invisible': ['|', ('state', '!=', 'sale'), ('rental_status', '=', False)]}"
+                    attrs="{'invisible': [
+                                '|', ('state', '!=', 'sale'),
+                                '|', ('rental_status', '=', False), ('has_rented_products', '=', False)]}"
                     options="{'classes': {'pickup': 'info', 'return': 'warning', 'returned': 'success'}}"/>
             </xpath>
         </field>

@@ -53,7 +53,7 @@
             <xpath expr="//field[@name='name']" position="attributes">
                 <attribute name="placeholder">e.g. Crane</attribute>
             </xpath>
-            <xpath expr="//field[@name='company_id']" position="after">
+            <xpath expr="//field[@name='resource_type']" position="before">
                 <field name="color" widget="color_picker" />
             </xpath>
         </field>

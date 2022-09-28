@@ -22,7 +22,7 @@ TimesheetUOMTimer.components = {
     FloatFactorField, FloatToggleField, TimesheetUOMHourTimer
 };
 
-// As we replace FloatTimeField by TimesheetUOMHourTimer, we remove it from the props that we get from TimesheetUOM.
+// As we replace FloatTimeField by TimesheetUOMHourTimer, we remove it from the components that we get from TimesheetUOM.
 delete TimesheetUOMTimer.components.FloatTimeField;
 
 registry.category("fields").add("timesheet_uom_timer", TimesheetUOMTimer);

@@ -1972,7 +1972,7 @@ class Article(models.Model):
         if not article:
             # retrieve workspace articles first, then private/shared ones.
             article = self.search([
-                ('parent_id', '=', False)
+                ('parent_id', '=', False, ), ('user_has_access', '=', True)
             ], limit=1, order='sequence, internal_permission desc')
         return article
 

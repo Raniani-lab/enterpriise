@@ -94,7 +94,7 @@
                                                     <!-- span forces the input to match the length of its value -->
                                                     <span t-attf-class="pe-2 #{this.props.record.data.is_locked ? 'o_article_locked' : ''}"
                                                           t-esc="this.props.record.data.name" t-att-title="this.props.record.data.name" />
-                                                    <field attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}"
+                                                    <field attrs="{'readonly': ['|', '|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False), ('id', '=', False)]}"
                                                            class="o_breadcrumb_article_name mb-0" name="name"/>
                                                 </div>
                                                 <i class="fa fa-fw fa-lock" title="This article is locked"
@@ -135,7 +135,8 @@
                                             </div>
                                         </div>
                                     </div>
-                                    <a role="button" class="btn btn-light o_toggle_favorite me-1" t-on-click="toggleFavorite">
+                                    <a role="button" class="btn btn-light o_toggle_favorite me-1" t-on-click="toggleFavorite"
+                                       attrs="{'invisible': [('id', '=', False)]}">
                                         <i class="fa fa-lg fa-star"
                                            title="Remove from favorites"
                                            attrs="{'invisible': [('is_user_favorite', '=', False)]}"/>
@@ -236,7 +237,8 @@
                                         <div class="d-flex col-12 col-lg position-relative p-0">
                                             <div class="o_scroll_view_lg">
                                                 <!-- Article body -->
-                                                <div class="o_knowledge_body d-flex flex-column">
+                                                <div class="o_knowledge_body d-flex flex-column"
+                                                     attrs="{'invisible': [('id', '=', False)]}">
                                                     <!-- Article Cover -->
                                                     <div class="o_knowledge_cover position-relative">
                                                         <field name="cover_image_url" invisible="1" />
@@ -296,27 +298,27 @@
                                                            </p>
                                                         </div>
                                                     </div>
-                                                    <!-- No article helper -->
                                                     <field name="category" invisible="1"/>
-                                                    <div class="o_view_nocontent" attrs="{'invisible': [('id', '!=', False)]}">
-                                                        <div class="o_nocontent_help">
-                                                            <p class="o_view_nocontent_smiling_face">
-                                                                 No article yet.
-                                                            </p>
-                                                            <p>
-                                                                <a href="#" role="button"
-                                                                   t-on-click="() => this.createArticle('private')">
-                                                                    Create an article
-                                                                </a>
-                                                                to unleash the power of Knowledge !
-                                                            </p>
-                                                        </div>
-                                                    </div>
                                                     <!-- Article body -->
                                                     <div class="o_knowledge_editor mt-0">
                                                         <field name="body" widget="html" no_label="1"
                                                             options="{'resizable': False, 'knowledge_commands': true}"
                                                             attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}"/>
+                                                    </div>
+                                                </div>
+                                                <!-- No Content Helper -->
+                                                <div class="o_view_nocontent" attrs="{'invisible': [('id', '!=', False)]}">
+                                                    <div class="o_nocontent_help">
+                                                        <p class="o_view_nocontent_smiling_face">
+                                                             No article yet.
+                                                        </p>
+                                                        <p>
+                                                            <a href="#" role="button"
+                                                               t-on-click="() => this.createArticle('private')">
+                                                                Create an article
+                                                            </a>
+                                                            to unleash the power of Knowledge !
+                                                        </p>
                                                     </div>
                                                 </div>
                                             </div>

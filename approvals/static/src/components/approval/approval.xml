@@ -4,8 +4,8 @@
     <t t-name="approvals.Approval" owl="1">
         <t t-if="approvalView">
             <div class="o_Approval" t-attf-class="{{ className }}" t-ref="root">
-                <t t-if="approvalView.activityViewOwner.activity.approval.status === 'pending'">
-                    <t t-if="approvalView.activityViewOwner.activity.approval.isCurrentPartnerApprover">
+                <t t-if="approvalView.activity.approval.status === 'pending'">
+                    <t t-if="approvalView.activity.approval.isCurrentPartnerApprover">
                         <button class="o_Approval_toolButton o_Approval_approveButton btn btn-success btn-link ps-0 pt-0" t-on-click="approvalView.onClickApprove">
                             <i class="fa fa-check"/> Approve
                         </button>

@@ -6,7 +6,9 @@ import { useService } from "@web/core/utils/hooks";
 const { Component, onWillStart, useState, useRef } = owl;
 
 export class HrReferralWelcome extends Component {
-    async setup() {
+    setup() {
+        super.setup();
+
         this.actionService = useService("action");
         this.orm = useService('orm');
 

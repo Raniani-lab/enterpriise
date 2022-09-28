@@ -35,8 +35,7 @@
             <field name="context">{
                 'grid_anchor': (datetime.date.today()).strftime('%Y-%m-%d'), 
                 'grid_range': 'year',
-                'search_default_group_by_analytic_plan': 1,
-                'search_default_group_by_analytic_account': 2,
+                'search_default_group_by_analytic_account': 1,
             }</field>
         </record>
 	</data>

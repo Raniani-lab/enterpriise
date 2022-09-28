@@ -26,7 +26,7 @@ export class TimesheetDisplayTimer extends Component {
     setup() {
         this.timerService = useService("timer");
         this.state = useState({
-            timerRunning: this.props.record.data.timer_start && !this.props.record.data.timer_pause,
+            timerRunning: Boolean(this.props.record.data.timer_start) && !Boolean(this.props.record.data.timer_pause),
             value: this.props.value,
         });
         onWillStart(this.onWillStart);

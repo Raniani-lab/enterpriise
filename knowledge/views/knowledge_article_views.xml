@@ -361,13 +361,15 @@
         <field name="arch" type="xml">
             <tree default_order="is_user_favorite desc, favorite_count desc"
                   js_class="knowledge_article_view_tree">
-                <field name="display_name"/>
+                <field name="display_name" string="Name"/>
                 <field name="is_user_favorite" widget="boolean_favorite" nolabel="1"
                        force_save="1" options="{'allow_order': '1'}"/>
+                <field name="category" optional="hide"/>
                 <field name="favorite_count" invisible="1"/>
-                <field name="root_article_id"/>
+                <field name="root_article_id" optional="hide"/>
+                <field name="parent_id"/>
                 <field name="last_edition_uid" widget="many2one_avatar_user"/>
-                <field name="last_edition_date"/>
+                <field name="last_edition_date" string="Last Edit Date"/>
             </tree>
         </field>
     </record>
@@ -379,9 +381,15 @@
         <field name="arch" type="xml">
             <tree create="0" default_order="deletion_date desc"
                   js_class="knowledge_article_view_tree">
-                <field name="display_name"/>
+                <field name="display_name" string="Name"/>
+                <field name="is_user_favorite" widget="boolean_favorite" nolabel="1"
+                       force_save="1" options="{'allow_order': '1'}"/>
+                <field name="category" optional="hide"/>
+                <field name="favorite_count" invisible="1"/>
+                <field name="root_article_id" optional="hide"/>
+                <field name="parent_id"/>
                 <field name="last_edition_uid" widget="many2one_avatar_user"/>
-                <field name="last_edition_date"/>
+                <field name="last_edition_date" string="Last Edit Date"/>
                 <field name="deletion_date"/>
             </tree>
         </field>
@@ -404,17 +412,13 @@
         <field name="model">knowledge.article</field>
         <field name="arch" type="xml">
             <kanban create="0" class="o_knowledge_article_kanban_view">
-                <field name="icon" invisible="1"/>
-                <field name="is_locked" invisible="1"/>
                 <field name="is_user_favorite" invisible="1"/>
-                <field name="user_can_write" invisible="1"/>
-                <field name="article_url" invisible="1"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click">
                             <div class="o_knowledge_kanban_card d-flex flex-column">
                                 <div class="d-flex align-items-center">
-                                    <div class="flex-grow-1 lead text-truncate">
+                                    <div class="flex-grow-1 lead">
                                         <field name="display_name"/>
                                     </div>
                                     <!-- When the user does not have 'write' access on an article, the user will not be
@@ -422,27 +426,17 @@
                                          `boolean_favorite` widget as the model can block the write call issued by the widget.
                                          To let the user add an article to their favorites, we will instead call an
                                          intermediate action that will do a sudo call on the `knowledge.article` model. -->
-                                    <a type="object" name="action_toggle_favorite" class="o_favorite o_field_widget"
+                                    <a type="object" name="action_toggle_favorite" class="o_favorite o_field_widget mb-auto mt-1"
                                         attrs="{'invisible': [('is_user_favorite', '=', False)]}">
                                         <i class="fa fa-star" title="Remove from favorites"/>
                                     </a>
-                                    <a type="object" name="action_toggle_favorite" class="o_favorite o_field_widget"
+                                    <a type="object" name="action_toggle_favorite" class="o_favorite o_field_widget mb-auto mt-1"
                                         attrs="{'invisible': [('is_user_favorite', '=', True)]}">
                                         <i class="fa fa-star-o" title="Add to favorites"/>
                                     </a>
-                                    <div attrs="{'invisible': ['|', ('is_locked', '=', False), ('user_can_write', '=', False)]}">
-                                        <i class="fa fa-fw fa-lock" title="locked"/>
-                                    </div>
                                 </div>
                                 <div class="flex-grow-1 text-muted">
-                                    <field name="category"/>
-                                </div>
-                                <div class="d-flex justify-content-end align-items-center">
-                                    <div class="flex-grow-1">
-                                        <field name="article_url" widget="CopyClipboardButton"
-                                            options="{'label': 'Copy Link'}"/>
-                                    </div>
-                                    <field name="activity_ids" widget="kanban_activity"/>
+                                    <field name="parent_id"/>
                                 </div>
                             </div>
                         </div>
@@ -510,8 +504,8 @@
                 <filter name="filter_trashed" string="Trashed"
                     domain="[('active', '=', False), ('to_delete', '=', True)]"/>
                 <group expand="0" string="Group By">
-                    <filter string="Category" name="group_by_category" domain="[]" context="{'group_by': 'category'}"/>
-                    <filter string="Subject" name="group_by_subject" context="{'group_by': 'root_article_id'}"/>
+                    <filter name="group_by_category" domain="[]" context="{'group_by': 'category'}"/>
+                    <filter name="group_by_menu_article" context="{'group_by': 'root_article_id'}"/>
                 </group>
             </search>
         </field>

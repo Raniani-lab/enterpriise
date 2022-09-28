@@ -116,7 +116,7 @@ class BankRecWidget(models.Model):
     form_date = fields.Date()
     form_account_id = fields.Many2one(
         comodel_name='account.account',
-        domain="['|', ('company_id', '=', company_id), ('deprecated', '=', False)]",
+        domain="[('account_type', '!=', 'asset_cash'), '|', ('company_id', '=', company_id), ('deprecated', '=', False)]",
     )
     form_partner_id = fields.Many2one(
         comodel_name='res.partner',

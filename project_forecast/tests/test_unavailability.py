@@ -17,6 +17,7 @@ class TestUnavailabilityForForecasts(TestCommonForecast):
 
         cls.setUpEmployees()
         cls.setUpProjects()
+        cls.employee_bert.resource_calendar_id.tz = 'UTC'
         # extra employee to test gantt_unavailability grouped by resource_id
         cls.employee_lionel = cls.env['hr.employee'].create({
             'name': 'lionel',

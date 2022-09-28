@@ -17,11 +17,11 @@ const { useState, useSubEnv, useRef, useChildSubEnv } = owl;
 
 export class BankRecKanbanRecord extends KanbanRecord {
     getRecordClasses() {
-        const classes = super.getRecordClasses();
+        let classes = `${super.getRecordClasses()} w-100 o_bank_rec_st_line`;
         if (this.props.record.resId === this.props.selectedStLineId) {
-            return `${classes} w-100 o_bank_rec_st_line o_bank_rec_selected_st_line`;
+            classes = `${classes} o_bank_rec_selected_st_line`;
         }
-        return `${classes} w-100 o_bank_rec_st_line`;
+        return classes;
     }
 }
 KanbanRecord.props = [

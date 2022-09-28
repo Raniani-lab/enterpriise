@@ -33,13 +33,13 @@
     'installable': True,
     'assets': {
         'web.assets_backend': [
+            'social/static/src/js/images_carousel_dialog.js',
             'social/static/src/js/social_post_formatter_mixin.js',
+            'social/static/src/js/social_post_formatter_mixin_owl.js',
             'social/static/src/js/kanban_social_field_stream_post.js',
             'social/static/src/js/social_post_preview_field.js',
             'social/static/src/js/add_stream_modal.js',
             'social/static/src/js/post_kanban_images_carousel.js',
-            'social/static/src/js/post_kanban_renderer.js',
-            'social/static/src/js/post_kanban_controller.js',
             'social/static/src/js/post_kanban_view.js',
             'social/static/src/js/stream_post_comment_delete.js',
             'social/static/src/js/stream_post_comments.js',

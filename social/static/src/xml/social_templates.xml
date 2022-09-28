@@ -427,4 +427,36 @@
             </t>
         </div>
     </t>
+
+    <t t-name="social.ImagesCarouselDialog" owl="1">
+        <Dialog title="props.title" footer="false" bodyClass="'bg-900'" withBodyPadding="false">
+            <t t-set="multi_images" t-value="props.images.length > 1"/>
+            <div id="o_stream_post_images_carousel"
+                 t-attf-class="o_stream_post_images_carousel carousel slide {{ multi_images ? 'o_stream_post_images_carousel_multi' : '' }}"
+                 data-bs-interval="false">
+                <ol t-if="multi_images" class="carousel-indicators">
+                    <t t-foreach="props.images" t-as="image_url" t-key="image_url">
+                        <li data-bs-target="#o_stream_post_images_carousel"
+                            t-att-data-bs-slide-to="image_url_index"
+                            t-attf-class="{{ image_url_index === props.activeIndex ? 'active' : '' }}"/>
+                    </t>
+                </ol>
+                <div class="carousel-inner h-100 d-flex align-items-center justify-content-center">
+                    <t t-foreach="props.images" t-as="image_url" t-key="image_url">
+                        <div t-attf-class="carousel-item m-0 w-auto {{ image_url_index === props.activeIndex ? 'active' : '' }}">
+                            <img t-att-src="image_url" class="shadow" alt="Image Url" />
+                        </div>
+                    </t>
+                </div>
+                <a t-if="multi_images" class="carousel-control-prev" href="#o_stream_post_images_carousel" role="button" data-bs-slide="prev">
+                    <span class="carousel-control-prev-icon"/>
+                    <span class="visually-hidden">Previous</span>
+                </a>
+                <a t-if="multi_images" class="carousel-control-next" href="#o_stream_post_images_carousel" role="button" data-bs-slide="next">
+                    <span class="carousel-control-next-icon"/>
+                    <span class="visually-hidden">Next</span>
+                </a>
+            </div>
+        </Dialog>
+    </t>
 </templates>

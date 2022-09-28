@@ -130,7 +130,7 @@ class AccountMoveLine(models.Model):
         return self._predicted_field(field, query)
 
     def _predict_product(self):
-        query = self._build_query([('product_id.active', '=', True)])
+        query = self._build_query(['|', ('product_id', '=', False), ('product_id.active', '=', True)])
         return self._predicted_field('account_move_line.product_id', query)
 
     def _predict_account(self):

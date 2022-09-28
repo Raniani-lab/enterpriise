@@ -468,6 +468,11 @@
                                         <field name="name" />
                                     </div>
                                 </div>
+                                <div class="row">
+                                    <div class="col o_kanban_primary_left">
+                                        <field name="resource_ids" widget="many2many_tags"/>
+                                    </div>
+                                </div>
                                 <div class="o_kanban_manage_button_section o_dropdown_kanban">
                                     <a role="button" class="o_kanban_manage_toggle_button" href="#" title="Dropdown menu">
                                         <i class="fa fa-ellipsis-v" aria-label="Manage" title="Manage"/>
@@ -487,7 +492,6 @@
                                     <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
                                 </div>
                             </div>
-                            <field name="resource_ids" widget="many2many_tags" />
                         </div>
                     </t>
                 </templates>

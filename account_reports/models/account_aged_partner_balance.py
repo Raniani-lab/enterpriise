@@ -235,3 +235,9 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
                 rslt.append((grouping_key, build_result_dict(report, query_res_lines)))
 
             return rslt
+
+    def open_journal_items(self, options, params):
+        params['view_ref'] = 'account.view_move_line_tree_grouped_partner'
+        action = self.env['account.report'].open_journal_items(options=options, params=params)
+        action.get('context', {}).update({'search_default_group_by_account': 0, 'search_default_group_by_partner': 1})
+        return action

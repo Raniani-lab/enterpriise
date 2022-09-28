@@ -946,3 +946,8 @@ class JournalReportCustomHandler(models.AbstractModel):
             'domain': [('display_type', 'not in', ('line_section', 'line_note'))],
             'context': ctx,
         }
+
+    def open_journal_items(self, options, params):
+        action = self.env['account.report'].open_journal_items(options=options, params=params)
+        action.get('context', {}).update({'search_default_group_by_account': 0, 'search_default_group_by_move': 1})
+        return action

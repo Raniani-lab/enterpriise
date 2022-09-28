@@ -243,14 +243,11 @@ const GridModel = AbstractModel.extend({
      * @returns {Object with keys id (string) and label (string[])}
      */
     _getRowInfo(row, grouped) {
-        let groupBy = this.groupedBy;
-        if (grouped) {
-            groupBy = groupBy.slice(1);
-        }
+        const fieldNames = Object.keys(row.values);
         const rowValues = [];
         const rowIds = [];
-        for (let i = 0; i < groupBy.length; i++) {
-            const rowField = groupBy[i];
+        for (let i = 0; i < fieldNames.length; i++) {
+            const rowField = fieldNames[i];
             let value = row.values[rowField];
             const fieldName = rowField.split(':')[0]; // remove groupby function (:day, :month...)
             const fieldType = this.fields[fieldName].type;

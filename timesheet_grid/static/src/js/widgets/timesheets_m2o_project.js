@@ -1,5 +1,4 @@
 /** @odoo-module alias=timesheet_grid.TimesheetM2OProject **/
-import fieldRegistry from 'web.field_registry';
 import TimesheetM2OWidget from 'timesheet_grid.TimesheetM2OWidget';
 import { _t } from 'web.core';
 import { sprintf } from "@web/core/utils/strings";
@@ -20,8 +19,5 @@ const TimesheetM2OProject = TimesheetM2OWidget.extend({
         );
     },
 });
-
-
-fieldRegistry.add('timesheets_m2o_project', TimesheetM2OProject);
 
 export default TimesheetM2OProject;

@@ -237,8 +237,6 @@ const FieldTimesheetHours = TimesheetUomDisplayTimer.extend({
     },
 });
 
-fieldRegistry.add('timesheet_uom_hours', FieldTimesheetHours);
-
 return {
     FieldTimesheetHours,
     FieldTimesheetTimeTimer,

@@ -1,6 +1,5 @@
 /** @odoo-module alias=timesheet_grid.TimesheetM2OWidget **/
 import field_utils from 'web.field_utils';
-import fieldRegistry from 'web.field_registry';
 import Widget from 'web.Widget';
 import StandaloneFieldManagerMixin from 'web.StandaloneFieldManagerMixin';
 import { FieldMany2One } from "web.relational_fields";
@@ -167,8 +166,5 @@ const TimesheetM2OWidget = Widget.extend(StandaloneFieldManagerMixin, {
         }));
     },
 });
-
-
-fieldRegistry.add('timesheets_m2o_widget', TimesheetM2OWidget);
 
 export default TimesheetM2OWidget;

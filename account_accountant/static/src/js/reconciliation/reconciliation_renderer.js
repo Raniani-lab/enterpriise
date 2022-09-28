@@ -342,7 +342,7 @@ var ManualLineRenderer = Widget.extend(FieldManagerMixin, {
             if (!isNaN(line.id)) {
                 $('<span class="line_info_button fa fa-info-circle"/>')
                     .appendTo($line.find('.cell_info_popover'))
-                    .attr("data-content", qweb.render('reconciliation.line.mv_line.details', {'line': line}));
+                    .attr("data-bs-content", qweb.render('reconciliation.line.mv_line.details', {'line': line}));
             }
             $props.append($line);
         });
@@ -360,7 +360,7 @@ var ManualLineRenderer = Widget.extend(FieldManagerMixin, {
                 if (!isNaN(line.id)) {
                     $('<span class="line_info_button fa fa-info-circle"/>')
                     .appendTo($line.find('.cell_info_popover'))
-                    .attr("data-content", qweb.render('reconciliation.line.mv_line.details', {'line': line}));
+                    .attr("data-bs-content", qweb.render('reconciliation.line.mv_line.details', {'line': line}));
                 }
                 $mv_lines.append($line);
             });

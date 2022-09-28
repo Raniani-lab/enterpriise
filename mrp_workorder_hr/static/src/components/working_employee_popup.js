@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { MrpTimer } from '@mrp_workorder_hr/components/timer';
+import { MrpTimer } from "@mrp/widgets/timer";
 import { useService } from "@web/core/utils/hooks";
 import time from 'web.time';
 

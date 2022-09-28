@@ -29,7 +29,8 @@ tour.register('test_gs1_receipt_expiration_date', {test: true}, [
             helper.assertLinesCount(1);
             const $line = helper.getLine({barcode: '76543210'});
             const lot_with_date = $line.find('div[name="lot"]').text().trim();
-            helper.assert(lot_with_date, 'b1-b001 (5/20/2022)', 'lot line');
+            const date = new Date('2022-05-20').toLocaleDateString();
+            helper.assert(lot_with_date, `b1-b001 (${date})`, 'lot line');
             helper.assertLineIsHighlighted($line, true);
             helper.assertLineQty($line, '8');
         }
@@ -58,8 +59,10 @@ tour.register('test_gs1_receipt_expiration_date', {test: true}, [
             helper.assertLineIsHighlighted($line2, true);
             const lot_with_date_1 = $line1.find('div[name="lot"]').text().trim();
             const lot_with_date_2 = $line2.find('div[name="lot"]').text().trim();
-            helper.assert(lot_with_date_1, 'b1-b001 (5/20/2022)', 'lot line');
-            helper.assert(lot_with_date_2, 'b1-b002 (5/21/2022)', 'lot line');
+            const date1 = new Date('2022-05-20').toLocaleDateString();
+            const date2 = new Date('2022-05-21').toLocaleDateString();
+            helper.assert(lot_with_date_1, `b1-b001 (${date1})`, 'lot line');
+            helper.assert(lot_with_date_2, `b1-b002 (${date2})`, 'lot line');
         }
     },
     // The following scanned barcode should be decomposed like that:
@@ -91,9 +94,12 @@ tour.register('test_gs1_receipt_expiration_date', {test: true}, [
             const lot_with_date_1 = $line1.find('div[name="lot"]').text().trim();
             const lot_with_date_2 = $line2.find('div[name="lot"]').text().trim();
             const lot_with_date_3 = $line3.find('div[name="lot"]').text().trim();
-            helper.assert(lot_with_date_1, 'b1-b001 (5/20/2022)', 'lot line');
-            helper.assert(lot_with_date_2, 'b1-b002 (5/21/2022)', 'lot line');
-            helper.assert(lot_with_date_3, 'b1-b003 (5/22/2022)', 'lot line');
+            const date1 = new Date('2022-05-20').toLocaleDateString();
+            const date2 = new Date('2022-05-21').toLocaleDateString();
+            const date3 = new Date('2022-05-22').toLocaleDateString();
+            helper.assert(lot_with_date_1, `b1-b001 (${date1})`, 'lot line');
+            helper.assert(lot_with_date_2, `b1-b002 (${date2})`, 'lot line');
+            helper.assert(lot_with_date_3, `b1-b003 (${date3})`, 'lot line');
         }
     },
     {

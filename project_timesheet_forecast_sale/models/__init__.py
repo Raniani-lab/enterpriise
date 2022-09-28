@@ -3,6 +3,5 @@
 
 from . import analytic_account_line
 from . import project
-from . import project_forecast
 from . import project_update
 from . import sale_order

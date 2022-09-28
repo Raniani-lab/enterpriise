@@ -6,6 +6,7 @@ from odoo import models, api, fields, Command, _
 from odoo.addons.web.controllers.utils import clean_action
 from odoo.exceptions import UserError, RedirectWarning
 from odoo.osv import expression
+from odoo.tools.misc import get_lang
 
 
 class GenericTaxReportCustomHandler(models.AbstractModel):
@@ -477,10 +478,16 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
         self.env['account.tax.repartition.line'].flush_model(['use_in_tax_closing'])
         self.env['account.move.line'].flush_model(['account_id', 'debit', 'credit', 'move_id', 'tax_line_id', 'date', 'company_id', 'display_type'])
         self.env['account.move'].flush_model(['state'])
-        sql = """
+
+        # Check whether it is multilingual, in order to get the translation from the JSON value if present
+        lang = self.env.user.lang or get_lang(self.env).code
+        tax_name = f"COALESCE(tax.name->>'{lang}', tax.name->>'en_US')" if \
+            self.pool['account.tax'].name.translate else 'tax.name'
+
+        sql = f"""
             SELECT "account_move_line".tax_line_id as tax_id,
                     tax.tax_group_id as tax_group_id,
-                    tax.name as tax_name,
+                    {tax_name} as tax_name,
                     "account_move_line".account_id,
                     COALESCE(SUM("account_move_line".balance), 0) as amount
             FROM account_tax tax, account_tax_repartition_line repartition, %s

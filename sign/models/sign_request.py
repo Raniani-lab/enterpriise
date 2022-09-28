@@ -239,6 +239,8 @@ class SignRequest(models.Model):
         self.ensure_one()
         if not request_items:
             request_items = self.request_item_ids.filtered(lambda r: not r.partner_id or (r.state == 'sent' and r.partner_id.id == self.env.user.partner_id.id))
+        if not request_items:
+            return
         return {
             'name': self.reference,
             'type': 'ir.actions.client',

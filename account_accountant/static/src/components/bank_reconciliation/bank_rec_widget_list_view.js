@@ -4,12 +4,21 @@ import { registry } from "@web/core/registry";
 import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
 import { View } from "@web/views/view";
 
-const { Component } = owl;
+const { Component, useSubEnv } = owl;
 
 /**
  * This widget allows to embed a list view in the form view
  */
 class FormEmbeddedListView extends Component {
+
+    setup() {
+        // little hack while better solution from framework js
+        // reset the config, especially the ControlPanel which was comming from a parent form view.
+        // it also reset the view switchers which was necessary to make them disapear
+        useSubEnv({
+            config: {},
+        });
+    }
 
     get bankRecListViewProps() {
         return {
@@ -28,6 +37,7 @@ class FormEmbeddedListView extends Component {
                 ...this.props.record.data[this.props.dataField].context,
             },
             allowSelectors: false,
+            searchViewId: false, // little hack: force to load the search view info
         }
     }
 }

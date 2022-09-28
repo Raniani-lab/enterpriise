@@ -16,6 +16,7 @@
 
         .o_bank_rec_st_line{
             margin: 0px !important;
+            border-right: thick solid transparent;
 
             &.o_bank_rec_selected_st_line{
                 border-right: thick solid mix(map-get($theme-colors, 'primary'), map-get($grays, '400'));

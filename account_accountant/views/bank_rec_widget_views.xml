@@ -380,16 +380,12 @@
 
                         </div>
 
-                        <div class="o_statusbar_buttons o_bank_rec_stats_buttons_middle"
+                        <div class="o_statusbar_buttons o_bank_rec_stats_buttons_aside_right"
                              attrs="{'invisible': [('state', 'not in', ('valid', 'invalid'))]}">
                             <field name="reco_models_widget"
                                    nolabel="1"
                                    widget="bank_rec_widget_form_reco_models_widget"/>
                         </div>
-
-                        <div name="button_box"
-                             class="oe_button_box o_bank_rec_stats_buttons_aside_right"
-                             attrs="{'invisible': [('state', '!=', 'reconciled')]}"/>
                     </div>
 
                     <field name="lines_widget"
@@ -573,9 +569,11 @@
                            groups="analytic.group_analytic_accounting"
                            optional="hidden"/>
                     <field name="amount_residual_currency"
+                           decoration-danger="amount_residual_currency &lt; 0"
                            groups="base.group_multi_currency"
                            string="Open Amount (in Currency)"/>
                     <field name="amount_residual"
+                           decoration-danger="amount_residual &lt; 0"
                            string="Open Amount"/>
 
                     <button name="action_open_business_doc"

@@ -51,19 +51,49 @@
                t-as="reco_model"
                t-key="reco_model.id">
                 <t t-set="is_selected" t-value="reco_model.id === data.selected_reconcile_model_id"/>
-                <button t-on-click="() => this.selectRecoModel(reco_model.id, is_selected)"
-                        class="btn"
+                <button t-if="reco_model_index &lt; 5 or is_selected"
+                        t-on-click="() => this.selectRecoModel(reco_model.id, is_selected)"
+                        class="btn text-truncate recon_model_button"
                         t-att-class="{'btn-secondary': !is_selected, 'bg-odoo text-uppercase text-white': is_selected}"
                         t-esc="reco_model.display_name"/>
             </t>
+            <Dropdown t-if="data.display_widget and data.available_reconcile_model_ids.length &gt; 5"
+                      togglerClass="'btn btn-light'"
+                      class="'bank_rec_reco_model_dropdown'"
+            >
+                <t t-set-slot="toggler">
+                    More
+                </t>
+                <t t-foreach="data.available_reconcile_model_ids" t-as="reco_model" t-key="reco_model.id">
+                    <t t-set="is_selected" t-value="reco_model.id === data.selected_reconcile_model_id"/>
+                    <DropdownItem t-if="reco_model_index &gt;= 5 and !is_selected"
+                                  onSelected="() => this.selectRecoModel(reco_model.id, is_selected)"
+                                  class="{'btn-secondary': !is_selected, 'bg-odoo text-uppercase text-white': is_selected}">
+                        <t t-out="reco_model.display_name"/>
+                    </DropdownItem>
+                </t>
+            </Dropdown>
         </div>
+
+        <Dropdown class="'bank_rec_reco_model_dropdown'"
+                  togglerClass="'btn btn-light'"
+                  position="'bottom-end'">
+            <t t-set-slot="toggler">
+                <i class="fa fa-cog"/>
+            </t>
+            <DropdownItem onSelected.bind="_onClickCreateReconciliationModel">
+                Create model
+            </DropdownItem>
+            <DropdownItem onSelected="() => this.actionService.doAction('account.action_account_reconcile_model')">
+                View models
+            </DropdownItem>
+        </Dropdown>
     </t>
 
     <t t-name="account_accountant.bank_rec_widget_form_lines_widget" owl="1">
         <t t-set="data" t-value="getRenderValues()"/>
-        <div class="o_list_renderer">
-            <div class="table-responsive">
-                <table class="o_list_table table table-sm table-hover table-striped o_bank_rec_lines_widget_table"
+        <div class="o_list_renderer table-responsive">
+                <table class="o_list_table table table-sm position-relative mb-0 o_list_table_ungrouped table-striped o_bank_rec_lines_widget_table"
                        style="table-layout: auto">
                     <thead>
                         <t t-foreach="data.columns" t-as="column" t-key="column[0]">
@@ -79,6 +109,7 @@
                         </t>
                     </thead>
                     <tbody>
+                        <tr/> <!-- This is a hack to start from dark strip in the table layout -->
                         <t t-foreach="data.lines" t-as="line" t-key="line_index">
 
                             <t t-set="add_liquidity_class"
@@ -270,7 +301,6 @@
 
                     </tbody>
                 </table>
-            </div>
         </div>
     </t>
 

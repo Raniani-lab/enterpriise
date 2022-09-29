@@ -1,22 +1,10 @@
 /** @odoo-module **/
 
-import { useComponentToModel } from '@mail/component_hooks/use_component_to_model';
 import { registerMessagingComponent } from '@mail/utils/messaging_component';
-import { LegacyComponent } from "@web/legacy/legacy_component";
 
-class Approval extends LegacyComponent {
+const { Component } = owl;
 
-    /**
-     * @override
-     */
-     setup() {
-        super.setup();
-        useComponentToModel({ fieldName: 'component' });
-    }
-
-    //--------------------------------------------------------------------------
-    // Public
-    //--------------------------------------------------------------------------
+class Approval extends Component {
 
     /**
      * @returns {ApprovalView}
@@ -33,5 +21,3 @@ Object.assign(Approval, {
 });
 
 registerMessagingComponent(Approval);
-
-export default Approval;

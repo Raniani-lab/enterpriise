@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registerModel } from '@mail/model/model_core';
-import { attr, one } from '@mail/model/model_field';
+import { one } from '@mail/model/model_field';
 
 registerModel({
     name: 'ApprovalView',
@@ -32,6 +32,5 @@ registerModel({
             identifying: true,
             inverse: 'approvalView',
         }),
-        component: attr(),
     },
 });

@@ -48,7 +48,6 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/src/legacy/scss/form_view_mobile.scss',
             'web_enterprise/static/src/legacy/scss/modal_mobile.scss',
             'web_enterprise/static/src/legacy/scss/promote_studio.scss',
-            'web_enterprise/static/src/legacy/scss/web_calendar_mobile.scss',
             'web_enterprise/static/src/webclient/**/*.scss',
             ('remove', 'web_enterprise/static/src/webclient/home_menu/home_menu_background.scss'), # already in _assets_common_styles
             ('remove', 'web_enterprise/static/src/webclient/navbar/navbar.scss'), # already in _assets_common_styles
@@ -91,7 +90,6 @@ This module modifies the web addon to provide Enterprise design and responsivene
             'web_enterprise/static/tests/legacy/form_mobile_tests.js',
             'web_enterprise/static/tests/legacy/relational_fields_mobile_tests.js',
             'web_enterprise/static/tests/legacy/views/basic/basic_render_mobile_tests.js',
-            'web_enterprise/static/tests/legacy/views/calendar_mobile_tests.js',
             'web_enterprise/static/tests/legacy/views/kanban_mobile_tests.js',
             'web_enterprise/static/tests/legacy/views/list_mobile_tests.js',
             'web_enterprise/static/tests/legacy/components/action_menus_mobile_tests.js',

@@ -37,11 +37,6 @@ class Employee(models.Model):
             return "%s (%s)" % (self.name, self.job_title)
         return self.name
 
-    def _get_view(self, view_id=None, view_type='form', **options):
-        if not view_id and view_type == 'form' and self._context.get('force_email'):
-            view_id = self.env.ref('planning.hr_employee_view_form_simplified').id
-        return super()._get_view(view_id, view_type, **options)
-
     def _init_column(self, column_name):
         # to avoid generating a single default employee_token when installing the module,
         # we need to set the default row by row for this column

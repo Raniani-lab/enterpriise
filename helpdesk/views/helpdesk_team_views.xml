@@ -194,7 +194,7 @@
                             </div>
                             <div class="o_setting_right_pane">
                                 <label for="use_website_helpdesk_form"/>
-                                <div class="text-muted">
+                                <div class="text-muted mb-4">
                                     Get tickets through an online form
                                 </div>
                             </div>

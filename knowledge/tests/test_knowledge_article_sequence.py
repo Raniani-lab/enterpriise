@@ -172,3 +172,21 @@ class TestKnowledgeArticleSequence(KnowledgeCommon):
         self.assertEqual(new_private.parent_id, existing_private, 'Sequencing: respect parent choice')
         self.assertEqual(new_private.sequence, 3,
                          'Sequencing: without any forced value, should be set last of all children')
+
+    @users('employee')
+    def test_resequence_with_move_before_readonly_article(self):
+        """Test resequencing the article with move before readonly article"""
+        article_root_noise = self.article_root_noise.with_env(self.env)
+
+        #making 1st article readonly
+        article_root_noise[0]._set_internal_permission('read')
+
+        self.assertEqual(article_root_noise[0].sequence, 1)
+        self.assertEqual(article_root_noise[1].sequence, 3)
+        self.assertSortedSequence(article_root_noise[0] + article_root_noise[1])
+
+        article_root_noise[1].move_to(before_article_id=article_root_noise[0].id)
+
+        self.assertEqual(article_root_noise[0].sequence, 2)
+        self.assertEqual(article_root_noise[1].sequence, 1)
+        self.assertSortedSequence(article_root_noise[1] + article_root_noise[0])

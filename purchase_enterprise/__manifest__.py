@@ -9,7 +9,7 @@
     'description': """
 Contains advanced features for purchase management
     """,
-    'depends': ['purchase', 'web_dashboard'],
+    'depends': ['purchase'],
     'data': [
         'report/purchase_report_views.xml',
     ],

@@ -587,17 +587,15 @@ class HelpdeskTicket(models.Model):
                 parsed_name, parsed_email = self.env['res.partner']._parse_partner_name(partner_email)
                 if not parsed_name:
                     parsed_name = partner_name
-                try:
-                    vals['partner_id'] = self.env['res.partner'].with_context(default_team_id=False).find_or_create(
-                        tools.formataddr((partner_name, parsed_email))
-                    ).id
-                except UnicodeEncodeError:
-                    # 'formataddr' doesn't support non-ascii characters in email. Therefore, we fall
-                    # back on a simple partner creation.
-                    vals['partner_id'] = self.env['res.partner'].create({
-                        'name': partner_name,
-                        'email': partner_email,
-                    }).id
+                if vals.get('team_id'):
+                    team = self.env['helpdesk.team'].browse(vals.get('team_id'))
+                    company = team.company_id.id
+                else:
+                    company = False
+
+                vals['partner_id'] = self.env['res.partner'].with_context(default_company_id=company).find_or_create(
+                    tools.formataddr((parsed_name, parsed_email))
+                ).id
 
         # determine partner email for ticket with partner but no email given
         partners = self.env['res.partner'].browse([vals['partner_id'] for vals in list_value if 'partner_id' in vals and vals.get('partner_id') and 'partner_email' not in vals])
@@ -863,7 +861,7 @@ class HelpdeskTicket(models.Model):
 
     @api.model
     def message_new(self, msg, custom_values=None):
-        values = dict(custom_values or {}, partner_email=msg.get('from'), partner_id=msg.get('author_id'))
+        values = dict(custom_values or {}, partner_email=msg.get('from'), partner_name=msg.get('from'), partner_id=msg.get('author_id'))
         ticket = super(HelpdeskTicket, self.with_context(mail_notify_author=True)).message_new(msg, custom_values=values)
         partner_ids = [x.id for x in self.env['mail.thread']._mail_find_partner_from_emails(self._ticket_email_split(msg), records=ticket) if x]
         customer_ids = [p.id for p in self.env['mail.thread']._mail_find_partner_from_emails(tools.email_split(values['partner_email']), records=ticket) if p]

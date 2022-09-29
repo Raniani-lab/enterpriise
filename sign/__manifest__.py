@@ -84,11 +84,10 @@ Let your customers follow the signature process easily.
             'sign/static/src/js/backend/*',
             'sign/static/src/js/tours/sign.js',
             'sign/static/src/js/activity.js',
-            'sign/static/src/components/sign_request/sign_request.js',
             'sign/static/src/scss/sign_backend.scss',
             'sign/static/src/xml/*.xml',
-            'sign/static/src/components/activity/activity.xml',
-            'sign/static/src/components/sign_request/sign_request.xml',
+            'sign/static/src/components/**/*',
+            'sign/static/src/views/**/*',
         ],
         'web.assets_frontend': [
             'sign/static/src/js/common/*',

@@ -52,11 +52,11 @@ class TestHrRecruitmentSign(HttpCase):
             'email_from': 'caped.baldy@heroassociation.net',
         })
         self.applicant.partner_id = self.env['res.partner'].create({
-                'is_company': False,
-                'type': 'private',
-                'name': self.applicant.partner_name,
-                'email': self.applicant.email_from,
-            })
+            'is_company': False,
+            'type': 'private',
+            'name': self.applicant.partner_name,
+            'email': self.applicant.email_from,
+        })
         wizard = self.env['hr.recruitment.sign.document.wizard'].create({
             'applicant_id': self.applicant.id,
             'partner_id': self.applicant.partner_id.id,

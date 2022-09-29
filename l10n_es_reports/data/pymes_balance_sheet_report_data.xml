@@ -240,9 +240,6 @@
                                     <record id="balance_pymes_line_21500" model="account.report.line">
                                         <field name="name">V. Resultados de ejercicios anteriores</field>
                                         <field name="code">l10n_es_pymes_line_21500</field>
-                                        <field name="groupby">account_id</field>
-                                        <field name="groupby"/>
-                                        <field name="foldable" eval="True"/>
                                         <field name="expression_ids">
                                             <record id="balance_pymes_line_21500_domain" model="account.report.expression">
                                                 <field name="label">domain</field>
@@ -274,9 +271,7 @@
                                     <record id="balance_pymes_line_21700" model="account.report.line">
                                         <field name="name">VII. Resultado del ejercicio</field>
                                         <field name="code">l10n_es_pymes_line_21700</field>
-                                        <field name="groupby"/>
                                         <field name="action_id" ref="account_reports.action_account_report_pl"/>
-                                        <field name="foldable" eval="True"/>
                                         <field name="expression_ids">
                                             <record id="balance_pymes_line_21700_balance" model="account.report.expression">
                                                 <field name="label">balance</field>

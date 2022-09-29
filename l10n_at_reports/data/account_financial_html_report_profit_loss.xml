@@ -299,8 +299,6 @@
                     <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl9" model="account.report.line">
                         <field name="name">9. Betriebsergebnis (Zwischensumme aus Z 1 bis 8)</field>
                         <field name="code">EBIT</field>
-                        <field name="groupby"/>
-                        <field name="foldable" eval="True"/>
                         <field name="expression_ids">
                             <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl9_balance" model="account.report.expression">
                                 <field name="label">balance</field>
@@ -405,8 +403,6 @@
                     <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl16" model="account.report.line">
                         <field name="name">16. Finanzergebnis (Zwischensumme aus Z 10 bis 15)</field>
                         <field name="code">FIN</field>
-                        <field name="groupby"/>
-                        <field name="foldable" eval="True"/>
                         <field name="expression_ids">
                             <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl16_balance" model="account.report.expression">
                                 <field name="label">balance</field>
@@ -419,8 +415,6 @@
                     <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl17" model="account.report.line">
                         <field name="name">17. Ergebnis der gewöhnlichen Geschäftstätigkeit (Zwischensumme aus Z 9 und Z 16)</field>
                         <field name="code">EBT</field>
-                        <field name="groupby"/>
-                        <field name="foldable" eval="True"/>
                         <field name="expression_ids">
                             <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl17_balance" model="account.report.expression">
                                 <field name="label">balance</field>
@@ -449,8 +443,6 @@
                     <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl19" model="account.report.line">
                         <field name="name">19. Ergebnis nach Steuern </field>
                         <field name="code">EBTAT</field>
-                        <field name="groupby"/>
-                        <field name="foldable" eval="True"/>
                         <field name="expression_ids">
                             <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl19_balance" model="account.report.expression">
                                 <field name="label">balance</field>
@@ -463,7 +455,7 @@
                     <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl20" model="account.report.line">
                         <field name="name">20. sonstige Steuern, soweit nicht unter den Posten 1 bis 19 enthalten </field>
                         <field name="code">MTAX</field>
-                        <field name="groupby"/>
+                        <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
                         <field name="expression_ids">
                             <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl20_balance" model="account.report.expression">
@@ -479,8 +471,6 @@
                     <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl21" model="account.report.line">
                         <field name="name">21. Jahresüberschuss/Jahresfehlbetrag</field>
                         <field name="code">PL</field>
-                        <field name="groupby"/>
-                        <field name="foldable" eval="True"/>
                         <field name="expression_ids">
                             <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl21_balance" model="account.report.expression">
                                 <field name="label">balance</field>
@@ -493,7 +483,7 @@
                     <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl22" model="account.report.line">
                         <field name="name">22. Auflösung von Kapitalrücklagen</field>
                         <field name="code">RCR</field>
-                        <field name="groupby"/>
+                        <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
                         <field name="expression_ids">
                             <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl22_balance" model="account.report.expression">
@@ -508,7 +498,7 @@
                     <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl23" model="account.report.line">
                         <field name="name">23. Auflösung von Gewinnrücklagen</field>
                         <field name="code">RRR</field>
-                        <field name="groupby"/>
+                        <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
                         <field name="expression_ids">
                             <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl23_balance" model="account.report.expression">
@@ -523,7 +513,7 @@
                     <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl24" model="account.report.line">
                         <field name="name">24. Zuweisung zu Gewinnrücklagen</field>
                         <field name="code">ARR</field>
-                        <field name="groupby"/>
+                        <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
                         <field name="expression_ids">
                             <record id="account_financial_report_l10n_at_paragraph_231_ugb_line_pl24_balance" model="account.report.expression">

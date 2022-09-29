@@ -178,24 +178,25 @@
                             <record id="account_financial_report_l10n_lu_bs_abr_line_2_1_5" model="account.report.line">
                                 <field name="name">V. Profit or loss brought forward</field>
                                 <field name="code">LU_BSABR_319</field>
-                                <field name="groupby"/>
-                                <field name="foldable" eval="True"/>
                                 <field name="expression_ids">
-                                    <record id="account_financial_report_l10n_lu_bs_abr_line_2_1_5_balance" model="account.report.expression">
-                                        <field name="label">balance</field>
+                                    <record id="account_financial_report_l10n_lu_bs_abr_line_2_1_5_pre_balance" model="account.report.expression">
+                                        <field name="label">pre_balance</field>
                                         <field name="engine">domain</field>
                                         <field name="formula" eval="['|', ('account_id.internal_group', 'in', ['income', 'expense']), ('account_id.code', '=like', '141%')]"/>
                                         <field name="date_scope">from_beginning</field>
-                                        <field name="subformula">-sum - LU_BSABR_321</field>
+                                        <field name="subformula">-sum</field>
+                                    </record>
+                                    <record id="account_financial_report_l10n_lu_bs_abr_line_2_1_5_balance" model="account.report.expression">
+                                        <field name="label">balance</field>
+                                        <field name="engine">aggregation</field>
+                                        <field name="formula">LU_BSABR_319.pre_balance - LU_BSABR_321.balance</field>
                                     </record>
                                 </field>
                             </record>
                             <record id="account_financial_report_l10n_lu_bs_abr_line_2_1_6" model="account.report.line">
                                 <field name="name">VI. Profit or loss for the financial year</field>
                                 <field name="code">LU_BSABR_321</field>
-                                <field name="groupby"/>
                                 <field name="action_id" ref="account_financial_report_l10n_lu_pl_abr_action"/>
-                                <field name="foldable" eval="True"/>
                                 <field name="expression_ids">
                                     <record id="account_financial_report_l10n_lu_bs_abr_line_2_1_6_balance" model="account.report.expression">
                                         <field name="label">balance</field>

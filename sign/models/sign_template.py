@@ -390,7 +390,7 @@ class SignItemParty(models.Model):
         ('sms', 'Unique Code via SMS')
     ], default=False, help="Force the signatory to identify using a second authentication method")
 
-    change_authorized = fields.Boolean('Change Authorized')
+    change_authorized = fields.Boolean('Change Authorized', help="If checked, recipient of a document with this role can be changed after having sent the request. Useful to replace a signatory who is out of office, etc.")
 
     @api.model
     def get_or_create(self, name):

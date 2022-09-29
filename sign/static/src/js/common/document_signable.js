@@ -1894,11 +1894,12 @@ export const SignableDocument = Document.extend({
   /**
    * Opens an error dialog
    * @param { String } errorMessage translated error message
-   * @param {*} confirmCallback callback after confirm
+   * @param { Function } confirmCallback callback after confirm
+   * @param { String | Boolean } title string or false for default
    */
-  openErrorDialog(errorMessage, confirmCallback) {
+  openErrorDialog(errorMessage, confirmCallback, title=false) {
     Dialog.alert(this, errorMessage, {
-      title: _t("Error"),
+      title: title || _t("Error"),
       confirm_callback: confirmCallback,
     });
   },

@@ -16,7 +16,7 @@ export class PlanningFormController extends FormController {
 
     async save(params = {})  {
         const dirtyFields = this.model.root.dirtyFields.map((f) => f.name);
-        super.save(params);
+        await super.save(params);
 
         if (dirtyFields.includes('repeat') && this.model.root.data['repeat']) {
             const message = this.env._t("The recurring shifts have successfully been created.");

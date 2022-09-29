@@ -967,6 +967,7 @@ class Planning(models.Model):
             return None
         context = dict(self._context)
         context['force_email'] = True
+        context['form_view_ref'] = 'planning.hr_employee_view_form_simplified'
         return {
             'relation': 'hr.employee',
             'res_ids': employee_ids_without_work_email,

@@ -5,6 +5,9 @@
     'category': 'Services/Field Service',
     'version': '1.0',
     'depends': ['industry_fsm', 'project_forecast'],
+    'data': [
+        'data/industry_fsm_forecast_data.xml',
+    ],
     'auto_install': True,
     'license': 'OEEL-1',
 }

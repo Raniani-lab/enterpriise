@@ -1102,8 +1102,8 @@ export default class BarcodePickingModel extends BarcodeModel {
      */
     async _setUser() {
         if (this.record.user_id != session.uid) {
-            await this.orm.write(this.params.model, [this.record.id], { user_id: session.uid });
             this.record.user_id = session.uid;
+            await this.orm.write(this.params.model, [this.record.id], { user_id: session.uid });
         }
     }
 

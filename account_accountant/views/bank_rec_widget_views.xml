@@ -449,7 +449,6 @@
                                            options="{'no_open': True, 'no_create': True}"
                                            context="{'append_type_to_tax_name': True}"
                                            attrs="{'invisible': ['|', ('form_flag', 'in', ('liquidity', 'new_aml', 'tax_line')), ('form_index', '=', False)]}"/>
-                                    <field name="analytic_distribution_stored_char" invisible="1"/>
                                     <field name="analytic_distribution" widget="analytic_distribution" groups="analytic.group_analytic_accounting"
                                            options="{'account_field': 'form_account_id', 'business_domain': 'general'}"
                                            attrs="{'invisible': ['|', ('form_flag', '=', 'liquidity'), ('form_index', '=', False)]}"/>
@@ -568,7 +567,6 @@
                     <field name="date_maturity" optional="hidden"/>
                     <field name="ref"
                            optional="hidden"/>
-                    <field name="analytic_distribution_stored_char" invisible="1"/>
                     <field name="analytic_distribution" widget="analytic_distribution"
                            groups="analytic.group_analytic_accounting"
                            optional="hidden"

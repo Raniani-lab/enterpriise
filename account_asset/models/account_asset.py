@@ -194,7 +194,7 @@ class AccountAsset(models.Model):
                 record._onchange_account_depreciation_expense_id()
 
     @api.depends('original_move_line_ids')
-    def _compute_analytic_distribution_stored_char(self):
+    def _compute_analytic_distribution(self):
         for asset in self:
             distribution_asset = {}
             amount_total = sum(asset.original_move_line_ids.mapped("balance"))
@@ -205,7 +205,7 @@ class AccountAsset(models.Model):
                             distribution_asset[account] = distribution_asset.get(account, 0) + distribution * line.balance
                 for account, distribution_amount in distribution_asset.items():
                     distribution_asset[account] = distribution_amount / amount_total
-            asset.analytic_distribution_stored_char = json.dumps(distribution_asset) if distribution_asset else asset.analytic_distribution_stored_char
+            asset.analytic_distribution = distribution_asset if distribution_asset else asset.analytic_distribution
 
     @api.depends('method_number', 'method_period', 'prorata_computation_type')
     def _compute_lifetime_days(self):

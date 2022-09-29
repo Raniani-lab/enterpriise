@@ -291,15 +291,39 @@ class TransferModelTestCase(AccountAutoTransferTestCase):
                                  'Next date from %s should be %s' % (str(next_date), expected_date_str))
 
     @patch('odoo.addons.account_auto_transfer.models.transfer_model.TransferModel._get_non_analytic_transfer_values')
-    @patch('odoo.models.BaseModel.read_group')
-    def test__get_non_filtered_auto_transfer_move_line_values(self, patched_read_group, patched_get_values):
+    def test__get_non_filtered_auto_transfer_move_line_values(self, patched_get_values):
         start_date = fields.Date.to_date('2019-01-01')
+        self.transfer_model.write({'account_ids': [(6, 0, [ma.id for ma in self.origin_accounts])], })
         end_date = fields.Date.to_date('2019-12-31')
-        patched_read_group.return_value = [
-            {'balance': 4242.42, 'account_id': (self.origin_accounts[0].id,)},
-            {'balance': 0, 'account_id': (self.destination_accounts[0].id,)},
-            {'balance': -12585.0, 'account_id': (self.origin_accounts[1].id,)}
-        ]
+
+        move = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': '2019-12-01',
+            'journal_id': self.company_data['default_journal_misc'].id,
+            'line_ids': [
+                (0, 0, {
+                    'debit': 4242.42,
+                    'credit': 0,
+                    'account_id': self.origin_accounts[0].id,
+                }),
+                (0, 0, {
+                    'debit': 8342.58,
+                    'credit': 0,
+                    'account_id': self.company_data.get('default_account_revenue').id,
+                }),
+                (0, 0, {
+                    'debit': 0,
+                    'credit': 0,
+                    'account_id': self.destination_accounts[0].id,
+                }),
+                (0, 0, {
+                    'debit': 0,
+                    'credit': 12585.0,
+                    'account_id': self.origin_accounts[1].id,
+                }),
+            ]
+        })
+        move.action_post()
         amount_left = 10.0
         patched_get_values.return_value = [{
             'name': "YO",
@@ -329,9 +353,8 @@ class TransferModelTestCase(AccountAutoTransferTestCase):
             'date_maturity': end_date,
             'debit': 12585.0 - amount_left
         }]
-        exp_res_len = len([x for x in patched_read_group.return_value if x['balance'] != 0.0]) * 2
         res = self.transfer_model._get_non_filtered_auto_transfer_move_line_values([], start_date, end_date)
-        self.assertEqual(len(res), exp_res_len)
+        self.assertEqual(len(res), 4)
         self.assertListEqual(exp, res)
 
     @patch(

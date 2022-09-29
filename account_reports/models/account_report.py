@@ -666,6 +666,8 @@ class AccountReport(models.Model):
         if not self.filter_analytic:
             return
 
+        options['analytic'] = True  # Used in js, so we can't only rely on self.filter_analytic
+
         enable_analytic_accounts = self.user_has_groups('analytic.group_analytic_accounting')
         if not enable_analytic_accounts:
             return
@@ -676,15 +678,6 @@ class AccountReport(models.Model):
             selected_analytic_accounts = self.env['account.analytic.account'].search([('id', 'in', analytic_account_ids)])
             options['analytic_accounts'] = selected_analytic_accounts.ids
             options['selected_analytic_account_names'] = selected_analytic_accounts.mapped('name')
-
-    @api.model
-    def _get_options_analytic_domain(self, options):
-        domain = []
-        if options.get('analytic_accounts'):
-            analytic_account_ids = [int(acc) for acc in options['analytic_accounts']]
-            domain = osv.expression.OR([('analytic_distribution_stored_char', 'ilike', f'%"{analytic_account_id}":%')
-                                        for analytic_account_id in analytic_account_ids])
-        return domain
 
     ####################################################
     # OPTIONS: partners
@@ -1412,7 +1405,6 @@ class AccountReport(models.Model):
         ]
         domain += self._get_options_journals_domain(options)
         domain += self._get_options_date_domain(options, date_scope)
-        domain += self._get_options_analytic_domain(options)
         domain += self._get_options_partner_domain(options)
         domain += self._get_options_all_entries_domain(options)
         domain += self._get_options_unreconciled_domain(options)

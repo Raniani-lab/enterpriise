@@ -49,17 +49,16 @@ class AccountReport(models.AbstractModel):
         This will duplicate all previous columns and adding the analytic accounts in the domain of the added columns.
 
         The analytic_groupby_option is used so the table used is the shadowed table.
-        The domain on analytic_distribution_stored_char can just use simple comparison as the column of the shadowed
+        The domain on analytic_distribution can just use simple comparison as the column of the shadowed
         table will simply be filled with analytic_account_ids.
         """
-
         analytic_headers = []
         plans = self.env['account.analytic.plan'].browse(options.get('analytic_plans_groupby'))
         for plan in plans:
             account_list = []
             accounts = self.env['account.analytic.account'].search([('root_plan_id', '=', plan.id)])
             for account in accounts:
-                account_list.append(str(account.id))
+                account_list.append(account.id)
             analytic_headers.append({
                 'name': plan.name,
                 'forced_options': {
@@ -74,7 +73,7 @@ class AccountReport(models.AbstractModel):
                 'name': account.name,
                 'forced_options': {
                     'analytic_groupby_option': True,
-                    'analytic_accounts_list': (str(account.id),),
+                    'analytic_accounts_list': (account.id,),
                 }
             })
         if analytic_headers:
@@ -117,7 +116,6 @@ class AccountReport(models.AbstractModel):
             "display_type": sql.Literal("product"),
             "parent_state": sql.Literal("posted"),
             "date": sql.Identifier("date"),
-            "analytic_distribution_stored_char": sql.Identifier("account_id"),
             "account_id": sql.Identifier("general_account_id"),
             "partner_id": sql.Identifier("partner_id"),
             "debit": sql.SQL("CASE WHEN (amount < 0) THEN amount else 0 END"),
@@ -130,6 +128,8 @@ class AccountReport(models.AbstractModel):
                     original=changed_equivalence_dict[fname],
                     asname=sql.SQL(fname),
                 ))
+            elif fname == 'analytic_distribution':
+                selected_fields.append(sql.SQL('to_jsonb(account_id) AS "account_move_line.analytic_distribution"'))
             else:
                 if line_fields[fname].get("type") in ("many2one", "one2many", "many2many", "monetary"):
                     typecast = sql.SQL('integer')
@@ -167,7 +167,15 @@ class AccountReport(models.AbstractModel):
     def _query_get(self, options, date_scope, domain=None):
         # Override to add the context key which will eventually trigger the shadowing of the table
         context_self = self.with_context(account_report_analytic_groupby=options.get('analytic_groupby_option'))
-        return super(AccountReport, context_self)._query_get(options, date_scope, domain)
+
+        # We add the domain filter for analytic_distribution here, as the search is not available
+        tables, where_clause, where_params = super(AccountReport, context_self)._query_get(options, date_scope, domain)
+        if options.get('analytic_accounts'):
+            analytic_account_ids = [[str(account_id) for account_id in options['analytic_accounts']]]
+            where_params.append(analytic_account_ids)
+            where_clause = f'{where_clause} AND "account_move_line".analytic_distribution ?| array[%s]'
+
+        return tables, where_clause, where_params
 
     def action_audit_cell(self, options, params):
         column_group_options = self._get_column_group_options(options, params['column_group_key'])
@@ -192,8 +200,8 @@ class AccountReport(models.AbstractModel):
                 if field.split('.')[0] == 'account_id':
                     field = field.replace('account_id', 'general_account_id')
                     expression = [(field, operator, right_term)]
-                # Replace the 'analytic_distribution_stored_char' by the account_id domain as we expect for analytic lines.
-                elif field == 'analytic_distribution_stored_char':
+                # Replace the 'analytic_distribution' by the account_id domain as we expect for analytic lines.
+                elif field == 'analytic_distribution':
                     account_ids = tuple(int(account_id) for account_id in column_group_options.get('analytic_accounts_list', []))
                     expression = [('account_id', 'in', account_ids)]
                 # For other fields not present in on the analytic line model, map them to get the info from the move_line.
@@ -232,7 +240,7 @@ class AccountReport(models.AbstractModel):
         if 'analytic_accounts_list' in options:
             domain = osv.expression.AND([
                 domain,
-                [('analytic_distribution_stored_char', 'in', options.get('analytic_accounts_list', []))],
+                [('analytic_distribution', 'in', options.get('analytic_accounts_list', []))],
             ])
 
         return domain

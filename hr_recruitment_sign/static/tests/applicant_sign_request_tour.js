@@ -35,12 +35,13 @@ odoo.define('hr_recruitment_sign.tour', function (require) {
             {
                 content: "Validate the creation",
                 trigger: '.btn.o_form_button_save',
+                extra_trigger: '.o_employee_form',
                 run: 'click',
             },
             {
                 content: "Validate the creation",
                 trigger: '.o_menu_brand',
-                extra_trigger: '.btn.o_form_button_edit',
+                extra_trigger: '.o_form_status_indicator_buttons_hidden',
                 run: 'click',
             },
         ]

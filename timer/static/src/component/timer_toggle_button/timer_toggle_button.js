@@ -28,7 +28,6 @@ export class TimerToggleButton extends Component {
     }
 
     async onClick(ev) {
-        ev.preventDefault();
         const context = this.props.record.getFieldContext(this.props.name);
         const action = this.props.value ? "stop" : "start";
         await this.orm.call(

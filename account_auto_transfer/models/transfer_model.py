@@ -251,20 +251,21 @@ class TransferModel(models.Model):
         """
         self.ensure_one()
         domain = self._get_move_lines_base_domain(start_date, end_date)
-        for account in self.line_ids.analytic_account_ids:
-            domain.append(('analytic_distribution_stored_char', 'not ilike', f'%"{account.id}":%'))
         domain = expression.AND([domain, [('partner_id', 'not in', self.line_ids.partner_ids.ids), ]])
-        total_balance_by_accounts = self.env['account.move.line']._read_group(domain, ['balance', 'account_id'],
-                                                                             ['account_id'])
-
+        query = self.env['account.move.line']._search(domain)
+        query.order = None
+        self.line_ids.analytic_account_ids.ids and query.add_where('(NOT analytic_distribution ?| array[%s] OR analytic_distribution IS NULL)', [[str(account_id) for account_id in self.line_ids.analytic_account_ids.ids]])
+        query_string, query_param = query.select('SUM(balance) AS balance', 'account_id')
+        query_string = f"{query_string} GROUP BY account_id"
+        self._cr.execute(query_string, query_param)
         # balance = debit - credit
         # --> balance > 0 means a debit so it should be credited on the source account
         # --> balance < 0 means a credit so it should be debited on the source account
         values_list = []
-        for total_balance_account in total_balance_by_accounts:
+        for total_balance_account in self._cr.dictfetchall():
             initial_amount = abs(total_balance_account['balance'])
             source_account_is_debit = total_balance_account['balance'] >= 0
-            account_id = total_balance_account['account_id'][0]
+            account_id = total_balance_account['account_id']
             account = self.env['account.account'].browse(account_id)
             if not float_is_zero(initial_amount, precision_digits=9):
                 move_lines_values, amount_left = self._get_non_analytic_transfer_values(account, lines, end_date,
@@ -366,14 +367,23 @@ class TransferModelLine(models.Model):
         already_handled_move_line_ids = []
         for transfer_model_line in self:
             domain = transfer_model_line._get_move_lines_domain(start_date, end_date, already_handled_move_line_ids)
-            total_balances_by_account = self.env['account.move.line']._read_group(domain, ['ids:array_agg(id)', 'balance', 'account_id'], ['account_id'])
+
+            query = self.env['account.move.line']._search(domain)
+            if transfer_model_line.analytic_account_ids:
+                query.add_where('account_move_line.analytic_distribution ?| array[%s]', [[str(account_id) for account_id in transfer_model_line.analytic_account_ids.ids]])
+            query.order = None
+            query_string, query_param = query.select('array_agg("account_move_line".id) AS ids', 'SUM(balance) AS balance', 'account_id')
+            query_string = f"{query_string} GROUP BY account_id"
+            self._cr.execute(query_string, query_param)
+            total_balances_by_account = [expense for expense in self._cr.dictfetchall()]
+
             for total_balance_account in total_balances_by_account:
                 already_handled_move_line_ids += total_balance_account['ids']
                 balance = total_balance_account['balance']
                 if not float_is_zero(balance, precision_digits=9):
                     amount = abs(balance)
                     source_account_is_debit = balance > 0
-                    account_id = total_balance_account['account_id'][0]
+                    account_id = total_balance_account['account_id']
                     account = self.env['account.account'].browse(account_id)
                     transfer_values += transfer_model_line._get_transfer_values(account, amount, source_account_is_debit,
                                                                             end_date)
@@ -393,12 +403,6 @@ class TransferModelLine(models.Model):
         move_lines_domain = self.transfer_model_id._get_move_lines_base_domain(start_date, end_date)
         if avoid_move_line_ids:
             move_lines_domain.append(('id', 'not in', avoid_move_line_ids))
-        domain_account = []
-        for account in self.analytic_account_ids:
-            domain_account.append([('analytic_distribution_stored_char', '=ilike', f'%"{account.id}":%')])
-        domain_account = expression.OR(domain_account) if domain_account else []
-        for domain in domain_account:
-            move_lines_domain.append(domain)
         if self.partner_ids:
             move_lines_domain.append(('partner_id', 'in', self.partner_ids.ids))
         return move_lines_domain

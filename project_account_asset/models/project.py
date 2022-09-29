@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from collections import Counter
 from odoo import api, fields, models, _lt
 
 class Project(models.Model):
@@ -13,29 +14,31 @@ class Project(models.Model):
         if not self.analytic_account_id:
             self.assets_count = 0
             return
+        query = self.env['account.asset']._search([])
+        query.add_where('account_asset.analytic_distribution ?| array[%s]', [str(account_id) for account_id in self.analytic_account_id.ids])
+        query_string, query_param = query.select('analytic_distribution')
+        self._cr.execute(query_string, query_param)
+        mapped_data = Counter(int(account) for data in self._cr.dictfetchall() for account in data['analytic_distribution'])
         for project in self:
-            assets = self.env['account.asset'].search([
-                ('analytic_distribution_stored_char', '=ilike', f'%"{project.analytic_account_id.id}":%')
-            ])
-            project.assets_count = len(assets)
+            project.assets_count = mapped_data.get(project.analytic_account_id.id, 0)
 
     # -------------------------------------
     # Actions
     # -------------------------------------
 
     def action_open_project_assets(self):
-        assets = self.env['account.asset'].search([
-                ('analytic_distribution_stored_char', '=ilike', f'%"{self.analytic_account_id.id}":%')
-            ])
+        query = self.env['account.asset']._search([])
+        query.add_where('account_asset.analytic_distribution ? %s', [str(self.analytic_account_id.id)])
+        assets = list(query)
         action = self.env["ir.actions.actions"]._for_xml_id("account_asset.action_account_asset_form")
         action.update({
             'views': [[False, 'tree'], [False, 'form'], [False, 'kanban']],
             'context': {'default_analytic_distribution': {self.analytic_account_id.id: 100}, 'default_asset_type': 'purchase'},
-            'domain': [('id', 'in', assets.ids)]
+            'domain': [('id', 'in', assets)]
         })
         if(len(assets) == 1):
             action["views"] = [[False, 'form']]
-            action["res_id"] = assets.id
+            action["res_id"] = assets[0]
         return action
 
     # ----------------------------

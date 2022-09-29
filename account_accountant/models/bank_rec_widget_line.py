@@ -206,11 +206,10 @@ class BankRecWidgetLine(models.Model):
             line.source_credit = -line.source_balance if line.source_balance < 0.0 else 0.0
 
     @api.depends('source_aml_id')
-    def _compute_analytic_distribution_stored_char(self):
+    def _compute_analytic_distribution(self):
         for line in self:
             if line.flag in ('aml', 'new_aml'):
-                line.analytic_distribution_stored_char = line.source_aml_id.analytic_distribution_stored_char
-                line._compute_analytic_distribution()
+                line.analytic_distribution = line.source_aml_id.analytic_distribution
 
     @api.depends('source_aml_id')
     def _compute_tax_repartition_line_id(self):

@@ -153,7 +153,7 @@ class AccountPayment(models.Model):
         if self.company_id != company_id:
             raise UserError(_("Trying to generate a Direct Debit XML file containing payments from another company than that file's creditor."))
 
-        if self.payment_method_line_id.code != 'sdd':
+        if self.payment_method_line_id.code not in self.payment_method_id._get_sdd_payment_method_code():
             raise UserError(_("Trying to generate a Direct Debit XML for payments coming from another payment method than SEPA Direct Debit."))
 
         if not self.sdd_mandate_id:

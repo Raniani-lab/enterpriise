@@ -300,7 +300,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      */
     _onNameClick(event) {
         const name = event.target.value;
-        if (name === this.env._t('Untitled')) {
+        if (name === 'Untitled' || name === this.env._t('Untitled')) {
             this._rename('');
         }
     }

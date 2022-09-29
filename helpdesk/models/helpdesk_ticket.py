@@ -587,7 +587,7 @@ class HelpdeskTicket(models.Model):
                 if not parsed_name:
                     parsed_name = partner_name
                 try:
-                    vals['partner_id'] = self.env['res.partner'].find_or_create(
+                    vals['partner_id'] = self.env['res.partner'].with_context(default_team_id=False).find_or_create(
                         tools.formataddr((partner_name, parsed_email))
                     ).id
                 except UnicodeEncodeError:

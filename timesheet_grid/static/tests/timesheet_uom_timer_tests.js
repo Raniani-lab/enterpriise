@@ -50,7 +50,7 @@ QUnit.module("timesheet_grid", {}, function () {
             target = getFixture();
         }
     }, function () {
-        QUnit.debug("button is not displayed on edit", async (assert) => {
+        QUnit.test("button is not displayed on edit", async (assert) => {
             await makeView({
                 type: "list",
                 resModel: "account.analytic.line",

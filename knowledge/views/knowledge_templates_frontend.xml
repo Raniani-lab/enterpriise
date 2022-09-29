@@ -82,8 +82,8 @@
                             <div class="flex-grow-1 position-relative" t-else="">
                                 <div class="o_scroll_view">
                                     <!-- Article Cover -->
-                                    <div t-if="article.cover" class="o_knowledge_cover_image">
-                                        <img t-attf-src="data:image/png;base64,{{ article.cover }}" />
+                                    <div t-if="article.cover_image_id" class="o_knowledge_cover_image">
+                                        <img t-att-src="article.cover_image_url" />
                                     </div>
                                     <!-- Article Icon -->
                                     <div t-if="article.icon" t-attf-class="o_knowledge_icon px-3 #{'o_full_width' if article.full_width else ''}">

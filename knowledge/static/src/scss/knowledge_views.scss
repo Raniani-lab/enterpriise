@@ -43,9 +43,10 @@
     .o_knowledge_option_button {
         visibility: hidden;
         opacity: 0;
-        transition: visibility 0.4s, opacity 0.4s linear;
+        transition: visibility 0.3s, opacity 0.3s linear;
     }
-    .o_knowledge_body:hover .o_knowledge_option_button {
+    .o_knowledge_icon_cover_buttons:hover > a,
+    .o_knowledge_cover:hover .o_knowledge_edit_cover_buttons > a {
         visibility: visible;
         opacity: 1;
     }
@@ -70,6 +71,17 @@
         }
     }
 
+    .o_knowledge_cover_image {
+        width: 100%;
+        img {
+            width: 100%;
+            height: 30vh;
+            min-height: 150px;
+            object-fit: cover;
+            object-position: 50% 50%;
+        }
+    }
+
     // = Sidebar
     // --------------------------------------------------------------------------
     .o_section .o_tree {
@@ -83,17 +95,6 @@
 
     .ui-sortable-handle {
         display: block;
-    }
-
-    .o_article_emoji {
-        height: 100%;
-        display: inline-block;
-        &:hover {
-            background-color: rgba($knowledge-bg--active, 0.2);
-        }
-        &:active {
-            background-color: rgba($knowledge-bg--active, 0.3);
-        }
     }
 
     .ui-sortable-handle:not(.dropdown-menu) {
@@ -114,6 +115,17 @@
 
         .o_knowledge_tree {
             user-select: none;
+        }
+
+        .o_article_emoji {
+            height: 100%;
+            display: inline-block;
+            &:hover {
+                background-color: rgba($knowledge-bg--active, 0.2);
+            }
+            &:active {
+                background-color: rgba($knowledge-bg--active, 0.3);
+            }
         }
 
         .o_article:not(.ui-sortable-helper) > div {
@@ -368,18 +380,12 @@
             overflow-y: auto;
             overflow-x: hidden;
         }
-        .o_knowledge_cover_image {
-            width: 100%;
-            img {
-                width: 100%;
-                height: 30vh;
-                min-height: 150px;
-                object-fit: cover;
-                object-position: 50% 50%;
+        .o_overlap_cover {
+            margin-bottom: -90px;
+            .o_article_emoji {
+                position:relative;
+                top:-70px;
             }
-        }
-        span.o_invisible_modifier + .o_knowledge_icon {
-            margin-top: -70px;
         }
         .o_knowledge_icon {
             &.o_large {

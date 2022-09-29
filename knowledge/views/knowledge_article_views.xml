@@ -23,6 +23,7 @@
                 <field name="parent_id" invisible="1"/>
                 <field name="user_permission" invisible="1"/>
                 <field name="to_delete" invisible="1"/>
+                <field name="cover_image_id" invisible="1"/>
                 <div class="d-sm-flex h-100 bg-white" t-ref="root">
                     <aside class="o_knowledge_aside d-print-none flex-shrink-0 p-0">
                         <div class="d-flex flex-column h-100">
@@ -78,16 +79,16 @@
                                                         <a class="o_article_emoji o-no-caret"
                                                             href="#"
                                                             attrs="{'invisible': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}">
-                                                            <field name="icon" attrs="{'readonly': True }"/>
+                                                            <field name="icon" attrs="{'readonly': True }" class="mb-0"/>
                                                         </a>
                                                     </div>
                                                     <span class="o_article_emoji o-no-caret"
                                                         attrs="{'invisible': [('is_locked', '=', False), ('user_can_write', '=', True), ('active', '=', True)]}">
-                                                        <field name="icon" attrs="{'readonly': True }"/>
+                                                        <field name="icon" attrs="{'readonly': True }" class="mb-0"/>
                                                     </span>
                                                 </div>
                                                 <div t-on-input="ev => ev.target.setAttribute('size', ev.target.value.length)"
-                                                     t-on-change="ev => this._rename(this.resId, ev.target.value)"
+                                                     t-on-change="ev => this._rename(ev.target.value)"
                                                      t-on-click="ev => this._onNameClick(ev)">
                                                     <field attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}"
                                                            class="o_breadcrumb_article_name mb-0" name="name"/>
@@ -230,40 +231,56 @@
                                                 <!-- Article body -->
                                                 <div class="o_knowledge_body d-flex flex-column">
                                                     <!-- Article Cover -->
-                                                    <field name="cover" widget="knowledge_cover_image" class="o_knowledge_cover_image"
-                                                           attrs="{'readonly': ['|', ('is_locked', '=', True), ('active', '=', False)]}"/>
+                                                    <div class="o_knowledge_cover position-relative">
+                                                        <field name="cover_image_url" invisible="1" />
+                                                        <div class="o_knowledge_cover_image" attrs="{'invisible': [('cover_image_id', '=', False)]}">  
+                                                            <img t-att-src="props.record.data.cover_image_url" alt="cover" /> 
+                                                        </div>
+                                                        <span class="o_knowledge_edit_cover_buttons position-absolute bottom-0 end-0 mb-2 me-3 text-muted d-print-none"
+                                                            attrs="{'invisible': ['|', '|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('cover_image_id', '=', False), ('active', '=', False)]}">
+                                                            <a role="button" t-on-click="onChangeCoverClick"
+                                                               class="btn btn-light text-capitalize me-3 o_knowledge_change_cover o_knowledge_option_button">
+                                                                <i class="fa fa-fw fa-lg fa-picture-o" title="Change cover"/> Change cover
+                                                            </a>
+                                                            <a role="button" t-on-click="() => this.props.record.update({cover_image_id: false})"
+                                                               class="btn btn-light text-capitalize o_knowledge_remove_cover o_knowledge_option_button">
+                                                                <i class="fa fa-fw fa-lg fa-trash-o" title="Remove cover"/> Remove cover
+                                                            </a>
+                                                        </span>
+                                                    </div>
 
                                                     <!-- Full Width handling -->
                                                     <span class="o_knowledge_article_view_form_dynamic_width d-none"
                                                           attrs="{'invisible': [('full_width', '=', True)]}"/>
 
                                                     <!-- Icon and Cover buttons -->
-                                                    <div class="o_knowledge_icon_cover_buttons text-muted bg-white d-print-none mt-2"
+                                                    <div class="o_knowledge_icon_cover_buttons text-muted bg-white d-print-none py-1"
                                                          attrs="{'invisible': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}">
-                                                        <a role="button" attrs="{'invisible': [('icon', '!=', False)]}"
-                                                           class="btn btn-secondary me-2 ps-1 o_knowledge_add_icon o_knowledge_option_button"
-                                                           t-on-click="addIcon">
-                                                            <i class="fa fa-fw fa-smile-o" style="font-size: 1.5rem;" title="Add icon"/> Add icon
+                                                        <a role="button" t-on-click="addIcon"
+                                                           attrs="{'invisible': [('icon', '!=', False)]}"
+                                                           class="btn btn-light text-capitalize me-2 ps-1 o_knowledge_add_icon o_knowledge_option_button">
+                                                            <i class="fa fa-fw fa-lg fa-smile-o" title="Add icon"/> Add icon
                                                         </a>
-                                                        <a role="button" attrs="{'invisible': [('cover', '!=', False)]}"
-                                                           t-on-click="addCover"
-                                                           class="btn btn-secondary o_knowledge_add_cover o_knowledge_option_button">
-                                                            <i class="fa fa-fw fa-picture-o" style="font-size: 1.5rem;" title="Add cover"/> Add cover
+                                                        <a role="button" t-on-click="addCover"
+                                                           attrs="{'invisible': [('cover_image_id', '!=', False)]}"
+                                                           class="btn btn-light text-capitalize me-2 ps-1 o_knowledge_add_cover o_knowledge_option_button">
+                                                            <i class="fa fa-fw fa-lg fa-picture-o" title="Add cover"/> Add cover
                                                         </a>
                                                         <a role="button" attrs="{'invisible': ['|', ('is_article_item', '=', False), ('article_properties_is_empty', '=', False)]}"
                                                            t-on-click="addProperties"
-                                                           class="btn btn-secondary o_knowledge_add_properties o_knowledge_option_button">
-                                                            <i class="fa fa-fw fa-cog" style="font-size: 1.5rem;" title="Add properties"/> Add Properties
+                                                           class="btn btn-light text-capitalize o_knowledge_add_properties o_knowledge_option_button">
+                                                            <i class="fa fa-fw fa-lg fa-cog" title="Add properties"/> Add Properties
                                                         </a>
                                                     </div>
 
                                                     <!-- Article Icon -->
-                                                    <span class="d-none" attrs="{'invisible': [('cover', '!=', False)]}" />
-                                                    <div class="o_knowledge_icon o_large" attrs="{'invisible': [('icon', '=', False)]}">
+                                                    <div t-attf-class="o_knowledge_icon o_large #{props.record.data.cover_image_id ? 'o_overlap_cover' : ''}" 
+                                                         attrs="{'invisible': [('icon', '=', False)]}">
                                                         <div class="o_article_emoji_dropdown">
                                                             <a class="o_article_emoji o-no-caret"
+                                                               role="button"
                                                                attrs="{'invisible': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}">
-                                                               <field name="icon" attrs="{'readonly': True }"/>
+                                                               <field name="icon" attrs="{'readonly': True }" class="d-inline"/>
                                                            </a>
                                                             <p class="o_article_emoji o-no-caret"
                                                                attrs="{'invisible': [('is_locked', '=', False), ('user_can_write', '=', True), ('active', '=', True)]}">
@@ -288,7 +305,7 @@
                                                         </div>
                                                     </div>
                                                     <!-- Article body -->
-                                                    <div class="o_knowledge_editor">
+                                                    <div class="o_knowledge_editor mt-0">
                                                         <field name="body" widget="html" no_label="1"
                                                             options="{'resizable': False, 'knowledge_commands': true}"
                                                             attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}"/>

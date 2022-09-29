@@ -3,6 +3,7 @@
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import emojis from '@mail/js/emojis';
 import { FormRenderer } from '@web/views/form/form_renderer';
+import { KnowledgeCoverDialog } from '@knowledge/components/cover_selector/knowledge_cover_dialog';
 import KnowledgeTreePanelMixin from '@knowledge/js/tools/tree_panel_mixin';
 import { patch } from "@web/core/utils/patch";
 import MoveArticleDialog from "@knowledge/components/move_article_dialog/move_article_dialog";
@@ -66,10 +67,32 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     //--------------------------------------------------------------------------
 
     /**
-     * Open the browser file uploader allowing to add a cover to the article
+     * Adds a random cover using unsplash. If unsplash throws an error (service
+     * down/keys unset), opens the cover selector instead.
+     * @param {Event} event
      */
-    addCover() {
-        this.root.el.querySelector('.o_knowledge_cover_image .o_select_file_button').click();
+    async addCover(event) {
+        // Disable button to prevent multiple calls
+        event.target.classList.add('disabled');
+        if (this.props.record.data.name === this.env._t('Untitled')) {
+            // Rename the article if there is a title in the body
+            await this._rename(this._getFallbackTitle());
+        }
+        const articleName = this.props.record.data.name;
+        try {
+            const res = await this.rpc(`/knowledge/article/${this.resId}/add_random_cover`, {
+                query: articleName === this.env._t('Untitled') ? '' : articleName,
+                orientation: 'landscape',
+            });
+            if (res.cover_id) {
+                await this.props.record.update({cover_image_id: [res.cover_id]});
+            } else {
+                this.openCoverSelector();
+            }
+        } catch {
+            this.openCoverSelector();
+        }
+        event.target.classList.remove('disabled');
     }
 
     /**
@@ -144,6 +167,15 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         });
     }
 
+    openCoverSelector() {
+        const articleName = this.props.record.data.name;
+        this.dialog.add(KnowledgeCoverDialog, {
+            articleCoverId: this.props.record.data.cover_image_id[0],
+            articleName: articleName === this.env._t('Untitled') ? '' : articleName,
+            save: async (id) => this.props.record.update({cover_image_id: [id]})
+        });
+    }
+
     get resId() {
         return this.props.record.resId;
     }
@@ -215,6 +247,13 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     // Handlers
     //--------------------------------------------------------------------------
 
+    async onChangeCoverClick() {
+        if (this.props.record.data.name === this.env._t('Untitled')) {
+            // Rename the article if there is a title in the body
+            await this._rename(this._getFallbackTitle());
+        }
+        this.openCoverSelector();
+    }
     /**
      * Show the Dialog allowing to move the current article.
      */
@@ -237,10 +276,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * body of the article and set it as the name of the article.
      * @param {Event} event
      */
-    async _onNameClick(event) {
+    _onNameClick(event) {
         const name = event.target.value;
         if (name === this.env._t('Untitled')) {
-            this._rename(this.resId, '');
+            this._rename('');
         }
     }
 
@@ -288,6 +327,17 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                 parent_id: parentId
             }
         );
+    }
+
+    /**
+     * @return {string} - first h1 in the body, "Untitled" if not found
+     */
+    _getFallbackTitle() {
+        const articleTitle = this.root.el.querySelector('.o_knowledge_editor h1');
+        if (articleTitle) {
+            return articleTitle.textContent.trim() || this.env._t('Untitled');
+        }
+        return this.env._t('Untitled');
     }
 
     /**
@@ -356,21 +406,19 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     /**
      * Rename the article. To prevent empty names, checks for a valid title in
      * the article, or renames the article to the default article name.
-     * @param {integer} id - Target id
      * @param {string} name - Target Name
      */
-    _rename(id, name) {
+    async _rename(name) {
         if (name === '') {
-            const articleTitle = this.root.el.querySelector('.o_knowledge_editor h1');
-            if (articleTitle) {
-                name = articleTitle.textContent.trim();
-            }
-            name = name || this.env._t('Untitled');
+            name = this._getFallbackTitle();
+            // await here will cause the main flow tour to fail
             this.props.record.update({'name': name});
+        } else if (name !== this.props.record.data.name) {
+            await this.props.record.update({'name': name});
         }
         // ADSC: Remove when tree component
         // Updates the name in the sidebar
-        const selector = `.o_article[data-article-id="${id}"] > .o_article_handle > .o_article_name`;
+        const selector = `.o_article[data-article-id="${this.resId}"] > .o_article_handle > .o_article_name`;
         this.tree.el.querySelectorAll(selector).forEach(function(articleName) {
           articleName.textContent = name;
         });

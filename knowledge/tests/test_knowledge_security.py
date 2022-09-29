@@ -45,6 +45,10 @@ class TestKnowledgeSecurity(KnowledgeArticlePermissionsCase):
         with self.assertRaises(exceptions.AccessError, msg='ACLs: No member access to public'):
             self.env['knowledge.article.member'].search([])
 
+        # COVERS
+        with self.assertRaises(exceptions.AccessError, msg='ACLs: no cover access to public'):
+            self.env['knowledge.cover'].search([])
+
     @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule')
     @users('portal_test')
     def test_models_as_portal(self):
@@ -83,6 +87,11 @@ class TestKnowledgeSecurity(KnowledgeArticlePermissionsCase):
         with self.assertRaises(exceptions.AccessError,
                                msg='Breaking rule for portal'):
             sudo_members.mapped('partner_id')  # access body should trigger acls
+
+        # COVERS
+        with self.assertRaises(exceptions.AccessError,
+                               msg="ACLs: No cover access to portal"):
+            self.env['knowledge.cover'].search([])
 
     @mute_logger('odoo.models.unlink')
     @users('user_erp_manager')
@@ -180,6 +189,12 @@ class TestKnowledgeSecurity(KnowledgeArticlePermissionsCase):
         self.assertEqual(members, new_member)
         self.assertEqual(members.partner_id, self.partner_employee2)
 
+        # COVERS
+        cover = self._create_cover()
+        cover.write({'attachment_url': '/'})
+        self.assertEqual(cover.attachment_url, '/')
+        cover.unlink()
+
     @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule', 'odoo.models.unlink')
     @users('employee')
     def test_models_as_user(self):
@@ -237,6 +252,12 @@ class TestKnowledgeSecurity(KnowledgeArticlePermissionsCase):
         with self.assertRaises(exceptions.AccessError,
                                msg="ACLs: no ACLs for write for user"):
             my_members.write({'permission': 'write'})
+
+        # COVERS
+        cover = self._create_cover()
+        cover.write({'attachment_url': '/'})
+        self.assertEqual(cover.attachment_url, '/')
+        cover.unlink()
 
     @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule')
     @users('employee')

@@ -122,14 +122,4 @@
     <t t-name="sign.rotate_pdf_button">
         <button id='rotateCw' class='toolbarButton o_sign_rotate rotateCw' t-att-title='title'/>
     </t>
-
-    <t t-name="sign.upload_template_error">
-        <p>These files cannot be read, they may be corrupted or encrypted.</p>
-        <t t-foreach="failedTemplates" t-as="failedTemplate">
-            <p> - <t t-out="failedTemplate.name"/></p>
-        </t>
-
-        <p>They will be removed from the uploaded files<span t-if="failedTemplates.length &lt; uploadedTemplatesCount"> and the process will continue</span>.</p>
-    </t>
-
 </templates>

@@ -737,7 +737,7 @@ class Article(models.Model):
         # resequence only if a sequence was not already computed based on current
         # parent maximum to avoid unnecessary recomputation of sequences
         if _resequence:
-            self._resequence()
+            self.sudo()._resequence()
 
         return result
 

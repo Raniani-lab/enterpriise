@@ -19,6 +19,13 @@ class AccountMove(models.Model):
         # OVERRIDE to enable the 'in_payment' state on invoices.
         return 'in_payment'
 
+    def action_post(self):
+        # EXTENDS 'account' to trigger the CRON auto-reconciling the statement lines.
+        res = super().action_post()
+        if self.statement_line_id:
+            self.env.ref('account_accountant.auto_reconcile_bank_statement_line')._trigger()
+        return res
+
     def action_open_bank_reconciliation_widget(self):
         return self.statement_line_id._action_open_bank_reconciliation_widget(
             default_context={

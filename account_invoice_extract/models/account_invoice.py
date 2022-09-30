@@ -728,12 +728,8 @@ class AccountMove(models.Model):
                     'name': description,
                     'price_unit': il['subtotal'],
                     'quantity': 1.0,
-                    'tax_ids': [Command.link(i) for i in il['taxes_records'].ids],
+                    'tax_ids': il['taxes_records'],
                 }
-                if not vals['tax_ids'] and self.company_id.account_purchase_tax_id.price_include:
-                    # If the total amount doesn't change, we can actually put the default taxes.
-                    # This is intended as a way to keep intra-community taxes
-                    del vals['tax_ids']
 
                 invoice_lines_to_create.append(vals)
         else:
@@ -955,14 +951,46 @@ class AccountMove(models.Model):
                 if force_write:
                     move_form.invoice_line_ids = [Command.clear()]
                 vals_invoice_lines = self._get_invoice_lines(ocr_results)
+                # Create the lines with only the name for account_predictive_bills
                 move_form.invoice_line_ids = [
-                    Command.create(line_vals)
+                    Command.create({'name': line_vals.pop('name')})
                     for line_vals in vals_invoice_lines
                 ]
+
+        if add_lines:
+            # We needed to close the first _get_edi_creation context to let account_predictive_bills do the predictions based on the label
+            with self._get_edi_creation() as move_form:
+                # Now edit them with the correct amount and apply the taxes
+                for line, ocr_line_vals in zip(move_form.invoice_line_ids[-len(vals_invoice_lines):], vals_invoice_lines):
+                    line.write({
+                        'price_unit': ocr_line_vals['price_unit'],
+                        'quantity': ocr_line_vals['quantity'],
+                    })
+                    taxes_dict = {}
+                    for tax in line.tax_ids:
+                        taxes_dict[(tax.amount, tax.amount_type, tax.price_include)] = {
+                            'found_by_OCR': False,
+                            'tax_record': tax,
+                        }
+                    for taxes_record in ocr_line_vals['tax_ids']:
+                        tax_tuple = (taxes_record.amount, taxes_record.amount_type, taxes_record.price_include)
+                        if tax_tuple not in taxes_dict:
+                            line.tax_ids = [Command.link(taxes_record.id)]
+                        else:
+                            taxes_dict[tax_tuple]['found_by_OCR'] = True
+                        if taxes_record.price_include:
+                            line.price_unit *= 1 + taxes_record.amount / 100
+                    for tax_info in taxes_dict.values():
+                        if not tax_info['found_by_OCR']:
+                            amount_before = line.price_total
+                            line.tax_ids = [Command.unlink(tax_info['tax_record'].id)]
+                            # If the total amount didn't change after removing it, we can actually leave it.
+                            # This is intended as a way to keep intra-community taxes
+                            if line.price_total == amount_before:
+                                line.tax_ids = [Command.link(tax_info['tax_record'].id)]
                 fields_populated.append(self._fields['invoice_line_ids'].string)
 
-        # check the tax roundings after the tax lines have been synced
-        if add_lines:
+            # Check the tax roundings after the tax lines have been synced
             tax_amount_rounding_error = total_ocr - self.tax_totals['amount_total']
             threshold = len(vals_invoice_lines) * move_form.currency_id.rounding
             if (

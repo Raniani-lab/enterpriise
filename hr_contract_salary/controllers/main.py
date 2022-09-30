@@ -3,7 +3,6 @@
 
 import hashlib
 
-from itertools import groupby
 from collections import defaultdict, OrderedDict
 from odoo import fields, http, models, _, Command, SUPERUSER_ID
 
@@ -15,7 +14,6 @@ from werkzeug.exceptions import NotFound
 from werkzeug.wsgi import get_current_url
 from urllib.parse import urlparse, parse_qs
 from datetime import datetime
-
 
 
 class SignContract(Sign):

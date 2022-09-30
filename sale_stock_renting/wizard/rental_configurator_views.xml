@@ -14,7 +14,7 @@
             <field name="uom_id" class="oe_inline" options="{'no_open':1}" attrs="{'invisible': [('is_product_storable', '=', True)]}"/>
             <span class="oe_inline" attrs="{'invisible': [('is_product_storable', '=', False)]}">
               (<field name="qty_available_during_period" class="oe_inline" nolabel="1"/>
-              &amp;#032;
+              <text class="oe_inline"> </text>
               <field name="product_uom_id" class="oe_inline"/>
               Available)
             </span>

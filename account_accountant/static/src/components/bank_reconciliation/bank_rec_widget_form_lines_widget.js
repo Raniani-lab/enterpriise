@@ -30,7 +30,7 @@ export class BankRecWidgetFormLinesWidget extends Component {
             columns.push(["analytic_account", this.env._t("Analytic Account")]);
         }
         if(data.display_multi_currency_column){
-            columns.push(["amount_currency", this.env._t("Amount Currency")], ["currency", this.env._t("Currency")]);
+            columns.push(["amount_currency", this.env._t("Amount in Currency")], ["currency", this.env._t("Currency")]);
         }
         if(data.display_taxes_column){
             columns.push(["taxes", this.env._t("Taxes")]);

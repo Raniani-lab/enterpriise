@@ -260,7 +260,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_form_lines_widget.js:0
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #, python-format
-msgid "Amount Currency"
+msgid "Amount in Currency"
 msgstr ""
 
 #. module: account_accountant
@@ -1196,7 +1196,7 @@ msgstr ""
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
-msgid "Open Amount (in Currency)"
+msgid "Open Amount in Currency"
 msgstr ""
 
 #. module: account_accountant

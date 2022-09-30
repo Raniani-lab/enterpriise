@@ -39,7 +39,7 @@
 @include media-breakpoint-down(xl) {
     .o_knowledge_editor .note-editable,
     .o_knowledge_editor .o_readonly {
-        padding-bottom: 1rem;
+        padding-bottom: 1rem !important; //overriding html field's padding (web_enterprise style)
         h1 {
             font-size: calc(1.375rem + 1.5vw);
         }
@@ -64,7 +64,7 @@
 @include media-breakpoint-up(lg) {
     .o_knowledge_editor .note-editable,
     .o_knowledge_editor .o_readonly {
-        padding-bottom: 50vh !important;
+        padding-bottom: 50vh !important; //overriding html field's padding (web_enterprise style)
         h1 {
             font-size: 2.5rem;
         }
@@ -89,6 +89,6 @@
 @media print {
     .o_knowledge_editor .note-editable,
     .o_knowledge_editor .o_readonly {
-        padding-bottom: 0;
+        padding-bottom: 0 !important; // overriding html field's padding (web_enterprise style)
     }
 }

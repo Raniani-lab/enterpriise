@@ -2,10 +2,11 @@ odoo.define('account_consolidation.GridController', function (require) {
     "use strict";
 
     var WebGridController = require('web_grid.GridController');
-    var dialogs = require('web.view_dialogs');
+    const { FormViewDialog } = require("@web/views/view_dialogs/form_view_dialog");
     var core = require('web.core');
-    var _t = core._t;
 
+    var _t = core._t;
+    const { Component } = owl;
 
     return WebGridController.extend({
         renderButtons(...args) {
@@ -23,14 +24,12 @@ odoo.define('account_consolidation.GridController', function (require) {
         },
         _onAddColumn(e) {
             e.preventDefault();
-            new dialogs.FormViewDialog(this, {
-                res_model: 'consolidation.journal',
-                res_id: false,
-                context: {'default_period_id': this.context.default_period_id},
+            Component.env.services.dialog.add(FormViewDialog, {
+                resModel: 'consolidation.journal',
+                context: { default_period_id: this.context.default_period_id },
                 title: _t('Add a column'),
-                disable_multiple_selection: true,
-                on_saved: this.reload.bind(this, {})
-            }).open();
+                onRecordSaved: this.reload.bind(this, {})
+            });
         },
         _onViewReport(e) {
             e.preventDefault();

@@ -167,6 +167,20 @@ const SignNameAndSignature = NameAndSignature.extend({
     return this._super.apply(this, arguments);
   },
   /**
+   * If a user clicks on the o_web_sign_signature div while in draw mode,
+   * we overwrite the signature in the server
+   * 
+   * @override
+   * @see NameAndSignature._onClickSignature
+   * @private
+   */
+  _onClickSignature: function () {
+    if (this.signMode === 'draw') {
+      this.signatureChanged = true;
+    }
+    return this._super.apply(this, arguments);
+  },
+  /**
    * If a user clicks on draw, we overwrite the signature in the server.
    *
    * @override

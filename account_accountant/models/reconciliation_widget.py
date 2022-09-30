@@ -470,6 +470,9 @@ class AccountReconciliation(models.AbstractModel):
     def _prepare_writeoff_move_vals(self, move_lines, vals_list):
         aggr = defaultdict(list)
         for vals in vals_list:
+            # detect if it is a tax case (the balance still exists) and manage the 0% tax case
+            if vals.get('tax_repartition_line_id') and self.env.company.currency_id.is_zero(vals['balance']):
+                continue
             move_vals = self._prepare_writeoff_moves(move_lines, vals)
             grouping = frozendict({k: v for k, v in move_vals.items() if k != 'line_ids'})
             aggr[grouping].extend(move_vals['line_ids'])

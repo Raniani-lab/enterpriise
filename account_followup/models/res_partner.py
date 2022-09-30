@@ -4,7 +4,7 @@
 import logging
 from odoo import api, fields, models, _
 from odoo.tools.misc import format_date
-from datetime import datetime
+from datetime import datetime, timedelta
 from odoo.tools import DEFAULT_SERVER_DATE_FORMAT
 from odoo.exceptions import UserError
 
@@ -130,13 +130,13 @@ class ResPartner(models.Model):
             if has_overdue_invoices and most_delayed_aml:
                 new_status = 'with_overdue_invoices'
             next_followup_date_exceeded = today >= partner.followup_next_action_date if partner.followup_next_action_date else True
-            if max_aml_delay >= next_followup_delay and next_followup_date_exceeded:
+            if max_aml_delay >= next_followup_delay and next_followup_date_exceeded and followup_lines_info:
                 new_status = 'in_need_of_action'
             partner.followup_status = new_status
 
             # computation of followup_line_id
             new_line = highest_followup_line
-            if most_delayed_aml and (most_delayed_aml.last_followup_date or max_aml_delay >= next_followup_delay):
+            if most_delayed_aml and (most_delayed_aml.last_followup_date or max_aml_delay >= next_followup_delay) and followup_lines_info:
                 index = highest_followup_line.id if highest_followup_line else None
                 next_line_id = followup_lines_info[index].get('next_followup_line_id')
                 new_line = self.env['account_followup.followup.line'].browse(next_line_id)
@@ -240,7 +240,7 @@ class ResPartner(models.Model):
         today = fields.Date.context_today(self)
         highest_followup_line = None
         most_delayed_aml = self.env['account.move.line']
-        first_followup_line = self.env['account_followup.followup.line'].search([('company_id', '=', self.env.company.id)], order='delay asc', limit=1)
+        first_followup_line = self._get_first_followup_level()
         # Minimum value for delay, will always be smaller than any other delay
         max_delay = first_followup_line.delay - 1
         has_overdue_invoices = False
@@ -269,37 +269,30 @@ class ResPartner(models.Model):
             'has_overdue_invoices': has_overdue_invoices,
         }
 
-    def get_next_action(self, followup_line):
-        """
-        Compute the next action status of the customer for the report.
+    def _get_included_unreconciled_aml_ids(self):
+        self.ensure_one()
+        return self.unreconciled_aml_ids.filtered(lambda aml: not aml.blocked)
+
+    def _get_first_followup_level(self):
+        self.ensure_one()
+        return self.env['account_followup.followup.line'].search([('company_id', '=', self.env.company.id)], order='delay asc', limit=1)
+
+    def _update_next_followup_action_date(self, followup_line):
+        """Updates the followup_next_action_date of the right account move lines
         """
         self.ensure_one()
-        return {
-            'date': self.followup_next_action_date or followup_line._get_next_date(),
-        }
 
-    def update_next_action(self, options):
-        """Updates the next_action_date of the right account move lines
-        options is a dict with the following keys:
-            - next_action_date : date of the next action, optional
-            - action: type of action (done|later), mandatory
-        """
-        next_action_date = options.get('next_action_date') and options['next_action_date'][0:10]
-        next_action_date_done = False
+        # Arbitrary 14 days delay (like the _get_next_date() method) if there is no followup_line
+        # This will be changed/removed in an upcoming improvement
+        next_date = followup_line._get_next_date() if followup_line else fields.Date.today() + timedelta(days=14)
+        self.followup_next_action_date = datetime.strftime(next_date, DEFAULT_SERVER_DATE_FORMAT)
+        msg = _('Next Reminder Date set to %s', format_date(self.env, self.followup_next_action_date))
+        self.message_post(body=msg)
+
         today = fields.Date.today()
-        for partner in self:
-            current_followup_line = partner.followup_line_id
-            if options['action'] == 'done':
-                next_action_date_done = datetime.strftime(current_followup_line._get_next_date(), DEFAULT_SERVER_DATE_FORMAT)
-            partner.followup_next_action_date = (not next_action_date or options['action'] == 'done') and next_action_date_done or next_action_date
-            if options['action'] in ('done', 'later'):
-                msg = _('Next Reminder Date set to %s', format_date(self.env, partner.followup_next_action_date))
-                partner.message_post(body=msg)
-            if options['action'] == 'done':
-                for aml in partner.unreconciled_aml_ids:
-                    if not aml.blocked:
-                        aml.followup_line_id = current_followup_line
-                        aml.last_followup_date = today
+        for aml in self._get_included_unreconciled_aml_ids():
+            aml.followup_line_id = followup_line
+            aml.last_followup_date = today
 
     def open_action_followup(self):
         self.ensure_one()
@@ -492,7 +485,7 @@ class ResPartner(models.Model):
         if options is None:
             options = {}
         if options.get('manual_followup', self.followup_status == 'in_need_of_action'):
-            followup_line = self.followup_line_id or self.env['account_followup.followup.line'].search([('company_id', '=', self.env.company.id)], order='delay asc', limit=1)
+            followup_line = self.followup_line_id or self._get_first_followup_level()
 
             if followup_line.create_activity:
                 # log a next activity for today
@@ -503,8 +496,7 @@ class ResPartner(models.Model):
                     user_id=(self._get_followup_responsible()).id
                 )
 
-            next_date = followup_line._get_next_date()
-            self.update_next_action(options={'next_action_date': datetime.strftime(next_date, DEFAULT_SERVER_DATE_FORMAT), 'action': 'done'})
+            self._update_next_followup_action_date(followup_line)
 
             self._send_followup(options={'followup_line': followup_line, **options})
 

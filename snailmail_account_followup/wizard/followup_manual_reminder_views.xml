@@ -7,10 +7,9 @@
             <field name="inherit_id" ref="account_followup.manual_reminder_view_form"/>
             <field name="arch" type="xml">
                 <group name="options" position="inside">
-                    <div name="snailmail">
-                        <field name="snailmail" string="By post"/>
-                        <label for="snailmail"/>
-                    </div>
+                    <group name="snailmail" colspan="1">
+                        <field name="snailmail" string="By post" nolabel="1"/><label for="snailmail"/>
+                    </group>
                 </group>
                 <group name="print_options" position="attributes">
                     <attribute name="attrs">{'invisible': [('print','=',False),('snailmail','=',False)]}</attribute>

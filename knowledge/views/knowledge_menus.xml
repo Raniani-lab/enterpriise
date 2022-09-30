@@ -3,7 +3,7 @@
     <menuitem
         id="knowledge_menu_root"
         name="Knowledge"
-        web_icon="knowledge,static/description/icon.png"
+        web_icon="knowledge,static/description/icon.svg"
         sequence="17"/>
 
     <menuitem

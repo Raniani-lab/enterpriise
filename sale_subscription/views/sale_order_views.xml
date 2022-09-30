@@ -22,7 +22,7 @@
             <button id="create_invoice" position="after">
                 <field name="show_rec_invoice_button" invisible="1"/>
                 <button name="action_invoice_subscription" string="Create Invoice"
-                        id="create_recurring_invoice" type="object" class="btn-primary" data-hotkey="q"
+                        id="create_recurring_invoice_primary" type="object" class="btn-primary" data-hotkey="q"
                         attrs="{'invisible': ['|', ('show_rec_invoice_button', '=', False), ('invoice_count', '>', 0)]}"
                 />
                 <button name="action_invoice_subscription" string="Create Invoice"

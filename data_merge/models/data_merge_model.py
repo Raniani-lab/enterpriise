@@ -159,6 +159,8 @@ class DataMergeModel(models.Model):
                          menu_id=menu_id)
                     ),
                 partner_ids=partner_ids,
+                model='data_merge.model',
+                res_id=self.id,
             )
 
     def _cron_find_duplicates(self):

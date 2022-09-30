@@ -18,10 +18,11 @@ class TestDeliveryEasypost(EasypostTestCommon):
         """
         wiz_action = picking.action_put_in_pack()
         self.assertEqual(wiz_action['res_model'], 'choose.delivery.package', 'Wrong wizard returned')
-        wiz = self.env[wiz_action['res_model']].with_context(wiz_action['context']).create({
+        wiz = Form(self.env[wiz_action['res_model']].with_context(wiz_action['context']).create({
             'delivery_package_type_id': picking.carrier_id.easypost_default_package_type_id.id
-        })
-        wiz.action_put_in_pack()
+        }))
+        choose_delivery_carrier = wiz.save()
+        choose_delivery_carrier.action_put_in_pack()
 
     def test_easypost_one_package_shipping(self):
         """ Try to rate and ship an order from

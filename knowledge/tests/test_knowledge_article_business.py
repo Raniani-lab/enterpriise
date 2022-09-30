@@ -1170,3 +1170,36 @@ class TestKnowledgeShare(KnowledgeCommonWData):
             'partner_ids': partner_ids,
             'permission': permission,
         }).action_invite_members()
+
+@tagged('post_install', '-at_install', 'knowledge_internals', 'knowledge_management')
+class TestKnowledgeArticleCovers(KnowledgeCommonWData):
+    """ Test article covers management  """
+
+    @users('employee')
+    def test_article_cover_management(self):
+        # User cannot modify cover of hidden article
+        article_hidden = self.article_private_manager.with_env(self.env)
+        cover = self._create_cover()
+        with self.assertRaises(exceptions.AccessError,
+                               msg="Cannot add cover to hidden article"):
+            article_hidden.write({'cover_image_id': cover.id})
+        article_hidden.with_user(self.user_admin).write({'cover_image_id': cover.id})
+        with self.assertRaises(exceptions.AccessError,
+                               msg="Cannot remove cover of hidden article"):
+            article_hidden.write({'cover_image_id': False})
+
+        # User cannot modify cover of readable article but has access to it
+        article_read = self.article_shared.with_env(self.env)
+        with self.assertRaises(exceptions.AccessError,
+                               msg="Cannot add cover to readable article"):
+            article_read.write({'cover_image_id': cover.id})
+        cover_2 = self._create_cover()
+        article_read.with_user(self.user_admin).write({'cover_image_id': cover_2.id})
+        with self.assertRaises(exceptions.AccessError,
+                               msg="Cannot remove cover of readable article"):
+            article_read.write({'cover_image_id': False})
+
+        # User can reuse a cover used in another article.
+        article_write = self.article_workspace.with_env(self.env)
+        article_write.write({'cover_image_id': cover_2.id})
+        self.assertEqual(article_write.cover_image_id, cover_2)

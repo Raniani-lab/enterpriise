@@ -30,7 +30,8 @@ class Article(models.Model):
     name = fields.Char(string="Title", default=lambda self: _('Untitled'), required=True, tracking=20)
     body = fields.Html(string="Body")
     icon = fields.Char(string='Emoji')
-    cover = fields.Binary(string='Cover Image')
+    cover_image_id = fields.Many2one("knowledge.cover", string='Article cover')
+    cover_image_url = fields.Char(related="cover_image_id.attachment_url", string="Cover url")
     is_locked = fields.Boolean(
         string='Locked',
         help="When locked, users cannot write on the body or change the title, "
@@ -822,7 +823,7 @@ class Article(models.Model):
                 "permission": 'write'
             })],
             "body": self.body,
-            "cover": self.cover,
+            "cover_image_id": self.cover_image_id.id,
             "full_width": False,
             "name": _("%s (copy)", self.name),
             "icon": self.icon,

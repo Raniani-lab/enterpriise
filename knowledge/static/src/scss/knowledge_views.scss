@@ -1,11 +1,30 @@
 .o_knowledge_form_view {
-    --default-sidebar-size: 300px;
-    --sidebar-size: clamp(300px, var(--default-sidebar-size), 50vw);
-    --knowledge-bg--active: 27, 161, 228;
-    padding: 0 !important;
-
     // = Navbar
     // --------------------------------------------------------------------------
+    .o_breadcrumb_article_name_container {
+        > span {
+            white-space: pre;
+            vertical-align: 1px;
+            color: transparent;
+            &:not(.o_article_locked) {
+                min-width: 150px;
+                display: inline-block;
+            }
+        }
+        .o_breadcrumb_article_name {
+            span, input {
+                position: absolute;
+                inset: 0;
+                overflow-x: hidden;
+                text-overflow: ellipsis;
+            }
+        }
+    }
+
+    .min-w-0 {
+        min-width: 0;
+    }
+
     .o_breadcrumb_article_name > input:not(:focus) {
         --o-input-border-color: transparent;
     }
@@ -14,24 +33,8 @@
     }
 
     .o_toggle_favorite {
-        font-size: 16px;
-        &.fa-star, &:hover {
+        .fa-star, &:hover {
             color: $o-main-favorite-color;
-        }
-    }
-
-    .o_knowledge_emoji_picker_blocker {
-        position: fixed;
-        top: 0px;
-        left: 0px;
-        width: 100vw;
-        height: 100vh;
-        display: none;
-    }
-
-    .o_knowledge_emoji_picker_container.show {
-        .o_knowledge_emoji_picker_blocker {
-            display: block;
         }
     }
 
@@ -106,8 +109,6 @@
     }
 
     .o_knowledge_aside {
-        width: var(--sidebar-size);
-        transition: width 0.15s linear;
 
         .o_scroll_view {
             max-height: 100%;
@@ -115,6 +116,12 @@
 
         .o_knowledge_tree {
             user-select: none;
+        }
+
+        .o_article_emoji_dropdown {
+            > a {
+                width: 1.5em;
+            }
         }
 
         .o_article_emoji {
@@ -130,32 +137,31 @@
 
         .o_article:not(.ui-sortable-helper) > div {
             &.o_article_active {
-                background-color: rgba($knowledge-bg--active, 0.2);
-                &:hover {
-                    background-color: rgba($knowledge-bg--active, 0.3);
-                }
-                .o_article_name:active::before,
-                .o_article_caret:hover,
-                &.o_article_handle .o_article_emoji:hover,
-                &.o_article_handle .o_article_create:hover {
-                    background-color: rgba($knowledge-bg--active, 0.4);
-                }
-                .o_article_caret:active,
-                &.o_article_handle .o_article_emoji:active,
-                &.o_article_handle .o_article_create:active {
-                    background-color: rgba($knowledge-bg--active, 0.5);
+                > div {
+                    background-color: rgba($knowledge-bg--active, 0.2);
+                    &:hover {
+                        background-color: rgba($knowledge-bg--active, 0.3);
+                    }
+                    &:active,
+                    &.o_article_handle .o_article_emoji:hover,
+                    &.o_article_handle .o_article_create:hover {
+                        background-color: rgba($knowledge-bg--active, 0.4);
+                    }
+                    &.o_article_handle .o_article_emoji:active,
+                    &.o_article_handle .o_article_create:active {
+                        background-color: rgba($knowledge-bg--active, 0.5);
+                    }
                 }
             }
-            &:hover {
+            > div:hover{
                 background-color: rgba($knowledge-bg--active, 0.2);
             }
-            .o_article_name:active::before,
             .o_article_caret:hover,
+            > div:active,
             &.o_article_handle .o_article_emoji:hover,
             &.o_article_handle .o_article_create:hover {
                 background-color: rgba($knowledge-bg--active, 0.3);
             }
-            .o_article_caret:active,
             &.o_article_handle .o_article_emoji:active,
             &.o_article_handle .o_article_create:active {
                 background-color: rgba($knowledge-bg--active, 0.4);
@@ -178,47 +184,8 @@
             z-index: 0;
         }
 
-        ul {
-            list-style: none;
-            padding: 0;
-        }
-        li {
-            padding: 0.2em 0;
-            position: relative;
-        }
-        li > ul > li:not(.ui-sortable-helper) {
-            margin-left: 1.28571429em * 0.5; // Workaround to get half .fa-fw icon's width.
-            padding-left: 0.8em;
-
-            &:before, &:after {
-                content: '';
-                background-color: $border-color;
-            }
-
-            &:before {
-                @include o-position-absolute($top: 1em, $left: 0);
-                width: .6em;
-                height: 1px;
-                margin: auto;
-            }
-
-            &:after {
-                @include o-position-absolute(0, auto, 0, 0);
-                width: 1px;
-                height: 100%;
-            }
-
-            &:last-child {
-                padding-bottom: 0;
-
-                &:after {
-                    height: 1em;
-                }
-            }
-        }
-
         .o_section_header:not(:hover) .o_section_create,
-        .o_article_handle:not(:hover) .o_article_create {
+        .o_article_handle > div:not(:hover) .o_article_create {
             visibility: hidden;
         }
         .o_article_create, .o_article_caret {
@@ -233,22 +200,6 @@
             }
             bottom: 0px;
             margin-left: 0.2rem;
-        }
-    }
-
-    // = Resizer
-    // --------------------------------------------------------------------------
-    .o_knowledge_article_form_resizer {
-        // Use '$spacers' measures to match surrounding elements padding
-        $-resizer-spacing: map-get($spacers, 3);
-        $-resizer-line-width: map-get($spacers, 1);
-
-        @include o-position-absolute(0, auto, 0, $-resizer-spacing * -1);
-        cursor: ew-resize;
-        touch-action: none;
-
-        span {
-            @include o-position-absolute(0, auto, 0, $-resizer-spacing + ($-resizer-line-width * -0.5));
         }
     }
 

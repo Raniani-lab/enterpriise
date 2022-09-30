@@ -185,7 +185,7 @@ tour.register('knowledge_main_flow_tour', {
     trigger: '.o_toggle_favorite',
 }, {
     // wait for the article to be registered as favorited
-    trigger: '.o_toggle_favorite.fa-star',
+    trigger: '.o_toggle_favorite .fa-star',
     run: () => {},
 }, {
     // move private article above workspace article in the favorite section

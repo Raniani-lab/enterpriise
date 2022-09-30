@@ -16,10 +16,12 @@
                         <div class="o_setting_right_pane">
                             <span class="o_form_label">Fiscal Year</span>
                             <div class="content-group">
-                                <div class="row mt16">
+                                <div class="d-flex mt16 align-items-baseline">
                                     <label for="fiscalyear_last_month" string="Last Day" class="col-lg-3 o_light_label"/>
-                                    <field name="fiscalyear_last_month" style="width: 100px; margin-right: 8px;"/>
-                                    <field name="fiscalyear_last_day" class="oe_inline"/>
+                                    <div class="col-lg-9">
+                                        <field name="fiscalyear_last_month" class="pe-2"/>
+                                        <field name="fiscalyear_last_day"/>
+                                    </div>
                                 </div>
                             </div>
                         </div>

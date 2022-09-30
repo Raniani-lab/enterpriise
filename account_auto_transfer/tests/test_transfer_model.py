@@ -3,6 +3,7 @@ from datetime import datetime, timedelta
 from unittest.mock import patch, call
 from functools import reduce
 from itertools import chain
+from freezegun import freeze_time
 
 from dateutil.relativedelta import relativedelta
 from odoo.addons.account_auto_transfer.tests.account_auto_transfer_test_classes import AccountAutoTransferTestCase
@@ -104,6 +105,7 @@ class TransferModelTestCase(AccountAutoTransferTestCase):
         patched.assert_called_once()
 
     @patch('odoo.addons.account_auto_transfer.models.transfer_model.TransferModel._create_or_update_move_for_period')
+    @freeze_time('2022-01-01')
     def test_action_perform_auto_transfer(self, patched):
         self.transfer_model.date_start = datetime.strftime(datetime.today() + relativedelta(day=1), "%Y-%m-%d")
         # - CASE 1 : normal case, acting on current period
@@ -138,7 +140,6 @@ class TransferModelTestCase(AccountAutoTransferTestCase):
         initial_call_count = patched.call_count
         transfer_model.action_perform_auto_transfer()
         self.assertEqual(initial_call_count + 13, patched.call_count, '13 more calls should have been done')
-
 
     @patch('odoo.addons.account_auto_transfer.models.transfer_model.TransferModel._get_auto_transfer_move_line_values')
     def test__create_or_update_move_for_period(self, patched_get_auto_transfer_move_line_values):

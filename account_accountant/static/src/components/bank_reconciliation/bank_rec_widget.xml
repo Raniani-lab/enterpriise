@@ -17,6 +17,12 @@
         </xpath>
     </t>
 
+    <t t-name="account.BankRecKanbanRecord" t-inherit="web.KanbanRecord" t-inherit-mode="primary" owl="1">
+        <xpath expr="//div[@role='article']" position="attributes">
+            <attribute name="t-att-tabindex"/>
+        </xpath>
+    </t>
+
     <t t-name="account.BankRecKanbanRenderer" t-inherit="web.KanbanRenderer" t-inherit-mode="primary" owl="1">
         <xpath expr="//div[@t-ref='root']" position="attributes">
             <attribute name="class" add="o_bank_rec_kanban_div" separator=" "/>

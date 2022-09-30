@@ -27,7 +27,7 @@
                             <field name="progression" class="pe-3" widget="selection_badge"/>
                         </group>
                         <group>
-                            <field name="manager_id"/>
+                            <field name="manager_id" force_save="1" attrs="{'readonly': [('is_manager', '=', False)]}"/>
                             <field name="deadline"/>
                         </group>
                     </group>

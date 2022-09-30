@@ -3,7 +3,7 @@
     <record id="hr_appraisal.group_hr_appraisal_user" model="res.groups">
         <field name="name">Officer : Access all appraisals</field>
         <field name="category_id" ref="base.module_category_human_resources_appraisals"/>
-        <field name="implied_ids" eval="[(4, ref('base.group_user'))]"/>
+        <field name="implied_ids" eval="[(4, ref('hr.group_hr_user'))]"/>
     </record>
 
     <record id="hr_appraisal.group_hr_appraisal_manager" model="res.groups">
@@ -80,11 +80,18 @@
         <field name="domain_force">[
             '|',
             '|',
+            '|',
+            '|',
+            ('is_implicit_manager', '=', True),
             ('employee_id.user_id', '=', user.id),
             ('manager_id.user_id', '=', user.id),
             '&amp;',
                 ('employee_id.parent_id', '!=', False),
-                ('employee_id.parent_id', '=', user.employee_id.id)]</field>
+                ('employee_id.parent_id.user_id', '=', user.id),
+            '&amp;',
+                ('employee_id.last_appraisal_id.manager_ids.user_id', '=', user.id),
+                ('employee_id.last_appraisal_id.state', 'in', ['new', 'pending'])
+        ]</field>
         <field name="perm_create" eval="True"/>
         <field name="perm_write" eval="True"/>
         <field name="perm_read" eval="True"/>

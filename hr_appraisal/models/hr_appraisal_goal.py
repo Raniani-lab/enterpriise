@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import fields, api, models, _
-from odoo.tools import html2plaintext, is_html_empty
 from odoo.tools.misc import get_lang
 
 
@@ -12,10 +11,11 @@ class HrAppraisalGoal(models.Model):
     _description = "Appraisal Goal"
 
     name = fields.Char(required=True)
-    employee_id = fields.Many2one('hr.employee', string="Employee",
+    employee_id = fields.Many2one(
+        'hr.employee', string="Employee",
         default=lambda self: self.env.user.employee_id, required=True)
     employee_autocomplete_ids = fields.Many2many('hr.employee', compute='_compute_is_manager')
-    is_implicit_manager = fields.Boolean(compute='_compute_is_manager')
+    is_implicit_manager = fields.Boolean(compute='_compute_is_manager', search='_search_is_implicit_manager')
     manager_id = fields.Many2one('hr.employee', string="Manager", compute="_compute_manager_id", readonly=False, store=True, required=True)
     manager_user_id = fields.Many2one('res.users', related='manager_id.user_id')
     progression = fields.Selection(selection=[
@@ -38,14 +38,35 @@ class HrAppraisalGoal(models.Model):
                 goal.is_implicit_manager = False
                 goal.employee_autocomplete_ids = self.env['hr.employee'].search([])
             else:
-                child_ids = self.env.user.employee_id.child_ids
-                goal.employee_autocomplete_ids = child_ids + self.env.user.employee_id
-                goal.is_implicit_manager = len(goal.employee_autocomplete_ids) > 1
+                if not self.env.user.employee_id:
+                    goal.employee_autocomplete_ids = False
+                    goal.is_implicit_manager = False
+                else:
+                    child_ids = self.env.user.employee_id.child_ids
+                    goal.employee_autocomplete_ids = child_ids\
+                        + self.env.user.employee_id\
+                        + self.env['hr.appraisal'].search([]).employee_id
+                    goal.is_implicit_manager = len(goal.employee_autocomplete_ids) > 1
+
+    @api.model
+    def _search_is_implicit_manager(self, operator, value):
+        if operator not in ['=', '!='] or not isinstance(value, bool):
+            raise NotImplementedError(_('Operation not supported'))
+        if not self.env.user.employee_id:
+            managered_appraisal_goals = self.env['hr.appraisal.goal']
+        else:
+            managered_appraisal_goals = self.env['hr.appraisal.goal'].search(
+                [('manager_id', '=', self.env.user.employee_id.id)]
+            )
+
+        if operator == '!=':
+            value = not value
+        return [('id', 'in' if value else 'not in', managered_appraisal_goals.ids)]
 
     @api.depends('employee_id')
     def _compute_manager_id(self):
         for goal in self:
-            goal.manager_id = goal.employee_id.parent_id
+            goal.manager_id = goal.employee_id.parent_id or self.env.user.employee_id
 
     def _notify_by_email_prepare_rendering_context(self, message, msg_vals=False, model_description=False,
                                                    force_email_company=False, force_email_lang=False):

@@ -50,17 +50,17 @@ tour.register('rental_tour', {
     content: _t("Click here to create a new quotation."),
     position: 'bottom',
 }, {
-    trigger: ".o_field_many2one[name=partner_id] input",
+    trigger: ".o_field_widget[name=partner_id] input",
     content: _t("Create or select a customer here."),
     position: 'bottom',
     run: 'text Agrolait',
 }, {
-    trigger: '.ui-menu-item > a',
+    trigger: '.o_field_widget[name=partner_id] .ui-menu-item > a:contains(Agrolait)',
     auto: true,
     in_modal: false,
 }, {
     trigger: "a:contains('Add a product')",
-    extra_trigger: ".o_field_many2one[name='partner_id'] .o_external_button",
+    extra_trigger: ".o_field_widget[name='partner_id'] .o_external_button",
     content: _t("Click here to start filling the quotation."),
     position: 'bottom',
 }, {

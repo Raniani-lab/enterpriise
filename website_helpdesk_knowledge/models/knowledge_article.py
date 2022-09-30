@@ -30,9 +30,9 @@ class Article(models.Model):
 
     def write(self, vals):
         check_if_used_in_helpdesk_team = not vals.get('website_published', True) or not vals.get('is_published', True)\
-                                         or vals.get('parent_id', False)
+                                         or not vals.get('active', True) or vals.get('parent_id', False)
         if check_if_used_in_helpdesk_team \
            and self.env['helpdesk.team'].sudo().search_count([('website_article_id', 'in', self.ids)], limit=1):
             raise ValidationError(
-                _('You cannot unpublish or set a parent on an article that is used by a helpdesk team.'))
+                _('You cannot delete, unpublish or set a parent on an article that is used by a helpdesk team.'))
         return super().write(vals)

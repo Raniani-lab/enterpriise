@@ -33,3 +33,7 @@ class TestHelpdeskKnowledgeTour(HttpCase, HelpdeskCommon):
             help_article.write({
                 'parent_id': other_article.id,
             })
+        with self.assertRaises(ValidationError):
+            help_article.write({
+                'active': False,
+            })

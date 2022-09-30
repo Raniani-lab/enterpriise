@@ -1380,6 +1380,7 @@ class AccountReport(models.Model):
         """
         return {
             self._init_options_multi_company: 10,
+            self._init_options_variants: 15,
             self._init_options_fiscal_position: 20,
             self._init_options_date: 30,
             self._init_options_horizontal_groups: 40,
@@ -1391,7 +1392,6 @@ class AccountReport(models.Model):
             self._init_options_growth_comparison: 1010,
             self._init_options_order_column: 1020,
             self._init_options_hierarchy: 1030,
-            self._init_options_variants: 1040,
             self._init_options_custom: 1050,
         }
 
@@ -3429,21 +3429,13 @@ class AccountReport(models.Model):
             companies = self.env.company
 
         if self.availability_condition == 'country':
-            fpos_opt = options['fiscal_position']
-
-            if isinstance(fpos_opt, int):
-                foreign_vat_fpos = self.env['account.fiscal.position'].browse(fpos_opt)
-                countries = foreign_vat_fpos.country_id
-
-            elif fpos_opt == 'all':
+            countries = companies.account_fiscal_country_id
+            if self.filter_fiscal_position:
                 foreign_vat_fpos = self.env['account.fiscal.position'].search([
                     ('foreign_vat', '!=', False),
                     ('company_id', 'in', companies.ids),
                 ])
-                countries = foreign_vat_fpos.country_id + companies.account_fiscal_country_id
-
-            else:
-                countries = companies.account_fiscal_country_id
+                countries += foreign_vat_fpos.country_id
 
             return not self.country_id or self.country_id in countries
 

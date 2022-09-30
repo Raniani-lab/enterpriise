@@ -13,10 +13,10 @@ const oldGetInvalidMessage = RentingMixin._getInvalidMessage;
  */
 RentingMixin._getInvalidMessage = function (startDate, endDate, productId) {
     let message = oldGetInvalidMessage.apply(this, arguments);
-    if (message || !startDate || !endDate || !this.rentingAvailabilities || this.preparationTime === undefined) {
+    if (message || !startDate || !endDate || !this.rentingAvailabilities || !this.preparationTime) {
         return message;
     }
-    if (startDate.add(-this.preparationTime, 'hours') < moment()) {
+    if (this._isDurationWithHours() && startDate.isBefore(moment().add({hours: this.preparationTime}))) {
         return _t("Your rental product cannot be prepared as fast, please rent later.");
     }
     if (!this.rentingAvailabilities[productId]) {

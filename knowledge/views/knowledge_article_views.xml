@@ -490,23 +490,26 @@
                 <field name="body"/>
                 <field name="last_edition_uid"/>
 
-                <filter name="filter_not_is_article_item" string="Hide Article Items"
+                <filter name="filter_not_is_article_item" string="Articles"
                     domain="[('is_article_item', '=', False)]"/>
-                <filter name="filter_is_article_item" string="Article Items Only"
+                <filter name="filter_is_article_item" string="Article Items"
                     domain="[('is_article_item', '=', True)]"/>
-                <filter name="filter_active" string="Archived"
-                    domain="[('active', '=', False), ('to_delete', '=', False)]"/>
+                <separator/>
+                <filter name="filter_favorites" string="Favorite"
+                    domain="[('is_user_favorite', '=', True)]"/>
+                <separator/>
+                <filter name="filter_workspace_articles" string="Workspace"
+                    domain="[('category', '=', 'workspace')]"/>
+                <filter name="filter_shared_articles" string="Shared"
+                    domain="[('category', '=', 'shared')]"/>
+                <filter name="filter_own_privates" string="Private"
+                    domain="[('category', '=', 'private'), ('user_has_write_access', '=', True)]"/>
+                <separator/>
                 <filter name="filter_trashed" string="Trashed"
                     domain="[('active', '=', False), ('to_delete', '=', True)]"/>
-                <filter name="filter_favorites" string="My Favorites"
-                    domain="[('is_user_favorite', '=', True)]"/>
-                <filter name="filter_own_privates" string="My Private Articles"
-                    domain="[('category', '=', 'private'), ('user_has_write_access', '=', True)]"/>
-                <filter name="filter_shared_articles" string="My Shared Articles"
-                    domain="[('category', '=', 'shared')]"/>
-
                 <group expand="0" string="Group By">
                     <filter string="Category" name="group_by_category" domain="[]" context="{'group_by': 'category'}"/>
+                    <filter string="Subject" name="group_by_subject" context="{'group_by': 'root_article_id'}"/>
                 </group>
             </search>
         </field>

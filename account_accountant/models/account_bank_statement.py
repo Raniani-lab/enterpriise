@@ -26,12 +26,6 @@ class AccountBankStatementLine(models.Model):
     # optimize the bank matching process"
     cron_last_check = fields.Datetime()
 
-    def action_post(self):
-        # EXTENDS 'account' to trigger the CRON auto-reconciling the statement lines.
-        res = super().action_post()
-        self.env.ref('account_accountant.auto_reconcile_bank_statement_line')._trigger()
-        return res
-
     def action_save_close(self):
         return {'type': 'ir.actions.act_window_close'}
 

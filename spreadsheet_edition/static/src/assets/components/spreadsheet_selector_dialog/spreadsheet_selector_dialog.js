@@ -1,19 +1,24 @@
 /** @odoo-module */
 
-import { _t } from "@web/core/l10n/translation";
+import { _lt, _t } from "@web/core/l10n/translation";
 import { Dialog } from "@web/core/dialog/dialog";
 import { sprintf } from "@web/core/utils/strings";
 import { useService } from "@web/core/utils/hooks";
+import { Notebook } from "@web/core/notebook/notebook";
 
 const { Component, useState } = owl;
 
 const LABELS = {
-    PIVOT: "pivot",
-    LIST: "list",
-    LINK: "link",
-    GRAPH: "graph",
+    PIVOT: _lt("pivot"),
+    LIST: _lt("list"),
+    LINK: _lt("link"),
+    GRAPH: _lt("graph"),
 };
 
+const PAGE_LABELS = {
+    SPREADSHEET: _lt("Spreadsheets"),
+    DASHBOARD: _lt("Dashboards"),
+};
 /**
  * @typedef State
  * @property {Object} spreadsheets
@@ -31,7 +36,6 @@ export class SpreadsheetSelectorDialog extends Component {
     setup() {
         /** @type {State} */
         this.state = useState({
-            panel: "spreadsheets",
             threshold: this.props.threshold,
             name: this.props.name,
         });
@@ -45,10 +49,10 @@ export class SpreadsheetSelectorDialog extends Component {
     }
 
     /**
-     * @param {string} panel "spreadsheets" | "dashboards"
+     * @param {"SPREADSHEET" | "DASHBOARD"} title
      */
-    activatePanel(panel) {
-        this.state.panel = panel;
+    getPageTitle(title) {
+        return PAGE_LABELS[title];
     }
 
     get nameLabel() {
@@ -110,7 +114,7 @@ export class SpreadsheetSelectorDialog extends Component {
 }
 
 SpreadsheetSelectorDialog.template = "spreadsheet_edition.SpreadsheetSelectorDialog";
-SpreadsheetSelectorDialog.components = { Dialog };
+SpreadsheetSelectorDialog.components = { Dialog, Notebook };
 SpreadsheetSelectorDialog.props = {
     actionOptions: Object,
     type: String,

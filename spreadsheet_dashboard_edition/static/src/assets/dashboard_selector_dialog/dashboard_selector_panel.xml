@@ -1,12 +1,9 @@
 <odoo>
     <t t-name="spreadsheet_dashboard_edition.DashboardSelectorPanel" t-inherit="spreadsheet_edition.SpreadsheetSelectorDialog" t-inherit-mode="extension" owl="1">
-        <xpath expr="//div[hasclass('o-sp-dialog-headers')]" position="inside">
-            <div class="o-sp-dialog-header" t-att-class="{ active: state.panel === 'dashboards' }" t-on-click="() => this.activatePanel('dashboards')">
-                    Dashboards
-            </div>
-        </xpath>
-        <xpath expr="//div[hasclass('o-sp-dialog-content')]" position="inside">
-            <DashboardSelectorPanel t-if="state.panel === 'dashboards'" onSpreadsheetSelected.bind="onSpreadsheetSelected" />
+        <xpath expr="//Notebook" position="inside">
+            <t t-set-slot="2" title="getPageTitle('DASHBOARD')" isVisible="true">
+                <DashboardSelectorPanel onSpreadsheetSelected.bind="onSpreadsheetSelected" />
+            </t>
         </xpath>
     </t>
 

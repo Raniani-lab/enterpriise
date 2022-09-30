@@ -7,7 +7,8 @@ class HelpdeskTeam(models.Model):
     _inherit = "helpdesk.team"
 
     show_knowledge_base_article = fields.Boolean(compute="_compute_show_knowledge_base_article")
-    website_article_id = fields.Many2one('knowledge.article', string='Article', help="Article on which customers will land by default, and to which the search will be restricted.")
+    website_article_id = fields.Many2one('knowledge.article', string='Article',
+        help="Article on which customers will land by default, and to which the search will be restricted.")
 
     @api.depends('website_article_id')
     def _compute_show_knowledge_base_article(self):

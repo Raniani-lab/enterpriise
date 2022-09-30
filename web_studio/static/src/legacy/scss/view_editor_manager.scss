@@ -19,7 +19,7 @@
                 color: $o-web-studio-bg-light;
                 font-size: x-large;
             }
-            .o_web_studio_show_invisible {
+            .o_web_studio_show_invisible, & + .o-web-studio-element-ghost {
                 opacity: 1;
                 outline: 1px solid $o-web-studio-bg-lighter;
                 background: repeating-linear-gradient(

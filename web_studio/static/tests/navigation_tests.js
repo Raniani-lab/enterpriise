@@ -13,6 +13,8 @@ import { getActionManagerServerData } from "@web/../tests/webclient/helpers";
 import { leaveStudio, openStudio, registerStudioDependencies } from "@web_studio/../tests/helpers";
 import { registry } from "@web/core/registry";
 import { session } from "@web/session";
+import { patch, unpatch } from "@web/core/utils/patch";
+import { StudioView } from "@web_studio/client_action/studio_view";
 
 // -----------------------------------------------------------------------------
 // Tests
@@ -228,8 +230,21 @@ QUnit.module("Studio", (hooks) => {
             "should have open the same record"
         );
 
+        let prom = makeDeferred();
+        patch(StudioView.prototype, "web_studio.Test.StudioView", {
+            setup() {
+                this._super();
+                owl.onMounted(() => {
+                    prom.resolve();
+                });
+            },
+        });
         await openStudio(target);
+        await prom;
+        prom = makeDeferred();
         await webClient.env.services.studio.reload();
+        await prom;
+        unpatch(StudioView.prototype, "web_studio.Test.StudioView");
 
         assert.containsOnce(
             target,
@@ -237,7 +252,7 @@ QUnit.module("Studio", (hooks) => {
             "the studio view should be opened after reloading"
         );
         assert.strictEqual(
-            $(target).find(".o_legacy_form_view span:contains(yop)").length,
+            $(target).find(".o_form_view span:contains(yop)").length,
             1,
             "should have open the same record"
         );

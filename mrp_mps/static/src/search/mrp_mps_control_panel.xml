@@ -16,7 +16,7 @@
                     t-on-click.stop="_onClickCreate">Add a Product</button>
             </div>
             <ActionMenus t-if="isRecordSelected"
-                activeIds="Array.from(model.selectedRecords)"
+                getActiveIds="() => Array.from(model.selectedRecords)"
                 context="{}"
                 domain="model.domain"
                 items="getActionMenuItems()"

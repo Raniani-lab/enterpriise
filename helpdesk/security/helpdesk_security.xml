@@ -144,5 +144,11 @@
             <field name="groups" eval="[(4, ref('group_helpdesk_manager'))]"/>
         </record>
 
+        <record id="helpdesk_stage_company_rule" model="ir.rule">
+            <field name="name">Helpdesk Stage: multi-company</field>
+            <field name="model_id" ref="model_helpdesk_stage"/>
+            <field name="domain_force">['|', ('team_ids', '=', False), ('team_ids.company_id', 'in', company_ids)]</field>
+        </record>
+
     </data>
 </odoo>

@@ -3,7 +3,7 @@
 from odoo import api, fields, models, _, _lt, Command
 from odoo.addons.iap.tools import iap_tools
 from odoo.exceptions import AccessError
-from odoo.tools import mute_logger
+from odoo.tools import float_compare, mute_logger
 from odoo.tools.misc import clean_context
 import logging
 import re
@@ -963,7 +963,13 @@ class AccountMove(models.Model):
 
         # check the tax roundings after the tax lines have been synced
         if add_lines:
-            self._check_total_amount(total_ocr)
+            tax_amount_rounding_error = total_ocr - self.tax_totals['amount_total']
+            threshold = len(vals_invoice_lines) * move_form.currency_id.rounding
+            if (
+                not move_form.currency_id.is_zero(tax_amount_rounding_error) and
+                float_compare(abs(tax_amount_rounding_error), threshold, precision_digits=2) <= 0
+            ):
+                self._check_total_amount(total_ocr)
 
         self.extract_populated_fields = ' - '.join(sorted(fields_populated))
 

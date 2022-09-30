@@ -1043,9 +1043,9 @@ class SaleOrder(models.Model):
                          ('is_invoice_cron', '=', False),
                          ('is_subscription', '=', True),
                          ('subscription_management', '!=', 'upsell'),
-                         ('state', 'not in', ['draft', 'sent']),
+                         ('state', 'in', ['sale', 'done']), # allow to close done subscription at the beginning of the invoicing cron
                          ('payment_exception', '=', False),
-                         '&', '|', ('next_invoice_date', '<=', current_date), ('end_date', '>=', current_date), ('stage_category', '=', 'progress')]
+                         '&', '|', ('next_invoice_date', '<=', current_date), ('end_date', '<=', current_date), ('stage_category', '=', 'progress')]
         if extra_domain:
             search_domain = expression.AND([search_domain, extra_domain])
         return search_domain

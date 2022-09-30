@@ -24,10 +24,12 @@ export class BankRecKanbanRecord extends KanbanRecord {
         return classes;
     }
 }
-KanbanRecord.props = [
+BankRecKanbanRecord.props = [
     ...KanbanRecord.props,
     "selectedStLineId?",
 ]
+
+BankRecKanbanRecord.template = "account.BankRecKanbanRecord";
 
 export class BankRecKanbanController extends KanbanController {
     async setup() {

@@ -138,6 +138,10 @@ class IntrastatReportCustomHandler(models.AbstractModel):
         xlsx_button_option = next(button_opt for button_opt in options['buttons'] if button_opt.get('action_param') == 'export_to_xlsx')
         xlsx_button_option['action_param'] = 'export_to_xlsx'
 
+    def _caret_options_initializer(self):
+        """ Add a caret option for navigating from an intrastat report line to the associated journal entry """
+        return {'account.move.line': [{'name': _("View Journal Entry"), 'action': 'caret_option_open_record_form', 'action_param': 'move_id'}]}
+
     ####################################################
     # OVERRIDES
     ####################################################
@@ -202,7 +206,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
                     options['intrastat_warnings'][error].append(line_vals[column_group][val_key])
         return {
             'id': report._get_generic_line_id('account.move.line', line_id),
-            'caret_options': 'account.move',
+            'caret_options': 'account.move.line',
             'name': line_vals['name'],
             'columns': columns,
             'level': 2,
@@ -439,7 +443,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
     def action_undefined_units_products(self, options, params):
         return {
             'type': 'ir.actions.act_window',
-            'name': _('Invalid commodity intrastat code products.'),
+            'name': _('Undefined supplementary unit products.'),
             'res_model': 'product.product',
             'views': [(
                 self.env.ref('account_intrastat.product_product_tree_view_account_intrastat_supplementary_unit').id,
@@ -456,7 +460,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
     def action_undefined_weight_products(self, options, params):
         return {
             'type': 'ir.actions.act_window',
-            'name': _('Invalid commodity intrastat code products.'),
+            'name': _('Undefined weight products.'),
             'res_model': 'product.product',
             'views': [(
                 self.env.ref('account_intrastat.product_product_tree_view_account_intrastat_weight').id,

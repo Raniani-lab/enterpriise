@@ -1,5 +1,8 @@
 /** @odoo-module **/
 import { registry } from "@web/core/registry";
+import { browser } from "@web/core/browser/browser";
+import { getCookie, setCookie } from "web.utils.cookies";
+import { delay } from "web.concurrency";
 import legacyBus from "web_studio.bus";
 import { resetViewCompilerCache } from "@web/views/view_compiler";
 
@@ -161,7 +164,15 @@ export const studioService = {
             state.studioMode = targetMode;
             user.updateContext({ studio: 1 });
             // LPE: we don't manage errors during do action.....
-            return env.services.action.doAction("studio", options);
+            const res = await env.services.action.doAction("studio", options);
+            // force color_scheme light
+            if (getCookie("color_scheme") === "dark") {
+                // ensure studio is fully loaded
+                await delay(0);
+                setCookie("color_scheme", "light");
+                browser.location.reload();
+            }
+            return res;
         }
 
         async function open(mode = false, actionId = false) {

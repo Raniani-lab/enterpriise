@@ -39,6 +39,7 @@ const wrapperRegistry = registry.category("wowl_editors_wrappers");
 const editorsRegistry = registry.category("studio_editors");
 const viewRegistry = registry.category("views");
 
+const { resetViewCompilerCache } = require("@web/views/view_compiler");
 const { extendEnv } = require('@web_studio/client_action/view_editors/utils')
 const { getNodesFromXpath, getLegacyNode, xpathToLegacyXpathInfo, serializeXmlToString, parseStringToXml } = require('@web_studio/client_action/view_editors/xml_utils')
 
@@ -49,6 +50,7 @@ const CONVERTED_VIEWS = [
     "graph",
     "map",
     "pivot",
+    "form",
 ];
 
 var _t = core._t;
@@ -1208,10 +1210,7 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
             view.Model = newModel;
         }
         if (this.mode !== "edition") {
-            registry
-                .category("owl_templates_cleanup")
-                .getAll()
-                .forEach((cb) => cb());
+            resetViewCompilerCache();
         }
         let resId, resIds = [];
         if (x2ManyInfo) {
@@ -1276,10 +1275,7 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
             }})
         }
         config.onViewChange = (data) => {
-            registry
-                .category("owl_templates_cleanup")
-                .getAll()
-                .forEach((cb) => cb());
+            resetViewCompilerCache();
             return this.__onViewChange(data)
         };
 
@@ -1318,10 +1314,7 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
             const legacyNode = getLegacyNode(params.xpath, controllerProps.archInfo.xmlDoc)
             const xpathInfo = xpathToLegacyXpathInfo(params.xpath);
             const data = {...params, node: legacyNode, xpathInfo }
-            registry
-                .category("owl_templates_cleanup")
-                .getAll()
-                .forEach((cb) => cb());
+            resetViewCompilerCache();
             this._onViewChange({data});
         }
 
@@ -1866,6 +1859,7 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
      */
     _onCloseXMLEditor: function () {
         this._super.apply(this, arguments);
+        resetViewCompilerCache();
         this.updateEditor();
     },
     /**

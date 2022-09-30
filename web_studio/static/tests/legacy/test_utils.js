@@ -193,7 +193,7 @@ async function createViewEditorManager(params) {
 
     const viewDescriptions = {
         fields: fieldsView.fields,
-        models: {
+        relatedModels: {
             [params.model]: fieldsView.fields,
         },
         views: {

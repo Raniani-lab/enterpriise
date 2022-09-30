@@ -157,7 +157,7 @@ tour.register('web_studio_tests_tour', {
     run: 'drag_and_drop .o_web_studio_form_view_editor .o_inner_group',
 }, {
     // click on the field
-    trigger: '.o_web_studio_form_view_editor td.o_td_label:first',
+    trigger: '.o_web_studio_form_view_editor .o_wrap_label:first label',
     // when it's there
     extra_trigger: 'input[data-type="field_name"]',
 }, {
@@ -221,7 +221,7 @@ tour.register('web_studio_tests_tour', {
     trigger: '.modal-footer .btn.btn-primary',
 }, {
     // verify that the currency field is in the view
-    extra_trigger: '.o_web_studio_form_view_editor td.o_td_label:contains("Currency")',
+    extra_trigger: '.o_web_studio_form_view_editor .o_wrap_label label:contains("Currency")',
     trigger: '.o_web_studio_sidebar .o_web_studio_new',
     async run() {
         // When adding a new field, the UI is blocked. When the rpc returns, the UI is
@@ -243,16 +243,16 @@ tour.register('web_studio_tests_tour', {
     run: 'drag_and_drop (.o_web_studio_form_view_editor .o_inner_group:first .o_web_studio_hook:eq(1))',
 }, {
     // verify that the monetary field is in the view
-    extra_trigger: '.o_web_studio_form_view_editor td.o_td_label:eq(1):contains("New Monetary")',
+    extra_trigger: '.o_web_studio_form_view_editor .o_wrap_label:eq(1) label:contains("New Monetary")',
     // switch the two first fields
-    trigger: '.o_web_studio_form_view_editor .o_inner_group:first .ui-draggable:eq(1)',
-    run: 'drag_and_drop .o_inner_group:first .o_web_studio_hook:first',
+    trigger: '.o_web_studio_form_view_editor .o_inner_group:first .o-draggable:eq(1)',
+    run: 'drag_and_drop_native .o_inner_group:first .o_web_studio_hook:first',
 }, {
     // click on "Add" tab
     trigger: '.o_web_studio_sidebar .o_web_studio_new',
 }, {
     // verify that the fields have been switched
-    extra_trigger: '.o_web_studio_form_view_editor td.o_td_label:eq(0):contains("New Monetary")',
+    extra_trigger: '.o_web_studio_form_view_editor .o_wrap_label:eq(0) label:contains("New Monetary")',
     // add a m2m field
     trigger: '.o_web_studio_sidebar .o_web_studio_field_type_container:eq(1) .o_web_studio_field_many2many',
     run: 'drag_and_drop .o_inner_group:first .o_web_studio_hook:first',
@@ -268,7 +268,7 @@ tour.register('web_studio_tests_tour', {
     trigger: 'button:contains(Confirm)',
 }, {
     // select the m2m to set its properties
-    trigger: 'tr:has(.o_field_many2many)',
+    trigger: '.o_wrap_input:has(.o_field_many2many)',
     timeout: 15000,  // creating M2M relations can take some time...
 }, {
     // change the `widget` attribute
@@ -871,7 +871,7 @@ tour.register('web_studio_approval_tour', {
     trigger: '.o_web_studio_views_icons > a[title="Form"]',
 }, {
     // click on first button it finds that has a node id
-    trigger: '.o_web_studio_form_view_editor button[data-node-id]',
+    trigger: '.o_web_studio_form_view_editor button.o-web-studio-editor--element-clickable',
 }, {
     // enable approvals for the button
     trigger: '.o_web_studio_sidebar label[for="studio_approval"]',

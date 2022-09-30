@@ -1,6 +1,7 @@
 /** @odoo-module **/
 import { registry } from "@web/core/registry";
 import legacyBus from "web_studio.bus";
+import { resetViewCompilerCache } from "@web/views/view_compiler";
 
 const { EventBus } = owl;
 
@@ -96,10 +97,13 @@ export const studioService = {
                 const additionalContext = {};
                 if (state.studioMode === MODES.EDITOR) {
                     if (currentHash.active_id) {
-                        additionalContext.active_id = currentHash.active_id
+                        additionalContext.active_id = currentHash.active_id;
                     }
                     if (editedActionId) {
-                        state.editedAction = await env.services.action.loadAction(editedActionId, additionalContext);
+                        state.editedAction = await env.services.action.loadAction(
+                            editedActionId,
+                            additionalContext
+                        );
                     } else {
                         state.editedAction = null;
                     }
@@ -171,6 +175,7 @@ export const studioService = {
             if (actionId) {
                 action = await env.services.action.loadAction(actionId);
             }
+            resetViewCompilerCache();
             return _openStudio(mode, action);
         }
 
@@ -178,6 +183,7 @@ export const studioService = {
             if (!inStudio) {
                 throw new Error("leave when not in studio???");
             }
+            resetViewCompilerCache();
             env.bus.trigger("CLEAR-CACHES");
             const options = {
                 stackPosition: "replacePreviousAction", // If target is menu, then replaceCurrent, see comment above why we cannot do this
@@ -202,6 +208,7 @@ export const studioService = {
         }
 
         async function reload(params = {}) {
+            resetViewCompilerCache();
             env.bus.trigger("CLEAR-CACHES");
             const action = await env.services.action.loadAction(state.editedAction.id);
             setParams({ action, ...params });
@@ -236,7 +243,11 @@ export const studioService = {
                 hash[URL_VIEW_KEY] = state.editedViewType || undefined;
                 hash[URL_TAB_KEY] = state.editorTab;
             }
-            if (state.editedAction && state.editedAction.context && state.editedAction.context.active_id) {
+            if (
+                state.editedAction &&
+                state.editedAction.context &&
+                state.editedAction.context.active_id
+            ) {
                 hash.active_id = state.editedAction.context.active_id;
             }
             env.services.router.pushState(hash, { replace: true });

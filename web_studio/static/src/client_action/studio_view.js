@@ -18,6 +18,7 @@ export class StudioView extends Component {
 
         useSubEnv({
             config: { ...this.env.config },
+            __beforeLeave__: null,
         });
     }
 }

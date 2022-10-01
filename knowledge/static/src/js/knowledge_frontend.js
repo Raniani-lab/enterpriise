@@ -4,6 +4,8 @@
 import { fetchValidHeadings } from './tools/knowledge_tools.js';
 import KnowledgeTreePanelMixin from './tools/tree_panel_mixin.js';
 import publicWidget from 'web.public.widget';
+import session from 'web.session';
+import { qweb as QWeb } from 'web.core';
 
 publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTreePanelMixin, {
     selector: '.o_knowledge_form_view',
@@ -23,6 +25,20 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
             const id = this.$el.data('article-id');
             this._renderTree(id, '/knowledge/tree_panel/portal');
             this._setResizeListener();
+            /**
+             * The embedded views are currently not supported in the frontend due
+             * to some technical limitations. Instead of showing an empty div, we
+             * will render a placeholder inviting the user to log in. Once logged
+             * in, the user will be redirected to the backend and should be able
+             * to load the embedded view.
+             */
+            const $placeholder = $(QWeb.render('knowledge.embedded_view_placeholder', {
+                url: `/knowledge/article/${id}`,
+                isLoggedIn: session.user_id !== false
+            }));
+            const $container = $('.o_knowledge_behavior_type_embedded_view');
+            $container.empty();
+            $container.append($placeholder);
         });
     },
 

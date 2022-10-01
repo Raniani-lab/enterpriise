@@ -1,29 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates>
-    <t t-name="knowledge.injector_component" owl="1"></t>
-    <t t-name="knowledge.file_block">
-        <div class="o_knowledge_file o_knowledge_toolbars_container o_knowledge_behavior_anchor o_knowledge_behavior_type_contents_container">
-            <div class="o_knowledge_file_image"/>
-            <div class="o_knowledge_file_description">
-                <div class="o_knowledge_file_name" t-out="img.name"/>
-                <div class="o_knowledge_file_extension" t-out="img.extension"/>
-            </div>
-            <div class="o_knowledge_toolbar_anchor o_knowledge_toolbar_type_file mt-auto ms-auto"/>
-        </div>
-    </t>
-    <t t-name="knowledge.template_block">
-        <div class="o_knowledge_template o_knowledge_toolbars_container o_knowledge_behavior_anchor o_knowledge_behavior_type_contents_container">
-            <div class="o_knowledge_toolbar_anchor o_knowledge_toolbar_type_template"/>
-            <div class="o_knowledge_content">
-                <p><br/></p>
-            </div>
-        </div>
-    </t>
     <t t-name="knowledge.wysiwyg_article_link">
-        <a t-att-href="href" t-att-data-res_id="article_id"
-            class="btn btn-sm o_knowledge_behavior_anchor o_knowledge_behavior_type_article">
-            <t t-out="display_name"/>
-        </a>
+        <a t-att-href="href" t-att-data-behavior-props="data"
+           class="btn btn-sm o_knowledge_behavior_anchor o_knowledge_behavior_type_article"/>
     </t>
     <t t-name="knowledge.wysiwyg_article_link_modal">
         <form class="container">
@@ -32,31 +11,9 @@
             </div>
         </form>
     </t>
-    <t t-name="knowledge.knowledge_table_of_content_wrapper">
-        <div class="o_knowledge_toc o_knowledge_behavior_anchor o_knowledge_behavior_type_toc">
-            <div class="o_knowledge_toc_content">
-                <i>No heading found in this document.</i>
-            </div>
-        </div><br/>
-    </t>
-    <t t-name="knowledge.knowledge_table_of_content">
-        <i contenteditable="false" t-if="!headings or headings.length === 0">
-            Add headings in this Article to create a Table of Content
-        </i>
-        <t t-foreach="headings" t-as="heading">
-            <!-- Use 'data-oe-nodeid' as we need something that is not removed during sanitizing -->
-            <a t-out="heading.name" t-att-data-oe-nodeid="heading.index" href="#" contenteditable="false"
-                t-attf-class="oe_unremovable o_no_link_popover d-block o_knowledge_toc_link #{'o_knowledge_toc_link_depth_' + depth}"/>
-        </t>
-    </t>
     <t t-name="knowledge.articles_structure_wrapper">
-        <div
-            t-attf-class="o_knowledge_articles_structure_wrapper o_knowledge_toolbars_container
-                o_knowledge_behavior_anchor o_knowledge_behavior_type_articles_structure
-                #{childrenOnly ? 'o_knowledge_articles_structure_children_only' : ''}">
-            <div class="o_knowledge_toolbar_anchor o_knowledge_toolbar_type_articles_structure"/>
-            <div class="o_knowledge_articles_structure_content w-100 m-0"/>
-        </div>
+        <div t-attf-class="o_knowledge_behavior_anchor o_knowledge_behavior_type_articles_structure
+            #{childrenOnly ? 'o_knowledge_articles_structure_children_only' : ''}"/>
     </t>
     <t t-name="knowledge.articles_structure">
         <i t-if="!articles or articles.length === 0">Nest articles under this one to generate a structure</i>

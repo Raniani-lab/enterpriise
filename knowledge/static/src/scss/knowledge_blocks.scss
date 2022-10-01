@@ -1,8 +1,10 @@
 
-.o_knowledge_file {
+.o_knowledge_behavior_type_file {
     margin-bottom: 5px;
     border-radius: 5px;
     background-color: $o-gray-100;
+    outline: 1px solid $o-gray-300;
+    outline-offset: -1px;
     display: flex;
     padding: 5px;
     & > .o_knowledge_file_image {
@@ -12,17 +14,18 @@
         margin-left: 5px;
         margin-right: 5px;
     }
+    .o_knowledge_file_extension {
+        text-transform: uppercase;
+        font-size: $font-size-sm !important;
+    }
 }
 
-.o_knowledge_file_extension {
-    text-transform: uppercase;
-    font-size: $font-size-sm !important;
-}
-
-.o_knowledge_template {
-    margin-bottom: 5px;
+.o_knowledge_behavior_type_template {
+    margin-bottom: 1rem;
     border-radius: 5px;
     background-color: $o-gray-100;
+    outline: 1px solid $o-gray-300;
+    outline-offset: -1px;
     & > .o_knowledge_content {
         padding: 5px;
         border-bottom: 5px solid $o-gray-100;
@@ -32,12 +35,18 @@
             margin-bottom: 0;
         }
     }
-    .o_knowledge_toolbar_anchor {
+    .o_knowledge_template_toolbar {
         min-height: 5px;
+    }
+    .o_knowledge_template_label {
+        font-family: $font-family-base !important;
+        font-weight: $font-weight-bold;
+        padding: $btn-padding-y-sm $btn-padding-x-sm;
+        color: $o-gray-600;
     }
 }
 
-.o_knowledge_toc {
+.o_knowledge_behavior_type_toc {
     box-shadow: 0 2px 4px 4px $o-gray-200;
     padding: 10px;
     margin: 15px 0 15px 0;
@@ -65,10 +74,10 @@
     }
 }
 
-.o_knowledge_articles_structure_wrapper {
+.o_knowledge_behavior_type_articles_structure {
     box-shadow: 0 2px 4px 4px $o-gray-200;
     padding: 10px;
-    margin: 15px 0 15px 0;
+    margin: 15px 0;
     .o_knowledge_articles_structure_content {
         min-height: 30px;
 
@@ -92,14 +101,43 @@
         > ol {
             padding-left: 5px;
         }
-
-        .fa-refresh {
-            position: relative;
-            top: 40%;
-        }
     }
 }
 
 .o_knowledge_behavior_type_article {
     border-color: $o-gray-200;
 }
+
+.o_knowledge_behavior_type_embedded_view {
+    --default-embedded-view-size: 80vh;
+    --embedded-view-size: clamp(300px, var(--default-embedded-view-size), 80vh);
+
+    display: flex;
+    flex-direction: column;
+    height: var(--embedded-view-size);
+    border: 1px solid $o-gray-200;
+
+    &:empty {
+        animation: o_knowledge_bg_color_pulsing 1.5s infinite;
+    }
+
+    .o_knowledge_embedded_view_placeholder {
+        .o_knowledge_embedded_view_placeholder_cover {
+            @include o-position-absolute(0, 0, 0, 0);
+            background: radial-gradient($white, transparent);
+        }
+    }
+}
+
+@keyframes o_knowledge_bg_color_pulsing {
+    0% {
+        background: $white;
+    }
+    50% {
+        background: $o-gray-100;
+    }
+    100% {
+        background: $white;
+    }
+}
+

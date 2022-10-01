@@ -25,6 +25,11 @@
             margin-top: 0;
             font-weight: 500;
             line-height: 1.2;
+            transition: background-color 0.5s ease;
+            &.o_knowledge_header_highlight {
+                border-radius: 0.25rem;
+                background-color: rgba($knowledge-bg--active, 0.2);
+            }
         }
     }
     .o_field_property_add {

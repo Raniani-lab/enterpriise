@@ -11,7 +11,7 @@
                     </span>
                 </h1>
                 <hr />
-                <div class="o_knowledge_toc o_knowledge_behavior_anchor o_knowledge_behavior_type_toc" contenteditable="false">
+                <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_toc">
                     <div class="o_knowledge_toc_content">
                         <a data-oe-nodeid="0" href="#" contenteditable="false" class="oe_unremovable o_no_link_popover d-block o_knowledge_toc_link o_knowledge_toc_link_depth_0">HR FAQ</a>
                         <a data-oe-nodeid="1" href="#" contenteditable="false" class="oe_unremovable o_no_link_popover d-block o_knowledge_toc_link o_knowledge_toc_link_depth_1">Expense Policy</a>
@@ -67,15 +67,14 @@
                         <span style="font-size: 14px; font-weight: bolder; text-decoration-line: underline;">contact our Fleet Officer</span>
                     </a>
                 </p>
-                <div class="o_knowledge_file o_knowledge_toolbars_container o_knowledge_behavior_anchor o_knowledge_behavior_type_contents_container">
-                    <div class="o_knowledge_file_image">
-                        <a href="/knowledge/static/src/img/fleet_icon.png" class="o_image" title="Car_Catalog.png" alt="Car_Catalog.png" data-mimetype="image/png"></a>
+                <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_file">
+                    <div class="o_knowledge_file_image" data-prop-name="fileImage">
+                        <a href="/knowledge/static/src/img/fleet_icon.png?download=true" title="Car_Catalog.png" data-mimetype="image/png" class="o_image"></a>
                     </div>
                     <div class="o_knowledge_file_description">
-                        <div class="o_knowledge_file_name">Car_Catalog.png</div>
-                        <div class="o_knowledge_file_extension">png</div>
+                        <div class="o_knowledge_file_name" data-prop-name="fileName">Car_Catalog.png</div>
+                        <div class="o_knowledge_file_extension" data-prop-name="fileExtension">png</div>
                     </div>
-                    <div class="o_knowledge_toolbar_anchor o_knowledge_toolbar_type_file mt-auto ms-auto"></div>
                 </div>
                 <p><br /></p>
                 <h3>
@@ -146,31 +145,21 @@
                 <hr />
                 <p>We decided to gather all relevant documentation here to make sure all resources were easy to access.</p>
                 <p><br /></p>
-                <div class="o_knowledge_articles_structure_wrapper o_knowledge_toolbars_container o_knowledge_behavior_anchor o_knowledge_behavior_type_articles_structure o_knowledge_articles_structure_children_only o_knowledge_articles_structure_loaded">
-                    <div class="o_knowledge_toolbar_anchor o_knowledge_toolbar_type_articles_structure" contenteditable="false">
-                        <div class="o_knowledge_toolbar" contenteditable="false">
-                            <div class="btn-group">
-                                <button data-call="update_articles_structure" title="Update" class="btn btn-link btn-sm border-0">
-                                    <i class="fa fa-refresh" contenteditable="false"></i> <span class="o_knowledge_toolbar_button_text">Refresh</span>
-                                </button>
-                            </div>
-                        </div>
-                    </div>
-                    <div class="o_knowledge_articles_structure_content w-100 m-0">
-                        <ol>
+                <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_articles_structure">
+                    <div class="o_knowledge_articles_structure_content" data-prop-name="content">
+                        <ol class="mb-0">
                             <li>
                                 <a href="/knowledge/article/3" data-oe-nodeid="3"
                                     class="d-block w-100 ps-1 border-0 o_knowledge_article_structure_link">
-                                    &#128216; Sales Playbook
+                                    Sales Playbook
                                 </a>
                             </li>
                             <li>
                                 <a href="/knowledge/article/4" data-oe-nodeid="4"
                                     class="d-block w-100 ps-1 border-0 o_knowledge_article_structure_link">
-                                    &#127912; Brand Assets
+                                    Brand Assets
                                 </a>
                             </li>
-                            
                         </ol>
                     </div>
                 </div>
@@ -200,9 +189,11 @@
                         : From a lead, use the book button in the chatter to find this article and autocomplete your email with this template.
                     </span>
                 </p>
-                <div class="o_knowledge_template o_knowledge_toolbars_container o_knowledge_behavior_anchor o_knowledge_behavior_type_contents_container">
-                    <div class="o_knowledge_toolbar_anchor o_knowledge_toolbar_type_template"></div>
-                    <div class="o_knowledge_content">
+                <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_template">
+                    <div class="d-flex">
+                        <div class="o_knowledge_template_label align-middle">Template</div>
+                    </div>
+                    <div class="o_knowledge_content" data-prop-name="content">
                         <p>Hey ProspectName,</p>
                         <p>
                             I was doing some research online and found your company.
@@ -229,9 +220,11 @@
                     </span>
                     <span style="font-size: 14px;">book button in the chatter to find this article and autocomplete your description with this qualification template.</span>
                 </p>
-                <div class="o_knowledge_template o_knowledge_toolbars_container o_knowledge_behavior_anchor o_knowledge_behavior_type_contents_container">
-                    <div class="o_knowledge_toolbar_anchor o_knowledge_toolbar_type_template"></div>
-                    <div class="o_knowledge_content">
+                <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_template">
+                    <div class="d-flex">
+                        <div class="o_knowledge_template_label align-middle">Template</div>
+                    </div>
+                    <div class="o_knowledge_content" data-prop-name="content">
                         <h2>Prospect Qualification</h2>
                         <p><br /></p>
                         <ol>
@@ -405,15 +398,14 @@
                     <br />
                     <span style="font-size: 14px;">They can also be shared with customers, journalists and resellers.</span>
                 </p>
-                <div class="o_knowledge_file o_knowledge_toolbars_container o_knowledge_behavior_anchor o_knowledge_behavior_type_contents_container">
-                    <div class="o_knowledge_file_image">
-                        <a href="https://odoocdn.com/openerp_website/static/src/img/assets/png/odoo_logo.png?download=true" class="o_image" title="logo.jpg" alt="logo.jpg" data-mimetype="image/jpeg"></a>
+                <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_file">
+                    <div class="o_knowledge_file_image" data-prop-name="fileImage">
+                        <a href="https://odoocdn.com/openerp_website/static/src/img/assets/png/odoo_logo.png?download=true" title="logo.jpg" data-mimetype="image/jpeg" class="o_image"></a>
                     </div>
                     <div class="o_knowledge_file_description">
-                        <div class="o_knowledge_file_name">Odoo Logo</div>
-                        <div class="o_knowledge_file_extension">JPG</div>
+                        <div class="o_knowledge_file_name" data-prop-name="fileName">Odoo Logo</div>
+                        <div class="o_knowledge_file_extension" data-prop-name="fileExtension">JPG</div>
                     </div>
-                    <div class="o_knowledge_toolbar_anchor o_knowledge_toolbar_type_file mt-auto ms-auto"></div>
                 </div>
                 <p><br /></p>
                 <h4>Usage</h4>
@@ -499,9 +491,11 @@
                     <span style="font-size: 14px;">Use this template whenever you have an announcement to make.</span>
                 </p>
                 <p><br /></p>
-                <div class="o_knowledge_template o_knowledge_toolbars_container o_knowledge_behavior_anchor o_knowledge_behavior_type_contents_container">
-                    <div class="o_knowledge_toolbar_anchor o_knowledge_toolbar_type_template"></div>
-                    <div class="o_knowledge_content">
+                <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_template">
+                    <div class="d-flex">
+                        <div class="o_knowledge_template_label align-middle">Template</div>
+                    </div>
+                    <div class="o_knowledge_content" data-prop-name="content">
                         <p>
                             250 Executive Park Blvd, Suite 3400 94134
                             <br />

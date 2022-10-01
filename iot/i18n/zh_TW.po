@@ -7,9 +7,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-09-27 15:40+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
@@ -54,6 +54,20 @@ msgstr ""
 #: model:ir.model,name:iot.model_add_iot_box
 msgid "Add IoT Box wizard"
 msgstr "添加物聯網盒子操作視窗"
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
+#, python-format
+msgid "Are you sure you want to reboot the IoT box?"
+msgstr ""
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
+#, python-format
+msgid "Are you sure you want to restart Odoo on the IoT box?"
+msgstr ""
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__drivers_auto_update
@@ -414,6 +428,13 @@ msgid "Last Updated on"
 msgstr "最後更新於"
 
 #. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
+#, python-format
+msgid "Last restarting process hasn't finished yet"
+msgstr ""
+
+#. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_keyboard_layout__layout
 msgid "Layout"
 msgstr "佈局"
@@ -494,6 +515,14 @@ msgid "Please check if the IoT Box is still connected."
 msgstr "請檢查IoT Box是否仍連接。"
 
 #. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
+#: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
+#, python-format
+msgid "Please wait"
+msgstr "請稍候"
+
+#. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__printer
 msgid "Printer"
 msgstr "列印機"
@@ -531,6 +560,29 @@ msgid "Reports"
 msgstr "報告"
 
 #. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
+#: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
+#: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
+#, python-format
+msgid "Restart Failed"
+msgstr ""
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
+#, python-format
+msgid "Restart finished"
+msgstr ""
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
+#, python-format
+msgid "Restarting"
+msgstr ""
+
+#. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__scale
 msgid "Scale"
 msgstr "比例"
@@ -544,6 +596,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device__connected
 msgid "Status"
 msgstr "狀態"
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
+#, python-format
+msgid "Success"
+msgstr "成功"
 
 #. module: iot
 #. openerp-web
@@ -568,6 +627,13 @@ msgstr ""
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_device_action
 msgid "There is no device connected to your IoT Boxes"
+msgstr ""
+
+#. module: iot
+#. openerp-web
+#: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
+#, python-format
+msgid "Timed out"
 msgstr ""
 
 #. module: iot

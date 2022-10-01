@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:24+0000\n"
+"POT-Creation-Date: 2022-09-27 15:42+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -62,8 +62,8 @@ msgstr "Ga terug"
 #. openerp-web
 #: code:addons/sign_itsme/static/src/xml/templates.xml:0
 #, python-format
-msgid "Identify with itsme®"
-msgstr "Identificeer je met itsme®"
+msgid "Identify with itsme"
+msgstr ""
 
 #. module: sign_itsme
 #: model_terms:ir.ui.view,arch_db:sign_itsme.sign_request_logs_user

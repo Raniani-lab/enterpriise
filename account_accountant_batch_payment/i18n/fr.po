@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Malika Berardi, 2022
 # Cécile Collart <cco@odoo.com>, 2022
 # 
 msgid ""
@@ -33,6 +34,8 @@ msgstr ""
 #: model:ir.model,name:account_accountant_batch_payment.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
 msgstr ""
+"L'assisstance de la réconciliation bancaire pour une seule ligne de "
+"l'extrait"
 
 #. module: account_accountant_batch_payment
 #: code:addons/account_accountant_batch_payment/models/account_batch_payment.py:0
@@ -62,7 +65,7 @@ msgstr "Annuler"
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_account_batch_payment_rejection__cancel_action_todo
 msgid "Cancel Action Todo"
-msgstr ""
+msgstr "Effacer l'action à faire"
 
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_rejection_form
@@ -142,7 +145,7 @@ msgstr "Nbr de paiement(s) rejeté(s)"
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_account_batch_payment_rejection__next_action_todo
 msgid "Next Action Todo"
-msgstr ""
+msgstr "Prochaine action à faire "
 
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_list_bank_rec_widget

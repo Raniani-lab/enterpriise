@@ -366,7 +366,7 @@ msgstr "طرق السداد"
 #. module: payment_sepa_direct_debit
 #: model:ir.model,name:payment_sepa_direct_debit.model_payment_provider
 msgid "Payment Provider"
-msgstr ""
+msgstr "مزود الدفع "
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model,name:payment_sepa_direct_debit.model_payment_token

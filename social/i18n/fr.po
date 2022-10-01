@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Cécile Collart <cco@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:47+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -103,7 +104,7 @@ msgstr "Ajouter"
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.utm_campaign_view_form
 msgid "Add Post"
-msgstr ""
+msgstr "Ajouter un poste"
 
 #. module: social
 #. openerp-web
@@ -237,6 +238,8 @@ msgid ""
 "Campaigns are used to centralize your marketing efforts and track their "
 "results."
 msgstr ""
+"Les campagnes sont utilisées pour centraliser vos efforts marketing et "
+"suivre leurs résultats."
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__can_link_accounts
@@ -341,7 +344,7 @@ msgstr "Contrôle si nous pouvons associer les comptes ou non."
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_view_utm_campaigns
 msgid "Create a Campaign"
-msgstr ""
+msgstr "Créer une campagne"
 
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_post
@@ -1820,6 +1823,8 @@ msgid ""
 "You cannot delete these UTM Mediums as they are linked to the following social accounts in Social:\n"
 "%(social_accounts)s"
 msgstr ""
+"Vous ne pouvez pas supprimer ces Mediums UTM car ils sont liés aux comptes sociaux suivants dans Social : \n"
+"%(social_accounts)s"
 
 #. module: social
 #: code:addons/social/models/utm_source.py:0
@@ -1828,6 +1833,8 @@ msgid ""
 "You cannot delete these UTM Sources as they are linked to social posts in Social:\n"
 "%(utm_sources)s"
 msgstr ""
+"Vous ne pouvez pas supprimer ces Sources UTM car elles sont liées à des publications sociales dans Social :\n"
+"%(utm_sources)s"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form

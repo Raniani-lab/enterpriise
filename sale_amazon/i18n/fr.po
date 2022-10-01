@@ -39,6 +39,19 @@ msgid ""
 "        </div>\n"
 "        "
 msgstr ""
+"<p>La synchronisation de la commande Amazon avec la référence  <t t-out=\"ctx.get('amazon_order_ref') or ''\">REF</t> a rencontré une erreur et n'a pas pu être complétée.</p>\n"
+"            <p>A moins que la commande soit annulée dans le \"Seller central\", aucune autre synchronisation ne peut être tentée</p>\n"
+"            <p>Afin de programmer une nouvelle tentative de synchronisation, veuillez procéder comme suit:\n"
+"                <ol>\n"
+"                    <li>Entrez dans les outils dévelopeurs</li>\n"
+"                    <li>Ouvrez le formulaire du compte Amazon sur lequel la commande a été passée.</li>\n"
+"                    <li>Allez sur l'onglet Suivi de commande.</li>\n"
+"                    <li>Fixer une date pour <em>Dernières commandes sync</em>qui est antérieur à la dernière mise à jour du statut de la commande.\n"
+"                    <li>Enregistrez les modifications et cliquez sur le bouton <em>SYNC COMMANDES</em>boutton.</li>\n"
+"                </ol>\n"
+"            </p>\n"
+"            <p>Si le problème persiste, contactez Odoo support</a>.</p>\n"
+"     "
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_marketplace__api_ref
@@ -193,6 +206,9 @@ msgid ""
 "Since the current carrier doesn't automatically provide a tracking "
 "reference, you need to set one manually."
 msgstr ""
+"Amazon exige qu'une référence de suivi soit fournie avec chaque livraison. "
+"Étant donné que le transporteur actuel ne fournit pas automatiquement de "
+"référence de suivi, vous devez en définir une manuellement."
 
 #. module: sale_amazon
 #: code:addons/sale_amazon/models/stock_picking.py:0
@@ -201,6 +217,8 @@ msgid ""
 "Amazon requires that a tracking reference is provided with each delivery. "
 "You need to assign a carrier to this delivery."
 msgstr ""
+"Amazon exige qu'une référence de suivi soit fournie avec chaque livraison. "
+"Vous devez affecter un transporteur à cette livraison."
 
 #. module: sale_amazon
 #: model:amazon.marketplace,name:sale_amazon.marketplace_CA
@@ -250,7 +268,7 @@ msgstr "Amazon.nl"
 #. module: sale_amazon
 #: model:mail.template,name:sale_amazon.order_sync_failure
 msgid "Amazon: Order Synchronization Failure"
-msgstr ""
+msgstr "Amazon : Échec de la synchronisation des commandes"
 
 #. module: sale_amazon
 #: model:ir.actions.server,name:sale_amazon.ir_cron_sync_amazon_orders_ir_actions_server
@@ -374,7 +392,7 @@ msgstr "Europe"
 #. module: sale_amazon
 #: model:ir.model.fields.selection,name:sale_amazon.selection__amazon_marketplace__region__us-west-2
 msgid "Far East"
-msgstr ""
+msgstr "Extrême Orient"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_order_view_form
@@ -423,6 +441,7 @@ msgstr "ID"
 msgid ""
 "If made inactive, this account will no longer be synchronized with Amazon."
 msgstr ""
+"S'il est rendu inactif, ce compte ne sera plus synchronisé avec Amazon"
 
 #. module: sale_amazon
 #: code:addons/sale_amazon/models/amazon_account.py:0
@@ -506,6 +525,8 @@ msgid ""
 "Link your Amazon account with Odoo to start synchronizing your\n"
 "                                Amazon orders."
 msgstr ""
+"Associez votre compte Amazon à Odoo pour commencer à synchroniser vos \n"
+"commandes Amazon."
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer__marketplace_id
@@ -593,6 +614,9 @@ msgid ""
 "the same package. Operations related to the product %s were not all "
 "confirmed at once."
 msgstr ""
+"Les produits livrés aux clients Amazon doivent avoir leurs pièces "
+"respectives dans le même colis. Les opérations liées au produit %s n'ont pas"
+" toutes été confirmées d'un coup."
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_marketplace__region
@@ -702,6 +726,8 @@ msgstr "Synchroniser les sélections"
 msgid ""
 "Synchronization of Amazon order {{ ctx.get('amazon_order_ref') }} has failed"
 msgstr ""
+"La synchronisation de la commande Amazon {{ ctx.get('amazon_order_ref') }}  "
+"a échoué"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_marketplace__tax_included
@@ -720,17 +746,17 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_sale_order_line__amazon_item_ref
 msgid "The Amazon-defined item reference."
-msgstr ""
+msgstr "La référence de l'article défini par Amazon"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_marketplace__api_ref
 msgid "The Amazon-defined marketplace reference."
-msgstr ""
+msgstr "La référence de marché définie par Amazon."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_sale_order__amazon_order_ref
 msgid "The Amazon-defined order reference."
-msgstr ""
+msgstr "La référence de commande définie par Amazon."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__team_id
@@ -742,7 +768,7 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_offer__sku
 msgid "The Stock Keeping Unit."
-msgstr ""
+msgstr "L'unité de gestion des stocks."
 
 #. module: sale_amazon
 #: code:addons/sale_amazon/utils.py:0
@@ -764,7 +790,7 @@ msgstr ""
 #: model:ir.model.fields,help:sale_amazon.field_res_partner__amazon_email
 #: model:ir.model.fields,help:sale_amazon.field_res_users__amazon_email
 msgid "The encrypted email of the customer. Does not forward mails."
-msgstr ""
+msgstr "L'email chiffré du client. Ne transfère pas les mails."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__last_orders_sync
@@ -783,6 +809,8 @@ msgid ""
 "The location of the stock managed by Amazon under the Amazon Fulfillment "
 "program."
 msgstr ""
+"La localisation du stock géré par Amazon dans le cadre du programme Amazon "
+"Fulfillment."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__refresh_token
@@ -794,18 +822,18 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_offer__marketplace_id
 msgid "The marketplace of this offer."
-msgstr ""
+msgstr "La place de marché de cette offre."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__available_marketplace_ids
 msgid "The marketplaces this account has access to."
-msgstr ""
+msgstr "Les marchés auxquels ce compte a accès."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__active_marketplace_ids
 #: model:ir.model.fields,help:sale_amazon.field_amazon_offer__active_marketplace_ids
 msgid "The marketplaces this account sells on."
-msgstr ""
+msgstr "Les marchés sur lesquels ce compte se vend."
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__aws_credentials_expiry
@@ -831,6 +859,9 @@ msgid ""
 "already been delivered. Please create a return for this order to adjust the "
 "stock."
 msgstr ""
+"La commande a été annulée par le client Amazon alors que certains produits "
+"ont déjà été livrés. Veuillez créer un retour pour cette commande afin "
+"d'ajuster le stock."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__base_marketplace_id
@@ -844,12 +875,13 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_offer__account_id
 msgid "The seller account used to manage this product."
-msgstr ""
+msgstr "Le compte vendeur utilisé pour gérer ce produit."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__aws_access_key
 msgid "The short-lived key used to identify the assumed ARN role on AWS."
 msgstr ""
+"La clé de courte durée utilisée pour identifier le rôle ARN assumé sur AWS."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__aws_secret_key
@@ -857,6 +889,8 @@ msgid ""
 "The short-lived key used to verify the access to the assumed ARN role on "
 "AWS."
 msgstr ""
+"La clé de courte durée utilisée pour vérifier l'accès au rôle ARN supposé "
+"sur AWS."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__restricted_data_token
@@ -864,11 +898,15 @@ msgid ""
 "The short-lived token used instead of the LWA Access Token to access "
 "restricted data"
 msgstr ""
+"Le jeton de courte durée utilisé à la place du jeton d'accès LWA pour "
+"accéder aux données restreintes"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__access_token
 msgid "The short-lived token used to query Amazon API on behalf of a seller."
 msgstr ""
+"Le jeton de courte durée utilisé pour interroger l'API Amazon au nom d'un "
+"vendeur."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__aws_session_token
@@ -876,11 +914,13 @@ msgid ""
 "The short-lived token used to query the SP-API with the assumed ARN role on "
 "AWS."
 msgstr ""
+"Jeton de courte durée utilisé pour interroger la SP-API avec le rôle ARN "
+"supposé sur AWS."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__name
 msgid "The user-defined name of the account."
-msgstr ""
+msgstr "Nom du compte défini par l'utilisateur."
 
 #. module: sale_amazon
 #: model:ir.model.constraint,message:sale_amazon.constraint_amazon_marketplace_unique_api_ref
@@ -911,6 +951,8 @@ msgid ""
 "                                          cannot be undone. Are you sure you"
 " want to proceed?"
 msgstr ""
+"Cette action déconnectera votre compte avec Amazon et ne pourra pas être "
+"annulée. Êtes-vous sur de vouloir continuer ?"
 
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_stock_picking
@@ -954,7 +996,7 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_marketplace__tax_included
 msgid "Whether the price includes the tax amount or not."
-msgstr ""
+msgstr "Si le prix inclut le montant de la taxe ou non."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_stock_location__amazon_location
@@ -962,11 +1004,13 @@ msgid ""
 "Whether this location represents the stock of a seller managed by Amazon "
 "under the Amazon Fulfillment program or not."
 msgstr ""
+"Si cet emplacement représente ou non le stock d'un vendeur géré par Amazon "
+"dans le cadre du programme Amazon Fulfillment."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_crm_team__amazon_team
 msgid "Whether this sales team is associated with Amazon orders or not."
-msgstr ""
+msgstr "Que cette équipe de vente soit associée ou non aux commandes Amazon."
 
 #. module: sale_amazon
 #: code:addons/sale_amazon/utils.py:0

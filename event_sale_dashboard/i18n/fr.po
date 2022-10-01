@@ -93,9 +93,9 @@ msgstr "Partenaires facturés uniques"
 #. module: event_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:event_sale_dashboard.event_sale_report_view_dashboard
 msgid "Unique partners who made sale orders"
-msgstr ""
+msgstr "Partenaires uniques qui ont passé des commandes"
 
 #. module: event_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:event_sale_dashboard.event_sale_report_view_dashboard
 msgid "Untaxed Total Revenues"
-msgstr ""
+msgstr "Revenus totaux non imposés"

@@ -49,7 +49,7 @@ msgstr "<i class=\"fa fa-thumbs-up\" title=\"Me gusta\"/>"
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.youtube_preview
 msgid "<span class=\"fw-bold\">Your YouTube Channel</span>"
-msgstr ""
+msgstr "<span class=\"fw-bold\">Su canal de YouTube</span>"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_view_form
@@ -167,6 +167,8 @@ msgid ""
 "Could not revoke your account.\n"
 "Error: %s"
 msgstr ""
+"No se pudo revocar su cuenta.\n"
+"Error: %s"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account_revoke_youtube__create_uid
@@ -203,6 +205,8 @@ msgid ""
 "Expiration date of the Access Token provided by the YouTube API, this should"
 " never be set manually."
 msgstr ""
+"Fecha de expiración del token de acceso que proporcionó la API de YouTube, "
+"nunca se debe establecer de forma manual."
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account__youtube_access_token
@@ -274,11 +278,14 @@ msgid ""
 "Odoo will lose access to your YouTube account\n"
 "                        and delete all its related data from your database."
 msgstr ""
+"Odoo perderá acceso a su cuenta de YouTube\n"
+"                        y eliminará de su base de datos todos loa datos relacionados."
 
 #. module: social_youtube
 #: model:ir.model.fields,help:social_youtube.field_social_post__youtube_video_privacy
 msgid "Once posted, set the video as Public/Private/Unlisted"
 msgstr ""
+"Una vez publicado, establezca el video como Público/Privado/No en lista"
 
 #. module: social_youtube
 #: code:addons/social_youtube/models/social_post.py:0
@@ -308,7 +315,7 @@ msgstr "Público"
 #: code:addons/social_youtube/controllers/main.py:0
 #, python-format
 msgid "Reason:"
-msgstr "Motivo:"
+msgstr "Razón:"
 
 #. module: social_youtube
 #: model:ir.model.fields,help:social_youtube.field_social_account__youtube_refresh_token
@@ -316,7 +323,7 @@ msgid ""
 "Refresh token provided by the YouTube API, this should never be set "
 "manually."
 msgstr ""
-"Token de actualización proporcionado por el API de YouTube, jamás se debe "
+"Token de actualización proporcionado por la API de YouTube, jamás se debe "
 "establecer de forma manual."
 
 #. module: social_youtube
@@ -327,26 +334,28 @@ msgstr "Revocar"
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_revoke_youtube_view_form
 msgid "Revoke & Delete"
-msgstr ""
+msgstr "Revocar y eliminar"
 
 #. module: social_youtube
 #: code:addons/social_youtube/models/social_account.py:0
 #, python-format
 msgid "Revoke Account"
-msgstr ""
+msgstr "Revocar cuenta"
 
 #. module: social_youtube
 #: model:ir.actions.act_window,name:social_youtube.social_account_revoke_youtube_action
 #: model:ir.model,name:social_youtube.model_social_account_revoke_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_revoke_youtube_view_form
 msgid "Revoke YouTube Account"
-msgstr ""
+msgstr "Revocar cuenta de YouTube"
 
 #. module: social_youtube
 #: code:addons/social_youtube/models/social_account.py:0
 #, python-format
 msgid "Revoking access tokens is currently limited to YouTube accounts only."
 msgstr ""
+"Revocar tokens de acceso actualmente se limita a cuentas de YouTube "
+"solamente."
 
 #. module: social_youtube
 #. openerp-web
@@ -442,7 +451,7 @@ msgstr "El video que está tratando de publicar fue eliminado de YouTube."
 #: code:addons/social_youtube/controllers/main.py:0
 #, python-format
 msgid "There is no channel linked with this YouTube account."
-msgstr ""
+msgstr "No hay canal vinculado con esta cuenta de YouTube."
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_view_form
@@ -456,7 +465,7 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account__youtube_token_expiration_date
 msgid "Token expiration date"
-msgstr "Fecha de caducidad del token"
+msgstr "Fecha de expiración del token"
 
 #. module: social_youtube
 #: code:addons/social_youtube/controllers/main.py:0
@@ -473,7 +482,7 @@ msgstr "Desconocido"
 #. module: social_youtube
 #: model:ir.model.fields.selection,name:social_youtube.selection__social_post__youtube_video_privacy__unlisted
 msgid "Unlisted"
-msgstr ""
+msgstr "No en lista"
 
 #. module: social_youtube
 #. openerp-web
@@ -533,7 +542,7 @@ msgstr "Descripción del video"
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_video_privacy
 msgid "Video Privacy"
-msgstr ""
+msgstr "Privacidad del video"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_post_view_form
@@ -599,7 +608,7 @@ msgstr "ID de categoría de YouTube"
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account__youtube_channel_id
 msgid "YouTube Channel ID"
-msgstr ""
+msgstr "ID del canal de YouTube"
 
 #. module: social_youtube
 #: model:ir.model.fields,help:social_youtube.field_social_account__youtube_channel_id
@@ -625,7 +634,7 @@ msgstr "Número de comentarios en YouTube"
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.res_config_settings_view_form
 msgid "YouTube Developer Account"
-msgstr ""
+msgstr "Cuenta de desarrollador de YouTube"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_stream_post__youtube_dislikes_count
@@ -640,7 +649,7 @@ msgstr "Número de Me gusta en YouTube"
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_stream_post__youtube_likes_ratio
 msgid "YouTube Likes Ratio"
-msgstr ""
+msgstr "Razón de Me gusta en Youtube"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_res_config_settings__youtube_oauth_client_id
@@ -682,7 +691,7 @@ msgstr "Miniatura de YouTube"
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_thumbnail_url
 #: model:ir.model.fields,field_description:social_youtube.field_social_stream_post__youtube_thumbnail_url
 msgid "YouTube Thumbnail Url"
-msgstr ""
+msgstr "URL de miniatura de YouTube"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account__youtube_upload_playlist_id
@@ -718,7 +727,7 @@ msgstr "Título del video de Youtube"
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_video_url
 msgid "YouTube Video Url"
-msgstr ""
+msgstr "URL de video de YouTube"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_stream_post__youtube_views_count
@@ -754,6 +763,8 @@ msgid ""
 "Your videos metadata including title and view counts (but never the video "
 "itself)"
 msgstr ""
+"Los metadatos de su video incluyen el título y el número de vistas (pero no "
+"el video en sí)"
 
 #. module: social_youtube
 #. openerp-web
@@ -774,9 +785,9 @@ msgstr ""
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_post_view_form
 msgid "e.g. Odoo Social Tutorial"
-msgstr "Por ejemplo, Tutorial social de Odoo"
+msgstr "Por ejemplo, Tutorial de redes sociales de Odoo"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_view_form
 msgid "the Google Third-party app account access panel"
-msgstr ""
+msgstr "el panel de acceso a la cuenta de aplicaciones de terceros de Google"

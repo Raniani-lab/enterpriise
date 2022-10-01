@@ -640,7 +640,7 @@ msgstr "La frecuencia de notificación debe ser mayor que 0"
 #: code:addons/data_merge/static/src/views/data_merge_list_view.js:0
 #, python-format
 msgid "The selected records have been merged"
-msgstr ""
+msgstr "Los registros seleccionados se fusionaron"
 
 #. module: data_merge
 #: code:addons/data_merge/models/data_merge_record.py:0
@@ -684,7 +684,7 @@ msgstr "Actualizado el"
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__used_in
 msgid "Used In"
-msgstr "Utilizado en"
+msgstr "Se utiliza en"
 
 #. module: data_merge
 #: model:ir.model.fields.selection,name:data_merge.selection__data_merge_model__notify_frequency_period__weeks

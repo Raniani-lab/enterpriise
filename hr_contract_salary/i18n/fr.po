@@ -1630,7 +1630,7 @@ msgstr "Salaire adapté avec les retenues de congé"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__wage_with_holidays
 msgid "Wage with Holidays"
-msgstr ""
+msgstr "Salaire vacances inclues"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__activity_creation_type__onchange

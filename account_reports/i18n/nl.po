@@ -2376,7 +2376,7 @@ msgstr "Relatiecategorieën:"
 #: model_terms:ir.ui.view,arch_db:account_reports.partner_view_buttons
 #, python-format
 msgid "Partner Ledger"
-msgstr "Relatie-grootboek"
+msgstr "Saldilijst per klant/leverancier"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_partner_ledger_report_handler
@@ -2386,7 +2386,7 @@ msgstr "Partner Ledger Custom Handler"
 #. module: account_reports
 #: model:ir.ui.menu,name:account_reports.account_reports_partners_reports_menu
 msgid "Partner Reports"
-msgstr "Relatie-rapportages"
+msgstr "Klant/leverancier rapportages"
 
 #. module: account_reports
 #. openerp-web

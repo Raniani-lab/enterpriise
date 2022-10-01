@@ -1610,7 +1610,7 @@ msgstr "重启成功！"
 msgid ""
 "System will automatically resolved the conflict(s) and apply changes. Do you"
 " agree?"
-msgstr "是否允许系统自动处理冲突并应用更改？"
+msgstr "是否允许系统自动处理冲突(多个)并应用更改？"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_tag__name

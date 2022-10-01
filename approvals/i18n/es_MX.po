@@ -218,7 +218,7 @@ msgstr "Usuarios aprobadores"
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "Approver(s)"
-msgstr "Aprobador(es)"
+msgstr "Aprobadores"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__approver_ids
@@ -340,9 +340,9 @@ msgid ""
 "Conversion between Units of Measure can only occur if they belong to the "
 "same category. The conversion will be made based on the ratios."
 msgstr ""
-"La conversión entre las unidades de medidas sólo pueden ocurrir si "
-"pertenecen a la misma categoría. La conversión se basará en los ratios "
-"establecidos."
+"La conversión entre las unidades de medidas solo pueden ocurrir si "
+"pertenecen a la misma categoría. La conversión se basará en las razones "
+"establecidas. "
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__create_uid
@@ -862,7 +862,7 @@ msgstr "Número de solicitudes por validar"
 #. module: approvals
 #: model:res.groups,name:approvals.group_approval_user
 msgid "Officer : Approve all requests"
-msgstr ""
+msgstr "Encargado: Aprobar todas las solicitudes"
 
 #. module: approvals
 #: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_amount__optional

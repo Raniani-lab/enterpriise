@@ -3,15 +3,15 @@
 # 	* documents
 # 
 # Translators:
-# Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2022
 # Martin Trigaux, 2022
+# Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2022
 # Braulio D. López Vázquez <bdl@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"POT-Creation-Date: 2022-09-27 15:40+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Braulio D. López Vázquez <bdl@odoo.com>, 2022\n"
 "Language-Team: Spanish (Mexico) (https://www.transifex.com/odoo/teams/41243/es_MX/)\n"
@@ -26,7 +26,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid " + Add a tag"
-msgstr ""
+msgstr " + Agregar una etiqueta"
 
 #. module: documents
 #. openerp-web
@@ -57,20 +57,11 @@ msgid "%s file(s) not moved because they are locked by another user"
 msgstr "%s archivo o archivos sin mover porque otro usuario los bloqueó"
 
 #. module: documents
-#: model_terms:ir.ui.view,arch_db:documents.document_view_form
-msgid ""
-"&amp;nbsp;\n"
-"                            <i class=\"fa fa-lock oe_inline\" title=\"Locked\" attrs=\"{'invisible': [('lock_uid', '=', False)]}\"/>"
-msgstr ""
-" \n"
-"                            <i class=\"fa fa-lock oe_inline\" title=\"Bloqueado\" attrs=\"{'invisible': [('lock_uid', '=', False)]}\"/>"
-
-#. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
 #, python-format
 msgid "(%s/%sMB)"
-msgstr ""
+msgstr "(%s/%sMB)"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -161,7 +152,7 @@ msgstr "<br/>Con tecnología de"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "<i class=\"fa fa fa-folder text-odoo me-2\" title=\"Workspace\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa fa-folder text-odoo me-2\" title=\"Espacio de trabajo\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -193,11 +184,22 @@ msgid "<i class=\"fa fa-link\"/> Go to URL"
 msgstr "<i class=\"fa fa-link\"/> Ir al URL"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.document_view_form
+msgid ""
+"<i class=\"fa fa-lock oe_inline\" title=\"Locked\" attrs=\"{'invisible': "
+"[('lock_uid', '=', False)]}\"/>"
+msgstr ""
+"<i class=\"fa fa-lock oe_inline\" title=\"Bloqueado\" attrs=\"{'invisible': "
+"[('lock_uid', '=', False)]}\"/>"
+
+#. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid ""
 "<i class=\"fa fa-tag o_documents_tag_color ms-2\" attrs=\"{'invisible': "
 "[('tag_ids', '=', [])]}\" title=\"Tags\"/>"
 msgstr ""
+"<i class=\"fa fa-tag o_documents_tag_color ms-2\" attrs=\"{'invisible': "
+"[('tag_ids', '=', [])]}\" title=\"Etiquetas\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
@@ -451,8 +453,8 @@ msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
 msgstr ""
-"Se evaluará un diccionario de Python con el fin de proporcionar valores "
-"predefinidos cuando se creen nuevos registros para este seudónimo."
+"Un diccionario Python que se evaluará para proporcionar valores "
+"predeterminados al crear nuevos registros para este seudónimo."
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_rule
@@ -651,7 +653,7 @@ msgstr "Nombre del seudónimo"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_domain
 msgid "Alias domain"
-msgstr "Dominio del seudónimo"
+msgstr "Seudónimo del dominio"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_model_id
@@ -710,7 +712,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/helper/documents_file_upload_service.js:0
 #, python-format
 msgid "An error occured while uploading."
-msgstr ""
+msgstr "Ocurrió un error en la subida."
 
 #. module: documents
 #. openerp-web
@@ -814,7 +816,7 @@ msgstr "Reglas disponibles"
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_bill
 msgid "Bill"
-msgstr "Cuenta"
+msgstr "Factura"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_brochures
@@ -901,7 +903,7 @@ msgid ""
 "Click on the <b>page separator</b>: we don't want to split these two pages "
 "as they belong to the same document."
 msgstr ""
-"Haga clic en el <b>separador de páginas</b>: No queremos separar estas dos "
+"Haga clic en el <b>separador de páginas</b>: no queremos separar estas dos "
 "páginas ya que pertenecen al mismo documento."
 
 #. module: documents
@@ -1029,7 +1031,7 @@ msgstr "Criterios"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_bounced_content
 msgid "Custom Bounced Message"
-msgstr "Mensaje personalizado en caso de devolución"
+msgstr "Mensaje devuelto personalizado"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_request_wizard__activity_date_deadline_range_type__days
@@ -1106,7 +1108,7 @@ msgstr "¿Realmente desea cancelar la subida de %s?"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "Do you really want to unlink this record?"
-msgstr ""
+msgstr "¿Realmente desea desvincular este registro?"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_document
@@ -1152,7 +1154,7 @@ msgstr ""
 #: code:addons/documents/models/mail_activity.py:0
 #, python-format
 msgid "Document Request: %s Uploaded by: %s"
-msgstr "Solicitud de documento: %sSubido por:%s"
+msgstr "Solicitud de documento: %ssubido por:%s"
 
 #. module: documents
 #: model:mail.template,name:documents.mail_template_document_request
@@ -1162,7 +1164,7 @@ msgstr "Solicitud de documento: Enviar por correo electrónico"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__has_write_access
 msgid "Document User Upload Rights"
-msgstr ""
+msgstr "Derechos de subida del usuario de documentos"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_action
@@ -1197,7 +1199,7 @@ msgstr "Documentos"
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder_deletion_wizard
 msgid "Documents Folder Deletion Wizard"
-msgstr ""
+msgstr "Asistente de eliminación de carpetas de documentos"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_link_to_record_wizard
@@ -1264,14 +1266,14 @@ msgstr "Arrastre los archivos aquí para subirlos"
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_date_deadline_range
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_date_deadline_range
 msgid "Due Date In"
-msgstr "Fecha de vencimiento en"
+msgstr "Fecha límite el"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_date_deadline_range_type
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_date_deadline_range_type
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_date_deadline_range_type
 msgid "Due type"
-msgstr "Tipo de vencimiento"
+msgstr "Tipo de límite"
 
 #. module: documents
 #. openerp-web
@@ -1286,7 +1288,7 @@ msgstr "Editar"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "Edit the linked record"
-msgstr ""
+msgstr "Editar el registro vinculado"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -1358,12 +1360,12 @@ msgstr "Tamaño del archivo"
 #: code:addons/documents/static/src/views/documents_controller_mixin.js:0
 #, python-format
 msgid "File is too large."
-msgstr ""
+msgstr "El archivo es muy grande."
 
 #. module: documents
 #: model:ir.model,name:documents.model_ir_binary
 msgid "File streaming helper model for controllers"
-msgstr ""
+msgstr "Modelo de ayuda para la transmisión de archivos para controladores"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
@@ -1373,7 +1375,7 @@ msgstr "Centralización de archivos"
 #. module: documents
 #: model:documents.folder,name:documents.documents_finance_folder
 msgid "Finance"
-msgstr "Financiar"
+msgstr "Finanzas"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_financial
@@ -1810,7 +1812,7 @@ msgstr "Mover al espacio de trabajo"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
 msgid "Move to parent workspace"
-msgstr ""
+msgstr "Mover a espacio de trabajo padre"
 
 #. module: documents
 #. openerp-web
@@ -1877,14 +1879,14 @@ msgstr "Nuevo grupo"
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "New Tag"
-msgstr ""
+msgstr "Nueva etiqueta"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "New Workspace"
-msgstr ""
+msgstr "Nuevo espacio de trabajo"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_calendar_event_id
@@ -2053,7 +2055,7 @@ msgstr "PDF/documento"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder_deletion_wizard__parent_folder_id
 msgid "Parent Folder"
-msgstr ""
+msgstr "Carpeta padre"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_model_id
@@ -2092,7 +2094,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "Partial transfer"
-msgstr ""
+msgstr "Transferencia parcial"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_contact
@@ -2102,10 +2104,10 @@ msgid ""
 "- partners: only authenticated partners\n"
 "- followers: only followers of the related document or members of following channels\n"
 msgstr ""
-"Política sobre cómo publicar un mensaje en el documento utilizando el servidor de correo.\n"
-"- todos: todos pueden publicar\n"
-"- partners: solo los partners verificados\n"
-"- seguidores: solo los seguidores del documento relacionado o los miembros de los canales\n"
+"Política para publicar un mensaje en el documento utilizando el servidor de correo.\n"
+"- todo el mundo: todos pueden publicar\n"
+"- partners: solo partners autenticados\n"
+"- seguidores: solo seguidores del documento relacionado o miembros de los siguientes canales\n"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_document__thumbnail_status__present
@@ -2277,7 +2279,7 @@ msgstr "Ventas"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_option
 msgid "Schedule Activity"
-msgstr "Agendar actividad"
+msgstr "Programar una actividad"
 
 #. module: documents
 #. openerp-web
@@ -2289,7 +2291,7 @@ msgstr "Seleccionar todos: Shift + A"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
 msgid "Select document"
-msgstr ""
+msgstr "Seleccionar documento"
 
 #. module: documents
 #. openerp-web
@@ -2373,13 +2375,13 @@ msgstr "Compartir enlaces"
 #: code:addons/documents/models/share.py:0
 #, python-format
 msgid "Share selected files"
-msgstr ""
+msgstr "Compartir archivos seleccionados"
 
 #. module: documents
 #: code:addons/documents/models/share.py:0
 #, python-format
 msgid "Share selected workspace"
-msgstr ""
+msgstr "Compartir el espacio de trabajo seleccionado"
 
 #. module: documents
 #. openerp-web
@@ -2570,8 +2572,9 @@ msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.odoo.com>"
 msgstr ""
-"Use el seudónimo del correo electrónico, por ejemplo, 'jobs' si desea "
-"recibir correos electrónicos para <jobs@example.odoo.com>"
+"El nombre de este seudónimo de correo electrónico. Por ejemplo, "
+"\"trabajos\", si lo que quiere es obtener los correos para "
+"<jobs@example.odoo.com>"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_user_id
@@ -2592,7 +2595,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "The share url has been copied to your clipboard."
-msgstr ""
+msgstr "El URL para compartir se copió al portapapeles."
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_share_share_unique
@@ -2640,7 +2643,7 @@ msgstr "Miniatura"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail_status
 msgid "Thumbnail Status"
-msgstr ""
+msgstr "Estado de la miniatura"
 
 #. module: documents
 #. openerp-web
@@ -2654,7 +2657,7 @@ msgstr ""
 #. module: documents
 #: model:digest.tip,name:documents.digest_tip_documents_0
 msgid "Tip: Become a paperless company"
-msgstr "Consejo: Conviértase en una empresa libre de papel"
+msgstr "Consejo: conviértase en una empresa libre de papel"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_status_tc
@@ -2734,6 +2737,8 @@ msgid ""
 "Upload <span class=\"fw-normal\">a file or</span> drag <span class=\"fw-"
 "normal\">it here.</span>"
 msgstr ""
+"Suba <span class=\"fw-normal\">un archivo o</span> arrástrelo <span "
+"class=\"fw-normal\">aquí.</span>"
 
 #. module: documents
 #. openerp-web
@@ -2750,7 +2755,7 @@ msgstr "Subir por correo electrónico"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Upload by email"
-msgstr ""
+msgstr "Subir por correo electrónico"
 
 #. module: documents
 #: code:addons/documents/models/mail_activity.py:0
@@ -2763,7 +2768,7 @@ msgstr "Subir solicitud de archivo"
 #: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
 #, python-format
 msgid "Uploading... (%s%)"
-msgstr ""
+msgstr "Subiendo... (%s%)"
 
 #. module: documents
 #: model:ir.model,name:documents.model_res_users
@@ -2829,7 +2834,7 @@ msgstr "Semanas"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
 msgid "What do you want to do with the files in the workspace?"
-msgstr ""
+msgstr "¿Qué desea hacer con los archivos en el espacio de trabajo?"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.workflow_rule_action
@@ -2873,7 +2878,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "Write Access"
-msgstr "Permiso de escritura"
+msgstr "Acceso de escritura"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__group_ids
@@ -2905,14 +2910,14 @@ msgstr "No puede crear carpetas recursivas."
 #: code:addons/documents/models/document.py:0
 #, python-format
 msgid "You don't have the right to move documents to that workspace."
-msgstr ""
+msgstr "No tiene los derechos de mover documentos a ese espacio de trabajo."
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "You don't have the rights to move documents to that workspace"
-msgstr ""
+msgstr "No tiene los derechos para mover documentos a ese espacio de trabajo"
 
 #. module: documents
 #. openerp-web
@@ -2968,7 +2973,7 @@ msgstr "descarga"
 #: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
 #, python-format
 msgid "dropdown-item"
-msgstr ""
+msgstr "dropdown-item"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -3012,14 +3017,14 @@ msgstr "Por ejemplo, https://www.youtube.com/watch?v=CP96yVnXNrY"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "fa fa-folder text-odoo"
-msgstr ""
+msgstr "fa fa-folder text-odoo"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "folder_id"
-msgstr ""
+msgstr "folder_id"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__is_readonly_model
@@ -3038,14 +3043,14 @@ msgstr "nombre"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "owner_id"
-msgstr ""
+msgstr "owner_id"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "partner_id"
-msgstr ""
+msgstr "partner_id"
 
 #. module: documents
 #. openerp-web

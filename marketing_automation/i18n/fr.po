@@ -5,14 +5,15 @@
 # Translators:
 # Martin Trigaux, 2022
 # Cécile Collart <cco@odoo.com>, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-09-27 15:40+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,7 +34,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mass_mailing_count
 msgid "# Mailings"
-msgstr "# Publipostages"
+msgstr "# Envois"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__total_participant_count
@@ -160,12 +161,12 @@ msgstr "<strong>Le flux de travail a été modifié !</strong>"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_mailings_count
 msgid "A/B Test Mailings #"
-msgstr ""
+msgstr "Envois de tests A/B #"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_completed
 msgid "A/B Testing Campaign Finished"
-msgstr ""
+msgstr "Campagne de test A/B terminée"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__trace_ids
@@ -220,17 +221,17 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Add Another Activity"
-msgstr ""
+msgstr "Ajouter ue autre activité"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Add new activity"
-msgstr ""
+msgstr "Ajouter une nouvelle activité"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 msgid "Add to Templates"
-msgstr ""
+msgstr "Ajouter des modèles"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_activity__allowed_parent_ids
@@ -250,7 +251,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_campaign__is_auto_campaign
 msgid "Allows us to filter relevant Campaigns"
-msgstr ""
+msgstr "Nous permet de filtrer les campagnes pertinentes"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__domain
@@ -276,7 +277,7 @@ msgstr "Joindre un fichier"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__is_auto_campaign
 msgid "Automatically Generated Campaign"
-msgstr ""
+msgstr "Campagne générée automatiquement"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -359,13 +360,6 @@ msgstr "Activités enfants"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-msgid "Click on 'Edit' button to add new activity in workflow."
-msgstr ""
-"Cliquez sur le bouton « Modifier » pour ajouter une nouvelle activité au "
-"flux de travail."
-
-#. module: marketing_automation
-#: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Clicked"
 msgstr "Cliqué"
 
@@ -391,6 +385,8 @@ msgid ""
 "Come back later once your campaigns are running to overview your "
 "participants."
 msgstr ""
+"Revenez plus tard, une fois vos campagnes en cours, pour avoir un aperçu de "
+"vos participants."
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_participant__state__completed
@@ -412,7 +408,7 @@ msgstr "Continuer"
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action
 msgid "Create a Marketing Automation Campaign"
-msgstr ""
+msgstr "Créer une campagne d'automatisation marketing"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__create_uid
@@ -437,6 +433,8 @@ msgstr "Créé le"
 msgid ""
 "Date that will be used to know when to determine and send the winner mailing"
 msgstr ""
+"Date qui sera utilisée pour savoir quand déterminer et envoyer le mailing "
+"gagnant"
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__interval_type__days
@@ -468,6 +466,8 @@ msgid ""
 "Deleting this activity will delete ALL its children activities. Are you "
 "sure?"
 msgstr ""
+"Supprimer cette activité supprimera TOUTES les activités enfants. Êtes-vous "
+"sûr de vouloir y procéder ?"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__child_ids
@@ -553,7 +553,7 @@ msgstr "Erreur ! Impossible de créer une hiérarchie d'activité récursive."
 #: code:addons/marketing_automation/models/marketing_activity.py:0
 #, python-format
 msgid "Exception in mass mailing: %s"
-msgstr "Exception dans le publipostage : %s"
+msgstr "Exception dans l'Email Marketing : %s"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_activity.py:0
@@ -614,6 +614,8 @@ msgid ""
 "Here you will be able to check the results of your mailings from all "
 "Marketing Automation Campaigns."
 msgstr ""
+"Ici, vous pourrez vérifier les résultats de vos envois pour toutes les "
+"campagnes d'automatisation du marketing."
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__interval_type__hours
@@ -633,7 +635,7 @@ msgstr "ID"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__is_mailing_campaign_activated
 msgid "Is Mailing Campaign Activated"
-msgstr ""
+msgstr "Est une campagne d'envois activée"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
@@ -816,26 +818,26 @@ msgstr "Activité marketing"
 #: model:ir.module.category,name:marketing_automation.module_marketing_automation_category
 #: model:ir.ui.menu,name:marketing_automation.marketing_automation_menu
 msgid "Marketing Automation"
-msgstr "Automatisation du Marketing"
+msgstr "Marketing Automation"
 
 #. module: marketing_automation
 #: model:ir.actions.act_window,name:marketing_automation.mail_mass_mailing_action_marketing_automation
 msgid "Marketing Automation Mailings"
-msgstr "Mailings Marketing Automation"
+msgstr "Envois dans Marketing Automation"
 
 #. module: marketing_automation
 #: model:ir.actions.server,name:marketing_automation.ir_cron_campaign_execute_activities_ir_actions_server
 #: model:ir.cron,cron_name:marketing_automation.ir_cron_campaign_execute_activities
 #: model:ir.cron,name:marketing_automation.ir_cron_campaign_execute_activities
 msgid "Marketing Automation: execute activities"
-msgstr "Automatisation marketing: exécution des activités"
+msgstr "Marketing Automation : exécution des activités"
 
 #. module: marketing_automation
 #: model:ir.actions.server,name:marketing_automation.ir_cron_campaign_sync_participants_ir_actions_server
 #: model:ir.cron,cron_name:marketing_automation.ir_cron_campaign_sync_participants
 #: model:ir.cron,name:marketing_automation.ir_cron_campaign_sync_participants
 msgid "Marketing Automation: sync participants"
-msgstr "Automatisation marketing: synchronisation des participants"
+msgstr "Marketing Automation : synchronisation des participants"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_marketing_campaign
@@ -869,30 +871,30 @@ msgid ""
 "Marketing campaigns use mass mailings with some specific behavior; this "
 "field is used to indicate its statistics may be suspicious."
 msgstr ""
-"Les compagnes marketing utilisent des publipostages avec un comportement "
+"Les compagnes marketing utilisent l'Email Marketing avec un comportement "
 "spécifique. Ce champ est utilisé pour indiquer que ses statistiques peuvent "
 "être suspectes."
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_mailing_mailing
 msgid "Mass Mailing"
-msgstr "Publipostage"
+msgstr "Email Marketing"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_mailing_trace_report
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_form
 msgid "Mass Mailing Statistics"
-msgstr "Statistiques de emails de masse"
+msgstr "Statistiques de l'Email Marketing"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_mail_ids
 msgid "Mass Mailings"
-msgstr "Publipostages"
+msgstr "Email Marketing"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__mailing_trace_ids
 msgid "Mass mailing statistics"
-msgstr "Statistiques du publipostage"
+msgstr "Statistiques des envois de masse"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__model_id
@@ -938,8 +940,8 @@ msgstr "Pas d'activité"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
-msgid "No activity added"
-msgstr "Aucune activité ajoutée"
+msgid "No activity for this campaign."
+msgstr ""
 
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.link_tracker_action_marketing_campaign
@@ -986,7 +988,7 @@ msgstr "Pas encore répondu"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__mailing_mail_count
 msgid "Number of Mass Mailing"
-msgstr "Nombre de publipostages"
+msgstr "Nombre d'envois de masse"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__click_count
@@ -1157,7 +1159,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 msgid "Remove from Templates"
-msgstr ""
+msgstr "Retirer des modèles"
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_participant__state__unlinked
@@ -1251,7 +1253,7 @@ msgstr "Rechercher des traces"
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_campaign__ab_testing_winner_selection
 msgid "Selection to determine the winner mailing that will be sent."
-msgstr ""
+msgstr "Sélection pour déterminer l'envoi gagnant qui sera envoyé."
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_schedule_datetime
@@ -1436,12 +1438,12 @@ msgid ""
 "marketing automation group."
 msgstr ""
 "Pour utiliser cette fonctionnalité, vous devez être un administrateur ou "
-"appartenir au groupe Automatisation Marketing."
+"appartenir au groupe Marketing Automation."
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_total_pc
 msgid "Total A/B test percentage"
-msgstr ""
+msgstr "Pourcentage total de tests A/B"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__total_bounce
@@ -1572,7 +1574,7 @@ msgstr "Semaines"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__ab_testing_winner_selection
 msgid "Winner Selection"
-msgstr ""
+msgstr "Sélection du gagnant"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -1592,6 +1594,8 @@ msgid ""
 "You are trying to set the activity \"%s\" as \"%s\" while its child \"%s\" has the trigger type \"%s\"\n"
 "Please modify one of those activities before saving."
 msgstr ""
+"Vous essayez de définir l'activité \"%s\" comme \"%s\" alors que l'activité enfant enfant \"%s\" a le déclencheur de type \"%s\"\n"
+"Veuillez modifier une de ces activités avant de sauvegarder."
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/utm_campaign.py:0
@@ -1600,6 +1604,8 @@ msgid ""
 "You cannot delete these UTM Campaigns as they are linked to the following marketing campaigns in Marketing Automation:\n"
 "%(campaign_names)s"
 msgstr ""
+"Vous ne pouvez pas supprimer ces campagnes UTM car elles sont liées aux campagnes marketing suivantes dans l'application Marketing Automation :\n"
+"%(campaign_names)s"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/utm_source.py:0
@@ -1608,6 +1614,8 @@ msgid ""
 "You cannot delete these UTM Sources as they are linked to the following marketing activities in Marketing Automation:\n"
 "%(activities_names)s"
 msgstr ""
+"Vous ne pouvez pas supprimer ces sources UTM car elles sont liées aux activités marketing suivantes dans l'application Marketing Automation :\n"
+"%(activities_names)s"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
@@ -1634,9 +1642,9 @@ msgstr "par ex. les offres eCommerce"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "e.g. eCommerce Offers Plan"
-msgstr ""
+msgstr "par ex. Plan d'offres eCommerce"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
 msgid "to generate a Test Participant"
-msgstr ""
+msgstr "pour générer un participant test"

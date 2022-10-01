@@ -799,7 +799,7 @@ msgstr "nooit"
 #. module: spreadsheet_edition
 #: model:ir.model.constraint,message:spreadsheet_edition.constraint_spreadsheet_revision_parent_revision_unique
 msgid "o-spreadsheet revision refused due to concurrency"
-msgstr "o-spreadsheetrevisie geweigerd vanwege gelijktijdigheid"
+msgstr "o-spreadsheetrevisie afgewezen vanwege gelijktijdigheid"
 
 #. module: spreadsheet_edition
 #. openerp-web

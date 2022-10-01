@@ -62,7 +62,7 @@ msgstr "Planification"
 #. module: hr_work_entry_contract_planning
 #: model:ir.model,name:hr_work_entry_contract_planning.model_planning_slot
 msgid "Planning Shift"
-msgstr "Poste de Planning"
+msgstr "Un poste du Planning"
 
 #. module: hr_work_entry_contract_planning
 #: model:ir.model.fields,field_description:hr_work_entry_contract_planning.field_hr_work_entry__planning_slot_id

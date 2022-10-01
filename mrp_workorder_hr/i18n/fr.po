@@ -3,9 +3,9 @@
 # 	* mrp_workorder_hr
 # 
 # Translators:
-# Cécile Collart <cco@odoo.com>, 2022
 # e2f <projects@e2f.com>, 2022
 # Martin Trigaux, 2022
+# Cécile Collart <cco@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +26,7 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/components/working_employee_popup.xml:0
 #, python-format
 msgid "+ New Operator"
-msgstr ""
+msgstr "+ Nouvel opérateur"
 
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workorder_view_tablet_form_inherit_workorder_hr
@@ -34,6 +34,8 @@ msgid ""
 "<span attrs=\"{'invisible': [('employee_name', '!=', False)]}\">Log In "
 "</span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('employee_name', '!=', False)]}\">Se "
+"connecter</span>"
 
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workcenter_form_view_inherit
@@ -115,12 +117,12 @@ msgstr "Connexion"
 #: code:addons/mrp_workorder_hr/static/src/js/mrp_workorder_hr.js:0
 #, python-format
 msgid "Logged in!"
-msgstr ""
+msgstr "Connecté !"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_routing_workcenter__employee_ratio
 msgid "Number of employee needed to produce one batch"
-msgstr ""
+msgstr "Nombre d'employés nécessaires pour produire un lot"
 
 #. module: mrp_workorder_hr
 #. openerp-web
@@ -144,7 +146,7 @@ msgstr "Mot de passe ? "
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_propose_change
 msgid "Propose a change in the production"
-msgstr ""
+msgstr "Proposer un changement dans la production"
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_quality_check
@@ -208,7 +210,7 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/js/mrp_workorder_hr.js:0
 #, python-format
 msgid "Wrong password !"
-msgstr ""
+msgstr "Mauvais mot de passe !"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_workcenter_productivity__employee_id
@@ -218,12 +220,12 @@ msgstr ""
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter_productivity__employee_cost
 msgid "employee_cost"
-msgstr ""
+msgstr "employee_cost"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__employee_ids
 msgid "employees with access"
-msgstr ""
+msgstr "employés avec accès"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_workcenter__employee_ids
@@ -233,4 +235,4 @@ msgstr ""
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workcenter_form_view_inherit
 msgid "per employee"
-msgstr ""
+msgstr "par employé"

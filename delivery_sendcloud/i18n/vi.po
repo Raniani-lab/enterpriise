@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-09-27 15:40+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
@@ -23,13 +23,13 @@ msgstr ""
 #. module: delivery_sendcloud
 #: code:addons/delivery_sendcloud/models/sendcloud_service.py:0
 #, python-format
-msgid "%s email required"
+msgid "%(partner_name)s email required"
 msgstr ""
 
 #. module: delivery_sendcloud
 #: code:addons/delivery_sendcloud/models/sendcloud_service.py:0
 #, python-format
-msgid "%s phone required"
+msgid "%(partner_name)s phone required"
 msgstr ""
 
 #. module: delivery_sendcloud

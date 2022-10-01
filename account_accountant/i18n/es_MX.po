@@ -3,9 +3,9 @@
 # 	* account_accountant
 # 
 # Translators:
+# Martin Trigaux, 2022
 # Lucia Pacheco <lpo@odoo.com>, 2022
 # Braulio D. López Vázquez <bdl@odoo.com>, 2022
-# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:22+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Braulio D. López Vázquez <bdl@odoo.com>, 2022\n"
 "Language-Team: Spanish (Mexico) (https://www.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,6 +28,8 @@ msgid ""
 "%(display_name_html)s with an open amount of %(open_amount)s will be fully "
 "reconciled by the transaction."
 msgstr ""
+"%(display_name_html)s con un importe abierto de %(open_amount)s se "
+"conciliará por completo en la transacción."
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
@@ -36,6 +38,8 @@ msgid ""
 "%(display_name_html)s with an open amount of %(open_amount)s will be reduced"
 " by %(amount)s."
 msgstr ""
+"%(display_name_html)s con un importe abierto de %(open_amount)s se reducirá "
+"en %(amount)s."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_form
@@ -45,7 +49,7 @@ msgstr "-> Conciliar"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_form_inherit
 msgid "1 Bank Transaction"
-msgstr ""
+msgstr "1 Transacción bancaria"
 
 #. module: account_accountant
 #: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_0
@@ -103,16 +107,19 @@ msgid ""
 "('form_single_currency_mode', '=', True), ('form_index', '=', "
 "False)]}\">in</span>"
 msgstr ""
+"<span class=\"ml4 mr4\" attrs=\"{'invisible': ['|', "
+"('form_single_currency_mode', '=', True), ('form_index', '=', "
+"False)]}\">en</span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "<span class=\"ml4 mr4\">-</span>"
-msgstr ""
+msgstr "<span class=\"ml4 mr4\">-</span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "<span class=\"ml4 mr4\">in</span>"
-msgstr ""
+msgstr "<span class=\"ml4 mr4\">en</span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
@@ -121,6 +128,9 @@ msgid ""
 "                                                        <span class=\"o_tag_badge_text\" style=\"color: white\">Matched</span>\n"
 "                                                    </span>"
 msgstr ""
+"<span class=\"o_badge_text\">\n"
+"                                                        <span class=\"o_tag_badge_text\" style=\"color: white\">Emparejado</span>\n"
+"                                                    </span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
@@ -129,6 +139,9 @@ msgid ""
 "                                                        <span class=\"o_tag_badge_text\">To check</span>\n"
 "                                                    </span>"
 msgstr ""
+"<span class=\"o_badge_text\">\n"
+"                                                        <span class=\"o_tag_badge_text\">Por revisar</span>\n"
+"                                                    </span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -137,6 +150,9 @@ msgid ""
 "('form_single_currency_mode', '=', True), ('form_force_negative_sign', '=', "
 "False), ('form_index', '=', False)]}\">-</span>"
 msgstr ""
+"<span class=\"o_form_label\" attrs=\"{'invisible': ['|', '|', "
+"('form_single_currency_mode', '=', True), ('form_force_negative_sign', '=', "
+"False), ('form_index', '=', False)]}\">-</span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -145,6 +161,9 @@ msgid ""
 "('form_force_negative_sign', '=', False), ('form_index', '=', "
 "False)]}\">-</span>"
 msgstr ""
+"<span class=\"o_form_label\" attrs=\"{'invisible': ['|', "
+"('form_force_negative_sign', '=', False), ('form_index', '=', "
+"False)]}\">-</span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -234,12 +253,12 @@ msgstr "Fechas de cierre contable"
 #: model:ir.actions.act_window,name:account_accountant.action_bank_statement_line_form_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_form_bank_rec_widget
 msgid "Add a Transaction"
-msgstr ""
+msgstr "Agregar una transacción"
 
 #. module: account_accountant
 #: model_terms:ir.actions.act_window,help:account_accountant.account_tag_action
 msgid "Add a new tag"
-msgstr "Añadir nueva etiqueta"
+msgstr "Agregar nueva etiqueta"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
@@ -263,7 +282,7 @@ msgstr "Permite definir años fiscales para más de 1 año o menos de 1 año."
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__amls_widget
 msgid "Amls Widget"
-msgstr ""
+msgstr "Widget Amls"
 
 #. module: account_accountant
 #. openerp-web
@@ -303,7 +322,7 @@ msgstr "Cuenta analítica"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__analytic_distribution_stored_char
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_distribution_stored_char
 msgid "Analytic Distribution Stored Char"
-msgstr ""
+msgstr "Char que almacena la distribución analítica"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__use_anglo_saxon
@@ -350,6 +369,7 @@ msgstr "Línea de estado de cuenta bancario"
 #: model:ir.model,name:account_accountant.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
 msgstr ""
+"Widget de conciliación bancaria para una sola línea del estado de cuenta"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
@@ -473,7 +493,7 @@ msgstr "Crear modelo de conciliación"
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_bank_statement_form_bank_rec_widget
 msgid "Create Statement"
-msgstr ""
+msgstr "Crear estado de cuenta"
 
 #. module: account_accountant
 #. openerp-web
@@ -528,7 +548,7 @@ msgstr "Crédito"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_bank_statement_line__cron_last_check
 msgid "Cron Last Check"
-msgstr ""
+msgstr "Última verificación del cron"
 
 #. module: account_accountant
 #. openerp-web
@@ -566,7 +586,7 @@ msgstr "Definir años fiscales de más de 1 año o menos de 1 año."
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Deposits"
-msgstr ""
+msgstr "Depósitos"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_digest_digest
@@ -589,20 +609,20 @@ msgstr "Nombre en pantalla"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__display_stroked_amount_currency
 msgid "Display Stroked Amount Currency"
-msgstr ""
+msgstr "Mostrar la divisa del importe trazado"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__display_stroked_balance
 msgid "Display Stroked Balance"
-msgstr ""
+msgstr "Mostrar balance trazado"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/digest.py:0
 #, python-format
 msgid "Do not have access, skip this data for user's digest email"
 msgstr ""
-"No tiene acceso, omita esta información para el correo electrónico del "
-"usuario"
+"No tiene acceso, omita esta información para el resumen del correo "
+"electrónico del usuario"
 
 #. module: account_accountant
 #. openerp-web
@@ -614,7 +634,7 @@ msgstr "Fecha de vencimiento"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_fiscal_year__date_to
 msgid "End Date"
-msgstr "Fecha final"
+msgstr "Fecha de finalización"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_fiscal_year__date_to
@@ -686,102 +706,102 @@ msgstr "Marcar"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__force_price_included_taxes
 msgid "Force Price Included Taxes"
-msgstr ""
+msgstr "Forzar precio con impuestos incluidos"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_account_id
 msgid "Form Account"
-msgstr ""
+msgstr "Cuenta de formulario"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_amount_currency
 msgid "Form Amount Currency"
-msgstr ""
+msgstr "Divisa del importe del formulario"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_balance
 msgid "Form Balance"
-msgstr ""
+msgstr "Balance del formulario"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_currency_id
 msgid "Form Currency"
-msgstr ""
+msgstr "Divisa del formulario"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_extra_text
 msgid "Form Extra Text"
-msgstr ""
+msgstr "Texto adicional del formulario"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_flag
 msgid "Form Flag"
-msgstr ""
+msgstr "Marcar formulario"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_force_negative_sign
 msgid "Form Force Negative Sign"
-msgstr ""
+msgstr "Forzar signo negativo en el formulario"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_index
 msgid "Form Index"
-msgstr ""
+msgstr "Índice del formulario"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_name
 msgid "Form Name"
-msgstr ""
+msgstr "Nombre del formulario"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_id
 msgid "Form Partner"
-msgstr ""
+msgstr "Partner del formulario"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_currency_id
 msgid "Form Partner Currency"
-msgstr ""
+msgstr "Divisa del partner del formulario"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_payable_account_id
 msgid "Form Partner Payable Account"
-msgstr ""
+msgstr "Cuenta por pagar del partner del formulario"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_payable_amount
 msgid "Form Partner Payable Amount"
-msgstr ""
+msgstr "Importe por pagar del partner del formulario"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_receivable_account_id
 msgid "Form Partner Receivable Account"
-msgstr ""
+msgstr "Cuenta por cobrar del partner del formulario"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_receivable_amount
 msgid "Form Partner Receivable Amount"
-msgstr ""
+msgstr "Importe por cobrar del partner del formulario"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_single_currency_mode
 msgid "Form Single Currency Mode"
-msgstr ""
+msgstr "Modo de única divisa del formulario"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_suggest_amount_currency
 msgid "Form Suggest Amount Currency"
-msgstr ""
+msgstr "Sugerir divisa del importe del formulario"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_suggest_balance
 msgid "Form Suggest Balance"
-msgstr ""
+msgstr "Sugerir balance del formulario"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_tax_ids
 msgid "Form Tax"
-msgstr ""
+msgstr "Impuesto del formulario"
 
 #. module: account_accountant
 #: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_0
@@ -836,7 +856,7 @@ msgstr "¡Excelente! Continuemos."
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__group_tax_id
 msgid "Group Tax"
-msgstr ""
+msgstr "Grupo de impuestos"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__id
@@ -870,17 +890,17 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__index
 msgid "Index"
-msgstr ""
+msgstr "Índice"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__invalid
 msgid "Invalid"
-msgstr ""
+msgstr "No válido"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Invalid statements"
-msgstr ""
+msgstr "Estados de cuenta inválidos"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_bank_rec_widget__state
@@ -889,6 +909,9 @@ msgid ""
 "Valid: The bank transaction can be validated.\n"
 "Reconciled: The bank transaction has already been processed. Nothing left to do."
 msgstr ""
+"No válida: la transacción bancaria no se puede validar porque la cuenta transitoria aún está involucrada\n"
+"Válida: la transacción bancaria se puede validar.\n"
+"Conciliada: la transacción bancaria ya se procesó. No hay nada por hacer."
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_company__invoicing_switch_threshold
@@ -913,7 +936,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
 msgid "Items"
-msgstr "Elementos"
+msgstr "Apuntes"
 
 #. module: account_accountant
 #. openerp-web
@@ -1053,12 +1076,12 @@ msgstr "Línea"
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_bank_rec_widget_line
 msgid "Line of the lines_widget"
-msgstr ""
+msgstr "Línea de lines_widget"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__lines_widget
 msgid "Lines Widget"
-msgstr ""
+msgstr "Widget de líneas"
 
 #. module: account_accountant
 #. openerp-web
@@ -1101,12 +1124,12 @@ msgstr "Operaciones manuales"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_tree_bank_rec_widget
 #, python-format
 msgid "Match"
-msgstr "Coincidir"
+msgstr "Emparejar"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Match Existing Entries"
-msgstr ""
+msgstr "Emparejar asientos existentes"
 
 #. module: account_accountant
 #. openerp-web
@@ -1118,18 +1141,18 @@ msgstr "Empareje con entradas que no son de cuentas por cobrar/por pagar"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Matched"
-msgstr ""
+msgstr "Emparejado"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/account_payment.py:0
 #, python-format
 msgid "Matched Transactions"
-msgstr ""
+msgstr "Transacciones emparejadas"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__matching_rules_allow_auto_reconcile
 msgid "Matching Rules Allow Auto Reconcile"
-msgstr ""
+msgstr "Las reglas de emparejamiento permiten la conciliación automática"
 
 #. module: account_accountant
 #. openerp-web
@@ -1167,7 +1190,7 @@ msgstr "Nuevo"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__next_action_todo
 msgid "Next Action Todo"
-msgstr ""
+msgstr "Siguiente acción por hacer"
 
 #. module: account_accountant
 #. openerp-web
@@ -1180,7 +1203,7 @@ msgstr "No hay archivos adjuntos vinculados."
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "No statement"
-msgstr ""
+msgstr "Sin estado de cuenta"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__tax_lock_date
@@ -1197,13 +1220,13 @@ msgid ""
 "No users, including Advisers, can edit accounts prior to and inclusive of "
 "this date. Use it for fiscal year locking for example."
 msgstr ""
-"Ningún usuario, asesores incluidos, puede editar cuentas antes de y en esta "
-"fecha. Utilícela, por ejemplo, para bloquear un año fiscal."
+"Ningún usuario, incluyendo asesores, pueden editar cuentas antes de y en "
+"esta fecha. Utilice esto para bloquear un año fiscal, por ejemplo."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Not Matched"
-msgstr ""
+msgstr "No emparejado"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -1232,12 +1255,12 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
 msgid "Open Amount"
-msgstr ""
+msgstr "Importe abierto"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
 msgid "Open Amount (in Currency)"
-msgstr ""
+msgstr "Importe abierto (en divisa)"
 
 #. module: account_accountant
 #. openerp-web
@@ -1250,7 +1273,7 @@ msgstr "Balance abierto"
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Open balance: %s"
-msgstr ""
+msgstr "Balance abierto: %s"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
@@ -1290,7 +1313,7 @@ msgstr "Por pagar"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Payable:"
-msgstr ""
+msgstr "Por pagar:"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_payment_form_inherit_account_accountant
@@ -1330,7 +1353,7 @@ msgstr "Elija una fecha que bloquear"
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Please install the 'Accounting Reports' module."
-msgstr ""
+msgstr "Por favor, instale el módulo de \"Reportes de contabilidad\"."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1360,6 +1383,8 @@ msgid ""
 "Prevents Journal entries creation prior to the defined date. Except for "
 "Accountants users."
 msgstr ""
+"Impide la creación de asientos de diario antes de la fecha definida. Excepto"
+" para los usuarios contadores."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__tax_lock_date
@@ -1389,7 +1414,7 @@ msgstr "Por cobrar"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Receivable:"
-msgstr ""
+msgstr "Por cobrar:"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
@@ -1399,7 +1424,7 @@ msgstr "Entregado"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__reco_models_widget
 msgid "Reco Models Widget"
-msgstr ""
+msgstr "Widget de modelos de conciliación"
 
 #. module: account_accountant
 #. openerp-web
@@ -1416,7 +1441,7 @@ msgstr "Conciliar"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__reconcile_model_id
 msgid "Reconcile Model"
-msgstr ""
+msgstr "Modelo de conciliación"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__reconciled
@@ -1433,7 +1458,7 @@ msgstr "Conciliación"
 #: code:addons/account_accountant/models/account_bank_statement.py:0
 #, python-format
 msgid "Reconciliation of %s"
-msgstr ""
+msgstr "Conciliación de %s"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1491,7 +1516,7 @@ msgstr "Seleccionar partner"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__selected_aml_ids
 msgid "Selected Aml"
-msgstr ""
+msgstr "AML seleccionado"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -1522,42 +1547,42 @@ msgstr "Algunos campos no están definidos"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_id
 msgid "Source Aml"
-msgstr ""
+msgstr "AML de origen"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_move_id
 msgid "Source Aml Move"
-msgstr ""
+msgstr "Movimiento de AML de origen"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_move_name
 msgid "Source Aml Move Name"
-msgstr ""
+msgstr "Nombre del movimiento de AML de origen"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_amount_currency
 msgid "Source Amount Currency"
-msgstr ""
+msgstr "Divisa del importe de origen"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_balance
 msgid "Source Balance"
-msgstr ""
+msgstr "Balance de origen"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_credit
 msgid "Source Credit"
-msgstr ""
+msgstr "Crédito de origen"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_debit
 msgid "Source Debit"
-msgstr ""
+msgstr "Débito de origen"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__st_line_id
 msgid "St Line"
-msgstr ""
+msgstr "Línea St"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_fiscal_year__date_from
@@ -1598,7 +1623,7 @@ msgstr "Impuesto"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_base_amount_currency
 msgid "Tax Base Amount Currency"
-msgstr ""
+msgstr "Divisa del importe de base de impuestos"
 
 #. module: account_accountant
 #. openerp-web
@@ -1625,7 +1650,7 @@ msgstr "Fecha de bloqueo de la declaración de impuestos"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_tag_ids
 msgid "Tax Tag"
-msgstr ""
+msgstr "Etiqueta de impuesto"
 
 #. module: account_accountant
 #. openerp-web
@@ -1663,6 +1688,8 @@ msgid ""
 "The invoice %(display_name_html)s with an open amount of %(open_amount)s "
 "will be entirely paid by the transaction."
 msgstr ""
+"La factura %(display_name_html)s con un importe abierto de %(open_amount)s "
+"será pagada por completo por la transacción."
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
@@ -1671,6 +1698,8 @@ msgid ""
 "The invoice %(display_name_html)s with an open amount of %(open_amount)s "
 "will be reduced by %(amount)s."
 msgstr ""
+"La factura %(display_name_html)s con un importe abierto de %(open_amount)s "
+"se reducirá en %(amount)s."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1719,7 +1748,7 @@ msgstr "Consejo: actualice los apuntes de diario de forma masiva"
 #. module: account_accountant
 #: model:digest.tip,name:account_accountant.digest_tip_account_accountant_1
 msgid "Tip: Find an Accountant or register your Accounting Firm"
-msgstr "Consejo: Encuentre un contador o registre su firma de contabilidad"
+msgstr "Consejo: encuentre un contador o registre su firma de contabilidad"
 
 #. module: account_accountant
 #. openerp-web
@@ -1741,7 +1770,7 @@ msgstr "Para agilizar la conciliación, defina"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__todo_command
 msgid "Todo Command"
-msgstr ""
+msgstr "Comando por hacer"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -1751,12 +1780,12 @@ msgstr "Transacción"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__transaction_currency_id
 msgid "Transaction Currency"
-msgstr ""
+msgstr "Divisa de la transacción"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Transaction Date"
-msgstr ""
+msgstr "Fecha de la transacción"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/account_move.py:0
@@ -1769,13 +1798,13 @@ msgstr "Cuenta de transferencias"
 #: model:ir.cron,cron_name:account_accountant.auto_reconcile_bank_statement_line
 #: model:ir.cron,name:account_accountant.auto_reconcile_bank_statement_line
 msgid "Try to reconcile automatically your statement lines"
-msgstr ""
+msgstr "Trate de conciliar de forma automática sus líneas de estado de cuenta"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/res_company.py:0
 #, python-format
 msgid "Unreconciled statements lines"
-msgstr ""
+msgstr "Líneas de estado de cuenta sin conciliar"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__valid
@@ -1809,7 +1838,7 @@ msgstr "Asistente"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__company_currency_id
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__company_currency_id
 msgid "Wizard Company Currency"
-msgstr ""
+msgstr "Divisa de la empresa del asistente"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/reconciliation_widget.py:0
@@ -1841,6 +1870,8 @@ msgid ""
 "You can't have maximum one auto balance line at the same time in the bank "
 "reconciliation widget"
 msgstr ""
+"No puede tener como máximo una línea de balance automático al mismo tiempo "
+"que la conciliación bancaria"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
@@ -1849,6 +1880,8 @@ msgid ""
 "You can't have multiple liquidity journal item at the same time in the bank "
 "reconciliation widget"
 msgstr ""
+"No puede tener múltiples apuntes de diario de liquidez al mismo tiempo que "
+"en el widget de conciliación bancaria"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
@@ -1857,6 +1890,8 @@ msgid ""
 "You can't have multiple times the same journal item in the bank "
 "reconciliation widget"
 msgstr ""
+"No puede tener el mismo apunte de diario varias veces en el widget de "
+"conciliación bancaria"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/account_move.py:0
@@ -1874,6 +1909,7 @@ msgstr ""
 msgid ""
 "You might want to %(btn_start)sfully reconcile%(btn_end)s the document."
 msgstr ""
+"Tal vez quiera %(btn_start)sconciliar por completo%(btn_end)s el documento."
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
@@ -1882,12 +1918,14 @@ msgid ""
 "You might want to make a %(btn_start)spartial reconciliation%(btn_end)s "
 "instead."
 msgstr ""
+"Tal vez quiera realizar una %(btn_start)sconciliación parcial%(btn_end)s en "
+"su lugar."
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "You might want to record a %(btn_start)spartial payment%(btn_end)s."
-msgstr ""
+msgstr "Tal vez quiera registrar un %(btn_start)spago parcial%(btn_end)s."
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
@@ -1895,6 +1933,8 @@ msgstr ""
 msgid ""
 "You might want to set the invoice as %(btn_start)sfully paid%(btn_end)s."
 msgstr ""
+"Tal vez quiera establecer la factura como %(btn_start)stotalmente "
+"pagada%(btn_end)s."
 
 #. module: account_accountant
 #. openerp-web
@@ -1906,7 +1946,7 @@ msgstr "Concilió"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__aml
 msgid "aml"
-msgstr ""
+msgstr "aml"
 
 #. module: account_accountant
 #. openerp-web
@@ -1918,7 +1958,7 @@ msgstr "y el seguimiento de los clientes"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__auto_balance
 msgid "auto_balance"
-msgstr ""
+msgstr "auto_balance"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_reconcile_model_widget_wizard
@@ -1928,22 +1968,22 @@ msgstr "Por ejemplo, comisiones bancarias"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__early_payment
 msgid "early_payment"
-msgstr ""
+msgstr "early_payment"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__liquidity
 msgid "liquidity"
-msgstr ""
+msgstr "liquidez"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__manual
 msgid "manual"
-msgstr ""
+msgstr "manual"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__new_aml
 msgid "new_aml"
-msgstr ""
+msgstr "new_aml"
 
 #. module: account_accountant
 #. openerp-web
@@ -1969,7 +2009,7 @@ msgstr "segundos por transacción."
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__tax_line
 msgid "tax_line"
-msgstr ""
+msgstr "tax_line"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view

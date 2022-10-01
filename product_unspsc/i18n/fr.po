@@ -3,8 +3,8 @@
 # 	* product_unspsc
 # 
 # Translators:
-# Cécile Collart <cco@odoo.com>, 2022
 # Martin Trigaux, 2022
+# Cécile Collart <cco@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:24+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -116,14 +116,14 @@ msgstr ""
 #. module: product_unspsc
 #: model_terms:ir.ui.view,arch_db:product_unspsc.product_template_unspsc
 msgid "UNSPSC"
-msgstr ""
+msgstr "UNSPSC"
 
 #. module: product_unspsc
 #: model:ir.model.fields,field_description:product_unspsc.field_product_product__unspsc_code_id
 #: model:ir.model.fields,field_description:product_unspsc.field_product_template__unspsc_code_id
 #: model:ir.model.fields,field_description:product_unspsc.field_uom_uom__unspsc_code_id
 msgid "UNSPSC Category"
-msgstr ""
+msgstr "Catégorie UNSPSC"
 
 #. module: product_unspsc
 #: model:ir.model.fields.selection,name:product_unspsc.selection__product_unspsc_code__applies_to__uom

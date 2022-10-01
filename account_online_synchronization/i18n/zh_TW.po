@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:23+0000\n"
+"POT-Creation-Date: 2022-09-27 15:40+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
@@ -105,6 +105,13 @@ msgstr "活動狀態"
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__activity_type_icon
 msgid "Activity Type Icon"
 msgstr "活動類型圖示"
+
+#. module: account_online_synchronization
+#. openerp-web
+#: code:addons/account_online_synchronization/static/src/xml/online_sync_template.xml:0
+#, python-format
+msgid "Add A Bank Account"
+msgstr ""
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_attachment_count
@@ -777,10 +784,8 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:account_online_synchronization.action_account_online_link_form
 msgid ""
 "To create a synchronization with your banking institution,<br>\n"
-"                please click on <b>Add a Bank Account</b> in <b>Configuration</b> menu."
+"                please click on <b>Add a Bank Account</b>."
 msgstr ""
-"To create a synchronization with your banking institution,<br>\n"
-"                please click on <b>Add a Bank Account</b> in <b>Configuration</b> menu."
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__access_token

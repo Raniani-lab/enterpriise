@@ -69,7 +69,7 @@ msgid ""
 "            has refused the document"
 msgstr ""
 ")\n"
-"            heeft het document geweigerd"
+"            heeft het document afgewezen"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
@@ -528,7 +528,7 @@ msgstr ""
 #: model:ir.model.fields,help:sign.field_sign_send_request__refusal_allowed
 msgid "Allow the contacts to refuse the document for a specific reason."
 msgstr ""
-"Sta de contacten toe om het document om een specifieke reden te weigeren."
+"Sta de contacten toe om het document om een specifieke reden af te wijzen."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
@@ -670,7 +670,7 @@ msgstr "CC-bericht"
 #: model:ir.model.fields,field_description:sign.field_sign_request__refusal_allowed
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__refusal_allowed
 msgid "Can be refused"
-msgstr "Kan worden geweigerd"
+msgstr "Kan worden afgewezen"
 
 #. module: sign
 #. openerp-web
@@ -874,7 +874,7 @@ msgid ""
 " signed or refused."
 msgstr ""
 "Contactpersonen in kopie worden per e-mail op de hoogte gebracht zodra het "
-"document volledig is ondertekend of geweigerd."
+"document volledig is ondertekend of afgewezen."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__cc_partner_ids
@@ -2301,7 +2301,7 @@ msgstr "Doorverwijzing URL"
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__action__refuse
 #, python-format
 msgid "Refuse"
-msgstr "Afkeuren"
+msgstr "Afwijzen"
 
 #. module: sign
 #. openerp-web
@@ -2310,7 +2310,7 @@ msgstr "Afkeuren"
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 #, python-format
 msgid "Refuse Document"
-msgstr "Document weigeren"
+msgstr "Document afwijzen"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_request__state__refused
@@ -2322,13 +2322,13 @@ msgstr "Afgewezen"
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__request_state__refused
 msgid "Refused Signature"
-msgstr "Geweigerde handtekening"
+msgstr "Handtekening afgewezen"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 #: model_terms:ir.ui.view,arch_db:sign.signer_status_wrapper
 msgid "Refused on"
-msgstr "Geweigerd aan"
+msgstr "Afgewezen op"
 
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_reports
@@ -3052,7 +3052,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Sorry, you cannot refuse this document"
-msgstr "Sorry, je kunt dit document niet weigeren"
+msgstr "Sorry, je kunt dit document niet afwijzen"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__set_sign_order
@@ -3300,7 +3300,7 @@ msgstr "Het document (%s) is afgewezen door een van de ondertekenaars"
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "The document has been refused"
-msgstr "Het document is geweigerd"
+msgstr "Het document is afgwezen"
 
 #. module: sign
 #: code:addons/sign/models/sign_request.py:0
@@ -3371,7 +3371,7 @@ msgstr "Het tekenverzoek is niet volledig ondertekend"
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "The signature has been refused by %s(%s)"
-msgstr "De handtekening is geweigerd door %s(%s)"
+msgstr "De handtekening is afgewezen door %s(%s)"
 
 #. module: sign
 #: code:addons/sign/models/sign_request.py:0
@@ -3451,7 +3451,7 @@ msgstr "Dit is hoe het document genoemd zal worden in de e-mail"
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "This sign request cannot be refused"
-msgstr "Dit tekenverzoek kan niet worden geweigerd"
+msgstr "Dit tekenverzoek kan niet worden afgewezen"
 
 #. module: sign
 #: code:addons/sign/models/sign_request.py:0
@@ -3469,7 +3469,7 @@ msgstr "Dit tekenverzoek kan niet worden ingevuld"
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "This sign request item cannot be refused"
-msgstr "Dit tekenverzoek kan niet worden geweigerd"
+msgstr "Dit tekenverzoek kan niet worden afgewezen"
 
 #. module: sign
 #: code:addons/sign/models/sign_request.py:0
@@ -3810,7 +3810,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "Why do you refuse to sign this document?"
-msgstr "Waarom weigert je dit document te ondertekenen?"
+msgstr "Waarom wijs je dit document af om te ondertekenen?"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__width
@@ -3867,7 +3867,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_refused
 msgid "You have refused the document"
-msgstr "U heeft het document geweigerd"
+msgstr "U heeft het document afgewezen"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner

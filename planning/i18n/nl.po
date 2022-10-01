@@ -65,17 +65,17 @@ msgstr "16:00 uur"
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "1:00 PM - 5:00 PM (2h)"
-msgstr "13:00 - 17:00 (2u)"
+msgstr "1:00 PM - 5:00 PM (2h)"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "1:00 PM - 5:00 PM (2h) - Jeffrey Kelly"
-msgstr "13:00 - 17:00 (2u) - Jeffrey Kelly"
+msgstr "1:00 PM - 5:00 PM (2h) - Jeffrey Kelly"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "1:00 PM - 5:00 PM (4h) - Jeffrey Kelly"
-msgstr "13:00 - 17:00 (4u) - Jeffrey Kelly"
+msgstr "1:00 PM - 5:00 PM (4h) - Jeffrey Kelly"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -418,8 +418,8 @@ msgid ""
 "<i title=\"Create\" class=\"o_gantt_cell_add fa fa-plus d-flex justify-"
 "content-center \"></i>"
 msgstr ""
-"<i title=\"Creëren\" class=\"o_gantt_cell_add fa fa-plus d-flex "
-"rechtvaardigen-content-center \"></i>"
+"<i title=\"Aanmaken\" class=\"o_gantt_cell_add fa fa-plus d-flex justify-"
+"content-center \"></i>"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
@@ -571,8 +571,9 @@ msgid ""
 msgstr ""
 "<span class=\"position-absolute o_gantt_progressbar o_gantt_group_success\" "
 "style=\"width: 32.5%;\"> </span> <span class=\"position-absolute "
-"o_gantt_text_hoverable o_gantt_group_success\"> <span class=\"o_hours "
-"px_group\" regelhoogte: 35px;\"> 13 uur / 40 uur (32,5%) </span> </span>"
+"o_gantt_text_hoverable o_gantt_group_success\"> <span "
+"class=\"o_gantt_group_hours px-1\" style=\"line-height: 35px;\"> 13 uur / 40"
+" uur (32,5%) </span> </span>"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -610,7 +611,7 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
 msgid "ASSIGN TO ME"
-msgstr "WIJS AAN MIJ toe"
+msgstr "WIJS AAN MIJ TOE"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_role__active
@@ -623,7 +624,7 @@ msgstr "Actief"
 #: code:addons/planning/static/src/js/planning_gantt_controller.js:0
 #, python-format
 msgid "Add Shift"
-msgstr "Shift toevoegen"
+msgstr "Dienst toevoegen"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_send_view_form
@@ -826,7 +827,7 @@ msgstr "Bevestig het verwijderen van slots."
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__conflicting_slot_ids
 msgid "Conflicting Slot"
-msgstr "Conflicterende sleuf"
+msgstr "Conflicterend slot"
 
 #. module: planning
 #. openerp-web
@@ -1049,7 +1050,7 @@ msgstr "Duur"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot_template__duration_days
 msgid "Duration Days"
-msgstr "Duur Dagen"
+msgstr "Duur dagen"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_kanban
@@ -1135,7 +1136,7 @@ msgstr "Elke"
 #: code:addons/planning/models/planning_recurrency.py:0
 #, python-format
 msgid "Every %s week(s) until %s"
-msgstr "Elke %swe(e)k(en) tot %s"
+msgstr "Elke %swe(e)k(en) t/m %s"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_send__note
@@ -2201,7 +2202,7 @@ msgid ""
 "There are no shifts planned for the previous week, or they have already been"
 " copied."
 msgstr ""
-"Er zijn geen shifts gepland voor de vorige week, of ze zijn al gekopieerd."
+"Er zijn geen diensten gepland voor de vorige week, of ze zijn al gekopieerd."
 
 #. module: planning
 #: code:addons/planning/models/planning.py:0

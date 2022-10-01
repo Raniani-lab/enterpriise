@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Cécile Collart <cco@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:47+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -362,7 +363,7 @@ msgstr "Galerie Plus"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Generate Token"
-msgstr ""
+msgstr "Générer le jeton"
 
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__gtc
@@ -544,6 +545,8 @@ msgid ""
 "Please provide your ebay production keys before enabling the account "
 "deletion notifications."
 msgstr ""
+"Veuillez fournir vos clés de production eBay avant d'activer les "
+"notifications de suppression de compte."
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -745,6 +748,8 @@ msgid ""
 "The python 'cryptography' module is not installed on your server.\n"
 "It is necessary to support eBay account deletion notifications, please contact your system administrator to install it."
 msgstr ""
+"Le module python 'cryptographie' n'est pas installé sur votre serveur.\n"
+"Il est nécessaire de prendre en charge les notifications de suppression de compte eBay, veuillez contacter votre administrateur système pour l'installer."
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_subtitle
@@ -795,6 +800,9 @@ msgid ""
 "\n"
 "However, personal information might remain in linked documents, please review them according to laws that apply."
 msgstr ""
+"Ceci est une notification automatique car une demande de suppression a été reçue d'eBay concernant le compte \"%s(%s)\". Le compte a déjà été anonymisé et son accès au portail a été révoqué (s'il en avait).\n"
+"\n"
+"Cependant, des informations personnelles peuvent rester dans des documents liés, veuillez les examiner conformément aux lois applicables."
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_title
@@ -837,7 +845,7 @@ msgstr "Variantes"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_verification_token
 msgid "Verification Token"
-msgstr ""
+msgstr "Jeton de vérification"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_zip_code
@@ -935,12 +943,12 @@ msgstr "Site Web eBay"
 #. module: sale_ebay
 #: model:mail.activity.type,name:sale_ebay.ebay_GDPR_notification
 msgid "eBay connector: account deletion notification"
-msgstr ""
+msgstr "Connecteur eBay : notification de suppression de compte"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay documentation"
-msgstr ""
+msgstr "Documentation eBay"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/sale_ebay.py:0
@@ -969,6 +977,8 @@ msgid ""
 "eBay requires supporting customer account deletion/closure notifications.\n"
 "                                Please follow the"
 msgstr ""
+"eBay exige la prise en charge des notifications de suppression/fermeture de compte client.\n"
+"Veuillez suivre la"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_url
@@ -1019,4 +1029,4 @@ msgstr "ebay Sales Team"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "to setup this mechanism."
-msgstr ""
+msgstr "pour mettre en place ce mécanisme."

@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Damien Bouvy <dbo@odoo.com>, 2022
 # Cécile Collart <cco@odoo.com>, 2022
 # 
 msgid ""
@@ -26,6 +27,7 @@ msgstr ""
 #, python-format
 msgid "<b>Congratulations</b>, you are now an expert of Expenses."
 msgstr ""
+"<b>Félicitations</b>, vous êtes à présent un expert en Notes de frais."
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__amount
@@ -157,14 +159,14 @@ msgstr "Message d'erreur"
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__sheet_id
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__expense_id
 msgid "Expense"
-msgstr "Dépense"
+msgstr "Note de frais"
 
 #. module: hr_expense_extract
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_ocr_parse_ir_actions_server
 #: model:ir.cron,cron_name:hr_expense_extract.ir_cron_ocr_parse
 #: model:ir.cron,name:hr_expense_extract.ir_cron_ocr_parse
 msgid "Expense OCR: Parse Expenses"
-msgstr ""
+msgstr "OCR en notes de frais : Analyser les notes de frais"
 
 #. module: hr_expense_extract
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_update_ocr_status_ir_actions_server
@@ -178,7 +180,7 @@ msgstr "OCR des notes de frais: mise à jour de tous les états"
 #: model:ir.cron,cron_name:hr_expense_extract.ir_cron_ocr_validate
 #: model:ir.cron,name:hr_expense_extract.ir_cron_ocr_validate
 msgid "Expense OCR: Validate Expenses"
-msgstr ""
+msgstr "OCR en Notes de frais : Valider des notes de frais"
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_hr_expense_sheet
@@ -189,12 +191,12 @@ msgstr "Note de frais"
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "Expense is being Digitized"
-msgstr ""
+msgstr "La note de frais est en cours de numérisation"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_res_config_settings__expense_extract_show_ocr_option_selection
 msgid "Expense processing option"
-msgstr ""
+msgstr "Option de traitement des notes de frais"
 
 #. module: hr_expense_extract
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
@@ -282,6 +284,8 @@ msgid ""
 "Let's try a sample receipt to test the automated processing of expenses with"
 " Artificial Intelligence."
 msgstr ""
+"Essayons un exemple de reçu pour tester le traitement automatisé des notes "
+"de frais avec l'Intelligence Artificielle."
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,help:hr_expense_extract.field_expense_sample_register__payment_method_line_id
@@ -349,19 +353,19 @@ msgstr "Enregistrer un paiement"
 #. module: hr_expense_extract
 #: model:ir.actions.act_window,name:hr_expense_extract.action_expense_sample_register
 msgid "Register Sample Payment"
-msgstr ""
+msgstr "Enregistrer un paiement test"
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_expense_sample_register
 msgid "Register Sample Payments"
-msgstr ""
+msgstr "Enregistrer des paiements tests"
 
 #. module: hr_expense_extract
 #. openerp-web
 #: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
 #, python-format
 msgid "Report this expense to your manager for validation."
-msgstr ""
+msgstr "Signalez cette note de frais à votre responsable pour validation."
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -372,13 +376,13 @@ msgstr "Renvoyer pour numérisation"
 #: code:addons/hr_expense_extract/wizard/expense_sample_receipt.py:0
 #, python-format
 msgid "Sample Employee"
-msgstr ""
+msgstr "Employé test"
 
 #. module: hr_expense_extract
 #: code:addons/hr_expense_extract/wizard/expense_sample_receipt.py:0
 #, python-format
 msgid "Sample Receipt: %s"
-msgstr ""
+msgstr "Reçu test : %s"
 
 #. module: hr_expense_extract
 #: model:ir.actions.server,name:hr_expense_extract.hr_expense_parse_action_server
@@ -413,7 +417,7 @@ msgstr "Code du statut"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__state_processed
 msgid "Status regarding OCR status"
-msgstr ""
+msgstr "Statut sur la plateforme OCR"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -448,19 +452,19 @@ msgstr "A valider"
 #: model:ir.actions.act_window,name:hr_expense_extract.action_expense_sample_receipt
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.expense_sample_receipt_view_form
 msgid "Try Sample Receipt"
-msgstr ""
+msgstr "Essayez un exemple de reçu"
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_expense_sample_receipt
 msgid "Try Sample Receipts"
-msgstr ""
+msgstr "Essayez des exemples de reçus"
 
 #. module: hr_expense_extract
 #. openerp-web
 #: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
 #, python-format
 msgid "Try the AI with a sample receipt."
-msgstr ""
+msgstr "Essayez l'IA avec un exemple de reçu."
 
 #. module: hr_expense_extract
 #: code:addons/hr_expense_extract/models/hr_expense.py:0

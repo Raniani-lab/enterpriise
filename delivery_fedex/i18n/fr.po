@@ -103,22 +103,22 @@ msgstr ""
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex
 msgid "Extra Data"
-msgstr ""
+msgstr "Données personnalisées"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_extra_data_rate_request
 msgid "Extra data for rate"
-msgstr ""
+msgstr "Données personnalisées pour le calcul du prix"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_extra_data_return_request
 msgid "Extra data for return"
-msgstr ""
+msgstr "Données personnalisées pour les retours"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_extra_data_ship_request
 msgid "Extra data for ship"
-msgstr ""
+msgstr "Données personnalisées pour l'expédition"
 
 #. module: delivery_fedex
 #: model:ir.model.fields,field_description:delivery_fedex.field_delivery_carrier__fedex_label_file_type
@@ -285,7 +285,7 @@ msgstr "INTERNATIONAL_PRIORITY"
 #: code:addons/delivery_fedex/models/delivery_fedex.py:0
 #, python-format
 msgid "Invalid syntax for FedEx extra data."
-msgstr ""
+msgstr "Syntaxe non valide pour les données personnalisées FedEx."
 
 #. module: delivery_fedex
 #: model:ir.model.fields.selection,name:delivery_fedex.selection__delivery_carrier__fedex_weight_unit__kg
@@ -554,6 +554,15 @@ msgid ""
 "With the above example, the AdditionalInformation of each piece will be updated.\n"
 "More info on https://www.fedex.com/en-us/developer/web-services/process.html#documentation"
 msgstr ""
+"Les données personnalisées dans FedEx sont organisées comme à l'intérieur d'un fichier json.\n"
+"Cette fonctionnalité est avancée/technique et ne doit être utilisée que si vous savez ce que vous faites.\n"
+"\n"
+"Exemple de valeur valide : ```\n"
+"\"ShipmentDetails\": {\"Pieces\": {\"Piece\": {\"AdditionalInformation\": \"info supp.\"}}}\n"
+"```\n"
+"\n"
+"Avec l'exemple ci-dessus, les informations personnalisées de chaque pièce seront mises à jour.\n"
+"Plus d'informations sur https://www.fedex.com/en-us/developer/web-services/process.html#documentation"
 
 #. module: delivery_fedex
 #: model_terms:ir.ui.view,arch_db:delivery_fedex.view_delivery_carrier_form_with_provider_fedex

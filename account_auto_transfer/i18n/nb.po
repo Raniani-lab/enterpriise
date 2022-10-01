@@ -3,16 +3,16 @@
 # 	* account_auto_transfer
 # 
 # Translators:
-# Martin Trigaux, 2019
-# Marius Stedjan <marius@stedjan.com>, 2019
+# Marius Stedjan <marius@stedjan.com>, 2022
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-27 09:17+0000\n"
-"PO-Revision-Date: 2019-09-27 12:00+0000\n"
-"Last-Translator: Marius Stedjan <marius@stedjan.com>, 2019\n"
+"POT-Creation-Date: 2021-07-12 07:57+0000\n"
+"PO-Revision-Date: 2022-09-22 05:45+0000\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -48,6 +48,20 @@ msgid "Activate"
 msgstr "Aktiver"
 
 #. module: account_auto_transfer
+#: model:ir.model.fields,help:account_auto_transfer.field_account_transfer_model_line__analytic_account_ids
+msgid ""
+"Adds a condition to only transfer the sum of the lines from the origin "
+"accounts that match these analytic accounts to the destination account"
+msgstr ""
+
+#. module: account_auto_transfer
+#: model:ir.model.fields,help:account_auto_transfer.field_account_transfer_model_line__partner_ids
+msgid ""
+"Adds a condition to only transfer the sum of the lines from the origin "
+"accounts that match these partners to the destination account"
+msgstr ""
+
+#. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line__analytic_account_ids
 msgid "Analytic Filter"
 msgstr ""
@@ -72,13 +86,40 @@ msgstr ""
 #. module: account_auto_transfer
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
+msgid ""
+"Automatic Transfer (entries with analytic account(s): %s and partner(s): %s)"
+msgstr ""
+
+#. module: account_auto_transfer
+#: code:addons/account_auto_transfer/models/transfer_model.py:0
+#, python-format
 msgid "Automatic Transfer (entries with analytic account(s): %s)"
 msgstr ""
 
 #. module: account_auto_transfer
 #: code:addons/account_auto_transfer/models/transfer_model.py:0
 #, python-format
+msgid "Automatic Transfer (entries with partner(s): %s)"
+msgstr ""
+
+#. module: account_auto_transfer
+#: code:addons/account_auto_transfer/models/transfer_model.py:0
+#, python-format
+msgid ""
+"Automatic Transfer (from account %s with analytic account(s): %s and "
+"partner(s): %s)"
+msgstr ""
+
+#. module: account_auto_transfer
+#: code:addons/account_auto_transfer/models/transfer_model.py:0
+#, python-format
 msgid "Automatic Transfer (from account %s with analytic account(s): %s)"
+msgstr ""
+
+#. module: account_auto_transfer
+#: code:addons/account_auto_transfer/models/transfer_model.py:0
+#, python-format
+msgid "Automatic Transfer (from account %s with partner(s): %s)"
 msgstr ""
 
 #. module: account_auto_transfer
@@ -119,6 +160,11 @@ msgstr "Opprettet av"
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line__create_date
 msgid "Created on"
 msgstr "Opprettet"
+
+#. module: account_auto_transfer
+#: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form
+msgid "Description"
+msgstr "Beskrivelse"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line__account_id
@@ -179,8 +225,8 @@ msgstr "Journal"
 
 #. module: account_auto_transfer
 #: model:ir.model,name:account_auto_transfer.model_account_move
-msgid "Journal Entries"
-msgstr "Journalregistreringer"
+msgid "Journal Entry"
+msgstr "Bilag"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model____last_update
@@ -222,7 +268,6 @@ msgstr ""
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__name
-#: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form
 msgid "Name"
 msgstr "Navn"
 
@@ -238,8 +283,15 @@ msgid "Origin Accounts"
 msgstr ""
 
 #. module: account_auto_transfer
+#: model:ir.model.fields,field_description:account_auto_transfer.field_account_bank_statement_line__transfer_model_id
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_move__transfer_model_id
+#: model:ir.model.fields,field_description:account_auto_transfer.field_account_payment__transfer_model_id
 msgid "Originating Model"
+msgstr ""
+
+#. module: account_auto_transfer
+#: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line__partner_ids
+msgid "Partner Filter"
 msgstr ""
 
 #. module: account_auto_transfer
@@ -280,6 +332,11 @@ msgid "Running"
 msgstr "Kjører"
 
 #. module: account_auto_transfer
+#: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line__sequence
+msgid "Sequence"
+msgstr "Sekvens"
+
+#. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__date_start
 msgid "Start Date"
 msgstr "Startdato"
@@ -287,7 +344,7 @@ msgstr "Startdato"
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__state
 msgid "State"
-msgstr "Stat"
+msgstr "Modus"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__date_stop
@@ -295,10 +352,23 @@ msgid "Stop Date"
 msgstr ""
 
 #. module: account_auto_transfer
-#: model:ir.model.fields,help:account_auto_transfer.field_account_transfer_model_line__analytic_account_ids
+#: code:addons/account_auto_transfer/models/transfer_model.py:0
+#, python-format
+msgid "The analytic filter %s is duplicated"
+msgstr ""
+
+#. module: account_auto_transfer
+#: code:addons/account_auto_transfer/models/transfer_model.py:0
+#, python-format
 msgid ""
-"The sum of all lines from the origin accounts having this analytic account "
-"will be automatically transferred to the destination account"
+"The partner filter %s in combination with the analytic filter %s is "
+"duplicated"
+msgstr ""
+
+#. module: account_auto_transfer
+#: code:addons/account_auto_transfer/models/transfer_model.py:0
+#, python-format
+msgid "The partner filter %s is duplicated"
 msgstr ""
 
 #. module: account_auto_transfer
@@ -326,3 +396,8 @@ msgstr "Overføringer"
 #: model:ir.model.fields.selection,name:account_auto_transfer.selection__account_transfer_model__frequency__year
 msgid "Yearly"
 msgstr "Årlig"
+
+#. module: account_auto_transfer
+#: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form
+msgid "e.g. Monthly Expense Transfer"
+msgstr ""

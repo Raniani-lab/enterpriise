@@ -3,22 +3,28 @@
 # 	* hr_recruitment_extract
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Cécile Collart <cco@odoo.com>, 2022
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"POT-Creation-Date: 2022-09-27 15:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: fr\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#. module: hr_recruitment_extract
+#: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
+#, python-format
+msgid "%s's Application"
+msgstr "Candidature de %s"
 
 #. module: hr_recruitment_extract
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
@@ -86,34 +92,34 @@ msgstr "Message d'erreur"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_can_show_resend_button
 msgid "Extract Can Show Resend Button"
-msgstr ""
+msgstr "Extraction autorise le bouton réenvoi"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_can_show_send_button
 msgid "Extract Can Show Send Button"
-msgstr ""
+msgstr "Extraction autorise le bouton envoi"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_state
 msgid "Extract State"
-msgstr ""
+msgstr "État de l'extraction"
 
 #. module: hr_recruitment_extract
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Generated Applicant"
-msgstr ""
+msgstr "Candidat généré"
 
 #. module: hr_recruitment_extract
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Generated Applicants"
-msgstr ""
+msgstr "Candidats générés"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__is_first_stage
 msgid "Is First Stage"
-msgstr ""
+msgstr "Est une étape initiale"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__no_extract_requested
@@ -130,31 +136,31 @@ msgstr "Crédit insuffisant"
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_ocr_parse
 #: model:ir.cron,name:hr_recruitment_extract.ir_cron_ocr_parse
 msgid "Recruitment OCR: Parse CV"
-msgstr ""
+msgstr "OCR en Recrutement : analyser le CV"
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_update_ocr_status_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_update_ocr_status
 #: model:ir.cron,name:hr_recruitment_extract.ir_cron_update_ocr_status
 msgid "Recruitment OCR: Update All Status"
-msgstr ""
+msgstr "OCR en Recrutement : Mettre à jour les status"
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_ocr_validate_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_ocr_validate
 #: model:ir.cron,name:hr_recruitment_extract.ir_cron_ocr_validate
 msgid "Recruitment OCR: Validate CV"
-msgstr ""
+msgstr "OCR en Recrutement : Valider le CV"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_config_settings__recruitment_extract_show_ocr_option_selection
 msgid "Recruitment processing option"
-msgstr ""
+msgstr "Option de traitement du recrutement"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_remote_id
 msgid "Request ID to IAP-OCR"
-msgstr ""
+msgstr "Demander l'ID à l'IAP-OCR"
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
@@ -194,7 +200,7 @@ msgstr "Serveur non disponible. Veuillez réessayer ultérieurement"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__state_processed
 msgid "State Processed"
-msgstr ""
+msgstr "Etat traité"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_status_code
@@ -249,7 +255,7 @@ msgstr "Extraction en attente"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__extract_not_ready
 msgid "Waiting extraction, but not ready"
-msgstr ""
+msgstr "En attente d'extraction, mais pas prêt"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__waiting_upload
@@ -266,8 +272,11 @@ msgstr "En attente de validation"
 #, python-format
 msgid "You cannot send a CV for an applicant who's not in first stage!"
 msgstr ""
+"Vous ne pouvez pas envoyer de CV pour un candidat qui n'est pas dans une "
+"étape initiale ! "
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "You don't have enough credit to extract data from your CV."
 msgstr ""
+"Vous n'avez pas assez de crédit pour extraire les données de votre CV."

@@ -728,7 +728,7 @@ msgstr "Aperçu de la feuille de calcul"
 #: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/odoo_bar/odoo_bar_config_panel.xml:0
 #, python-format
 msgid "Stacked barchart"
-msgstr ""
+msgstr "Graphique à barres empilées"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -811,4 +811,4 @@ msgstr "les enregistrements de la liste."
 #. module: spreadsheet_edition
 #: model:ir.model,name:spreadsheet_edition.model_ir_websocket
 msgid "websocket message handling"
-msgstr ""
+msgstr "Traitement des messages du websocket "

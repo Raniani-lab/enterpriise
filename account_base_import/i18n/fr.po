@@ -5,6 +5,7 @@
 # Translators:
 # Cécile Collart <cco@odoo.com>, 2022
 # Martin Trigaux, 2022
+# Malika Berardi, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Malika Berardi, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,7 +29,7 @@ msgstr "<span class=\"o_form_label\">Configuration initiale</span>"
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 msgid "<span class=\"text-muted\">(end of year balances)</span>"
-msgstr ""
+msgstr "<span class=\"text-muted\">(Solde de fin d'année)</span>"
 
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
@@ -45,7 +46,7 @@ msgstr "Compte"
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Account Winbooks Import module"
-msgstr ""
+msgstr "Module d'importation de compte Winbooks "
 
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
@@ -58,14 +59,14 @@ msgstr "Importation comptable"
 #: model:ir.actions.client,name:account_base_import.action_open_import_guide
 #, python-format
 msgid "Accounting Import Guide"
-msgstr ""
+msgstr "Guide d'import pour la comptabilité"
 
 #. module: account_base_import
 #. openerp-web
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Accounting Import Options"
-msgstr ""
+msgstr "Option d'importation de la comptabilité"
 
 #. module: account_base_import
 #: model:ir.model,name:account_base_import.model_base_import_import
@@ -111,7 +112,7 @@ msgstr "FEC"
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "FEC Import module"
-msgstr ""
+msgstr "Import du module FEC"
 
 #. module: account_base_import
 #. openerp-web
@@ -134,7 +135,7 @@ msgstr "Importer un plan comptable"
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Import CoA"
-msgstr ""
+msgstr "Import du plan comptable (pcmn)"
 
 #. module: account_base_import
 #. openerp-web
@@ -150,7 +151,7 @@ msgstr "Importer des contacts"
 #: model:ir.actions.client,name:account_base_import.action_account_move_line_import
 #, python-format
 msgid "Import Journal Items"
-msgstr ""
+msgstr "Import des pièces comptables"
 
 #. module: account_base_import
 #: model:ir.actions.client,name:account_base_import.action_partner_import
@@ -216,6 +217,8 @@ msgstr ""
 #, python-format
 msgid "Optional, but useful to import open receivables & payables using a"
 msgstr ""
+"Optionnel, mais utile pour importer des comptes débiteurs et des comptes "
+"créditeurs utilisant un "
 
 #. module: account_base_import
 #. openerp-web
@@ -240,6 +243,8 @@ msgid ""
 " import. Only use the Journal Items import for unreconciled entries in your "
 "Payable and Receivable Accounts."
 msgstr ""
+"Astuce  : nous vous recommandons d'importer votre balance initiale en utilisant le plan comptable importé\n"
+"Seulement utiliser l'import des pièces comptables pour les entrées non réconciliées pour les comptes débiteurs et les comptes créditeurs ouverts "
 
 #. module: account_base_import
 #. openerp-web
@@ -255,6 +260,8 @@ msgstr ""
 #, python-format
 msgid "Use templates to import CSV or Excel for your accounting setup."
 msgstr ""
+"Utiliser le modèle d'import CSV ou Excel pour la configuration de votre "
+"comptabilité"
 
 #. module: account_base_import
 #. openerp-web

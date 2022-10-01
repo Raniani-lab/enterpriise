@@ -3,8 +3,8 @@
 # 	* account_winbooks_import
 # 
 # Translators:
-# Lucia Pacheco <lpo@odoo.com>, 2022
 # Martin Trigaux, 2022
+# Lucia Pacheco <lpo@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Lucia Pacheco <lpo@odoo.com>, 2022\n"
 "Language-Team: Spanish (Mexico) (https://www.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -57,7 +57,7 @@ msgstr "Empresas"
 #: code:addons/account_winbooks_import/wizard/import_wizard.py:0
 #, python-format
 msgid "Company Settings"
-msgstr "Configuración de la empresa"
+msgstr "Ajustes de la empresa"
 
 #. module: account_winbooks_import
 #: code:addons/account_winbooks_import/wizard/import_wizard.py:0
@@ -111,7 +111,7 @@ msgstr "Importar (modo seguro)"
 #: code:addons/account_winbooks_import/static/src/xml/account_winbooks_import.xml:0
 #, python-format
 msgid "Import WBK"
-msgstr ""
+msgstr "Importar WBK"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields,field_description:account_winbooks_import.field_account_winbooks_import_wizard__only_open

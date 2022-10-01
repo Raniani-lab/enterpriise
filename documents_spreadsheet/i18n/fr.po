@@ -32,6 +32,8 @@ msgstr "\"%s\" enregistré comme modèle"
 msgid ""
 "#{ isSpreadsheet and 'Odoo Spreadsheets not available for download' or ''}"
 msgstr ""
+"#{ isSpreadsheet and 'Feuilles de calcul Odoo non disponibles au "
+"téléchargement' or ''}"
 
 #. module: documents_spreadsheet
 #: code:addons/documents_spreadsheet/models/spreadsheet_template.py:0

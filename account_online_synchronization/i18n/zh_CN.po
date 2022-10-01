@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:23+0000\n"
+"POT-Creation-Date: 2022-09-27 15:40+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -107,6 +107,13 @@ msgstr "活动状态"
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__activity_type_icon
 msgid "Activity Type Icon"
 msgstr "活动类型图表"
+
+#. module: account_online_synchronization
+#. openerp-web
+#: code:addons/account_online_synchronization/static/src/xml/online_sync_template.xml:0
+#, python-format
+msgid "Add A Bank Account"
+msgstr ""
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_attachment_count
@@ -771,10 +778,8 @@ msgstr "当前Odoo版本低，不支持'%s'同步模式。请安装最新的版�
 #: model_terms:ir.actions.act_window,help:account_online_synchronization.action_account_online_link_form
 msgid ""
 "To create a synchronization with your banking institution,<br>\n"
-"                please click on <b>Add a Bank Account</b> in <b>Configuration</b> menu."
+"                please click on <b>Add a Bank Account</b>."
 msgstr ""
-"要创建一个与您的银行机构的同步。<br>\n"
-"                请点击<b>配置</b>菜单中的<b>添加银行账户</b>."
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__access_token

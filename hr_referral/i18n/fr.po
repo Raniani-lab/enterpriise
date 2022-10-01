@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Tivisse <yti@odoo.com>, 2022
+# Jolien De Paepe, 2022
 # Cécile Collart <cco@odoo.com>, 2022
 # 
 msgid ""
@@ -36,7 +37,7 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_recruitment_report__referral_hired
 msgid "# Hired by Referral"
-msgstr "# Embauché par référencement"
+msgstr "# Engagé par référencement"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_applicant_employee_referral_kanban
@@ -46,7 +47,7 @@ msgstr "<b>Responsable: </b>"
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_applicant_employee_referral_kanban
 msgid "<i class=\"fa fa-check me-2\" title=\"Hired\"/>"
-msgstr "<i class=\"fa fa-check me-2\" title=\"Embauché\"/>"
+msgstr "<i class=\"fa fa-check me-2\" title=\"Engagé\"/>"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.view_hr_applicant_employee_referral_kanban
@@ -965,7 +966,7 @@ msgstr "Sur clics"
 #: model:ir.actions.act_window,name:hr_referral.action_hr_referral_onboarding_configuration
 #: model:ir.ui.menu,name:hr_referral.menu_hr_referral_onboarding_configuration
 msgid "Onboarding"
-msgstr "Intégration"
+msgstr "Parcours d'intégration"
 
 #. module: hr_referral
 #. openerp-web
@@ -1182,7 +1183,7 @@ msgstr "Utilisateur responsable"
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Restart Onboarding"
-msgstr "Redémarrez l'intégration"
+msgstr "Redémarrez le parcours d'intégration"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.res_config_settings_view__form

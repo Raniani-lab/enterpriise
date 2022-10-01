@@ -822,7 +822,7 @@ QUnit.module("Views", (hooks) => {
         );
     });
 
-    QUnit.test("graph tag and date aggregate", async function (assert) {
+    QUnit.skip("graph tag and date aggregate", async function (assert) {
         serverData.views["test_time_range,some_xmlid,graph"] = `<graph/>`;
 
         await makeView({

@@ -90,7 +90,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             }
             // If the article has some properties set,
             // we should display the property panel that is hidden by default.
-            if (!this.props.record.data.article_properties_is_empty) {
+            if (this.props.record.data.article_properties && !this.props.record.data.article_properties_is_empty) {
                 this.toggleProperties();
             }
         });

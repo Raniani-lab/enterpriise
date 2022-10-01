@@ -1,26 +1,44 @@
 /** @odoo-module **/
 
+import { ComponentWrapper } from 'web.OwlCompatibility';
 import { qweb as QWeb, _t } from 'web.core';
 import Wysiwyg from 'web_editor.wysiwyg';
 import { KnowledgeArticleLinkModal } from './wysiwyg/knowledge_article_link.js';
-import { preserveCursor, setCursorStart } from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
+import { PromptEmbeddedViewNameDialogWrapper } from '../components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js';
+import { preserveCursor } from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
 
 Wysiwyg.include({
     /**
      * @override
      */
     init: function (parent, options) {
-        if (options.knowledge_commands) {
+        if (options.knowledgeCommands) {
             /**
-             * knowledge_commands is a view option from a field_html that
+             * knowledgeCommands is a view option from a field_html that
              * indicates that knowledge-specific commands should be loaded.
              * powerboxFilters is an array of functions used to filter commands
              * displayed in the powerbox.
              */
             options.powerboxFilters = options.powerboxFilters ? options.powerboxFilters : [];
+            options.powerboxFilters.push(this._filterKnowledgeCommandGroupInTable);
             options.powerboxFilters.push(this._filterKnowledgeCommandGroupInTemplate);
         }
         this._super.apply(this, arguments);
+    },
+    /**
+     * Prevent usage of commands from the group "Knowledge" inside the tables.
+     * @param {Array[Object]} commands commands available in this wysiwyg
+     * @returns {Array[Object]} commands which can be used after the filter was applied
+     */
+    _filterKnowledgeCommandGroupInTable: function (commands) {
+        let anchor = document.getSelection().anchorNode;
+        if (anchor.nodeType !== Node.ELEMENT_NODE) {
+            anchor = anchor.parentElement;
+        }
+        if (anchor && anchor.closest('table')) {
+            commands = commands.filter(command => command.category !== 'Knowledge');
+        }
+        return commands;
     },
     /**
      * Prevent usage of commands from the group "Knowledge" inside the block
@@ -29,15 +47,15 @@ Wysiwyg.include({
      * Knowledge, where knowledge-specific commands may not be available.
      * i.e.: prevent usage /template in a /template block
      *
-     * @param {Array} commands commands available in this wysiwyg
-     * @returns {Array} commands which can be used after the filter was applied
+     * @param {Array[Object]} commands commands available in this wysiwyg
+     * @returns {Array[Object]} commands which can be used after the filter was applied
      */
     _filterKnowledgeCommandGroupInTemplate: function (commands) {
         let anchor = document.getSelection().anchorNode;
         if (anchor.nodeType !== Node.ELEMENT_NODE) {
             anchor = anchor.parentElement;
         }
-        if (anchor && anchor.closest('.o_knowledge_template')) {
+        if (anchor && anchor.closest('.o_knowledge_content')) {
             commands = commands.filter(command => command.category !== 'Knowledge');
         }
         return commands;
@@ -52,21 +70,21 @@ Wysiwyg.include({
         categories.push({ name: 'Media', priority: 50 });
         commands.push({
             category: 'Media',
-            name: 'Article',
+            name: _t('Article'),
             priority: 10,
-            description: 'Link an article.',
+            description: _t('Link an article.'),
             fontawesome: 'fa-file',
             callback: () => {
                 this._insertArticleLink();
             },
         });
-        if (this.options.knowledge_commands) {
+        if (this.options.knowledgeCommands) {
             categories.push({ name: 'Knowledge', priority: 10 });
             commands.push({
                 category: 'Knowledge',
-                name: 'File',
+                name: _t('File'),
                 priority: 20,
-                description: 'Embed a file.',
+                description: _t('Embed a file.'),
                 fontawesome: 'fa-file',
                 callback: () => {
                     this.openMediaDialog({
@@ -79,9 +97,9 @@ Wysiwyg.include({
                 }
             }, {
                 category: 'Knowledge',
-                name: "Template",
+                name: _t('Template'),
                 priority: 10,
-                description: "Add a template section.",
+                description: _t('Add a template section.'),
                 fontawesome: 'fa-pencil-square',
                 callback: () => {
                     this._insertTemplate();
@@ -94,6 +112,44 @@ Wysiwyg.include({
                 fontawesome: 'fa-bookmark',
                 callback: () => {
                     this._insertTableOfContent();
+                },
+            }, {
+                category: 'Knowledge',
+                name: _t('Kanban view'),
+                priority: 40,
+                description: _t('Insert Kanban View'),
+                fontawesome: 'fa-th-large',
+                callback: () => {
+                    const restoreSelection = preserveCursor(this.odooEditor.document);
+                    const viewType = 'kanban';
+                    this._openEmbeddedViewDialog(viewType, name => {
+                        restoreSelection();
+                        this._insertEmbeddedView('knowledge.knowledge_article_item_action', viewType, name, {
+                            active_id: this.options.recordInfo.res_id,
+                            default_parent_id: this.options.recordInfo.res_id,
+                            default_icon: '📄',
+                            default_is_article_item: true,
+                        });
+                    });
+                }
+            }, {
+                category: 'Knowledge',
+                name: _t('List view'),
+                priority: 50,
+                description: _t('Insert List View'),
+                fontawesome: 'fa-th-list',
+                callback: () => {
+                    const restoreSelection = preserveCursor(this.odooEditor.document);
+                    const viewType = 'list';
+                    this._openEmbeddedViewDialog(viewType, name => {
+                        restoreSelection();
+                        this._insertEmbeddedView('knowledge.knowledge_article_item_action', viewType, name, {
+                            active_id: this.options.recordInfo.res_id,
+                            default_parent_id: this.options.recordInfo.res_id,
+                            default_icon: '📄',
+                            default_is_article_item: true,
+                        });
+                    });
                 }
             }, {
                 category: 'Knowledge',
@@ -118,38 +174,21 @@ Wysiwyg.include({
         return {...options, commands, categories};
     },
     /**
-     * Notify @see FieldHtmlInjector that toolbars need to be injected
-     * @see KnowledgeToolbar
-     *
-     * @param {Element} container
-     */
-    _notifyNewToolbars(container) {
-        const toolbarsData = [];
-        container.querySelectorAll('.o_knowledge_toolbar_anchor').forEach(function (container, anchor) {
-            const type = Array.from(anchor.classList).find(className => className.startsWith('o_knowledge_toolbar_type_'));
-            if (type) {
-                toolbarsData.push({
-                    container: container,
-                    anchor: anchor,
-                    type: type,
-                });
-            }
-        }.bind(this, container));
-        this.$editable.trigger('refresh_toolbars', { toolbarsData: toolbarsData });
-    },
-    /**
      * Notify @see FieldHtmlInjector that behaviors need to be injected
      * @see KnowledgeBehavior
      *
      * @param {Element} anchor
+     * @param {Object} props
      */
-    _notifyNewBehaviors(anchor) {
+    _notifyNewBehavior(anchor, props=null) {
         const behaviorsData = [];
         const type = Array.from(anchor.classList).find(className => className.startsWith('o_knowledge_behavior_type_'));
         if (type) {
             behaviorsData.push({
                 anchor: anchor,
-                type: type,
+                behaviorType: type,
+                setCursor: true,
+                props: props || {},
             });
         }
         this.$editable.trigger('refresh_behaviors', { behaviorsData: behaviorsData});
@@ -158,31 +197,33 @@ Wysiwyg.include({
      * Insert a /toc block (table of content)
      */
     _insertTableOfContent: function () {
-        const tableOfContentBlock = $(QWeb.render('knowledge.knowledge_table_of_content_wrapper', {}))[0];
+        const tableOfContentBlock = $(QWeb.render('knowledge.abstract_behavior', {
+            behaviorType: "o_knowledge_behavior_type_toc",
+        }))[0];
         const [container] = this.odooEditor.execCommand('insert', tableOfContentBlock);
-        this._notifyNewBehaviors(container);
+        this._notifyNewBehavior(container);
     },
     /**
      * Insert a /structure block.
      * It will list all the articles that are direct children of this one.
+     * @param {boolean} childrenOnly
      */
-     _insertArticlesStructure: function (childrenOnly) {
+    _insertArticlesStructure: function (childrenOnly) {
         const articlesStructureBlock = $(QWeb.render('knowledge.articles_structure_wrapper', {
             childrenOnly: childrenOnly
         }))[0];
         const [container] = this.odooEditor.execCommand('insert', articlesStructureBlock);
-        this._notifyNewToolbars(container);
-        this._notifyNewBehaviors(container);
+        this._notifyNewBehavior(container);
     },
     /**
      * Insert a /template block
      */
     _insertTemplate() {
-        const templateBlock = $(QWeb.render('knowledge.template_block', {}))[0];
+        const templateBlock = $(QWeb.render('knowledge.abstract_behavior', {
+            behaviorType: "o_knowledge_behavior_type_template",
+        }))[0];
         const [container] = this.odooEditor.execCommand('insert', templateBlock);
-        setCursorStart(container.querySelector('.o_knowledge_content > p'));
-        this._notifyNewToolbars(container);
-        this._notifyNewBehaviors(container);
+        this._notifyNewBehavior(container);
     },
     /**
      * Insert a /article block (through a dialog)
@@ -193,20 +234,41 @@ Wysiwyg.include({
         dialog.on('save', this, article => {
             if (article) {
                 const articleLinkBlock = $(QWeb.render('knowledge.wysiwyg_article_link', {
-                    display_name: article.display_name,
                     href: '/knowledge/article/' + article.id,
-                    article_id: article.id,
+                    data: JSON.stringify({
+                        article_id: article.id,
+                        display_name: article.display_name,
+                    }),
                 }))[0];
                 dialog.close();
                 restoreSelection();
                 const [anchor] = this.odooEditor.execCommand('insert', articleLinkBlock);
-                this._notifyNewBehaviors(anchor);
+                this._notifyNewBehavior(anchor);
             }
         });
         dialog.on('closed', this, () => {
             restoreSelection();
         });
         dialog.open();
+    },
+    /**
+     * Inserts a view in the editor
+     * @param {String} actWindowId - Act window id of the action
+     * @param {String} viewType - View type
+     * @param {String} name - Name
+     * @param {Object} context - Context
+     */
+    _insertEmbeddedView: async function (actWindowId, viewType, name, context={}) {
+        const restoreSelection = preserveCursor(this.odooEditor.document);
+        restoreSelection();
+        context.knowledge_embedded_view_framework = 'owl';
+        const embeddedViewBlock = $(await this._rpc({
+            model: 'knowledge.article',
+            method: 'render_embedded_view',
+            args: [[this.options.recordInfo.res_id], actWindowId, viewType, name, context],
+        }))[0];
+        const [container] = this.odooEditor.execCommand('insert', embeddedViewBlock);
+        this._notifyNewBehavior(container);
     },
     /**
      * Notify the @see FieldHtmlInjector when a /file block is inserted from a
@@ -216,16 +278,37 @@ Wysiwyg.include({
      * @override
      */
     _onMediaDialogSave(params, element) {
-        const result = this._super(...arguments);
-        if (!result) {
-            return;
+        if (element.classList.contains('o_is_knowledge_file')) {
+            params.restoreSelection();
+            element.classList.remove('o_is_knowledge_file');
+            element.classList.add('o_image');
+            const extension = (element.title && element.title.split('.').pop()) || element.dataset.mimetype;
+            const fileBlock = $(QWeb.render('knowledge.abstract_behavior', {
+                behaviorType: "o_knowledge_behavior_type_file",
+            }))[0];
+            const [container] = this.odooEditor.execCommand('insert', fileBlock);
+            this._notifyNewBehavior(container, {
+                fileName: element.title,
+                fileImage: element.outerHTML,
+                fileExtension: extension,
+            });
+            // need to set cursor (anchor.sibling)
+        } else {
+            return this._super(...arguments);
         }
-        const [container] = result;
-        if (container.classList.contains('o_knowledge_file')) {
-            setCursorStart(container.nextElementSibling);
-            this._notifyNewToolbars(container);
-            this._notifyNewBehaviors(container);
-        }
-        return result;
+    },
+    /**
+     * Inserts the dialog allowing the user to specify name for the embedded view.
+     * @param {String} viewType
+     * @param {Function} save
+     */
+    _openEmbeddedViewDialog: function (viewType, save) {
+        // TODO: remove the wrapper when the wysiwyg is converted to owl.
+        const dialog = new ComponentWrapper(this, PromptEmbeddedViewNameDialogWrapper, {
+            isNew: true,
+            viewType: viewType,
+            save: save
+        });
+        dialog.mount(document.body);
     },
 });

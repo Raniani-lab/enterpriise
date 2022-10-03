@@ -10,9 +10,11 @@
         </xpath>
 
         <xpath expr="//t[@t-if='!showTable']" position="replace">
-            <button t-on-click="props.onAdd" class="btn btn-secondary btn-sm" role="button" t-if="isEditable">
-                Add new skills
-            </button>
+            <div class="ms-4 mt-4">
+                <button t-on-click="props.onAdd" class="btn btn-secondary btn-sm" role="button" t-if="isEditable">
+                    Add new skills
+                </button>
+            </div>
         </xpath>
     </t>
 

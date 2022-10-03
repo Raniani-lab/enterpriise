@@ -23,10 +23,11 @@
                             <field name="url" attrs="{'invisible': [('onclick', '!=', 'url')], 'required': [('onclick', '=', 'url')]}" placeholder="https://www.google.com"/>
                         </group>
                     </group>
-                    <group name="name_details">
-                        <field name="name"/>
+                    <group col="1">
+                        <group name="name_details">
+                            <field name="name"/>
+                        </group>
                     </group>
-
                 </sheet>
             </form>
         </field>

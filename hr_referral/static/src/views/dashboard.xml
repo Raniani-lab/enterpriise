@@ -31,7 +31,7 @@
                                 <li data-bs-target="#carouselOnboarding" t-att-data-bs-slide-to="item_index" t-att-class="item_first and 'active'"></li>
                             </t>
                         </ol>
-                        <div class="carousel-controls">
+                        <div class="carousel-controls d-flex">
                             <a type="button" id="btn_skip" t-ref="btnSkipRef" class="o_hr_referral_btn btn me-1 btn-lg side-btn o_hr_referral_start" aria-label="Start" title="Skip and Start" t-on-click.prevent="() => this._completeOnboarding(true)">
                                 Skip
                             </a>
@@ -98,11 +98,11 @@
                         <div class="user_info">
                             <p class="m-0 user_total">
                                 <b>Total</b><br/>
-                                <span t-esc="dashboardData.point_received"/>
+                                <span class="pe-2" t-esc="dashboardData.point_received"/>
                             </p>
                             <p class="m-0 user_points">
-                                <b>To Spend</b>
-                                <span t-esc="dashboardData.point_to_spend"/>
+                                <b>To Spend</b><br/>
+                                <span class="pe-2" t-esc="dashboardData.point_to_spend"/>
                             </p>
                         </div>
                         <div class="m-0 user_level">

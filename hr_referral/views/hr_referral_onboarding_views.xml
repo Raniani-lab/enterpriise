@@ -7,14 +7,12 @@
         <field name="arch" type="xml">
             <form>
                 <sheet>
+                    <field name="image" widget='image' class="oe_avatar bg-black" nolabel="1"/>
                     <group>
                         <group name="main_details">
                             <field name="text"/>
-                            <field name="sequence"/>
+                            <field name="sequence" groups="base.group_no_one"/>
                             <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
-                        </group>
-                        <group name="image">
-                            <field name="image" widget='image' class="oe_avatar" style="background: black;" nolabel="1"/>
                         </group>
                     </group>
                 </sheet>

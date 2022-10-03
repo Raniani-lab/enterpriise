@@ -8,24 +8,30 @@ patch(SaleOrderLineProductField.prototype, 'sale_renting', {
 
     async _onProductUpdate() {
         this._super(...arguments);
-        if (this.props.record.data.is_product_rentable) {
+        if (
+            this.props.record.data.is_product_rentable &&
+            this.props.record.activeFields[this.props.name].options.rent
+        ) {
+            // The rental configurator is only expected to open in Rental App
+            //      (rent specified true in the xml field options)
+            // Allows selling a product in the sale app while also renting it in the Rental app
             this._openRentalConfigurator(false);
         }
     },
 
     _editLineConfiguration() {
         this._super(...arguments);
-        if (this.props.record.data.is_product_rentable) {
+        if (this.props.record.data.is_rental) {
             this._openRentalConfigurator(true);
         }
     },
 
     get isConfigurableLine() {
-        return this._super(...arguments) || Boolean(this.props.record.data.is_product_rentable);
+        return this._super(...arguments) || !!this.props.record.data.is_rental;
     },
 
     configurationButtonFAIcon() {
-        if (this.props.record.data.is_product_rentable) {
+        if (this.props.record.data.is_rental) {
             return 'fa-calendar';
         }
         return this._super(...arguments);

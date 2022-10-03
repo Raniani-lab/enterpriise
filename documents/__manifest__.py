@@ -86,7 +86,7 @@
             ('include', 'web.pdf_js_lib'),
         ],
         'web.tests_assets': [
-            'documents/static/tests/helpers/*',
+            'documents/static/tests/helpers/**/*',
             'documents/static/tests/legacy/helpers/*',
         ],
         'web.qunit_suite_tests': [

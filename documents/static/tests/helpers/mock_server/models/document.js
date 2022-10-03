@@ -1,16 +1,11 @@
 /** @odoo-module **/
 
-import '@mail/../tests/helpers/mock_server'; // ensure mail overrides are applied first
 import { patch } from "@web/core/utils/patch";
 import { MockServer } from "@web/../tests/helpers/mock_server";
 
 import Domain from 'web.Domain';
 
-const FACET_ORDER_COLORS = [
-    '#F06050', '#6CC1ED', '#F7CD1F', '#814968', '#30C381', '#D6145F', '#475577', '#F4A460', '#EB7E7F', '#2C8397',
-];
-
-patch(MockServer.prototype, 'documents', {
+patch(MockServer.prototype, 'documents/models/document', {
     //--------------------------------------------------------------------------
     // Private
     //--------------------------------------------------------------------------
@@ -20,13 +15,6 @@ patch(MockServer.prototype, 'documents', {
      * @private
      */
     async _performRPC(route, args) {
-        if (route.indexOf('/documents/image') >= 0 ||
-            _.contains(['.png', '.jpg'], route.substr(route.length - 4))) {
-            return Promise.resolve();
-        }
-        if (args.model === 'documents.share' && args.method === 'check_access_rights') {
-            return true;
-        }
         if (args.model === 'documents.document' && args.method === 'get_document_max_upload_limit') {
             return Promise.resolve(67000000);
         }
@@ -75,42 +63,6 @@ patch(MockServer.prototype, 'documents', {
             return a > b ? 1 : a < b ? -1 : 0;
         });
         return [...sorted, ...notAttached, ...notAFile];
-    },
-    /**
-     * Mocks the '_get_tags' method of the model 'documents.tag'.
-     */
-    _mockDocumentsTag_GetTags(domain, folderId) {
-        const facets = this.models['documents.facet'].records;
-        const orderedTags = this.models['documents.tag'].records.sort((firstTag, secondTag) => {
-            const firstTagFacet = facets.find(facet => facet.id === firstTag.facet_id);
-            const secondTagFacet = facets.find(facet => facet.id === secondTag.facet_id);
-            return firstTagFacet.sequence === secondTagFacet.sequence
-                ? firstTag.sequence - secondTag.sequence
-                : firstTagFacet.sequence - secondTagFacet.sequence;
-        });
-        return orderedTags.map(tag => {
-            const [facet] = this.mockSearchRead('documents.facet', [[['id', '=', tag['facet_id']]]], {});
-            return {
-                display_name: tag.display_name,
-                group_hex_color: FACET_ORDER_COLORS[facet.id % FACET_ORDER_COLORS.length],
-                group_id: facet.id,
-                group_name: facet.name,
-                group_sequence: facet.sequence,
-                group_tooltip: facet.tooltip,
-                id: tag.id,
-                sequence: tag.sequence,
-            };
-        });
-    },
-    /**
-     * @override
-     * @returns {Object}
-     */
-    _mockResUsers_InitMessaging(...args) {
-        return {
-            ...this._super(...args),
-            'hasDocumentsUserGroup': true,
-        };
     },
     /**
      * Override to handle the specific case of model 'documents.document'.

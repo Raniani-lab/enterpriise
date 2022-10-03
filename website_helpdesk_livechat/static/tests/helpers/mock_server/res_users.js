@@ -1,11 +1,11 @@
 /** @odoo-module **/
 
-import '@mail/../tests/helpers/mock_server'; // ensure mail override is applied first.
+import '@mail/../tests/helpers/mock_server/models/res_users'; // ensure mail override is applied first.
 
 import { patch } from '@web/core/utils/patch';
 import { MockServer } from '@web/../tests/helpers/mock_server';
 
-patch(MockServer.prototype, 'website_helpdesk_livechat', {
+patch(MockServer.prototype, 'website_helpdesk_livechat/models/res_users', {
     /**
      * @override
      */

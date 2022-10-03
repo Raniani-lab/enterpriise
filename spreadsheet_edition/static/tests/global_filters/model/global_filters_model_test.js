@@ -44,6 +44,99 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
     });
 
     QUnit.test(
+        "Can open context menu with __count and positional argument",
+        async function (assert) {
+            const { env, model } = await createSpreadsheetWithPivot({
+                arch: /*xml*/ `
+                <pivot>
+                    <field name="product_id" type="row"/>
+                    <field name="__count" type="measure"/>
+                </pivot>`,
+            });
+            setCellContent(model, "B3", '=ODOO.PIVOT(1, "__count", "#product_id", 1)');
+            await addGlobalFilter(model, {
+                filter: {
+                    id: "42",
+                    type: "relation",
+                    defaultValue: [],
+                    pivotFields: { 1: { field: "product_id", type: "many2one" } },
+                },
+            });
+            selectCell(model, "B3");
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "use_global_filter");
+            assert.strictEqual(root.isVisible(env), true);
+        }
+    );
+
+    QUnit.test("Can open context menu with positional argument", async function (assert) {
+        const { env, model } = await createSpreadsheetWithPivot({
+            arch: /*xml*/ `
+                <pivot>
+                    <field name="product_id" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+        });
+        setCellContent(model, "B3", '=ODOO.PIVOT(1, "probability", "#product_id", 1)');
+        await addGlobalFilter(model, {
+            filter: {
+                id: "42",
+                type: "relation",
+                defaultValue: [],
+                pivotFields: { 1: { field: "product_id", type: "many2one" } },
+            },
+        });
+        selectCell(model, "B3");
+        const root = cellMenuRegistry.getAll().find((item) => item.id === "use_global_filter");
+        assert.strictEqual(root.isVisible(env), true);
+    });
+
+    QUnit.test("Can open context menu without argument", async function (assert) {
+        const { env, model } = await createSpreadsheetWithPivot({
+            arch: /*xml*/ `
+                <pivot>
+                    <field name="product_id" type="row"/>
+                    <field name="__count" type="measure"/>
+                </pivot>`,
+        });
+        setCellContent(model, "B3", '=ODOO.PIVOT(1, "probability")');
+        await addGlobalFilter(model, {
+            filter: {
+                id: "42",
+                type: "relation",
+                defaultValue: [],
+                pivotFields: { 1: { field: "product_id", type: "many2one" } },
+            },
+        });
+        selectCell(model, "B3");
+        const root = cellMenuRegistry.getAll().find((item) => item.id === "use_global_filter");
+        assert.strictEqual(root.isVisible(env), false);
+    });
+
+    QUnit.test(
+        "Can open context menu when there is a filter with no field defined",
+        async function (assert) {
+            const { env, model } = await createSpreadsheetWithPivot({
+                arch: /*xml*/ `
+                <pivot>
+                    <field name="product_id" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+            });
+            await addGlobalFilter(model, {
+                filter: {
+                    id: "42",
+                    type: "relation",
+                    defaultValue: [],
+                    pivotFields: {},
+                },
+            });
+            selectCell(model, "B3");
+            const root = cellMenuRegistry.getAll().find((item) => item.id === "use_global_filter");
+            assert.strictEqual(root.isVisible(env), false);
+        }
+    );
+
+    QUnit.test(
         "Set as filter is not visible if there is no pivot formula",
         async function (assert) {
             const { env, model } = await createSpreadsheetWithPivot();

@@ -45,19 +45,23 @@
 
     <t t-name="account_accountant.bank_rec_widget_form_reco_models_widget" owl="1">
         <t t-set="data" t-value="getRenderValues()"/>
+        <t t-set="nb_rendered_buttons" t-value="0"/>
         <div class="o_bank_rec_reco_models_widget_div">
             <t t-if="data.display_widget"
                t-foreach="data.available_reconcile_model_ids"
                t-as="reco_model"
                t-key="reco_model.id">
                 <t t-set="is_selected" t-value="reco_model.id === data.selected_reconcile_model_id"/>
-                <button t-if="reco_model_index &lt; 5 or is_selected"
+                <t t-if="reco_model_index &lt; 5 or is_selected">
+                    <button
                         t-on-click="() => this.selectRecoModel(reco_model.id, is_selected)"
                         class="btn text-truncate recon_model_button"
                         t-att-class="{'btn-secondary': !is_selected, 'bg-odoo text-uppercase text-white': is_selected}"
-                        t-esc="reco_model.display_name"/>
+                        t-out="reco_model.display_name"/>
+                    <t t-set="nb_rendered_buttons" t-value="nb_rendered_buttons + 1"/>
+                </t>
             </t>
-            <Dropdown t-if="data.display_widget and data.available_reconcile_model_ids.length &gt; 5"
+            <Dropdown t-if="data.display_widget and data.available_reconcile_model_ids.length &gt; nb_rendered_buttons"
                       togglerClass="'btn btn-light'"
                       class="'bank_rec_reco_model_dropdown'"
             >

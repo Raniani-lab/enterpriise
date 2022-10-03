@@ -7,6 +7,11 @@
                 <PdfViewerField t-props="viewerProps"/>
             </div>
         </t>
+        <t t-elif="type === 'google_slide'">
+            <div class="o_tablet_document">
+                <SlidesViewer t-props="viewerProps"/>
+            </div>
+        </t>
         <t t-elif="type !== false">
             <div class="o_tablet_document">
                 <ImageField t-props="viewerProps"/>

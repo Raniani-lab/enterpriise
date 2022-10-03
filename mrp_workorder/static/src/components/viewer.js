@@ -2,6 +2,7 @@
 
 import { PdfViewerField } from '@web/views/fields/pdf_viewer/pdf_viewer_field';
 import { ImageField } from '@web/views/fields/image/image_field';
+import { SlidesViewer } from "@mrp/views/fields/google_slides_viewer";
 
 const { Component, useEffect, useRef } = owl;
 
@@ -38,6 +39,9 @@ class DocumentViewer extends Component {
         if (!this.props || !this.props.value) {
             return false;
         }
+        if (this.props.resField === "worksheet_url") {
+            return "google_slide";
+        }
         for (const [magicNumber, type] of Object.entries(this.magicNumbers)) {
             if (this.props.value.startsWith(magicNumber)) {
                 return type;
@@ -45,6 +49,7 @@ class DocumentViewer extends Component {
         }
         return false;
     }
+
     get viewerProps() {
         let viewerProps = {
             record: {
@@ -70,6 +75,7 @@ DocumentViewer.props = ["resField", "resModel", "resId", "value", "page"];
 DocumentViewer.components = {
     PdfViewerField,
     ImageField,
+    SlidesViewer,
 };
 
 export default DocumentViewer;

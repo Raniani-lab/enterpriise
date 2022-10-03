@@ -524,6 +524,7 @@ class QualityCheck(models.Model):
             'worksheet_document',
             'worksheet_page',
             'is_deleted',
+            'point_id',
         ]
 
     def _get_fields_for_tablet(self, sorted_check_list):
@@ -533,4 +534,7 @@ class QualityCheck(models.Model):
         """
         if sorted_check_list:
             self = self.browse(sorted_check_list)
-        return self.read(self._get_fields_list_for_tablet(), load=False)
+        values = self.read(self._get_fields_list_for_tablet(), load=False)
+        for check in values:
+            check['worksheet_url'] = self.env['quality.check'].browse(check['id']).point_id.worksheet_url
+        return values

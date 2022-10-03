@@ -133,18 +133,37 @@ class Tablet extends Component {
                     value: this.selectedStep.worksheet_document,
                     page: 1,
                 };
-            } else if (this.data.operation !== undefined && this.selectedStep.worksheet_page) {
+            } else if (this.selectedStep.worksheet_url) {
                 return {
-                    resModel: 'mrp.routing.workcenter',
-                    resId: this.data.operation.id,
-                    resField: 'worksheet',
-                    value: this.data.operation.worksheet,
-                    page: this.selectedStep.worksheet_page,
+                    resModel: "quality.point",
+                    resId: this.selectedStep.point_id,
+                    resField: "worksheet_url",
+                    value: this.selectedStep.worksheet_url,
+                    page: 1,
                 };
+            } else if (this.data.operation !== undefined && this.selectedStep.worksheet_page) {
+                if (this.data.operation.worksheet) {
+                    return {
+                        resModel: "mrp.routing.workcenter",
+                        resId: this.data.operation.id,
+                        resField: "worksheet",
+                        value: this.data.operation.worksheet,
+                        page: this.selectedStep.worksheet_page,
+                    };
+                } else if (this.data.operation.worksheet_url) {
+                    return {
+                        resModel: "mrp.routing.workcenter",
+                        resId: this.data.operation.id,
+                        resField: "worksheet_url",
+                        value: this.data.operation.worksheet_url,
+                        page: this.selectedStep.worksheet_page,
+                    };
+                } else {
+                    return false;
+                }
             } else {
                 return false;
             }
-
         } else if (this.data.operation.worksheet) {
             return {
                 resModel: 'mrp.routing.workcenter',

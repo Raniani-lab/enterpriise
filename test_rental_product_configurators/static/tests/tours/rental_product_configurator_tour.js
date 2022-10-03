@@ -107,7 +107,7 @@ tour.register('rental_product_configurator_tour', {
     position: 'bottom',
 }, {
     content: "verify that the rental has been confirmed",
-    trigger: '.o_statusbar_status button.btn-primary:contains("Sales Order")',
+    trigger: '.o_statusbar_status button.o_arrow_button_current:contains("Sales Order")',
     run() {},
 }, ...tour.stepUtils.discardForm(),
 ]);

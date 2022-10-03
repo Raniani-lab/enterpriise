@@ -10,13 +10,13 @@
             <xpath expr="//group[@name='resource_details']" position="inside">
                 <group>
                     <label for="full_time_required_hours" string="Full Time"/>
-                    <div class="o_row">
-                        <field name="full_time_required_hours" nolabel="1"/>
+                    <div>
+                        <field name="full_time_required_hours" nolabel="1" style="width: 10%"/>
                         <span> hours/week</span>
                     </div>
                     <label for="work_time_rate" string="Work Time Rate"/>
-                    <div class="o_row">
-                        <field name="work_time_rate" nolabel="1"/>
+                    <div>
+                        <field name="work_time_rate" nolabel="1"  style="width: 10%"/>
                         <span> %</span>
                     </div>
                     <field name="is_fulltime" invisible="1"/>

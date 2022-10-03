@@ -18,7 +18,7 @@ tour.register('planning_test_tour', {
     content: "Assign this shift to your <b>resource</b>, or leave it open for the moment.",
     run: 'text Thibault',
 }, {
-    trigger: "ul.ui-menu.ui-widget a:contains(Thibault)",
+    trigger: ".o-autocomplete--dropdown-item > a:contains('Thibault')",
     auto: true,
     in_modal: false,
 }, {
@@ -26,25 +26,33 @@ tour.register('planning_test_tour', {
     content: "Select the <b>role</b> your employee will have (<i>e.g. Chef, Bartender, Waiter, etc.</i>).",
     run: 'text Developer',
 }, {
-    trigger: "ul.ui-menu.ui-widget a:contains(Developer)",
+    trigger: ".o-autocomplete--dropdown-item > a:contains('Developer')",
     auto: true,
     in_modal: false,
 }, {
-    trigger: ".o_field_widget[name='start_datetime']",
+    trigger: ".o_field_widget[name='start_datetime'] input",
     content: "Set start datetime",
     run: function (actions) {
-        this.$anchor.val(this.$anchor.val().replace(/(\d{2}:){2}\d{2}/g, '08:00:00'));
-        this.$anchor.trigger("change");
+        const input = this.$anchor[0];
+        input.value = input.value.replace(/(\d{2}:){2}\d{2}/g, '08:00:00');
+        input.dispatchEvent(new InputEvent('input', {
+            bubbles: true,
+        }));
+        input.dispatchEvent(new Event("change", { bubbles: true, cancelable: false }));
     }
 }, {
-    trigger: ".o_field_widget[name='end_datetime']",
+    trigger: ".o_field_widget[name='end_datetime'] input",
     content: "Set end datetime",
     run: function (actions) {
-        this.$anchor.val(this.$anchor.val().replace(/(\d{2}:){2}\d{2}/g, '11:59:59'));
-        this.$anchor.trigger("change");
+        const input = this.$anchor[0];
+        input.value = input.value.replace(/(\d{2}:){2}\d{2}/g, '11:59:59');
+        input.dispatchEvent(new InputEvent('input', {
+            bubbles: true,
+        }));
+        input.dispatchEvent(new Event("change", { bubbles: true, cancelable: false }));
     }
 }, {
-    trigger: "div[name='template_creation'] > input",
+    trigger: "div[name='template_creation'] input",
     content: "Save this shift as a template",
     run: function (actions) {
         if (!this.$anchor.prop('checked')) {

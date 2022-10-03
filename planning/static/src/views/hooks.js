@@ -1,6 +1,7 @@
 /** @odoo-module **/
 
 import { useService } from "@web/core/utils/hooks";
+import { escape } from "@web/core/utils/strings";
 import { serializeDateTime } from "@web/core/l10n/dates";
 
 const { markup, useComponent, useEnv } = owl;
@@ -22,7 +23,7 @@ export function usePlanningViewHook({ getDomain, getStartDate, getRecords, getAd
             if (result) {
                 const message = env._t("The shifts from the previous week have successfully been copied.");
                 notifications.add(
-                    markup(`<i class="fa fa-fw fa-check"></i><span class="ms-1">${message}</span>`),
+                    markup(`<i class="fa fa-fw fa-check"></i><span class="ms-1">${escape(message)}</span>`),
                     {
                         type: "success",
                     },

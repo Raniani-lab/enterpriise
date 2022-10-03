@@ -2,7 +2,6 @@
 
 import GanttModel from 'web_gantt.GanttModel';
 import { _t } from 'web.core';
-import { PlanningModelMixin } from './planning_mixins';
 import { formatPercentage } from "@web/views/fields/formatters";
 
 const GROUPBY_COMBINATIONS = [
@@ -23,7 +22,7 @@ const GROUPBY_COMBINATIONS = [
     "task_id,role_id",
 ];
 
-const PlanningGanttModel = GanttModel.extend(PlanningModelMixin, {
+const PlanningGanttModel = GanttModel.extend({
 
     /**
      * @public

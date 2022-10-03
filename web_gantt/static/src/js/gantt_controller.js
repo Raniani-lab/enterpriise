@@ -3,12 +3,14 @@
 import AbstractController from 'web.AbstractController';
 import core from 'web.core';
 import config from 'web.config';
-import dialogs from 'web.view_dialogs';
 import { confirm as confirmDialog } from 'web.Dialog';
 import { Domain } from '@web/core/domain';
+import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
+import { SelectCreateDialog } from "@web/views/view_dialogs/select_create_dialog";
 
 const QWeb = core.qweb;
 const _t = core._t;
+const { Component } = owl;
 
 export function removeDomainLeaf(domain, keysToRemove) {
     function processLeaf(elements, idx, operatorCtx, newDomain) {
@@ -223,24 +225,32 @@ export default AbstractController.extend({
      * Opens dialog to add/edit/view a record
      *
      * @private
-     * @param {integer|undefined} resID
-     * @param {Object|undefined} context
-     * @returns {FormViewDialog}
+     * @param {Object} props FormViewDialog props
+     * @param {Object} options
      */
-    _openDialog(resID, context) {
-        const title = resID ? _t("Open") : _t("Create");
-
-        return new dialogs.FormViewDialog(this, {
-            title: _.str.sprintf(title),
-            res_model: this.modelName,
-            view_id: this.dialogViews[0][0],
-            res_id: resID,
-            readonly: !this.is_action_enabled('edit'),
-            deletable: this.is_action_enabled('delete') && resID,
-            context: _.extend({}, this.context, context),
-            on_saved: this.reload.bind(this, {}),
-            on_remove: this._onDialogRemove.bind(this, resID),
-        }).open();
+    _openDialog(props, options = {}) {
+        const title = props.title || (props.resId ? _t("Open") : _t("Create"));
+        const onClose = options.onClose || (() => {});
+        options = {
+            ...options,
+            onClose: async () => {
+                onClose();
+                await this.reload();
+            },
+        };
+        let removeRecord;
+        if (this.is_action_enabled('delete') && props.resId) {
+            removeRecord = this._onDialogRemove.bind(this, props.resId)
+        }
+        Component.env.services.dialog.add(FormViewDialog, {
+            title,
+            resModel: this.modelName,
+            viewId: this.dialogViews[0][0],
+            resId: props.resId,
+            mode: this.is_action_enabled('edit') ? "edit" : "readonly",
+            context: _.extend({}, this.context, props.context),
+            removeRecord
+        }, options);
     },
     /**
      * Handler called when clicking the
@@ -299,21 +309,20 @@ export default AbstractController.extend({
      */
     _openPlanDialog(context) {
         const state = this.model.get();
-        new dialogs.SelectCreateDialog(this, {
+        Component.env.services.dialog.add(SelectCreateDialog, {
             title: _t("Plan"),
-            res_model: this.modelName,
+            resModel: this.modelName,
             domain: this._getPlanDialogDomain(state),
             views: this.dialogViews,
             context: Object.assign({}, this.context, context),
-            on_selected: (records) => {
-                const ids = _.pluck(records, 'id');
-                if (ids.length) {
+            onSelected: (resIds) => {
+                if (resIds.length) {
                     // Here, the dates are already in server time so we set the
                     // isUTC parameter of reschedule to true to avoid conversion
-                    this._reschedule(ids, context, true, this.openPlanDialogCallback);
+                    this._reschedule(resIds, context, true, this.openPlanDialogCallback);
                 }
             },
-        }).open();
+        });
     },
     /**
      * upon clicking on the create button, determines if a dialog with a formview should be opened
@@ -329,7 +338,7 @@ export default AbstractController.extend({
                 on_close: this.reload.bind(this, {})
             });
         } else {
-            this._openDialog(undefined, context);
+            this._openDialog({ context });
         }
     },
     /**
@@ -494,10 +503,9 @@ export default AbstractController.extend({
             // Sync with the mutex to wait for potential changes on the view
             await this.model.mutex.getUnlockedDef();
 
-            const dialog = this._openDialog(ev.data.target.data('id'));
-            dialog.on('closed', this, () => {
-                ev.data.target.removeClass('o_gantt_pill_editing');
-            });
+            const props = { resId: ev.data.target.data('id') };
+            const options = { onClose: () => ev.data.target.removeClass('o_gantt_pill_editing') };
+            this._openDialog(props, options);
         }
     },
     /**

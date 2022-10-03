@@ -7,6 +7,7 @@ var core = require('web.core');
 var utils = require('web.utils');
 var concurrency = require('web.concurrency');
 
+const { escape } = require("@web/core/utils/strings");
 const { FormViewDialog } = require("@web/views/view_dialogs/form_view_dialog");
 
 var qweb = core.qweb;
@@ -98,7 +99,7 @@ var GridController = AbstractController.extend({
             ],
             domain: cell.domain,
             context: ctx,
-            help: markup(`<p class='o_view_nocontent_smiling_face'>${noActivitiesFound}</p>`),
+            help: markup(`<p class='o_view_nocontent_smiling_face'>${escape(noActivitiesFound)}</p>`),
         };
     },
 

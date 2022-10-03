@@ -1,8 +1,14 @@
 /** @odoo-module **/
 
+import { _t } from "@web/core/l10n/translation";
+import { registry } from "@web/core/registry";
+import { formView } from "@web/views/form/form_view";
+import { FormController } from "@web/views/form/form_controller";
+import { FormViewDialog } from '@web/views/view_dialogs/form_view_dialog';
 import Wysiwyg from 'web_editor.wysiwyg'
-import dialogs from 'web.view_dialogs'
 import { parseHTML } from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
+
+const { Component } = owl;
 
 Wysiwyg.include({
     _getPowerboxOptions: function () {
@@ -17,35 +23,20 @@ Wysiwyg.include({
                 description: 'Add a specific appointment.',
                 fontawesome: 'fa-calendar',
                 callback: async () => {
-                    const dialog = new dialogs.FormViewDialog(this, {
-                        res_model: 'appointment.invite',
-                        res_id: 0,
-                        res_ids: [],
-                        res_IDs: [],
-                        resIDs: [],
+                    Component.env.services.dialog.add(AppointmentFormViewDialog, {
+                        resModel: 'appointment.invite',
                         context: {
                             form_view_ref: "appointment.appointment_invite_view_form_insert_link",
                             default_appointment_type_ids: [],
                             default_staff_user_ids: [],
                         },
-                        title: "Insert Appointment Link",
-                        readonly: false,
-                    });
-                    dialog.open();
-                    await dialog.opened();
-                    const $dialog = $(dialog.el.closest('.modal-dialog'));
-                    dialog.on('dialog_form_loaded', this, () => {
-                        $dialog.find('.o_book_url_save').on('click', async () => {
-                            const url = $dialog.find('.o_appointment_book_url').text();
-                            await dialog._save();
-                            dialog.destroy();
+                        title: _t("Insert Appointment Link"),
+                        mode: "edit",
+                        insertLink: (url) => {
                             const link = `<a href="${url}">Schedule an Appointment</a>`;
                             this.focus();
                             this.odooEditor.execCommand('insert', parseHTML(link));
-                        });
-                        $dialog.find('.o_book_url_discard').on('click', () => {
-                            dialog.destroy();
-                        });
+                        },
                     });
                 },
             },
@@ -63,4 +54,31 @@ Wysiwyg.include({
         ]);
         return {...options, commands, categories};
     }
+});
+
+class AppointmentFormViewDialog extends FormViewDialog {
+    setup() {
+        super.setup();
+        this.viewProps.insertLink = this.props.insertLink;
+    }
+}
+AppointmentFormViewDialog.props = {
+    ...FormViewDialog.props,
+    insertLink: { type: Function },
+};
+
+class AppointmentInsertLinkFormController extends FormController {
+    async afterExecuteActionButton(clickParams) {
+        if (clickParams.special === "save") { // Insert Link button
+            this.props.insertLink(this.model.root.data.book_url);
+        }
+    }
+}
+AppointmentInsertLinkFormController.props = {
+    ...FormController.props,
+    insertLink: { type: Function },
+};
+registry.category("views").add("appointment_insert_link_form", {
+    ...formView,
+    Controller: AppointmentInsertLinkFormController,
 });

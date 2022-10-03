@@ -14,14 +14,11 @@ export class AppointmentInviteFormRenderer extends FormRenderer {
     setup() {
         super.setup();
         this.notification = useService("notification");
-        useEffect((warning) => {
-            const saveButton = document.querySelector('.o_appointment_invite_copy_save');
-            if (!!warning) {
-                saveButton.classList.add('disabled');
-            } else {
-                saveButton.classList.remove('disabled');
+        useEffect((saveButton, warning) => {
+            if (saveButton) {
+                saveButton.classList.toggle('disabled', !!warning);
             }
-        }, () => [document.querySelector('.alert.alert-warning')]);
+        }, () => [document.querySelector('.o_appointment_invite_copy_save'), document.querySelector('.alert.alert-warning')]);
     }
     /**
      * Save the invitation and copy the url in the clipboard

@@ -22,6 +22,7 @@ class BankRecWidgetLine(models.Model):
             ('liquidity', 'liquidity'),
             ('new_aml', 'new_aml'),
             ('aml', 'aml'),
+            ('exchange_diff', 'exchange_diff'),
             ('tax_line', 'tax_line'),
             ('manual', 'manual'),
             ('early_payment', 'early_payment'),
@@ -148,13 +149,13 @@ class BankRecWidgetLine(models.Model):
     @api.depends('source_aml_id')
     def _compute_account_id(self):
         for line in self:
-            if line.flag in ('aml', 'new_aml', 'liquidity'):
+            if line.flag in ('aml', 'new_aml', 'liquidity', 'exchange_diff'):
                 line.account_id = line.source_aml_id.account_id
 
     @api.depends('source_aml_id')
     def _compute_date(self):
         for line in self:
-            if line.flag in ('aml', 'new_aml'):
+            if line.flag in ('aml', 'new_aml', 'exchange_diff'):
                 line.date = line.source_aml_id.date
             elif line.flag in ('liquidity', 'auto_balance', 'manual', 'early_payment', 'tax_line'):
                 line.date = line.wizard_id.st_line_id.date
@@ -176,7 +177,7 @@ class BankRecWidgetLine(models.Model):
     @api.depends('source_aml_id')
     def _compute_currency_id(self):
         for line in self:
-            if line.flag in ('aml', 'new_aml', 'liquidity'):
+            if line.flag in ('aml', 'new_aml', 'liquidity', 'exchange_diff'):
                 line.currency_id = line.source_aml_id.currency_id
             elif line.flag in ('auto_balance', 'manual', 'early_payment'):
                 line.currency_id = line.wizard_id.transaction_currency_id

@@ -149,7 +149,7 @@
                                         <i class="rounded-circle text-center fa fa-fw fa-comments" title="Open chatter"/>
                                     </a>
                                     <a role="button" class="btn btn-light btn-properties me-1" data-hotkey="d"
-                                        attrs="{'invisible': ['|', ('id', '=', False), ('is_article_item', '=', False)]}"
+                                        attrs="{'invisible': ['|', ('id', '=', False), ('parent_id', '=', False)]}"
                                        t-on-click="toggleProperties">
                                         <i class="rounded-circle text-center fa fa-cog" title="Show Properties"/>
                                     </a>
@@ -161,7 +161,7 @@
                                         <div class="o_knowledge_more_options_panel dropdown-menu" role="menu">
                                             <div attrs="{'invisible': [('user_can_write', '=', False)]}">
                                                 <a role="button" class="dropdown-item btn-move" t-on-click="onMoveArticleClick"
-                                                   attrs="{'invisible': [('active', '=', False)]}">
+                                                   attrs="{'invisible': ['|', ('active', '=', False), ('is_article_item', '=', True)]}">
                                                     <i class="fa fa-fw fa-lg fa-angle-double-right"/> Move To
                                                 </a>
                                                 <button class="dropdown-item btn-lock" href="#" type="object" name="action_set_lock"
@@ -275,7 +275,7 @@
                                                            class="btn btn-light text-capitalize me-2 ps-1 o_knowledge_add_cover o_knowledge_option_button">
                                                             <i class="fa fa-fw fa-lg fa-picture-o" title="Add cover"/> Add cover
                                                         </a>
-                                                        <a role="button" attrs="{'invisible': ['|', ('is_article_item', '=', False), ('article_properties_is_empty', '=', False)]}"
+                                                        <a role="button" attrs="{'invisible': ['|', ('parent_id', '=', False), ('article_properties_is_empty', '=', False)]}"
                                                            t-on-click="addProperties"
                                                            class="btn btn-light text-capitalize o_knowledge_add_properties o_knowledge_option_button">
                                                             <i class="fa fa-fw fa-lg fa-cog" title="Add properties"/> Add Properties
@@ -325,7 +325,7 @@
                                         </div>
                                         <!-- Properties -->
                                         <div class="o_knowledge_properties col-12 col-lg-2 position-relative d-print-none p-0 border-start d-none"
-                                             attrs="{'invisible': [('is_article_item', '=', False)]}">
+                                             attrs="{'invisible': [('parent_id', '=', False)]}">
                                             <div class="m-2 o_scroll_view_lg">
                                                 <h3 class="mt-2 mb-4">Property Fields</h3>
                                                 <field name="article_properties" nolabel="1" class="d-block"

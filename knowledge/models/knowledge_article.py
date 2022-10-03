@@ -191,18 +191,6 @@ class Article(models.Model):
                  )
             )
 
-    @api.constrains('child_ids')
-    def _check_article_item_children(self):
-        for article in self:
-            if article.has_item_children and article.has_article_children:
-                raise ValidationError(_('Article %s can only contain one type of article.', article.display_name))
-
-    @api.constrains('parent_id', 'is_article_item')
-    def _check_article_item_parent(self):
-        for article in self:
-            if article.parent_id.has_item_children and article.parent_id.has_article_children:
-                raise ValidationError(_('Article %s can only contain one type of article.', article.parent_id.display_name))
-
     # ------------------------------------------------------------
     # COMPUTED FIELDS
     # ------------------------------------------------------------
@@ -989,14 +977,6 @@ class Article(models.Model):
                 'is_desynchronized': False
             })
 
-        # Handle article items:
-        # - both types cannot co-exist under same parent
-        # - article item must have parent
-        if self.is_article_item and (not parent or parent.has_article_children):
-            values['is_article_item'] = False
-        elif not self.is_article_item and parent.has_item_children:
-            values['is_article_item'] = True
-
         return self.write(values)
 
     def _resequence(self):
@@ -1100,8 +1080,6 @@ class Article(models.Model):
         if parent:
             if not is_private and parent.category == "private":
                 is_private = True
-            if parent.has_item_children:
-                values['is_article_item'] = True
         else:
             # child do not have to setup an internal permission as it is inherited
             values['internal_permission'] = 'none' if is_private else 'write'

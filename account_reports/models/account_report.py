@@ -2493,7 +2493,7 @@ class AccountReport(models.Model):
         rslt = {}
 
         for formula, expressions in formulas_dict.items():
-            line_domain = safe_eval(formula, {'ref': lambda x: self.env.ref(x).id})
+            line_domain = literal_eval(formula)
             tables, where_clause, where_params = self._query_get(options, date_scope, domain=line_domain)
 
             tail_query, tail_params = self._get_engine_query_tail(offset, limit)

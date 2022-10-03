@@ -16,6 +16,39 @@
                 "19": {
                     "size": 40
                 },
+                "20": {
+                    "size": 23
+                },
+                "21": {
+                    "size": 23
+                },
+                "22": {
+                    "size": 23
+                },
+                "23": {
+                    "size": 23
+                },
+                "24": {
+                    "size": 23
+                },
+                "25": {
+                    "size": 23
+                },
+                "26": {
+                    "size": 23
+                },
+                "27": {
+                    "size": 23
+                },
+                "28": {
+                    "size": 23
+                },
+                "29": {
+                    "size": 23
+                },
+                "30": {
+                    "size": 23
+                },
                 "31": {
                     "size": 40
                 },
@@ -55,103 +88,103 @@
                 },
                 "A19": {
                     "style": 1,
-                    "content": "[Top Warehouses](odoo://view/{\"viewType\":\"pivot\",\"action\":{\"domain\":[[\"warehouse_id\",\"!=\",false]],\"context\":{\"group_by\":[\"warehouse_id\"],\"pivot_measures\":[\"__count\",\"product_qty\"],\"pivot_column_groupby\":[],\"pivot_row_groupby\":[\"warehouse_id\"]},\"modelName\":\"stock.move\",\"views\":[[false,\"kanban\"],[false,\"list\"],[false,\"form\"],[false,\"pivot\"],[false,\"graph\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"Top Warehouses\"})",
+                    "content": "[Top Products](odoo://view/{\"viewType\":\"pivot\",\"action\":{\"domain\":[[\"product_id\",\"!=\",false]],\"context\":{\"group_by\":[\"product_id\"],\"pivot_measures\":[\"__count\",\"product_qty\"],\"pivot_column_groupby\":[],\"pivot_row_groupby\":[\"product_id\"]},\"modelName\":\"stock.move\",\"views\":[[false,\"kanban\"],[false,\"list\"],[false,\"form\"],[false,\"pivot\"],[false,\"graph\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"Top Products\"})",
                     "border": 1
                 },
                 "A20": {
                     "style": 2,
-                    "content": "=_t(\"Warehouse\")",
+                    "content": "=_t(\"Product\")",
                     "border": 2
                 },
                 "A21": {
                     "style": 3,
-                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",1)"
+                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",1)"
                 },
                 "A22": {
                     "style": 4,
-                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",2)"
+                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",2)"
                 },
                 "A23": {
                     "style": 3,
-                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",3)"
+                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",3)"
                 },
                 "A24": {
                     "style": 4,
-                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",4)"
+                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",4)"
                 },
                 "A25": {
                     "style": 3,
-                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",5)"
+                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",5)"
                 },
                 "A26": {
                     "style": 4,
-                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",6)"
+                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",6)"
                 },
                 "A27": {
                     "style": 3,
-                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",7)"
+                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",7)"
                 },
                 "A28": {
                     "style": 4,
-                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",8)"
+                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",8)"
                 },
                 "A29": {
                     "style": 3,
-                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",9)"
+                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",9)"
                 },
                 "A30": {
                     "style": 4,
-                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",10)"
+                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",10)"
                 },
                 "A32": {
                     "style": 1,
-                    "content": "[Top Products](odoo://view/{\"viewType\":\"pivot\",\"action\":{\"domain\":[[\"product_id\",\"!=\",false]],\"context\":{\"group_by\":[\"product_id\"],\"pivot_measures\":[\"__count\",\"product_qty\"],\"pivot_column_groupby\":[],\"pivot_row_groupby\":[\"product_id\"]},\"modelName\":\"stock.move\",\"views\":[[false,\"kanban\"],[false,\"list\"],[false,\"form\"],[false,\"pivot\"],[false,\"graph\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"Top Products\"})",
+                    "content": "[Top Warehouses](odoo://view/{\"viewType\":\"pivot\",\"action\":{\"domain\":[[\"warehouse_id\",\"!=\",false]],\"context\":{\"group_by\":[\"warehouse_id\"],\"pivot_measures\":[\"__count\",\"product_qty\"],\"pivot_column_groupby\":[],\"pivot_row_groupby\":[\"warehouse_id\"]},\"modelName\":\"stock.move\",\"views\":[[false,\"kanban\"],[false,\"list\"],[false,\"form\"],[false,\"pivot\"],[false,\"graph\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"Top Warehouses\"})",
                     "border": 1
                 },
                 "A33": {
                     "style": 2,
-                    "content": "=_t(\"Product\")",
+                    "content": "=_t(\"Warehouse\")",
                     "border": 2
                 },
                 "A34": {
                     "style": 3,
-                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",1)"
+                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",1)"
                 },
                 "A35": {
                     "style": 4,
-                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",2)"
+                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",2)"
                 },
                 "A36": {
                     "style": 3,
-                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",3)"
+                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",3)"
                 },
                 "A37": {
                     "style": 4,
-                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",4)"
+                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",4)"
                 },
                 "A38": {
                     "style": 3,
-                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",5)"
+                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",5)"
                 },
                 "A39": {
                     "style": 4,
-                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",6)"
+                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",6)"
                 },
                 "A40": {
                     "style": 3,
-                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",7)"
+                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",7)"
                 },
                 "A41": {
                     "style": 4,
-                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",8)"
+                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",8)"
                 },
                 "A42": {
                     "style": 3,
-                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",9)"
+                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",9)"
                 },
                 "A43": {
                     "style": 4,
-                    "content": "=ODOO.PIVOT.HEADER(3,\"#product_id\",10)"
+                    "content": "=ODOO.PIVOT.HEADER(1,\"#warehouse_id\",10)"
                 },
                 "B19": {
                     "style": 5,
@@ -165,47 +198,47 @@
                 "B21": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",1)"
+                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",1)"
                 },
                 "B22": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",2)"
+                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",2)"
                 },
                 "B23": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",3)"
+                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",3)"
                 },
                 "B24": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",4)"
+                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",4)"
                 },
                 "B25": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",5)"
+                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",5)"
                 },
                 "B26": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",6)"
+                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",6)"
                 },
                 "B27": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",7)"
+                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",7)"
                 },
                 "B28": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",8)"
+                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",8)"
                 },
                 "B29": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",9)"
+                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",9)"
                 },
                 "B30": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",10)"
+                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",10)"
                 },
                 "B32": {
                     "style": 5,
@@ -219,47 +252,47 @@
                 "B34": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",1)"
+                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",1)"
                 },
                 "B35": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",2)"
+                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",2)"
                 },
                 "B36": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",3)"
+                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",3)"
                 },
                 "B37": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",4)"
+                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",4)"
                 },
                 "B38": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",5)"
+                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",5)"
                 },
                 "B39": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",6)"
+                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",6)"
                 },
                 "B40": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",7)"
+                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",7)"
                 },
                 "B41": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",8)"
+                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",8)"
                 },
                 "B42": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",9)"
+                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",9)"
                 },
                 "B43": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"__count\",\"#product_id\",10)"
+                    "content": "=ODOO.PIVOT(1,\"__count\",\"#warehouse_id\",10)"
                 },
                 "C19": {
                     "style": 5,
@@ -273,47 +306,47 @@
                 "C21": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",1)"
+                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",1)"
                 },
                 "C22": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",2)"
+                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",2)"
                 },
                 "C23": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",3)"
+                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",3)"
                 },
                 "C24": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",4)"
+                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",4)"
                 },
                 "C25": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",5)"
+                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",5)"
                 },
                 "C26": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",6)"
+                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",6)"
                 },
                 "C27": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",7)"
+                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",7)"
                 },
                 "C28": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",8)"
+                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",8)"
                 },
                 "C29": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",9)"
+                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",9)"
                 },
                 "C30": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",10)"
+                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",10)"
                 },
                 "C32": {
                     "style": 5,
@@ -327,147 +360,147 @@
                 "C34": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",1)"
+                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",1)"
                 },
                 "C35": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",2)"
+                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",2)"
                 },
                 "C36": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",3)"
+                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",3)"
                 },
                 "C37": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",4)"
+                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",4)"
                 },
                 "C38": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",5)"
+                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",5)"
                 },
                 "C39": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",6)"
+                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",6)"
                 },
                 "C40": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",7)"
+                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",7)"
                 },
                 "C41": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",8)"
+                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",8)"
                 },
                 "C42": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",9)"
+                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",9)"
                 },
                 "C43": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(3,\"product_qty\",\"#product_id\",10)"
+                    "content": "=ODOO.PIVOT(1,\"product_qty\",\"#warehouse_id\",10)"
                 },
                 "E19": {
-                    "style": 1,
-                    "content": "[Top Locations](odoo://view/{\"viewType\":\"pivot\",\"action\":{\"domain\":[[\"location_dest_id\",\"!=\",false]],\"context\":{\"group_by\":[\"location_dest_id\"],\"pivot_measures\":[\"__count\",\"product_qty\"],\"pivot_column_groupby\":[],\"pivot_row_groupby\":[\"location_dest_id\"]},\"modelName\":\"stock.move\",\"views\":[[false,\"kanban\"],[false,\"list\"],[false,\"form\"],[false,\"pivot\"],[false,\"graph\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"Top Locations\"})",
-                    "border": 1
-                },
-                "E20": {
-                    "style": 2,
-                    "content": "=_t(\"Location\")",
-                    "border": 2
-                },
-                "E21": {
-                    "style": 3,
-                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",1)"
-                },
-                "E22": {
-                    "style": 4,
-                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",2)"
-                },
-                "E23": {
-                    "style": 3,
-                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",3)"
-                },
-                "E24": {
-                    "style": 4,
-                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",4)"
-                },
-                "E25": {
-                    "style": 3,
-                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",5)"
-                },
-                "E26": {
-                    "style": 4,
-                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",6)"
-                },
-                "E27": {
-                    "style": 3,
-                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",7)"
-                },
-                "E28": {
-                    "style": 4,
-                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",8)"
-                },
-                "E29": {
-                    "style": 3,
-                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",9)"
-                },
-                "E30": {
-                    "style": 4,
-                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",10)"
-                },
-                "E32": {
                     "style": 1,
                     "content": "[Top Partners](odoo://view/{\"viewType\":\"pivot\",\"action\":{\"domain\":[[\"partner_id\",\"!=\",false]],\"context\":{\"group_by\":[\"partner_id\"],\"pivot_measures\":[\"__count\",\"product_qty\"],\"pivot_column_groupby\":[],\"pivot_row_groupby\":[\"partner_id\"]},\"modelName\":\"stock.move\",\"views\":[[false,\"kanban\"],[false,\"list\"],[false,\"form\"],[false,\"pivot\"],[false,\"graph\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"Top Partners\"})",
                     "border": 1
                 },
-                "E33": {
+                "E20": {
                     "style": 2,
                     "content": "=_t(\"Partner\")",
                     "border": 2
                 },
-                "E34": {
+                "E21": {
                     "style": 3,
                     "content": "=ODOO.PIVOT.HEADER(4,\"#partner_id\",1)"
                 },
-                "E35": {
+                "E22": {
                     "style": 4,
                     "content": "=ODOO.PIVOT.HEADER(4,\"#partner_id\",2)"
                 },
-                "E36": {
+                "E23": {
                     "style": 3,
                     "content": "=ODOO.PIVOT.HEADER(4,\"#partner_id\",3)"
                 },
-                "E37": {
+                "E24": {
                     "style": 4,
                     "content": "=ODOO.PIVOT.HEADER(4,\"#partner_id\",4)"
                 },
-                "E38": {
+                "E25": {
                     "style": 3,
                     "content": "=ODOO.PIVOT.HEADER(4,\"#partner_id\",5)"
                 },
-                "E39": {
+                "E26": {
                     "style": 4,
                     "content": "=ODOO.PIVOT.HEADER(4,\"#partner_id\",6)"
                 },
-                "E40": {
+                "E27": {
                     "style": 3,
                     "content": "=ODOO.PIVOT.HEADER(4,\"#partner_id\",7)"
                 },
-                "E41": {
+                "E28": {
                     "style": 4,
                     "content": "=ODOO.PIVOT.HEADER(4,\"#partner_id\",8)"
                 },
-                "E42": {
+                "E29": {
                     "style": 3,
                     "content": "=ODOO.PIVOT.HEADER(4,\"#partner_id\",9)"
                 },
-                "E43": {
+                "E30": {
                     "style": 4,
                     "content": "=ODOO.PIVOT.HEADER(4,\"#partner_id\",10)"
+                },
+                "E32": {
+                    "style": 1,
+                    "content": "[Top Locations](odoo://view/{\"viewType\":\"pivot\",\"action\":{\"domain\":[[\"location_dest_id\",\"!=\",false]],\"context\":{\"group_by\":[\"location_dest_id\"],\"pivot_measures\":[\"__count\",\"product_qty\"],\"pivot_column_groupby\":[],\"pivot_row_groupby\":[\"location_dest_id\"]},\"modelName\":\"stock.move\",\"views\":[[false,\"kanban\"],[false,\"list\"],[false,\"form\"],[false,\"pivot\"],[false,\"graph\"],[false,\"search\"]]},\"threshold\":0,\"name\":\"Top Locations\"})",
+                    "border": 1
+                },
+                "E33": {
+                    "style": 2,
+                    "content": "=_t(\"Location\")",
+                    "border": 2
+                },
+                "E34": {
+                    "style": 3,
+                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",1)"
+                },
+                "E35": {
+                    "style": 4,
+                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",2)"
+                },
+                "E36": {
+                    "style": 3,
+                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",3)"
+                },
+                "E37": {
+                    "style": 4,
+                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",4)"
+                },
+                "E38": {
+                    "style": 3,
+                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",5)"
+                },
+                "E39": {
+                    "style": 4,
+                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",6)"
+                },
+                "E40": {
+                    "style": 3,
+                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",7)"
+                },
+                "E41": {
+                    "style": 4,
+                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",8)"
+                },
+                "E42": {
+                    "style": 3,
+                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",9)"
+                },
+                "E43": {
+                    "style": 4,
+                    "content": "=ODOO.PIVOT.HEADER(2,\"#location_dest_id\",10)"
                 },
                 "F19": {
                     "style": 5,
@@ -481,47 +514,47 @@
                 "F21": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",1)"
+                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",1)"
                 },
                 "F22": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",2)"
+                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",2)"
                 },
                 "F23": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",3)"
+                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",3)"
                 },
                 "F24": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",4)"
+                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",4)"
                 },
                 "F25": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",5)"
+                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",5)"
                 },
                 "F26": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",6)"
+                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",6)"
                 },
                 "F27": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",7)"
+                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",7)"
                 },
                 "F28": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",8)"
+                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",8)"
                 },
                 "F29": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",9)"
+                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",9)"
                 },
                 "F30": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",10)"
+                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",10)"
                 },
                 "F32": {
                     "style": 5,
@@ -535,47 +568,47 @@
                 "F34": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",1)"
+                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",1)"
                 },
                 "F35": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",2)"
+                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",2)"
                 },
                 "F36": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",3)"
+                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",3)"
                 },
                 "F37": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",4)"
+                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",4)"
                 },
                 "F38": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",5)"
+                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",5)"
                 },
                 "F39": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",6)"
+                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",6)"
                 },
                 "F40": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",7)"
+                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",7)"
                 },
                 "F41": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",8)"
+                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",8)"
                 },
                 "F42": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",9)"
+                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",9)"
                 },
                 "F43": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"__count\",\"#partner_id\",10)"
+                    "content": "=ODOO.PIVOT(2,\"__count\",\"#location_dest_id\",10)"
                 },
                 "G19": {
                     "style": 5,
@@ -589,47 +622,47 @@
                 "G21": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",1)"
+                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",1)"
                 },
                 "G22": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",2)"
+                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",2)"
                 },
                 "G23": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",3)"
+                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",3)"
                 },
                 "G24": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",4)"
+                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",4)"
                 },
                 "G25": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",5)"
+                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",5)"
                 },
                 "G26": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",6)"
+                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",6)"
                 },
                 "G27": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",7)"
+                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",7)"
                 },
                 "G28": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",8)"
+                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",8)"
                 },
                 "G29": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",9)"
+                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",9)"
                 },
                 "G30": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",10)"
+                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",10)"
                 },
                 "G32": {
                     "style": 5,
@@ -643,47 +676,47 @@
                 "G34": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",1)"
+                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",1)"
                 },
                 "G35": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",2)"
+                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",2)"
                 },
                 "G36": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",3)"
+                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",3)"
                 },
                 "G37": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",4)"
+                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",4)"
                 },
                 "G38": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",5)"
+                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",5)"
                 },
                 "G39": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",6)"
+                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",6)"
                 },
                 "G40": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",7)"
+                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",7)"
                 },
                 "G41": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",8)"
+                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",8)"
                 },
                 "G42": {
                     "style": 7,
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",9)"
+                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",9)"
                 },
                 "G43": {
                     "format": 1,
-                    "content": "=ODOO.PIVOT(4,\"product_qty\",\"#partner_id\",10)"
+                    "content": "=ODOO.PIVOT(2,\"product_qty\",\"#location_dest_id\",10)"
                 },
                 "A8": {
                     "border": 2
@@ -736,7 +769,6 @@
                     "tag": "chart",
                     "data": {
                         "title": "",
-                        "id": "68ebf228-b00b-456b-84f5-ada5212d184e",
                         "background": "#FFFFFF",
                         "legendPosition": "top",
                         "metaData": {
@@ -1001,20 +1033,23 @@
                     []
                 ],
                 "measure": "product_qty",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "2": {
             "colGroupBys": [],
             "context": {},
             "domain": [
+                "&",
                 [
                     "location_dest_id",
                     "!=",
                     false
+                ],
+                [
+                    "location_dest_usage",
+                    "=",
+                    "internal"
                 ]
             ],
             "id": "2",
@@ -1037,10 +1072,7 @@
                     []
                 ],
                 "measure": "product_qty",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "3": {
@@ -1073,10 +1105,7 @@
                     []
                 ],
                 "measure": "product_qty",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "4": {
@@ -1109,10 +1138,7 @@
                     []
                 ],
                 "measure": "product_qty",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "5": {

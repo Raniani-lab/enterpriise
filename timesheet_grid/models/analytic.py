@@ -5,6 +5,7 @@ import ast
 
 from datetime import date, datetime, timedelta
 from dateutil.relativedelta import relativedelta
+from dateutil.rrule import SU
 from lxml import etree
 from collections import defaultdict
 
@@ -141,10 +142,8 @@ class AnalyticLine(models.Model):
         #           ['date', '<=', '2250-01-01']
         #   3) retrieve data and create correctly the grid and rows in result
 
-        today = fields.Date.to_string(fields.Date.today())
-        grid_anchor = self.env.context.get('grid_anchor', today)
-        last_week = (fields.Datetime.from_string(grid_anchor) - timedelta(days=7)).date()
-        domain_timesheet_search = [
+        grid_anchor, last_week = self._get_last_week()
+        domain_search = [
             ('project_id', '!=', False),
             '|',
                 ('task_id.active', '=', True),
@@ -167,7 +166,7 @@ class AnalyticLine(models.Model):
                     if operator == '=':
                         operator = '<='
                     value = '2250-01-01' if operator in ['<', '<='] else '1970-01-01'
-                domain_timesheet_search.append([name, operator, value])
+                domain_search.append([name, operator, value])
                 if name in ['project_id', 'task_id']:
                     if operator in ['=', '!='] and value:
                         field = "name" if isinstance(value, str) else "id"
@@ -175,13 +174,13 @@ class AnalyticLine(models.Model):
                     elif operator in ['ilike', 'not ilike']:
                         domain_project_task[name].append(('name', operator, value))
             else:
-                domain_timesheet_search.append(rule)
+                domain_search.append(rule)
 
         if group_expand_section_values:
             if section_field in ['project_id', 'employee_id', 'task_id']:
                 apply_group_expand = True
                 if section_field == 'employee_id':
-                    domain_timesheet_search = expression.AND([domain_timesheet_search, [(section_field, 'in', list(group_expand_section_values))]])
+                    domain_search = expression.AND([domain_search, [(section_field, 'in', list(group_expand_section_values))]])
                 if section_field in ['project_id', 'task_id']:
                     domain_project_task[section_field] = expression.AND([domain_project_task[section_field], [('id', 'in', list(group_expand_section_values))]])
 
@@ -197,7 +196,7 @@ class AnalyticLine(models.Model):
             rows_dict[section_key][key] = value
 
         # step 2: search timesheets
-        timesheets = self.search(domain_timesheet_search)
+        timesheets = self.search(domain_search)
 
         # step 3: retrieve data and create correctly the grid and rows in result
         timesheet_section_field = self.env['account.analytic.line']._fields[section_field] if section_field else False
@@ -696,11 +695,7 @@ class AnalyticLine(models.Model):
                  ['date', '<=', '2250-01-01']
         """
 
-        today = fields.Date.to_string(fields.Date.today())
-        grid_anchor = self.env.context.get('grid_anchor', today)
-        last_week = (fields.Datetime.from_string(grid_anchor) - timedelta(days=7)).date()
         domain_search = []
-
         # We force the date rules to be always met
         for rule in domain:
             if len(rule) == 3 and rule[0] == 'date':
@@ -711,6 +706,7 @@ class AnalyticLine(models.Model):
             else:
                 domain_search.append(rule)
 
+        grid_anchor, last_week = self._get_last_week()
         domain_search = expression.AND([[('date', '>=', last_week), ('date', '<=', grid_anchor)], domain_search])
         return self.search(domain_search).project_id
 
@@ -750,11 +746,7 @@ class AnalyticLine(models.Model):
                  ['date', '>=', '1970-01-01'],
                  ['date', '<=', '2250-01-01']
         """
-        today = fields.Date.to_string(fields.Date.today())
-        grid_anchor = self.env.context.get('grid_anchor', today)
-        last_week = (fields.Datetime.from_string(grid_anchor) - timedelta(days=7)).date()
         domain_search = []
-
         for rule in domain:
             if len(rule) == 3 and rule[0] == 'date':
                 name, operator, _rule = rule
@@ -763,6 +755,8 @@ class AnalyticLine(models.Model):
                 domain_search.append((name, operator, '2250-01-01' if operator in ['<', '<='] else '1970-01-01'))
             else:
                 domain_search.append(rule)
+
+        grid_anchor, last_week = self._get_last_week()
         domain_search = expression.AND([
             [('project_id', '!=', False),
              ('date', '>=', last_week),
@@ -778,6 +772,12 @@ class AnalyticLine(models.Model):
             order = None
         return self.search(domain_search, order=order).employee_id
 
+    def _get_last_week(self):
+        today = fields.Date.to_string(fields.Date.today())
+        grid_anchor = self.env.context.get('grid_anchor', today)
+        last_week = fields.Datetime.from_string(grid_anchor)
+        last_week += relativedelta(weekday=SU(-2))
+        return grid_anchor, last_week.date()
     # ----------------------------------------------------
     # Timer Methods
     # ----------------------------------------------------

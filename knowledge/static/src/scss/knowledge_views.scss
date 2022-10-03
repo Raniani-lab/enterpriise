@@ -344,6 +344,11 @@
             padding-left: 2rem !important; // gutter size of the editor
             padding-right: 2rem !important;
         }
+        .o_knowledge_editor .o_kanban_view .o_field_properties {
+            // kanban view in editor
+            padding-left: 0 !important;
+            padding-right: 0 !important;
+        }
     }
 }
 
@@ -356,6 +361,11 @@
         .o_knowledge_editor .o_field_properties {
             padding-left: 1rem !important; // gutter size of the editor
             padding-right: 1rem !important;
+        }
+        .o_knowledge_editor .o_kanban_view .o_field_properties {
+            // kanban view in editor
+            padding-left: 0 !important;
+            padding-right: 0 !important;
         }
     }
 }

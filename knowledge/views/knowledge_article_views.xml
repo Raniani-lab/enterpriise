@@ -462,14 +462,16 @@
                 <field name="is_user_favorite" invisible="1"/>
                 <field name="user_has_write_access" invisible="1"/>
                 <field name="article_url" invisible="1"/>
+                <field name="article_properties"/>
                 <templates>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click">
                             <div class="o_knowledge_kanban_card d-flex flex-column">
-                                <div class="d-flex align-items-center">
+                                <div class="d-flex flex-column align-items-start">
                                     <div class="flex-grow-1 lead text-truncate">
                                         <field name="display_name"/>
                                     </div>
+                                    <field name="article_properties" widget="properties"/>
                                 </div>
                             </div>
                         </div>

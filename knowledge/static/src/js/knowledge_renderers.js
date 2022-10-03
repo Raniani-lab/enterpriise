@@ -120,11 +120,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         onMounted(() => {
             this._renderTree(this.resId, '/knowledge/tree_panel');
 
-            // Focus inside the body (default_focus does not work yet, to check
-            // when field_html will be converted)
+            // Focus inside the body if article is empty (default_focus does not work).
             const body = this.root.el.querySelector('.o_knowledge_editor .note-editable');
-            if (body) {
-                body.focus();
+            if (body && !body.innerText.trim()) {
+                setTimeout(() => body.focus(), 0);
             }
             // If the article has some properties set,
             // we should display the property panel that is hidden by default.

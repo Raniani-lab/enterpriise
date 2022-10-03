@@ -498,9 +498,10 @@ class AnalyticLine(models.Model):
             is_timesheet_approver = self.user_has_groups('hr_timesheet.group_hr_timesheet_approver')
             employees = self.env['hr.employee'].search([
                 ('id', 'in', self.employee_id.ids),
-                '|',
-                    ('parent_id.user_id', '=', self._uid),
-                    ('timesheet_manager_id', '=', self._uid),
+                ('user_id', '!=', self._uid),
+                '|', ('parent_id.user_id', '=', self._uid),
+                '|', ('timesheet_manager_id', '=', self._uid),
+                '&', ('parent_id', '=', False), ('timesheet_manager_id', '=', False),
             ])
 
             action = "delete" if delete else "modify" if vals is not None and "date" in vals else "create or edit"
@@ -956,9 +957,16 @@ class AnalyticLine(models.Model):
         domain = [('is_timesheet', '=', True), ('validated', '=', validated)]
 
         if not self.user_has_groups('hr_timesheet.group_timesheet_manager'):
-            return expression.AND([domain, ['|', ('employee_id.timesheet_manager_id', '=', self.env.user.id),
-                      '|', ('employee_id', 'in', self.env.user.employee_id.subordinate_ids.ids),
-                      '|', ('employee_id.parent_id.user_id', '=', self.env.user.id), ('project_id.user_id', '=', self.env.user.id)]])
+            return expression.AND([
+                domain,
+                [
+                    ('user_id', '!=', self._uid),
+                    '|', ('employee_id.timesheet_manager_id', '=', self._uid),
+                    '|', ('employee_id', 'in', self.env.user.employee_id.subordinate_ids.ids),
+                    '|', ('employee_id.parent_id.user_id', '=', self._uid),
+                    '&', ('employee_id.timesheet_manager_id', '=', False), ('employee_id.parent_id', '=', False),
+                ],
+            ])
         return domain
 
     def _get_timesheets_to_merge(self):

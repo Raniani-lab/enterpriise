@@ -97,6 +97,22 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
             'employee_id': self.empl_approver2.id
         })
 
+        self.user_employee4 = new_test_user(self.env, 'user_employee4', groups='hr_timesheet.group_hr_timesheet_user')
+
+        self.empl_employee4 = self.env['hr.employee'].create({
+            'name': 'User Empl Employee 4',
+            'user_id': self.user_employee4.id,
+        })
+
+        self.timesheet5 = self.env['account.analytic.line'].with_user(self.user_approver).create({
+            'name': 'My timesheet 5',
+            'project_id': self.project_customer.id,
+            'task_id': self.task1.id,
+            'date': today,
+            'unit_amount': 2,
+            'employee_id': self.empl_employee4.id
+        })
+
     def test_access_rights_for_employee(self):
         """ Check the operations of employee with the lowest access
 
@@ -362,3 +378,12 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
 
         self.timesheet3.with_user(self.user_approver).action_invalidate_timesheet()
         self.assertFalse(self.empl_employee3.last_validated_timesheet_date)
+
+    def test_approve_user_without_approver_and_parents(self):
+        """
+            Check that a user with group_hr_timesheet_user can approve timesheets
+            of user that don't have a timesheet approver and a parent.
+        """
+        timesheet_to_validate = self.timesheet5
+        timesheet_to_validate.with_user(self.user_approver).action_validate_timesheet()
+        self.assertEqual(timesheet_to_validate.validated, True)

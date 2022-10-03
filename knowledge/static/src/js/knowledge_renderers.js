@@ -201,12 +201,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         } else if (this.resId) {  // Don't save when NoRecord helper is shown
             await this.props.record.save();
         }
-        this.actionService.doAction('knowledge.ir_actions_server_knowledge_home_page', {
-            stackPosition: 'replaceCurrentAction',
-            additionalContext: {
-                res_id: resId ? resId : false
-            }
-        });
+        this.actionService.doAction(
+            await this.orm.call('knowledge.article', 'action_home_page', resId ? [resId] : []),
+            {stackPosition: 'replaceCurrentAction'}
+        );
     }
 
     openCoverSelector() {

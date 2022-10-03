@@ -18,7 +18,7 @@ export class TemplateBehavior extends AbstractBehavior {
     setup() {
         super.setup();
         this.dialogService = useService("dialog");
-        this.knowledgeService = useService("knowledgeService");
+        this.knowledgeCommandsService = useService("knowledgeCommandsService");
         this.popoverService = useService("popover");
         this.uiService = useService("ui");
         this.copyToClipboardButton = useRef("copyToClipboardButton");
@@ -41,8 +41,7 @@ export class TemplateBehavior extends AbstractBehavior {
                 this.clipboard.destroy();
             }
         });
-        this.recordWithChatter = this.knowledgeService.getAvailableRecordWithChatter();
-        this.recordWithHtmlField = this.knowledgeService.getAvailableRecordWithHtmlField();
+        this.targetRecordInfo = this.knowledgeCommandsService.getCommandsRecordInfo();
         if (this.props.content) {
             this.props.content = markup(this.props.content);
         }
@@ -70,13 +69,12 @@ export class TemplateBehavior extends AbstractBehavior {
      * @param {Event} ev
      */
     onClickUseAsDescription(ev) {
-        // require this.recordWithHtmlField
         const dataTransfer = this._createHtmlDataTransfer();
         const macro = new UseAsDescriptionMacro({
-            targetXmlDoc: this.recordWithHtmlField.xmlDoc,
-            breadcrumbs: this.recordWithHtmlField.breadcrumbs,
+            targetXmlDoc: this.targetRecordInfo.xmlDoc,
+            breadcrumbs: this.targetRecordInfo.breadcrumbs,
             data: {
-                fieldName: this.recordWithHtmlField.fieldNames[0].name,
+                fieldName: this.targetRecordInfo.fieldInfo.name,
                 dataTransfer: dataTransfer,
             },
             services: {
@@ -93,11 +91,10 @@ export class TemplateBehavior extends AbstractBehavior {
      * @param {Event} ev
      */
     onClickSendAsMessage(ev) {
-        // require this.recordWithChatter
         const dataTransfer = this._createHtmlDataTransfer();
         const macro = new SendAsMessageMacro({
-            targetXmlDoc: this.recordWithChatter.xmlDoc,
-            breadcrumbs: this.recordWithChatter.breadcrumbs,
+            targetXmlDoc: this.targetRecordInfo.xmlDoc,
+            breadcrumbs: this.targetRecordInfo.breadcrumbs,
             data: {
                 dataTransfer: dataTransfer,
             },

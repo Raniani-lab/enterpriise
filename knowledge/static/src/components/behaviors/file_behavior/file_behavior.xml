@@ -12,10 +12,10 @@
         </div>
         <div class="o_knowledge_toolbar mt-auto ms-auto o_knowledge_clean_for_save">
             <div class="btn-group">
-                <button t-if="recordWithChatter" t-on-click="onClickAttachToMessage" title="Send as Message" class="btn btn-primary btn-link btn-sm border-0">
+                <button t-if="targetRecordInfo and targetRecordInfo.withChatter" t-on-click="onClickAttachToMessage" title="Send as Message" class="btn btn-primary btn-link btn-sm border-0">
                     <i class="fa fa-envelope" t-on-dblclick.stop=""/> <span class="o_knowledge_toolbar_button_text">Send as Message</span>
                 </button>
-                <button t-if="recordWithChatter" t-on-click="onClickUseAsAttachment" title="Use as Attachment" class="btn btn-primary btn-link btn-sm border-0">
+                <button t-if="targetRecordInfo and targetRecordInfo.withChatter" t-on-click="onClickUseAsAttachment" title="Use as Attachment" class="btn btn-primary btn-link btn-sm border-0">
                     <i class="fa fa-paperclip" t-on-dblclick.stop=""/> <span class="o_knowledge_toolbar_button_text">Use as Attachment</span>
                 </button>
                 <button t-on-click="onClickDownload" title="Download" class="btn btn-primary btn-link btn-sm border-0">

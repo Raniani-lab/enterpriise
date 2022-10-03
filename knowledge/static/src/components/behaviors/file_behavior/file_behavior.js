@@ -15,10 +15,10 @@ export class FileBehavior extends AbstractBehavior {
     setup() {
         super.setup();
         this.dialogService = useService('dialog');
-        this.knowledgeService = useService('knowledgeService');
+        this.knowledgeCommandsService = useService('knowledgeCommandsService');
         this.rpcService = useService('rpc');
         this.uiService = useService('ui');
-        this.recordWithChatter = this.knowledgeService.getAvailableRecordWithChatter();
+        this.targetRecordInfo = this.knowledgeCommandsService.getCommandsRecordInfo();
         if (this.props.fileImage) {
             this.props.fileImage = markup(this.props.fileImage);
         }
@@ -63,7 +63,6 @@ export class FileBehavior extends AbstractBehavior {
      * @param {Event} ev
      */
     async onClickAttachToMessage(ev) {
-        // require this.recordWithChatter
         const fileLink = this.props.anchor.querySelector('.o_knowledge_file_image > a');
         if (!fileLink || !fileLink.hasAttribute('href')) {
             return;
@@ -86,8 +85,8 @@ export class FileBehavior extends AbstractBehavior {
             return;
         }
         const macro = new AttachToMessageMacro({
-            targetXmlDoc: this.recordWithChatter.xmlDoc,
-            breadcrumbs: this.recordWithChatter.breadcrumbs,
+            targetXmlDoc: this.targetRecordInfo.xmlDoc,
+            breadcrumbs: this.targetRecordInfo.breadcrumbs,
             data: {
                 dataTransfer: dataTransfer,
             },
@@ -105,7 +104,6 @@ export class FileBehavior extends AbstractBehavior {
      * @param {Event} ev
      */
     async onClickUseAsAttachment(ev) {
-        // require this.recordWithChatter
         const fileLink = this.props.anchor.querySelector('.o_knowledge_file_image > a');
         if (!fileLink || !fileLink.hasAttribute('href')) {
             return;
@@ -120,8 +118,8 @@ export class FileBehavior extends AbstractBehavior {
                 name: fileLink.getAttribute('title'),
                 data: dataURL.split(',')[1],
                 is_image: false,
-                res_id: this.recordWithChatter.resId,
-                res_model: this.recordWithChatter.resModel,
+                res_id: this.targetRecordInfo.resId,
+                res_model: this.targetRecordInfo.resModel,
             });
         } catch {
             return;
@@ -130,8 +128,8 @@ export class FileBehavior extends AbstractBehavior {
             return;
         }
         const macro = new UseAsAttachmentMacro({
-            targetXmlDoc: this.recordWithChatter.xmlDoc,
-            breadcrumbs: this.recordWithChatter.breadcrumbs,
+            targetXmlDoc: this.targetRecordInfo.xmlDoc,
+            breadcrumbs: this.targetRecordInfo.breadcrumbs,
             data: null,
             services: {
                 ui: this.uiService,

@@ -108,13 +108,14 @@
                 <separator/>
                 <filter name="closed" string="Closed" domain="[('stage_category','=','closed')]" help="Closed subscriptions"/>
                 <filter name="future" string="Not Started Yet" domain="[('stage_category','=','progress'), ('start_date', '&gt;=', context_today().strftime('%Y-%m-%d'))]" help="Confirmed and not yet started"/>
-                <separator/>
+                <filter string="Expiring" name="filter_expire" domain="[('state', '!=', 'done')]"/>
                 <separator/>
                 <filter name="good" string="Good Health" domain="[('health', '=', 'done')]"/>
                 <filter name="bad" string="Bad Health" domain="[('health', '=', 'bad')]"/>
                 <separator/>
                 <filter name="filter_order_date" date="date_order"/>
                 <filter name="filter_recurring_next_date" date="next_invoice_date"/>
+                <separator/>
                 <filter invisible="1" string="Late Activities" name="activities_overdue"
                     domain="[('my_activity_date_deadline', '&lt;', context_today().strftime('%Y-%m-%d'))]"
                     help="Show all records which has next action date is before today"/>
@@ -320,22 +321,24 @@
       <field name="model">sale.order</field>
       <field name="groups_id" eval="[(4, ref('account.group_account_invoice'))]"/>
       <field name="arch" type="xml">
-        <tree sample="1">
+        <tree sample="1" multi_edit="1">
             <field name="client_order_ref" readonly="1" decoration-bf="1"/>
             <field name="partner_id" readonly="1"/>
-            <field name="next_invoice_date" string="Next Invoice" widget="remaining_days" attrs="{'invisible': [('stage_category', '!=', 'progress')]}" optional="show"/>
-            <field name="activity_ids" widget="list_activity"/>
-            <field name="pricelist_id" invisible="1"/>
+            <field name="next_invoice_date" string="Next Invoice" widget="remaining_days" attrs="{'invisible': [('stage_category', '!=', 'progress')]}" optional="show" readonly="1"/>
+            <field name="activity_ids" widget="list_activity" readonly="1"/>
+            <field name="pricelist_id" invisible="1" readonly="1"/>
             <field name="user_id" optional="show" widget="many2one_avatar_user"/>
             <field name="team_id" optional="hide"/>
             <field name="company_id" groups="base.group_multi_company" readonly="1"/>
-            <field name="amount_untaxed"/>
-            <field name="percentage_satisfaction" optional="hide"/>
-            <field name="amount_total" decoration-bf="1" widget='monetary' options="{'currency_field': 'currency_id'}"/>
-            <field name="stage_id" widget="badge" decoration-info="stage_category == 'draft'" decoration-success="stage_category == 'progress'"/>
-            <field name="to_renew" invisible="1"/>
-            <field name="stage_category" invisible="1"/>
-            <field name="currency_id" invisible="1"/>
+            <field name="company_id" invisible="1" readonly="1"/>
+            <field name="amount_untaxed" readonly="1"/>
+            <field name="percentage_satisfaction" optional="hide" readonly="1"/>
+            <field name="amount_total" decoration-bf="1" widget='monetary' options="{'currency_field': 'currency_id'}" readonly="1"/>
+            <field name="stage_id" widget="badge" decoration-info="stage_category == 'draft'" decoration-success="stage_category == 'progress'" readonly="1"/>
+            <field name="to_renew" invisible="1" readonly="1"/>
+            <field name="renew_state" readonly="1"/>
+            <field name="stage_category" invisible="1" readonly="1"/>
+            <field name="currency_id" invisible="1" readonly="1"/>
         </tree>
       </field>
     </record>
@@ -441,6 +444,16 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order.close.reason</field>
         <field name="view_mode">tree</field>
+    </record>
+
+    <!-- Change customer -->
+    <record id="model_sale_order_subscription_change_customer" model="ir.actions.server">
+        <field name="name">Change customer</field>
+        <field name="model_id" ref="sale.model_sale_order"/>
+        <field name="binding_model_id" ref="sale.model_sale_order"/>
+        <field name="binding_view_types">form,list</field>
+        <field name="state">code</field>
+        <field name="code">action = env["ir.actions.actions"]._for_xml_id("sale_subscription.sale_subscription_change_customer_wizard_action")</field>
     </record>
 
     <!-- Alerts -->

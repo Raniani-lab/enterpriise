@@ -13,6 +13,7 @@ from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_is_zero
 from odoo.osv import expression
 from odoo.tools import config
+from odoo.tools.misc import formatLang
 from odoo.tools.date_utils import get_timedelta
 
 _logger = logging.getLogger(__name__)

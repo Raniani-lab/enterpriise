@@ -31,6 +31,7 @@ Features:
         'security/sale_subscription_security.xml',
         'security/ir.model.access.csv',
         'wizard/sale_subscription_close_reason_wizard_views.xml',
+        'wizard/sale_subscription_change_customer_wizard_views.xml',
         'views/sale_order_views.xml',
         'views/product_template_views.xml',
         'views/sale_subscription_views.xml',

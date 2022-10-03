@@ -59,22 +59,9 @@
 
 .o_appraisal_form {
     .o_form_sheet {
-        padding: 24px 0 0!important;
-        &>.oe_button_box, .o_notebook_headers {
-            box-sizing: border-box;
-            max-width: 100%;
-            margin-left: 0;
-            margin-right: 0;
-        }
-        &>.oe_title {
-            margin-left: 24px;
-            margin-right: 24px;
-        }
-        &>.o_group {
-            padding-left: 24px;
-            padding-right: 24px;
-        }
+        padding-bottom: 0 !important;
     }
+
     div.o_field_boolean_toggle_confirm, div.o_field_boolean_toggle {
         display: inline-flex;
     }
@@ -107,11 +94,8 @@
         user-select: none;
         pointer-events: none;
     }
-    .tab-pane {
-        padding: 16px $o-sheet-vpadding!important;
-    }
     .o_appraisal_both_feedback {
-        margin: -16px 0-$o-sheet-vpadding!important;
+        margin: -16px var(--notebook-margin-x) !important;
         &>.o_appraisal_feedback {
             max-width: 50%;
         }

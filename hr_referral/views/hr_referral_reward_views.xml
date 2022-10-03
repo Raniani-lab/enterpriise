@@ -92,6 +92,7 @@
         <field name="model">hr.referral.reward</field>
         <field name="arch" type="xml">
             <form>
+                <field name="active" invisible="1"/>
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_get_employee_awarded" class="oe_stat_button" icon="fa-user"
@@ -107,26 +108,25 @@
                         </button>
                     </div>
 
+                    <field name="image" widget='image' class="oe_avatar" nolabel="1"/>
                     <group>
                         <group name="main_details">
                             <field name="name"/>
                             <label for="cost" string="Cost"/>
                             <div>
-                                <field name="cost" nolabel="1" class="oe_inline"/>
+                                <field name="cost" nolabel="1" class="w-25"/>
                                 <span class="ml8">Points</span>
                             </div>
                             <field name="company_id" groups="base.group_multi_company" options="{'no_create': True}"/>
                             <field name="gift_manager_id" options="{'no_create': True}"/>
                         </group>
-                        <group name="image">
-                            <field name="image" widget='image' class="oe_avatar" nolabel="1"/>
-                        </group>
-
+                        <group name="image" />
                     </group>
-                    <group name="description">
-                        <field name="description"/>
-                        <field name="active" invisible="1"/>
-                    </group>
+                    <notebook>
+                        <page string="Description">
+                            <field name="description" widget="html" nolabel="1"/>
+                        </page>
+                    </notebook>
                 </sheet>
                 <div class="oe_chatter">
                     <field name="message_follower_ids" groups="base.group_user"/>

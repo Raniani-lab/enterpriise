@@ -74,10 +74,6 @@
         width: 100%;
         margin: 0 auto;
 
-        @include media-breakpoint-up(sm) {
-            width: 25%
-        }
-
         .carousel-controls {
             position: relative;
         }

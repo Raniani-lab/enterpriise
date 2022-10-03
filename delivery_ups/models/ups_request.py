@@ -548,7 +548,7 @@ class UPSRequest():
 
         sso = self.factory_ns2.ShipmentServiceOptionsType()
         if shipment_info.get('require_invoice'):
-            sso.InternationalForms = self.set_invoice(shipment_info, packages.commodities, ship_to)
+            sso.InternationalForms = self.set_invoice(shipment_info, [c for pkg in packages for c in pkg.commodities], ship_to)
         if saturday_delivery:
             sso.SaturdayDeliveryIndicator = saturday_delivery
         shipment.ShipmentServiceOptions = sso

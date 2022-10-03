@@ -1164,7 +1164,7 @@ QUnit.module(
             const year = pivots[0].querySelector(".pivot_filter_input input.o_datepicker_input");
             const this_year = luxon.DateTime.local().year;
             assert.equal(quarter.value, "empty");
-            assert.equal(year.value, "");
+            assert.equal(year.value, "Select year...");
             assert.containsOnce(target, "i.o_side_panel_filter_icon.fa-cog");
             // no default value
             assert.containsNone(target, "i.o_side_panel_filter_icon.fa-times");
@@ -1180,7 +1180,7 @@ QUnit.module(
             await click(target.querySelector("i.o_side_panel_filter_icon.fa-times"));
             assert.containsNone(target, "i.o_side_panel_filter_icon.fa-times");
             assert.equal(quarter.value, "empty");
-            assert.equal(year.value, "");
+            assert.equal(year.value, "Select year...");
         });
 
         QUnit.test("Can clear a relation filter values", async function (assert) {

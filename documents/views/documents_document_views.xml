@@ -70,10 +70,10 @@
                             t-attf-class="d-flex flex-column oe_kanban_global_area o_kanban_attachment o_documents_attachment {{record.type.raw_value === 'empty' ? 'oe_file_request' : ''}} {{props.record.selected ? 'o_record_selected' : ''}}"
                             t-att-data-id="record.id.raw_value">
                             <t t-set="fileRequest" t-value="record.type.raw_value === 'empty'"/>
-                            <t t-set="fileUpload" t-value="getFileUpload and getFileUpload(props.record) or false"/>
+                            <t t-set="fileUpload" t-value="getFileUpload and getFileUpload() or false"/>
                             <i t-if="!fileUpload" class="fa fa-circle-thin o_record_selector" title="Select document"/>
                             <t t-else="">
-                                <DocumentsFileUploadProgressBar fileUpload="fileUpload"/>
+                                <FileUploadProgressBar fileUpload="fileUpload"/>
                             </t>
                             <div t-attf-class="o_kanban_image #{fileRequest ? 'o_request_image' : ''}">
                                 <t t-set="webimage"

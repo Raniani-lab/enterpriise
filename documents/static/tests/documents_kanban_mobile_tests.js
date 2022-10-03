@@ -14,7 +14,7 @@ import {
     patchWithCleanup,
 } from '@web/../tests/helpers/utils';
 import { setupViewRegistries } from "@web/../tests/views/helpers";
-import { documentsFileUploadService } from '@documents/views/helper/documents_file_upload_service';
+import { fileUploadService } from "@web/core/file_upload/file_upload_service";
 import { DocumentsListRenderer } from '@documents/views/list/documents_list_renderer';
 
 const serviceRegistry = registry.category("services");
@@ -26,7 +26,7 @@ QUnit.module('documents_kanban_mobile_tests.js', {
     async beforeEach() {
         setupViewRegistries();
         target = getFixture();
-        serviceRegistry.add("documents_file_upload", documentsFileUploadService);
+        serviceRegistry.add("file_upload", fileUploadService);
         patchWithCleanup(DocumentsListRenderer, {
             init() {
                 this._super(...arguments);

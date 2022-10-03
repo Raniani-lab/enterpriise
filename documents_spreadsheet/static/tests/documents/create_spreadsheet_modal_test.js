@@ -9,7 +9,7 @@ import { getBasicData } from "@spreadsheet/../tests/utils/data";
 
 import { setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from '@web/core/registry';
-import { documentsFileUploadService } from '@documents/views/helper/documents_file_upload_service';
+import { fileUploadService } from "@web/core/file_upload/file_upload_service";
 import { DocumentsKanbanRenderer } from "@documents/views/kanban/documents_kanban_renderer";
 
 const serviceRegistry = registry.category("services");
@@ -46,7 +46,7 @@ QUnit.module("documents_spreadsheet > create spreadsheet from template modal", {
     beforeEach() {
         setupViewRegistries();
         target = getFixture();
-        serviceRegistry.add("documents_file_upload", documentsFileUploadService);
+        serviceRegistry.add("file_upload", fileUploadService);
         serviceRegistry.add("documents_pdf_thumbnail", {
             start() {
                 return {

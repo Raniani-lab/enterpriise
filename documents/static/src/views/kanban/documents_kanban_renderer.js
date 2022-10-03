@@ -2,17 +2,23 @@
 
 import { KanbanRenderer } from "@web/views/kanban/kanban_renderer";
 
-import { DocumentsRendererMixin } from "../documents_renderer_mixin";
+import { useService } from "@web/core/utils/hooks";
 import { DocumentsDropZone } from "../helper/documents_drop_zone";
 import { DocumentsInspector } from "../inspector/documents_inspector";
-import { DocumentsFileUploadViewContainer } from "../helper/documents_file_upload";
+import { FileUploadProgressContainer } from "@web/core/file_upload/file_upload_progress_container";
+import { FileUploadProgressKanbanRecord } from "@web/core/file_upload/file_upload_progress_record";
 import { DocumentsKanbanRecord } from "./documents_kanban_record";
 import { DocumentsActionHelper } from "../helper/documents_action_helper";
 import { DocumentsAttachmentViewer } from "../helper/documents_attachment_viewer";
 
-export class DocumentsKanbanRenderer extends DocumentsRendererMixin(KanbanRenderer) {
-    get uploadRecordTemplate() {
-        return "documents.DocumentsFileUploadProgressCard";
+const { useRef } = owl;
+
+export class DocumentsKanbanRenderer extends KanbanRenderer {
+    setup() {
+        super.setup();
+        this.root = useRef("root");
+        const { uploads } = useService("file_upload");
+        this.documentUploads = uploads;
     }
 
     /**
@@ -53,13 +59,23 @@ export class DocumentsKanbanRenderer extends DocumentsRendererMixin(KanbanRender
             return true;
         }
     }
+
+    getDocumentsInspectorProps() {
+        return {
+            selection: this.props.list.selection,
+            count: this.props.list.model.useSampleModel ? 0 : this.props.list.count,
+            fileSize: this.props.list.fileSize,
+            archInfo: this.props.archInfo,
+        };
+    }
 }
 
 DocumentsKanbanRenderer.template = "documents.DocumentsKanbanRenderer";
 DocumentsKanbanRenderer.components = Object.assign({}, KanbanRenderer.components, {
     DocumentsInspector,
     DocumentsDropZone,
-    DocumentsFileUploadViewContainer,
+    FileUploadProgressContainer,
+    FileUploadProgressKanbanRecord,
     KanbanRecord: DocumentsKanbanRecord,
     DocumentsActionHelper,
     DocumentsAttachmentViewer,

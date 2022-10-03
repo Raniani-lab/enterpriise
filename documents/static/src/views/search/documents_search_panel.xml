@@ -32,7 +32,7 @@
                 <div t-if="valueId and supportedEditionFields.includes(section.fieldName)" class="o_documents_search_panel_section_edit h-100" t-on-click.stop.prevent="(ev) => this.openEditPopover(ev, section, value.id, null)">
                     <span class="fa fa-cog"/>
                 </div>
-                <span t-if="documentState.isUploadingInFolder(valueId)" class="fa fa-circle-o-notch fa-spin"/>
+                <span t-if="isUploadingInFolder(valueId)" class="fa fa-circle-o-notch fa-spin"/>
             </div>
         </xpath>
     </t>

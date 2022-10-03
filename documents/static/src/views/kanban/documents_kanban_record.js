@@ -2,11 +2,10 @@
 
 import { KanbanRecord } from "@web/views/kanban/kanban_record";
 import { DocumentsKanbanCompiler } from "./documents_kanban_compiler";
-import { DocumentsFileUploadProgressBar } from "../helper/documents_file_upload";
-import { useFileUpload } from "../helper/documents_file_upload_service";
+import { FileUploadProgressBar } from "@web/core/file_upload/file_upload_progress_bar";
 import { KANBAN_BOX_ATTRIBUTE } from "@web/views/kanban/kanban_arch_parser";
 import { onNewPdfThumbnail } from "../helper/documents_pdf_thumbnail_service";
-import { useService } from "@web/core/utils/hooks";
+import { useBus, useService } from "@web/core/utils/hooks";
 
 const CANCEL_GLOBAL_CLICK = ["a", ".dropdown", ".oe_kanban_action"].join(",");
 
@@ -14,10 +13,17 @@ const { xml } = owl;
 
 export class DocumentsKanbanRecord extends KanbanRecord {
     setup() {
-        this.props.Compiler = DocumentsKanbanCompiler;
         super.setup();
-        useFileUpload(this.props.record.resId);
+        // File upload
+        const { bus, uploads } = useService("file_upload");
+        this.documentUploads = uploads;
+        useBus(bus, "FILE_UPLOAD_ADDED", (ev) => {
+            if (ev.detail.upload.data.get("document_id") == this.props.record.resId) {
+                this.render(true);
+            }
+        });
 
+        // Pdf Thumbnail
         this.pdfService = useService("documents_pdf_thumbnail");
         this.pdfService.enqueueRecords([this.props.record]);
 
@@ -45,8 +51,8 @@ export class DocumentsKanbanRecord extends KanbanRecord {
     /**
      * Get the current file upload for this record if there is any
      */
-    getFileUpload(record) {
-        return this.env.documentsStore.getFileUploadForRecord(record.resId);
+    getFileUpload() {
+        return Object.values(this.documentUploads).find(upload => upload.data.get("document_id") == this.props.record.resId);
     }
 
     /**
@@ -84,7 +90,11 @@ export class DocumentsKanbanRecord extends KanbanRecord {
 }
 DocumentsKanbanRecord.components = {
     ...KanbanRecord.components,
-    DocumentsFileUploadProgressBar,
+    FileUploadProgressBar,
+};
+DocumentsKanbanRecord.defaultProps = {
+    ...KanbanRecord.defaultProps,
+    Compiler: DocumentsKanbanCompiler,
 };
 
 DocumentsKanbanRecord.template = xml`

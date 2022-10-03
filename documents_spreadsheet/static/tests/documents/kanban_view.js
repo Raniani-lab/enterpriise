@@ -12,7 +12,7 @@ import {
 } from "@web/../tests/helpers/utils";
 import { setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from "@web/core/registry";
-import { documentsFileUploadService } from "@documents/views/helper/documents_file_upload_service";
+import { fileUploadService } from "@web/core/file_upload/file_upload_service";
 import { browser } from "@web/core/browser/browser";
 import { DocumentsSearchPanel } from "@documents/views/search/documents_search_panel";
 import { SearchPanel } from "@web/search/search_panel/search_panel";
@@ -29,7 +29,7 @@ QUnit.module(
         beforeEach() {
             setupViewRegistries();
             target = getFixture();
-            serviceRegistry.add("documents_file_upload", documentsFileUploadService);
+            serviceRegistry.add("file_upload", fileUploadService);
             serviceRegistry.add("documents_pdf_thumbnail", {
                 start() {
                     return {

@@ -2,19 +2,24 @@
 
 import { ListRenderer } from "@web/views/list/list_renderer";
 
-import { DocumentsRendererMixin } from "../documents_renderer_mixin";
+import { useService } from "@web/core/utils/hooks";
 import { DocumentsInspector } from "../inspector/documents_inspector";
-import { DocumentsFileUploadViewContainer } from "../helper/documents_file_upload";
+import { FileUploadProgressContainer } from "@web/core/file_upload/file_upload_progress_container";
+import { FileUploadProgressDataRow } from "@web/core/file_upload/file_upload_progress_record";
 import { DocumentsDropZone } from "../helper/documents_drop_zone";
 import { CheckBox } from "@web/core/checkbox/checkbox";
 import { DocumentsActionHelper } from "../helper/documents_action_helper";
 import { DocumentsAttachmentViewer } from "../helper/documents_attachment_viewer";
 
-const { useEffect } = owl;
+const { useEffect, useRef } = owl;
 
-export class DocumentsListRenderer extends DocumentsRendererMixin(ListRenderer) {
+export class DocumentsListRenderer extends ListRenderer {
     setup() {
         super.setup();
+        this.root = useRef("root");
+        const { uploads } = useService("file_upload");
+        this.documentUploads = uploads;
+
         useEffect(
             (el) => {
                 if (!el) {
@@ -50,18 +55,15 @@ export class DocumentsListRenderer extends DocumentsRendererMixin(ListRenderer) 
         return this.props.allowSelectors;
     }
 
-    get uploadRecordTemplate() {
-        return "documents.DocumentsFileUploadProgressLine";
-    }
 
-    /**
-     * @override
-     */
     getDocumentsInspectorProps() {
-        const result = super.getDocumentsInspectorProps();
-        // Only show preview in inspector if we are not viewing a file.
-        result.withFilePreview = !this.env.documentsPreviewStore.documentList || !this.env.documentsPreviewStore.documentList.exists();;
-        return result;
+        return {
+            selection: this.props.list.selection,
+            count: this.props.list.model.useSampleModel ? 0 : this.props.list.count,
+            fileSize: this.props.list.fileSize,
+            archInfo: this.props.archInfo,
+            withFilePreview: !this.env.documentsView.previewStore.documentList || !this.env.documentsView.previewStore.documentList.exists(),
+        };
     }
 }
 
@@ -89,7 +91,8 @@ DocumentsListRenderer.recordRowTemplate = "documents.DocumentsListRenderer.Recor
 DocumentsListRenderer.components = Object.assign({}, ListRenderer.components, {
     DocumentsInspector,
     DocumentsListRendererCheckBox,
-    DocumentsFileUploadViewContainer,
+    FileUploadProgressContainer,
+    FileUploadProgressDataRow,
     DocumentsDropZone,
     DocumentsActionHelper,
     DocumentsAttachmentViewer,

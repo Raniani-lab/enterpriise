@@ -3,7 +3,7 @@
 import { browser } from "@web/core/browser/browser";
 import { SearchPanel } from "@web/search/search_panel/search_panel";
 
-import { useAutofocus, useService } from "@web/core/utils/hooks";
+import { useService } from "@web/core/utils/hooks";
 import { device } from "web.config";
 import { sprintf } from "web.utils";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
@@ -25,7 +25,9 @@ DocumentsSearchPanelItemSettingsPopover.template = "documents.DocumentsSearchPan
 export class DocumentsSearchPanel extends SearchPanel {
     setup() {
         super.setup(...arguments);
-        this.documentState = useState(this.env.documentsStore);
+        const { uploads } = useService("file_upload");
+        this.documentUploads = uploads;
+        useState(uploads);
         this.notification = useService("notification");
         this.orm = useService("orm");
         this.user = useService("user");
@@ -36,7 +38,6 @@ export class DocumentsSearchPanel extends SearchPanel {
         onWillStart(async () => {
             this.isDocumentManager = await this.user.hasGroup("documents.group_documents_manager");
         });
-        useAutofocus();
     }
 
     /**
@@ -60,6 +61,10 @@ export class DocumentsSearchPanel extends SearchPanel {
         return ["folder_id", "tag_ids"];
     }
 
+    isUploadingInFolder(folderId) {
+        return Object.values(this.documentUploads).find(upload => upload.data.get("folder_id") === folderId);
+    }
+
     //---------------------------------------------------------------------
     // Edition
     //---------------------------------------------------------------------
@@ -67,7 +72,7 @@ export class DocumentsSearchPanel extends SearchPanel {
     getResModelResIdFromValueGroup(section, value, group) {
         if (value) {
             return [
-                this.documentState.model.root.activeFields[section.fieldName].relation,
+                this.env.model.root.activeFields[section.fieldName].relation,
                 section.values.get(value).id,
             ];
         } else if (group) {

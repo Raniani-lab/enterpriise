@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { documentsFileUploadService } from '@documents/views/helper/documents_file_upload_service';
+import { fileUploadService } from "@web/core/file_upload/file_upload_service";
 import { createDocumentsView as originalCreateDocumentsView, createDocumentsViewWithMessaging } from './documents_test_utils';
 import { registry } from '@web/core/registry';
 import { setupViewRegistries } from "@web/../tests/views/helpers";
@@ -51,7 +51,7 @@ let pyEnv;
 QUnit.module('documents', {}, function () {
 QUnit.module('documents_kanban_tests.js', {
     async beforeEach() {
-        serviceRegistry.add("documents_file_upload", documentsFileUploadService);
+        serviceRegistry.add("file_upload", fileUploadService);
         serviceRegistry.add("documents_pdf_thumbnail", {
             start() {
                 return {
@@ -73,14 +73,15 @@ QUnit.module('documents_kanban_tests.js', {
                 return result;
             },
         });
-        this.ORIGINAL_CREATE_XHR = documentsFileUploadService._createXHR;
+        this.ORIGINAL_CREATE_XHR = fileUploadService.createXhr;
         this.patchDocumentXHR = (mockedXHRs, customSend) => {
-            documentsFileUploadService._createXhr = () => {
-                const xhr = {
+            fileUploadService.createXhr = () => {
+                const xhr = new window.EventTarget();
+                Object.assign(xhr, {
                     upload: new window.EventTarget(),
                     open() {},
                     send(data) { customSend && customSend(data); },
-                };
+                });
                 mockedXHRs.push(xhr);
                 return xhr;
             };
@@ -169,7 +170,7 @@ QUnit.module('documents_kanban_tests.js', {
         target = getFixture();
     },
     afterEach() {
-        documentsFileUploadService._createXHR = this.ORIGINAL_CREATE_XHR;
+        fileUploadService.createXhr = this.ORIGINAL_CREATE_XHR;
         pyEnv = undefined;
     },
 }, function () {
@@ -3025,7 +3026,10 @@ QUnit.module('documents_kanban_tests.js', {
             },
         });
 
-        testUtils.file.dropFile($(target.querySelector('.o_kanban_renderer')), file);
+        testUtils.file.dragoverFile($(target.querySelector(".o_kanban_renderer")), file);
+        await nextTick();
+        testUtils.file.dropFile($(target.querySelector('.o_documents_drop_over_zone')), file);
+        await nextTick();
         assert.verifySteps(['xhrSend']);
     });
 
@@ -3052,7 +3056,10 @@ QUnit.module('documents_kanban_tests.js', {
             </t></templates></kanban>`,
         });
 
-        testUtils.file.dropFile($(target.querySelector('.o_kanban_renderer')), file);
+        testUtils.file.dragoverFile($(target.querySelector(".o_kanban_renderer")), file);
+        await nextTick();
+        testUtils.file.dropFile($(target.querySelector('.o_documents_drop_over_zone')), file);
+        await nextTick();
         assert.verifySteps(['xhrSend']);
 
         const progressEvent = new Event('progress', { bubbles: true, });
@@ -3066,7 +3073,7 @@ QUnit.module('documents_kanban_tests.js', {
         assert.strictEqual(target.querySelector('.o_file_upload_progress_text_left').textContent, "Uploading... (50%)",
             "the current upload progress should be at 50%");
 
-        assert.containsOnce(target, '.fa.fa-circle-o-notch');
+        assert.containsOnce(target, '.o-file-upload-progress-bar-abort');
 
         progressEvent.loaded = 350000000;
         mockedXHRs[0].upload.dispatchEvent(progressEvent);
@@ -3085,6 +3092,9 @@ QUnit.module('documents_kanban_tests.js', {
             content: 'hello, world',
             contentType: 'text/plain',
         });
+        Object.defineProperty(file, "size", {
+            get: () => 67000001,
+        });
 
         const kanban = await createDocumentsView({
             type: "kanban",
@@ -3095,11 +3105,6 @@ QUnit.module('documents_kanban_tests.js', {
                     <field name="name"/>
                 </div>
             </t></templates></kanban>`,
-            async mockRPC(route, args) {
-                if (args.model === 'documents.document' && args.method === 'get_document_max_upload_limit') {
-                    return 11;
-                }
-            },
         });
 
         patchWithCleanup(kanban.env.services.notification, {
@@ -3109,12 +3114,15 @@ QUnit.module('documents_kanban_tests.js', {
             }
         });
 
-        assert.strictEqual(file.size, 12, 'Upload file size is greater than upload limit');
-        testUtils.file.dropFile($(target.querySelector('.o_documents_view')), file);
+        assert.strictEqual(file.size, 67000001, 'Upload file size is greater than upload limit');
+        testUtils.file.dragoverFile($(target.querySelector(".o_kanban_renderer")), file);
+        await nextTick();
+        testUtils.file.dropFile($(target.querySelector('.o_documents_drop_over_zone')), file);
+        await nextTick();
     });
 
     QUnit.test('documents: upload replace bars', async function (assert) {
-        assert.expect(5);
+        assert.expect(4);
 
         pyEnv['documents.document'].unlink(pyEnv['documents.document'].search([]));// reset incompatible setup
         const documentsDocumentId1 = pyEnv['documents.document'].create({
@@ -3141,7 +3149,7 @@ QUnit.module('documents_kanban_tests.js', {
                         <t t-set="fileUpload" t-value="getFileUpload(props.record)"/>
                         <i t-if="!fileUpload" class="fa fa-circle-thin o_record_selector" title="Select document"/>
                         <t t-else="">
-                            <DocumentsFileUploadProgressBar fileUpload="fileUpload"/>
+                            <FileUploadProgressBar fileUpload="fileUpload"/>
                         </t>
                     </div>
                 </t></templates></kanban>`,
@@ -3158,11 +3166,9 @@ QUnit.module('documents_kanban_tests.js', {
 
         assert.verifySteps(['xhrSend']);
 
-        assert.containsOnce(target, '.o_documents_attachment > .o_file_upload_progress_bar',
-            "there should be a progress card");
-        assert.containsOnce(target, '.o_documents_attachment > .o_file_upload_progress_bar > .o_file_upload_progress_bar_value',
+        assert.containsOnce(target, '.o_documents_attachment .o-file-upload-progress-bar-value',
             "there should be a progress bar");
-        assert.containsOnce(target, '.o_documents_attachment > .o_file_upload_progress_bar > .o_upload_cross',
+        assert.containsOnce(target, '.o_documents_attachment .o-file-upload-progress-bar-abort',
             "there should be cancel upload cross");
     });
 
@@ -3199,8 +3205,10 @@ QUnit.module('documents_kanban_tests.js', {
             </t></templates></kanban>`,
         });
 
-        const $dropZone = $(target.querySelector('.o_kanban_renderer'));
-        testUtils.file.dropFile($dropZone, file1);
+        testUtils.file.dragoverFile($(target.querySelector(".o_kanban_renderer")), file1);
+        await nextTick();
+        testUtils.file.dropFile($(target.querySelector('.o_documents_drop_over_zone')), file1);
+        await nextTick();
 
         // awaiting next tick as the file drop is not synchronous
         await nextTick();
@@ -3209,7 +3217,10 @@ QUnit.module('documents_kanban_tests.js', {
         assert.strictEqual(target.querySelector('.o_kanban_record:nth-of-type(1) .o_kanban_record_title span').textContent, 'text1.txt',
             "The first kanban card should be named after the file");
 
-        testUtils.file.dropFiles($dropZone, [file2, file3]);
+        testUtils.file.dragoverFile($(target.querySelector(".o_kanban_renderer")), [file2, file3]);
+        await nextTick();
+        testUtils.file.dropFiles($(target.querySelector('.o_documents_drop_over_zone')), [file2, file3]);
+        await nextTick();
 
         // awaiting next tick as the file drop is not synchronous
         await nextTick();
@@ -3223,7 +3234,7 @@ QUnit.module('documents_kanban_tests.js', {
         mockedXHRs[1].response = JSON.stringify({
             success: "All files uploaded"
         });
-        mockedXHRs[1].onload();
+        mockedXHRs[1].dispatchEvent(new Event("load"));
 
         // awaiting next tick as the render of the notify card isn't synchronous
         await nextTick();
@@ -3261,8 +3272,10 @@ QUnit.module('documents_kanban_tests.js', {
             }
         });
 
-        const $dropZone = $(target.querySelector('.o_kanban_renderer'));
-        testUtils.file.dropFile($dropZone, file);
+        testUtils.file.dragoverFile($(target.querySelector(".o_kanban_renderer")), file);
+        await nextTick();
+        testUtils.file.dropFile($(target.querySelector('.o_documents_drop_over_zone')), file);
+        await nextTick();
         await nextTick();
 
 
@@ -3271,7 +3284,7 @@ QUnit.module('documents_kanban_tests.js', {
             error: "One or more file(s) failed to upload"
         });
         mockedXHRs[0].status = 200;
-        mockedXHRs[0].onload();
+        mockedXHRs[0].dispatchEvent(new Event("load"));
         await nextTick();
 
         assert.containsNone(target, '.o_kanban_progress_card', "There should be no upload card left");

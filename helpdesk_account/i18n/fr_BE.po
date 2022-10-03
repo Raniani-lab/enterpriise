@@ -27,12 +27,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk_account.helpdesk_ticket_view_form_inherit_helpdesk_invoicing
 #, python-format
 msgid "Credit Notes"
-msgstr ""
+msgstr "Notes de crédit"
 
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_helpdesk_ticket__invoices_count
 msgid "Credit Notes Count"
-msgstr ""
+msgstr "Nombre d'notes de crédit"
 
 #. module: helpdesk_account
 #: model:ir.model,name:helpdesk_account.model_helpdesk_ticket
@@ -58,7 +58,10 @@ msgstr ""
 
 #. module: helpdesk_account
 #: model:ir.model.fields,help:helpdesk_account.field_account_move_reversal__helpdesk_sale_order_id
-msgid "Reference of the Sales Order to which this ticket refers. Setting this information aims at easing your After Sales process and only serves indicative purposes."
+msgid ""
+"Reference of the Sales Order to which this ticket refers. Setting this "
+"information aims at easing your After Sales process and only serves "
+"indicative purposes."
 msgstr ""
 
 #. module: helpdesk_account
@@ -76,3 +79,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_move_reversal__suitable_move_ids
 msgid "Suitable Move"
 msgstr ""
+
+#. module: helpdesk_account
+#: code:addons/helpdesk_account/controllers/portal.py:0
+msgid "Credit Note"
+msgstr "Note de crédit"

@@ -4,7 +4,6 @@
 import logging
 from dateutil.relativedelta import relativedelta
 from psycopg2.extensions import TransactionRollbackError
-from psycopg2 import sql
 from ast import literal_eval
 from collections import defaultdict
 
@@ -12,8 +11,7 @@ from odoo import fields, models, _, api, Command, SUPERUSER_ID
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_is_zero
 from odoo.osv import expression
-from odoo.tools import config
-from odoo.tools.misc import formatLang
+from odoo.tools import config, format_amount
 from odoo.tools.date_utils import get_timedelta
 
 _logger = logging.getLogger(__name__)
@@ -98,6 +96,7 @@ class SaleOrder(models.Model):
                                        help="Automatic payment with token failed. The payment provider configuration and token should be checked")
     show_rec_invoice_button = fields.Boolean(compute='_compute_show_rec_invoice_button')
     is_upselling = fields.Boolean(compute='_compute_is_upselling')
+    recurring_details = fields.Html(compute='_compute_recurring_details')
     renew_state = fields.Selection(
         [('renewing', 'Renewing'), ('renewed', 'Renewed')], compute='_compute_renew_state')
 
@@ -181,6 +180,40 @@ class SaleOrder(models.Model):
                 order.recurring_monthly = sum(order.order_line.mapped('recurring_monthly'))
             else:
                 order.recurring_monthly = 0
+
+    @api.depends('is_subscription', 'order_line.price_total')
+    def _compute_recurring_details(self):
+        subscription_orders = self.filtered(lambda sub: sub.is_subscription or sub.subscription_id)
+        self.recurring_details = ""
+        if subscription_orders.ids:
+            query = """
+                SELECT order_id, 
+                       pt.recurring_invoice recurring_invoice,
+                       SUM(price_subtotal) AS subtotal,
+                       SUM(price_total) as total 
+                  FROM sale_order_line sol 
+                  JOIN sale_order so ON sol.order_id=so.id
+                  JOIN product_product pp ON pp.id=sol.product_id 
+                  JOIN product_template pt ON pt.id=pp.product_tmpl_id 
+                 WHERE order_id IN %s
+                   AND so.recurrence_id IS NOT NULL
+                   AND pt.recurring_invoice IS NOT NULL
+              GROUP BY order_id,recurring_invoice
+            """
+            self.env.cr.execute(query, (tuple(subscription_orders.ids),))
+            recurring_details = self.env.cr.dictfetchall()
+            for so in subscription_orders:
+                lang_code = so.partner_id.lang
+                values = [details for details in recurring_details if details['order_id'] == so.id and details['subtotal'] and details['total']]
+                recurring_amount = sum([v['subtotal'] for v in values if v.get('recurring_invoice')])
+                non_recurring_amount = so.amount_untaxed - recurring_amount
+                recurring_formatted_amount = so.currency_id and format_amount(self.env, recurring_amount, so.currency_id, lang_code) or recurring_amount
+                non_recurring_formatted_amount = so.currency_id and format_amount(self.env, non_recurring_amount, so.currency_id, lang_code) or non_recurring_amount
+                rendering_values = [{
+                    'non_recurring': non_recurring_formatted_amount,
+                    'recurring': recurring_formatted_amount,
+                }]
+                so.recurring_details = self.env['ir.qweb']._render('sale_subscription.recurring_details', {'rendering_values': rendering_values})
 
     def _compute_access_url(self):
         super()._compute_access_url()

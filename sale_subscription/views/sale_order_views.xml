@@ -167,6 +167,9 @@
                 <field name="payment_token_id" groups="base.group_no_one" options="{'no_create': 'True'}"/>
                 <field name="payment_exception" groups="base.group_no_one"/>
             </group>
+            <group name="sale_total" position="inside">
+                <field name="recurring_details" nolabel="1" colspan="2"/>
+            </group>
         </field>
     </record>
 

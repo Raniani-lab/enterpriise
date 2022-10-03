@@ -87,15 +87,20 @@
     <template id="main_table_header_template_consolidation_report">
         <thead class="o_account_reports_header_hierarchy">
             <tr>
-                <t t-foreach="options.get('column_headers')" t-as="cell">
-                    <th t-att-class="'o_account_report_column_header ' + (cell.get('class', ''))"
-                        t-att-colspan="cell.get('colspan')"
-                        t-att-style="cell.get('style', '')"
-                        t-att-title="cell.get('title')"
-                        t-att-data-bs-toggle="cell.get('data-bs-toggle')">
+                <th t-att-class="o_account_report_column_header"
+                    style="width:40%;"/>
 
-                        <t t-call="{{cell.get('template', 'account_reports.cell_template')}}"/>
-                    </th>
+                <t t-foreach="options.get('column_headers')" t-as="column_headers">
+                    <t t-foreach="column_headers" t-as="cell">
+                        <th t-att-class="'o_account_report_column_header ' + (cell.get('class', ''))"
+                            t-att-colspan="cell.get('colspan')"
+                            t-att-style="cell.get('style', '')"
+                            t-att-title="cell.get('title')"
+                            t-att-data-bs-toggle="cell.get('data-bs-toggle')">
+
+                            <t t-call="{{cell.get('template', 'account_reports.cell_template')}}"/>
+                        </th>
+                    </t>
                 </t>
             </tr>
         </thead>
@@ -163,9 +168,9 @@
 
                 <t t-set="column_index" t-value="0"/>
                 <t t-foreach="line.get('columns')" t-as="column">
-                    <t t-set="hierarchies_enabled" t-value="len(options.get('columns_header', [])) > 1"/>
-                    <td t-att-class="'o_account_report_line ' + (column.get('class', options.get('column_headers')[column_index + line.get('colspan', 1)].get('class', '')) + (line.get('unfoldable') and ' o_foldable_total' or '')) + ('' if hierarchies_enabled else ' o_account_report_line_indent')"
-                        t-att-style="column.get('style', options.get('column_headers')[column_index + line.get('colspan', 1)].get('style', ''))">
+                    <t t-set="hierarchies_enabled" t-value="len(options.get('column_headers', [[]])[0]) > 1"/>
+                    <td t-att-class="'o_account_report_line ' + (column.get('class', options.get('column_headers')[0][column_index].get('class', '')) + (line.get('unfoldable') and ' o_foldable_total' or '')) + ('' if hierarchies_enabled else ' o_account_report_line_indent')"
+                        t-att-style="column.get('style', options.get('column_headers')[0][column_index].get('style', ''))">
                         <t t-if="column.get('journal_id')">
                             <div class="dropdown no_print">
                                 <a class="dropdown-toggle" data-bs-toggle="dropdown" href='#'>

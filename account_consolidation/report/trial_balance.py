@@ -68,16 +68,17 @@ class TrialBalanceCustomHandler(models.AbstractModel):
         AnalysisPeriod = self.env['consolidation.period']
         all_period_ids = PeriodsHandler.get_selected_values(options) + [self._get_selected_period_id()]
         selected_periods = AnalysisPeriod.browse(all_period_ids)
-        columns = [{'name': '', 'style': 'width:40%'}]
+        columns = []
         if len(selected_periods) == 1:
-            return columns + self._get_journals_headers(options)
+            columns += self._get_journals_headers(options)
         else:
             periods_columns = [{'name': period.display_name, 'class': 'number'} for period in selected_periods]
             # Add the percentage column
             if len(selected_periods) == 2:
-                return columns + periods_columns + [{'name': '%', 'class': 'number'}]
+                columns += periods_columns + [{'name': '%', 'class': 'number'}]
             else:
-                return columns + periods_columns
+                columns += periods_columns
+        return [columns]
 
     def _get_journals_headers(self, options):
         journal_ids = JournalsHandler.get_selected_values(options)

@@ -366,3 +366,16 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
         Timesheet.adjust_grid([('id', '=', timesheet.id)], 'date', column_date, 'unit_amount', 3.0)
 
         self.assertEqual(Timesheet.search_count([('employee_id', '=', employee.id)]), 2, "Should create new timesheet instead of updating validated timesheet in cell")
+
+    def test_get_last_week(self):
+        """Test the get_last_week method. It should return grid_anchor (GA), last_week (LW),
+            where last_week is first Sunday before GA - 7 days. Example:
+            Su Mo Tu We Th Fr Sa
+            LW -- -- -- -- -- --
+            -- -- GA -- -- -- --
+        """
+        AnalyticLine = self.env['account.analytic.line']
+        for d in range(8, 22):
+            grid_anchor = datetime(2023, 1, d)
+            dummy, last_week = AnalyticLine.with_context(grid_anchor=grid_anchor)._get_last_week()
+            self.assertEqual(last_week, date(2023, 1, ((d - 1) // 7 - 1) * 7 + 1))

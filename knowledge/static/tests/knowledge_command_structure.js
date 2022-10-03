@@ -3,7 +3,7 @@
 import { ArticlesStructureBehavior } from "@knowledge/components/behaviors/articles_structure_behavior/articles_structure_behavior";
 import { click, getFixture, makeDeferred, nextTick } from "@web/../tests/helpers/utils";
 import { patch, unpatch } from "@web/core/utils/patch";
-import { makeFakeMessagingServiceForKnowledge } from "@knowledge/../tests/knowledge_service_mock";
+import { makeFakeMessagingServiceForKnowledge } from "@knowledge/../tests/mock_services";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from "@web/core/registry";
 

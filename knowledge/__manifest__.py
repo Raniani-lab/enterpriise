@@ -86,7 +86,7 @@
             'knowledge/static/tests/knowledge_command_structure.js',
         ],
         'web.tests_assets': [
-            'knowledge/static/tests/knowledge_service_mock.js',
+            'knowledge/static/tests/mock_services.js',
         ],
     },
 }

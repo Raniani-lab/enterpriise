@@ -9,7 +9,7 @@ import { patch, unpatch } from "@web/core/utils/patch";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from "@web/core/registry";
 import { TableOfContentBehavior } from "@knowledge/components/behaviors/table_of_content_behavior/table_of_content_behavior";
-import { makeFakeMessagingServiceForKnowledge } from "@knowledge/../tests/knowledge_service_mock";
+import { makeFakeMessagingServiceForKnowledge } from "@knowledge/../tests/mock_services";
 
 const serviceRegistry = registry.category("services");
 const {

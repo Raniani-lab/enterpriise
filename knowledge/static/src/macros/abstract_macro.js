@@ -52,8 +52,8 @@ export class AbstractMacro {
         /**
          * Preliminary breadcrumbs macro. It will use the @see breadcrumbsIndex
          * to switch back to the view related to the stored record
-         * (@see KnowledgeService) . Once and if the view of the target record
-         * is correctly loaded, run the specific macroAction.
+         * (@see KnowledgeCommandsService ). Once and if the view of the target
+         * record is correctly loaded, run the specific macroAction.
          */
         const startMacro = {
             name: "restore_record",

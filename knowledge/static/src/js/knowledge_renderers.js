@@ -22,7 +22,8 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         super.setup();
 
         this.state = useState({
-            displayChatter: false
+            displayChatter: false,
+            displaySharePanel: false,
         });
 
         this.actionService = useService("action");
@@ -78,7 +79,27 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             this.tree.el.addEventListener('click', listener);
             this.messaging.messagingBus.addEventListener('knowledge_add_emoji', this._onAddEmoji);
             this.messaging.messagingBus.addEventListener('knowledge_remove_emoji', this._onRemoveEmoji);
-            
+
+            /**
+             * Show/hide the Share Panel (invite, update members permissions, ...)
+             * Done on events of BS dropdown instead of onClick because user might
+             * click on another dropdown toggle button, which would not fire the
+             * click on toggle Share Panel itself. This leads to an inconsistent
+             * state between the display and the state, which is solved by correctly
+             * using dropdown events.
+             */
+            const buttonSharePanel = this.root.el.querySelector('#dropdown_share_panel');
+            if (buttonSharePanel) {
+                buttonSharePanel.addEventListener(
+                    'shown.bs.dropdown',
+                    () => this.state.displaySharePanel = true
+                );
+                buttonSharePanel.addEventListener(
+                    'hidden.bs.dropdown',
+                    () => this.state.displaySharePanel = false
+                );
+            }
+
             return () => {
                 this.tree.el.removeEventListener('click', listener);
                 this.messaging.messagingBus.removeEventListener('knowledge_add_emoji', this._onAddEmoji);

@@ -333,7 +333,8 @@
                                             </div>
                                         </div>
                                         <!-- Chatter -->
-                                        <div class="o_knowledge_chatter col-12 col-lg-4 position-relative d-print-none p-0 d-none">
+                                        <div t-if="state.displayChatter"
+                                             class="o_knowledge_chatter col-12 col-lg-4 position-relative d-print-none p-0">
                                             <div class="oe_chatter o_scroll_view_lg">
                                                 <field name="message_follower_ids"/>
                                                 <field name="activity_ids"/>

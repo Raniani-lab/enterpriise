@@ -11,7 +11,7 @@ import { sprintf } from '@web/core/utils/strings';
 import { useService } from "@web/core/utils/hooks";
 
 const disallowedEmojis = ['💩', '💀', '☠️', '🤮', '🖕'];
-const { onMounted, useEffect, useRef} = owl;
+const { onMounted, useEffect, useRef, useState} = owl;
 
 export class KnowledgeArticleFormRenderer extends FormRenderer {
 
@@ -20,6 +20,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     //--------------------------------------------------------------------------
     setup() {
         super.setup();
+
+        this.state = useState({
+            displayChatter: false
+        });
 
         this.actionService = useService("action");
         this.dialog = useService("dialog");
@@ -219,18 +223,13 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     }
 
     /**
-     * Show/hide the chatter. Before showing it, it is reloaded so that new messages,
-     * activities,... will be shown.
+     * Show/hide the chatter. When showing it, it fetches data required for
+     * new messages, activities, ...
      */
     toggleChatter() {
         if (this.resId) {
-            const chatter = this.root.el.querySelector('.o_knowledge_chatter');
-            if (chatter.classList.contains('d-none')) {
-                // Reload chatter
-                this.env.model.notify();
-            }
-            chatter.classList.toggle('d-none');
             this.root.el.querySelector('.btn-chatter').classList.toggle('active');
+            this.state.displayChatter = !this.state.displayChatter;
         }
     }
 

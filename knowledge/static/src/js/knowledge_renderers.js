@@ -321,6 +321,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * @param {Function} onReject
      */
     async _confirmMoveArticle(articleId, position, onSuccess, onReject) {
+        // Force save if changes have been made before the move to.
+        if (this.props.record.isDirty) {
+            await this.props.record.save();
+        }
         try {
             const result = await this.orm.call(
                 'knowledge.article',
@@ -330,6 +334,8 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             );
             if (result) {
                 onSuccess();
+                await this.props.record.load();
+                this.env.model.notify();
             } else {
                 onReject();
             }

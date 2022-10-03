@@ -113,8 +113,8 @@ class PosOrder(models.Model):
         return field_list
 
     @api.model
-    def get_table_draft_orders(self, table_id):
-        table_orders = super().get_table_draft_orders(table_id)
+    def get_table_draft_orders(self, table_ids):
+        table_orders = super().get_table_draft_orders(table_ids)
         if self.env.company.l10n_de_is_germany_and_fiskaly():
             for order in table_orders:
                 order['tss_info'] = {}

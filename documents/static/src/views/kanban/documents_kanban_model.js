@@ -22,7 +22,7 @@ export class DocumentsKanbanRecord extends DocumentsRecordMixin(KanbanModel.Reco
                 (!this.data.lock_uid || this.data.lock_uid[0] === session.uid) && folder.has_write_access;
             const selection = this.model.root.selection;
             let documents = selection.length > 1 && selection.find(rec => rec === this) && selection.filter(rec => rec.isViewable()) || [this];
-            await this.model.env.bus.trigger("documents-open-preview", {
+            await this.model.env.documentsView.bus.trigger("documents-open-preview", {
                 documents,
                 mainDocument: this,
                 isPdfSplit: false,
@@ -40,9 +40,7 @@ export class DocumentsKanbanRecord extends DocumentsRecordMixin(KanbanModel.Reco
             files: ev.target.files,
             folderId: this.data.folder_id && this.data.folder_id[0],
             recordId: this.resId,
-            params: {
-                tagIds: this.model.env.searchModel.getSelectedTagIds(),
-            },
+            tagIds: this.model.env.searchModel.getSelectedTagIds(),
         });
         ev.target.value = "";
     }

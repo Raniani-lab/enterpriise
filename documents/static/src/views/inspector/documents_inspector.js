@@ -1,20 +1,20 @@
 /** @odoo-module **/
 
 import { device } from "web.config";
-import { _t } from "web.core";
 import { str_to_datetime } from "web.time";
 import { session } from "@web/session";
 import { KeepLast } from "@web/core/utils/concurrency";
 import { intersection } from "@web/core/utils/arrays";
 import { AutoComplete } from "@web/core/autocomplete/autocomplete";
 import { x2ManyCommands } from "@web/core/orm_service";
-import { useService } from "@web/core/utils/hooks";
+import { useBus, useService } from "@web/core/utils/hooks";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { FileUploader } from "@web/views/fields/file_handler";
 import { ChatterContainer } from "@mail/components/chatter_container/chatter_container";
 import { DocumentsInspectorField } from "./documents_inspector_field";
 import { download } from "@web/core/network/download";
 import { onNewPdfThumbnail } from "../helper/documents_pdf_thumbnail_service";
+import { useTriggerRule } from "@documents/views/hooks";
 
 const { Component, markup, useEffect, useState, useRef, onPatched, onWillUpdateProps, onWillStart } = owl;
 
@@ -65,6 +65,16 @@ export class DocumentsInspector extends Component {
         this.keepLast = new KeepLast();
         this.previewLockCount = 0;
         this.str_to_datetime = str_to_datetime;
+        const { triggerRule } = useTriggerRule();
+        this._triggerRule = triggerRule;
+        const { bus: fileUploadBus } = useService("file_upload");
+        useBus(fileUploadBus, "FILE_UPLOAD_LOADED", (ev) => {
+            let documentId = ev.detail.upload.data.get("document_id");
+            if (documentId && this.resIds.includes(Number.parseInt(documentId))) {
+                this.state.previousAttachmentDirty = true;
+            }
+        });
+
         // Avoid generating new urls if they were generated within this component's lifetime
         this.generatedUrls = {};
         this.state = useState({
@@ -89,6 +99,7 @@ export class DocumentsInspector extends Component {
             updateLockedState(nextProps);
             this.updateAttachmentHistory(nextProps);
         });
+
         // Chatter
         const chatterCloseHandler = () => {
             this.state.showChatter = this.isMobile;
@@ -133,7 +144,7 @@ export class DocumentsInspector extends Component {
         }
 
         //Mobile specific
-        if (!device.isMobile) {
+        if (!this.env.isSmall) {
             return;
         }
         this.inspectorMobileRef = useRef("inspectorMobile");
@@ -158,7 +169,7 @@ export class DocumentsInspector extends Component {
     }
 
     get isMobile() {
-        return device.isMobile;
+        return this.env.isSmall;
     }
 
     updateAttachmentHistory(nextProps) {
@@ -299,7 +310,7 @@ export class DocumentsInspector extends Component {
         }
         this._writeInClipboard(this.generatedUrls[resIds]);
         this.notificationService.add(
-            _t("The share url has been copied to your clipboard."),
+            this.env._t("The share url has been copied to your clipboard."),
             {
                 type: "success",
             },
@@ -311,16 +322,11 @@ export class DocumentsInspector extends Component {
             return;
         }
         const record = this.props.selection[0];
-        await this.env.bus.trigger("documents-upload-files", {
+        await this.env.documentsView.bus.trigger("documents-upload-files", {
             files: ev.target.files,
             folderId: this.env.searchModel.getSelectedFolderId() || (record.data.folder_id && record.data.folder_id[0]),
             recordId: this.props.selection[0].resId,
-            params: {
-                tagIds: this.env.searchModel.getSelectedTagIds(),
-                extraHandler: () => {
-                    this.state.previousAttachmentDirty = true;
-                },
-            },
+            tagIds: this.env.searchModel.getSelectedTagIds(),
         });
         ev.target.value = "";
     }
@@ -450,7 +456,7 @@ export class DocumentsInspector extends Component {
                     },
                 },
             ],
-            placeholder: _t(" + Add a tag"),
+            placeholder: this.env._t(" + Add a tag"),
         };
     }
 
@@ -463,10 +469,10 @@ export class DocumentsInspector extends Component {
     }
 
     async triggerRule(rule) {
-        await this.env.bus.trigger("documents-trigger-rule", {
-            documents: this.props.selection,
-            ruleId: rule.resId,
-        });
+        await this._triggerRule(
+            this.props.selection.map(rec => rec.resId),
+            rule.resId,
+        );
     }
 
     async onDeletePreviousAttachment(attachmentId) {
@@ -506,7 +512,7 @@ export class DocumentsInspector extends Component {
             return;
         }
         const documents = this.props.selection.filter(rec => rec.isViewable());
-        this.env.bus.trigger("documents-open-preview", {
+        this.env.documentsView.bus.trigger("documents-open-preview", {
             documents: documents,
             mainDocument: mainDocument || documents[0],
             isPdfSplit,
@@ -526,7 +532,7 @@ export class DocumentsInspector extends Component {
         });
         this.action.doAction(
             {
-                name: _t("Edit the linked record"),
+                name: this.env._t("Edit the linked record"),
                 type: "ir.actions.act_window",
                 res_model: "documents.link_to_record_wizard",
                 views: [[false, "form"]],
@@ -551,7 +557,7 @@ export class DocumentsInspector extends Component {
         const recordId = this.props.selection[0].resId;
         const model = this.props.selection[0].model;
         this.dialogService.add(ConfirmationDialog, {
-            body: _t("Do you really want to unlink this record?"),
+            body: this.env._t("Do you really want to unlink this record?"),
             confirm: async () => {
                 await this.orm.call("documents.workflow.rule", "unlink_record", [[recordId]]);
                 await model.load();

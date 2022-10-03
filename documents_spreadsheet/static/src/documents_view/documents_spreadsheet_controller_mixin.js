@@ -12,19 +12,21 @@ export const DocumentsSpreadsheetControllerMixin = {
         this._super(...arguments);
         this.action = useService("action");
         this.dialogService = useService("dialog");
+        // Hack-ish way to do this but the function is added by a hook which we can't really override.
+        this.baseOnOpenDocumentsPreview = this.onOpenDocumentsPreview.bind(this);
+        this.onOpenDocumentsPreview = this._onOpenDocumentsPreview.bind(this);
     },
 
     /**
      * @override
      */
-    async onOpenDocumentsPreview(ev) {
-        const { documents } = ev.detail;
+    async _onOpenDocumentsPreview({ documents }) {
         if (
             documents.length !== 1 ||
             (documents[0].data.handler !== "spreadsheet" &&
                 documents[0].data.mimetype !== XLSX_MIME_TYPE)
         ) {
-            return this._super(...arguments);
+            return this.baseOnOpenDocumentsPreview(...arguments);
         }
         if (documents[0].data.handler === "spreadsheet") {
             this.action.doAction({

@@ -25,6 +25,11 @@
             flex-direction: column;
             min-height: 200px;
             width: 200px;
+
+            &:hover .o-file-upload-progress-bar-abort {
+                display: inline-block;
+                z-index: 3;
+            }
         }
 
         .o_kanban_record .o_kanban_attachment {

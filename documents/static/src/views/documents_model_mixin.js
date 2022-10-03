@@ -132,6 +132,7 @@ export const DocumentsDataPointMixin = (component) => class extends component {
         try {
             const context = this.context;
             await this.model.orm.write(this.resModel, resIds, changes, { context });
+            this.invalidateCache();
             await Promise.all(this.selection.map((rec) => rec.load()));
             this.model.notify();
         } catch (_) {
@@ -257,12 +258,5 @@ export const DocumentsRecordMixin = (component) => class extends component {
         document.body.append(newElement);
         ev.dataTransfer.setDragImage(newElement, -5, -5);
         setTimeout(() => newElement.remove());
-    }
-
-    /**
-     * Get the current file upload for this record if there is any
-     */
-    getFileUpload() {
-        return this.env.documentsStore.uploadByRecordId[this.resId];
     }
 };

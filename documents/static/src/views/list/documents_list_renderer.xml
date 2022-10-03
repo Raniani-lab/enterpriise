@@ -9,9 +9,9 @@
             <DocumentsInspector t-props="getDocumentsInspectorProps()"/>
         </xpath>
         <table position="before">
-            <DocumentsDropZone setDropZone.bind="setDropZone"/>
-            <DocumentsAttachmentViewer setAttachmentViewer.bind="setAttachmentViewer"/>
-            <DocumentsFileUploadViewContainer recordTemplate="'documents.DocumentsFileUploadProgressLine'"/>
+            <DocumentsDropZone parentRoot="root"/>
+            <DocumentsAttachmentViewer parentRoot="root"/>
+            <FileUploadProgressContainer fileUploads="this.documentUploads" Component="constructor.components.FileUploadProgressDataRow" shouldDisplay="(upload) => !upload.data.get('document_id')"/>
         </table>
         <t t-call="web.ActionHelper" position="replace">
             <t t-if="showNoContentHelper">
@@ -32,12 +32,6 @@
         <CheckBox position="replace">
             <DocumentsListRendererCheckBox disabled="!!props.list.editedRecord or props.list.model.useSampleModel" value="record.selected" onChange.bind="(ev) => record.onRecordClick(ev, {isKeepSelection: true})"/>
         </CheckBox>
-    </t>
-
-    <t t-name="documents.DocumentsListUploadContainer" owl="1">
-        <t t-foreach="getCurrentUploads()" t-as="upload" t-key="upload.uploadId">
-            <DocumentsFileUploadProgressLine fileUpload="upload"/>
-        </t>
     </t>
 
     <t t-name="documents.DocumentsListRendererCheckBox" owl="1">

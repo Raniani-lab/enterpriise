@@ -5,7 +5,7 @@ const CommonMenuDialog = require('web_studio.CommonMenuDialog');
 var config = require('web.config');
 var core = require('web.core');
 var Dialog = require('web.Dialog');
-var form_common = require('web.view_dialogs');
+var { FormViewDialog } = require("@web/views/view_dialogs/form_view_dialog");
 var relational_fields = require('web.relational_fields');
 var session = require('web.session');
 var StandaloneFieldManagerMixin = require('web.StandaloneFieldManagerMixin');
@@ -14,6 +14,7 @@ var Widget = require('web.Widget');
 var Many2One = relational_fields.FieldMany2One;
 const FieldRadio = relational_fields.FieldRadio;
 var _t = core._t;
+const { Component } = owl;
 
 var MenuItem = Widget.extend({
     template: 'web_studio.EditMenu.MenuItem',
@@ -215,15 +216,27 @@ var EditMenuDialog = Dialog.extend({
     _onEditMenu: function (ev) {
         var self = this;
         var menu_id = $(ev.currentTarget).closest('[data-menu-id]').data('menu-id');
-        new form_common.FormViewDialog(this, {
-            res_model: 'ir.ui.menu',
-            res_id: menu_id,
-            on_saved: function () {
+        // HACK: here, we open a wowl dialog on top of a bootstrap (legacy) dialog.
+        // The legacy dialog traps the focus, meaning that it isn't possible to focus
+        // anything (e.g. a field input to edit it) in the wowl dialog.
+        // To prevent this behavior, we hide this modal (but we take care not to destroy
+        // this widget in the process), and re-show it when the wowl dialog is closed.
+        this.$modal.off('hidden.bs.modal');
+        this.$modal.modal("hide");
+        Component.env.services.dialog.add(FormViewDialog, {
+            resModel: 'ir.ui.menu',
+            resId: menu_id,
+            onRecordSaved: function () {
                 self._saveChanges().then(function () {
                     self._reloadMenuData(true);
                 });
             },
-        }).open();
+        }, {
+            onClose: () => {
+                this.$modal.modal("show");
+                this.$modal.on('hidden.bs.modal', _.bind(this.destroy, this));
+            },
+        });
     },
     /**
      * Save the current changes (in `to_move` and `to_delete`).

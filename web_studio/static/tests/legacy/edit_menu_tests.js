@@ -2,6 +2,7 @@ odoo.define('web_studio.EditMenu_tests', function (require) {
 "use strict";
 
 var testUtils = require('web.test_utils');
+const { prepareWowlFormViewDialogs } = require("@web/../tests/views/helpers");
 
 var EditMenu = require('web_studio.EditMenu');
 
@@ -121,6 +122,8 @@ QUnit.module('Studio', {
             },
         });
 
+        await prepareWowlFormViewDialogs({ models: this.data, views: this.archs });
+
         const $modal = $('.modal');
         assert.containsOnce(dialog, 'ul.oe_menu_editor',
             "there should be the list of menus");
@@ -171,13 +174,13 @@ QUnit.module('Studio', {
 
         // open the dialog to edit the menu
         await testUtils.dom.click(dialog.$('.js_edit_menu:nth(1)'));
-        assert.strictEqual($('.o_act_window').length, 1,
-            "there should be a act window modal in the dom");
-        assert.strictEqual($('.o_act_window input.o_field_widget[name="name"]').val(), "Menu 2",
+        assert.strictEqual($('.o_dialog .o_form_view').length, 1,
+            "there should be a form view dialog in the dom");
+        assert.strictEqual($('.o_dialog .o_form_view .o_field_widget[name="name"] input').val(), "Menu 2",
             "the edited menu should be menu 2");
         // confirm the edition
         assert.strictEqual(customizeCalls, 0, "current changes have not been saved");
-        await testUtils.dom.click($('.o_act_window').closest('.modal').find('.btn-primary'));
+        await testUtils.dom.click($('.o_dialog .o_form_button_save'));
         assert.strictEqual(customizeCalls, 1, "current changes are saved after editing a menu");
 
         // delete the last menu
@@ -191,8 +194,8 @@ QUnit.module('Studio', {
         await testUtils.dom.click(dialog.$('.js_delete_menu:first'));
         await testUtils.dom.click($modal.find('footer .btn-primary'));
         assert.containsN($(document), '.modal', 2,
-            "should have 2 dialogsm");
-        assert.strictEqual($('.modal-title:last').text(), "Alert",
+            "should have 2 dialogs");
+        assert.strictEqual($('.modal:not(.o_inactive_modal) .modal-title').text(), "Alert",
             "should have alert dialog if we delete all menus");
 
         dialog.destroy();

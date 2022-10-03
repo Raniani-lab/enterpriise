@@ -101,6 +101,24 @@ class AccountMove(models.Model):
             if record.extract_state not in ['no_extract_requested']:
                 record.extract_can_show_send_button = False
 
+    @api.depends(
+        'state',
+        'extract_state',
+        'move_type',
+        'company_id.extract_in_invoice_digitalization_mode',
+        'company_id.extract_out_invoice_digitalization_mode',
+    )
+    def _compute_show_banners(self):
+        for record in self:
+            record.extract_can_show_banners = (
+                record.is_invoice() and
+                record.state == 'draft' and
+                (
+                    (record.is_purchase_document() and record.company_id.extract_in_invoice_digitalization_mode != 'no_send') or
+                    (record.is_sale_document() and record.company_id.extract_out_invoice_digitalization_mode != 'no_send')
+                )
+            )
+
     extract_state = fields.Selection([('no_extract_requested', 'No extract requested'),
                                       ('not_enough_credit', 'Not enough credit'),
                                       ('error_status', 'An error occurred'),
@@ -119,6 +137,7 @@ class AccountMove(models.Model):
 
     extract_can_show_resend_button = fields.Boolean("Can show the ocr resend button", compute=_compute_show_resend_button)
     extract_can_show_send_button = fields.Boolean("Can show the ocr send button", compute=_compute_show_send_button)
+    extract_can_show_banners = fields.Boolean("Can show the ocr banners", compute=_compute_show_banners)
 
     def action_reload_ai_data(self):
         try:

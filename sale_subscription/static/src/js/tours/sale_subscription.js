@@ -2,52 +2,19 @@ odoo.define('sale_subscription.tour', function(require) {
 "use_strict";
 
 var core = require('web.core');
-const {Markup} = require('web.utils');
 var tour = require('web_tour.tour');
 
 var _t = core._t;
+const { markup } = owl;
 
 tour.register('sale_subscription_tour', {
     url: "/web",
     sequence: 250,
+    rainbowMan: true,
+    rainbowManMessage: markup(_t("<b>Congratulations</b>, your first subscription quotation is ready to be sent!")),
 }, [{
     trigger: '.o_app[data-menu-xmlid="sale_subscription.menu_sale_subscription_root"]',
 	content: _t('Want recurring billing via subscription management ? Get started by clicking here'),
-    position: 'bottom',
-},
-{
-    trigger: '.dropdown-toggle[data-menu-xmlid="sale_subscription.menu_sale_subscription_config"]',
-    content: _t('Configure your subscription templates here'),
-    position: 'bottom',},
-{
-    trigger: '.dropdown-item[data-menu-xmlid="sale_subscription.menu_template_of_subscription"]',
-    content: Markup(_t('Click here to create <b>your first subscription template</b>')),
-    position: 'top',
-},
-{
-    trigger: '.o-kanban-button-new',
-    extra_trigger: '.o_subscription_kanban',
-    content: _t('Let\'s create your first subscription template.'),
-    position: 'bottom',
-    width: 200,
-},
-{
-    trigger: 'div.oe_title input',
-    extra_trigger: '.o_form_editable',
-    content: Markup(_t('Enter a name for this template.<br/><i>(e.g. eLearning Yearly)</i>')),
-    position: 'right',
-    width: 200,
-},
-{
-    trigger: 'select.field_rule_type',
-    extra_trigger: '.o_form_editable',
-    content: Markup(_t('Choose the recurrence for this template.<br/><i>(e.g. 1 time per Year)</i>')),
-    position: 'right',
-    width: 200,
-},
-{
-    trigger: '.o_form_button_save',
-    content: _t('Save this template and the modifications you\'ve made to it.'),
     position: 'bottom',
 },
 {
@@ -58,32 +25,71 @@ tour.register('sale_subscription_tour', {
 {
     trigger: '.dropdown-item[data-menu-xmlid="sale_subscription.menu_sale_subscription_product"]',
     content: _t('Create your first subscription product here'),
-    position: 'top',
+    position: 'bottom',
 },
 {
-    trigger: '.o_list_button_add',
+    trigger: '.o-kanban-button-new',
+    extra_trigger: '.o_kanban_product_template',
     content: _t('Go ahead and create a new product'),
     position: 'right',
-    width: 200,
 },
 {
-    trigger: 'input.o_field_widget[name="name"]',
-    content: Markup(_t('Choose a product name.<br/><i>(e.g. eLearning Access)</i>')),
-    position: 'right',
-    width: 200,
-},
-{
-    trigger: '.o_field_widget.field_sub_template_id',
+    trigger: 'input.o_input[id="name"]', // remove after ?
     extra_trigger: '.o_form_editable',
-    content: _t('Select your newly created template. Every sale of this product will generate a new subscription!'),
-    position: 'top',
+    content: markup(_t('Choose a product name.<br/><i>(e.g. eLearning Access)</i>')),
+    position: 'right',
+    width: 200,
 },
 {
-    trigger: '.o_form_button_save',
-    content: Markup(_t('Save and you\'re all set!<br/>Simply sell this product to create a subscription automatically or create a subscription manually!')),
+    trigger: 'a.nav-link[name="pricing"]',
+    extra_trigger: '.o_form_editable',
+    content: _t("Let's configure the product price"),
     position: 'right',
-    width: 400,
 },
+{
+    trigger: ".o_field_x2many_list_row_add > a",
+    extra_trigger: '.o_form_editable',
+    content: _t("Let's add a pricing with a recurrence"),
+    run: "click",
+},
+{
+    trigger: '.dropdown-item[data-menu-xmlid="sale_subscription.menu_sale_subscription_root"]',
+    content: _t('Go back to the subscription view'),
+    position: 'bottom',
+},
+{
+    trigger: '.o-kanban-button-new',
+    extra_trigger: '.o_kanban_order',
+    content: _t('Go ahead and create a new subscription'),
+    position: 'right',
+},
+{
+    trigger: '.o_field_widget[name="partner_id"]',
+    content: _t('Assign a new partner to the contract'),
+    position: 'right',
+},
+{
+    trigger: ".o_field_x2many_list_row_add > a",
+    content:  _t('Click here to add some products or services to your quotation.'),
+    run: 'click',
+},
+{
+    trigger: ".o_field_widget[name='product_id'], .o_field_widget[name='product_template_id']",
+    extra_trigger: ".o_sale_order",
+    content: _t("Select a recurring product"),
+    position: "right",
+},
+{
+    trigger: 'div.o_row',
+    content:  _t("Select a recurrence"),
+    position: "bottom",
+},
+{
+    trigger: 'div[name="subscription_pill"]',
+    content:  _t("Your contrat is recurrent"),
+    position: "bottom",
+},
+
 ]);
 
 });

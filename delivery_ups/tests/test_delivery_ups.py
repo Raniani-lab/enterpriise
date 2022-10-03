@@ -202,7 +202,7 @@ class TestDeliveryUPS(TransactionCase):
             wizard = Form(self.env[action['res_model']].with_context(action['context']))
             wizard.save().process()
 
-        warehouse = self.env['sale.order']._default_warehouse_id()
+        warehouse = self.env.user._get_default_warehouse_id()
         warehouse.delivery_steps = 'pick_ship'
         stock_location = warehouse.lot_stock_id
 

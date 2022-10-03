@@ -364,8 +364,9 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             } else {
                 onReject();
             }
-        } catch {
+        } catch (error) {
             onReject();
+            throw error;
         }
     }
     
@@ -741,6 +742,13 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                             offsetParent.append($item.domPosition.parent);
                         }
                     }
+                    // Hide caret if parent has no children after rejected move
+                    const $firstParent = $parent.first();
+                    if (!$firstParent.children('ul').is(':parent')) {
+                        $firstParent.removeClass('mjs-nestedSortable-branch mjs-nestedSortable-expanded');
+                        $firstParent.children('ul').remove();
+                    }
+
                     // For consistency with the nestedSortable library,
                     // trigger the 'change' event from the moved $item
                     $item._trigger('change', null, $item._uiHash());

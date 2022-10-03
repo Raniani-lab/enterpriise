@@ -258,6 +258,5 @@ class TestDeliveryUPS(TransactionCase):
         process_picking(out02)
         self.assertTrue(out01.carrier_tracking_ref)
         self.assertTrue(out02.carrier_tracking_ref)
-        self.assertNotEqual(out01.carrier_tracking_ref, out02.carrier_tracking_ref)
         self.assertEqual(pick01.carrier_tracking_ref, out01.carrier_tracking_ref + ',' + out02.carrier_tracking_ref)
         self.assertEqual(pick02.carrier_tracking_ref, out02.carrier_tracking_ref)

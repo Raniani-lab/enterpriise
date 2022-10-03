@@ -7,6 +7,7 @@ from collections import defaultdict
 from odoo import fields, models, api, _, Command
 from odoo.tools.date_utils import get_timedelta
 from odoo.tools import format_date
+from odoo.tools.float_utils import float_is_zero
 from odoo.exceptions import ValidationError
 
 INTERVAL_FACTOR = {
@@ -53,7 +54,7 @@ class SaleOrderLine(models.Model):
             to_invoice_check = line.order_id.next_invoice_date and line.state in ('sale', 'done') and line.order_id.next_invoice_date >= today
             if line.order_id.end_date:
                 to_invoice_check = to_invoice_check and line.order_id.end_date > today
-            if to_invoice_check and line.order_id.start_date and line.order_id.start_date > today:
+            if to_invoice_check and line.order_id.start_date and line.order_id.start_date > today or float_is_zero(line.price_subtotal, precision_rounding=line.order_id.currency_id.rounding):
                 line.invoice_status = 'no'
 
     @api.depends('order_id.subscription_management', 'order_id.start_date', 'order_id.next_invoice_date')

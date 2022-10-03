@@ -1750,3 +1750,29 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertFalse(line.product_id)
             with self.assertRaises(ValidationError):
                 upsell_so_2.action_confirm()
+
+    def test_free_product_do_not_invoice(self):
+        sub_product_tmpl = self.env['product.template'].create({
+            'name': 'Free product',
+            'type': 'service',
+            'recurring_invoice': True,
+            'uom_id': self.env.ref('uom.product_uom_unit').id,
+            'list_price': 0,
+        })
+
+        self.subscription.start_date = False
+        self.subscription.next_invoice_date = False
+        self.subscription.order_line = [Command.clear()]
+        self.subscription.write({
+            'partner_id': self.partner.id,
+            'recurrence_id': self.recurrence_year.id,
+            'order_line': [Command.create({
+                'name': sub_product_tmpl.name,
+                'product_id': sub_product_tmpl.product_variant_id.id,
+                'product_uom_qty': 1.0,
+                'product_uom': sub_product_tmpl.uom_id.id,
+            })]
+        })
+        self.assertEqual(self.subscription.amount_untaxed, 0, "The price shot be 0")
+        self.assertEqual(self.subscription.order_line.price_subtotal, 0, "The price line should be 0")
+        self.assertEqual(self.subscription.order_line.invoice_status, 'no', "Nothing to invoice here")

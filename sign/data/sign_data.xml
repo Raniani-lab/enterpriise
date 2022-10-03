@@ -51,7 +51,6 @@
     <record model="sign.item.type" id="sign_item_type_company">
         <field name="name">Company</field>
         <field name="placeholder">Company</field>
-        <field name="auto_field">company_id.name</field>
     </record>
 
     <record model="sign.item.type" id="sign_item_type_text">

@@ -587,6 +587,7 @@ const PublicSignerDialog = SignInfoDialog.extend({
 
   addDefaultButtons(parent, options) {
     options.buttons = [];
+    options.buttons.push({ text: _t("Cancel"), classes: "btn-link", close: true });
     options.buttons.push({
       text: _t("Validate & Send"),
       classes: "btn-primary",
@@ -618,7 +619,6 @@ const PublicSignerDialog = SignInfoDialog.extend({
         this.sentResolve();
       },
     });
-    options.buttons.push({ text: _t("Cancel"), close: true });
     this.options = options;
   },
 

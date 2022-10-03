@@ -18,7 +18,7 @@ planningTestTour.steps.splice(salePlanningStartStepIndex + 1, 0, {
             magnifyIcon.click();
         },
     }, {
-        trigger: "tr.o_data_row td[title='Developer']",
+        trigger: "tr.o_data_row td[data-tooltip='Developer']",
         content: "Select the slot and plan orders",
         run: 'click',
     }, {

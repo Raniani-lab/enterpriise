@@ -12,14 +12,6 @@ export default GanttController.extend({
             display_milestone_popover: '_onDisplayMilestonePopover',
         }),
 
-        _openDialog: function (resID, context) {
-            const formViewDialogOpened = this._super(resID, context);
-            formViewDialogOpened.on('closed', this, (options) => {
-                this.reload();
-            });
-            return formViewDialogOpened;
-        },
-
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------

@@ -2,9 +2,6 @@
 
 import GanttController from 'web_gantt.GanttController';
 import {_t} from 'web.core';
-import {Markup} from 'web.utils';
-import Dialog from 'web.Dialog';
-import {FormViewDialog} from 'web.view_dialogs';
 import { PlanningControllerMixin } from './planning_mixins';
 
 const PlanningGanttController = GanttController.extend(PlanningControllerMixin, {
@@ -73,125 +70,14 @@ const PlanningGanttController = GanttController.extend(PlanningControllerMixin, 
     },
 
     /**
-     * Display a dialog form view of employee model for each employee who has no work email
+     * Opens dialog to add/edit/view a record. Overrides to tweak dialog's title
      *
-     * This function is only useable in Controller class
-     *
-     * @param {Object} [result] result containing the employees without work email, context and relation to display the form view of the employee model.
-     * @param {Array<number>} [result.res_ids] the employee ids without work email.
-     * @param {Object} [result.context] context.
-     * @param {string} [result.relation] the model name to display the form view.
-     *
-     * @returns {Promise}
+     * @override
      */
-    _displayDialogWhenEmployeeNoEmail: function (result) {
-        if (!result) {
-            // then we have nothing to do.
-            return Promise.resolve();
-        }
-        return Promise.all(result.res_ids.map((employee_id) => {
-            const def = new Promise((resolve, reject) => {
-                const formDialog = new FormViewDialog(this, {
-                    title: "",
-                    res_model: result.relation,
-                    res_id: employee_id,
-                    readonly: false,
-                    context: result.context,
-                    on_saved: () => resolve(),
-                }).open();
-                formDialog.on('form_dialog_discarded', this, () => reject());
-            });
-            return def;
-        }));
-    },
-
-    /**
-     * Opens dialog to add/edit/view a record
-     * Override required to execute the reload of the gantt view when an action is performed on a
-     * single record.
-     *
-     * @private
-     * @param {integer|undefined} resID
-     * @param {Object|undefined} context
-     */
-    _openDialog: function (resID, context) {
-        var self = this;
-        var record = resID ? _.findWhere(this.model.get().records, {id: resID,}) : {};
-        var title = resID ? record.display_name : _t("Add Shift");
-        const allContext = Object.assign({}, this.context, context);
-
-        const dialog = new FormViewDialog(this, {
-            title: _.str.sprintf(title),
-            res_model: this.modelName,
-            view_id: this.dialogViews[0][0],
-            res_id: resID,
-            readonly: !this.is_action_enabled('edit'),
-            deletable: this.is_action_enabled('edit') && resID,
-            context: allContext,
-            on_saved: this.reload.bind(this, {}),
-            on_remove: this._onDialogRemove.bind(this, resID),
-        });
-        dialog.on('closed', this, function(ev){
-            // we reload as record can be created or modified (sent, unpublished, ...)
-            self.reload();
-        });
-        dialog.on('execute_action', this, async function(e) {
-            const action_name = e.data.action_data.name || e.data.action_data.special;
-            const event_data = _.clone(e.data);
-
-            /* YTI TODO: Refactor this stuff to use events instead of empirically reload the page*/
-            if (action_name === "action_unschedule") {
-                e.stopPropagation();
-                self.trigger_up('execute_action', event_data);
-                _.delay(function() { self.dialog.destroy(); }, 400);
-            } else if (action_name === "unlink") {
-                e.stopPropagation();
-                const message = _t('Are you sure you want to delete this shift?');
-
-                Dialog.confirm(self, message, {
-                    confirm_callback: function(evt) {
-                        self.trigger_up('execute_action', event_data);
-                        _.delay(function() { self.dialog.destroy() }, 200);
-                    },
-                    cancel_callback: function(evt) {
-                        self.dialog.$footer.find('button').removeAttr('disabled');
-                    }
-                });
-            } else {
-                const initialState = dialog.form_view.model.get(dialog.form_view.handle);
-                const state = dialog.form_view.renderer.state;
-                const resID = e.data.env.currentID;
-
-                if (initialState.data.template_creation != state.data.template_creation && state.data.template_creation) {
-                    // Then the shift should be saved as a template too.
-                    const message = _t("This shift was successfully saved as a template.")
-                    self.displayNotification({
-                        type: 'success',
-                        message: Markup`<i class="fa fa-fw fa-check"></i><span class="ms-1">${message}</span>`,
-                    });
-                }
-
-                if (action_name === 'action_send' && resID) {
-                    e.stopPropagation();
-                    // We want to check if all employees impacted to this action have a email.
-                    // For those who do not have any email in work_email field, then a FormViewDialog is displayed for each employee who is not email.
-                    try {
-                        const result = await this.model.getEmployeesWithoutWorkEmail({
-                            model: self.modelName,
-                            res_id: resID
-                        });
-                        await this._displayDialogWhenEmployeeNoEmail(result);
-                        self.trigger_up('execute_action', event_data);
-                        setTimeout(() => self.dialog.destroy(), 100);
-                    } catch (_err) {
-                        self.dialog.$footer.find('button').removeAttr('disabled');
-                    }
-                }
-            }
-        });
-
-        self.dialog = dialog.open();
-        return self.dialog;
+    _openDialog: function (props, options) {
+        var record = props.resId ? _.findWhere(this.model.get().records, {id: props.resId}) : {};
+        var title = props.resId ? record.display_name : _t("Add Shift");
+        this._super({ ...props, title }, options);
     },
 
     //--------------------------------------------------------------------------

@@ -4,6 +4,8 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
     const Domain = require("web.Domain");
     const PlanningGanttView = require("planning.PlanningGanttView");
     const testUtils = require("web.test_utils");
+    const { prepareWowlFormViewDialogs } = require("@web/../tests/views/helpers");
+    const { patchTimeZone } = require("@web/../tests/helpers/utils");
 
     const actualDate = new Date(2018, 11, 20, 8, 0, 0);
     const initialDate = new Date(
@@ -112,20 +114,22 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                 model: 'task',
                 data: this.data,
                 arch: '<gantt date_start="start" date_stop="stop" sample="1"/>',
-                archs: {
-                    'task,false,form': `
-                        <form>
-                            <field name="name"/>
-                            <field name="start"/>
-                            <field name="stop"/>
-                            <field name="resource_id"/>
-                        </form>`,
-                },
                 viewOptions: {
                     initialDate: new Date(),
                 },
                 groupBy: ['resource_id'],
             });
+
+            const views = {
+                'task,false,form': `
+                    <form>
+                        <field name="name"/>
+                        <field name="start"/>
+                        <field name="stop"/>
+                        <field name="resource_id"/>
+                    </form>`,
+            };
+            await prepareWowlFormViewDialogs({ models: this.data, views });
 
             assert.hasClass(gantt, 'o_legacy_view_sample_data');
             assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
@@ -138,7 +142,7 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
             );
 
             await testUtils.dom.triggerMouseEvent(gantt.$(`.o_gantt_row:first .o_gantt_cell:first .o_gantt_cell_add`), "click");
-            await testUtils.fields.editInput($('.modal .modal-body input[name=name]'), 'new task');
+            await testUtils.fields.editInput($('.modal .modal-body .o_field_widget[name=name] input'), 'new task');
             await testUtils.modal.clickButton('Save & Close');
 
             assert.doesNotHaveClass(gantt, 'o_legacy_view_sample_data');
@@ -150,6 +154,8 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
 
         QUnit.test('open a dialog to add a new task', async function (assert) {
             assert.expect(4);
+
+            patchTimeZone(0);
 
             const gantt = await createView({
                 View: PlanningGanttView,
@@ -163,27 +169,33 @@ odoo.define("planning.planning_gantt_tests.js", function (require) {
                             '<field name="stop"/>' +
                         '</form>',
                 },
-                mockRPC: function (route, args) {
-                    if (args.method === 'onchange') {
-                        const today = moment().startOf('date');
-                        const todayStr = today.format("YYYY-MM-DD 23:59:59");
-                        assert.strictEqual(args.kwargs.context.default_stop, todayStr, "default stop date should have 24 hours difference");
-                    }
-                    return this._super.apply(this, arguments);
-                },
-                translateParameters: {
-                    date_format: "%Y-%m-%d",
-                    time_format: "%H:%M:%S",
-                }
             });
+
+            const views = {
+                'task,false,form': `
+                    <form>
+                        <field name="name"/>
+                        <field name="start"/>
+                        <field name="stop"/>
+                    </form>`,
+            };
+            const mockRPC = (route, args) => {
+                if (args.method === 'onchange') {
+                    const today = moment().startOf('date');
+                    const todayStr = today.format("YYYY-MM-DD 23:59:59");
+                    assert.strictEqual(args.kwargs.context.default_stop, todayStr, "default stop date should have 24 hours difference");
+                }
+            }
+            await prepareWowlFormViewDialogs({ models: this.data, views }, mockRPC);
+
             await testUtils.dom.click(gantt.$el.find('.o_gantt_button_add'));
             // check that the dialog is opened with prefilled fields
             assert.containsOnce($('.o_dialog_container'), '.modal', 'There should be one modal opened');
             const today = moment().startOf('date');
-            let todayStr = today.format("YYYY-MM-DD 00:00:00");
+            let todayStr = today.format("MM/DD/YYYY 00:00:00");
             assert.strictEqual($('.o_field_widget[name=start] .o_input').val(), todayStr,
                 'the start date should be the start of the focus month');
-            todayStr = today.format("YYYY-MM-DD 23:59:59");
+            todayStr = today.format("MM/DD/YYYY 23:59:59");
             assert.strictEqual($('.o_field_widget[name=stop] .o_input').val(), todayStr,
                 'the end date should be the end of the focus month');
 

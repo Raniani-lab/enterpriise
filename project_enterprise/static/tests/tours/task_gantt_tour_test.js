@@ -77,7 +77,7 @@ tour.register('project_enterprise_tour', {
         trigger: '.o_gantt_button_add',
         content: 'Add a task in gantt',
     }, {
-        trigger: '.o_field_char[name="name"]',
+        trigger: '.o_field_char[name="name"] input',
         content: 'Set task name',
         run: 'text New task',
     }, {
@@ -85,7 +85,7 @@ tour.register('project_enterprise_tour', {
         content: 'Assign the task to you',
     }, {
         trigger: 'button span:contains("Save")',
-        extra_trigger: '.o_field_many2manytags .rounded-pill',
+        extra_trigger: '.o_field_many2many_tags_avatar .rounded-pill',
         content: 'Save task',
     }, {
         trigger: ".o_gantt_progressbar",

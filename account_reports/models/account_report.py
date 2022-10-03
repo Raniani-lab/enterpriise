@@ -3472,7 +3472,7 @@ class AccountReport(models.Model):
         # Compute the colspan of each header level, aka the number of single columns it contains at the base ot the hierarchy
         level_colspan_list = column_headers_render_data['level_colspan'] = []
         for i in range(len(options['column_headers'])):
-            colspan = len(columns)
+            colspan = max(len(columns), 1)
             for column_header in options['column_headers'][i + 1:]:
                 colspan *= len(column_header)
             level_colspan_list.append(colspan)

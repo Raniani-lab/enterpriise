@@ -83,8 +83,8 @@ class TestTrialBalanceReport(AccountConsolidationTestCase):
         custom_handler = self.env[report.custom_handler_model_name]
         options = report._get_options(None)
         headers = custom_handler._get_column_headers(options)
-        self.assertEqual(len(headers), len(self.journals) + 2, 'Report should have a header by journal + a total column and a first blank column')
-        real_headers = headers[1:-1]
+        self.assertEqual(len(headers[0]), len(self.journals) + 1, 'Report should have a header by journal + a total column')
+        real_headers = headers[0][0:-1]
         self.assertEqual(real_headers[0]['name'], custom_handler._get_journal_col(self.journals['be'][0], options)['name'], 'First column should be the column of "BE company" journal')
         self.assertEqual(real_headers[1]['name'], custom_handler._get_journal_col(self.journals['us'][0], options)['name'], 'First column should be the column of "US company" journal')
 
@@ -144,8 +144,8 @@ class TestTrialBalanceReport(AccountConsolidationTestCase):
         options = report._get_options(None)
         options['consolidation_journals'][0]['selected'] = True
         headers = custom_handler._get_column_headers(options)
-        self.assertEqual(len(headers), len(self.journals) + 1, 'Report should have a header by selected journal + a total column and a first blank column')
-        real_headers = headers[1:-1]
+        self.assertEqual(len(headers[0]), 2, 'Report should have a header by selected journal + a total column')
+        real_headers = headers[0][0:-1]
         self.assertEqual(real_headers[0]['name'], custom_handler._get_journal_col(self.journals['be'][0], options)['name'], '"%s" journal should be in headers' % self.journals['be'][0].name)
 
         for real_header in real_headers:

@@ -547,14 +547,13 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
         self.assertEqual(len(self.items_parent.child_ids), 2)
         self.assertTrue(self.items_parent.has_item_children)
 
-        # Cannot create a normal article under a parent of items
-        with self.assertRaises(exceptions.ValidationError, msg='Cannot create a normal article under an items parent'):
-            self.env['knowledge.article'].create([{
-                'internal_permission': False,
-                'name': 'Child Item 3',
-                'parent_id': self.items_parent.id,
-                'is_article_item': False,
-            }])
+        # Can create a normal article under a parent of items
+        self.env['knowledge.article'].create([{
+            'internal_permission': False,
+            'name': 'Child Item 3',
+            'parent_id': self.items_parent.id,
+            'is_article_item': False,
+        }])
 
         # Can create an article item under parent with no child. A parent item can be an item itself.
         self.assertTrue(len(self.item_child.child_ids) == 0)
@@ -595,7 +594,7 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
         self.assertTrue(self.shared_child.has_item_children)
 
         # - Under a parent that is not an item parent and already has children :
-        #     it becomes a normal article
+        #     it stays an article item - both types can co-exist.
         self.env['knowledge.article'].create([{
             'internal_permission': False,
             'name': 'workspace child',
@@ -607,23 +606,15 @@ class TestKnowledgeArticleConstraints(KnowledgeCommon):
 
         self.item_child.move_to(self.article_workspace.id)
 
-        self.assertFalse(self.item_child.is_article_item)
+        self.assertTrue(self.item_child.is_article_item)
         self.assertEqual(len(self.article_workspace.child_ids), 2)
         self.assertTrue(self.article_workspace.has_article_children)
 
-        with self.assertRaises(exceptions.ValidationError, msg='Cannot set an article as item under a parent with no items'):
-            with self.cr.savepoint():
-                self.item_child.write({'is_article_item': True})
-
-        # Can move a normal article under an item parent: the article becomes an article item.
-        self.assertFalse(self.item_child.is_article_item)
-        self.item_child.move_to(items_parent_2.id)
-        self.assertTrue(self.item_child.is_article_item)
-
-        with self.assertRaises(exceptions.ValidationError, msg='Cannot set an article item as normal under an item parent'):
-            with self.cr.savepoint():
-                self.item_child.write({'is_article_item': False})
-
-        # TODO DBE: Maybe check this one on another record (and remove savepoint) in order to blablabla... uh'
         with self.assertRaises(IntegrityError, msg='An article item must have a parent'):
             self.item_child.write({'parent_id': False})
+
+        # Can move a normal article under an item parent: the article stays a normal article
+        self.item_child.write({'is_article_item': False})
+        self.assertFalse(self.item_child.is_article_item)
+        self.item_child.move_to(items_parent_2.id)
+        self.assertFalse(self.item_child.is_article_item)

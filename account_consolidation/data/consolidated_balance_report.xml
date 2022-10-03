@@ -167,7 +167,7 @@
                     <td t-att-class="'o_account_report_line ' + (column.get('class', options.get('column_headers')[column_index + line.get('colspan', 1)].get('class', '')) + (line.get('unfoldable') and ' o_foldable_total' or '')) + ('' if hierarchies_enabled else ' o_account_report_line_indent')"
                         t-att-style="column.get('style', options.get('column_headers')[column_index + line.get('colspan', 1)].get('style', ''))">
                         <t t-if="column.get('journal_id')">
-                            <div class="dropdown">
+                            <div class="dropdown no_print">
                                 <a class="dropdown-toggle" data-bs-toggle="dropdown" href='#'>
                                     <span t-att-data-line-id="line['id']"
                                           t-att-data-id="column['journal_id']"
@@ -188,6 +188,9 @@
                                         Audit
                                     </a>
                                 </div>
+                            </div>
+                            <div class="print_only">
+                                <t t-out="column.get('name')"/>
                             </div>
                         </t>
                         <t t-else="">

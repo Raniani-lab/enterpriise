@@ -121,8 +121,8 @@ class TrialBalanceCustomHandler(models.AbstractModel):
             ap = self.env['consolidation.period'].browse(ap_id)
             ap_is_closed = ap.state == 'closed'
         buttons = [
-            {'name': _('PDF'), 'sequence': 1, 'action': 'export_file', 'action_param': '_export_to_pdf', 'file_export_type': _('PDF')},
-            {'name': _('XLSX'), 'sequence': 2, 'action': 'export_file', 'action_param': '_export_to_xlsx', 'file_export_type': _('XLSX')}
+            {'name': _('PDF'), 'sequence': 1, 'action': 'export_file', 'action_param': 'export_to_pdf', 'file_export_type': _('PDF')},
+            {'name': _('XLSX'), 'sequence': 2, 'action': 'export_file', 'action_param': 'export_to_xlsx', 'file_export_type': _('XLSX')}
         ]
         if not ap_is_closed:
             buttons.append({'name': _('Edit'), 'sequence': 10, 'action': 'action_open_view_grid'})
@@ -235,8 +235,8 @@ class TrialBalanceCustomHandler(models.AbstractModel):
 
     def export_file(self, options, file_generator):
         options.update({
-            'force_periods': self._consolidated_balance_report_get_period_ids(options),
+            'force_periods': self._get_period_ids(options),
             'active_id': self.env.context.get('active_id'),
         })
 
-        return self.env['account.report'].export_file(options, file_generator)
+        return self.env['account.report'].browse(options['report_id']).export_file(options, file_generator)

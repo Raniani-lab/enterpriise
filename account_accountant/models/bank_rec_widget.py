@@ -308,7 +308,7 @@ class BankRecWidget(models.Model):
                     nb_liquidity += 1
                 elif line.flag == 'auto_balance':
                     nb_auto_balance += 1
-                if line.source_aml_id:
+                if line.flag == 'new_aml' and line.source_aml_id:
                     if line.source_aml_id in seen_amls:
                         raise UserError(_("You can't have multiple times the same journal item in the bank reconciliation widget"))
                     seen_amls.add(line.source_aml_id)
@@ -343,8 +343,25 @@ class BankRecWidget(models.Model):
         protected_fields = set(models.MAGIC_COLUMNS + [self.CONCURRENCY_CHECK_FIELD])
 
         for wizard in self:
+            lines = wizard.line_ids
+
+            # Sort the lines.
+            sorted_lines = []
+            auto_balance_lines = []
+            epd_lines = []
+            exchange_diff_map = {x.source_aml_id: x for x in lines.filtered(lambda x: x.flag == 'exchange_diff')}
+            for line in lines:
+                if line.flag == 'auto_balance':
+                    auto_balance_lines.append(line)
+                elif line.flag == 'early_payment':
+                    epd_lines.append(line)
+                elif line.flag != 'exchange_diff':
+                    sorted_lines.append(line)
+                    if line.flag == 'new_aml' and exchange_diff_map.get(line.source_aml_id):
+                        sorted_lines.append(exchange_diff_map[line.source_aml_id])
+
             line_vals_list = []
-            for line in wizard.line_ids:
+            for line in sorted_lines + epd_lines + auto_balance_lines:
                 js_vals = {}
 
                 for field_name, field in line._fields.items():
@@ -541,29 +558,8 @@ class BankRecWidget(models.Model):
                 aml = line.source_aml_id
                 balance_sign = -1 if wizard.form_force_negative_sign else 1
 
-                aml_vals = {
-                    'balance': aml.amount_residual,
-                    'amount_currency': aml.amount_residual_currency,
-                    'amount_residual': aml.amount_residual,
-                    'amount_residual_currency': aml.amount_residual_currency,
-                    'company': wizard.company_id,
-                    'currency': aml.currency_id,
-                    'date': line.date,
-                }
-                self.env['account.move.line']._prepare_reconciliation_partials([
-                    {
-                        'balance': line.balance,
-                        'amount_currency': line.amount_currency,
-                        'amount_residual': line.balance,
-                        'amount_residual_currency': line.amount_currency,
-                        'company': wizard.company_id,
-                        'currency': line.currency_id,
-                        'date': line.date,
-                    },
-                    aml_vals,
-                ])
-                residual_amount_before_reco = abs(aml_vals['amount_currency'])
-                residual_amount_after_reco = abs(aml_vals['amount_residual_currency'])
+                residual_amount_before_reco = abs(aml.amount_residual_currency)
+                residual_amount_after_reco = abs(aml.amount_residual_currency + line.amount_currency)
                 reconciled_amount = residual_amount_before_reco - residual_amount_after_reco
                 is_fully_reconciled = aml.currency_id.is_zero(residual_amount_after_reco)
                 is_invoice = aml.move_id.is_invoice(include_receipts=True)
@@ -857,11 +853,15 @@ class BankRecWidget(models.Model):
         line.amount_currency = sign * self.form_amount_currency
         line.balance = sign * self.form_balance
 
-        if line.flag not in ('tax_line', 'early_payment') and line.tax_ids:
-            # Manual edition of amounts. Disable the price_included mode.
-            line.force_price_included_taxes = False
+        if line.flag not in ('tax_line', 'early_payment'):
 
-            self._lines_widget_recompute_taxes()
+            if line.tax_ids:
+                # Manual edition of amounts. Disable the price_included mode.
+                line.force_price_included_taxes = False
+
+                self._lines_widget_recompute_taxes()
+
+            self._lines_widget_recompute_exchange_diff()
             self._lines_widget_add_auto_balance_line()
             self._action_mount_line_in_edit(line.index)
         else:
@@ -900,6 +900,7 @@ class BankRecWidget(models.Model):
             self.form_amount_currency = self.form_balance
             self._onchange_form_amount_currency()
         else:
+            self._lines_widget_recompute_exchange_diff()
             self._lines_widget_add_auto_balance_line()
 
     # -------------------------------------------------------------------------
@@ -1019,43 +1020,14 @@ class BankRecWidget(models.Model):
         self.line_ids = line_ids_commands
 
     def _lines_widget_prepare_new_aml_line(self, aml, **kwargs):
-        amounts_in_st_curr = self.st_line_id\
-            ._prepare_counterpart_amounts_using_st_line_rate(aml.currency_id, -aml.amount_residual, -aml.amount_residual_currency)
-        if self.transaction_currency_id == aml.currency_id:
-            # The reconciliation will be done using the currency of the transaction.
-            amount_currency = amounts_in_st_curr['amount_currency']
-            balance = amounts_in_st_curr['balance']
-            currency_id = aml.currency_id.id
-        elif aml.currency_id == self.company_currency_id:
-            # The reconciliation will be expressed using the foreign currency of the transaction to cover the
-            # Mexican case.
-            amount_currency = aml.company_currency_id\
-                ._convert(-aml.amount_residual, self.transaction_currency_id, aml.company_id, aml.date)
-            amounts_in_st_curr = self.st_line_id\
-                ._prepare_counterpart_amounts_using_st_line_rate(self.transaction_currency_id, -aml.amount_residual, amount_currency)
-            balance = amounts_in_st_curr['balance']
-            currency_id = self.transaction_currency_id.id
-        elif self.transaction_currency_id == self.company_currency_id:
-            # The reconciliation will be expressed using the foreign currency of the aml to cover the Mexican
-            # case.
-            amount_currency = -aml.amount_residual_currency
-            balance = aml.currency_id\
-                ._convert(amount_currency, self.transaction_currency_id, aml.company_id, self.st_line_id.date)
-            currency_id = aml.currency_id.id
-        else:
-            # The reconciliation will be done using the currency of the aml.
-            amount_currency = -aml.amount_residual_currency
-            balance = amounts_in_st_curr['balance']
-            currency_id = aml.currency_id.id
-
         return self._lines_widget_prepare_aml_line(
             aml,
             flag='new_aml',
-            currency_id=currency_id,
-            amount_currency=amount_currency,
-            balance=balance,
-            source_amount_currency=amount_currency,
-            source_balance=balance,
+            currency_id=aml.currency_id,
+            amount_currency=-aml.amount_residual_currency,
+            balance=-aml.amount_residual,
+            source_amount_currency=-aml.amount_residual_currency,
+            source_balance=-aml.amount_residual,
             **kwargs,
         )
 
@@ -1063,10 +1035,12 @@ class BankRecWidget(models.Model):
         if line.flag != 'new_aml':
             return None
 
+        exchange_diff_line = self.line_ids\
+            .filtered(lambda x: x.flag == 'exchange_diff' and x.source_aml_id == line.source_aml_id)
         auto_balance_line_vals = self._lines_widget_prepare_auto_balance_line()
 
         auto_balance = auto_balance_line_vals['balance']
-        current_balance = line.balance
+        current_balance = line.balance + exchange_diff_line.balance
         has_enough_comp_debit = auto_balance < 0.0 and current_balance > 0.0 and current_balance > -auto_balance
         has_enough_comp_credit = auto_balance > 0.0 and current_balance < 0.0 and -current_balance > auto_balance
 
@@ -1079,22 +1053,35 @@ class BankRecWidget(models.Model):
             if has_enough_curr_debit or has_enough_curr_credit:
                 amount_currency_after_partial = current_amount_currency + auto_amount_currency
 
-                rate = abs(line.source_amount_currency) / abs(line.source_balance)
+                # Get the bank transaction rate.
+                rate = abs(auto_amount_currency) / abs(auto_balance)
+
+                # Compute the amounts to make a partial.
                 balance_after_partial = line.company_currency_id.round(amount_currency_after_partial / rate)
+                new_line_balance = line.company_currency_id.round(balance_after_partial * abs(line.balance) / abs(current_balance))
+                exchange_diff_line_balance = balance_after_partial - new_line_balance
                 return {
+                    'exchange_diff_line': exchange_diff_line,
                     'amount_currency': amount_currency_after_partial,
-                    'balance': balance_after_partial,
+                    'balance': new_line_balance,
+                    'exchange_balance': exchange_diff_line_balance,
                 }
         elif has_enough_comp_debit or has_enough_comp_credit:
             # Compute the new value for balance.
             balance_after_partial = current_balance + auto_balance
 
-            # Compute the new value for amount_currency.
+            # Get the rate of the original journal item.
             rate = abs(line.source_amount_currency) / abs(line.source_balance)
-            amount_currency_after_partial = line.currency_id.round(balance_after_partial * rate)
+
+            # Compute the amounts to make a partial.
+            new_line_balance = line.company_currency_id.round(balance_after_partial * abs(line.balance) / abs(current_balance))
+            exchange_diff_line_balance = balance_after_partial - new_line_balance
+            amount_currency_after_partial = line.currency_id.round(new_line_balance * rate)
             return {
+                'exchange_diff_line': exchange_diff_line,
                 'amount_currency': amount_currency_after_partial,
-                'balance': balance_after_partial,
+                'balance': new_line_balance,
+                'exchange_balance': exchange_diff_line_balance,
             }
         return None
 
@@ -1198,6 +1185,11 @@ class BankRecWidget(models.Model):
                 # Make a partial: an auto-balance line is no longer necessary.
                 last_line.amount_currency = partial_amounts['amount_currency']
                 last_line.balance = partial_amounts['balance']
+                exchange_line = partial_amounts['exchange_diff_line']
+                if exchange_line:
+                    exchange_line.balance = partial_amounts['exchange_balance']
+                    if exchange_line.currency_id == self.company_currency_id:
+                        exchange_line.amount_currency = exchange_line.balance
                 return True
 
         return False
@@ -1350,6 +1342,71 @@ class BankRecWidget(models.Model):
 
         self.line_ids = line_ids_commands
 
+    def _lines_widget_recompute_exchange_diff(self):
+        self.ensure_one()
+        self._ensure_loaded_lines()
+
+        line_ids_commands = []
+
+        # Clean the existing lines.
+        for exchange_diff in self.line_ids.filtered(lambda x: x.flag == 'exchange_diff'):
+            line_ids_commands.append(Command.unlink(exchange_diff.id))
+
+        new_amls = self.line_ids.filtered(lambda x: x.flag == 'new_aml')
+        for new_aml in new_amls:
+
+            # Compute the balance of the line using the rate/currency coming from the bank transaction.
+            amounts_in_st_curr = self.st_line_id._prepare_counterpart_amounts_using_st_line_rate(
+                new_aml.currency_id,
+                new_aml.balance,
+                new_aml.amount_currency,
+            )
+            balance = amounts_in_st_curr['balance']
+            if new_aml.currency_id == self.company_currency_id and self.transaction_currency_id != self.company_currency_id:
+                # The reconciliation will be expressed using the foreign currency of the transaction to cover the
+                # Mexican case.
+                aml_rate_at_st_line_date = self.env['res.currency']\
+                    ._get_conversion_rate(self.company_currency_id, self.transaction_currency_id, self.company_id, new_aml.date)
+                amount_currency_in_st_line_curr = self.transaction_currency_id.round(new_aml.balance * aml_rate_at_st_line_date)
+                if amounts_in_st_curr['balance']:
+                    st_line_rate = abs(amounts_in_st_curr['amount_currency']) / abs(amounts_in_st_curr['balance'])
+                else:
+                    st_line_rate = 1.0
+                balance = self.company_currency_id.round(amount_currency_in_st_line_curr / st_line_rate)
+            elif new_aml.currency_id != self.company_currency_id and self.transaction_currency_id == self.company_currency_id:
+                # The reconciliation will be expressed using the foreign currency of the aml to cover the Mexican
+                # case.
+                balance = new_aml.currency_id\
+                    ._convert(new_aml.amount_currency, self.transaction_currency_id, self.company_id, self.st_line_id.date)
+
+            # Compute the exchange difference balance.
+            exchange_diff_balance = balance - new_aml.balance
+            if self.company_currency_id.is_zero(exchange_diff_balance):
+                continue
+
+            expense_exchange_account = self.company_id.expense_currency_exchange_account_id
+            income_exchange_account = self.company_id.income_currency_exchange_account_id
+
+            if exchange_diff_balance > 0.0:
+                account = expense_exchange_account
+            else:
+                account = income_exchange_account
+
+            line_ids_commands.append(Command.create({
+                'flag': 'exchange_diff',
+                'source_aml_id': new_aml.source_aml_id.id,
+
+                'account_id': account.id,
+                'date': new_aml.date,
+                'name': _("Exchange Difference: %s", new_aml.name),
+                'partner_id': new_aml.partner_id.id,
+                'currency_id': new_aml.currency_id.id,
+                'amount_currency': exchange_diff_balance if new_aml.currency_id == self.company_currency_id else 0.0,
+                'balance': exchange_diff_balance,
+            }))
+
+        self.line_ids = line_ids_commands
+
     def _lines_widget_prepare_reco_model_write_off_vals(self, reco_model, write_off_vals):
         self.ensure_one()
 
@@ -1463,6 +1520,7 @@ class BankRecWidget(models.Model):
     def _action_add_new_amls(self, amls, reco_model=None, allow_partial=True):
         self.ensure_one()
         self._lines_widget_load_new_amls(amls, reco_model=reco_model)
+        self._lines_widget_recompute_exchange_diff()
         if not self._lines_widget_check_apply_early_payment_discount() and allow_partial:
             self._lines_widget_check_apply_partial_matching()
         self._lines_widget_add_auto_balance_line()

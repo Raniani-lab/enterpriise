@@ -224,7 +224,10 @@
                                             t-esc="line.analytic_distribution.display"/>
                                     </t>
                                     <t t-if="column[0] === 'amount_currency'">
-                                        <t t-if="line.display_stroked_amount_currency.value">
+                                        <t t-if="line.flag.value == 'exchange_diff'">
+                                            <td/>
+                                        </t>
+                                        <t t-elif="line.display_stroked_amount_currency.value">
                                             <td class="o_data_cell o_field_cell o_list_number"
                                                 field="amount_currency"
                                                 style="justify-content: right; display: flex; flex-direction: column;">
@@ -243,10 +246,15 @@
                                         </t>
                                     </t>
                                     <t t-if="column[0] === 'currency'">
-                                        <td class="o_data_cell o_field_cell o_list_many2one"
-                                            field="currency_id"
-                                            t-att-title="line.currency_id.display"
-                                            t-esc="line.currency_id.display"/>
+                                        <t t-if="line.flag.value == 'exchange_diff'">
+                                            <td/>
+                                        </t>
+                                        <t t-else="">
+                                            <td class="o_data_cell o_field_cell o_list_many2one"
+                                                field="currency_id"
+                                                t-att-title="line.currency_id.display"
+                                                t-esc="line.currency_id.display"/>
+                                        </t>
                                     </t>
                                     <t t-if="column[0] === 'taxes'">
                                         <td class="o_data_cell o_field_cell o_many2many_tags_cell"
@@ -296,7 +304,7 @@
                                     </t>
                                     <t t-if="column[0] === '__trash'">
                                         <td class="o_list_record_remove">
-                                            <button t-if="['valid', 'invalid'].includes(data.state) &amp;&amp; !['liquidity', 'auto_balance', 'tax_line'].includes(line.flag.value)"
+                                            <button t-if="['valid', 'invalid'].includes(data.state) &amp;&amp; !['liquidity', 'auto_balance', 'tax_line', 'exchange_diff'].includes(line.flag.value)"
                                                     t-on-click.prevent.stop="(ev) => this.removeLine(line.index.value)"
                                                     class="btn fa fa-trash-o"/>
                                         </td>

@@ -422,7 +422,7 @@
                                     <field name="form_partner_id"
                                            string="Partner"
                                            options="{'no_open': True, 'no_quick_create': True}"
-                                           attrs="{'readonly': [('form_flag', 'in', ('tax_line', 'new_aml'))], 'invisible': [('form_index', '=', False)]}"/>
+                                           attrs="{'readonly': [('form_flag', 'in', ('tax_line', 'new_aml', 'exchange_diff'))], 'invisible': [('form_index', '=', False)]}"/>
                                     <label for="button_form_partner_receivable"
                                            string=""
                                            attrs="{'invisible': ['|', '|', '|', '|', ('form_index', '=', False), ('form_partner_id', '=', False), ('form_partner_receivable_account_id', '=', False), ('form_partner_payable_account_id', '=', False), ('form_flag', 'not in', ('auto_balance', 'manual'))]}"/>
@@ -442,13 +442,13 @@
                                     <field name="form_account_id"
                                            string="Account"
                                            options="{'no_open': True, 'no_create': True}"
-                                           attrs="{'readonly': [('form_flag', 'in', ('liquidity', 'new_aml'))], 'invisible': [('form_index', '=', False)], 'required': [('form_index', '!=', False)]}"/>
+                                           attrs="{'readonly': [('form_flag', 'in', ('liquidity', 'new_aml', 'exchange_diff'))], 'invisible': [('form_index', '=', False)], 'required': [('form_index', '!=', False)]}"/>
                                     <field name="form_tax_ids"
                                            string="Taxes"
                                            widget="many2many_tags"
                                            options="{'no_open': True, 'no_create': True}"
                                            context="{'append_type_to_tax_name': True}"
-                                           attrs="{'invisible': ['|', ('form_flag', 'in', ('liquidity', 'new_aml', 'tax_line')), ('form_index', '=', False)]}"/>
+                                           attrs="{'invisible': ['|', ('form_flag', 'in', ('liquidity', 'new_aml', 'tax_line', 'exchange_diff')), ('form_index', '=', False)]}"/>
                                     <field name="analytic_distribution" widget="analytic_distribution" groups="analytic.group_analytic_accounting"
                                            options="{'account_field': 'form_account_id', 'business_domain': 'general'}"
                                            attrs="{'invisible': ['|', ('form_flag', '=', 'liquidity'), ('form_index', '=', False)]}"/>
@@ -458,24 +458,24 @@
                                 <group>
                                     <field name="form_name"
                                            string="Label"
-                                           attrs="{'invisible': [('form_index', '=', False)], 'required': [('form_flag', '=', 'liquidity')]}"/>
+                                           attrs="{'invisible': [('form_index', '=', False)], 'readonly': [('form_flag', '=', 'exchange_diff')], 'required': [('form_flag', '=', 'liquidity')]}"/>
 
                                     <label for="form_amount_currency"
                                            string="Amount in Currency"
-                                           attrs="{'invisible': ['|', ('form_single_currency_mode', '=', True), ('form_index', '=', False)]}"/>
-                                    <div class="d-flex" attrs="{'invisible': ['|', ('form_single_currency_mode', '=', True), ('form_index', '=', False)]}">
+                                           attrs="{'invisible': ['|', '|', ('form_single_currency_mode', '=', True), ('form_index', '=', False), ('form_flag', '=', 'exchange_diff')]}"/>
+                                    <div class="d-flex"
+                                         attrs="{'invisible': ['|', '|', ('form_single_currency_mode', '=', True), ('form_index', '=', False), ('form_flag', '=', 'exchange_diff')]}">
                                         <span class="o_form_label"
-                                              attrs="{'invisible': ['|', '|', ('form_single_currency_mode', '=', True), ('form_force_negative_sign', '=', False), ('form_index', '=', False)]}">-</span>
+                                              attrs="{'invisible': [('form_force_negative_sign', '=', False)]}">-</span>
                                         <field name="form_amount_currency"
                                                options="{'no_symbol': True}"
-                                               attrs="{'readonly': [('form_flag', '=', 'liquidity')], 'invisible': ['|', ('form_single_currency_mode', '=', True), ('form_index', '=', False)]}"/>
-                                        <span class="ml4 mr4"
-                                              attrs="{'invisible': ['|', ('form_single_currency_mode', '=', True), ('form_index', '=', False)]}">in</span>
+                                               attrs="{'readonly': [('form_flag', '=', 'liquidity')]}"/>
+                                        <span class="ml4 mr4">in</span>
                                         <field name="form_currency_id"
                                                style="width: 120px"
                                                string="Currency"
                                                options="{'no_open': True, 'no_create': True}"
-                                               attrs="{'readonly': [('form_flag', 'in', ('liquidity', 'tax_line', 'new_aml'))], 'invisible': ['|', ('form_single_currency_mode', '=', True), ('form_index', '=', False)], 'required': [('form_index', '!=', False)]}"/>
+                                               attrs="{'readonly': [('form_flag', 'in', ('liquidity', 'tax_line', 'new_aml'))], 'required': [('form_index', '!=', False)]}"/>
                                     </div>
 
                                     <label for="form_balance"
@@ -486,7 +486,7 @@
                                               attrs="{'invisible': ['|', ('form_force_negative_sign', '=', False), ('form_index', '=', False)]}">-</span>
                                         <field name="form_balance"
                                                options="{'no_symbol': True}"
-                                               attrs="{'readonly': [('form_flag', '=', 'liquidity'), ('form_single_currency_mode', '=', False)], 'invisible': [('form_index', '=', False)]}"/>
+                                               attrs="{'readonly': [('form_flag', 'in', ('liquidity', 'exchange_diff')), ('form_single_currency_mode', '=', False)], 'invisible': [('form_index', '=', False)]}"/>
                                         <span class="ml4 mr4">in</span>
                                         <field name="company_currency_id" style="width: 120px"/>
                                     </div>

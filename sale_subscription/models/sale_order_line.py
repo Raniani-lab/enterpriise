@@ -162,10 +162,15 @@ class SaleOrderLine(models.Model):
             day_before_end_date = end_date and end_date - relativedelta(days=1)
             if not start_date or not day_before_end_date:
                 continue
+            # The related_invoice_lines have their subscription_{start,end}_date between start_date and day_before_end_date
+            # But sometimes, migrated contract and account_move_line don't have these value set.
+            # We fall back on the  l.move_id.invoice_date which could be wrong if the invoice is posted during another
+            # period than the subscription.
             related_invoice_lines = line.invoice_lines.filtered(
                 lambda l: l.move_id.state != 'cancel' and
-                          start_date <= l.subscription_start_date <= day_before_end_date and
-                          l.subscription_end_date == day_before_end_date)
+                        l.subscription_start_date and l.subscription_end_date and
+                        start_date <= l.subscription_start_date <= day_before_end_date and
+                        l.subscription_end_date == day_before_end_date)
             for invoice_line in related_invoice_lines:
                 line_sign = amount_sign.get(invoice_line.move_id.move_type, 1)
                 qty_invoiced += line_sign * invoice_line.product_uom_id._compute_quantity(invoice_line.quantity, line.product_uom)

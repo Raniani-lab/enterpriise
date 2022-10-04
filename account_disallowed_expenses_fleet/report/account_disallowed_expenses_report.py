@@ -121,7 +121,7 @@ class DisallowedExpensesFleetCustomHandler(models.AbstractModel):
                 return 'account_rate'
         return groupby
 
-    def _expand_unfoldable_line_category_line(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
+    def _report_expand_unfoldable_line_category_line(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
         # Override.
         results = self._get_query_results(options, groupby, line_dict_id)
         lines = []
@@ -146,7 +146,7 @@ class DisallowedExpensesFleetCustomHandler(models.AbstractModel):
 
         return {'lines': lines}
 
-    def _expand_unfoldable_line_vehicle_line(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
+    def _report_expand_unfoldable_line_vehicle_line(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
         results = self._get_query_results(options, groupby, line_dict_id)
         lines = []
 
@@ -170,7 +170,7 @@ class DisallowedExpensesFleetCustomHandler(models.AbstractModel):
             'level': len(current),
             'unfoldable': True,
             'caret_options': False,
-            'expand_function': '_expand_unfoldable_line_vehicle_line',
+            'expand_function': '_report_expand_unfoldable_line_vehicle_line',
             'groupby': 'fleet_rate',
         }
 

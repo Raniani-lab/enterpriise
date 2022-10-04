@@ -276,7 +276,7 @@
                             <record id="account_financial_report_executivesummary_avdebt0_ndays" model="account.report.expression">
                                 <field name="label">NDays</field>
                                 <field name="engine">custom</field>
-                                <field name="formula">_custom_engine_executive_summary_ndays</field>
+                                <field name="formula">_report_custom_engine_executive_summary_ndays</field>
                                 <field name="auditable" eval="False"/>
                             </record>
                         </field>
@@ -298,7 +298,7 @@
                             <record id="account_financial_report_executivesummary_avgcre0_ndays" model="account.report.expression">
                                 <field name="label">NDays</field>
                                 <field name="engine">custom</field>
-                                <field name="formula">_custom_engine_executive_summary_ndays</field>
+                                <field name="formula">_report_custom_engine_executive_summary_ndays</field>
                                 <field name="auditable" eval="False"/>
                             </record>
                         </field>

@@ -74,7 +74,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
 
     def _custom_unfold_all_batch_data_generator(self, report, options, lines_to_expand_by_function):
         account_ids_to_expand = []
-        for line_dict in lines_to_expand_by_function.get('_expand_unfoldable_line_general_ledger', []):
+        for line_dict in lines_to_expand_by_function.get('_report_expand_unfoldable_line_general_ledger', []):
             model, model_id = report._get_model_info_from_id(line_dict['id'])
             if model == 'account.account':
                 account_ids_to_expand.append(model_id)
@@ -520,7 +520,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             'level': 1,
             'unfoldable': has_lines,
             'unfolded': has_lines and (line_id in options.get('unfolded_lines') or unfold_all),
-            'expand_function': '_expand_unfoldable_line_general_ledger',
+            'expand_function': '_report_expand_unfoldable_line_general_ledger',
             'class': 'o_account_reports_totals_below_sections' if self.env.company.totals_below_sections else '',
         }
 
@@ -603,7 +603,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
     def caret_option_audit_tax(self, options, params):
         return self.env['account.generic.tax.report.handler'].caret_option_audit_tax(options, params)
 
-    def _expand_unfoldable_line_general_ledger(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
+    def _report_expand_unfoldable_line_general_ledger(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
         def init_load_more_progress(line_dict):
             return {
                 column['column_group_key']: line_col.get('no_format', 0)

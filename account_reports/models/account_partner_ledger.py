@@ -62,7 +62,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
 
     def _custom_unfold_all_batch_data_generator(self, report, options, lines_to_expand_by_function):
         partner_ids_to_expand = []
-        for line_dict in lines_to_expand_by_function.get('_expand_unfoldable_line_partner_ledger', []):
+        for line_dict in lines_to_expand_by_function.get('_report_expand_unfoldable_line_partner_ledger', []):
             model, model_id = self.env['account.report']._get_model_info_from_id(line_dict['id'])
             if model == 'res.partner':
                 partner_ids_to_expand.append(model_id)
@@ -270,7 +270,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
 
         return " UNION ALL ".join(queries), params
 
-    def _expand_unfoldable_line_partner_ledger(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
+    def _report_expand_unfoldable_line_partner_ledger(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
         def init_load_more_progress(line_dict):
             return {
                 column['column_group_key']: line_col.get('no_format', 0)
@@ -517,7 +517,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
             'trust': partner.trust if partner else None,
             'unfoldable': unfoldable,
             'unfolded': line_id in options['unfolded_lines'] or unfold_all,
-            'expand_function': '_expand_unfoldable_line_partner_ledger',
+            'expand_function': '_report_expand_unfoldable_line_partner_ledger',
         }
 
     def _get_report_line_move_line(self, options, aml_query_result, partner_line_id, init_bal_by_col_group):

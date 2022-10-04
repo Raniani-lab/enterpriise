@@ -1650,7 +1650,7 @@ class AccountReport(models.Model):
             The function will be called on the report's custom handler if it exists, or on the report itself otherwise.
         """
         self.ensure_one()
-        function_name_prefix = f'_{prefix}_'
+        function_name_prefix = f'_report_{prefix}_'
         if not function_name.startswith(function_name_prefix):
             raise UserError(_("Method '%s' must start with the '%s' prefix.", function_name, function_name_prefix))
 
@@ -1840,7 +1840,7 @@ class AccountReport(models.Model):
             'level': line.hierarchy_level,
             'page_break': line.print_on_new_page,
             'action_id': line.action_id.id,
-            'expand_function': line.groupby and '_expand_unfoldable_line_with_groupby' or None,
+            'expand_function': line.groupby and '_report_expand_unfoldable_line_with_groupby' or None,
         }
 
         if parent_id:
@@ -3678,7 +3678,7 @@ class AccountReport(models.Model):
             'progress': progress,
         }
 
-    def _expand_unfoldable_line_with_groupby(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
+    def _report_expand_unfoldable_line_with_groupby(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
         # The line we're expanding might be an inner groupby; we first need to find the report line generating it
         report_line_id = None
         for dummy, model, model_id in reversed(self._parse_line_id(line_dict_id)):
@@ -4199,7 +4199,7 @@ class AccountReportLine(models.Model):
                 'columns': self.report_id._build_static_line_columns(self, options, group_totals),
                 'level': self.hierarchy_level + 2 * (len(sub_groupby_domain) + 1),
                 'parent_id': line_dict_id,
-                'expand_function': '_expand_unfoldable_line_with_groupby' if next_groupby else None,
+                'expand_function': '_report_expand_unfoldable_line_with_groupby' if next_groupby else None,
                 'caret_options': groupby_model if not next_groupby else None,
             }
 

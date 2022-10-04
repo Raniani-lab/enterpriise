@@ -141,7 +141,7 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
         # Hook to be overridden.
         return groupby
 
-    def _expand_unfoldable_line_category_line(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
+    def _report_expand_unfoldable_line_category_line(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
         results = self._get_query_results(options, groupby, line_dict_id)
         lines = []
 
@@ -154,7 +154,7 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
 
         return {'lines': lines}
 
-    def _expand_unfoldable_line_account_line(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
+    def _report_expand_unfoldable_line_account_line(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
         results = self._get_query_results(options, groupby, line_dict_id)
         lines = []
 
@@ -194,7 +194,7 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
             'columns': self._get_column_values(options, values),
             'level': len(current),
             'unfoldable': True,
-            'expand_function': '_expand_unfoldable_line_category_line',
+            'expand_function': '_report_expand_unfoldable_line_category_line',
             'groupby': 'account_id',
         }
 

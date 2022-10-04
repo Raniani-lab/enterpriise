@@ -316,7 +316,7 @@ class SpanishTaxReportCustomHandler(models.AbstractModel):
         report = self.env['account.report'].browse(report_options['report_id'])
         report_line = self.env.ref(line_xml_id)
         line_dict_id = report._get_generic_line_id('account.report.line', report_line.id)
-        for subline in report._expand_unfoldable_line_with_groupby(line_dict_id, report_line.groupby, report_options, None, 0)['lines']:
+        for subline in report._report_expand_unfoldable_line_with_groupby(line_dict_id, report_line.groupby, report_options, None, 0)['lines']:
             subline_model, subline_model_id = report._get_model_info_from_id(subline['id'])
 
             if subline_model == 'res.partner':
@@ -345,7 +345,7 @@ class SpanishTaxReportCustomHandler(models.AbstractModel):
         report = self.env['account.report'].browse(report_options['report_id'])
         report_line = self.env.ref(line_xml_id)
         line_dict_id = report._get_generic_line_id('account.report.line', report_line.id)
-        for subline in report._expand_unfoldable_line_with_groupby(line_dict_id, report_line.groupby, report_options, None, 0)['lines']:
+        for subline in report._report_expand_unfoldable_line_with_groupby(line_dict_id, report_line.groupby, report_options, None, 0)['lines']:
             subline_model, model_id = report._get_model_info_from_id(subline['id'])
             if subline_model == 'res.partner' and model_id == partner_id:
                 return subline
@@ -776,19 +776,19 @@ class SpanishMod347TaxReportCustomHandler(models.AbstractModel):
         super()._custom_options_initializer(report, options, previous_options=previous_options)
         super()._append_boe_button(options, 347)
 
-    def _custom_engine_threshold_insurance_bought(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+    def _report_custom_engine_threshold_insurance_bought(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
         domain = MOD_347_CUSTOM_ENGINES_DOMAINS['l10n_es_mod347_threshold_insurance_bought']
         return self._custom_threshold_common(domain, expressions, options, date_scope, current_groupby, next_groupby, offset=offset, limit=limit)
 
-    def _custom_engine_threshold_regular_bought(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+    def _report_custom_engine_threshold_regular_bought(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
         domain = MOD_347_CUSTOM_ENGINES_DOMAINS['l10n_es_mod347_threshold_regular_bought']
         return self._custom_threshold_common(domain, expressions, options, date_scope, current_groupby, next_groupby, offset=offset, limit=limit)
 
-    def _custom_engine_threshold_regular_sold(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+    def _report_custom_engine_threshold_regular_sold(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
         domain = MOD_347_CUSTOM_ENGINES_DOMAINS['l10n_es_mod347_threshold_regular_sold']
         return self._custom_threshold_common(domain, expressions, options, date_scope, current_groupby, next_groupby, offset=offset, limit=limit)
 
-    def _custom_engine_threshold_all_operations(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+    def _report_custom_engine_threshold_all_operations(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
         domain = MOD_347_CUSTOM_ENGINES_DOMAINS['l10n_es_mod347_threshold_all_operations']
         return self._custom_threshold_common(domain, expressions, options, date_scope, current_groupby, next_groupby, offset=offset, limit=limit)
 

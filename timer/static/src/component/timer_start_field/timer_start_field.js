@@ -65,6 +65,9 @@ export class TimerStartField extends Component {
 TimerStartField.props = {
     ...standardFieldProps,
 };
+TimerStartField.fieldDependencies = {
+    timer_pause: { type: "datetime" },
+};
 TimerStartField.template = "timer.TimerStartField";
 
 registry.category("fields").add("timer_start_field", TimerStartField);

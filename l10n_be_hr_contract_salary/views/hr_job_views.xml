@@ -15,6 +15,9 @@
                     </group>
                 </page>
             </page>
+            <xpath expr="//field[@name='l10n_be_contract_withholding_taxes_exemption']" position="after">
+                <xpath expr="//field[@name='l10n_be_scale_category']" position="move"/>
+            </xpath>
         </field>
     </record>
 

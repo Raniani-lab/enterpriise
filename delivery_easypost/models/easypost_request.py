@@ -360,7 +360,7 @@ class EasypostRequest():
 
         # get tracking code and lable file url
         result['track_shipments_url'] = {res['tracking_code']: res['tracker']['public_url'] for res in response['shipments'] if res['tracker']}
-        result['track_label_data'] = {res['tracking_code']: res['postage_label']['label_url'] for res in response['shipments']}
+        result['track_label_data'] = {res['tracking_code']: res['postage_label']['label_url'] for res in response['shipments'] if res['postage_label']}
 
         # get commercial invoice + other forms
         result['forms'] = {form['form_type']: form['form_url'] for res in response['shipments'] for form in res.get('forms', [])}

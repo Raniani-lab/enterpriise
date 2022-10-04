@@ -754,13 +754,22 @@ class Article(models.Model):
         """ Duplicates a recordset of articles. Filters out articles that are
         going to be duplicated during the duplication of their parent in order
         to prevent duplicating several times the same article. """
-        to_copy = self
-        for article in self:
-            to_copy -= article._get_descendants()
+        current_ids = set(self.ids)
+        # Remove records that will get duplicated with their parent
+        to_copy = self.filtered(lambda article: not article._get_ancestor_ids() & current_ids)
 
-        duplicates = self.env['knowledge.article']
-        for article in to_copy:
-            duplicates += article.copy(default)
+        duplicates = self.create([
+            article.with_context(active_test=False).copy_data(default=default)[0]
+            for article in to_copy
+        ])
+        # update translations, skip name (hardcoded in default anyway) and o2m fields
+        # as we don't need anything translated from them
+        for old, new in zip(to_copy, duplicates):
+            old.with_context(from_copy_translation=True).copy_translations(
+                new,
+                excluded=list(default.keys()) if default else [] + ['name', 'article_member_ids', 'favorite_ids']
+            )
+
         return duplicates
 
     # ------------------------------------------------------------
@@ -2055,6 +2064,26 @@ class Article(models.Model):
         action_data.setdefault('display_name', name)
         action_data.setdefault('name', name)
         return action_data
+
+    def _get_ancestor_ids(self):
+        """ Return the union of sets including the ids for the ancestors of
+        records in recordset. E.g.,
+         * if self = Article `8` which has for parent `4` that has itself
+           parent `2`, return `{2, 4}`;
+         * if article `11` is a child of `6` and is also in `self`, return
+           `{2, 4, 6}`;
+
+        :rtype: set
+        """
+        ancestor_ids = set()
+        for article in self:
+            if article.id in ancestor_ids:
+                continue
+            for ancestor_id in map(int, article.parent_path.split('/')[-3::-1]):
+                if ancestor_id in ancestor_ids:
+                    break
+                ancestor_ids.add(ancestor_id)
+        return ancestor_ids
 
     def _get_invite_url(self, partner):
         self.ensure_one()

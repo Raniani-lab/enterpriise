@@ -7,6 +7,9 @@ from odoo import api, models
 class ResUsers(models.Model):
     _inherit = "res.users"
 
+    def _get_personal_info_partner_ids_to_notify(self):
+        return self.env.ref('hr_payroll.group_hr_payroll_user').users.filtered(lambda u: u.company_id == self.env.company).partner_id.ids
+
     @api.model_create_multi
     def create(self, vals_list):
         users = super().create(vals_list)

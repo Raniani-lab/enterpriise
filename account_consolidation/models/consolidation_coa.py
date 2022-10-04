@@ -13,7 +13,7 @@ class ConsolidationChart(models.Model):
     currency_id = fields.Many2one('res.currency', string="Target Currency", required=True)
     period_ids = fields.One2many('consolidation.period', 'chart_id', string="Analysis Periods")
     period_ids_count = fields.Integer(compute='_compute_period_ids_count', string='# Periods')
-    account_ids = fields.One2many('consolidation.account', 'chart_id', 'Consolidation Accounts', copy=True)
+    account_ids = fields.One2many('consolidation.account', 'chart_id', 'Consolidation Accounts')
     account_ids_count = fields.Integer(compute='_compute_account_ids_count', string='# Accounts')
     group_ids = fields.One2many('consolidation.group', 'chart_id', 'Account Groups')
     group_ids_count = fields.Integer(compute='_compute_group_ids_count', string='# Groups')
@@ -61,7 +61,13 @@ class ConsolidationChart(models.Model):
         default = dict(default or {})
         default['name'] = self.name + ' (copy)'
         default['color'] = ((self.color if self.color else 0) + 1) % 12
-        return super().copy(default)
+        default['group_ids'] = [group.copy().id for group in self.group_ids if not group.parent_id]  # This will copy parent groups, which will automatically copy child groups.
+        res = super().copy(default)
+        # Link the automatically copied children to the new chart.
+        res.group_ids.child_ids.chart_id = res.id
+        # We copied the groups, which copied the accounts. We still need to link the new accounts with the chart.
+        res.group_ids.account_ids.chart_id = res.id
+        return res
 
     # ACTIONS
 
@@ -187,6 +193,11 @@ class ConsolidationAccount(models.Model):
                 vals['account_ids'][:1] = add_accounts + remove_accounts
         return super(ConsolidationAccount, self).write(vals)
 
+    def copy(self, default=None):
+        default = dict(default or {})
+        default['name'] = self.name + ' (copy)'
+        return super().copy(default)
+
     # COMPUTEDS
 
     @api.depends('group_id', 'name')
@@ -285,6 +296,16 @@ class ConsolidationGroup(models.Model):
                                related="account_ids.line_ids")
     invert_sign = fields.Boolean('Invert Balance Sign', default=False)
     sign = fields.Integer(compute='_compute_sign', recursive=True)
+
+    def copy(self, default=None):
+        default = dict(default or {})
+        default['name'] = self.name + ' (copy)'
+        # Call manually copy to pass in the copy method of the copied records
+        if self.child_ids:
+            default['child_ids'] = [group.copy().id for group in self.child_ids]
+        if self.account_ids:
+            default['account_ids'] = [account.copy().id for account in self.account_ids]
+        return super().copy(default)
 
     # CONSTRAINTS
     @api.constrains('child_ids', 'account_ids')

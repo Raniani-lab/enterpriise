@@ -39,6 +39,69 @@ class TestAccountConsolidationChart(AccountConsolidationTestCase):
         self.assertEqual(Account.search_count([('id', '=', acc.id)]), 0)
         self.assertEqual(AnalysisPeriod.search_count([('id', '=', ap.id)]), 0)
 
+    def test_copy_consolidation_chart(self):
+        # Test that copying a chart is properly copying every accounts, groups,... and linking them to the new chart
+        base_chart = self.env['consolidation.chart'].create({'name': 'Base Chart', 'currency_id': 1})
+        group_a = self.env['consolidation.group'].create({
+            'chart_id': base_chart.id,
+            'name': 'Group A',
+            'sequence': 1,
+        })
+        group_b, group_aa, group_ab = self.env['consolidation.group'].create([{
+            'chart_id': base_chart.id,
+            'name': 'Group B',
+            'sequence': 2,
+        }, {
+            'chart_id': base_chart.id,
+            'parent_id': group_a.id,
+            'name': 'Group AA',
+            'sequence': 3,
+        }, {
+            'chart_id': base_chart.id,
+            'parent_id': group_a.id,
+            'name': 'Group AB',
+            'sequence': 4,
+        }])
+        self.env['consolidation.account'].create([{
+            'chart_id': base_chart.id,
+            'name': 'Account BA',
+            'currency_mode': 'end',
+            'group_id': group_b.id,
+        }, {
+            'chart_id': base_chart.id,
+            'name': 'Account AAA',
+            'currency_mode': 'end',
+            'group_id': group_aa.id,
+        }, {
+            'chart_id': base_chart.id,
+            'name': 'Account AAB',
+            'currency_mode': 'end',
+            'group_id': group_aa.id,
+        }, {
+            'chart_id': base_chart.id,
+            'name': 'Account ABA',
+            'currency_mode': 'end',
+            'group_id': group_ab.id,
+        }])
+        copied_chart = base_chart.copy()
+        copied_group_a, copied_group_b, copied_group_aa, copied_group_ab = copied_chart.group_ids
+        # Check that all four groups where properly copied and are linked to the chart ids.
+        for base_group, copied_group in zip(base_chart.group_ids, copied_chart.group_ids):
+            self.assertEqual(copied_group.name, f'{base_group.name} (copy)')
+
+        # Also make sure that all children groups have the right parents.
+        for parent_group, copied_group in zip([copied_group_a, copied_group_a], [copied_group_aa, copied_group_ab]):
+            self.assertEqual(copied_group.parent_id, parent_group)
+
+        # Ensure that all accounts were copied and are linked to the chart
+        for base_account, copied_account in zip(base_chart.account_ids, copied_chart.account_ids):
+            self.assertEqual(copied_account.name, f'{base_account.name} (copy)')
+
+        # Make sure that all copied accounts are linked to their groups too
+        expected_groups_for_accounts = [copied_group_b, copied_group_aa, copied_group_aa, copied_group_ab]
+        for copied_group, copied_account in zip(expected_groups_for_accounts, copied_chart.account_ids):
+            self.assertEqual(copied_account.group_id, copied_group)
+
 
 @tagged('post_install', '-at_install')
 class TestAccountConsolidationAccount(AccountConsolidationTestCase):

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-27 15:40+0000\n"
-"PO-Revision-Date: 2022-09-27 15:40+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"PO-Revision-Date: 2022-10-04 09:41+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -674,6 +674,16 @@ msgid "Bill"
 msgstr ""
 
 #. module: documents
+#: model:documents.folder,name:documents.documents_marketing_brand1_folder
+msgid "Brand 1"
+msgstr ""
+
+#. module: documents
+#: model:documents.folder,name:documents.documents_marketing_brand2_folder
+msgid "Brand 2"
+msgstr ""
+
+#. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_brochures
 msgid "Brochures"
 msgstr ""
@@ -1003,11 +1013,6 @@ msgid "Document Request: %s Uploaded by: %s"
 msgstr ""
 
 #. module: documents
-#: model:mail.template,name:documents.mail_template_document_request
-msgid "Document Request: Send by email"
-msgstr ""
-
-#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__has_write_access
 msgid "Document User Upload Rights"
 msgstr ""
@@ -1020,6 +1025,11 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__type__ids
 msgid "Document list"
+msgstr ""
+
+#. module: documents
+#: model:mail.template,name:documents.mail_template_document_request
+msgid "Document: Document Request"
 msgstr ""
 
 #. module: documents
@@ -2117,6 +2127,11 @@ msgstr ""
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_legal
 msgid "Send to Legal"
+msgstr ""
+
+#. module: documents
+#: model:mail.template,description:documents.mail_template_document_request
+msgid "Sent to partner when requesting a document from them"
 msgstr ""
 
 #. module: documents

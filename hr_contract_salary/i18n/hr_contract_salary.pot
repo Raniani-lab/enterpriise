@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:48+0000\n"
-"PO-Revision-Date: 2022-09-20 09:48+0000\n"
+"POT-Creation-Date: 2022-10-04 09:42+0000\n"
+"PO-Revision-Date: 2022-10-04 09:42+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -189,11 +189,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__applicant_id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__applicant_id
 msgid "Applicant"
-msgstr ""
-
-#. module: hr_contract_salary
-#: model:mail.template,name:hr_contract_salary.mail_template_send_offer_applicant
-msgid "Applicant: Your Salary Package"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -391,11 +386,6 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__activity_creation__countersigned
 msgid "Contract is countersigned"
-msgstr ""
-
-#. module: hr_contract_salary
-#: model:mail.template,name:hr_contract_salary.mail_template_send_offer
-msgid "Contract: Your Salary Package"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -633,6 +623,11 @@ msgid "Employee signs his contract"
 msgstr ""
 
 #. module: hr_contract_salary
+#: model:mail.template,name:hr_contract_salary.mail_template_send_offer
+msgid "Employee: Contract And Salary Package"
+msgstr ""
+
+#. module: hr_contract_salary
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #, python-format
 msgid ""
@@ -642,6 +637,7 @@ msgid ""
 msgstr ""
 
 #. module: hr_contract_salary
+#: model:hr.contract.salary.advantage,name:hr_contract_salary.advantage_extra_time_off
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__holidays
 msgid "Extra Time Off"
 msgstr ""
@@ -1078,6 +1074,11 @@ msgid "Oops"
 msgstr ""
 
 #. module: hr_contract_salary
+#: model:sign.template,redirect_url_text:hr_contract_salary.sign_template_cdi_developer
+msgid "Open Link"
+msgstr ""
+
+#. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__origin_contract_id
 msgid "Origin Contract"
 msgstr ""
@@ -1197,6 +1198,11 @@ msgstr ""
 #: code:addons/hr_contract_salary/static/src/xml/resume_sidebar.xml:0
 #, python-format
 msgid "Recompute"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:mail.template,name:hr_contract_salary.mail_template_send_offer_applicant
+msgid "Recruitment: Your Salary Package"
 msgstr ""
 
 #. module: hr_contract_salary
@@ -1329,6 +1335,17 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__sign_copy_partner_id
 msgid "Send a copy to"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:mail.template,description:hr_contract_salary.mail_template_send_offer_applicant
+msgid "Sent automatically when you generate an offer for an application"
+msgstr ""
+
+#. module: hr_contract_salary
+#: model:mail.template,description:hr_contract_salary.mail_template_send_offer
+msgid ""
+"Sent manually when you generate a simulation link on the employee contract"
 msgstr ""
 
 #. module: hr_contract_salary

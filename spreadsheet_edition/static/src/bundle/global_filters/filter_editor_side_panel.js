@@ -12,7 +12,7 @@ import { FilterFieldOffset } from "./components/filter_field_offset";
 import { RELATIVE_DATE_RANGE_TYPES } from "@spreadsheet/helpers/constants";
 import { DateFilterValue } from "@spreadsheet/global_filters/components/filter_date_value/filter_date_value";
 import { globalFiltersFieldMatchers } from "@spreadsheet/global_filters/plugins/global_filters_core_plugin";
-import { ModelFieldSelector } from "@web/core/model_field_selector/model_field_selector";
+import { SpreadsheetModelFieldSelector } from "./components/model_field_selector/spreadsheet_model_field_selector";
 
 const { onMounted, onWillStart, useState } = owl;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
@@ -86,7 +86,6 @@ export default class FilterEditorSidePanel extends LegacyComponent {
 
         this.relativeDateRangesTypes = RELATIVE_DATE_RANGE_TYPES;
         this.dateRangeTypes = RANGE_TYPES;
-        this.superList = globalFiltersFieldMatchers;
         onWillStart(this.onWillStart);
         onMounted(this.onMounted);
     }
@@ -100,6 +99,10 @@ export default class FilterEditorSidePanel extends LegacyComponent {
 
     get missingLabel() {
         return this.state.saved && !this.state.label;
+    }
+
+    get wrongFieldMatchings() {
+        return this.state.saved ? [...this._wrongFieldMatchingsSet] : [];
     }
 
     get missingModel() {
@@ -173,7 +176,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         const proms = [];
         proms.push(this.fetchModelFromName());
         proms.push(
-            ...Object.values(this.superList)
+            ...Object.values(globalFiltersFieldMatchers)
                 .map((el) => el.waitForReady())
                 .flat()
         );
@@ -190,14 +193,14 @@ export default class FilterEditorSidePanel extends LegacyComponent {
      * model
      *
      * @param {Object.<string, Field>} fields Fields to look in
-     * @returns {string|undefined}
+     * @returns {field|undefined}
      */
     _findRelation(fields) {
         const field = Object.values(fields).find(
             (field) =>
                 field.searchable && field.relation === this.state.relation.relatedModel.technical
         );
-        return field.name;
+        return field;
     }
 
     async onModelSelected({ technical, label }) {
@@ -211,8 +214,8 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         this.state.relation.relatedModel.label = label;
 
         for (const [index, object] of Object.entries(this.state.fieldMatchings)) {
-            const fieldName = this._findRelation(object.fields());
-            this.selectedField(index, fieldName);
+            const field = this._findRelation(object.fields());
+            this.selectedField(index, field ? field.name : undefined, field);
         }
     }
 
@@ -236,6 +239,11 @@ export default class FilterEditorSidePanel extends LegacyComponent {
      */
     filterModelFieldSelectorField(field) {
         const type = this.state.type;
+        if (this.env.debug) {
+            // Debug users are allowed to go through relational fields a target multi-depth
+            // relations e.g. product_id.categ_id.name
+            return ALLOWED_FIELD_TYPES[type].includes(field.type) || !!field.relation;
+        }
         if (ALLOWED_FIELD_TYPES[type].includes(field.type)) {
             const relatedModel = this.state.relation.relatedModel.technical;
             if (field.searchable && (!relatedModel || field.relation === relatedModel)) {
@@ -246,25 +254,39 @@ export default class FilterEditorSidePanel extends LegacyComponent {
     }
 
     /**
+     * @param {{resModel:string, field: Object}[] | undefined} fieldChain
+     * @return {Object | undefined}
+     */
+    extractField(fieldChain) {
+        if (!fieldChain) {
+            return undefined;
+        }
+        const candidate = fieldChain.reverse().find((chain) => chain.field);
+        return candidate ? candidate.field : candidate;
+    }
+
+    /**
      * @param {string} index
      * @param {string|undefined} chain
+     * @param {Object | undefined} field
      */
-    selectedField(index, chain) {
-        if (!chain) {
+    selectedField(index, chain, field) {
+        if (!chain || !field) {
             this.state.fieldMatchings[index].fieldMatch = {};
             return;
         }
-        // TODO: consider the whole chain. (need to have the whole relational field tree for this)
-        const fieldName = chain.split(".")[0];
-        const field = this.state.fieldMatchings[index].fields()[fieldName];
-        if (field) {
-            this.state.fieldMatchings[index].fieldMatch = {
-                chain: fieldName,
-                type: field.type,
-            };
-            if (this.state.type === "date") {
-                this.state.fieldMatchings[index].fieldMatch.offset = 0;
-            }
+        const fieldName = chain;
+        this.state.fieldMatchings[index].fieldMatch = {
+            chain: fieldName,
+            type: field.type,
+        };
+        if (this.state.type === "date") {
+            this.state.fieldMatchings[index].fieldMatch.offset = 0;
+        }
+        if (field.relation !== this.state.relation.relatedModel.technical) {
+            this._wrongFieldMatchingsSet.add(index);
+        } else {
+            this._wrongFieldMatchingsSet.delete(index);
         }
     }
 
@@ -285,7 +307,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
 
     onSave() {
         this.state.saved = true;
-        if (this.missingLabel || this.missingModel) {
+        if (this.missingLabel || this.missingModel || this.wrongFieldMatchings.length !== 0) {
             this.notification.add(this.env._t("Some required fields are not valid"), {
                 type: "danger",
                 sticky: false,
@@ -304,8 +326,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
             rangeType: this.state.date.type,
             defaultsToCurrentPeriod: this.state.date.defaultsToCurrentPeriod,
         };
-        // here populate the command a bit more with a key chart, pivot or list
-        // (inside the command which goes against the static part but osef)
+        // Populate the command a bit more with a key chart, pivot or list
         const additionalPayload = {};
         Object.values(this.state.fieldMatchings).forEach((fm) => {
             const { type, id } = fm.payload();
@@ -356,7 +377,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
 }
 FilterEditorSidePanel.template = "spreadsheet_edition.FilterEditorSidePanel";
 FilterEditorSidePanel.components = {
-    ModelFieldSelector,
+    SpreadsheetModelFieldSelector,
     ModelSelector,
     RecordsSelector,
     DateFilterValue,

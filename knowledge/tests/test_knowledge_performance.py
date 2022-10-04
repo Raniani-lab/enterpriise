@@ -21,6 +21,18 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
         self.env.flush_all()
         self.cr.flush()
 
+    @users('admin')
+    @warmup
+    def test_article_copy_batch(self):
+        """ Test performance of batch-copying articles, which implies notably
+        a descendants checks which might be costly.
+
+        Done as admin as only admin has access to Duplicate button currently."""
+        with self.assertQueryCount(admin=77):
+            workspace_children = self.workspace_children.with_env(self.env)
+            shared = self.article_shared.with_env(self.env)
+            _duplicates = (workspace_children + shared).copy_batch()
+
     @users('employee')
     @warmup
     def test_article_creation_single_shared_grandchild(self):
@@ -76,6 +88,14 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
         with self.assertQueryCount(employee=9):
             shared_article = self.shared_children[0].with_env(self.env)
             shared_article.action_toggle_favorite()
+
+    @users('employee')
+    @warmup
+    def test_article_get_valid_parent_options(self):
+        with self.assertQueryCount(employee=15):  # knowledge: 15
+            child_writable_article = self.workspace_children[1].with_env(self.env)
+            # don't check actual results, those are tested in ``TestKnowledgeArticleUtilities`` class
+            _res = child_writable_article.get_valid_parent_options(search_term="")
 
     @users('employee')
     @warmup

@@ -98,6 +98,43 @@ class TestKnowledgeArticleFields(KnowledgeCommonWData):
             self.assertEqual(article.last_edition_date, _reference_dt + timedelta(days=1))
 
 
+@tagged('knowledge_internals')
+class TestKnowledgeArticleUtilities(KnowledgeCommonWData):
+    """ Test data oriented utilities and tools for articles. """
+
+    @users('employee')
+    def test_article_get_valid_parent_options(self):
+        child_writable_article = self.workspace_children[1].with_env(self.env)
+        res = child_writable_article.get_valid_parent_options(search_term="")
+        self.assertEqual(
+            sorted(item['id'] for item in res),
+            sorted(
+                (self.article_workspace + self.workspace_children[0] + self.article_shared + self.shared_children).ids
+            ),
+            'Should contain: brother, parent and other accessible articles (shared section)'
+        )
+
+        root_writable_article = self.article_workspace.with_env(self.env)
+        res = root_writable_article.get_valid_parent_options(search_term="")
+        self.assertEqual(
+            sorted(item['id'] for item in res),
+            sorted(
+                (self.article_shared + self.shared_children).ids
+            ),
+            'Should contain: none of descendants, so only other accessible articles (shared section)'
+        )
+
+        root_writable_article = self.article_workspace.with_env(self.env)
+        res = root_writable_article.get_valid_parent_options(search_term="child")
+        self.assertEqual(
+            sorted(item['id'] for item in res),
+            sorted(
+                (self.shared_children).ids
+            ),
+            'Should contain: none of descendants, so only other accessible articles (shared section), filtered by search term'
+        )
+
+
 @tagged('knowledge_internals', 'knowledge_management')
 class TestKnowledgeCommonWDataInitialValue(KnowledgeCommonWData):
     """ Test initial values or our test data once so that other tests do not have

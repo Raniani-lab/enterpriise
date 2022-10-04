@@ -95,7 +95,7 @@ tour.register(
             timeout: 60000 /* previous step reloads registry, etc. - could take a long time */,
         },
         {
-            trigger: ".o_web_studio_form_view_editor td.o_td_label",
+            trigger: ".o_web_studio_form_view_editor .o_wrap_label label",
             content: _t("To <b>customize a field</b>, click on its <i>label</i>."),
             position: "bottom",
         },
@@ -109,7 +109,7 @@ tour.register(
         },
         {
             // wait for the field to be renamed
-            extra_trigger: ".o_web_studio_form_view_editor td.o_td_label:contains(My Field)",
+            extra_trigger: ".o_web_studio_form_view_editor .o_wrap_label label:contains(My Field)",
             trigger: ".o_web_studio_sidebar .o_web_studio_new",
             content: _t("Good job! To add more <b>fields</b>, come back to the <i>Add tab</i>."),
             position: "bottom",

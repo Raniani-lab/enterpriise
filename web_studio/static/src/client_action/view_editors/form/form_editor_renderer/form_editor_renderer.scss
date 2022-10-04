@@ -1,9 +1,9 @@
 .o_web_studio_client_action {
-    .o_web_studio_editor_manager .o_web_studio_view_renderer .o_legacy_form_view {
+    .o_web_studio_editor_manager .o_web_studio_view_renderer .o_web_studio_form_view_editor {
         $-web-studio-form-edition-gap: 10px;
         flex-flow: column nowrap;
 
-        > .o_form_sheet_bg {
+        .o_form_sheet_bg {
             flex: 1 0 auto;
             border-bottom: 1px solid map-get($grays, '300');
             width: auto;
@@ -14,7 +14,53 @@
             }
         }
 
-        > .o_FormRenderer_chatterContainer {
+        // Draggable style at each step
+        // To move to the parent when all is converted
+        .o-draggable {
+            &, & * {
+                cursor: move !important;
+            }
+
+            &.o-draggable--dragging {
+                width: unset !important;
+                transform: rotate(-5deg);
+                box-shadow: 0 5px 25px -10px black;
+                transition: transform 0.6s, box-shadow 0.3s;
+
+                &.o-draggable--drop-ready {
+                    opacity: 1!important;
+                    line-height: 2;
+                    border: 2px solid $o-brand-primary;
+                }
+            }
+        }
+
+        .o-web-studio-editor--element-clickable {
+            // HOVER HANDLING
+            // native selector: the main sibling is hovered
+            &:hover, &:hover + .o-web-studio-element-ghost,
+            // manual selector:the second sibling is hovered; programmatically add a class
+            &.o-web-studio-ghost-hovered, &.o-web-studio-ghost-hovered + .o-web-studio-element-ghost {
+                cursor: pointer;
+                outline: 1px dashed $o-brand-primary;
+            }
+
+            // CLICK HANDLING
+            // On the main sibling
+            &.o-web-studio-editor--element-clicked:not(.o-draggable--dragging),
+            // On the slave sibling
+            &.o-web-studio-editor--element-clicked:not(.o-draggable--dragging) + .o-web-studio-element-ghost {
+                outline: 2px solid $o-brand-primary;
+                &.btn {
+                    outline: 2px solid darken($o-brand-primary, 5%);
+                }
+                &:not(.o_statusbar_status) {
+                    outline-offset: -2px;
+                }
+            }
+        }
+
+        .o_FormRenderer_chatterContainer {
             max-width: 100%;
         }
 
@@ -138,22 +184,7 @@
                 background: $o-web-studio-bg-lighter;
             }
         }
-        .o_web_studio_hovered {
-            cursor: pointer;
-            outline: 1px dashed $o-brand-primary;
-            &:not(.o_statusbar_status) {
-                outline-offset: -1px;
-            }
-        }
-        .o_web_studio_clicked {
-            outline: 2px solid $o-brand-primary;
-            &.btn {
-                outline: 2px solid darken($o-brand-primary, 5%);
-            }
-            &:not(.o_statusbar_status) {
-                outline-offset: -2px;
-            }
-        }
+
         .o_web_studio_button_hook {
             width: 48px;
             cursor: pointer;
@@ -230,6 +261,24 @@
 
         &.o_xxl_form_view {
             height: auto;
+        }
+
+        // Button box
+        .oe_button_box {
+            &, & + .oe_avatar {
+                + .oe_title {
+                    width: 400px;
+                }
+            }
+
+            .oe_stat_button {
+                &:hover {
+                    background-color: #e6e6e6;
+                }
+                .o_button_icon {
+                    color: #7C7BAD;
+                }
+            }
         }
     }
 }

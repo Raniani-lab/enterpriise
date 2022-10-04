@@ -1867,20 +1867,28 @@ class Article(models.Model):
         return changes, tracking_value_ids
 
     def _send_invite_mail(self, partners):
-        # TDE NOTE: try to cleanup and batchize
         self.ensure_one()
+
+        partner_to_bodies = {}
         for partner in partners:
-            subject = _("Invitation to access %s", self.name)
-            partner_lang = get_lang(self.env, lang_code=partner.lang).code
-            body = self.env['ir.qweb'].with_context(lang=partner_lang)._render(
-                'knowledge.knowledge_article_mail_invite', {
+            member = self.article_member_ids.filtered(lambda member: member.partner_id == partner)
+            invite_url = url_join(
+                self.get_base_url(),
+                f"/knowledge/article/invite/{member.id}/{member._get_invitation_hash()}"
+            )
+            partner_to_bodies[partner] = self.env['ir.qweb'].with_context(lang=partner.lang)._render(
+                'knowledge.knowledge_article_mail_invite',
+                {
                     'record': self,
                     'user': self.env.user,
                     'recipient': partner,
-                    'link': self._get_invite_url(partner),
-                })
+                    'link': invite_url,
+                }
+            )
 
-            self.with_context(lang=partner_lang).message_notify(
+        subject = _("Invitation to access %s", self.name)
+        for partner, body in partner_to_bodies.items():
+            self.with_context(lang=partner.lang).message_notify(
                 body=body,
                 email_layout_xmlid='mail.mail_notification_light',
                 partner_ids=partner.ids,

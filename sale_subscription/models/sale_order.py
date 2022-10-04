@@ -87,8 +87,8 @@ class SaleOrder(models.Model):
                                                string='Recurrence', ondelete='restrict', readonly=False, store=True)
     is_batch = fields.Boolean(string='Is a Batch', default=False, copy=False)
     is_invoice_cron = fields.Boolean(string='Is a Subscription invoiced in cron', default=False, copy=False)
-    subscription_id = fields.Many2one('sale.order', string='Parent Contract', ondelete='restrict', copy=False)
-    origin_order_id = fields.Many2one('sale.order', string='First contract', ondelete='restrict', copy=False, store=True, compute='_compute_origin_order_id')
+    subscription_id = fields.Many2one('sale.order', string='Parent Contract', ondelete='restrict', copy=True)
+    origin_order_id = fields.Many2one('sale.order', string='First contract', ondelete='restrict', store=True, copy=True, compute='_compute_origin_order_id')
     subscription_child_ids = fields.One2many('sale.order', 'subscription_id')
     history_count = fields.Integer(compute='_compute_history_count')
     payment_exception = fields.Boolean("Contract in exception",

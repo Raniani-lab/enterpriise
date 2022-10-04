@@ -65,13 +65,13 @@
                 <templates>
                     <div t-name="gantt-popover">
                         <div>
-                            <strong>Order # — </strong> <t t-esc="name"/>
+                            <strong>Order # — </strong> <t t-out="name"/>
                         </div>
                         <div>
-                            <strong>Pickup  — </strong> <t t-esc="userTimezoneStartDate.format('L LT')"/>
+                            <strong>Pickup  — </strong> <t t-out="userTimezoneStartDate.format('L LT')"/>
                         </div>
                         <div>
-                            <strong>Return — </strong> <t t-esc="userTimezoneStopDate.format('L LT')"/>
+                            <strong>Return — </strong> <t t-out="userTimezoneStopDate.format('L LT')"/>
                         </div>
                         <div>
                             <strong>Status — </strong> <t t-field="report_line_status"/>

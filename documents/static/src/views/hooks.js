@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { useBus, useService } from "@web/core/utils/hooks";
-import { sprintf } from "@web/core/utils/strings";
+import { escape, sprintf } from "@web/core/utils/strings";
 import { memoize } from "@web/core/utils/functions";
 import { useSetupView } from "@web/views/view_hook";
 import { insert } from "@mail/model/model_field_command";
@@ -430,7 +430,7 @@ export function useTriggerRule() {
             if (result && typeof result === "object") {
                 if (result.hasOwnProperty("warning")) {
                     notification.add(
-                        markup(`<ul>${result["warning"]["documents"].map((d) => `<li>${d}</li>`).join("")}</ul>`),
+                        markup(`<ul>${result["warning"]["documents"].map((d) => `<li>${escape(d)}</li>`).join("")}</ul>`),
                         {
                             title: result["warning"]["title"],
                             type: "danger",

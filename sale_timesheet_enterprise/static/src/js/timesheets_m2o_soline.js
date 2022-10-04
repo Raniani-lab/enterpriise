@@ -1,5 +1,5 @@
 /** @odoo-module alias=sale_timesheet_enterprise.TimesheetM2OSOLine **/
-import fieldRegistry from 'web.field_registry';
+
 import TimesheetM2OWidget from 'timesheet_grid.TimesheetM2OWidget';
 import { _t } from 'web.core';
 import { sprintf } from "@web/core/utils/strings";
@@ -21,8 +21,5 @@ const TimesheetM2OSOLine = TimesheetM2OWidget.extend({
         );
     },
 });
-
-
-fieldRegistry.add('timesheets_m2o_soline', TimesheetM2OSOLine);
 
 export default TimesheetM2OSOLine;

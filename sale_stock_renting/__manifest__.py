@@ -35,8 +35,7 @@ Allows use of stock application to manage rentals inventory
     'post_init_hook': '_ensure_rental_stock_moves_consistency',
     'assets': {
         'web.assets_backend': [
-            'sale_stock_renting/static/src/js/**/*',
-            'sale_stock_renting/static/src/xml/**/*',
+            'sale_stock_renting/static/src/**/*',
         ],
     },
     'license': 'OEEL-1',

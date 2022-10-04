@@ -15,7 +15,6 @@ var bus = require('web_studio.bus');
 var EditorMixin = require('web_studio.EditorMixin');
 var EditorMixinOwl = require('web_studio.EditorMixinOwl');
 
-var FormEditor = require('web_studio.FormEditor');
 var KanbanEditor = require('web_studio.KanbanEditor');
 var ListEditor = require('web_studio.ListEditor');
 var SearchEditor = require('web_studio.SearchEditor');
@@ -57,7 +56,6 @@ var _t = core._t;
 var QWeb = core.qweb;
 
 var Editors = {
-    form: FormEditor,
     kanban: KanbanEditor,
     list: ListEditor,
     search: SearchEditor,

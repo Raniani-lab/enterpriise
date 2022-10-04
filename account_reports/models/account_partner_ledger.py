@@ -60,6 +60,13 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
 
         options['forced_domain'] = options.get('forced_domain', []) + domain
 
+    def _caret_options_initializer(self):
+        """ Specify caret options for navigating from a report line to the associated journal entry or payment """
+        return {
+            'account.move.line': [{'name': _("View Journal Entry"), 'action': 'caret_option_open_record_form'}],
+            'account.payment': [{'name': _("View Payment"), 'action': 'caret_option_open_record_form', 'action_param': 'payment_id'}],
+        }
+
     def _custom_unfold_all_batch_data_generator(self, report, options, lines_to_expand_by_function):
         partner_ids_to_expand = []
         for line_dict in lines_to_expand_by_function.get('_report_expand_unfoldable_line_partner_ledger', []):

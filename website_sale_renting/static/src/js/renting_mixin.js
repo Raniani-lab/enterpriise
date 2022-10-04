@@ -39,7 +39,7 @@ export const RentingMixin = {
                 const rentingDuration = endDate - startDate;
                 if (rentingDuration < 0) {
                     message = _t("The return date should be after the pickup date.");
-                } else if (startDate.isBefore(moment())) {
+                } else if (startDate.isBefore(moment(), 'day')) {
                     message = _t("The pickup date cannot be in the past.");
                 } else if (['hour', 'day', 'week', 'month'].includes(this.rentingMinimalTime.unit)) {
                     const unit = this.rentingMinimalTime.unit;

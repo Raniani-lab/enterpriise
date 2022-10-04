@@ -134,6 +134,22 @@ class TestKnowledgeArticleUtilities(KnowledgeCommonWData):
             'Should contain: none of descendants, so only other accessible articles (shared section), filtered by search term'
         )
 
+    @users('employee')
+    def test_article_get_ancestor_ids(self):
+        # Using ids from method docstring for easy matching.
+        # Order doesn't matter for this line
+        article_2, article_6 = self.env['knowledge.article'].create([
+            {'name': 'Article 2'},
+            {'name': 'Article 6'}]
+        )
+        article_4 = self.env['knowledge.article'].create({'name': 'Article 4', 'parent_id': article_2.id})
+        article_8 = self.env['knowledge.article'].create({'name': 'Article 8', 'parent_id': article_4.id})
+        article_11 = self.env['knowledge.article'].create({'name': 'Article 11', 'parent_id': article_6.id})
+
+        self.assertSetEqual(article_8._get_ancestor_ids(), {article_2.id, article_4.id})
+        self.assertSetEqual((article_8 | article_4)._get_ancestor_ids(), {article_2.id, article_4.id})
+        self.assertSetEqual((article_8 | article_11)._get_ancestor_ids(), {article_2.id, article_4.id, article_6.id})
+
 
 @tagged('knowledge_internals', 'knowledge_management')
 class TestKnowledgeCommonWDataInitialValue(KnowledgeCommonWData):

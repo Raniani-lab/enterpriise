@@ -111,12 +111,8 @@ class KnowledgeController(http.Controller):
             # this helps avoiding to actually fetch ancestors
             # this will not leak anything as it's just a set of IDS
             # displayed articles ACLs are correctly checked here below
-            # e.g of parent_path for article id 8 with parent 4 that has itself a parent 2: '2/4/8/'
-            # the python split will make it [2,4,8,''], so we want everything but the last 2 items
             active_article = request.env['knowledge.article'].sudo().browse(active_article_id)
-            ancestors_ids = {int(ancestor_id) for ancestor_id in active_article.parent_path.split('/')[:-2]}
-            if ancestors_ids:
-                unfolded_articles_ids |= ancestors_ids
+            unfolded_articles_ids |= active_article._get_ancestor_ids()
 
         # fetch root article_ids as sudo, ACLs will be checked on next global call fetching 'all_visible_articles'
         # this helps avoiding 2 queries done for ACLs (and redundant with the global fetch)

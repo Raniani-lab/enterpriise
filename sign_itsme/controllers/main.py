@@ -11,7 +11,7 @@ from odoo.addons.iap import jsonrpc
 from odoo.tools import consteq
 from odoo.addons.sign.controllers.main import Sign as SignController
 
-IAP_DEFAULT_DOMAIN = 'https://iap.odoo.com'
+IAP_DEFAULT_DOMAIN = 'https://itsme.api.odoo.com'
 IAP_SERVICE_NAME = 'itsme_proxy'
 class SignItsme(SignController):
     def get_document_qweb_context(self, sign_request_id, token, **post):

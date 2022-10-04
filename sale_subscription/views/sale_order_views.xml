@@ -60,7 +60,9 @@
             </button>
             <!--  Change the label of cancel button for subscription -->
             <button name="action_cancel" position="after">
-                <button name="%(sale_subscription.sale_subscription_close_reason_wizard_action)d" type="action" string="Close" attrs="{'invisible': ['|', ('stage_category', '!=', 'progress'), ('id', '=', False)]}" data-hotkey="z"/>
+                <button name="%(sale_subscription.sale_subscription_close_reason_wizard_action)d" type="action"
+                        string="Close" attrs="{'invisible': ['|', ('stage_category', 'not in', ['progress', 'paused']), ('id', '=', False)]}"
+                        data-hotkey="z"/>
             </button>
             <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
                 <button attrs="{'invisible': [('history_count', '&lt;', 2)]}"

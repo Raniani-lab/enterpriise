@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
-"PO-Revision-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"PO-Revision-Date: 2022-10-04 09:41+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -219,6 +219,11 @@ msgid "Checks"
 msgstr ""
 
 #. module: mrp_workorder
+#: model:product.attribute,name:mrp_workorder.product_attribute_color_radio
+msgid "Color"
+msgstr ""
+
+#. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_propose_change__comment
 msgid "Comment"
 msgstr ""
@@ -289,6 +294,12 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields.selection,name:mrp_workorder.selection__quality_point__source_document__step
 msgid "Custom"
+msgstr ""
+
+#. module: mrp_workorder
+#: model:product.template.attribute.value,name:mrp_workorder.product_attribute_value_1
+#: model:product.template.attribute.value,name:mrp_workorder.product_attribute_value_1_radio
+msgid "Dark Blue"
 msgstr ""
 
 #. module: mrp_workorder
@@ -377,6 +388,18 @@ msgstr ""
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__worksheet_url
 msgid "Google doc URL"
+msgstr ""
+
+#. module: mrp_workorder
+#: model:product.template.attribute.value,name:mrp_workorder.product_attribute_value_2
+#: model:product.template.attribute.value,name:mrp_workorder.product_attribute_value_2_radio
+msgid "Green"
+msgstr ""
+
+#. module: mrp_workorder
+#: model:product.template.attribute.value,name:mrp_workorder.product_attribute_value_3
+#: model:product.template.attribute.value,name:mrp_workorder.product_attribute_value_3_radio
+msgid "Grey"
 msgstr ""
 
 #. module: mrp_workorder
@@ -857,6 +880,14 @@ msgid "Show the timer on the work order screen"
 msgstr ""
 
 #. module: mrp_workorder
+#: model:product.product,description_sale:mrp_workorder.product_product_stool_1
+#: model:product.product,description_sale:mrp_workorder.product_product_stool_2
+#: model:product.product,description_sale:mrp_workorder.product_product_stool_3
+#: model:product.template,description_sale:mrp_workorder.product_template_stool
+msgid "Small wooden stool"
+msgstr ""
+
+#. module: mrp_workorder
 #: model:ir.model.fields.selection,name:mrp_workorder.selection__quality_point__source_document__operation
 msgid "Specific Page of Operation Worksheet"
 msgstr ""
@@ -902,6 +933,30 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__move_line_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__move_line_id
 msgid "Stock Move Line"
+msgstr ""
+
+#. module: mrp_workorder
+#: model:product.product,name:mrp_workorder.product_product_stool_1
+#: model:product.product,name:mrp_workorder.product_product_stool_2
+#: model:product.product,name:mrp_workorder.product_product_stool_3
+#: model:product.template,name:mrp_workorder.product_template_stool
+msgid "Stool"
+msgstr ""
+
+#. module: mrp_workorder
+#: model:product.product,name:mrp_workorder.product_product_stool_foot_1
+#: model:product.product,name:mrp_workorder.product_product_stool_foot_2
+#: model:product.product,name:mrp_workorder.product_product_stool_foot_3
+#: model:product.template,name:mrp_workorder.product_template_stool_foot
+msgid "Stool Foot"
+msgstr ""
+
+#. module: mrp_workorder
+#: model:product.product,name:mrp_workorder.product_product_stool_top_1
+#: model:product.product,name:mrp_workorder.product_product_stool_top_2
+#: model:product.product,name:mrp_workorder.product_product_stool_top_3
+#: model:product.template,name:mrp_workorder.product_template_stool_top
+msgid "Stool Top"
 msgstr ""
 
 #. module: mrp_workorder
@@ -979,6 +1034,22 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_tree_view_planning
 msgid "Unit of Measure"
+msgstr ""
+
+#. module: mrp_workorder
+#: model:product.product,uom_name:mrp_workorder.product_product_stool_1
+#: model:product.product,uom_name:mrp_workorder.product_product_stool_2
+#: model:product.product,uom_name:mrp_workorder.product_product_stool_3
+#: model:product.product,uom_name:mrp_workorder.product_product_stool_foot_1
+#: model:product.product,uom_name:mrp_workorder.product_product_stool_foot_2
+#: model:product.product,uom_name:mrp_workorder.product_product_stool_foot_3
+#: model:product.product,uom_name:mrp_workorder.product_product_stool_top_1
+#: model:product.product,uom_name:mrp_workorder.product_product_stool_top_2
+#: model:product.product,uom_name:mrp_workorder.product_product_stool_top_3
+#: model:product.template,uom_name:mrp_workorder.product_template_stool
+#: model:product.template,uom_name:mrp_workorder.product_template_stool_foot
+#: model:product.template,uom_name:mrp_workorder.product_template_stool_top
+msgid "Units"
 msgstr ""
 
 #. module: mrp_workorder
@@ -1163,4 +1234,20 @@ msgstr ""
 #: code:addons/mrp_workorder/static/src/components/summary_step.xml:0
 #, python-format
 msgid "minutes"
+msgstr ""
+
+#. module: mrp_workorder
+#: model:product.product,description_sale:mrp_workorder.product_product_stool_foot_1
+#: model:product.product,description_sale:mrp_workorder.product_product_stool_foot_2
+#: model:product.product,description_sale:mrp_workorder.product_product_stool_foot_3
+#: model:product.template,description_sale:mrp_workorder.product_template_stool_foot
+msgid "wooden stool foot"
+msgstr ""
+
+#. module: mrp_workorder
+#: model:product.product,description_sale:mrp_workorder.product_product_stool_top_1
+#: model:product.product,description_sale:mrp_workorder.product_product_stool_top_2
+#: model:product.product,description_sale:mrp_workorder.product_product_stool_top_3
+#: model:product.template,description_sale:mrp_workorder.product_template_stool_top
+msgid "wooden stool top"
 msgstr ""

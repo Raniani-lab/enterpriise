@@ -807,8 +807,12 @@ class TestKnowledgeArticleCopy(KnowledgeCommonBusinessCase):
         )
         self.assertEqual(duplicate.name, f'{article_workspace.name} (copy)')
         self.assertEqual(len(duplicate.child_ids), 2, 'Copy batch should copy children')
+        self.assertEqual(
+            sorted(duplicate.mapped('child_ids.name')),
+            sorted([f'{name} (copy)' for name in article_workspace.mapped('child_ids.name')])
+        )
 
-        # Selecting 2 articles in different hierarchies should duplicate both
+        # Selecting 2 articles in different hierarchies (under same parent) should duplicate both
         workspace_children = self.workspace_children.with_env(self.env)
         duplicates = workspace_children.copy_batch()
         self.assertEqual(
@@ -828,6 +832,29 @@ class TestKnowledgeArticleCopy(KnowledgeCommonBusinessCase):
         article_write_member = self.shared_children[0].with_env(self.env)
         with self.assertRaises(exceptions.AccessError):
             article_write_member.copy()
+
+    @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule')
+    @users('admin')
+    def test_article_duplicate_admin(self):
+        """ Test duplicate (copy_batch) as admin as he has enough rights to really
+        copy articles, not like employee currently. """
+        workspace_children = self.workspace_children.with_env(self.env)
+        shared = self.article_shared.with_env(self.env)
+        duplicates = (workspace_children + shared).copy_batch()
+        for original, copy in zip(workspace_children + shared, duplicates):
+            self.assertEqual(copy.name, f'{original.name} (copy)')
+            self.assertEqual(len(original.child_ids), len(copy.child_ids))
+            self.assertEqual(len(original._get_descendants()), len(copy._get_descendants()))
+            self.assertNotEqual(original.child_ids, copy.child_ids)
+        self.assertEqual(
+            sorted(duplicates.mapped('child_ids.name')),
+            sorted([f'{name} (copy)' for name in (workspace_children + shared).mapped('child_ids.name')])
+        )
+        self.assertEqual(
+            sorted(article.name for article in duplicates[-1]._get_descendants()),
+            sorted(f'{article.name} (copy)' for article in shared._get_descendants()),
+            "Check descendants name is also updated (not only direct children)"
+        )
 
     @mute_logger('odoo.addons.base.models.ir_model', 'odoo.addons.base.models.ir_rule')
     @users('employee')

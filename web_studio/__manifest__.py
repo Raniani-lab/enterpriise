@@ -108,7 +108,6 @@ Note: Only the admin user is allowed to make those customizations.
 
             'web_studio/static/src/legacy/scss/icons.scss',
             'web_studio/static/src/legacy/scss/action_editor.scss',
-            'web_studio/static/src/legacy/scss/form_editor.scss',
             'web_studio/static/src/legacy/scss/kanban_view.scss',
             'web_studio/static/src/legacy/scss/kanban_editor.scss',
             'web_studio/static/src/legacy/scss/list_editor.scss',

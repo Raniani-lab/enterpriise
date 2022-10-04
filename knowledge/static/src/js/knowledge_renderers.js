@@ -1,7 +1,6 @@
 /** @odoo-module */
 
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import emojis from '@mail/js/emojis';
 import { FormRenderer } from '@web/views/form/form_renderer';
 import { KnowledgeCoverDialog } from '@knowledge/components/cover_selector/knowledge_cover_dialog';
 import KnowledgeTreePanelMixin from '@knowledge/js/tools/tree_panel_mixin';
@@ -11,8 +10,7 @@ import PermissionPanel from '@knowledge/components/permission_panel/permission_p
 import { sprintf } from '@web/core/utils/strings';
 import { useService } from "@web/core/utils/hooks";
 
-const disallowedEmojis = ['💩', '👎', '💔', '😭', '😢', '😐', '😕', '😞', '😢', '💀'];
-const emojisRandomPickerSource = emojis.filter(emoji => !disallowedEmojis.includes(emoji.unicode));
+const disallowedEmojis = ['💩', '💀', '☠️', '🤮', '🖕'];
 const { onMounted, useEffect, useRef} = owl;
 
 export class KnowledgeArticleFormRenderer extends FormRenderer {
@@ -32,7 +30,12 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         this.root = useRef('root');
         this.tree = useRef('tree');
         
-        this.messagingService.get().then(messaging => this.messaging = messaging);
+        this.messagingService.get().then(messaging => {
+            this.messaging = messaging;
+            this.emojisRandomPickerSource = messaging.emojiRegistry.allEmojis.filter(
+                emoji => !disallowedEmojis.includes(emoji.codepoints)
+            );
+        });
         this._onAddEmoji = this._onAddEmoji.bind(this);
         this._onRemoveEmoji = this._onRemoveEmoji.bind(this);
         
@@ -134,7 +137,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * Add a random icon to the article.
      */
     addIcon() {
-        const icon = emojisRandomPickerSource[Math.floor(Math.random() * emojisRandomPickerSource.length)].unicode;
+        const icon = this.emojisRandomPickerSource[Math.floor(Math.random() * this.emojisRandomPickerSource.length)].codepoints;
         this._renderEmoji(icon, this.resId);
     }
 

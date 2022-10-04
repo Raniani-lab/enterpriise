@@ -1565,7 +1565,14 @@ class TestSubscription(TestSubscriptionCommon):
             first_line_id = upsell_so.order_line[0] # line 0 is the upsell line
             first_line_id.product_id = self.product2
             self.assertFalse(first_line_id.parent_line_id, "The new line should not have a parent line")
+            upsell_so.currency_id = False
+            upsell_so.currency_id = False
+            first_line_id._compute_parent_line_id()
+            self.assertFalse(first_line_id.parent_line_id, "The new line should not have a parent line even without currency_id")
+            self.subscription._compute_pricelist_id() # reset the currency_id
+            upsell_so._compute_pricelist_id()
             first_line_id.product_id = self.product
+            upsell_so.order_line[0].price_unit = parent_line_id.price_unit + 0.004 # making sure that rounding issue will not affect computed result
             self.assertEqual(upsell_so.order_line[0].parent_line_id, parent_line_id, "The parent line is the one from the subscription")
             first_line_id.pricing_id = parent_line_id.pricing_id
             self.assertEqual(upsell_so.order_line.parent_line_id, parent_line_id,

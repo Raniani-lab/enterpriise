@@ -152,7 +152,9 @@
                                     groups="stock.group_stock_multi_locations"
                                     attrs="{'invisible': [('code', '=', 'outgoing')]}"/>
                         </group>
-                        <group name="barcode_validation" string="Final Validation">
+                        <field name="show_barcode_validation" invisible="1"/>
+                        <group name="barcode_validation" string="Final Validation" attrs="{'invisible': [('show_barcode_validation', '=', False)]}">
+                            <!-- show_barcode_validation handles combined groups/invisible complexity -->
                             <field name="barcode_validation_full"
                                 attrs="{'invisible': [('restrict_scan_product', '=', True)]}"/>
                             <field name="barcode_validation_all_product_packed"

@@ -143,7 +143,7 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
      * It also determines which boxes should be visible according to the current active field.
      */
     renderInvoiceExtract(attachment) {
-        const thread = this.getMessaging().models['Thread'].insert({
+        const thread = this.env.services.messaging.modelManager.messaging.models['Thread'].insert({
             id: this.props.record.resId,
             model: this.props.record.resModel,
         });

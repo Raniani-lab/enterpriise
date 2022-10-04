@@ -301,7 +301,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             res_model: 'res.partner',
         });
         assert.containsNone(document.body, '.o_attachment_preview', "there should be nothing previewed");
-        assert.containsOnce(document.body, '.o_form_sheet_bg > .o_FormRenderer_chatterContainer',
+        assert.containsOnce(document.body, '.o_form_sheet_bg + .o_FormRenderer_chatterContainer',
             "chatter should not have been moved");
     });
 });

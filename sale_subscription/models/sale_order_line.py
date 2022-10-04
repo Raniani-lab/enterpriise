@@ -32,10 +32,6 @@ class SaleOrderLine(models.Model):
         not_subscription_lines = self.filtered(lambda line: not line.order_id.is_subscription)
         return not_subscription_lines and undeletable_lines
 
-    @api.depends('temporal_type', 'order_id.subscription_management')
-    def _compute_name(self):
-        super()._compute_name()
-
     @api.depends('product_template_id', 'order_id.recurrence_id')
     def _compute_temporal_type(self):
         super()._compute_temporal_type()

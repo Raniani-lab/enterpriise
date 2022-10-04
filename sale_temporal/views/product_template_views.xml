@@ -51,7 +51,7 @@
         <page string="Price" name="pricing" attrs="{'invisible': [('is_temporal','=',False)]}">
           <group>
             <group name="pricing">
-                <field name="product_pricing_ids" nolabel="1">
+                <field name="product_pricing_ids" nolabel="1" colspan="2">
                   <tree editable="bottom">
                     <control>
                         <create name="add_product_pricing" string="Add a price"/>

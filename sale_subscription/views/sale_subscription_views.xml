@@ -720,8 +720,8 @@
                     <label for="auto_close_limit" attrs="{'invisible': [('recurrence_id','=', False)]}"/>
                     <!--  ARJ TODO master ir config parameter or a company setting -->
                     <div class="o_row" attrs="{'invisible': [('recurrence_id','=', False),]}">
-                        <field name="auto_close_limit"/>
-                        <span class="ms-1">days</span>
+                        <field name="auto_close_limit" class="oe_inline"/>
+                        <div>days</div>
                     </div>
                     <field name="journal_id" options="{'no_create': True}"
                            attrs="{'invisible': [('recurrence_id','=', False)]}"

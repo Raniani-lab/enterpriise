@@ -36,8 +36,14 @@
         <field name="inherit_id" ref="product.product_template_only_form_view"/>
         <field name="model">product.template</field>
         <field name="arch" type="xml">
-            <field name="default_code" position="after">
-                <field name="version" attrs="{'invisible': [('product_variant_count', '>', 1)]}"/>
+            <field name="default_code" position="replace">
+                    <label for="default_code" attrs="{'invisible': [('product_variant_count', '>', 1)]}"/>
+                    <div class="o_row" attrs="{'invisible': [('product_variant_count', '>', 1)]}">
+                        <field name="default_code" nolabel="1" class="oe_inline" style="width: 55% !important;"/>
+                        <span style="width: 5% !important; display: inline-block;"/>
+                        <label for="version" class="oe_inline fw-bold" style="width: 20% !important; margin: 0;"/>
+                        <field name="version" nolabel="1" class="oe_inline" style="width: 20% !important;"/>
+                    </div>
             </field>
         </field>
     </record>
@@ -47,8 +53,14 @@
         <field name="inherit_id" ref="product.product_normal_form_view"/>
         <field name="model">product.product</field>
         <field name="arch" type="xml">
-            <field name="default_code" position="after">
-                <field name="version" attrs="{'invisible': [('product_variant_count', '>', 1)]}"/>
+            <field name="default_code" position="replace">
+                <label for="default_code"/>
+                <div class="o_row">
+                    <field name="default_code" nolabel="1" class="oe_inline" style="width: 55% !important;"/>
+                    <span style="width: 5% !important; display: inline-block;"/>
+                    <label for="version" class="oe_inline fw-bold" style="width: 20% !important; margin: 0;"/>
+                    <field name="version" nolabel="1" class="oe_inline" style="width: 20% !important;"/>
+                </div>
             </field>
         </field>
     </record>

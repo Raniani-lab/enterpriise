@@ -66,7 +66,7 @@ class SaleOrderLine(models.Model):
         if self.qty_delivered > self.product_uom_qty:
             self.product_uom_qty = self.qty_delivered
 
-    @api.depends('start_date', 'return_date', 'temporal_type')
+    @api.depends('start_date', 'return_date', 'is_rental')
     def _compute_name(self):
         """Override to add the compute dependency.
 

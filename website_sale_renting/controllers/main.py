@@ -23,8 +23,8 @@ class WebsiteSaleRenting(WebsiteSale):
         )
         return result
 
-    def _product_get_query_url_kwargs(self, category, search, min_price, max_price, **kwargs):
-        result = super()._product_get_query_url_kwargs(category, search, min_price, max_price, **kwargs)
+    def _product_get_query_url_kwargs(self, category, search, **kwargs):
+        result = super()._product_get_query_url_kwargs(category, search, **kwargs)
         result.update(
             start_date=kwargs.get('start_date'),
             end_date=kwargs.get('end_date'),

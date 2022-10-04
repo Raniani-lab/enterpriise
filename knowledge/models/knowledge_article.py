@@ -1187,8 +1187,9 @@ class Article(models.Model):
                 child._add_members(partners, 'none', force_update=False)
 
             share_partner_ids = partners.filtered(lambda partner: partner.partner_share)
-            self._add_members(share_partner_ids, 'read')
-            self._add_members(partners - share_partner_ids, permission)
+            members_command = self._add_members_command(share_partner_ids, 'read')
+            members_command += self._add_members_command(partners - share_partner_ids, permission)
+            self.sudo().write({'article_member_ids': members_command})
             self._send_invite_mail(partners)
 
         return True
@@ -1340,6 +1341,18 @@ class Article(models.Model):
           this can be used to create default members and left existing one untouched;
         """
         self.ensure_one()
+        members_command = self._add_members_command(
+            partners, permission, force_update=force_update
+        )
+        return self.sudo().write({'article_member_ids': members_command})
+
+    def _add_members_command(self, partners, permission, force_update=True):
+        """ Implementation of ``_add_members``, returning commands to update
+        the article. Used when caller prefers commands compared to updating
+        directly the article.
+
+        See main method for more details. """
+        self.ensure_one()
         if not self.env.su and not self.user_can_write:
             raise AccessError(
                 _("You have to be editor on %(article_name)s to add members.",
@@ -1358,8 +1371,7 @@ class Article(models.Model):
                 (1, member.id, {'permission': permission})
                 for member in members_to_update
             ]
-
-        return self.sudo().write({'article_member_ids': members_command})
+        return members_command
 
     def _desync_access_from_parents_values(self, force_internal_permission=False,
                                            force_partners=False, force_member_permission=False):

@@ -1295,12 +1295,12 @@ class AccountReport(models.Model):
     def _init_options_variants(self, options, previous_options=None):
         available_variants = []
         allowed_variant_ids = set()
-        allowed_country_variant_ids = []
+        allowed_country_variant_ids = {}
         for variant in self._get_variants().filtered(lambda x: x._is_available_for(options)):
             if not self.root_report_id and variant != self:
                 allowed_variant_ids.add(variant.id)
                 if variant.country_id:
-                    allowed_country_variant_ids.append(variant.id)
+                    allowed_country_variant_ids.setdefault(variant.country_id.id, []).append(variant.id)
 
             available_variants.append({
                 'id': variant.id,
@@ -1314,7 +1314,9 @@ class AccountReport(models.Model):
         if previous_opt_report_id in allowed_variant_ids or previous_opt_report_id == self.id:
             options['report_id'] = previous_opt_report_id
         elif allowed_country_variant_ids:
-            options['report_id'] = next(iter(allowed_country_variant_ids))
+            country_id = self.env.company.account_fiscal_country_id.id
+            report_id = (allowed_country_variant_ids.get(country_id) or next(iter(allowed_country_variant_ids.values())))[0]
+            options['report_id'] = report_id
         else:
             options['report_id'] = self.id
 

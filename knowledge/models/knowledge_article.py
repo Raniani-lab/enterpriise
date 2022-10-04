@@ -2081,11 +2081,11 @@ class Article(models.Model):
         current article (to avoid recursions) """
         return self.search_read(
             domain=[
-                '&',
+                '&', '&', '&',
                     ('name', 'ilike', search_term),
-                    '&',
-                        ('id', 'not in', (self._get_descendants() + self).ids),
-                        ('user_has_access', '=', True),
+                    ('id', 'not in', self.ids),
+                    '!', ('parent_id', 'child_of', self.ids),
+                    ('user_has_access', '=', True),
             ],
             fields=['id', 'display_name', 'root_article_id'],
             limit=15,

@@ -51,7 +51,7 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
             'file_export_type': _('XML')
         }]
 
-    def _custom_engine_partner_vat_listing(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+    def _report_custom_engine_partner_vat_listing(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
         def build_result_dict(query_res_lines):
             if current_groupby:
                 rslt = {

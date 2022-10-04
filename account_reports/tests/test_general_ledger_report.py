@@ -236,7 +236,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
             ],
         )
 
-        load_more_1 = self.report._expand_unfoldable_line('_expand_unfoldable_line_general_ledger', report_lines[3]['id'], report_lines[6]['groupby'], options, json.loads(report_lines[6]['progress']), report_lines[6]['offset'])
+        load_more_1 = self.report._expand_unfoldable_line('_report_expand_unfoldable_line_general_ledger', report_lines[3]['id'], report_lines[6]['groupby'], options, json.loads(report_lines[6]['progress']), report_lines[6]['offset'])
 
         self.assertLinesValues(
             load_more_1,
@@ -249,7 +249,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
             ],
         )
 
-        load_more_2 = self.report._expand_unfoldable_line('_expand_unfoldable_line_general_ledger', report_lines[3]['id'], load_more_1[2]['groupby'], options, json.loads(load_more_1[2]['progress']), load_more_1[2]['offset'])
+        load_more_2 = self.report._expand_unfoldable_line('_report_expand_unfoldable_line_general_ledger', report_lines[3]['id'], load_more_1[2]['groupby'], options, json.loads(load_more_1[2]['progress']), load_more_1[2]['offset'])
 
         self.assertLinesValues(
             load_more_2,

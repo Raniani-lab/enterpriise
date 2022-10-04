@@ -297,11 +297,11 @@ class JournalReportCustomHandler(models.AbstractModel):
             'journal_id': journal_vals['id'],
             'journal_type': journal_vals['type'],
             'page_break': not is_first_journal,
-            'expand_function': '_expand_unfoldable_line_journal_report' if not options['group_by_months'] else '_expand_unfoldable_line_journal_report_expand_journal_line_by_month',
+            'expand_function': '_report_expand_unfoldable_line_journal_report' if not options['group_by_months'] else '_report_expand_unfoldable_line_journal_report_expand_journal_line_by_month',
             'colspan': len(options['columns']) + 1  # We want it to take the whole line. It makes it easier to unfold it.
         }
 
-    def _expand_unfoldable_line_journal_report(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data):
+    def _report_expand_unfoldable_line_journal_report(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data):
         report = self.env['account.report']
         new_options = options.copy()
         if options['group_by_months']:
@@ -343,7 +343,7 @@ class JournalReportCustomHandler(models.AbstractModel):
             'progress': json.dumps(next_progress),
         }
 
-    def _expand_unfoldable_line_journal_report_expand_journal_line_by_month(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data):
+    def _report_expand_unfoldable_line_journal_report_expand_journal_line_by_month(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data):
         model, record_id = self.env['account.report']._get_model_info_from_id(line_dict_id)
 
         if model != 'account.journal':
@@ -374,7 +374,7 @@ class JournalReportCustomHandler(models.AbstractModel):
                     'unfolded': line_id in options.get('unfolded_lines') or options.get('unfold_all'),
                     'parent_id': line_dict_id,
                     'colspan': len(options['columns']) + 1,
-                    'expand_function': '_expand_unfoldable_line_journal_report',
+                    'expand_function': '_report_expand_unfoldable_line_journal_report',
                 })
         return lines
 

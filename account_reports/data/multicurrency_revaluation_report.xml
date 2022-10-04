@@ -90,27 +90,27 @@
                   <record id="multicurrency_revaluation_to_adjust_balance_currency" model="account.report.expression">
                       <field name="label">balance_currency</field>
                       <field name="engine">custom</field>
-                      <field name="formula">_custom_engine_multi_currency_revaluation_to_adjust</field>
+                      <field name="formula">_report_custom_engine_multi_currency_revaluation_to_adjust</field>
                       <field name="subformula">balance_currency</field>
                   </record>
                   <record id="multicurrency_revaluation_to_adjust_balance_operation" model="account.report.expression">
                       <field name="label">balance_operation</field>
                       <field name="engine">custom</field>
-                      <field name="formula">_custom_engine_multi_currency_revaluation_to_adjust</field>
+                      <field name="formula">_report_custom_engine_multi_currency_revaluation_to_adjust</field>
                       <field name="subformula">balance_operation</field>
                       <field name="auditable" eval="False"/>
                   </record>
                   <record id="multicurrency_revaluation_to_adjust_balance_current" model="account.report.expression">
                       <field name="label">balance_current</field>
                       <field name="engine">custom</field>
-                      <field name="formula">_custom_engine_multi_currency_revaluation_to_adjust</field>
+                      <field name="formula">_report_custom_engine_multi_currency_revaluation_to_adjust</field>
                       <field name="subformula">balance_current</field>
                       <field name="auditable" eval="False"/>
                   </record>
                   <record id="multicurrency_revaluation_to_adjust_adjustment" model="account.report.expression">
                       <field name="label">adjustment</field>
                       <field name="engine">custom</field>
-                      <field name="formula">_custom_engine_multi_currency_revaluation_to_adjust</field>
+                      <field name="formula">_report_custom_engine_multi_currency_revaluation_to_adjust</field>
                       <field name="subformula">adjustment</field>
                       <field name="auditable" eval="False"/>
                   </record>
@@ -124,25 +124,25 @@
                   <record id="multicurrency_revaluation_excluded_balance_currency" model="account.report.expression">
                       <field name="label">balance_currency</field>
                       <field name="engine">custom</field>
-                      <field name="formula">_custom_engine_multi_currency_revaluation_excluded</field>
+                      <field name="formula">_report_custom_engine_multi_currency_revaluation_excluded</field>
                       <field name="subformula">balance_currency</field>
                   </record>
                   <record id="multicurrency_revaluation_excluded_balance_operation" model="account.report.expression">
                       <field name="label">balance_operation</field>
                       <field name="engine">custom</field>
-                      <field name="formula">_custom_engine_multi_currency_revaluation_excluded</field>
+                      <field name="formula">_report_custom_engine_multi_currency_revaluation_excluded</field>
                       <field name="subformula">balance_operation</field>
                   </record>
                   <record id="multicurrency_revaluation_excluded_balance_current" model="account.report.expression">
                       <field name="label">balance_current</field>
                       <field name="engine">custom</field>
-                      <field name="formula">_custom_engine_multi_currency_revaluation_excluded</field>
+                      <field name="formula">_report_custom_engine_multi_currency_revaluation_excluded</field>
                       <field name="subformula">balance_current</field>
                   </record>
                   <record id="multicurrency_revaluation_excluded_adjustment" model="account.report.expression">
                       <field name="label">adjustment</field>
                       <field name="engine">custom</field>
-                      <field name="formula">_custom_engine_multi_currency_revaluation_excluded</field>
+                      <field name="formula">_report_custom_engine_multi_currency_revaluation_excluded</field>
                       <field name="subformula">adjustment</field>
                   </record>
               </field>

@@ -29,7 +29,7 @@ class MexicanAccountReportCustomHandler(models.AbstractModel):
             {'name': _('DPIVA (txt)'), 'sequence': 60, 'action': 'export_file', 'action_param': 'action_get_dpiva_txt', 'file_export_type': _('DPIVA')},
         ))
 
-    def _custom_engine_diot_report(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
+    def _report_custom_engine_diot_report(self, expressions, options, date_scope, current_groupby, next_groupby, offset=0, limit=None):
         def build_dict(report, current_groupby, query_res):
             if not current_groupby:
                 return query_res[0] if query_res else {k: None for k in report.mapped('line_ids.expression_ids.label')}

@@ -202,9 +202,14 @@ class SaleOrderLine(models.Model):
         for line in self:
             if not line.order_id.subscription_id or not line.product_id.recurring_invoice:
                 continue
+            # We use a rounding to avoid -326.40000000000003 != -326.4 for new records.
             matching_line_ids = parent_line_ids.filtered(
                 lambda l:
-                (l.order_id, l.product_id, l.product_uom, l.price_unit) == (line.order_id.subscription_id, line.product_id, line.product_uom, line.price_unit)
+                (l.order_id, l.product_id, l.product_uom, l.order_id.currency_id,
+                 l.order_id.currency_id.round(l.price_unit) if l.order_id.currency_id else round(l.price_unit, 2)) ==
+                (line.order_id.subscription_id, line.product_id, line.product_uom, line.order_id.currency_id,
+                 line.order_id.currency_id.round(line.price_unit) if line.order_id.currency_id else round(line.price_unit, 2)
+                 )
             )
             if matching_line_ids:
                 line.parent_line_id = matching_line_ids.ids[-1]

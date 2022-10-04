@@ -19,9 +19,11 @@
             <form string="Periodicity">
                 <sheet>
                     <group>
-                        <field name="name"/>
-                        <field name="duration"/>
-                        <field name="unit"/>
+                        <group>
+                            <field name="name"/>
+                            <field name="duration"/>
+                            <field name="unit"/>
+                        </group>
                     </group>
                 </sheet>
             </form>

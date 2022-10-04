@@ -38,7 +38,7 @@ if records:
                             <field name="payment_method_code" invisible="1"/> <!--For use in modules depending on this one-->
                         </group><group>
                             <field name="date"/>
-                            <field name="name" placeholder="auto ..." required="0"/>
+                            <field name="name" placeholder="Leave empty to generate automatically..." required="0"/>
                         </group>
                     </group>
 

@@ -718,9 +718,9 @@
                     <field name="user_closable" attrs="{'invisible': [('recurrence_id','=', False)]}"/>
                     <label for="auto_close_limit" attrs="{'invisible': [('recurrence_id','=', False)]}"/>
                     <!--  ARJ TODO master ir config parameter or a company setting -->
-                    <div attrs="{'invisible': [('recurrence_id','=', False),]}">
-                        <field name="auto_close_limit" style="width: 3rem;"/>
-                        <div class="d-inline-block">days</div>
+                    <div class="o_row" attrs="{'invisible': [('recurrence_id','=', False),]}">
+                        <field name="auto_close_limit" class="oe_inline"/>
+                        <div>days</div>
                     </div>
                     <field name="journal_id" options="{'no_create': True}"
                            attrs="{'invisible': [('recurrence_id','=', False)]}"

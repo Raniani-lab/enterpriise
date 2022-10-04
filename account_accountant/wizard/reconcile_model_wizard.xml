@@ -18,7 +18,7 @@
                 </group>
 
                 <group string="Counterpart Values">
-                    <field name="line_ids" nolabel="1">
+                    <field name="line_ids" nolabel="1" colspan="2">
                         <tree editable="bottom">
                             <field name="account_id"/>
                             <field name="amount_type"/>

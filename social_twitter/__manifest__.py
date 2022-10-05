@@ -28,7 +28,7 @@
             'social_twitter/static/src/js/stream_post_comments_reply_quote.js',
             'social_twitter/static/src/js/stream_post_kanban_record.js',
             'social_twitter/static/src/js/stream_post_twitter_quote.js',
-        #     'social_twitter/static/src/js/twitter_users_autocomplete.js',
+            'social_twitter/static/src/js/twitter_users_autocomplete.js',
             ('after', 'social/static/src/js/social_post_formatter_mixin.js', 'social_twitter/static/src/js/social_post_formatter_mixin.js'),
             'social_twitter/static/src/xml/**/*',
         ],

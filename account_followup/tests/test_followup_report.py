@@ -143,3 +143,23 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
         sent_attachments = self.env['mail.message'].search([('partner_ids', '=', self.partner_a.id)]).attachment_ids
 
         self.assertEqual(invoice_attachments, sent_attachments)
+
+    def test_followup_invoice_no_amount(self):
+        # Init options.
+        report = self.env['account.followup.report']
+        options = {
+            'partner_id': self.partner_a.id,
+        }
+
+        invoice_move = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': self.partner_a.id,
+            'date': '2022-01-01',
+            'invoice_line_ids': [
+                (0, 0, {'quantity': 0, 'price_unit': 30}),
+            ],
+        })
+        invoice_move.action_post()
+
+        lines = report._get_followup_report_lines(options)
+        self.assertEqual(len(lines), 0, "There should be no line displayed")

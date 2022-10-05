@@ -171,14 +171,14 @@ class Forecast(models.Model):
              ('date', '>=', min_date),
              ('date', '<=', max_date),
              ('slot_id', '!=', False)],
-            ['task_id', 'employee_id', 'date', 'timesheet_count:count(id)'],
-            ['task_id', 'employee_id', 'date:day'],
+            ['employee_id', 'date', 'timesheet_count:count(id)'],
+            ['employee_id', 'date:day'],
             lazy=False,
         )
         timesheet_count_per_dates_per_task_and_employee = defaultdict(lambda: defaultdict(int))
         for res in timesheet_read_group:
             timesheet_date = datetime.strptime(res['date:day'], '%d %b %Y').date()
-            timesheet_count_per_dates_per_task_and_employee[(res['task_id'][0], res['employee_id'][0])][timesheet_date] = res['timesheet_count']
+            timesheet_count_per_dates_per_task_and_employee[res['employee_id'][0]][timesheet_date] = res['timesheet_count']
         vals_list = []
         for slot in slots:
             work_hours_data = work_data_per_employee_id[slot.employee_id.id]

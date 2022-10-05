@@ -11,7 +11,7 @@ import { sprintf } from '@web/core/utils/strings';
 import { useService } from "@web/core/utils/hooks";
 
 const disallowedEmojis = ['💩', '💀', '☠️', '🤮', '🖕'];
-const { onMounted, useEffect, useRef, useState} = owl;
+const { onMounted, onPatched, useEffect, useRef, useState} = owl;
 
 export class KnowledgeArticleFormRenderer extends FormRenderer {
 
@@ -24,6 +24,8 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         this.state = useState({
             displayChatter: false,
             displaySharePanel: false,
+            displayPropertyPanel: false,
+            displayPropertyToggle: false,
         });
 
         this.actionService = useService("action");
@@ -45,6 +47,14 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         this._onRemoveEmoji = this._onRemoveEmoji.bind(this);
         
         this.sidebarSize = localStorage.getItem('knowledgeArticleSidebarSize');
+
+        onPatched(() => {
+            // Handle Add property button
+            if (this.triggerClickOnAddProperty && this.root.el.querySelector('.o_field_property_add > button')) {
+                this.triggerClickOnAddProperty = false;
+                this.root.el.querySelector('.o_field_property_add > button').click();
+            }
+        })
 
         useEffect(() => {
             // ADSC: Make tree component with "t-on-" instead of adding these eventListeners
@@ -120,6 +130,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             // we should display the property panel that is hidden by default.
             if (this.props.record.data.article_properties && !this.props.record.data.article_properties_is_empty) {
                 this.toggleProperties();
+                this.state.displayPropertyToggle = true;
             }
         });
     }
@@ -170,12 +181,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * Open the Properties Panel and start to add the first property field.
      */
     addProperties(event) {
-        this.root.el.querySelector('.o_knowledge_add_properties').classList.add('d-none');
-        const propertiesPanel = this.root.el.querySelector('.o_knowledge_properties');
-        propertiesPanel.classList.remove('d-none');
-        this._scrollToElement(this.root.el.querySelector('.o_knowledge_main_view'), propertiesPanel);
-        this.root.el.querySelector('.btn-properties').classList.add('active');
-        this.root.el.querySelector('.o_field_property_add > button').click();
+        this.toggleProperties();
+        // See onPatched: triggers a click when properties widget is ready and added
+        // in to DOM. It opens the panel directly.
+        this.triggerClickOnAddProperty = true;
     }
 
     /**
@@ -256,12 +265,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * Show/hide the Property Fields right panel.
      */
     toggleProperties() {
-        const propertiesPanel = this.root.el.querySelector('.o_knowledge_properties');
-        propertiesPanel.classList.toggle('d-none');
-        if (!propertiesPanel.classList.contains('d-none')) {
-            this._scrollToElement(this.root.el.querySelector('.o_knowledge_main_view'), propertiesPanel);
-        }
-        this.root.el.querySelector('.btn-properties').classList.toggle('active');
+        // This first time toggle properties is called is to display the property panel.
+        // Once done, we should always display property toggle.
+        this.state.displayPropertyToggle = true;
+        this.state.displayPropertyPanel = !this.state.displayPropertyPanel;
     }
 
     /**

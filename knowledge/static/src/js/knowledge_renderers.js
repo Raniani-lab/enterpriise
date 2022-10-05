@@ -101,6 +101,13 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             const buttonSharePanel = this.root.el.querySelector('#dropdown_share_panel');
             if (buttonSharePanel) {
                 buttonSharePanel.addEventListener(
+                    // Prevent hiding the dropdown when the invite modal is shown
+                    'hide.bs.dropdown', (ev) => {
+                        if (this.uiService.activeElement !== document) {
+                            ev.preventDefault();
+                        }
+                });
+                buttonSharePanel.addEventListener(
                     'shown.bs.dropdown',
                     () => this.state.displaySharePanel = true
                 );

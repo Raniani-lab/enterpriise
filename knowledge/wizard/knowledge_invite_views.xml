@@ -17,8 +17,9 @@
                 </div>
                 <sheet>
                     <group>
-                        <field name="permission"/>
+                        <field name="permission" class="w-100"/>
                         <field name="partner_ids" widget="many2many_tags_email"
+                            class="o_knowledge_add_people_input w-100"
                             placeholder="Add people or email addresses"
                             context="{'force_email': True, 'show_email': True}"/>
                     </group>

@@ -4,47 +4,13 @@
 //
 
 //------------------------------------------------------------------------------
-// Generic Input
-//------------------------------------------------------------------------------
-
-.o_input {
-    border-width: 0 0 $input-border-width 0;
-}
-
-//------------------------------------------------------------------------------
 // Fields
 //------------------------------------------------------------------------------
 
 .o_field_widget.o_legacy_field_widget {
-    .o_field_many2one {
+    .o_field_many2one, .o_field_many2manytags {
         .o_input_dropdown .o_input {
-            // Overlap legacy menus border-top with the underneath input border.
-            border-bottom: $input-border-width solid transparent;
             transform: translateY($input-border-width + $dropdown-border-width);
-        }
-
-        &:hover, &:focus-within {
-            .o_input_dropdown .o_input {
-                border-bottom-color: var(--o-input-border-color);
-            }
-        }
-    }
-
-    .o_field_many2manytags {
-        .o_input {
-            border: none;
-        }
-
-        &.o_input {
-            // Overlap legacy menus border-top with the underneath input border.
-            border-bottom: $input-border-width solid transparent;
-            transform: translateY($input-border-width + $dropdown-border-width);
-        }
-
-        &:hover, &:focus-within {
-            &.o_input {
-                border-bottom-color: var(--o-input-border-color);
-            }
         }
     }
 

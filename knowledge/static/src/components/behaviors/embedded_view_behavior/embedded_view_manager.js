@@ -29,8 +29,12 @@ export class EmbeddedViewManager extends Component {
         this.dialogService = useService('dialog');
 
         useOwnDebugContext(); // define a debug context when the developer mode is enable
+        const config = {
+            ...getDefaultConfig(),
+            disableSearchBarAutofocus: true,
+        };
         useSubEnv({
-            config: getDefaultConfig(),
+            config,
             __getGlobalState__: this.__getGlobalState__,
         });
         onWillStart(this.onWillStart.bind(this));

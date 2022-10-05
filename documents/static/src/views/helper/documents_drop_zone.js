@@ -69,7 +69,7 @@ export class DocumentsDropZone extends Component {
             files: ev.dataTransfer.files,
             folderId: this.env.searchModel.getSelectedFolderId(),
             recordId: false,
-            tagIds: this.env.searchModel.getSelectedTagIds,
+            tagIds: this.env.searchModel.getSelectedTagIds(),
         });
     }
 }

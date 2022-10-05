@@ -2941,10 +2941,11 @@ class AccountReport(models.Model):
         report_line = self.env['account.report.line'].browse(params['report_line_id'])
         expression_label = params['expression_label']
         expression = report_line.expression_ids.filtered(lambda x: x.label == expression_label)
+        column_group_options = self._get_column_group_options(options, params['column_group_key'])
 
         # Audit of external values
         if expression.engine == 'external':
-            date_from, date_to, dummy = self._get_date_bounds_info(options, expression.date_scope)
+            date_from, date_to, dummy = self._get_date_bounds_info(column_group_options, expression.date_scope)
             external_values_domain = [('target_report_expression_id', '=', expression.id), ('date', '<=', date_to)]
             if date_from:
                 external_values_domain.append(('date', '>=', date_from))
@@ -2984,7 +2985,7 @@ class AccountReport(models.Model):
         # Aggregate all domains per date scope, then create the final domain.
         audit_or_domains_per_date_scope = {}
         for expression_to_audit in expression._expand_aggregations():
-            expression_domain = self._get_expression_audit_aml_domain(expression_to_audit, options)
+            expression_domain = self._get_expression_audit_aml_domain(expression_to_audit, column_group_options)
 
             if expression_domain is None:
                 continue
@@ -2998,7 +2999,7 @@ class AccountReport(models.Model):
         domain = osv.expression.OR([
             osv.expression.AND([
                 osv.expression.OR(audit_or_domains),
-                self._get_options_domain(options, date_scope)
+                self._get_options_domain(column_group_options, date_scope)
             ])
             for date_scope, audit_or_domains in audit_or_domains_per_date_scope.items()
         ])

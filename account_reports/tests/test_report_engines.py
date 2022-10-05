@@ -209,11 +209,12 @@ class TestReportEngines(TestAccountReportsCommon):
 
         return report
 
-    def _get_audit_params_from_report_line(self, report_line, report_line_dict, **kwargs):
+    def _get_audit_params_from_report_line(self, options, report_line, report_line_dict, **kwargs):
         return {
             'report_line_id': report_line.id,
             'calling_line_dict_id': report_line_dict['id'],
             'expression_label': 'balance',
+            'column_group_key': next(iter(options['column_groups'])),
             **kwargs,
         }
 
@@ -278,7 +279,7 @@ class TestReportEngines(TestAccountReportsCommon):
         for report_line, expected_amls in zip(report.line_ids, expected_redirection_values_list):
             report_line_dict = [x for x in report_lines if x['name'] == report_line.name][0]
             with self.subTest(report_line=report_line.name):
-                action_dict = report.action_audit_cell(options, self._get_audit_params_from_report_line(report_line, report_line_dict))
+                action_dict = report.action_audit_cell(options, self._get_audit_params_from_report_line(options, report_line, report_line_dict))
                 self.assertEqual(move.line_ids.filtered_domain(action_dict['domain']), expected_amls)
 
     def test_engine_domain(self):
@@ -361,7 +362,7 @@ class TestReportEngines(TestAccountReportsCommon):
         for report_line in report.line_ids:
             report_line_dict = [x for x in report_lines if x['name'] == report_line.name][0]
             with self.subTest(report_line=report_line.name):
-                action_dict = report.action_audit_cell(options, self._get_audit_params_from_report_line(report_line, report_line_dict))
+                action_dict = report.action_audit_cell(options, self._get_audit_params_from_report_line(options, report_line, report_line_dict))
                 self.assertEqual(move.line_ids.filtered_domain(action_dict['domain']), expected_amls)
 
     def test_engine_account_codes(self):
@@ -496,7 +497,7 @@ class TestReportEngines(TestAccountReportsCommon):
         for report_line, expected_amls in zip(report.line_ids, expected_redirection_values_list):
             report_line_dict = [x for x in report_lines if x['name'] == report_line.name][0]
             with self.subTest(report_line=report_line.name):
-                action_dict = report.action_audit_cell(options, self._get_audit_params_from_report_line(report_line, report_line_dict))
+                action_dict = report.action_audit_cell(options, self._get_audit_params_from_report_line(options, report_line, report_line_dict))
                 self.assertEqual(move.line_ids.filtered_domain(action_dict['domain']), expected_amls)
 
     def test_engine_external(self):
@@ -557,7 +558,7 @@ class TestReportEngines(TestAccountReportsCommon):
         # Check redirection.
         for report_line, report_line_dict in zip(report.line_ids, report_lines):
             with self.subTest(report_line=report_line.name):
-                action_dict = report.action_audit_cell(options, self._get_audit_params_from_report_line(report_line, report_line_dict))
+                action_dict = report.action_audit_cell(options, self._get_audit_params_from_report_line(options, report_line, report_line_dict))
                 self.assertRecordValues(
                     self.env['account.report.external.value'].search(action_dict['domain']),
                     [
@@ -602,7 +603,7 @@ class TestReportEngines(TestAccountReportsCommon):
         ]
         for report_line, report_line_dict, expected_values in zip(report.line_ids, report_lines, expected_redirection_values_list):
             with self.subTest(report_line=report_line.name):
-                action_dict = report.action_audit_cell(options, self._get_audit_params_from_report_line(report_line, report_line_dict))
+                action_dict = report.action_audit_cell(options, self._get_audit_params_from_report_line(options, report_line, report_line_dict))
                 self.assertRecordValues(
                     self.env['account.report.external.value'].search(action_dict['domain']),
                     expected_values,
@@ -788,5 +789,5 @@ class TestReportEngines(TestAccountReportsCommon):
             report_line = report.line_ids.filtered(lambda x: x.name == report_line_name)
             report_line_dict = [x for x in report_lines if x['name'] == report_line.name][0]
             with self.subTest(report_line=report_line.name):
-                action_dict = report.action_audit_cell(options, self._get_audit_params_from_report_line(report_line, report_line_dict))
+                action_dict = report.action_audit_cell(options, self._get_audit_params_from_report_line(options, report_line, report_line_dict))
                 self.assertEqual(moves.line_ids.filtered_domain(action_dict['domain']), expected_amls)

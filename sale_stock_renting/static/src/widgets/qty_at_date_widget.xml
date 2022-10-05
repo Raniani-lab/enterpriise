@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <template id="template" xml:space="preserve">
-    <t t-name="sale_stock_renting.QtyAtDatePopup" t-inherit="sale_stock.QtyAtDatePopup" t-inherit-mode="extension" owl="1">
+    <!-- TODO: rename this to QtyAtDatePopup in master version -->
+    <t t-name="sale_stock_renting.QtyDetailPopOver" t-inherit="sale_stock.QtyDetailPopOver" t-inherit-mode="extension" owl="1">
         <xpath expr="//div" position="attributes">
             <attribute name="t-if">!props.record.data.is_rental || !props.record.data.return_date || !props.record.data.start_date</attribute>
         </xpath>

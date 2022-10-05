@@ -370,9 +370,7 @@ function useDocumentsViewFileUpload() {
                 if (recordId) {
                     formData.append("document_id", recordId);
                 }
-                if (tagIds) {
-                    formData.append("tag_ids", tagIds);
-                }
+                formData.append("tag_ids", tagIds);
                 if (context) {
                     for (const key of [
                         "default_owner_id",
@@ -406,9 +404,7 @@ function useDocumentsViewFileUpload() {
                 folderId: env.searchModel.getSelectedFolderId(),
                 recordId: false,
                 context: component.props.context,
-                params: {
-                    tagIds: env.searchModel.getSelectedTagIds(),
-                },
+                tagIds: env.searchModel.getSelectedTagIds(),
             });
             ev.target.value = "";
         },

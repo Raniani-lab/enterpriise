@@ -282,6 +282,12 @@
     }
 }
 
+.o_knowledge_add_people_input {
+    .o_field_tags {
+        width: 100%;
+    }
+}
+
 // Media queries:
 
 @include media-breakpoint-up(lg) {

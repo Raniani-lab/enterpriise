@@ -60,8 +60,8 @@ $h5-font-size: $o-font-size-base * 1.1 !default;
 //
 // Customizes the `.table` component with basic values, each used across all table variations.
 
-$table-striped-bg-factor: 0.04 !default;
-$table-striped-order: even !default;
+$table-striped-bg-factor: 0.01 !default;
+$table-striped-order: odd !default;
 
 // Buttons
 //

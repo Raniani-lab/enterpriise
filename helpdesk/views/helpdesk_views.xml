@@ -716,7 +716,7 @@
                             <field name="sla_deadline" widget="remaining_days"/>
                         </span>
                     </div>
-                    <group class="mb-0">
+                    <group class="mb-0 mt-4">
                         <group>
                             <field name="active" invisible="1"/>
                             <field name="team_id" required="1" context="{'default_use_sla': True}"/>

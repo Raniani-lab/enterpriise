@@ -2219,7 +2219,7 @@ class AccountReport(models.Model):
         for expression, expression_res in other_expressions_totals.items():
             if expression.report_line_id.code:
                 evaluation_dict.setdefault(expression.report_line_id.code, {})
-                evaluation_dict[expression.report_line_id.code][expression.label] = expression_res['value']
+                evaluation_dict[expression.report_line_id.code][expression.label] = self.env.company.currency_id.round(expression_res['value'])
 
         # Complete evaluation_dict with the formulas of uncomputed aggregation lines
         aggregations_terms_to_evaluate = set() # Those terms are part of the formulas to evaluate; we know they will get a value eventually

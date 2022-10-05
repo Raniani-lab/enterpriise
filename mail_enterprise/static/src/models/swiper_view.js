@@ -8,6 +8,14 @@ registerModel({
     name: 'SwiperView',
     identifyingMode: 'xor',
     recordMethods: {
+        onComponentUpdate() {
+            // to observe useful values outside of slot, to guarantee proper
+            // re-render
+            if (this.swiperView) {
+                void this.swiperView.record.localId;
+                void this.swiperView.componentName;
+            }
+        },
         /**
          * Handles left swipe on this swiper view.
          */

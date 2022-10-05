@@ -242,3 +242,13 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
             self.subscription._create_recurring_invoice(automatic=True)
         invoice = self.subscription.order_line.invoice_lines.move_id
         self.assertFalse(invoice, "The draft invoice should be deleted when something goes wrong in _handle_automatic_invoices")
+
+    def test_manual_invoice_with_token(self):
+        self.subscription.write({'payment_token_id': self.payment_method.id,
+                                 'client_order_ref': 'Customer REF XXXXXXX'
+        })
+        with freeze_time("2021-01-03"):
+            self.subscription.action_confirm()
+            self.subscription._create_recurring_invoice()
+            self.assertEqual(self.subscription.next_invoice_date, datetime.date(2021, 2, 3), 'the next invoice date should be updated')
+            self.assertEqual(self.subscription.invoice_count, 1)

@@ -76,7 +76,6 @@ Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, 
     double_pay_line_ids = fields.One2many(
         'l10n.be.double.pay.recovery.line', 'employee_id',
         string='Previous Occupations', groups="hr_payroll.group_hr_payroll_user")
-    sdworx_code = fields.Char("SDWorx code", groups="hr.group_hr_user")
 
     @api.constrains('children', 'disabled_children_number',
                     'other_senior_dependent', 'other_disabled_senior_dependent',
@@ -97,11 +96,6 @@ Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, 
                 validation_error_message.append(_("Count of disabled dependent people/children must be less or equal to the number of dependent people/children."))
             if validation_error_message:
                 raise ValidationError("\n".join(validation_error_message))
-
-    @api.constrains('sdworx_code')
-    def _check_sdworx_code(self):
-        if self.sdworx_code and len(self.sdworx_code) != 7:
-            raise ValidationError(_('The SDWorx code should have 7 characters or should be left empty!'))
 
     def _compute_l10n_be_holiday_pay_recovered(self):
         payslips = self.env['hr.payslip'].search([

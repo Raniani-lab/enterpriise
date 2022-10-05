@@ -97,13 +97,6 @@
                     <field name="double_pay_line_ids" colspan="2" nolabel="1"/>
                 </group>
             </group>
-            <page name="hr_settings" position="inside">
-                <group string="SD Worx" groups="l10n_be_hr_payroll.group_export_sdworx_leaves">
-                    <group>
-                        <field name="sdworx_code"/>
-                    </group>
-                </group>
-            </page>
         </field>
     </record>
 </odoo>

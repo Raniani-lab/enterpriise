@@ -191,6 +191,3 @@ class L10nBeExportSDWorxLeavesWizard(models.TransientModel):
             'views': [(False, 'form')],
             'target': 'new',
         }
-
-    def action_validate(self):
-        self.leave_ids.write({'payslip_state': 'done'})

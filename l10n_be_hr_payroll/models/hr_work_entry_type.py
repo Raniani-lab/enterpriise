@@ -82,12 +82,6 @@ class HrWorkEntryType(models.Model):
     leave_right = fields.Boolean(
         string="Keep Time Off Right", default=False,
         help="Work entries counts for time off right for next year.")
-    sdworx_code = fields.Char("SDWorx code", groups="hr.group_hr_user")
-
-    @api.constrains('sdworx_code')
-    def _check_sdworx_code(self):
-        if self.sdworx_code and len(self.sdworx_code) != 4:
-            raise ValidationError(_('The code should have 4 characters!'))
 
     @api.model
     def get_work_entry_type_benefits(self):

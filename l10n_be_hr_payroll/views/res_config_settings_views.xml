@@ -110,12 +110,6 @@
                             </div>
                         </div>
                     </setting>
-                    <setting id="company_information" string="SDWorx" company_dependent="1" help="Allow to export Working Entries to your Social Secretariat">
-                        <field name="group_export_sdworx_leaves"/>
-                        <group class="mt16" groups="l10n_be_hr_payroll.group_export_sdworx_leaves">
-                            <field name="sdworx_code"/>
-                        </group>
-                    </setting>
                 </block>
             </xpath>
         </field>

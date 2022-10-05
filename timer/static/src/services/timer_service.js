@@ -3,7 +3,7 @@
 import { deserializeDateTime } from "@web/core/l10n/dates";
 import { registry } from "@web/core/registry";
 
-const { DateTime, Interval, Duration } = luxon;
+const { DateTime, Interval } = luxon;
 
 class TimerService {
     constructor(orm) {
@@ -16,11 +16,10 @@ class TimerService {
     }
 
     get timerFormatted() {
-        return Duration.fromObject({
-            hours: this.hours,
-            minutes: this.minutes,
-            seconds: this.seconds,
-        }).toISOTime({ suppressMilliseconds: true });
+        const hours = `${this.hours}`.padStart(2, "0");
+        const minutes = `${this.minutes}`.padStart(2, "0");
+        const seconds = `${this.seconds}`.padStart(2, "0");
+        return `${hours}:${minutes}:${seconds}`;
     }
 
     addHours(hours) {
@@ -81,7 +80,7 @@ class TimerService {
         const serverTime = deserializeDateTime(
             await this.orm.call("timer.timer", "get_server_time")
         );
-        return serverTime;
+        return serverTime.setZone("utc");
     }
 
     addFloatTime(timeElapsed) {
@@ -106,7 +105,7 @@ class TimerService {
         this.hours = 0;
         this.minutes = 0;
         this.seconds = 0;
-        this.offset = 0;
+        delete this.offset;
     }
 }
 

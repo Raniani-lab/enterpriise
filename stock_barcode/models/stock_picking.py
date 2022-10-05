@@ -274,6 +274,21 @@ class StockPickingType(models.Model):
         ], "Force Destination Location scan?",
         help="Does the picker have to scan the destination? If yes, at which rate?",
         default='optional', required=True)
+    show_barcode_validation = fields.Boolean(
+        compute='_compute_show_barcode_validation',
+        help='Technical field used to compute whether the "Final Validation" group should be displayed, solving combined groups/invisible complexity.')
+
+    @api.depends('restrict_scan_product', 'restrict_put_in_pack', 'restrict_scan_dest_location')
+    def _compute_show_barcode_validation(self):
+        for picking_type in self:
+            # reflect all fields invisible conditions
+            hide_full = picking_type.restrict_scan_product
+            hide_all_product_packed = not self.user_has_groups('stock.group_tracking_lot') or\
+                                      picking_type.restrict_put_in_pack != 'optional'
+            hide_dest_location = not self.user_has_groups('stock.group_stock_multi_locations') or\
+                                 (picking_type.code == 'outgoing' or picking_type.restrict_scan_dest_location != 'optional')
+            # show if not all hidden
+            picking_type.show_barcode_validation = not (hide_full and hide_all_product_packed and hide_dest_location)
 
     @api.constrains('restrict_scan_source_location', 'restrict_scan_dest_location')
     def _check_restrinct_scan_locations(self):

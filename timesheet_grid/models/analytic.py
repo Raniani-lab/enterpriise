@@ -38,7 +38,6 @@ class AnalyticLine(models.Model):
     duration_unit_amount = fields.Float(related="unit_amount", readonly=True, string="Timesheet Init Amount")
     unit_amount_validate = fields.Float(related="unit_amount", readonly=True, string="Timesheet Unit Time")
 
-
     display_timer = fields.Boolean(
         compute='_compute_display_timer',
         help="Technical field used to display the timer if the encoding unit is 'Hours'.")
@@ -51,14 +50,16 @@ class AnalyticLine(models.Model):
         for line in self:
             line.can_edit = is_approver or not line.validated
 
+    def _should_not_display_timer(self):
+        self.ensure_one()
+        return (self.employee_id not in self.env.user.employee_ids) or self.validated
+
     def _compute_display_timer(self):
-        other_employee_lines = self.filtered(lambda l: l.employee_id not in self.env.user.employee_ids)
-        validated_lines = self.filtered(lambda line: line.validated)
-        (other_employee_lines + validated_lines).update({'display_timer': False})
         uom_hour = self.env.ref('uom.product_uom_hour')
-        for analytic_line in self - validated_lines - other_employee_lines:
-            analytic_line.display_timer = analytic_line.encoding_uom_id == uom_hour and \
-                                          self.env.company.timesheet_encode_uom_id == uom_hour
+        is_uom_hour = self.env.company.timesheet_encode_uom_id == uom_hour
+        for analytic_line in self:
+            analytic_line.display_timer = is_uom_hour and analytic_line.encoding_uom_id == uom_hour \
+                                          and not analytic_line._should_not_display_timer()
 
     @api.model
     def read_grid(self, row_fields, col_field, cell_field, domain=None, range=None, readonly_field=None, orderby=None):

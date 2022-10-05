@@ -1230,10 +1230,13 @@ class SaleOrder(models.Model):
         """ Override to increment periods when needed """
         invoices = super()._create_invoices(grouped=grouped, final=final, date=date)
         # update next_invoice_date if token
-        # When a token is present the update is done in reconcile_pending_transaction
+        # When a token is present the update is done in reconcile_pending_transaction for automatic invoice
+        # we want to update the date if we are not automatic as there is no reconciliation callback
         order_to_update = self.env['sale.order']
+        manual = not self.env.context.get('recurring_automatic', False)
         for order in self:
-            if order.is_subscription and order.state == 'sale' and (not order.payment_token_id or self.env.context.get('subscription_force_next_invoice_date')):
+            if order.is_subscription and order.state == 'sale' and \
+                    (not order.payment_token_id or manual or self.env.context.get('subscription_force_next_invoice_date')):
                 order_to_update |= order
 
         order_to_update._update_next_invoice_date()

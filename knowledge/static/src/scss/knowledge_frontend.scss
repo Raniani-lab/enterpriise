@@ -106,3 +106,24 @@
         }
     }
 }
+
+.o_knowledge_portal_virality {
+    @include media-breakpoint-down(sm) {
+        display: none;
+    }
+    @include media-breakpoint-between(sm, xl) {
+        font-size: .85rem;
+    }
+    @include media-breakpoint-up(xl) {
+        font-size: .9rem;
+    }
+}
+
+.o_knowledge_public_virality {
+    table-layout: fixed;
+    &:has(#knowledge_virality_try_odoo) {
+        @include media-breakpoint-down(sm) {
+            width: 100%;
+        }
+    }
+}

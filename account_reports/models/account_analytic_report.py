@@ -1,5 +1,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import models, fields, api
+from odoo import models, fields, api, osv
+from odoo.addons.web.controllers.utils import clean_action
 from psycopg2 import sql
 
 
@@ -27,6 +28,7 @@ class AccountReport(models.AbstractModel):
         options['analytic_groupby'] = True
         options['analytic_plan_groupby'] = True
 
+        options['include_analytic_without_aml'] = (previous_options or {}).get('include_analytic_without_aml', False)
         previous_analytic_accounts = (previous_options or {}).get('analytic_accounts_groupby', [])
         analytic_account_ids = [int(x) for x in previous_analytic_accounts]
         selected_analytic_accounts = self.env['account.analytic.account'].search(
@@ -60,16 +62,20 @@ class AccountReport(models.AbstractModel):
                 account_list.append(str(account.id))
             analytic_headers.append({
                 'name': plan.name,
-                'forced_options': {'analytic_groupby_option': True,
-                                   'forced_domain': [('analytic_distribution_stored_char', 'in', tuple(account_list))]}
+                'forced_options': {
+                    'analytic_groupby_option': True,
+                    'analytic_accounts_list': tuple(account_list),  # Analytic accounts used in the domain to filter the lines.
+                }
             })
 
         accounts = self.env['account.analytic.account'].browse(options.get('analytic_accounts_groupby'))
         for account in accounts:
             analytic_headers.append({
                 'name': account.name,
-                'forced_options': {'analytic_groupby_option': True,
-                                   'forced_domain': [('analytic_distribution_stored_char', 'ilike', str(account.id))]}
+                'forced_options': {
+                    'analytic_groupby_option': True,
+                    'analytic_accounts_list': (str(account.id),),
+                }
             })
         if analytic_headers:
             analytic_headers.append({'name': ''})
@@ -104,7 +110,7 @@ class AccountReport(models.AbstractModel):
         self.env.cr.execute("SELECT column_name FROM information_schema.columns WHERE table_name='account_move_line'")
         stored_fields = set(f[0] for f in self.env.cr.fetchall())
         changed_equivalence_dict = {
-            "id": sql.Identifier("move_line_id"),
+            "id": sql.Identifier("id"),
             "balance": sql.SQL("-amount"),
             "company_id": sql.Identifier("company_id"),
             "journal_id": sql.Identifier("journal_id"),
@@ -162,6 +168,74 @@ class AccountReport(models.AbstractModel):
         # Override to add the context key which will eventually trigger the shadowing of the table
         context_self = self.with_context(account_report_analytic_groupby=options.get('analytic_groupby_option'))
         return super(AccountReport, context_self)._query_get(options, date_scope, domain)
+
+    def action_audit_cell(self, options, params):
+        column_group_options = self._get_column_group_options(options, params['column_group_key'])
+
+        if not column_group_options.get('analytic_groupby_option'):
+            return super(AccountReport, self).action_audit_cell(options, params)
+        else:
+            # Start by getting the domain from the options. Note that this domain is targeting account.move.line
+            report_line = self.env['account.report.line'].browse(params['report_line_id'])
+            expression = report_line.expression_ids.filtered(lambda x: x.label == params['expression_label'])
+            line_domain = self._get_audit_line_domain(column_group_options, expression, params)
+            # The line domain is made for move lines, so we need some postprocessing to have it work with analytic lines.
+            domain = []
+            AccountAnalyticLine = self.env['account.analytic.line']
+            for expression in line_domain:
+                if len(expression) == 1:  # For operators such as '&' or '|' we can juste add them again.
+                    domain.append(expression)
+                    continue
+
+                field, operator, right_term = expression
+                # On analytic lines, the account.account field is named general_account_id and not account_id.
+                if field.split('.')[0] == 'account_id':
+                    field = field.replace('account_id', 'general_account_id')
+                    expression = [(field, operator, right_term)]
+                # Replace the 'analytic_distribution_stored_char' by the account_id domain as we expect for analytic lines.
+                elif field == 'analytic_distribution_stored_char':
+                    account_ids = tuple(int(account_id) for account_id in column_group_options.get('analytic_accounts_list', []))
+                    expression = [('account_id', 'in', account_ids)]
+                # For other fields not present in on the analytic line model, map them to get the info from the move_line.
+                # Or ignore these conditions if there is no move lines.
+                elif field.split('.')[0] not in AccountAnalyticLine._fields:
+                    expression = [(f'move_line_id.{field}', operator, right_term)]
+                    if options.get('include_analytic_without_aml'):
+                        expression = osv.expression.OR([
+                            [('move_line_id', '=', False)],
+                            expression,
+                        ])
+                else:
+                    expression = [expression]  # just for the extend
+                domain.extend(expression)
+
+            action = clean_action(self.env.ref('analytic.account_analytic_line_action_entries')._get_action_dict(), env=self.env)
+            action['domain'] = domain
+            return action
+
+    @api.model
+    def _get_options_journals_domain(self, options):
+        domain = super(AccountReport, self)._get_options_journals_domain(options)
+        # Add False to the domain in order to select lines without journals for analytics columns.
+        if options.get('include_analytic_without_aml'):
+            domain = osv.expression.OR([
+                domain,
+                [('journal_id', '=', False)],
+            ])
+        return domain
+
+    def _get_options_domain(self, options, date_scope):
+        self.ensure_one()
+        domain = super()._get_options_domain(options, date_scope)
+
+        # Get the analytic accounts that we need to filter on from the options and add a domain for them.
+        if 'analytic_accounts_list' in options:
+            domain = osv.expression.AND([
+                domain,
+                [('analytic_distribution_stored_char', 'in', options.get('analytic_accounts_list', []))],
+            ])
+
+        return domain
 
 
 class AccountMoveLine(models.Model):

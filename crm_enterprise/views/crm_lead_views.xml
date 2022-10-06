@@ -89,74 +89,6 @@
             </field>
         </record>
 
-        <record id="crm_opportunity_view_dashboard" model="ir.ui.view">
-            <field name="name">crm.lead.view.dashboard</field>
-            <field name="model">crm.lead</field>
-            <field name="mode">primary</field>
-            <field name="arch" type="xml">
-                <dashboard sample="1">
-                    <view type="graph" ref="crm_enterprise.crm_opportunity_view_graph"/>
-                    <group>
-                        <group>
-                            <aggregate name="aggregate_opportunities" string="Opportunities" group_operator="count" field="id" measure="__count__"/>
-                            <aggregate name="aggregate_expected_revenue" field="expected_revenue" string="Expected Revenue"/>
-                            <aggregate name="aggregate_prorated_revenue" field="prorated_revenue" invisible="1"/>
-                            <formula name="prorated_revenue" string="Prorated Revenue" value="record.aggregate_prorated_revenue" widget="monetary"/>
-                            <formula name="deal_size" string="Average Deal Size" value="record.aggregate_expected_revenue / record.aggregate_opportunities" widget="monetary"/>
-                            <aggregate name="aggregate_days_to_assign" string="Days to Assign" field="day_open" group_operator="avg" value_label="days"/>
-                            <aggregate name="aggregate_days_to_close" string="Days to Close" field="day_close" group_operator="avg" value_label="days"/>
-                            <aggregate name="aggregate_days_exceeding_closing" string="Exceeding Close Days" field="days_exceeding_closing" group_operator="avg"/>
-                        </group>
-                        <group col="1">
-                            <widget name="pie_chart" title="Win/Loss Ratio" attrs="{'groupby': 'won_status', 'domain': '[\'|\', (\'active\', \'=\', False), (\'active\', \'=\', True), (\'won_status\', \'!=\', \'pending\')]'}"/>
-                            <widget name="pie_chart" title="Medium" attrs="{'groupby': 'medium_id'}"/>
-                        </group>
-                    </group>
-                    <view type="pivot" ref="crm.crm_lead_view_pivot"/>
-                    <view type="cohort" ref="crm_enterprise.crm_lead_view_cohort"/>
-                </dashboard>
-            </field>
-        </record>
-
-        <record id="crm_lead_dashboard_view" model="ir.ui.view">
-            <field name="name">crm.lead.view.dashboard.lead</field>
-            <field name="model">crm.lead</field>
-            <field name="mode">primary</field>
-            <field name="arch" type="xml">
-                <dashboard sample="1">
-                    <view type="graph" ref="crm_enterprise.crm_lead_view_graph"/>
-                    <group>
-                        <group>
-                                <aggregate name="aggregate_leads" string="Leads/Opportunities"
-                                    group_operator="count_distinct" field="id" measure="__count__" groups="crm.group_use_lead"/>
-                                <aggregate name="aggregate_opportunities" string="Opportunities" field="id" domain="[('type','=','opportunity')]"
-                                    group_operator="count" measure="__count__" groups="!crm.group_use_lead"/>
-                                <formula name="opportunity_percent" string="% Opportunities"
-                                    value="record.aggregate_opportunities / record.aggregate_leads" widget="percentage" groups="crm.group_use_lead"/>
-                                <aggregate name="aggregate_days_to_convert" string="# Days To Convert"
-                                    group_operator="avg" field="days_to_convert" groups="crm.group_use_lead"/>
-                                <aggregate name="aggregate_days_to_assign" string="#Days to Assign" field="day_open"
-                                    group_operator="avg" value_label="days"/>
-                                <aggregate name="aggregate_day_close" string="Days to Close" field="day_close" group_operator="avg" value_label="days"/>
-                                <aggregate name="aggregate_expected_revenue" string="Expected Revenue" field="expected_revenue"
-                                    group_operator="sum" widget="monetary"/>
-                                <aggregate name="aggregate_expected_monthly_revenue" string="Expected MRR" field="recurring_revenue_monthly"
-                                    group_operator="sum" widget="monetary" groups="crm.group_use_recurring_revenues"/>
-                                <aggregate name="aggregate_prorated_revenue" string="Prorated Revenue" field="prorated_revenue"
-                                    group_operator="sum" widget="monetary"/>
-                                <aggregate name="aggregate_prorated_monthly_revenue" string="Prorated MRR" field="recurring_revenue_monthly_prorated"
-                                    group_operator="sum" widget="monetary" groups="crm.group_use_recurring_revenues"/>
-                        </group>
-                        <group>
-                            <widget name="pie_chart" title="Sales Teams" attrs="{'groupby': 'team_id'}"/>
-                            <widget name="pie_chart" title="Medium" attrs="{'groupby': 'medium_id'}"/>
-                        </group>
-                    </group>
-                    <view type="pivot" ref="crm_enterprise.crm_lead_view_pivot"/>
-                </dashboard>
-            </field>
-        </record>
-
         <record id="crm_lead_view_cohort" model="ir.ui.view">
             <field name="name">crm.lead.view.cohort</field>
             <field name="model">crm.lead</field>
@@ -174,26 +106,14 @@
         </record>
 
         <record id="crm.action_report_crm_lead_salesteam" model="ir.actions.act_window">
-            <field name="view_mode">dashboard,graph,pivot,tree,form,cohort</field>
-            <field name="view_id" ref="crm_lead_dashboard_view"/>
-        </record>
-        <record id="action_report_crm_lead_salesteam_view_dashboard" model="ir.actions.act_window.view">
-            <field name="sequence">1</field>
-            <field name="view_mode">dashboard</field>
-            <field name="view_id" ref="crm_lead_dashboard_view"/>
-            <field name="act_window_id" ref="crm.action_report_crm_lead_salesteam"/>
-        </record>
-
-        <record id="crm.action_report_crm_opportunity_salesteam" model="ir.actions.act_window">
-            <field name="view_mode">dashboard,pivot,graph,tree,form,cohort</field>
-            <field name="view_id" ref="crm_opportunity_view_dashboard"/>
+            <field name="view_mode">graph,pivot,tree,form,cohort</field>
         </record>
 
         <!-- dashboard action -->
         <record id="crm_opportunity_action_dashboard" model="ir.actions.act_window">
             <field name="name">Pipeline Analysis</field>
             <field name="res_model">crm.lead</field>
-            <field name="view_mode">graph,pivot,cohort,dashboard,tree,form</field>
+            <field name="view_mode">graph,pivot,cohort,tree,form</field>
             <field name="context" eval="{
                 'tree_view_ref': 'crm.crm_case_tree_view_oppor',
                 'default_type': 'opportunity',
@@ -207,13 +127,6 @@
                     Use this menu to have an overview of your Pipeline.
                 </p>
             </field>
-        </record>
-
-        <record id="crm_opportunity_action_dashboard_dashboard" model="ir.actions.act_window.view">
-            <field name="sequence" eval="4"/>
-            <field name="view_mode">dashboard</field>
-            <field name="view_id" ref="crm_opportunity_view_dashboard"/>
-            <field name="act_window_id" ref="crm_enterprise.crm_opportunity_action_dashboard"/>
         </record>
 
         <record id="crm_opportunity_action_dashboard_pivot" model="ir.actions.act_window.view">
@@ -238,47 +151,10 @@
         </record>
 
         <record id="crm_opportunity_action_dashboard_tree" model="ir.actions.act_window.view">
-            <field name="sequence" eval="5"/>
+            <field name="sequence" eval="4"/>
             <field name="view_mode">tree</field>
             <field name="view_id" ref="crm.crm_case_tree_view_oppor"/>
             <field name="act_window_id" ref="crm_enterprise.crm_opportunity_action_dashboard"/>
-        </record>
-
-        <record id="crm_lead_action_dashboard" model="ir.actions.act_window">
-            <field name="name">Dashboard</field>
-            <field name="res_model">crm.lead</field>
-            <field name="view_mode">dashboard,pivot,graph,tree</field>
-            <field name="domain">['|', ('active','=',True), ('active','=',False)]</field>
-            <field name="search_view_id" ref="crm.view_crm_case_leads_filter"/>
-            <field name="context" eval="{'search_default_filter_creation_date': 1}"/>
-            <field name="help" type="html">
-                <p class="o_view_nocontent_smiling_face">
-                    No data found!
-                </p><p>
-                    This Dashboard allows you to see at a glance how well you are doing.
-                </p>
-            </field>
-        </record>
-
-        <record id="crm_lead_action_dashboard_dashboard" model="ir.actions.act_window.view">
-            <field name="sequence" eval="1"/>
-            <field name="view_mode">dashboard</field>
-            <field name="view_id" ref="crm_lead_dashboard_view"/>
-            <field name="act_window_id" ref="crm_enterprise.crm_lead_action_dashboard"/>
-        </record>
-
-        <record id="crm_lead_action_dashboard_pivot" model="ir.actions.act_window.view">
-            <field name="sequence" eval="2"/>
-            <field name="view_mode">pivot</field>
-            <field name="view_id" ref="crm_enterprise.crm_lead_view_pivot"/>
-            <field name="act_window_id" ref="crm_enterprise.crm_lead_action_dashboard"/>
-        </record>
-
-        <record id="crm_lead_action_dashboard_graph" model="ir.actions.act_window.view">
-            <field name="sequence" eval="3"/>
-            <field name="view_mode">graph</field>
-            <field name="view_id" ref="crm_enterprise.crm_lead_view_graph"/>
-            <field name="act_window_id" ref="crm_enterprise.crm_lead_action_dashboard"/>
         </record>
 
         <!-- add map to pipeline action -->
@@ -289,41 +165,22 @@
             <field name="act_window_id" ref="crm.crm_lead_action_pipeline"/>
         </record>
 
-        <!-- add dashboard to res partner action -->
-        <record id="crm_lead_action_partner_view_dashboard" model="ir.actions.act_window.view">
-            <field name="sequence" eval="6"/>
-            <field name="view_mode">dashboard</field>
-            <field name="act_window_id" ref="crm.crm_lead_opportunities"/>
-        </record>
-
         <!-- add cohort to res partner action -->
         <record id="crm_opportunity_partner_add_cohort" model="ir.actions.act_window.view">
-            <field name="sequence" eval="7"/>
+            <field name="sequence" eval="6"/>
             <field name="view_mode">cohort</field>
             <field name="act_window_id" ref="crm.crm_lead_opportunities"/>
         </record>
 
         <!-- add dashboard to lead report action -->
         <record id="crm.crm_opportunity_report_action_lead" model="ir.actions.act_window">
-            <field name="view_mode">graph,pivot,dashboard,tree</field>
-        </record>
-        <record id="crm_opportunity_report_action_lead_dashbaord" model="ir.actions.act_window.view">
-            <field name="view_mode">dashboard</field>
-            <field name="view_id" ref="crm_enterprise.crm_opportunity_view_dashboard"/>
-            <field name="act_window_id" ref="crm.crm_opportunity_report_action_lead"/>
+            <field name="view_mode">graph,pivot,tree</field>
         </record>
 
         <!-- menuitem -->
         <record id="crm.crm_opportunity_report_menu" model="ir.ui.menu">
             <field name="action" ref="crm_enterprise.crm_opportunity_action_dashboard"/>
         </record>
-
-        <menuitem
-            id="crm_enterprise_dashboard_menu"
-            name="Dashboard"
-            parent="crm.crm_menu_report"
-            action="crm_enterprise.crm_lead_action_dashboard"
-            sequence="0"/>
 
     </data>
 </odoo>

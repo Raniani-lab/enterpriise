@@ -9,7 +9,7 @@
 Add a dynamic report about contracts and employees.
     """,
     'website': 'https://www.odoo.com/app/employees',
-    'depends': ['hr_contract', 'web_dashboard'],
+    'depends': ['hr_contract'],
     'data': [
         'security/ir.model.access.csv',
         'security/hr_contract_reports_security.xml',

@@ -83,3 +83,9 @@ class PlanningShift(models.Model):
 
     def write(self, values):
         return super(PlanningShift, self).write(values)
+
+    def _prepare_shift_vals(self):
+        return {
+            **super()._prepare_shift_vals(),
+            'project_id': self.project_id.id,
+        }

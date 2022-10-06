@@ -133,9 +133,7 @@ class Employee(models.Model):
             if (slot.start_datetime < split_time) and (slot.end_datetime > split_time):
                 shift_vals_list.append({
                     'start_datetime': split_time,
-                    'end_datetime': slot.end_datetime,
-                    'role_id': slot.role_id.id,
-                    'company_id': slot.company_id.id,
+                    **slot._prepare_shift_vals(),
                 })
                 if split_time > slot.start_datetime:
                     slot.write({'end_datetime': split_time})

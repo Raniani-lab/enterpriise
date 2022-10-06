@@ -648,3 +648,9 @@ class PlanningSlot(models.Model):
                 warning=_("This Sale Order Item doesn't have a target value of planned hours. Planned hours :")
             )
         return super()._gantt_progress_bar(field, res_ids, start, stop)
+
+    def _prepare_shift_vals(self):
+        return {
+            **super()._prepare_shift_vals(),
+            'sale_line_id': self.sale_line_id.id,
+        }

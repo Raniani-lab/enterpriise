@@ -1840,6 +1840,26 @@ class Planning(models.Model):
 
         return progress_bars
 
+    def _prepare_shift_vals(self):
+        """ Generate shift vals"""
+        self.ensure_one()
+        return {
+            'resource_id': False,
+            'end_datetime': self.end_datetime,
+            'role_id': self.role_id.id,
+            'company_id': self.company_id.id,
+            'allocated_percentage': self.allocated_percentage,
+            'name': self.name,
+            'recurrency_id': self.recurrency_id.id,
+            'repeat': self.repeat,
+            'repeat_interval': self.repeat_interval,
+            'repeat_unit': self.repeat_unit,
+            'repeat_type': self.repeat_type,
+            'repeat_until': self.repeat_until,
+            'repeat_number': self.repeat_number,
+            'template_id': self.template_id.id,
+        }
+
 class PlanningRole(models.Model):
     _name = 'planning.role'
     _description = "Planning Role"

@@ -115,6 +115,12 @@ class AccountBankStatementLine(models.Model):
             wizard._action_trigger_matching_rules()
             if wizard.state == 'valid' and wizard.matching_rules_allow_auto_reconcile:
                 wizard.button_validate(async_action=False)
+
+                st_line.move_id.message_post(body=_(
+                    "This bank transaction has been automatically validated using the reconciliation model '%s'.",
+                    ', '.join(st_line.move_id.line_ids.reconcile_model_id.mapped('name')),
+                ))
+
                 nb_auto_reconciled_lines += 1
         st_lines.write({'cron_last_check': datetime_now})
 

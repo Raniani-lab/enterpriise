@@ -11,8 +11,7 @@ export class StreamPostKanbanModel extends KanbanModel {
      * @private
      */
     _refreshStreams() {
-        // @see orm_service.js:235 for the .withOption() => doesn't seems to work ...
-        return this.orm.call('social.stream', 'refresh_all', []);
+        return this.orm.silent.call('social.stream', 'refresh_all', []);
     }
 
     /**
@@ -24,8 +23,8 @@ export class StreamPostKanbanModel extends KanbanModel {
      * @private
      */
     _refreshAccountsStats() {
-        this.orm.call('social.live.post', 'refresh_statistics', []);
-        return this.orm.call('social.account', 'refresh_statistics', []);
+        this.orm.silent.call('social.live.post', 'refresh_statistics', []);
+        return this.orm.silent.call('social.account', 'refresh_statistics', []);
     }
 
     /**

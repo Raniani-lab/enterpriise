@@ -161,10 +161,10 @@ class SocialStreamPostYoutube(models.Model):
             youtube_comment_replies = [
                 self.env['social.media']._format_youtube_comment(reply)
                 for reply in list(reversed(comment.get('replies', {}).get('comments', [])))]
-            if youtube_comment_replies:
-                youtube_comment['comments'] = {
-                    'data': youtube_comment_replies
-                }
+
+            youtube_comment['comments'] = {
+                'data': youtube_comment_replies if youtube_comment_replies else []
+            }
 
             comments.append(youtube_comment)
 

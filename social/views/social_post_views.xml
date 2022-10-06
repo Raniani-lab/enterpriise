@@ -73,13 +73,13 @@
                                         <t t-if="image_url_index == 1 &amp; record.image_ids.raw_value.length > 2">
                                             <a class="o_social_stream_post_image_more position-relative d-flex ms-1"
                                                 t-on-click.stop="() => this.onClickMoreImages(image_url_index, image_urls_json)">
-                                                <img class="o_social_stream_post_image_click" t-att-src="image_urls_json[1]" alt="Post Image" />
+                                                <img t-att-src="image_urls_json[1]" alt="Post Image" />
                                                 <div class="o_social_stream_post_image_more_overlay d-flex align-items-center h-100 w-100 text-white justify-content-center position-absolute h1 m-0" style="user-select: none;">
                                                     +<t t-esc="image_urls_json.length - 2"/>
                                                 </div>
                                             </a>
                                         </t>
-                                        <img t-else="" class="o_social_stream_post_image_click" t-att-src="image_url" alt="Post Image"
+                                        <img t-else="" t-att-src="image_url" alt="Post Image"
                                             t-on-click.stop="() => this.onClickMoreImages(image_url_index, image_urls_json)"/>
                                     </t>
                                 </div>

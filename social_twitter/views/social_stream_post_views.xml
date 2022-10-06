@@ -65,10 +65,9 @@
                     <div class="d-flex justify-content-around">
                         <div t-attf-class="o_social_twitter_likes o_social_subtle_btn ps-2 pe-3 #{record.twitter_user_likes.raw_value ? 'o_social_twitter_user_likes' : ''}"
                              t-on-click.prevent="_onTwitterTweetLike">
-                            <t t-if="record.twitter_likes_count.raw_value !== '0'">
-                                <i class="fa fa-heart me-1" title="Likes"/>
-                                <b class="o_social_kanban_likes_count" t-esc="_insertThousandSeparator(record.twitter_likes_count.raw_value)"/>
-                            </t>
+                            <i class="fa fa-heart me-1" title="Likes"/>
+                            <b class="o_social_kanban_likes_count" t-esc="record.twitter_likes_count.raw_value !== '0' ?
+                                _insertThousandSeparator(record.twitter_likes_count.raw_value) : ''"/>
                         </div>
 
                         <div class="o_social_twitter_comments o_social_comments o_social_subtle_btn px-4"

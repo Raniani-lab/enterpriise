@@ -135,5 +135,5 @@ class SocialStreamPostInstagram(models.Model):
                 # Small trick for the comment answers, we reverse the list to have it in the
                 # desired order (chronological).
                 'data': [self._instagram_format_comment(comment) for comment in comment['replies'].get('data', [])][::-1]
-            } if comment.get('replies') else False
+            } if comment.get('replies') else {'data': []}
         }

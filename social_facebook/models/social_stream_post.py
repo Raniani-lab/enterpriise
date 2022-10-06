@@ -93,6 +93,8 @@ class SocialStreamPostFacebook(models.Model):
                 comment["from"] = {"name": _("Unknown")}
 
             inner_comments = comment.get('comments', {}).get('data', [])
+            if not inner_comments:
+                comment['comments'] = {'data': []}
             for inner_comment in inner_comments:
                 inner_comment['likes'] = {'summary': {'total_count': inner_comment.get('like_count', 0)}}
                 inner_comment['formatted_created_time'] = self._format_facebook_published_date(inner_comment)

@@ -71,7 +71,7 @@ export class StreamPostComments extends Component {
     }
 
     get bodyClass() {
-        return 'o_social_comments_modal o_social_comments_modal_' + this.originalPost.media_type.raw_value + ' pt-0 px-0';
+        return 'o_social_comments_modal o_social_comments_modal_' + this.originalPost.media_type.raw_value + ' pt-0 px-0 bg-100';
     }
 
     get originalPost() {

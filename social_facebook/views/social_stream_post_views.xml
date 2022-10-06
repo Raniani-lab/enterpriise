@@ -27,10 +27,9 @@
                     t-if="record.media_type.raw_value === 'facebook'">
                     <div t-attf-class="o_social_facebook_likes o_social_subtle_btn ps-2 pe-3 #{record.facebook_user_likes.raw_value ? 'o_social_facebook_user_likes' : ''}"
                         t-on-click.stop="_onFacebookPostLike">
-                        <t t-if="record.facebook_likes_count.raw_value !== 0">
-                            <i class="fa fa-thumbs-up me-1" title="Likes"/>
-                            <b class="o_social_kanban_likes_count" t-esc="_insertThousandSeparator(record.facebook_likes_count.raw_value)"/>
-                        </t>
+                        <i class="fa fa-thumbs-up me-1" title="Likes"/>
+                        <b class="o_social_kanban_likes_count" t-esc="record.facebook_likes_count.raw_value !== 0 ?
+                            _insertThousandSeparator(record.facebook_likes_count.raw_value) : ''"/>
                     </div>
                     <div class="o_social_facebook_comments o_social_comments o_social_subtle_btn px-3"
                          t-on-click.stop="_onFacebookCommentsClick">

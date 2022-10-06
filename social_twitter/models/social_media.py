@@ -205,6 +205,7 @@ class SocialMediaTwitter(models.Model):
                     'total_count': tweet.get('favorite_count')
                 }
             },
+            'comments': {'data': []},
             'in_reply_to_status_id_str': tweet.get('in_reply_to_status_id_str'),
         }
 

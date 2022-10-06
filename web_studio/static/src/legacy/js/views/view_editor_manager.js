@@ -9,6 +9,8 @@ var framework = require('web.framework');
 var session = require('web.session');
 var view_registry = require('web.view_registry');
 const { processArch } = require("@web/legacy/legacy_load_views");
+const KanbanView = require("web.KanbanView");
+const ListView = require("web.ListView");
 
 var AbstractEditorManager = require('web_studio.AbstractEditorManager');
 var bus = require('web_studio.bus');
@@ -1393,7 +1395,14 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
             if (CONVERTED_VIEWS.includes(this.view_type)) {
                 return this.instantiateWowlController(viewParams);
             }
-            var View = view_registry.get(this.view_type);
+            let View;
+            if (this.view_type === "kanban") {
+                View = KanbanView;
+            } else if (this.view_type === "list") {
+                View = ListView;
+            } else {
+                View = view_registry.get(this.view_type);
+            }
             this.view = new View(fields_view, _.extend({}, viewParams));
             if (this.mode === 'edition') {
                 var Editor = Editors[this.view_type];

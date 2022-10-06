@@ -45,7 +45,6 @@ It assigns manager and user access rights to the Administrator for the accountin
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'account_accountant/static/src/js/*.js',
             'account_accountant/static/src/js/tours/account_accountant.js',
             'account_accountant/static/src/js/reconciliation/*.js',
             'account_accountant/static/src/scss/*.scss',

@@ -385,7 +385,6 @@
                     "tag": "chart",
                     "data": {
                         "title": "",
-                        "id": "f2791b10-860a-49c4-a95b-c58fc4619ff2",
                         "background": "#FFFFFF",
                         "legendPosition": "none",
                         "metaData": {
@@ -594,9 +593,12 @@
     },
     "revisionId": "START_REVISION",
     "chartOdooMenusReferences": {
-        "f2791b10-860a-49c4-a95b-c58fc4619ff2": "hr.menu_hr_root"
+        "f2791b10-860a-49c4-a95b-c58fc4619ff2": "hr.menu_hr_root",
+        "e58ddf24-719e-44c2-9042-cd327e0fb7e0": "hr.menu_hr_employee_user"
     },
-    "odooVersion": 3,
+    "odooVersion": 4,
+    "lists": {},
+    "listNextId": 1,
     "pivots": {
         "1": {
             "colGroupBys": [],
@@ -697,8 +699,6 @@
         }
     },
     "pivotNextId": 4,
-    "lists": {},
-    "listNextId": 1,
     "globalFilters": [
         {
             "id": "768a5e57-a46a-4703-a7aa-870bca65bae9",

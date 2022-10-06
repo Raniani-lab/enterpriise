@@ -1512,13 +1512,12 @@
                 {
                     "id": "4915c374-aebc-481a-bfa7-39781ffaac44",
                     "x": 0,
-                    "y": 182,
-                    "width": 536,
-                    "height": 222,
+                    "y": 178,
+                    "width": 475,
+                    "height": 230,
                     "tag": "chart",
                     "data": {
                         "title": "",
-                        "id": "4915c374-aebc-481a-bfa7-39781ffaac44",
                         "background": "#FFFFFF",
                         "legendPosition": "none",
                         "metaData": {
@@ -1545,14 +1544,13 @@
                 },
                 {
                     "id": "91c732c5-b044-4b07-9dee-f7048033b161",
-                    "x": 547,
-                    "y": 180,
-                    "width": 536,
-                    "height": 225,
+                    "x": 525,
+                    "y": 178,
+                    "width": 475,
+                    "height": 230,
                     "tag": "chart",
                     "data": {
                         "title": "",
-                        "id": "91c732c5-b044-4b07-9dee-f7048033b161",
                         "background": "#FFFFFF",
                         "legendPosition": "none",
                         "metaData": {
@@ -1835,9 +1833,65 @@
     "chartOdooMenusReferences": {
         "4915c374-aebc-481a-bfa7-39781ffaac44": "hr_recruitment.menu_hr_recruitment_root",
         "9f196086-2b54-44f8-b80e-9ba2bcfbf1fe": "hr_recruitment.menu_hr_recruitment_root",
-        "91c732c5-b044-4b07-9dee-f7048033b161": "hr_recruitment.menu_hr_recruitment_root"
+        "91c732c5-b044-4b07-9dee-f7048033b161": "hr_recruitment.menu_hr_recruitment_root",
+        "e0624db2-bdc1-46b2-9fb0-2d50cb39fb54": "hr_recruitment.menu_crm_case_categ_all_app",
+        "ed3c8d72-864c-4aeb-9f4e-cfa9886b961b": "hr_recruitment.hr_applicant_report_menu",
+        "8f345945-0380-411d-a267-99922f2b897a": "hr_recruitment.hr_applicant_report_menu",
+        "9821be88-e50b-4837-a0a7-a167e6ec81aa": "hr_recruitment.hr_applicant_report_menu",
+        "b8a54130-6779-4cef-9662-003d06e27d80": "hr_recruitment.hr_applicant_report_menu"
     },
-    "odooVersion": 3,
+    "odooVersion": 4,
+    "lists": {
+        "1": {
+            "columns": [
+                "partner_name",
+                "job_id",
+                "name",
+                "stage_id",
+                "priority",
+                "partner_mobile",
+                "categ_ids",
+                "user_id",
+                "create_date"
+            ],
+            "domain": [],
+            "model": "hr.applicant",
+            "context": {},
+            "orderBy": [
+                {
+                    "name": "create_date",
+                    "asc": false
+                }
+            ],
+            "id": "1",
+            "name": "Applications by Creation Date"
+        },
+        "2": {
+            "columns": [
+                "partner_name",
+                "job_id",
+                "name",
+                "stage_id",
+                "priority",
+                "partner_mobile",
+                "categ_ids",
+                "user_id",
+                "create_date"
+            ],
+            "domain": [],
+            "model": "hr.applicant",
+            "context": {},
+            "orderBy": [
+                {
+                    "name": "create_date",
+                    "asc": true
+                }
+            ],
+            "id": "2",
+            "name": "Applications by Creation Date"
+        }
+    },
+    "listNextId": 3,
     "pivots": {
         "1": {
             "colGroupBys": [],
@@ -1937,10 +1991,7 @@
                     []
                 ],
                 "measure": "hired",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "5": {
@@ -1973,10 +2024,7 @@
                     []
                 ],
                 "measure": "hired",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "6": {
@@ -2009,10 +2057,7 @@
                     []
                 ],
                 "measure": "hired",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "7": {
@@ -2045,10 +2090,7 @@
                     []
                 ],
                 "measure": "hired",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "8": {
@@ -2081,65 +2123,11 @@
                     []
                 ],
                 "measure": "hired",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         }
     },
     "pivotNextId": 9,
-    "lists": {
-        "1": {
-            "columns": [
-                "partner_name",
-                "job_id",
-                "name",
-                "stage_id",
-                "priority",
-                "partner_mobile",
-                "categ_ids",
-                "user_id",
-                "create_date"
-            ],
-            "domain": [],
-            "model": "hr.applicant",
-            "context": {},
-            "orderBy": [
-                {
-                    "name": "create_date",
-                    "asc": false
-                }
-            ],
-            "id": "1",
-            "name": "Applications by Creation Date"
-        },
-        "2": {
-            "columns": [
-                "partner_name",
-                "job_id",
-                "name",
-                "stage_id",
-                "priority",
-                "partner_mobile",
-                "categ_ids",
-                "user_id",
-                "create_date"
-            ],
-            "domain": [],
-            "model": "hr.applicant",
-            "context": {},
-            "orderBy": [
-                {
-                    "name": "create_date",
-                    "asc": true
-                }
-            ],
-            "id": "2",
-            "name": "Applications by Creation Date"
-        }
-    },
-    "listNextId": 3,
     "globalFilters": [
         {
             "id": "f93b0b68-4ddf-4141-b8e7-9e666c54bc45",

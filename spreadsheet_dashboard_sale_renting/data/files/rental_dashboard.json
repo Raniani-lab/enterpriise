@@ -739,7 +739,6 @@
                     "tag": "chart",
                     "data": {
                         "title": "",
-                        "id": "4ce3be5b-1e3d-4174-a375-c9841f11475d",
                         "background": "#FFFFFF",
                         "legendPosition": "none",
                         "metaData": {
@@ -1023,7 +1022,10 @@
     },
     "revisionId": "START_REVISION",
     "chartOdooMenusReferences": {
-        "4ce3be5b-1e3d-4174-a375-c9841f11475d": "sale_renting.rental_menu_root"
+        "4ce3be5b-1e3d-4174-a375-c9841f11475d": "sale_renting.rental_menu_root",
+        "81f8cba7-aabc-4e13-a454-4660645be79f": "sale_renting.rental_orders_all",
+        "01657be1-2ed9-48bd-aab5-158f7d15e752": "sale_renting.rental_orders_all",
+        "097038ff-456e-48b7-9908-2a07d5ff3440": "sale_renting.menu_rental_reporting"
     },
     "odooVersion": 4,
     "lists": {},
@@ -1071,10 +1073,7 @@
                     []
                 ],
                 "measure": "price",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "2": {
@@ -1119,10 +1118,7 @@
                     []
                 ],
                 "measure": "price",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "3": {
@@ -1167,10 +1163,7 @@
                     []
                 ],
                 "measure": "price",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "4": {
@@ -1209,10 +1202,7 @@
                     []
                 ],
                 "measure": "price",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "7": {
@@ -1251,10 +1241,7 @@
                     []
                 ],
                 "measure": "price",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "8": {
@@ -1293,10 +1280,7 @@
                     []
                 ],
                 "measure": "price",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         }
     },

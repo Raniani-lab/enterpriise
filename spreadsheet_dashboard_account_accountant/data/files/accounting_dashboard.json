@@ -721,7 +721,6 @@
                     "tag": "chart",
                     "data": {
                         "title": "",
-                        "id": "151b0f60-aa89-457e-9456-9807ab779be6",
                         "background": "#FFFFFF",
                         "legendPosition": "none",
                         "metaData": {
@@ -1409,7 +1408,7 @@
                     "content": "=ODOO.BALANCE($F34,C$9)"
                 },
                 "C35": {
-                    "content": "=ODOO.BALANCE($F35,C$9)"
+                    "content": "=-ODOO.BALANCE($F35,C$9)"
                 },
                 "C36": {
                     "content": "=C40-C48"
@@ -1596,7 +1595,7 @@
                     "content": "=ODOO.BALANCE($F34,D$9)"
                 },
                 "D35": {
-                    "content": "=ODOO.BALANCE($F35,D$9)"
+                    "content": "=-ODOO.BALANCE($F35,D$9)"
                 },
                 "D36": {
                     "content": "=D40-D48"
@@ -1781,7 +1780,7 @@
                     "content": "=ODOO.BALANCE($F34,E$9)"
                 },
                 "E35": {
-                    "content": "=ODOO.BALANCE($F35,E$9)"
+                    "content": "=-ODOO.BALANCE($F35,E$9)"
                 },
                 "E36": {
                     "content": "=E40-E48"
@@ -3085,13 +3084,17 @@
     "revisionId": "START_REVISION",
     "chartOdooMenusReferences": {
         "cb548cd5-6798-46c9-ade5-3b497efbfc4a": "account_accountant.menu_accounting",
-        "151b0f60-aa89-457e-9456-9807ab779be6": "account_accountant.menu_accounting"
+        "151b0f60-aa89-457e-9456-9807ab779be6": "account_accountant.menu_accounting",
+        "86aac7b2-f3a5-46e1-a097-916aa4b8f8d0": "account_reports.menu_action_account_report_exec_summary",
+        "3586cbc4-6ca3-46af-951f-94d4773f94dc": "account_reports.menu_action_account_report_exec_summary",
+        "57f18f9a-55b7-4b84-b927-480c4c56c026": "account_reports.menu_action_account_report_exec_summary",
+        "8f1fb053-5700-4bb3-b93d-55ceb2083d31": "account_reports.menu_action_account_report_exec_summary"
     },
-    "odooVersion": 3,
-    "pivots": {},
-    "pivotNextId": 1,
+    "odooVersion": 4,
     "lists": {},
     "listNextId": 1,
+    "pivots": {},
+    "pivotNextId": 1,
     "globalFilters": [
         {
             "id": "7785b753-917c-4640-a937-4b6226222ca8",

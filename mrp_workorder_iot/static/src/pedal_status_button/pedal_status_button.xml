@@ -10,7 +10,10 @@
     </t>
 
     <t t-name="mrp_workorder_iot.Tablet" t-inherit="mrp_workorder.Tablet" t-inherit-mode="extension" owl="1">
-        <xpath expr="//div[hasclass('o_tablet_timeline')]" position="before">
+        <xpath expr="//div[hasclass('o_tablet_timeline')]" position="attributes">
+            <attribute name="t-if">state.showPedalStatus or steps.length</attribute>
+        </xpath>
+        <xpath expr="//div[hasclass('o_tablet_timeline')]" position="inside">
             <t t-if="state.showPedalStatus">
                 <PedalStatusButton pedalConnected="state.pedalConnected" takeOwnership.bind="takeOwnership" />
             </t>

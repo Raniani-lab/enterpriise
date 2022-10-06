@@ -1036,7 +1036,7 @@ class SaleOrder(models.Model):
 
     def _create_recurring_invoice(self, automatic=False, batch_size=30):
         automatic = bool(automatic)
-        auto_commit = not bool(config['test_enable'] or not config['test_file'])
+        auto_commit = automatic and not bool(config['test_enable'] or not config['test_file'])
         Mail = self.env['mail.mail']
         stages_in_progress = self.env['sale.order.stage'].search([('category', '=', 'progress')])
         if len(self) > 0:

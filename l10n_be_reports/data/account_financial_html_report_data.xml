@@ -19,11 +19,6 @@
             <record id="account_financial_report_be_actif_title0" model="account.report.line">
                 <field name="name">ACTIF</field>
                 <field name="children_ids">
-                    <record id="account_financial_report_be_actif0" model="account.report.line">
-                        <field name="name">TOTAL DE L'ACTIF</field>
-                        <field name="code">BE_ACTIF</field>
-                        <field name="aggregation_formula">BE_20_28.balance + BE_29_58.balance</field>
-                    </record>
                     <record id="account_financial_report_be_actif_imm0" model="account.report.line">
                         <field name="name">20/28 - Actifs immobilisés</field>
                         <field name="code">BE_20_28</field>
@@ -207,16 +202,16 @@
                             </record>
                         </field>
                     </record>
+                    <record id="account_financial_report_be_actif0" model="account.report.line">
+                        <field name="name">TOTAL DE L'ACTIF</field>
+                        <field name="code">BE_ACTIF</field>
+                        <field name="aggregation_formula">BE_20_28.balance + BE_29_58.balance</field>
+                    </record>
                 </field>
             </record>
             <record id="account_financial_report_be_passif_title0" model="account.report.line">
                 <field name="name">PASSIF</field>
                 <field name="children_ids">
-                    <record id="account_financial_report_be_passif0" model="account.report.line">
-                        <field name="name">TOTAL DU PASSIF</field>
-                        <field name="code">BE_PASSIF</field>
-                        <field name="aggregation_formula">BE_10_15.balance + BE_16.balance + BE_17_49.balance</field>
-                    </record>
                     <record id="account_financial_report_be_capitaux_propres0" model="account.report.line">
                         <field name="name">10/15 - Capitaux propres</field>
                         <field name="code">BE_10_15</field>
@@ -522,6 +517,11 @@
                                 <field name="account_codes_formula">-493 - 492</field>
                             </record>
                         </field>
+                    </record>
+                    <record id="account_financial_report_be_passif0" model="account.report.line">
+                        <field name="name">TOTAL DU PASSIF</field>
+                        <field name="code">BE_PASSIF</field>
+                        <field name="aggregation_formula">BE_10_15.balance + BE_16.balance + BE_17_49.balance</field>
                     </record>
                 </field>
             </record>

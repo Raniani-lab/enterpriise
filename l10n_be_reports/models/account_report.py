@@ -291,7 +291,7 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
             for line in report.line_ids
             if line.code
         }
-
+        round_adm_tol = 62.00  # Rounding tolerance for belgian administration
         checks = [
             # code 13. Carried over grids can be ignored by these rules, they will be set to 0 if they are negative.
             (_("Not allowed negative amounts"),
@@ -306,28 +306,28 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
                 lambda expr_totals: expr_totals[expr_map['c56']]['value'] + expr_totals[expr_map['c57']]['value'] > 0 if expr_totals[expr_map['c87']]['value'] > 0 else True),
 
             # Code O
-            (_('[01] * 6% + [02] * 12% + [03] * 21% = [54]'),
-                lambda expr_totals: expr_totals[expr_map['c01']]['value'] * 0.06 + expr_totals[expr_map['c02']]['value'] * 0.12 + expr_totals[expr_map['c03']]['value'] * 0.21 == expr_totals[expr_map['c54']]['value']),
+            ('[01] * 6% + [02] * 12% + [03] * 21% = [54] ± 62',
+                lambda expr_totals: abs(expr_totals[expr_map['c01']]['value'] * 0.06 + expr_totals[expr_map['c02']]['value'] * 0.12 + expr_totals[expr_map['c03']]['value'] * 0.21 - expr_totals[expr_map['c54']]['value']) <= round_adm_tol),
 
             # Code P
-            (_('([84] + [86] + [88]) * 21% >= [55]'),
-                lambda expr_totals: (expr_totals[expr_map['c84']]['value'] + expr_totals[expr_map['c86']]['value'] + expr_totals[expr_map['c88']]['value']) * 0.21 >= expr_totals[expr_map['c55']]['value']),
+            ('([84] + [86] + [88]) * 21% >= [55] - 62',
+                lambda expr_totals: (expr_totals[expr_map['c84']]['value'] + expr_totals[expr_map['c86']]['value'] + expr_totals[expr_map['c88']]['value']) * 0.21 >= expr_totals[expr_map['c55']]['value'] - round_adm_tol),
 
             # Code Q
-            (_('([85] + [87]) * 21% >= ([56] + [57])'),
-                lambda expr_totals: (expr_totals[expr_map['c85']]['value'] + expr_totals[expr_map['c87']]['value']) * 0.21 >= expr_totals[expr_map['c56']]['value'] + expr_totals[expr_map['c57']]['value']),
+            ('([85] + [87]) * 21% >= ([56] + [57]) - 62',
+                lambda expr_totals: ((expr_totals[expr_map['c85']]['value'] + expr_totals[expr_map['c87']]['value']) * 0.21) >= (expr_totals[expr_map['c56']]['value'] + expr_totals[expr_map['c57']]['value']) - round_adm_tol),
 
             # Code S
-            (_('([81] + [82] + [83] + [84] + [85]) * 50% >= [59]'),
+            ('([81] + [82] + [83] + [84] + [85]) * 50% >= [59]',
                 lambda expr_totals: sum(expr_totals[expr_map[grid]]['value'] for grid in ('c81', 'c82', 'c83', 'c84', 'c85')) * 0.5 >= expr_totals[expr_map['c59']]['value']),
 
             # Code T
-            (_('[85] * 21% >= [63]'),
-                lambda expr_totals: expr_totals[expr_map['c85']]['value'] * 0.21 >= expr_totals[expr_map['c63']]['value']),
+            ('[85] * 21% >= [63] - 62',
+                lambda expr_totals: expr_totals[expr_map['c85']]['value'] * 0.21 >= expr_totals[expr_map['c63']]['value'] - round_adm_tol),
 
             # Code U
-            (_('[49] * 21% >= [64]'),
-                lambda expr_totals: expr_totals[expr_map['c49']]['value'] * 0.21 >= expr_totals[expr_map['c64']]['value']),
+            ('[49] * 21% >= [64] - 62',
+                lambda expr_totals: expr_totals[expr_map['c49']]['value'] * 0.21 >= expr_totals[expr_map['c64']]['value'] - round_adm_tol),
 
             # Code AC
             (_('[88] < ([81] + [82] + [83] + [84]) * 100 if [88] > 99.999'),

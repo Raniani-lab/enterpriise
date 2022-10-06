@@ -76,6 +76,12 @@ class MrpWorkorder(models.Model):
         })
         return data
 
+    def record_production(self):
+        action = super().record_production()
+        if action is not True and self.employee_id:
+            action.get('context', {})['employee_id'] = self.employee_id.id
+        return action
+
     def action_back(self):
         action = super().action_back()
         if self.employee_id:

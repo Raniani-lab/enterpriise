@@ -33,14 +33,16 @@ export class WorkorderFormController extends FormController {
                 this.workorderBus.trigger("workorder_event", params.name);
                 return false;
             }
-            if (this.model.root.resmodel === "mrp.workorder") {
-                await new Promise((resolve) =>
-                    this.workorderbus.trigger("force_save_check", { resolve })
-                );
+            if (this.model.root.resModel === "mrp.workorder") {
+                if (this.model.root.data.current_quality_check_id) {
+                    await new Promise((resolve) =>
+                        this.workorderBus.trigger("force_save_check", { resolve })
+                    );
+                }
             }
-            if (this.model.root.resmodel === "quality.check") {
+            if (this.model.root.resModel === "quality.check") {
                 await new Promise((resolve) =>
-                    this.workorderbus.trigger("force_save_workorder", { resolve })
+                    this.workorderBus.trigger("force_save_workorder", { resolve })
                 );
             }
         };

@@ -927,6 +927,7 @@
                     "content": "=ODOO.LIST(1,9,\"prorated_revenue\")"
                 },
                 "F30": {
+                    "format": 3,
                     "content": "=ODOO.LIST(1,10,\"prorated_revenue\")"
                 },
                 "F33": {
@@ -1126,6 +1127,7 @@
                     "content": "=ODOO.LIST(1,9,\"probability\")"
                 },
                 "G30": {
+                    "format": 2,
                     "content": "=ODOO.LIST(1,10,\"probability\")"
                 },
                 "G33": {
@@ -1799,9 +1801,50 @@
     "revisionId": "START_REVISION",
     "chartOdooMenusReferences": {
         "5adf5fa8-e0e4-4e13-a3ac-259d67389cfb": "crm.crm_menu_root",
-        "6c739756-da1e-4e9b-bd26-e74e6cd10c88": "crm.crm_menu_root"
+        "6c739756-da1e-4e9b-bd26-e74e6cd10c88": "crm.crm_menu_root",
+        "09ab3fe3-04d6-4c9f-97ff-bb37fee0e692": "crm.crm_opportunity_report_menu",
+        "5dc98740-8fc9-432d-b386-59e6e5c8b7e8": "crm.crm_opportunity_report_menu",
+        "735dabd8-96dc-44a1-9871-f35a94c347f5": "crm.menu_crm_opportunities"
     },
-    "odooVersion": 3,
+    "odooVersion": 4,
+    "lists": {
+        "1": {
+            "columns": [
+                "name",
+                "email_from",
+                "phone",
+                "country_id",
+                "user_id",
+                "activity_ids",
+                "my_activity_date_deadline",
+                "prorated_revenue",
+                "stage_id",
+                "probability"
+            ],
+            "domain": [
+                [
+                    "type",
+                    "=",
+                    "opportunity"
+                ]
+            ],
+            "model": "crm.lead",
+            "context": {
+                "default_type": "opportunity",
+                "search_default_assigned_to_me": 1,
+                "default_team_id": 1
+            },
+            "orderBy": [
+                {
+                    "name": "prorated_revenue",
+                    "asc": false
+                }
+            ],
+            "id": "1",
+            "name": "list opps"
+        }
+    },
+    "listNextId": 2,
     "pivots": {
         "1": {
             "colGroupBys": [],
@@ -2123,50 +2166,12 @@
         }
     },
     "pivotNextId": 9,
-    "lists": {
-        "1": {
-            "columns": [
-                "name",
-                "email_from",
-                "phone",
-                "country_id",
-                "user_id",
-                "activity_ids",
-                "my_activity_date_deadline",
-                "prorated_revenue",
-                "stage_id",
-                "probability"
-            ],
-            "domain": [
-                [
-                    "type",
-                    "=",
-                    "opportunity"
-                ]
-            ],
-            "model": "crm.lead",
-            "context": {
-                "default_type": "opportunity",
-                "search_default_assigned_to_me": 1,
-                "default_team_id": 1
-            },
-            "orderBy": [
-                {
-                    "name": "prorated_revenue",
-                    "asc": false
-                }
-            ],
-            "id": "1",
-            "name": "list opps"
-        }
-    },
-    "listNextId": 2,
     "globalFilters": [
         {
             "id": "bf6dcdb0-d22d-468c-b6a9-64f717005043",
             "type": "date",
             "label": "Period",
-            "defaultValue": "last_year",
+            "defaultValue": {},
             "rangeType": "relative",
             "defaultsToCurrentPeriod": false,
             "pivotFields": {
@@ -2302,51 +2307,51 @@
             "defaultsToCurrentPeriod": false,
             "pivotFields": {
                 "1": {
-                    "field": "activity_user_id",
+                    "field": "user_id",
                     "type": "many2one"
                 },
                 "2": {
-                    "field": "activity_user_id",
+                    "field": "user_id",
                     "type": "many2one"
                 },
                 "3": {
-                    "field": "activity_user_id",
+                    "field": "user_id",
                     "type": "many2one"
                 },
                 "4": {
-                    "field": "activity_user_id",
+                    "field": "user_id",
                     "type": "many2one"
                 },
                 "5": {
-                    "field": "activity_user_id",
+                    "field": "user_id",
                     "type": "many2one"
                 },
                 "6": {
-                    "field": "activity_user_id",
+                    "field": "user_id",
                     "type": "many2one"
                 },
                 "7": {
-                    "field": "activity_user_id",
+                    "field": "user_id",
                     "type": "many2one"
                 },
                 "8": {
-                    "field": "activity_user_id",
+                    "field": "user_id",
                     "type": "many2one"
                 }
             },
             "listFields": {
                 "1": {
-                    "field": "activity_user_id",
+                    "field": "user_id",
                     "type": "many2one"
                 }
             },
             "graphFields": {
                 "5adf5fa8-e0e4-4e13-a3ac-259d67389cfb": {
-                    "field": "activity_user_id",
+                    "field": "user_id",
                     "type": "many2one"
                 },
                 "6c739756-da1e-4e9b-bd26-e74e6cd10c88": {
-                    "field": "activity_user_id",
+                    "field": "user_id",
                     "type": "many2one"
                 }
             }

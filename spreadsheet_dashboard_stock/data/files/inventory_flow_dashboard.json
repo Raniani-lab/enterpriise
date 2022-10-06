@@ -882,7 +882,7 @@
                     "content": "=_t(\"Current\")"
                 },
                 "B2": {
-                    "content": "=_t(\"-3\")"
+                    "content": "=ODOO.PIVOT(5,\"cycle_time\")"
                 },
                 "B3": {
                     "content": "=ODOO.PIVOT(5,\"delay\")"
@@ -997,7 +997,10 @@
     },
     "revisionId": "START_REVISION",
     "chartOdooMenusReferences": {
-        "68ebf228-b00b-456b-84f5-ada5212d184e": "stock.menu_stock_root"
+        "68ebf228-b00b-456b-84f5-ada5212d184e": "stock.menu_stock_root",
+        "828d0e17-137f-4f2b-9d2c-e848859dbff6": "stock_enterprise.stock_dashboard_menuitem",
+        "dba70661-e001-43b9-9dab-d97e0469e83a": "stock_enterprise.stock_dashboard_menuitem",
+        "eccd9e96-997e-4a92-ad09-91f142d23248": "stock_enterprise.stock_dashboard_menuitem"
     },
     "odooVersion": 4,
     "lists": {},

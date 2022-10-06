@@ -633,7 +633,6 @@
                     "tag": "chart",
                     "data": {
                         "title": "",
-                        "id": "2828f15d-9fe0-43c8-8ad7-a2b7fe7ff3c5",
                         "background": "#FFFFFF",
                         "legendPosition": "none",
                         "metaData": {
@@ -674,7 +673,6 @@
                     "tag": "chart",
                     "data": {
                         "title": "",
-                        "id": "6591ce4b-64ce-4630-943d-18570a18a4f2",
                         "background": "#FFFFFF",
                         "legendPosition": "right",
                         "metaData": {
@@ -1093,7 +1091,11 @@
     "chartOdooMenusReferences": {
         "2828f15d-9fe0-43c8-8ad7-a2b7fe7ff3c5": "mrp.menu_mrp_root",
         "6591ce4b-64ce-4630-943d-18570a18a4f2": "mrp.menu_mrp_root",
-        "3d49564f-cc66-495b-b056-61dd29b34ea6": "mrp.menu_mrp_root"
+        "3d49564f-cc66-495b-b056-61dd29b34ea6": "mrp.menu_mrp_root",
+        "379d22d2-4cbf-48fb-8fad-e44b9ce00dea": "mrp_account_enterprise.mrp_dashboard_menuitem",
+        "992b1b7d-78e0-4b41-b144-3995c16b73be": "mrp_account_enterprise.mrp_dashboard_menuitem",
+        "683afc26-bbb2-4647-8e80-e3699839ffd5": "mrp.menu_mrp_workcenter_productivity_report",
+        "9f95d0f4-ad80-45de-970a-9897eab4d56f": "mrp.menu_mrp_workcenter_productivity_report"
     },
     "odooVersion": 4,
     "lists": {},
@@ -1167,10 +1169,7 @@
                     []
                 ],
                 "measure": "product_uom_qty",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "2": {
@@ -1241,10 +1240,7 @@
                     []
                 ],
                 "measure": "product_uom_qty",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "3": {
@@ -1331,10 +1327,7 @@
                     []
                 ],
                 "measure": "product_uom_qty",
-                "order": "desc",
-                "originIndexes": [
-                    0
-                ]
+                "order": "desc"
             }
         },
         "5": {

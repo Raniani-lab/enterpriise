@@ -1009,7 +1009,7 @@ export default class BarcodePickingModel extends BarcodeModel {
                 alreadyExisting++;
             }
         }
-        if (alreadyExisting === quants.length) {
+        if (alreadyExisting >= quants.length) {
             barcodeData.error = _t("This package is already scanned.");
             return;
         }
@@ -1017,26 +1017,34 @@ export default class BarcodePickingModel extends BarcodeModel {
         for (const quant of quants) {
             const product = this.cache.getRecord('product.product', quant.product_id);
             const searchLineParams = Object.assign({}, barcodeData, { product });
-            const currentLine = this._findLine(searchLineParams);
-            if (currentLine) { // Updates an existing line.
-                const fieldsParams = this._convertDataToFieldsParams({
-                    quantity: quant.quantity,
-                    lotName: barcodeData.lotName,
-                    lot: barcodeData.lot,
-                    package: recPackage,
-                    owner: barcodeData.owner,
-                });
-                await this.updateLine(currentLine, fieldsParams);
-            } else { // Creates a new line.
-                const fieldsParams = this._convertDataToFieldsParams({
-                    product,
-                    quantity: quant.quantity,
-                    lot: quant.lot_id,
-                    package: quant.package_id,
-                    resultPackage: quant.package_id,
-                    owner: quant.owner_id,
-                });
-                await this._createNewLine({ fieldsParams });
+            let remaining_qty = quant.quantity;
+            let qty_used = 0;
+            while (remaining_qty > 0) {
+                const currentLine = this._findLine(searchLineParams);
+                if (currentLine) { // Updates an existing line.
+                    const qty_needed = Math.max(currentLine.reserved_uom_qty - currentLine.qty_done, 0);
+                    qty_used = qty_needed ? Math.min(qty_needed, remaining_qty) : remaining_qty;
+                    const fieldsParams = this._convertDataToFieldsParams({
+                        quantity: qty_used,
+                        lotName: barcodeData.lotName,
+                        lot: barcodeData.lot,
+                        package: recPackage,
+                        owner: barcodeData.owner,
+                    });
+                    await this.updateLine(currentLine, fieldsParams);
+                } else { // Creates a new line.
+                    qty_used = remaining_qty;
+                    const fieldsParams = this._convertDataToFieldsParams({
+                        product,
+                        quantity: qty_used,
+                        lot: quant.lot_id,
+                        package: quant.package_id,
+                        resultPackage: quant.package_id,
+                        owner: quant.owner_id,
+                    });
+                    await this._createNewLine({ fieldsParams });
+                }
+                remaining_qty -= qty_used;
             }
         }
         barcodeData.stopped = true;

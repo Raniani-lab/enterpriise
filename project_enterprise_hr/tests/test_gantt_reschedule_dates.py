@@ -40,15 +40,15 @@ class TestGanttRescheduleOnTasks(AutoShiftDatesHRCommon):
         self.gantt_reschedule_backward(self.task_1, self.task_3)
         self.assertEqual(self.task_1.planned_date_begin,
                          new_task_3_begin_date + relativedelta(days=-1, hour=11), failed_message)
-        failed_message = "The auto shift date feature should take the company's calendar into account before employee create_date."
-        new_task_3_begin_date = self.armande_employee_create_date - relativedelta(days=3, hour=9)
+        failed_message = "The auto shift date feature should take the employee's calendar into account even before employee create_date."
+        new_task_3_begin_date = self.armande_employee_create_date - relativedelta(days=4, hour=15)
         self.task_3.write({
             'planned_date_begin': new_task_3_begin_date,
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
         self.gantt_reschedule_backward(self.task_1, self.task_3)
-        self.assertEqual(self.task_1.planned_date_begin,
-                         new_task_3_begin_date - relativedelta(days=1, hour=15), failed_message)
+        self.assertEqual(self.task_1.planned_date_end,
+                         new_task_3_begin_date - relativedelta(hour=12), failed_message)
         new_task_1_begin_date = self.armande_departure_date + relativedelta(days=1, hour=11)
         self.task_1.write({
             'planned_date_begin': new_task_1_begin_date,
@@ -56,11 +56,8 @@ class TestGanttRescheduleOnTasks(AutoShiftDatesHRCommon):
         })
         self.gantt_reschedule_forward(self.task_1, self.task_3)
         self.assertEqual(self.task_3.planned_date_begin,
-                         new_task_1_begin_date + relativedelta(hour=14), failed_message)
+                         new_task_1_begin_date + relativedelta(days=1, hour=8), failed_message)
         failed_message = "The auto shift date feature should work for tasks landing on the edge of employee create_date or on the edge of departure_date."
-        self.armande_employee.write({
-            'resource_calendar_id': self.calendar_afternoon.id,
-        })
         new_task_3_begin_date = self.armande_employee_create_date + relativedelta(hour=13)
         self.task_3.write({
             'planned_date_begin': new_task_3_begin_date,
@@ -70,6 +67,9 @@ class TestGanttRescheduleOnTasks(AutoShiftDatesHRCommon):
         self.assertEqual(self.task_1.planned_date_begin,
                          new_task_3_begin_date + relativedelta(hour=9), failed_message)
         new_task_1_begin_date = self.armande_departure_date - relativedelta(days=1, hour=16)
+        self.armande_employee.write({
+            'resource_calendar_id': self.calendar_afternoon.id,
+        })
         self.task_1.write({
             'planned_date_begin': new_task_1_begin_date,
             'planned_date_end': new_task_1_begin_date + (self.task_1_planned_date_end - self.task_1_planned_date_begin),
@@ -79,24 +79,24 @@ class TestGanttRescheduleOnTasks(AutoShiftDatesHRCommon):
                          new_task_1_begin_date + relativedelta(days=1, hour=13), failed_message)
         failed_message = "The auto shift date feature should work for tasks landing on the edge of employee create_date or on the edge of departure_date, even when falling in the middle of the planned_hours."
         new_task_3_begin_date = self.armande_employee_create_date + relativedelta(hour=15)
+        self.armande_employee.write({
+            'resource_calendar_id': self.calendar_morning.id,
+        })
         self.task_3.write({
             'planned_date_begin': new_task_3_begin_date,
             'planned_date_end': new_task_3_begin_date + (self.task_3_planned_date_end - self.task_3_planned_date_begin),
         })
         self.gantt_reschedule_backward(self.task_1, self.task_3)
         self.assertEqual(self.task_1.planned_date_begin,
-                         new_task_3_begin_date + relativedelta(hour=11), failed_message)
-        self.armande_employee.write({
-            'resource_calendar_id': self.calendar_morning.id,
-        })
-        new_task_1_begin_date = self.armande_departure_date + relativedelta(hour=8)
+                         new_task_3_begin_date + relativedelta(hour=9), failed_message)
+        new_task_1_begin_date = self.armande_departure_date + relativedelta(hour=10)
         self.task_1.write({
             'planned_date_begin': new_task_1_begin_date,
             'planned_date_end': new_task_1_begin_date + (self.task_1_planned_date_end - self.task_1_planned_date_begin),
         })
         self.gantt_reschedule_forward(self.task_1, self.task_3)
         self.assertEqual(self.task_3.planned_date_end,
-                         new_task_1_begin_date + relativedelta(days=1, hour=9), failed_message)
+                         new_task_1_begin_date + relativedelta(days=1, hour=10), failed_message)
 
     def test_auto_shift_multiple_assignees(self):
         """

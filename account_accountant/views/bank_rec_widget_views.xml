@@ -157,8 +157,8 @@
                                         </div>
                                         <div id="row2_col2">
                                             <div class="o_field_many2manytags o_field_widget d-flex flex-row flex-nowrap">
-                                                <span t-if="record.to_check.raw_value" class="badge text-bg-warning border-0 fw-normal">To check</span>
-                                                <div t-if="record.is_reconciled.raw_value" class="badge text-bg-success border-0 fw-normal">
+                                                <span t-if="record.to_check.raw_value" class="badge text-bg-warning fw-normal">To check</span>
+                                                <div t-if="record.is_reconciled.raw_value" class="badge text-bg-success fw-normal">
                                                     <i class="fa fa-check"/> Matched
                                                 </div>
                                             </div>

@@ -20,7 +20,7 @@ registerPatch({
          * @param {MouseEvent} ev
          */
         onClickMobileNumber(ev) {
-            if (!this.exists() || !this.component) {
+            if (!this.exists()) {
                 return;
             }
             ev.preventDefault();

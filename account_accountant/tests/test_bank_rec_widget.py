@@ -75,6 +75,12 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
     def test_retrieve_partner_from_payment_ref(self):
         st_line = self._create_st_line(1000.0, partner_id=None, payment_ref="Gagnant turlututu Bernard tsoin tsoin")
         partner = self.env['res.partner'].create({'name': "Bernard Gagnant"})
+        self._create_invoice_line(
+            'out_invoice',
+            partner_id=partner,
+            invoice_date='2019-01-01',
+            invoice_line_ids=[{'price_unit': 1000.0}],
+        )
 
         self.assertEqual(st_line._retrieve_partner(), partner)
 

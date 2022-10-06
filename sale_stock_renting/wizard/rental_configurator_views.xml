@@ -7,7 +7,7 @@
     <field name="arch" type="xml">
       <xpath expr="//div[@name='qty_to_reserve']" position="replace">
           <div name="qty_to_reserve">
-            <field name="quantity" class="oe_inline col-lg-3 text-start ps-0"/>
+            <field name="quantity" class="text-start ps-0" style="max-width: 5rem"/>
             <!-- <notebook name="debug" groups="base.group_no_one" invisible="1"> -->
             <field name="is_product_storable" invisible="1"/>
             <field name="tracking" invisible="1"/>

@@ -36,23 +36,23 @@
                     }"/>
             </button>
             <xpath expr="//div[@name='button_box']" position="after">
-                <div class="rounded-pill text-bg-info float-end"
+                <div class="badge rounded-pill text-bg-info float-end fs-6 border-0"
                     attrs="{'invisible': [
                     '|', ('state', 'not in', ['sale', 'done']),
                     '|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', True)]}">Confirmed</div>
-                <div class="rounded-pill text-bg-info float-end"
+                <div class="badge rounded-pill text-bg-info float-end fs-6 border-0"
                     attrs="{'invisible': [
                     '|', ('state', 'not in', ['sale', 'done']),
                     '|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', False)]}">Late Pickup</div>
-                <div class="rounded-pill text-bg-warning float-end"
+                <div class="badge rounded-pill text-bg-warning float-end fs-6 border-0"
                     attrs="{'invisible': [
                     '|', ('state', 'not in', ['sale', 'done']),
                     '|', ('rental_status', '!=', 'return'), ('has_late_lines', '=', True)]}">Picked-up</div>
-                <div class="rounded-pill text-bg-danger float-end"
+                <div class="badge rounded-pill text-bg-danger float-end fs-6 border-0"
                     attrs="{'invisible': [
                     '|', ('state', 'not in', ['sale', 'done']),
                     '|', ('rental_status', '!=', 'return'), ('has_late_lines', '=', False)]}">Late Return</div>
-                <div class="rounded-pill text-bg-success float-end"
+                <div class="badge rounded-pill text-bg-success float-end fs-6 border-0"
                     attrs="{'invisible': [
                     '|', ('state', 'not in', ['sale', 'done']), ('rental_status', '!=', 'returned')]}">Returned</div>
             </xpath>

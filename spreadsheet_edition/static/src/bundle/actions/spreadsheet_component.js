@@ -196,7 +196,7 @@ export default class SpreadsheetComponent extends LegacyComponent {
         this.state.dialog.isDisplayed = false;
         this.state.dialog.isEditText = false;
         this.state.dialog.isEditInteger = false;
-        document.querySelector(".o-grid-overlay").focus();
+        document.querySelector(".o-grid").focus();
     }
 
     /**
@@ -301,10 +301,12 @@ export default class SpreadsheetComponent extends LegacyComponent {
 
     /**
      * Adds a notification to display to the user
-     * @param {{text: string, tag: string}} notification 
+     * @param {{text: string, tag: string}} notification
      */
     notifyUser(notification) {
-        if (tags.has(notification.tag)) return;
+        if (tags.has(notification.tag)) {
+            return;
+        }
         this.notifications.add(notification.text, {
             type: "warning",
             sticky: true,

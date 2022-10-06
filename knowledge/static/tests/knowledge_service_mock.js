@@ -22,6 +22,9 @@ export function makeFakeMessagingServiceForKnowledge() {
                         },
                         openChat() {},
                         rpc() {},
+                        emojiRegistry: {
+                            allEmojis: [{codepoints: "🥸"}, {codepoints: "🗿"}]
+                        },
                     };
                 },
                 modelManager: {

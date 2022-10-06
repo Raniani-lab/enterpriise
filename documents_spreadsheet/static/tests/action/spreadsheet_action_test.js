@@ -235,7 +235,7 @@ QUnit.module(
             await nextTick();
             await dom.click(document.body.querySelector(".modal-footer .btn-primary"));
             await nextTick();
-            assert.strictEqual(document.activeElement.className, "o-grid-overlay");
+            assert.strictEqual(document.activeElement.className, "o-grid o-two-columns");
         });
     }
 );

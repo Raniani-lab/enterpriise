@@ -1741,6 +1741,7 @@ class Article(models.Model):
 
         additional_select_fields = ''
         join_clause = ''
+        additional_fields = additional_fields or {}
         if additional_fields:
             supported_additional_models = [
                 'res.partner',
@@ -1840,26 +1841,22 @@ class Article(models.Model):
                 }
                 min_level_dict[article_id][partner_id] = level
 
-                if additional_fields:
-                    # update our resulting dict based on additional fields
-                    article_members[article_id][partner_id].update({
-                        field_alias: result[field_alias] if model != 'knowledge.article' or origin_id != article_id else False
-                        for model, fields_list in additional_fields.items()
-                        for (field, field_alias) in fields_list
-                    })
+                # update our resulting dict based on additional fields
+                article_members[article_id][partner_id].update({
+                    field_alias: result[field_alias] if model != 'knowledge.article' or origin_id != article_id else False
+                    for model, fields_list in additional_fields.items()
+                    for (field, field_alias) in fields_list
+                })
         # add empty member for each article that doesn't have any.
-        for article in self:
-            if article.id not in article_members:
-                article_members[article.id][None] = {'based_on': False, 'member_id': False, 'permission': None}
-
-                if additional_fields:
-                    # update our resulting dict based on additional fields
-                    article_members[article.id][None].update({
-                        field_alias: False
-                        for model, fields_list in additional_fields.items()
-                        for (field, field_alias) in fields_list
-                    })
-
+        empty_member = {
+            'based_on': False, 'member_id': False, 'permission': None,
+            **{
+                field_alias: False
+                for model, fields_list in additional_fields.items()
+                for field, field_alias in fields_list
+            }}
+        for article in self.filtered(lambda a: a.id not in article_members):
+            article_members[article.id][None] = empty_member
         return article_members
 
     # ------------------------------------------------------------

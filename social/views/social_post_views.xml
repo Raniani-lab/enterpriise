@@ -61,7 +61,8 @@
                             <div t-attf-class="o_social_stream_post_message_body flex-grow-1 py-2 px-3 #{has_attachments ? 'o_social_stream_post_with_attachments' : 'border-bottom'}">
                                 <div name="o_social_stream_post_message_text"
                                      t-attf-class="o_social_stream_post_message_text overflow-hidden #{has_attachments ? 'mb-2' : ''}">
-                                    <div t-out="formatPost(record.message.value)"/>
+                                    <div t-if="formatPost" t-out="formatPost(record.message.value)"/>
+                                    <div t-else="" t-out="record.message.value"/>
                                 </div>
 
                                 <div t-if="has_attachments"
@@ -72,7 +73,7 @@
                                     <t t-foreach="image_urls_json.length > 2 ? image_urls_json.slice(0, 2) : image_urls_json" t-as="image_url" t-key="image_url_index">
                                         <t t-if="image_url_index == 1 &amp; record.image_ids.raw_value.length > 2">
                                             <a class="o_social_stream_post_image_more position-relative d-flex ms-1"
-                                                t-on-click.stop="() => this.onClickMoreImages(image_url_index, image_urls_json)">
+                                                t-on-click.stop="() => this.onClickMoreImages ? this.onClickMoreImages(image_url_index, image_urls_json) : {}">
                                                 <img t-att-src="image_urls_json[1]" alt="Post Image" />
                                                 <div class="o_social_stream_post_image_more_overlay d-flex align-items-center h-100 w-100 text-white justify-content-center position-absolute h1 m-0" style="user-select: none;">
                                                     +<t t-esc="image_urls_json.length - 2"/>
@@ -80,7 +81,7 @@
                                             </a>
                                         </t>
                                         <img t-else="" t-att-src="image_url" alt="Post Image"
-                                            t-on-click.stop="() => this.onClickMoreImages(image_url_index, image_urls_json)"/>
+                                            t-on-click.stop="() => this.onClickMoreImages ? this.onClickMoreImages(image_url_index, image_urls_json) : {}"/>
                                     </t>
                                 </div>
                             </div>

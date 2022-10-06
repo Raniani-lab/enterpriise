@@ -8,9 +8,6 @@ import session from "web.session";
 import makeTestEnvironment from "web.test_env";
 import testUtils from "web.test_utils";
 import Widget from "web.Widget";
-import { localization } from "@web/core/l10n/localization";
-import * as legacyFieldRegistry from "web.field_registry";
-import { FieldDate, FieldDateTime } from "web.basic_fields";
 
 import { useBackButton } from "web_mobile.hooks";
 import { BackButtonEventMixin } from "web_mobile.mixins";
@@ -19,7 +16,7 @@ import mobile from "web_mobile.core";
 
 import { createWebClient, doAction } from '@web/../tests/webclient/helpers';
 import { makeTestEnv } from "@web/../tests/helpers/mock_env";
-import { mount, getFixture, destroy, patchWithCleanup, click, clickSave} from "@web/../tests/helpers/utils";
+import { mount, getFixture, destroy, patchWithCleanup, clickSave} from "@web/../tests/helpers/utils";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 
 const { Component, useState, xml } = owl;
@@ -751,132 +748,5 @@ QUnit.module("web_mobile", {
         });
 
         await clickSave(target);
-    });
-
-    QUnit.module("FieldDate");
-
-    QUnit.test("date field: toggle datepicker", async function (assert) {
-        assert.expect(8);
-
-        patchWithCleanup(mobile.methods, {
-            requestDateTimePicker({ value, type }) {
-                assert.step("requestDateTimePicker");
-                assert.strictEqual(false, value, "field shouldn't have an initial value");
-                assert.strictEqual("date", type, "datepicker's mode should be 'date'");
-                return Promise.resolve({ data: "2020-01-12" });
-            },
-        });
-
-        patchWithCleanup(localization, { dateFormat: "%m/%d/%Y" });
-
-        legacyFieldRegistry.add("legacy_date", FieldDate);
-
-        await makeView({
-            type: "form",
-            resModel: "partner",
-            serverData: serverData,
-            arch: '<form><field name="date" widget="legacy_date"/><field name="name"/></form>',
-        });
-
-        assert.containsNone(
-            document.body,
-            ".bootstrap-datetimepicker-widget",
-            "datepicker shouldn't be present initially"
-        );
-
-        await click(target, ".o_datepicker input");
-
-        assert.containsNone(
-            document.body,
-            ".bootstrap-datetimepicker-widget",
-            "datepicker shouldn't be opened"
-        );
-        assert.verifySteps(
-            ["requestDateTimePicker"],
-            "native datepicker should have been called"
-        );
-        // ensure focus has been restored to the date field
-        target.querySelector(".o_datepicker_input").focus();
-        assert.strictEqual(
-            target.querySelector(".o_datepicker_input").value,
-            "01/12/2020",
-            "should be properly formatted"
-        );
-
-        // focus another field
-        const nameField = target.querySelector(".o_field_widget[name=name]");
-        nameField.focus();
-        await click(nameField);
-        assert.strictEqual(
-            target.querySelector(".o_datepicker_input").value,
-            "01/12/2020",
-            "shouldn't have changed after loosing focus"
-        );
-    });
-
-    QUnit.module("FieldDateTime");
-
-    QUnit.test("datetime field: toggle datepicker", async function (assert) {
-        assert.expect(8);
-
-        patchWithCleanup(mobile.methods, {
-            requestDateTimePicker({ value, type }) {
-                assert.step("requestDateTimePicker");
-                assert.strictEqual(false, value, "field shouldn't have an initial value");
-                assert.strictEqual(
-                    "datetime",
-                    type,
-                    "datepicker's mode should be 'datetime'"
-                );
-                return Promise.resolve({ data: "2020-01-12 12:00:00" });
-            },
-        });
-
-        patchWithCleanup(localization, { dateFormat: "%m/%d/%Y" });
-        patchWithCleanup(localization, { dateTimeFormat: "%m/%d/%Y %H:%M:%S" });
-
-        legacyFieldRegistry.add("legacy_datetime", FieldDateTime);
-
-        await makeView({
-            type: "form",
-            resModel: "partner",
-            serverData: serverData,
-            arch: '<form><field name="datetime" widget="legacy_datetime"/><field name="name"/></form>',
-        });
-
-        assert.containsNone(
-            document.body,
-            ".bootstrap-datetimepicker-widget",
-            "datepicker shouldn't be present initially"
-        );
-
-        await click(target, ".o_datepicker input");
-
-        assert.containsNone(
-            document.body,
-            ".bootstrap-datetimepicker-widget",
-            "datepicker shouldn't be opened"
-        );
-        assert.verifySteps(
-            ["requestDateTimePicker"],
-            "native datepicker should have been called"
-        );
-        // ensure focus has been restored to the datetime field
-        target.querySelector(".o_datepicker_input").focus();
-        assert.strictEqual(
-            target.querySelector(".o_datepicker_input").value,
-            "01/12/2020 12:00:00",
-            "should be properly formatted"
-        );
-
-        // focus another field
-        const nameField = target.querySelector(".o_field_widget[name=name]");
-        nameField.focus();
-        await click(nameField);
-        assert.strictEqual(
-            target.querySelector(".o_datepicker_input").value,
-            "01/12/2020 12:00:00",
-            "shouldn't have changed after loosing focus"
-        );
     });
 });

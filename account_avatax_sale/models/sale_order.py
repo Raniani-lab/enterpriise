@@ -60,6 +60,8 @@ class SaleOrder(models.Model):
                 'amount': order.amount_untaxed,
                 'formatted_amount': formatLang(self.env, order.amount_untaxed, currency_obj=currency),
             }]
+            tax_totals['amount_total'] = order.amount_total
+            tax_totals['formatted_amount_total'] = formatLang(self.env, order.amount_total, currency_obj=currency)
 
             order.tax_totals = tax_totals
 

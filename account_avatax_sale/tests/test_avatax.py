@@ -1,5 +1,6 @@
 from odoo import fields
 from odoo.tests.common import tagged
+from odoo.tools.misc import formatLang
 from odoo.addons.account_avatax.tests.common import TestAccountAvataxCommon
 from .mocked_so_response import generate_response
 
@@ -43,6 +44,8 @@ class TestSaleAvalara(TestAccountAvataxCommon):
             subtotal_group = totals['groups_by_subtotal']['Untaxed Amount']
             self.assertEqual(len(subtotal_group), 1, 'There should only be one subtotal group (Untaxed Amount)')
             self.assertEqual(subtotal_group[0]['tax_group_amount'], order.amount_tax, 'The tax on tax_totals is different from amount_tax.')
+            self.assertEqual(totals['amount_total'], order.amount_total)
+            self.assertEqual(totals['formatted_amount_total'], formatLang(self.env, order.amount_total, currency_obj=order.currency_id))
 
             for avatax_line in mocked_response['lines']:
                 so_line = order.order_line.filtered(lambda l: str(l.id) == avatax_line['lineNumber'].split(',')[1])

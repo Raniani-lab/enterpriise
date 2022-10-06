@@ -13,7 +13,7 @@
                         </div>
                         <t t-set="stats" t-value="dashboardData.stats"/>
                         <t t-foreach="stats" t-as="stat" t-key="stat.id" t-if="stats &amp;&amp; stats.length > 0">
-                            <div class="col-12 col-md-6 mb-2 px-1 o_payroll_dashboard_panel">
+                            <div class="col-12 col-md-6 mb-2 o_payroll_dashboard_panel">
                                 <PayrollDashboardStats t-props="stat"/>
                             </div>
                         </t>

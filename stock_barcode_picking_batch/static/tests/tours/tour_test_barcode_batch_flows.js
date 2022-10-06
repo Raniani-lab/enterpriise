@@ -776,4 +776,53 @@ tour.register('test_put_in_pack_scan_suggested_package', {test: true}, [
     ...tour.stepUtils.validateBarcodeForm(),
 ]);
 
+tour.register('test_pack_and_same_product_several_sml', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan P00001',
+    },
+    {
+        trigger: '.qty-done:contains("3")',
+        run: function() {
+            const $lines =  helper.getLines({barcode: 'product1'});
+            helper.assert($lines.length, 2);
+            helper.assertLineIsHighlightedGreen($lines, true);
+            helper.assertLineQty($($lines[0]), '3');
+            helper.assertLineQty($($lines[1]), '7');
+        },
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan P00001',
+    },
+    {
+        trigger: '.o_notification.border-danger',
+        run: function () {
+            helper.assertErrorMessage('This package is already scanned.');
+        },
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan P00002',
+    },
+    {
+        trigger: '.qty-done:contains("25")',
+        run: function() {
+            const $lines =  helper.getLines({barcode: 'product2'});
+            helper.assert($lines.length, 3);
+            helper.assertLineIsHighlightedGreen($lines, true);
+            helper.assertLineQty($($lines[0]), '25');
+            helper.assertLineQty($($lines[1]), '30');
+            helper.assertLineQty($($lines[2]), '45');
+        },
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan O-BTN.validate',
+    },
+    {
+        trigger: '.o_notification.border-success',
+    },
+]);
+
 });

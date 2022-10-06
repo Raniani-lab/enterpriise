@@ -56,7 +56,7 @@ class HelpdeskTicket(models.Model):
             if timesheet.so_line == timesheet.helpdesk_ticket_id.sale_line_id:
                 delta -= timesheet.unit_amount
             if delta:
-                mapped_remaining_hours[timesheet.helpdesk_ticket_id._origin.id] += timesheet.so_line.product_uom._compute_quantity(delta, uom_hour)
+                mapped_remaining_hours[timesheet.helpdesk_ticket_id._origin.id] += timesheet.product_uom_id._compute_quantity(delta, uom_hour)
 
         for ticket in self:
             ticket.remaining_hours_so = mapped_remaining_hours[ticket._origin.id]

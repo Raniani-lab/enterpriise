@@ -96,8 +96,8 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
 
         patchers = [patch('odoo.fields.Datetime.now', _now)]
 
-        for p in patchers:
-            p.start()
+        for patcher in patchers:
+            self.startPatcher(patcher)
 
         self.user_manager.company_id.write({
             'timesheet_mail_manager_interval': interval,
@@ -105,9 +105,6 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
         })
 
         self.assertEqual(result, self.user_manager.company_id.timesheet_mail_manager_nextdate)
-
-        for p in patchers:
-            p.stop()
 
     def test_timesheet_next_date_reminder_neg_delay(self):
 

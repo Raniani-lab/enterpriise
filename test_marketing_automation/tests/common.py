@@ -26,16 +26,11 @@ class TestMACommon(TestMailFullCommon):
         cls.patcher4 = patch('odoo.addons.marketing_automation.models.marketing_trace.Datetime', wraps=Datetime)
         cls.patcher5 = patch('odoo.addons.marketing_automation_sms.models.marketing_activity.Datetime', wraps=Datetime)
 
-        cls.mock_datetime = cls.patcher.start()
-        cls.mock_datetime2 = cls.patcher2.start()
-        cls.mock_datetime3 = cls.patcher3.start()
-        cls.mock_datetime4 = cls.patcher4.start()
-        cls.mock_datetime5 = cls.patcher5.start()
-        cls.addClassCleanup(cls.patcher.stop)
-        cls.addClassCleanup(cls.patcher2.stop)
-        cls.addClassCleanup(cls.patcher3.stop)
-        cls.addClassCleanup(cls.patcher4.stop)
-        cls.addClassCleanup(cls.patcher5.stop)
+        cls.mock_datetime = cls.startClassPatcher(cls.patcher)
+        cls.mock_datetime2 = cls.startClassPatcher(cls.patcher2)
+        cls.mock_datetime3 = cls.startClassPatcher(cls.patcher3)
+        cls.mock_datetime4 = cls.startClassPatcher(cls.patcher4)
+        cls.mock_datetime5 = cls.startClassPatcher(cls.patcher5)
 
     # ------------------------------------------------------------
     # TOOLS AND ASSERTS

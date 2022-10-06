@@ -31,8 +31,8 @@ class TestSaleCouponTaxCloudFlow(common.TestSaleCouponTaxCloudCommon):
             patch('odoo.addons.account_taxcloud.models.taxcloud_request.TaxCloudRequest.verify_address', self._verify_address),
             patch('odoo.addons.account_taxcloud.models.taxcloud_request.TaxCloudRequest.get_all_taxes_values', self._get_all_taxes_values),
         ]
-        for p in patchers:
-            p.start()
+        for patcher in patchers:
+            self.startPatcher(patcher)
 
     def _verify_address(self, *args):
         return {

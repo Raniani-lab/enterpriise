@@ -181,7 +181,5 @@ class TestDashboard(TransactionCase):
 
     def test_dashboard_stat_end_of_year(self):
         # Tests the dashboard again but at the end of a year
-        freezer = freeze_time(date(2021, 12, 1))
-        freezer.start()
-        self.test_dashboard_stats()
-        freezer.stop()
+        with freeze_time(date(2021, 12, 1)):
+            self.test_dashboard_stats()

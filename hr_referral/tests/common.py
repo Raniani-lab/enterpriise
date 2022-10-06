@@ -66,5 +66,4 @@ class TestHrReferralBase(TransactionCase):
             return "Hello"
 
         patcher = patch('odoo.addons.link_tracker.models.link_tracker.LinkTracker._get_title_from_url', wraps=_get_title_from_url)
-        patcher.start()
-        self.addCleanup(patcher.stop)
+        self.startPatcher(patcher)

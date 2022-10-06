@@ -26,7 +26,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
         ]
 
         for patcher in patchers:
-            patcher.start()
+            self.startPatcher(patcher)
 
         self.subscription.write({
             'partner_id': self.partner.id,
@@ -85,9 +85,6 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
         vals = [sub.payment_exception for sub in failing_subs if sub.payment_exception]
         self.assertFalse(vals, "The subscriptions are not flagged anymore, the payment succeeded")
 
-        for patcher in patchers:
-            patcher.stop()
-
     def test_auto_payment_across_time(self):
         self.original_prepare_invoice = self.subscription._prepare_invoice
 
@@ -97,7 +94,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
         ]
 
         for patcher in patchers:
-            patcher.start()
+            self.startPatcher(patcher)
 
         subscription_tmpl = self.env['sale.order.template'].create({
             'name': 'Subscription template without discount',
@@ -180,9 +177,6 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
             self.assertEqual(self.subscription.stage_category, 'closed', 'the end_date is passed, the subscription is automatically closed')
             invoice = self.subscription.invoice_ids.sorted('date')[-1]
             self.assertEqual(invoice.date, datetime.date(2021, 4, 3), 'We should not create a new invoices')
-
-        for patcher in patchers:
-            patcher.stop()
 
     def test_do_payment_calls_send_payment_request_only_once(self):
         self.invoice = self.env['account.move'].create(

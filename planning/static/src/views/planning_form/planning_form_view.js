@@ -7,8 +7,31 @@ import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { escape } from "@web/core/utils/strings";
+import { Record, RelationalModel } from "@web/views/basic_relational_model";
 
 const { markup, onMounted } = owl;
+
+
+class PlanningFormRecord extends Record {
+    async save() {
+        const dirtyFields = this.dirtyFields.map((f) => f.name);
+        const res = await super.save(...arguments);
+
+        if (dirtyFields.includes("repeat") && this.data["repeat"]) {
+            const message = this.model.env._t("The recurring shifts have successfully been created.");
+            this.model.notificationService.add(
+                markup(
+                    `<i class="fa fa-fw fa-check"></i><span class="ms-1">${escape(message)}</span>`
+                ),
+                { type: "success" }
+            );
+        }
+        return res;
+    }
+}
+
+class PlanningFormModel extends RelationalModel {}
+PlanningFormModel.Record = PlanningFormRecord;
 
 export class PlanningFormController extends FormController {
 
@@ -59,19 +82,6 @@ export class PlanningFormController extends FormController {
         return super.beforeExecuteActionButton(clickParams);
     }
 
-    async save(params = {})  {
-        const dirtyFields = this.model.root.dirtyFields.map((f) => f.name);
-        await super.save(params);
-
-        if (dirtyFields.includes('repeat') && this.model.root.data['repeat']) {
-            const message = this.env._t("The recurring shifts have successfully been created.");
-            this.notification.add(
-                markup(`<i class="fa fa-fw fa-check"></i><span class="ms-1">${escape(message)}</span>`),
-                {type: "success"}
-            );
-        }
-    }
-
     /**
      * Display a dialog form view of employee model for each employee who has no work email.
      *
@@ -101,6 +111,7 @@ export class PlanningFormController extends FormController {
 export const planningFormView = {
     ...formView,
     Controller: PlanningFormController,
+    Model: PlanningFormModel,
 };
 
 registry.category("views").add("planning_form", planningFormView);

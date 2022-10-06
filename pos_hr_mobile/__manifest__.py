@@ -7,7 +7,7 @@
     'summary': 'POS Barcode scan in Mobile',
     'version': '1.0',
     'description': """ """,
-    'depends': ['pos_hr', 'web_mobile'],
+    'depends': ['pos_hr', 'web_mobile', 'barcodes_mobile'],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

@@ -10,7 +10,6 @@ import PermissionPanel from '@knowledge/components/permission_panel/permission_p
 import { sprintf } from '@web/core/utils/strings';
 import { useService } from "@web/core/utils/hooks";
 
-const disallowedEmojis = ['💩', '💀', '☠️', '🤮', '🖕'];
 const { onMounted, onPatched, useEffect, useRef, useState} = owl;
 
 export class KnowledgeArticleFormRenderer extends FormRenderer {
@@ -39,9 +38,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         
         this.messagingService.get().then(messaging => {
             this.messaging = messaging;
-            this.emojisRandomPickerSource = messaging.emojiRegistry.allEmojis.filter(
-                emoji => !disallowedEmojis.includes(emoji.codepoints)
-            );
+            if (this.messaging.emojiRegistry.isLoaded || this.messaging.emojiRegistry.isLoading) {
+                return;
+            }
+            this.messaging.emojiRegistry.loadEmojiData();
         });
         this._onAddEmoji = this._onAddEmoji.bind(this);
         this._onRemoveEmoji = this._onRemoveEmoji.bind(this);
@@ -173,7 +173,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * Add a random icon to the article.
      */
     addIcon() {
-        const icon = this.emojisRandomPickerSource[Math.floor(Math.random() * this.emojisRandomPickerSource.length)].codepoints;
+        const icon = this.messaging.knowledge.randomEmojis[Math.floor(Math.random() * this.messaging.knowledge.randomEmojis.length)].codepoints;
         this._renderEmoji(icon, this.resId);
     }
 

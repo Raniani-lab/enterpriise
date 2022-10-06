@@ -13,6 +13,7 @@ export function makeFakeMessagingServiceForKnowledge() {
                 async get() {
                     return {
                         knowledge: {
+                            randomEmojis: [{codepoints: "🥸"}, {codepoints: "🗿"}],
                             update() {},
                         },
                         messagingBus: {
@@ -23,7 +24,10 @@ export function makeFakeMessagingServiceForKnowledge() {
                         openChat() {},
                         rpc() {},
                         emojiRegistry: {
-                            allEmojis: [{codepoints: "🥸"}, {codepoints: "🗿"}]
+                            allEmojis: [{codepoints: "🥸"}, {codepoints: "🗿"}],
+                            isLoaded: true,
+                            isLoading: false,
+                            loadEmojiData: () => {},
                         },
                     };
                 },

@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registerModel } from '@mail/model/model_core';
-import { attr, one } from '@mail/model/model_field';
+import { attr, many, one } from '@mail/model/model_field';
 import { clear } from '@mail/model/model_field_command';
 
 /**
@@ -34,6 +34,9 @@ registerModel({
         },
     },
     fields: {
+        randomEmojis: many('Emoji', {
+            inverse: 'emojiAsKnowledgeRandom',
+        }),
         currentArticle: one('KnowledgeArticle'),
         emojiPickerPopoverAnchorRef: attr(),
         emojiPickerPopoverView: one('PopoverView', {

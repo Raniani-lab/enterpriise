@@ -218,7 +218,7 @@
                             <record id="account_financial_report_executivesummary_gpmargin0_balance" model="account.report.expression">
                                 <field name="label">balance</field>
                                 <field name="engine">aggregation</field>
-                                <field name="formula">GRP.balance / OPINC.balance</field>
+                                <field name="formula">GRP.balance / OPINC.balance * 100</field>
                                 <field name="date_scope">normal</field>
                                 <field name="subformula">cross_report</field>
                                 <field name="figure_type">percentage</field>
@@ -232,7 +232,7 @@
                             <record id="account_financial_report_executivesummary_npmargin0_balance" model="account.report.expression">
                                 <field name="label">balance</field>
                                 <field name="engine">aggregation</field>
-                                <field name="formula">NEP.balance / INC.balance</field>
+                                <field name="formula">NEP.balance / INC.balance * 100</field>
                                 <field name="date_scope">normal</field>
                                 <field name="subformula">cross_report</field>
                                 <field name="figure_type">percentage</field>
@@ -246,7 +246,7 @@
                             <record id="account_financial_report_executivesummary_return_investment0_balance" model="account.report.expression">
                                 <field name="label">balance</field>
                                 <field name="engine">aggregation</field>
-                                <field name="formula">NEP.balance / TA.balance</field>
+                                <field name="formula">NEP.balance / TA.balance * 100</field>
                                 <field name="date_scope">normal</field>
                                 <field name="subformula">cross_report</field>
                                 <field name="figure_type">percentage</field>

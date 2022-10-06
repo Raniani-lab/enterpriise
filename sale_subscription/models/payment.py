@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
+from odoo.tools import str2bool
 
 class PaymentTransaction(models.Model):
     _inherit = 'payment.transaction'
@@ -17,12 +18,13 @@ class PaymentTransaction(models.Model):
 
     def _reconcile_after_done(self):
         res = super()._reconcile_after_done()
-        today = fields.Date.today()
-        order_to_update_ids = self.env['sale.order']
-        for order in self.sale_order_ids:
-            if order.recurrence_id and order.payment_token_id and order.start_date <= order.next_invoice_date <= today:
-                order_to_update_ids |= order
-        order_to_update_ids._update_next_invoice_date()
+        if str2bool(self.env['ir.config_parameter'].sudo().get_param('sale.automatic_invoice')):
+            today = fields.Date.today()
+            order_to_update_ids = self.env['sale.order']
+            for order in self.sale_order_ids:
+                if order.recurrence_id and order.payment_token_id and order.start_date <= order.next_invoice_date <= today:
+                    order_to_update_ids |= order
+            order_to_update_ids._update_next_invoice_date()
         return res
 
 

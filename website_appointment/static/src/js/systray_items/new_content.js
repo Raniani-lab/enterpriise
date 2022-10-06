@@ -13,19 +13,9 @@ patch(NewContentModal.prototype, 'website_appointment_new_content', {
             this.isAppointmentManager = await this.user.hasGroup('appointment.group_appointment_manager');
 
             const newAppointmentTypeElement = this.state.newContentElements.find(element => element.moduleXmlId === 'base.module_website_appointment');
-            newAppointmentTypeElement.createNewContent = () => this.createNewAppointmentType();
+            newAppointmentTypeElement.createNewContent = () => this.onAddContent('website_appointment.appointment_type_action_add_simplified');
             newAppointmentTypeElement.status = MODULE_STATUS.INSTALLED;
             newAppointmentTypeElement.isDisplayed = this.isAppointmentManager;
         });
     },
-
-    createNewAppointmentType() {
-        this.action.doAction('website_appointment.appointment_type_action_add_simplified', {
-            onClose: (data) => {
-                if (data) {
-                    this.website.goToWebsite({ path: data.path });
-                }
-            },
-        });
-    }
 });

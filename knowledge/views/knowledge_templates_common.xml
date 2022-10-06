@@ -26,7 +26,8 @@
             <t t-set="readonly" t-value="portal_readonly_mode or not user_write_access_by_article.get(article.id)"/>
             <t t-set="favorite" t-value="favorites_sudo.filtered(lambda f: f.article_id == article) if favorites_sudo else False"/>
             <t t-set="children"
-                    t-value="all_visible_articles.filtered(lambda child: child.parent_id == article) if all_visible_articles else article.child_ids"/>
+                    t-value="all_visible_articles.filtered(lambda child: child.parent_id == article and not child.is_article_item)
+                             if all_visible_articles else article.child_ids"/>
             <t t-set="unfoldChildren" t-value="bool(
                 children and (
                     (not isFavoriteTree and article.id in unfolded_articles_ids)

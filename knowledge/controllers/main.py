@@ -195,7 +195,8 @@ class KnowledgeController(http.Controller):
         if not parent:
             return werkzeug.exceptions.NotFound()
 
-        articles = parent.child_ids.sorted("sequence") if parent.has_article_children else request.env['knowledge.article']
+        articles = parent.child_ids.sorted("sequence").filtered(
+            lambda a: not a.is_article_item) if parent.has_article_children else request.env['knowledge.article']
         return request.env['ir.qweb']._render('knowledge.articles_template', {
             'articles': articles,
             'portal_readonly_mode': not request.env.user.has_group('base.group_user'),  # used to bypass access check (to speed up loading)
@@ -214,10 +215,15 @@ class KnowledgeController(http.Controller):
             ("user_id", "=", request.env.user.id), ('is_article_active', '=', True)
         ])
 
-        all_visible_articles = request.env['knowledge.article'].search([
-            '&', ('is_article_item', '=', False),
-            '|', ('id', 'in', favorites_sudo.article_id.ids), ('parent_id', 'child_of', favorites_sudo.article_id.ids)
+        all_visible_article_domains = expression.OR([
+            [
+                ('parent_id', 'child_of', favorites_sudo.article_id.ids),
+                ('is_article_item', '=', False),
+            ],
+            [('id', 'in', favorites_sudo.article_id.ids)],
         ])
+
+        all_visible_articles = request.env['knowledge.article'].search(all_visible_article_domains)
 
         return request.env['ir.qweb']._render('knowledge.knowledge_article_tree_favorites', {
             "favorites_sudo": favorites_sudo,

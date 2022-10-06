@@ -11,10 +11,10 @@ from odoo.tools import get_lang
 
 
 class AccountGeneralLedger(models.AbstractModel):
-    _inherit = 'account.report'
+    _inherit = 'account.general.ledger.report.handler'
 
-    def general_ledger_custom_options_initializer(self, options, previous_options=None):
-        super().general_ledger_custom_options_initializer(options, previous_options)
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options)
         if self.env.company.account_fiscal_country_id.code == 'LU':
             options.setdefault('buttons', []).append({
                 'name': _('FAIA'),
@@ -140,8 +140,8 @@ class AccountGeneralLedger(models.AbstractModel):
         values.update(res)
 
     @api.model
-    def _l10n_lu_prepare_saft_report_values(self, options):
-        template_vals = self._saft_prepare_report_values(options)
+    def _l10n_lu_prepare_saft_report_values(self, report, options):
+        template_vals = report._saft_prepare_report_values(options)
 
         template_vals.update({
             'xmlns': 'urn:OECD:StandardAuditFile-Taxation/2.00',
@@ -153,7 +153,8 @@ class AccountGeneralLedger(models.AbstractModel):
 
     @api.model
     def l10n_lu_export_saft_to_xml(self, options):
-        template_vals = self._l10n_lu_prepare_saft_report_values(options)
+        report = self.env['account.report'].browse(options['report_id'])
+        template_vals = self._l10n_lu_prepare_saft_report_values(report, options)
         content = self.env['ir.qweb']._render('l10n_lu_reports.saft_template_inherit_l10n_lu_saft', template_vals)
 
         xsd_attachment = self.env['ir.attachment'].search([('name', '=', 'xsd_cached_FAIA_v_2_01_reduced_version_A_xsd')])
@@ -162,7 +163,7 @@ class AccountGeneralLedger(models.AbstractModel):
                 tools.xml_utils._check_with_xsd(content, xsd)
 
         return {
-            'file_name': self.get_default_report_filename('xml'),
+            'file_name': report.get_default_report_filename('xml'),
             'file_content': "\n".join(re.split(r'\n\s*\n', content)).encode(),
             'file_type': 'xml',
         }

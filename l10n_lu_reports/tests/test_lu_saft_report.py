@@ -81,7 +81,7 @@ class TestLuSaftReport(TestAccountReportsCommon):
         options = self._generate_options(report, fields.Date.from_string('2019-01-01'), fields.Date.from_string('2019-12-31'))
 
         self.assertXmlTreeEqual(
-            self.get_xml_tree_from_string(report.l10n_lu_export_saft_to_xml(options)['file_content']),
+            self.get_xml_tree_from_string(self.env[report.custom_handler_model_name].with_context(skip_xsd=True).l10n_lu_export_saft_to_xml(options)['file_content']),
             self.get_xml_tree_from_string('''
                 <AuditFile xmlns="urn:OECD:StandardAuditFile-Taxation/2.00">
                     <Header>

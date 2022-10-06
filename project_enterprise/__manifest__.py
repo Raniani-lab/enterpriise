@@ -34,8 +34,28 @@ Bridge module for project and enterprise
             'project_enterprise/static/tests/**/*',
         ],
         'project.webclient': [
-            ('remove', 'web_enterprise/static/src/legacy/legacy_service_provider.js'),
-            ('remove', 'web_enterprise/static/src/webclient/home_menu/*.js'),
+            'web_enterprise/static/src/webclient/**/*.scss',
+            ('remove', 'web_enterprise/static/src/webclient/home_menu/home_menu_background.scss'), # already in _assets_common_styles
+            ('remove', 'web_enterprise/static/src/webclient/navbar/navbar.scss'), # already in _assets_common_styles
+
+            # Allows events to be added to the ListRenderer before it is extended.
+            # for more info, see: https://github.com/odoo/enterprise/pull/30169#pullrequestreview-1064657223
+            ('prepend', 'web_enterprise/static/src/legacy/js/views/list/list_renderer_mobile.js'),
+
+            'web_enterprise/static/src/core/**/*',
+            'web_enterprise/static/src/views/kanban/*',
+            'web_enterprise/static/src/views/list/*',
+            'web_enterprise/static/src/webclient/settings_form_view/*',
+            'web_enterprise/static/src/webclient/navbar/*',
+            'web_enterprise/static/src/webclient/promote_studio_dialog/*',
+            'web_enterprise/static/src/webclient/webclient.js',
+
+            'web_enterprise/static/src/legacy/js/core/*.js',
+            'web_enterprise/static/src/legacy/js/views/*.js',
+            'web_enterprise/static/src/legacy/js/widgets/*.js',
+
+            'web_enterprise/static/src/legacy/scss/fields.scss',
+
             ('remove', 'project/static/src/project_sharing/main.js'),
             'project_enterprise/static/src/project_sharing/**/*',
         ],

@@ -119,6 +119,9 @@ registerModel({
         }),
         isViewable: attr({
             compute() {
+                if (this.record) {
+                    return this.record.isViewable();
+                }
                 if (this.attachment) {
                     return this.attachment.isViewable;
                 }

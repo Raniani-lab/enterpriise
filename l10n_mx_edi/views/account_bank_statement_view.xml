@@ -17,11 +17,11 @@
             <field name="inherit_id" ref="account_accountant.view_bank_statement_line_tree_bank_rec_widget"/>
             <field name="arch" type="xml">
                 <field name="statement_id" position="after">
-                    <field name="l10n_mx_edi_force_generate_cfdi" invisible="1" />
+                    <field name="l10n_mx_edi_force_generate_cfdi" invisible="1"/>
 
                     <field name="l10n_mx_edi_payment_method_id"
-                           attrs="{'readonly': [('statement_complete', '=', True)]}"
-                    />
+                           optional="hide"
+                           attrs="{'readonly': [('statement_complete', '=', True)], 'invisible': [('country_code', '!=', 'MX')]}"/>
 
                     <button name="action_l10n_mx_edi_force_generate_cfdi" type="object"
                            string="Force CFDI" class="oe_link"

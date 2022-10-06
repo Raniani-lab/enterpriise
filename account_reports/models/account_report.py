@@ -2975,6 +2975,23 @@ class AccountReport(models.Model):
 
         # Audit of move lines
         # If we're auditing a groupby line, we need to make sure to restrict the result of what we audit to the right group values
+        column = next(col for col in report_line.report_id.column_ids if col.expression_label == expression_label)
+        if column.custom_audit_action_id:
+            action_dict = column.custom_audit_action_id._get_action_dict()
+        else:
+            action_dict = {
+                'name': _("Journal Items"),
+                'type': 'ir.actions.act_window',
+                'res_model': 'account.move.line',
+                'view_mode': 'list',
+                'views': [(False, 'list')],
+            }
+
+        action = clean_action(action_dict, env=self.env)
+        action['domain'] = self._get_audit_line_domain(column_group_options, expression, params)
+        return action
+
+    def _get_audit_line_domain(self, column_group_options, expression, params):
         calling_line_dict_id = params['calling_line_dict_id']
         parsed_line_dict_id = self._parse_line_id(calling_line_dict_id)
         groupby_domain = []
@@ -2999,27 +3016,12 @@ class AccountReport(models.Model):
 
         domain = osv.expression.OR([
             osv.expression.AND([
-                osv.expression.OR(audit_or_domains),
+                osv.expression.OR(audit_or_domain),
                 self._get_options_domain(column_group_options, date_scope)
             ])
-            for date_scope, audit_or_domains in audit_or_domains_per_date_scope.items()
+            for date_scope, audit_or_domain in audit_or_domains_per_date_scope.items()
         ])
-
-        column = next(col for col in report_line.report_id.column_ids if col.expression_label == expression_label)
-        if column.custom_audit_action_id:
-            action_dict = column.custom_audit_action_id._get_action_dict()
-        else:
-            action_dict = {
-                'name': _("Journal Items"),
-                'type': 'ir.actions.act_window',
-                'res_model': 'account.move.line',
-                'view_mode': 'list',
-                'views': [(False, 'list')],
-            }
-
-        action = clean_action(action_dict, env=self.env)
-        action['domain'] = domain
-        return action
+        return domain
 
     def _get_expression_audit_aml_domain(self, expression_to_audit, options):
         """ Returns the domain used to audit a single provided expression.

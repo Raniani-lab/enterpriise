@@ -41,8 +41,12 @@ export class StreamPostKanbanController extends KanbanController {
     }
 
     async _onRefreshStats() {
-        this.state.refreshRequired = await this.model._refreshStreams();
-        this.accounts = await this.model._refreshAccountsStats();
+        this.model._refreshStreams().then((result) => {
+            this.state.refreshRequired = result;
+        });
+        this.model._refreshAccountsStats().then((result) => {
+            this.accounts = result;
+        });
     }
 
     _refreshView() {

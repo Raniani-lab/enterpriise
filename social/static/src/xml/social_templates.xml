@@ -63,13 +63,13 @@
                         <t t-foreach="images.length > 2 ? images.slice(0, 2) : images" t-as="image_url" t-key="image_url_index">
                             <t t-if="image_url_index == 1 &amp;&amp; images.length > 2">
                                 <a class="o_social_original_post_image_more position-relative d-flex ms-1" t-on-click.stop="() => this._onClickMoreImages(image_url_index, images)">
-                                    <img class="o_social_original_post_image_click" t-att-src="images[1]" alt="Post Image" />
+                                    <img t-att-src="images[1]" alt="Post Image" />
                                     <div class="o_social_stream_post_image_more_overlay d-flex align-items-center h-100 w-100 text-white justify-content-center position-absolute h1 m-0" style="user-select: none;">
                                         +<t t-esc="images.length - 2"/>
                                     </div>
                                 </a>
                             </t>
-                            <img t-else="" class="o_social_original_post_image_click o_social_original_post_single" t-att-src="image_url" alt="Post Image" t-on-click.stop="() => this._onClickMoreImages(image_url_index, images)"/>
+                            <img t-else="" class="o_social_original_post_single" t-att-src="image_url" alt="Post Image" t-on-click.stop="() => this._onClickMoreImages(image_url_index, images)"/>
                         </t>
                     </div>
                     <a t-if="originalPost.link_url.value"
@@ -113,6 +113,7 @@
                         class="o_social_add_comment o_social_comment_message form-control pe-5"
                         t-att-class="{'bg-200 o_social_bubble_radius': props.bubble_design}"
                         t-att-placeholder="isCommentReply ? write_reply_text : write_comment_text"
+                        t-att-disabled="state.disabled"
                         t-on-keydown="_onAddComment">
                         <t t-esc="initialValue || ''"/>
                     </textarea>
@@ -192,7 +193,9 @@
            isCommentEdit="true"
            mediaSpecificProps="props.mediaSpecificProps"
            toggleEditMode.bind="_toggleEditMode"
-           bubble_design="bubble_design"/>
+           bubble_design="bubble_design"
+           onAddComment="(newComment) => props.comment = newComment"
+           preventAddComment="props.preventAddComment"/>
 
         <div t-else="" class="o_social_comment_wrapper d-flex align-items-start">
             <div class="o_social_author_image position-relative rounded-circle flex-shrink-0 me-2 overflow-hidden">
@@ -267,8 +270,8 @@
                             </t>
                             <a class="o_social_comment_reply btn btn-sm btn-link px-0" href="#"
                                t-on-click.prevent="props._onReplyComment || _onReplyComment"> Reply </a>
-                            <span t-if="comment.comments and !action.showSubComment" class="o_social_comment_load_replies"
-                                  t-on-click.prevent="_onLoadReplies">
+                            <span t-if="comment.comments and comment.comments.data.length and !action.showSubComment"
+                                  class="o_social_comment_load_replies" t-on-click.prevent="_onLoadReplies">
                                 <span class="mx-1">&#183;</span>
                                 <a class="btn btn-sm btn-link px-0" href="#">
                                     <i class="fa fa-comments me-1"/>View <t t-esc="comment.comments.data.length"/> replies...
@@ -289,6 +292,7 @@
                        _onReplyComment.bind="_onReplyComment"
                        mediaSpecificProps="props.mediaSpecificProps"
                        toggleUserLikes="() => props.toggleUserLikes(innerComment)"
+                       preventAddComment="props.preventAddComment"
                        onDeleteComment="() => comment.comments.data.splice(innerComment_index, 1)"/>
                 </t>
             </div>
@@ -410,6 +414,10 @@
     </div>
 
     <t t-name="social.SocialKanbanView" t-inherit="web.KanbanView" t-inherit-mode="primary" owl="1">
+        <xpath expr="//Layout" position="attributes">
+            <attribute name="className">model.useSampleModel ? 'o_view_sample_data o_social_stream_post_kanban_view_wrapper'
+                : 'o_social_stream_post_kanban_view_wrapper'</attribute>
+        </xpath>
         <xpath expr="//t[@t-component='props.Renderer']" position="before">
             <NewContentRefreshBanner
                 refreshRequired="state.refreshRequired"

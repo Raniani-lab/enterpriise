@@ -11,6 +11,7 @@ export class StreamPostCommentsReply extends Component {
         super.setup();
         this.messagingService = useService('messaging');
         this.state = useState({
+            disabled: false,
             attachmentSrc: false,
         });
         this.inputRef = useAutofocus();
@@ -41,6 +42,9 @@ export class StreamPostCommentsReply extends Component {
         if (textarea.value.trim() === '') {
             return;
         }
+
+        this.state.disabled = true;
+
         this._addComment(textarea);
     }
 
@@ -67,7 +71,9 @@ export class StreamPostCommentsReply extends Component {
         xhr.open('POST', this.addCommentEndpoint);
         formData.append('csrf_token', odoo.csrf_token);
         formData.append('stream_post_id', this.originalPost.id.raw_value);
-        formData.append('is_edit', this.isCommentEdit);
+        if (this.isCommentEdit) {
+            formData.append('is_edit', this.isCommentEdit);
+        }
         if (this.isCommentEdit || this.isCommentReply) {
             formData.append('comment_id', this.comment.id);
         }
@@ -84,6 +90,10 @@ export class StreamPostCommentsReply extends Component {
             }
             this.state.attachmentSrc = false;
             this.inputRef.el.value = '';
+            this.state.disabled = false;
+            if (this.isCommentEdit) {
+                this.props.toggleEditMode();
+            }
         }
     }
 

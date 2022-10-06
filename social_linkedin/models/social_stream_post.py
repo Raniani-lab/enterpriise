@@ -161,13 +161,12 @@ class SocialStreamPostLinkedIn(models.Model):
         }
 
         sub_comments_count = json_data.get('commentsSummary', {}).get('totalFirstLevelComments', 0)
-        if sub_comments_count:
-            data['comments'] = {
-                'data': {
-                    'length': sub_comments_count,
-                    'parentUrn': json_data.get('$URN'),
-                }
-            }
+        data['comments'] = {
+            'data': {
+                'length': sub_comments_count,
+                'parentUrn': json_data.get('$URN'),
+            } if sub_comments_count else []
+        }
 
         return data
 

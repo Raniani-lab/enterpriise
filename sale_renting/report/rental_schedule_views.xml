@@ -168,19 +168,19 @@
         <field name="arch" type="xml">
             <form string="Rental Order">
                 <sheet>
-                    <div class="rounded-pill text-bg-info float-end"
+                    <div class="badge rounded-pill text-bg-info float-end fs-6 border-0"
                         attrs="{'invisible': [
                         '|', ('state', 'not in', ['sale', 'done']), '|', ('report_line_status', '!=', 'reserved'), ('late', '=', True)]}">Reserved</div>
-                    <div class="rounded-pill text-bg-info float-end"
+                    <div class="badge rounded-pill text-bg-info float-end fs-6 border-0"
                         attrs="{'invisible': [
                         '|', ('state', 'not in', ['sale', 'done']), '|', ('report_line_status', '!=', 'reserved'), ('late', '=', False)]}">Late Delivery</div>
-                    <div class="rounded-pill text-bg-warning float-end"
+                    <div class="badge rounded-pill text-bg-warning float-end fs-6 border-0"
                         attrs="{'invisible': [
                         '|', ('state', 'not in', ['sale', 'done']), '|', ('report_line_status', '!=', 'pickedup'), ('late', '=', True)]}">Picked-up</div>
-                    <div class="rounded-pill text-bg-danger float-end"
+                    <div class="badge rounded-pill text-bg-danger float-end fs-6 border-0"
                         attrs="{'invisible': [
                         '|', ('state', 'not in', ['sale', 'done']), '|', ('report_line_status', '!=', 'pickedup'), ('late', '=', False)]}">Late Return</div>
-                    <div class="rounded-pill text-bg-success float-end"
+                    <div class="badge rounded-pill text-bg-success float-end fs-6 border-0"
                         attrs="{'invisible': [
                         '|', ('state', 'not in', ['sale', 'done']), ('report_line_status', '!=', 'returned')]}">Returned</div>
                     <h1>

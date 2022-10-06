@@ -25,18 +25,17 @@ class PermissionPanel extends Component {
         this.state = useState({
             loading: true,
             partner_id: session.partner_id
-        })
-        onWillStart(this.loadPanel);
+        });
+        onWillStart(() => {
+            this.loadPanel();
+        });
     }
 
     async loadPanel () {
-        const data = await this.loadData();
-        this.state = {
-            ...this.state,
-            ...data,
+        Object.assign(this.state, {
+            ...await this.loadData(),
             loading: false
-        };
-        this.render();
+        });
     }
 
     /**

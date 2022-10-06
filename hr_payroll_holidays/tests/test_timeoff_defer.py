@@ -198,7 +198,10 @@ class TestTimeoffDefer(TestPayrollHolidaysBase):
         self.assertEqual(reported_work_entries[1].date_stop, datetime(2022, 2, 1, 16, 0))
 
     def test_report_to_next_month_overlap(self):
-        # If the time off overlap over 2 months, only report the exceeding part from january
+        """
+        If the time off overlap over 2 months, only report the exceeding part from january
+        In case leaves go over two months, only the leaves that are in the first month should be defered
+        """
         self.emp.contract_ids._generate_work_entries(datetime(2022, 1, 1), datetime(2022, 2, 28))
         payslip = self.env['hr.payslip'].create({
             'name': 'toto payslip',
@@ -234,8 +237,8 @@ class TestTimeoffDefer(TestPayrollHolidaysBase):
             ('date_start', '>=', Datetime.to_datetime('2022-02-01')),
             ('date_stop', '<=', datetime.combine(Datetime.to_datetime('2022-02-28'), datetime.max.time()))
         ])
-        self.assertEqual(len(reported_work_entries), 6)
-        self.assertEqual(list(set(we.date_start.day for we in reported_work_entries)), [1, 2, 3])
+        self.assertEqual(len(reported_work_entries), 2)
+        self.assertEqual(list(set(we.date_start.day for we in reported_work_entries)), [1])
         self.assertEqual(reported_work_entries[0].date_start, datetime(2022, 2, 1, 7, 0))
         self.assertEqual(reported_work_entries[0].date_stop, datetime(2022, 2, 1, 11, 0))
         self.assertEqual(reported_work_entries[1].date_start, datetime(2022, 2, 1, 12, 0))

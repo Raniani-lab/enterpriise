@@ -103,7 +103,7 @@ class Employee(models.Model):
         employees = self.env['hr.employee'].browse(employee_ids)
         hours_per_day_per_employee = {}
 
-        employees_work_days_data, _dummy = employees.resource_id._get_valid_work_intervals(start_datetime, end_datetime)
+        employees_work_days_data, _dummy = employees.resource_id.sudo()._get_valid_work_intervals(start_datetime, end_datetime)
 
         for employee in employees:
             units_to_work = sum_intervals(employees_work_days_data[employee.resource_id.id])

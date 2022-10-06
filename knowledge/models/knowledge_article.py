@@ -754,13 +754,22 @@ class Article(models.Model):
         """ Duplicates a recordset of articles. Filters out articles that are
         going to be duplicated during the duplication of their parent in order
         to prevent duplicating several times the same article. """
-        to_copy = self
-        for article in self:
-            to_copy -= article._get_descendants()
+        current_ids = set(self.ids)
+        # Remove records that will get duplicated with their parent
+        to_copy = self.filtered(lambda article: not article._get_ancestor_ids() & current_ids)
 
-        duplicates = self.env['knowledge.article']
-        for article in to_copy:
-            duplicates += article.copy(default)
+        duplicates = self.create([
+            article.with_context(active_test=False).copy_data(default=default)[0]
+            for article in to_copy
+        ])
+        # update translations, skip name (hardcoded in default anyway) and o2m fields
+        # as we don't need anything translated from them
+        for old, new in zip(to_copy, duplicates):
+            old.with_context(from_copy_translation=True).copy_translations(
+                new,
+                excluded=list(default.keys()) if default else [] + ['name', 'article_member_ids', 'favorite_ids']
+            )
+
         return duplicates
 
     # ------------------------------------------------------------
@@ -1187,8 +1196,9 @@ class Article(models.Model):
                 child._add_members(partners, 'none', force_update=False)
 
             share_partner_ids = partners.filtered(lambda partner: partner.partner_share)
-            self._add_members(share_partner_ids, 'read')
-            self._add_members(partners - share_partner_ids, permission)
+            members_command = self._add_members_command(share_partner_ids, 'read')
+            members_command += self._add_members_command(partners - share_partner_ids, permission)
+            self.sudo().write({'article_member_ids': members_command})
             self._send_invite_mail(partners)
 
         return True
@@ -1340,6 +1350,18 @@ class Article(models.Model):
           this can be used to create default members and left existing one untouched;
         """
         self.ensure_one()
+        members_command = self._add_members_command(
+            partners, permission, force_update=force_update
+        )
+        return self.sudo().write({'article_member_ids': members_command})
+
+    def _add_members_command(self, partners, permission, force_update=True):
+        """ Implementation of ``_add_members``, returning commands to update
+        the article. Used when caller prefers commands compared to updating
+        directly the article.
+
+        See main method for more details. """
+        self.ensure_one()
         if not self.env.su and not self.user_can_write:
             raise AccessError(
                 _("You have to be editor on %(article_name)s to add members.",
@@ -1358,8 +1380,7 @@ class Article(models.Model):
                 (1, member.id, {'permission': permission})
                 for member in members_to_update
             ]
-
-        return self.sudo().write({'article_member_ids': members_command})
+        return members_command
 
     def _desync_access_from_parents_values(self, force_internal_permission=False,
                                            force_partners=False, force_member_permission=False):
@@ -1720,6 +1741,7 @@ class Article(models.Model):
 
         additional_select_fields = ''
         join_clause = ''
+        additional_fields = additional_fields or {}
         if additional_fields:
             supported_additional_models = [
                 'res.partner',
@@ -1819,26 +1841,22 @@ class Article(models.Model):
                 }
                 min_level_dict[article_id][partner_id] = level
 
-                if additional_fields:
-                    # update our resulting dict based on additional fields
-                    article_members[article_id][partner_id].update({
-                        field_alias: result[field_alias] if model != 'knowledge.article' or origin_id != article_id else False
-                        for model, fields_list in additional_fields.items()
-                        for (field, field_alias) in fields_list
-                    })
+                # update our resulting dict based on additional fields
+                article_members[article_id][partner_id].update({
+                    field_alias: result[field_alias] if model != 'knowledge.article' or origin_id != article_id else False
+                    for model, fields_list in additional_fields.items()
+                    for (field, field_alias) in fields_list
+                })
         # add empty member for each article that doesn't have any.
-        for article in self:
-            if article.id not in article_members:
-                article_members[article.id][None] = {'based_on': False, 'member_id': False, 'permission': None}
-
-                if additional_fields:
-                    # update our resulting dict based on additional fields
-                    article_members[article.id][None].update({
-                        field_alias: False
-                        for model, fields_list in additional_fields.items()
-                        for (field, field_alias) in fields_list
-                    })
-
+        empty_member = {
+            'based_on': False, 'member_id': False, 'permission': None,
+            **{
+                field_alias: False
+                for model, fields_list in additional_fields.items()
+                for field, field_alias in fields_list
+            }}
+        for article in self.filtered(lambda a: a.id not in article_members):
+            article_members[article.id][None] = empty_member
         return article_members
 
     # ------------------------------------------------------------
@@ -1855,20 +1873,28 @@ class Article(models.Model):
         return changes, tracking_value_ids
 
     def _send_invite_mail(self, partners):
-        # TDE NOTE: try to cleanup and batchize
         self.ensure_one()
+
+        partner_to_bodies = {}
         for partner in partners:
-            subject = _("Invitation to access %s", self.name)
-            partner_lang = get_lang(self.env, lang_code=partner.lang).code
-            body = self.env['ir.qweb'].with_context(lang=partner_lang)._render(
-                'knowledge.knowledge_article_mail_invite', {
+            member = self.article_member_ids.filtered(lambda member: member.partner_id == partner)
+            invite_url = url_join(
+                self.get_base_url(),
+                f"/knowledge/article/invite/{member.id}/{member._get_invitation_hash()}"
+            )
+            partner_to_bodies[partner] = self.env['ir.qweb'].with_context(lang=partner.lang)._render(
+                'knowledge.knowledge_article_mail_invite',
+                {
                     'record': self,
                     'user': self.env.user,
                     'recipient': partner,
-                    'link': self._get_invite_url(partner),
-                })
+                    'link': invite_url,
+                }
+            )
 
-            self.with_context(lang=partner_lang).message_notify(
+        subject = _("Invitation to access %s", self.name)
+        for partner, body in partner_to_bodies.items():
+            self.with_context(lang=partner.lang).message_notify(
                 body=body,
                 email_layout_xmlid='mail.mail_notification_light',
                 partner_ids=partner.ids,
@@ -2036,6 +2062,26 @@ class Article(models.Model):
         action_data.setdefault('name', name)
         return action_data
 
+    def _get_ancestor_ids(self):
+        """ Return the union of sets including the ids for the ancestors of
+        records in recordset. E.g.,
+         * if self = Article `8` which has for parent `4` that has itself
+           parent `2`, return `{2, 4}`;
+         * if article `11` is a child of `6` and is also in `self`, return
+           `{2, 4, 6}`;
+
+        :rtype: set
+        """
+        ancestor_ids = set()
+        for article in self:
+            if article.id in ancestor_ids:
+                continue
+            for ancestor_id in map(int, article.parent_path.split('/')[-3::-1]):
+                if ancestor_id in ancestor_ids:
+                    break
+                ancestor_ids.add(ancestor_id)
+        return ancestor_ids
+
     def _get_invite_url(self, partner):
         self.ensure_one()
         member = self.env['knowledge.article.member'].search([('article_id', '=', self.id), ('partner_id', '=', partner.id)])
@@ -2061,11 +2107,11 @@ class Article(models.Model):
         current article (to avoid recursions) """
         return self.search_read(
             domain=[
-                '&',
+                '&', '&', '&',
                     ('name', 'ilike', search_term),
-                    '&',
-                        ('id', 'not in', (self._get_descendants() + self).ids),
-                        ('user_has_access', '=', True),
+                    ('id', 'not in', self.ids),
+                    '!', ('parent_id', 'child_of', self.ids),
+                    ('user_has_access', '=', True),
             ],
             fields=['id', 'display_name', 'root_article_id'],
             limit=15,

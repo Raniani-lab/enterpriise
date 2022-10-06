@@ -93,30 +93,26 @@ class KnowledgeController(http.Controller):
         and returns the rendered given template with those values.
 
         :param int active_article_id: used to highlight the given article_id in the template;
-        :param list unfolded_articles_ids: List of IDs used to display the children
+        :param unfolded_articles_ids: List of IDs used to display the children
           of the given article ids. Unfolded articles are saved into local storage.
           When reloading/opening the article page, previously unfolded articles
           nodes must be opened;
-        :param list unfolded_favorite_articles_ids: same as ``unfolded_articles_ids``
+        :param unfolded_favorite_articles_ids: same as ``unfolded_articles_ids``
           but specific for 'Favorites' tree.
         """
-        unfolded_articles_ids = unfolded_articles_ids or []
-        unfolded_favorite_articles_ids = unfolded_favorite_articles_ids or []
-        existing_ids = self._article_ids_exists(unfolded_articles_ids + unfolded_favorite_articles_ids)
-        unfolded_articles_ids = {article_id for article_id in unfolded_articles_ids if article_id in existing_ids}
-        unfolded_favorite_articles_ids = {article_id for article_id in unfolded_favorite_articles_ids if article_id in existing_ids}
+        unfolded_articles_ids = set(unfolded_articles_ids or [])
+        unfolded_favorite_articles_ids = set(unfolded_favorite_articles_ids or [])
+        existing_ids = self._article_ids_exists(unfolded_articles_ids & unfolded_favorite_articles_ids)
+        unfolded_articles_ids = unfolded_articles_ids & existing_ids
+        unfolded_favorite_articles_ids = unfolded_favorite_articles_ids & existing_ids
 
         if active_article_id:
             # determine the hierarchy to unfold based on parent_path and as sudo
             # this helps avoiding to actually fetch ancestors
             # this will not leak anything as it's just a set of IDS
             # displayed articles ACLs are correctly checked here below
-            # e.g of parent_path for article id 8 with parent 4 that has itself a parent 2: '2/4/8/'
-            # the python split will make it [2,4,8,''], so we want everything but the last 2 items
             active_article = request.env['knowledge.article'].sudo().browse(active_article_id)
-            ancestors_ids = {int(ancestor_id) for ancestor_id in active_article.parent_path.split('/')[:-2]}
-            if ancestors_ids:
-                unfolded_articles_ids |= ancestors_ids
+            unfolded_articles_ids |= active_article._get_ancestor_ids()
 
         # fetch root article_ids as sudo, ACLs will be checked on next global call fetching 'all_visible_articles'
         # this helps avoiding 2 queries done for ACLs (and redundant with the global fetch)
@@ -195,8 +191,9 @@ class KnowledgeController(http.Controller):
         if not parent:
             return werkzeug.exceptions.NotFound()
 
-        articles = parent.child_ids.sorted("sequence").filtered(
-            lambda a: not a.is_article_item) if parent.has_article_children else request.env['knowledge.article']
+        articles = parent.child_ids.filtered(
+            lambda a: not a.is_article_item
+        ).sorted("sequence") if parent.has_article_children else request.env['knowledge.article']
         return request.env['ir.qweb']._render('knowledge.articles_template', {
             'articles': articles,
             'portal_readonly_mode': not request.env.user.has_group('base.group_user'),  # used to bypass access check (to speed up loading)
@@ -237,7 +234,8 @@ class KnowledgeController(http.Controller):
             },
         })
 
-    def _article_ids_exists(self, articles_ids):
+    @staticmethod
+    def _article_ids_exists(articles_ids):
         if not articles_ids:
             return set()
         # we might get IDs from the localstorage that are not real records anymore (unlink, ...)
@@ -252,7 +250,7 @@ class KnowledgeController(http.Controller):
     @http.route('/knowledge/get_article_permission_panel_data', type='json', auth='user')
     def get_article_permission_panel_data(self, article_id):
         """
-        Returns a dictionnary containing all values required to render the permission panel.
+        Returns a dictionary containing all values required to render the permission panel.
         :param article_id: (int) article id
         """
         article = request.env['knowledge.article'].search([('id', '=', article_id)])
@@ -274,7 +272,7 @@ class KnowledgeController(http.Controller):
         })[article.id]
 
         based_on_articles = request.env['knowledge.article'].search([
-            ('id', 'in', list(set([member['based_on'] for member in members_permission.values() if member['based_on']])))
+            ('id', 'in', list(set(member['based_on'] for member in members_permission.values() if member['based_on'])))
         ])
 
         for partner_id, member in members_permission.items():

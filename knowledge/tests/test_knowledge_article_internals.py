@@ -98,6 +98,59 @@ class TestKnowledgeArticleFields(KnowledgeCommonWData):
             self.assertEqual(article.last_edition_date, _reference_dt + timedelta(days=1))
 
 
+@tagged('knowledge_internals')
+class TestKnowledgeArticleUtilities(KnowledgeCommonWData):
+    """ Test data oriented utilities and tools for articles. """
+
+    @users('employee')
+    def test_article_get_valid_parent_options(self):
+        child_writable_article = self.workspace_children[1].with_env(self.env)
+        res = child_writable_article.get_valid_parent_options(search_term="")
+        self.assertEqual(
+            sorted(item['id'] for item in res),
+            sorted(
+                (self.article_workspace + self.workspace_children[0] + self.article_shared + self.shared_children).ids
+            ),
+            'Should contain: brother, parent and other accessible articles (shared section)'
+        )
+
+        root_writable_article = self.article_workspace.with_env(self.env)
+        res = root_writable_article.get_valid_parent_options(search_term="")
+        self.assertEqual(
+            sorted(item['id'] for item in res),
+            sorted(
+                (self.article_shared + self.shared_children).ids
+            ),
+            'Should contain: none of descendants, so only other accessible articles (shared section)'
+        )
+
+        root_writable_article = self.article_workspace.with_env(self.env)
+        res = root_writable_article.get_valid_parent_options(search_term="child")
+        self.assertEqual(
+            sorted(item['id'] for item in res),
+            sorted(
+                (self.shared_children).ids
+            ),
+            'Should contain: none of descendants, so only other accessible articles (shared section), filtered by search term'
+        )
+
+    @users('employee')
+    def test_article_get_ancestor_ids(self):
+        # Using ids from method docstring for easy matching.
+        # Order doesn't matter for this line
+        article_2, article_6 = self.env['knowledge.article'].create([
+            {'name': 'Article 2'},
+            {'name': 'Article 6'}]
+        )
+        article_4 = self.env['knowledge.article'].create({'name': 'Article 4', 'parent_id': article_2.id})
+        article_8 = self.env['knowledge.article'].create({'name': 'Article 8', 'parent_id': article_4.id})
+        article_11 = self.env['knowledge.article'].create({'name': 'Article 11', 'parent_id': article_6.id})
+
+        self.assertSetEqual(article_8._get_ancestor_ids(), {article_2.id, article_4.id})
+        self.assertSetEqual((article_8 | article_4)._get_ancestor_ids(), {article_2.id, article_4.id})
+        self.assertSetEqual((article_8 | article_11)._get_ancestor_ids(), {article_2.id, article_4.id, article_6.id})
+
+
 @tagged('knowledge_internals', 'knowledge_management')
 class TestKnowledgeCommonWDataInitialValue(KnowledgeCommonWData):
     """ Test initial values or our test data once so that other tests do not have

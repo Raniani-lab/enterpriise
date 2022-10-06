@@ -332,7 +332,10 @@ class QualityCheck(models.Model):
 
     def add_check_in_chain(self, activity=True):
         self.ensure_one()
-        self._insert_in_chain('after', self.workorder_id.current_quality_check_id)
+        if self.workorder_id.current_quality_check_id:
+            self._insert_in_chain('after', self.workorder_id.current_quality_check_id)
+        else:
+            self.workorder_id.current_quality_check_id = self
         if self.workorder_id.production_id.bom_id and activity:
             body = Markup(_("<b>New Step suggested by %s</b><br/>"
                  "<b>Reason:</b>"

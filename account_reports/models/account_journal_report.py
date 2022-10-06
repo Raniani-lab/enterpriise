@@ -455,7 +455,7 @@ class JournalReportCustomHandler(models.AbstractModel):
         for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
             values = values[column_group_key]
             balance = False if column_group_options.get('show_payment_lines') and is_unreconciled_payment else values.get('cumulated_balance')
-            not_receivable_with_partner = values['partner_name'] and values['account_type'] not in ('receivable', 'payable')
+            not_receivable_with_partner = values['partner_name'] and values['account_type'] not in ('asset_receivable', 'liability_payable')
             columns.extend([
                 {'name': '%s %s' % (values['account_code'], '' if values['partner_name'] else values['account_name']), 'name_right': values['partner_name'], 'class': 'o_account_report_line_ellipsis' + (' color-blue' if not_receivable_with_partner else ''), 'template': 'account_reports.cell_template_journal_audit_report', 'style': 'text-align:left;'},
                 {'name': values['name'], 'class': 'o_account_report_line_ellipsis', 'style': 'text-align:left;'},

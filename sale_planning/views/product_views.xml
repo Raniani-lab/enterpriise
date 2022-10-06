@@ -17,6 +17,7 @@
                     <field name="planning_role_id"
                            attrs="{'invisible': [('planning_enabled', '=', False)], 'required': [('planning_enabled', '=', True)]}"
                            class="oe_inline" nolabel="1" placeholder=" e.g. Consultant"/>
+                    <div class="fst-italic text-muted" attrs="{'invisible': [('planning_enabled', '=', False)]}">Plan shifts for your orders for employees who have this role.</div>
                 </div>
             </xpath>
         </field>

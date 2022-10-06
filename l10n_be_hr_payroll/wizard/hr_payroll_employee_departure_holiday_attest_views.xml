@@ -10,9 +10,10 @@
                         <field name="employee_id"/>
                     </group>
                 </group>
-                <group string="Payslip" colspan="4">
-                    <group>
-                        <span>
+                <div class="o_horizontal_separator mb-3 text-uppercase fw-bolder small">Payslip</div>
+                <div class="container">
+                    <div class="row">
+                        <div class="col-sm">
                             Taking into account for remuneration:
                             <ul>
                                 <li>Fixed and variable remuneration</li>
@@ -23,74 +24,69 @@
                                 <li>Beneficiary holdings</li>
                                 <li>Various bonuses</li>
                             </ul>
-                        </span>
-                    </group>
-                    <group>
-                        <span>
+                        </div>
+                        <div class="col-sm">
                             We draw your attention to the fact that this information is based on the data in Odoo and / or that you
                             have introduced in Odoo and that it is important that they be accompanied by a verification on your part
                             according to the particularities related to contract of the worker or your company which Odoo would not
                             know.
-                        </span>
-                    </group>
-
-                    <group class="o_label_nowrap" string="Payslip current year" colspan="4">
-                        <field name="payslip_n_ids" nolabel="1" colspan="4">
-                            <tree>
-                                <field name="number"/>
-                                <field name="payslip_run_id"/>
-                                <field name="date_from"/>
-                                <field name="date_to"/>
-                                <field name="line_ids" invisible="1"/>
-                                <field name="basic_wage" sum="Total basic wage"/>
-                                <field name="net_wage" sum="Total net wage"/>
-                                <field name="state"/>
-                            </tree>
-                        </field>
-                        <field name="net_n" colspan="2"/>
-                    </group>
-                    <group class="o_label_nowrap" string="Payslip previous year" colspan="4">
-                        <field name="payslip_n1_ids" nolabel="1" colspan="4">
-                            <tree>
-                                <field name="number"/>
-                                <field name="payslip_run_id"/>
-                                <field name="date_from"/>
-                                <field name="date_to"/>
-                                <field name="line_ids" invisible="1"/>
-                                <field name="basic_wage" sum="Total basic wage"/>
-                                <field name="net_wage" sum="Total net wage"/>
-                                <field name="state"/>
-                            </tree>
-                        </field>
-                        <field name="net_n1"/>
-                    </group>
+                        </div>
+                    </div>
+                </div>
+                <group class="o_label_nowrap" string="Payslip current year">
+                    <field name="payslip_n_ids" nolabel="1" colspan="2">
+                        <tree>
+                            <field name="number"/>
+                            <field name="payslip_run_id"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="line_ids" invisible="1"/>
+                            <field name="basic_wage" sum="Total basic wage"/>
+                            <field name="net_wage" sum="Total net wage"/>
+                            <field name="state"/>
+                        </tree>
+                    </field>
+                    <field name="net_n" colspan="2"/>
                 </group>
-                <group>
-                    <group string="Allocation Time Off" colspan="4">
-                        <field name="time_off_allocation_n_ids" nolabel="1" colspan="4">
-                            <tree>
-                                <field name="holiday_status_id"/>
-                                <field name="name"/>
-                                <field name="number_of_days" sum="Total allocated days"/>
-                                <field name="state"/>
-                            </tree>
-                        </field>
-                        <field name="time_off_allocated"/>
-                    </group>
-                    <group string="Time Off" colspan="4">
-                        <field name="time_off_n_ids" nolabel="1" colspan="4">
-                            <tree>
-                                <field name="holiday_type"/>
-                                <field name="name"/>
-                                <field name="date_from"/>
-                                <field name="date_to"/>
-                                <field name="number_of_days" sum="Total time off days"/>
-                                <field name="state"/>
-                            </tree>
-                        </field>
-                        <field name="time_off_taken"/>
+                <group class="o_label_nowrap" string="Payslip previous year">
+                    <field name="payslip_n1_ids" nolabel="1" colspan="2">
+                        <tree>
+                            <field name="number"/>
+                            <field name="payslip_run_id"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="line_ids" invisible="1"/>
+                            <field name="basic_wage" sum="Total basic wage"/>
+                            <field name="net_wage" sum="Total net wage"/>
+                            <field name="state"/>
+                        </tree>
+                    </field>
+                    <field name="net_n1"/>
+                </group>
+                <group string="Allocation Time Off">
+                    <field name="time_off_allocation_n_ids" nolabel="1" colspan="2">
+                        <tree>
+                            <field name="holiday_status_id"/>
+                            <field name="name"/>
+                            <field name="number_of_days" sum="Total allocated days"/>
+                            <field name="state"/>
+                        </tree>
+                    </field>
+                    <field name="time_off_allocated"/>
+                </group>
+                <group string="Time Off" colspan="2">
+                    <field name="time_off_n_ids" nolabel="1" colspan="2">
+                        <tree>
+                            <field name="holiday_type"/>
+                            <field name="name"/>
+                            <field name="date_from"/>
+                            <field name="date_to"/>
+                            <field name="number_of_days" sum="Total time off days"/>
+                            <field name="state"/>
+                        </tree>
+                    </field>
+                    <field name="time_off_taken"/>
 
-                    </group>
                 </group>
                 <group string="Unpaid Time Off">
                     <group>

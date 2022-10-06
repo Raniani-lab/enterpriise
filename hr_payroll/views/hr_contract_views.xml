@@ -37,9 +37,9 @@
                 <page string="Part Time" name="part_time">
                     <group>
                         <group>
-                            <div colspan="2" class="o_checkbox_optional_field">
-                                <label for="time_credit"/>
-                                <field name="time_credit"/>
+                            <label for="time_credit"/>
+                            <div class="o_row">
+                                <field name="time_credit" class="oe_inline"/>
                                 <field name="work_time_rate" attrs="{'invisible': [('time_credit', '=', False)]}" widget="percentage"/>
                             </div>
                             <field name="standard_calendar_id" attrs="{'invisible': [('time_credit', '=', False)]}" help="The Standard Calendar is the calendar used by the people working at a 100% rate. It's used here to compute your part-time percentage."/>

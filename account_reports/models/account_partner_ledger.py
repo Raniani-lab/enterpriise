@@ -244,7 +244,7 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
         params = []
         report = self.env.ref('account_reports.partner_ledger_report')
         for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
-            dummy, where_clause, where_params = report._query_get(column_group_options, 'normal')
+            tables, where_clause, where_params = report._query_get(column_group_options, 'normal')
             params += [
                 column_group_key,
                 column_group_options['date']['date_to'],
@@ -257,14 +257,14 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
                     COALESCE(SUM(CASE WHEN aml_with_partner.balance > 0 THEN 0 ELSE partial.amount END), 0)               AS debit,
                     COALESCE(SUM(CASE WHEN aml_with_partner.balance < 0 THEN 0 ELSE partial.amount END), 0)               AS credit,
                     COALESCE(SUM(CASE WHEN aml_with_partner.balance > 0 THEN -partial.amount ELSE partial.amount END), 0) AS balance
-                FROM account_partial_reconcile partial
-                JOIN account_move_line ON
-                    (account_move_line.id = partial.debit_move_id OR account_move_line.id = partial.credit_move_id)
-                    AND account_move_line.partner_id IS NULL
+                FROM {tables}
+                JOIN account_partial_reconcile partial
+                    ON account_move_line.id = partial.debit_move_id OR account_move_line.id = partial.credit_move_id
                 JOIN account_move_line aml_with_partner ON
                     (aml_with_partner.id = partial.debit_move_id OR aml_with_partner.id = partial.credit_move_id)
                     AND aml_with_partner.partner_id IS NOT NULL
                 WHERE partial.max_date <= %s AND {where_clause}
+                    AND account_move_line.partner_id IS NULL
                 GROUP BY aml_with_partner.partner_id
             """)
 

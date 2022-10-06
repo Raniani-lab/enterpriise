@@ -16,7 +16,11 @@ export const voipService = {
     dependencies: ["messaging", "user", "notification"],
     async start(env, { user, messaging, notification }) {
         const isEmployee = await user.hasGroup('base.group_user');
-        let bus;
+        let bus, voip;
+
+        messaging.modelManager.messagingCreatedPromise.then(() => {
+            voip = messaging.modelManager.messaging.voip;
+        });
 
         if (isEmployee) {
             bus = new EventBus();
@@ -27,18 +31,15 @@ export const voipService = {
             });
         }
 
-        const _messaging = await messaging.get();
-
-        const hasMediaDevices = !!browser.navigator.mediaDevices
-        const hasRtcSupport = _messaging.device.hasRtcSupport;
+        const hasMediaDevices = Boolean(browser.navigator.mediaDevices);
 
         function canCall() {
-            if (!isEmployee || !hasRtcSupport || !hasMediaDevices) {
+            if (!voip || !isEmployee || !hasMediaDevices) {
                 return false;
             }
-            const { voip } = _messaging;
             return (
                 voip.mode !== "prod" ||
+                voip.messaging.device.hasRtcSupport &&
                 voip.isServerConfigured &&
                 voip.areCredentialsSet
             );

@@ -10,12 +10,12 @@
                         <field name="name"/>
                         <field name="code"/>
                     </group>
-                    <div class="o_salary_rule_container position-relative" attrs="{'invisible': [('id', '!=', False)]}">
+                    <div string="Versions"  class="o_salary_rule_container position-relative" attrs="{'invisible': [('id', '!=', False)]}">
                         <group class="pe-none user-select-none mt-4 opacity-25 lh-1">
                             <div>
                                 <span>Versions</span>
                                 <field name="parameter_version_ids"
-                                        nolabel="1" attrs="{'invisible': [('id', '!=', False)]}">
+                                        colspan="2" nolabel="1" attrs="{'invisible': [('id', '!=', False)]}">
                                     <tree>
                                         <field name="date_from"/>
                                         <field name="parameter_value"/>
@@ -28,15 +28,13 @@
                         </span>
                     </div>
                     <group string="Versions" attrs="{'invisible': [('id', '=', False)]}">
-                        <div class="o_salary_rule_container">
-                            <field name="parameter_version_ids" nolabel="1"
-                                    context="{'default_rule_parameter_id': active_id}">
-                                <tree editable="bottom">
-                                    <field name="date_from"/>
-                                    <field name="parameter_value"/>
-                                </tree>
-                            </field>
-                        </div>
+                        <field name="parameter_version_ids" nolabel="1" colspan="2"
+                                context="{'default_rule_parameter_id': active_id}">
+                            <tree editable="bottom">
+                                <field name="date_from"/>
+                                <field name="parameter_value"/>
+                            </tree>
+                        </field>
                     </group>
                     <notebook>
                         <page string="Description">

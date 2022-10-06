@@ -167,8 +167,8 @@ class Providerdhl(models.Model):
                 global_product_code = q.find('GlobalProductCode').text
                 if global_product_code == self.dhl_product_code and charge:
                     shipping_charge = charge
-                    shipping_currency = q.find('CurrencyCode') or False
-                    shipping_currency = shipping_currency and shipping_currency.text
+                    shipping_currency = q.find('CurrencyCode')
+                    shipping_currency = None if shipping_currency is None else shipping_currency.text
                     break
                 else:
                     available_product_code.append(global_product_code)
@@ -196,7 +196,7 @@ class Providerdhl(models.Model):
                 order_currency = order.currency_id
             else:
                 order_currency = picking.sale_id.currency_id or picking.company_id.currency_id
-            if not shipping_currency or order_currency.name == shipping_currency:
+            if shipping_currency is None or order_currency.name == shipping_currency:
                 price = float(shipping_charge)
             else:
                 quote_currency = self.env['res.currency'].search([('name', '=', shipping_currency)], limit=1)

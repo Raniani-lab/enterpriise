@@ -1,10 +1,7 @@
 odoo.define('account_accountant.MoveLineListViewTests', function (require) {
     "use strict";
 
-    const legacyViewRegistry = require("web.view_registry");
     const testUtils = require('web.test_utils');
-
-    const MoveLineListView = require('account_accountant.MoveLineListView').AccountMoveListView;
 
     const { start, startServer } = require('@mail/../tests/helpers/test_utils');
     const { patchUiSize, SIZES } = require('@mail/../tests/helpers/patch_ui_size');
@@ -17,7 +14,6 @@ odoo.define('account_accountant.MoveLineListViewTests', function (require) {
         '/web/dataset/call_kw/account.move.line/get_views',
         ...MAIL_ROUTES_TO_IGNORE
     ];
-    legacyViewRegistry.add('account_move_line_list', MoveLineListView);
 
     QUnit.module('Views', {}, function () {
         QUnit.module('MoveLineListView', {

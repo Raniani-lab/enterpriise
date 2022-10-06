@@ -230,13 +230,13 @@
     </div>
 
     <t t-name="GanttView.ResizeBadge">
-        <span t-if="diff === 0" class="o_gantt_pill_resize_badge badge rounded-pill border-0" t-attf-style="#{direction}: 0px;">
+        <span t-if="diff === 0" class="o_gantt_pill_resize_badge badge rounded-pill" t-attf-style="#{direction}: 0px;">
             <t t-esc="_.str.sprintf('%s %s', diff, time)"/>
         </span>
-        <span t-elif="diff &gt; 0" class="o_gantt_pill_resize_badge badge rounded-pill border-0 text-success" t-attf-style="#{direction}: 0px;">
+        <span t-elif="diff &gt; 0" class="o_gantt_pill_resize_badge badge rounded-pill text-success" t-attf-style="#{direction}: 0px;">
             <t t-esc="_.str.sprintf('+%s %s', diff, time)"/>
         </span>
-        <span t-else="diff &lt; 0" class="o_gantt_pill_resize_badge badge rounded-pill border-0 text-danger" t-attf-style="#{direction}: 0px;">
+        <span t-else="diff &lt; 0" class="o_gantt_pill_resize_badge badge rounded-pill text-danger" t-attf-style="#{direction}: 0px;">
             <t t-esc="_.str.sprintf('%s %s', diff, time)"/>
         </span>
     </t>

@@ -207,6 +207,7 @@
                     <field name="foreign_currency_id"
                            optional="hidden"
                            groups="base.group_multi_currency"
+                           options="{'no_open': True, 'no_create': True}"
                            attrs="{'readonly': [('is_reconciled', '=', True),('amount', '!=', 0)]}"
                     />
                     <field name="amount" attrs="{'readonly': [('is_reconciled', '=', True),('amount', '!=', 0)]}" />

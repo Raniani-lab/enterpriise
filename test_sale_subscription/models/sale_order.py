@@ -22,25 +22,22 @@ class SaleOrder(models.Model):
         self.env.flush_all()
         self.env.cr.flush()
 
-    # Mocking for '_process_invoices_to_send'
-    # Otherwise the whole sending mail process will be triggered and we don't want it in the post_init hook
-    def _mock_process_invoices_to_send(self, account_moves, auto_commit):
-        account_moves.is_move_sent = True
-
     def _test_demo_create_invoices(self, automatic=True):
         self._create_recurring_invoice(automatic=automatic)
         self.invoice_ids.filtered(lambda inv: inv.state == 'draft')._post(False)
 
     @api.model
     def _test_demo_generate_subscriptions(self):
+        # Mocking for '_process_invoices_to_send'
+        # Otherwise the whole sending mail process will be triggered and we don't want it in the post_init hook
+        def _mock_process_invoices_to_send(account_moves, auto_commit):
+            account_moves.is_move_sent = True
 
-        patchers = [
-            patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._process_invoices_to_send',
-                  wraps=self._mock_process_invoices_to_send),
-        ]
-        for patcher in patchers:
-            patcher.start()
+        with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._process_invoices_to_send',
+                  wraps=_mock_process_invoices_to_send):
+            self._test_demo_generate_subscriptions_unpatched
 
+    def _test_demo_generate_subscriptions_unpatched(self):
         self._test_demo_flush_tracking()
         time_start = fields.Date.today() - relativedelta(years=1)
         subs_to_invoice = self.env['sale.order']
@@ -181,6 +178,3 @@ class SaleOrder(models.Model):
 
         subs_to_invoice.filtered(lambda so: so.state == 'sale')._test_demo_create_invoices(automatic=False)
         subs_to_invoice.to_renew = False
-
-        for patcher in patchers:
-            patcher.stop()

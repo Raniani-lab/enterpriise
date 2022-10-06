@@ -170,7 +170,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         ]
 
         for patcher in patchers:
-            patcher.start()
+            self.startPatcher(patcher)
 
         subscription = self.subscription.create({
             'partner_id': self.partner.id,

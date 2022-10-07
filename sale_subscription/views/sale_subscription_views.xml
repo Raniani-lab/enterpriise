@@ -713,7 +713,7 @@
                            attrs="{'invisible': ['|', ('recurrence_id','=', False), ('recurring_rule_boundary','=','unlimited')]}"/>
                     <div attrs="{'invisible': ['|', ('recurrence_id','=', False), ('recurring_rule_boundary','=','unlimited')]}">
                         <field name="recurring_rule_count" style="width: 3rem;"/>
-                        <field name="recurring_rule_type"/>
+                        <field name="recurring_rule_type" class="oe_inline"/>
                     </div>
                     <field name="user_closable" attrs="{'invisible': [('recurrence_id','=', False)]}"/>
                     <label for="auto_close_limit" attrs="{'invisible': [('recurrence_id','=', False)]}"/>

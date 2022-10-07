@@ -42,6 +42,7 @@ class HrContract(models.Model):
     def _compute_l10n_be_is_below_scale(self):
         super()._compute_l10n_be_is_below_scale()
 
+    @api.depends('wage_with_holidays')
     def _compute_double_holiday_wage(self):
         for contract in self:
             contract.double_holiday_wage = contract.wage_with_holidays * 0.92

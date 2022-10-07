@@ -342,7 +342,7 @@ class MainComponent extends Component {
         await this.env.model.save();
         // Updates the line id if it's missing, in order to open the line form view.
         if (!line.id && virtualId) {
-            line = this.env.model.pageLines.find(l => Number(l.dummy_id) === virtualId);
+            line = this.env.model.pageLines.find(l => l.dummy_id === virtualId);
         }
         this._editedLineParams = this.env.model.getEditedLineParams(line);
         await this.openProductPage();

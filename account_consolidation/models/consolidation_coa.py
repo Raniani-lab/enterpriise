@@ -276,6 +276,16 @@ class ConsolidationAccount(models.Model):
         self.ensure_one()
         return dict(self._fields['currency_mode'].selection).get(self.currency_mode)
 
+    @api.model
+    def _name_search(self, name='', args=None, operator='ilike', limit=100, name_get_uid=None):
+        args = args or []
+        domain = []
+        if name:
+            domain = ['|', ('code', '=ilike', name.split(' ')[0] + '%'), ('name', operator, name)]
+            if operator in expression.NEGATIVE_TERM_OPERATORS:
+                domain = ['&', '!'] + domain[1:]
+        ids = self._search(expression.AND([domain, args]), limit=limit, access_rights_uid=name_get_uid)
+        return models.lazy_name_get(self.browse(ids).with_user(name_get_uid))
 
 class ConsolidationGroup(models.Model):
     _name = "consolidation.group"

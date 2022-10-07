@@ -19,15 +19,13 @@
                         <field name="import_file" widget="binary_commission" filename="filename" options="{'accepted_file_extensions': 'text/csv'}"/>
                     </group>
                 </group>
-                <group>
-                    <field name="line_ids" nolabel="1">
-                        <tree editable="bottom">
-                            <field name="employee_id"/>
-                            <field name="commission_amount"/>
-                            <field name="currency_id" invisible="1"/>
-                        </tree>
-                    </field>
-                </group>
+                <field name="line_ids" nolabel="1">
+                    <tree editable="bottom">
+                        <field name="employee_id"/>
+                        <field name="commission_amount"/>
+                        <field name="currency_id" invisible="1"/>
+                    </tree>
+                </field>
                 <div states="export">
                     <h2>Export Complete</h2>
                     <p>The file has been downloaded.</p>

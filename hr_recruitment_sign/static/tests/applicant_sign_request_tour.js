@@ -41,7 +41,7 @@ odoo.define('hr_recruitment_sign.tour', function (require) {
             {
                 content: "Validate the creation",
                 trigger: '.o_menu_brand',
-                extra_trigger: '.o_form_status_indicator_buttons_hidden',
+                extra_trigger: '.o_form_status_indicator_buttons.invisible',
                 run: 'click',
             },
         ]

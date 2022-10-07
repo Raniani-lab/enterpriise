@@ -84,7 +84,7 @@
                 <field name="payment_exception" invisible="1"/>
                 <div class="px-2 rounded-pill text-bg-warning float-end" attrs="{'invisible': ['|', ('is_subscription', '=', False), ('to_renew', '=', False)]}">To Renew</div>
                 <div class="px-2 rounded-pill text-bg-danger float-end" attrs="{'invisible': [('payment_exception', '=', False)]}">Payment Failure</div>
-                <div class="badge rounded-pill bg-default float-end border border-default" attrs="{'invisible': [('stage_category', '!=', 'closed')]}">Closed</div>
+                <div class="badge rounded-pill bg-default float-end border border-default fs-6" attrs="{'invisible': [('stage_category', '!=', 'closed')]}">Closed</div>
                 <field name="is_subscription" invisible="1"/>
                 <field name="to_renew"  invisible="1"/>
                 <field name="is_upselling"  invisible="1"/>
@@ -105,7 +105,7 @@
                 <div name="upsell_pill" class="badge rounded-pill bg-primary float-end fs-6"
                      attrs="{'invisible': [('is_upselling', '=', False)]}">Upselling
                 </div>
-                <div name="renewed_pill" class="badge rounded-pill bg-success float-end fs-6"
+                <div name="renewed_pill" class="badge rounded-pill bg-success text-white float-end fs-6"
                      attrs="{'invisible': ['|', ('renew_state', '=', 'renewing'), ('renew_state', '=', False)]}"><field name="renew_state" class="d-inline"/>
                 </div>
                 <div name="renewing_pill" class="badge rounded-pill bg-warning float-end fs-6"

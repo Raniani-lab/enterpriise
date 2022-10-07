@@ -9,6 +9,11 @@
             <xpath expr="//header" position="inside">
                 <button name="action_manual_send_for_digitization" class="oe_highlight" string="Send For Digitization" type="object"
                 attrs="{'invisible': [('extract_can_show_send_button', '=', False)]}" data-hotkey="x" />
+                <button name="action_reload_ai_data" string="Reload AI Data" type="object"
+                attrs="{'invisible':['|', '|',
+                       ('move_type', 'not in', ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')),
+                       ('state', '!=', 'draft'),
+                       ('extract_state', 'not in', ['waiting_validation', 'validation_to_send'])]}" />
             </xpath>
             <xpath expr="//header" position='after'>
                 <field name="extract_state" attrs="{'invisible':True}"/>
@@ -16,18 +21,6 @@
                 <field name="extract_attachment_id" attrs="{'invisible':True}"/>
                 <field name="extract_can_show_resend_button" attrs="{'invisible':True}"/>
                 <field name="extract_can_show_send_button" attrs="{'invisible':True}"/>
-                <div role="status" class="alert alert-success mb8 text-center"
-                     attrs="{'invisible':['|', '|',
-                            ('move_type', 'not in', ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')),
-                            ('state', 'not in', ['draft']),
-                            ('extract_state', 'not in', ['waiting_validation', 'validation_to_send'])]}">
-                    The bill has been populated by AI.
-                    <field name="extract_populated_fields" widget="populated_fields_tooltip"/>
-                    <button type="object" name="action_reload_ai_data" class="btn btn-link">
-                        <i class="fa fa-fw o_button_icon fa-arrow-right"/>
-                        Reload AI Data
-                    </button>
-                </div>
                 <div role="status" class="alert alert-danger mb8 text-center"
                      attrs="{'invisible':['|', '|',
                             ('move_type', 'not in', ('in_invoice', 'in_refund', 'out_invoice', 'out_refund')),

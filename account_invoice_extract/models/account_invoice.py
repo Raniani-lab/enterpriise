@@ -115,7 +115,6 @@ class AccountMove(models.Model):
     extract_error_message = fields.Text("Error message", compute=_compute_error_message)
     extract_remote_id = fields.Integer("Id of the request to IAP-OCR", default="-1", copy=False, readonly=True)
     extract_word_ids = fields.One2many("account.invoice_extract.words", inverse_name="invoice_id", copy=False)
-    extract_populated_fields = fields.Char(readonly=True, copy=False)
     extract_attachment_id = fields.Many2one('ir.attachment', readonly=True, ondelete='set null', copy=False)
 
     extract_can_show_resend_button = fields.Boolean("Can show the ocr resend button", compute=_compute_show_resend_button)
@@ -833,24 +832,16 @@ class AccountMove(models.Model):
         SWIFT_code_ocr = json.loads(ocr_results['SWIFT_code']['selected_value']['content']) if 'SWIFT_code' in ocr_results else None
         qr_bill_ocr = ocr_results['qr-bill']['selected_value']['content'] if 'qr-bill' in ocr_results else None
 
-        fields_populated = []
         with self._get_edi_creation() as move_form:
             if not move_form.partner_id or force_write:
                 partner_id, created = self._get_partner(ocr_results)
                 if partner_id:
                     move_form.partner_id = partner_id
-
-                    if self.is_purchase_document():
-                        fields_populated.append(_("Vendor"))
-                    else:
-                        fields_populated.append(_("Customer"))
-
                     if created and iban_ocr and not move_form.partner_bank_id and self.is_purchase_document():
                         bank_account = self.env['res.partner.bank'].search([('acc_number', '=ilike', iban_ocr), *self._domain_company()])
                         if bank_account:
                             if bank_account.partner_id == move_form.partner_id.id:
                                 move_form.partner_bank_id = bank_account
-                                fields_populated.append(self._fields['partner_bank_id'].string)
                         else:
                             vals = {
                                 'partner_id': move_form.partner_id.id,
@@ -906,33 +897,24 @@ class AccountMove(models.Model):
                         'currency_id': move_form.currency_id.id,
                         'partner_id': partner.id,
                     })
-                    fields_populated.append(self._fields['partner_bank_id'].string)
 
             due_date_move_form = move_form.invoice_date_due  # remember the due_date, as it could be modified by the onchange() of invoice_date
             context_create_date = fields.Date.context_today(self, self.create_date)
             if date_ocr and (not move_form.invoice_date or move_form.invoice_date == context_create_date or force_write):
                 move_form.invoice_date = date_ocr
-                if self.is_purchase_document():
-                    fields_populated.append(_("Bill Date"))
-                else:
-                    fields_populated.append(_("Invoice Date"))
             if due_date_ocr and (due_date_move_form == context_create_date or force_write):
                 if date_ocr == due_date_ocr and move_form.partner_id and move_form.partner_id.property_supplier_payment_term_id:
                     # if the invoice date and the due date found by the OCR are the same, we use the payment terms of the detected supplier instead, if there is one
                     move_form.invoice_payment_term_id = move_form.partner_id.property_supplier_payment_term_id
-                    fields_populated.append(self._fields['invoice_payment_term_id'].string)
                 else:
                     move_form.invoice_date_due = due_date_ocr
-                    fields_populated.append(self._fields['invoice_date_due'].string)
 
             if self.is_purchase_document() and (not move_form.ref or force_write):
                 move_form.ref = invoice_id_ocr
-                fields_populated.append(_("Bill Reference"))
 
             if self.is_sale_document():
                 with mute_logger('odoo.tests.common.onchange'):
                     move_form.name = invoice_id_ocr
-                    fields_populated.append(self._fields['name'].string)
 
             if currency_ocr and (move_form.currency_id == move_form.company_currency_id or force_write):
                 currency = self.env["res.currency"].search([
@@ -940,11 +922,9 @@ class AccountMove(models.Model):
                         ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
                 if currency:
                     move_form.currency_id = currency
-                    fields_populated.append(self._fields['currency_id'].string)
 
             if payment_ref_ocr and (not move_form.payment_reference or force_write):
                 move_form.payment_reference = payment_ref_ocr
-                fields_populated.append(self._fields['payment_reference'].string)
 
             add_lines = not move_form.invoice_line_ids or force_write
             if add_lines:
@@ -988,7 +968,6 @@ class AccountMove(models.Model):
                             # This is intended as a way to keep intra-community taxes
                             if line.price_total == amount_before:
                                 line.tax_ids = [Command.link(tax_info['tax_record'].id)]
-                fields_populated.append(self._fields['invoice_line_ids'].string)
 
             # Check the tax roundings after the tax lines have been synced
             tax_amount_rounding_error = total_ocr - self.tax_totals['amount_total']
@@ -998,8 +977,6 @@ class AccountMove(models.Model):
                 float_compare(abs(tax_amount_rounding_error), threshold, precision_digits=2) <= 0
             ):
                 self._check_total_amount(total_ocr)
-
-        self.extract_populated_fields = ' - '.join(sorted(fields_populated))
 
     def buy_credits(self):
         url = self.env['iap.account'].get_credits_url(base_url='', service_name='invoice_ocr')

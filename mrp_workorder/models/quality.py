@@ -151,7 +151,7 @@ class QualityPoint(models.Model):
     @api.depends('operation_id', 'picking_type_ids')
     def _compute_is_workorder_step(self):
         for quality_point in self:
-            quality_point.is_workorder_step = quality_point.operation_id or quality_point.picking_type_ids and\
+            quality_point.is_workorder_step = quality_point.picking_type_ids and\
                 all(pt.code == 'mrp_operation' for pt in quality_point.picking_type_ids)
 
     def _change_product_ids_for_bom(self, bom_id):

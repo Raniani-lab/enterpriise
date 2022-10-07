@@ -8,8 +8,10 @@
     'description': """Sepa Direct Debit Payment Provider""",
     'depends': ['account_sepa_direct_debit', 'account_payment', 'sms'],
     'data': [
-        'views/payment_views.xml',
+        'views/payment_provider_views.xml',
         'views/payment_sepa_direct_debit_templates.xml',
+        'views/sdd_mandate_views.xml',
+
         'data/mail_template_data.xml',
         'data/payment_provider_data.xml',
     ],

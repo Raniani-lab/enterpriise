@@ -194,17 +194,9 @@
                         <notebook>
                             <page string="Definition">
                                 <group>
-                                    <group>
-                                        <field name="engine"/>
-                                    </group>
-                                </group>
-                                <group col="4">
-                                    <field name="formula" colspan="3"/>
-                                </group>
-                                <group>
-                                    <group>
-                                        <field name="subformula"/>
-                                    </group>
+                                    <field name="engine"/>
+                                    <field name="formula"/>
+                                    <field name="subformula"/>
                                 </group>
                             </page>
                             <page string="Options">

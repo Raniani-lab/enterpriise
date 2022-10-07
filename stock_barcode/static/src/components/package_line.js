@@ -3,11 +3,8 @@
 import LineComponent from './line';
 
 export default class PackageLineComponent extends LineComponent {
-    get componentClasses() {
-        return [
-            this.qtyDone == 1 ? 'o_line_completed' : 'o_line_not_completed',
-            this.isSelected ? 'o_selected o_highlight' : ''
-        ].join(' ');
+    get isComplete() {
+        return this.qtyDone == this.qtyDemand;
     }
 
     get isSelected() {
@@ -33,4 +30,5 @@ export default class PackageLineComponent extends LineComponent {
         this.env.model.trigger('update');
     }
 }
+PackageLineComponent.props = ["displayUOM", "line", "openPackage"];
 PackageLineComponent.template = 'stock_barcode.PackageLineComponent';

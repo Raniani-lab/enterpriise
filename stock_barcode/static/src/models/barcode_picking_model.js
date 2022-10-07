@@ -491,7 +491,7 @@ export default class BarcodePickingModel extends BarcodeModel {
     }
 
     get packageLines() {
-        if (!this.record.picking_type_entire_packs) {
+        if (!this._moveEntirePackage()) {
             return [];
         }
         const linesWithPackage = this.currentState.lines.filter(line => line.package_id && line.result_package_id);
@@ -541,7 +541,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         let lines = super.pageLines;
         // If we show entire package, we don't return lines with package (they
         // will be treated as "package lines").
-        if (this.record.picking_type_entire_packs) {
+        if (this._moveEntirePackage()) {
             lines = lines.filter(line => !(line.package_id && line.result_package_id));
         }
         return this._sortLine(lines);

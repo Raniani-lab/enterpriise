@@ -252,7 +252,7 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
     }
 
     _moveEntirePackage() {
-        return this.picking.picking_type_entire_packs;
+        return this.picking && this.picking.picking_type_entire_packs;
     }
 
     _sortingMethod(l1, l2) {

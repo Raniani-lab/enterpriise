@@ -4,9 +4,9 @@
         <xpath expr="//div" position="replace">
             <t t-if="props.record.data.resource_type !== 'material'">$0</t>
             <t t-else="">
-                <div>
+                <div class="d-flex">
                     <span class="o_m2o_avatar">
-                        <span t-if="props.value !== false" class="d-inline-flex align-items-center justify-content-center rounded-circle o_material_resource cursor-default" t-att-title="props.value[1]">
+                        <span t-if="props.value !== false" class="d-inline-flex align-items-center justify-content-center rounded-circle o_material_resource cursor-default me-1" t-att-title="props.value[1]">
                             <i class="fa fa-wrench"/>
                         </span>
                         <span t-elif="!props.readonly" class="o_m2o_avatar_empty"></span>

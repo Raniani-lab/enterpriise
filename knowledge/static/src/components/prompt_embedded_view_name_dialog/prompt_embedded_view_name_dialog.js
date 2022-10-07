@@ -39,12 +39,13 @@ export class PromptEmbeddedViewNameDialog extends Component {
      * @returns {String}
      */
     get title () {
-        if (this.props.viewType === 'kanban') {
-            return _t('Embed a Kanban View');
-        }
         if (this.props.viewType === 'list') {
-            return _t('Embed a List View');
+            return _t('Insert a List View');
         }
+        if (this.props.viewType === 'kanban') {
+            return _t('Insert a Kanban View');
+        }
+        return _t('Embed a View');
     }
     /**
      * @param {Event} event

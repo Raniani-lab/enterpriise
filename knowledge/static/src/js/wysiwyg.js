@@ -115,9 +115,9 @@ Wysiwyg.include({
                 },
             }, {
                 category: 'Knowledge',
-                name: _t('Kanban view'),
+                name: _t('Item Kanban'),
                 priority: 40,
-                description: _t('Insert Kanban View'),
+                description: _t('Insert a Kanban view of article items'),
                 fontawesome: 'fa-th-large',
                 callback: () => {
                     const restoreSelection = preserveCursor(this.odooEditor.document);
@@ -134,9 +134,9 @@ Wysiwyg.include({
                 }
             }, {
                 category: 'Knowledge',
-                name: _t('List view'),
+                name: _t('Item List'),
                 priority: 50,
-                description: _t('Insert List View'),
+                description: _t('Insert a List view of article items'),
                 fontawesome: 'fa-th-list',
                 callback: () => {
                     const restoreSelection = preserveCursor(this.odooEditor.document);

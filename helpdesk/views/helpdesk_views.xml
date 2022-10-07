@@ -539,7 +539,7 @@
                 <field name="legend_done" invisible="1"/>
                 <field name="ticket_ref" string="ID" readonly="1" optional="show"/>
                 <field name="priority" optional="show" widget="priority"/>
-                <field name="name" string="Name" readonly="1"/>
+                <field name="name" string="Name"/>
                 <field name="team_id" optional="show" readonly="1" invisible="context.get('default_team_id', False)"/>
                 <field name="team_id" optional="hide" readonly="1" invisible="not context.get('default_team_id', False)"/>
                 <field name="user_id" optional="show" widget="many2one_avatar_user" options="{'no_quick_create': True}"/>

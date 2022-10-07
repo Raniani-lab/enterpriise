@@ -114,10 +114,10 @@ const EmbeddedViewRendererPatch = {
                 onSelectCallback(resIds[0]);
             },
             onCreateEdit: async () => {
-                const id = await this.orm.create('knowledge.article', [{
-                    body: '<p></p>'
-                }]);
-                onSelectCallback(id);
+                const articleId = await this.orm.call('knowledge.article', 'article_create', [], {
+                    is_private: true
+                });
+                onSelectCallback(articleId);
             },
         });
     },

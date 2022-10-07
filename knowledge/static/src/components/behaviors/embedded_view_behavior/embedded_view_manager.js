@@ -10,9 +10,12 @@ const {
     Component,
     onMounted,
     onWillStart,
-    useEffect,
-    useRef,
     useSubEnv } = owl;
+
+const EMBEDDED_VIEW_LIMITS = {
+    kanban: 20,
+    list: 40,
+};
 
 /**
  * Wrapper for the embedded view, manage the toolbar and the embedded view props
@@ -24,15 +27,16 @@ export class EmbeddedViewManager extends Component {
 
         this.actionService = useService('action');
         this.dialogService = useService('dialog');
-        this.orm = useService('orm');
-        this.resizer = useRef('resizer');
 
         useOwnDebugContext(); // define a debug context when the developer mode is enable
+        const config = {
+            ...getDefaultConfig(),
+            disableSearchBarAutofocus: true,
+        };
         useSubEnv({
-            config: getDefaultConfig(),
+            config,
             __getGlobalState__: this.__getGlobalState__,
         });
-        useEffect(this.setResizerListener.bind(this), () => [this.resizer.el]);
         onWillStart(this.onWillStart.bind(this));
         onMounted(this.onMounted.bind(this));
     }
@@ -84,39 +88,21 @@ export class EmbeddedViewManager extends Component {
                 });
             },
             createRecord: async () => {
-                const ctx = {};
-                for (const key of ['active_id', 'active_ids', 'active_model']) {
-                    if (context.hasOwnProperty(key)) {
-                        ctx[key] = context[key];
-                    }
-                }
-                if (action.res_model === 'knowledge.article') {
-                    const articleId = await this.orm.call('knowledge.article', 'article_create', [
-                        false,             // title
-                        ctx.active_id,     // parent_id
-                        false,             // is_private
-                        true               // is_article_item
-                    ]);
-                    this.actionService.doAction('knowledge.ir_actions_server_knowledge_home_page', {
-                        additionalContext: {
-                            res_id: articleId
-                        }
-                    });
-                } else {
-                    const [formViewId] = this.action.views.find((view) => {
-                        return view[1] === 'form';
-                    }) || [false];
-                    this.actionService.doAction({
-                        type: 'ir.actions.act_window',
-                        res_model: action.res_model,
-                        views: [[formViewId, 'form']],
-                        context: ctx,
-                    });
-                }
+                const [formViewId] = this.action.views.find((view) => {
+                    return view[1] === 'form';
+                }) || [false];
+                this.actionService.doAction({
+                    type: 'ir.actions.act_window',
+                    res_model: action.res_model,
+                    views: [[formViewId, 'form']],
+                });
             },
         };
         if (action.search_view_id) {
             ViewProps.searchViewId = action.search_view_id[0];
+        }
+        if (this.props.viewType in EMBEDDED_VIEW_LIMITS) {
+            ViewProps.limit = EMBEDDED_VIEW_LIMITS[this.props.viewType];
         }
         this.EmbeddedView = View;
         this.EmbeddedViewProps = ViewProps;
@@ -154,50 +140,6 @@ export class EmbeddedViewManager extends Component {
         this.actionService.doAction(this.action, {
             viewType: this.props.viewType,
         });
-    }
-
-    /**
-     * Binds new event listeners to the resizer bar of the embedded view.
-     * These listeners will let the user to resize the embedded view vertically
-     * by dragging the resize bar.
-     * @returns {Function}
-     */
-    setResizerListener () {
-        const container = this.props.el;
-        const resizer = this.resizer.el;
-        /**
-         * @param {Event} event
-         */
-        const onPointerMove = event => {
-            const rect = container.getBoundingClientRect();
-            const height = (event.pageY + resizer.clientHeight / 2) - rect.top;
-            container.style.setProperty('--default-embedded-view-size', height + 'px');
-        };
-        /**
-         * @param {Event} event
-         */
-        const onPointerUp = event => {
-            document.body.removeEventListener('mousemove', onPointerMove);
-            document.body.removeEventListener('mouseup', onPointerUp);
-            document.body.removeEventListener('mouseleave', onPointerUp);
-        };
-        /**
-         * @param {Event} event
-         */
-        const onPointerDown = event => {
-            event.preventDefault();
-            event.stopPropagation();
-            document.body.addEventListener('mousemove', onPointerMove);
-            document.body.addEventListener('mouseup', onPointerUp);
-            document.body.addEventListener('mouseleave', onPointerUp);
-        };
-        resizer.addEventListener('mousedown', onPointerDown);
-        return () => {
-            resizer.removeEventListener('mousedown', onPointerDown);
-            document.body.removeEventListener('mousemove', onPointerMove);
-            document.body.removeEventListener('mouseup', onPointerUp);
-            document.body.removeEventListener('mouseleave', onPointerUp);
-        };
     }
 }
 

@@ -2058,8 +2058,8 @@ class Article(models.Model):
         # from this point on, the act_window is considered apart from the original record
         del action_data['id']
         del action_data['xml_id']
-        action_data.setdefault('display_name', name)
-        action_data.setdefault('name', name)
+        action_data['display_name'] = name or action_data['display_name']
+        action_data['name'] = name or action_data['name']
         return action_data
 
     def _get_ancestor_ids(self):

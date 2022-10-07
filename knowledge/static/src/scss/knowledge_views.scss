@@ -1,4 +1,7 @@
 .o_knowledge_form_view {
+
+    --editor-gutter-size: 2rem;
+
     // = Navbar
     // --------------------------------------------------------------------------
     .o_breadcrumb_article_name_container {
@@ -53,13 +56,22 @@
         visibility: visible;
         opacity: 1;
     }
+
+    .o_knowledge_icon.o_large,
+    .o_knowledge_icon_cover_buttons,
+    .o_knowledge_editor .o_field_html .note-editable,
+    .o_knowledge_editor .o_field_html .o_readonly,
+    .o_knowledge_editor .o_field_properties {
+        padding-left: var(--editor-gutter-size) !important;
+        padding-right: var(--editor-gutter-size) !important;
+    }
     .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_icon,
     .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_icon_cover_buttons,
     .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_editor .o_field_html .note-editable,
     .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_editor .o_field_html .o_readonly,
     .o_knowledge_article_view_form_dynamic_width ~ .o_knowledge_editor .o_field_properties {
         width: 100%;
-        max-width: 750px;
+        max-width: calc(750px + 2 * var(--editor-gutter-size));
         margin-left: auto;
         margin-right: auto;
     }
@@ -353,14 +365,6 @@
                 font-size: 80px;
             }
         }
-        .o_knowledge_icon.o_large,
-        .o_knowledge_icon_cover_buttons,
-        .o_knowledge_editor .o_field_html .note-editable,
-        .o_knowledge_editor .o_field_html .o_readonly,
-        .o_knowledge_editor .o_field_properties {
-            padding-left: 2rem !important; // gutter size of the editor
-            padding-right: 2rem !important;
-        }
         .o_knowledge_editor .o_kanban_view .o_field_properties {
             // kanban view in editor
             padding-left: 0 !important;
@@ -371,14 +375,9 @@
 
 @include media-breakpoint-down(md) {
     .o_knowledge_form_view {
-        .o_knowledge_icon,
-        .o_knowledge_icon_cover_buttons,
-        .o_knowledge_editor .o_field_html .note-editable,
-        .o_knowledge_editor .o_field_html .o_readonly,
-        .o_knowledge_editor .o_field_properties {
-            padding-left: 1rem !important; // gutter size of the editor
-            padding-right: 1rem !important;
-        }
+
+        --editor-gutter-size: 1rem;
+
         .o_knowledge_editor .o_kanban_view .o_field_properties {
             // kanban view in editor
             padding-left: 0 !important;

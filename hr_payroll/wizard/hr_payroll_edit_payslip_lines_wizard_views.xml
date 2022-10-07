@@ -4,7 +4,7 @@
         <field name="name">hr.payroll.edit.payslip.lines.wizard.view.form</field>
         <field name="model">hr.payroll.edit.payslip.lines.wizard</field>
         <field name="arch" type="xml">
-            <form string="Edition of Payslip Lines in the Payslip" js_class="payslip_edit_lines_form">
+            <form string="Edition of Payslip Lines in the Payslip">
                 <field name="payslip_id" invisible="1"/>
                 <span><strong>Tip:</strong> Each time you edit the quantity or the amount on a line, we recompute the following lines. We recommend that you edit from top to bottom to prevent your edition from being overwritten by the automatic recalculation. Be careful that reordering the lines doesn't recompute them.</span>
                 <group>

@@ -525,10 +525,6 @@ class BankRecWidget(models.Model):
                 ],
             })
 
-            # == Dynamic Currency filter ==
-            if wizard.transaction_currency_id != wizard.company_currency_id:
-                context['search_default_currency_id'] = wizard.transaction_currency_id.id
-
             # Stringify the domain.
             for dynamic_filter in dynamic_filters:
                 dynamic_filter['domain'] = str(dynamic_filter['domain'])

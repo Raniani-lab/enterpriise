@@ -106,14 +106,14 @@
                                 <!-- Buttons -->
                                 <div class="d-flex align-items-center pe-2">
                                     <a role="button" t-on-click="() => this.createArticle('private')" class="btn btn-light btn-create text-nowrap me-1" data-hotkey="c">
-                                        <i class="fa fa-plus-circle"/> Create
+                                        <i class="fa fa-plus-circle me-1"/>Create
                                     </a>
                                     <div class="o-dropdown dropdown o-dropdown--no-caret">
                                         <a role="button" class="btn btn-light btn-share dropdown-toggle me-1"
                                            id="dropdown_share_panel"
                                            data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" data-hotkey="s"
                                            attrs="{'invisible': ['|', ('id', '=', False), ('active', '=', False)]}">
-                                            <i class="fa fa-share-alt"/> Share
+                                            <i class="fa fa-share-alt me-1"/>Share
                                         </a>
                                         <div role="menu" t-on-click.stop=""
                                              aria-labelledby="dropdown_share_panel"

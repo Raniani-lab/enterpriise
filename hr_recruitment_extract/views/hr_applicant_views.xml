@@ -14,52 +14,50 @@
                 <field name="extract_can_show_resend_button" invisible="1"/>
                 <field name="extract_can_show_send_button" invisible="1"/>
                 <field name="is_first_stage" invisible="1"/>
-                <div role="status" class="alert alert-danger mb8"
+                <div role="status" class="alert alert-danger mb8 text-center"
                      attrs="{'invisible':['|',
                             ('is_first_stage', '=', False),
                             ('extract_state', 'not in', ['not_enough_credit'])]}">
-                    <button string="Buy credits" type="object" name="buy_credits" class="btn btn-sm btn-primary float-end mb0"/>
-                    <button name="action_manual_send_for_digitization" class="btn btn-sm btn-primary float-end mb0 me-1" string="Resend For Digitization" type="object"
-                        attrs="{'invisible': [('extract_can_show_resend_button', '=', False)]}" data-hotkey="q"/>
                     You don't have enough credit to extract data from your CV.
-                    <div class="clearfix"/>
+                    <button type="object" name="buy_credits" class="btn btn-link">
+                        <i class="fa fa-fw o_button_icon fa-arrow-right"/>
+                        Buy credits
+                    </button>
+                    <button type="object" name="action_manual_send_for_digitization" class="btn btn-link">
+                        <i class="fa fa-fw o_button_icon fa-arrow-right"/>
+                        Resend For Digitization
+                    </button>
                 </div>
-                <div role="status" class="alert alert-info mb8"
+                <div role="status" class="alert alert-info mb8 text-center"
                      attrs="{'invisible':['|',
                             ('is_first_stage', '=', False),
                             ('extract_state', 'not in', ['waiting_upload', 'waiting_extraction'])]}">
-                    <button string="Update status" type="object" name="check_ocr_status" class="btn btn-sm btn-primary float-end mb0"/>
-                    The file has been sent and is being processed. It usually takes between 5 and 10 seconds.
-                    <div class="clearfix"/>
+                    All fields will be automated by Artificial Intelligence, it might take 5 seconds.
+                    <button type="object" name="check_ocr_status" class="btn btn-link">
+                        <i class="fa fa-fw o_button_icon fa-arrow-right"/>
+                        Refresh
+                    </button>
                 </div>
                 <field name="extract_status_code" invisible="1"/>
-                <div role="status" class="alert alert-info mb8"
+                <div role="status" class="alert alert-info mb8 text-center"
                      attrs="{'invisible':['|',
                             ('is_first_stage', '=', False),
                             ('extract_state', 'not in', ['extract_not_ready'])]}">
-                    <button string="Update status" type="object" name="check_ocr_status" class="btn btn-sm btn-primary float-end mb0"/>
                     The data extraction is not finished yet. The extraction usually takes between 5 and 10 seconds.
-                    <div class="clearfix"/>
+                    <button type="object" name="check_ocr_status" class="btn btn-link">
+                        <i class="fa fa-fw o_button_icon fa-arrow-right"/>
+                        Refresh
+                    </button>
                 </div>
-                <div role="status" class="alert alert-danger mb8"
-                     attrs="{'invisible':['|', '|',
+                <div role="status" class="alert alert-danger mb8 text-center"
+                     attrs="{'invisible':['|',
                             ('is_first_stage', '=', False),
-                            ('extract_state', 'not in', ['error_status']),
-                            '&amp;',
-                            ('extract_status_code', '&gt;', 99),
-                            ('extract_status_code', '&lt;', 200)]}">
-                    <button name="action_manual_send_for_digitization" class="btn btn-sm btn-primary float-end mb0 me-1"
-                            string="Resend For Digitalization" type="object" data-hotkey="q"/>
-                    <field name="extract_error_message" class="oe_inline"/>
-                    <div class="clearfix"/>
-                </div>
-                <div role="status" class="alert alert-warning mb8"
-                     attrs="{'invisible':['|', '|', '|',
-                            ('is_first_stage', '=', False),
-                            ('extract_state', 'not in', ['error_status', 'waiting_validation']),
-                            ('extract_status_code', '&lt;', 100),
-                            ('extract_status_code', '&gt;', 199)]}">
-                    <field name="extract_error_message"/>
+                            ('extract_state', 'not in', ['error_status'])]}">
+                    <field name="extract_error_message" class="oe_inline" style="width:auto !important;"/>
+                    <button type="object" name="action_manual_send_for_digitization" class="btn btn-link">
+                        <i class="fa fa-fw o_button_icon fa-arrow-right"/>
+                        Resend For Digitization
+                    </button>
                 </div>
             </xpath>
             <xpath expr="//field[@name='department_id']" position='after'>

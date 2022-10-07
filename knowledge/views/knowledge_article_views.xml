@@ -406,7 +406,7 @@
         <field name="name">knowledge.article.view.tree.embedded</field>
         <field name="model">knowledge.article</field>
         <field name="arch" type="xml">
-            <tree create="1" editable="bottom">
+            <tree create="1" js_class="knowledge_article_view_tree_embedded">
                 <field name="icon" attrs="{'readonly': True }"/>
                 <field name="name"/>
                 <button name="action_home_page" type="object" string="Open" icon="fa-external-link" />
@@ -457,7 +457,7 @@
         <field name="name">knowledge.article.view.kanban.embedded</field>
         <field name="model">knowledge.article</field>
         <field name="arch" type="xml">
-            <kanban create="1" class="o_knowledge_article_kanban_view">
+            <kanban create="1" js_class="knowledge_article_view_kanban_embedded" class="o_knowledge_article_kanban_view">
                 <field name="icon" invisible="1"/>
                 <field name="is_locked" invisible="1"/>
                 <field name="is_user_favorite" invisible="1"/>

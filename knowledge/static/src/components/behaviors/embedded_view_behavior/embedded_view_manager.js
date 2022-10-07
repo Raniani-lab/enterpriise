@@ -27,7 +27,6 @@ export class EmbeddedViewManager extends Component {
 
         this.actionService = useService('action');
         this.dialogService = useService('dialog');
-        this.orm = useService('orm');
 
         useOwnDebugContext(); // define a debug context when the developer mode is enable
         useSubEnv({
@@ -85,35 +84,14 @@ export class EmbeddedViewManager extends Component {
                 });
             },
             createRecord: async () => {
-                const ctx = {};
-                for (const key of ['active_id', 'active_ids', 'active_model']) {
-                    if (context.hasOwnProperty(key)) {
-                        ctx[key] = context[key];
-                    }
-                }
-                if (action.res_model === 'knowledge.article') {
-                    const articleId = await this.orm.call('knowledge.article', 'article_create', [
-                        false,             // title
-                        ctx.active_id,     // parent_id
-                        false,             // is_private
-                        true               // is_article_item
-                    ]);
-                    this.actionService.doAction('knowledge.ir_actions_server_knowledge_home_page', {
-                        additionalContext: {
-                            res_id: articleId
-                        }
-                    });
-                } else {
-                    const [formViewId] = this.action.views.find((view) => {
-                        return view[1] === 'form';
-                    }) || [false];
-                    this.actionService.doAction({
-                        type: 'ir.actions.act_window',
-                        res_model: action.res_model,
-                        views: [[formViewId, 'form']],
-                        context: ctx,
-                    });
-                }
+                const [formViewId] = this.action.views.find((view) => {
+                    return view[1] === 'form';
+                }) || [false];
+                this.actionService.doAction({
+                    type: 'ir.actions.act_window',
+                    res_model: action.res_model,
+                    views: [[formViewId, 'form']],
+                });
             },
         };
         if (action.search_view_id) {

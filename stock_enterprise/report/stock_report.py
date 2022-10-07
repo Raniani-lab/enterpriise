@@ -21,7 +21,7 @@ class StockReport(models.Model):
         ('incoming', 'Vendors'),
         ('outgoing', 'Customers'),
         ('internal', 'Internal')], string="Type", readonly=True)
-    operation_type = fields.Char("Operation Type", readonly=True)
+    operation_type = fields.Char("Operation Type", readonly=True, translate=True)
     product_id = fields.Many2one('product.product', "Product", readonly=True)
     picking_name = fields.Char("Picking Name", readonly=True)
     reference = fields.Char("Reference", readonly=True)

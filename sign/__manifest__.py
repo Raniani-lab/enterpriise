@@ -78,7 +78,6 @@ Let your customers follow the signature process easily.
             'sign/static/src/xml/sign_common.xml',
             'sign/static/src/xml/sign_modal.xml',
             'sign/static/src/scss/sign_common.scss',
-            'web_editor/static/lib/html2canvas.js',
         ],
         'web.assets_backend': [
             'sign/static/src/js/backend/*',
@@ -94,7 +93,6 @@ Let your customers follow the signature process easily.
             'sign/static/src/xml/sign_common.xml',
             'sign/static/src/xml/sign_modal.xml',
             'sign/static/src/scss/sign_common.scss',
-            'web_editor/static/lib/html2canvas.js', # FIXME this should definitely not be in assets_frontend and be lazy loaded only when needed
             'sign/static/src/scss/sign_frontend.scss',
         ],
         'web.assets_tests': [

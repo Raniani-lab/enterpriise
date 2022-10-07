@@ -14,6 +14,7 @@ import { NameAndSignature } from "web.name_and_signature";
 import session from "web.session";
 import Widget from "web.Widget";
 import time from "web.time";
+import { loadJS } from '@web/core/assets';
 
 const _t = core._t;
 
@@ -64,7 +65,8 @@ const SignNameAndSignature = NameAndSignature.extend({
       (res) => {
          this.showFrameCheck = res;
       }),
-      this._super.apply(this, arguments)
+      this._super.apply(this, arguments),
+      loadJS('/web_editor/static/lib/html2canvas.js')
     ]);
   },
 

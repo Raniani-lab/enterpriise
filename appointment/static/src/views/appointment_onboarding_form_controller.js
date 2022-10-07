@@ -14,8 +14,8 @@ export default class AppointmentOnboardingAppointmentTypeFormController extends 
      *
      * @override
      */
-    async save()  {
-        super.save();
+    async saveButtonClicked()  {
+        await super.saveButtonClicked();
         const wasFirstValidation = await this.orm.call(
             'onboarding.onboarding.step',
             'action_save_appointment_onboarding_create_appointment_type_step',

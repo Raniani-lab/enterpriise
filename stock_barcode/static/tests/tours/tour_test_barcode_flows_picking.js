@@ -980,11 +980,7 @@ tour.register('test_receipt_from_scratch_with_lots_2', {test: true}, [
 ]);
 
 tour.register('test_receipt_from_scratch_with_lots_3', {test: true}, [
-    {
-        trigger: '.o_barcode_client_action',
-        run: 'scan product1'
-    },
-
+    { trigger: '.o_barcode_client_action', run: 'scan product1' },
     {
         trigger: '.o_barcode_line',
         run: function() {
@@ -995,8 +991,13 @@ tour.register('test_receipt_from_scratch_with_lots_3', {test: true}, [
         }
     },
 
+    // Scans a second time product1 after going through the edit form view.
+    { trigger: '.o_barcode_line.o_selected .btn.o_edit' },
+    { trigger: '.o_discard' },
+    { trigger: '.o_barcode_client_action', run: 'scan product1' },
+
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line .qty-done:contains("2")',
         run: 'scan productlot1'
     },
 
@@ -1007,7 +1008,7 @@ tour.register('test_receipt_from_scratch_with_lots_3', {test: true}, [
             const $line1 = helper.getLine({barcode: 'product1'});
             const $line2 = helper.getLine({barcode: 'productlot1'});
             helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineQty($line1, "1");
+            helper.assertLineQty($line1, "2");
             helper.assertLineIsHighlighted($line2, true);
             helper.assertLineQty($line2, "0");
         }
@@ -1024,13 +1025,13 @@ tour.register('test_receipt_from_scratch_with_lots_3', {test: true}, [
     },
 
     {
-        trigger: '.qty-done:contains(2)',
+        trigger: '.o_selected .qty-done:contains(2)',
         run: function() {
             helper.assertLinesCount(2);
             const $line1 = helper.getLine({barcode: 'product1'});
             const $line2 = helper.getLine({barcode: 'productlot1'});
             helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineQty($line1, "1");
+            helper.assertLineQty($line1, "2");
             helper.assertLineIsHighlighted($line2, true);
             helper.assertLineQty($line2, "2");
         }

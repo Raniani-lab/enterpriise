@@ -763,7 +763,8 @@ export default class BarcodePickingModel extends BarcodeModel {
             // its `virtual_id` (and so, avoid to set a new `virtual_id`).
             const prevLine = this.currentState && this.currentState.lines.find(l => l.id === id);
             const previousVirtualId = prevLine && prevLine.virtual_id;
-            smlData.virtual_id = Number(smlData.dummy_id) || previousVirtualId || this._uniqueVirtualId;
+            smlData.dummy_id = smlData.dummy_id && Number(smlData.dummy_id);
+            smlData.virtual_id = smlData.dummy_id || previousVirtualId || this._uniqueVirtualId;
             smlData.product_id = this.cache.getRecord('product.product', smlData.product_id);
             smlData.product_uom_id = this.cache.getRecord('uom.uom', smlData.product_uom_id);
             smlData.location_id = this.cache.getRecord('stock.location', smlData.location_id);

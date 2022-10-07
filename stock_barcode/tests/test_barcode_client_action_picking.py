@@ -196,7 +196,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.start_tour(url, 'test_receipt_from_scratch_with_lots_3', login='admin', timeout=180)
         move_lines = receipt_picking.move_line_ids
         self.assertEqual(move_lines[0].product_id.id, self.product1.id)
-        self.assertEqual(move_lines[0].qty_done, 1.0)
+        self.assertEqual(move_lines[0].qty_done, 2.0)
         self.assertEqual(move_lines[1].product_id.id, self.productlot1.id)
         self.assertEqual(move_lines[1].qty_done, 2.0)
         self.assertEqual(move_lines[1].lot_name, 'lot1')

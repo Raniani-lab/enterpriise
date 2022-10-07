@@ -125,7 +125,7 @@ class ProjectProject(models.Model):
                 folders_to_create_vals.append(folder_vals)
                 projects_with_folder_to_create.append(project)
 
-        created_folders = self.env['documents.folder'].create(folders_to_create_vals)
+        created_folders = self.env['documents.folder'].sudo().create(folders_to_create_vals)
         for project, folder in zip(projects_with_folder_to_create, created_folders):
             project.documents_folder_id = folder
 

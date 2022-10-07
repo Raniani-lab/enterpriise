@@ -24,19 +24,4 @@ export class KnowledgePlugin {
             }
         }
     }
-
-    /**
-     * @param {Selection} selection
-     */
-    onSelectionChange(selection) {
-        if (selection.anchorNode) {
-            let anchor = selection.anchorNode;
-            if (anchor.nodeType === Node.TEXT_NODE) {
-                anchor = anchor.parentNode;
-            }
-            if (anchor.closest('.o_knowledge_behavior_type_embedded_view')) {
-                throw 'STOP_HANDLING_SELECTION';
-            }
-        }
-    }
 }

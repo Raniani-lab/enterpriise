@@ -6,7 +6,7 @@
             <field name="name">account.report.tree</field>
             <field name="model">account.report</field>
             <field name="arch" type="xml">
-                <tree>
+                <tree default_order="name asc">
                     <field name="name"/>
                     <field name="country_id"/>
                     <field name="root_report_id"/>
@@ -20,9 +20,11 @@
             <field name="priority">100</field>
             <field name="arch" type="xml">
                 <search string="Accounting Reports">
+                    <field name="name"/>
+                    <field name="root_report_id"/>
                     <group expand="0" string="Group By">
-                            <filter string="Country" name="country_id" domain="[]" context="{'group_by':'country_id'}"/>
-                            <filter string="Root Report" name="root_report_id" domain="[]" context="{'group_by':'root_report_id'}"/>
+                        <filter string="Country" name="country_id" domain="[]" context="{'group_by':'country_id'}"/>
+                        <filter string="Root Report" name="root_report_id" domain="[]" context="{'group_by':'root_report_id'}"/>
                     </group>
                 </search>
             </field>

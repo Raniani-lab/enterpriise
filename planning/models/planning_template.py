@@ -44,6 +44,8 @@ class PlanningTemplate(models.Model):
         user_tz = pytz.timezone(self.env['planning.slot']._get_tz())
         today = date.today()
         for shift_template in self:
+            if not 0 <= shift_template.start_time < 24:
+                raise ValidationError(_('The start hour must be greater or equal to 0 and lower than 24.'))
             start_time = time(hour=int(shift_template.start_time), minute=round(math.modf(shift_template.start_time)[0] / (1 / 60.0)))
             duration = shift_template._get_duration()
             end_time = datetime.combine(date.today(), start_time) + duration

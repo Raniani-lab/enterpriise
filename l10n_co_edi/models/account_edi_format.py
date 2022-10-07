@@ -208,8 +208,8 @@ class AccountEdiFormat(models.Model):
             return notas
 
         invoice = invoice.with_context(lang=invoice.partner_id.lang)
-
-        move_lines_with_tax_type = invoice.line_ids.filtered('tax_line_id.l10n_co_edi_type')
+        code_to_filter = ['07', 'ZZ'] if invoice.move_type in ('in_invoice', 'in_refund') else ['ZZ']
+        move_lines_with_tax_type = invoice.line_ids.filtered(lambda l: l.tax_line_id.l10n_co_edi_type.code not in [False] + code_to_filter)
 
         ovt_tax_codes = ('01C', '02C', '03C')
         ovt_taxes = move_lines_with_tax_type.filtered(lambda move: move.tax_line_id.l10n_co_edi_type.code in ovt_tax_codes).tax_line_id
@@ -223,7 +223,10 @@ class AccountEdiFormat(models.Model):
             tax = tax_values['tax_repartition_line'].tax_id
             return {'tax': tax, 'l10n_co_edi_type': tax.l10n_co_edi_type}
 
-        tax_details = invoice._prepare_edi_tax_details(grouping_key_generator=group_tax_retention)
+        def l10n_co_filter_to_apply(base_line, tax_values):
+            return tax_values['tax_repartition_line'].tax_id.l10n_co_edi_type.code not in code_to_filter
+
+        tax_details = invoice._prepare_edi_tax_details(filter_to_apply=l10n_co_filter_to_apply, grouping_key_generator=group_tax_retention)
         retention_taxes = [(group, detail) for group, detail in tax_details['tax_details'].items() if detail['l10n_co_edi_type'].retention]
         regular_taxes = [(group, detail) for group, detail in tax_details['tax_details'].items() if not detail['l10n_co_edi_type'].retention]
 

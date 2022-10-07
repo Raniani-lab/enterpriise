@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models, _
+from odoo import api, fields, models, _, Command
 from odoo.exceptions import UserError
 from odoo.tools.misc import format_date
 from odoo.tools import float_compare
@@ -241,14 +241,15 @@ class AssetModify(models.TransientModel):
             move = self.env['account.move'].create({
                 'journal_id': self.asset_id.journal_id.id,
                 'date': fields.Date.today(),
+                'move_type': 'entry',
                 'line_ids': [
-                    (0, 0, {
+                    Command.create({
                         'account_id': self.account_asset_id.id,
                         'debit': residual_increase + salvage_increase,
                         'credit': 0,
                         'name': _('Value increase for: %(asset)s', asset=self.asset_id.name),
                     }),
-                    (0, 0, {
+                    Command.create({
                         'account_id': self.account_asset_counterpart_id.id,
                         'debit': 0,
                         'credit': residual_increase + salvage_increase,

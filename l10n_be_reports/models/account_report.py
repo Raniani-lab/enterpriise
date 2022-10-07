@@ -358,6 +358,7 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
                 'name': _("Controls failed"),
                 'columns': [{} for i in range(len(options['columns']))],
                 'level': 0,
+                'page_break': True,
             }))
 
             # Modify the options to add a key indicating the check failed. Thanks to this small hack, we can display a banner

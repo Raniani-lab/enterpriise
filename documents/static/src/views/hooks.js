@@ -7,6 +7,7 @@ import { useSetupView } from "@web/views/view_hook";
 import { insert } from "@mail/model/model_field_command";
 import { PdfManager } from "@documents/owl/components/pdf_manager/pdf_manager";
 import { x2ManyCommands } from "@web/core/orm_service";
+import { ShareFormViewDialog } from "@documents/views/helper/share_form_view_dialog";
 
 const { EventBus, onWillStart, markup, reactive, useComponent, useEnv, useRef, useSubEnv } = owl;
 
@@ -134,25 +135,34 @@ export function useDocumentView(helpers) {
                         : false,
                 },
             ]);
-            let shareResId = null;
-            let shareShouldDelete = true;
-            action.doAction(act, {
-                fullscreen: env.isSmall,
-                props: {
-                    setShareResId: (resId) => {
-                        shareResId = resId;
+            let shareResId = act.res_id;
+            let saved = false;
+            const close = dialogService.add(
+                ShareFormViewDialog,
+                {
+                    resModel: "documents.share",
+                    resId: shareResId,
+                    onSave: async (record) => {
+                        saved = true;
+                        // Copy the share link to the clipboard
+                        navigator.clipboard.writeText(record.data.full_url);
+                        // Show a notification to the user about the copy to clipboard
+                        notification.add(env._t("The share url has been copied to your clipboard."), {
+                            type: "success",
+                        });
+                        close();
                     },
-                    setShouldDelete: (shouldDelete) => {
-                        shareShouldDelete = shouldDelete;
+                    onDiscard: () => {close();},
+                },
+                {
+                    onClose: async () => {
+                        if (!saved) {
+                            await orm.unlink("documents.share", [shareResId]);
+                        }
                     },
-                },
-                onClose: () => {
-                    if (shareResId && shareShouldDelete) {
-                        orm.unlink("documents.share", [shareResId]);
-                    }
-                },
-            });
-        }
+                }
+            );
+        },
     };
 }
 

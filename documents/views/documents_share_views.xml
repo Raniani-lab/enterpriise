@@ -108,7 +108,7 @@
         <field name="name">Share Document</field>
         <field name="model">documents.share</field>
         <field name="arch" type="xml">
-            <form class="o_share_form" js_class="documents_share_popup_form">
+            <form class="o_share_form">
                 <sheet class="o_share_sheet">
                     <field name="type" invisible="1"/>
                     <field name="can_upload" invisible="1"/>

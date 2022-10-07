@@ -13,8 +13,8 @@ class StockMove(models.Model):
             return True
         return super()._should_bypass_set_qty_producing()
 
-    def _action_assign(self):
-        res = super()._action_assign()
+    def _action_assign(self, force_qty=False):
+        res = super()._action_assign(force_qty=force_qty)
         for workorder in self.raw_material_production_id.workorder_ids:
             for check in workorder.check_ids:
                 if check.test_type not in ('register_consumed_materials', 'register_byproducts'):

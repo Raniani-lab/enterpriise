@@ -1,7 +1,12 @@
 /** @odoo-module */
 
+import { StreamPostCommentsReply } from '@social/js/stream_post_comments_reply';
+
 import { getFixture } from "@web/../tests/helpers/utils";
-import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
+import { makeView, setupViewRegistries } from "@web/../tests/views/helpers"
+import { registry } from "@web/core/registry";;
+
+import testUtils from "web.test_utils";
 
 let target;
 let serverData;
@@ -37,6 +42,9 @@ return '<kanban class="o_social_stream_post_kanban"' +
     '    <field name="facebook_shares_count"/>' +
     '    <field name="facebook_reach"/>' +
     '    <field name="facebook_page_id"/>' +
+    '    <field name="linkedin_author_image_url"/>' +
+    '    <field name="instagram_facebook_author_id"/>' +
+    '    <field name="twitter_profile_image_url"/>' +
     '    <templates>' +
 
 '<t t-name="kanban-box">' +
@@ -244,7 +252,12 @@ QUnit.module('Facebook Comments', (hooks) => {
                             string: 'Account',
                             type: 'many2one',
                             relation: 'social.account'
-                        }
+                        },
+                        // props unrelated to the facebook module, but added here to avoid test
+                        // failures when all social sub-modules are installed.
+                        linkedin_author_image_url: {type: 'char'},
+                        instagram_facebook_author_id: {type: 'char'},
+                        twitter_profile_image_url: {type: 'char'},
                     },
                     records: [{
                         id: 1,
@@ -309,6 +322,20 @@ QUnit.module('Facebook Comments', (hooks) => {
         }
 
         setupViewRegistries();
+        const serviceRegistry = registry.category("services");
+        // Mock the entire messaging service to do nothing (to avoid "messaging is undefined" errors)
+        serviceRegistry.add("messaging", {
+            start: () => {
+                return { get: () => {
+                    return Promise.resolve({
+                        messagingBus: {
+                            addEventListener: () => {},
+                            removeEventListener: () => {},
+                        }
+                    });
+                } }; 
+            }
+        }, { force: true });
     });
 
     QUnit.test('Check accounts statistics', async function (assert) {
@@ -353,5 +380,246 @@ QUnit.module('Facebook Comments', (hooks) => {
             "Audience trend is correctly displayed.");
     });
 
-    // TODO awa: re-instate test of facebook comments, currently broken in OWL
+    QUnit.test('Check messages display', async function (assert) {
+        assert.expect(5);
+
+        await makeView({
+            type: "form",
+            resModel: 'social_stream_post',
+            serverData,
+            arch: getArch(),
+            mockRPC: (route, params) => {
+                if (params.method === 'refresh_all' || params.method === 'refresh_statistics') {
+                    return {};
+                } else if(route.startsWith('https://graph.facebook.com/')) {
+                    return '';
+                }
+            }
+        });
+
+        assert.containsN(target, '.o_social_stream_post_kanban_global', 3,
+            "There should be 3 posts displayed on kanban view.");
+
+        assert.containsOnce(target,
+            ".o_social_stream_post_facebook_stats div:contains('5') .fa-thumbs-up",
+            "The first comment should have 5 likes");
+
+        assert.containsOnce(target,
+            ".o_social_stream_post_facebook_stats div:contains('15') .fa-comments",
+            "The first comment should have 15 comments");
+
+        assert.containsOnce(target,
+            ".o_social_stream_post_facebook_stats:contains('4 Shares')",
+            "The first comment should have 4 shares");
+
+        assert.containsOnce(target,
+            ".o_social_stream_post_facebook_stats:contains('18 Views')",
+            "The first comment should have 18 'reach'");
+    });
+
+    QUnit.test('Check comments behavior', async function (assert) {
+        assert.expect(17);
+
+        await makeView({
+            type: "form",
+            resModel: 'social_stream_post',
+            serverData,
+            arch: getArch(),
+            mockRPC: function (route, params) {
+                if (params.method === 'refresh_all' || params.method === 'refresh_statistics') {
+                    return {};
+                } else if(route === '/social_facebook/get_comments') {
+                    return {
+                        summary: {
+                            total_count: 1
+                        },
+                        comments: [{
+                            from: {
+                                id: 1,
+                                picture: {
+                                    data: {
+                                        url: 'socialtest/picture'
+                                    }
+                                }
+                            },
+                            user_likes: false,
+                            message: 'Root Comment',
+                            likes: {
+                                summary: {
+                                    total_count: 3
+                                }
+                            },
+                            comments: {
+                                data: [{
+                                    from: {
+                                        id: 2,
+                                        picture: {
+                                            data: {
+                                                url: 'socialtest/picture'
+                                            }
+                                        }
+                                    },
+                                    user_likes: true,
+                                    message: 'Sub Comment 1',
+                                    likes: {
+                                        summary: {
+                                            total_count: 5
+                                        }
+                                    }
+                                }, {
+                                    from: {
+                                        id: 3,
+                                        picture: {
+                                            data: {
+                                                url: 'socialtest/picture'
+                                            }
+                                        }
+                                    },
+                                    user_likes: false,
+                                    message: 'Sub Comment 2',
+                                    likes: {
+                                        summary: {
+                                            total_count: 10
+                                        }
+                                    }
+                                }]
+                            }
+                        }]
+                    };
+                } else if (route === '/social_facebook/like_comment') {
+                    // test that 2 calls are made
+                    assert.ok(true);
+                    return {};
+                } else if(route.startsWith('https://graph.facebook.com/')) {
+                    return '';
+                } else if(route === 'socialtest/picture') {
+                    return '';
+                }
+            }
+        });
+
+        await testUtils.dom.click(target.querySelector('.o_social_stream_post_facebook_stats .fa-comments'));
+
+        const body = target.closest('body');
+
+        // 1. Root comment is displayed with 3 likes and 2 replies options.
+        assert.containsOnce(body,
+            ".o_social_comments_messages .o_social_comment_text:contains('Root Comment')",
+            "Root comment should be displayed.");
+
+        assert.containsOnce(body,
+            ".o_social_comment_wrapper .o_social_comment_message:contains('View 2 replies')",
+            "There are 2 replies below the root comment.");
+
+        assert.containsOnce(body,
+            ".o_social_comment_wrapper .o_social_likes_count:contains('3')",
+            "The root comment should have 3 likes");
+
+        // 2. Load replies and check display.
+        await testUtils.dom.click(
+            target.querySelector(".o_social_comment_wrapper span.o_social_comment_load_replies"));
+
+        assert.containsOnce(body,
+            ".o_social_comment_wrapper .o_social_comment_message div.o_social_comment_text:contains('Sub Comment 1')",
+            "First sub comment should be loaded");
+
+        assert.containsOnce(body,
+            ".o_social_comment_wrapper .o_social_comment_message div.o_social_comment_text:contains('Sub Comment 2')",
+            "Second sub comment should be loaded");
+
+        
+        // 3. Check like/dislike behavior
+
+        // 3a. Check like status and count
+        assert.containsOnce(body,
+            ".o_social_comment .o_social_comment:contains('Sub Comment 1') .o_social_comment_user_likes",
+            "First comment is liked");
+
+        assert.containsOnce(body,
+            ".o_social_comment .o_social_comment:contains('Sub Comment 2'):not(.o_social_comment_user_likes)",
+            "Second comment is NOT liked");
+
+        assert.containsOnce(body,
+            ".o_social_comment .o_social_comment:contains('Sub Comment 1') .o_social_likes_count:contains('5')",
+            "Sub comment 1 should have 5 likes");
+
+        assert.containsOnce(body,
+            ".o_social_comment .o_social_comment:contains('Sub Comment 2') .o_social_likes_count:contains('10')",
+            "Sub comment 2 should have 10 likes");
+
+        // 3b. Dislike first and like second sub-comments
+        const subComments = target.querySelectorAll(".o_social_comment .o_social_comment");
+        await testUtils.dom.click(
+            subComments[0].querySelector(".o_social_comment_like"));
+
+        await testUtils.dom.click(
+            subComments[1].querySelector(".o_social_comment_like"));
+
+        // 3a. Check like status and count now that it's reversed
+        assert.containsOnce(body,
+            ".o_social_comment .o_social_comment:contains('Sub Comment 1'):not(.o_social_comment_user_likes)",
+            "First comment is NOT liked");
+
+        assert.containsOnce(body,
+            ".o_social_comment .o_social_comment:contains('Sub Comment 2') .o_social_comment_user_likes",
+            "Second comment is liked");
+
+        assert.containsOnce(body,
+            ".o_social_comment .o_social_comment:contains('Sub Comment 1') .o_social_likes_count:contains('4')",
+            "Sub comment 1 should have 4 likes");
+
+        assert.containsOnce(body,
+            ".o_social_comment .o_social_comment:contains('Sub Comment 2') .o_social_likes_count:contains('11')",
+            "Sub comment 2 should have 11 likes");
+        
+        // 4. Add comment
+
+        // Patch "addComment" to return new comment
+        // Sadly 'XMLHttpRequest' cannot be mocked easily (would have been better)
+        testUtils.mock.patch(StreamPostCommentsReply.prototype, {
+            _addComment: function (textarea) {
+                const formData = new FormData(textarea.closest('.o_social_write_reply').querySelector('form'));
+                this.props.onAddComment({
+                    from: {
+                        id: 1,
+                        picture: {
+                            data: {
+                                url: 'socialtest/picture'
+                            }
+                        }
+                    },
+                    message: formData.get('message'),
+                    likes: {
+                        summary: {
+                            total_count: 3
+                        }
+                    }
+                });
+            },
+        });
+
+        await testUtils.fields.editInput(
+            target.querySelector('.o_social_write_reply .o_social_add_comment'), 'New Comment');
+        await testUtils.fields.triggerKeydown(
+            target.querySelector('.o_social_write_reply .o_social_add_comment'), 'enter');
+
+        assert.containsOnce(body,
+            ".o_social_comment_wrapper .o_social_comment_message div.o_social_comment_text:contains('New Comment')",
+            "New Comment should be displayed.");
+
+        // 5. Add reply to comment
+        await testUtils.dom.click(
+            target.querySelector(".o_social_comment_wrapper span.o_social_comment_load_replies"));
+
+        await testUtils.dom.click(
+            target.querySelector(".o_social_comment .o_social_comment .o_social_comment_reply"));
+        await testUtils.fields.editInput(
+            target.querySelector(".o_social_comment .o_social_add_comment"), 'New Reply');
+        await testUtils.fields.triggerKeydown(
+            target.querySelector(".o_social_comment .o_social_add_comment"), 'enter');
+
+        assert.containsOnce(body,
+            ".o_social_comment_wrapper .o_social_comment_message div.o_social_comment_text:contains('New Reply')",
+            "New Reply should be displayed");
+    });
 });

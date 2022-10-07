@@ -371,12 +371,14 @@
                 <field name="display_name" string="Name"/>
                 <field name="is_user_favorite" widget="boolean_favorite" nolabel="1"
                        force_save="1" options="{'allow_order': '1'}"/>
+                <field name="parent_id"/>
+                <field name="create_uid" string="Created by" widget="many2one_avatar_user" optional="show"/>
+                <field name="create_date" string="Created on" optional="show"/>
                 <field name="category" optional="hide"/>
                 <field name="favorite_count" invisible="1"/>
                 <field name="root_article_id" optional="hide"/>
-                <field name="parent_id"/>
-                <field name="last_edition_uid" widget="many2one_avatar_user"/>
-                <field name="last_edition_date" string="Last Edit Date"/>
+                <field name="last_edition_uid" widget="many2one_avatar_user" optional="hide"/>
+                <field name="last_edition_date" string="Last Edit Date" optional="hide"/>
             </tree>
         </field>
     </record>
@@ -405,11 +407,20 @@
     <record id="knowledge_article_view_tree_items" model="ir.ui.view">
         <field name="name">knowledge.article.view.tree.embedded</field>
         <field name="model">knowledge.article</field>
+        <field name="priority">32</field>
         <field name="arch" type="xml">
-            <tree create="1" js_class="knowledge_article_view_tree_embedded">
-                <field name="icon" attrs="{'readonly': True }"/>
-                <field name="name"/>
-                <button name="action_home_page" type="object" string="Open" icon="fa-external-link" />
+            <tree create="1" js_class="knowledge_article_view_tree_embedded" default_order="sequence asc, write_date desc, id desc">
+                <field name="sequence" widget="handle"/>
+                <field name="display_name" string="Name"/>
+                <field name="is_user_favorite" widget="boolean_favorite" nolabel="1"
+                       force_save="1" options="{'allow_order': '1'}"/>
+                <field name="create_uid" string="Created by" widget="many2one_avatar_user" optional="show"/>
+                <field name="create_date" string="Created on" optional="show"/>
+                <field name="category" optional="hide"/>
+                <field name="favorite_count" invisible="1"/>
+                <field name="root_article_id" optional="hide"/>
+                <field name="last_edition_uid" widget="many2one_avatar_user" optional="hide"/>
+                <field name="last_edition_date" string="Last Edit Date" optional="hide"/>
             </tree>
         </field>
     </record>
@@ -456,11 +467,13 @@
     <record id="knowledge_article_view_kanban_items" model="ir.ui.view">
         <field name="name">knowledge.article.view.kanban.embedded</field>
         <field name="model">knowledge.article</field>
+        <field name="priority">32</field>
         <field name="arch" type="xml">
-            <kanban create="1" js_class="knowledge_article_view_kanban_embedded" class="o_knowledge_article_kanban_view">
+            <kanban create="1" js_class="knowledge_article_view_kanban_embedded" class="o_knowledge_article_kanban_view" default_order="sequence asc, write_date desc, id desc">
                 <field name="icon" invisible="1"/>
                 <field name="is_locked" invisible="1"/>
                 <field name="is_user_favorite" invisible="1"/>
+                <field name="sequence" widget="handle"/>
                 <field name="user_has_write_access" invisible="1"/>
                 <field name="article_url" invisible="1"/>
                 <field name="article_properties"/>

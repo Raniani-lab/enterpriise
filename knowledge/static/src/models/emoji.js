@@ -12,7 +12,7 @@ registerPatch({
                 if (!this.messaging || !this.messaging.knowledge) {
                     return clear();
                 }
-                if (['💩', '💀', '☠️', '🤮', '🖕'].includes(this.codepoints)) {
+                if (['💩', '💀', '☠️', '🤮', '🖕', '🤢'].includes(this.codepoints)) {
                     return clear();
                 }
                 return this.messaging.knowledge;

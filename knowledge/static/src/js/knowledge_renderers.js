@@ -101,6 +101,13 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             const buttonSharePanel = this.root.el.querySelector('#dropdown_share_panel');
             if (buttonSharePanel) {
                 buttonSharePanel.addEventListener(
+                    // Prevent hiding the dropdown when the invite modal is shown
+                    'hide.bs.dropdown', (ev) => {
+                        if (this.uiService.activeElement !== document) {
+                            ev.preventDefault();
+                        }
+                });
+                buttonSharePanel.addEventListener(
                     'shown.bs.dropdown',
                     () => this.state.displaySharePanel = true
                 );
@@ -120,11 +127,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         onMounted(() => {
             this._renderTree(this.resId, '/knowledge/tree_panel');
 
-            // Focus inside the body (default_focus does not work yet, to check
-            // when field_html will be converted)
+            // Focus inside the body if article is empty (default_focus does not work).
             const body = this.root.el.querySelector('.o_knowledge_editor .note-editable');
-            if (body) {
-                body.focus();
+            if (body && !body.innerText.trim()) {
+                setTimeout(() => body.focus(), 0);
             }
             // If the article has some properties set,
             // we should display the property panel that is hidden by default.
@@ -364,8 +370,9 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             } else {
                 onReject();
             }
-        } catch {
+        } catch (error) {
             onReject();
+            throw error;
         }
     }
     
@@ -741,6 +748,13 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                             offsetParent.append($item.domPosition.parent);
                         }
                     }
+                    // Hide caret if parent has no children after rejected move
+                    const $firstParent = $parent.first();
+                    if (!$firstParent.children('ul').is(':parent')) {
+                        $firstParent.removeClass('mjs-nestedSortable-branch mjs-nestedSortable-expanded');
+                        $firstParent.children('ul').remove();
+                    }
+
                     // For consistency with the nestedSortable library,
                     // trigger the 'change' event from the moved $item
                     $item._trigger('change', null, $item._uiHash());

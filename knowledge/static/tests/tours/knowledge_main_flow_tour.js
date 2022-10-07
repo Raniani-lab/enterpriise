@@ -158,7 +158,7 @@ tour.register('knowledge_main_flow_tour', {
 }, {
     // Submit the invite wizard
     trigger: 'button:contains("Invite")',
-    in_modal: false,
+    extra_trigger: '.o_field_tags span.o_badge_text',
 }, {
     // add to favorite
     trigger: '.o_toggle_favorite',

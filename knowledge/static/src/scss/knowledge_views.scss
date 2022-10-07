@@ -254,9 +254,20 @@
             .o_td_label {
                 width: 100% !important;
                 padding: 0px !important;
+                .o_property_field_highlight b {
+                    margin-left: 0px;
+                }
             }
             .o_property_field_value {
                 padding: 0rem !important;
+                .o_input_dropdown {
+                    margin-left: 0;
+                    padding-left: 0;
+                    min-width: auto;
+                    .dropdown {
+                        padding-right: 10px;
+                    }
+                }
             }
         }
         .o_field_property_add {

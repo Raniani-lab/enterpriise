@@ -109,35 +109,12 @@
 }
 
 .o_knowledge_behavior_type_embedded_view {
-    --default-embedded-view-size: 80vh;
-    --embedded-view-size: clamp(300px, var(--default-embedded-view-size), 80vh);
-
-    display: flex;
-    flex-direction: column;
-    height: var(--embedded-view-size);
-    border: 1px solid $o-gray-200;
-
-    &:empty {
-        animation: o_knowledge_bg_color_pulsing 1.5s infinite;
-    }
-
     .o_knowledge_embedded_view_placeholder {
+        min-height: 300px;
         .o_knowledge_embedded_view_placeholder_cover {
             @include o-position-absolute(0, 0, 0, 0);
             background: radial-gradient($white, transparent);
         }
-    }
-}
-
-@keyframes o_knowledge_bg_color_pulsing {
-    0% {
-        background: $white;
-    }
-    50% {
-        background: $o-gray-100;
-    }
-    100% {
-        background: $white;
     }
 }
 

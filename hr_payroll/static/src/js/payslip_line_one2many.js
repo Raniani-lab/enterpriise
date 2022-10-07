@@ -1,13 +1,9 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { formView } from "@web/views/form/form_view";
-import { FormController } from "@web/views/form/form_controller";
 import { X2ManyField } from "@web/views/fields/x2many/x2many_field";
 import { ListRenderer } from "@web/views/list/list_renderer";
 import { Field } from "@web/views/fields/field";
-
-export class PayslipEditLinesFormController extends FormController {}
 
 export class WorkedDaysField extends Field {
     get fieldComponentProps() {
@@ -111,7 +107,3 @@ PayslipLineOne2Many.components = {
 
 registry.category('fields').add('payslip_line_one2many', PayslipLineOne2Many);
 registry.category('fields').add('worked_days_line_one2many', WorkedDaysLineOne2Many);
-registry.category('views').add('payslip_edit_lines_form', {
-    ...formView,
-    Controller: PayslipEditLinesFormController
-})

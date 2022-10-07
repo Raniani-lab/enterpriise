@@ -55,8 +55,7 @@ export class CohortModel extends Model {
         this.metaData.measures = computeReportMeasures(
             this.metaData.fields,
             this.metaData.fieldAttrs,
-            [this.metaData.measure],
-            this.metaData.additionalMeasures
+            [this.metaData.measure]
         );
         return this._load(this.metaData);
     }

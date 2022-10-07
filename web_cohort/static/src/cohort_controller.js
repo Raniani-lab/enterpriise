@@ -120,13 +120,8 @@ CohortController.template = "web_cohort.CohortView";
 CohortController.components = { Dropdown, DropdownItem, Layout };
 CohortController.props = {
     ...standardViewProps,
-    additionalMeasures: { type: Array, elements: String, optional: 1 },
     Model: Function,
     modelParams: Object,
     Renderer: Function,
     buttonTemplate: String,
-};
-
-CohortController.defaultProps = {
-    additionalMeasures: [],
 };

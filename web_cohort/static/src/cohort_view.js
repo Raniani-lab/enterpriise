@@ -23,11 +23,10 @@ const cohortView = {
         if (genericProps.state) {
             modelParams = genericProps.state.metaData;
         } else {
-            const { arch, fields, additionalMeasures, resModel } = genericProps;
+            const { arch, fields, resModel } = genericProps;
             const { ArchParser } = view;
             const archInfo = new ArchParser().parse(arch, fields);
             modelParams = {
-                additionalMeasures: additionalMeasures,
                 dateStart: archInfo.dateStart,
                 dateStartString: archInfo.dateStartString,
                 dateStop: archInfo.dateStop,

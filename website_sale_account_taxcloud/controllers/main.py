@@ -15,7 +15,7 @@ class WebsiteSale(main.WebsiteSale):
             try:
                 order.validate_taxes_on_sales_order()
             except ValidationError:
-                res['errors'].append((_("Validation Error"), _("This address does not appear to be valid. Please make sure it has been filled in correctly.")))
+                res.setdefault('errors', []).append((_("Validation Error"), _("This address does not appear to be valid. Please make sure it has been filled in correctly.")))
 
         res.update(super(WebsiteSale, self)._get_shop_payment_values(order, **kwargs))
         return res

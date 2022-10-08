@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:11+0000\n"
+"POT-Creation-Date: 2022-10-04 09:43+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
@@ -100,6 +100,11 @@ msgstr "Sist oppdatert av"
 #: model:ir.model.fields,field_description:sale_renting_sign.field_rental_sign_wizard__write_date
 msgid "Last Updated on"
 msgstr "Sist oppdatert"
+
+#. module: sale_renting_sign
+#: model:sign.template,redirect_url_text:sale_renting_sign.template_rental_sign
+msgid "Open Link"
+msgstr ""
 
 #. module: sale_renting_sign
 #: model:ir.model,name:sale_renting_sign.model_sale_order

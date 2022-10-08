@@ -3,16 +3,16 @@
 # 	* spreadsheet_edition
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Malaz Abuidris <msea@odoo.com>, 2022
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"POT-Creation-Date: 2022-10-04 09:43+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2022\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -160,6 +160,13 @@ msgstr "أنشئ في"
 #, python-format
 msgid "Currency"
 msgstr "العملة"
+
+#. module: spreadsheet_edition
+#. openerp-web
+#: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
+#, python-format
+msgid "Dashboards"
+msgstr "لوحات البيانات "
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -725,6 +732,13 @@ msgstr "لقطة جدول البيانات "
 
 #. module: spreadsheet_edition
 #. openerp-web
+#: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
+#, python-format
+msgid "Spreadsheets"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. openerp-web
 #: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/odoo_bar/odoo_bar_config_panel.xml:0
 #, python-format
 msgid "Stacked barchart"
@@ -783,10 +797,31 @@ msgstr ""
 
 #. module: spreadsheet_edition
 #. openerp-web
+#: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
+#, python-format
+msgid "graph"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. openerp-web
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/pivot_dialog.xml:0
 #, python-format
 msgid "has no cell missing from this sheet"
 msgstr "لا يحتوي على خلايا مفقودة من هذه الورقة "
+
+#. module: spreadsheet_edition
+#. openerp-web
+#: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
+#, python-format
+msgid "link"
+msgstr "الرابط"
+
+#. module: spreadsheet_edition
+#. openerp-web
+#: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
+#, python-format
+msgid "list"
+msgstr ""
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -799,6 +834,13 @@ msgstr "مطلقاً "
 #. module: spreadsheet_edition
 #: model:ir.model.constraint,message:spreadsheet_edition.constraint_spreadsheet_revision_parent_revision_unique
 msgid "o-spreadsheet revision refused due to concurrency"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. openerp-web
+#: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
+#, python-format
+msgid "pivot"
 msgstr ""
 
 #. module: spreadsheet_edition

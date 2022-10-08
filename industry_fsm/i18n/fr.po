@@ -3,17 +3,18 @@
 # 	* industry_fsm
 # 
 # Translators:
-# Alexandra Jubert, 2022
-# Martin Trigaux, 2022
 # Cécile Collart <cco@odoo.com>, 2022
+# Martin Trigaux, 2022
+# Jolien De Paepe, 2022
+# Alexandra Jubert, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
+"Last-Translator: Alexandra Jubert, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -218,13 +219,34 @@ msgid "Average Rating"
 msgstr "Évaluation moyenne"
 
 #. module: industry_fsm
-#: model:project.task.type,legend_blocked:industry_fsm.planning_project_stage_0
+#: model:project.task,legend_blocked:industry_fsm.planning_task_0
+#: model:project.task,legend_blocked:industry_fsm.planning_task_1
+#: model:project.task,legend_blocked:industry_fsm.planning_task_10
+#: model:project.task,legend_blocked:industry_fsm.planning_task_11
+#: model:project.task,legend_blocked:industry_fsm.planning_task_12
+#: model:project.task,legend_blocked:industry_fsm.planning_task_13
+#: model:project.task,legend_blocked:industry_fsm.planning_task_14
+#: model:project.task,legend_blocked:industry_fsm.planning_task_15
+#: model:project.task,legend_blocked:industry_fsm.planning_task_16
+#: model:project.task,legend_blocked:industry_fsm.planning_task_17
+#: model:project.task,legend_blocked:industry_fsm.planning_task_19
+#: model:project.task,legend_blocked:industry_fsm.planning_task_2
+#: model:project.task,legend_blocked:industry_fsm.planning_task_20
+#: model:project.task,legend_blocked:industry_fsm.planning_task_3
+#: model:project.task,legend_blocked:industry_fsm.planning_task_4
+#: model:project.task,legend_blocked:industry_fsm.planning_task_5
+#: model:project.task,legend_blocked:industry_fsm.planning_task_6
+#: model:project.task,legend_blocked:industry_fsm.planning_task_7
+#: model:project.task,legend_blocked:industry_fsm.planning_task_8
+#: model:project.task,legend_blocked:industry_fsm.planning_task_9
 #: model:project.task.type,legend_blocked:industry_fsm.planning_project_stage_1
-#: model:project.task.type,legend_blocked:industry_fsm.planning_project_stage_2
-#: model:project.task.type,legend_blocked:industry_fsm.planning_project_stage_3
-#: model:project.task.type,legend_blocked:industry_fsm.planning_project_stage_4
 msgid "Blocked"
 msgstr "Bloqué"
+
+#. module: industry_fsm
+#: model:project.task,legend_done:industry_fsm.planning_task_18
+msgid "Buzz or set as done"
+msgstr "Buzz ou définir comme terminé"
 
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.project_task_menu_planning_by_project_fsm
@@ -243,11 +265,6 @@ msgid "Cancel"
 msgstr "Annuler"
 
 #. module: industry_fsm
-#: model:project.task.type,name:industry_fsm.planning_project_stage_4
-msgid "Cancelled"
-msgstr "Annulé"
-
-#. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.portal_task_sign_button
 msgid "Close"
 msgstr "Fermer"
@@ -256,17 +273,17 @@ msgstr "Fermer"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Closed"
-msgstr "Fermé"
+msgstr "Clôturé"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Closed Last 30 Days"
-msgstr "Terminées ces 30 derniers jours"
+msgstr "Clôturées ces 30 derniers jours"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Closed Last 7 Days"
-msgstr "Terminées ces 7 derniers jours"
+msgstr "Clôturées ces 7 derniers jours"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__is_closed
@@ -338,12 +355,12 @@ msgstr "Créer un projet"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.res_config_settings_view_form
 msgid "Create custom worksheet templates"
-msgstr "Créer des brouillons personnalisés de feuille de travail"
+msgstr "Créez des modèles de feuilles de travail personnalisés"
 
 #. module: industry_fsm
 #: model:res.groups,name:industry_fsm.group_fsm_quotation_from_task
 msgid "Create new quotations directly from the tasks"
-msgstr "Créer de nouveaux devis directement depuis les tâches"
+msgstr "Créez de nouveaux devis directement depuis les tâches"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.res_config_settings_view_form
@@ -362,7 +379,7 @@ msgstr ""
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_view_form_inherit
 msgid "Create reports to be signed off by your customers"
-msgstr "Créez des rapports qui seront signés par vos clients"
+msgstr "Créez des rapports à faire signer par vos clients"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard__create_uid
@@ -379,7 +396,7 @@ msgstr "Créé le"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_res_config_settings__module_industry_fsm_report
 msgid "Custom Worksheets"
-msgstr " Feuille de travail personnalisée"
+msgstr " Feuilles de travail personnalisées"
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/models/project_task.py:0
@@ -501,15 +518,15 @@ msgid "Do you want to stop the running timers?"
 msgstr "Voulez-vous arrêter les minuteurs en cours ?"
 
 #. module: industry_fsm
-#: model:project.task.type,name:industry_fsm.planning_project_stage_3
-msgid "Done"
-msgstr "Fait"
-
-#. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__hours_effective
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_list_fsm
 msgid "Effective Hours"
 msgstr "Heures effectives"
+
+#. module: industry_fsm
+#: model:mail.template,description:industry_fsm.mail_template_data_task_report
+msgid "Email sent when clicking on \"send report\" in a task"
+msgstr "Email envoyé quand on clique sur \"envoyer rapport\" dans une tâche"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__planned_date_end
@@ -543,6 +560,16 @@ msgstr "Analyse des Tâches de Services sur Site"
 #, python-format
 msgid "Field Service"
 msgstr "Services sur Site"
+
+#. module: industry_fsm
+#: model:mail.template,name:industry_fsm.mail_template_data_intervention_details
+msgid "Field Service: Intervention Scheduled"
+msgstr "Services sur Site : Intervention planifiée"
+
+#. module: industry_fsm
+#: model:mail.template,name:industry_fsm.mail_template_data_task_report
+msgid "Field Service: Task Report"
+msgstr "Services sur Site : Rapport de tâche"
 
 #. module: industry_fsm
 #. openerp-web
@@ -607,7 +634,7 @@ msgstr "Regrouper par"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
 msgid "Hours Spent"
-msgstr "Heures passés"
+msgstr "Heures passées"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard__id
@@ -617,12 +644,28 @@ msgid "ID"
 msgstr "ID"
 
 #. module: industry_fsm
-#: model:project.task.type,legend_normal:industry_fsm.planning_project_stage_0
+#: model:project.task,legend_normal:industry_fsm.planning_task_0
+#: model:project.task,legend_normal:industry_fsm.planning_task_1
+#: model:project.task,legend_normal:industry_fsm.planning_task_10
+#: model:project.task,legend_normal:industry_fsm.planning_task_11
+#: model:project.task,legend_normal:industry_fsm.planning_task_12
+#: model:project.task,legend_normal:industry_fsm.planning_task_13
+#: model:project.task,legend_normal:industry_fsm.planning_task_14
+#: model:project.task,legend_normal:industry_fsm.planning_task_15
+#: model:project.task,legend_normal:industry_fsm.planning_task_16
+#: model:project.task,legend_normal:industry_fsm.planning_task_17
+#: model:project.task,legend_normal:industry_fsm.planning_task_18
+#: model:project.task,legend_normal:industry_fsm.planning_task_19
+#: model:project.task,legend_normal:industry_fsm.planning_task_2
+#: model:project.task,legend_normal:industry_fsm.planning_task_20
+#: model:project.task,legend_normal:industry_fsm.planning_task_3
+#: model:project.task,legend_normal:industry_fsm.planning_task_4
+#: model:project.task,legend_normal:industry_fsm.planning_task_5
+#: model:project.task,legend_normal:industry_fsm.planning_task_6
+#: model:project.task,legend_normal:industry_fsm.planning_task_7
+#: model:project.task,legend_normal:industry_fsm.planning_task_8
+#: model:project.task,legend_normal:industry_fsm.planning_task_9
 #: model:project.task.type,legend_normal:industry_fsm.planning_project_stage_1
-#: model:project.task.type,legend_normal:industry_fsm.planning_project_stage_2
-#: model:project.task.type,legend_normal:industry_fsm.planning_project_stage_3
-#: model:project.task.type,legend_normal:industry_fsm.planning_project_stage_4
-#: model:project.task.type,name:industry_fsm.planning_project_stage_2
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "In Progress"
@@ -722,7 +765,7 @@ msgid ""
 "Let's <b>mark your task as done!</b> <i>Tip: when doing so, your stock will "
 "automatically be updated, and your task will be closed.</i>"
 msgstr ""
-"<b>Marquons votre tâche comme terminée !</b> <i>Astuce : lors de cette "
+"<b>Marquons votre tâche comme faite !</b> <i>Astuce : lors de cette "
 "opération, votre stock sera automatiquement mis à jour et votre tâche sera "
 "clôturée.</i>"
 
@@ -829,9 +872,9 @@ msgid "Navigate To"
 msgstr "Aller à"
 
 #. module: industry_fsm
-#: model:project.task.type,name:industry_fsm.planning_project_stage_0
-msgid "New"
-msgstr "Nouveau"
+#: model:project.task,legend_blocked:industry_fsm.planning_task_18
+msgid "Need functional or technical help"
+msgstr "Besoin d'une aide fonctionnelle ou technique"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -869,7 +912,7 @@ msgstr "Aucunes tâches trouvées. Créons-en une !"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Not Starred"
-msgstr "Non favoris"
+msgstr "Priorité basse"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -952,7 +995,7 @@ msgstr "Priorité"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__progress
 msgid "Progress"
-msgstr "En cours"
+msgstr "Avancement"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_project_project
@@ -986,11 +1029,26 @@ msgid "Rating Value (/5)"
 msgstr "Valeur de l'évaluation (/5)"
 
 #. module: industry_fsm
-#: model:project.task.type,legend_done:industry_fsm.planning_project_stage_0
+#: model:project.task,legend_done:industry_fsm.planning_task_0
+#: model:project.task,legend_done:industry_fsm.planning_task_1
+#: model:project.task,legend_done:industry_fsm.planning_task_10
+#: model:project.task,legend_done:industry_fsm.planning_task_11
+#: model:project.task,legend_done:industry_fsm.planning_task_12
+#: model:project.task,legend_done:industry_fsm.planning_task_13
+#: model:project.task,legend_done:industry_fsm.planning_task_14
+#: model:project.task,legend_done:industry_fsm.planning_task_15
+#: model:project.task,legend_done:industry_fsm.planning_task_16
+#: model:project.task,legend_done:industry_fsm.planning_task_17
+#: model:project.task,legend_done:industry_fsm.planning_task_19
+#: model:project.task,legend_done:industry_fsm.planning_task_2
+#: model:project.task,legend_done:industry_fsm.planning_task_3
+#: model:project.task,legend_done:industry_fsm.planning_task_4
+#: model:project.task,legend_done:industry_fsm.planning_task_5
+#: model:project.task,legend_done:industry_fsm.planning_task_6
+#: model:project.task,legend_done:industry_fsm.planning_task_7
+#: model:project.task,legend_done:industry_fsm.planning_task_8
+#: model:project.task,legend_done:industry_fsm.planning_task_9
 #: model:project.task.type,legend_done:industry_fsm.planning_project_stage_1
-#: model:project.task.type,legend_done:industry_fsm.planning_project_stage_2
-#: model:project.task.type,legend_done:industry_fsm.planning_project_stage_3
-#: model:project.task.type,legend_done:industry_fsm.planning_project_stage_4
 msgid "Ready"
 msgstr "Prêt"
 
@@ -1004,6 +1062,11 @@ msgid ""
 msgstr ""
 "Prêt à <b>gérer vos interventions sur site</b> ? <i>Cliquez sur Services sur"
 " Site pour démarrer.</i>"
+
+#. module: industry_fsm
+#: model:project.task,legend_done:industry_fsm.planning_task_20
+msgid "Ready to reopen"
+msgstr "Prêt à ré-ouvrir"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__remaining_hours
@@ -1030,18 +1093,6 @@ msgid "Save time by automatically generating a <b>signature</b>."
 msgstr "Gagnez du temps en générant automatiquement une <b>signature</b>."
 
 #. module: industry_fsm
-#. openerp-web
-#: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
-#, python-format
-msgid ""
-"Save your <b>worksheet</b> once it is complete.<br/><i>Tip: customize this "
-"form to your needs and create as many templates as you want.</i>"
-msgstr ""
-"Enregistrez votre <b>feuille de travail</b> une fois qu'elle est "
-"terminée.<br/> <i>Astuce : personnalisez ce formulaire selon vos besoins et "
-"créez autant de modèles que vous le souhaitez.</i>"
-
-#. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_fsm_planning_groupby_project
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_fsm_planning_groupby_user
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_to_schedule_fsm
@@ -1064,13 +1115,22 @@ msgstr "Sélectionnez le <b>client</b> pour votre tâche."
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "Send Report"
-msgstr "Envoyer le compte-rendu"
+msgstr "Envoyer le rapport"
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/models/project_task.py:0
 #, python-format
 msgid "Send report"
 msgstr "Envoyer le rapport"
+
+#. module: industry_fsm
+#: model:mail.template,description:industry_fsm.mail_template_data_intervention_details
+msgid ""
+"Set this template on a project's stage to automate email when tasks reach "
+"stages"
+msgstr ""
+"Définir ce modèle sur une étape de projet pour automatiquement envoyer un "
+"email lorsque la tâche atteint cette étape"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.res_config_settings_action_fsm
@@ -1137,7 +1197,7 @@ msgstr "Etapes"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Starred"
-msgstr "Favoris"
+msgstr "Priorité élevée"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -1193,7 +1253,6 @@ msgstr "Tâche Effectuée"
 
 #. module: industry_fsm
 #: model:ir.actions.report,name:industry_fsm.task_custom_report
-#: model:mail.template,name:industry_fsm.mail_template_data_task_report
 msgid "Task Report"
 msgstr "Rapport de Tâche"
 
@@ -1213,11 +1272,6 @@ msgid "Task stop running timers confirmation wizard line"
 msgstr ""
 "Ligne de l'assistant de confirmation de l'arrêt de la minuterie sur les "
 "tâches"
-
-#. module: industry_fsm
-#: model:mail.template,name:industry_fsm.mail_template_data_intervention_details
-msgid "Task: Intervention Scheduled"
-msgstr "Tâche: Intervention planifiée"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.project_tasks_action_fsm

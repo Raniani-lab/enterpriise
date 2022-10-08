@@ -6,15 +6,15 @@
 # นัจ-ณวัสน์ เอกสิรินิธิพล <nawhath.aek@hotmail.com>, 2022
 # Pornvibool Tippayawat <pornvibool.t@gmail.com>, 2022
 # Seksan Poltree <seksan.poltree@gmail.com>, 2022
-# Odoo Thaidev <odoothaidev@gmail.com>, 2022
 # Wichanon Jamwutthipreecha, 2022
+# Odoo Thaidev <odoothaidev@gmail.com>, 2022
 # Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Thai (https://www.transifex.com/odoo/teams/41243/th/)\n"
@@ -272,6 +272,12 @@ msgid "Barcode scan is ambiguous with several model: %s. Use the most likely."
 msgstr ""
 
 #. module: stock_barcode
+#: model:product.product,name:stock_barcode.product_cable_management_box_2
+#: model:product.template,name:stock_barcode.product_cable_management_box_2_product_template
+msgid "Cable Management Box"
+msgstr "Cable Management Box"
+
+#. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/components/main.xml:0
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_cancel_operation_view
@@ -350,6 +356,18 @@ msgstr "สร้างโดย"
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_barcode_cancel_operation__create_date
 msgid "Created on"
 msgstr "สร้างเมื่อ"
+
+#. module: stock_barcode
+#: model:product.product,name:stock_barcode.product_custom_cabinet_metric
+#: model:product.template,name:stock_barcode.product_custom_cabinet_metric_product_template
+msgid "Customized Cabinet (Metric)"
+msgstr ""
+
+#. module: stock_barcode
+#: model:product.product,name:stock_barcode.product_custom_cabinet_usa
+#: model:product.template,name:stock_barcode.product_custom_cabinet_usa_product_template
+msgid "Customized Cabinet (USA)"
+msgstr ""
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -1367,6 +1385,12 @@ msgid "Unit of Measure"
 msgstr "หน่วยวัด"
 
 #. module: stock_barcode
+#: model:product.product,uom_name:stock_barcode.product_cable_management_box_2
+#: model:product.template,uom_name:stock_barcode.product_cable_management_box_2_product_template
+msgid "Units"
+msgstr "หน่วย"
+
+#. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_stock_quant_tree
 msgid "UoM"
 msgstr "หน่วยวัด"
@@ -1470,11 +1494,23 @@ msgid "document"
 msgstr "เอกสาร"
 
 #. module: stock_barcode
+#: model:product.product,uom_name:stock_barcode.product_custom_cabinet_usa
+#: model:product.template,uom_name:stock_barcode.product_custom_cabinet_usa_product_template
+msgid "ft³"
+msgstr "ft³"
+
+#. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "location"
 msgstr ""
+
+#. module: stock_barcode
+#: model:product.product,uom_name:stock_barcode.product_custom_cabinet_metric
+#: model:product.template,uom_name:stock_barcode.product_custom_cabinet_metric_product_template
+msgid "m³"
+msgstr "m³"
 
 #. module: stock_barcode
 #. openerp-web

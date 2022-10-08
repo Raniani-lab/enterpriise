@@ -7,9 +7,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"POT-Creation-Date: 2022-10-04 09:43+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
@@ -384,6 +384,17 @@ msgstr "La verifica SMS è disabilitata."
 #: model_terms:ir.ui.view,arch_db:payment_sepa_direct_debit.inline_form
 msgid "Send SMS"
 msgstr "Manda SMS"
+
+#. module: payment_sepa_direct_debit
+#: model:mail.template,description:payment_sepa_direct_debit.mail_template_sepa_notify_validation
+msgid ""
+"Send the SEPA mandate in attachement, to partners who signed a new mandate"
+msgstr ""
+
+#. module: payment_sepa_direct_debit
+#: model:mail.template,description:payment_sepa_direct_debit.mail_template_sepa_notify_debit
+msgid "Sent to the customer to indicate their account will be charged"
+msgstr ""
 
 #. module: payment_sepa_direct_debit
 #. openerp-web

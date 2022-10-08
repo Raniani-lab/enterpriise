@@ -3,16 +3,16 @@
 # 	* hr_appraisal
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Malaz Abuidris <msea@odoo.com>, 2022
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2022\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -467,6 +467,12 @@ msgstr "قوالب التقييم "
 #, python-format
 msgid "Appraisal of %s"
 msgstr "التقييم لـ %s "
+
+#. module: hr_appraisal
+#: code:addons/hr_appraisal/models/hr_appraisal.py:0
+#, python-format
+msgid "Appraisal reopened"
+msgstr ""
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/res_company.py:0
@@ -944,25 +950,25 @@ msgid "Group by..."
 msgstr "التجميع حسب... "
 
 #. module: hr_appraisal
+#: model:mail.template,name:hr_appraisal.mail_template_appraisal_confirm
+msgid "HR: Appraisal Confirmation"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:mail.template,name:hr_appraisal.mail_template_appraisal_request_from_employee
+msgid "HR: Employee Appraisal Request"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:mail.template,name:hr_appraisal.mail_template_appraisal_request
+msgid "HR: Manager appraisal request"
+msgstr ""
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__has_message
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__has_message
 msgid "Has Message"
 msgstr "يحتوي على رسالة "
-
-#. module: hr_appraisal
-#: model:mail.template,name:hr_appraisal.mail_template_appraisal_confirm
-msgid "Hr Appraisal: Confirm Appraisal"
-msgstr "تقييم الموارد البشرية: تأكيد التقييم "
-
-#. module: hr_appraisal
-#: model:mail.template,name:hr_appraisal.mail_template_appraisal_request_from_employee
-msgid "Hr Appraisal: Request an Appraisal From Employee"
-msgstr "تقييم الموارد البشرية: اطلب تقييماً من موظف "
-
-#. module: hr_appraisal
-#: model:mail.template,name:hr_appraisal.mail_template_appraisal_request
-msgid "Hr Appraisal: Request an Appraisal from Manager"
-msgstr "تقييم الموارد البشرية: اطلب تقييماً من المدير "
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__id
@@ -1308,6 +1314,12 @@ msgid "Ongoing Appraisal Count"
 msgstr ""
 
 #. module: hr_appraisal
+#: code:addons/hr_appraisal/models/hr_appraisal_goal.py:0
+#, python-format
+msgid "Operation not supported"
+msgstr "هذه العملية غير مدعومة "
+
+#. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_request_appraisal__lang
 msgid ""
 "Optional translation language (ISO code) to select when sending out an "
@@ -1453,6 +1465,23 @@ msgid "Send by email"
 msgstr "الإرسال عبر البريد الإلكتروني "
 
 #. module: hr_appraisal
+#: model:mail.template,description:hr_appraisal.mail_template_appraisal_confirm
+msgid ""
+"Sent automatically to both employee and manager when appraisal is confirmed"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:mail.template,description:hr_appraisal.mail_template_appraisal_request_from_employee
+msgid ""
+"Sent manually to the employee by the manager who wants to do an appraisal"
+msgstr ""
+
+#. module: hr_appraisal
+#: model:mail.template,description:hr_appraisal.mail_template_appraisal_request
+msgid "Sent manually to the manager by the employee who wants an appraisal"
+msgstr ""
+
+#. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_note__sequence
 msgid "Sequence"
 msgstr "التسلسل "
@@ -1530,6 +1559,12 @@ msgid ""
 msgstr ""
 "بفضل خطة تقييمك دون أي تقييمات يدوية، سوف يتم إنشاء التقييم الجديد تلقائياً "
 "في %s."
+
+#. module: hr_appraisal
+#: code:addons/hr_appraisal/models/hr_appraisal.py:0
+#, python-format
+msgid "The appraisal's status has been set to Done by %s"
+msgstr ""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__note

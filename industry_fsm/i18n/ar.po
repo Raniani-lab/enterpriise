@@ -4,16 +4,16 @@
 # 
 # Translators:
 # Mustafa Rawi <mustafa@cubexco.com>, 2022
-# Martin Trigaux, 2022
 # Malaz Abuidris <msea@odoo.com>, 2022
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2022\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -208,13 +208,34 @@ msgid "Average Rating"
 msgstr "متوسط التقييم "
 
 #. module: industry_fsm
-#: model:project.task.type,legend_blocked:industry_fsm.planning_project_stage_0
+#: model:project.task,legend_blocked:industry_fsm.planning_task_0
+#: model:project.task,legend_blocked:industry_fsm.planning_task_1
+#: model:project.task,legend_blocked:industry_fsm.planning_task_10
+#: model:project.task,legend_blocked:industry_fsm.planning_task_11
+#: model:project.task,legend_blocked:industry_fsm.planning_task_12
+#: model:project.task,legend_blocked:industry_fsm.planning_task_13
+#: model:project.task,legend_blocked:industry_fsm.planning_task_14
+#: model:project.task,legend_blocked:industry_fsm.planning_task_15
+#: model:project.task,legend_blocked:industry_fsm.planning_task_16
+#: model:project.task,legend_blocked:industry_fsm.planning_task_17
+#: model:project.task,legend_blocked:industry_fsm.planning_task_19
+#: model:project.task,legend_blocked:industry_fsm.planning_task_2
+#: model:project.task,legend_blocked:industry_fsm.planning_task_20
+#: model:project.task,legend_blocked:industry_fsm.planning_task_3
+#: model:project.task,legend_blocked:industry_fsm.planning_task_4
+#: model:project.task,legend_blocked:industry_fsm.planning_task_5
+#: model:project.task,legend_blocked:industry_fsm.planning_task_6
+#: model:project.task,legend_blocked:industry_fsm.planning_task_7
+#: model:project.task,legend_blocked:industry_fsm.planning_task_8
+#: model:project.task,legend_blocked:industry_fsm.planning_task_9
 #: model:project.task.type,legend_blocked:industry_fsm.planning_project_stage_1
-#: model:project.task.type,legend_blocked:industry_fsm.planning_project_stage_2
-#: model:project.task.type,legend_blocked:industry_fsm.planning_project_stage_3
-#: model:project.task.type,legend_blocked:industry_fsm.planning_project_stage_4
 msgid "Blocked"
 msgstr "محجوب"
+
+#. module: industry_fsm
+#: model:project.task,legend_done:industry_fsm.planning_task_18
+msgid "Buzz or set as done"
+msgstr "تنبيه أو تعين كمهمة منتهية"
 
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.project_task_menu_planning_by_project_fsm
@@ -231,11 +252,6 @@ msgstr "حسب المستخدم "
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_stop_timer_wizard_form
 msgid "Cancel"
 msgstr "إلغاء "
-
-#. module: industry_fsm
-#: model:project.task.type,name:industry_fsm.planning_project_stage_4
-msgid "Cancelled"
-msgstr "ملغي"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.portal_task_sign_button
@@ -487,15 +503,15 @@ msgid "Do you want to stop the running timers?"
 msgstr ""
 
 #. module: industry_fsm
-#: model:project.task.type,name:industry_fsm.planning_project_stage_3
-msgid "Done"
-msgstr "منتهي "
-
-#. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__hours_effective
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_list_fsm
 msgid "Effective Hours"
 msgstr "ساعات العمل الفعلية"
+
+#. module: industry_fsm
+#: model:mail.template,description:industry_fsm.mail_template_data_task_report
+msgid "Email sent when clicking on \"send report\" in a task"
+msgstr ""
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__planned_date_end
@@ -529,6 +545,16 @@ msgstr "تحليل مهام إدارة الخدمات الميدانية "
 #, python-format
 msgid "Field Service"
 msgstr "الخدمة الميدانية"
+
+#. module: industry_fsm
+#: model:mail.template,name:industry_fsm.mail_template_data_intervention_details
+msgid "Field Service: Intervention Scheduled"
+msgstr ""
+
+#. module: industry_fsm
+#: model:mail.template,name:industry_fsm.mail_template_data_task_report
+msgid "Field Service: Task Report"
+msgstr ""
 
 #. module: industry_fsm
 #. openerp-web
@@ -599,12 +625,28 @@ msgid "ID"
 msgstr "المُعرف"
 
 #. module: industry_fsm
-#: model:project.task.type,legend_normal:industry_fsm.planning_project_stage_0
+#: model:project.task,legend_normal:industry_fsm.planning_task_0
+#: model:project.task,legend_normal:industry_fsm.planning_task_1
+#: model:project.task,legend_normal:industry_fsm.planning_task_10
+#: model:project.task,legend_normal:industry_fsm.planning_task_11
+#: model:project.task,legend_normal:industry_fsm.planning_task_12
+#: model:project.task,legend_normal:industry_fsm.planning_task_13
+#: model:project.task,legend_normal:industry_fsm.planning_task_14
+#: model:project.task,legend_normal:industry_fsm.planning_task_15
+#: model:project.task,legend_normal:industry_fsm.planning_task_16
+#: model:project.task,legend_normal:industry_fsm.planning_task_17
+#: model:project.task,legend_normal:industry_fsm.planning_task_18
+#: model:project.task,legend_normal:industry_fsm.planning_task_19
+#: model:project.task,legend_normal:industry_fsm.planning_task_2
+#: model:project.task,legend_normal:industry_fsm.planning_task_20
+#: model:project.task,legend_normal:industry_fsm.planning_task_3
+#: model:project.task,legend_normal:industry_fsm.planning_task_4
+#: model:project.task,legend_normal:industry_fsm.planning_task_5
+#: model:project.task,legend_normal:industry_fsm.planning_task_6
+#: model:project.task,legend_normal:industry_fsm.planning_task_7
+#: model:project.task,legend_normal:industry_fsm.planning_task_8
+#: model:project.task,legend_normal:industry_fsm.planning_task_9
 #: model:project.task.type,legend_normal:industry_fsm.planning_project_stage_1
-#: model:project.task.type,legend_normal:industry_fsm.planning_project_stage_2
-#: model:project.task.type,legend_normal:industry_fsm.planning_project_stage_3
-#: model:project.task.type,legend_normal:industry_fsm.planning_project_stage_4
-#: model:project.task.type,name:industry_fsm.planning_project_stage_2
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "In Progress"
@@ -805,9 +847,9 @@ msgid "Navigate To"
 msgstr "التنقل إلى "
 
 #. module: industry_fsm
-#: model:project.task.type,name:industry_fsm.planning_project_stage_0
-msgid "New"
-msgstr "جديد"
+#: model:project.task,legend_blocked:industry_fsm.planning_task_18
+msgid "Need functional or technical help"
+msgstr "تحتاج إلى مساعدة فنية أو تقنية "
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -960,11 +1002,26 @@ msgid "Rating Value (/5)"
 msgstr "قيمة التقييم (/5) "
 
 #. module: industry_fsm
-#: model:project.task.type,legend_done:industry_fsm.planning_project_stage_0
+#: model:project.task,legend_done:industry_fsm.planning_task_0
+#: model:project.task,legend_done:industry_fsm.planning_task_1
+#: model:project.task,legend_done:industry_fsm.planning_task_10
+#: model:project.task,legend_done:industry_fsm.planning_task_11
+#: model:project.task,legend_done:industry_fsm.planning_task_12
+#: model:project.task,legend_done:industry_fsm.planning_task_13
+#: model:project.task,legend_done:industry_fsm.planning_task_14
+#: model:project.task,legend_done:industry_fsm.planning_task_15
+#: model:project.task,legend_done:industry_fsm.planning_task_16
+#: model:project.task,legend_done:industry_fsm.planning_task_17
+#: model:project.task,legend_done:industry_fsm.planning_task_19
+#: model:project.task,legend_done:industry_fsm.planning_task_2
+#: model:project.task,legend_done:industry_fsm.planning_task_3
+#: model:project.task,legend_done:industry_fsm.planning_task_4
+#: model:project.task,legend_done:industry_fsm.planning_task_5
+#: model:project.task,legend_done:industry_fsm.planning_task_6
+#: model:project.task,legend_done:industry_fsm.planning_task_7
+#: model:project.task,legend_done:industry_fsm.planning_task_8
+#: model:project.task,legend_done:industry_fsm.planning_task_9
 #: model:project.task.type,legend_done:industry_fsm.planning_project_stage_1
-#: model:project.task.type,legend_done:industry_fsm.planning_project_stage_2
-#: model:project.task.type,legend_done:industry_fsm.planning_project_stage_3
-#: model:project.task.type,legend_done:industry_fsm.planning_project_stage_4
 msgid "Ready"
 msgstr "جاهز"
 
@@ -978,6 +1035,11 @@ msgid ""
 msgstr ""
 "أأنت جاهز <b>لإدارة عملياتك في مواقع العمل</b>؟ <i>اضغط على الخدمة الميدانية"
 " للبدء.</i> "
+
+#. module: industry_fsm
+#: model:project.task,legend_done:industry_fsm.planning_task_20
+msgid "Ready to reopen"
+msgstr "جاهز لإعادة الفتح"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__remaining_hours
@@ -1002,17 +1064,6 @@ msgstr "راضي "
 #, python-format
 msgid "Save time by automatically generating a <b>signature</b>."
 msgstr ""
-
-#. module: industry_fsm
-#. openerp-web
-#: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
-#, python-format
-msgid ""
-"Save your <b>worksheet</b> once it is complete.<br/><i>Tip: customize this "
-"form to your needs and create as many templates as you want.</i>"
-msgstr ""
-"قم بحفظ <b>ورقة عملك</b> بمجرد اكتمالها. <br/><i>نصيحة: قم بتخصيص هذه "
-"الاستمارة لتناسب احتياجاتك وأنشئ أي قدر تريده من القوالب.</i> "
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_fsm_planning_groupby_project
@@ -1044,6 +1095,13 @@ msgstr "إرسال التقرير"
 #, python-format
 msgid "Send report"
 msgstr "إرسال التقرير "
+
+#. module: industry_fsm
+#: model:mail.template,description:industry_fsm.mail_template_data_intervention_details
+msgid ""
+"Set this template on a project's stage to automate email when tasks reach "
+"stages"
+msgstr ""
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.res_config_settings_action_fsm
@@ -1164,7 +1222,6 @@ msgstr "انتهت المهمة "
 
 #. module: industry_fsm
 #: model:ir.actions.report,name:industry_fsm.task_custom_report
-#: model:mail.template,name:industry_fsm.mail_template_data_task_report
 msgid "Task Report"
 msgstr "تقرير المهمة "
 
@@ -1182,11 +1239,6 @@ msgstr ""
 #: model:ir.model,name:industry_fsm.model_project_task_stop_timers_wizard_line
 msgid "Task stop running timers confirmation wizard line"
 msgstr ""
-
-#. module: industry_fsm
-#: model:mail.template,name:industry_fsm.mail_template_data_intervention_details
-msgid "Task: Intervention Scheduled"
-msgstr "المهمة: تمت جدولة العمل الميداني "
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.project_tasks_action_fsm

@@ -6,13 +6,15 @@
 # Maxime Chambreuil <mchambreuil@ursainfosystems.com>, 2022
 # Jérôme Tanché <jerome.tanche@ouest-dsi.fr>, 2022
 # Martin Trigaux, 2022
+# Christophe Klopfert, 2022
+# Jolien De Paepe, 2022
 # Cécile Collart <cco@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-27 15:42+0000\n"
+"POT-Creation-Date: 2022-10-04 09:43+0000\n"
 "PO-Revision-Date: 2022-09-29 09:37+0000\n"
 "Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -28,21 +30,21 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "(Net sales – COGS) / Net sales"
-msgstr ""
+msgstr "(Ventes nettes - COGS) / Ventes nettes"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 0.7: company might be stuck with non liquid assets"
-msgstr ""
+msgstr "< 0.7 : l'entreprise peut être coincée avec des actifs non liquides"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 0.8: income might be too low"
-msgstr ""
+msgstr "< 0.8 : le revenu peut être trop faible"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -50,48 +52,50 @@ msgstr ""
 #, python-format
 msgid "< 0: company might not be able to meet obligations"
 msgstr ""
+"< 0 : l'entreprise pourrait ne pas être en mesure de respecter ses "
+"obligations"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 1: weak financial performance"
-msgstr ""
+msgstr "< 1 : faible performance financière"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 2.5: mature company who accumulated a lot of money"
-msgstr ""
+msgstr "< 2.5 : entreprise mature qui a accumulé beaucoup d'argent"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 20%: hard to become profitable"
-msgstr ""
+msgstr "< 20% : difficile de devenir rentable"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 2: company might be slow to pay suppliers"
-msgstr ""
+msgstr "< 2 : l'entreprise peut être lente à payer ses fournisseurs"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 3%: not efficient at generating business"
-msgstr ""
+msgstr "< 3% : pas efficace pour générer des affaires"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "< 5%: not efficient at operating business"
-msgstr ""
+msgstr "< 5% : pas efficace dans l'exploitation de l'entreprise"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -99,6 +103,7 @@ msgstr ""
 #, python-format
 msgid "< 6: company might not get paid for sales quickly enough"
 msgstr ""
+"< 6 : l'entreprise peut ne pas être payée assez rapidement pour ses ventes"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -106,41 +111,43 @@ msgstr ""
 #, python-format
 msgid "> 0: company can meet financial obligations at any time"
 msgstr ""
+"> 0 : l'entreprise peut faire face à ses obligations financières à tout "
+"moment"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 1.5: strong financial performance"
-msgstr ""
+msgstr "> 1.5 : bonnes performances financières"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 10%: very efficient"
-msgstr ""
+msgstr "> 10% : très efficace"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 10%: very efficient at operating business"
-msgstr ""
+msgstr "> 10 % : très efficace dans l'exploitation de l'entreprise"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 10: company gets paid for sales quickly"
-msgstr ""
+msgstr "> 10 : l'entreprise est rapidement payée pour ses ventes"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 1: company in highly solvent position"
-msgstr ""
+msgstr "> 1 : entreprise en position très solvable"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -148,6 +155,7 @@ msgstr ""
 #, python-format
 msgid "> 1: income allow to meet financial obligations"
 msgstr ""
+"> 1 : les revenus permettent de faire face aux obligations financières"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -155,13 +163,14 @@ msgstr ""
 #, python-format
 msgid "> 3: company liquidates debts to suppliers quickly"
 msgstr ""
+"> 3 : l'entreprise règle rapidement ses dettes envers ses fournisseurs"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "> 50%: hugely profitable business"
-msgstr ""
+msgstr "> 50% : activité extrêmement rentable"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -169,6 +178,7 @@ msgstr ""
 #, python-format
 msgid "> 5: company owns a lot of debt and not of a lot of own money"
 msgstr ""
+"> 5 : l'entreprise a beaucoup de dettes et pas beaucoup d'argent propre"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -205,7 +215,7 @@ msgstr "Délai moyen de jours des créanciers"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Average debtor days"
-msgstr ""
+msgstr "Délai moyen de jours des débiteurs"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -236,14 +246,14 @@ msgstr "Banque et liquidités"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Best if compared with competitors"
-msgstr ""
+msgstr "Meilleur par rapport aux concurrents"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "COGS"
-msgstr ""
+msgstr "Coût des marchandises vendues"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -258,7 +268,7 @@ msgstr "Espèces"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Cash flow"
-msgstr ""
+msgstr "Flux de trésorerie "
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -266,7 +276,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Cash flow / Current liabilities"
-msgstr ""
+msgstr "Trésorerie / Passifs circulants"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -274,7 +284,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Cash flow ratio"
-msgstr ""
+msgstr "Ratio de flux de trésorerie"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -328,7 +338,7 @@ msgstr "Coût des ventes"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Cost of revenue"
-msgstr ""
+msgstr "Coût des revenus"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -349,7 +359,7 @@ msgstr "Actifs circulants"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Current Liabilities"
-msgstr "Passif circulant"
+msgstr "Passifs circulants"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -363,7 +373,7 @@ msgstr "Bénéfices de l'année en cours"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Current assets"
-msgstr ""
+msgstr "Actifs circulants"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -371,7 +381,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Current assets / Current liabilities"
-msgstr ""
+msgstr "Actifs circulants / Passifs circulants"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -387,7 +397,7 @@ msgstr "Actif circulant au passif"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Current assets – Current liabilities"
-msgstr ""
+msgstr "Actifs circulants – Passifs circulants"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -395,7 +405,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Current expense"
-msgstr ""
+msgstr "Dépenses courantes"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -403,14 +413,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Current income"
-msgstr ""
+msgstr "Revenu actuel"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Current liabilities"
-msgstr ""
+msgstr "Passifs circulants"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -418,7 +428,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Current ratio"
-msgstr ""
+msgstr "Ratio actuel"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -447,7 +457,7 @@ msgstr "Amortissement"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "EBIT"
-msgstr ""
+msgstr "BAII"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -455,7 +465,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "EBIT / Net sales"
-msgstr ""
+msgstr "BAII / Ventes nettes"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -479,7 +489,7 @@ msgstr "Notes de frais"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Financial independence"
-msgstr ""
+msgstr "Indépendance financière"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -511,7 +521,7 @@ msgstr "Bénéfice brut "
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Gross profit margin"
-msgstr ""
+msgstr "Marge de bénéfice brut"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -534,14 +544,14 @@ msgstr "Facturé"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "KPI"
-msgstr ""
+msgstr "KPI"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "KPIS"
-msgstr ""
+msgstr "KPIs"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -556,7 +566,7 @@ msgstr "Mois"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Month-Year"
-msgstr ""
+msgstr "Année-Mois"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -564,6 +574,7 @@ msgstr ""
 #, python-format
 msgid "Net Credit Purchases / Average accounts payable balance for period"
 msgstr ""
+"Achats nets à crédit / Solde moyen des comptes créditeurs pour la période"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -578,7 +589,7 @@ msgstr "Actifs net "
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Net income"
-msgstr ""
+msgstr "Revenu net"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -586,7 +597,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Net income / Revenue"
-msgstr ""
+msgstr "Résultat net / Chiffre d'affaires"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -594,7 +605,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Net profit"
-msgstr ""
+msgstr "Bénéfice net"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -604,14 +615,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Net profit margin"
-msgstr ""
+msgstr "La marge bénéficiaire nette"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Net sales"
-msgstr ""
+msgstr "Ventes nettes"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -639,56 +650,56 @@ msgstr "Hors bilan"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -1 - Month"
-msgstr ""
+msgstr "Décalage -1 - Mois"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -1 - Month-Year"
-msgstr ""
+msgstr "Décalage -1 - Année-Mois"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -1 - Start date"
-msgstr ""
+msgstr "Décalage -1 - Date de début"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -1 - Year"
-msgstr ""
+msgstr "Décalage -1 - Année"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -4 - Month"
-msgstr ""
+msgstr "Décalage -4 - Mois"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -4 - Month-Year"
-msgstr ""
+msgstr "Décalage -4 - Mois-Année"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -4 - Start date"
-msgstr ""
+msgstr "Décalage -4 - Date de début"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Offset -4 - Year"
-msgstr ""
+msgstr "Décalage -4 - Année"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -696,7 +707,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Operating margin"
-msgstr ""
+msgstr "La marge d'exploitation"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -710,7 +721,7 @@ msgstr "Autres revenus"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Other variables"
-msgstr ""
+msgstr "Autres variables"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -724,7 +735,7 @@ msgstr "Payable"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Payable turnover"
-msgstr ""
+msgstr "Chiffre d'affaires payable"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -742,7 +753,7 @@ msgstr "Dettes"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Payables / Expenses * 120"
-msgstr ""
+msgstr "Dettes / Dépenses * 120"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -772,14 +783,14 @@ msgstr "Prépaiements"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Previous expense"
-msgstr ""
+msgstr "Dépense antérieure"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Previous income"
-msgstr ""
+msgstr "Revenu antérieur"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -812,7 +823,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Quick ratio"
-msgstr ""
+msgstr "Ratio rapide"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -844,7 +855,7 @@ msgstr "Créances"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Receivables / Income * 120"
-msgstr ""
+msgstr "Créances / Revenu * 120"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -852,7 +863,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Return on investments"
-msgstr ""
+msgstr "Retour sur investissements"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -895,28 +906,28 @@ msgstr "Nom technique"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Total assets"
-msgstr ""
+msgstr "Actifs Totaux"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Total expense"
-msgstr ""
+msgstr "Charge totale"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Total income"
-msgstr ""
+msgstr "Revenu Total"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Total liabilities"
-msgstr ""
+msgstr "Passif total"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -924,14 +935,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Total liabilities / Total shareholders’ equity"
-msgstr ""
+msgstr "Total du passif / Total des capitaux propres"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Total shareholder's equity"
-msgstr ""
+msgstr "Capitaux propres totaux"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -947,7 +958,7 @@ msgstr "Valeur"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Very dependent on the sector"
-msgstr ""
+msgstr "Très dépendant du secteur"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -957,7 +968,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Working capital"
-msgstr ""
+msgstr "Fonds de roulement"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -973,56 +984,56 @@ msgstr "Année"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "bank and cash"
-msgstr ""
+msgstr "banque et espèces"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "cost of revenue"
-msgstr ""
+msgstr "coût des revenus"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "current assets"
-msgstr ""
+msgstr "actifs circulants"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "current liabilities"
-msgstr ""
+msgstr "passifs circulants"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "expenses + depreciation + cost of revenue"
-msgstr ""
+msgstr "charges + amortissements + coût des revenus"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "expenses - income"
-msgstr ""
+msgstr "charges - revenu"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "income"
-msgstr ""
+msgstr "revenu"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "income + other income"
-msgstr ""
+msgstr "revenu + autre revenu"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -1037,7 +1048,7 @@ msgstr "dernière période"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "net sales - COGS"
-msgstr ""
+msgstr "ventes nettes - COGS"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -1046,34 +1057,36 @@ msgstr ""
 msgid ""
 "number of times you can pay off current debts with cash generated per year"
 msgstr ""
+"nombre de fois que vous pouvez rembourser vos dettes actuelles avec les "
+"liquidités générées par an"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "payable"
-msgstr ""
+msgstr "dette"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "payable + credit card + current liabilities + non-current liabilities"
-msgstr ""
+msgstr "dettes + carte de crédit + passif courant + passif non courant"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "possible issue in COGS (Cost of Goods sold)"
-msgstr ""
+msgstr "problème possible dans CDMV (coût des marchandises vendues)"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "possible issue in direct and indirect costs"
-msgstr ""
+msgstr "problème possible dans les coûts directs et indirects"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -1082,6 +1095,8 @@ msgstr ""
 msgid ""
 "possible issue in payment terms agreement with clients to get paid faster"
 msgstr ""
+"problème possible dans l'accord sur les conditions de paiement avec les "
+"clients pour être payé plus rapidement"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -1090,6 +1105,8 @@ msgstr ""
 msgid ""
 "possible issue in providers payments, could lead to loss of suppliers trust"
 msgstr ""
+"problème possible dans les paiements des fournisseurs, pourrait entraîner "
+"une perte de confiance des fournisseurs"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -1097,13 +1114,15 @@ msgstr ""
 #, python-format
 msgid "possible issue in ressources allocation or missed growth opportunities"
 msgstr ""
+"problème possible dans l'allocation des ressources ou opportunités de "
+"croissance manquées"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "possible issue in the business model"
-msgstr ""
+msgstr "problème possible dans le business model"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -1111,6 +1130,8 @@ msgstr ""
 #, python-format
 msgid "possible issue with asset distribution and cash availability"
 msgstr ""
+"problème possible avec la distribution des actifs et la disponibilité des "
+"liquidités"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -1118,21 +1139,21 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "possible issues in cash availability at short term"
-msgstr ""
+msgstr "problèmes possibles de disponibilité de trésorerie à court terme"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "receivable"
-msgstr ""
+msgstr "créance"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "receivable + bank and cash + current assets"
-msgstr ""
+msgstr "créance + banque et espèces + actifs circulants"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -1142,31 +1163,33 @@ msgid ""
 "receivable + bank and cash + current assets + non-current assets + "
 "prepayments + fixed assets"
 msgstr ""
+"créance + banque et trésorerie + actifs circulants + actifs non circulants +"
+" acomptes + immobilisations"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "to pay"
-msgstr ""
+msgstr "à payer"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "to receive"
-msgstr ""
+msgstr "à recevoir"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "total assets - total liabilities"
-msgstr ""
+msgstr "actif total - passif total"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "total income - total expense"
-msgstr ""
+msgstr "revenu total - charge totale"

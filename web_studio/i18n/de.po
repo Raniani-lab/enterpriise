@@ -4466,6 +4466,12 @@ msgstr "Sie machst einfach gerne Dinge kaputt, nicht wahr?"
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
+#, python-format
+msgid "You must have at least one option set"
+msgstr ""
+
+#. module: web_studio
+#. openerp-web
 #: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
 #, python-format
 msgid "You must select a related field"

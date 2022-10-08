@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:48+0000\n"
+"POT-Creation-Date: 2022-10-04 09:42+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Lucia Pacheco <lpo@odoo.com>, 2022\n"
 "Language-Team: Spanish (Mexico) (https://www.transifex.com/odoo/teams/41243/es_MX/)\n"
@@ -64,7 +64,7 @@ msgid ""
 msgstr ""
 "<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
 "        <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
-"            Apreciable <t t-esc=\"object.name\"/>, ya está disponible el enlace de acceso a sus documentos personales.<br/><br/>\n"
+"            Apreciable <t t-esc=\"object.name\"/>, ya se encuentra disponible el enlace de acceso a sus documentos personales.<br/><br/>\n"
 "            En esta carpeta encontrará todos sus documentos personales de RRHH.<br/><br/>\n"
 "            Mantenga este enlace seguro.<br/><br/>\n"
 "            <div style=\"text-align: center; padding: 16px 0px 16px 0px; font-size: 14px;\">\n"
@@ -152,6 +152,8 @@ msgid ""
 "Employee's private email must be set to use \"Send Access Link\" function:\n"
 "%s"
 msgstr ""
+"El correo electrónico privado del empleado debe estar configurado para utilizar la función \"Enviar enlace de acceso\":\n"
+"%s"
 
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_employees
@@ -171,8 +173,8 @@ msgstr "Documentos de RRHH: %s"
 
 #. module: documents_hr
 #: model:mail.template,name:documents_hr.mail_template_document_folder_link
-msgid "HR: Your documents access link"
-msgstr "RRHH: Su enlace de acceso a los documentos"
+msgid "HR: Document Access Link"
+msgstr ""
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_config_settings__documents_hr_settings
@@ -196,6 +198,11 @@ msgid ""
 msgstr ""
 "Enviar un correo electrónico al usuario que contenga el enlace compartido "
 "con todos sus documentos."
+
+#. module: documents_hr
+#: model:mail.template,description:documents_hr.mail_template_document_folder_link
+msgid "Sent manually when recording an employee departure"
+msgstr ""
 
 #. module: documents_hr
 #: code:addons/documents_hr/models/hr_employee.py:0

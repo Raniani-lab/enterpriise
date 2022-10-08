@@ -7,9 +7,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:09+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Korean (https://www.transifex.com/odoo/teams/41243/ko/)\n"
@@ -203,6 +203,20 @@ msgid "DHL Documents"
 msgstr ""
 
 #. module: delivery_dhl
+#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_eu_dom
+#: model:product.product,name:delivery_dhl.product_product_delivery_dhl_eu_dom
+#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_eu_dom_product_template
+msgid "DHL EU"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_eu_intl
+#: model:product.product,name:delivery_dhl.product_product_delivery_dhl_eu_intl
+#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_eu_intl_product_template
+msgid "DHL EU -> International"
+msgstr ""
+
+#. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_default_package_type_id
 msgid "DHL Package Type"
 msgstr ""
@@ -233,6 +247,20 @@ msgstr "DHL 사이트 ID가 누락되었습니다. 배송 방법 설정을 수�
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_SiteID
 msgid "DHL SiteID"
 msgstr "DHL 사이트 ID"
+
+#. module: delivery_dhl
+#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_us_dom
+#: model:product.product,name:delivery_dhl.product_product_delivery_dhl_us_dom
+#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_us_dom_product_template
+msgid "DHL US"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_us_intl
+#: model:product.product,name:delivery_dhl.product_product_delivery_dhl_us_intl
+#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_us_intl_product_template
+msgid "DHL US -> International"
+msgstr ""
 
 #. module: delivery_dhl
 #: code:addons/delivery_dhl/models/dhl_request.py:0
@@ -519,6 +547,18 @@ msgstr "이 발송에 사용할 수 있는 가격이 없습니다. DHL %s 상품
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__u
 msgid "U - Express Worldwide"
 msgstr "U - 전세계 특송"
+
+#. module: delivery_dhl
+#: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_eu_dom
+#: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_eu_intl
+#: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_us_dom
+#: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_us_intl
+#: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_eu_dom_product_template
+#: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_eu_intl_product_template
+#: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_us_dom_product_template
+#: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_us_intl_product_template
+msgid "Units"
+msgstr "단위"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__v

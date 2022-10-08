@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"POT-Creation-Date: 2022-10-04 09:43+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Malaz Abuidris <msea@odoo.com>, 2022\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
@@ -479,8 +479,6 @@ msgstr "رفع الفيديو "
 #. module: social_youtube
 #. openerp-web
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
-#: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
-#: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "Upload failed. Please try again."
 msgstr "فشلت عملية رفع الفيديو. يرجى المحاولة مجدداً. "
@@ -489,15 +487,15 @@ msgstr "فشلت عملية رفع الفيديو. يرجى المحاولة م�
 #. openerp-web
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
-msgid "Uploading... %s"
-msgstr "جاري رفع الفيديو... %s "
+msgid "Uploading %s"
+msgstr ""
 
 #. module: social_youtube
 #. openerp-web
-#: code:addons/social_youtube/static/src/xml/social_youtube_templates.xml:0
+#: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
-msgid "Uploading... 0%"
-msgstr "جاري رفع الفيديو... 0% "
+msgid "Uploading... %s%%"
+msgstr ""
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_res_config_settings__youtube_use_own_account

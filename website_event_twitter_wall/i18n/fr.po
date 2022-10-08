@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:11+0000\n"
+"POT-Creation-Date: 2022-10-04 09:44+0000\n"
 "PO-Revision-Date: 2022-09-22 05:50+0000\n"
 "Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -19,6 +19,11 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: fr\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#. module: website_event_twitter_wall
+#: model_terms:website.twitter.wall,description:website_event_twitter_wall.openwood_twitter_wall
+msgid "#wood"
+msgstr "#wood"
 
 #. module: website_event_twitter_wall
 #: model:ir.model,name:website_event_twitter_wall.model_event_event
@@ -34,6 +39,11 @@ msgstr "Modèle d'événement"
 #: model:ir.model.fields,field_description:website_event_twitter_wall.field_website_event_menu__menu_type
 msgid "Menu Type"
 msgstr "Type de Menu"
+
+#. module: website_event_twitter_wall
+#: model:website.twitter.wall,name:website_event_twitter_wall.openwood_twitter_wall
+msgid "OpenWood Wall"
+msgstr "Mur d'OpenWood"
 
 #. module: website_event_twitter_wall
 #: model:ir.model.fields,field_description:website_event_twitter_wall.field_event_event__social_menu

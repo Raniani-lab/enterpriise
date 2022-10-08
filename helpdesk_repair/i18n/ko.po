@@ -3,22 +3,27 @@
 # 	* helpdesk_repair
 # 
 # Translators:
-# Martin Trigaux, 2022
 # JH CHOI <hwangtog@gmail.com>, 2022
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:48+0000\n"
+"POT-Creation-Date: 2022-10-04 09:42+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: JH CHOI <hwangtog@gmail.com>, 2022\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Korean (https://www.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: ko\n"
 "Plural-Forms: nplurals=1; plural=0;\n"
+
+#. module: helpdesk_repair
+#: model:helpdesk.ticket,legend_blocked:helpdesk_repair.helpdesk_repair_ticket_1
+msgid "Blocked"
+msgstr "거부됨"
 
 #. module: helpdesk_repair
 #: model:ir.actions.act_window,name:helpdesk_repair.action_repair_order_form
@@ -34,6 +39,16 @@ msgstr "고객센터 팀"
 #: model:ir.model,name:helpdesk_repair.model_helpdesk_ticket
 msgid "Helpdesk Ticket"
 msgstr "고객센터 티켓"
+
+#. module: helpdesk_repair
+#: model:helpdesk.ticket,legend_normal:helpdesk_repair.helpdesk_repair_ticket_1
+msgid "In Progress"
+msgstr "진행 중"
+
+#. module: helpdesk_repair
+#: model:helpdesk.ticket,legend_done:helpdesk_repair.helpdesk_repair_ticket_1
+msgid "Ready"
+msgstr "준비"
 
 #. module: helpdesk_repair
 #: model:ir.model.fields,help:helpdesk_repair.field_repair_order__ticket_id

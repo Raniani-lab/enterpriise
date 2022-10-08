@@ -3,8 +3,8 @@
 # 	* social_linkedin
 # 
 # Translators:
-# Cécile Collart <cco@odoo.com>, 2022
 # Martin Trigaux, 2022
+# Cécile Collart <cco@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:24+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,6 +64,8 @@ msgid ""
 "Check this if you want to use your personal LinkedIn Developer Account "
 "instead of the provided one."
 msgstr ""
+"Cochez cette case si vous souhaitez utiliser votre compte développeur "
+"LinkedIn personnel au lieu de celui fourni."
 
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_res_config_settings
@@ -158,7 +160,7 @@ msgstr "URN de poste LinkedIn"
 #. module: social_linkedin
 #: model_terms:ir.ui.view,arch_db:social_linkedin.res_config_settings_view_form
 msgid "Linkedin Developer Account"
-msgstr ""
+msgstr "Compte développeur LinkedIn"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_media__media_type
@@ -198,7 +200,7 @@ msgstr "Publication"
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_post_template
 msgid "Social Post Template"
-msgstr ""
+msgstr "Modèle de poste social"
 
 #. module: social_linkedin
 #: model:ir.model,name:social_linkedin.model_social_stream
@@ -229,13 +231,13 @@ msgstr ""
 #: code:addons/social_linkedin/models/social_account.py:0
 #, python-format
 msgid "There is no page linked to this account"
-msgstr ""
+msgstr "Il n'y a pas de page liée à ce compte"
 
 #. module: social_linkedin
 #: code:addons/social_linkedin/controllers/main.py:0
 #, python-format
 msgid "There was a authentication issue during your request."
-msgstr ""
+msgstr "Il y a eu un problème d'authentification lors de votre demande."
 
 #. module: social_linkedin
 #: code:addons/social_linkedin/controllers/main.py:0
@@ -260,7 +262,7 @@ msgstr ""
 #. module: social_linkedin
 #: model:ir.model.fields,help:social_linkedin.field_social_stream_post__linkedin_author_vanity_name
 msgid "Vanity name, used to generate a link to the author"
-msgstr ""
+msgstr "Nom personnalisé, utilisé pour générer un lien vers l'auteur"
 
 #. module: social_linkedin
 #: code:addons/social_linkedin/models/social_live_post.py:0
@@ -269,6 +271,9 @@ msgid ""
 "We could not upload your image, try reducing its size and posting it again "
 "(error: Failed during upload registering)."
 msgstr ""
+"Nous n'avons pas pu télécharger votre image, essayez de réduire sa taille et"
+" de la publier à nouveau (erreur : échec lors de l'enregistrement du "
+"téléchargement)."
 
 #. module: social_linkedin
 #: code:addons/social_linkedin/models/social_live_post.py:0
@@ -276,12 +281,14 @@ msgstr ""
 msgid ""
 "We could not upload your image, try reducing its size and posting it again."
 msgstr ""
+"Nous n'avons pas pu télécharger votre image, essayez de réduire sa taille et"
+" de la publier à nouveau."
 
 #. module: social_linkedin
 #: code:addons/social_linkedin/models/social_stream.py:0
 #, python-format
 msgid "Wrong stream type for \"%s\""
-msgstr ""
+msgstr "Mauvais type de flux pour \"%s\""
 
 #. module: social_linkedin
 #: code:addons/social_linkedin/models/social_media.py:0

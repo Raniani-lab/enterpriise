@@ -3,16 +3,16 @@
 # 	* hr_payroll
 # 
 # Translators:
-# Xavier Symons <xsy@openerp.com>, 2022
 # Tivisse <yti@odoo.com>, 2022
 # Martin Trigaux, 2022
+# Jolien De Paepe, 2022
 # Cécile Collart <cco@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -101,6 +101,11 @@ msgid "1. Save documents to terminated employees"
 msgstr "1. Envoyer les documents aux employés licenciés"
 
 #. module: hr_payroll
+#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_13th_month_salary
+msgid "13th pay salary"
+msgstr "13ème mois"
+
+#. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "2. Index salaries for Marketing department"
 msgstr "2. Indexer les salaires du département Marketing"
@@ -169,7 +174,7 @@ msgid ""
 msgstr ""
 "<span colspan=\"4\" nolabel=\"1\">Cet assistant va générer les fiches de "
 "paie de(s) l'employé(s) sélectionné(s) sur base des dates et des notes de "
-"crédit figurant sur les bulletins de paie.</span>"
+"crédit figurant sur les fiches de paie.</span>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_index_form_view
@@ -948,7 +953,7 @@ msgstr "Conflit"
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Conflicts"
-msgstr "Conflits"
+msgstr "Conflit(s"
 
 #. module: hr_payroll
 #. openerp-web
@@ -1009,6 +1014,16 @@ msgstr "Registre de contribution"
 #: model:ir.actions.report,name:hr_payroll.action_report_register
 msgid "Contribution Registers"
 msgstr "Registres des contributions"
+
+#. module: hr_payroll
+#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_convanceallowance1
+msgid "Conveyance Allowance"
+msgstr "Indemnité de transport"
+
+#. module: hr_payroll
+#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_ca_gravie
+msgid "Conveyance Allowance For Gravie"
+msgstr "Indemnité de transport pour Gravie"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_input__amount
@@ -1311,7 +1326,7 @@ msgstr "Fait"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_filter
 msgid "Done Payslip Batches"
-msgstr "Lots terminés de bulletins de paie"
+msgstr "Lots terminés de fiches de paie"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_filter
@@ -1339,7 +1354,7 @@ msgstr "Brouillon"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_filter
 msgid "Draft Payslip Batches"
-msgstr "Lots brouillons de bulletins de paie"
+msgstr "Lots brouillons de fiches de paie"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_filter
@@ -1470,19 +1485,19 @@ msgstr "Employés"
 #, python-format
 msgid "Employees (With Running Contracts) missing from open batches"
 msgstr ""
-"Employés (avec un contrat en cours) manquant dans un lot de fiche de paie"
+"Employé(s) (avec un contrat en cours) manquant dans un lot de fiche de paie"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Employees With Both New And Running Contracts"
-msgstr "Employés avec à la fois un contrat en cours et ouvert"
+msgstr "Employé(s) avec à la fois un contrat en cours et ouvert"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Employees With Multiple Open Payslips of Same Type"
-msgstr "Employés avec plusieurs fiches de paie en attente du même type"
+msgstr "Employé(s) avec plusieurs fiches de paie du même type en attente"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
@@ -1495,7 +1510,7 @@ msgstr "Employés sans contrats ouverts"
 #, python-format
 msgid "Employees with payslips generated on the previous contract"
 msgstr ""
-"Employés avec des fiches de paie générées à partir d'un contrat précédent"
+"Employé(s) avec des fiches de paie générées à partir d'un contrat précédent"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
@@ -1628,11 +1643,12 @@ msgstr "Générer"
 #. module: hr_payroll
 #. openerp-web
 #: code:addons/hr_payroll/static/src/js/work_entries_controller_mixin.js:0
+#: code:addons/hr_payroll/static/src/views/work_entry_calendar/work_entry_calendar.xml:0
 #: model:ir.actions.act_window,name:hr_payroll.action_hr_payslip_by_employees
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_form
 #, python-format
 msgid "Generate Payslips"
-msgstr "Générer les bulletins de paie"
+msgstr "Générer les fiches de paie"
 
 #. module: hr_payroll
 #: model:ir.actions.server,name:hr_payroll.action_generate_payslips_from_work_entries
@@ -1642,7 +1658,7 @@ msgstr "Générer des fiches de paie"
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_payslip_employees
 msgid "Generate payslips for all selected employees"
-msgstr "Génère les bulletins de paie pour tous les employés sélectionnés"
+msgstr "Génère les fiches de paie pour tous les employés sélectionnés"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_form
@@ -1742,6 +1758,11 @@ msgstr "Heures de travail"
 #: model:ir.model.fields,field_description:hr_payroll.field_resource_calendar__hours_per_week
 msgid "Hours per Week"
 msgstr "Heures par semaine"
+
+#. module: hr_payroll
+#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_houserentallowance1
+msgid "House Rent Allowance"
+msgstr "Allocation logement"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__id
@@ -2075,6 +2096,11 @@ msgid "Maximum Range"
 msgstr "Plage maximale"
 
 #. module: hr_payroll
+#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_meal_voucher
+msgid "Meal Voucher"
+msgstr "Chèque Repas"
+
+#. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_has_error
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__message_has_error
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__message_has_error
@@ -2212,13 +2238,13 @@ msgstr "Nouveau"
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "New Contracts"
-msgstr "Nouveau contrats"
+msgstr "Nouveau(x) contrat(s)"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "New Employees"
-msgstr "Nouveaux Employés"
+msgstr "Nouveau(x) Employé(s)"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/wizard/hr_payroll_payslips_by_employees.py:0
@@ -2605,12 +2631,12 @@ msgstr "La date de début de la fiche de paie doit précéder la date de fin."
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_filter
 msgid "Payslip Batch"
-msgstr "Lot de bulletins de paie"
+msgstr "Lot de fiches de paie"
 
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_payslip_run
 msgid "Payslip Batches"
-msgstr "Lots de bulletins de paie"
+msgstr "Lots de fiches de paie"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_employee__payslip_count
@@ -2700,14 +2726,14 @@ msgstr "Bulletin de paie jours travaillés"
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_tree
 #, python-format
 msgid "Payslips"
-msgstr "Feuilles de paie"
+msgstr "Fiches de paie"
 
 #. module: hr_payroll
 #: model:ir.actions.act_window,name:hr_payroll.action_hr_payslip_run_tree
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_form
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_tree
 msgid "Payslips Batches"
-msgstr "Lots de bulletins de paie"
+msgstr "Lots de fiches de paie"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_tree
@@ -2718,29 +2744,29 @@ msgstr "Nombre de fiches de paie"
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Payslips Generated On Previous Contract"
-msgstr "Fiches de paie générées sur un contrat précédent"
+msgstr "Fiche(s) de paie générées sur un contrat précédent"
 
 #. module: hr_payroll
 #: model:ir.actions.act_window,name:hr_payroll.hr_payslip_action_view_to_pay
 msgid "Payslips To Pay"
-msgstr "Fiches de paie à payer"
+msgstr "Fiche(s) de paie à payer"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Payslips With Negative Amounts"
-msgstr "Fiches de paie avec un montant négatif"
+msgstr "Fiche(s) de paie avec un montant négatif"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_by_employees
 msgid "Payslips by Employees"
-msgstr "Bulletins de paie par employé"
+msgstr "Fiches de paie par employé"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Payslips with negative NET"
-msgstr "Fiches de paie avec un net négatif"
+msgstr "Fiche(s) de paie avec un net négatif"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_index__percentage
@@ -2778,7 +2804,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payroll_report__work_entry_source__planning
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_work_entry_report__work_entry_source__planning
 msgid "Planning"
-msgstr "Planification"
+msgstr "Planning"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
@@ -2789,7 +2815,7 @@ msgstr "Transmettre les bulletins de paie au service comptabilité"
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Previous Negative Payslip to Report"
-msgstr "Fiches de paie précédentes négatives à reporter"
+msgstr "Fiche(s) de paie précédentes négatives à reporter"
 
 #. module: hr_payroll
 #. openerp-web
@@ -2800,10 +2826,20 @@ msgid "Print"
 msgstr "Imprimer"
 
 #. module: hr_payroll
+#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_professionaltax1
+msgid "Professional Tax"
+msgstr "Précompte professionnel"
+
+#. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Prorated end-of-year bonus"
 msgstr "Bonus de fin d'année au prorata"
+
+#. module: hr_payroll
+#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_providentfund1
+msgid "Provident Fund"
+msgstr "Caisse de prévoyance"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__amount_python_compute
@@ -3184,7 +3220,7 @@ msgstr "Rechercher des lignes de bulletins"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_filter
 msgid "Search Payslips"
-msgstr "Rechercher dans les feuilles de paie"
+msgstr "Rechercher dans les fiches de paie"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_salary_attachment_view_search
@@ -3213,6 +3249,11 @@ msgstr "Sélectionnez un <strong>Responsable RH</strong>pour le contrat."
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payroll_structure_type__default_schedule_pay__semi-annually
 msgid "Semi-annually"
 msgstr "Semestriel"
+
+#. module: hr_payroll
+#: model:mail.template,description:hr_payroll.mail_template_new_payslip
+msgid "Sent to employee to notify them about their new payslip"
+msgstr "Envoyé à l'employé pour l'informer de sa nouvelle fiche de paie"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__sequence
@@ -3350,6 +3391,11 @@ msgstr "Structures"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__sum_worked_hours
 msgid "Sum Worked Hours"
 msgstr "Somme des heures travaillées"
+
+#. module: hr_payroll
+#: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_sum_alw_category
+msgid "Sum of Allowance category"
+msgstr "Somme pour la catégorie d'indemnité"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_work_entry_report_view_tree
@@ -4029,7 +4075,7 @@ msgstr "Heures de travail"
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Working Schedule Changes"
-msgstr "Changements d'horaire"
+msgstr "Changement(s) d'horaire"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_salary_rule.py:0

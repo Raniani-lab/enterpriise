@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: 敬雲 林 <chingyun@yuanchih-consult.com>, 2022\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
@@ -1256,6 +1256,7 @@ msgid "Field Name"
 msgstr "欄位名稱"
 
 #. module: sign
+#: model:ir.ui.menu,name:sign.sign_item_type_menu
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
 msgid "Field Types"
 msgstr "Field Types"
@@ -1280,7 +1281,7 @@ msgstr "檔案內容 (base64)"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/backend/views_custo.js:0
+#: code:addons/sign/static/src/views/hooks.js:0
 #, python-format
 msgid "File Error"
 msgstr ""
@@ -1528,6 +1529,15 @@ msgstr ""
 #: model:ir.model.fields,help:sign.field_sign_request__message_needaction
 msgid "If checked, new messages require your attention."
 msgstr "勾選代表有新訊息需要您留意。"
+
+#. module: sign
+#: model:ir.model.fields,help:sign.field_sign_item_role__change_authorized
+#: model:ir.model.fields,help:sign.field_sign_request_item__change_authorized
+msgid ""
+"If checked, recipient of a document with this role can be changed after "
+"having sent the request. Useful to replace a signatory who is out of office,"
+" etc."
+msgstr ""
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error
@@ -2078,6 +2088,11 @@ msgid "Oops"
 msgstr "哎呀"
 
 #. module: sign
+#: model:sign.template,redirect_url_text:sign.template_sign_1
+#: model:sign.template,redirect_url_text:sign.template_sign_2
+#: model:sign.template,redirect_url_text:sign.template_sign_3
+#: model:sign.template,redirect_url_text:sign.template_sign_4
+#: model:sign.template,redirect_url_text:sign.template_sign_5
 #: model:sign.template,redirect_url_text:sign.template_sign_tour
 msgid "Open Link"
 msgstr "Open Link"
@@ -2289,6 +2304,8 @@ msgstr "Request Item Infos"
 
 #. module: sign
 #. openerp-web
+#: code:addons/sign/static/src/components/activity_list_view_item/activity_list_view_item.xml:0
+#: code:addons/sign/static/src/components/activity_list_view_item/activity_list_view_item.xml:0
 #: code:addons/sign/static/src/components/sign_request/sign_request.xml:0
 #: code:addons/sign/static/src/components/sign_request/sign_request.xml:0
 #: code:addons/sign/static/src/xml/activity.xml:0
@@ -2782,7 +2799,7 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/models/sign_request_view.js:0
+#: code:addons/sign/static/src/models/activity.js:0
 #: model:ir.actions.act_window,name:sign.action_sign_send_request
 #: model:ir.model,name:sign.model_sign_request
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__sign_request_id
@@ -3093,10 +3110,16 @@ msgstr "活動模板"
 #: code:addons/sign/static/src/js/backend/document_signable.js:0
 #: code:addons/sign/static/src/js/backend/sign_request.js:0
 #: code:addons/sign/static/src/js/backend/sign_template.js:0
-#: code:addons/sign/static/src/js/backend/views_custo.js:0
 #, python-format
 msgid "Template \"%s\""
 msgstr "Template \"%s\""
+
+#. module: sign
+#. openerp-web
+#: code:addons/sign/static/src/views/hooks.js:0
+#, python-format
+msgid "Template %s"
+msgstr ""
 
 #. module: sign
 #. openerp-web
@@ -3338,14 +3361,14 @@ msgstr "There are no signatures request."
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_backend.xml:0
+#: code:addons/sign/static/src/components/template_alert_dialog/template_alert_dialog.xml:0
 #, python-format
 msgid "These files cannot be read, they may be corrupted or encrypted."
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_backend.xml:0
+#: code:addons/sign/static/src/components/template_alert_dialog/template_alert_dialog.xml:0
 #, python-format
 msgid "They will be removed from the uploaded files"
 msgstr ""
@@ -3464,15 +3487,15 @@ msgstr "記錄的異常活動的類型。"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/backend/views_custo.js:0
+#: code:addons/sign/static/src/views/common.xml:0
 #, python-format
 msgid "UPLOAD A PDF TEMPLATE"
 msgstr "UPLOAD A PDF TEMPLATE"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/backend/views_custo.js:0
-#: code:addons/sign/static/src/js/backend/views_custo.js:0
+#: code:addons/sign/static/src/views/common.xml:0
+#: code:addons/sign/static/src/views/common.xml:0
 #, python-format
 msgid "UPLOAD A PDF TO SIGN"
 msgstr "UPLOAD A PDF TO SIGN"
@@ -3517,23 +3540,17 @@ msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/backend/views_custo.js:0
+#: code:addons/sign/static/src/views/common.xml:0
 #, python-format
 msgid "Upload a PDF file to use as a template."
 msgstr ""
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/js/backend/views_custo.js:0
+#: code:addons/sign/static/src/views/common.xml:0
+#: code:addons/sign/static/src/views/common.xml:0
 #, python-format
-msgid "Upload a PDF that you want to sign directly."
-msgstr ""
-
-#. module: sign
-#. openerp-web
-#: code:addons/sign/static/src/js/backend/views_custo.js:0
-#, python-format
-msgid "Upload a pdf that you want to sign directly."
+msgid "Upload a pdf that you want to sign directly"
 msgstr ""
 
 #. module: sign
@@ -3873,7 +3890,7 @@ msgstr "及"
 
 #. module: sign
 #. openerp-web
-#: code:addons/sign/static/src/xml/sign_backend.xml:0
+#: code:addons/sign/static/src/components/template_alert_dialog/template_alert_dialog.xml:0
 #, python-format
 msgid "and the process will continue"
 msgstr ""

@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Jolien De Paepe, 2022
 # Cécile Collart <cco@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-27 15:42+0000\n"
+"POT-Creation-Date: 2022-10-04 09:43+0000\n"
 "PO-Revision-Date: 2022-09-29 09:37+0000\n"
 "Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -60,7 +61,7 @@ msgstr "Taille moyenne des transactions"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Average deal size"
-msgstr ""
+msgstr "Taille moyenne des transactions"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -83,14 +84,14 @@ msgstr "Ville"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Close Rate"
-msgstr ""
+msgstr "Taux de clôture"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Close rate"
-msgstr ""
+msgstr "Taux de clôture"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -104,7 +105,7 @@ msgstr "Fermé"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed count"
-msgstr ""
+msgstr "Compte fermé"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -138,7 +139,7 @@ msgstr "Actuel"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Current period"
-msgstr ""
+msgstr "Période actuelle"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -152,21 +153,21 @@ msgstr "Jours à attribuer"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to Win"
-msgstr ""
+msgstr "Jours pour gagner"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to assign"
-msgstr ""
+msgstr "Jours pour attribuer"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to win"
-msgstr ""
+msgstr "Jours pour gagner"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -187,14 +188,14 @@ msgstr "Date de fermeture prévue"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected count"
-msgstr ""
+msgstr "Compte attendu"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected revenue"
-msgstr ""
+msgstr "Revenu attendu"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -202,14 +203,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "KPI"
-msgstr ""
+msgstr "KPI"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Leads by Month"
-msgstr ""
+msgstr "Pistes par mois"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -234,7 +235,7 @@ msgstr "Moyen"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Open opportunities"
-msgstr ""
+msgstr "Opportunités ouvertes"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -248,7 +249,7 @@ msgstr "Opportunité"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Percentage closed"
-msgstr ""
+msgstr "Pourcentage fermé"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -263,7 +264,7 @@ msgstr "Période"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Pipeline Stages"
-msgstr ""
+msgstr "Étapes du pipeline"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -279,7 +280,7 @@ msgstr "Précedent"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Previous period"
-msgstr ""
+msgstr "Période précédente"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -362,21 +363,21 @@ msgstr "Étiquettes"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "To close"
-msgstr ""
+msgstr "À clôturer"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Campaigns"
-msgstr ""
+msgstr "Meilleures campagnes"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Cities"
-msgstr ""
+msgstr "Meilleures villes"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -384,14 +385,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Countries"
-msgstr ""
+msgstr "Meilleurs pays"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Lost Reasons"
-msgstr ""
+msgstr "Principaux motifs de perte"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -406,7 +407,7 @@ msgstr "Meilleurs media"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Opportunities"
-msgstr ""
+msgstr "Meilleures opportunités"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -414,7 +415,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Sales Teams"
-msgstr ""
+msgstr "Meilleures équipes de vente"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -422,7 +423,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Salespeople"
-msgstr ""
+msgstr "Meilleur vendeur"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -437,63 +438,63 @@ msgstr "Meilleures sources"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Tags"
-msgstr ""
+msgstr "Meilleures étiquette"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total days to assign"
-msgstr ""
+msgstr "Jours totaux pour assigner"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total days to win"
-msgstr ""
+msgstr "Jours totaux pour gagner"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total leads"
-msgstr ""
+msgstr "Pistes totales"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Won leads"
-msgstr ""
+msgstr "Pistes remportées"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "average deal size - current"
-msgstr ""
+msgstr "Taille moyenne des transactions - actuelle"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "average deal size - previous"
-msgstr ""
+msgstr "Taille moyenne des transactions - précédente"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "close rate - current"
-msgstr ""
+msgstr "taux de clôture - actuel"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "close rate - previous"
-msgstr ""
+msgstr "taux de clôture - précédent"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -514,14 +515,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "expected - current"
-msgstr ""
+msgstr "attendu - actuel"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "expected - previous"
-msgstr ""
+msgstr "attendu - précédent"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -537,7 +538,7 @@ msgstr "dernière période"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "list opps"
-msgstr ""
+msgstr "liste d'opportunités"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -568,7 +569,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top cities"
-msgstr ""
+msgstr "meilleures villes"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -576,28 +577,28 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top countries"
-msgstr ""
+msgstr "meilleurs pays"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top lost reasons"
-msgstr ""
+msgstr "principaux motifs de perte"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top medium"
-msgstr ""
+msgstr "meilleur medium"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top mediums"
-msgstr ""
+msgstr "meilleurs mediums"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -605,39 +606,39 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top sales team"
-msgstr ""
+msgstr "meilleure équipe de vente"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top salespeople"
-msgstr ""
+msgstr "meilleur vendeur"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top salesperson"
-msgstr ""
+msgstr "meilleur vendeur"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top source"
-msgstr ""
+msgstr "meilleure source"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top sources"
-msgstr ""
+msgstr "meilleures sources"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top tags"
-msgstr ""
+msgstr "meilleures étiquettes"

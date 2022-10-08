@@ -3,16 +3,17 @@
 # 	* mrp_workorder
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Cécile Collart <cco@odoo.com>, 2022
+# Martin Trigaux, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -173,12 +174,12 @@ msgstr "Bloquer"
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
 msgid "BoM feedback %s (%s)"
-msgstr ""
+msgstr "Retour nomenclature %s(%s)"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__bom_product_ids
 msgid "Bom Product"
-msgstr "Produit BOM"
+msgstr "Produit nomenclature"
 
 #. module: mrp_workorder
 #: model:ir.model.fields.selection,name:mrp_workorder.selection__mrp_workorder_additional_product__type__byproduct
@@ -224,6 +225,11 @@ msgid "Checks"
 msgstr "Chèques"
 
 #. module: mrp_workorder
+#: model:product.attribute,name:mrp_workorder.product_attribute_color_radio
+msgid "Color"
+msgstr "Couleur"
+
+#. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_propose_change__comment
 msgid "Comment"
 msgstr "Commentaires"
@@ -238,7 +244,7 @@ msgstr "Société"
 #: code:addons/mrp_workorder/static/src/components/summary_step.xml:0
 #, python-format
 msgid "Completion Time:"
-msgstr ""
+msgstr "Temps de traitement :"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_id
@@ -298,6 +304,12 @@ msgstr "Contrôle qualité actuel"
 #: model:ir.model.fields.selection,name:mrp_workorder.selection__quality_point__source_document__step
 msgid "Custom"
 msgstr "Personnalisé"
+
+#. module: mrp_workorder
+#: model:product.template.attribute.value,name:mrp_workorder.product_attribute_value_1
+#: model:product.template.attribute.value,name:mrp_workorder.product_attribute_value_1_radio
+msgid "Dark Blue"
+msgstr "Bleu foncé"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
@@ -388,6 +400,18 @@ msgid "Google doc URL"
 msgstr "URL du document Google"
 
 #. module: mrp_workorder
+#: model:product.template.attribute.value,name:mrp_workorder.product_attribute_value_2
+#: model:product.template.attribute.value,name:mrp_workorder.product_attribute_value_2_radio
+msgid "Green"
+msgstr "Vert"
+
+#. module: mrp_workorder
+#: model:product.template.attribute.value,name:mrp_workorder.product_attribute_value_3
+#: model:product.template.attribute.value,name:mrp_workorder.product_attribute_value_3_radio
+msgid "Grey"
+msgstr "Gris"
+
+#. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder_additional_product__id
 #: model:ir.model.fields,field_description:mrp_workorder.field_propose_change__id
 msgid "ID"
@@ -416,6 +440,8 @@ msgid ""
 "In case of Quality Check by Quantity, Move Line on which the Quality Check "
 "applies"
 msgstr ""
+"En cas de contrôle qualité par quantité, déplacer la ligne sur laquelle le "
+"contrôle qualité s'applique"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_routing_workcenter__quality_point_count
@@ -617,7 +643,7 @@ msgstr "Planning par Production"
 #. module: mrp_workorder
 #: model:ir.ui.menu,name:mrp_workorder.menu_mrp_workorder_workcenter
 msgid "Planning by Workcenter"
-msgstr "Planning par poste de charge"
+msgstr "Planning par poste de travail"
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/models/quality.py:0
@@ -803,7 +829,7 @@ msgstr "Enregistrer un produit supplémentaire"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__bom_active
 msgid "Related Bill of Material Active"
-msgstr ""
+msgstr "Nomenclature correspondante active"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__component_remaining_qty
@@ -871,9 +897,17 @@ msgid "Show the timer on the work order screen"
 msgstr "Montrer le chronomètre sur l'écran des ordres de travail"
 
 #. module: mrp_workorder
+#: model:product.product,description_sale:mrp_workorder.product_product_stool_1
+#: model:product.product,description_sale:mrp_workorder.product_product_stool_2
+#: model:product.product,description_sale:mrp_workorder.product_product_stool_3
+#: model:product.template,description_sale:mrp_workorder.product_template_stool
+msgid "Small wooden stool"
+msgstr "Petit tabouret en bois"
+
+#. module: mrp_workorder
 #: model:ir.model.fields.selection,name:mrp_workorder.selection__quality_point__source_document__operation
 msgid "Specific Page of Operation Worksheet"
-msgstr ""
+msgstr "Page précise d'une feuille de travail d'opération"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,help:mrp_workorder.field_mrp_bom__activity_state
@@ -896,7 +930,7 @@ msgstr "Etape"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point__source_document
 msgid "Step Document"
-msgstr ""
+msgstr "Document d'étape"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_propose_change__step_id
@@ -920,7 +954,31 @@ msgstr "Mouvement d'inventaire"
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__move_line_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__move_line_id
 msgid "Stock Move Line"
-msgstr ""
+msgstr "Ligne de mouvement d'inventaire"
+
+#. module: mrp_workorder
+#: model:product.product,name:mrp_workorder.product_product_stool_1
+#: model:product.product,name:mrp_workorder.product_product_stool_2
+#: model:product.product,name:mrp_workorder.product_product_stool_3
+#: model:product.template,name:mrp_workorder.product_template_stool
+msgid "Stool"
+msgstr "Tabouret"
+
+#. module: mrp_workorder
+#: model:product.product,name:mrp_workorder.product_product_stool_foot_1
+#: model:product.product,name:mrp_workorder.product_product_stool_foot_2
+#: model:product.product,name:mrp_workorder.product_product_stool_foot_3
+#: model:product.template,name:mrp_workorder.product_template_stool_foot
+msgid "Stool Foot"
+msgstr "Pied du tabouret"
+
+#. module: mrp_workorder
+#: model:product.product,name:mrp_workorder.product_product_stool_top_1
+#: model:product.product,name:mrp_workorder.product_product_stool_top_2
+#: model:product.product,name:mrp_workorder.product_product_stool_top_3
+#: model:product.template,name:mrp_workorder.product_template_stool_top
+msgid "Stool Top"
+msgstr "Assise du tabouret"
 
 #. module: mrp_workorder
 #. openerp-web
@@ -932,7 +990,7 @@ msgstr "Suggérer une amélioration de la feuille de travail"
 #. module: mrp_workorder
 #: model:ir.actions.client,name:mrp_workorder.tablet_client_action
 msgid "Tablet Client Action"
-msgstr ""
+msgstr "Action de tablette client"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__test_type
@@ -952,6 +1010,8 @@ msgid ""
 "This workcenter isn't expected to have open workorders during this period. "
 "Work hours :"
 msgstr ""
+"Ce poste de travail ne devrait pas avoir d'ordres de travail ouverts pendant"
+" cette période. Heures de travail :"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_res_config_settings__group_mrp_wo_tablet_timer
@@ -1000,6 +1060,22 @@ msgid "Unit of Measure"
 msgstr "Unité de mesure"
 
 #. module: mrp_workorder
+#: model:product.product,uom_name:mrp_workorder.product_product_stool_1
+#: model:product.product,uom_name:mrp_workorder.product_product_stool_2
+#: model:product.product,uom_name:mrp_workorder.product_product_stool_3
+#: model:product.product,uom_name:mrp_workorder.product_product_stool_foot_1
+#: model:product.product,uom_name:mrp_workorder.product_product_stool_foot_2
+#: model:product.product,uom_name:mrp_workorder.product_product_stool_foot_3
+#: model:product.product,uom_name:mrp_workorder.product_product_stool_top_1
+#: model:product.product,uom_name:mrp_workorder.product_product_stool_top_2
+#: model:product.product,uom_name:mrp_workorder.product_product_stool_top_3
+#: model:product.template,uom_name:mrp_workorder.product_template_stool
+#: model:product.template,uom_name:mrp_workorder.product_template_stool_foot
+#: model:product.template,uom_name:mrp_workorder.product_template_stool_top
+msgid "Units"
+msgstr "Unité(s)"
+
+#. module: mrp_workorder
 #: model:ir.actions.server,name:mrp_workorder.production_order_unplan_server_action
 msgid "Unplan orders"
 msgstr "Déplanifier les ordres"
@@ -1032,6 +1108,9 @@ msgid ""
 "Use steps to show instructions on a worksheet to operators, or trigger "
 "quality checks at specific steps of the work order."
 msgstr ""
+"Utilisez des étapes pour afficher des instructions sur une feuille de "
+"travail aux opérateurs ou déclencher des contrôles de qualité à des étapes "
+"spécifiques de l'ordre de travail."
 
 #. module: mrp_workorder
 #: model_terms:ir.actions.act_window,help:mrp_workorder.mrp_workorder_action_tablet
@@ -1040,6 +1119,9 @@ msgid ""
 "            The tablet provides worksheets for your workers and allow them to scrap products, track time,\n"
 "            launch a maintenance request, perform quality tests, etc."
 msgstr ""
+"Utilisez le panneau de commande du poste de travail pour enregistrer les opérations directement à l'atelier.\n"
+"            La tablette fournit des feuilles de travail à vos opérateurs et vous permet de créer des produits de rebut, de suivre leur temps de travail,\n"
+"            de lancer une demande de maintenance, d'effectuer des contrôles qualité, etc."
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_check_view_form_tablet
@@ -1104,6 +1186,8 @@ msgid ""
 "Work orders are operations to do as part of a manufacturing order.\n"
 "            Operations are defined in the bill of materials or added in the manufacturing order directly."
 msgstr ""
+"Les ordres de travail sont des opérations à effectuer dans le cadre d'un ordre de fabrication.\n"
+"Les opérations sont définies dans la nomenclature ou ajoutées directement dans l'ordre de fabrication."
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__working_state
@@ -1171,7 +1255,7 @@ msgstr "ZPL"
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "back"
-msgstr ""
+msgstr "retour"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
@@ -1184,3 +1268,19 @@ msgstr "menu"
 #, python-format
 msgid "minutes"
 msgstr "minutes"
+
+#. module: mrp_workorder
+#: model:product.product,description_sale:mrp_workorder.product_product_stool_foot_1
+#: model:product.product,description_sale:mrp_workorder.product_product_stool_foot_2
+#: model:product.product,description_sale:mrp_workorder.product_product_stool_foot_3
+#: model:product.template,description_sale:mrp_workorder.product_template_stool_foot
+msgid "wooden stool foot"
+msgstr "pied du tabouret en bois"
+
+#. module: mrp_workorder
+#: model:product.product,description_sale:mrp_workorder.product_product_stool_top_1
+#: model:product.product,description_sale:mrp_workorder.product_product_stool_top_2
+#: model:product.product,description_sale:mrp_workorder.product_product_stool_top_3
+#: model:product.template,description_sale:mrp_workorder.product_template_stool_top
+msgid "wooden stool top"
+msgstr "assise du tabouret en bois"

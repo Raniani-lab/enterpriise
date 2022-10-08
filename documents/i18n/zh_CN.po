@@ -3,16 +3,17 @@
 # 	* documents
 # 
 # Translators:
-# Martin Trigaux, 2022
 # 稀饭~~ <wangwhai@qq.com>, 2022
+# Martin Trigaux, 2022
+# 深圳 JM <3440895@qq.com>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-27 15:40+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: 稀饭~~ <wangwhai@qq.com>, 2022\n"
+"Last-Translator: 深圳 JM <3440895@qq.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -791,6 +792,16 @@ msgid "Bill"
 msgstr "账单"
 
 #. module: documents
+#: model:documents.folder,name:documents.documents_marketing_brand1_folder
+msgid "Brand 1"
+msgstr "品牌 1"
+
+#. module: documents
+#: model:documents.folder,name:documents.documents_marketing_brand2_folder
+msgid "Brand 2"
+msgstr "品牌 2"
+
+#. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_brochures
 msgid "Brochures"
 msgstr "宣传册"
@@ -1120,11 +1131,6 @@ msgid "Document Request: %s Uploaded by: %s"
 msgstr "文档请求：%s上载者：%s"
 
 #. module: documents
-#: model:mail.template,name:documents.mail_template_document_request
-msgid "Document Request: Send by email"
-msgstr "文件请求:通过电子邮件发送"
-
-#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__has_write_access
 msgid "Document User Upload Rights"
 msgstr ""
@@ -1138,6 +1144,11 @@ msgstr "文档工作流动作标记"
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__type__ids
 msgid "Document list"
 msgstr "文档列表"
+
+#. module: documents
+#: model:mail.template,name:documents.mail_template_document_request
+msgid "Document: Document Request"
+msgstr ""
 
 #. module: documents
 #. openerp-web
@@ -2245,6 +2256,11 @@ msgid "Send to Legal"
 msgstr "发送给法律部"
 
 #. module: documents
+#: model:mail.template,description:documents.mail_template_document_request
+msgid "Sent to partner when requesting a document from them"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
 #: model:ir.model.fields,field_description:documents.field_documents_folder__sequence
 #: model:ir.model.fields,field_description:documents.field_documents_tag__sequence
@@ -2688,7 +2704,7 @@ msgstr "上传文件请求"
 #: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
 #, python-format
 msgid "Uploading... (%s%)"
-msgstr ""
+msgstr "上传... (%s%)"
 
 #. module: documents
 #: model:ir.model,name:documents.model_res_users

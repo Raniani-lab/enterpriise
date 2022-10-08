@@ -6,6 +6,7 @@
 # Martin Trigaux, 2022
 # Ryanto The <ry.the77@gmail.com>, 2022
 # Edi Santoso <repopamor@gmail.com>, 2022
+# Abe Manyo, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:47+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Edi Santoso <repopamor@gmail.com>, 2022\n"
+"Last-Translator: Abe Manyo, 2022\n"
 "Language-Team: Indonesian (https://www.transifex.com/odoo/teams/41243/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,6 +30,9 @@ msgid ""
 "total of %(total)s points. Visit <a href=\"%(url)s\">this link</a> to pick a"
 " gift!"
 msgstr ""
+" Anda mendapatkan %(gained)s poin setelah kegiatan ini.<br/>Ini berarti Anda"
+" memiliki total %(total)s poin. Kunjungi <a href=\"%(url)s\">link ini</a> "
+"untuk memilih hadiah!"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_recruitment_report__referral_hired
@@ -105,6 +109,8 @@ msgid ""
 "A new alert has been added to the Referrals app! Check your <a "
 "href=%(url)s>dashboard</a> now!"
 msgstr ""
+"Alert baru telah ditambahkan ke aplikasi Referensi! Periksa <a "
+"href=%(url)s>dashboard</a> Anda sekarang!"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__message_needaction
@@ -484,6 +490,8 @@ msgid ""
 "External links must start with 'http://www.'. For an internal url, you don't"
 " need to put domain name, you can just insert the path."
 msgstr ""
+"Link eksternal harus dimulai dengan 'http://www.'. Untuk url internal, Anda "
+"tidak perlu menyediakan nama domain, cukup masukkan alamatnya saja."
 
 #. module: hr_referral
 #: model:ir.model.fields.selection,name:hr_referral.selection__hr_referral_link_to_share__channel__facebook

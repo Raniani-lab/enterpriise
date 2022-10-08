@@ -1164,7 +1164,7 @@ msgstr "Intrekken"
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "You cannot approve before the previous approver."
-msgstr "U kunt pas goedkeuren na de vorige goedkeurder."
+msgstr "Je kunt pas goedkeuren na de vorige goedkeurder."
 
 #. module: approvals
 #: code:addons/approvals/models/approval_request.py:0

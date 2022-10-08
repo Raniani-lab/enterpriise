@@ -10,9 +10,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Malaz Abuidris <msea@odoo.com>, 2022\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
@@ -460,7 +460,7 @@ msgstr "الإجابات"
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__category__anytime
 #, python-format
 msgid "Any Time"
@@ -492,7 +492,6 @@ msgstr ""
 #: model:mail.message.subtype,description:appointment.mt_calendar_event_booked
 #: model:mail.message.subtype,name:appointment.mt_appointment_type_booked
 #: model:mail.message.subtype,name:appointment.mt_calendar_event_booked
-#: model:mail.template,name:appointment.appointment_booked_mail_template
 msgid "Appointment Booked"
 msgstr "تم حجز الموعد "
 
@@ -505,7 +504,6 @@ msgstr "تم حجز الموعد: {{ object.appointment_type_id.name }}"
 #: model:mail.message.subtype,description:appointment.mt_calendar_event_canceled
 #: model:mail.message.subtype,name:appointment.mt_appointment_type_canceled
 #: model:mail.message.subtype,name:appointment.mt_calendar_event_canceled
-#: model:mail.template,name:appointment.appointment_canceled_mail_template
 msgid "Appointment Canceled"
 msgstr "تم إلغاء الموعد "
 
@@ -599,6 +597,16 @@ msgstr "أنواع المواعيد "
 #: code:addons/appointment/models/calendar_event.py:0
 #, python-format
 msgid "Appointment canceled by: %(partners)s"
+msgstr ""
+
+#. module: appointment
+#: model:mail.template,name:appointment.appointment_booked_mail_template
+msgid "Appointment: Appointment Booked"
+msgstr ""
+
+#. module: appointment
+#: model:mail.template,name:appointment.appointment_canceled_mail_template
+msgid "Appointment: Appointment Canceled"
 msgstr ""
 
 #. module: appointment
@@ -729,7 +737,7 @@ msgstr "تم اختيارها من قِبَل العميل "
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Click in your calendar to pick meeting time proposals."
 msgstr "اضغط على تقويمك لاختيار مقترحات أوقات الاجتماعات. "
@@ -786,7 +794,7 @@ msgstr ""
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.js:0
 #, python-format
 msgid "Copied !"
 msgstr "تم النسخ!"
@@ -873,6 +881,11 @@ msgstr ""
 "        تحديد الفترة الزمنية غير الدورية (مثال: 10 إبريل 2021 من الساعة 10 إلى 11 صباحاً) من التقويم. "
 
 #. module: appointment
+#: model:appointment.type,name:appointment.appointment_type_2
+msgid "Dental Care"
+msgstr ""
+
+#. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Details:"
 msgstr ""
@@ -888,8 +901,7 @@ msgstr ""
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form_insert_link
 #, python-format
 msgid "Discard"
@@ -981,10 +993,8 @@ msgstr ""
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Get Share Link"
 msgstr "الحصول على رابط المشاركة "
@@ -995,6 +1005,15 @@ msgstr "الحصول على رابط المشاركة "
 #, python-format
 msgid "Get Your Link"
 msgstr ""
+
+#. module: appointment
+#: model_terms:appointment.type,message_intro:appointment.appointment_type_1
+msgid ""
+"Get a <strong>customized demo</strong> and an <strong>analysis of your "
+"needs</strong>."
+msgstr ""
+"احصل على <strong>نسخة تجريبية مخصصة</strong> و<strong>تحليل "
+"لاحتياجاتك</strong>."
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_onboarding_link
@@ -1168,7 +1187,7 @@ msgstr "آخر تحديث في"
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Link Copied in your clipboard !"
 msgstr "تم نسخ الرابط في حافظتك! "
@@ -1239,11 +1258,6 @@ msgstr "أنا"
 #, python-format
 msgid "Meet With Me"
 msgstr ""
-
-#. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_form
-msgid "Meeting Details"
-msgstr "تفاصيل الاجتماع"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
@@ -1617,7 +1631,7 @@ msgstr "البحث في المسؤول "
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Select Dates"
 msgstr ""
@@ -1635,6 +1649,16 @@ msgstr "عدد المواعيد التي تم تحديدها "
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_search
 msgid "Selection Questions"
+msgstr ""
+
+#. module: appointment
+#: model:mail.template,description:appointment.appointment_canceled_mail_template
+msgid "Sent to all attendees when an appointment is cancelled"
+msgstr ""
+
+#. module: appointment
+#: model:mail.template,description:appointment.appointment_booked_mail_template
+msgid "Sent to people who book an appointment online"
 msgstr ""
 
 #. module: appointment
@@ -1658,9 +1682,9 @@ msgstr "مشاركة"
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Share Availabilities"
 msgstr "مشاركة الإتاحات "
@@ -1776,6 +1800,16 @@ msgstr ""
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__7
 msgid "Sunday"
 msgstr "الأحد"
+
+#. module: appointment
+#: model:appointment.question,name:appointment.appointment_type_2_question_1
+msgid "Symptoms"
+msgstr "الأعراض "
+
+#. module: appointment
+#: model:appointment.type,name:appointment.appointment_type_1
+msgid "Technical Demo"
+msgstr ""
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer_input__value_text_box
@@ -1960,6 +1994,15 @@ msgid "Users"
 msgstr "المستخدمين "
 
 #. module: appointment
+#: model_terms:appointment.type,message_confirmation:appointment.appointment_type_1
+msgid ""
+"We thank you for your interest in our products!<br>\n"
+"               Please make sure to arrive <strong>10 minutes</strong> before your appointment."
+msgstr ""
+"نشكرك على اهتمامك بمنتجاتنا!<br>\n"
+"               الرجاء الحرص على الوصول قبل موعدك بـ<strong>10 دقائق</strong>. "
+
+#. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__category__website
 msgid "Website"
 msgstr "الموقع الإلكتروني"
@@ -2001,11 +2044,6 @@ msgstr ""
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
-msgid "You will meet with"
-msgstr ""
-
-#. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Your Email*"
 msgstr ""
 
@@ -2027,13 +2065,6 @@ msgstr "موعدك خلال أقل من"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "and not after"
-msgstr ""
-
-#. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_form
-msgid ""
-"appointment,\n"
-"                                    on"
 msgstr ""
 
 #. module: appointment
@@ -2074,11 +2105,6 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "e.g. \"What are your symptoms ?\""
-msgstr ""
-
-#. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_form
-msgid "for a"
 msgstr ""
 
 #. module: appointment

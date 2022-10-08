@@ -6,17 +6,17 @@
 # Martin Trigaux, 2022
 # 高木正勝 <masakatsu.takagi@pro-spire.co.jp>, 2022
 # Yoshi Tashiro (Quartile) <tashiro@roomsfor.hk>, 2022
+# 江口和志 <sandwhale1010@gmail.com>, 2022
 # Ryoko Tsuda <ryoko@quartile.co>, 2022
 # Noma Yuki, 2022
-# 江口和志 <sandwhale1010@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: 江口和志 <sandwhale1010@gmail.com>, 2022\n"
+"Last-Translator: Noma Yuki, 2022\n"
 "Language-Team: Japanese (https://www.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -461,7 +461,7 @@ msgstr "回答"
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__category__anytime
 #, python-format
 msgid "Any Time"
@@ -493,7 +493,6 @@ msgstr ""
 #: model:mail.message.subtype,description:appointment.mt_calendar_event_booked
 #: model:mail.message.subtype,name:appointment.mt_appointment_type_booked
 #: model:mail.message.subtype,name:appointment.mt_calendar_event_booked
-#: model:mail.template,name:appointment.appointment_booked_mail_template
 msgid "Appointment Booked"
 msgstr ""
 
@@ -506,7 +505,6 @@ msgstr ""
 #: model:mail.message.subtype,description:appointment.mt_calendar_event_canceled
 #: model:mail.message.subtype,name:appointment.mt_appointment_type_canceled
 #: model:mail.message.subtype,name:appointment.mt_calendar_event_canceled
-#: model:mail.template,name:appointment.appointment_canceled_mail_template
 msgid "Appointment Canceled"
 msgstr ""
 
@@ -600,6 +598,16 @@ msgstr ""
 #: code:addons/appointment/models/calendar_event.py:0
 #, python-format
 msgid "Appointment canceled by: %(partners)s"
+msgstr ""
+
+#. module: appointment
+#: model:mail.template,name:appointment.appointment_booked_mail_template
+msgid "Appointment: Appointment Booked"
+msgstr ""
+
+#. module: appointment
+#: model:mail.template,name:appointment.appointment_canceled_mail_template
+msgid "Appointment: Appointment Canceled"
 msgstr ""
 
 #. module: appointment
@@ -730,7 +738,7 @@ msgstr "お客様が選択"
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Click in your calendar to pick meeting time proposals."
 msgstr "カレンダをクリックしてミーティング時間の候補を選択します。"
@@ -787,7 +795,7 @@ msgstr ""
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.js:0
 #, python-format
 msgid "Copied !"
 msgstr "コピーされました。"
@@ -870,6 +878,11 @@ msgid ""
 msgstr ""
 
 #. module: appointment
+#: model:appointment.type,name:appointment.appointment_type_2
+msgid "Dental Care"
+msgstr ""
+
+#. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Details:"
 msgstr ""
@@ -883,8 +896,7 @@ msgstr ""
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form_insert_link
 #, python-format
 msgid "Discard"
@@ -976,10 +988,8 @@ msgstr ""
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Get Share Link"
 msgstr "共有リンクをゲット"
@@ -990,6 +1000,13 @@ msgstr "共有リンクをゲット"
 #, python-format
 msgid "Get Your Link"
 msgstr ""
+
+#. module: appointment
+#: model_terms:appointment.type,message_intro:appointment.appointment_type_1
+msgid ""
+"Get a <strong>customized demo</strong> and an <strong>analysis of your "
+"needs</strong>."
+msgstr "<strong>カスタマイズされたデモ</strong>と <strong>あなたのニーズの分析</strong>を得ましょう"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_onboarding_link
@@ -1159,7 +1176,7 @@ msgstr "最終更新日"
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Link Copied in your clipboard !"
 msgstr "クリップボードにリンクがコピーされました！"
@@ -1230,11 +1247,6 @@ msgstr "自分"
 #, python-format
 msgid "Meet With Me"
 msgstr ""
-
-#. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_form
-msgid "Meeting Details"
-msgstr "打ち合わせ詳細"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
@@ -1608,7 +1620,7 @@ msgstr ""
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Select Dates"
 msgstr ""
@@ -1626,6 +1638,16 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_search
 msgid "Selection Questions"
+msgstr ""
+
+#. module: appointment
+#: model:mail.template,description:appointment.appointment_canceled_mail_template
+msgid "Sent to all attendees when an appointment is cancelled"
+msgstr ""
+
+#. module: appointment
+#: model:mail.template,description:appointment.appointment_booked_mail_template
+msgid "Sent to people who book an appointment online"
 msgstr ""
 
 #. module: appointment
@@ -1649,9 +1671,9 @@ msgstr "共有"
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Share Availabilities"
 msgstr "利用可能時間を共有"
@@ -1767,6 +1789,16 @@ msgstr ""
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__7
 msgid "Sunday"
 msgstr "日曜"
+
+#. module: appointment
+#: model:appointment.question,name:appointment.appointment_type_2_question_1
+msgid "Symptoms"
+msgstr "症状"
+
+#. module: appointment
+#: model:appointment.type,name:appointment.appointment_type_1
+msgid "Technical Demo"
+msgstr ""
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer_input__value_text_box
@@ -1951,6 +1983,15 @@ msgid "Users"
 msgstr "ユーザ"
 
 #. module: appointment
+#: model_terms:appointment.type,message_confirmation:appointment.appointment_type_1
+msgid ""
+"We thank you for your interest in our products!<br>\n"
+"               Please make sure to arrive <strong>10 minutes</strong> before your appointment."
+msgstr ""
+"私どもの製品にご興味を持って頂きありがとうございます<br>\n"
+"               予約の <strong>10 分</strong> 前に御到着頂けますようお願いいたします。"
+
+#. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__category__website
 msgid "Website"
 msgstr "ウェブサイト"
@@ -1992,11 +2033,6 @@ msgstr ""
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
-msgid "You will meet with"
-msgstr ""
-
-#. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Your Email*"
 msgstr ""
 
@@ -2018,13 +2054,6 @@ msgstr "あなたの予定は未満です"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "and not after"
-msgstr ""
-
-#. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_form
-msgid ""
-"appointment,\n"
-"                                    on"
 msgstr ""
 
 #. module: appointment
@@ -2065,11 +2094,6 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "e.g. \"What are your symptoms ?\""
-msgstr ""
-
-#. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_form
-msgid "for a"
 msgstr ""
 
 #. module: appointment

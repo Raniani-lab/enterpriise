@@ -296,7 +296,7 @@ msgstr "Kostenplaats"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution_stored_char
 msgid "Analytic Distribution Stored Char"
-msgstr ""
+msgstr "Analytische distributie Opgeslagen Char"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -341,8 +341,8 @@ msgid ""
 "%(dep_delta)s. This corresponds to %(move_count)s %(mthd)s "
 "%(word)s:<br>%(entries)s"
 msgstr ""
-"Afschrijving geannuleerd <br>De account %(exp_acc)s is gecrediteerd voor "
-"%(exp_delta)s, terwijl de account %(dep_acc)s is gedebiteerd voor "
+"Afschrijving geannuleerd <br>De rekening %(exp_acc)s is gecrediteerd voor "
+"%(exp_delta)s, terwijl de rekening %(dep_acc)s is gedebiteerd voor "
 "%(dep_delta)s. Dit komt overeen met %(move_count)s %(mthd)s %(word)s: "
 "<br>%(entries)s"
 
@@ -381,7 +381,7 @@ msgstr "Activa handmatig aangepast"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Asset Model"
-msgstr "Soort activa"
+msgstr "Activasoort"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -398,12 +398,12 @@ msgstr "Activamodellen"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__name
 msgid "Asset Name"
-msgstr "Naam activa"
+msgstr "Activanaam"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Asset Options"
-msgstr "Activa opties"
+msgstr "Activaopties"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset_report_handler
@@ -709,7 +709,7 @@ msgstr "Datum"
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "Dec. then Straight"
-msgstr "Dal. dan recht"
+msgstr "Dalend en dan recht"
 
 #. module: account_asset
 #: code:addons/account_asset/report/account_assets_report.py:0
@@ -841,7 +841,7 @@ msgstr "Uitgestelde omzetnaam"
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Deferred Revenue(s)"
-msgstr "Uitgestelde omzet"
+msgstr "Uitgestelde omzet(ten)"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_revenue_form
@@ -1025,7 +1025,7 @@ msgstr "Duur"
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_duration_rate
 msgid "Duration / Rate"
-msgstr "Duur / Ration"
+msgstr "Duur / Ratio"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form

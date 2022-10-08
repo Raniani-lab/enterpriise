@@ -560,9 +560,9 @@ msgid ""
 "        Is Required Approver: the employee's manager will be required to approve the request.\n"
 "    "
 msgstr ""
-"Cómo interactúa el gerente del empleado con este tipo de aprobación.\n"
+"El nivel de interacción del gerente con las aprobaciones del empleado.\n"
 "\n"
-"Vacío: no haga nada\n"
+"Vacío: no se hace nada\n"
 "Es aprobador: el gerente del empleado estará en la lista de aprobadores\n"
 "Es aprobador necesario: se necesitará que el gerente del empleado apruebe la solicitud.\n"
 "    "
@@ -897,7 +897,7 @@ msgstr "Solicitud de pago"
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "Period"
-msgstr "Período"
+msgstr "Periodo"
 
 #. module: approvals
 #: model:approval.category,name:approvals.approval_category_data_procurement
@@ -1187,12 +1187,12 @@ msgstr ""
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "e.g. Brussels"
-msgstr "por ejemplo, Bruselas"
+msgstr "p. ej., Bruselas"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "e.g. Procurement"
-msgstr "por ejemplo, aprovisionamiento"
+msgstr "p. ej., aprovisionamiento"
 
 #. module: approvals
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action

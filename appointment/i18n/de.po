@@ -7,14 +7,16 @@
 # Leon Grill <leg@odoo.com>, 2022
 # Martin Trigaux, 2022
 # Friederike Fasterling-Nesselbosch, 2022
+# 4e7311735ad180fde514b5b19202d965, 2022
+# DE T2 <e2f48d4s5vd1s2@outlook.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Friederike Fasterling-Nesselbosch, 2022\n"
+"Last-Translator: DE T2 <e2f48d4s5vd1s2@outlook.com>, 2022\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -617,7 +619,7 @@ msgstr "Antworten"
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__category__anytime
 #, python-format
 msgid "Any Time"
@@ -649,7 +651,6 @@ msgstr "Termin Antworten"
 #: model:mail.message.subtype,description:appointment.mt_calendar_event_booked
 #: model:mail.message.subtype,name:appointment.mt_appointment_type_booked
 #: model:mail.message.subtype,name:appointment.mt_calendar_event_booked
-#: model:mail.template,name:appointment.appointment_booked_mail_template
 msgid "Appointment Booked"
 msgstr "Termin gebucht"
 
@@ -662,7 +663,6 @@ msgstr "Termin gebucht: {{ object.appointment_type_id.name }}"
 #: model:mail.message.subtype,description:appointment.mt_calendar_event_canceled
 #: model:mail.message.subtype,name:appointment.mt_appointment_type_canceled
 #: model:mail.message.subtype,name:appointment.mt_calendar_event_canceled
-#: model:mail.template,name:appointment.appointment_canceled_mail_template
 msgid "Appointment Canceled"
 msgstr "Termin storniert"
 
@@ -757,6 +757,16 @@ msgstr "Terminarten"
 #, python-format
 msgid "Appointment canceled by: %(partners)s"
 msgstr "Termin abgesagt von: %(partners)s"
+
+#. module: appointment
+#: model:mail.template,name:appointment.appointment_booked_mail_template
+msgid "Appointment: Appointment Booked"
+msgstr ""
+
+#. module: appointment
+#: model:mail.template,name:appointment.appointment_canceled_mail_template
+msgid "Appointment: Appointment Canceled"
+msgstr ""
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -888,7 +898,7 @@ msgstr "Vom Kunden gewählt"
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Click in your calendar to pick meeting time proposals."
 msgstr ""
@@ -949,7 +959,7 @@ msgstr ""
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.js:0
 #, python-format
 msgid "Copied !"
 msgstr "Kopiert !"
@@ -1037,6 +1047,11 @@ msgstr ""
 "ein einmaliges Zeitfenster (z. B. 10. April 2021 von 10 bis 11 Uhr) in seinem Kalender definiert."
 
 #. module: appointment
+#: model:appointment.type,name:appointment.appointment_type_2
+msgid "Dental Care"
+msgstr ""
+
+#. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Details:"
 msgstr "Details:"
@@ -1052,8 +1067,7 @@ msgstr ""
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form_insert_link
 #, python-format
 msgid "Discard"
@@ -1147,10 +1161,8 @@ msgstr "Front-End-Anzeige"
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Get Share Link"
 msgstr "Link zum Teilen erhalten"
@@ -1161,6 +1173,15 @@ msgstr "Link zum Teilen erhalten"
 #, python-format
 msgid "Get Your Link"
 msgstr "So erhalten Sie Ihren Link"
+
+#. module: appointment
+#: model_terms:appointment.type,message_intro:appointment.appointment_type_1
+msgid ""
+"Get a <strong>customized demo</strong> and an <strong>analysis of your "
+"needs</strong>."
+msgstr ""
+"Sichern Sie sich eine <strong>persönliche Demo</strong> und eine "
+"<strong>Bedarfsanalyse</strong>."
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_onboarding_link
@@ -1340,7 +1361,7 @@ msgstr "Zuletzt aktualisiert am"
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Link Copied in your clipboard !"
 msgstr "Link in die Zwischenablage kopiert!"
@@ -1411,11 +1432,6 @@ msgstr "Ich"
 #, python-format
 msgid "Meet With Me"
 msgstr "Meeting mit mir"
-
-#. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_form
-msgid "Meeting Details"
-msgstr "Meeting-Details"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
@@ -1795,7 +1811,7 @@ msgstr "Nach Verantwortlichem durchsuchen"
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Select Dates"
 msgstr "Daten auswählen"
@@ -1814,6 +1830,16 @@ msgstr "Anzahl der ausgewählten Termine"
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_search
 msgid "Selection Questions"
 msgstr "Auswahl Fragen"
+
+#. module: appointment
+#: model:mail.template,description:appointment.appointment_canceled_mail_template
+msgid "Sent to all attendees when an appointment is cancelled"
+msgstr ""
+
+#. module: appointment
+#: model:mail.template,description:appointment.appointment_booked_mail_template
+msgid "Sent to people who book an appointment online"
+msgstr ""
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer__sequence
@@ -1836,9 +1862,9 @@ msgstr "Teilen"
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Share Availabilities"
 msgstr "Verfügbarkeiten teilen"
@@ -1958,6 +1984,16 @@ msgstr "Eingereichte Antworten"
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__7
 msgid "Sunday"
 msgstr "Sonntag"
+
+#. module: appointment
+#: model:appointment.question,name:appointment.appointment_type_2_question_1
+msgid "Symptoms"
+msgstr "Symptome"
+
+#. module: appointment
+#: model:appointment.type,name:appointment.appointment_type_1
+msgid "Technical Demo"
+msgstr ""
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer_input__value_text_box
@@ -2163,6 +2199,15 @@ msgid "Users"
 msgstr "Benutzer"
 
 #. module: appointment
+#: model_terms:appointment.type,message_confirmation:appointment.appointment_type_1
+msgid ""
+"We thank you for your interest in our products!<br>\n"
+"               Please make sure to arrive <strong>10 minutes</strong> before your appointment."
+msgstr ""
+"Vielen Dank für Ihr Interesse an unseren Produkten!<br>\n"
+"               Bitte seien Sie <strong>10 Minuten</strong> vor Ihrem Termin bei uns."
+
+#. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__category__website
 msgid "Website"
 msgstr "Website"
@@ -2204,11 +2249,6 @@ msgstr "Mit Outlook oder Google"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
-msgid "You will meet with"
-msgstr "Sie haben ein Meeting mit"
-
-#. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Your Email*"
 msgstr "Ihre E-Mail*"
 
@@ -2231,15 +2271,6 @@ msgstr "Ihr Termin ist in weniger als"
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "and not after"
 msgstr "und nicht nach"
-
-#. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_form
-msgid ""
-"appointment,\n"
-"                                    on"
-msgstr ""
-"Termin,\n"
-"                                    am"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
@@ -2282,11 +2313,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "e.g. \"What are your symptoms ?\""
 msgstr "z.B. \"Was sind Ihre Symptome?\""
-
-#. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_form
-msgid "for a"
-msgstr "für ein"
 
 #. module: appointment
 #. openerp-web

@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"POT-Creation-Date: 2022-10-04 09:43+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Malaz Abuidris <msea@odoo.com>, 2022\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
@@ -35,6 +35,11 @@ msgstr "الحساب التحليلي"
 #: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_planning_analysis_report__billable_allocated_hours
 msgid "Billable Hours Allocated"
 msgstr ""
+
+#. module: project_timesheet_forecast_sale
+#: model:planning.role,name:project_timesheet_forecast_sale.planning_role_consultant
+msgid "Consultant"
+msgstr "استشاري "
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model.fields,field_description:project_timesheet_forecast_sale.field_project_project__display_planning_timesheet_analysis
@@ -80,6 +85,16 @@ msgstr "بند أمر المبيعات"
 #: model:ir.model.fields,help:project_timesheet_forecast_sale.field_project_project__display_planning_timesheet_analysis
 msgid "Should we display the planning and timesheet analysis button?"
 msgstr "هل يجب عرض زر التخطيط وتحليل الجدول الزمني؟ "
+
+#. module: project_timesheet_forecast_sale
+#: model:planning.role,name:project_timesheet_forecast_sale.planning_role_junior_architect
+msgid "Software Junior Architect"
+msgstr "مهندس برمجيات مبتدئ "
+
+#. module: project_timesheet_forecast_sale
+#: model:planning.role,name:project_timesheet_forecast_sale.planning_role_senior_architect
+msgid "Software Senior Architect"
+msgstr "مهندس برمجيات أول "
 
 #. module: project_timesheet_forecast_sale
 #: model:ir.model.fields,help:project_timesheet_forecast_sale.field_planning_analysis_report__billable_allocated_hours

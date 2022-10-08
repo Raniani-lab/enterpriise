@@ -7,9 +7,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:50+0000\n"
+"POT-Creation-Date: 2022-10-04 09:43+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Japanese (https://www.transifex.com/odoo/teams/41243/ja/)\n"
@@ -30,6 +30,11 @@ msgid "<i class=\"fa fa-ban me-2\"/>Unpublished"
 msgstr ""
 
 #. module: website_appointment
+#: model_terms:ir.ui.view,arch_db:website_appointment.appointment_pages_kanban_view
+msgid "<i class=\"fa fa-globe me-2\" title=\"Website URL\"/>"
+msgstr ""
+
+#. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_form
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_info
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_select_operator
@@ -39,7 +44,8 @@ msgstr ""
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.website_calendar_index_topbar
 msgid ""
-"<span class=\"navbar-brand h4 my-0 me-auto\">Choose Your Appointment</span>"
+"<span class=\"navbar-brand h4 my-0 me-auto my-auto\">Choose Your "
+"Appointment</span>"
 msgstr ""
 
 #. module: website_appointment

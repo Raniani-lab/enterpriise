@@ -3,17 +3,18 @@
 # 	* account_accountant
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Lucia Pacheco <lpo@odoo.com>, 2022
 # Braulio D. López Vázquez <bdl@odoo.com>, 2022
+# Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2022
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Braulio D. López Vázquez <bdl@odoo.com>, 2022\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Spanish (Mexico) (https://www.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -47,6 +48,11 @@ msgid "-> Reconcile"
 msgstr "-> Conciliar"
 
 #. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
+msgid "/&gt;"
+msgstr "/&gt;"
+
+#. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_form_inherit
 msgid "1 Bank Transaction"
 msgstr "1 Transacción bancaria"
@@ -77,6 +83,11 @@ msgid ""
 msgstr ""
 "<br>Vea cómo gestionar las facturas de sus clientes en el menú "
 "<b>Clientes/Facturas</b>"
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
+msgid "<i class=\"fa fa-check\"/> Matched"
+msgstr ""
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
@@ -120,28 +131,6 @@ msgstr "<span class=\"ml4 mr4\">-</span>"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "<span class=\"ml4 mr4\">in</span>"
 msgstr "<span class=\"ml4 mr4\">en</span>"
-
-#. module: account_accountant
-#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
-msgid ""
-"<span class=\"o_badge_text\">\n"
-"                                                        <span class=\"o_tag_badge_text\" style=\"color: white\">Matched</span>\n"
-"                                                    </span>"
-msgstr ""
-"<span class=\"o_badge_text\">\n"
-"                                                        <span class=\"o_tag_badge_text\" style=\"color: white\">Emparejado</span>\n"
-"                                                    </span>"
-
-#. module: account_accountant
-#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
-msgid ""
-"<span class=\"o_badge_text\">\n"
-"                                                        <span class=\"o_tag_badge_text\">To check</span>\n"
-"                                                    </span>"
-msgstr ""
-"<span class=\"o_badge_text\">\n"
-"                                                        <span class=\"o_tag_badge_text\">Por revisar</span>\n"
-"                                                    </span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -294,13 +283,17 @@ msgid "Amount"
 msgstr "Importe"
 
 #. module: account_accountant
-#. openerp-web
-#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_form_lines_widget.js:0
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__amount_currency
-#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
-#, python-format
 msgid "Amount Currency"
 msgstr "Divisa del importe"
+
+#. module: account_accountant
+#. openerp-web
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_form_lines_widget.js:0
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
+#, python-format
+msgid "Amount in Currency"
+msgstr "Importe en divisa"
 
 #. module: account_accountant
 #. openerp-web
@@ -509,6 +502,7 @@ msgstr "Crear un nuevo grupo de cuentas"
 
 #. module: account_accountant
 #. openerp-web
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Create model"
@@ -592,6 +586,11 @@ msgstr "Depósitos"
 #: model:ir.model,name:account_accountant.model_digest_digest
 msgid "Digest"
 msgstr "Resumen"
+
+#. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_form_bank_rec_widget
+msgid "Discard"
+msgstr "Descartar"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -727,6 +726,11 @@ msgstr "Balance del formulario"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_currency_id
 msgid "Form Currency"
 msgstr "Divisa del formulario"
+
+#. module: account_accountant
+#: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_date
+msgid "Form Date"
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_extra_text
@@ -943,6 +947,7 @@ msgstr "Apuntes"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: model:ir.model,name:account_accountant.model_account_journal
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 #, python-format
 msgid "Journal"
 msgstr "Diario"
@@ -1169,6 +1174,13 @@ msgid "Modify models"
 msgstr "Modificar modelos"
 
 #. module: account_accountant
+#. openerp-web
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
+#, python-format
+msgid "More"
+msgstr "Más"
+
+#. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_move_line__move_attachment_ids
 msgid "Move Attachment"
 msgstr "Mover archivo adjunto"
@@ -1259,8 +1271,8 @@ msgstr "Importe abierto"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
-msgid "Open Amount (in Currency)"
-msgstr "Importe abierto (en divisa)"
+msgid "Open Amount in Currency"
+msgstr ""
 
 #. module: account_accountant
 #. openerp-web
@@ -1292,7 +1304,6 @@ msgstr "Pagado"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__partner_id
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__partner_id
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
-#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 #, python-format
 msgid "Partner"
 msgstr "Partner"
@@ -1455,12 +1466,6 @@ msgid "Reconciliation"
 msgstr "Conciliación"
 
 #. module: account_accountant
-#: code:addons/account_accountant/models/account_bank_statement.py:0
-#, python-format
-msgid "Reconciliation of %s"
-msgstr "Conciliación de %s"
-
-#. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Record cost of goods sold in your journal entries"
 msgstr "Registrar el costo de los bienes vendidos en sus asientos de diario"
@@ -1486,6 +1491,7 @@ msgstr "Residual"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_form_bank_rec_widget
 msgid "Save"
 msgstr "Guardar"
 
@@ -1761,6 +1767,11 @@ msgid "To Check"
 msgstr "Por revisar"
 
 #. module: account_accountant
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
+msgid "To check"
+msgstr ""
+
+#. module: account_accountant
 #. openerp-web
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
@@ -1781,11 +1792,6 @@ msgstr "Transacción"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__transaction_currency_id
 msgid "Transaction Currency"
 msgstr "Divisa de la transacción"
-
-#. module: account_accountant
-#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
-msgid "Transaction Date"
-msgstr "Fecha de la transacción"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/account_move.py:0
@@ -1828,6 +1834,13 @@ msgstr "Verificar"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
 msgid "View"
 msgstr "Ver"
+
+#. module: account_accountant
+#. openerp-web
+#: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
+#, python-format
+msgid "View models"
+msgstr ""
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__wizard_id

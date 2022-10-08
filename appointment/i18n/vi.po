@@ -6,14 +6,15 @@
 # Duy BQ <duybq86@gmail.com>, 2022
 # Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Vo Thanh Thuy, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Vo Thanh Thuy, 2022\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -459,7 +460,7 @@ msgstr "Trả lời"
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__category__anytime
 #, python-format
 msgid "Any Time"
@@ -491,7 +492,6 @@ msgstr ""
 #: model:mail.message.subtype,description:appointment.mt_calendar_event_booked
 #: model:mail.message.subtype,name:appointment.mt_appointment_type_booked
 #: model:mail.message.subtype,name:appointment.mt_calendar_event_booked
-#: model:mail.template,name:appointment.appointment_booked_mail_template
 msgid "Appointment Booked"
 msgstr "Cuộc hẹn đã đặt"
 
@@ -504,7 +504,6 @@ msgstr "Cuộc hẹn đã đặt: {{ object.appointment_type_id.name }}"
 #: model:mail.message.subtype,description:appointment.mt_calendar_event_canceled
 #: model:mail.message.subtype,name:appointment.mt_appointment_type_canceled
 #: model:mail.message.subtype,name:appointment.mt_calendar_event_canceled
-#: model:mail.template,name:appointment.appointment_canceled_mail_template
 msgid "Appointment Canceled"
 msgstr "Cuộc hẹn bị hủy"
 
@@ -598,6 +597,16 @@ msgstr "Loại cuộc hẹn"
 #: code:addons/appointment/models/calendar_event.py:0
 #, python-format
 msgid "Appointment canceled by: %(partners)s"
+msgstr ""
+
+#. module: appointment
+#: model:mail.template,name:appointment.appointment_booked_mail_template
+msgid "Appointment: Appointment Booked"
+msgstr ""
+
+#. module: appointment
+#: model:mail.template,name:appointment.appointment_canceled_mail_template
+msgid "Appointment: Appointment Canceled"
 msgstr ""
 
 #. module: appointment
@@ -728,7 +737,7 @@ msgstr "Chọn bởi khách hàng"
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Click in your calendar to pick meeting time proposals."
 msgstr "Bấm vào lịch để chọn đề xuất thời gian cuộc gặp. "
@@ -785,7 +794,7 @@ msgstr ""
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.js:0
 #, python-format
 msgid "Copied !"
 msgstr "Đã sao chép!"
@@ -872,6 +881,11 @@ msgstr ""
 "        xác định khung giờ không định kỳ (VD: 10 tháng 4 năm 2021 từ 10 đến 11 giờ sáng) trong lịch."
 
 #. module: appointment
+#: model:appointment.type,name:appointment.appointment_type_2
+msgid "Dental Care"
+msgstr ""
+
+#. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Details:"
 msgstr ""
@@ -887,8 +901,7 @@ msgstr ""
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form_insert_link
 #, python-format
 msgid "Discard"
@@ -980,10 +993,8 @@ msgstr ""
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Get Share Link"
 msgstr "Lấy link chia sẻ"
@@ -994,6 +1005,15 @@ msgstr "Lấy link chia sẻ"
 #, python-format
 msgid "Get Your Link"
 msgstr ""
+
+#. module: appointment
+#: model_terms:appointment.type,message_intro:appointment.appointment_type_1
+msgid ""
+"Get a <strong>customized demo</strong> and an <strong>analysis of your "
+"needs</strong>."
+msgstr ""
+"Nhận một <strong>bản demo tùy chỉnh</strong> và một <strong>bản phân tích "
+"nhu cầu</strong> của bạn. "
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_onboarding_link
@@ -1167,7 +1187,7 @@ msgstr "Cập nhật lần cuối vào"
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Link Copied in your clipboard !"
 msgstr "Link đã sao chép vào bộ nhớ đệm !"
@@ -1238,11 +1258,6 @@ msgstr "Tôi"
 #, python-format
 msgid "Meet With Me"
 msgstr ""
-
-#. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_form
-msgid "Meeting Details"
-msgstr "Chi tiết Cuộc gặp"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
@@ -1616,7 +1631,7 @@ msgstr "Tìm kiếm theo phụ trách"
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Select Dates"
 msgstr ""
@@ -1634,6 +1649,16 @@ msgstr "Số cuộc hẹn được chọn"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_search
 msgid "Selection Questions"
+msgstr ""
+
+#. module: appointment
+#: model:mail.template,description:appointment.appointment_canceled_mail_template
+msgid "Sent to all attendees when an appointment is cancelled"
+msgstr ""
+
+#. module: appointment
+#: model:mail.template,description:appointment.appointment_booked_mail_template
+msgid "Sent to people who book an appointment online"
 msgstr ""
 
 #. module: appointment
@@ -1657,9 +1682,9 @@ msgstr "Chia sẻ"
 
 #. module: appointment
 #. openerp-web
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
-#: code:addons/appointment/static/src/xml/appointment_scheduling.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
+#: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Share Availabilities"
 msgstr "Chia sẻ lịch trống"
@@ -1775,6 +1800,16 @@ msgstr ""
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__7
 msgid "Sunday"
 msgstr "Chủ nhật"
+
+#. module: appointment
+#: model:appointment.question,name:appointment.appointment_type_2_question_1
+msgid "Symptoms"
+msgstr "Triệu chứng"
+
+#. module: appointment
+#: model:appointment.type,name:appointment.appointment_type_1
+msgid "Technical Demo"
+msgstr ""
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer_input__value_text_box
@@ -1959,6 +1994,15 @@ msgid "Users"
 msgstr "Người dùng"
 
 #. module: appointment
+#: model_terms:appointment.type,message_confirmation:appointment.appointment_type_1
+msgid ""
+"We thank you for your interest in our products!<br>\n"
+"               Please make sure to arrive <strong>10 minutes</strong> before your appointment."
+msgstr ""
+"Chúng tôi rất cảm ơn bạn vì đã có hứng thú với các sản phẩm của chúng tôi!<br>\n"
+"               Bạn vui lòng đến trước <strong>10 phút</strong> trước khi cuộc hẹn bắt đầu. "
+
+#. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__category__website
 msgid "Website"
 msgstr "Trang web"
@@ -2000,11 +2044,6 @@ msgstr ""
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
-msgid "You will meet with"
-msgstr ""
-
-#. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Your Email*"
 msgstr ""
 
@@ -2026,13 +2065,6 @@ msgstr "Cuộc hẹn của bạn ít hơn"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "and not after"
-msgstr ""
-
-#. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_form
-msgid ""
-"appointment,\n"
-"                                    on"
 msgstr ""
 
 #. module: appointment
@@ -2073,11 +2105,6 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "e.g. \"What are your symptoms ?\""
-msgstr ""
-
-#. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_form
-msgid "for a"
 msgstr ""
 
 #. module: appointment

@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:23+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2022\n"
 "Language-Team: Spanish (Mexico) (https://www.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -36,13 +37,13 @@ msgstr "Se importaron e ignoraron %d transacciones."
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
 #, python-format
 msgid "1 transaction had already been imported and was ignored."
-msgstr "Se importó 1 transacción y se ignoró."
+msgstr "Ya se había importado 1 transacción, por lo que se ignoró."
 
 #. module: account_bank_statement_import
 #: model:ir.model.constraint,message:account_bank_statement_import.constraint_account_bank_statement_line_unique_import_id
 msgid "A bank account transactions can be imported only once !"
 msgstr ""
-"Las transacciones de una cuenta bancaria puede importarse solo una vez."
+"Las transacciones de una cuenta bancaria solo se pueden importar una vez."
 
 #. module: account_bank_statement_import
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
@@ -53,7 +54,7 @@ msgstr "Elementos que ya se importaron"
 #. module: account_bank_statement_import
 #: model:ir.model,name:account_bank_statement_import.model_account_bank_statement_line
 msgid "Bank Statement Line"
-msgstr "Línea de estado de cuenta bancario"
+msgstr "Línea del estado de cuenta bancario"
 
 #. module: account_bank_statement_import
 #: model:ir.model,name:account_bank_statement_import.model_account_setup_bank_manual_config
@@ -84,7 +85,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
 #, python-format
 msgid "Go to Apps"
-msgstr ""
+msgstr "Ir a aplicaciones"
 
 #. module: account_bank_statement_import
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
@@ -145,7 +146,7 @@ msgid ""
 "The currency of the bank statement (%s) is not the same as the currency of "
 "the journal (%s)."
 msgstr ""
-"La moneda de del estado de cuenta  (%s) no es la misma moneda que la de los "
+"La moneda del estado de cuenta  (%s) no es la misma moneda que la de los "
 "diarios (%s)."
 
 #. module: account_bank_statement_import

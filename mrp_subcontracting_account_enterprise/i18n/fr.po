@@ -43,22 +43,22 @@ msgstr "<span>Coût Unitaire</span>"
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
 msgid "<strong>Total Cost of Subcontracting</strong>"
-msgstr ""
+msgstr "<strong>Coût total de la sous-traitance</strong>"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_report_pivot_view_inherit_subcontracting
 msgid "Average Subcontracting Cost / Unit"
-msgstr ""
+msgstr "Coût moyen de sous-traitance / Unité"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
 msgid "Cost of Subcontracting"
-msgstr ""
+msgstr "Coût de la sous-traitance"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
 msgid "Cost of Subcontracting per unit (in"
-msgstr ""
+msgstr "Coût de sous-traitance unitaire (en"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model,name:mrp_subcontracting_account_enterprise.model_report_mrp_account_enterprise_mrp_cost_structure
@@ -76,6 +76,8 @@ msgid ""
 "Subcontracting cost per unit produced (in product UoM) of manufacturing "
 "order"
 msgstr ""
+"Coût de sous-traitance par unité fabriquée (en UdM produit) de l'ordre de "
+"fabrication"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,field_description:mrp_subcontracting_account_enterprise.field_mrp_report__total_cost
@@ -85,12 +87,12 @@ msgstr "Coût total"
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,field_description:mrp_subcontracting_account_enterprise.field_mrp_report__subcontracting_cost
 msgid "Total Subcontracting Cost"
-msgstr ""
+msgstr "Coût total de sous-traitance"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,field_description:mrp_subcontracting_account_enterprise.field_mrp_report__unit_subcontracting_cost
 msgid "Total Subcontracting Cost / Unit"
-msgstr ""
+msgstr "Coût total de sous-traitance / Unité"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,help:mrp_subcontracting_account_enterprise.field_mrp_report__total_cost
@@ -98,8 +100,10 @@ msgid ""
 "Total cost of manufacturing order (component + operation costs + "
 "subcontracting cost)"
 msgstr ""
+"Coût total de l'ordre de fabrication (composant + coûts d'exploitation + "
+"coût de sous-traitance)"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,help:mrp_subcontracting_account_enterprise.field_mrp_report__subcontracting_cost
 msgid "Total cost of subcontracting for manufacturing order"
-msgstr ""
+msgstr "Coût total de sous-traitance pour l'ordre de fabrication"

@@ -7,9 +7,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:48+0000\n"
+"POT-Creation-Date: 2022-10-04 09:42+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
@@ -20,9 +20,19 @@ msgstr ""
 "Plural-Forms: nplurals=1; plural=0;\n"
 
 #. module: helpdesk_sale_timesheet
+#: model:helpdesk.sla,name:helpdesk_sale_timesheet.helpdesk_sla_4
+msgid "4 hours to finish"
+msgstr ""
+
+#. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_account_analytic_line
 msgid "Analytic Account"
 msgstr "Tài khoản phân tích"
+
+#. module: helpdesk_sale_timesheet
+#: model:helpdesk.ticket,legend_blocked:helpdesk_sale_timesheet.helpdesk_ticket_24
+msgid "Blocked"
+msgstr "Đã bị khóa"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_helpdesk_ticket_convert_wizard
@@ -105,6 +115,11 @@ msgid "Hours:"
 msgstr "Giờ:"
 
 #. module: helpdesk_sale_timesheet
+#: model:helpdesk.ticket,legend_normal:helpdesk_sale_timesheet.helpdesk_ticket_24
+msgid "In Progress"
+msgstr "Đang thực hiện"
+
+#. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_product_template
 msgid "Product"
 msgstr "Sản phẩm"
@@ -124,6 +139,11 @@ msgstr "Dự án mà vé (và bảng chấm công) sẽ được liên kết the
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__project_sale_order_id
 msgid "Project's sale order"
 msgstr "Đơn bán hàng của dự án"
+
+#. module: helpdesk_sale_timesheet
+#: model:helpdesk.ticket,legend_done:helpdesk_sale_timesheet.helpdesk_ticket_24
+msgid "Ready"
+msgstr "Sẵn sàng"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__sale_order_id

@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# laje_odoo, 2022
 # Cécile Collart <cco@odoo.com>, 2022
 # 
 msgid ""
@@ -25,7 +26,8 @@ msgstr ""
 msgid ""
 "<span>There are multiple disallowed expenses rates in this period</span>"
 msgstr ""
-"<span>Il y'a de multiples Dépenses non autorisées dans cette période</span>"
+"<span>Il y'a de multiples Dépenses non autorisées admises dans cette "
+"période</span>"
 
 #. module: account_disallowed_expenses
 #: model:ir.model,name:account_disallowed_expenses.model_account_account
@@ -41,7 +43,7 @@ msgstr "Active"
 #. module: account_disallowed_expenses
 #: model_terms:ir.actions.act_window,help:account_disallowed_expenses.action_account_disallowed_expenses_category_list
 msgid "Add a Disallowed Expenses Category"
-msgstr "Ajouter une catégorie de dépenses non autorisée"
+msgstr "Ajouter une catégorie de dépenses non admise"
 
 #. module: account_disallowed_expenses
 #: model:ir.model.fields,field_description:account_disallowed_expenses.field_account_disallowed_expenses_rate__category_id
@@ -96,42 +98,42 @@ msgstr "Montant non autorisé"
 #: model:ir.ui.menu,name:account_disallowed_expenses.menu_action_account_report_de
 #: model_terms:ir.ui.view,arch_db:account_disallowed_expenses.view_account_form
 msgid "Disallowed Expenses"
-msgstr "Dépense non autorisée"
+msgstr "Dépense non admise"
 
 #. module: account_disallowed_expenses
 #: model:ir.actions.act_window,name:account_disallowed_expenses.action_account_disallowed_expenses_category_list
 #: model:ir.ui.menu,name:account_disallowed_expenses.menu_action_account_disallowed_expenses_category_list
 msgid "Disallowed Expenses Categories"
-msgstr "Catégories de dépenses non autorisées"
+msgstr "Catégories de dépenses non admises"
 
 #. module: account_disallowed_expenses
 #: model:ir.model,name:account_disallowed_expenses.model_account_disallowed_expenses_category
 #: model:ir.model.fields,field_description:account_disallowed_expenses.field_account_account__disallowed_expenses_category_id
 msgid "Disallowed Expenses Category"
-msgstr "Catégorie de dépenses non autorisées"
+msgstr "Catégorie de dépenses non admises"
 
 #. module: account_disallowed_expenses
 #: model:ir.model,name:account_disallowed_expenses.model_account_disallowed_expenses_report_handler
 msgid "Disallowed Expenses Custom Handler"
-msgstr ""
+msgstr "Traitement personnalisé des dépenses non admises"
 
 #. module: account_disallowed_expenses
 #: model:ir.model,name:account_disallowed_expenses.model_account_disallowed_expenses_rate
 msgid "Disallowed Expenses Rate"
-msgstr "Taux de dépenses non autorisé"
+msgstr "Taux de dépenses non admise"
 
 #. module: account_disallowed_expenses
 #: model:account.report,name:account_disallowed_expenses.disallowed_expenses_report
 #: model:ir.actions.client,name:account_disallowed_expenses.action_account_report_de
 msgid "Disallowed Expenses Report"
-msgstr "Rapport de dépenses refusées"
+msgstr "Rapport de dépenses non admise"
 
 #. module: account_disallowed_expenses
 #: model:ir.model.constraint,message:account_disallowed_expenses.constraint_account_disallowed_expenses_category_unique_code_in_country
 msgid "Disallowed expenses category code should be unique in each company."
 msgstr ""
-"Le code catégorie de dépenses non autorisées devrait être unique dans chaque"
-" société"
+"Le code catégorie de dépenses non admises devrait être unique dans chaque "
+"société"
 
 #. module: account_disallowed_expenses
 #: model:ir.model.fields,field_description:account_disallowed_expenses.field_account_disallowed_expenses_category__display_name

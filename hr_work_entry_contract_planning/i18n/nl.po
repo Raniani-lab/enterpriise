@@ -75,4 +75,4 @@ msgstr "Resources"
 #. module: hr_work_entry_contract_planning
 #: model:ir.model.fields,field_description:hr_work_entry_contract_planning.field_hr_contract__work_entry_source
 msgid "Work Entry Source"
-msgstr ""
+msgstr "Bron werkinvoer"

@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -1281,6 +1281,12 @@ msgid "Cancel"
 msgstr "Annuleren"
 
 #. module: sale_subscription
+#: model:product.product,name:sale_subscription.product_car_leasing
+#: model:product.template,name:sale_subscription.product_car_leasing_product_template
+msgid "Car Leasing (SUB)"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__stage_category
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__category
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_stage__category
@@ -1644,7 +1650,7 @@ msgid ""
 "        trigger date, like sending a reminder 15 minutes before a meeting."
 msgstr ""
 "Vertraging na de triggerdatum.\n"
-"        U kunt een negatief getal invoeren als u een vertraging nodig heeft voordat de\n"
+"        Je kunt een negatief getal invoeren als u een vertraging nodig heeft voordat de\n"
 "        triggerdatum, zoals het sturen van een herinnering 15 minuten voor een vergadering."
 
 #. module: sale_subscription
@@ -2436,6 +2442,14 @@ msgstr ""
 "te sluiten of te vernieuwen."
 
 #. module: sale_subscription
+#: model:product.product,name:sale_subscription.product_office_cleaning
+#: model:product.template,name:sale_subscription.product_office_cleaning_product_template
+#: model:sale.order.template.line,name:sale_subscription.montly_template_line
+#: model:sale.order.template.line,name:sale_subscription.yearly_template_line
+msgid "Office Cleaning Service (SUB)"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__on_change_field_ids
 msgid "On Change Fields Trigger"
 msgstr "Bij wijziging veld trigger"
@@ -3036,6 +3050,29 @@ msgid "Send as (SMS)"
 msgstr "Verzenden als (SMS)"
 
 #. module: sale_subscription
+#: model:mail.template,description:sale_subscription.email_payment_success
+msgid ""
+"Sent automatically with subscription invoice when payment is successful"
+msgstr ""
+
+#. module: sale_subscription
+#: model:mail.template,description:sale_subscription.mail_template_subscription_invoice
+msgid "Sent manually to customers with the invoice in attachment"
+msgstr ""
+
+#. module: sale_subscription
+#: model:mail.template,description:sale_subscription.email_payment_close
+msgid ""
+"Sent to customer to indicate that subscription is automatically terminated"
+msgstr ""
+
+#. module: sale_subscription
+#: model:mail.template,description:sale_subscription.email_payment_reminder
+msgid ""
+"Sent to customer when payment failed but subscription is not yet cancelled"
+msgstr ""
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__sequence
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_close_reason__sequence
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_stage__sequence
@@ -3056,6 +3093,13 @@ msgstr "Stel betaalmethode in"
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__action__set_stage
 msgid "Set a stage on the subscription"
 msgstr "Stel een fase in op het abonnement"
+
+#. module: sale_subscription
+#: model:mail.template,description:sale_subscription.mail_template_subscription_rating
+msgid ""
+"Set on subscription's stage (e.g. Closed, Upsell) to ask a rating to "
+"customers"
+msgstr ""
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__binding_model_id
@@ -3213,11 +3257,6 @@ msgid "Subscription Count"
 msgstr "Aantal abonnementen"
 
 #. module: sale_subscription
-#: model:mail.template,name:sale_subscription.mail_template_subscription_invoice
-msgid "Subscription Invoice: Send by Email"
-msgstr "Abonnementsfactuur: per e-mail verzenden"
-
-#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__order_log_ids
 msgid "Subscription Logs"
 msgstr "Abonnementenlogboek"
@@ -3324,8 +3363,8 @@ msgstr "Abonnement: betalingsherinnering"
 
 #. module: sale_subscription
 #: model:mail.template,name:sale_subscription.email_payment_success
-msgid "Subscription: Payment Success"
-msgstr "Abonnement: betaling succesvol"
+msgid "Subscription: Payment Success And Invoice"
+msgstr ""
 
 #. module: sale_subscription
 #: model:sms.template,name:sale_subscription.sms_template_data_payment_failure
@@ -3341,6 +3380,11 @@ msgstr "Abonnement: betalingsherinnering"
 #: model:mail.template,name:sale_subscription.mail_template_subscription_rating
 msgid "Subscription: Rating Request"
 msgstr "Abonnement: beoordelingsverzoek"
+
+#. module: sale_subscription
+#: model:mail.template,name:sale_subscription.mail_template_subscription_invoice
+msgid "Subscription: Subscription Invoice"
+msgstr ""
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order_alert.py:0
@@ -3407,6 +3451,12 @@ msgid "Summary"
 msgstr "Samenvatting"
 
 #. module: sale_subscription
+#: model:base.automation,name:sale_subscription.subscription_alert_percent_revenue_base_automation
+#: model:sale.order.alert,name:sale_subscription.subscription_alert_percent_revenue
+msgid "Take action on less satisfied clients"
+msgstr "Onderneem actie tegen minder tevreden klanten"
+
+#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__crud_model_id
 msgid "Target Model"
 msgstr "Doelmodel"
@@ -3431,6 +3481,13 @@ msgstr "Teamleider"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Template"
 msgstr "Sjabloon"
+
+#. module: sale_subscription
+#: model:mail.template,description:sale_subscription.mail_template_subscription_alert
+msgid ""
+"Template to be used on customized alerts for subscriptions requiring "
+"attention"
+msgstr ""
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_template_action
@@ -3718,6 +3775,14 @@ msgid "Unit of Measure"
 msgstr "Maateenheid"
 
 #. module: sale_subscription
+#: model:product.product,uom_name:sale_subscription.product_car_leasing
+#: model:product.product,uom_name:sale_subscription.product_office_cleaning
+#: model:product.template,uom_name:sale_subscription.product_car_leasing_product_template
+#: model:product.template,uom_name:sale_subscription.product_office_cleaning_product_template
+msgid "Units"
+msgstr "Stuks"
+
+#. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
 msgid "Untaxed Total:"
 msgstr "Totaal onbelast:"
@@ -3897,13 +3962,21 @@ msgid "Years"
 msgstr "Jaar"
 
 #. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid ""
+"You can not upsell a subscription that has not been invoiced yet. Please, "
+"update directly the %s contract or invoice it first."
+msgstr ""
+
+#. module: sale_subscription
 #: code:addons/sale_subscription/models/res_partner.py:0
 #, python-format
 msgid ""
 "You can't archive the partner as it is used in the following recurring "
 "orders: %s"
 msgstr ""
-"U kunt de relatie niet archiveren omdat deze wordt gebruikt in de volgende "
+"Je kunt de relatie niet archiveren omdat deze wordt gebruikt in de volgende "
 "herhalende orders: %s"
 
 #. module: sale_subscription
@@ -3912,15 +3985,15 @@ msgstr ""
 msgid ""
 "You cannot save a sale order with a recurrence and no recurring product."
 msgstr ""
-"U kunt een verkooporder met een terugkerend en geen terugkerend product niet"
-" opslaan."
+"Je kunt een verkooporder met een terugkerend en geen terugkerend product "
+"niet opslaan."
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "You cannot save a sale order with recurring product and no recurrence."
 msgstr ""
-"U kunt een verkooporder met herhalend product en zonder herhaling niet "
+"Je kunt een verkooporder met herhalend product en zonder herhaling niet "
 "opslaan."
 
 #. module: sale_subscription
@@ -3930,7 +4003,7 @@ msgid ""
 "You cannot set to draft a canceled quotation linked to invoiced "
 "subscriptions. Please create a new quotation."
 msgstr ""
-"U kunt niet instellen om een opgezegde offerte op te stellen die gekoppeld "
+"Je kunt niet instellen om een opgezegde offerte op te stellen die gekoppeld "
 "is aan gefactureerde abonnementen. Maak een nieuwe offerte aan."
 
 #. module: sale_subscription
@@ -3939,7 +4012,7 @@ msgid ""
 "You cannot set to draft a confirmed subscription. Please create a new "
 "quotation"
 msgstr ""
-"U kunt niet instellen om een bevestigd abonnement op te stellen. Maak een "
+"Je kunt niet instellen om een bevestigd abonnement op te stellen. Maak een "
 "nieuwe offerte aan"
 
 #. module: sale_subscription

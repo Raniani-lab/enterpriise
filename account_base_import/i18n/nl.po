@@ -58,7 +58,7 @@ msgstr "Boekhoudkundige import"
 #: model:ir.actions.client,name:account_base_import.action_open_import_guide
 #, python-format
 msgid "Accounting Import Guide"
-msgstr "Gids voor het importeren van boekhouding"
+msgstr "Uitleg voor het importeren van boekhouding"
 
 #. module: account_base_import
 #. openerp-web
@@ -70,7 +70,7 @@ msgstr "Importopties voor boekhouding"
 #. module: account_base_import
 #: model:ir.model,name:account_base_import.model_base_import_import
 msgid "Base Import"
-msgstr "Basis import functionaliteit"
+msgstr "Basis importfunctionaliteit"
 
 #. module: account_base_import
 #. openerp-web
@@ -83,7 +83,7 @@ msgstr "Grootboekschema"
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 msgid "Choose how you want to setup your CoA"
-msgstr "Kies hoe je je CoA wilt instellen"
+msgstr "Kies hoe je je grootboekschema wilt instellen"
 
 #. module: account_base_import
 #. openerp-web
@@ -134,7 +134,7 @@ msgstr "Rekeningschema importeren"
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Import CoA"
-msgstr "CoA importeren"
+msgstr "Grootboekschema importeren"
 
 #. module: account_base_import
 #. openerp-web
@@ -150,12 +150,12 @@ msgstr "Contacten importeren"
 #: model:ir.actions.client,name:account_base_import.action_account_move_line_import
 #, python-format
 msgid "Import Journal Items"
-msgstr "Journaalposten importeren"
+msgstr "Boekingsregels importeren"
 
 #. module: account_base_import
 #: model:ir.actions.client,name:account_base_import.action_partner_import
 msgid "Import Partners"
-msgstr "Partners importeren"
+msgstr "Relaties importeren"
 
 #. module: account_base_import
 #. openerp-web
@@ -215,7 +215,7 @@ msgstr ""
 msgid "Optional, but useful to import open receivables & payables using a"
 msgstr ""
 "Optioneel, maar handig om openstaande vorderingen en schulden te importeren "
-"met a"
+"met een"
 
 #. module: account_base_import
 #. openerp-web
@@ -240,9 +240,9 @@ msgid ""
 " import. Only use the Journal Items import for unreconciled entries in your "
 "Payable and Receivable Accounts."
 msgstr ""
-"Tip: we raden u aan uw initiële saldi te importeren met behulp van de "
-"rekeningschema-import. Gebruik de import van journaalposten alleen voor "
-"niet-afgestemde boekingen in uw debiteuren- en debiteurenrekening."
+"Tip: we raden je aan de openingsbalans te importeren met behulp van de "
+"grootboekschema-import. Gebruik de import van de boekingsregels alleen voor "
+"niet-afgeletterde boekingen van de debiteuren- en debiteurenrekening."
 
 #. module: account_base_import
 #. openerp-web
@@ -258,7 +258,7 @@ msgstr ""
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Use templates to import CSV or Excel for your accounting setup."
-msgstr "Gebruik sjablonen om CSV of Excel te importeren voor uw boekhouding."
+msgstr "Gebruik sjablonen om CSV of Excel te importeren voor de boekhouding."
 
 #. module: account_base_import
 #. openerp-web
@@ -313,5 +313,5 @@ msgid ""
 "to import the FEC file. We will setup your charts of accounts and the "
 "history of journal entries."
 msgstr ""
-"om het FEC-bestand te importeren. We zullen uw rekeningschema's en de "
-"geschiedenis van journaalboekingen opzetten."
+"om het FEC-bestand te importeren. We zullen he grootboekschema en de "
+"geschiedenis van boekingen opzetten."

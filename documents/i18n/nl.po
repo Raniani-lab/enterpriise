@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-27 15:40+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -39,7 +39,7 @@ msgstr "%s Documenten"
 #: code:addons/documents/static/src/views/documents_model_mixin.js:0
 #, python-format
 msgid "%s Documents (%s locked)"
-msgstr "%s Documenten (%s gelocked)"
+msgstr "%s Documenten (%s geblokeerd)"
 
 #. module: documents
 #. openerp-web
@@ -146,7 +146,7 @@ msgstr "<b>Mb</b>"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid "<br/>Powered by"
-msgstr "Aangeboden door"
+msgstr "<br/>Aangeboden door"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -225,9 +225,7 @@ msgstr "<span style=\"color:white;\">&amp;nbsp;Documenten.</span>"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<span title=\"Requested Document\">Requested Document</span>"
-msgstr ""
-"<span title=\"Gevraagde document\">Gevraagde document<span title=\"Requested"
-" Document\">"
+msgstr "<span title=\"Gevraagde documente\">Gevraagde documenten</span>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
@@ -814,6 +812,16 @@ msgid "Bill"
 msgstr "Factuur"
 
 #. module: documents
+#: model:documents.folder,name:documents.documents_marketing_brand1_folder
+msgid "Brand 1"
+msgstr "Merk 1"
+
+#. module: documents
+#: model:documents.folder,name:documents.documents_marketing_brand2_folder
+msgid "Brand 2"
+msgstr "Merk 2"
+
+#. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_brochures
 msgid "Brochures"
 msgstr "Brochures"
@@ -1057,7 +1065,7 @@ msgstr "Verwijderen"
 #. module: documents
 #: model:ir.actions.act_window,name:documents.documents_folder_deletion_wizard_action
 msgid "Delete Confirmation"
-msgstr ""
+msgstr "Bevestiging verwijderen"
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_deprecate
@@ -1149,11 +1157,6 @@ msgid "Document Request: %s Uploaded by: %s"
 msgstr "Document aanvraag: %s Geüpload door: %s"
 
 #. module: documents
-#: model:mail.template,name:documents.mail_template_document_request
-msgid "Document Request: Send by email"
-msgstr "Documentaanvraag: per e-mail verzenden"
-
-#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__has_write_access
 msgid "Document User Upload Rights"
 msgstr ""
@@ -1167,6 +1170,11 @@ msgstr "Document flow labelactie"
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__type__ids
 msgid "Document list"
 msgstr "Documentlijst"
+
+#. module: documents
+#: model:mail.template,name:documents.mail_template_document_request
+msgid "Document: Document Request"
+msgstr ""
 
 #. module: documents
 #. openerp-web
@@ -1796,7 +1804,7 @@ msgstr "Naar inbox verplaatsen"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__folder_id
 msgid "Move to Workspace"
-msgstr "Verplaats naar werkruimte"
+msgstr "Naar werkruimte verplaatsen"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
@@ -2296,6 +2304,11 @@ msgid "Send to Legal"
 msgstr "Verstuur na de juridische afdeling"
 
 #. module: documents
+#: model:mail.template,description:documents.mail_template_document_request
+msgid "Sent to partner when requesting a document from them"
+msgstr ""
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
 #: model:ir.model.fields,field_description:documents.field_documents_folder__sequence
 #: model:ir.model.fields,field_description:documents.field_documents_tag__sequence
@@ -2560,7 +2573,7 @@ msgid ""
 "<jobs@example.odoo.com>"
 msgstr ""
 "De naam van de e-mail alias, bijvoorbeeld: 'vacature' als je alle e-mails "
-"van vacature@uwbedrijf.nl wilt afvangen."
+"van vacature@bedrijf.nl wilt afvangen."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_user_id

@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Jolien De Paepe, 2022
 # Cécile Collart <cco@odoo.com>, 2022
 # 
 msgid ""
@@ -29,14 +30,14 @@ msgstr "# de Comptes"
 #: code:addons/social/models/social_post.py:0
 #, python-format
 msgid "%s (max %s chars)"
-msgstr ""
+msgstr "%s (max %s caractères)"
 
 #. module: social
 #. openerp-web
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid ", you must first link a social media."
-msgstr ""
+msgstr ", vous devez d'abord lier un réseau social."
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_http_error_view
@@ -46,7 +47,7 @@ msgstr "<b>Une erreur est survenue lors de la liaison à votre compte </b>"
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
 msgid "<i class=\"fa fa-globe\" title=\"See the post\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-globe\" title=\"Voir le poste\"/>"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_kanban
@@ -61,6 +62,8 @@ msgid ""
 "<strong>Congrats! Come back in a few minutes to check your "
 "statistics.</strong>"
 msgstr ""
+"<strong>Félicitations ! Revenez dans quelques minutes pour vérifier vos "
+"statistiques.</strong>"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__message_needaction
@@ -132,7 +135,7 @@ msgstr "Ajouter une image"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "All Companies"
-msgstr ""
+msgstr "Toutes les sociétés"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_utm_campaign__social_post_ids
@@ -142,7 +145,7 @@ msgstr "Toutes les publications liées aux réseaux sociaux"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__account_allowed_ids
 msgid "Allowed Accounts"
-msgstr ""
+msgstr "Comptes autorisés"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_account_view_search
@@ -201,7 +204,7 @@ msgstr ""
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
 msgid "Before posting, links will be converted to be trackable."
-msgstr ""
+msgstr "Avant la publication, les liens seront convertis pour être traçables."
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_stream_post_view_search
@@ -211,7 +214,7 @@ msgstr "Par Flux"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__csrf_token
 msgid "CSRF Token"
-msgstr ""
+msgstr "Jeton CSRF"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__calendar_date
@@ -260,14 +263,14 @@ msgstr "Annuler"
 #: code:addons/social/static/src/js/tours/social.js:0
 #, python-format
 msgid "Choose which <b>account</b> you would like to link first."
-msgstr ""
+msgstr "Choisissez quel <b>compte</b> vous souhaitez lier en premier."
 
 #. module: social
 #. openerp-web
 #: code:addons/social/static/src/js/stream_post_kanban_renderer.js:0
 #, python-format
 msgid "Click to refresh."
-msgstr ""
+msgstr "Cliquer pour rafraichir. "
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
@@ -323,6 +326,8 @@ msgid ""
 "Contains the social media handle of the person that created this account. "
 "E.g: '@odoo.official' for the 'Odoo' Twitter account"
 msgstr ""
+"Contient le pseudonyme de réseau social de la personne qui a créé ce compte."
+" Ex : '@odoo.official' pour le compte Twitter 'Odoo'"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_live_post__message
@@ -330,6 +335,8 @@ msgid ""
 "Content of the social post message that is post-processed (links are "
 "shortened, UTMs, ...)"
 msgstr ""
+"Contenu de la publication social qui est post-traité (liens raccourcis, UTM,"
+" ...)"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__has_streams
@@ -349,7 +356,7 @@ msgstr "Créer une campagne"
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_post
 msgid "Create a Post"
-msgstr ""
+msgstr "Créer une publication"
 
 #. module: social
 #: code:addons/social/models/social_account.py:0
@@ -358,6 +365,8 @@ msgid ""
 "Create other accounts for %(media_names)s for this company or ask "
 "%(company_names)s to share their accounts"
 msgstr ""
+"Créez d'autres comptes pour %(media_names)s pour cette société ou demandez à"
+" %(company_names)s de partager vos comptes"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__create_uid
@@ -420,7 +429,7 @@ msgstr "Description"
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.res_config_settings_view_form
 msgid "Developer Accounts"
-msgstr ""
+msgstr "Comptes de développeur"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__display_name
@@ -454,6 +463,8 @@ msgid ""
 "Due to length restrictions, the following posts cannot be posted:\n"
 " %s"
 msgstr ""
+"En raison de restrictions de longueur, les messages suivants ne peuvent pas être publiés :\n"
+"%s"
 
 #. module: social
 #. openerp-web
@@ -473,6 +484,8 @@ msgid ""
 "Enable this option and load demo data to test the social module.<br/>\n"
 "                                        This must never be used on a production database!"
 msgstr ""
+"Activez cette option et chargez les données de démonstration pour tester le module social.<br/>\n"
+"Cela ne doit jamais être utilisé sur une base de données de production !"
 
 #. module: social
 #. openerp-web
@@ -559,7 +572,7 @@ msgstr "Audience totale du Compte (Likes, Follows, ...)"
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_http_error_view
 msgid "Go back to Odoo"
-msgstr ""
+msgstr "Revenir à Odoo"
 
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_stream
@@ -577,7 +590,7 @@ msgstr "Regrouper par"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__social_account_handle
 msgid "Handle / Short Name"
-msgstr ""
+msgstr "Pseudonyme / Nom court"
 
 #. module: social
 #. openerp-web
@@ -698,6 +711,7 @@ msgstr ""
 #, python-format
 msgid "It will appear in the Feed once it has posts to display."
 msgstr ""
+"Il apparaîtra dans le flux une fois qu'il aura des messages à afficher."
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account____last_update
@@ -743,21 +757,21 @@ msgstr "Dernière mise à jour le"
 #: code:addons/social/static/src/js/tours/social.js:0
 #, python-format
 msgid "Let's <b>connect</b> to Facebook, LinkedIn or Twitter."
-msgstr ""
+msgstr "<b>Connectez-vous</b> à Facebook, LinkedIn ou Twitter."
 
 #. module: social
 #. openerp-web
 #: code:addons/social/static/src/js/tours/social.js:0
 #, python-format
 msgid "Let's create your own <b>social media</b> dashboard."
-msgstr ""
+msgstr "Créons votre propre tableau de bord des <b>réseaux sociaux</b>."
 
 #. module: social
 #. openerp-web
 #: code:addons/social/static/src/js/tours/social.js:0
 #, python-format
 msgid "Let's start posting."
-msgstr ""
+msgstr "Commençons à poster."
 
 #. module: social
 #. openerp-web
@@ -807,7 +821,7 @@ msgstr "URL du Lien"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Link a new account"
-msgstr ""
+msgstr "Lier un nouveau compte"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_media_view_kanban
@@ -817,7 +831,7 @@ msgstr "Lien du compte"
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_account
 msgid "Link an Account"
-msgstr ""
+msgstr "Lier un compte"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__company_id
@@ -828,11 +842,13 @@ msgid ""
 "Link an account to a company to restrict its usage or keep empty to let all "
 "companies use it."
 msgstr ""
+"Liez un compte à une entreprise pour limiter son utilisation ou laissez-le "
+"vide pour permettre à toutes les entreprises de l'utiliser."
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_live_post__live_post_link
 msgid "Link of the live post on the target media."
-msgstr ""
+msgstr "Lien de la publication en direct sur le média cible."
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
@@ -852,7 +868,7 @@ msgstr "Le lien avec les médias sociaux externes est rompu"
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__account_allowed_ids
 msgid "List of the accounts which can be selected for this post."
-msgstr ""
+msgstr "Liste des comptes pouvant être sélectionnés pour cette publication."
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__live_posts_by_media
@@ -875,7 +891,7 @@ msgstr "Pièce jointe principale"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__max_post_length
 msgid "Max Post Length"
-msgstr ""
+msgstr "Longueur maximale de la publication"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__media_ids
@@ -907,7 +923,7 @@ msgstr "Erreur d'envoi du message"
 #: model:ir.model.fields,field_description:social.field_social_post__message_length
 #: model:ir.model.fields,field_description:social.field_social_post_template__message_length
 msgid "Message Length"
-msgstr ""
+msgstr "Longueur du message"
 
 #. module: social
 #: code:addons/social/models/social_post.py:0
@@ -921,6 +937,8 @@ msgstr "Message publié"
 msgid ""
 "Message posted partially. These are the ones that couldn't be posted: <br>%s"
 msgstr ""
+"Message posté partiellement. Voici ceux qui n'ont pas pu être publiés : "
+"<br>%s"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__message_ids
@@ -975,7 +993,7 @@ msgstr "Nouvelle Publication"
 #: code:addons/social/static/src/js/stream_post_kanban_renderer.js:0
 #, python-format
 msgid "New content available."
-msgstr ""
+msgstr "Nouveau contenu disponible."
 
 #. module: social
 #. openerp-web
@@ -1007,17 +1025,17 @@ msgstr "Type d'activités à venir"
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_account
 msgid "No Social Account yet!"
-msgstr ""
+msgstr "Pas encore de compte social !"
 
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_stream
 msgid "No Social Streams yet!"
-msgstr ""
+msgstr "Pas encore de flux sociaux !"
 
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_stream_post
 msgid "No Stream added yet!"
-msgstr ""
+msgstr "Aucun flux ajouté pour le moment !"
 
 #. module: social
 #. openerp-web
@@ -1032,6 +1050,7 @@ msgstr "Pas encore de commentaires."
 #, python-format
 msgid "No social accounts configured, please contact your administrator."
 msgstr ""
+"Aucun compte social configuré, veuillez contacter votre administrateur."
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__message_needaction_counter
@@ -1130,7 +1149,7 @@ msgstr "Ok"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Or add"
-msgstr ""
+msgstr "ou ajouter"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__audience_trend
@@ -1158,6 +1177,8 @@ msgstr ""
 #, python-format
 msgid "Please specify at least one account to post into (for post ID(s) %s)."
 msgstr ""
+"Veuillez spécifier au moins un compte sur lequel publier (pour les "
+"identifiants de publication %s)."
 
 #. module: social
 #: code:addons/social/models/social_post.py:0
@@ -1218,7 +1239,7 @@ msgstr "Publier sur"
 #: model:ir.model.fields.selection,name:social.selection__social_live_post__state__posted
 #: model:ir.model.fields.selection,name:social.selection__social_post__state__posted
 msgid "Posted"
-msgstr "Comptabilisé"
+msgstr "Publié"
 
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_live_post__state__posting
@@ -1250,6 +1271,8 @@ msgstr "Messages par comptes"
 #, python-format
 msgid "Press Enter to post. Press Shift+Enter to insert a Line Break."
 msgstr ""
+"Appuyez sur Entrer pour publier. Appuyez sur Maj+Entrer pour insérer un saut"
+" de ligne."
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
@@ -1352,6 +1375,8 @@ msgstr "Date prévue"
 #, python-format
 msgid "Selected accounts (%s) do not match the selected company (%s)"
 msgstr ""
+"Les comptes sélectionnés (%s) ne correspondent pas à l'entreprise "
+"sélectionnée (%s)"
 
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_post__post_method__now
@@ -1366,13 +1391,15 @@ msgstr "Séquence"
 #. module: social
 #: model:ir.model.fields,help:social.field_social_stream__sequence
 msgid "Sequence used to order streams (mainly for the 'Feed' kanban view)"
-msgstr ""
+msgstr "Séquence utilisée pour organiser les flux (pour la vue Kanban 'Feed'."
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__max_post_length
 msgid ""
 "Set a maximum number of characters can be posted in post. 0 for no limit."
 msgstr ""
+"Définissez un nombre maximum de caractères pouvant être publiés dans la "
+"publication. 0 pour aucune limite."
 
 #. module: social
 #: model:ir.actions.act_window,name:social.action_social_global_settings
@@ -1445,12 +1472,12 @@ msgstr "Publication"
 #: model:ir.model,name:social.model_social_post_template
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
 msgid "Social Post Template"
-msgstr ""
+msgstr "Modèle de poste social"
 
 #. module: social
 #: model:ir.actions.act_window,name:social.social_post_template_action
 msgid "Social Post Templates"
-msgstr ""
+msgstr "Modèles de postes sociaux"
 
 #. module: social
 #: model:ir.actions.act_window,name:social.action_social_post
@@ -1486,7 +1513,7 @@ msgstr "Flux sociaux"
 #. module: social
 #: model:res.groups,name:social.group_social_user
 msgid "Social User"
-msgstr ""
+msgstr "Utilisateur Social"
 
 #. module: social
 #: model:ir.actions.server,name:social.ir_cron_post_scheduled_ir_actions_server
@@ -1562,7 +1589,7 @@ msgstr "Tendance des Histoires"
 #: code:addons/social/static/src/js/stream_post_kanban_controller.js:0
 #, python-format
 msgid "Stream Added (%s)"
-msgstr ""
+msgstr "Flux ajouté (%s)"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post_image__stream_post_id
@@ -1613,6 +1640,7 @@ msgstr "Synchroniser"
 #, python-format
 msgid "The 'message' field is required for post ID %s"
 msgstr ""
+"Le champ 'message' est obligatoire pour l'identifiant de publication %s"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__account_ids
@@ -1672,6 +1700,8 @@ msgid ""
 "This token can be used to verify that an incoming request from a social "
 "provider has not been forged."
 msgstr ""
+"Ce jeton peut être utilisé pour vérifier qu'une demande entrante d'un "
+"fournisseur social n'a pas été falsifiée."
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream__name
@@ -1683,7 +1713,7 @@ msgstr "Titre"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "To add a stream"
-msgstr ""
+msgstr "Pour ajouter un flux"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream__stream_type_id
@@ -1730,6 +1760,8 @@ msgid ""
 "Use your own Developer Accounts on our Social app.\n"
 "                            Those credentials are provided in the developer section of your professional social media account."
 msgstr ""
+"Utilisez vos propres comptes de développeur sur notre application sociale.\n"
+"Ces informations d'identification sont fournies dans la section développeur de votre compte de réseau social professionnel."
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__media_type
@@ -1794,7 +1826,7 @@ msgstr "Ecrire un commentaire..."
 #: code:addons/social/static/src/js/tours/social.js:0
 #, python-format
 msgid "Write a message to get a preview of your post."
-msgstr ""
+msgstr "Écrivez un message pour avoir un aperçu de votre publication."
 
 #. module: social
 #. openerp-web
@@ -1809,6 +1841,8 @@ msgid ""
 "Write an enticing post, add images and schedule it to be posted later on "
 "multiple platforms at once."
 msgstr ""
+"Rédigez un article attrayant, ajoutez des images et programmez-le pour qu'il"
+" soit publié plus tard sur plusieurs plateformes à la fois."
 
 #. module: social
 #: code:addons/social/models/social_post.py:0
@@ -1846,7 +1880,7 @@ msgstr "Votre Publication"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "a Stream from an existing account"
-msgstr ""
+msgstr "un Flux d'un compte existant"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
@@ -1856,7 +1890,7 @@ msgstr "avant publication."
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_stream
 msgid "dashboard"
-msgstr ""
+msgstr "tableau de bord"
 
 #. module: social
 #. openerp-web
@@ -1876,13 +1910,15 @@ msgstr "réponses..."
 #: model_terms:ir.actions.act_window,help:social.action_social_stream_post
 msgid "to keep an eye on your own posts and monitor all social activities."
 msgstr ""
+"pour garder un œil sur vos propres publications et surveiller toutes les "
+"activités sociales."
 
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_stream
 msgid "to link your accounts and start posting."
-msgstr ""
+msgstr "pour lier vos comptes et commencer à publier."
 
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_account
 msgid "to start posting from Odoo."
-msgstr ""
+msgstr "pour commencer à publier depuis Odoo."

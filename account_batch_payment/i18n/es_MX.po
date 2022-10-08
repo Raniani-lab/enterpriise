@@ -78,7 +78,7 @@ msgstr "Icono de tipo de actividad"
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid "All payments in the batch must belong to the same company."
-msgstr "Todos los pagos del lote deben pertenecer a la misma compañía."
+msgstr "Todos los pagos del lote deben pertenecer a la misma empresa."
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
@@ -96,12 +96,12 @@ msgstr "Importe"
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__amount_residual
 msgid "Amount Residual"
-msgstr ""
+msgstr "Residual de la cantidad"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__amount_residual_currency
 msgid "Amount Residual Currency"
-msgstr ""
+msgstr "Divisa del residual de la cantidad"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_payment__amount_signed
@@ -176,7 +176,7 @@ msgid ""
 "                    to the bank."
 msgstr ""
 "Los pagos por lotes le permiten agrupar diferentes pagos para facilitar\n"
-"                    la conciliación. También son muy útiles al depositar cheques\n"
+"                    la conciliación. También son muy útiles al momento de depositar cheques\n"
 "                    en el banco."
 
 #. module: account_batch_payment
@@ -408,7 +408,7 @@ msgstr "Es un seguidor"
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
 msgid "Issuing bank account :"
-msgstr ""
+msgstr "Cuenta bancaria emisora"
 
 #. module: account_batch_payment
 #: model:ir.model,name:account_batch_payment.model_account_journal
@@ -504,7 +504,7 @@ msgstr "Tipo de la siguiente actividad"
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_account_payment_search_inherit_account_batch_payment
 msgid "Not Batch Payments"
-msgstr ""
+msgstr "No pagos por lotes"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.view_account_payment_search_inherit_account_batch_payment
@@ -669,7 +669,7 @@ msgstr "Algunos pagos ya se enviaron"
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid "Some recipient accounts do not allow out payments."
-msgstr ""
+msgstr "Algunas cuentas receptoras no permiten pagos salientes."
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__state
@@ -701,6 +701,7 @@ msgstr "TOTAL"
 msgid ""
 "Target another recipient account or allow sending money to the current one."
 msgstr ""
+"Use una cuenta receptora diferente o permita enviar dinero a la actual."
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.batch_error_wizard_form

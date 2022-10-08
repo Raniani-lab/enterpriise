@@ -5,14 +5,16 @@
 # Translators:
 # Martin Trigaux, 2022
 # Cécile Collart <cco@odoo.com>, 2022
+# Alexandra Jubert, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-27 15:42+0000\n"
+"POT-Creation-Date: 2022-10-04 09:43+0000\n"
 "PO-Revision-Date: 2022-09-29 09:37+0000\n"
-"Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +28,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Agent"
-msgstr ""
+msgstr "Agent"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -49,28 +51,28 @@ msgstr "Client"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to assign"
-msgstr ""
+msgstr "Nombre d'heures pour attribuer"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to close"
-msgstr ""
+msgstr "Nombre d'heures pour clôturer"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to respond"
-msgstr ""
+msgstr "Nombre d'heures pour répondre"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "KPI"
-msgstr ""
+msgstr "KPI"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -108,28 +110,28 @@ msgstr "Équipe"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Assigned To"
-msgstr ""
+msgstr "Analyse des tickets par assigné à"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Customer"
-msgstr ""
+msgstr "Analyse des tickets par client"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Team"
-msgstr ""
+msgstr "Analyse des tickets par équipe"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Ticket Type"
-msgstr ""
+msgstr "Analyse des tickets par type de ticket"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -149,7 +151,7 @@ msgstr "Type de ticket"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Tickets"
-msgstr "Billets"
+msgstr "Tickets"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -170,14 +172,14 @@ msgstr "Tickets par type"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Assign"
-msgstr ""
+msgstr "Temps pour assigner"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Close"
-msgstr ""
+msgstr "Temps pour fermer"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -236,11 +238,11 @@ msgstr "depuis la période précédente"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "stats - current"
-msgstr ""
+msgstr "stats - actuel"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "stats - previous"
-msgstr ""
+msgstr "stats - précédent"

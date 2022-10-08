@@ -3,8 +3,8 @@
 # 	* documents
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Olivier ANDRE <frsw194@gmail.com>, 2022
+# Martin Trigaux, 2022
 # Cécile Collart <cco@odoo.com>, 2022
 # Jolien De Paepe, 2022
 # 
@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-27 15:40+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -699,8 +699,8 @@ msgid ""
 "launch user defined actions, request a signature, convert to vendor bills "
 "with AI, etc."
 msgstr ""
-"Un moyen simple de traiter les e-mails entrants consiste à configurer votre "
-"scanner pour envoyer des PDF à votre e-mail de l'espace de travail. Les "
+"Un moyen simple de traiter les emails entrants consiste à configurer votre "
+"scanner pour envoyer des PDF à votre email de l'espace de travail. Les "
 "fichiers numérisés apparaîtront automatiquement dans votre espace de "
 "travail. Ensuite, traitez vos documents en masse avec l'outil de "
 "fractionnement : lancez des actions définies par l'utilisateur, demandez une"
@@ -803,7 +803,7 @@ msgid ""
 "alias</span>."
 msgstr ""
 "Automatisez votre boîte de réception à l'aide de documents scannés ou "
-"d'e-mails envoyés à <span class=\"o_folder_description_alias\">l'alias "
+"d'emails envoyés à <span class=\"o_folder_description_alias\">l'alias "
 "<strong>inbox-financial</strong></span>."
 
 #. module: documents
@@ -815,6 +815,16 @@ msgstr "Règles Disponibles"
 #: model:documents.tag,name:documents.documents_finance_documents_bill
 msgid "Bill"
 msgstr "Facture"
+
+#. module: documents
+#: model:documents.folder,name:documents.documents_marketing_brand1_folder
+msgid "Brand 1"
+msgstr "Marque 1"
+
+#. module: documents
+#: model:documents.folder,name:documents.documents_marketing_brand2_folder
+msgid "Brand 2"
+msgstr "Marque 2"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_marketing_assets_brochures
@@ -1024,7 +1034,7 @@ msgstr "Critères"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_bounced_content
 msgid "Custom Bounced Message"
-msgstr "Message personnalisé"
+msgstr "Message de rejet personnalisé"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_request_wizard__activity_date_deadline_range_type__days
@@ -1149,11 +1159,6 @@ msgid "Document Request: %s Uploaded by: %s"
 msgstr "Demande de document: %s Envoyé par: %s"
 
 #. module: documents
-#: model:mail.template,name:documents.mail_template_document_request
-msgid "Document Request: Send by email"
-msgstr "Demande de document : Envoyer par e-mail"
-
-#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__has_write_access
 msgid "Document User Upload Rights"
 msgstr "Droit de téléchargement pour l'utilisateur de Documents"
@@ -1167,6 +1172,11 @@ msgstr "Action d'étiquetage des documents"
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__type__ids
 msgid "Document list"
 msgstr "Liste de Documents"
+
+#. module: documents
+#: model:mail.template,name:documents.mail_template_document_request
+msgid "Document: Document Request"
+msgstr "Document : Demande de document"
 
 #. module: documents
 #. openerp-web
@@ -1653,7 +1663,7 @@ msgid ""
 "Let's tag this mail as legal<br/> <i>Tips: actions can be tailored to your "
 "process, according to the workspace.</i>"
 msgstr ""
-"Marquons ce courriel comme Légal<br/> <i>Astuce : les actions peuvent être "
+"Marquons cet email comme Légal<br/> <i>Astuce : les actions peuvent être "
 "adaptées à votre processus, en fonction de l'espace de travail.</i>"
 
 #. module: documents
@@ -1997,7 +2007,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/helper/documents_action_helper.xml:0
 #, python-format
 msgid "Or send emails to"
-msgstr "ou bien envoyer les e-mails à"
+msgstr "ou bien envoyer les emails à"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_knowledge_other
@@ -2298,6 +2308,11 @@ msgid "Send to Legal"
 msgstr "Envoyer à Juridique"
 
 #. module: documents
+#: model:mail.template,description:documents.mail_template_document_request
+msgid "Sent to partner when requesting a document from them"
+msgstr "Envoyé au partenaire lorsqu'un document lui est demandé"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
 #: model:ir.model.fields,field_description:documents.field_documents_folder__sequence
 #: model:ir.model.fields,field_description:documents.field_documents_tag__sequence
@@ -2552,9 +2567,9 @@ msgid ""
 " email that does not reply to an existing record will cause the creation of "
 "a new record of this model (e.g. a Project Task)"
 msgstr ""
-"Le modèle (sorte de document Odoo) auquel correspond cet alias. Tout les "
-"e-mail entrant ne correspondant pas à un enregistrement existant entraînera "
-"la création d'un nouvel enregistrement de ce modèle (Ex. : une tâche d'un "
+"Le modèle (sorte de document Odoo) auquel correspond cet alias. Chaque email"
+" entrant ne correspondant pas à un enregistrement existant entraînera la "
+"création d'un nouvel enregistrement de ce modèle (Ex. : une tâche d'un "
 "projet)"
 
 #. module: documents
@@ -2563,8 +2578,8 @@ msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.odoo.com>"
 msgstr ""
-"Le nom de l'alias de messagerie, par exemple 'carrieres' pour relever les "
-"e-mails de <carrieres@example.odoo.com>"
+"Le nom de l'alias de messagerie, par exemple 'carrières' pour relever les "
+"emails de <carrieres@example.odoo.com>"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_user_id

@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Cécile Collart <cco@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-09 14:11+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -69,6 +70,8 @@ msgid ""
 "Check this if you want to use your personal Facebook Developer Account "
 "instead of the provided one."
 msgstr ""
+"Cochez cette case si vous souhaitez utiliser votre compte développeur "
+"Facebook personnel au lieu de celui fourni."
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_comments_count
@@ -127,7 +130,7 @@ msgstr "Commentaires Facebook"
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.res_config_settings_view_form
 msgid "Facebook Developer Account"
-msgstr ""
+msgstr "Compte développeur Facebook"
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_social_account__facebook_access_token
@@ -257,7 +260,7 @@ msgstr "Publication"
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_post_template
 msgid "Social Post Template"
-msgstr ""
+msgstr "Modèle de poste social"
 
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_stream
@@ -273,7 +276,7 @@ msgstr "Publication du Flux Social"
 #: code:addons/social_facebook/controllers/main.py:0
 #, python-format
 msgid "There is no page linked to this account"
-msgstr ""
+msgstr "Il n'y a pas de page liée à ce compte"
 
 #. module: social_facebook
 #: code:addons/social_facebook/controllers/main.py:0
@@ -323,6 +326,8 @@ msgid ""
 "We could not upload your image, try reducing its size and posting it again "
 "(error: %s)."
 msgstr ""
+"Nous n'avons pas pu télécharger votre image, essayez de réduire sa taille et"
+" de la publier à nouveau (erreur : %s)."
 
 #. module: social_facebook
 #: code:addons/social_facebook/models/social_media.py:0
@@ -345,4 +350,4 @@ msgstr "commentaire/réponse"
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.facebook_preview
 msgid "• <i class=\"fa fa-globe\"/>"
-msgstr ""
+msgstr "• <i class=\"fa fa-globe\"/>"

@@ -3,16 +3,18 @@
 # 	* planning
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
+# 黎伟杰 <674416404@qq.com>, 2022
+# Martin Trigaux, 2022
+# 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Raymond Yu <cl_yu@hotmail.com>, 2022\n"
+"Last-Translator: 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -769,6 +771,11 @@ msgid "Color"
 msgstr "颜色"
 
 #. module: planning
+#: model:planning.role,name:planning.planning_role_cm
+msgid "Community Manager"
+msgstr "社区经理"
+
+#. module: planning
 #: model:ir.model,name:planning.model_res_company
 msgid "Companies"
 msgstr "公司"
@@ -806,14 +813,14 @@ msgstr "冲突时段"
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/xml/planning_calendar.xml:0
+#: code:addons/planning/static/src/views/planning_calendar/planning_calendar_controller.xml:0
 #, python-format
 msgid "Copy previous"
 msgstr "复制以前的"
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/xml/planning_calendar.xml:0
+#: code:addons/planning/static/src/views/planning_calendar/planning_calendar_controller.xml:0
 #: code:addons/planning/static/src/xml/planning_gantt.xml:0
 #: code:addons/planning/static/src/xml/planning_gantt.xml:0
 #, python-format
@@ -942,6 +949,11 @@ msgid "Departure Wizard"
 msgstr "离职向导"
 
 #. module: planning
+#: model:planning.role,name:planning.planning_role_developer
+msgid "Developer"
+msgstr "开发者"
+
+#. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.employee_no_email_list_wizard
 #: model_terms:ir.ui.view,arch_db:planning.planning_send_view_form
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
@@ -978,7 +990,7 @@ msgstr "Doris Cole (调酒师)"
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/xml/planning_calendar.xml:0
+#: code:addons/planning/static/src/views/planning_calendar/planning_calendar_controller.xml:0
 #: model:ir.model.fields.selection,name:planning.selection__planning_analysis_report__state__draft
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__state__draft
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
@@ -1030,6 +1042,17 @@ msgstr "Eli Lambert"
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "Eli Lambert (Waiter)"
 msgstr "Eli Lambert (服务生)"
+
+#. module: planning
+#: model:mail.template,description:planning.email_template_slot_single
+msgid "Email sent automatically when publishing a shift"
+msgstr ""
+
+#. module: planning
+#: model:mail.template,description:planning.email_template_planning_planning
+msgid ""
+"Email sent automatically when publishing the schedule of your employees"
+msgstr ""
 
 #. module: planning
 #: model:ir.model,name:planning.model_hr_employee
@@ -1323,7 +1346,7 @@ msgstr "上周"
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/xml/planning_calendar.xml:0
+#: code:addons/planning/static/src/views/planning_calendar/planning_calendar_controller.xml:0
 #, python-format
 msgid "Legend"
 msgstr "图例"
@@ -1367,6 +1390,11 @@ msgstr "让我们开始管理你的员工的日程安排吧!"
 #: model_terms:ir.actions.act_window,help:planning.planning_action_shift_template
 msgid "Make encoding shifts easy with templates."
 msgstr "用模板使编码转变变得容易。"
+
+#. module: planning
+#: model:planning.role,name:planning.planning_role_management
+msgid "Management"
+msgstr "管理"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__manager_id
@@ -1628,6 +1656,16 @@ msgid "Planning:"
 msgstr "计划:"
 
 #. module: planning
+#: model:mail.template,name:planning.email_template_planning_planning
+msgid "Planning: New Schedule"
+msgstr ""
+
+#. module: planning
+#: model:mail.template,name:planning.email_template_slot_single
+msgid "Planning: New Shift"
+msgstr ""
+
+#. module: planning
 #: model:ir.actions.server,name:planning.ir_cron_forecast_schedule_ir_actions_server
 #: model:ir.cron,cron_name:planning.ir_cron_forecast_schedule
 #: model:ir.cron,name:planning.ir_cron_forecast_schedule
@@ -1641,20 +1679,10 @@ msgid "Planning: new open shift available on"
 msgstr "计划：新的开放班次可用"
 
 #. module: planning
-#: model:mail.template,name:planning.email_template_planning_planning
-msgid "Planning: new schedule (multiple shifts)"
-msgstr "规划：新的时间表（多班制）"
-
-#. module: planning
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "Planning: new shift on"
 msgstr "计划：新的班次"
-
-#. module: planning
-#: model:mail.template,name:planning.email_template_slot_single
-msgid "Planning: new single shift"
-msgstr "规划：新的单次班次"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.brand_promotion
@@ -1668,7 +1696,7 @@ msgstr "上一个模板"
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/xml/planning_calendar.xml:0
+#: code:addons/planning/static/src/views/planning_calendar/planning_calendar_controller.xml:0
 #: code:addons/planning/static/src/xml/planning_gantt.xml:0
 #: model:ir.actions.server,name:planning.model_planning_slot_action_publish
 #: model_terms:ir.ui.view,arch_db:planning.planning_send_view_form
@@ -1688,7 +1716,7 @@ msgstr "发布和发送"
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/xml/planning_calendar.xml:0
+#: code:addons/planning/static/src/views/planning_calendar/planning_calendar_controller.xml:0
 #: model:ir.model.fields.selection,name:planning.selection__planning_analysis_report__state__published
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__state__published
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
@@ -1888,7 +1916,7 @@ msgstr "通过电子邮件发送规划"
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/xml/planning_calendar.xml:0
+#: code:addons/planning/static/src/views/planning_calendar/planning_calendar_controller.xml:0
 #: code:addons/planning/static/src/xml/planning_gantt.xml:0
 #, python-format
 msgid "Send schedule"
@@ -2063,6 +2091,7 @@ msgstr "重复的结束日期应晚于班次的开始日期。"
 #. module: planning
 #. openerp-web
 #: code:addons/planning/static/src/js/planning_form_view.js:0
+#: code:addons/planning/static/src/views/planning_form/planning_form_view.js:0
 #, python-format
 msgid "The recurring shifts have successfully been created."
 msgstr "已成功创建定期班次。"
@@ -2088,6 +2117,7 @@ msgstr "该班次已成功发送。"
 #. module: planning
 #. openerp-web
 #: code:addons/planning/static/src/js/planning_mixins.js:0
+#: code:addons/planning/static/src/views/hooks.js:0
 #, python-format
 msgid "The shifts from the previous week have successfully been copied."
 msgstr "前一周的班次已经成功复制。"
@@ -2095,6 +2125,7 @@ msgstr "前一周的班次已经成功复制。"
 #. module: planning
 #. openerp-web
 #: code:addons/planning/static/src/js/planning_mixins.js:0
+#: code:addons/planning/static/src/views/hooks.js:0
 #: code:addons/planning/wizard/planning_send.py:0
 #: code:addons/planning/wizard/planning_send.py:0
 #, python-format
@@ -2133,6 +2164,7 @@ msgstr "开始时间不能是负数。"
 #. module: planning
 #. openerp-web
 #: code:addons/planning/static/src/js/planning_mixins.js:0
+#: code:addons/planning/static/src/views/hooks.js:0
 #, python-format
 msgid ""
 "There are no shifts planned for the previous week, or they have already been"

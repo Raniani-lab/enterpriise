@@ -251,7 +251,7 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_temporal_recurrence
 msgid "Sale temporal Recurrence"
-msgstr ""
+msgstr "Recurrencia temporal de la venta"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_order

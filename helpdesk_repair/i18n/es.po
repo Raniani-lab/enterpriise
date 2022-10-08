@@ -7,9 +7,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:48+0000\n"
+"POT-Creation-Date: 2022-10-04 09:42+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
@@ -18,6 +18,11 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: es\n"
 "Plural-Forms: nplurals=3; plural=n == 1 ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
+
+#. module: helpdesk_repair
+#: model:helpdesk.ticket,legend_blocked:helpdesk_repair.helpdesk_repair_ticket_1
+msgid "Blocked"
+msgstr "Bloqueada"
 
 #. module: helpdesk_repair
 #: model:ir.actions.act_window,name:helpdesk_repair.action_repair_order_form
@@ -33,6 +38,16 @@ msgstr "Equipo de Mesa de Ayuda"
 #: model:ir.model,name:helpdesk_repair.model_helpdesk_ticket
 msgid "Helpdesk Ticket"
 msgstr "Ticket de servicio de asistencia"
+
+#. module: helpdesk_repair
+#: model:helpdesk.ticket,legend_normal:helpdesk_repair.helpdesk_repair_ticket_1
+msgid "In Progress"
+msgstr "En progreso"
+
+#. module: helpdesk_repair
+#: model:helpdesk.ticket,legend_done:helpdesk_repair.helpdesk_repair_ticket_1
+msgid "Ready"
+msgstr "Preparado"
 
 #. module: helpdesk_repair
 #: model:ir.model.fields,help:helpdesk_repair.field_repair_order__ticket_id

@@ -26,7 +26,7 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/components/working_employee_popup.xml:0
 #, python-format
 msgid "+ New Operator"
-msgstr ""
+msgstr "+ Nuevo operador"
 
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workorder_view_tablet_form_inherit_workorder_hr
@@ -34,6 +34,8 @@ msgid ""
 "<span attrs=\"{'invisible': [('employee_name', '!=', False)]}\">Log In "
 "</span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('employee_name', '!=', False)]}\">Iniciar "
+"sesión </span>"
 
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workcenter_form_view_inherit
@@ -58,7 +60,7 @@ msgstr "Cancelar"
 #: code:addons/mrp_workorder_hr/static/src/components/tablet.js:0
 #, python-format
 msgid "Change Worker"
-msgstr ""
+msgstr "Cambiar trabajador"
 
 #. module: mrp_workorder_hr
 #. openerp-web
@@ -91,7 +93,7 @@ msgstr "Empleado"
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_routing_workcenter__employee_ratio
 msgid "Employee Capacity"
-msgstr ""
+msgstr "Capacidad de empleados"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__employee_costs_hour
@@ -115,12 +117,12 @@ msgstr "Iniciar sesión"
 #: code:addons/mrp_workorder_hr/static/src/js/mrp_workorder_hr.js:0
 #, python-format
 msgid "Logged in!"
-msgstr ""
+msgstr "¡Se inició sesión!"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_routing_workcenter__employee_ratio
 msgid "Number of employee needed to produce one batch"
-msgstr ""
+msgstr "Número de empleados necesarios para producir un lote"
 
 #. module: mrp_workorder_hr
 #. openerp-web
@@ -155,14 +157,14 @@ msgstr "Control de calidad"
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__allow_employee
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workorder__allow_employee
 msgid "Requires Log In"
-msgstr ""
+msgstr "Es necesario iniciar sesión"
 
 #. module: mrp_workorder_hr
 #. openerp-web
 #: code:addons/mrp_workorder_hr/static/src/js/mrp_workorder_hr.js:0
 #, python-format
 msgid "Select Employee"
-msgstr ""
+msgstr "Seleccionar empleado"
 
 #. module: mrp_workorder_hr
 #. openerp-web
@@ -176,7 +178,7 @@ msgstr "Detener"
 #: code:addons/mrp_workorder_hr/static/src/js/mrp_workorder_hr.js:0
 #, python-format
 msgid "This employee is not allowed on this workcenter"
-msgstr ""
+msgstr "Este empleado no tiene permitido estar en este centro de trabajo"
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_workcenter
@@ -201,36 +203,38 @@ msgstr "Registro de productividad del centro de trabajo"
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workorder__employee_ids
 msgid "Working Employees"
-msgstr ""
+msgstr "Empleados trabajando"
 
 #. module: mrp_workorder_hr
 #. openerp-web
 #: code:addons/mrp_workorder_hr/static/src/js/mrp_workorder_hr.js:0
 #, python-format
 msgid "Wrong password !"
-msgstr ""
+msgstr "¡Contraseña incorrecta!"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_workcenter_productivity__employee_id
 msgid "employee that record this working time"
-msgstr ""
+msgstr "empleado que registra este tiempo de trabajo"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter_productivity__employee_cost
 msgid "employee_cost"
-msgstr ""
+msgstr "employee_cost"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__employee_ids
 msgid "employees with access"
-msgstr ""
+msgstr "empleados con acceso"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_workcenter__employee_ids
 msgid "if left empty, all employees can log in to the workcenter"
 msgstr ""
+"si se deja vacío, todos los empleados pueden iniciar sesión en el centro de "
+"trabajo"
 
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workcenter_form_view_inherit
 msgid "per employee"
-msgstr ""
+msgstr "por empleado"

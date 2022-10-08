@@ -351,7 +351,7 @@ msgid ""
 "If True, the generic data merge tool is available in the contextual menu of "
 "this model."
 msgstr ""
-"Si True, l'outil de fusion des données génériques est disponible dans le "
+"Si Vrai, l'outil de fusion des données génériques est disponible dans le "
 "menu contextuel de ce modèle."
 
 #. module: data_merge
@@ -360,7 +360,7 @@ msgid ""
 "If True, this record is used for contextual menu action \"Merge\" on the "
 "target model."
 msgstr ""
-"Si True, cet enregistrement est utilisé pour l'action de menu contextuel "
+"Si Vrai, cet enregistrement est utilisé pour l'action de menu contextuel "
 "\"Fusionner\" sur le modèle cible."
 
 #. module: data_merge
@@ -369,7 +369,7 @@ msgid ""
 "If the model already has a custom merge method, the class attribute `_merge_disabled` is set to true on\n"
 "             that model and the generic data merge action should not be available on that model."
 msgstr ""
-"Si le modèle a déjà une méthode de fusion personnalisée, l'attribut de classe `_merge_disabled` est défini à true pour\n"
+"Si le modèle a déjà une méthode de fusion personnalisée, l'attribut de classe `_merge_disabled` est défini à vrai pour\n"
 "             ce modèle et l'action de fusion des données génériques ne devrait pas être disponible pour ce modèle."
 
 #. module: data_merge

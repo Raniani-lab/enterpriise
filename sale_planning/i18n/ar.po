@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"POT-Creation-Date: 2022-10-04 09:43+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Malaz Abuidris <msea@odoo.com>, 2022\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
@@ -65,9 +65,39 @@ msgid "By Sales Order"
 msgstr "بواسطة أمر البيع "
 
 #. module: sale_planning
+#: model:product.product,name:sale_planning.developer_product
+#: model:product.template,name:sale_planning.developer_product_product_template
+msgid "Developer (Plan services)"
+msgstr "مطوِّر (تخطيط الخدمات) "
+
+#. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__end_datetime
 msgid "End Date"
 msgstr "تاريخ الانتهاء"
+
+#. module: sale_planning
+#: model:planning.role,name:sale_planning.planning_role_tester
+msgid "Functional Tester"
+msgstr ""
+
+#. module: sale_planning
+#: model:product.product,uom_name:sale_planning.developer_product
+#: model:product.product,uom_name:sale_planning.technical_maintainance_product
+#: model:product.template,uom_name:sale_planning.developer_product_product_template
+#: model:product.template,uom_name:sale_planning.technical_maintainance_product_product_template
+msgid "Hours"
+msgstr "الساعات"
+
+#. module: sale_planning
+#: model:product.product,name:sale_planning.technical_maintainance_product
+#: model:product.template,name:sale_planning.technical_maintainance_product_product_template
+msgid "IT Technical Maintenance (Plan services)"
+msgstr "الصيانة الفنية لتقنية المعلومات (تخطيط الخدمات) "
+
+#. module: sale_planning
+#: model:planning.role,name:sale_planning.planning_role_technician
+msgid "IT Technician"
+msgstr "فني تقنية المعلومات "
 
 #. module: sale_planning
 #: model:ir.model.fields,help:sale_planning.field_planning_slot__sale_line_plannable
@@ -110,9 +140,15 @@ msgid "Orders Planned"
 msgstr ""
 
 #. module: sale_planning
+#: model_terms:product.product,description:sale_planning.developer_product
+#: model_terms:product.template,description:sale_planning.developer_product_product_template
+msgid "Our developer will help you to add new features to your Software."
+msgstr "سوف يساعدك مطورنا على إضافة خصائص جديدة إلى برنامجك. "
+
+#. module: sale_planning
 #. openerp-web
-#: code:addons/sale_planning/static/src/xml/planning_calendar.xml:0
-#: code:addons/sale_planning/static/src/xml/planning_calendar.xml:0
+#: code:addons/sale_planning/static/src/views/sale_planning_calendar/sale_planning_calendar_controller.xml:0
+#: code:addons/sale_planning/static/src/views/sale_planning_calendar/sale_planning_calendar_controller.xml:0
 #: code:addons/sale_planning/static/src/xml/planning_gantt.xml:0
 #: code:addons/sale_planning/static/src/xml/planning_gantt.xml:0
 #, python-format
@@ -257,8 +293,15 @@ msgid "Start Date"
 msgstr "تاريخ البداية"
 
 #. module: sale_planning
+#: model_terms:product.product,description:sale_planning.technical_maintainance_product
+#: model_terms:product.template,description:sale_planning.technical_maintainance_product_product_template
+msgid "Take a rest. We'll do our best."
+msgstr "استرخِ، سنفعل ما بوسعنا. "
+
+#. module: sale_planning
 #. openerp-web
 #: code:addons/sale_planning/static/src/js/backend/sale_planning_mixin.js:0
+#: code:addons/sale_planning/static/src/views/hooks.js:0
 #, python-format
 msgid "The sales orders have successfully been assigned."
 msgstr "لقد تم إسناد أوامر البيع بنجاح. "
@@ -266,6 +309,7 @@ msgstr "لقد تم إسناد أوامر البيع بنجاح. "
 #. module: sale_planning
 #. openerp-web
 #: code:addons/sale_planning/static/src/js/backend/sale_planning_mixin.js:0
+#: code:addons/sale_planning/static/src/views/hooks.js:0
 #, python-format
 msgid "There are no sales orders to assign or no employees are available."
 msgstr "لا توجد أوامر بيع لإسنادها أو لا يوجد موظفون متاحون. "
@@ -296,6 +340,18 @@ msgstr "إلغاء الجدولة "
 #, python-format
 msgid "View Planning"
 msgstr "عرض المخطط "
+
+#. module: sale_planning
+#. openerp-web
+#: code:addons/sale_planning/static/src/views/hooks.js:0
+#, python-format
+msgid "View Shifts"
+msgstr ""
+
+#. module: sale_planning
+#: model:planning.role,name:sale_planning.planning_role_planner
+msgid "Work Planner"
+msgstr ""
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.product_template_form_view_invoice_policy_inherit_sale_planning

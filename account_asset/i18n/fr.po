@@ -6,9 +6,9 @@
 # jb78180 <jblum66@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Damien Bouvy <dbo@odoo.com>, 2022
-# Cécile Collart <cco@odoo.com>, 2022
 # Malika Berardi, 2022
 # laje_odoo, 2022
+# Cécile Collart <cco@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:22+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: laje_odoo, 2022\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2040,9 +2040,9 @@ msgid ""
 "You can manually close an asset when the depreciation is over.\n"
 "By cancelling an asset, all depreciation entries will be reversed"
 msgstr ""
-"Quand un actif est crée, le statut est en \"brouillon\".\n"
-"Si l'actif est confirmé, le statut passe \"en cours\" et la ligne d'amortissement peut être postée en comptabilité.\n"
-"Le statut 'en attente' peut être configuré manuellement quand vous voulez mettre en pause l'amortissement de l'actif pour un moment\n"
+"Quand un actif est crée, le statut est en 'Brouillon'.\n"
+"Si l'actif est confirmé, le statut passe à 'En cours' et la ligne d'amortissement peut être postée en comptabilité.\n"
+"Le statut 'En attente' peut être configuré manuellement quand vous voulez mettre en pause l'amortissement de l'actif pour un moment\n"
 "Vous pouvez manuellement clôturer l'actif quand l'amortissement est terminé\n"
 "En annulant l'actif, toutes les écritures de dépréciations seront extournés"
 
@@ -2125,13 +2125,13 @@ msgstr "book_value"
 #: model:account.report.column,name:account_asset.assets_report_date_from
 #: model:account.report.column,name:account_asset.assets_report_depre_date_from
 msgid "date from"
-msgstr "A partir de la date du "
+msgstr "date à partir de laquelle"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_assets_date_to
 #: model:account.report.column,name:account_asset.assets_report_depre_date_to
 msgid "date to"
-msgstr "Jusquà la date du "
+msgstr "date jusqu'à"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -2175,7 +2175,7 @@ msgstr "extourné"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "select the related expense"
-msgstr "Sélectionner la charge liée "
+msgstr "sélectionnez la charge liée "
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form

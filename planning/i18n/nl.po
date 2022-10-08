@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -794,6 +794,11 @@ msgid "Color"
 msgstr "Kleur"
 
 #. module: planning
+#: model:planning.role,name:planning.planning_role_cm
+msgid "Community Manager"
+msgstr "Community manager"
+
+#. module: planning
 #: model:ir.model,name:planning.model_res_company
 msgid "Companies"
 msgstr "Bedrijven"
@@ -831,14 +836,14 @@ msgstr "Conflicterend slot"
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/xml/planning_calendar.xml:0
+#: code:addons/planning/static/src/views/planning_calendar/planning_calendar_controller.xml:0
 #, python-format
 msgid "Copy previous"
 msgstr "Kopieer vorige"
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/xml/planning_calendar.xml:0
+#: code:addons/planning/static/src/views/planning_calendar/planning_calendar_controller.xml:0
 #: code:addons/planning/static/src/xml/planning_gantt.xml:0
 #: code:addons/planning/static/src/xml/planning_gantt.xml:0
 #, python-format
@@ -975,6 +980,11 @@ msgid "Departure Wizard"
 msgstr "Vertrek wizard"
 
 #. module: planning
+#: model:planning.role,name:planning.planning_role_developer
+msgid "Developer"
+msgstr "Developer"
+
+#. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.employee_no_email_list_wizard
 #: model_terms:ir.ui.view,arch_db:planning.planning_send_view_form
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
@@ -1011,7 +1021,7 @@ msgstr "Doris Cole (barman)"
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/xml/planning_calendar.xml:0
+#: code:addons/planning/static/src/views/planning_calendar/planning_calendar_controller.xml:0
 #: model:ir.model.fields.selection,name:planning.selection__planning_analysis_report__state__draft
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__state__draft
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
@@ -1067,6 +1077,17 @@ msgstr "Eli Lambert"
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "Eli Lambert (Waiter)"
 msgstr "Eli Lambert (Ober)"
+
+#. module: planning
+#: model:mail.template,description:planning.email_template_slot_single
+msgid "Email sent automatically when publishing a shift"
+msgstr ""
+
+#. module: planning
+#: model:mail.template,description:planning.email_template_planning_planning
+msgid ""
+"Email sent automatically when publishing the schedule of your employees"
+msgstr ""
 
 #. module: planning
 #: model:ir.model,name:planning.model_hr_employee
@@ -1370,7 +1391,7 @@ msgstr "Vorige week"
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/xml/planning_calendar.xml:0
+#: code:addons/planning/static/src/views/planning_calendar/planning_calendar_controller.xml:0
 #, python-format
 msgid "Legend"
 msgstr "Legenda"
@@ -1417,6 +1438,11 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:planning.planning_action_shift_template
 msgid "Make encoding shifts easy with templates."
 msgstr "Maak coderingsdiensten eenvoudig met sjablonen."
+
+#. module: planning
+#: model:planning.role,name:planning.planning_role_management
+msgid "Management"
+msgstr "Management"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__manager_id
@@ -1684,6 +1710,16 @@ msgid "Planning:"
 msgstr "Planning:"
 
 #. module: planning
+#: model:mail.template,name:planning.email_template_planning_planning
+msgid "Planning: New Schedule"
+msgstr ""
+
+#. module: planning
+#: model:mail.template,name:planning.email_template_slot_single
+msgid "Planning: New Shift"
+msgstr ""
+
+#. module: planning
 #: model:ir.actions.server,name:planning.ir_cron_forecast_schedule_ir_actions_server
 #: model:ir.cron,cron_name:planning.ir_cron_forecast_schedule
 #: model:ir.cron,name:planning.ir_cron_forecast_schedule
@@ -1697,20 +1733,10 @@ msgid "Planning: new open shift available on"
 msgstr "Planning: nieuwe open dienst beschikbaar op"
 
 #. module: planning
-#: model:mail.template,name:planning.email_template_planning_planning
-msgid "Planning: new schedule (multiple shifts)"
-msgstr "Planning: nieuw rooster (meerdere diensten)"
-
-#. module: planning
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "Planning: new shift on"
 msgstr "Planning: nieuwe dienst aan"
-
-#. module: planning
-#: model:mail.template,name:planning.email_template_slot_single
-msgid "Planning: new single shift"
-msgstr "Planning: nieuwe enkele dienst"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.brand_promotion
@@ -1724,7 +1750,7 @@ msgstr "Vorige sjabloon"
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/xml/planning_calendar.xml:0
+#: code:addons/planning/static/src/views/planning_calendar/planning_calendar_controller.xml:0
 #: code:addons/planning/static/src/xml/planning_gantt.xml:0
 #: model:ir.actions.server,name:planning.model_planning_slot_action_publish
 #: model_terms:ir.ui.view,arch_db:planning.planning_send_view_form
@@ -1744,7 +1770,7 @@ msgstr "Publiceer & verzend"
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/xml/planning_calendar.xml:0
+#: code:addons/planning/static/src/views/planning_calendar/planning_calendar_controller.xml:0
 #: model:ir.model.fields.selection,name:planning.selection__planning_analysis_report__state__published
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__state__published
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
@@ -1947,7 +1973,7 @@ msgstr "Verstuur planning via e-mail"
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/xml/planning_calendar.xml:0
+#: code:addons/planning/static/src/views/planning_calendar/planning_calendar_controller.xml:0
 #: code:addons/planning/static/src/xml/planning_gantt.xml:0
 #, python-format
 msgid "Send schedule"
@@ -2125,6 +2151,7 @@ msgstr ""
 #. module: planning
 #. openerp-web
 #: code:addons/planning/static/src/js/planning_form_view.js:0
+#: code:addons/planning/static/src/views/planning_form/planning_form_view.js:0
 #, python-format
 msgid "The recurring shifts have successfully been created."
 msgstr "De terugkerende diensten zijn succesvol aangemaakt."
@@ -2151,6 +2178,7 @@ msgstr "De dienst is succesvol verzonden."
 #. module: planning
 #. openerp-web
 #: code:addons/planning/static/src/js/planning_mixins.js:0
+#: code:addons/planning/static/src/views/hooks.js:0
 #, python-format
 msgid "The shifts from the previous week have successfully been copied."
 msgstr "De diensten van de vorige week zijn succesvol gekopieerd."
@@ -2158,6 +2186,7 @@ msgstr "De diensten van de vorige week zijn succesvol gekopieerd."
 #. module: planning
 #. openerp-web
 #: code:addons/planning/static/src/js/planning_mixins.js:0
+#: code:addons/planning/static/src/views/hooks.js:0
 #: code:addons/planning/wizard/planning_send.py:0
 #: code:addons/planning/wizard/planning_send.py:0
 #, python-format
@@ -2197,6 +2226,7 @@ msgstr "Het startuur kan niet negatief zijn."
 #. module: planning
 #. openerp-web
 #: code:addons/planning/static/src/js/planning_mixins.js:0
+#: code:addons/planning/static/src/views/hooks.js:0
 #, python-format
 msgid ""
 "There are no shifts planned for the previous week, or they have already been"

@@ -6,6 +6,8 @@
 # Tivisse <yti@odoo.com>, 2022
 # Martin Trigaux, 2022
 # Cécile Collart <cco@odoo.com>, 2022
+# Jolien De Paepe, 2022
+# Alexandra Jubert, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:24+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
+"Last-Translator: Alexandra Jubert, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,7 +56,7 @@ msgstr ""
 "Gardez une trace des articles que vous utilisez pour accomplir vos tâches et facturez vos clients pour les marchandises.\n"
 "Astuce : grâce aux kits, vous pouvez ajouter plusieurs articles à la fois.\n"
 "</p><p>\n"
-"Lorsque votre tâche est marquée comme terminée, votre stock sera mis à jour automatiquement. Choisissez simplement un entrepôt \n"
+"Lorsque votre tâche est marquée comme faite, votre stock sera mis à jour automatiquement. Choisissez simplement un entrepôt \n"
 "dans votre profil d'où tirer le stock.\n"
 "</p>"
 
@@ -213,7 +215,7 @@ msgstr "Créer un nouveau devis"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_view_form_inherit
 msgid "Create new quotations directly from tasks"
-msgstr "Créer de nouveaux devis directement depuis les tâches"
+msgstr "Créez de nouveaux devis directement depuis les tâches"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__currency_id
@@ -677,7 +679,7 @@ msgstr "Opportunité de vente additionnelle"
 #, python-format
 msgid "Use the breadcrumbs to navigate to your <b>list of products</b>."
 msgstr ""
-"Utilisez le fil d'Ariane pour naviguer votre <b>liste de produits</b>."
+"Utilisez le fil d'Ariane pour retourner à votre <b>liste de produits</b>."
 
 #. module: industry_fsm_sale
 #. openerp-web

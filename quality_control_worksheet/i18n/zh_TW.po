@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:24+0000\n"
+"POT-Creation-Date: 2022-10-04 09:43+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Chinese (Taiwan) (https://www.transifex.com/odoo/teams/41243/zh_TW/)\n"
@@ -35,6 +35,16 @@ msgid "Correct Worksheet"
 msgstr ""
 
 #. module: quality_control_worksheet
+#: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
+msgid "Date"
+msgstr "日期"
+
+#. module: quality_control_worksheet
+#: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
+msgid "Length"
+msgstr "長度"
+
+#. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_point__worksheet_model_name
 msgid "Model Name"
 msgstr "模型名稱"
@@ -44,6 +54,11 @@ msgstr "模型名稱"
 #, python-format
 msgid "Please fill in the worksheet."
 msgstr ""
+
+#. module: quality_control_worksheet
+#: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
+msgid "Product"
+msgstr "商品"
 
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_quality_check
@@ -63,6 +78,11 @@ msgid "Quality Control Point"
 msgstr "品質控制點"
 
 #. module: quality_control_worksheet
+#: model:ir.model,name:quality_control_worksheet.model_x_custom_worksheet_x_quality_check_worksheet_template_1
+msgid "Quality Issues"
+msgstr ""
+
+#. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check__worksheet_template_id
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check_wizard__worksheet_template_id
 msgid "Quality Template"
@@ -80,6 +100,11 @@ msgid "Quality Worksheet Templates"
 msgstr ""
 
 #. module: quality_control_worksheet
+#: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
+msgid "Responsible"
+msgstr "負責人"
+
+#. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_point__worksheet_success_conditions
 msgid "Success Conditions"
 msgstr ""
@@ -92,6 +117,11 @@ msgstr "模板"
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_quality_check_wizard
 msgid "Wizard for Quality Check Pop Up"
+msgstr ""
+
+#. module: quality_control_worksheet
+#: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
+msgid "Wood Texture"
 msgstr ""
 
 #. module: quality_control_worksheet
@@ -114,4 +144,9 @@ msgstr ""
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_worksheet_template
 msgid "Worksheet Template"
+msgstr ""
+
+#. module: quality_control_worksheet
+#: model:ir.actions.act_window,name:quality_control_worksheet.template_action_Quality_Issues
+msgid "Worksheets"
 msgstr ""

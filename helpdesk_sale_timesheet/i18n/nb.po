@@ -8,9 +8,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:48+0000\n"
+"POT-Creation-Date: 2022-10-04 09:42+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
@@ -21,9 +21,19 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: helpdesk_sale_timesheet
+#: model:helpdesk.sla,name:helpdesk_sale_timesheet.helpdesk_sla_4
+msgid "4 hours to finish"
+msgstr ""
+
+#. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_account_analytic_line
 msgid "Analytic Account"
 msgstr "Analytisk konto"
+
+#. module: helpdesk_sale_timesheet
+#: model:helpdesk.ticket,legend_blocked:helpdesk_sale_timesheet.helpdesk_ticket_24
+msgid "Blocked"
+msgstr "Blokkert"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_helpdesk_ticket_convert_wizard
@@ -106,6 +116,11 @@ msgid "Hours:"
 msgstr ""
 
 #. module: helpdesk_sale_timesheet
+#: model:helpdesk.ticket,legend_normal:helpdesk_sale_timesheet.helpdesk_ticket_24
+msgid "In Progress"
+msgstr "Pågår"
+
+#. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_product_template
 msgid "Product"
 msgstr "Produkt"
@@ -125,6 +140,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__project_sale_order_id
 msgid "Project's sale order"
 msgstr ""
+
+#. module: helpdesk_sale_timesheet
+#: model:helpdesk.ticket,legend_done:helpdesk_sale_timesheet.helpdesk_ticket_24
+msgid "Ready"
+msgstr "Klar"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__sale_order_id

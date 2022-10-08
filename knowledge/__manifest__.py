@@ -59,6 +59,9 @@
             'knowledge/static/src/services/*.js',
             'knowledge/static/src/macros/*.js',
         ],
+        "web.dark_mode_assets_backend": [
+            'knowledge/static/src/scss/knowledge_views.dark.scss',
+        ],
         'web.assets_frontend': [
             'knowledge/static/src/scss/knowledge_common.scss',
             'knowledge/static/src/scss/knowledge_frontend.scss',

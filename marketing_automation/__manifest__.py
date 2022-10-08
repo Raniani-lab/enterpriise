@@ -38,6 +38,12 @@
             'marketing_automation/static/src/js/*.js',
             'marketing_automation/static/src/scss/*.scss',
             'marketing_automation/static/src/xml/*.xml',
+
+            # Don't include dark mode files in light mode
+            ('remove', 'marketing_automation/static/src/scss/*.dark.scss'),
+        ],
+        "web.dark_mode_assets_backend": [
+            'marketing_automation/static/src/scss/*.dark.scss',
         ],
         'web.qunit_suite_tests': [
             'marketing_automation/static/tests/**/*',

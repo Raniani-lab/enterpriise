@@ -34,6 +34,12 @@ This module enables the barcode scanning feature for the warehouse management sy
             'stock_barcode/static/src/**/*.js',
             'stock_barcode/static/src/**/*.scss',
             'stock_barcode/static/src/**/*.xml',
+
+            # Don't include dark mode files in light mode
+            ('remove', 'stock_barcode/static/src/**/*.dark.scss'),
+        ],
+        "web.dark_mode_assets_backend": [
+            'stock_barcode/static/src/**/*.dark.scss',
         ],
         'web.qunit_suite_tests': [
             'stock_barcode/static/tests/units/**/*',

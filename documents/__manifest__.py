@@ -73,6 +73,9 @@
             'documents/static/src/owl/components/pdf_page/pdf_page.xml',
             'documents/static/src/owl/components/pdf_group_name/pdf_group_name.xml',
         ],
+        'web._assets_primary_variables': [
+            'documents/static/src/scss/documents.variables.scss',
+        ],
         'documents.public_page_assets': [
             ('include', 'web._assets_helpers'),
             ('include', 'web._assets_backend_helpers'),

@@ -7,7 +7,7 @@
         <field name="arch" type="xml">
             <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
                 <field name="asset_id" invisible="1"/>
-                <field name="asset_asset_type" invisible="0"/>
+                <field name="asset_asset_type" invisible="1"/>
                 <field name="linked_asset_type" invisible="1"/>
                 <field name="number_asset_ids" invisible="1"/>
                 <field name="draft_asset_ids" invisible="1"/>

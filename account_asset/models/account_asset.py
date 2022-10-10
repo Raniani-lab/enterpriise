@@ -305,7 +305,6 @@ class AccountAsset(models.Model):
                 domain=[
                     ('asset_id', 'in', self.ids),
                     ('state', '=', 'posted'),
-                    ('reversal_move_id', '=', False),
                 ],
                 fields=['move_ids:count(id)'],
                 groupby=['asset_id'],

@@ -58,6 +58,9 @@
             <xpath expr="/form" position="attributes">
                 <attribute name="string">Revenue Recognition</attribute>
             </xpath>
+            <xpath expr="//page[@name='main_page']" position="attributes">
+                <attribute name="string">Revenue</attribute>
+            </xpath>
             <xpath expr="//button[@name='compute_depreciation_board']" position="attributes">
                 <attribute name="string">Compute Revenue</attribute>
             </xpath>

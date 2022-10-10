@@ -6,6 +6,7 @@
     // here to avoid breaking studio custom style)
     &:not(.o_home_menu_background_custom) .o_main_navbar {
         background: transparent;
+        border-bottom-color: transparent;
 
         .dropdown-menu {
             border-color: $dropdown-bg;

@@ -429,8 +429,10 @@ class HrContractSalary(http.Controller):
             'contract_update_template_id': contract.contract_update_template_id.id,
             'date_start': fields.Date.today().replace(day=1),
             'contract_type_id': contract.contract_type_id.id,
-            'work_entry_source': contract.work_entry_source,
         }
+        if 'work_entry_source' in contract:
+            contract_vals['work_entry_source'] = contract.work_entry_source
+
         for advantage in contract_advantages:
             if not advantage.res_field_id or advantage.field not in contract:
                 continue

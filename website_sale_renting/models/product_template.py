@@ -7,6 +7,7 @@ from pytz import timezone, utc, UTC
 from odoo import fields, models
 from odoo.http import request
 from odoo.addons.sale_temporal.models.product_pricing import PERIOD_RATIO
+from odoo.tools import format_amount
 
 class ProductTemplate(models.Model):
     _inherit = 'product.template'
@@ -98,6 +99,7 @@ class ProductTemplate(models.Model):
         if current_unit != pricing.recurrence_id.unit:
             ratio *= PERIOD_RATIO[current_unit] / PERIOD_RATIO[pricing.recurrence_id.unit]
 
+        company_id = False
         if website:
             #compute taxes
             product = (product or self)
@@ -110,6 +112,28 @@ class ProductTemplate(models.Model):
             current_price = self._price_with_tax_computed(
                 current_price, product_taxes, taxes, company_id, pricelist, product, partner
             )
+
+        suitable_pricings = self.env['product.pricing']._get_suitable_pricings(product or self, pricelist)
+        # If there are multiple pricings with the same recurrence, we only keep the ones with the best price
+        best_pricings = {}
+        for p in suitable_pricings:
+            if p.recurrence_id not in best_pricings:
+                best_pricings[p.recurrence_id] = p
+            elif best_pricings[p.recurrence_id].price > p.price:
+                best_pricings[p.recurrence_id] = p
+        suitable_pricings = best_pricings.values()
+        currency = pricelist and pricelist.currency_id or self.env.company.currency_id
+        def _pricing_price(pricing, pricelist):
+            if pricing.currency_id == currency:
+                return pricing.price
+            return pricing.currency_id._convert(
+                pricing.price,
+                pricelist.currency_id,
+                company_id or self.env.company,
+                fields.Date.context_today(self),
+            )
+        pricing_table = [(p.name, format_amount(self.env, _pricing_price(p, pricelist), currency))
+                            for p in suitable_pricings]
 
         return {
             **combination_info,
@@ -125,6 +149,7 @@ class ProductTemplate(models.Model):
             'current_rental_price_per_unit': current_price / (ratio or 1),
             'base_unit_price': 0,
             'base_unit_name': False,
+            'pricing_table': pricing_table,
         }
 
     def _get_default_renting_dates(

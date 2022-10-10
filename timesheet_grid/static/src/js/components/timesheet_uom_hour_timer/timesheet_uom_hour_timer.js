@@ -15,10 +15,12 @@ export class TimesheetUOMHourTimer extends Component {
     }
 
     get displayButton() {
-        return this.props.record.data.display_timer && this.props.record.mode === "readonly";
+        return this.props.record.data.display_timer
+            && this.props.record.mode === "readonly"
+            && !this.props.record.isReadonly(this.props.name);
     }
 
-    get buttonClass() {
+    get iconClass() {
         const icon = this.isTimerRunning ? "stop" : "play";
         const textColor = this.isTimerRunning ? "danger" : "primary";
         return `fa fa-${icon}-circle text-${textColor}`;

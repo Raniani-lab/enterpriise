@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-    <div t-name="spreadsheet_edition.SpreadsheetComponent" class="o_spreadsheet_container" owl="1">
+    <div t-name="spreadsheet_edition.SpreadsheetComponent" class="o_spreadsheet_container o_field_highlight" owl="1">
         <Spreadsheet model="model"
                      exposeSpreadsheet.bind="exposeSpreadsheet"
                      onUnexpectedRevisionId="props.onUnexpectedRevisionId"

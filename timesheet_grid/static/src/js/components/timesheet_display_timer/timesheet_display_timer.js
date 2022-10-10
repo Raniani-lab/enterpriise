@@ -52,6 +52,7 @@ export class TimesheetDisplayTimer extends Component {
             this.serverTime = await this.timerService.getServerTime();
             this.timerService.computeOffset(this.serverTime);
             this.timerService.setTimer(this.state.value, this.timerStart, this.serverTime);
+            this.timerService.updateTimer(this.timerStart);
             this.state.value = this.timerService.toSeconds / 3600;
             this._startTimeRefresh();
         }

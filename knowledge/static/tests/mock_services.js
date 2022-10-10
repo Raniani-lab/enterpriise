@@ -35,7 +35,7 @@ export function makeFakeMessagingServiceForKnowledge() {
                     startListening() {},
                     stopListening() {},
                     removeListener() {},
-                    messagingCreatedPromise: Promise.resolve(),
+                    messagingCreatedPromise: new Promise(() => {}),
                 },
             };
         }

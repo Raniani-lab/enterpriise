@@ -7,7 +7,7 @@ class ProductPricing(models.Model):
 
     def _get_unit_label(self, duration):
         """ Get the product pricing unit label for website rendering. """
-        if not duration:
+        if duration is None:
             return ""
         labels = {
             'hour': _lt("Hour"),

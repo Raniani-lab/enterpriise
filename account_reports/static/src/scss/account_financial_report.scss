@@ -138,6 +138,14 @@
                 background-color: rgba(0, 0, 0, 0.05);
             }
         }
+        thead {
+            tr:first-child {
+                border-bottom: 1px solid $o-gray-300;
+            }
+        }
+        tbody {
+            border: none;
+        }
         tbody tr:hover {
             td {
                 background-color: rgba(0, 0, 0, 0.05) !important;
@@ -147,13 +155,10 @@
             padding-left: 8px;
             padding-right: 8px;
         }
-        thead th {
-            background-color: #f8efcb;
-        }
         max-width: 500px;
         margin-left:auto;
         margin-right:auto;
-        background-color: #f8efcb;
+        border: 1px solid $o-gray-300;
     }
     .account_report_line_name a {
         color:#008784;
@@ -249,7 +254,6 @@
             text-align: center;
         }
         th {
-            border: 1px solid #e6e6e6;
             background-color: white;
             background-clip: padding-box;
             .subtitle{
@@ -258,7 +262,6 @@
         }
         .o_account_reports_header_hierarchy {
             th:not(:first-child) {
-                border: 1px solid #e6e6e6;
                 border-collapse: separate;
                 padding-right: 8px;
                 padding-left: 8px;

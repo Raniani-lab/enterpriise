@@ -50,7 +50,7 @@ class PlanningSlot(models.Model):
                    (contract.date_end IS NULL OR
                     contract.date_end >= slot.start_datetime)
          LEFT JOIN hr_work_entry hwe
-                ON hwe.employee_id=slot.employee_id AND
+                ON hwe.employee_id = slot.employee_id AND
                    hwe.date_start <= slot.end_datetime AND
                    hwe.date_stop >= slot.start_datetime
              WHERE slot.id in %s
@@ -63,7 +63,8 @@ class PlanningSlot(models.Model):
         work_entries_to_archive = []
         for row in query_result:
             periods_to_generate[(row['start'], row['stop'])].extend(row['contract_ids'])
-            work_entries_to_archive.extend(row['work_entry_ids'])
+            if any(row['work_entry_ids']):
+                work_entries_to_archive.extend(row['work_entry_ids'])
         self.env['hr.work.entry'].sudo().browse(work_entries_to_archive).write({'active': False})
         work_entries_vals_list = []
         for period, contract_ids in periods_to_generate.items():

@@ -6,35 +6,14 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:43+0000\n"
-"PO-Revision-Date: 2022-10-04 09:43+0000\n"
+"POT-Creation-Date: 2022-10-10 13:29+0000\n"
+"PO-Revision-Date: 2022-10-10 13:29+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Plural-Forms: \n"
-
-#. module: spreadsheet_edition
-#. openerp-web
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
-#, python-format
-msgid "(Graph -"
-msgstr ""
-
-#. module: spreadsheet_edition
-#. openerp-web
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
-#, python-format
-msgid "(List #"
-msgstr ""
-
-#. module: spreadsheet_edition
-#. openerp-web
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
-#, python-format
-msgid "(Pivot #"
-msgstr ""
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__active
@@ -172,8 +151,6 @@ msgstr ""
 
 #. module: spreadsheet_edition
 #. openerp-web
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Date field"
@@ -737,6 +714,13 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/odoo_bar/odoo_bar_config_panel.xml:0
 #, python-format
 msgid "Stacked barchart"
+msgstr ""
+
+#. module: spreadsheet_edition
+#. openerp-web
+#: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/odoo_line/odoo_line_config_panel.xml:0
+#, python-format
+msgid "Stacked linechart"
 msgstr ""
 
 #. module: spreadsheet_edition

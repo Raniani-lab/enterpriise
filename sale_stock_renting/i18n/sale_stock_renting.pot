@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:43+0000\n"
-"PO-Revision-Date: 2022-10-04 09:43+0000\n"
+"POT-Creation-Date: 2022-10-10 13:29+0000\n"
+"PO-Revision-Date: 2022-10-10 13:29+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -28,16 +28,17 @@ msgid "%(product)s (%(qty)s items)"
 msgstr ""
 
 #. module: sale_stock_renting
-#: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form
-msgid "<span class=\"o_form_label\">Default Padding Time</span>"
+#: model_terms:ir.ui.view,arch_db:sale_stock_renting.rental_order_wizard_view_form
+msgid ""
+"<i class=\"fa fa-warning\"/>\n"
+"                        <span>\n"
+"                            Some products don't have the requested qty available for pickup\n"
+"                        </span>"
 msgstr ""
 
 #. module: sale_stock_renting
-#: model_terms:ir.ui.view,arch_db:sale_stock_renting.rental_order_wizard_view_form
-msgid ""
-"<span>\n"
-"                    Some products don't have the requested qty available for pickup\n"
-"                  </span>"
+#: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form
+msgid "<span class=\"o_form_label\">Default Padding Time</span>"
 msgstr ""
 
 #. module: sale_stock_renting
@@ -49,13 +50,20 @@ msgid ""
 msgstr ""
 
 #. module: sale_stock_renting
+#. openerp-web
+#: code:addons/sale_stock_renting/static/src/widgets/qty_at_date_widget.xml:0
+#, python-format
+msgid "Availability"
+msgstr ""
+
+#. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_order_wizard_line__qty_available
 msgid "Available"
 msgstr ""
 
 #. module: sale_stock_renting
 #. openerp-web
-#: code:addons/sale_stock_renting/static/src/xml/qty_at_date_rental.xml:0
+#: code:addons/sale_stock_renting/static/src/widgets/qty_at_date_widget.xml:0
 #, python-format
 msgid "Available for Rent"
 msgstr ""
@@ -354,7 +362,7 @@ msgstr ""
 
 #. module: sale_stock_renting
 #. openerp-web
-#: code:addons/sale_stock_renting/static/src/xml/qty_at_date_rental.xml:0
+#: code:addons/sale_stock_renting/static/src/widgets/qty_at_date_widget.xml:0
 #, python-format
 msgid "View Rentals"
 msgstr ""
@@ -383,7 +391,7 @@ msgstr ""
 
 #. module: sale_stock_renting
 #. openerp-web
-#: code:addons/sale_stock_renting/static/src/xml/qty_at_date_rental.xml:0
+#: code:addons/sale_stock_renting/static/src/widgets/qty_at_date_widget.xml:0
 #, python-format
 msgid "to"
 msgstr ""

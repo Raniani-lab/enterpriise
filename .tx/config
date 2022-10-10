@@ -337,11 +337,6 @@ file_filter = event_social/i18n/<lang>.po
 source_file = event_social/i18n/event_social.pot
 source_lang = en
 
-[odoo-16.fleet_dashboard]
-file_filter = fleet_dashboard/i18n/<lang>.po
-source_file = fleet_dashboard/i18n/fleet_dashboard.pot
-source_lang = en
-
 [odoo-16.helpdesk]
 file_filter = helpdesk/i18n/<lang>.po
 source_file = helpdesk/i18n/helpdesk.pot
@@ -457,11 +452,6 @@ file_filter = hr_holidays_gantt/i18n/<lang>.po
 source_file = hr_holidays_gantt/i18n/hr_holidays_gantt.pot
 source_lang = en
 
-[odoo-16.hr_homeworking]
-file_filter = hr_homeworking/i18n/<lang>.po
-source_file = hr_homeworking/i18n/hr_homeworking.pot
-source_lang = en
-
 [odoo-16.hr_payroll]
 file_filter = hr_payroll/i18n/<lang>.po
 source_file = hr_payroll/i18n/hr_payroll.pot
@@ -530,11 +520,6 @@ source_lang = en
 [odoo-16.hr_work_entry_holidays_enterprise]
 file_filter = hr_work_entry_holidays_enterprise/i18n/<lang>.po
 source_file = hr_work_entry_holidays_enterprise/i18n/hr_work_entry_holidays_enterprise.pot
-source_lang = en
-
-[odoo-16.im_livechat_enterprise]
-file_filter = im_livechat_enterprise/i18n/<lang>.po
-source_file = im_livechat_enterprise/i18n/im_livechat_enterprise.pot
 source_lang = en
 
 [odoo-16.industry_fsm]
@@ -1027,6 +1012,11 @@ file_filter = stock_barcode_picking_batch/i18n/<lang>.po
 source_file = stock_barcode_picking_batch/i18n/stock_barcode_picking_batch.pot
 source_lang = en
 
+[odoo-16.stock_barcode_product_expiry]
+file_filter = stock_barcode_product_expiry/i18n/<lang>.po
+source_file = stock_barcode_product_expiry/i18n/stock_barcode_product_expiry.pot
+source_lang = en
+
 [odoo-16.stock_enterprise]
 file_filter = stock_enterprise/i18n/<lang>.po
 source_file = stock_enterprise/i18n/stock_enterprise.pot
@@ -1060,11 +1050,6 @@ source_lang = en
 [odoo-16.web_cohort]
 file_filter = web_cohort/i18n/<lang>.po
 source_file = web_cohort/i18n/web_cohort.pot
-source_lang = en
-
-[odoo-16.web_dashboard]
-file_filter = web_dashboard/i18n/<lang>.po
-source_file = web_dashboard/i18n/web_dashboard.pot
 source_lang = en
 
 [odoo-16.web_enterprise]

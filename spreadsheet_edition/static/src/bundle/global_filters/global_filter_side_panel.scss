@@ -42,8 +42,11 @@
                 flex-direction: row;
                 flex-grow: 1;
 
-                .o-filter-value .o_field_widget {
-                    width: 100%;
+                .o-filter-value {
+                    .o_field_widget,
+                    .o_field_tags {
+                        width: 100%;
+                    }
                 }
 
                 .o_side_panel_filter_icon {

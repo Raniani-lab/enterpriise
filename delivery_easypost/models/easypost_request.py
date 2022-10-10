@@ -124,7 +124,7 @@ class EasypostRequest():
                    if addr_obj[addr_obj_field]}
         address['order[%s][name]' % addr_type] = (addr_obj.name or addr_obj.display_name)[:25]
         if addr_obj.state_id:
-            address['order[%s][state]' % addr_type] = addr_obj.state_id.name
+            address['order[%s][state]' % addr_type] = addr_obj.state_id.code
         address['order[%s][country]' % addr_type] = addr_obj.country_id.code
         if addr_obj.commercial_company_name:
             address['order[%s][company]' % addr_type] = addr_obj.commercial_company_name[:25]

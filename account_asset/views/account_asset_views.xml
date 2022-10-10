@@ -97,7 +97,7 @@
                         </group>
                     </group>
                     <notebook colspan="4" attrs="{'invisible': [('state', '=', 'model')]}">
-                        <page string="Asset">
+                        <page string="Asset" name="main_page">
                             <group>
                                 <field name="active" invisible="1"/>
                                 <group string="Asset Values" attrs="{'invisible': [('state', '=', 'model')]}" name="asset_values">
@@ -123,7 +123,7 @@
                                     <field name="method_progress_factor" widget="percentage" attrs="{'invisible':[('method','=','linear')], 'required':[('method','in',('degressive', 'degressive_then_linear'))]}"/>
                                     <label for="method_number" string="Duration"/>
                                     <div class="o_row">
-                                        <field name="method_number" required="1"/>
+                                        <field name="method_number" required="1" class="oe_inline"/>
                                         <field name="method_period" required="1" nolabel="1"/>
                                     </div>
                                     <field name="prorata_computation_type"/>

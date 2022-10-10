@@ -182,3 +182,43 @@ class TestWorkEntryPlanning(TransactionCase):
         self.contract._generate_work_entries(date(2021, 9, 1), date(2021, 9, 30))
         work_entries = self.env['hr.work.entry'].search([('employee_id', '=', self.employee.id)])
         self.assertFalse(any(hwe.planning_slot_id for hwe in work_entries))
+
+    def test_create_work_entries(self):
+        """ No assertion in this test, the purpose is just to check that
+            plannings_slots._create_work_entries() happens without raising error
+            when one of the slots is related to work_entries and the other not.
+        """
+        self.contract.write({
+            'date_generated_from': datetime(2021, 9, 1, 0, 0, 0),
+            'date_generated_to': datetime(2021, 9, 30, 23, 59, 59),
+        })
+        employee2 = self.env['hr.employee'].create({
+            'name': 'Santa Cruise',
+        })
+        self.env['hr.contract'].create({
+            'name': 'Santa Cruise\'s contract',
+            'employee_id': employee2.id,
+            'wage': 5300,
+            'work_entry_source': 'planning',
+            'date_start': '2020-01-01',
+            'state': 'open',
+            'date_generated_from': datetime(2021, 9, 1, 0, 0, 0),
+            'date_generated_to': datetime(2021, 9, 30, 23, 59, 59),
+        })
+        planning_slots = self.env['planning.slot'].create([{
+            'resource_id': self.employee.resource_id.id,
+            'start_datetime': datetime(2021, 9, 14, 14, 0, 0),
+            'end_datetime': datetime(2021, 9, 14, 17, 0, 0),
+        }, {
+            'resource_id': employee2.resource_id.id,
+            'start_datetime': datetime(2021, 9, 15, 14, 0, 0),
+            'end_datetime': datetime(2021, 9, 15, 17, 0, 0),
+        }])
+        self.env['hr.work.entry'].create({
+            'name': 'Mission Impossible: Distribute Gifts',
+            'employee_id': employee2.id,
+            'contract_id': employee2.contract_id.id,
+            'date_start': datetime(2021, 9, 15, 14, 0, 0),
+            'date_stop': datetime(2021, 9, 15, 17, 0, 0),
+        })
+        planning_slots._create_work_entries()

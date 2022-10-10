@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <template id="rental_products_price" inherit_id="website_sale.product_price" name="Rental Product Price">
+        <xpath expr="//div[@itemprop='offers']" position="attributes">
+            <attribute name="t-attf-class" separator=" " add="{{'o_hidden' if combination_info['is_rental'] else ''}}"/>
+        </xpath>
         <xpath expr="//span[hasclass('oe_price')]" position="after">
             <t t-if="combination_info['is_rental']">
                 <input type="hidden" name="is_rental" t-att-value="combination_info['is_rental']"/>
@@ -51,7 +54,7 @@
                         </div>
                     </div>
                 </div>
-                <div class="o_renting_details my-2 col-md-8 ps-0 d-flex justify-content-between">
+                <div class="h4 o_renting_details my-2 col-md-8 ps-0 d-flex justify-content-between">
                     <div>
                         <strong>
                             <span class="o_renting_duration" t-esc="combination_info['current_rental_duration']"/>
@@ -75,6 +78,21 @@
                     </span>
                 </div>
             </div>
+        </xpath>
+        <xpath expr="//div[@id='o_product_terms_and_share']" position="before">
+            <t t-if="combination_info['is_rental']">
+                <u class="h5">Pricing</u>
+                <table class="o_not_editable table w-50 {{'' if combination_info['pricing_table'] else 'd-none'}}" id="oe_wsale_rental_pricing_table">
+                    <tbody>
+                        <t t-foreach="combination_info['pricing_table']" t-as="pricing_info">
+                            <tr>
+                                <td class="w-50" t-esc="pricing_info[0]"/>
+                                <td class="w-50 text-muted" t-esc="pricing_info[1]"/>
+                            </tr>
+                        </t>
+                    </tbody>
+                </table>
+            </t>
         </xpath>
     </template>
 

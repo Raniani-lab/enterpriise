@@ -45,7 +45,7 @@
             ('after', 'web_grid/static/tests/mock_server.js', 'timesheet_grid/static/tests/timesheet_grid_tests.js'),
             ('after', 'web_grid/static/tests/mock_server.js', 'timesheet_grid/static/tests/timesheet_timer_grid_tests.js'),
             ('after', 'web_grid/static/tests/mock_server.js', 'timesheet_grid/static/tests/task_progress_gantt_test.js'),
-            "timesheet_grid/static/tests/timesheet_uom_timer_tests.js",
+            "timesheet_grid/static/tests/timesheet_uom_hour_timer_tests.js",
             "timesheet_grid/static/tests/timesheet_display_timer_tests.js",
             "timesheet_grid/static/tests/timesheet_validation_kanban_view_tests.js",
         ],

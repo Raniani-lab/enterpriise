@@ -79,9 +79,7 @@ export class FormEditorCompiler extends formView.Compiler {
             el.prepend(compiledButtonBox);
         }
 
-        const fieldStatus = compiled.querySelector(
-            `Field[type="'crm_statusbar'"], Field[type="'statusbar'"]`
-        ); // change selector at some point
+        const fieldStatus = compiled.querySelector(`Field[type="'statusbar'"]`); // change selector at some point
         if (!fieldStatus) {
             const add_statusbar = !compiled.querySelector(".o_form_statusbar");
             const statusBarFieldHook = createElement("StatusBarFieldHook", { add_statusbar });

@@ -27,7 +27,7 @@
                 <t t-set="line_name">
                     <t t-if="not context.get('print_mode')">
                         <t t-if="'move_id' in line and 'date' in line">
-                            <a t-att-data-line_id="line.get('id')" action="caret_option_open_record_form" t-att-data-action_param = "move_id">
+                            <a t-att-data-line_id="line.get('id')" action="journal_report_action_open_business_doc">
                                 <t t-esc="line.get('name')"/>
                             </a>
                             <t t-if="'date' in line">

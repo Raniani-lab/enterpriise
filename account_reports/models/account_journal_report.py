@@ -951,3 +951,10 @@ class JournalReportCustomHandler(models.AbstractModel):
         action = self.env['account.report'].open_journal_items(options=options, params=params)
         action.get('context', {}).update({'search_default_group_by_account': 0, 'search_default_group_by_move': 1})
         return action
+
+    def journal_report_action_open_business_doc(self, options, params):
+        model, record_id = self.env['account.report']._get_model_info_from_id(params['line_id'])
+        record = self.env[model].browse(record_id)
+        if record._name in ['account.move', 'account.move.line']:
+            return record.action_open_business_doc()
+        raise UserError(_("The selected report line does not target a Journal Entry or a Journal Item."))

@@ -1553,7 +1553,7 @@ class AccountReport(models.Model):
             ],
 
             'account.bank.statement': [
-                {'name': _("View Bank Statement"), 'action': 'caret_option_open_record_form', 'action_param': 'statement_id'},
+                {'name': _("View Bank Statement"), 'action': 'caret_option_open_statement_line_reco_widget'},
             ],
 
             'res.partner': [
@@ -1586,7 +1586,6 @@ class AccountReport(models.Model):
         return {
             'account.payment': 'account.view_account_payment_form',
             'res.partner': 'base.view_partner_form',
-            'account.bank.statement': 'account.view_bank_statement_form',
             'account.move': 'account.view_move_form',
         }
 
@@ -1621,6 +1620,15 @@ class AccountReport(models.Model):
         }
 
         return action_vals
+
+    def caret_option_open_statement_line_reco_widget(self, options, params):
+        model, record_id = self._get_model_info_from_id(params['line_id'])
+        record = self.env[model].browse(record_id)
+        if record._name == 'account.bank.statement.line':
+            return record.action_open_recon_st_line()
+        elif record._name == 'account.bank.statement':
+            return record.action_open_bank_reconcile_widget()
+        raise UserError(_("'View Bank Statement' caret option is only available for report lines targeting bank statements."))
 
     ####################################################
     # MISC

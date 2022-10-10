@@ -20,22 +20,19 @@ registerModel({
         dialTone: one("SoundEffect", {
             default: {
                 defaultVolume: 0.7,
-                filename: "dialtone",
-                path: "/voip/static/src/sounds/",
+                path: "/voip/static/src/sounds/dialtone",
             },
             isCausal: true,
         }),
         incomingCallRingtone: one("SoundEffect", {
             default: {
-                filename: "incomingcall",
-                path: "/voip/static/src/sounds/",
+                path: "/voip/static/src/sounds/incomingcall",
             },
             isCausal: true,
         }),
         ringbackTone: one("SoundEffect", {
             default: {
-                filename: "ringbacktone",
-                path: "/voip/static/src/sounds/",
+                path: "/voip/static/src/sounds/ringbacktone",
             },
             isCausal: true,
         }),

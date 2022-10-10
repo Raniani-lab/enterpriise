@@ -510,15 +510,16 @@ class AccountAsset(models.Model):
                 amount = min(linear_amount, 0)
 
         if self.method == 'degressive_then_linear' and days_left_to_depreciated != 0:
-            linear_amount = number_days * residual_declining / days_left_to_depreciated
-            if float_compare(residual_amount, 0, precision_rounding=self.currency_id.rounding) >= 0:
-                amount = max(linear_amount, amount)
-            else:
-                amount = min(linear_amount, amount)
-        # TODO new method
-        # elif self.method == 'degressive_à_la_française' and days_left_to_depreciated != 0:
-        #     linear_amount = number_days * self.total_depreciable_value / self.asset_lifetime_days
-        #     amount = max(linear_amount, amount)
+            linear_amount = number_days * self.total_depreciable_value / self.asset_lifetime_days
+            amount = max(linear_amount, amount, key=abs)
+
+        # if self.method == 'degressif_chelou' and days_left_to_depreciated != 0:
+        #     linear_amount = number_days * residual_declining / days_left_to_depreciated
+        #     if float_compare(residual_amount, 0, precision_rounding=self.currency_id.rounding) >= 0:
+        #         amount = max(linear_amount, amount)
+        #     else:
+        #         amount = min(linear_amount, amount)
+
 
         if abs(residual_amount) < abs(amount) or total_days >= self.asset_lifetime_days:
             # If the residual amount is less than the computed amount, we keep the residual amount

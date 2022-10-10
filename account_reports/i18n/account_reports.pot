@@ -71,6 +71,14 @@ msgstr ""
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
+msgid ""
+"'View Bank Statement' caret option is only available for report lines "
+"targeting bank statements."
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
 msgid "'external' engine does not support groupby, limit nor offset."
 msgstr ""
 
@@ -2885,6 +2893,13 @@ msgstr ""
 #: code:addons/account_reports/models/account_tax.py:0
 #, python-format
 msgid "The main company of a tax unit has to be part of it."
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_journal_report.py:0
+#, python-format
+msgid ""
+"The selected report line does not target a Journal Entry or a Journal Item."
 msgstr ""
 
 #. module: account_reports

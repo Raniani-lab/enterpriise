@@ -946,6 +946,15 @@ class SaleOrder(models.Model):
 
         return self.env["sale.order.line"].browse(invoiceable_line_ids + downpayment_line_ids)
 
+    def _subscription_post_success_free_renewal(self):
+        """ Action done after the successful payment has been performed """
+        self.ensure_one()
+        msg_body = _(
+            'Automatic renewal succeeded. Free subscription. Next Invoice: %(inv)s. No email sent.',
+            inv=self.next_invoice_date
+        )
+        self.message_post(body=msg_body)
+
     def _subscription_post_success_payment(self, invoice, transaction):
         """ Action done after the successful payment has been performed """
         self.ensure_one()
@@ -1088,10 +1097,15 @@ class SaleOrder(models.Model):
                 if auto_commit:
                     self.env.cr.commit() # To avoid a rollback in case something is wrong, we create the invoices one by one
                 invoiceable_lines = all_invoiceable_lines.filtered(lambda l: l.order_id.id == subscription.id)
-                if not invoiceable_lines:
-                    # We still update the next_invoice_date if there is any recurring line
+                invoice_is_free = float_is_zero(sum(invoiceable_lines.mapped('price_subtotal')), precision_rounding=subscription.currency_id.rounding)
+                if not invoiceable_lines or invoice_is_free:
+                    # We still update the next_invoice_date if it is due
                     if not automatic or subscription.next_invoice_date < today:
                         subscription._update_next_invoice_date()
+                        if invoice_is_free:
+                            subscription._subscription_post_success_free_renewal()
+                    if auto_commit:
+                        self.env.cr.commit()
                     continue
                 try:
                     invoice = subscription.with_context(recurring_automatic=automatic)._create_invoices()

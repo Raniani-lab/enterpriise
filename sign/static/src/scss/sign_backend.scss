@@ -32,8 +32,8 @@
             table {
                 border-collapse: initial;
                 border: none;
-                --table-hover-bg: white;
-                --table-striped-bg: white;
+                --table-hover-bg: #{$o-view-background-color};
+                --table-striped-bg: #{$o-view-background-color};
             }
             thead > tr > th {
                 border: none;

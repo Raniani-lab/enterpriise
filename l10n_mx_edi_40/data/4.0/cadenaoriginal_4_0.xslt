@@ -6,7 +6,7 @@
   <!--
 		En esta sección se define la inclusión de las plantillas de utilerías para colapsar espacios
 	-->
-  <xsl:include href="http://www.sat.gob.mx/sitio_internet/cfd/2/cadenaoriginal_2_0/utilerias.xslt"/>
+  <xsl:include href="../../../l10n_mx_edi/data/3.3/utilerias.xslt"/>
   <!-- 
 		En esta sección se define la inclusión de las demás plantillas de transformación para 
 		la generación de las cadenas originales de los complementos fiscales 

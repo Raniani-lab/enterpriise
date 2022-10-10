@@ -330,7 +330,7 @@
                                             </div>
                                         </div>
                                         <!-- Properties -->
-                                        <div t-if="state.displayPropertyPanel" class="o_knowledge_properties col-12 col-lg-2 position-relative d-print-none p-0 border-start"
+                                        <div t-if="state.displayPropertyPanel" class="o_knowledge_properties o_field_highlight col-12 col-lg-2 position-relative d-print-none p-0 border-start"
                                              attrs="{'invisible': [('parent_id', '=', False)]}">
                                             <div class="m-2 o_scroll_view_lg">
                                                 <h3 class="mt-2 mb-4">Property Fields</h3>

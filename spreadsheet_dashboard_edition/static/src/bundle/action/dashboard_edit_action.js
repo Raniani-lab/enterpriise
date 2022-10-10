@@ -17,7 +17,7 @@ import { useService } from "@web/core/utils/hooks";
  * @typedef {import("@spreadsheet_edition/bundle/o_spreadsheet/collaborative/spreadsheet_collaborative_service").SpreadsheetCollaborativeService} SpreadsheetCollaborativeService
  */
 
-const { useState, onWillStart, Component, useSubEnv } = owl;
+const { useState, Component, useSubEnv } = owl;
 
 class DashboardEditAction extends AbstractSpreadsheetAction {
     setup() {
@@ -31,7 +31,6 @@ class DashboardEditAction extends AbstractSpreadsheetAction {
             // TODO clean this env key
             isDashboardSpreadsheet: true,
         });
-        onWillStart(() => this.onWillStart());
 
         /** @type {SpreadsheetCollaborativeService} */
         this.spreadsheetCollaborative = useService("spreadsheet_collaborative");

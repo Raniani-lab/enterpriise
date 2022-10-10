@@ -77,7 +77,7 @@ export class TimesheetDisplayTimer extends Component {
         }
     }
 
-    get FloatTimeFieldProps() {
+    get TimesheetTimerFloatTimerFieldProps() {
         return { ...this.props, ...this.state };
     }
 

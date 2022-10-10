@@ -15,6 +15,12 @@
 
     .o_dial_window_title {
         height: $o-mail-chat-window-header-height-mobile;
+        background-color: var(--voip__windowTitle-bg, #{$o-brand-odoo});
+        color: #FFFFFF;
+    }
+
+    .o_dial_window_close:hover {
+        background-color: rgba($black, 0.1);
     }
 
     @include media-breakpoint-up(md) {

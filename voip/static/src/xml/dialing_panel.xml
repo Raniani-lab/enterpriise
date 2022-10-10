@@ -13,7 +13,7 @@
     @param {voip.dialingPanel} widget
 -->
 <div class="o_dial o_in_home_menu position-absolute w-100 h-100 flex-column ms-md-2 bottom-0 bg-white shadow d-print-none" t-name="voip.DialingPanel">
-    <div class="o_dial_fold position-relative bottom-0 text-bg-odoo">
+    <div class="o_dial_fold position-relative bottom-0">
         <div class="o_dial_window_title d-flex align-items-center cursor-pointer overflow-auto">
             <t t-call="voip.DialingPanel.HeaderContent">
                 <a t-set="title" t-value="widget.title"/>
@@ -83,7 +83,7 @@
 <t t-name="voip.DialingPanel.HeaderContent">
     <i class="oi oi-large oi-voip ms-3 me-1 my-0" role="img"/>
     <div class="o_dial_text flex-grow-1 mx-1 my-0" t-out="title"/>
-    <a aria-label="Close" class="o_dial_window_close btn btn-odoo d-flex align-items-center h-100 m-0 px-3 py-0 border-0 opacity-50 opacity-100-hover" href="#" title="Close">
+    <a aria-label="Close" class="o_dial_window_close d-flex align-items-center h-100 m-0 px-3 py-0 border-0 opacity-50 opacity-100-hover text-reset" href="#" title="Close">
         <i class="oi oi-large oi-close"/>
     </a>
 </t>

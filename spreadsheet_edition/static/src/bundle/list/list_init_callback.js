@@ -63,7 +63,7 @@ export function insertList({ list, threshold, fields, name }) {
             columns: list.columns,
         });
         const columns = [];
-        for (let col = 0; col <= list.columns.length; col++) {
+        for (let col = 0; col < list.columns.length; col++) {
             columns.push(col);
         }
         model.dispatch("AUTORESIZE_COLUMNS", { sheetId, cols: columns });

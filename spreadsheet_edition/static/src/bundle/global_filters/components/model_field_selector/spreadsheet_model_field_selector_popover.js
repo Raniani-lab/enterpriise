@@ -6,7 +6,7 @@ export class SpreadsheetModelFieldSelectorPopover extends ModelFieldSelectorPopo
     async update() {
         const fieldNameChain = this.fieldNameChain;
         this.fullFieldName = fieldNameChain.join(".");
-        await this.props.update(fieldNameChain, this.chain);
+        await this.props.update(fieldNameChain, [...this.chain]);
         await this.loadFields();
         this.render();
     }

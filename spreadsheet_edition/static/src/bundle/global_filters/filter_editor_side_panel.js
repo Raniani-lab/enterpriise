@@ -261,7 +261,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         if (!fieldChain) {
             return undefined;
         }
-        const candidate = fieldChain.reverse().find((chain) => chain.field);
+        const candidate = [...fieldChain].reverse().find((chain) => chain.field);
         return candidate ? candidate.field : candidate;
     }
 

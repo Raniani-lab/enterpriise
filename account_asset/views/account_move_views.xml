@@ -23,20 +23,28 @@
                     class="oe_stat_button"
                     icon="fa-id-card-o"
                     attrs="{'invisible': ['|', ('number_asset_ids', '=', 0), ('draft_asset_ids', '=', True)]}">
-                    <field name="number_asset_ids" widget="statinfo" nolabel="1" help=""/>
-                    <label for="number_asset_ids" string="Asset(s)" attrs="{'invisible': [('linked_asset_type', '!=', 'purchase')]}"/>
-                    <label for="number_asset_ids" string="Deferred Expense(s)" attrs="{'invisible': [('linked_asset_type', '!=', 'expense')]}"/>
-                    <label for="number_asset_ids" string="Deferred Revenue(s)" attrs="{'invisible': [('linked_asset_type', '!=', 'sale')]}"/>
+                    <div class="o_field_widget o_stat_info">
+                        <field name="number_asset_ids" nolabel="1" help=""/>
+                        <span class="o_stat_text">
+                        <label for="number_asset_ids" string="Assets" attrs="{'invisible': [('linked_asset_type', '!=', 'purchase')]}"/>
+                        <label for="number_asset_ids" string="Def. Expenses" attrs="{'invisible': [('linked_asset_type', '!=', 'expense')]}"/>
+                        <label for="number_asset_ids" string="Def. Revenues" attrs="{'invisible': [('linked_asset_type', '!=', 'sale')]}"/>
+                        </span>
+                    </div>
                 </button>
                 <button name="action_open_asset_ids"
                     type="object"
                     class="oe_stat_button text-danger"
                     icon="fa-id-card-o"
                     attrs="{'invisible': ['|', ('number_asset_ids', '=', 0), ('draft_asset_ids', '=', False)]}">
-                    <field name="number_asset_ids" widget="statinfo" nolabel="1" help=""/>
-                    <label for="number_asset_ids" string="Asset(s)" attrs="{'invisible': [('linked_asset_type', '!=', 'purchase')]}"/>
-                    <label for="number_asset_ids" string="Deferred Expense(s)" attrs="{'invisible': [('linked_asset_type', '!=', 'expense')]}"/>
-                    <label for="number_asset_ids" string="Deferred Revenue(s)" attrs="{'invisible': [('linked_asset_type', '!=', 'sale')]}"/>
+                    <div class="o_field_widget o_stat_info">
+                        <field name="number_asset_ids" nolabel="1" help=""/>
+                        <span class="o_stat_text">
+                        <label for="number_asset_ids" string="Assets" attrs="{'invisible': [('linked_asset_type', '!=', 'purchase')]}"/>
+                        <label for="number_asset_ids" string="Def. Expenses" attrs="{'invisible': [('linked_asset_type', '!=', 'expense')]}"/>
+                        <label for="number_asset_ids" string="Def. Revenues" attrs="{'invisible': [('linked_asset_type', '!=', 'sale')]}"/>
+                        </span>
+                    </div>
                 </button>
             </xpath>
         </field>

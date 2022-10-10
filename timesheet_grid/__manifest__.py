@@ -48,6 +48,7 @@
             "timesheet_grid/static/tests/timesheet_uom_hour_timer_tests.js",
             "timesheet_grid/static/tests/timesheet_display_timer_tests.js",
             "timesheet_grid/static/tests/timesheet_validation_kanban_view_tests.js",
+            "timesheet_grid/static/tests/timesheet_uom_hour_toggle_tests.js",
         ],
     }
 }

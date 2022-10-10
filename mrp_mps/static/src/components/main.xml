@@ -3,7 +3,7 @@
 
     <div t-name="mrp_mps.mrp_mps" class="main o_action" owl="1">
         <MrpMpsControlPanel/>
-        <div class="o_mrp_mps o_content">
+        <div class="o_mrp_mps o_content bg-view">
             <t t-if="lines.length">
                 <div class="text-nowrap mr0 ml0">
                     <table class="table o_mps_product_table">

@@ -70,7 +70,7 @@ class AccountMove(models.Model):
                             move.line_ids.filtered(lambda l: l.account_id == account).mapped(
                                 'debit' if asset.original_value > 0 else 'credit'
                             )
-                        ) * (asset.original_value / abs(asset.original_value))
+                        ) * (-1 if asset.original_value < 0 else 1)
                     )
             else:
                 asset_depreciation = 0

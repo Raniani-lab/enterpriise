@@ -27,7 +27,7 @@
                         >
                         <i t-att-class="app.webIcon.iconClass" t-attf-style="color: {{app.webIcon.color}};"/>
                     </div>
-                    <div class="o_caption w-100 text-center text-truncate text-white mt-2" t-esc="app.label or app.name"/>
+                    <div class="o_caption w-100 text-center text-truncate mt-2" t-esc="app.label or app.name"/>
                 </a>
             </div>
             <div t-elif="!displayedApps.length" id="result_menu_0" role="option" aria-selected="true" class="o_no_result">

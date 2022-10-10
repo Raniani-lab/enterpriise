@@ -45,12 +45,12 @@ $o-barcode-completed-color: #befdcc;
         }
     }
 
-    &.o_line_completed, &.o_line_completed > .o_barcode_line_summary {
-        background: $o-barcode-completed-color;
+    &.o_line_completed {
+        background: var(--barcode__line--completed, #befdcc);
     }
 
-    &.o_line_not_completed, &.o_line_not_completed > .o_barcode_line_summary {
-        background: #fcf9f2;
+    &.o_line_not_completed {
+        background: var(--barcode__line--notCompleted, #fcf9f2);
     }
 
     &.o_selected {

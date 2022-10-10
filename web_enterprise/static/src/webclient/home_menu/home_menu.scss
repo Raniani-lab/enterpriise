@@ -61,7 +61,8 @@
         }
 
         .o_caption {
-            text-shadow: 0 1px 1px rgba(black, 0.8);
+            color: $o-home-menu-caption-color;
+            text-shadow: $o-home-menu-caption-shadow;
         }
 
         &:focus,

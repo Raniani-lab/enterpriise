@@ -51,6 +51,11 @@
         opacity: 0;
         transition: visibility 0.3s, opacity 0.3s linear;
     }
+    
+    .o_knowledge_icon_cover_buttons {
+        background-color: var(--knowledge-view-bg, $o-white);
+    }
+
     .o_knowledge_icon_cover_buttons:hover > a,
     .o_knowledge_cover:hover .o_knowledge_edit_cover_buttons > a {
         visibility: visible;

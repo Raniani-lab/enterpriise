@@ -13,9 +13,10 @@ $dark: $o-gray-900 !default;
 
 // Options
 
-// Disable predefined decorative box-shadow styles on various components.
+// Enable predefined decorative box-shadow styles on various components.
 // Does not affect box-shadows used for focus states.
-$enable-shadows: false !default;
+
+$enable-shadows: true !default;
 
 // Components
 //
@@ -69,6 +70,9 @@ $table-striped-order: odd !default;
 
 $btn-transition: none !default;
 
+$btn-box-shadow: 0 !default;
+$btn-active-box-shadow: 0 !default;
+
 // Dropdowns
 //
 // Dropdown menu container and contents.
@@ -78,10 +82,18 @@ $dropdown-divider-bg: $o-gray-200 !default;
 // Forms
 //
 
+$input-bg: transparent !default;
+$input-box-shadow: 0 !default;
+
+$form-switch-checked-color: $o-white !default;
+
 // Will affect bootstrap default forms only (eg. popover textarea)
-$input-focus-box-shadow: none !default;
-$form-select-focus-box-shadow: none !default;
+$input-focus-box-shadow: 0 !default;
 $input-focus-border-color: mix($o-brand-primary, $o-gray-300) !default;
+
+$form-select-focus-box-shadow: 0 !default;
+
+$form-range-track-box-shadow: 0 !default;
 
 $custom-checkbox-indicator-border-radius: 1px !default; // Just a slight smoothing.
 
@@ -101,11 +113,9 @@ $custom-checkbox-indicator-border-radius: 1px !default; // Just a slight smoothi
 // $zindex-modal-backdrop: $zindex-modal;
 
 // Navs
-$nav-link-color: $o-gray-700 !default;
-$nav-link-border-color: $o-gray-300 !default;
-$nav-tabs-border-color: $o-gray-300 !default;
-$nav-tabs-link-hover-color: $o-brand-primary !default;
-$nav-tabs-link-active-color: $o-gray-900 !default;
+$nav-link-color: $o-main-text-color !default;
+$nav-tabs-link-active-color: $o-main-headings-color !default;
+$nav-tabs-link-active-bg: transparent !default;
 
 
 // Badges
@@ -117,6 +127,16 @@ $badge-border-radius: $o-border-radius !default;
 // Define alert colors, border radius, and padding.
 
 $alert-border-width: 0 !default;
+
+// Progress bars
+
+$progress-box-shadow: 0 !default;
+
+
+// Image thumbnails
+
+$thumbnail-box-shadow: 0 !default;
+
 
 // Breadcrumbs
 

@@ -46,8 +46,6 @@ $map-marker-color: #2c8397;
     &--pin-list {
         &-container {
             padding: 8px 8px 8px 22px !important;
-            background-color: white;
-            border-left: 1px solid #dee2e6;
             height: 100%;
             overflow-y: scroll;
             overflow-x: hidden;
@@ -80,14 +78,10 @@ $map-marker-color: #2c8397;
         &-header {
             padding: 8px 0;
             text-transform: uppercase;
-            color: #666666;
+            color: $headings-color;
 
             i {
                 margin-right: 0.5rem;
-            }
-
-            span {
-                font-weight: bold;
             }
         }
 

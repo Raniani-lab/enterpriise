@@ -213,7 +213,7 @@
                            <small t-att-title="comment.created_time"
                                   t-esc="comment.formatted_created_time"/>
                         </a>
-                        <span t-if="comment.likes.summary.total_count" class="o_social_comment_likes_total badge rounded-pill bg-white border-0 py-1 ms-1">
+                        <span t-if="comment.likes.summary.total_count" class="o_social_comment_likes_total badge rounded-pill bg-white py-1 ms-1">
                             <i t-attf-class="fa {{ likesClass }} me-1" title="Likes"/>
                             <span class="o_social_likes_count" t-esc="comment.likes.summary.total_count"/>
                         </span>

@@ -58,7 +58,7 @@
 
     <div t-name="GanttView" class="o_gantt_view">
         <div class="o_gantt_view_container container-fluid p-0">
-            <div class="row g-0 o_gantt_header_container position-sticky bg-white">
+            <div class="row g-0 o_gantt_header_container position-sticky bg-view">
                 <div class="col-md-2 col-3 position-relative o_gantt_row_sidebar text-center" t-if="widget.state.groupedBy.length">
                     <span class="fw-bold" t-esc="widget.string"/>
                 </div>
@@ -114,15 +114,15 @@
         </t>
     </t>
 
-    <div t-name="GanttView.Row" t-attf-class="row g-0 o_gantt_row #{widget.isTotal ? 'o_gantt_row_total' : widget.isGroup ? 'o_gantt_row_group' : 'o_gantt_row_nogroup'} #{widget.isOpen ? 'open' : ''}" t-att-data-from-server="widget.fromServer" t-att-data-row-id="widget.rowId">
+    <div t-name="GanttView.Row" t-attf-class="row g-0 o_gantt_row bg-view #{widget.isTotal ? 'o_gantt_row_total' : widget.isGroup ? 'o_gantt_row_group' : 'o_gantt_row_nogroup'} #{widget.isOpen ? 'open' : ''}" t-att-data-from-server="widget.fromServer" t-att-data-row-id="widget.rowId">
         <div t-if="!widget.options.hideSidebar" t-attf-class="col-md-2 col-3 o_gantt_row_sidebar position-relative #{!widget.name ? 'o_gantt_row_sidebar_empty' : '' }" t-attf-style="padding-left: #{widget.leftPadding}px;">
             <t t-if="widget.progressBar">
                 <t t-if="widget.progressBar.max_value > 0">
-                    <span t-attf-class="position-absolute o_gantt_progressbar {{ widget.progressBar.ratio > 100 ? 'o_gantt_group_danger' : 'o_gantt_group_success' }}"
+                    <span t-attf-class="position-absolute o_gantt_progressbar bg-opacity-25 {{ widget.progressBar.ratio > 100 ? 'o_gantt_group_danger text-bg-danger' : 'o_gantt_group_success text-bg-success' }}"
                         t-att-style="'width: ' + Math.min(widget.progressBar.ratio, 100) + '%;'">
                         &amp;nbsp;
                     </span>
-                    <span t-attf-class="position-absolute {{widget.progressBar.ratio > 0 ? (widget.progressBar.ratio > 100 ? 'o_gantt_group_danger' : 'o_gantt_group_success') : 'o_gantt_group_none' }} {{ widget.isMobile ? 'o_gantt_text_mobile': 'o_gantt_text_hoverable'}}">
+                    <span t-attf-class="position-absolute o_gantt_text_hoverable z-index-1 {{widget.progressBar.ratio > 0 ? (widget.progressBar.ratio > 100 ? 'o_gantt_group_danger  text-bg-danger' : 'o_gantt_group_success text-bg-success') : 'o_gantt_group_none' }} {{ widget.isMobile ? 'o_gantt_text_mobile': 'o_gantt_text_hoverable'}}">
                         <span class="o_gantt_group_hours px-1" t-att-style="widget.cellHeight ? 'line-height: ' + (widget.isMobile ? widget.cellHeight / 2 : widget.cellHeight) + 'px;' : ''">
                             <t t-esc="widget.progressBar.value_formatted"/> / <t t-esc="widget.progressBar.max_value_formatted"/>
                         </span>
@@ -230,13 +230,13 @@
     </div>
 
     <t t-name="GanttView.ResizeBadge">
-        <span t-if="diff === 0" class="o_gantt_pill_resize_badge badge rounded-pill border-0" t-attf-style="#{direction}: 0px;">
+        <span t-if="diff === 0" class="o_gantt_pill_resize_badge badge rounded-pill" t-attf-style="#{direction}: 0px;">
             <t t-esc="_.str.sprintf('%s %s', diff, time)"/>
         </span>
-        <span t-elif="diff &gt; 0" class="o_gantt_pill_resize_badge badge rounded-pill border-0 text-success" t-attf-style="#{direction}: 0px;">
+        <span t-elif="diff &gt; 0" class="o_gantt_pill_resize_badge badge rounded-pill text-success" t-attf-style="#{direction}: 0px;">
             <t t-esc="_.str.sprintf('+%s %s', diff, time)"/>
         </span>
-        <span t-else="diff &lt; 0" class="o_gantt_pill_resize_badge badge rounded-pill border-0 text-danger" t-attf-style="#{direction}: 0px;">
+        <span t-else="diff &lt; 0" class="o_gantt_pill_resize_badge badge rounded-pill text-danger" t-attf-style="#{direction}: 0px;">
             <t t-esc="_.str.sprintf('%s %s', diff, time)"/>
         </span>
     </t>

@@ -85,7 +85,7 @@
                                         class="o_grid_total_bar"
                                         t-att-style="'height:' + totalHeight + '%;'">
                                         <span t-if="totalHeight"
-                                            class="o_grid_total_title position-absolute px-1"
+                                            class="o_grid_total_title position-absolute bg-white px-1"
                                             t-esc="_format(total_cells.value)"/>
                                     </div>
                                     <div t-else="" t-esc="_format(total_cells.value)"/>
@@ -320,7 +320,7 @@
                 class="o_grid_total_bar"
                 t-att-style="'height:' + props.cellHeight + '%;'">
                 <span t-if="props.cellHeight"
-                    class="o_grid_total_title position-absolute px-1"
+                    class="o_grid_total_title position-absolute bg-white px-1"
                     t-esc="_format(props.cellValue)"/>
             </div>
             <div t-else="" t-esc="_format(props.cellValue)"/>
@@ -363,7 +363,7 @@
                 class="o_grid_total_bar"
                 t-att-style="'height:' + props.cellHeight + '%;'">
                 <span t-if="props.cellHeight"
-                    class="o_grid_total_title position-absolute px-1"
+                    class="o_grid_total_title position-absolute bg-white px-1"
                     t-esc="_format(props.cellValue)"/>
             </div>
             <div t-else="" t-esc="_format(props.cellValue)"/>

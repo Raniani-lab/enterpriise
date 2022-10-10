@@ -55,6 +55,7 @@ class SaleOrder(models.Model):
                              compute='_compute_start_date',
                              readonly=False,
                              store=True,
+                             tracking=True,
                              help="The start date indicate when the subscription periods begin.")
     last_invoice_date = fields.Date(string='Last invoice date', compute='_compute_last_invoice_date')
     recurring_live = fields.Boolean(string='Alive', compute='_compute_recurring_live', store=True)

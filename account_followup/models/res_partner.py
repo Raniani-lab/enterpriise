@@ -56,6 +56,14 @@ class ResPartner(models.Model):
         groups='account.group_account_readonly,account.group_account_invoice',
     )
 
+    def _get_name(self):
+        # OVERRIDE base/models/res_partner.py
+        name = super()._get_name()
+        # Add a placeholder name for the followup address
+        if self.type == 'followup' and not self.name:
+            name += dict(self.fields_get(['type'])['type']['selection'])[self.type]
+        return name
+
     def _search_status(self, operator, value):
         """
         Compute the search on the field 'followup_status'

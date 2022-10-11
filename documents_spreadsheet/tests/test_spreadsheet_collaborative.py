@@ -135,6 +135,15 @@ class SpreadsheetCollaborative(SpreadsheetTestCommon):
             "The revision should not have been updated",
         )
 
+    def test_unlink_revisions(self):
+        spreadsheet = self.create_spreadsheet()
+        spreadsheet.dispatch_spreadsheet_message(
+            self.new_revision_data(spreadsheet)
+        )
+        ids = spreadsheet.spreadsheet_revision_ids.ids
+        spreadsheet.unlink()
+        self.assertFalse(self.env["spreadsheet.revision"].browse(ids).exists())
+
     def test_autovacuum_revisions(self):
         spreadsheet = self.create_spreadsheet()
         with freeze_time("2021-01-10 18:00"):

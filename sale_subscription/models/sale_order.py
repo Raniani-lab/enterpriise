@@ -1240,6 +1240,10 @@ class SaleOrder(models.Model):
                     mail = Mail.sudo().create({'body_html': error_message, 'subject': error_message,
                                         'email_to': email_context.get('responsible_email'), 'auto_delete': True})
                     mail.send()
+                    if invoice.state == 'draft':
+                        existing_invoices -= invoice
+                        invoice.unlink()
+
 
         return existing_invoices
 

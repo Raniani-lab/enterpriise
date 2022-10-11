@@ -237,3 +237,16 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
         found_mail = self._find_mail_mail_wemail('accountman@test.com', 'sent', author=self.env.user.partner_id)
         mail_body = "Error during renewal of contract [%s] Customer REF XXXXXXX (Payment not recorded)" % self.subscription.id
         self.assertEqual(found_mail.body_html, mail_body)
+
+    @mute_logger('odoo.addons.sale_subscription.models.sale_order')
+    def test_bad_payment_exception(self):
+        self.subscription.write({'payment_token_id': self.payment_method.id,
+                                 'client_order_ref': 'Customer REF XXXXXXX'
+        })
+        self.subscription.action_confirm()
+        with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._do_payment', wraps=self._mock_subscription_do_payment),\
+             patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._subscription_post_success_payment', side_effect=Exception("Kaput")),\
+             self.mock_mail_gateway():
+            self.subscription._create_recurring_invoice(automatic=True)
+        invoice = self.subscription.order_line.invoice_lines.move_id
+        self.assertFalse(invoice, "The draft invoice should be deleted when something goes wrong in _handle_automatic_invoices")

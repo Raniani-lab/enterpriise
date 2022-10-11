@@ -1,14 +1,4 @@
 .o_kanban_timer_start {
     min-width: 5rem;
-    &:hover {
-        > .o_kanban_timer_toggle {
-            display: inline-block;
-        }
-        > .o_time_duration {
-            display: none;
-        }
-    }
-    .o_kanban_timer_toggle {
-        display: none;
-    }
+    line-height: 1.5rem;
 }

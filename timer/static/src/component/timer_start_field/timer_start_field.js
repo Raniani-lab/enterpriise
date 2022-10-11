@@ -32,7 +32,7 @@ export class TimerStartField extends Component {
     async startTimer(timerStart) {
         if (timerStart) {
             let currentTime;
-            if (!this.timerService.offset) {
+            if (!("offset" in this.timerService)) {
                 if (this.timerPause) {
                     this.clearTimer = true;
                 }
@@ -64,6 +64,9 @@ export class TimerStartField extends Component {
 
 TimerStartField.props = {
     ...standardFieldProps,
+};
+TimerStartField.fieldDependencies = {
+    timer_pause: { type: "datetime" },
 };
 TimerStartField.template = "timer.TimerStartField";
 

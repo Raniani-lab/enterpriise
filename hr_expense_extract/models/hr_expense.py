@@ -172,6 +172,15 @@ class HrExpense(models.Model):
 
     def check_status(self):
         """contact iap to get the actual status of the ocr requests"""
+        if any(rec.extract_state == 'waiting_upload' for rec in self):
+            _logger.info("Manual trigger of the parse cron")
+            try:
+                self.env.ref('hr_expense_extract.ir_cron_ocr_parse')._try_lock()
+                self.env.ref('hr_expense_extract.ir_cron_ocr_parse').sudo().method_direct_trigger()
+            except UserError:
+                _logger.warning("Lock acquiring failed, cron is already running")
+                return
+
         records_to_update = self.filtered(lambda exp: exp.extract_state in ['waiting_extraction', 'extract_not_ready'])
         
         for record in records_to_update:

@@ -173,6 +173,15 @@ class HrApplicant(models.Model):
 
     def check_ocr_status(self):
         """contact iap to get the actual status of the ocr requests"""
+        if any(rec.extract_state == 'waiting_upload' for rec in self):
+            _logger.info("Manual trigger of the parse cron")
+            try:
+                self.env.ref('hr_recruitment_extract.ir_cron_ocr_parse')._try_lock()
+                self.env.ref('hr_recruitment_extract.ir_cron_ocr_parse').sudo().method_direct_trigger()
+            except UserError:
+                _logger.warning("Lock acquiring failed, cron is already running")
+                return
+
         applicants_to_check = self.filtered(lambda a: a.extract_state in ['waiting_extraction', 'extract_not_ready'])
 
         for applicant in applicants_to_check:
@@ -225,8 +234,6 @@ class HrApplicant(models.Model):
                 title=_("CV is being Digitized"))
         self.extract_state = 'waiting_upload'
         self.env.ref('hr_recruitment_extract.ir_cron_ocr_parse')._trigger()
-        # OCR usually takes between 5 and 10 seconds to process the file. Thus, we wait a bit before we update the status
-        self.env.ref('hr_recruitment_extract.ir_cron_update_ocr_status')._trigger(fields.Datetime.now() + timedelta(seconds=10))
 
     def action_send_for_digitization(self):
         if any(not applicant.is_first_stage for applicant in self):

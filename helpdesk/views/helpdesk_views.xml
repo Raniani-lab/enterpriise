@@ -410,6 +410,7 @@
                 <field name="close_hours" string="Hours to Close" widget="float_time"/>
                 <field name="assign_hours" string="Hours to Assign" widget="float_time"/>
                 <field name="color" invisible="1"/>
+                <field name="answered_customer_message_count" invisible="1"/>
             </graph>
         </field>
     </record>
@@ -424,6 +425,7 @@
                 <field name="close_hours" string="Hours to Close" widget="float_time"/>
                 <field name="assign_hours" string="Hours to Assign" widget="float_time"/>
                 <field name="color" invisible="1"/>
+                <field name="answered_customer_message_count" invisible="1"/>
             </pivot>
         </field>
     </record>
@@ -770,6 +772,7 @@
                 <field name="close_hours" string="Hours to Close"/>
                 <field name="assign_hours" string="Hours to Assign"/>
                 <field name="color" invisible="1"/>
+                <field name="answered_customer_message_count" invisible="1"/>
             </cohort>
         </field>
     </record>

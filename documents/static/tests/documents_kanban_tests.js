@@ -822,7 +822,7 @@ QUnit.module('documents_kanban_tests.js', {
         await click(target, '.o_preview_available');
 
         assert.containsOnce(target, '.o_AttachmentViewer_buttonSplit', "should have a pdf splitter");
-        assert.containsOnce(target, 'iframe[data-src="/web/static/lib/pdfjs/web/viewer.html?file=/web/content/2?model=documents.document"]',
+        assert.containsOnce(target, 'iframe[data-src="/web/static/lib/pdfjs/web/viewer.html?file=/web/content/2?model%3Ddocuments.document"]',
             "should have an iframe with the correct pdfviewer src");
 
         await click(target, '.o_AttachmentViewer_headerItemButtonClose');

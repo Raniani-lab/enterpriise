@@ -262,23 +262,23 @@
                                     <field name="partner_id"/>
                                 </div>
                                 <div class="o_kanban_record_body">
-                                    <div t-if="record.to_renew.raw_value &amp;&amp; record.renew_state.raw_value != 'renewing'" class="badge text-bg-warning border-0 float-end mt4">
+                                    <div t-if="record.to_renew.raw_value &amp;&amp; record.renew_state.raw_value != 'renewing'" class="badge text-bg-warning float-end mt4">
                                         To Renew
                                     </div>
-                                    <div t-if="record.payment_exception.raw_value" class="badge text-bg-danger border-0 float-end mt4">
+                                    <div t-if="record.payment_exception.raw_value" class="badge text-bg-danger float-end mt4">
                                         Payment Failure
                                     </div>
                                     <div t-if="record.subscription_management.raw_value == 'upsell' or  record.subscription_management.raw_value == 'renew'"
                                          class="badge bg-light border-1 float-end mt4">
                                         <field name="subscription_management"/>
                                     </div>
-                                    <div t-if="record.renew_state.raw_value == 'renewing'" class="badge bg-warning border-0 float-end mt4">
+                                    <div t-if="record.renew_state.raw_value == 'renewing'" class="badge bg-warning float-end mt4">
                                         <field name="renew_state"/>
                                     </div>
-                                    <div t-if="record.renew_state.raw_value == 'renewed'" class="badge bg-success border-0 float-end mt4">
+                                    <div t-if="record.renew_state.raw_value == 'renewed'" class="badge bg-success float-end mt4">
                                         <field name="renew_state"/>
                                     </div>
-                                    <div t-if="record.is_upselling.raw_value" class="badge bg-info border-0 float-end mt4">
+                                    <div t-if="record.is_upselling.raw_value" class="badge bg-info float-end mt4">
                                         Upselling
                                     </div>
                                     <field name="name"/>

@@ -2,6 +2,7 @@
 
 import { loadJS } from "@web/core/assets";
 import { useService } from "@web/core/utils/hooks";
+import { getColor } from "@web/views/graph/colors";
 
 const { Component, onWillUnmount, useEffect, useRef, useState, onWillStart } = owl;
 
@@ -126,7 +127,7 @@ export class PayrollDashboardStats extends Component {
         this.graphData.forEach((pt) => {
             data.push(pt.value);
             labels.push(pt.label);
-            const color = this.props.is_sample ? '#ebebeb' : (pt.type === 'past' ? '#ccbdc8' : (pt.type === 'future' ? '#a5d8d7' : '#ebebeb'));
+            const color = this.props.is_sample ? '#ebebeb' : (pt.type === 'past' ? '#ccbdc8' : (pt.type === 'future' ? '#a5d8d7' : getColor(19)));
             backgroundColors.push(color);
         });
 
@@ -175,7 +176,7 @@ export class PayrollDashboardStats extends Component {
         const labels = [];
         const datasets = [];
         const datasets_labels = [];
-        const colors = this.props.is_sample ? ['#e7e7e7', '#dddddd', '#f0f0f0', '#fafafa'] : ['#ccbdc8', '#a5d8d7', '#ebebeb', '#ebebeb'];
+        const colors = this.props.is_sample ? ['#e7e7e7', '#dddddd', '#f0f0f0', '#fafafa'] : [getColor(13), '#a5d8d7', '#ebebeb', '#ebebeb'];
 
 
         _.each(this.graphData, function(graphData, code) {

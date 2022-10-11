@@ -2,7 +2,7 @@
     display: flex;
     flex-direction: column;
     height: 100%;
-    background-color: white;
+    background-color: $o-view-background-color;
     overflow: auto;
 
     .o_strong {
@@ -14,12 +14,18 @@
     .o_barcode_header {
         flex: 0 0 46px;
         color: white;
+        background-color: var(--barcode__header-bg, #{$o-brand-odoo});
 
         .nav-link {
             cursor: pointer;
         }
          .nav-link, .navbar-text {
             font-size: 16px;
+            color: #FFFFFF;
+
+            &:hover {
+                color: rgba($color: #FFFFFF, $alpha: 0.75)
+            }
         }
     }
 
@@ -44,6 +50,7 @@
     .o_barcode_lines_header {
         font-size: 16px;
         color: white;
+        background-color: var(--barcode__linesHeader-bg, #{$o-gray-800});
 
         @include media-breakpoint-down(md) {
             font-size: 14px;
@@ -138,7 +145,7 @@
 
         > button {
             flex: 1 0 auto;
-            border-bottom: 1px solid $gray-700;
+            border-bottom: 1px solid $border-color;
 
             &:last-child {
                 border-bottom: 0;
@@ -227,11 +234,11 @@
             }
 
             .o_qty_done_field_completed input {
-                background: #f6fdf6;
+                background: var(--barcode__input--completed, #f6fdf6);
             }
 
             .o_qty_done_field_not_completed input {
-                background: #fcf9f2;
+                background: var(--barcode__input--notCompleted, #fcf9f2);
             }
 
             & > div {
@@ -241,11 +248,11 @@
 
                 .o_input {
                     padding: 8px;
-                    border: 1px solid $o-form-lightsecondary;
+                    border: 1px solid $border-color;
                 }
 
                 .o_required_modifier .o_input {
-                    border-bottom: 2px solid $o-main-text-color;
+                    border-bottom: 2px solid $border-color
                 }
 
                 .o_dropdown_button {

@@ -15,7 +15,7 @@
                 <span class="pdf_manager_topbar_buttons_right">
                     <span class="o_pdf_archive_menu me-2" t-on-click="_onClickArchive" t-if="isDebugMode">
                         <span>Archive original file(s) </span>
-                        <input class="ms-2" id="pdf_archive" type="checkbox" name="archive" t-att-checked="state.archive"/>
+                        <input class="ms-2 form-check-input" id="pdf_archive" type="checkbox" name="archive" t-att-checked="state.archive"/>
                     </span>
                     <button class="btn btn-secondary o_pdf_manager_button me-2"
                         aria-label="Add new file"

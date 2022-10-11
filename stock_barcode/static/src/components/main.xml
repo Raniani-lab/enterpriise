@@ -2,13 +2,13 @@
 <templates xml:space="preserve">
 
     <div t-name="stock_barcode.MainComponent" class="o_content o_barcode_client_action" owl="1">
-        <div class="o_barcode_header bg-odoo">
+        <div class="o_barcode_header">
             <div class="navbar navbar-expand navbar-dark">
                 <nav class="navbar-nav me-auto">
                     <button t-on-click="exit" class="o_exit btn nav-link me-4">
                         <i class="fa fa-chevron-left"/>
                     </button>
-                    <span class="o_title navbar-text text-white" t-esc="env.model.name"/>
+                    <span class="o_title navbar-text" t-esc="env.model.name"/>
                 </nav>
                 <nav class="navbar-nav">
                     <t t-if="displayBarcodeApplication">
@@ -32,7 +32,7 @@
                     <button type="button" class="close" title="Close" aria-label="Close" t-on-click="hideNote">&#215;</button>
                     <t t-esc="env.model.record.note"/>
                 </div>
-                <div class="o_barcode_lines_header row bg-800 alert m-0 px-1 "
+                <div class="o_barcode_lines_header row alert m-0 px-1 "
                     t-attf-class="{{displayHeaderInfoAsColumn ? 'flex-column justify-content-center align-items-center' : 'justify-content-between'}}">
                     <div t-if="info.warning" class="o_barcode_pic position-relative text-center mt-2 mb-1">
                         <i class="fa fa-5x fa-exclamation-triangle"/>
@@ -83,15 +83,15 @@
                 onDiscard="() => this.toggleBarcodeLines()"/>
             <ChatterContainer threadModel="props.model" threadId="props.id"/>
         </div>
-        <div t-if="displayBarcodeActions" class="o_barcode_settings flex-column h100 bg-700">
+        <div t-if="displayBarcodeActions" class="o_barcode_settings flex-column h100">
             <t t-foreach="env.model.printButtons" t-as="button" t-key="button.class">
-                <button class="btn-lg btn btn-dark text-uppercase"
+                <button class="btn-lg btn btn-light text-uppercase"
                     t-attf-class="{{button.class}}" t-esc="button.name"
                     t-on-click="() => this.print(button.action, button.method)"/>
             </t>
             <button t-if="env.model.displayCancelButton"
                 t-on-click="cancel"
-                class="o_cancel_operation btn-lg btn btn-dark text-uppercase">
+                class="o_cancel_operation btn-lg btn btn-light text-uppercase">
                 Cancel
             </button>
         </div>

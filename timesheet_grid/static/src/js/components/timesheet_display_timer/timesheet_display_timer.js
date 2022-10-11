@@ -36,7 +36,7 @@ export class TimesheetDisplayTimer extends Component {
 
     async onWillUpdateProps(nextProps) {
         let newValue = nextProps.value;
-        if (this.state.timerRunning && nextProps.value !== this.props.value) {
+        if (this.state.timerRunning) {
             this._stopTimeRefresh();
             this.timerService.clearTimer();
             this.timerService.setTimer(nextProps.value, nextProps.record.data.timer_start, this.serverTime);

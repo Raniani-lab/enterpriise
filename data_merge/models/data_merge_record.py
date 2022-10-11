@@ -13,6 +13,8 @@ import psycopg2
 import itertools
 import ast
 import logging
+import operator as py_operator
+
 _logger = logging.getLogger(__name__)
 
 
@@ -53,8 +55,10 @@ class DataMergeRecord(models.Model):
         records = self.with_context(active_test=False).search([])
         if operator == 'in':
             records = records.filtered(lambda r: r.company_id.id in value)
-        elif operator == '=':
-            records = records.filtered(lambda r: r.company_id.id == value)
+        elif operator in ['=', '!=']:
+            op = py_operator.eq if operator == "=" else py_operator.ne
+            convert_to_compare = lambda r: bool(r) if isinstance(value, bool) else r
+            records = records.filtered(lambda r: op(convert_to_compare(r.company_id.id), value))
         else:
             raise NotImplementedError()
         return [('id', 'in', records.ids)]

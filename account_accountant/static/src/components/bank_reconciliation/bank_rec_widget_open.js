@@ -7,7 +7,6 @@ const { Component } = owl;
 
 class OpenBankRecWidget extends Component {
     setup() {
-        super.setup();
         this.orm = useService("orm");
         this.action = useService("action");
     }

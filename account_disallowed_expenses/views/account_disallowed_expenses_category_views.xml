@@ -47,19 +47,18 @@
                     <div>
                         <h1 style="font-size: 1.9rem;">
                             <div class="row">
-                                <div class="col col-md-auto">
+                                <div class="col">
                                     <label for="code" string="Code"/>
                                     <div>
-                                        <field name="code" placeholder="e.g. 1201" class="oe_inline"/>
+                                        <field name="code" placeholder="e.g. 1201"/>
                                     </div>
                                 </div>
-                                <div class="col col-md-8">
+                                <div class="col col-md-10">
                                     <label for="name" string="Category Name"/>
                                     <div>
                                         <field name="name"
                                                placeholder="e.g. Non-Deductible Tax"
-                                               class="oe_inline"
-                                               style="width:80% !important;"/>
+                                               class="oe_inline"/>
                                     </div>
                                 </div>
                             </div>
@@ -73,15 +72,13 @@
                     </group>
                     <notebook>
                         <page name="rates" string="Rates">
-                            <group>
-                                <field name="rate_ids" nolabel="1" editable="bottom">
-                                    <tree order="date_from desc" editable="bottom">
-                                        <field name="date_from"/>
-                                        <field name="rate"/>
-                                        <field name="company_id" groups="base.group_multi_company" optional="hide"/>
-                                    </tree>
-                                </field>
-                            </group>
+                            <field name="rate_ids" nolabel="1" editable="bottom">
+                                <tree order="date_from desc" editable="bottom">
+                                    <field name="date_from"/>
+                                    <field name="rate"/>
+                                    <field name="company_id" groups="base.group_multi_company"/>
+                                </tree>
+                            </field>
                         </page>
                     </notebook>
                 </sheet>

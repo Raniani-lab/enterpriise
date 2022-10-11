@@ -65,13 +65,12 @@
                     </div>
                     <field name="is_assigned_to_me" invisible="1"/>
                     <field name="allow_self_unassign" invisible="1"/>
-                    <group attrs="{'invisible': [('template_autocomplete_ids', '=', []), ('template_id', '=', False)]}"
-                        groups="planning.group_planning_manager" name="shift_templates" class="oe_edit_only">
-                        <field name="template_id" nolabel="1" class="text-break flex-wrap"
-                            domain="[['id', 'in', template_autocomplete_ids]]"
-                            widget="selection_badge" options="{'horizontal': true}"
-                        />
-                    </group>
+                    <field name="template_id"
+                        domain="[['id', 'in', template_autocomplete_ids]]"
+                        widget="selection_badge" options="{'horizontal': true}"
+                        groups="planning.group_planning_manager"
+                        attrs="{'invisible': [('template_autocomplete_ids', '=', []), ('template_id', '=', False)]}"
+                    />
                     <field name="template_autocomplete_ids" invisible="1"/>
                     <field name="recurrency_id" invisible='1'/>
                     <group>
@@ -225,16 +224,6 @@
         <field name="inherit_id" ref="planning_view_form_inherit"/>
         <field name="mode">primary</field>
         <field name="arch" type="xml">
-            <xpath expr="//group[@name='shift_templates']" position="replace">
-                <group attrs="{'invisible': [('template_autocomplete_ids', '=', []), ('template_id', '=', False)]}" class="oe_edit_only">
-                    <div colspan="2" class="o_row">
-                        <field name="template_id" nolabel="1" class="text-break flex-wrap"
-                            domain="[['id', 'in', template_autocomplete_ids]]"
-                            widget="selection_badge" options="{'horizontal': true}"
-                        />
-                    </div>
-                </group>
-            </xpath>
             <xpath expr="//sheet" position="after">
                 <footer class="d-flex flex-wrap">
                     <field name="publication_warning" invisible="1"/>

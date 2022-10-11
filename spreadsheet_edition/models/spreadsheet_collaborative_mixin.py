@@ -234,3 +234,11 @@ class SpreadsheetCollaborativeMixin(models.AbstractModel):
         # For debug purposes, we archive revisions instead of unlinking them
         # self.spreadsheet_revision_ids.unlink()
         self.sudo().spreadsheet_revision_ids.active = False
+
+    def unlink(self):
+        """ Override unlink to delete spreadsheet revision. This cannot be
+        cascaded, because link is done through (res_model, res_id). """
+        if not self:
+            return True
+        self.sudo().spreadsheet_revision_ids.unlink()
+        return super().unlink()

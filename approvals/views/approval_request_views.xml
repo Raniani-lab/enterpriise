@@ -116,7 +116,7 @@
                         </button>
                     </div>
                     <div class="oe_avatar">
-                        <field name="category_image" widget="image" options="{'preview_image': 'category_image', 'size': [80, 80]}"/>
+                        <field name="category_image" widget="image" options="{'preview_image': 'category_image', 'size': [80, 80]}" class="bg-view" />
                     </div>
                     <div class="oe_title">
                         <label for="name"/>

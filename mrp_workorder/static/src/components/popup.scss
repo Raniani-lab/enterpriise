@@ -1,4 +1,4 @@
-$wo-border-separation: solid 1px rgba(60, 60, 60, 0.1);
+$wo-border-separation: $border-width solid $border-color;
 
 .o_tablet_popups {
     height: 100%;
@@ -19,7 +19,7 @@ $wo-border-separation: solid 1px rgba(60, 60, 60, 0.1);
         left: 25%;
         width: 50%;
         position: fixed;
-        background: $o-gray-100;
+        background: $o-gray-200;
 
         button{
             box-shadow: none;
@@ -59,7 +59,7 @@ $wo-border-separation: solid 1px rgba(60, 60, 60, 0.1);
             padding: 20px;
             border-bottom: $wo-border-separation;
             font-size: large;
-            color: black;
+            color: $o-black;
         }
 
         .footer {
@@ -78,7 +78,6 @@ $wo-border-separation: solid 1px rgba(60, 60, 60, 0.1);
             cursor: pointer;
             &:not(.btn-link) {
                 border-radius: 2px;
-                border: $wo-border-separation;
             }
         }
 
@@ -99,7 +98,7 @@ $wo-border-separation: solid 1px rgba(60, 60, 60, 0.1);
                 text-align: center;
                 align-content: center;
                 h2 {
-                    color: black;
+                    color: $o-black;
                 }
             }
         }
@@ -116,7 +115,7 @@ $wo-border-separation: solid 1px rgba(60, 60, 60, 0.1);
                 cursor: pointer;
                 text-align: left;
                 padding: 0px 16px;
-                color: black;
+                color: $o-black;
 
                 &:nth-child(odd) {
                     background: $o-tooltip-title-background-color;
@@ -159,6 +158,6 @@ $wo-border-separation: solid 1px rgba(60, 60, 60, 0.1);
     }
 
     .footer > div {
-        color: black;
+        color: $o-black;
     }
 }

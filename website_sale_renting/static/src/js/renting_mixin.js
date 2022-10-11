@@ -71,8 +71,8 @@ export const RentingMixin = {
      *
      * @private
      */
-    _getDateFromInputOrDefault(picker, fieldName, inputName, startOfDay) {
-        let date = picker && (startOfDay ? picker[fieldName].startOf('day') : picker[fieldName]);
+    _getDateFromInputOrDefault(picker, fieldName, inputName) {
+        let date = picker && picker[fieldName];
         if (!date || !date._isValid) {
             const $defaultDate = this.el.querySelector('input[name="default_' + inputName + '"]');
             date = $defaultDate && $defaultDate.value;
@@ -93,7 +93,7 @@ export const RentingMixin = {
             const picker = rentingDates.data('daterangepicker');
             return {
                 start_date: this._getDateFromInputOrDefault(picker, 'startDate', 'start_date'),
-                end_date: this._getDateFromInputOrDefault(picker, 'endDate', 'end_date', !this._isDurationWithHours()),
+                end_date: this._getDateFromInputOrDefault(picker, 'endDate', 'end_date'),
             };
         }
         return {};

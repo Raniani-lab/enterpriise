@@ -3,7 +3,7 @@
 
 <template id="snippet_options" inherit_id="website.snippet_options" name="Appointment Snippet Options">
     <xpath expr="." position="inside">
-        <div data-selector="main:has(.o_appointment_index)" data-page-options="true" data-no-check="true" string="Appointments Page">
+        <div data-selector="main:has(.o_appointment_index)" data-page-options="true" groups="website.group_website_designer" data-no-check="true" string="Appointments Page">
             <we-checkbox string="Card Design"
                          data-customize-website-views="website_appointment.opt_appointments_list_cards"
                          data-no-preview="true"

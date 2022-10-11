@@ -177,12 +177,13 @@ class AccountPayment(models.Model):
         debtor_name = self.sdd_mandate_id.partner_bank_id.acc_holder_name or partner.name or partner.parent_id.name
         Dbtr = create_xml_node_chain(DrctDbtTxInf, ['Dbtr', 'Nm'], self.split_node(debtor_name, 70)[0])[0]
 
-        if partner.contact_address:
+        contact_address = partner._display_address(without_company=True)
+        if contact_address:
             PstlAdr = create_xml_node(Dbtr, 'PstlAdr')
             if partner.country_id and partner.country_id.code:
                 create_xml_node(PstlAdr, 'Ctry', partner.country_id.code)
             n_line = 0
-            contact_address = partner.contact_address.replace('\n', ' ').strip()
+            contact_address = contact_address.replace('\n', ' ').strip()
             while contact_address and n_line < 2:
                 create_xml_node(PstlAdr, 'AdrLine', self.split_node(contact_address, 70)[0])
                 contact_address = self.split_node(contact_address, 70)[1]

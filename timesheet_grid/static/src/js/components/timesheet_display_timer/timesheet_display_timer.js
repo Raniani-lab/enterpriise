@@ -36,7 +36,7 @@ export class TimesheetDisplayTimer extends Component {
 
     async onWillUpdateProps(nextProps) {
         let newValue = nextProps.value;
-        if (this.state.timerRunning && nextProps.value !== this.props.value) {
+        if (this.state.timerRunning) {
             this._stopTimeRefresh();
             this.timerService.clearTimer();
             this.timerService.setTimer(nextProps.value, nextProps.record.data.timer_start, this.serverTime);
@@ -52,6 +52,7 @@ export class TimesheetDisplayTimer extends Component {
             this.serverTime = await this.timerService.getServerTime();
             this.timerService.computeOffset(this.serverTime);
             this.timerService.setTimer(this.state.value, this.timerStart, this.serverTime);
+            this.timerService.updateTimer(this.timerStart);
             this.state.value = this.timerService.toSeconds / 3600;
             this._startTimeRefresh();
         }
@@ -77,7 +78,7 @@ export class TimesheetDisplayTimer extends Component {
         }
     }
 
-    get FloatTimeFieldProps() {
+    get TimesheetTimerFloatTimerFieldProps() {
         return { ...this.props, ...this.state };
     }
 

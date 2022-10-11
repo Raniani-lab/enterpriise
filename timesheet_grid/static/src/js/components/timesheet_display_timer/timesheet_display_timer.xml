@@ -11,7 +11,7 @@
     </t>
 
     <t t-name="timesheet_grid.TimesheetDisplayTimer" owl="1">
-        <TimesheetTimerFloatTimerField t-props="FloatTimeFieldProps"/>
+        <TimesheetTimerFloatTimerField t-props="TimesheetTimerFloatTimerFieldProps"/>
     </t>
 
 </templates>

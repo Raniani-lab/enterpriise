@@ -23,7 +23,10 @@ It adds a timer to a view for time recording purpose
     'assets': {
         'web.assets_backend': [
             'timer/static/src/**/*',
-        ]
+        ],
+        'web.qunit_suite_tests': [
+            'timer/static/tests/**/*',
+        ],
     },
     'license': 'OEEL-1',
 }

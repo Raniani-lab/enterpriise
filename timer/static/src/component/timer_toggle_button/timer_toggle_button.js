@@ -1,7 +1,6 @@
 /** @odoo-module */
 
 import { _lt } from "@web/core/l10n/translation";
-import { registry } from "@web/core/registry";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
 import { useService } from "@web/core/utils/hooks";
 
@@ -46,5 +45,3 @@ TimerToggleButton.props = {
     ...standardFieldProps,
 };
 TimerToggleButton.template = "timer.ToggleButton";
-
-registry.category("fields").add("timer_toggle_button", TimerToggleButton);

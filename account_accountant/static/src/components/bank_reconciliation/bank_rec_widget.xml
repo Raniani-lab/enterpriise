@@ -8,7 +8,8 @@
         <xpath expr="//t[@t-component='props.Renderer']" position="after">
             <div class="o_bank_rec_right_div">
                 <t t-if="!!state.selectedStLineId">
-                    <View t-props="bankRecFormViewProps" t-key="state.selectedStLineId"/>
+                    <!-- Use the datapoint as a key to ensure the form view is rerendered when the model is reloaded -->
+                    <View t-props="bankRecFormViewProps" t-key="this.recordById(state.selectedStLineId).id"/>
                 </t>
             </div>
         </xpath>

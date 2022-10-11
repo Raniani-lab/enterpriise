@@ -3,7 +3,7 @@
 
 <template id="snippet_options" inherit_id="website.snippet_options" name="Helpdesk Snippet Options">
     <xpath expr="." position="inside">
-        <div data-selector="main:has(ul.o_whelpdesk_topbar_filters)" data-page-options="true" data-no-check="true" string="Help Center Page">
+        <div data-selector="main:has(ul.o_whelpdesk_topbar_filters)" data-page-options="true" groups="website.group_website_designer" data-no-check="true" string="Help Center Page">
             <we-checkbox string="Date Filter"
                          data-customize-website-views="website_helpdesk.navbar_search_date"
                          data-no-preview="true"

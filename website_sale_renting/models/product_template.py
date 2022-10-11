@@ -231,8 +231,12 @@ class ProductTemplate(models.Model):
             if not template.rent_ok:
                 continue
             pricing = self.env['product.pricing']._get_first_suitable_pricing(template, pricelist)
-            prices[template.id]['rental_duration'] = pricing.recurrence_id.duration
-            prices[template.id]['rental_unit'] = pricing._get_unit_label(pricing.recurrence_id.duration)
+            if pricing:
+                prices[template.id]['rental_duration'] = pricing.recurrence_id.duration
+                prices[template.id]['rental_unit'] = pricing._get_unit_label(pricing.recurrence_id.duration)
+            else:
+                prices[template.id]['rental_duration'] = 0
+                prices[template.id]['rental_unit'] = False
 
         return prices
 

@@ -79,8 +79,7 @@
 }
 
 .o_bank_rec_selected_line{
-    outline: thin solid mix(map-get($theme-colors, 'primary'), map-get($grays, '400'));
-    outline-offset: -1px;
+    background-color: whitesmoke;
 }
 
 .o_bank_rec_widget_form_suggest_button{

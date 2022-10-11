@@ -3,7 +3,7 @@
 import { registry } from "@web/core/registry";
 import { kanbanView } from "@web/views/kanban/kanban_view";
 
-import { TimesheetValidationKanbanController } from "./timesheet_validation_kanban_controler";
+import { TimesheetValidationKanbanController } from "./timesheet_validation_kanban_controller";
 
 
 export const timesheetValidationKanbanView = {

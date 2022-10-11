@@ -4321,7 +4321,7 @@ class AccountReport(models.Model):
                 regroup = self._regroup_accounts_coverage_report_errors_trie(child)
                 children_lines |= regroup["lines"]
                 children_errors |= set(regroup["errors"])
-            if len(children_errors) == 1:
+            if len(children_errors) == 1 and children_lines and children_lines == trie["lines"]:
                 trie["children"] = {}
                 trie["lines"] = children_lines
                 trie["errors"] = children_errors

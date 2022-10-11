@@ -3,7 +3,7 @@
 
      <div t-name="spreadsheet_edition.FilterComponent" class="o_filter_component" owl="1">
         <div
-            t-attf-class="o_topbar_filter_icon fa fa-sliders {{activeFilter ? 'btn-link': ''}}"
+            t-attf-class="o_topbar_filter_icon fa fa-search {{activeFilter ? 'btn-link': ''}}"
             title="Filters"
             t-on-click="toggleDropdown"></div>
     </div>

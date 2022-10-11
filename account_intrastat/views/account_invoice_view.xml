@@ -71,7 +71,7 @@
                     <field name="intrastat_product_origin_country_id"
                         optional="hide"
                         attrs="{'column_invisible': [('parent.move_type', 'not in', ('out_invoice', 'out_refund'))]}"
-                        options="{'no_create_edit': True}"/>
+                        options="{'no_create': True}"/>
                 </xpath>
             </field>
         </record>

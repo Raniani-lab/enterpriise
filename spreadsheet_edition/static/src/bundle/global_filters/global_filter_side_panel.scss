@@ -1,3 +1,15 @@
+.o-spreadsheet-topbar {
+    .o_topbar_filter_icon {
+        padding: 3px;
+        font-size: 18px;
+        cursor: pointer;
+
+        &:hover {
+            background-color: #ebebeb;
+        }
+    }
+}
+
 .o_spreadsheet_filter_editor_side_panel {
     .o_global_filter_delete {
         float: left;

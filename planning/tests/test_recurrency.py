@@ -56,7 +56,7 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
             self.assertFalse(self.get_by_employee(self.employee_joseph))
 
             # since repeat span is 1 month, we should have 5 slots
-            self.env['planning.slot'].create({
+            slot = self.env['planning.slot'].create({
                 'start_datetime': datetime(2019, 6, 27, 8, 0, 0),
                 'end_datetime': datetime(2019, 6, 27, 17, 0, 0),
                 'resource_id': self.resource_joseph.id,
@@ -75,6 +75,13 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
             }
             self.assertTrue(first_generated_slots_dates == expected_slot_dates, 'Initial run should have created expected slots')
             # TODO JEM: check same employee, attached to same reccurrence, same role, ...
+
+            slot.write({
+                'repeat_unit': 'week',
+                'repeat_type': 'until',
+                'repeat_until': datetime(2019, 9, 27, 15, 0, 0),
+            })
+            self.assertEqual(len(self.get_by_employee(self.employee_joseph)), 5, 'The slot count for recurring shift who have repeat type until should be 5')
 
         # now run cron two weeks later, should yield two more slots
         # because the repeat_interval is 1 week
@@ -556,6 +563,12 @@ class TestRecurrencySlotGeneration(TestCommonPlanning):
 
             slot.update({'repeat_type': 'forever'})
             self.assertEqual(slot.recurrency_id.repeat_until, False, 'Repeat forever should not have a date')
+
+            slot.update({'repeat_until': datetime(2020, 5, 25, 17, 0, 0)})
+            self.assertEqual(len(self.get_by_employee(self.employee_bert)), 27, 'After modify the slot count for recurring shift who have repeat type forever should be 27')
+
+            slot.unlink()
+            self.assertEqual(len(self.get_by_employee(self.employee_bert)), 26, 'After delete the slot count for recurring shift who have repeat type forever should be 26')
 
     def test_recurrency_past(self):
         with self._patch_now('2020-01-01 08:00:00'):

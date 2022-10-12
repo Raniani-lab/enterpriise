@@ -202,7 +202,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             "action_make_private_copy",
             [this.resId]
         );
-        this.openArticle(articleId);
+        this.openArticle(articleId, true);
     }
 
     /**
@@ -220,27 +220,54 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                 parent_id: targetParentId ? targetParentId : false
             }
         );
-        this.openArticle(articleId);
+        this.openArticle(articleId, true);
     }
 
     /**
      * @param {integer} - resId: id of the article to open
+     * @param {boolean} - [forceFullReload]: will reload the whole form view using a "doAction"
+     *   if true, notably useful when the tree panel needs to be reloaded (defaults to false).
      */
-    async openArticle(resId) {
-        // disable sortable trees drag and drop.
-        const $sortable = $('.o_tree_favorite,.o_tree');
-        $sortable.sortable('disable');
-        // Focus out of name input to prevent showing an error when opening an
-        // article while the name input is focused and empty
-        if (document.activeElement.id === "name" && document.activeElement.value === "") {
+    async openArticle(resId, forceFullReload=false) {
+        // If the focus is on the "name" input, force a _rename before leaving this article
+        if (document.activeElement.id === "name") {
+            await this._rename(document.activeElement.value);
             document.activeElement.blur();
         } else if (this.resId) {  // Don't save when NoRecord helper is shown
             await this.props.record.save();
         }
-        this.actionService.doAction(
-            await this.orm.call('knowledge.article', 'action_home_page', resId ? [resId] : []),
-            {stackPosition: 'replaceCurrentAction'}
-        );
+
+        if (resId) {
+            if (forceFullReload) {
+                this.actionService.doAction(
+                    await this.orm.call('knowledge.article', 'action_home_page', resId ? [resId] : []),
+                    {stackPosition: 'replaceCurrentAction'}
+                );
+            } else {
+                // toggle on/off the classes that highlight the selected article
+                document.querySelectorAll(`[data-article-id="${this.resId}"] > div`).forEach((previousArticle) => {
+                    previousArticle.classList.remove('o_article_active', 'fw-bold', 'text-900');
+                    previousArticle.querySelector('.o_article_emoji').classList
+                        .remove('o_article_emoji_active', 'text-900');
+                });
+
+                document.querySelectorAll(`[data-article-id="${resId}"] > div`).forEach((currentArticle) => {
+                    currentArticle.classList.add('o_article_active', 'fw-bold', 'text-900');
+                    currentArticle.querySelector('.o_article_emoji').classList
+                        .add('o_article_emoji_active', 'text-900');
+                });
+
+                // Force save if changes have been made before loading the new record
+                if (this.props.record.isDirty) {
+                    await this.props.record.save();
+                }
+
+                // load the new record
+                await this.props.record.model.load({
+                    resId: resId,
+                });
+            }
+        }
     }
 
     openCoverSelector() {

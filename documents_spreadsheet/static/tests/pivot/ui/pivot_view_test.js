@@ -756,13 +756,15 @@ QUnit.module("spreadsheet pivot view", {}, () => {
     });
 
     QUnit.test("user related context is not saved in the spreadsheet", async function (assert) {
-        const context = {
+        const userContext = {
             allowed_company_ids: [15],
-            default_stage_id: 5,
-            search_default_stage_id: 5,
             tz: "bx",
             lang: "FR",
             uid: 4,
+        };
+        const context = {
+            ...userContext,
+            default_stage_id: 5,
         };
         const testSession = {
             uid: 4,
@@ -770,20 +772,21 @@ QUnit.module("spreadsheet pivot view", {}, () => {
                 allowed_companies: { 15: { id: 15, name: "Hermit" } },
                 current_company: 15,
             },
-            user_context: context,
+            user_context: userContext,
         };
         patchWithCleanup(session, testSession);
-        const { model, env } = await createSpreadsheetFromPivotView();
+        const { model, env } = await createSpreadsheetFromPivotView({
+            additionalContext: context,
+        });
         assert.deepEqual(
             env.services.user.context,
-            context,
+            userContext,
             "context is used for spreadsheet action"
         );
         assert.deepEqual(
             model.exportData().pivots[1].context,
             {
                 default_stage_id: 5,
-                search_default_stage_id: 5,
             },
             "user related context is not stored in context"
         );

@@ -12,12 +12,6 @@ from odoo.addons.iap.tools import iap_tools
 from odoo.exceptions import UserError
 
 _logger = logging.getLogger(__name__)
-try:
-    import firebase_admin
-    from firebase_admin import messaging
-    from firebase_admin import credentials
-except ImportError:
-    firebase_admin = None
 
 try:
     from google.oauth2 import service_account
@@ -50,22 +44,6 @@ class SocialAccountPushNotifications(models.Model):
         if not self.env.user.has_group('base.group_system') and any(account.website_id for account in self):
             raise UserError(_("You can't delete a Push Notification account."))
 
-    def _init_firebase_app(self):
-        """ Initialize the firebase library before usage.
-        There is no actual way to tell if the app is already initialized or not.
-        And we don't want to initialize it when the server starts because it could never be used.
-        So we have to check for the ValueError that triggers if the app if already initialized and ignore it. """
-        self.ensure_one()
-
-        firebase_credentials = credentials.Certificate(json.loads(
-            base64.b64decode(self.firebase_admin_key_file).decode())
-        )
-        try:
-            firebase_admin.initialize_app(firebase_credentials, options={'httpTimeout': 10})
-        except ValueError:
-            # app already initialized
-            pass
-
     def _firebase_send_message(self, data, visitors):
         if self.firebase_use_own_account:
             self._firebase_send_message_from_configuration(data, visitors)
@@ -73,22 +51,9 @@ class SocialAccountPushNotifications(models.Model):
             self._firebase_send_message_from_iap(data, visitors)
 
     def _firebase_send_message_from_configuration(self, data, visitors):
-        """ This method now has a dual implementation to handle cases when the firebase_admin
-        python library is not installed / not in the correct version.
-
-        1. When firebase_admin is available:
-           Sends messages by batch of 100 (max limit from firebase).
-           Returns a tuple containing:
-              - The matched website.visitors (search_read records).
-              - A list of firebase_admin.messaging.BatchResponse to be handled by the caller.
-
-        2. When firebase_admin is NOT available.
-           Sends messages one by one using the firebase REST API.
-           (Which is what firebase_admin does under the hood anyway)
+        """ Sends messages one by one using the firebase REST API.
            It requires a bearer token for authentication that we obtain using the google_auth library.
-           Returns a tuple containing:
-              - The matched website.visitors (search_read records).
-              - An empty list. """
+           Returns he matched website.visitors (search_read records). """
 
         if not visitors:
             return [], []
@@ -96,19 +61,8 @@ class SocialAccountPushNotifications(models.Model):
         if not self.firebase_admin_key_file:
             raise UserError(_("Firebase Admin Key File is missing from the configuration."))
 
-        results = []
         tokens = visitors.mapped('push_subscription_ids.push_token')
-        if firebase_admin and self._check_firebase_version():
-            self._init_firebase_app()
-            batch_size = 100
-
-            for tokens_batch in tools.split_every(batch_size, tokens, piece_maker=list):
-                firebase_message = messaging.MulticastMessage(
-                    data=data,
-                    tokens=tokens_batch
-                )
-                results.append(messaging.send_multicast(firebase_message))
-        elif service_account:
+        if service_account:
             firebase_data = json.loads(
                 base64.b64decode(self.firebase_admin_key_file).decode())
             firebase_credentials = service_account.Credentials.from_service_account_info(
@@ -131,11 +85,9 @@ class SocialAccountPushNotifications(models.Model):
                     timeout=5
                 )
         else:
-            raise UserError(_('You have to either install "firebase_admin>=2.17.0" or '
-                              '"google_auth>=1.18.0" to be able to send push '
-                              'notifications.'))
+            raise UserError(_('You have to install "google_auth>=1.18.0" to be able to send push notifications.'))
 
-        return tokens, results
+        return tokens
 
     def _firebase_send_message_from_iap(self, data, visitors):
         social_iap_endpoint = self.env['ir.config_parameter'].sudo().get_param(
@@ -152,16 +104,3 @@ class SocialAccountPushNotifications(models.Model):
             iap_tools.iap_jsonrpc(url_join(social_iap_endpoint, '/iap/social_push_notifications/firebase_send_message'), params=batch_data)
 
         return []
-
-    def _check_firebase_version(self):
-        """ Utility method to check that the installed firebase version has needed features. """
-        version_compliant = firebase_admin and messaging and credentials \
-            and hasattr(firebase_admin, 'initialize_app') \
-            and hasattr(messaging, 'send')
-
-        if not version_compliant:
-            _logger.warning("""Your version of 'firebase_admin' is outdated.
-                                 Please install version >=2.17.0.
-                                 Falling back to native google-auth implementation.""")
-
-        return version_compliant

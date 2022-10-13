@@ -9,13 +9,14 @@ const serviceRegistry = registry.category("services");
 const userMenuRegistry = registry.category("user_menuitems");
 
 export const colorThemeService = {
-    dependencies: ["cookie"],
+    dependencies: ["cookie", "ui"],
 
-    start(env, { cookie }) {
+    start(env, { cookie, ui }) {
         userMenuRegistry.add("color_scheme.switch", switchColorSchemeItem);
         return {
             switchToColorScheme(theme) {
                 cookie.setCookie("color_scheme", theme);
+                ui.block();
                 browser.location.reload();
             },
         };

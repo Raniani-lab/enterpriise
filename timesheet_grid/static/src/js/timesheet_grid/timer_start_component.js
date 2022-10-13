@@ -25,7 +25,7 @@ odoo.define('timesheet_grid.TimerStartComponent', function (require) {
                 if (this.props.addTimeMode) {
                     classNames = ['fa', 'fa-plus', 'bg-transparent'];
                 } else {
-                    classNames = ['fa', 'fa-play', 'bg-transparent'];
+                    classNames = ['fa', 'fa-play', 'text-success'];
                 }
             } else {
                 classNames.push('bg-transparent');

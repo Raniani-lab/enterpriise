@@ -15,7 +15,7 @@ import {
 } from "@web/../tests/helpers/utils";
 import { menuService } from "@web/webclient/menus/menu_service";
 import { actionService } from "@web/webclient/actions/action_service";
-import { makeFakeDialogService } from "@web/../tests/helpers/mock_services";
+import { makeFakeDialogService, fakeCookieService } from "@web/../tests/helpers/mock_services";
 import { hotkeyService } from "@web/core/hotkeys/hotkey_service";
 import { registerStudioDependencies, openStudio, leaveStudio } from "./helpers";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
@@ -35,6 +35,7 @@ QUnit.module("Studio > Navbar", (hooks) => {
         serviceRegistry.add("dialog", makeFakeDialogService());
         serviceRegistry.add("menu", menuService);
         serviceRegistry.add("hotkey", hotkeyService);
+        serviceRegistry.add("cookie", fakeCookieService);
         patchWithCleanup(browser, {
             setTimeout: (handler, delay, ...args) => handler(...args),
             clearTimeout: () => {},

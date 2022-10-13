@@ -95,7 +95,7 @@
             .o_app {
                 flex-direction: row !important;
                 justify-content: initial !important;
-                max-width: 100%;
+                width: 100%;
                 background-color: rgba(255, 255, 255, 0.1);
                 padding: map-get($spacers, 3) map-get($spacers, 4) !important;
             }

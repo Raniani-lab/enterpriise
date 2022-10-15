@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -132,7 +132,7 @@ msgstr ""
 #: code:addons/planning/static/src/js/tours/planning.js:0
 #, python-format
 msgid "<b>Publish & send</b> your employee's planning."
-msgstr "<b>Publiceer en verstuur</b> de planning van uw medewerker."
+msgstr "<b>Publiceer en verstuur</b> de planning van je medewerker."
 
 #. module: planning
 #: model:mail.template,body_html:planning.email_template_planning_planning
@@ -710,7 +710,7 @@ msgid ""
 "Analyze the allocation of your resources across roles, projects, and sales "
 "orders, and estimate future needs."
 msgstr ""
-"Analyseer de toewijzing van uw middelen over rollen, projecten en "
+"Analyseer de toewijzing van je middelen over rollen, projecten en "
 "verkooporders en schat toekomstige behoeften."
 
 #. module: planning
@@ -723,7 +723,7 @@ msgstr "Gearchiveerd"
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/js/planning_gantt_controller.js:0
+#: code:addons/planning/static/src/views/planning_form/planning_form_view.js:0
 #, python-format
 msgid "Are you sure you want to delete this shift?"
 msgstr "Weet je zeker dat je deze dienst wilt verwijderen?"
@@ -813,6 +813,13 @@ msgstr "Bedrijven"
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Company"
 msgstr "Bedrijf"
+
+#. module: planning
+#: model:ir.model.fields,help:planning.field_planning_planning__company_id
+msgid ""
+"Company linked to the material resource. Leave empty for the resource to be "
+"available in every company."
+msgstr ""
 
 #. module: planning
 #: model:ir.model,name:planning.model_res_config_settings
@@ -935,30 +942,24 @@ msgstr ""
 " planning ontvangen."
 
 #. module: planning
+#: model:ir.model.fields,help:planning.field_planning_slot__role_id
+msgid ""
+"Define the roles your resources perform (e.g. Chef, Bartender, Waiter...). "
+"Create open shifts for the roles you need to complete a mission. Then, "
+"assign those open shifts to the resources that are available."
+msgstr ""
+
+#. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid ""
 "Define the roles your resources perform (e.g. Chef, Bartender, Waiter...). "
 "Create open shifts for the roles you will be needing to complete a mission. "
 "Then, assign those open shifts to the resources that are available."
 msgstr ""
-"Definieer de rollen die uw resources vervullen (bijvoorbeeld chef-kok, "
+"Definieer de rollen die je resources vervullen (bijvoorbeeld chef-kok, "
 "barman, ober...). Creëer open ploegen voor de rollen die je nodig hebt om "
 "een missie te voltooien. Wijs die openstaande diensten vervolgens toe aan de"
 " beschikbare resources."
-
-#. module: planning
-#: model:ir.model.fields,help:planning.field_res_company__planning_generation_interval
-msgid ""
-"Delay for the rate at which recurring shift should be generated in month"
-msgstr ""
-"Vertraging voor de snelheid waarmee terugkerende dienst moet worden "
-"gegenereerd in de maand"
-
-#. module: planning
-#: model:ir.model.fields,help:planning.field_res_config_settings__planning_generation_interval
-msgid "Delay for the rate at which recurring shifts should be generated"
-msgstr ""
-"Snelheidsvertraging waarmee herhalende diensten gegenereerd moeten worden"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_kanban
@@ -1007,7 +1008,7 @@ msgstr "Schermnaam"
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_resources
 msgid "Distribute your material resources across projects and sales orders."
-msgstr "Verdeel uw materiële middelen over projecten en verkooporders."
+msgstr "Verdeel je materiële middelen over projecten en verkooporders."
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -1170,7 +1171,7 @@ msgid ""
 "Find here your planning. Assign yourself open shifts that match your roles, "
 "or indicate your unavailability."
 msgstr ""
-"Vind hier uw planning. Wijs jezelf openstaande diensten toe die passen bij "
+"Vind hier je planning. Wijs jezelf openstaande diensten toe die passen bij "
 "je rollen, of geef aan dat je niet beschikbaar bent."
 
 #. module: planning
@@ -1277,15 +1278,6 @@ msgid ""
 msgstr ""
 "Indien aangevinkt, betekent dit dat de dienst is gewijzigd sinds de laatste "
 "publicatie."
-
-#. module: planning
-#: model:ir.model.fields,help:planning.field_planning_slot__repeat_until
-msgid ""
-"If set, the recurrence stop at that date. Otherwise, the recurrence is "
-"applied indefinitely."
-msgstr ""
-"Indien ingesteld, stopt de herhaling op die datum. Anders wordt de herhaling"
-" voor onbepaalde tijd toegepast."
 
 #. module: planning
 #. openerp-web
@@ -1408,14 +1400,6 @@ msgid "Let employees unassign themselves from shifts"
 msgstr "Sta toe dat werknemers een toewijzing van een dienst kunnen afwijzen"
 
 #. module: planning
-#: model:ir.model.fields,help:planning.field_planning_planning__allow_self_unassign
-#: model:ir.model.fields,help:planning.field_planning_slot__allow_self_unassign
-#: model:ir.model.fields,help:planning.field_res_company__planning_allow_self_unassign
-#: model:ir.model.fields,help:planning.field_res_config_settings__planning_allow_self_unassign
-msgid "Let your employees un-assign themselves from shifts when unavailable"
-msgstr "Sta toe dat werknemers een toewijzing van een dienst kunnen afwijzen"
-
-#. module: planning
 #. openerp-web
 #: code:addons/planning/static/src/js/tours/planning.js:0
 #, python-format
@@ -1423,7 +1407,7 @@ msgid ""
 "Let's create your first <b>shift</b>. <i>Tip: use the (+) shortcut available"
 " on each cell of the Gantt view to save time.</i>"
 msgstr ""
-"Laten we uw eerste <b>ploeg</b> maken. <i>Tip: gebruik de sneltoets (+) die "
+"Laten we je eerste <b>ploeg</b> maken. <i>Tip: gebruik de sneltoets (+) die "
 "beschikbaar is in elke cel van de Gantt-weergave om tijd te besparen.</i>"
 
 #. module: planning
@@ -1464,6 +1448,13 @@ msgstr "Materiaal"
 #: model:ir.ui.menu,name:planning.planning_menu_settings_resource
 msgid "Materials"
 msgstr "Materialen"
+
+#. module: planning
+#: model:ir.model.fields,help:planning.field_planning_slot__repeat
+msgid ""
+"Modifications made to a shift only impact the current shift and not the other ones that are part of the recurrence. The same goes when deleting a recurrent shift. Disable this option to stop the recurrence.\n"
+"To avoid polluting your database and performance issues, shifts are only created for the next 6 months. They are then gradually created as time passes by in order to always get shifts 6 months ahead. This value can be modified from the settings of Planning, in debug mode."
+msgstr ""
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__publication_warning
@@ -1628,11 +1619,6 @@ msgid "Past"
 msgstr "Verleden"
 
 #. module: planning
-#: model:ir.model.fields,help:planning.field_planning_slot__allocated_percentage
-msgid "Percentage of time the employee is supposed to work during the shift."
-msgstr "Percentage tijd dat de werknemer tijdens de dienst moet werken."
-
-#. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_send__start_datetime
 #: model_terms:ir.ui.view,arch_db:planning.planning_send_view_form
 msgid "Period"
@@ -1646,7 +1632,7 @@ msgid ""
 "Plan all of your shifts in one click by <b>copying the previous week's "
 "schedule</b>."
 msgstr ""
-"Plan al uw diensten met één klik door <b>het rooster van de vorige week te "
+"Plan al je diensten met één klik door <b>het rooster van de vorige week te "
 "kopiëren</b>."
 
 #. module: planning
@@ -1886,12 +1872,28 @@ msgid "Role"
 msgstr "Rol"
 
 #. module: planning
+#: model:ir.model.fields,help:planning.field_hr_employee__default_planning_role_id
+msgid ""
+"Role that will be selected by default when creating a shift for this employee.\n"
+"This role will also have precedence over the other roles of the employee when planning orders."
+msgstr ""
+
+#. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_roles
 #: model:ir.model.fields,field_description:planning.field_hr_employee__planning_role_ids
 #: model:ir.model.fields,field_description:planning.field_resource_resource__role_ids
 #: model:ir.ui.menu,name:planning.planning_menu_settings_role
 msgid "Roles"
 msgstr "Rollen"
+
+#. module: planning
+#: model:ir.model.fields,help:planning.field_hr_employee__planning_role_ids
+msgid ""
+"Roles that the employee can fill in. When creating a shift for this employee, only the shift templates for these roles will be displayed.\n"
+"Similarly, only the open shifts available for these roles will be sent to the employee when the schedule is published.\n"
+"Additionally, the employee will only be assigned orders for these roles (with the default planning role having precedence over the other ones).\n"
+"Leave empty for the employee to be assigned shifts regardless of the role."
+msgstr ""
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
@@ -1939,7 +1941,7 @@ msgid ""
 "Schedule your human and material resources across roles, projects and sales "
 "orders."
 msgstr ""
-"Plan uw menselijke en materiële middelen over rollen, projecten en "
+"Plan je menselijke en materiële middelen over rollen, projecten en "
 "verkooporders."
 
 #. module: planning
@@ -2046,7 +2048,7 @@ msgstr "Verschuivingen in conflict"
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Shifts of Your Department Member"
-msgstr "Ploegen van uw afdelingslid"
+msgstr "Ploegen van je afdelingslid"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
@@ -2150,7 +2152,6 @@ msgstr ""
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/js/planning_form_view.js:0
 #: code:addons/planning/static/src/views/planning_form/planning_form_view.js:0
 #, python-format
 msgid "The recurring shifts have successfully been created."
@@ -2273,7 +2274,7 @@ msgstr ""
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/js/planning_gantt_controller.js:0
+#: code:addons/planning/static/src/views/planning_form/planning_form_view.js:0
 #, python-format
 msgid "This shift was successfully saved as a template."
 msgstr "Deze dienst is succesvol opgeslagen als sjabloon."
@@ -2394,7 +2395,7 @@ msgid ""
 "needing to complete a mission. Then, assign those open shifts to the "
 "resources that are available.</i>"
 msgstr ""
-"Schrijf de <b>rol</b> op die uw werknemer zal vervullen (<i>bijv. Chef, "
+"Schrijf de <b>rol</b> op die je werknemer zal vervullen (<i>bijv. Chef, "
 "barman, ober, enz.</i>). <i>Tip: maak open ploegen voor de rollen die je "
 "nodig hebt om een missie te voltooien. Wijs die openstaande diensten "
 "vervolgens toe aan de beschikbare bronnen.</i>"

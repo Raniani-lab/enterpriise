@@ -3,15 +3,16 @@
 # 	* hr_payroll_expense
 # 
 # Translators:
-# Yihya Hugirat <hugirat@gmail.com>, 2019
+# Yihya Hugirat <hugirat@gmail.com>, 2022
+# ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:04+0000\n"
-"PO-Revision-Date: 2019-08-26 09:36+0000\n"
-"Last-Translator: Yihya Hugirat <hugirat@gmail.com>, 2019\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"PO-Revision-Date: 2022-09-22 05:47+0000\n"
+"Last-Translator: ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,7 +23,7 @@ msgstr ""
 #. module: hr_payroll_expense
 #: model:ir.model,name:hr_payroll_expense.model_hr_expense_sheet
 msgid "Expense Report"
-msgstr ""
+msgstr "דוח הוצאות"
 
 #. module: hr_payroll_expense
 #: model:ir.model.fields,field_description:hr_payroll_expense.field_hr_payslip__expense_sheet_ids
@@ -33,6 +34,11 @@ msgstr "הוצאות"
 #. module: hr_payroll_expense
 #: model:ir.model.fields,field_description:hr_payroll_expense.field_hr_payslip__expenses_count
 msgid "Expenses Count"
+msgstr "כמות הוצאות"
+
+#. module: hr_payroll_expense
+#: model:hr.salary.rule,name:hr_payroll_expense.hr_salary_rule_expense_refund
+msgid "Expenses Reimbursement"
 msgstr ""
 
 #. module: hr_payroll_expense
@@ -43,12 +49,12 @@ msgstr ""
 #. module: hr_payroll_expense
 #: model:ir.model,name:hr_payroll_expense.model_hr_payslip
 msgid "Pay Slip"
-msgstr ""
+msgstr "תלוש שכר"
 
 #. module: hr_payroll_expense
 #: model:ir.model.fields,field_description:hr_payroll_expense.field_hr_expense_sheet__payslip_id
 msgid "Payslip"
-msgstr ""
+msgstr "תלוש שכר"
 
 #. module: hr_payroll_expense
 #: model:ir.model.fields,field_description:hr_payroll_expense.field_hr_expense_sheet__refund_in_payslip

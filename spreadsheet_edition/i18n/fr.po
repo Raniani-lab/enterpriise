@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:43+0000\n"
+"POT-Creation-Date: 2022-10-10 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -21,27 +21,6 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: fr\n"
 "Plural-Forms: nplurals=3; plural=(n == 0 || n == 1) ? 0 : n != 0 && n % 1000000 == 0 ? 1 : 2;\n"
-
-#. module: spreadsheet_edition
-#. openerp-web
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
-#, python-format
-msgid "(Graph -"
-msgstr "(Graph -"
-
-#. module: spreadsheet_edition
-#. openerp-web
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
-#, python-format
-msgid "(List #"
-msgstr "(Liste #"
-
-#. module: spreadsheet_edition
-#. openerp-web
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
-#, python-format
-msgid "(Pivot #"
-msgstr "(Pivot #"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__active
@@ -179,8 +158,6 @@ msgstr "Date"
 
 #. module: spreadsheet_edition
 #. openerp-web
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Date field"
@@ -746,6 +723,13 @@ msgstr "Feuilles de calcul"
 #, python-format
 msgid "Stacked barchart"
 msgstr "Graphique à barres empilées"
+
+#. module: spreadsheet_edition
+#. openerp-web
+#: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/odoo_line/odoo_line_config_panel.xml:0
+#, python-format
+msgid "Stacked linechart"
+msgstr "Graphique à lignes empilées"
 
 #. module: spreadsheet_edition
 #. openerp-web

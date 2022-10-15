@@ -4,16 +4,16 @@
 # 
 # Translators:
 # Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2022
-# Braulio D. López Vázquez <bdl@odoo.com>, 2022
 # Martin Trigaux, 2022
+# Braulio D. López Vázquez <bdl@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Braulio D. López Vázquez <bdl@odoo.com>, 2022\n"
 "Language-Team: Spanish (Mexico) (https://www.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,26 +30,25 @@ msgstr "<b>%s le sugiere eliminar esta instrucción</b>"
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
-msgid "<b>%s suggests to use this document as instruction</b>"
-msgstr "<b>%s le sugiere usar este documento como instrucción</b>"
+msgid ""
+"<b>%s suggests to use this document as instruction</b><br/><img style='max-"
+"width: 75%%' class='img-fluid' src=%s/>"
+msgstr ""
+"<b>%s sugiere usar este documento como instrucciones</b><br/><img "
+"style='max-width: 75%%' class='img-fluid' src=%s/>"
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
-msgid "<b>New Instruction suggested by %s</b><br/>%s<br/>"
-msgstr "<b>Nueva instrucción sugerida por %s</b><br/>%s<br/>"
+msgid "<b>New Instruction suggested by %s</b><br/>%s<br/><b>Reason: %s</b>"
+msgstr ""
+"<b>Nuevas instrucciones sugeridas por %s</b><br/>%s<br/><b>Razón: %s</b>"
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/models/quality.py:0
 #, python-format
 msgid "<b>New Step suggested by %s</b><br/><b>Reason:</b>%s"
 msgstr "<b>Nuevo paso sugerido por %s</b><br/><b>Razón:</b>%s"
-
-#. module: mrp_workorder
-#: code:addons/mrp_workorder/wizard/propose_change.py:0
-#, python-format
-msgid "<b>Reason: %s</b>"
-msgstr "<b>Razón: %s</b>"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.res_config_settings_view_form
@@ -309,7 +308,7 @@ msgstr "Personalizado"
 #: model:product.template.attribute.value,name:mrp_workorder.product_attribute_value_1
 #: model:product.template.attribute.value,name:mrp_workorder.product_attribute_value_1_radio
 msgid "Dark Blue"
-msgstr ""
+msgstr "Azul oscuro"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_inherit_workorder
@@ -329,6 +328,12 @@ msgid "Delete this Step"
 msgstr "Eliminar este paso"
 
 #. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__is_deleted
+msgid "Deleted in production"
+msgstr "Se eliminó en producción"
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_mrp_workorder_additional_product_wizard
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_propose_change_wizard
 msgid "Discard"
@@ -339,6 +344,11 @@ msgstr "Descartar"
 #: model:ir.model.fields,field_description:mrp_workorder.field_propose_change__display_name
 msgid "Display Name"
 msgstr "Nombre en pantalla"
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
+msgid "Document"
+msgstr "Documento"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__qty_done
@@ -444,8 +454,12 @@ msgstr ""
 "la cual se aplica el control de calidad"
 
 #. module: mrp_workorder
-#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_routing_workcenter__quality_point_count
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
+msgid "Instruction"
+msgstr "Instrucción"
+
+#. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_routing_workcenter__quality_point_count
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_routing_workcenter_tree_view_inherited
 msgid "Instructions"
 msgstr "Instrucciones"
@@ -728,6 +742,7 @@ msgid "Products"
 msgstr "Productos"
 
 #. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_propose_change_wizard
 msgid "Propose Change"
 msgstr "Proponer cambio"
@@ -810,11 +825,6 @@ msgid "Quantity"
 msgstr "Cantidad"
 
 #. module: mrp_workorder
-#: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
-msgid "Reason"
-msgstr "Razón"
-
-#. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Record production"
 msgstr "Registrar producción"
@@ -861,11 +871,6 @@ msgid "Result"
 msgstr "Resultado"
 
 #. module: mrp_workorder
-#: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
-msgid "Save"
-msgstr "Guardar"
-
-#. module: mrp_workorder
 #. openerp-web
 #: code:addons/mrp_workorder/static/src/components/menuPopup.xml:0
 #, python-format
@@ -901,7 +906,7 @@ msgstr "Mostrar el temporizador en la pantalla de orden de trabajo"
 #: model:product.product,description_sale:mrp_workorder.product_product_stool_3
 #: model:product.template,description_sale:mrp_workorder.product_template_stool
 msgid "Small wooden stool"
-msgstr ""
+msgstr "Banco pequeño de madera"
 
 #. module: mrp_workorder
 #: model:ir.model.fields.selection,name:mrp_workorder.selection__quality_point__source_document__operation
@@ -961,7 +966,7 @@ msgstr "Línea de movimiento de existencias"
 #: model:product.product,name:mrp_workorder.product_product_stool_3
 #: model:product.template,name:mrp_workorder.product_template_stool
 msgid "Stool"
-msgstr ""
+msgstr "Banco"
 
 #. module: mrp_workorder
 #: model:product.product,name:mrp_workorder.product_product_stool_foot_1
@@ -969,7 +974,7 @@ msgstr ""
 #: model:product.product,name:mrp_workorder.product_product_stool_foot_3
 #: model:product.template,name:mrp_workorder.product_template_stool_foot
 msgid "Stool Foot"
-msgstr ""
+msgstr "Pie de banco"
 
 #. module: mrp_workorder
 #: model:product.product,name:mrp_workorder.product_product_stool_top_1
@@ -977,7 +982,7 @@ msgstr ""
 #: model:product.product,name:mrp_workorder.product_product_stool_top_3
 #: model:product.template,name:mrp_workorder.product_template_stool_top
 msgid "Stool Top"
-msgstr ""
+msgstr "Asiento de banco"
 
 #. module: mrp_workorder
 #. openerp-web
@@ -1019,6 +1024,7 @@ msgstr "Temporizador"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__title
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
 msgid "Title"
 msgstr "Título"
 
@@ -1269,12 +1275,17 @@ msgid "minutes"
 msgstr "minutos"
 
 #. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_propose_change__title
+msgid "title"
+msgstr "título"
+
+#. module: mrp_workorder
 #: model:product.product,description_sale:mrp_workorder.product_product_stool_foot_1
 #: model:product.product,description_sale:mrp_workorder.product_product_stool_foot_2
 #: model:product.product,description_sale:mrp_workorder.product_product_stool_foot_3
 #: model:product.template,description_sale:mrp_workorder.product_template_stool_foot
 msgid "wooden stool foot"
-msgstr ""
+msgstr "pie de banco de madera"
 
 #. module: mrp_workorder
 #: model:product.product,description_sale:mrp_workorder.product_product_stool_top_1
@@ -1282,4 +1293,4 @@ msgstr ""
 #: model:product.product,description_sale:mrp_workorder.product_product_stool_top_3
 #: model:product.template,description_sale:mrp_workorder.product_template_stool_top
 msgid "wooden stool top"
-msgstr ""
+msgstr "asiento de banco de madera"

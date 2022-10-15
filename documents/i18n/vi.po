@@ -3,16 +3,16 @@
 # 	* documents
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Dao Nguyen <trucdao.uel@gmail.com>, 2022
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Dao Nguyen <trucdao.uel@gmail.com>, 2022\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,24 +43,10 @@ msgstr "%s Documents (%s locked)"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload_service.js:0
-#, python-format
-msgid "%s Files"
-msgstr "%s Files"
-
-#. module: documents
-#. openerp-web
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "%s file(s) not moved because they are locked by another user"
 msgstr "%s file(s) not moved because they are locked by another user"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "(%s/%sMB)"
-msgstr ""
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -692,7 +678,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload_service.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "An error occured while uploading."
 msgstr ""
@@ -832,14 +818,6 @@ msgstr "Có thể tải lên"
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Cancel"
 msgstr "Hủy"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.xml:0
-#: code:addons/documents/static/src/views/helper/documents_file_upload.xml:0
-#, python-format
-msgid "Cancel Upload"
-msgstr "Hủy tải lên"
 
 #. module: documents
 #: model_terms:documents.folder,description:documents.documents_internal_folder
@@ -1069,6 +1047,13 @@ msgid "Description"
 msgstr "Mô tả"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_form
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_form
+msgid "Discard"
+msgstr "Huỷ bỏ"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_facet__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_folder__display_name
@@ -1081,13 +1066,6 @@ msgstr "Mô tả"
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__display_name
 msgid "Display Name"
 msgstr "Tên hiển thị"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "Do you really want to cancel the upload of %s?"
-msgstr "Bạn có thực sự muốn hủy tải lên của %s?"
 
 #. module: documents
 #. openerp-web
@@ -1288,7 +1266,7 @@ msgstr "Email CC"
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
-#: code:addons/documents/static/src/views/documents_controller_mixin.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #: model:ir.model.fields.selection,name:documents.selection__documents_document__thumbnail_status__error
 #, python-format
 msgid "Error"
@@ -1342,7 +1320,7 @@ msgstr "Dung lượng tập tin"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/documents_controller_mixin.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "File is too large."
 msgstr ""
@@ -1664,11 +1642,6 @@ msgstr "Liên kết"
 #: model:ir.model.fields.selection,name:documents.selection__documents_workflow_rule__create_model__link_to_record
 msgid "Link to record"
 msgstr "Liên kết với hồ sơ"
-
-#. module: documents
-#: model:ir.model.fields,help:documents.field_documents_document__email_cc
-msgid "List of cc from incoming emails."
-msgstr "Danh sách CC từ email đến"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__state__live
@@ -2097,13 +2070,6 @@ msgid "Presentations"
 msgstr "Bài đăng"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "Processing..."
-msgstr "Đang xử lý..."
-
-#. module: documents
 #: model:documents.tag,name:documents.documents_internal_template_project
 msgid "Project"
 msgstr "Dự án"
@@ -2252,6 +2218,13 @@ msgstr "Lỗi gửi SMS"
 #: model:documents.tag,name:documents.documents_internal_knowledge_sales
 msgid "Sales"
 msgstr "Bán hàng"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_form
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_form
+msgid "Save"
+msgstr "Lưu"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_option
@@ -2569,7 +2542,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/form/share_form_controller.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "The share url has been copied to your clipboard."
@@ -2733,13 +2706,6 @@ msgstr ""
 #, python-format
 msgid "Upload file request"
 msgstr "Tải lên tệp yêu cầu"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "Uploading... (%s%)"
-msgstr ""
 
 #. module: documents
 #: model:ir.model,name:documents.model_res_users
@@ -3050,7 +3016,7 @@ msgstr "được chia sẻ bởi"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload_service.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "status code: %s, message: %s"
 msgstr "mã trạng thái: %s, tin nhắn: %s"

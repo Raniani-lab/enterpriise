@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -704,7 +704,7 @@ msgstr "已存档"
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/js/planning_gantt_controller.js:0
+#: code:addons/planning/static/src/views/planning_form/planning_form_view.js:0
 #, python-format
 msgid "Are you sure you want to delete this shift?"
 msgstr "你确定要删除这个班次吗？"
@@ -790,6 +790,13 @@ msgstr "公司"
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Company"
 msgstr "公司"
+
+#. module: planning
+#: model:ir.model.fields,help:planning.field_planning_planning__company_id
+msgid ""
+"Company linked to the material resource. Leave empty for the resource to be "
+"available in every company."
+msgstr ""
 
 #. module: planning
 #: model:ir.model,name:planning.model_res_config_settings
@@ -910,6 +917,14 @@ msgid ""
 msgstr "为以下员工定义工作电子邮件地址，以便他们接收计划。"
 
 #. module: planning
+#: model:ir.model.fields,help:planning.field_planning_slot__role_id
+msgid ""
+"Define the roles your resources perform (e.g. Chef, Bartender, Waiter...). "
+"Create open shifts for the roles you need to complete a mission. Then, "
+"assign those open shifts to the resources that are available."
+msgstr ""
+
+#. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid ""
 "Define the roles your resources perform (e.g. Chef, Bartender, Waiter...). "
@@ -917,17 +932,6 @@ msgid ""
 "Then, assign those open shifts to the resources that are available."
 msgstr ""
 "定义您的资源执行的角色（例如厨师、调酒师、服务生......）。 为完成任务所需的角色创建开放式轮班。 然后，将这些未结班次分配给可用资源。"
-
-#. module: planning
-#: model:ir.model.fields,help:planning.field_res_company__planning_generation_interval
-msgid ""
-"Delay for the rate at which recurring shift should be generated in month"
-msgstr "每月应产生的经常性转变的比率的延迟"
-
-#. module: planning
-#: model:ir.model.fields,help:planning.field_res_config_settings__planning_generation_interval
-msgid "Delay for the rate at which recurring shifts should be generated"
-msgstr "应产生经常性轮班的比率的延迟"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_kanban
@@ -1238,13 +1242,6 @@ msgid ""
 msgstr "如果被选中，意味着移位包含的内容在上次发布后发生了变化。"
 
 #. module: planning
-#: model:ir.model.fields,help:planning.field_planning_slot__repeat_until
-msgid ""
-"If set, the recurrence stop at that date. Otherwise, the recurrence is "
-"applied indefinitely."
-msgstr "如果设置，则重复在该日期停止。 否则，将无限期地应用重复。"
-
-#. module: planning
 #. openerp-web
 #: code:addons/planning/static/src/js/tours/planning.js:0
 #, python-format
@@ -1363,14 +1360,6 @@ msgid "Let employees unassign themselves from shifts"
 msgstr "允许员工自行空出排班"
 
 #. module: planning
-#: model:ir.model.fields,help:planning.field_planning_planning__allow_self_unassign
-#: model:ir.model.fields,help:planning.field_planning_slot__allow_self_unassign
-#: model:ir.model.fields,help:planning.field_res_company__planning_allow_self_unassign
-#: model:ir.model.fields,help:planning.field_res_config_settings__planning_allow_self_unassign
-msgid "Let your employees un-assign themselves from shifts when unavailable"
-msgstr "让你的员工在没有时间的情况下取消自己的轮班安排"
-
-#. module: planning
 #. openerp-web
 #: code:addons/planning/static/src/js/tours/planning.js:0
 #, python-format
@@ -1416,6 +1405,13 @@ msgstr "物料"
 #: model:ir.ui.menu,name:planning.planning_menu_settings_resource
 msgid "Materials"
 msgstr "材料"
+
+#. module: planning
+#: model:ir.model.fields,help:planning.field_planning_slot__repeat
+msgid ""
+"Modifications made to a shift only impact the current shift and not the other ones that are part of the recurrence. The same goes when deleting a recurrent shift. Disable this option to stop the recurrence.\n"
+"To avoid polluting your database and performance issues, shifts are only created for the next 6 months. They are then gradually created as time passes by in order to always get shifts 6 months ahead. This value can be modified from the settings of Planning, in debug mode."
+msgstr ""
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__publication_warning
@@ -1574,11 +1570,6 @@ msgstr "重叠的时段"
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Past"
 msgstr "过去"
-
-#. module: planning
-#: model:ir.model.fields,help:planning.field_planning_slot__allocated_percentage
-msgid "Percentage of time the employee is supposed to work during the shift."
-msgstr "员工在当班期间应该工作的时间的百分比。"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_send__start_datetime
@@ -1831,12 +1822,28 @@ msgid "Role"
 msgstr "角色"
 
 #. module: planning
+#: model:ir.model.fields,help:planning.field_hr_employee__default_planning_role_id
+msgid ""
+"Role that will be selected by default when creating a shift for this employee.\n"
+"This role will also have precedence over the other roles of the employee when planning orders."
+msgstr ""
+
+#. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_roles
 #: model:ir.model.fields,field_description:planning.field_hr_employee__planning_role_ids
 #: model:ir.model.fields,field_description:planning.field_resource_resource__role_ids
 #: model:ir.ui.menu,name:planning.planning_menu_settings_role
 msgid "Roles"
 msgstr "角色"
+
+#. module: planning
+#: model:ir.model.fields,help:planning.field_hr_employee__planning_role_ids
+msgid ""
+"Roles that the employee can fill in. When creating a shift for this employee, only the shift templates for these roles will be displayed.\n"
+"Similarly, only the open shifts available for these roles will be sent to the employee when the schedule is published.\n"
+"Additionally, the employee will only be assigned orders for these roles (with the default planning role having precedence over the other ones).\n"
+"Leave empty for the employee to be assigned shifts regardless of the role."
+msgstr ""
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
@@ -2090,7 +2097,6 @@ msgstr "重复的结束日期应晚于班次的开始日期。"
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/js/planning_form_view.js:0
 #: code:addons/planning/static/src/views/planning_form/planning_form_view.js:0
 #, python-format
 msgid "The recurring shifts have successfully been created."
@@ -2208,7 +2214,7 @@ msgstr "这个公开的班次不再有了，或者在此期间规划已经更新
 
 #. module: planning
 #. openerp-web
-#: code:addons/planning/static/src/js/planning_gantt_controller.js:0
+#: code:addons/planning/static/src/views/planning_form/planning_form_view.js:0
 #, python-format
 msgid "This shift was successfully saved as a template."
 msgstr "该班次已成功保存为模板。"

@@ -3,17 +3,16 @@
 # 	* sale_ebay
 # 
 # Translators:
-# Martin Trigaux, 2019
-# Bohdan Lisnenko, 2019
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
+# Martin Trigaux, 2022
+# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-23 11:39+0000\n"
-"PO-Revision-Date: 2019-08-26 09:38+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
+"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"PO-Revision-Date: 2022-09-22 05:48+0000\n"
+"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -60,7 +59,7 @@ msgstr "30 днів (лише для фіксованої ціни)"
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__days_5
 msgid "5 Days"
-msgstr "5 днів"
+msgstr "5 Днів"
 
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__days_7
@@ -89,8 +88,27 @@ msgstr "<span class=\"o_form_label\">Обліковий запис eBay</span>"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid ""
+"<span class=\"o_form_label\">eBay Marketplace Account Deletion/Closure "
+"Notifications</span>"
+msgstr ""
+"<span class=\"o_form_label\">Повідомлення про видалення/закриття облікового "
+"запису маркетплейсу eBay</span>"
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">eBay Options</span>"
 msgstr "<span class=\"o_form_label\">Функції eBay</span>"
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "Activate Other Currencies"
+msgstr "Активувати інші валюти"
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "Add other countries"
+msgstr "Додати інші країни"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:0
@@ -112,12 +130,6 @@ msgstr "Дозволити найкращу пропозицію"
 #: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_type__chinese
 msgid "Auction"
 msgstr "Аукціон"
-
-#. module: sale_ebay
-#: model:ir.model.fields,field_description:sale_ebay.field_res_country__ebay_available
-#: model:ir.model.fields,field_description:sale_ebay.field_res_currency__ebay_available
-msgid "Availability To Use For eBay API"
-msgstr "Доступність для використання для eBay API"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_buy_it_now_price
@@ -179,9 +191,14 @@ msgid "Contact"
 msgstr "Контакт"
 
 #. module: sale_ebay
+#: model:ir.actions.act_window,name:sale_ebay.action_country_all_form
+msgid "Countries"
+msgstr "Країни"
+
+#. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Countries & Currencies"
-msgstr "Країни та валюти"
+msgstr "Країни та Валюти"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_res_country
@@ -205,7 +222,7 @@ msgstr "Створив"
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__create_date
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__create_date
 msgid "Created on"
-msgstr "Створено на"
+msgstr "Створено"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_res_currency
@@ -242,6 +259,11 @@ msgstr "Ключ розробника"
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__display_name
 msgid "Display Name"
 msgstr "Назва для відображення"
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "Documentation"
+msgstr "Документація"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_listing_duration
@@ -285,8 +307,8 @@ msgstr "Ebay: відновлення замовлень"
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_stock_sync_ir_actions_server
 #: model:ir.cron,cron_name:sale_ebay.ir_cron_sale_ebay_stock_sync
 #: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_stock_sync
-msgid "Ebay: synchronise stock (for 'get new orders' synchronisation)"
-msgstr ""
+msgid "Ebay: synchronise stock"
+msgstr "Ebay: синхронізувати склад"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_categories_ir_actions_server
@@ -294,16 +316,6 @@ msgstr ""
 #: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_categories
 msgid "Ebay: update categories"
 msgstr "Ebay: оновити категорії"
-
-#. module: sale_ebay
-#: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_status_10_ir_actions_server
-#: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_status_5_ir_actions_server
-#: model:ir.cron,cron_name:sale_ebay.ir_cron_sale_ebay_status_10
-#: model:ir.cron,cron_name:sale_ebay.ir_cron_sale_ebay_status_5
-#: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_status_10
-#: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_status_5
-msgid "Ebay: update product status"
-msgstr "Ebay: оновити статус товару"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
@@ -351,6 +363,11 @@ msgid "Gallery Plus"
 msgstr "Додати галерею"
 
 #. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "Generate Token"
+msgstr "Створити Токен"
+
+#. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__gtc
 msgid "Good 'Til Cancelled (only for fixed price)"
 msgstr "Товар знаходиться до закриття (тільки для фіксованої ціни)"
@@ -363,6 +380,12 @@ msgstr "Товар знаходиться до закриття (тільки д
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__id
 msgid "ID"
 msgstr "ID"
+
+#. module: sale_ebay
+#: model:ir.model.fields,help:sale_ebay.field_res_country__ebay_available
+#: model:ir.model.fields,help:sale_ebay.field_res_currency__ebay_available
+msgid "If activated, can be used for eBay."
+msgstr "Якщо активовано, то може бути використано для eBay."
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -392,7 +415,7 @@ msgstr "Стан елементу"
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy____last_update
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site____last_update
 msgid "Last Modified on"
-msgstr "Останні зміни на"
+msgstr "Остання модифікація"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__write_uid
@@ -457,7 +480,12 @@ msgstr "Тип списку"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_location
 msgid "Location"
-msgstr "Місцезнаходження"
+msgstr "Розташування"
+
+#. module: sale_ebay
+#: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_account_deletion_endpoint
+msgid "Marketplace account deletion notification endpoint"
+msgstr "Кінцева точка сповіщення про видалення облікового запису маркетплейсу"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -475,7 +503,7 @@ msgstr "Режим та повноваження"
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__name
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__name
 msgid "Name"
-msgstr "Ім'я"
+msgstr "Назва"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/sale_ebay.py:0
@@ -503,13 +531,23 @@ msgstr "Або умова не сумісна з категорією."
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_out_of_stock
 msgid "Out Of Stock"
-msgstr "Немає на складі"
+msgstr "Не на складі"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_seller_payment_policy_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_seller_payment_policy_id
 msgid "Payment Policy"
 msgstr "Політика оплати"
+
+#. module: sale_ebay
+#: code:addons/sale_ebay/models/res_config_settings.py:0
+#, python-format
+msgid ""
+"Please provide your ebay production keys before enabling the account "
+"deletion notifications."
+msgstr ""
+"Будь ласка, надайте свої виробничі ключі ebay, перш ніж увімкнути сповіщення"
+" про видалення облікового запису."
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -528,7 +566,7 @@ msgid "Private Listing"
 msgstr "Приватний список"
 
 #. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_product_product
+#: model:ir.model,name:sale_ebay.model_product_template
 msgid "Product"
 msgstr "Товар"
 
@@ -538,9 +576,9 @@ msgid "Product Categories"
 msgstr "Категорії товару"
 
 #. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_product_template
-msgid "Product Template"
-msgstr "Шаблон товару"
+#: model:ir.model,name:sale_ebay.model_product_product
+msgid "Product Variant"
+msgstr "Варіант товару"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/sale_order.py:0
@@ -556,22 +594,17 @@ msgstr "Виробництво"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_app_id
 msgid "Production App Key"
-msgstr "Ключ додатку виробництва"
+msgstr "Ключ додатку Виробництва"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_cert_id
 msgid "Production Cert Key"
-msgstr "Сертифікат ключа виробництва "
+msgstr "Замкнений ключ виробництва "
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_token
 msgid "Production Token"
 msgstr "Токен виробництва"
-
-#. module: sale_ebay
-#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "Products & Transactions"
-msgstr "Товари та транзакції"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_use
@@ -698,19 +731,26 @@ msgid "Sync now"
 msgstr "Синхронізувати зараз"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:0
 #: code:addons/sale_ebay/models/sale_order.py:0
 #, python-format
 msgid "The Buyer Chose The Following Delivery Method :\n"
 msgstr "Покупець вибрав наступний метод доставки:\n"
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:0
-#: code:addons/sale_ebay/models/product.py:0
 #: code:addons/sale_ebay/models/sale_order.py:0
 #, python-format
 msgid "The Buyer Posted :\n"
 msgstr "Покупець опублікував :\n"
+
+#. module: sale_ebay
+#: code:addons/sale_ebay/models/res_config_settings.py:0
+#, python-format
+msgid ""
+"The python 'cryptography' module is not installed on your server.\n"
+"It is necessary to support eBay account deletion notifications, please contact your system administrator to install it."
+msgstr ""
+"Модуль «криптографія» Python не встановлено на вашому сервері.\n"
+"Необхідно підтримувати сповіщення про видалення облікового запису eBay, зверніться до свого системного адміністратора, щоб встановити його."
 
 #. module: sale_ebay
 #: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_subtitle
@@ -753,10 +793,16 @@ msgstr ""
 "\"РІК-МІСЯЦЬ-ДЕНЬ\"."
 
 #. module: sale_ebay
-#: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_template_id
-#: model:ir.model.fields,help:sale_ebay.field_product_template__ebay_template_id
-msgid "This field contains the template that will be used."
-msgstr "Це поле містить шаблон, який буде використовуватися."
+#: code:addons/sale_ebay/models/res_partner.py:0
+#, python-format
+msgid ""
+"This is an automated notification as a deletion request has been received from eBay concerning the account \"%s (%s)\". The account has been anonymised already and his portal access revoked (if they had any).\n"
+"\n"
+"However, personal information might remain in linked documents, please review them according to laws that apply."
+msgstr ""
+"Це автоматичне сповіщення, оскільки було отримано запит на видалення від eBay щодо облікового запису \"%s (%s)\". Обліковий запис уже анонімізовано, а доступ до порталу скасовано (якщо вони були).\n"
+"\n"
+"Однак особиста інформація може залишатися в пов’язаних документах, перегляньте їх відповідно до чинного законодавства."
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_title
@@ -786,9 +832,20 @@ msgid "Use eBay"
 msgstr "Використовуйте eBay"
 
 #. module: sale_ebay
+#: model:ir.model.fields,field_description:sale_ebay.field_res_country__ebay_available
+#: model:ir.model.fields,field_description:sale_ebay.field_res_currency__ebay_available
+msgid "Use on eBay"
+msgstr "Використовуйте на eBay"
+
+#. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Variants"
 msgstr "Варіанти"
+
+#. module: sale_ebay
+#: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_verification_token
+msgid "Verification Token"
+msgstr "Токен верифікації"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_zip_code
@@ -809,6 +866,7 @@ msgstr "Категорія eBay"
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_description
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_description
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "eBay Description"
 msgstr "Опис eBay "
 
@@ -846,6 +904,11 @@ msgid "eBay Listing ID"
 msgstr "ID списку eBay "
 
 #. module: sale_ebay
+#: model:mail.activity.type,summary:sale_ebay.ebay_GDPR_notification
+msgid "eBay Odoo connector notification - account deletion"
+msgstr "Сповіщення конектора eBay Odoo - видалення облікового запису"
+
+#. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_policy
 msgid "eBay Policy"
 msgstr "Політика eBay"
@@ -878,6 +941,16 @@ msgid "eBay Website"
 msgstr "Веб-сайт eBay "
 
 #. module: sale_ebay
+#: model:mail.activity.type,name:sale_ebay.ebay_GDPR_notification
+msgid "eBay connector: account deletion notification"
+msgstr "Конектор eBay: сповіщення видалення облікового запису"
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "eBay documentation"
+msgstr "Документація eBay"
+
+#. module: sale_ebay
 #: code:addons/sale_ebay/models/sale_ebay.py:0
 #, python-format
 msgid ""
@@ -885,17 +958,6 @@ msgid ""
 "'%s'"
 msgstr ""
 "Помилка eBay: Неможливо синхронізувати категорії. \n"
-"'%s'"
-
-#. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:0
-#: code:addons/sale_ebay/models/product.py:0
-#, python-format
-msgid ""
-"eBay error: Impossible to synchronize the products. \n"
-"'%s'"
-msgstr ""
-"Помилка eBay: Неможливо синхронізувати товари. \n"
 "'%s'"
 
 #. module: sale_ebay
@@ -910,6 +972,15 @@ msgid "eBay parameters"
 msgstr "Параметри eBay "
 
 #. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid ""
+"eBay requires supporting customer account deletion/closure notifications.\n"
+"                                Please follow the"
+msgstr ""
+"eBay вимагає підтримки сповіщень про видалення/закриття облікового запису клієнта.\n"
+"                                Слідкуйте за"
+
+#. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_url
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_url
 msgid "eBay url"
@@ -918,32 +989,32 @@ msgstr "eBay url"
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_end_items_listings
 msgid "eBay: End product listings"
-msgstr ""
+msgstr "eBay: Завершіть лістинг товару"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_list_items
 msgid "eBay: List products"
-msgstr ""
+msgstr "eBay: Зіставте список товарів"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_relist_items
 msgid "eBay: Relist products"
-msgstr ""
+msgstr "eBay: Зрелістіть товари"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_revise_items
 msgid "eBay: Revise products"
-msgstr ""
+msgstr "eBay: Перегляньте товари"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_unlink_items_listings
 msgid "eBay: Unlink product listings"
-msgstr ""
+msgstr "eBay: Роз'єднайте лістинги товару"
 
 #. module: sale_ebay
 #: model:ir.actions.server,name:sale_ebay.action_ebay_update_carrier
 msgid "eBay: Update carrier information"
-msgstr ""
+msgstr "eBay: Оновіть інформацію перевізника"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_currency
@@ -954,3 +1025,8 @@ msgstr "Валюта ebay"
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sales_team
 msgid "ebay Sales Team"
 msgstr "Команда продажу ebay"
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "to setup this mechanism."
+msgstr "щоби встановити цей механізм."

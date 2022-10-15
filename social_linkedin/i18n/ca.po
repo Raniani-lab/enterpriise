@@ -15,7 +15,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:24+0000\n"
+"POT-Creation-Date: 2022-10-10 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: marcescu, 2022\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
@@ -32,13 +32,13 @@ msgstr "<b>Publicació LinkedIn</b>"
 
 #. module: social_linkedin
 #: model_terms:ir.ui.view,arch_db:social_linkedin.social_stream_post_view_kanban
-msgid "<i class=\"fa fa-comments\" title=\"Comments\"/>"
-msgstr "<i class=\"fa fa-comments\" title=\"Comments\"/>"
+msgid "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
+msgstr ""
 
 #. module: social_linkedin
 #: model_terms:ir.ui.view,arch_db:social_linkedin.social_stream_post_view_kanban
-msgid "<i class=\"fa fa-thumbs-up\" title=\"Likes\"/>"
-msgstr "<i class=\"fa fa-thumbs-up\" title=\"Likes\"/>"
+msgid "<i class=\"fa fa-thumbs-up me-1\" title=\"Likes\"/>"
+msgstr ""
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_live_post__linkedin_post_id
@@ -109,7 +109,7 @@ msgstr "URL del compte de LinkedIn"
 
 #. module: social_linkedin
 #. openerp-web
-#: code:addons/social_linkedin/static/src/js/stream_post_linkedin_comments.js:0
+#: code:addons/social_linkedin/static/src/js/stream_post_kanban_record.js:0
 #: model:ir.model.fields,field_description:social_linkedin.field_social_stream_post__linkedin_comments_count
 #, python-format
 msgid "LinkedIn Comments"
@@ -300,10 +300,3 @@ msgstr "Tipus de transmissió en viu incorrecte per a «%s\""
 #, python-format
 msgid "You don't have an active subscription. Please buy one here: %s"
 msgstr "No tens una subscripció activa. Si us plau, compri un aquí:%s"
-
-#. module: social_linkedin
-#. openerp-web
-#: code:addons/social_linkedin/static/src/js/stream_post_linkedin_comments.js:0
-#, python-format
-msgid "comment/reply"
-msgstr "comentari/resposta"

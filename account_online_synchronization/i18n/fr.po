@@ -403,12 +403,12 @@ msgstr "Si actif, certains messages ont une erreur de livraison."
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__inverse_balance_sign
 msgid "If checked, the balance sign will be inverted"
-msgstr ""
+msgstr "Si cochée, le signe du solde sera inversé"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__inverse_transaction_sign
 msgid "If checked, the transaction sign will be inverted"
-msgstr ""
+msgstr "Si cochée, le signe de la transaction sera inversé"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__auto_sync
@@ -444,12 +444,12 @@ msgstr "Valeur non valide pour le paramètre de configuration proxy_mode"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__inverse_balance_sign
 msgid "Inverse Balance Sign"
-msgstr ""
+msgstr "Signe du solde inversé"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__inverse_transaction_sign
 msgid "Inverse Transaction Sign"
-msgstr ""
+msgstr "Signe de transaction inversé"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_is_follower

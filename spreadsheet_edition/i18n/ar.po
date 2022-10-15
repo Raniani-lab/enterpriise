@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:43+0000\n"
+"POT-Creation-Date: 2022-10-10 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
@@ -19,27 +19,6 @@ msgstr ""
 "Content-Transfer-Encoding: \n"
 "Language: ar\n"
 "Plural-Forms: nplurals=6; plural=n==0 ? 0 : n==1 ? 1 : n==2 ? 2 : n%100>=3 && n%100<=10 ? 3 : n%100>=11 && n%100<=99 ? 4 : 5;\n"
-
-#. module: spreadsheet_edition
-#. openerp-web
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
-#, python-format
-msgid "(Graph -"
-msgstr ""
-
-#. module: spreadsheet_edition
-#. openerp-web
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
-#, python-format
-msgid "(List #"
-msgstr "(List #"
-
-#. module: spreadsheet_edition
-#. openerp-web
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
-#, python-format
-msgid "(Pivot #"
-msgstr "(Pivot #"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__active
@@ -177,8 +156,6 @@ msgstr "التاريخ"
 
 #. module: spreadsheet_edition
 #. openerp-web
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Date field"
@@ -743,6 +720,13 @@ msgstr ""
 #, python-format
 msgid "Stacked barchart"
 msgstr "مخطط شريطي مكدس "
+
+#. module: spreadsheet_edition
+#. openerp-web
+#: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/odoo_line/odoo_line_config_panel.xml:0
+#, python-format
+msgid "Stacked linechart"
+msgstr ""
 
 #. module: spreadsheet_edition
 #. openerp-web

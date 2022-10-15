@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Duy BQ <duybq86@gmail.com>, 2022
-# Vo Thanh Thuy, 2022
 # odooviet <cuong.nm@ictech.vn>, 2022
 # Martin Trigaux, 2022
 # 
@@ -12,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
@@ -148,11 +147,6 @@ msgid ""
 msgstr ""
 
 #. module: knowledge
-#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_kanban
-msgid "<i class=\"fa fa-fw fa-lock\" title=\"locked\"/>"
-msgstr ""
-
-#. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.articles_template_name
 msgid "<i class=\"fa fa-fw fa-plus\" title=\"Create a nested article\"/>"
 msgstr ""
@@ -176,13 +170,13 @@ msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "<i class=\"fa fa-plus-circle\"/> Create"
+msgid "<i class=\"fa fa-plus-circle me-1\"/>Create"
 msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "<i class=\"fa fa-share-alt\"/> Share"
-msgstr "<i class=\"fa fa-share-alt\"/> Chia sẻ"
+msgid "<i class=\"fa fa-share-alt me-1\"/>Share"
+msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_kanban
@@ -869,13 +863,6 @@ msgid "Article"
 msgstr "Bài viết"
 
 #. module: knowledge
-#: code:addons/knowledge/models/knowledge_article.py:0
-#: code:addons/knowledge/models/knowledge_article.py:0
-#, python-format
-msgid "Article %s can only contain one type of article."
-msgstr ""
-
-#. module: knowledge
 #: code:addons/knowledge/models/knowledge_article_member.py:0
 #, python-format
 msgid ""
@@ -1053,12 +1040,6 @@ msgid "Categories"
 msgstr "Phân loại"
 
 #. module: knowledge
-#: model:ir.model.fields,field_description:knowledge.field_knowledge_article__category
-#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
-msgid "Category"
-msgstr "Danh mục"
-
-#. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
@@ -1153,6 +1134,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_member__create_uid
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__create_uid
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__create_uid
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
 msgid "Created by"
 msgstr "Được tạo bởi"
 
@@ -1167,6 +1150,8 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_member__create_date
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__create_date
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__create_date
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
 msgid "Created on"
 msgstr "Được tạo vào"
 
@@ -1239,14 +1224,7 @@ msgstr "Nhân bản"
 #. openerp-web
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
-msgid "Embed a Kanban View"
-msgstr ""
-
-#. module: knowledge
-#. openerp-web
-#: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
-#, python-format
-msgid "Embed a List View"
+msgid "Embed a View"
 msgstr ""
 
 #. module: knowledge
@@ -1468,13 +1446,6 @@ msgstr "Insert"
 
 #. module: knowledge
 #. openerp-web
-#: code:addons/knowledge/static/src/js/wysiwyg.js:0
-#, python-format
-msgid "Insert Kanban View"
-msgstr ""
-
-#. module: knowledge
-#. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg/knowledge_article_link.js:0
 #, python-format
 msgid "Insert Link"
@@ -1482,9 +1453,30 @@ msgstr "Chèn Link"
 
 #. module: knowledge
 #. openerp-web
+#: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
+#, python-format
+msgid "Insert a Kanban View"
+msgstr ""
+
+#. module: knowledge
+#. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
-msgid "Insert List View"
+msgid "Insert a Kanban view of article items"
+msgstr ""
+
+#. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
+#, python-format
+msgid "Insert a List View"
+msgstr ""
+
+#. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Insert a List view of article items"
 msgstr ""
 
 #. module: knowledge
@@ -1562,7 +1554,14 @@ msgstr ""
 #. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
-msgid "Kanban view"
+msgid "Item Kanban"
+msgstr ""
+
+#. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Item List"
 msgstr ""
 
 #. module: knowledge
@@ -1583,6 +1582,13 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_invite
 msgid "Knowledge Invite Wizard"
+msgstr ""
+
+#. module: knowledge
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_trash
+msgid "Last Edit Date"
 msgstr ""
 
 #. module: knowledge
@@ -1651,13 +1657,6 @@ msgid "Link an article."
 msgstr ""
 
 #. module: knowledge
-#. openerp-web
-#: code:addons/knowledge/static/src/js/wysiwyg.js:0
-#, python-format
-msgid "List view"
-msgstr "Xem danh sách"
-
-#. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_locked
 msgid "Locked"
 msgstr "Đã khoá"
@@ -1698,6 +1697,11 @@ msgstr "Thành viên"
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_member_ids
 msgid "Members Information"
 msgstr "Thông tin thành viên"
+
+#. module: knowledge
+#: model:ir.model.fields,field_description:knowledge.field_knowledge_article__root_article_id
+msgid "Menu Article"
+msgstr ""
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_has_error
@@ -1754,6 +1758,13 @@ msgstr "Hạn chót hoạt động"
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search_items
 msgid "My Favorites"
 msgstr "Mục yêu thích của tôi"
+
+#. module: knowledge
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_trash
+msgid "Name"
+msgstr "Tên"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -1888,7 +1899,6 @@ msgstr ""
 #. openerp-web
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_manager.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_manager.xml:0
-#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
 #, python-format
 msgid "Open"
 msgstr "Mở"
@@ -2066,6 +2076,11 @@ msgid "Search for an article..."
 msgstr ""
 
 #. module: knowledge
+#: model:ir.model.fields,field_description:knowledge.field_knowledge_article__category
+msgid "Section"
+msgstr "Mục"
+
+#. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/cover_selector/knowledge_cover_dialog.js:0
 #, python-format
@@ -2146,12 +2161,6 @@ msgstr ""
 "Quá hạn: Ngày đến hạn phải được chuyển\n"
 "Hôm nay: Hôm nay là ngày phải thực hiện\n"
 "Kế hoạch: Các hoạt động trong tương lai."
-
-#. module: knowledge
-#: model:ir.model.fields,field_description:knowledge.field_knowledge_article__root_article_id
-#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
-msgid "Subject"
-msgstr "Chủ đề"
 
 #. module: knowledge
 #. openerp-web
@@ -2601,6 +2610,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/knowledge/static/src/components/behaviors/abstract_behavior/abstract_behavior.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
+#: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_behavior.xml:0
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "loader"

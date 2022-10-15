@@ -431,7 +431,7 @@ msgstr "Activiteit uitzondering decoratie"
 #: model:ir.actions.report,name:sign.action_sign_request_print_logs
 #, python-format
 msgid "Activity Logs"
-msgstr "Activiteit logs"
+msgstr "Activiteitlogs"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_state
@@ -441,7 +441,7 @@ msgstr "Activiteitsfase"
 #. module: sign
 #: model:ir.model,name:sign.model_mail_activity_type
 msgid "Activity Type"
-msgstr "Soort activiteit"
+msgstr "Activiteitssoort"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_type_icon
@@ -2529,7 +2529,7 @@ msgid ""
 "example, select your own contact to sign the document yourself."
 msgstr ""
 "Selecteer de contactpersoon die moet ondertekenen, op basis van hun "
-"rol.<br>Selecteer in dit voorbeeld uw eigen contactpersoon om het document "
+"rol.<br>Selecteer in dit voorbeeld je eigen contactpersoon om het document "
 "zelf te ondertekenen."
 
 #. module: sign
@@ -3623,7 +3623,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action
 msgid "Upload a PDF file to create your first template"
-msgstr "Upload een PDF-bestand om uw eerste sjabloon te maken"
+msgstr "Upload een PDF-bestand om je eerste sjabloon te maken"
 
 #. module: sign
 #. openerp-web
@@ -3809,7 +3809,7 @@ msgid ""
 "Well done, your document is ready!<br>Let's send it to get our first "
 "signature."
 msgstr ""
-"Goed gedaan, uw document is klaar!<br>Laten we het verzenden om onze eerste "
+"Goed gedaan, je document is klaar!<br>Laten we het verzenden om onze eerste "
 "handtekening te krijgen."
 
 #. module: sign
@@ -3984,7 +3984,7 @@ msgstr "Jouw handtekening is bewaard."
 msgid ""
 "Your signature was not submitted. Ensure the SMS validation code is correct."
 msgstr ""
-"Uw handtekening is niet ingediend. Zorg ervoor dat de sms-validatiecode "
+"Je handtekening is niet ingediend. Zorg ervoor dat de sms-validatiecode "
 "correct is."
 
 #. module: sign

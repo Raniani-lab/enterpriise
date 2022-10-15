@@ -125,7 +125,7 @@ msgstr "Amazon e-mail"
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_sale_order_line__amazon_item_ref
 msgid "Amazon Item Ref"
-msgstr ""
+msgstr "Amazon-artikelreferentie"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_stock_location__amazon_location
@@ -186,7 +186,7 @@ msgstr "Amazon team"
 #. module: sale_amazon
 #: model_terms:ir.actions.act_window,help:sale_amazon.list_amazon_account_action
 msgid "Amazon accounts correspond to Amazon Seller Central accounts."
-msgstr "Amazon accounts komt overeen met Amazon Seller Central"
+msgstr "Amazon accounts komt overeen met Amazon Seller Central."
 
 #. module: sale_amazon
 #: code:addons/sale_amazon/models/amazon_marketplace.py:0
@@ -225,47 +225,47 @@ msgstr ""
 #. module: sale_amazon
 #: model:amazon.marketplace,name:sale_amazon.marketplace_CA
 msgid "Amazon.ca"
-msgstr ""
+msgstr "Amazon.ca"
 
 #. module: sale_amazon
 #: model:amazon.marketplace,name:sale_amazon.marketplace_UK
 msgid "Amazon.co.uk"
-msgstr ""
+msgstr "Amazon.co.uk"
 
 #. module: sale_amazon
 #: model:amazon.marketplace,name:sale_amazon.marketplace_US
 msgid "Amazon.com"
-msgstr ""
+msgstr "Amazon.com"
 
 #. module: sale_amazon
 #: model:amazon.marketplace,name:sale_amazon.marketplace_MX
 msgid "Amazon.com.mx"
-msgstr ""
+msgstr "Amazon.com.mx"
 
 #. module: sale_amazon
 #: model:amazon.marketplace,name:sale_amazon.marketplace_DE
 msgid "Amazon.de"
-msgstr ""
+msgstr "Amazon.de"
 
 #. module: sale_amazon
 #: model:amazon.marketplace,name:sale_amazon.marketplace_ES
 msgid "Amazon.es"
-msgstr ""
+msgstr "Amazon.es"
 
 #. module: sale_amazon
 #: model:amazon.marketplace,name:sale_amazon.marketplace_FR
 msgid "Amazon.fr"
-msgstr ""
+msgstr "Amazon.fr"
 
 #. module: sale_amazon
 #: model:amazon.marketplace,name:sale_amazon.marketplace_IT
 msgid "Amazon.it"
-msgstr ""
+msgstr "Amazon.it"
 
 #. module: sale_amazon
 #: model:amazon.marketplace,name:sale_amazon.marketplace_NL
 msgid "Amazon.nl"
-msgstr ""
+msgstr "Amazon.nl"
 
 #. module: sale_amazon
 #: model:mail.template,name:sale_amazon.order_sync_failure
@@ -344,7 +344,7 @@ msgstr "Kan geen verbinding maken met de proxy."
 #: code:addons/sale_amazon/controllers/onboarding.py:0
 #, python-format
 msgid "Could not find Amazon account with id %s"
-msgstr "Kon Amazon-account met id %s niet vinden."
+msgstr "Kon Amazon-account met id %s niet vinden"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__create_uid
@@ -442,6 +442,8 @@ msgstr "ID"
 msgid ""
 "If made inactive, this account will no longer be synchronized with Amazon."
 msgstr ""
+"Indien inactief gemaakt, wordt dit account niet langer gesynchroniseerd met "
+"Amazon."
 
 #. module: sale_amazon
 #: code:addons/sale_amazon/models/amazon_account.py:0
@@ -464,7 +466,7 @@ msgid ""
 "current sync marketplaces"
 msgstr ""
 "Als dit account toegang heeft gekregen tot nieuwe markten, synchroniseer ze "
-"dan en voeg ze toe aan de huidige gesynchroniseerde markten."
+"dan en voeg ze toe aan de huidige gesynchroniseerde markten"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_search
@@ -528,6 +530,8 @@ msgid ""
 "Link your Amazon account with Odoo to start synchronizing your\n"
 "                                Amazon orders."
 msgstr ""
+"Koppel je Amazon-account aan Odoo om te beginnen met het synchroniseren van je\n"
+"                                Amazon-bestellingen."
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer__marketplace_id
@@ -688,7 +692,7 @@ msgstr "Seller Central URL"
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__seller_key
 msgid "Seller Key"
-msgstr ""
+msgstr "Verkopersleutel"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__base_marketplace_id
@@ -749,17 +753,17 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_sale_order_line__amazon_item_ref
 msgid "The Amazon-defined item reference."
-msgstr ""
+msgstr "De door Amazon gedefinieerde itemreferentie."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_marketplace__api_ref
 msgid "The Amazon-defined marketplace reference."
-msgstr ""
+msgstr "De door Amazon gedefinieerde marktplaatsreferentie."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_sale_order__amazon_order_ref
 msgid "The Amazon-defined order reference."
-msgstr ""
+msgstr "De door Amazon gedefinieerde bestelreferentie."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__team_id
@@ -770,7 +774,7 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_offer__sku
 msgid "The Stock Keeping Unit."
-msgstr ""
+msgstr "De voorraadbeheereenheid."
 
 #. module: sale_amazon
 #: code:addons/sale_amazon/utils.py:0
@@ -792,7 +796,7 @@ msgstr ""
 #: model:ir.model.fields,help:sale_amazon.field_res_partner__amazon_email
 #: model:ir.model.fields,help:sale_amazon.field_res_users__amazon_email
 msgid "The encrypted email of the customer. Does not forward mails."
-msgstr ""
+msgstr "De versleutelde e-mail van de klant. Stuurt geen e-mails door."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__last_orders_sync
@@ -811,6 +815,8 @@ msgid ""
 "The location of the stock managed by Amazon under the Amazon Fulfillment "
 "program."
 msgstr ""
+"De locatie van de voorraad die wordt beheerd door Amazon in het kader van "
+"het Amazon Fulfillment-programma."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__refresh_token
@@ -822,18 +828,18 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_offer__marketplace_id
 msgid "The marketplace of this offer."
-msgstr ""
+msgstr "De marktplaats van dit aanbod."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__available_marketplace_ids
 msgid "The marketplaces this account has access to."
-msgstr ""
+msgstr "De marktplaatsen waartoe dit account toegang heeft."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__active_marketplace_ids
 #: model:ir.model.fields,help:sale_amazon.field_amazon_offer__active_marketplace_ids
 msgid "The marketplaces this account sells on."
-msgstr ""
+msgstr "De marktplaatsen waarop dit account verkoopt."
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__aws_credentials_expiry
@@ -858,6 +864,9 @@ msgid ""
 "already been delivered. Please create a return for this order to adjust the "
 "stock."
 msgstr ""
+"De bestelling is geannuleerd door de Amazon-klant terwijl sommige producten "
+"al zijn afgeleverd. Maak een retour aan voor deze bestelling om de voorraad "
+"aan te passen."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__base_marketplace_id
@@ -871,7 +880,7 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_offer__account_id
 msgid "The seller account used to manage this product."
-msgstr ""
+msgstr "Het verkopersaccount dat wordt gebruikt om dit product te beheren."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__aws_access_key
@@ -917,7 +926,7 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__name
 msgid "The user-defined name of the account."
-msgstr ""
+msgstr "De door de gebruiker gedefinieerde naam van het account."
 
 #. module: sale_amazon
 #: model:ir.model.constraint,message:sale_amazon.constraint_amazon_marketplace_unique_api_ref
@@ -945,6 +954,8 @@ msgid ""
 "                                          cannot be undone. Are you sure you"
 " want to proceed?"
 msgstr ""
+"Met deze actie wordt je account bij Amazon ontkoppeld en kan dit niet "
+"ongedaan worden gemaakt. Weet je zeker dat je verder wilt gaan?"
 
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_stock_picking
@@ -983,12 +994,12 @@ msgstr "Waarschuwing"
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_stock_picking__amazon_sync_pending
 msgid "Whether the picking must be notified to Amazon or not."
-msgstr ""
+msgstr "Of de picking aan Amazon moet worden gemeld of niet."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_marketplace__tax_included
 msgid "Whether the price includes the tax amount or not."
-msgstr ""
+msgstr "Of de prijs nu inclusief btw is of niet."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_stock_location__amazon_location
@@ -996,11 +1007,13 @@ msgid ""
 "Whether this location represents the stock of a seller managed by Amazon "
 "under the Amazon Fulfillment program or not."
 msgstr ""
+"Of deze locatie nu de voorraad vertegenwoordigt van een verkoper die wordt "
+"beheerd door Amazon onder het Amazon Fulfillment-programma of niet."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_crm_team__amazon_team
 msgid "Whether this sales team is associated with Amazon orders or not."
-msgstr ""
+msgstr "Of dit verkoopteam nu is gekoppeld aan Amazon-bestellingen of niet."
 
 #. module: sale_amazon
 #: code:addons/sale_amazon/utils.py:0

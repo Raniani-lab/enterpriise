@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Léonie Bouchat <lbo@odoo.com>, 2022\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
@@ -369,6 +369,12 @@ msgid "Decrease Time"
 msgstr "Ridurre il tempo"
 
 #. module: timesheet_grid
+#: model:ir.model.fields,help:timesheet_grid.field_account_analytic_line__employee_id
+msgid ""
+"Define an 'hourly cost' on the employee to track the cost of their time."
+msgstr ""
+
+#. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
 msgid "Delete"
 msgstr "Elimina"
@@ -594,37 +600,6 @@ msgid "ID"
 msgstr "ID"
 
 #. module: timesheet_grid
-#: model:ir.model.fields,help:timesheet_grid.field_res_company__prevent_old_timesheets_encoding
-#: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__prevent_old_timesheets_encoding
-msgid ""
-"If checked, encoding of timesheets older than a certain number of days will "
-"be blocked"
-msgstr ""
-
-#. module: timesheet_grid
-#: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_manager_allow
-msgid "If checked, send an email to all manager"
-msgstr "Se selezionato, inviare una email a tutti i responsabili"
-
-#. module: timesheet_grid
-#: model:ir.model.fields,help:timesheet_grid.field_res_company__timesheet_mail_manager_allow
-msgid ""
-"If checked, send an email to all managers who have not validated their "
-"timesheet"
-msgstr ""
-"Se selezionato, inviare una email a tutti i responsabili che non hanno "
-"registrato il loro foglio ore"
-
-#. module: timesheet_grid
-#: model:ir.model.fields,help:timesheet_grid.field_res_company__timesheet_mail_employee_allow
-#: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_user_allow
-msgid ""
-"If checked, send an email to all users who have not recorded their timesheet"
-msgstr ""
-"Se selezionato, inviare una email a tutti gli utenti che non hanno "
-"registrato il loro foglio ore"
-
-#. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/js/components/timesheet_uom_hour_toggle/timesheet_uom_hour_toggle.xml:0
 #: code:addons/timesheet_grid/static/src/js/timesheet_uom_timer.js:0
@@ -799,6 +774,22 @@ msgstr "Nessuna attività da convalidare."
 #. module: timesheet_grid
 #: model_terms:ir.actions.act_window,help:timesheet_grid.timesheet_grid_to_validate_action
 msgid "No timesheets to validate"
+msgstr ""
+
+#. module: timesheet_grid
+#: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_manager_delay
+msgid ""
+"Number of days after the end of the week/month after which an automatic "
+"email reminder will be sent to timesheet managers that still have timesheets"
+" to validate."
+msgstr ""
+
+#. module: timesheet_grid
+#: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_user_delay
+msgid ""
+"Numbers of days after the end of the week/month after which an automatic "
+"email reminder will be sent to timesheet users that still have timesheets to"
+" encode (according to their working hours)."
 msgstr ""
 
 #. module: timesheet_grid
@@ -1035,6 +1026,16 @@ msgstr ""
 "\"Ore\"."
 
 #. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+msgid ""
+"The duration of timesheets encoded through the timer will automatically be "
+"rounded up to this number. For instance, if you stop your timer at 00:16:56,"
+" the duration of the timesheet entry will automatically be rounded up to "
+"00:30 (assuming you have a round up of 15 min). We recommend having the same"
+" value for the minimal duration and for the round up."
+msgstr ""
+
+#. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_controller_mixin.js:0
 #, python-format
@@ -1184,6 +1185,17 @@ msgstr ""
 msgid ""
 "Timesheets before the %s (included) have been validated, and can no longer "
 "be %s."
+msgstr ""
+
+#. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+msgid ""
+"Timesheets encoded via the timer that do not meet the minimal duration will "
+"automatically be rounded up to the defined value. For instance, if you stop "
+"your timer at 00:04:36, the duration of the timesheet entry will "
+"automatically be rounded up to 00:15 (assuming you have a minimal duration "
+"of 15 min). We recommend having the same value for the minimal duration and "
+"for the round up."
 msgstr ""
 
 #. module: timesheet_grid

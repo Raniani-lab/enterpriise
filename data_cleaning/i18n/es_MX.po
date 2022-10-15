@@ -26,7 +26,7 @@ msgid ""
 "' field cleaning rule.<br/>\n"
 "You can validate changes"
 msgstr ""
-"' regla de depuración del campo.<br/>\n"
+": regla de depuración del campo.<br/>\n"
 "Puede validar cambios"
 
 #. module: data_cleaning

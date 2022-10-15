@@ -5,6 +5,8 @@
 # Translators:
 # keecome <7017511@qq.com>, 2022
 # Martin Trigaux, 2022
+# Emily Jia <eji@odoo.com>, 2022
+# 稀饭~~ <wangwhai@qq.com>, 2022
 # Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
@@ -31,12 +33,12 @@ msgstr "%s (副本)"
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "%s Payment Reminder - %s"
-msgstr ""
+msgstr "%s 付款提醒 - %s"
 
 #. module: account_followup
 #: model:ir.actions.report,print_report_name:account_followup.action_report_followup
 msgid "'Follow-up ' + object.display_name"
-msgstr ""
+msgstr "'Follow-up ' + object.display_name"
 
 #. module: account_followup
 #: model:ir.model.fields,help:account_followup.field_res_partner__type
@@ -48,6 +50,11 @@ msgid ""
 "- Private: Private addresses are only visible by authorized users and contain sensitive data (employee home addresses, ...).\n"
 "- Other: Other address for the company (e.g. subsidiary, ...)"
 msgstr ""
+"- 联系人：用于整理给定公司的员工（如CEO和CFO等）。\n"
+"- 发票地址：所有发票的首选地址。当您为此公司的订单开具发票时，默认选中此选项。\n"
+"- 交货地址：所有交货的首选地址。交付属于此公司的订单时默认选中此选项。\n"
+"- 私人地址：私人地址仅对授权用户可见，且包含敏感信息（员工住址...…）。\n"
+"- 其他地址：公司的其他地址（如子公司...…）"
 
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line1
@@ -62,17 +69,17 @@ msgstr "30天"
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line3
 msgid "40 Days"
-msgstr ""
+msgstr "40 天"
 
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line4
 msgid "50 Days"
-msgstr ""
+msgstr "50 天"
 
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line5
 msgid "60 Days"
-msgstr ""
+msgstr "60 天"
 
 #. module: account_followup
 #: model:mail.template,body_html:account_followup.email_template_followup_1
@@ -107,6 +114,35 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                        <t t-if=\"object.id != object.commercial_partner_id.id\">亲爱的 <t t-out=\"object.name or ''\"/> (<t t-out=\"object.commercial_partner_id.name or ''\"/>),</t>\n"
+"                        <t t-else=\"\">亲爱的 <t t-out=\"object.name or ''\"/>,</t>\n"
+"                        <br/>\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        如果我们有错误，则例外，似乎 <t t-out=\"format_amount(object.total_overdue, object.currency_id) or ''\"/>\n"
+"                        保持无偿。请采取适当措施，以便在接下来的8天内进行此付款。\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        您的付款是否在此邮件发送后进行，请忽略此消息。\n"
+"                        不要犹豫，联系我们的会计部门。\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        此致敬意\n"
+"                        <t t-if=\"not is_html_empty(object._get_followup_responsible().signature)\">\n"
+"                            <br/>\n"
+"                            <t t-out=\"object._get_followup_responsible().signature\"/>\n"
+"                        </t>\n"
+"                        <t t-else=\"\">\n"
+"                            <br/>\n"
+"                            --\n"
+"                            <br/>\n"
+"                            <t t-out=\"object._get_followup_responsible().name\"/>\n"
+"                        </t>\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
 
 #. module: account_followup
 #: model:mail.template,body_html:account_followup.demo_followup_email_template_4
@@ -139,6 +175,33 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p>\n"
+"                        <t t-if=\"object.id != object.commercial_partner_id.id\">亲爱的 <t t-out=\"object.name or ''\"/> (<t t-out=\"object.commercial_partner_id.name or ''\"/>),</t>\n"
+"                        <t t-else=\"\">亲爱的 <t t-out=\"object.name or ''\"/>,</t>\n"
+"                        <br/>\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        尽管有几次提醒，您的帐户仍未结算。\n"
+"                        除非在接下来的8天内全额付款，否则将采取法律行动以收回债务，恕不另行通知。\n"
+"                        我相信这一行动将证明是不必要的，到期付款的详细信息印在下面。\n"
+"                        如对此事有任何疑问，请随时联系我们的会计部门。\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        此致敬意\n"
+"                        <t t-if=\"not is_html_empty(object._get_followup_responsible().signature)\">\n"
+"                            <br/>\n"
+"                            <t t-out=\"object._get_followup_responsible().signature\"/>\n"
+"                        </t>\n"
+"                        <t t-else=\"\">\n"
+"                            <br/>\n"
+"                            --\n"
+"                            <br/>\n"
+"                            <t t-out=\"object._get_followup_responsible().name\"/>\n"
+"                        </t>\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
 
 #. module: account_followup
 #: model:mail.template,body_html:account_followup.demo_followup_email_template_2
@@ -178,6 +241,40 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p>\n"
+"                        <t t-if=\"object.id != object.commercial_partner_id.id\">亲爱的 <t t-out=\"object.name or ''\"/> (<t t-out=\"object.commercial_partner_id.name or ''\"/>),</t>\n"
+"                        <t t-else=\"\">亲爱的 <t t-out=\"object.name or ''\"/>,</t>\n"
+"                        <br/>\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        我们失望地看到，尽管发送了提醒，但您的帐户现在严重过期。\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        必须立即付款，否则我们将不得不考虑停止您的帐户，这意味着我们将无法再为您的公司提供（商品/服务）。\n"
+"                        请采取适当措施，以便在接下来的8天内进行此付款。\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        如果出现我们不知道的发票支付问题，请随时联系我们的会计部门，以便我们快速解决问题。\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        到期付款的详细信息打印在下面。\n"
+"                    </p>\n"
+"                    <p>\n"
+"                        此致敬意\n"
+"                        <t t-if=\"not is_html_empty(object._get_followup_responsible().signature)\">\n"
+"                            <br/>\n"
+"                            <t t-out=\"object._get_followup_responsible().signature\"/>\n"
+"                        </t>\n"
+"                        <t t-else=\"\">\n"
+"                            <br/>\n"
+"                            --\n"
+"                            <br/>\n"
+"                            <t t-out=\"object._get_followup_responsible().name\"/>\n"
+"                        </t>\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.followup_search_template
@@ -254,7 +351,7 @@ msgstr "地址类型"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_search_view
 msgid "Assigned to me"
-msgstr ""
+msgstr "分配给我"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__attachment_ids
@@ -272,7 +369,7 @@ msgstr "自动的"
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__body_html
 msgid "Body Html"
-msgstr ""
+msgstr "正文 Html"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__can_edit_body
@@ -304,7 +401,7 @@ msgstr "联系人"
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 msgid "Content Template"
-msgstr ""
+msgstr "内容模板"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__body
@@ -365,7 +462,7 @@ msgstr "日期:"
 #. module: account_followup
 #: model:ir.model.constraint,message:account_followup.constraint_account_followup_followup_line_days_uniq
 msgid "Days of the follow-up lines must be different per company"
-msgstr ""
+msgstr "跟进线路的天数必须因公司而异"
 
 #. module: account_followup
 #: code:addons/account_followup/models/account_followup_report.py:0
@@ -383,6 +480,16 @@ msgid ""
 "%s\n"
 "\n"
 msgstr ""
+"亲爱的 %s，\n"
+"\n"
+"如果我们有错误，则例外，似乎以下金额仍未支付。请采取适当措施，以便在接下来的8天内进行此付款。\n"
+"\n"
+"您的付款是否在此邮件发送后进行，请忽略此消息。不要犹豫，联系我们的会计部门。\n"
+"\n"
+"此致敬意\n"
+"\n"
+" %s\n"
+"\n"
 
 #. module: account_followup
 #: code:addons/account_followup/models/account_followup_report.py:0
@@ -390,7 +497,7 @@ msgstr ""
 msgid ""
 "Dear client, we kindly remind you that you still have unpaid invoices. "
 "Please check them and take appropriate action. %s"
-msgstr ""
+msgstr "尊敬的%s客户，我们恳请您，您仍然有未付的发票。请检查它们并采取适当的措施。"
 
 #. module: account_followup
 #: model_terms:ir.actions.act_window,help:account_followup.action_account_followup_line_definition_form
@@ -410,6 +517,10 @@ msgid ""
 "- Salesperson: Sales Person defined on the invoice\n"
 "- Account Manager: Sales Person defined on the customer"
 msgstr ""
+"确定将分配给活动的人员：\n"
+"- 后续负责（默认）\n"
+"- 销售人员：发票上定义的销售人员\n"
+"- 客户经理：客户定义的销售人员"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__display_name
@@ -441,7 +552,7 @@ msgstr "电子邮件添加签名"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Email Recipients"
-msgstr ""
+msgstr "电子邮件收件人"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
@@ -451,12 +562,12 @@ msgstr "电子邮件主题"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Exclude from Follow-ups"
-msgstr ""
+msgstr "从随访中排除"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__email_recipient_ids
 msgid "Extra Recipients"
-msgstr ""
+msgstr "额外收件人"
 
 #. module: account_followup
 #: code:addons/account_followup/models/chart_template.py:0
@@ -467,18 +578,18 @@ msgstr "首次提醒"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Follow up"
-msgstr ""
+msgstr "跟进"
 
 #. module: account_followup
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "Follow-up %s - %s"
-msgstr ""
+msgstr "后续  %s - %s"
 
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__res_partner__type__followup
 msgid "Follow-up Address"
-msgstr ""
+msgstr "后续地址"
 
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_followup_followup_line
@@ -534,7 +645,7 @@ msgstr "催款步骤"
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "Follow-up letter generated"
-msgstr ""
+msgstr "生成后续信函"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.account_followup_journal_dashboard_kanban_view
@@ -548,11 +659,14 @@ msgid ""
 "            possible to use print and e-mail templates to send specific messages to\n"
 "            the customer."
 msgstr ""
+"对于每个步骤，指定要执行的操作和延迟（以天为单位）。是的\n"
+"            可以使用打印和电子邮件模板将特定邮件发送到\n"
+"            客户。"
 
 #. module: account_followup
 #: model:mail.template,name:account_followup.demo_followup_email_template_4
 msgid "Fourth reminder followup"
-msgstr ""
+msgstr "第四次提醒跟进"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_search_view
@@ -580,7 +694,7 @@ msgstr "需要动作"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Invoice No."
-msgstr ""
+msgstr "发票编号"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_move_line__invoice_date
@@ -601,7 +715,7 @@ msgstr "编辑"
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__join_invoices
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__join_invoices
 msgid "Join Invoices"
-msgstr ""
+msgstr "加入发票"
 
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_move_line
@@ -611,7 +725,7 @@ msgstr "会计分录"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Kind reminder!"
-msgstr ""
+msgstr "温馨提示！"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__lang
@@ -644,7 +758,7 @@ msgstr "最近催款"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Letter/Email Content"
-msgstr ""
+msgstr "信件/电子邮件内容"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__mail_template_id
@@ -674,7 +788,7 @@ msgstr "下一个提醒日期设置为%s"
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__followup_next_action_date
 #: model:ir.model.fields,field_description:account_followup.field_res_users__followup_next_action_date
 msgid "Next reminder"
-msgstr ""
+msgstr "下次提醒"
 
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__res_partner__followup_status__no_action_needed
@@ -713,7 +827,7 @@ msgstr ""
 msgid ""
 "Optionally you can assign a user to this field, which will make him "
 "responsible for the activities. If empty, we will find someone responsible."
-msgstr ""
+msgstr "（可选）您可以将用户分配到此字段，这将使他负责活动。如果空的，我们会找到一个负责任的人。"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
@@ -769,7 +883,7 @@ msgstr "打印催款信件"
 #. module: account_followup
 #: model:ir.actions.server,name:account_followup.action_account_reports_customer_statements_do_followup
 msgid "Process Automatic Follow-ups"
-msgstr ""
+msgstr "过程自动跟进"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
@@ -779,7 +893,7 @@ msgstr "调节"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 msgid "Remind"
-msgstr ""
+msgstr "提醒"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__followup_reminder_type
@@ -828,7 +942,7 @@ msgstr "搜索催款"
 #. module: account_followup
 #: model:mail.template,name:account_followup.demo_followup_email_template_2
 msgid "Second reminder followup"
-msgstr ""
+msgstr "第二次提醒跟进"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
@@ -848,27 +962,27 @@ msgstr "发送EMail"
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__send_sms
 msgid "Send SMS Message"
-msgstr ""
+msgstr "发送短信"
 
 #. module: account_followup
 #: model:ir.actions.act_window,name:account_followup.manual_reminder_action
 msgid "Send and Print"
-msgstr ""
+msgstr "发送和打印"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__sms
 msgid "Sms"
-msgstr ""
+msgstr "短信"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__sms_body
 msgid "Sms Body"
-msgstr ""
+msgstr "短信正文"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Sms Content"
-msgstr ""
+msgstr "短信内容"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__sms_template_id
@@ -895,7 +1009,7 @@ msgstr "模板"
 #: model:ir.model.fields,help:account_followup.field_res_partner__followup_next_action_date
 #: model:ir.model.fields,help:account_followup.field_res_users__followup_next_action_date
 msgid "The date before which no follow-up action should be taken."
-msgstr ""
+msgstr "不应采取后续行动的日期。"
 
 #. module: account_followup
 #: model:ir.model.fields,help:account_followup.field_account_move_line__invoice_origin
@@ -908,7 +1022,7 @@ msgid ""
 "The number of days after the due date of the invoice to wait before sending "
 "the reminder. Can be negative if you want to send the reminder before the "
 "invoice due date."
-msgstr ""
+msgstr "发票到期日后在发送提醒之前要等待的天数。如果要在发票到期日之前发送提醒，则可能为负数。"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_tree_view
@@ -941,13 +1055,13 @@ msgstr "逾期 总计"
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__unpaid_invoice_ids
 #: model:ir.model.fields,field_description:account_followup.field_res_users__unpaid_invoice_ids
 msgid "Unpaid Invoice"
-msgstr ""
+msgstr "未付发票"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__unpaid_invoices_count
 #: model:ir.model.fields,field_description:account_followup.field_res_users__unpaid_invoices_count
 msgid "Unpaid Invoices Count"
-msgstr ""
+msgstr "未付发票计数"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__unreconciled_aml_ids
@@ -969,12 +1083,12 @@ msgstr "带有逾期结算单"
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_followup_manual_reminder
 msgid "Wizard for sending manual reminders to clients"
-msgstr ""
+msgstr "用于向客户端发送手动提醒的向导"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Write your message here..."
-msgstr ""
+msgstr "在这里写下您的留言..."
 
 #. module: account_followup
 #: code:addons/account_followup/models/account_followup_report.py:0
@@ -982,7 +1096,7 @@ msgstr ""
 msgid ""
 "You are trying to send an Email, but no follow-up contact has any email "
 "address set"
-msgstr ""
+msgstr "您正在尝试发送电子邮件，但没有后续联系人设置了任何电子邮件地址"
 
 #. module: account_followup
 #: code:addons/account_followup/models/account_followup_report.py:0
@@ -990,12 +1104,12 @@ msgstr ""
 msgid ""
 "You are trying to send an SMS, but no follow-up contact has any mobile/phone"
 " number set"
-msgstr ""
+msgstr "您正在尝试发送短信，但没有后续联系人设置任何手机/电话号码"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 msgid "days after due date"
-msgstr ""
+msgstr "到期日后天数"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
@@ -1016,3 +1130,5 @@ msgid ""
 "{{ (object.company_id or object._get_followup_responsible().company_id).name"
 " }} Payment Reminder - {{ object.commercial_company_name }}"
 msgstr ""
+"{{ (object.company_id or object._get_followup_responsible().company_id).name"
+" }} 付款提醒 - {{ object.commercial_company_name }}"

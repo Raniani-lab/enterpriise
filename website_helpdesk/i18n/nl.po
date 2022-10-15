@@ -253,7 +253,7 @@ msgstr "Tagsfilter"
 #: model_terms:website.page,arch_db:website_helpdesk.aboutus_page
 msgid "Thank you for submitting your issue, our team will get right on it!"
 msgstr ""
-"Bedankt voor het indienen van uw probleem, ons team zal er direct mee aan de"
+"Bedankt voor het indienen van je probleem, ons team zal er direct mee aan de"
 " slag gaan!"
 
 #. module: website_helpdesk
@@ -303,4 +303,4 @@ msgstr "Website URL"
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submited
 #: model_terms:website.page,arch_db:website_helpdesk.aboutus_page
 msgid "Your Ticket Number is"
-msgstr "Uw ticketnummer is"
+msgstr "Je ticketnummer is"

@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:23+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Malaz Abuidris <msea@odoo.com>, 2022\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
@@ -435,6 +435,12 @@ msgid "Account Chart Template"
 msgstr "قالب مخطط الحساب"
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Account Code"
+msgstr "كود الحساب "
+
+#. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_display_representative_field
 msgid "Account Display Representative Field"
 msgstr "حقل ممثل لعرض الحساب "
@@ -491,12 +497,23 @@ msgid "Accounts"
 msgstr "الحسابات"
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.account_report_form
+msgid "Accounts Coverage Report"
+msgstr ""
+
+#. module: account_reports
 #: model:account.report.expression,report_line_name:account_reports.multicurrency_revaluation_to_adjust_adjustment
 #: model:account.report.expression,report_line_name:account_reports.multicurrency_revaluation_to_adjust_balance_currency
 #: model:account.report.expression,report_line_name:account_reports.multicurrency_revaluation_to_adjust_balance_current
 #: model:account.report.expression,report_line_name:account_reports.multicurrency_revaluation_to_adjust_balance_operation
 #: model:account.report.line,name:account_reports.multicurrency_revaluation_to_adjust
 msgid "Accounts To Adjust"
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Accounts coverage"
 msgstr ""
 
 #. module: account_reports
@@ -683,6 +700,13 @@ msgstr "الحسابات التحليلية:"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Analytic Plans:"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
+msgid ""
+"Analytic filters will include analytic items without accounting "
+"correspondence"
 msgstr ""
 
 #. module: account_reports
@@ -1393,6 +1417,12 @@ msgid "Ending Balance :"
 msgstr ""
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Error message"
+msgstr "رسالة خطأ"
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template
 msgid "Exclude"
 msgstr "استثناء"
@@ -1765,6 +1795,11 @@ msgid "Include"
 msgstr "تضمين "
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
+msgid "Include Analytic Simulations"
+msgstr ""
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Include Payments"
 msgstr ""
@@ -1785,6 +1820,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Include unposted entries"
 msgstr "تضمين القيود غير المُرحلة"
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
+msgid "Including Analytic Simulations"
+msgstr ""
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
@@ -2569,6 +2609,12 @@ msgid "Report Name"
 msgstr "اسم التقرير"
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Report lines mentioning the account code"
+msgstr ""
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 msgid "Reporting"
 msgstr "التقارير"
@@ -2871,6 +2917,12 @@ msgid "The Book balance in Odoo dated today"
 msgstr "رصيد السجل في أودو بتاريخ اليوم "
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "The company's country does not match the report's country."
+msgstr ""
+
+#. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_tax_unit__country_id
 msgid ""
 "The country in which this tax unit is used to group your companies' tax "
@@ -2929,6 +2981,28 @@ msgstr "هذا الشهر"
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "This Quarter"
 msgstr "ربع السنة الجاري"
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid ""
+"This account exists in the Chart of Accounts but is not mentioned in any "
+"line of the report"
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid ""
+"This account is reported in a line of the report but does not exist in the "
+"Chart of Accounts"
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "This account is reported in multiple lines of the report"
+msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -3147,6 +3221,7 @@ msgid "View Carryover Lines"
 msgstr "عرض بنود الترحيل "
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_partner_ledger.py:0
 #: code:addons/account_reports/models/account_report.py:0
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
@@ -3161,6 +3236,7 @@ msgid "View Partner"
 msgstr "عرض الشريك"
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_partner_ledger.py:0
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "View Payment"

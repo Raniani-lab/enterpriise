@@ -3,17 +3,17 @@
 # 	* mrp_workorder
 # 
 # Translators:
-# Cécile Collart <cco@odoo.com>, 2022
-# Martin Trigaux, 2022
 # Jolien De Paepe, 2022
+# Martin Trigaux, 2022
+# Cécile Collart <cco@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Jolien De Paepe, 2022\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,26 +30,25 @@ msgstr "<b>%s suggère de supprimer cette instruction</b>"
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
-msgid "<b>%s suggests to use this document as instruction</b>"
-msgstr "<b>%s suggère d'utiliser ce document comme instruction</b>"
+msgid ""
+"<b>%s suggests to use this document as instruction</b><br/><img style='max-"
+"width: 75%%' class='img-fluid' src=%s/>"
+msgstr ""
+"<b>%ssuggère d'utiliser ce document comme instruction</b><br/><img "
+"style='max-width: 75%%' class='img-fluid' src=%s/>"
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
-msgid "<b>New Instruction suggested by %s</b><br/>%s<br/>"
-msgstr "<b>Nouvelle instruction suggérée par %s</b><br/>%s<br/>"
+msgid "<b>New Instruction suggested by %s</b><br/>%s<br/><b>Reason: %s</b>"
+msgstr ""
+"<b>Nouvelle instruction suggérée par %s</b><br/>%s<br/><b>Raison :%s</b>"
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/models/quality.py:0
 #, python-format
 msgid "<b>New Step suggested by %s</b><br/><b>Reason:</b>%s"
 msgstr "<b>Nouvelle étape suggérée par %s</b><br/><b>Raison :</b>%s"
-
-#. module: mrp_workorder
-#: code:addons/mrp_workorder/wizard/propose_change.py:0
-#, python-format
-msgid "<b>Reason: %s</b>"
-msgstr "<b>Raison : %s</b>"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.res_config_settings_view_form
@@ -329,6 +328,12 @@ msgid "Delete this Step"
 msgstr "Supprimer cette étape"
 
 #. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__is_deleted
+msgid "Deleted in production"
+msgstr "Supprimé en production"
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_mrp_workorder_additional_product_wizard
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_propose_change_wizard
 msgid "Discard"
@@ -339,6 +344,11 @@ msgstr "Annuler"
 #: model:ir.model.fields,field_description:mrp_workorder.field_propose_change__display_name
 msgid "Display Name"
 msgstr "Nom affiché"
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
+msgid "Document"
+msgstr "Document"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__qty_done
@@ -444,8 +454,12 @@ msgstr ""
 "contrôle qualité s'applique"
 
 #. module: mrp_workorder
-#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_routing_workcenter__quality_point_count
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
+msgid "Instruction"
+msgstr "Instruction"
+
+#. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_routing_workcenter__quality_point_count
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_routing_workcenter_tree_view_inherited
 msgid "Instructions"
 msgstr "Instructions"
@@ -727,6 +741,7 @@ msgid "Products"
 msgstr "Articles"
 
 #. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_propose_change_wizard
 msgid "Propose Change"
 msgstr "Proposer un changement"
@@ -811,11 +826,6 @@ msgid "Quantity"
 msgstr "Quantité"
 
 #. module: mrp_workorder
-#: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
-msgid "Reason"
-msgstr "Motif"
-
-#. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Record production"
 msgstr "Enregistrer la production"
@@ -860,11 +870,6 @@ msgstr "Utilisateur Responsable"
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__result
 msgid "Result"
 msgstr "Résultat"
-
-#. module: mrp_workorder
-#: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
-msgid "Save"
-msgstr "Sauvegarder"
 
 #. module: mrp_workorder
 #. openerp-web
@@ -1020,6 +1025,7 @@ msgstr "Chronomètre"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__title
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
 msgid "Title"
 msgstr "Titre"
 
@@ -1268,6 +1274,11 @@ msgstr "menu"
 #, python-format
 msgid "minutes"
 msgstr "minutes"
+
+#. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_propose_change__title
+msgid "title"
+msgstr "titre"
 
 #. module: mrp_workorder
 #: model:product.product,description_sale:mrp_workorder.product_product_stool_foot_1

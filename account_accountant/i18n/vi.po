@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
@@ -379,7 +379,6 @@ msgstr "Kiểm tra tất cá"
 #. module: account_accountant
 #. openerp-web
 #: code:addons/account_accountant/static/src/components/move_line_list/move_line_list.xml:0
-#: code:addons/account_accountant/static/src/js/legacy_move_line_list_view.js:0
 #, python-format
 msgid "Choose a line to preview its attachments."
 msgstr "Chọn nội dung để xem trước file đính kèm."
@@ -1180,7 +1179,6 @@ msgstr ""
 #. module: account_accountant
 #. openerp-web
 #: code:addons/account_accountant/static/src/components/move_line_list/move_line_list.xml:0
-#: code:addons/account_accountant/static/src/js/legacy_move_line_list_view.js:0
 #, python-format
 msgid "No attachments linked."
 msgstr "Không có file đình kèm."
@@ -1689,6 +1687,14 @@ msgid "There is nothing to reconcile."
 msgstr "Không có gì để đối soát."
 
 #. module: account_accountant
+#: code:addons/account_accountant/models/account_bank_statement.py:0
+#, python-format
+msgid ""
+"This bank transaction has been automatically validated using the "
+"reconciliation model '%s'."
+msgstr ""
+
+#. module: account_accountant
 #. openerp-web
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
@@ -1865,6 +1871,12 @@ msgid ""
 msgstr ""
 "Bạn không thể đối chiếu các khoản phải trả và phải thu của nhiều đối tác "
 "cùng một lúc."
+
+#. module: account_accountant
+#: code:addons/account_accountant/wizard/account_change_lock_date.py:0
+#, python-format
+msgid "You cannot set a lock date in the future."
+msgstr ""
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0

@@ -9,9 +9,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:48+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Thai (https://www.transifex.com/odoo/teams/41243/th/)\n"
@@ -207,6 +207,11 @@ msgid "Company Currency"
 msgstr "สกุลเงินของบริษัท"
 
 #. module: account_batch_payment
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_account_payment_tree_inherit_account_batch_payment
+msgid "Create Batch"
+msgstr ""
+
+#. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_journal.py:0
 #, python-format
 msgid "Create Batch Payment"
@@ -367,13 +372,6 @@ msgid "Icon to indicate an exception activity."
 msgstr "ไอคอนเพื่อระบุการยกเว้นกิจกรรม"
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:0
-#: code:addons/account_batch_payment/models/account_batch_payment.py:0
-#, python-format
-msgid "Id: %s"
-msgstr ""
-
-#. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__message_needaction
 msgid "If checked, new messages require your attention."
 msgstr "ถ้าเลือก ข้อความใหม่จะต้องการความสนใจจากคุณ"
@@ -430,6 +428,11 @@ msgstr "อัปเดตครั้งล่าสุดโดย"
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__write_date
 msgid "Last Updated on"
 msgstr "อัปเดตครั้งล่าสุดเมื่อ"
+
+#. module: account_batch_payment
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
+msgid "Leave empty to generate automatically..."
+msgstr ""
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__message_main_attachment_id
@@ -802,22 +805,11 @@ msgstr ""
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
-msgid ""
-"You cannot add payments that are not posted.\n"
-"Payments:\n"
-"%s"
+msgid "You cannot add payments that are not posted."
 msgstr ""
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
-msgid ""
-"You cannot add payments with zero amount in a Batch Payment.\n"
-"Payments:\n"
-"%s"
+msgid "You cannot add payments with zero amount in a Batch Payment."
 msgstr ""
-
-#. module: account_batch_payment
-#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
-msgid "auto ..."
-msgstr "อัตโนมัติ ..."

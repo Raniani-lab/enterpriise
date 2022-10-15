@@ -1,13 +1,18 @@
 # Translation of Odoo Server.
 # This file contains the translation of the following modules:
-# * quality
+# 	* quality
+# 
+# Translators:
+# Jumshud Sultanov <cumshud@gmail.com>, 2022
+# erpgo translator <jumshud@erpgo.az>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~11.5+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2018-09-21 14:06+0000\n"
-"PO-Revision-Date: 2018-08-24 11:47+0000\n"
+"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"PO-Revision-Date: 2022-09-22 05:48+0000\n"
+"Last-Translator: erpgo translator <jumshud@erpgo.az>, 2022\n"
 "Language-Team: Azerbaijani (https://www.transifex.com/odoo/teams/41243/az/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,6 +37,8 @@ msgid ""
 "A Python dictionary that will be evaluated to provide default values when "
 "creating new records for this alias."
 msgstr ""
+"Bu qoşma ad üzrə yeni qeydlər yaradarkən susmaya görə dəyərləri təmin etmək "
+"üçün qiymətləndiriləcək Python lüğəti."
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_needaction
@@ -39,7 +46,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_needaction
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Lazımi Hərəkət"
 
 #. module: quality
 #: model:quality.alert.stage,name:quality.quality_alert_stage_2
@@ -49,6 +56,45 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__active
 msgid "Active"
+msgstr "Aktiv"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_ids
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_ids
+msgid "Activities"
+msgstr "Fəaliyyətlər"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_exception_decoration
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_exception_decoration
+msgid "Activity Exception Decoration"
+msgstr "Faəliyyət istisnaetmə İşarəsi"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_state
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_state
+msgid "Activity State"
+msgstr "Fəaliyyət Statusu"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_type_icon
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "Fəaliyyət Növü ikonu"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__additional_note
+msgid "Additional Note"
+msgstr ""
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_check__additional_note
+msgid "Additional remarks concerning this check."
+msgstr ""
+
+#. module: quality
+#: model:res.groups,name:quality.group_quality_manager
+msgid "Administrator"
 msgstr ""
 
 #. module: quality
@@ -64,27 +110,32 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_id
 msgid "Alias"
-msgstr ""
+msgstr "Qoşma Ad"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_contact
 msgid "Alias Contact Security"
-msgstr ""
+msgstr "Kontakt Təhlükəsizliyinə Alternativ Ad"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_name
 msgid "Alias Name"
-msgstr ""
+msgstr "Alternativ Ad"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_domain
 msgid "Alias domain"
-msgstr ""
+msgstr "Alias domeni"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_model_id
 msgid "Aliased Model"
-msgstr ""
+msgstr "Alternativ Model adı"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
+msgid "Archived"
+msgstr "Arxivləndi"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_attachment_count
@@ -92,7 +143,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_attachment_count
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Qoşma Sayı"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__reason
@@ -111,14 +162,21 @@ msgid "Check Count"
 msgstr ""
 
 #. module: quality
+#. openerp-web
+#: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
+#, python-format
+msgid "Close"
+msgstr "Bağlayın"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__color
 msgid "Color"
-msgstr ""
+msgstr "Rəng"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_tag__color
 msgid "Color Index"
-msgstr ""
+msgstr "Rəng İndeksi"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__company_id
@@ -126,12 +184,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__company_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__company_id
 msgid "Company"
-msgstr ""
+msgstr "Şirkət"
 
 #. module: quality
 #: model:quality.alert.stage,name:quality.quality_alert_stage_1
 msgid "Confirmed"
-msgstr ""
+msgstr "Təsdiq olundu"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__control_date
@@ -158,7 +216,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_reason__create_uid
 #: model:ir.model.fields,field_description:quality.field_quality_tag__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Tərəfindən yaradılıb"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__create_date
@@ -170,6 +228,16 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_reason__create_date
 #: model:ir.model.fields,field_description:quality.field_quality_tag__create_date
 msgid "Created on"
+msgstr "Tarixdə yaradıldı"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Creation Date"
+msgstr "Yaradılma Tarixi"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_bounced_content
+msgid "Custom Bounced Message"
 msgstr ""
 
 #. module: quality
@@ -180,12 +248,12 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__date_close
 msgid "Date Closed"
-msgstr ""
+msgstr "Tarix Bağlandı"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_defaults
 msgid "Default Values"
-msgstr ""
+msgstr "Defolt Dəyərlər"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_point__test_type_id
@@ -205,7 +273,7 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__description
 msgid "Description"
-msgstr ""
+msgstr "Təsvir"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__display_name
@@ -217,17 +285,27 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_reason__display_name
 #: model:ir.model.fields,field_description:quality.field_quality_tag__display_name
 msgid "Display Name"
+msgstr "Ekran Adı"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Done"
+msgstr "Hazırdır"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__email_cc
+msgid "Email cc"
 msgstr ""
 
 #. module: quality
-#: selection:quality.check,quality_state:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_check__quality_state__fail
 msgid "Failed"
 msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__folded
 msgid "Folded"
-msgstr ""
+msgstr "Bağlanmış"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_follower_ids
@@ -235,15 +313,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_follower_ids
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_follower_ids
 msgid "Followers"
-msgstr ""
-
-#. module: quality
-#: model:ir.model.fields,field_description:quality.field_quality_alert__message_channel_ids
-#: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_channel_ids
-#: model:ir.model.fields,field_description:quality.field_quality_check__message_channel_ids
-#: model:ir.model.fields,field_description:quality.field_quality_point__message_channel_ids
-msgid "Followers (Channels)"
-msgstr ""
+msgstr "İzləyicilər"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_partner_ids
@@ -251,17 +321,36 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_partner_ids
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_partner_ids
 msgid "Followers (Partners)"
+msgstr "İzləyicilər (Tərəfdaşlar)"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__activity_type_icon
+#: model:ir.model.fields,help:quality.field_quality_check__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr "Gözəl şriftli ikon, məsələn fa-tapşırıqlar"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Future Activities"
+msgstr "Gələcək Fəaliyyətlər"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Group By"
+msgstr "Aşağıdakılara görə Qrupla"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__has_message
+#: model:ir.model.fields,field_description:quality.field_quality_alert_team__has_message
+#: model:ir.model.fields,field_description:quality.field_quality_check__has_message
+#: model:ir.model.fields,field_description:quality.field_quality_point__has_message
+msgid "Has Message"
 msgstr ""
 
 #. module: quality
-#: model:ir.module.category,description:quality.module_category_quality
-msgid "Helps you manage your quality alerts and quality checks."
-msgstr ""
-
-#. module: quality
-#: selection:quality.alert,priority:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__2
 msgid "High"
-msgstr ""
+msgstr "Yüksək"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__id
@@ -281,14 +370,20 @@ msgid ""
 "ID of the parent record holding the alias (example: project holding the task"
 " creation alias)"
 msgstr ""
+"Təxəllüsün olduğu əsas qeydin ID nömrəsi (məsələn: tapşırığın yaradılması "
+"təxəllüsünün olduğu layihə)"
 
 #. module: quality
-#: model:ir.model.fields,help:quality.field_quality_alert__message_unread
-#: model:ir.model.fields,help:quality.field_quality_alert_team__message_unread
-#: model:ir.model.fields,help:quality.field_quality_check__message_unread
-#: model:ir.model.fields,help:quality.field_quality_point__message_unread
-msgid "If checked new messages require your attention."
-msgstr ""
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_exception_icon
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_exception_icon
+msgid "Icon"
+msgstr "Simvol"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__activity_exception_icon
+#: model:ir.model.fields,help:quality.field_quality_check__activity_exception_icon
+msgid "Icon to indicate an exception activity."
+msgstr "İstisna fəaliyyəti göstərən simvol."
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_needaction
@@ -296,14 +391,32 @@ msgstr ""
 #: model:ir.model.fields,help:quality.field_quality_check__message_needaction
 #: model:ir.model.fields,help:quality.field_quality_point__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "İşarələnibsə, yeni mesajlara baxmalısınız."
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_has_error
+#: model:ir.model.fields,help:quality.field_quality_alert__message_has_sms_error
 #: model:ir.model.fields,help:quality.field_quality_alert_team__message_has_error
+#: model:ir.model.fields,help:quality.field_quality_alert_team__message_has_sms_error
 #: model:ir.model.fields,help:quality.field_quality_check__message_has_error
+#: model:ir.model.fields,help:quality.field_quality_check__message_has_sms_error
 #: model:ir.model.fields,help:quality.field_quality_point__message_has_error
+#: model:ir.model.fields,help:quality.field_quality_point__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
+msgstr "Yoxlanılıbsa, bəzi mesajların çatdırılmasında xəta var."
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert_team__alias_bounced_content
+msgid ""
+"If set, this content will automatically be sent out to unauthorized users "
+"instead of the default message."
+msgstr ""
+"Qurulubsa, bu məzmun avtomatik olaraq standart mesaj yerinə icazəsiz "
+"istifadəçilərə göndəriləcək."
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "In Progress"
 msgstr ""
 
 #. module: quality
@@ -317,7 +430,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_is_follower
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "İzləyicidir"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert____last_update
@@ -329,7 +442,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_reason____last_update
 #: model:ir.model.fields,field_description:quality.field_quality_tag____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Son Dəyişdirilmə tarixi"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__write_uid
@@ -341,7 +454,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_reason__write_uid
 #: model:ir.model.fields,field_description:quality.field_quality_tag__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Son Yeniləyən"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__write_date
@@ -353,18 +466,32 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_reason__write_date
 #: model:ir.model.fields,field_description:quality.field_quality_tag__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Son Yenilənmə tarixi"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Late Activities"
+msgstr "Ən son Əməliyyatlar"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__email_cc
+msgid "List of cc from incoming emails."
+msgstr "Gələn emaillərdən cc sayı"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__lot_id
-#: model:ir.model.fields,field_description:quality.field_quality_check__lot_id
 msgid "Lot"
+msgstr "Partiya"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__lot_id
+msgid "Lot/Serial"
 msgstr ""
 
 #. module: quality
-#: selection:quality.alert,priority:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__1
 msgid "Low"
-msgstr ""
+msgstr "Aşağı"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_main_attachment_id
@@ -372,12 +499,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_main_attachment_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
-
-#. module: quality
-#: model:res.groups,name:quality.group_quality_manager
-msgid "Manager"
-msgstr ""
+msgstr "Əsas Əlavə"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_has_error
@@ -385,7 +507,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_has_error
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Mesajın Çatdırılmasında xəta"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_ids
@@ -393,36 +515,77 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_ids
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_ids
 msgid "Messages"
+msgstr "Mesajlar"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__my_activity_date_deadline
+#: model:ir.model.fields,field_description:quality.field_quality_check__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr ""
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "My Alerts"
 msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__name
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__name
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__name
-#: model:ir.model.fields,field_description:quality.field_quality_check__name
 #: model:ir.model.fields,field_description:quality.field_quality_point_test_type__name
 #: model:ir.model.fields,field_description:quality.field_quality_reason__name
-#: model:ir.model.fields,field_description:quality.field_quality_tag__name
 msgid "Name"
-msgstr ""
+msgstr "Ad"
 
 #. module: quality
-#: code:addons/quality/models/quality.py:32
-#: code:addons/quality/models/quality.py:69
-#: code:addons/quality/models/quality.py:70
-#: code:addons/quality/models/quality.py:144
-#: code:addons/quality/models/quality.py:181
-#: code:addons/quality/models/quality.py:182
-#: code:addons/quality/models/quality.py:209
-#: code:addons/quality/models/quality.py:244
-#: code:addons/quality/models/quality.py:245
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
+#: code:addons/quality/models/quality.py:0
 #: model:quality.alert.stage,name:quality.quality_alert_stage_0
 #, python-format
 msgid "New"
+msgstr "Yeni"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_calendar_event_id
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
 msgstr ""
 
 #. module: quality
-#: selection:quality.alert,priority:0
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_date_deadline
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_date_deadline
+msgid "Next Activity Deadline"
+msgstr "Növbəti Fəaliyyətin Son Tarixi"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_summary
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_summary
+msgid "Next Activity Summary"
+msgstr "Növbəti Fəaliyyət Xülasəsi"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_type_id
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_type_id
+msgid "Next Activity Type"
+msgstr "Yeni Fəaliyyət Növü"
+
+#. module: quality
+#: code:addons/quality/models/quality.py:0
+#, python-format
+msgid ""
+"No quality team found for this company.\n"
+"Please go to configuration and create one first."
+msgstr ""
+
+#. module: quality
+#: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__0
 msgid "Normal"
 msgstr ""
 
@@ -431,12 +594,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_point__note
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Note"
-msgstr ""
+msgstr "Qeyd"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 msgid "Notes"
-msgstr ""
+msgstr "Qeydlər"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_needaction_counter
@@ -444,15 +607,15 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_needaction_counter
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Hərəkətlərin sayı"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_has_error_counter
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_has_error_counter
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_has_error_counter
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_has_error_counter
-msgid "Number of error"
-msgstr ""
+msgid "Number of errors"
+msgstr "Xətaların sayı"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_needaction_counter
@@ -460,7 +623,7 @@ msgstr ""
 #: model:ir.model.fields,help:quality.field_quality_check__message_needaction_counter
 #: model:ir.model.fields,help:quality.field_quality_point__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Əməliyyat tələb edən mesajların sayı"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_has_error_counter
@@ -468,25 +631,18 @@ msgstr ""
 #: model:ir.model.fields,help:quality.field_quality_check__message_has_error_counter
 #: model:ir.model.fields,help:quality.field_quality_point__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Çatdırılma xətası olan mesajların sayı"
 
 #. module: quality
-#: model:ir.model.fields,help:quality.field_quality_alert__message_unread_counter
-#: model:ir.model.fields,help:quality.field_quality_alert_team__message_unread_counter
-#: model:ir.model.fields,help:quality.field_quality_check__message_unread_counter
-#: model:ir.model.fields,help:quality.field_quality_point__message_unread_counter
-msgid "Number of unread messages"
+#: model:ir.model.fields,field_description:quality.field_quality_point__picking_type_ids
+msgid "Operation Types"
 msgstr ""
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
-msgid "Operation"
-msgstr ""
-
-#. module: quality
-#: model:ir.model.fields,field_description:quality.field_quality_point__picking_type_id
-msgid "Operation Type"
-msgstr ""
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_tree
+msgid "Operations"
+msgstr "Əməliyyatlar"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_force_thread_id
@@ -495,6 +651,9 @@ msgid ""
 "attached, even if they did not reply to it. If set, this will disable the "
 "creation of new records completely."
 msgstr ""
+"Cavab verməsələr belə, gələn bütün mesajların əlavə ediləcəyi email "
+"zəncirinin (qeyd) istəyə bağlı ID-si. Quraşdırılarsa, bu, yeni qeydlərin "
+"yaradılmasını tamamilə dayandıracaq."
 
 #. module: quality
 #: model:quality.reason,name:quality.reason_other
@@ -504,17 +663,17 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_user_id
 msgid "Owner"
-msgstr ""
+msgstr "Sahibi"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_parent_model_id
 msgid "Parent Model"
-msgstr ""
+msgstr "Əsas Model"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr ""
+msgstr "Əsas Qeyd Zəncirinin ID-si"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_parent_model_id
@@ -523,6 +682,14 @@ msgid ""
 " necessarily the model given by alias_model_id (example: project "
 "(parent_model) and task (model))"
 msgstr ""
+"Qoşma adı özündə saxlayan əsas model Qoşma ad istinadını özündə saxlayan "
+"model  alias_model_id tərəfindən verilən model olmaya bilər (məsələn: layihə"
+" (parent_model) və tapşırıq (model))"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__partner_id
+msgid "Partner"
+msgstr "Tərəfdaş"
 
 #. module: quality
 #: model:quality.reason,name:quality.reason_parts
@@ -530,7 +697,7 @@ msgid "Parts Quality"
 msgstr ""
 
 #. module: quality
-#: selection:quality.check,quality_state:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_check__quality_state__pass
 msgid "Passed"
 msgstr ""
 
@@ -553,6 +720,10 @@ msgid ""
 "- partners: only authenticated partners\n"
 "- followers: only followers of the related document or members of following channels\n"
 msgstr ""
+"Mail şlüzündən istifadə edərək sənəddəki mesajı göndərmək qaydası.\n"
+"- hər kəs: hərkəs göndərə bilər\n"
+"- tərəfdaşlar: yalnız təsdiqlənmiş tərəfdaşlar\n"
+"- izləyicilər: yalnız müvafiq sənədin izləyiciləri və ya aşağıdakı kanalların üzvləri\n"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__action_preventive
@@ -562,28 +733,33 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__priority
 msgid "Priority"
-msgstr ""
+msgstr "Prioritet"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__product_tmpl_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__product_id
-#: model:ir.model.fields,field_description:quality.field_quality_point__product_tmpl_id
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Product"
-msgstr ""
+msgstr "Məhsul"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_point__product_category_ids
+msgid "Product Categories"
+msgstr "Məhsul Kateqoriyaları"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__product_id
-#: model:ir.model.fields,field_description:quality.field_quality_point__product_id
 msgid "Product Variant"
 msgstr ""
 
 #. module: quality
-#: model:ir.module.category,name:quality.module_category_quality
-msgid "Quality"
-msgstr ""
+#: model:ir.model.fields,field_description:quality.field_quality_point__product_ids
+msgid "Products"
+msgstr "Məhsullar"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_alert
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Quality Alert"
 msgstr ""
 
@@ -613,29 +789,55 @@ msgid "Quality Control Test Type"
 msgstr ""
 
 #. module: quality
+#: model:ir.model.fields,help:quality.field_quality_point__product_category_ids
+msgid ""
+"Quality Point will apply to every Products in the selected Product "
+"Categories."
+msgstr ""
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_point__product_ids
+msgid "Quality Point will apply to every selected Products."
+msgstr ""
+
+#. module: quality
 #: model:ir.model,name:quality.model_quality_tag
 msgid "Quality Tag"
 msgstr ""
 
 #. module: quality
-#: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_force_thread_id
-msgid "Record Thread ID"
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Quality Team"
 msgstr ""
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_force_thread_id
+msgid "Record Thread ID"
+msgstr "Qeyd Hissəciyinin ID-si"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__name
 #: model:ir.model.fields,field_description:quality.field_quality_point__name
 msgid "Reference"
-msgstr ""
+msgstr "Rəy"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__user_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__user_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__user_id
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Responsible"
-msgstr ""
+msgstr "Məsul"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_user_id
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_user_id
+msgid "Responsible User"
+msgstr "Məsul İstifadəçi"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__reason_id
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Root Cause"
 msgstr ""
 
@@ -645,11 +847,24 @@ msgid "Root Cause for Quality Failure"
 msgstr ""
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__message_has_sms_error
+#: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_has_sms_error
+#: model:ir.model.fields,field_description:quality.field_quality_check__message_has_sms_error
+#: model:ir.model.fields,field_description:quality.field_quality_point__message_has_sms_error
+msgid "SMS Delivery error"
+msgstr "SMS-in Çatdırılmasında xəta"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__sequence
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__sequence
 #: model:ir.model.fields,field_description:quality.field_quality_point__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Ardıcıllıq"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Show all records which has next action date is before today"
+msgstr "Növbəti fəaliyyət tarixi bu günə qədər olan bütün qeydləri göstərin"
 
 #. module: quality
 #: model:quality.alert.stage,name:quality.quality_alert_stage_3
@@ -658,8 +873,9 @@ msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__stage_id
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Stage"
-msgstr ""
+msgstr "Mərhələ"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__quality_state
@@ -667,8 +883,34 @@ msgid "Status"
 msgstr ""
 
 #. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__activity_state
+#: model:ir.model.fields,help:quality.field_quality_check__activity_state
+msgid ""
+"Status based on activities\n"
+"Overdue: Due date is already passed\n"
+"Today: Activity date is today\n"
+"Planned: Future activities."
+msgstr ""
+"Fəaliyyətlərə əsaslanan status\n"
+"Gecikmiş: Gözlənilən tarixdən keçib\n"
+"Bu gün: Fəaliyyət tarixi bu gündür\n"
+"Planlaşdırılıb: Gələcək fəaliyyətlər."
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_tag__name
+msgid "Tag Name"
+msgstr "Etiket Adı"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__tag_ids
 msgid "Tags"
+msgstr "Etiketlər"
+
+#. module: quality
+#. openerp-web
+#: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
+#, python-format
+msgid "Take a Picture"
 msgstr ""
 
 #. module: quality
@@ -676,7 +918,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__team_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__team_id
 msgid "Team"
-msgstr ""
+msgstr "Komanda"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert_stage__team_ids
+msgid "Teams"
+msgstr "Komandalar"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__test_type
@@ -686,6 +933,7 @@ msgid "Technical name"
 msgstr ""
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__test_type_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__test_type_id
 msgid "Test Type"
 msgstr ""
@@ -697,6 +945,9 @@ msgid ""
 " email that does not reply to an existing record will cause the creation of "
 "a new record of this model (e.g. a Project Task)"
 msgstr ""
+"Bu alternativ adın uyğun gəldiyi model (Odoo Document Kind). Mövcud qeydə "
+"cavab verməyən hər hansı gələn email bu modelin yeni bir qeydinin "
+"yaradılmasına səbəb olacaq (məsələn, Layihə Tapşırığı)"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_name
@@ -704,6 +955,8 @@ msgid ""
 "The name of the email alias, e.g. 'jobs' if you want to catch emails for "
 "<jobs@example.odoo.com>"
 msgstr ""
+"<jobs@example.odoo.com> ünvanından olan mailləri görmək istəyirsinizsə, "
+"email alternativininin (məs: işlər) adı"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_user_id
@@ -713,6 +966,10 @@ msgid ""
 "the sender (From) address, or will use the Administrator account if no "
 "system user is found for that address."
 msgstr ""
+"Bu alternativ adda emailləri qəbul etdikdən sonra tərtib olunan qeydlərin "
+"sahibi. Bu sahə təyin edilməyibsə, sistem göndərənin (Kimdən) ünvanına "
+"əsasən doğru sahibi tapmağa çalışacaq və ya həmin ünvan üçün sistem "
+"istifadəçisi tapılmadıqda Administrator hesabından istifadə edəcəkdir."
 
 #. module: quality
 #: model:res.groups,comment:quality.group_quality_manager
@@ -725,35 +982,32 @@ msgid "The quality user uses the quality process"
 msgstr ""
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__title
 #: model:ir.model.fields,field_description:quality.field_quality_point__title
 msgid "Title"
-msgstr ""
+msgstr "Başlıq"
 
 #. module: quality
-#: selection:quality.check,quality_state:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_check__quality_state__none
 msgid "To do"
 msgstr ""
 
 #. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
+msgid "Today Activities"
+msgstr "Bugünkü Fəaliyyətlər"
+
+#. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_tree
 msgid "Type"
-msgstr ""
+msgstr "Tip"
 
 #. module: quality
-#: model:ir.model.fields,field_description:quality.field_quality_alert__message_unread
-#: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_unread
-#: model:ir.model.fields,field_description:quality.field_quality_check__message_unread
-#: model:ir.model.fields,field_description:quality.field_quality_point__message_unread
-msgid "Unread Messages"
-msgstr ""
-
-#. module: quality
-#: model:ir.model.fields,field_description:quality.field_quality_alert__message_unread_counter
-#: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_unread_counter
-#: model:ir.model.fields,field_description:quality.field_quality_check__message_unread_counter
-#: model:ir.model.fields,field_description:quality.field_quality_point__message_unread_counter
-msgid "Unread Messages Counter"
-msgstr ""
+#: model:ir.model.fields,help:quality.field_quality_alert__activity_exception_decoration
+#: model:ir.model.fields,help:quality.field_quality_check__activity_exception_decoration
+msgid "Type of the exception activity on record."
+msgstr "Qeyddəki istisna fəaliyyət növü."
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_tag__color
@@ -763,16 +1017,23 @@ msgstr ""
 #. module: quality
 #: model:res.groups,name:quality.group_quality_user
 msgid "User"
-msgstr ""
+msgstr "İstifadəçi"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__partner_id
 msgid "Vendor"
-msgstr ""
+msgstr "Podratçı"
 
 #. module: quality
-#: selection:quality.alert,priority:0
+#: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__3
 msgid "Very High"
+msgstr "Çox yüksək"
+
+#. module: quality
+#. openerp-web
+#: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
+#, python-format
+msgid "Viewer"
 msgstr ""
 
 #. module: quality
@@ -781,7 +1042,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__website_message_ids
 #: model:ir.model.fields,field_description:quality.field_quality_point__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Veb sayt Mesajları"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__website_message_ids
@@ -789,7 +1050,7 @@ msgstr ""
 #: model:ir.model.fields,help:quality.field_quality_check__website_message_ids
 #: model:ir.model.fields,help:quality.field_quality_point__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Veb saytın kommunikasiya tarixçəsi"
 
 #. module: quality
 #: model:quality.reason,name:quality.reason_wo
@@ -800,3 +1061,8 @@ msgstr ""
 #: model:quality.reason,name:quality.reason_workcenter
 msgid "Workcenter Failure"
 msgstr ""
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_point_test_type__active
+msgid "active"
+msgstr "Aktiv"

@@ -4,17 +4,17 @@
 # 
 # Translators:
 # Fabien Pinckaers <fp@openerp.com>, 2022
+# Jolien De Paepe, 2022
 # Martin Trigaux, 2022
 # Cécile Collart <cco@odoo.com>, 2022
-# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Jolien De Paepe, 2022\n"
+"Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -165,11 +165,6 @@ msgstr ""
 "('user_can_write', '=', False), ('active', '=', False)]}\"/>"
 
 #. module: knowledge
-#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_kanban
-msgid "<i class=\"fa fa-fw fa-lock\" title=\"locked\"/>"
-msgstr "<i class=\"fa fa-fw fa-lock\" title=\"verrouillé\"/>"
-
-#. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.articles_template_name
 msgid "<i class=\"fa fa-fw fa-plus\" title=\"Create a nested article\"/>"
 msgstr "<i class=\"fa fa-fw fa-plus\" title=\"Créer un sous-article\"/>"
@@ -197,13 +192,13 @@ msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "<i class=\"fa fa-plus-circle\"/> Create"
-msgstr "<i class=\"fa fa-plus-circle\"/>Créer"
+msgid "<i class=\"fa fa-plus-circle me-1\"/>Create"
+msgstr "<i class=\"fa fa-plus-circle me-1\"/>Créer"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "<i class=\"fa fa-share-alt\"/> Share"
-msgstr "<i class=\"fa fa-share-alt\"/> Partager"
+msgid "<i class=\"fa fa-share-alt me-1\"/>Share"
+msgstr "<i class=\"fa fa-share-alt me-1\"/>Partager"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_kanban
@@ -1144,13 +1139,6 @@ msgid "Article"
 msgstr "Article"
 
 #. module: knowledge
-#: code:addons/knowledge/models/knowledge_article.py:0
-#: code:addons/knowledge/models/knowledge_article.py:0
-#, python-format
-msgid "Article %s can only contain one type of article."
-msgstr "L'article %s ne peut contenir qu'un seul type d'article."
-
-#. module: knowledge
 #: code:addons/knowledge/models/knowledge_article_member.py:0
 #, python-format
 msgid ""
@@ -1341,12 +1329,6 @@ msgid "Categories"
 msgstr "Catégories"
 
 #. module: knowledge
-#: model:ir.model.fields,field_description:knowledge.field_knowledge_article__category
-#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
-msgid "Category"
-msgstr "Catégorie"
-
-#. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
@@ -1441,6 +1423,8 @@ msgstr "Créer mon propre espace de travail <i class=\"fa fa-book\"/>"
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_member__create_uid
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__create_uid
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__create_uid
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
 msgid "Created by"
 msgstr "Créé par"
 
@@ -1455,6 +1439,8 @@ msgstr "Créé par :"
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_member__create_date
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__create_date
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__create_date
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
 msgid "Created on"
 msgstr "Créé le"
 
@@ -1530,15 +1516,8 @@ msgstr "Dupliquer"
 #. openerp-web
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
-msgid "Embed a Kanban View"
-msgstr "Intégrer une vue Kanban"
-
-#. module: knowledge
-#. openerp-web
-#: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
-#, python-format
-msgid "Embed a List View"
-msgstr "Intégrer une vue liste"
+msgid "Embed a View"
+msgstr "Intégrer une vue"
 
 #. module: knowledge
 #. openerp-web
@@ -1767,13 +1746,6 @@ msgstr "Insérer"
 
 #. module: knowledge
 #. openerp-web
-#: code:addons/knowledge/static/src/js/wysiwyg.js:0
-#, python-format
-msgid "Insert Kanban View"
-msgstr "Insérer la vue Kanban"
-
-#. module: knowledge
-#. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg/knowledge_article_link.js:0
 #, python-format
 msgid "Insert Link"
@@ -1781,10 +1753,31 @@ msgstr "Insérer un lien"
 
 #. module: knowledge
 #. openerp-web
+#: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
+#, python-format
+msgid "Insert a Kanban View"
+msgstr "Insérer une vue Kanban"
+
+#. module: knowledge
+#. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
-msgid "Insert List View"
-msgstr "Insérer la vue liste"
+msgid "Insert a Kanban view of article items"
+msgstr "Insérer une vue Kanban des éléments"
+
+#. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
+#, python-format
+msgid "Insert a List View"
+msgstr "Insérer une vue liste"
+
+#. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Insert a List view of article items"
+msgstr "Insérer une vue Liste des éléments"
 
 #. module: knowledge
 #. openerp-web
@@ -1861,8 +1854,15 @@ msgstr "Le champ propriété est-il vide ?"
 #. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
-msgid "Kanban view"
-msgstr "Vue kanban"
+msgid "Item Kanban"
+msgstr "Elément Kanban"
+
+#. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Item List"
+msgstr "Liste d'éléments"
 
 #. module: knowledge
 #: model:ir.ui.menu,name:knowledge.knowledge_menu_root
@@ -1883,6 +1883,13 @@ msgstr "Couverture Connaissances"
 #: model:ir.model,name:knowledge.model_knowledge_invite
 msgid "Knowledge Invite Wizard"
 msgstr "Assistant d'invitation à Connaissances"
+
+#. module: knowledge
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_trash
+msgid "Last Edit Date"
+msgstr "Date de la dernière modification"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__last_edition_uid
@@ -1950,13 +1957,6 @@ msgid "Link an article."
 msgstr "Joindre un article."
 
 #. module: knowledge
-#. openerp-web
-#: code:addons/knowledge/static/src/js/wysiwyg.js:0
-#, python-format
-msgid "List view"
-msgstr "Vue Liste"
-
-#. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_locked
 msgid "Locked"
 msgstr "Bloqué"
@@ -1999,6 +1999,11 @@ msgstr "Membres"
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_member_ids
 msgid "Members Information"
 msgstr "Informations Membres"
+
+#. module: knowledge
+#: model:ir.model.fields,field_description:knowledge.field_knowledge_article__root_article_id
+msgid "Menu Article"
+msgstr ""
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_has_error
@@ -2057,6 +2062,13 @@ msgstr "Échéance de mon activité"
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search_items
 msgid "My Favorites"
 msgstr "Mes favoris"
+
+#. module: knowledge
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_trash
+msgid "Name"
+msgstr "Nom"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -2193,7 +2205,6 @@ msgstr ""
 #. openerp-web
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_manager.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_manager.xml:0
-#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
 #, python-format
 msgid "Open"
 msgstr "Ouvert"
@@ -2371,6 +2382,11 @@ msgid "Search for an article..."
 msgstr "Rechercher un article..."
 
 #. module: knowledge
+#: model:ir.model.fields,field_description:knowledge.field_knowledge_article__category
+msgid "Section"
+msgstr "Section"
+
+#. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/cover_selector/knowledge_cover_dialog.js:0
 #, python-format
@@ -2451,12 +2467,6 @@ msgstr ""
 "En retard : la date d'échéance est déjà dépassée\n"
 "Aujourd'hui : la date d'activité est aujourd'hui\n"
 "Planifiée : activités futures"
-
-#. module: knowledge
-#: model:ir.model.fields,field_description:knowledge.field_knowledge_article__root_article_id
-#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
-msgid "Subject"
-msgstr "Sujet"
 
 #. module: knowledge
 #. openerp-web
@@ -2944,6 +2954,7 @@ msgstr "vous a invité à accéder à"
 #. openerp-web
 #: code:addons/knowledge/static/src/components/behaviors/abstract_behavior/abstract_behavior.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
+#: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_behavior.xml:0
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "loader"

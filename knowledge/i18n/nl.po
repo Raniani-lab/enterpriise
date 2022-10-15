@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -32,7 +32,7 @@ msgstr ""
 "\n"
 "            Verwijderde artikelen worden extra opgeslagen in de Prullenbak\n"
 "            <b>%(threshold)s</b> dagen\n"
-"            voordat het permanent wordt verwijderd voor uw database"
+"            voordat het permanent wordt verwijderd voor je database"
 
 #. module: knowledge
 #. openerp-web
@@ -163,11 +163,6 @@ msgstr ""
 "('user_can_write', '=', False), ('active', '=', False)]}\"/>"
 
 #. module: knowledge
-#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_kanban
-msgid "<i class=\"fa fa-fw fa-lock\" title=\"locked\"/>"
-msgstr "<i class=\"fa fa-fw fa-lock\" title=\"geblokkeerd\"/>"
-
-#. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.articles_template_name
 msgid "<i class=\"fa fa-fw fa-plus\" title=\"Create a nested article\"/>"
 msgstr "<i class=\"fa fa-fw fa-plus\" title=\"Maak een genest artikel\"/>"
@@ -195,13 +190,13 @@ msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "<i class=\"fa fa-plus-circle\"/> Create"
-msgstr "<i class=\"fa fa-plus-circle\"/> Aanmaken"
+msgid "<i class=\"fa fa-plus-circle me-1\"/>Create"
+msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
-msgid "<i class=\"fa fa-share-alt\"/> Share"
-msgstr "<i class=\"fa fa-share-alt\"/> Delen"
+msgid "<i class=\"fa fa-share-alt me-1\"/>Share"
+msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_kanban
@@ -350,7 +345,7 @@ msgstr ""
 "                <font class=\"text-o-color-2\">snelkoppelingen</font>\n"
 "            </span>\n"
 "            je creëert voor jezelf.\n"
-"            Verwijder de ster van deze pagina bovenaan om deze uit uw favorieten te verwijderen.\n"
+"            Verwijder de ster van deze pagina bovenaan om deze uit je favorieten te verwijderen.\n"
 "        </span>"
 
 #. module: knowledge
@@ -760,7 +755,7 @@ msgstr ""
 "        <span style=\"font-weight: bolder;\">\n"
 "            <font class=\"text-o-color-2\">Opdrachtenpalet</font>\n"
 "        </span>\n"
-"        (Ctrl + k/⌘ + k) zoek vervolgens door artikelen door uw zoekopdracht te beginnen met\n"
+"        (Ctrl + k/⌘ + k) zoek vervolgens door artikelen door je zoekopdracht te beginnen met\n"
 "        \"<span style=\"font-weight: bolder;\">?</span>\".\n"
 "    </span>"
 
@@ -807,7 +802,7 @@ msgid ""
 "<span style=\"font-size: 14px;\">From your document, find this article by "
 "clicking on the book icon in the chatter.</span>"
 msgstr ""
-"<span style=\"font-size: 14px;\">Zoek dit artikel in uw document door op het"
+"<span style=\"font-size: 14px;\">Zoek dit artikel in je document door op het"
 " boekpictogram in de chatter te klikken.</span>"
 
 #. module: knowledge
@@ -825,8 +820,8 @@ msgid ""
 "<span style=\"font-size: 14px;\">Need this document somewhere? Come back "
 "here by clicking on the book icon in the chatter.</span>"
 msgstr ""
-"<span style=\"font-size: 14px;\">Heeft u dit document ergens nodig? Kom hier"
-" terug door op het boekpictogram in de chatter te klikken.</span>"
+"<span style=\"font-size: 14px;\">Heeft je dit document ergens nodig? Kom "
+"hier terug door op het boekpictogram in de chatter te klikken.</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -1016,7 +1011,7 @@ msgid ""
 "Are you sure you want to delete this cover ? It will be removed from every "
 "article it is used in."
 msgstr ""
-"Weet je zeker dat u deze omslag wilt verwijderen? Het wordt verwijderd uit "
+"Weet je zeker dat je deze omslag wilt verwijderen? Het wordt verwijderd uit "
 "elk artikel waarin het wordt gebruikt."
 
 #. module: knowledge
@@ -1038,8 +1033,8 @@ msgid ""
 "Are you sure you want to move \"%s%s\" to private? Only you will be able to "
 "access it."
 msgstr ""
-"Weet je zeker dat u \"%s%s\" naar privé wilt verplaatsen? Alleen jij hebt er"
-" toegang toe."
+"Weet je zeker dat je \"%s%s\" naar privé wilt verplaatsen? Alleen jij hebt "
+"er toegang toe."
 
 #. module: knowledge
 #. openerp-web
@@ -1049,8 +1044,8 @@ msgid ""
 "Are you sure you want to move \"%s%s\" to the Workspace? It will be shared "
 "with all internal users."
 msgstr ""
-"Weet je zeker dat u \"%s%s\" naar de werkruimte wilt verplaatsen? Het wordt "
-"gedeeld met alle interne gebruikers."
+"Weet je zeker dat je \"%s%s\" naar de werkruimte wilt verplaatsen? Het wordt"
+" gedeeld met alle interne gebruikers."
 
 #. module: knowledge
 #. openerp-web
@@ -1060,7 +1055,7 @@ msgid ""
 "Are you sure you want to move \"%s%s\" under \"%s%s\"? It will be shared "
 "with the same persons."
 msgstr ""
-"Weet je zeker dat u \"%s%s\" onder \"%s%s\" wilt verplaatsen? Het wordt "
+"Weet je zeker dat je \"%s%s\" onder \"%s%s\" wilt verplaatsen? Het wordt "
 "gedeeld met dezelfde personen."
 
 #. module: knowledge
@@ -1136,13 +1131,6 @@ msgstr ""
 #, python-format
 msgid "Article"
 msgstr "Artikel"
-
-#. module: knowledge
-#: code:addons/knowledge/models/knowledge_article.py:0
-#: code:addons/knowledge/models/knowledge_article.py:0
-#, python-format
-msgid "Article %s can only contain one type of article."
-msgstr "Artikel %s kan slechts één type artikel bevatten."
 
 #. module: knowledge
 #: code:addons/knowledge/models/knowledge_article_member.py:0
@@ -1330,12 +1318,6 @@ msgid "Categories"
 msgstr "Categorieën"
 
 #. module: knowledge
-#: model:ir.model.fields,field_description:knowledge.field_knowledge_article__category
-#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
-msgid "Category"
-msgstr "Categorie"
-
-#. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
@@ -1430,6 +1412,8 @@ msgstr "Maak mijn eigen werkruimte <i class=\"fa fa-book\"/>"
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_member__create_uid
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__create_uid
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__create_uid
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
 msgid "Created by"
 msgstr "Gemaakt door"
 
@@ -1444,6 +1428,8 @@ msgstr "Gemaakt door:"
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_member__create_date
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__create_date
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__create_date
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
 msgid "Created on"
 msgstr "Gemaakt op"
 
@@ -1513,21 +1499,14 @@ msgstr "Downloaden"
 #: code:addons/knowledge/static/src/views/list_view.js:0
 #, python-format
 msgid "Duplicate"
-msgstr "Duplicaat"
+msgstr "Dupliceren"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
-msgid "Embed a Kanban View"
-msgstr "Een Kanban-weergave insluiten"
-
-#. module: knowledge
-#. openerp-web
-#: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
-#, python-format
-msgid "Embed a List View"
-msgstr "Een lijstweergave insluiten"
+msgid "Embed a View"
+msgstr ""
 
 #. module: knowledge
 #. openerp-web
@@ -1628,7 +1607,7 @@ msgstr "Ga naar artikel"
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_member_view_search
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
 msgid "Group By"
-msgstr "Groeperen op"
+msgstr "Groepeer op"
 
 #. module: knowledge
 #. openerp-web
@@ -1757,13 +1736,6 @@ msgstr "Invoegen"
 
 #. module: knowledge
 #. openerp-web
-#: code:addons/knowledge/static/src/js/wysiwyg.js:0
-#, python-format
-msgid "Insert Kanban View"
-msgstr "Kanban-weergave invoegen"
-
-#. module: knowledge
-#. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg/knowledge_article_link.js:0
 #, python-format
 msgid "Insert Link"
@@ -1771,10 +1743,31 @@ msgstr "Koppeling invoegen"
 
 #. module: knowledge
 #. openerp-web
+#: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
+#, python-format
+msgid "Insert a Kanban View"
+msgstr ""
+
+#. module: knowledge
+#. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
-msgid "Insert List View"
-msgstr "Lijstweergave invoegen"
+msgid "Insert a Kanban view of article items"
+msgstr ""
+
+#. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
+#, python-format
+msgid "Insert a List View"
+msgstr ""
+
+#. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Insert a List view of article items"
+msgstr ""
 
 #. module: knowledge
 #. openerp-web
@@ -1851,8 +1844,15 @@ msgstr "Is het eigenschapsveld leeg?"
 #. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
-msgid "Kanban view"
-msgstr "Kanban-weergave"
+msgid "Item Kanban"
+msgstr ""
+
+#. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Item List"
+msgstr ""
 
 #. module: knowledge
 #: model:ir.ui.menu,name:knowledge.knowledge_menu_root
@@ -1873,6 +1873,13 @@ msgstr "Kennisomslag"
 #: model:ir.model,name:knowledge.model_knowledge_invite
 msgid "Knowledge Invite Wizard"
 msgstr "Wizard Kennis uitnodigen"
+
+#. module: knowledge
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_trash
+msgid "Last Edit Date"
+msgstr ""
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__last_edition_uid
@@ -1940,13 +1947,6 @@ msgid "Link an article."
 msgstr "Koppel een artikel."
 
 #. module: knowledge
-#. openerp-web
-#: code:addons/knowledge/static/src/js/wysiwyg.js:0
-#, python-format
-msgid "List view"
-msgstr "Lijstweergave"
-
-#. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_locked
 msgid "Locked"
 msgstr "Op slot"
@@ -1989,6 +1989,11 @@ msgstr "Leden"
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_member_ids
 msgid "Members Information"
 msgstr "Ledeninformatie"
+
+#. module: knowledge
+#: model:ir.model.fields,field_description:knowledge.field_knowledge_article__root_article_id
+msgid "Menu Article"
+msgstr ""
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_has_error
@@ -2047,6 +2052,13 @@ msgstr "Mijn activiteitsdeadline"
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search_items
 msgid "My Favorites"
 msgstr "Mijn favorieten"
+
+#. module: knowledge
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
+#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_trash
+msgid "Name"
+msgstr "Naam"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -2183,7 +2195,6 @@ msgstr ""
 #. openerp-web
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_manager.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_manager.xml:0
-#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
 #, python-format
 msgid "Open"
 msgstr "Open"
@@ -2361,6 +2372,11 @@ msgid "Search for an article..."
 msgstr "Zoek een artikel..."
 
 #. module: knowledge
+#: model:ir.model.fields,field_description:knowledge.field_knowledge_article__category
+msgid "Section"
+msgstr "Sectie"
+
+#. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/cover_selector/knowledge_cover_dialog.js:0
 #, python-format
@@ -2441,12 +2457,6 @@ msgstr ""
 "Achterstallig: vervaldatum is al verstreken\n"
 "Vandaag: Activiteitsdatum is vandaag\n"
 "Gepland: Toekomstige activiteiten."
-
-#. module: knowledge
-#: model:ir.model.fields,field_description:knowledge.field_knowledge_article__root_article_id
-#: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
-msgid "Subject"
-msgstr "Onderwerp"
 
 #. module: knowledge
 #. openerp-web
@@ -2534,7 +2544,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_behavior.xml:0
 #, python-format
 msgid "The view does not exist or you are not allowed to access to it."
-msgstr "De weergave bestaat niet of u heeft er geen toegang toe."
+msgstr "De weergave bestaat niet of je heeft er geen toegang toe."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -2925,6 +2935,7 @@ msgstr "nodigde je uit om toegang te krijgen"
 #. openerp-web
 #: code:addons/knowledge/static/src/components/behaviors/abstract_behavior/abstract_behavior.xml:0
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
+#: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_behavior.xml:0
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "loader"

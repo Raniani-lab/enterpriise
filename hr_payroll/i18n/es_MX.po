@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Cécile Collart <cco@odoo.com>, 2022
-# Braulio D. López Vázquez <bdl@odoo.com>, 2022
 # Martin Trigaux, 2022
+# Braulio D. López Vázquez <bdl@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Braulio D. López Vázquez <bdl@odoo.com>, 2022\n"
 "Language-Team: Spanish (Mexico) (https://www.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1759,7 +1759,7 @@ msgstr "Horas por semana"
 #. module: hr_payroll
 #: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_houserentallowance1
 msgid "House Rent Allowance"
-msgstr "Subsidio de alquiler de la casa"
+msgstr "Subsidio de alquiler de casa"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__id
@@ -2094,7 +2094,7 @@ msgstr "Intervalo máximo"
 #. module: hr_payroll
 #: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_meal_voucher
 msgid "Meal Voucher"
-msgstr "Vale de comida"
+msgstr "Vale de despensa"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_has_error
@@ -3249,7 +3249,7 @@ msgstr "Semestralmente"
 #. module: hr_payroll
 #: model:mail.template,description:hr_payroll.mail_template_new_payslip
 msgid "Sent to employee to notify them about their new payslip"
-msgstr ""
+msgstr "Se envía al empleado para notificarle sobre su nuevo recibo de nómina"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__sequence

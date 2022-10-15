@@ -3,16 +3,16 @@
 # 	* documents
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +25,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid " + Add a tag"
-msgstr ""
+msgstr " + Voeg een tag toe"
 
 #. module: documents
 #. openerp-web
@@ -43,26 +43,12 @@ msgstr "%s Documenten (%s geblokeerd)"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload_service.js:0
-#, python-format
-msgid "%s Files"
-msgstr "%s Bestanden"
-
-#. module: documents
-#. openerp-web
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "%s file(s) not moved because they are locked by another user"
 msgstr ""
 "%s bestand(en) niet verplaatst omdat ze zijn vergrendeld door een andere "
 "gebruiker"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "(%s/%sMB)"
-msgstr "(%s/%sMB)"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -151,7 +137,7 @@ msgstr "<br/>Aangeboden door"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "<i class=\"fa fa fa-folder text-odoo me-2\" title=\"Workspace\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa fa-folder text-odoo me-2\" title=\"Werkruimte\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -188,6 +174,8 @@ msgid ""
 "<i class=\"fa fa-lock oe_inline\" title=\"Locked\" attrs=\"{'invisible': "
 "[('lock_uid', '=', False)]}\"/>"
 msgstr ""
+"<i class=\"fa fa-lock oe_inline\" title=\"Locked\" attrs=\"{'invisible': "
+"[('lock_uid', '=', False)]}\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -195,6 +183,8 @@ msgid ""
 "<i class=\"fa fa-tag o_documents_tag_color ms-2\" attrs=\"{'invisible': "
 "[('tag_ids', '=', [])]}\" title=\"Tags\"/>"
 msgstr ""
+"<i class=\"fa fa-tag o_documents_tag_color ms-2\" attrs=\"{'invisible': "
+"[('tag_ids', '=', [])]}\" title=\"Tags\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
@@ -370,7 +360,7 @@ msgstr ""
 "                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
 "                                    <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
 "                                        <div>\n"
-"                                            Hello <t t-out=\"object.owner_id.name or ''\">OdooBot</t>,\n"
+"                                            Hallo <t t-out=\"object.owner_id.name or ''\">OdooBot</t>,\n"
 "                                            <br/><br/>\n"
 "                                            <t t-out=\"object.create_uid.name or ''\">OdooBot</t> (<t t-out=\"object.create_uid.email or ''\">odoobot@example.com</t>) vraagt je om het volgende document te verstrekken::\n"
 "                                            <br/><br/>\n"
@@ -699,11 +689,11 @@ msgstr ""
 "Gescande bestanden verschijnen automatisch in je werkruimte. Verwerk "
 "vervolgens je documenten in bulk met de split-tool: start door de gebruiker "
 "gedefinieerde acties, vraag een handtekening aan, converteer naar "
-"leveranciersfacturen met"
+"leveranciersfacturen met AI, etc."
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload_service.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "An error occured while uploading."
 msgstr "Er is een fout opgetreden tijdens het uploaden."
@@ -848,14 +838,6 @@ msgid "Cancel"
 msgstr "Annuleren"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.xml:0
-#: code:addons/documents/static/src/views/helper/documents_file_upload.xml:0
-#, python-format
-msgid "Cancel Upload"
-msgstr "Annuleer upload"
-
-#. module: documents
 #: model_terms:documents.folder,description:documents.documents_internal_folder
 msgid "Categorize, share and keep track of all your internal documents."
 msgstr "Categoriseer, deel en houd al je interne documenten bij."
@@ -988,7 +970,7 @@ msgstr "Maak share"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__activity_option
 msgid "Create a new activity"
-msgstr "Nieuwe activiteit toevoegen."
+msgstr "Nieuwe activiteit toevoegen"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__create_uid
@@ -1084,6 +1066,13 @@ msgid "Description"
 msgstr "Omschrijving"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_form
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_form
+msgid "Discard"
+msgstr "Negeren"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_facet__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_folder__display_name
@@ -1099,17 +1088,10 @@ msgstr "Schermnaam"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "Do you really want to cancel the upload of %s?"
-msgstr "Wil je de upload van %s echt annuleren?"
-
-#. module: documents
-#. openerp-web
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "Do you really want to unlink this record?"
-msgstr ""
+msgstr "Wil je deze record echt ontkoppelen?"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_document
@@ -1159,7 +1141,7 @@ msgstr "Document aanvraag: %s Geüpload door: %s"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__has_write_access
 msgid "Document User Upload Rights"
-msgstr ""
+msgstr "Uploadrechten documentgebruiker"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_action
@@ -1174,7 +1156,7 @@ msgstr "Documentlijst"
 #. module: documents
 #: model:mail.template,name:documents.mail_template_document_request
 msgid "Document: Document Request"
-msgstr ""
+msgstr "Document: Documentaanvraag"
 
 #. module: documents
 #. openerp-web
@@ -1199,7 +1181,7 @@ msgstr "Documenten"
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder_deletion_wizard
 msgid "Documents Folder Deletion Wizard"
-msgstr ""
+msgstr "Wizard Documentenmap verwijderen"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_link_to_record_wizard
@@ -1224,7 +1206,7 @@ msgstr "Documenten aanmaken mixin"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Does not contain"
-msgstr "bevat niet"
+msgstr "Bevat niet"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__domain
@@ -1288,7 +1270,7 @@ msgstr "Wijzigen"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "Edit the linked record"
-msgstr ""
+msgstr "Bewerk het gekoppelde record"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -1303,7 +1285,7 @@ msgstr "E-mail cc"
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
-#: code:addons/documents/static/src/views/documents_controller_mixin.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #: model:ir.model.fields.selection,name:documents.selection__documents_document__thumbnail_status__error
 #, python-format
 msgid "Error"
@@ -1357,10 +1339,10 @@ msgstr "Bestandsgrootte"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/documents_controller_mixin.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "File is too large."
-msgstr ""
+msgstr "Bestand is te groot."
 
 #. module: documents
 #: model:ir.model,name:documents.model_ir_binary
@@ -1501,7 +1483,7 @@ msgstr "Indien aangevinkt vragen nieuwe berichten je aandacht."
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_error
 #: model:ir.model.fields,help:documents.field_documents_share__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr "indien aangevinkt hebben sommige leveringen een fout."
+msgstr "Indien aangevinkt hebben sommige leveringen een fout."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_bounced_content
@@ -1532,7 +1514,7 @@ msgstr "Postvak in"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__include_sub_folders
 msgid "Include Sub Folders"
-msgstr ""
+msgstr "Inclusief submappen"
 
 #. module: documents
 #: model_terms:documents.folder,description:documents.documents_internal_folder
@@ -1573,7 +1555,7 @@ msgstr "Is een volger"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__is_shared
 msgid "Is Shared"
-msgstr ""
+msgstr "Is gedeeld"
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_internal_knowledge
@@ -1684,11 +1666,6 @@ msgstr "Link"
 #: model:ir.model.fields.selection,name:documents.selection__documents_workflow_rule__create_model__link_to_record
 msgid "Link to record"
 msgstr "Link naar opname"
-
-#. module: documents
-#: model:ir.model.fields,help:documents.field_documents_document__email_cc
-msgid "List of cc from incoming emails."
-msgstr "cc lijst van binnenkomende e-mails."
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__state__live
@@ -1809,7 +1786,7 @@ msgstr "Naar werkruimte verplaatsen"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
 msgid "Move to parent workspace"
-msgstr ""
+msgstr "Verplaatsen naar bovenliggende werkruimte"
 
 #. module: documents
 #. openerp-web
@@ -1876,14 +1853,14 @@ msgstr "Nieuwe groep"
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "New Tag"
-msgstr ""
+msgstr "Nieuw label"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "New Workspace"
-msgstr ""
+msgstr "Nieuwe werkruimte"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_calendar_event_id
@@ -2042,7 +2019,7 @@ msgstr "Eigenaar"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "Owner: #{document.owner_id.name}"
-msgstr ""
+msgstr "Eigenaar: #{document.owner_id.name}"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -2090,7 +2067,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "Partial transfer"
-msgstr ""
+msgstr "Gedeeltelijke overdracht"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_contact
@@ -2114,13 +2091,6 @@ msgstr "Huidig"
 #: model:documents.tag,name:documents.documents_internal_template_presentations
 msgid "Presentations"
 msgstr "Presentaties"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "Processing..."
-msgstr "Verwerken..."
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_template_project
@@ -2273,6 +2243,13 @@ msgid "Sales"
 msgstr "Verkoop"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_form
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_form
+msgid "Save"
+msgstr "Opslaan"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_option
 msgid "Schedule Activity"
 msgstr "Plan activiteit"
@@ -2287,7 +2264,7 @@ msgstr "Selecteer alles: Shift + A"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
 msgid "Select document"
-msgstr ""
+msgstr "Selecteer document"
 
 #. module: documents
 #. openerp-web
@@ -2306,7 +2283,7 @@ msgstr "Verstuur na de juridische afdeling"
 #. module: documents
 #: model:mail.template,description:documents.mail_template_document_request
 msgid "Sent to partner when requesting a document from them"
-msgstr ""
+msgstr "Verzonden naar partner bij het aanvragen van een document van hen"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
@@ -2377,13 +2354,13 @@ msgstr "Links delen"
 #: code:addons/documents/models/share.py:0
 #, python-format
 msgid "Share selected files"
-msgstr ""
+msgstr "Geselecteerde bestanden delen"
 
 #. module: documents
 #: code:addons/documents/models/share.py:0
 #, python-format
 msgid "Share selected workspace"
-msgstr ""
+msgstr "Geselecteerde werkruimte delen"
 
 #. module: documents
 #. openerp-web
@@ -2573,7 +2550,7 @@ msgid ""
 "<jobs@example.odoo.com>"
 msgstr ""
 "De naam van de e-mail alias, bijvoorbeeld: 'vacature' als je alle e-mails "
-"van vacature@bedrijf.nl wilt afvangen."
+"van vacature@bedrijf.nl wilt afvangen"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_user_id
@@ -2591,11 +2568,11 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/form/share_form_controller.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "The share url has been copied to your clipboard."
-msgstr ""
+msgstr "De gedeelde url is gekopieerd naar je klembord."
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_share_share_unique
@@ -2641,7 +2618,7 @@ msgstr "Miniatuur"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail_status
 msgid "Thumbnail Status"
-msgstr ""
+msgstr "Miniatuurstatus"
 
 #. module: documents
 #. openerp-web
@@ -2734,6 +2711,8 @@ msgid ""
 "Upload <span class=\"fw-normal\">a file or</span> drag <span class=\"fw-"
 "normal\">it here.</span>"
 msgstr ""
+"Upload <span class=\"fw-normal\">een bestand of</span> sleep <span "
+"class=\"fw-normal\">het hier.</span>"
 
 #. module: documents
 #. openerp-web
@@ -2750,20 +2729,13 @@ msgstr "Upload via e-mail"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Upload by email"
-msgstr ""
+msgstr "Uploaden per e-mail"
 
 #. module: documents
 #: code:addons/documents/models/mail_activity.py:0
 #, python-format
 msgid "Upload file request"
 msgstr "Bestandsverzoek uploaden"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "Uploading... (%s%)"
-msgstr "Uploaden... (%s%)"
 
 #. module: documents
 #: model:ir.model,name:documents.model_res_users
@@ -2829,7 +2801,7 @@ msgstr "Weken"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
 msgid "What do you want to do with the files in the workspace?"
-msgstr ""
+msgstr "Wat wil je doen met de bestanden in de werkruimte?"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.workflow_rule_action
@@ -2904,6 +2876,7 @@ msgstr "Je kunt geen recursieve mappen maken."
 #, python-format
 msgid "You don't have the right to move documents to that workspace."
 msgstr ""
+"Je hebt niet het recht om documenten naar die werkruimte te verplaatsen."
 
 #. module: documents
 #. openerp-web
@@ -2911,6 +2884,7 @@ msgstr ""
 #, python-format
 msgid "You don't have the rights to move documents to that workspace"
 msgstr ""
+"Je hebt niet de rechten om documenten naar die werkruimte te verplaatsen"
 
 #. module: documents
 #. openerp-web
@@ -2966,7 +2940,7 @@ msgstr "download"
 #: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
 #, python-format
 msgid "dropdown-item"
-msgstr ""
+msgstr "dropdown-item"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -3010,14 +2984,14 @@ msgstr "Bijv. https://www.youtube.com/watch?v=CP96yVnXNrY"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "fa fa-folder text-odoo"
-msgstr ""
+msgstr "fa fa-map tekst-odoo"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "folder_id"
-msgstr ""
+msgstr "folder_id"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__is_readonly_model
@@ -3036,14 +3010,14 @@ msgstr "naam"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "owner_id"
-msgstr ""
+msgstr "owner_id"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "partner_id"
-msgstr ""
+msgstr "partneridentificatie"
 
 #. module: documents
 #. openerp-web
@@ -3075,7 +3049,7 @@ msgstr "gedeeld door"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload_service.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "status code: %s, message: %s"
 msgstr "statuscode: %s, bericht: %s"

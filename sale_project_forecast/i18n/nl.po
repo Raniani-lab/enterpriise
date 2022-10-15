@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:24+0000\n"
+"POT-Creation-Date: 2022-10-10 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -33,3 +33,11 @@ msgstr "Verkooporderregel"
 #: model:ir.model,name:sale_project_forecast.model_sale_order_line
 msgid "Sales Order Line"
 msgstr "Verkooporderregel"
+
+#. module: sale_project_forecast
+#: model:ir.model.fields,help:sale_project_forecast.field_planning_slot__sale_line_id
+msgid ""
+"Sales order item for which this shift will be performed. When sales orders "
+"are automatically planned, the remaining hours of the sales order item, as "
+"well as the role defined on the service, are taken into account."
+msgstr ""

@@ -6,17 +6,17 @@
 # Jeanphy <hzh0292@qq.com>, 2022
 # liAnGjiA <liangjia@qq.com>, 2022
 # Martin Trigaux, 2022
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022
 # Emily Jia <eji@odoo.com>, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Emily Jia <eji@odoo.com>, 2022\n"
+"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,7 +44,7 @@ msgstr "# 最近30天内的预约"
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__suggested_staff_user_count
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__staff_user_count
 msgid "# Staff Users"
-msgstr ""
+msgstr "# 员工用户"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_calendar
@@ -71,7 +71,7 @@ msgstr "（时区："
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "+3212345678"
-msgstr ""
+msgstr "+3212345678"
 
 #. module: appointment
 #: code:addons/appointment/controllers/calendar.py:0
@@ -176,6 +176,79 @@ msgid ""
 "</div>\n"
 "            "
 msgstr ""
+"<div>\n"
+"    <t t-set=\"colors\" t-value=\"{'needsAction': 'grey', 'accepted': 'green', 'tentative': '#FFFF00', 'declined': 'red'}\"/>\n"
+"    <t t-set=\"recurrent\" t-value=\"object.recurrence_id and not ctx.get('calendar_template_ignore_recurrence')\"/>\n"
+"    <t t-set=\"mail_tz\" t-value=\"object._get_mail_tz() or ctx.get('mail_tz')\"/>\n"
+"    <p>\n"
+"    技术演示 <t t-out=\"object.appointment_type_id.name or ''\">的预约已预定</t> <t t-if=\"object.appointment_type_id.category != 'custom'\"> 与 <t t-out=\"object.partner_id.name or ''\">Brandon Freeman</t></t>.\n"
+"    </p>\n"
+"    <div style=\"text-align: center; padding: 16px 0px 16px 0px;\">\n"
+"        <a t-attf-href=\"/calendar/meeting/join?token={{ object.access_token }}\" style=\"padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px\">\n"
+"            加入</a>\n"
+"        <a t-attf-href=\"/web?#id={{ object.id }}&amp;view_type=form&amp;model=calendar.event\" style=\"padding: 5px 10px; color: #FFFFFF; text-decoration: none; background-color: #875A7B; border: 1px solid #875A7B; border-radius: 3px\">\n"
+"            查看</a>\n"
+"    </div>\n"
+"    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n"
+"            <td width=\"130px;\" style=\"min-width: 130px;\">\n"
+"                <div style=\"border-top-start-radius: 3px; border-top-end-radius: 3px; font-size: 12px; border-collapse: separate; text-align: center; font-weight: bold; color: #ffffff; min-height: 18px; background-color: #875A7B; border: 1px solid #875A7B;\">\n"
+"                    <t t-out=\"format_datetime(dt=object.start, tz=mail_tz if not object.allday else None, dt_format=&quot;EEEE&quot;, lang_code=object.env.lang) or ''\">周三</t>\n"
+"                </div>\n"
+"                <div style=\"font-size: 48px; min-height: auto; font-weight: bold; text-align: center; color: #5F5F5F; background-color: #F8F8F8; border: 1px solid #875A7B;\">\n"
+"                    <t t-out=\"str(object.start.day) or ''\">1</t>\n"
+"                </div>\n"
+"                <div style=\"font-size: 12px; text-align: center; font-weight: bold; color: #ffffff; background-color: #875A7B;\">\n"
+"                    <t t-out=\"format_datetime(dt=object.start, tz=mail_tz if not object.allday else None, dt_format=&quot;MMMM y&quot;, lang_code=object.env.lang) or ''\">2020年1月</t>\n"
+"                </div>\n"
+"                <div style=\"border-collapse: separate; color: #5F5F5F; text-align: center; font-size: 12px; border-bottom-end-radius: 3px; font-weight: bold; border: 1px solid #875A7B; border-bottom-start-radius: 3px;\">\n"
+"                    <t t-if=\"not object.allday\">\n"
+"                        <div>\n"
+"                            <t t-out=\"format_time(time=object.start, tz=mail_tz, time_format=&quot;short&quot;, lang_code=object.env.lang) or ''\">8:00</t>\n"
+"                        </div>\n"
+"                        <t t-if=\"mail_tz\">\n"
+"                            <div style=\"font-size: 10px; font-weight: normal;\">\n"
+"                                (<t t-out=\"mail_tz\"/>)\n"
+"                            </div>\n"
+"                        </t>\n"
+"                    </t>\n"
+"                </div>\n"
+"            </td>\n"
+"            <td width=\"20px;\"/>\n"
+"            <td style=\"padding-top: 5px;\">\n"
+"                <p><strong>活动详情</strong></p>\n"
+"                <ul>\n"
+"                    <li t-if=\"object.location\">位置: <t t-out=\"object.location or ''\">布鲁塞尔</t>\n"
+"                        (<a target=\"_blank\" t-attf-href=\"http://maps.google.com/maps?oi=map&amp;q={{ object.location }}\">查看地图</a>)\n"
+"                    </li>\n"
+"                    <li t-if=\"recurrent\">时间: <t t-out=\"object.recurrence_id.name or ''\">每1周一次, 共三次活动</t></li>\n"
+"                    <li t-if=\"not object.allday and object.duration\">时长: <t t-out=\"('%dH%02d' % (object.duration,round(object.duration*60)%60)) or ''\">0H30</t></li>\n"
+"                    <li>与会者\n"
+"                    <ul>\n"
+"                        <li t-foreach=\"object.attendee_ids\" t-as=\"attendee\">\n"
+"                            <div t-attf-style=\"display: inline-block; border-radius: 50%; width: 10px; height: 10px; background:{{ colors.get(attendee.state) or 'white' }};\"> </div>\n"
+"                            <t t-if=\"attendee.common_name\">\n"
+"                                <span style=\"margin-left:5px\" t-out=\"attendee.common_name or ''\">米歇尔管理处</span>\n"
+"                            </t>\n"
+"                            <t t-else=\"\">\n"
+"                                <span style=\"margin-left:5px\">您</span>\n"
+"                            </t>\n"
+"                        </li>\n"
+"                    </ul></li>\n"
+"                    <li t-if=\"object.videocall_location\">\n"
+"                        如何加入:\n"
+"                        <t t-if=\"object.get_base_url() in object.videocall_location\"> 通过Odoo内部沟通</t>\n"
+"                        <t t-else=\"\"> 加入链接</t><br/>\n"
+"                        <a t-attf-href=\"{{ object.videocall_location }}\" target=\"_blank\" t-out=\"object.videocall_location or ''\">www.mycompany.com/calendar/join_videocall/xyz</a>\n"
+"                    </li>\n"
+"                </ul>\n"
+"                <t t-if=\"not is_html_empty(object.description)\">\n"
+"                    <li>活动描述:\n"
+"                    <t t-out=\"object.description\"/></li>\n"
+"                </t>\n"
+"            </td>\n"
+"    </tr></table>\n"
+"</div>\n"
+"            "
 
 #. module: appointment
 #: model:mail.template,body_html:appointment.appointment_canceled_mail_template
@@ -248,16 +321,83 @@ msgid ""
 "</div>\n"
 "            "
 msgstr ""
+"<div>\n"
+"    <t t-set=\"colors\" t-value=\"{'needsAction': 'grey', 'accepted': 'green', 'tentative': '#FFFF00', 'declined': 'red'}\"/>\n"
+"    <t t-set=\"recurrent\" t-value=\"object.recurrence_id and not ctx.get('calendar_template_ignore_recurrence')\"/>\n"
+"    <t t-set=\"mail_tz\" t-value=\"object._get_mail_tz() or ctx.get('mail_tz')\"/>\n"
+"    <p>\n"
+"    技术演示 <t t-out=\"object.appointment_type_id.name or ''\">的预约</t> <t t-if=\"object.appointment_type_id.category != 'custom'\"> 与 <t t-out=\"object.partner_id.name or ''\">Brandon Freeman</t></t>已被取消。 \n"
+"    </p>\n"
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\"><tr>\n"
+"            <td width=\"130px;\" style=\"min-width: 130px;\">\n"
+"                <div style=\"border-top-start-radius: 3px; border-top-end-radius: 3px; font-size: 12px; border-collapse: separate; text-align: center; font-weight: bold; color: #ffffff; min-height: 18px; background-color: #875A7B; border: 1px solid #875A7B;\">\n"
+"                    <t t-out=\"format_datetime(dt=object.start, tz=mail_tz, dt_format=&quot;EEEE&quot;, lang_code=object.env.lang) or ''\">周三</t>\n"
+"                </div>\n"
+"                <div style=\"font-size: 48px; min-height: auto; font-weight: bold; text-align: center; color: #5F5F5F; background-color: #F8F8F8; border: 1px solid #875A7B;\">\n"
+"                    <t t-out=\"str(object.start.day) or ''\">1</t>\n"
+"                </div>\n"
+"                <div style=\"font-size: 12px; text-align: center; font-weight: bold; color: #ffffff; background-color: #875A7B;\">\n"
+"                    <t t-out=\"format_datetime(dt=object.start, tz=mail_tz, dt_format=&quot;MMMM y&quot;, lang_code=object.env.lang) or ''\"> 2020年1月</t>\n"
+"                </div>\n"
+"                <div style=\"border-collapse: separate; color: #5F5F5F; text-align: center; font-size: 12px; border-bottom-end-radius: 3px; font-weight: bold; border: 1px solid #875A7B; border-bottom-start-radius: 3px;\">\n"
+"                    <t t-if=\"not object.allday\">\n"
+"                        <div><t t-out=\"format_time(time=object.start, tz=mail_tz, time_format=&quot;short&quot;, lang_code=object.env.lang) or ''\">8:00</t></div>\n"
+"                        <t t-if=\"mail_tz\">\n"
+"                            <div style=\"font-size: 10px; font-weight: normal;\">\n"
+"                                (<t t-out=\"mail_tz\"/>)\n"
+"                            </div>\n"
+"                        </t>\n"
+"                    </t>\n"
+"                </div>\n"
+"            </td>\n"
+"            <td width=\"20px;\"/>\n"
+"            <td style=\"padding-top: 5px;\">\n"
+"                <del>\n"
+"                    <p><strong>活动详情</strong></p>\n"
+"                    <ul>\n"
+"                            <li t-if=\"object.location\">位置: <t t-out=\"object.location or ''\">布鲁塞尔</t>\n"
+"                                (<a target=\"_blank\" t-attf-href=\"http://maps.google.com/maps?oi=map&amp;q={{ object.location }}\">查看地图</a>)\n"
+"                            </li>\n"
+"                            <li t-if=\"recurrent\">时间: <t t-out=\"object.recurrence_id.name or ''\">每1周一次, 共三次活动</t></li>\n"
+"                            <li t-if=\"not object.allday and object.duration\">时长: <t t-out=\"('%dH%02d' % (object.duration,round(object.duration*60)%60)) or ''\">0H30</t></li>\n"
+"                        <li>与会者\n"
+"                        <ul t-foreach=\"object.attendee_ids\" t-as=\"attendee\">\n"
+"                            <li>\n"
+"                                <div t-attf-style=\"display: inline-block; border-radius: 50%; width: 10px; height: 10px; background:{{ colors.get(attendee.state) or 'white' }};\"> </div>\n"
+"                                <t t-if=\"attendee.common_name\">\n"
+"                                    <span style=\"margin-left:5px\" t-out=\"attendee.common_name or ''\"/>\n"
+"                                </t>\n"
+"                                <t t-else=\"\">\n"
+"                                    <span style=\"margin-left:5px\">您</span>\n"
+"                                </t>\n"
+"                            </li>\n"
+"                        </ul></li>\n"
+"                        <li t-if=\"object.videocall_location\">\n"
+"                            如何加入:\n"
+"                            <t t-if=\"object.get_base_url() in object.videocall_location\">通过Odoo内部沟通</t>\n"
+"                            <t t-else=\"\"> 加入链接</t><br/>\n"
+"                            <a t-attf-href=\"{{ object.videocall_location }}\" target=\"_blank\" t-out=\"object.videocall_location or ''\">www.mycompany.com/calendar/join_videocall/xyz</a>\n"
+"                        </li>\n"
+"                    </ul>\n"
+"                    <t t-if=\"not is_html_empty(object.description)\">\n"
+"                        <li>活动描述:\n"
+"                        <t t-out=\"object.description\"/></li>\n"
+"                    </t>\n"
+"                </del>\n"
+"            </td>\n"
+"    </tr></table>\n"
+"</div>\n"
+"            "
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form
 msgid "<i class=\"fa fa-info-circle\" title=\"Info\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-info-circle\" title=\"Info\"/>"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
 msgid "<i class=\"fa fa-map-marker me-2\" title=\"Location\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-map-marker me-2\" title=\"Location\"/>"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
@@ -265,20 +405,22 @@ msgid ""
 "<i class=\"fa fa-pencil me-2\" role=\"img\" aria-label=\"Edit\" "
 "title=\"Create custom questions in backend\"/><em>Add Custom Questions</em>"
 msgstr ""
+"<i class=\"fa fa-pencil me-2\" role=\"img\" aria-label=\"Edit\" "
+"title=\"Create custom questions in backend\"/><em>添加自定义问题</em>"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form
 msgid ""
 "<i class=\"fa fa-warning\"/> Impossible to share a link for an appointment "
 "type that has no user assigned."
-msgstr ""
+msgstr "<i class=\"fa fa-warning\"/> 无法共享未分配用户的预约类型的链接。"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form
 msgid ""
 "<i class=\"fa fa-warning\"/> You need to be part of an appointment type to "
 "be able to share a personal link."
-msgstr ""
+msgstr "<i class=\"fa fa-warning\"/> 您需要成为预约类型的一部分才能共享个人链接。"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
@@ -288,7 +430,7 @@ msgstr "<span class=\"bg-danger\">归档</span>"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
 msgid "<span class=\"o_not_editable\">Online</span>"
-msgstr ""
+msgstr "<span class=\"o_not_editable\">线上</span>"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
@@ -307,7 +449,7 @@ msgstr "<span> 小时</span>"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "<span>Online</span>"
-msgstr ""
+msgstr "<span>线上</span>"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
@@ -373,7 +515,7 @@ msgstr "启用"
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Add a function here..."
-msgstr ""
+msgstr "此处添加功能..."
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
@@ -383,12 +525,12 @@ msgstr "在此处添加一条介绍消息..."
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Add to Google Agenda"
-msgstr ""
+msgstr "添加至谷歌日程"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Add to iCal/Outlook"
-msgstr ""
+msgstr "添加至iCal/Outlook"
 
 #. module: appointment
 #: model:res.groups,name:appointment.group_appointment_manager
@@ -422,7 +564,7 @@ msgstr "允许取消"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__country_ids
 msgid "Allowed Countries"
-msgstr ""
+msgstr "允许的国家"
 
 #. module: appointment
 #: model:ir.model.constraint,message:appointment.constraint_appointment_answer_input_value_check
@@ -472,12 +614,12 @@ msgstr "答案"
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__category__anytime
 #, python-format
 msgid "Any Time"
-msgstr ""
+msgstr "任何时间"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_invite__staff_users_choice__all_assigned_users
 msgid "Any User"
-msgstr ""
+msgstr "任何用户"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
@@ -506,7 +648,7 @@ msgstr "已预约"
 #. module: appointment
 #: model:mail.template,subject:appointment.appointment_booked_mail_template
 msgid "Appointment Booked: {{ object.appointment_type_id.name }}"
-msgstr "已预订的预约。{{ object.appointment_type_id.name }}}。"
+msgstr "预约已预订。{{ object.appointment_type_id.name }}}。"
 
 #. module: appointment
 #: model:mail.message.subtype,description:appointment.mt_calendar_event_canceled
@@ -565,7 +707,7 @@ msgstr "名称"
 #. module: appointment
 #: model:onboarding.onboarding,name:appointment.appointment_onboarding_panel
 msgid "Appointment Onboarding"
-msgstr ""
+msgstr "预约培训"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_answer
@@ -580,7 +722,7 @@ msgstr "预约问题"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__name
 msgid "Appointment Title"
-msgstr ""
+msgstr "预约标题"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_type
@@ -610,12 +752,12 @@ msgstr "预约取消者: %(partners)s"
 #. module: appointment
 #: model:mail.template,name:appointment.appointment_booked_mail_template
 msgid "Appointment: Appointment Booked"
-msgstr ""
+msgstr "预约: 已预定"
 
 #. module: appointment
 #: model:mail.template,name:appointment.appointment_canceled_mail_template
 msgid "Appointment: Appointment Canceled"
-msgstr ""
+msgstr "预约: 已取消"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -694,7 +836,7 @@ msgstr "已预定预约"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_partner_ids
 msgid "CC to"
-msgstr ""
+msgstr "抄送至"
 
 #. module: appointment
 #: model:ir.ui.menu,name:appointment.calendar_appointment_type_menu_action
@@ -726,7 +868,7 @@ msgstr "在（小时）之前取消"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Cancel/Reschedule"
-msgstr ""
+msgstr "取消/重新计划"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__category
@@ -759,7 +901,7 @@ msgstr "配置"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Confirm Appointment"
-msgstr ""
+msgstr "确认预约"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_confirmation
@@ -780,12 +922,12 @@ msgstr "连接"
 #: code:addons/appointment/models/onboarding_onboarding_step.py:0
 #, python-format
 msgid "Connect your Calendar"
-msgstr ""
+msgstr "连接日历"
 
 #. module: appointment
 #: model:onboarding.onboarding.step,title:appointment.appointment_onboarding_configure_calendar_provider_step
 msgid "Connect your calendar"
-msgstr ""
+msgstr "连接日历"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_res_partner
@@ -798,7 +940,7 @@ msgid ""
 "Contacts that need to be notified whenever a new appointment is booked or "
 "canceled,                                                  regardless of "
 "whether they attend or not"
-msgstr ""
+msgstr "无论他们是否参加，每当有新预订或取消预约时都需要通知的联系人"
 
 #. module: appointment
 #. openerp-web
@@ -811,13 +953,13 @@ msgstr "已复制 !"
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_onboarding_link_view_form
 msgid "Copy Link &amp; Close"
-msgstr ""
+msgstr "复制链接 &amp; 关闭"
 
 #. module: appointment
 #: code:addons/appointment/models/onboarding_onboarding_step.py:0
 #, python-format
 msgid "Create your first Appointment"
-msgstr ""
+msgstr "创建第一个预约"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer__create_uid
@@ -873,7 +1015,7 @@ msgstr "已拒绝"
 #: code:addons/appointment/models/appointment_type.py:0
 #, python-format
 msgid "Default slots cannot be applied to the %s appointment type category."
-msgstr ""
+msgstr "默认时段不能应用于 %s预约类别分类 "
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_slot__slot_type
@@ -891,12 +1033,12 @@ msgstr ""
 #. module: appointment
 #: model:appointment.type,name:appointment.appointment_type_2
 msgid "Dental Care"
-msgstr ""
+msgstr "牙科护理"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Details:"
-msgstr ""
+msgstr "细节:"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_slot__allday
@@ -969,12 +1111,12 @@ msgstr "每一个"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "Extra Message on Confirmation"
-msgstr ""
+msgstr "确认时的额外信息"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_confirmation
 msgid "Extra information provided once the appointment is booked."
-msgstr ""
+msgstr "预约后提供额外信息。"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_follower_ids
@@ -995,7 +1137,7 @@ msgstr "从"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__avatars_display
 msgid "Front-End Display"
-msgstr ""
+msgstr "前端显示"
 
 #. module: appointment
 #. openerp-web
@@ -1010,7 +1152,7 @@ msgstr "获取分享链接"
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_onboarding_link_view_form
 #, python-format
 msgid "Get Your Link"
-msgstr ""
+msgstr "获取您的链接"
 
 #. module: appointment
 #: model_terms:appointment.type,message_intro:appointment.appointment_type_1
@@ -1022,7 +1164,7 @@ msgstr "获得一个<strong>定制的演示</strong>和<strong>对您的需求�
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_onboarding_link
 msgid "Get a link to an appointment type during the onboarding"
-msgstr ""
+msgstr "在培训期间获得一个预约类型的链接"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_invite__suggested_staff_user_ids
@@ -1034,12 +1176,12 @@ msgstr "获取与所选预约类型相关联的用户，以便在可选择的用
 #. module: appointment
 #: model:onboarding.onboarding.step,title:appointment.appointment_onboarding_preview_invite_step
 msgid "Get your link"
-msgstr ""
+msgstr "获取您的链接"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Google Agenda"
-msgstr ""
+msgstr "谷歌日程"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_search
@@ -1055,7 +1197,7 @@ msgstr "有信息"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "How to Join:"
-msgstr ""
+msgstr "如何加入:"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__assign_method
@@ -1094,6 +1236,13 @@ msgstr ""
 "如果设置，则只有选定的用户才会被考虑到这个时段。"
 
 #. module: appointment
+#. openerp-web
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Insert Appointment Link"
+msgstr "插入预约链接"
+
+#. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form_insert_link
 msgid "Insert link"
 msgstr "插入链接"
@@ -1130,17 +1279,17 @@ msgstr "现在线上上取消已经太晚了，如果您真的不能来，请通
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "John Smith"
-msgstr ""
+msgstr "John Smith"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Join at"
-msgstr ""
+msgstr "加入链接"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Join with Odoo Discuss"
-msgstr ""
+msgstr "通过Odoo内部沟通加入"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__country_ids
@@ -1210,7 +1359,7 @@ msgstr "链接网址"
 #: code:addons/appointment/static/src/js/appointment_invite_form_renderer.js:0
 #, python-format
 msgid "Link copied to clipboard!"
-msgstr ""
+msgstr "链接被复制到剪贴板!"
 
 #. module: appointment
 #. openerp-web
@@ -1242,7 +1391,7 @@ msgstr "地点："
 #. module: appointment
 #: model:onboarding.onboarding.step,done_text:appointment.appointment_onboarding_create_appointment_type_step
 msgid "Looks great! - Click to review"
-msgstr ""
+msgstr "看起来很棒！-点击以审查"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_main_attachment_id
@@ -1259,7 +1408,7 @@ msgstr "我"
 #: code:addons/appointment/models/onboarding_onboarding_step.py:0
 #, python-format
 msgid "Meet With Me"
-msgstr ""
+msgstr "与我会面"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
@@ -1317,17 +1466,17 @@ msgstr "默认新的预约"
 #. module: appointment
 #: model_terms:ir.actions.act_window,help:appointment.appointment_type_action
 msgid "No Appointment Configured"
-msgstr ""
+msgstr "未配置预约"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__avatars_display__hide
 msgid "No Picture"
-msgstr ""
+msgstr "无图片"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__appointment_type_info_msg
 msgid "No User Assigned Message"
-msgstr ""
+msgstr "未分配用户消息"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
@@ -1389,7 +1538,7 @@ msgstr "新手入门"
 #. module: appointment
 #: model:ir.model,name:appointment.model_onboarding_onboarding_step
 msgid "Onboarding Step"
-msgstr ""
+msgstr "入门步骤"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__slot_type__unique
@@ -1440,7 +1589,7 @@ msgstr "您的链接中只允许使用字母、数字、下划线和短划线。
 #: code:addons/appointment/models/appointment_type.py:0
 #, python-format
 msgid "Only one anytime appointment type is allowed for a specific user."
-msgstr ""
+msgstr "特定用户只允许一种随时预约类型。"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -1452,7 +1601,7 @@ msgstr "选项"
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Our first availability is"
-msgstr ""
+msgstr "最早可用为"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
@@ -1491,7 +1640,7 @@ msgstr "预览"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
 msgid "Preview <span class=\"fa fa-arrow-right\"/>"
-msgstr ""
+msgstr "预览 <span class=\"fa fa-arrow-right\"/>"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer__question_id
@@ -1656,12 +1805,12 @@ msgstr "问题选项"
 #. module: appointment
 #: model:mail.template,description:appointment.appointment_canceled_mail_template
 msgid "Sent to all attendees when an appointment is cancelled"
-msgstr ""
+msgstr "取消预约时发送给所有与会者"
 
 #. module: appointment
 #: model:mail.template,description:appointment.appointment_booked_mail_template
 msgid "Sent to people who book an appointment online"
-msgstr ""
+msgstr "发送给在线预约的人"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer__sequence
@@ -1673,7 +1822,7 @@ msgstr "序号"
 #. module: appointment
 #: model:onboarding.onboarding.step,title:appointment.appointment_onboarding_create_appointment_type_step
 msgid "Set your availabilities"
-msgstr ""
+msgstr "设置您的可用性"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -1707,12 +1856,12 @@ msgstr "‎共享链接‎"
 #: model_terms:ir.actions.act_window,help:appointment.appointment_type_action
 msgid ""
 "Share calendar link allowing people to book meetings with you or a team."
-msgstr ""
+msgstr "分享日历链接，允许人们预订与您或团队的会议。"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_onboarding_link_view_form
 msgid "Share this link to let people book meetings with you or your team."
-msgstr ""
+msgstr "分享这个链接，让人们预定与您或您的团队的会议。"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__short_code
@@ -1733,7 +1882,7 @@ msgstr "短代码唯一警告"
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__avatars_display__show
 msgid "Show Users' Pictures"
-msgstr ""
+msgstr "显示用户图片"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_question__question_type__char
@@ -1748,7 +1897,7 @@ msgstr "间隙类型"
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_intro
 msgid "Small description of the appointment type."
-msgstr ""
+msgstr "预约类型的简短介绍"
 
 #. module: appointment
 #. openerp-web
@@ -1756,21 +1905,21 @@ msgstr ""
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Sorry,"
-msgstr ""
+msgstr "抱歉，"
 
 #. module: appointment
 #. openerp-web
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Sorry, we have no availability for an appointment."
-msgstr ""
+msgstr "很抱歉，我们没有可用的预约"
 
 #. module: appointment
 #. openerp-web
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Sorry, we have no more slots available for this month."
-msgstr ""
+msgstr "很抱歉，本月我们没有更多的空位。"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_invite__staff_users_choice__specific_users
@@ -1791,7 +1940,7 @@ msgstr "开始时间"
 #: model:onboarding.onboarding.step,done_text:appointment.appointment_onboarding_configure_calendar_provider_step
 #: model:onboarding.onboarding.step,done_text:appointment.appointment_onboarding_preview_invite_step
 msgid "Step Completed! - Click to review"
-msgstr ""
+msgstr "步骤已完成! - 点击以审视"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_question__answer_input_ids
@@ -1811,7 +1960,7 @@ msgstr "症状"
 #. module: appointment
 #: model:appointment.type,name:appointment.appointment_type_1
 msgid "Technical Demo"
-msgstr ""
+msgstr "技术演示"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer_input__value_text_box
@@ -1832,7 +1981,7 @@ msgstr "网址已被占用，请选择另外的代码。"
 #. module: appointment
 #: model:ir.model.constraint,message:appointment.constraint_appointment_slot_check_start_and_end_hour
 msgid "The end time must be later than the start time."
-msgstr ""
+msgstr "结束时间必须晚于开始时间。"
 
 #. module: appointment
 #: code:addons/appointment/controllers/portal.py:0
@@ -1844,7 +1993,7 @@ msgstr "字段'%s'在目标模型中不存在。"
 #: code:addons/appointment/models/appointment_invite.py:0
 #, python-format
 msgid "The following appointment type(s) have no staff assigned: %s."
-msgstr ""
+msgstr "以下预约类型未分配员工%s。"
 
 #. module: appointment
 #: code:addons/appointment/models/appointment_question.py:0
@@ -1865,7 +2014,7 @@ msgstr "以下用户属于限制时段，但不属于可用人员:%s"
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Their first availability is"
-msgstr ""
+msgstr "他们最早可用为"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_appointments
@@ -1877,20 +2026,20 @@ msgstr "您的账户没有与之相关的预约。"
 msgid ""
 "This appointment type has no availabilities because it does not have any "
 "opening hours configured"
-msgstr ""
+msgstr "此预约类型没有可用性，因为它没有配置任何开放时间"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
 msgid ""
 "This appointment type has no availabilities because it has no staff assigned"
-msgstr ""
+msgstr "此预约类型没有可用性，因为它没有分配员工"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
 msgid ""
 "This appointment type has no availabilities because it has no staff assigned"
 " and does not have any opening hours configured"
-msgstr ""
+msgstr "此预约类型没有可用性，因为它没有分配员工和配置任何开放时间"
 
 #. module: appointment
 #: code:addons/appointment/models/appointment_type.py:0
@@ -1910,6 +2059,8 @@ msgid ""
 "This option toggles the display of avatars of the staff members during the frontend appointment process.\n"
 "        When choosing amongst several users, a selection screen will also be used, if website is installed."
 msgstr ""
+"此选项可在预约过程中的前端切换员工头像的显示。\n"
+"        当在几个用户中选择时，如果安装了网站，选择屏幕也会被使用。"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__4
@@ -1988,6 +2139,11 @@ msgid ""
 "\n"
 "            - Anytime: the user will create and share to another user an appointment type covering all their time slots"
 msgstr ""
+"用于定义该预约类别的类型。\n"
+"        可以是以下之一。\n"
+"            - 网站：默认类别，人们可以从网站上访问和安排与用户的预约。\n"
+"            - 自定义：用户将创建并分享给用户一个自定义的预约类别，可手工挑选时间段\n"
+"            - 任何时间：用户创建并将包含所有时段的预约类型分享给其他用户。"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__staff_user_ids
@@ -2040,22 +2196,22 @@ msgstr "与"
 #. module: appointment
 #: model:onboarding.onboarding.step,description:appointment.appointment_onboarding_configure_calendar_provider_step
 msgid "With Outlook or Google"
-msgstr ""
+msgstr "通过Outlook或者Google"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Your Email*"
-msgstr ""
+msgstr "您的邮箱*"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Your Name*"
-msgstr ""
+msgstr "您的名字*"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Your Phone Number*"
-msgstr ""
+msgstr "您的电话号码*"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
@@ -2085,7 +2241,7 @@ msgstr "天数"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "e.g. \"During this meeting, we will...\""
-msgstr ""
+msgstr "例如\"会议期间, 我们将...\""
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -2095,12 +2251,12 @@ msgstr "例如，“我感到恶心...”"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "e.g. \"Technical Demo\""
-msgstr ""
+msgstr "例如 \"技术演示\""
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "e.g. \"Thank you for your trust, we look forward to meeting you!\""
-msgstr ""
+msgstr "例如 \"感谢您的信任, 期待与您见面!\""
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -2112,14 +2268,14 @@ msgstr "例如“你的症状是什么？"
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "has no availability for an appointment."
-msgstr ""
+msgstr "暂无可用预约"
 
 #. module: appointment
 #. openerp-web
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "has no more slots available for this month."
-msgstr ""
+msgstr "本月我们没有更多的空位。"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -2134,17 +2290,17 @@ msgstr "时间从现在开始！"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "john.smith@example.com"
-msgstr ""
+msgstr "john.smith@example.com"
 
 #. module: appointment
 #: model:onboarding.onboarding.step,description:appointment.appointment_onboarding_create_appointment_type_step
 msgid "to automate appointments"
-msgstr ""
+msgstr "自动化预约"
 
 #. module: appointment
 #: model:onboarding.onboarding.step,description:appointment.appointment_onboarding_preview_invite_step
 msgid "to schedule appointments"
-msgstr ""
+msgstr "安排预约"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form

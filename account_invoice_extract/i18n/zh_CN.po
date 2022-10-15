@@ -4,6 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# 稀饭~~ <wangwhai@qq.com>, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -11,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,6 +46,8 @@ msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
 "                        Buy credits"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"                        购买积分"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
@@ -51,6 +55,8 @@ msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
 "                        Refresh"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"                        刷新"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
@@ -58,6 +64,8 @@ msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
 "                        Reload AI Data"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"                        重新加载人工智能数据"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
@@ -65,6 +73,8 @@ msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
 "                        Resend For Digitization"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"                        重新发送以实现数字化"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.res_config_settings_view_form
@@ -116,7 +126,7 @@ msgstr "账单参照"
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Bill is being Digitized"
-msgstr ""
+msgstr "账单正在被数字化"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_bank_statement_line__extract_can_show_resend_button
@@ -151,7 +161,7 @@ msgstr "配置设置"
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Couldn't reload AI data."
-msgstr ""
+msgstr "无法重新加载 AI 数据。"
 
 #. module: account_invoice_extract
 #. openerp-web
@@ -184,24 +194,24 @@ msgstr "客户结算单"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_out_invoice_digitalization_mode
 msgid "Digitization mode on customer invoices"
-msgstr ""
+msgstr "客户发票的数字化模式"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_in_invoice_digitalization_mode
 msgid "Digitization mode on vendor bills"
-msgstr ""
+msgstr "供应商账单的数字化模式"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_in_invoice_digitalization_mode__auto_send
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_out_invoice_digitalization_mode__auto_send
 msgid "Digitize automatically"
-msgstr ""
+msgstr "自动数字化"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_in_invoice_digitalization_mode__manual_send
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_out_invoice_digitalization_mode__manual_send
 msgid "Digitize on demand only"
-msgstr ""
+msgstr "仅按需数字化"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__display_name
@@ -212,7 +222,7 @@ msgstr "显示名称"
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_in_invoice_digitalization_mode__no_send
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_out_invoice_digitalization_mode__no_send
 msgid "Do not digitize"
-msgstr ""
+msgstr "不数字化"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.res_config_settings_view_form
@@ -231,14 +241,14 @@ msgstr "错误消息"
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_attachment_id
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_payment__extract_attachment_id
 msgid "Extract Attachment"
-msgstr ""
+msgstr "提取附件"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_bank_statement_line__extract_populated_fields
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_populated_fields
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_payment__extract_populated_fields
 msgid "Extract Populated Fields"
-msgstr ""
+msgstr "提取填充的字段"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_bank_statement_line__extract_word_ids
@@ -285,13 +295,13 @@ msgstr "IAP-OCR请求的ID"
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Invalid PDF (Conversion error)"
-msgstr ""
+msgstr "无效的 PDF（转换错误）"
 
 #. module: account_invoice_extract
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Invalid PDF (Unable to get page count)"
-msgstr ""
+msgstr "无效的 PDF（无法获取页数）"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__invoice_id
@@ -309,7 +319,7 @@ msgstr "开票日期"
 #: model:ir.cron,cron_name:account_invoice_extract.ir_cron_ocr_parse
 #: model:ir.cron,name:account_invoice_extract.ir_cron_ocr_parse
 msgid "Invoice OCR: Parse Invoices"
-msgstr ""
+msgstr "发票 OCR：解析发票"
 
 #. module: account_invoice_extract
 #: model:ir.actions.server,name:account_invoice_extract.ir_cron_update_ocr_status_ir_actions_server
@@ -323,7 +333,7 @@ msgstr "结算单OCR：更新所有状态"
 #: model:ir.cron,cron_name:account_invoice_extract.ir_cron_ocr_validate
 #: model:ir.cron,name:account_invoice_extract.ir_cron_ocr_validate
 msgid "Invoice OCR: Validate Invoices"
-msgstr ""
+msgstr "发票 OCR：验证发票"
 
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_account_move
@@ -364,17 +374,17 @@ msgstr "信用额度不足"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__ocr_selected
 msgid "Ocr Selected"
-msgstr ""
+msgstr "已选择"
 
 #. module: account_invoice_extract
 #: model:ir.actions.server,name:account_invoice_extract.model_account_send_for_digitalization
 msgid "Send Bills for digitization"
-msgstr ""
+msgstr "发送账单以进行数字化"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "Send For Digitization"
-msgstr ""
+msgstr "发送以进行数字化"
 
 #. module: account_invoice_extract
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
@@ -392,7 +402,7 @@ msgstr "服务器不可用。请稍后再试"
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_single_line_per_tax
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_config_settings__extract_single_line_per_tax
 msgid "Single Invoice Line Per Tax"
-msgstr ""
+msgstr "每税单一发票行"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_bank_statement_line__extract_status_code
@@ -412,14 +422,14 @@ msgstr "“invoice_ocr” IAP 帐户令牌无效。 请删除它以让 Odoo 生�
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "The bill has been populated by AI."
-msgstr ""
+msgstr "该法案已由AI填充。"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
 "between 5 and 10 seconds."
-msgstr ""
+msgstr "数据提取尚未完成。提取通常需要5到10秒。"
 
 #. module: account_invoice_extract
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
@@ -431,14 +441,14 @@ msgstr "无法找到文档"
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "The document has been rejected because it is too small"
-msgstr ""
+msgstr "文档因太小而被拒绝"
 
 #. module: account_invoice_extract
 #. openerp-web
 #: code:addons/account_invoice_extract/static/src/xml/populated_fields_tooltip.xml:0
 #, python-format
 msgid "The following fields were populated by the OCR:"
-msgstr ""
+msgstr "OCR 填充了以下字段："
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__to_validate
@@ -475,7 +485,7 @@ msgstr "等待导出"
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__waiting_upload
 msgid "Waiting upload"
-msgstr ""
+msgstr "等待上传"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__waiting_validation
@@ -524,7 +534,7 @@ msgstr "字符文本"
 msgid ""
 "You can always change the mapping by clicking on one field in the Invoice "
 "form and select the appropriate value in the PDF."
-msgstr ""
+msgstr "您始终可以通过单击 发票 窗体中的一个字段并在 PDF 中选择适当的值来更改映射。"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr

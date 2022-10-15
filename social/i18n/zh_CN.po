@@ -7,9 +7,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
@@ -94,7 +94,6 @@ msgstr "活动类型图表"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_kanban_controller.js:0
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Add"
@@ -243,7 +242,6 @@ msgstr "可以连接账户吗？"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_comment_delete.js:0
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
 #, python-format
@@ -259,7 +257,7 @@ msgstr "首先选择你想链接的<b>账户</b>。"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_kanban_renderer.js:0
+#: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Click to refresh."
 msgstr "点击刷新。"
@@ -275,13 +273,6 @@ msgstr "点击"
 #, python-format
 msgid "Comment Image"
 msgstr "评论图像"
-
-#. module: social
-#. openerp-web
-#: code:addons/social/static/src/js/stream_post_comments.js:0
-#, python-format
-msgid "Comments"
-msgstr "注释"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__company_id
@@ -396,7 +387,7 @@ msgstr "定义该账户是否有统计资料的趋向。"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_comment_delete.js:0
+#: code:addons/social/static/src/js/stream_post_comment.js:0
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Delete Comment"
@@ -432,10 +423,10 @@ msgstr "显示名称"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/xml/social_templates.xml:0
+#: code:addons/social/static/src/js/stream_post_comment.js:0
 #, python-format
-msgid "Do you really want to delete that"
-msgstr "你真的要删除此导出模板？"
+msgid "Do you really want to delete %s"
+msgstr ""
 
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_post__state__draft
@@ -866,6 +857,13 @@ msgid "Main Attachment"
 msgstr "主要附件"
 
 #. module: social
+#. openerp-web
+#: code:addons/social/static/src/xml/social_templates.xml:0
+#, python-format
+msgid "Main actions"
+msgstr "主要动作"
+
+#. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__max_post_length
 msgid "Max Post Length"
 msgstr ""
@@ -965,10 +963,10 @@ msgstr "最新帖子"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_kanban_renderer.js:0
+#: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
-msgid "New content available."
-msgstr "有新的内容。"
+msgid "New content available"
+msgstr ""
 
 #. module: social
 #. openerp-web
@@ -1104,13 +1102,6 @@ msgstr "参与你的频道的人在他们的朋友或追随者的饲料上创建
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_comment_delete.js:0
-#, python-format
-msgid "Ok"
-msgstr "确定"
-
-#. module: social
-#. openerp-web
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Or add"
@@ -1157,7 +1148,9 @@ msgstr "文章图像"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/post_kanban_images_carousel.js:0
+#: code:addons/social/static/src/js/post_kanban_view.js:0
+#: code:addons/social/static/src/js/stream_post_comments.js:0
+#: code:addons/social/static/src/js/stream_post_kanban_record.js:0
 #, python-format
 msgid "Post Images"
 msgstr "文章图像"
@@ -1474,7 +1467,7 @@ msgstr "社交:发布预定的帖子"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_kanban_controller.js:0
+#: code:addons/social/static/src/js/stream_post_kanban_dashboard.js:0
 #, python-format
 msgid ""
 "Sorry, you're not allowed to re-link this account, please contact your "
@@ -1809,6 +1802,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
 msgid "before posting."
 msgstr "在发帖之前。"
+
+#. module: social
+#. openerp-web
+#: code:addons/social/static/src/js/stream_post_comment.js:0
+#, python-format
+msgid "comment/reply"
+msgstr "评论/回复"
 
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_stream

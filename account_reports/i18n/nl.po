@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:23+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -453,6 +453,12 @@ msgid "Account Chart Template"
 msgstr "Grootboekschema sjabloon"
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Account Code"
+msgstr "Rekeningcode"
+
+#. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_display_representative_field
 msgid "Account Display Representative Field"
 msgstr "Boekhouding weergeven vertegenwoordiger veld"
@@ -509,6 +515,11 @@ msgid "Accounts"
 msgstr "Kostenplaatsen"
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.account_report_form
+msgid "Accounts Coverage Report"
+msgstr ""
+
+#. module: account_reports
 #: model:account.report.expression,report_line_name:account_reports.multicurrency_revaluation_to_adjust_adjustment
 #: model:account.report.expression,report_line_name:account_reports.multicurrency_revaluation_to_adjust_balance_currency
 #: model:account.report.expression,report_line_name:account_reports.multicurrency_revaluation_to_adjust_balance_current
@@ -516,6 +527,12 @@ msgstr "Kostenplaatsen"
 #: model:account.report.line,name:account_reports.multicurrency_revaluation_to_adjust
 msgid "Accounts To Adjust"
 msgstr "Rekeningen om aan te passen"
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Accounts coverage"
+msgstr ""
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_mail_activity_type__category
@@ -702,6 +719,13 @@ msgstr "Kostenplaatsen:"
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Analytic Plans:"
 msgstr "Kostenplaatsplannen:"
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
+msgid ""
+"Analytic filters will include analytic items without accounting "
+"correspondence"
+msgstr ""
 
 #. module: account_reports
 #. openerp-web
@@ -1419,6 +1443,12 @@ msgid "Ending Balance :"
 msgstr "Eindbalans :"
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Error message"
+msgstr "Foutmelding"
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template
 msgid "Exclude"
 msgstr "Uitsluiten"
@@ -1483,8 +1513,8 @@ msgid ""
 " he would pay)"
 msgstr ""
 "Verwachte betalingsdatum zoals handmatig ingesteld via het klantenoverzicht "
-"(bijv. als u de klant aan de telefoon had en de datum wilt onthouden die hij"
-" beloofde te betalen)"
+"(bijv. als je de klant aan de telefoon had en de datum wilt onthouden die "
+"hij beloofde te betalen)"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__expense_provision_account_id
@@ -1704,7 +1734,7 @@ msgstr "Bruto winst marge (bruto marge / operationele omzet)"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_report_search
 msgid "Group By"
-msgstr "Groeperen op"
+msgstr "Groepeer op"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
@@ -1719,7 +1749,7 @@ msgstr "Groepsnaam"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Group by months"
-msgstr "Groeperen op maand"
+msgstr "Groepeer op maand"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -1800,6 +1830,11 @@ msgid "Include"
 msgstr "Inclusief"
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
+msgid "Include Analytic Simulations"
+msgstr ""
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Include Payments"
 msgstr "Inclusief betalingen"
@@ -1820,6 +1855,11 @@ msgstr "Inclusief aanpassingen/provisie-boekingen"
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Include unposted entries"
 msgstr "Inclusief ongeboekte boekingen"
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
+msgid "Including Analytic Simulations"
+msgstr ""
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
@@ -2611,6 +2651,12 @@ msgid "Report Name"
 msgstr "Rapportnaam"
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Report lines mentioning the account code"
+msgstr ""
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 msgid "Reporting"
 msgstr "Rapportages"
@@ -2915,6 +2961,12 @@ msgid "The Book balance in Odoo dated today"
 msgstr "De boekbalans in Odoo is vandaag gedateerd"
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "The company's country does not match the report's country."
+msgstr ""
+
+#. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_tax_unit__country_id
 msgid ""
 "The country in which this tax unit is used to group your companies' tax "
@@ -2976,6 +3028,28 @@ msgstr "Deze maand"
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "This Quarter"
 msgstr "Dit kwartaal"
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid ""
+"This account exists in the Chart of Accounts but is not mentioned in any "
+"line of the report"
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid ""
+"This account is reported in a line of the report but does not exist in the "
+"Chart of Accounts"
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "This account is reported in multiple lines of the report"
+msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -3203,6 +3277,7 @@ msgid "View Carryover Lines"
 msgstr "Bekijk overdrachtsregels"
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_partner_ledger.py:0
 #: code:addons/account_reports/models/account_report.py:0
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
@@ -3217,6 +3292,7 @@ msgid "View Partner"
 msgstr "Bekijk relatie"
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_partner_ledger.py:0
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "View Payment"

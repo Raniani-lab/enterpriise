@@ -3,23 +3,25 @@
 # 	* stock_enterprise
 # 
 # Translators:
-# Martin Trigaux, 2019
-# ilan kl <ilan@qaroads.co.il>, 2019
-# Fishfur A Banter <fishfurbanter@gmail.com>, 2019
-# Leandro Noijovich <eliel.sorcerer@gmail.com>, 2019
-# Yihya Hugirat <hugirat@gmail.com>, 2019
-# שהאב חוסיין <shhab89@gmail.com>, 2019
-# hed shefetr <hed@laylinetech.com>, 2019
-# דודי מלכה <Dudimalka6@gmail.com>, 2019
-# ZVI BLONDER <ZVIBLONDER@gmail.com>, 2019
+# ilan kl <ilan@qaroads.co.il>, 2022
+# Netta Waizer, 2022
+# Leandro Noijovich <eliel.sorcerer@gmail.com>, 2022
+# Lilach Gilliam <lilach.gilliam@gmail.com>, 2022
+# שהאב חוסיין <shhab89@gmail.com>, 2022
+# דודי מלכה <Dudimalka6@gmail.com>, 2022
+# Martin Trigaux, 2022
+# Desausoi Laurent, 2022
+# hed shefer <hed@laylinetech.com>, 2022
+# ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022
+# Yihya Hugirat <hugirat@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 09:38+0000\n"
-"Last-Translator: ZVI BLONDER <ZVIBLONDER@gmail.com>, 2019\n"
+"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"PO-Revision-Date: 2022-09-22 05:49+0000\n"
+"Last-Translator: Yihya Hugirat <hugirat@gmail.com>, 2022\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,9 +35,19 @@ msgid "Available"
 msgstr "זמין"
 
 #. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
+msgid "Average Cycle Time (Days)"
+msgstr "זמן מחזור ממוצע (ימים)"
+
+#. module: stock_enterprise
+#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
+msgid "Average Delay (Days)"
+msgstr "עיכוב ממוצע (ימים)"
+
+#. module: stock_enterprise
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__cancel
 msgid "Cancelled"
-msgstr "מבוטל"
+msgstr "בוטל"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__company_id
@@ -45,7 +57,7 @@ msgstr "חברה"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__creation_date
 msgid "Creation Date"
-msgstr "תאריך היווצרות"
+msgstr "תאריך יצירה"
 
 #. module: stock_enterprise
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__outgoing
@@ -75,7 +87,7 @@ msgstr "עיכוב"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__delay
 msgid "Delay (Days)"
-msgstr "מתעכב (בימים)"
+msgstr "עיכוב (בימים)"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
@@ -83,8 +95,8 @@ msgid ""
 "Delay to deliver an order (in days). Computed by comparing the scheduled "
 "date of the delivery order and its effective date."
 msgstr ""
-"עיכוב כדי לספק הזמנה (בימים). מחושב על ידי השוואת התאריך המתוכנן של צו "
-"המשלוח והתאריך בפועל."
+"עיכב במשלוח ההזמנה (בימים). מחושב על ידי השוואת התאריך המתוכנן של הזמנת "
+"המשלוח והתאריך האפקטיבי שלה."
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
@@ -92,7 +104,7 @@ msgid ""
 "Delay to receive an order (in days). Computed by comparing the scheduled "
 "date of the receipt and its effective date."
 msgstr ""
-"עיכוב לקבלת הזמנה (בימים). מחושב על ידי השוואת המועד המתוכנן לקבלה והתאריך "
+"עיכוב בקבלת הזמנה (בימים). מחושב על ידי השוואת המועד המתוכנן לקבלה והתאריך "
 "בפועל."
 
 #. module: stock_enterprise
@@ -103,12 +115,12 @@ msgstr "זמן מחזור משלוחים"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
 msgid "Deliveries Delay"
-msgstr "עיכובים משלוח"
+msgstr "עיכובים במשלוחים"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__display_name
 msgid "Display Name"
-msgstr "הצג שם"
+msgstr "שם לתצוגה"
 
 #. module: stock_enterprise
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__done
@@ -138,17 +150,12 @@ msgstr "תאריך צפוי"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__id
 msgid "ID"
-msgstr "תעודה מזהה"
+msgstr "מזהה"
 
 #. module: stock_enterprise
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__picking_type_code__internal
 msgid "Internal"
 msgstr "פנימי"
-
-#. module: stock_enterprise
-#: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__inventory_id
-msgid "Inventory Adjustment"
-msgstr "התאמת מלאי"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__is_late
@@ -158,7 +165,7 @@ msgstr "מאחר"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__is_backorder
 msgid "Is a Backorder"
-msgstr "זה הברקוד"
+msgstr "הזמנה חוזרת"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report____last_update
@@ -166,14 +173,14 @@ msgid "Last Modified on"
 msgstr "שינוי אחרון ב"
 
 #. module: stock_enterprise
-#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
-msgid "Month"
-msgstr "חודש"
-
-#. module: stock_enterprise
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__draft
 msgid "New"
 msgstr "חדש"
+
+#. module: stock_enterprise
+#: model_terms:ir.actions.act_window,help:stock_enterprise.stock_report_dashboard_action
+msgid "No data yet!"
+msgstr "אין דירוג עדיין"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__operation_type
@@ -188,7 +195,12 @@ msgstr "זמין חלקית"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__partner_id
 msgid "Partner"
-msgstr "שותף"
+msgstr "לקוח/ספק"
+
+#. module: stock_enterprise
+#: model:ir.ui.menu,name:stock_enterprise.stock_dashboard_menuitem
+msgid "Performance"
+msgstr "שיעורי רווחיות"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__picking_name
@@ -208,23 +220,22 @@ msgstr "קטגורית מוצר"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__product_qty
 msgid "Product Quantity"
-msgstr "כמות מוצר"
+msgstr "כמות מוצרים"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_enterprise_move_tree_view
-#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
 msgid "Quantity"
 msgstr "כמות"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
 msgid "Receipts Cycle Time"
-msgstr "זמן מחזור קבלות"
+msgstr "קבלות זמן מחזור"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
 msgid "Receipts Delay"
-msgstr "עיקוב קבלות"
+msgstr "עיכוב בקבלות"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__reference
@@ -240,7 +251,7 @@ msgstr "דוח"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_map_view
 msgid "Scheduled Date"
-msgstr "תאריך מתוכנן"
+msgstr "תאריך מתוזמן"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__state
@@ -250,17 +261,12 @@ msgstr "סטטוס"
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_pivot_view
 msgid "Stock Overview"
-msgstr "סקירה כללית על מלאי"
-
-#. module: stock_enterprise
-#: model:ir.model,name:stock_enterprise.model_report_stock_quantity
-msgid "Stock Quantity Report"
-msgstr ""
+msgstr "סקירה כללית של מלאי"
 
 #. module: stock_enterprise
 #: model:ir.model,name:stock_enterprise.model_stock_report
 msgid "Stock Report"
-msgstr "דו\"ח מלאי"
+msgstr "דוח מלאי"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view
@@ -277,8 +283,8 @@ msgid ""
 "Time needed to receive an order (in days). Computed by comparing the "
 "creation date of the receipt and its done date."
 msgstr ""
-"זמן דרוש לקבלת ההזמנה (בימים).\n"
-"חושב ע\"י השוואת תאריך יצירת הקבלה עם תאריך ביצועה."
+"זמן דרוש לקבלת ההזמנה (בימים). מחושב על ידי השוואת תאריך הקבלה עם תאריך "
+"ביצועה."
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__date_done
@@ -288,7 +294,7 @@ msgstr "תאריך העברה"
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__picking_id
 msgid "Transfer Reference"
-msgstr "הפניית העברה"
+msgstr "מזהה העברה"
 
 #. module: stock_enterprise
 #: model:ir.model.fields,field_description:stock_enterprise.field_stock_report__picking_type_code
@@ -303,7 +309,7 @@ msgstr "ספקים"
 #. module: stock_enterprise
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__waiting
 msgid "Waiting Another Move"
-msgstr "מחכה לתנועה נוספת"
+msgstr "ממתין לתנועה נוספת"
 
 #. module: stock_enterprise
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__confirmed
@@ -312,14 +318,8 @@ msgstr "ממתין לזמינות"
 
 #. module: stock_enterprise
 #: model:ir.actions.act_window,name:stock_enterprise.stock_report_dashboard_action
-#: model:ir.ui.menu,name:stock_enterprise.stock_dashboard_menuitem
 msgid "Warehouse Analysis"
-msgstr ""
-
-#. module: stock_enterprise
-#: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_view_grid
-msgid "Week"
-msgstr "שבוע"
+msgstr "ניתוח נתוני מחסן"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_dashboard_view

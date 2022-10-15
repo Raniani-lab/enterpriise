@@ -3,8 +3,8 @@
 # 	* documents_project
 # 
 # Translators:
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # Martin Trigaux, 2022
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-27 15:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +24,7 @@ msgstr ""
 #: code:addons/documents_project/models/project_project.py:0
 #, python-format
 msgid "%(project_name)s's Documents"
-msgstr ""
+msgstr "%(project_name)s's documenten"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_workflow_rule
@@ -48,7 +48,7 @@ msgstr "Bijlage"
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.edit_project_document_form_inherit
 msgid "Categorize and share your documents with your customers"
-msgstr ""
+msgstr "Categoriseer en deel je documenten met je klanten"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_facet
@@ -78,7 +78,7 @@ msgstr "Afkeuren"
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_deprecated
 msgid "Deprectated"
-msgstr ""
+msgstr "Vervallen"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_document
@@ -102,7 +102,7 @@ msgstr "Documenten"
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.edit_project_document_form_inherit
 msgid "Documents &amp; Analytics"
-msgstr ""
+msgstr "Documenten &amp; Analytics"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_folder
@@ -117,7 +117,7 @@ msgstr "Concept"
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_document__is_shared
 msgid "Is Shared"
-msgstr ""
+msgstr "Is gedeeld"
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_mark_as_draft
@@ -128,23 +128,23 @@ msgstr "Markeer als concept"
 #: code:addons/documents_project/models/folder.py:0
 #, python-format
 msgid "Merged Workspace"
-msgstr ""
+msgstr "Samengevoegde werkruimte"
 
 #. module: documents_project
 #: code:addons/documents_project/models/workflow.py:0
 #, python-format
 msgid "New task from Documents"
-msgstr ""
+msgstr "Nieuwe taak van documenten"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_project__document_count
 msgid "Number of documents in Project"
-msgstr ""
+msgstr "Aantal documenten in project"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_task__document_count
 msgid "Number of documents in Task"
-msgstr ""
+msgstr "Aantal documenten in taak"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_project_project
@@ -166,7 +166,7 @@ msgstr "Gedeelde documenten"
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_project__shared_document_count
 msgid "Shared Documents Count"
-msgstr ""
+msgstr "Aantal gedeelde documenten"
 
 #. module: documents_project
 #: model:documents.facet,name:documents_project.documents_project_status
@@ -183,7 +183,7 @@ msgstr "Taak"
 #: code:addons/documents_project/models/workflow.py:0
 #, python-format
 msgid "Task created from document"
-msgstr ""
+msgstr "Taak gemaakt op basis van document"
 
 #. module: documents_project
 #: code:addons/documents_project/models/folder.py:0
@@ -192,6 +192,8 @@ msgid ""
 "The \"%s\" workspace is required by the Project application and cannot be "
 "deleted."
 msgstr ""
+"De werkruimte \"%s\" is vereist voor de projecttoepassing en kan niet worden"
+" verwijderd."
 
 #. module: documents_project
 #: code:addons/documents_project/models/project_project.py:0
@@ -200,6 +202,8 @@ msgid ""
 "The \"%s\" workspace should either be in the \"%s\" company like this "
 "project or be open to all companies."
 msgstr ""
+"De werkruimte \"%s\" moet zich in het bedrijf \"%s\" bevinden zoals dit "
+"project, of moet openstaan voor alle bedrijven."
 
 #. module: documents_project
 #: code:addons/documents_project/models/folder.py:0
@@ -209,6 +213,9 @@ msgid ""
 "which it is linked. Please update the company of the \"%s\" project, or "
 "leave the company of this workspace empty."
 msgstr ""
+"Deze werkruimte moet in hetzelfde bedrijf blijven als het \"%s\"-project "
+"waaraan deze is gekoppeld. Werk het bedrijf van het \"%s\"-project bij, of "
+"laat het bedrijf van deze werkruimte leeg."
 
 #. module: documents_project
 #: code:addons/documents_project/models/folder.py:0
@@ -219,6 +226,10 @@ msgid ""
 "\n"
 "Please update the company of those projects, or leave the company of this workspace empty."
 msgstr ""
+"Deze werkruimte moet in hetzelfde bedrijf blijven als de volgende projecten waaraan deze is gekoppeld:\n"
+"%s\n"
+"\n"
+"Werk het bedrijf van die projecten bij, of laat het bedrijf van deze werkruimte leeg."
 
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_to_validate
@@ -231,11 +242,13 @@ msgid ""
 "Upload <span class=\"fw-normal\">a file or </span>drag <span class=\"fw-"
 "normal\">it here.</span>"
 msgstr ""
+"Upload <span class=\"fw-normal\">een bestand of </span>sleep <span "
+"class=\"fw-normal\">het hier.</span>"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_task__project_use_documents
 msgid "Use Documents"
-msgstr ""
+msgstr "Documenten gebruiken"
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_validate
@@ -261,6 +274,9 @@ msgid ""
 " All of the attachments of your tasks will be automatically added as "
 "documents in this workspace as well."
 msgstr ""
+"Werkruimte waarin alle documenten van dit project worden gecategoriseerd. "
+"Alle bijlagen van je taken worden ook automatisch toegevoegd als documenten "
+"in deze werkruimte."
 
 #. module: documents_project
 #: code:addons/documents_project/models/project_project.py:0
@@ -271,14 +287,18 @@ msgid ""
 "\n"
 "Please update the company of all projects so that they remain in the same company as their workspace, or leave the company of the \"%s\" workspace blank."
 msgstr ""
+"Je kunt het bedrijf van dit project niet wijzigen, omdat de werkruimte is gekoppeld aan de andere volgende projecten die zich nog in het bedrijf \"%s\" bevinden:\n"
+"%s\n"
+"\n"
+"Werk het bedrijf van alle projecten bij zodat ze in hetzelfde bedrijf blijven als hun werkruimte, of laat het bedrijf van de \"%s\" werkruimte leeg."
 
 #. module: documents_project
 #: code:addons/documents_project/models/folder.py:0
 #, python-format
 msgid "You cannot set a company on the Projects workspace."
-msgstr ""
+msgstr "Je kunt geen bedrijf instellen in de werkruimte Projecten."
 
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.share_page
 msgid "documents shared"
-msgstr ""
+msgstr "documenten gedeeld"

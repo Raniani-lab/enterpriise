@@ -5,6 +5,7 @@
 # Translators:
 # Jeffery CHEN <jeffery9@gmail.com>, 2022
 # Martin Trigaux, 2022
+# 稀饭~~ <wangwhai@qq.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: 稀饭~~ <wangwhai@qq.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,7 +24,7 @@ msgstr ""
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__count
 msgid "# Applicant"
-msgstr ""
+msgstr "# 申请人"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__hired
@@ -33,7 +34,7 @@ msgstr "# 雇用"
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__hiring_ratio
 msgid "# Hired Ratio"
-msgstr ""
+msgstr "# 雇用比率"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__meetings_amount
@@ -72,7 +73,7 @@ msgstr "申请人姓名"
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
 msgid "Applicant that have been enrolled into the company."
-msgstr ""
+msgstr "已注册到公司的申请人。"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__company_id
@@ -90,7 +91,7 @@ msgstr "建立者"
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_stage_report__days_in_stage
 msgid "Days In Stage"
-msgstr ""
+msgstr "阶段中的天数"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__display_name
@@ -131,12 +132,12 @@ msgstr "聘用人员"
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #, python-format
 msgid "Hiring ratio"
-msgstr ""
+msgstr "招聘比例"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_team_view_dashboard
 msgid "Hiring ratio (%)"
-msgstr ""
+msgstr "招聘比例 (%)"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__id
@@ -223,7 +224,7 @@ msgstr "招聘率"
 #. module: hr_recruitment_reports
 #: model:ir.model,name:hr_recruitment_reports.model_hr_recruitment_stage_report
 msgid "Recruitment Stage Analysis"
-msgstr ""
+msgstr "招聘阶段分析"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__refuse_reason_id
@@ -251,7 +252,7 @@ msgstr "来源"
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_team_view_graph
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_view_source_pivot
 msgid "Source Analysis"
-msgstr ""
+msgstr "来源分析"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__stage_id
@@ -277,27 +278,27 @@ msgstr "状态"
 #. module: hr_recruitment_reports
 #: model:ir.actions.act_window,name:hr_recruitment_reports.recruitment_report_team_action
 msgid "Team Performance"
-msgstr ""
+msgstr "团队绩效"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
 msgid ""
 "The % is based on the total of applicant that have been hired divided by the"
 " total of applicant."
-msgstr ""
+msgstr "%基于已雇用的申请人总数除以申请人总数。"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
 msgid ""
 "The process duration is based on the time between the applicant creation and"
 " the stage \"hired\" or \"refused\"."
-msgstr ""
+msgstr "流程持续时间基于申请人创建与“雇用”或“拒绝”阶段之间的时间。"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.actions.act_window,help:hr_recruitment_reports.recruitment_report_source_action
 #: model_terms:ir.actions.act_window,help:hr_recruitment_reports.recruitment_report_source_job_action
 msgid "This report performs analysis on your recruitment source."
-msgstr ""
+msgstr "此报告对您的招聘来源进行分析。"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.actions.act_window,help:hr_recruitment_reports.recruitment_report_action
@@ -310,12 +311,12 @@ msgstr "这份报告对您的招聘进行分析。"
 #. module: hr_recruitment_reports
 #: model_terms:ir.actions.act_window,help:hr_recruitment_reports.recruitment_report_team_action
 msgid "This report performs analysis on your teams' performance."
-msgstr ""
+msgstr "此报告对团队的绩效进行分析。"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_inherit_kanban_view
 msgid "Time By Stages"
-msgstr ""
+msgstr "时间（按阶段）"
 
 #. module: hr_recruitment_reports
 #: model:ir.actions.act_window,name:hr_recruitment_reports.recruitment_stage_report_action
@@ -324,36 +325,36 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_stage_report_view_pivot
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_stage_report_view_search
 msgid "Time In Stage Analysis"
-msgstr ""
+msgstr "阶段分析时间"
 
 #. module: hr_recruitment_reports
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #, python-format
 msgid "Total Hired"
-msgstr ""
+msgstr "总雇用人数"
 
 #. module: hr_recruitment_reports
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #, python-format
 msgid "Total Meetings"
-msgstr ""
+msgstr "会议总数"
 
 #. module: hr_recruitment_reports
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_team_view_dashboard
 #, python-format
 msgid "Total applicants"
-msgstr ""
+msgstr "申请人总数"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_team_view_dashboard
 msgid "Total hired"
-msgstr ""
+msgstr "雇用总数"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_team_view_dashboard
 msgid "Total meetings"
-msgstr ""
+msgstr "会议总数"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_source_view_dashboard

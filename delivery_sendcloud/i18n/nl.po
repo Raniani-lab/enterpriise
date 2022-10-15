@@ -48,7 +48,7 @@ msgid ""
 "charges, your shippings are automatically <b>cancelled</b> after the label "
 "creation."
 msgstr ""
-"<i class=\"fa fa-exclamation-triangle\"/> In een testomgeving worden uw "
+"<i class=\"fa fa-exclamation-triangle\"/> In een testomgeving worden je "
 "verzendingen automatisch <b>geannuleerd</b> nadat het label is gemaakt om "
 "kosten te voorkomen."
 
@@ -59,7 +59,7 @@ msgid ""
 "enabled carriers in your account."
 msgstr ""
 "<i class=\"fa fa-info-circle\"/> De beschikbare verzendmethoden zijn "
-"afhankelijk van de ingeschakelde vervoerders in uw account."
+"afhankelijk van de ingeschakelde vervoerders in je account."
 
 #. module: delivery_sendcloud
 #: model:ir.model.fields.selection,name:delivery_sendcloud.selection__delivery_carrier__sendcloud_shipping_rules__both
@@ -417,7 +417,7 @@ msgid ""
 "type that you set as default"
 msgstr ""
 "Sommige vervoerders hebben pakketafmetingen nodig, je kunt deze definiëren "
-"in een pakkettype dat u als standaard instelt"
+"in een pakkettype dat je als standaard instelt"
 
 #. module: delivery_sendcloud
 #: code:addons/delivery_sendcloud/models/sendcloud_service.py:0

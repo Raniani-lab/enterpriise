@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:42+0000\n"
+"POT-Creation-Date: 2022-10-10 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -132,9 +132,9 @@ msgstr "Project"
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,help:helpdesk_sale_timesheet.field_helpdesk_team__project_id
 msgid ""
-"Project to which the tickets (and the timesheets) will be linked by default."
+"Project to which the timesheets of this helpdesk team's tickets will be "
+"linked."
 msgstr ""
-"Project waaraan de tickets (en de urenstaten) standaard worden gekoppeld."
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__project_sale_order_id
@@ -150,22 +150,6 @@ msgstr "Beschikbaar"
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__sale_order_id
 msgid "Ref. Sales Order"
 msgstr "Verkooporder"
-
-#. module: helpdesk_sale_timesheet
-#: model:ir.model.fields,help:helpdesk_sale_timesheet.field_helpdesk_ticket__sale_order_id
-msgid ""
-"Reference of the Sales Order to which this ticket refers. Setting this "
-"information aims at easing your After Sales process and only serves "
-"indicative purposes."
-msgstr ""
-"Referentie van de verkooporder waarnaar deze ticket verwijst. Het instellen "
-"van deze informatie is bedoeld om je after sales-proces te vergemakkelijken "
-"en dient alleen ter indicatie."
-
-#. module: helpdesk_sale_timesheet
-#: model:ir.model.fields,help:helpdesk_sale_timesheet.field_helpdesk_ticket__use_helpdesk_sale_timesheet
-msgid "Reinvoice the time spent on ticket through tasks."
-msgstr "Factureer de tijd besteed aan ticket via taken."
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__use_helpdesk_sale_timesheet
@@ -205,6 +189,14 @@ msgid "SLA Policy"
 msgstr "SLA afspraak"
 
 #. module: helpdesk_sale_timesheet
+#: model:ir.model.fields,help:helpdesk_sale_timesheet.field_product_product__sla_id
+#: model:ir.model.fields,help:helpdesk_sale_timesheet.field_product_template__sla_id
+msgid ""
+"SLA Policy that will automatically apply to the tickets linked to a sales "
+"order item containing this service."
+msgstr ""
+
+#. module: helpdesk_sale_timesheet
 #: code:addons/helpdesk_sale_timesheet/controllers/portal.py:0
 #: model:ir.model,name:helpdesk_sale_timesheet.model_sale_order
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_sale_timesheet
@@ -217,6 +209,15 @@ msgstr "Verkooporder"
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.helpdesk_ticket_view_search_inherit_helpdesk_sale_timesheet
 msgid "Sales Order Item"
 msgstr "Verkooporderregel"
+
+#. module: helpdesk_sale_timesheet
+#: model:ir.model.fields,help:helpdesk_sale_timesheet.field_helpdesk_ticket__sale_line_id
+msgid ""
+"Sales Order Item to which the time spent on this ticket will be added in order to be invoiced to your customer.\n"
+"By default the last prepaid sales order item that has time remaining will be selected.\n"
+"Remove the sales order item in order to make this ticket non-billable.\n"
+"You can also change or remove the sales order item of each timesheet entry individually."
+msgstr ""
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_sla__sale_line_ids
@@ -232,17 +233,6 @@ msgstr "Verkooporder waaraan het project is gerelateerd."
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.portal_helpdesk_ticket_timesheet
 msgid "Spent"
 msgstr ""
-
-#. module: helpdesk_sale_timesheet
-#: model:ir.model.fields,help:helpdesk_sale_timesheet.field_helpdesk_sla__sale_line_ids
-msgid ""
-"This SLA Policy will apply to any tickets with the selected Sales Order Item"
-" as reference. Leave empty to apply this SLA Policy to any ticket without "
-"distinction."
-msgstr ""
-"Dit SLA-beleid is van toepassing op alle tickets met het geselecteerde "
-"verkooporderregel als referentie. Laat leeg om dit SLA-beleid zonder "
-"onderscheid op elk ticket toe te passen."
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_sale_order__ticket_count

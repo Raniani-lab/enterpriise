@@ -3,15 +3,15 @@
 # 	* social
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Jolien De Paepe, 2022
+# Martin Trigaux, 2022
 # Cécile Collart <cco@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -98,7 +98,6 @@ msgstr "Icône de type d'activité"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_kanban_controller.js:0
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Add"
@@ -251,7 +250,6 @@ msgstr "Peut lier des comptes ?"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_comment_delete.js:0
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
 #, python-format
@@ -267,7 +265,7 @@ msgstr "Choisissez quel <b>compte</b> vous souhaitez lier en premier."
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_kanban_renderer.js:0
+#: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Click to refresh."
 msgstr "Cliquer pour rafraichir. "
@@ -283,13 +281,6 @@ msgstr "Clics"
 #, python-format
 msgid "Comment Image"
 msgstr "Commenter l'image"
-
-#. module: social
-#. openerp-web
-#: code:addons/social/static/src/js/stream_post_comments.js:0
-#, python-format
-msgid "Comments"
-msgstr "Commentaires"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__company_id
@@ -410,7 +401,7 @@ msgstr "Définit si ce compte a des tendances statistiques ou pas."
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_comment_delete.js:0
+#: code:addons/social/static/src/js/stream_post_comment.js:0
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Delete Comment"
@@ -446,10 +437,10 @@ msgstr "Nom affiché"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/xml/social_templates.xml:0
+#: code:addons/social/static/src/js/stream_post_comment.js:0
 #, python-format
-msgid "Do you really want to delete that"
-msgstr "Voulez-vous réellement supprimer ceci? "
+msgid "Do you really want to delete %s"
+msgstr "Voulez-vous réellement supprimer %s "
 
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_post__state__draft
@@ -889,6 +880,13 @@ msgid "Main Attachment"
 msgstr "Pièce jointe principale"
 
 #. module: social
+#. openerp-web
+#: code:addons/social/static/src/xml/social_templates.xml:0
+#, python-format
+msgid "Main actions"
+msgstr "Actions principales"
+
+#. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__max_post_length
 msgid "Max Post Length"
 msgstr "Longueur maximale de la publication"
@@ -990,10 +988,10 @@ msgstr "Nouvelle Publication"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_kanban_renderer.js:0
+#: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
-msgid "New content available."
-msgstr "Nouveau contenu disponible."
+msgid "New content available"
+msgstr "Nouveau contenu disponible"
 
 #. module: social
 #. openerp-web
@@ -1139,13 +1137,6 @@ msgstr ""
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_comment_delete.js:0
-#, python-format
-msgid "Ok"
-msgstr "Ok"
-
-#. module: social
-#. openerp-web
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Or add"
@@ -1199,7 +1190,9 @@ msgstr "Image de la Publication"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/post_kanban_images_carousel.js:0
+#: code:addons/social/static/src/js/post_kanban_view.js:0
+#: code:addons/social/static/src/js/stream_post_comments.js:0
+#: code:addons/social/static/src/js/stream_post_kanban_record.js:0
 #, python-format
 msgid "Post Images"
 msgstr "Publier des images"
@@ -1524,7 +1517,7 @@ msgstr "Social : publier des publications programmées"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_kanban_controller.js:0
+#: code:addons/social/static/src/js/stream_post_kanban_dashboard.js:0
 #, python-format
 msgid ""
 "Sorry, you're not allowed to re-link this account, please contact your "
@@ -1886,6 +1879,13 @@ msgstr "un Flux d'un compte existant"
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
 msgid "before posting."
 msgstr "avant publication."
+
+#. module: social
+#. openerp-web
+#: code:addons/social/static/src/js/stream_post_comment.js:0
+#, python-format
+msgid "comment/reply"
+msgstr "commentaire/réponse"
 
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_stream

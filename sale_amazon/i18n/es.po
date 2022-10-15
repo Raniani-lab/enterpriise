@@ -6,6 +6,7 @@
 # ushyme (sesn), 2022
 # Braulio D. López Vázquez <bdl@odoo.com>, 2022
 # Martin Trigaux, 2022
+# Michael Epstein, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:47+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Michael Epstein, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -296,7 +297,7 @@ msgstr "Se ha producido un error"
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.authorization_error
 msgid "An error occurred while linking your account with Amazon."
-msgstr ""
+msgstr "Ocurrió un error al vincular su cuenta de Amazon."
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__available_marketplace_ids
@@ -334,19 +335,19 @@ msgstr "No se ha podido establecer la conexión con el API."
 #: code:addons/sale_amazon/utils.py:0
 #, python-format
 msgid "Could not establish the connection to the feed URL."
-msgstr ""
+msgstr "No se ha podido establecer la conexión con el URL ingresado."
 
 #. module: sale_amazon
 #: code:addons/sale_amazon/utils.py:0
 #, python-format
 msgid "Could not establish the connection to the proxy."
-msgstr ""
+msgstr "No se ha podido establecer la conexión al proxy."
 
 #. module: sale_amazon
 #: code:addons/sale_amazon/controllers/onboarding.py:0
 #, python-format
 msgid "Could not find Amazon account with id %s"
-msgstr ""
+msgstr "No se encontró una cuenta de Amazon con el ID %s"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__create_uid
@@ -385,7 +386,7 @@ msgstr "Nombre mostrado"
 #: code:addons/sale_amazon/utils.py:0
 #, python-format
 msgid "Error code: %s; description: %s"
-msgstr ""
+msgstr "Código de error: %s; descripción: %s"
 
 #. module: sale_amazon
 #: model:ir.model.fields.selection,name:sale_amazon.selection__amazon_marketplace__region__eu-west-1
@@ -395,7 +396,7 @@ msgstr "Europa"
 #. module: sale_amazon
 #: model:ir.model.fields.selection,name:sale_amazon.selection__amazon_marketplace__region__us-west-2
 msgid "Far East"
-msgstr ""
+msgstr "Extremo oriente"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_order_view_form
@@ -483,12 +484,12 @@ msgstr "Se muestra el seguimiento"
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__access_token
 msgid "LWA Access Token"
-msgstr ""
+msgstr "Token de acceso LWA"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__refresh_token
 msgid "LWA Refresh Token"
-msgstr ""
+msgstr "Token de actualización LWA"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account____last_update
@@ -519,7 +520,7 @@ msgstr "Última actualización el"
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 msgid "Link with Amazon"
-msgstr ""
+msgstr "Vincular con Amazon"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
@@ -547,7 +548,7 @@ msgstr "Nombre"
 #. module: sale_amazon
 #: model:ir.model.fields.selection,name:sale_amazon.selection__amazon_marketplace__region__us-east-1
 msgid "North America"
-msgstr ""
+msgstr "América del Norte"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__offer_count
@@ -636,7 +637,7 @@ msgstr "Registre el suyo para comenzar a sincronizar sus pedidos en Odoo."
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__restricted_data_token
 msgid "Restricted Data Token"
-msgstr ""
+msgstr "Token de datos restringidos"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer__sku
@@ -681,7 +682,7 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_marketplace__seller_central_url
 msgid "Seller Central URL"
-msgstr ""
+msgstr "URL de central de vendedor"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__seller_key
@@ -702,7 +703,7 @@ msgstr "Ubicación de existencias"
 #: code:addons/sale_amazon/models/amazon_account.py:0
 #, python-format
 msgid "Successfully updated the marketplaces available to this account!"
-msgstr ""
+msgstr "¡Se actualizaron con éxito los mercados disponibles para esta cuenta!"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__active_marketplace_ids
@@ -739,6 +740,8 @@ msgid ""
 "The Amazon region of the marketplace. Please refer to the Selling Partner "
 "API documentation to find the correct region."
 msgstr ""
+"La región del mercado de Amazon. Consulte la documentación de API de partner"
+" de venta para encontrar la región correcta."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_sale_order_line__amazon_item_ref
@@ -778,6 +781,8 @@ msgid ""
 "The communication with the API failed.\n"
 "Error code: %s; description: %s"
 msgstr ""
+"Falló la comunicación con el API.\n"
+"Código de error: %s; descripción: %s"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_res_partner__amazon_email
@@ -807,6 +812,8 @@ msgstr ""
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__refresh_token
 msgid "The long-lived token that can be exchanged for a new access token."
 msgstr ""
+"El token de larga duración que puede intercambiarse por un nuevo token de "
+"acceso."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_offer__marketplace_id
@@ -827,17 +834,18 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__aws_credentials_expiry
 msgid "The moment at which the AWS credentials become invalid."
-msgstr ""
+msgstr "El momento en el que las credenciales AWS se vuelven inválidas."
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__restricted_data_token_expiry
 msgid "The moment at which the Restricted Data Token becomes invalid."
 msgstr ""
+"El momento en el que el token de datos restringidos se vuelve inválido."
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__access_token_expiry
 msgid "The moment at which the token becomes invalid."
-msgstr ""
+msgstr "El momento en el que el token se vuelve no válido."
 
 #. module: sale_amazon
 #: code:addons/sale_amazon/models/sale_order.py:0

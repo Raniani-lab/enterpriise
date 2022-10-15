@@ -189,7 +189,7 @@ msgstr "Wijzigen"
 #. module: documents_spreadsheet
 #: model_terms:documents.folder,description:documents_spreadsheet.documents_spreadsheet_folder
 msgid "Enjoy collaborative work on your spreadsheets."
-msgstr "Werk samen aan uw spreadsheets."
+msgstr "Werk samen aan je spreadsheets."
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_documents_document__raw
@@ -435,7 +435,7 @@ msgstr "Werkruimte"
 msgid ""
 "Your file is about to be saved as an Odoo Spreadsheet to allow for edition."
 msgstr ""
-"Uw bestand staat op het punt te worden opgeslagen als een Odoo-spreadsheet "
+"Je bestand staat op het punt te worden opgeslagen als een Odoo-spreadsheet "
 "om bewerking mogelijk te maken."
 
 #. module: documents_spreadsheet

@@ -3,18 +3,20 @@
 # 	* sale_enterprise
 # 
 # Translators:
-# Максим Дронь <dronmax@gmail.com>, 2019
-# Martin Trigaux, 2019
-# Vasiliy Korobatov <korobatov@gmail.com>, 2019
-# Oleg Kuryan <oleg@ventor.tech>, 2019
+# Oleg Kuryan <oleg@ventor.tech>, 2022
+# Vasiliy Korobatov <korobatov@gmail.com>, 2022
+# Максим Дронь <dronmax@gmail.com>, 2022
+# Ivan Kropotkin <yelizariev@itpp.dev>, 2022
+# Сергей Шебанин <sergey@shebanin.ru>, 2022
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server saas~14.4+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 09:38+0000\n"
-"Last-Translator: Oleg Kuryan <oleg@ventor.tech>, 2019\n"
+"POT-Creation-Date: 2021-07-12 07:57+0000\n"
+"PO-Revision-Date: 2022-09-22 05:48+0000\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,11 +27,21 @@ msgstr ""
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "# Customers"
-msgstr ""
+msgstr "# Клиентов"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "# Lines"
+msgstr "# Строк"
+
+#. module: sale_enterprise
+#: model:ir.model.fields,field_description:sale_enterprise.field_sale_report__avg_days_to_confirm
+msgid "Average Days To Confirm"
+msgstr ""
+
+#. module: sale_enterprise
+#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
+msgid "Average Days to Confirm"
 msgstr ""
 
 #. module: sale_enterprise
@@ -38,30 +50,45 @@ msgid "Average Order"
 msgstr "Средняя стоимость заказа"
 
 #. module: sale_enterprise
-#: model:ir.model.fields,field_description:sale_enterprise.field_sale_report__days_to_confirm
-msgid "Days To Confirm"
+#: model:ir.model.fields,help:sale_enterprise.field_sale_report__avg_days_to_confirm
+msgid ""
+"Average days to confirm a sales order after its creation. Due to a hack "
+"needed to calculate this,               every record will show the same "
+"average value, therefore only use this as an aggregated value with "
+"group_operator=avg"
 msgstr ""
 
 #. module: sale_enterprise
-#: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
-msgid "Days to Confirm"
+#: model_terms:ir.actions.act_window,help:sale_enterprise.sale_report_action_dashboard
+msgid "Create a new sales order"
 msgstr ""
+
+#. module: sale_enterprise
+#: model:ir.actions.act_window,name:sale_enterprise.sale_report_action_dashboard
+#: model:ir.ui.menu,name:sale_enterprise.menu_sale_report_dashboard
+msgid "Dashboard"
+msgstr "Обзор"
 
 #. module: sale_enterprise
 #: model:ir.model.fields.selection,name:sale_enterprise.selection__sale_report__invoice_status__invoiced
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit
 msgid "Fully Invoiced"
-msgstr "Счет выставлен полностью"
+msgstr "Полностью актировано"
 
 #. module: sale_enterprise
 #: model:ir.model.fields,field_description:sale_enterprise.field_sale_report__invoice_status
 msgid "Invoice Status"
-msgstr "Статус счета"
+msgstr "Статус акта"
+
+#. module: sale_enterprise
+#: model_terms:ir.actions.act_window,help:sale_enterprise.sale_report_action_dashboard
+msgid "No data yet!"
+msgstr "Данных пока нет!"
 
 #. module: sale_enterprise
 #: model:ir.model.fields.selection,name:sale_enterprise.selection__sale_report__invoice_status__no
 msgid "Nothing to Invoice"
-msgstr "Нет позиций для выставления счёта"
+msgstr "Нет позиций для выставления акта"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
@@ -69,7 +96,6 @@ msgid "Orders"
 msgstr "Заказы"
 
 #. module: sale_enterprise
-#: model:ir.actions.act_window,name:sale_enterprise.sale_report_action_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_pivot
 msgid "Sales Analysis"
 msgstr "Анализ продаж"
@@ -88,17 +114,17 @@ msgstr "Команды продаж"
 #: model:ir.model.fields.selection,name:sale_enterprise.selection__sale_report__invoice_status__to_invoice
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit
 msgid "To Invoice"
-msgstr "Выписать счет"
+msgstr "Нет акта"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Total Sales"
-msgstr ""
+msgstr "сумма продаж"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
 msgid "Total, Tax Included"
-msgstr ""
+msgstr "Вместе с подадткамы"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
@@ -108,7 +134,7 @@ msgstr "Итого без налогов"
 #. module: sale_enterprise
 #: model:ir.model.fields.selection,name:sale_enterprise.selection__sale_report__invoice_status__upselling
 msgid "Upselling Opportunity"
-msgstr "Предложение до продажи"
+msgstr "Допродажа"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard

@@ -36,7 +36,7 @@ msgstr "Agend-afspraak"
 #: code:addons/appointment_crm/static/src/xml/calendar_appointment_scheduling.xml:0
 #, python-format
 msgid "Click in your calendar to pick meeting time proposals for"
-msgstr "Klik in uw agenda om voorstellen voor vergadertijden te kiezen voor:"
+msgstr "Klik in je agenda om voorstellen voor vergadertijden te kiezen voor:"
 
 #. module: appointment_crm
 #: model:ir.model.fields,field_description:appointment_crm.field_appointment_type__lead_create

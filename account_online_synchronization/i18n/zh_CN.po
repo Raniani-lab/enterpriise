@@ -6,6 +6,7 @@
 # Raymond Yu <cl_yu@hotmail.com>, 2022
 # Martin Trigaux, 2022
 # Jeffery CHEN <jeffery9@gmail.com>, 2022
+# 稀饭~~ <wangwhai@qq.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-27 15:40+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
+"Last-Translator: 稀饭~~ <wangwhai@qq.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -113,7 +114,7 @@ msgstr "活动类型图表"
 #: code:addons/account_online_synchronization/static/src/xml/online_sync_template.xml:0
 #, python-format
 msgid "Add A Bank Account"
-msgstr ""
+msgstr "添加银行账户"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_attachment_count
@@ -146,7 +147,7 @@ msgstr "账户余额通过第三方应用转入"
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_account_online_link
 msgid "Bank Connection"
-msgstr ""
+msgstr "银行连接"
 
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_account_bank_statement_line
@@ -156,18 +157,18 @@ msgstr "银行对账单明细"
 #. module: account_online_synchronization
 #: model:mail.activity.type,name:account_online_synchronization.bank_sync_activity_update_consent
 msgid "Bank Synchronization: Update consent"
-msgstr ""
+msgstr "银行同步：更新同意"
 
 #. module: account_online_synchronization
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Bank Synchronization: Update your consent"
-msgstr ""
+msgstr "银行同步：更新您的同意"
 
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
+msgstr "单个对账单行的银行对帐小部件"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.view_account_link_journal_form_wizard
@@ -208,22 +209,22 @@ msgstr "已连接"
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
 msgid "Consent expired"
-msgstr ""
+msgstr "同意已过期"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
 msgid "Consent expires in"
-msgstr ""
+msgstr "同意期截止至"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
 msgid "Consent expires on"
-msgstr ""
+msgstr "同意期截止至"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.account_journal_dashboard_inherit_online_sync
 msgid "Consent expires today"
-msgstr ""
+msgstr "同意书今天到期"
 
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_res_partner
@@ -292,7 +293,7 @@ msgstr "币种"
 #: model:ir.model.fields,help:account_online_synchronization.field_account_journal__expiring_synchronization_date
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__expiring_synchronization_date
 msgid "Date when the consent for this connection expires"
-msgstr ""
+msgstr "对此连接的同意到期的日期"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal__display_name
@@ -311,12 +312,12 @@ msgstr "错误"
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__expiring_synchronization_date
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__expiring_synchronization_date
 msgid "Expiring Synchronization Date"
-msgstr ""
+msgstr "同步日期即将到期"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__expiring_synchronization_due_day
 msgid "Expiring Synchronization Due Day"
-msgstr ""
+msgstr "同步到期日即将到期"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__account_data
@@ -337,7 +338,7 @@ msgstr "获取交易明细"
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Fetched Transactions"
-msgstr ""
+msgstr "提取的事务"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_follower_ids
@@ -401,12 +402,12 @@ msgstr "如果勾选此项， 某些消息将会产生传递错误。"
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__inverse_balance_sign
 msgid "If checked, the balance sign will be inverted"
-msgstr ""
+msgstr "如果选中，余额符号将反转"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__inverse_transaction_sign
 msgid "If checked, the transaction sign will be inverted"
-msgstr ""
+msgstr "如果选中，交易符号将被反转"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__auto_sync
@@ -418,7 +419,7 @@ msgstr "如果可能的话，我们将尝试自动获取此记录的新交易"
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__provider_data
 msgid "Information needed to interact with third party provider"
-msgstr ""
+msgstr "与第三方提供商交互所需的信息"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__name
@@ -440,12 +441,12 @@ msgstr "proxy_mode配置设置的数值无效。"
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__inverse_balance_sign
 msgid "Inverse Balance Sign"
-msgstr ""
+msgstr "逆平衡符号"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__inverse_transaction_sign
 msgid "Inverse Transaction Sign"
-msgstr ""
+msgstr "反向事务符号"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_is_follower
@@ -780,6 +781,8 @@ msgid ""
 "To create a synchronization with your banking institution,<br>\n"
 "                please click on <b>Add a Bank Account</b>."
 msgstr ""
+"要创建与您的银行机构的同步，<br>\n"
+"                请点击<b>添加银行账户</b>。"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__access_token

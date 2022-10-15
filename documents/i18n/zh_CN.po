@@ -5,15 +5,15 @@
 # Translators:
 # 稀饭~~ <wangwhai@qq.com>, 2022
 # Martin Trigaux, 2022
-# 深圳 JM <3440895@qq.com>, 2022
+# Emily Jia <eji@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: 深圳 JM <3440895@qq.com>, 2022\n"
+"Last-Translator: Emily Jia <eji@odoo.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,24 +44,10 @@ msgstr "%s个文档（%s已锁定）"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload_service.js:0
-#, python-format
-msgid "%s Files"
-msgstr "%s 文件"
-
-#. module: documents
-#. openerp-web
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "%s file(s) not moved because they are locked by another user"
 msgstr "%s文件未被移动，因为它们被另一个用户锁定"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "(%s/%sMB)"
-msgstr ""
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -686,7 +672,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload_service.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "An error occured while uploading."
 msgstr ""
@@ -824,14 +810,6 @@ msgstr "可以上传"
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Cancel"
 msgstr "取消"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.xml:0
-#: code:addons/documents/static/src/views/helper/documents_file_upload.xml:0
-#, python-format
-msgid "Cancel Upload"
-msgstr "取消上传"
 
 #. module: documents
 #: model_terms:documents.folder,description:documents.documents_internal_folder
@@ -1059,6 +1037,13 @@ msgid "Description"
 msgstr "说明"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_form
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_form
+msgid "Discard"
+msgstr "丢弃"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_facet__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_folder__display_name
@@ -1071,13 +1056,6 @@ msgstr "说明"
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__display_name
 msgid "Display Name"
 msgstr "显示名称"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "Do you really want to cancel the upload of %s?"
-msgstr "您真的要取消上传 %s 吗？"
 
 #. module: documents
 #. openerp-web
@@ -1277,7 +1255,7 @@ msgstr "邮件抄送"
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
-#: code:addons/documents/static/src/views/documents_controller_mixin.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #: model:ir.model.fields.selection,name:documents.selection__documents_document__thumbnail_status__error
 #, python-format
 msgid "Error"
@@ -1331,7 +1309,7 @@ msgstr "文件大小"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/documents_controller_mixin.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "File is too large."
 msgstr ""
@@ -1339,7 +1317,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model,name:documents.model_ir_binary
 msgid "File streaming helper model for controllers"
-msgstr ""
+msgstr "控制器文件流帮助器模型"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.res_config_settings_view_form
@@ -1643,11 +1621,6 @@ msgstr "链接"
 #: model:ir.model.fields.selection,name:documents.selection__documents_workflow_rule__create_model__link_to_record
 msgid "Link to record"
 msgstr "链接到记录"
-
-#. module: documents
-#: model:ir.model.fields,help:documents.field_documents_document__email_cc
-msgid "List of cc from incoming emails."
-msgstr "收到的邮件里的抄送列表。"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__state__live
@@ -2070,13 +2043,6 @@ msgid "Presentations"
 msgstr "展示"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "Processing..."
-msgstr "处理中..."
-
-#. module: documents
 #: model:documents.tag,name:documents.documents_internal_template_project
 msgid "Project"
 msgstr "项目"
@@ -2225,6 +2191,13 @@ msgstr "短信发送错误"
 #: model:documents.tag,name:documents.documents_internal_knowledge_sales
 msgid "Sales"
 msgstr "销售"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_form
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_form
+msgid "Save"
+msgstr "保存"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_option
@@ -2534,7 +2507,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/form/share_form_controller.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "The share url has been copied to your clipboard."
@@ -2698,13 +2671,6 @@ msgstr ""
 #, python-format
 msgid "Upload file request"
 msgstr "上传文件请求"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "Uploading... (%s%)"
-msgstr "上传... (%s%)"
 
 #. module: documents
 #: model:ir.model,name:documents.model_res_users
@@ -3010,7 +2976,7 @@ msgstr "分享者"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload_service.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "status code: %s, message: %s"
 msgstr "状态代码:%s, 消息:%s"

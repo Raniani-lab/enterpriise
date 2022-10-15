@@ -3,17 +3,17 @@
 # 	* mrp_maintenance
 # 
 # Translators:
-# Martin Trigaux, 2019
-# Michal Veselý <michal@veselyberanek.net>, 2019
-# trendspotter <j.podhorecky@volny.cz>, 2019
+# Michal Veselý <michal@veselyberanek.net>, 2022
+# Martin Trigaux, 2022
+# trendspotter <jirka.p@volny.cz>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 09:37+0000\n"
-"Last-Translator: trendspotter <j.podhorecky@volny.cz>, 2019\n"
+"POT-Creation-Date: 2022-10-04 09:42+0000\n"
+"PO-Revision-Date: 2022-09-22 05:47+0000\n"
+"Last-Translator: trendspotter <jirka.p@volny.cz>, 2022\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +24,12 @@ msgstr ""
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_production_view_form_inherit_maintenance
 msgid "<span class=\"o_stat_text\">Maintenance</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Údržba</span>"
+
+#. module: mrp_maintenance
+#: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_request__company_id
+msgid "Company"
+msgstr "Firma"
 
 #. module: mrp_maintenance
 #: model:ir.model.fields,help:mrp_maintenance.field_maintenance_equipment__estimated_next_failure
@@ -32,9 +37,19 @@ msgid "Computed as Latest Failure Date + MTBF"
 msgstr ""
 
 #. module: mrp_maintenance
+#: model:maintenance.equipment,name:mrp_maintenance.equipment_furniture1
+msgid "Crosscut Saw: 8 ppi."
+msgstr ""
+
+#. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_request_view_form_inherit_mrp
 msgid "Discard"
 msgstr "Zrušit"
+
+#. module: mrp_maintenance
+#: model:maintenance.equipment,name:mrp_maintenance.equipment_furniture3
+msgid "Drill Machine"
+msgstr ""
 
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_workcenter_view_form_inherit_maintenance
@@ -59,7 +74,7 @@ msgstr ""
 #. module: mrp_maintenance
 #: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_equipment__estimated_next_failure
 msgid "Estimated time before next failure (in days)"
-msgstr ""
+msgstr "Odhadovaná doba do další poruchy (ve dnech)"
 
 #. module: mrp_maintenance
 #: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_equipment__expected_mtbf
@@ -71,6 +86,11 @@ msgstr "Očekávaná Střední doba mezi poruchami"
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
 msgid "Expected Mean Time Between Failure"
 msgstr "Očekávaná Střední doba mezi poruchami"
+
+#. module: mrp_maintenance
+#: model:maintenance.equipment.category,name:mrp_maintenance.equipment_furniture_tools
+msgid "Furniture Tools"
+msgstr ""
 
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
@@ -109,8 +129,11 @@ msgid "Maintenance Equipment"
 msgstr "Vybavení pro údržbu"
 
 #. module: mrp_maintenance
+#. openerp-web
+#: code:addons/mrp_maintenance/static/src/components/menuPopup.xml:0
 #: model:ir.model,name:mrp_maintenance.model_maintenance_request
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_production_view_form_inherit_maintenance
+#, python-format
 msgid "Maintenance Request"
 msgstr "Požadavek na údržbu"
 
@@ -119,11 +142,6 @@ msgstr "Požadavek na údržbu"
 #, python-format
 msgid "Maintenance Requests"
 msgstr "Žádosti o údržbu"
-
-#. module: mrp_maintenance
-#: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_workorder_tablet_view_form_inherit_maintenance
-msgid "Maintenance request"
-msgstr ""
 
 #. module: mrp_maintenance
 #: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_request__production_id
@@ -166,6 +184,11 @@ msgid "Operation"
 msgstr "Úkon"
 
 #. module: mrp_maintenance
+#: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_request__production_company_id
+msgid "Production Company"
+msgstr ""
+
+#. module: mrp_maintenance
 #: model:ir.model,name:mrp_maintenance.model_mrp_production
 msgid "Production Order"
 msgstr "Výrobní příkaz"
@@ -179,6 +202,11 @@ msgstr "Požadavek"
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_request_view_form_inherit_mrp
 msgid "Save"
 msgstr "Uložit"
+
+#. module: mrp_maintenance
+#: model:maintenance.equipment,name:mrp_maintenance.equipment_furniture2
+msgid "Scrub Plane"
+msgstr ""
 
 #. module: mrp_maintenance
 #: model:ir.model,name:mrp_maintenance.model_mrp_workcenter

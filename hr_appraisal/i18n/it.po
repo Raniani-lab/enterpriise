@@ -4,13 +4,14 @@
 # 
 # Translators:
 # Friederike Fasterling-Nesselbosch, 2022
+# Sergio Zanchetta <primes2h@gmail.com>, 2022
 # Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
@@ -749,7 +750,7 @@ msgstr "Scadenza:"
 #: code:addons/hr_appraisal/models/hr_appraisal_goal.py:0
 #, python-format
 msgid "Deadline: %s"
-msgstr ""
+msgstr "Scadenza: %s"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_goal_view_kanban
@@ -1115,7 +1116,7 @@ msgstr "in ritardo"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Late Activities"
-msgstr "Ultime attività"
+msgstr "Attività in ritardo"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__template_id
@@ -1762,13 +1763,13 @@ msgstr "Ad esempio, presentati alla tuo nuova squadra"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
-msgid "months after recruitment,"
-msgstr "mesi dopo reclutamento,"
+msgid "months after recruitment, then after"
+msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
-msgid "months,"
-msgstr "mesi,"
+msgid "months, then every"
+msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
@@ -1789,16 +1790,6 @@ msgstr "una volta pubblicato"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_activity
 msgid "text-danger"
 msgstr ""
-
-#. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
-msgid "then after"
-msgstr "poi dopo"
-
-#. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
-msgid "then every"
-msgstr "poi ogni"
 
 #. module: hr_appraisal
 #: model:mail.template,subject:hr_appraisal.mail_template_appraisal_request_from_employee

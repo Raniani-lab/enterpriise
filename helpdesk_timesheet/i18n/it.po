@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:42+0000\n"
+"POT-Creation-Date: 2022-10-10 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Italian (https://www.transifex.com/odoo/teams/41243/it/)\n"
@@ -275,9 +275,9 @@ msgstr "Progetto"
 #: model:ir.model.fields,help:helpdesk_timesheet.field_helpdesk_team__project_id
 #: model:ir.model.fields,help:helpdesk_timesheet.field_helpdesk_ticket__project_id
 msgid ""
-"Project to which the tickets (and the timesheets) will be linked by default."
+"Project to which the timesheets of this helpdesk team's tickets will be "
+"linked."
 msgstr ""
-"Progetto a cui i ticket (e i fogli di lavoro) saranno collegati per default."
 
 #. module: helpdesk_timesheet
 #: model_terms:ir.actions.act_window,help:helpdesk_timesheet.act_hr_timesheet_line_helpdesk
@@ -335,20 +335,6 @@ msgid "Tasks"
 msgstr "Lavori"
 
 #. module: helpdesk_timesheet
-#: model:ir.model.fields,help:helpdesk_timesheet.field_helpdesk_ticket__use_helpdesk_timesheet
-msgid "This requires to have project module installed."
-msgstr "Questo richiede che Odoo Progetto sia installato."
-
-#. module: helpdesk_timesheet
-#: model:ir.model.fields,help:helpdesk_timesheet.field_helpdesk_team__timesheet_encode_uom_id
-msgid ""
-"This will set the unit of measure used to encode timesheet. This will simply provide tools\n"
-"        and widgets to help the encoding. All reporting will still be expressed in hours (default value)."
-msgstr ""
-"Verrà impostata l'unità di misura usata nei fogli ore, con la disponibilità di strumenti e oggetti\n"
-"        utili alla gestione. Le rendicontazioni resteranno tutte espresse in ore (valore predefinito)."
-
-#. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_create_timesheet__ticket_id
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.hr_timesheet_line_search_inherit_helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.hr_timesheet_line_tree_inherit_helpdesk_timesheet
@@ -388,6 +374,13 @@ msgstr "Ticket"
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_create_timesheet__time_spent
 msgid "Time"
 msgstr "Tempi"
+
+#. module: helpdesk_timesheet
+#: model:ir.model.fields,help:helpdesk_timesheet.field_helpdesk_ticket__timesheet_ids
+msgid ""
+"Time spent on this ticket. By default, your timesheets will be linked to the sales order item of your ticket.\n"
+"Remove the sales order item to make your timesheet entries non billable."
+msgstr ""
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__timer_pause

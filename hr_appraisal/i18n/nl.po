@@ -3,16 +3,16 @@
 # 	* hr_appraisal
 # 
 # Translators:
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # Martin Trigaux, 2022
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,6 +25,8 @@ msgstr ""
 #, python-format
 msgid "%(user)s decided, as %(role)s, to publish the employee's feedback"
 msgstr ""
+"%(user)s heeft besloten, als %(role)s, om de feedback van de werknemer te "
+"publiceren"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
@@ -270,7 +272,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "<span class=\"o_stat_text\">Appraisals</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Beoordelingen</span>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -283,6 +285,8 @@ msgid ""
 "<span class=\"text-end\" attrs=\"{'invisible': ['|', ('manager_feedback_published', '=', True), ('can_see_manager_publish', '=', False)]}\">Not Visible to Employee</span>\n"
 "                                            <span class=\"text-end\" attrs=\"{'invisible': ['|', ('manager_feedback_published', '=', False), ('can_see_manager_publish', '=', False)]}\">Visible to Employee</span>"
 msgstr ""
+"<span class=\"text-end\" attrs=\"{'invisible': ['|', ('manager_feedback_published', '=', True), ('can_see_manager_publish', '=', False)]}\">Niet zichtbaar voor werknemer</span>\n"
+"                                            <span class=\"text-end\" attrs=\"{'invisible': ['|', ('manager_feedback_published', '=', False), ('can_see_manager_publish', '=', False)]}\">Zichtbaar naar werknemer</span>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -290,6 +294,8 @@ msgid ""
 "<span class=\"text-end\" attrs=\"{'invisible': [('employee_feedback_published', '=', True)]}\">Not Visible to Manager</span>\n"
 "                                            <span class=\"text-end\" attrs=\"{'invisible': [('employee_feedback_published', '=', False)]}\">Visible to Manager</span>"
 msgstr ""
+"<span class=\"text-end\" attrs=\"{'invisible': [('employee_feedback_published', '=', True)]}\">Niet zichtbaar voor manager</span>\n"
+"                                            <span class=\"text-end\" attrs=\"{'invisible': [('employee_feedback_published', '=', False)]}\">Zichtbaar voor manager</span>"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
@@ -427,7 +433,7 @@ msgstr "Sjabloon voor feedback van beoordelingsmanager"
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Appraisal Officer"
-msgstr ""
+msgstr "Beoordelingsverantwoordelijke"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__appraisal_plan_posted
@@ -455,7 +461,7 @@ msgstr "Beoordeling verzonden"
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_appraisal_report
 msgid "Appraisal Statistics"
-msgstr "Beoordeling statistieken"
+msgstr "Beoordelingsstatistieken"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_department_view_form
@@ -472,14 +478,14 @@ msgstr "Beoordeling van %s"
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Appraisal reopened"
-msgstr ""
+msgstr "Beoordeling heropend"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/res_company.py:0
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid "Appraisal to Confirm and Send"
-msgstr "Beoordeling om te bevestigen en te verzenden."
+msgstr "Beoordeling om te bevestigen en te verzenden"
 
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action_from_department
@@ -517,7 +523,7 @@ msgstr "Gearchiveerd"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
 msgid "Ask to fill a survey to other employees"
-msgstr "Vraag aan andere werknemers om een enquête in te vullen."
+msgstr "Vraag aan andere werknemers om een enquête in te vullen"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
@@ -545,7 +551,7 @@ msgstr "Auteur"
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_plan
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_config_settings__appraisal_plan
 msgid "Automatically Generate Appraisals"
-msgstr "Automatisch beoordelingen genereren."
+msgstr "Automatisch beoordelingen genereren"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
@@ -580,12 +586,12 @@ msgstr "Kan tekst bewerken"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__can_see_employee_publish
 msgid "Can See Employee Publish"
-msgstr "Kan werknemer zien publiceren."
+msgstr "Kan zien wat de werknemer heeft gepubliceerd"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__can_see_manager_publish
 msgid "Can See Manager Publish"
-msgstr "Kan Manager zien publiceren."
+msgstr "Kan zien wat de manager heeft gepubliceerd"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.request_appraisal_view_form
@@ -691,7 +697,7 @@ msgstr "Maak een beoordeling na werving"
 #. module: hr_appraisal
 #: model_terms:ir.actions.act_window,help:hr_appraisal.action_hr_appraisal_goal
 msgid "Create new goals"
-msgstr ""
+msgstr "Nieuwe doelen maken"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__create_uid
@@ -823,12 +829,12 @@ msgstr "Werknemer automatisch aanvullen"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__employee_feedback
 msgid "Employee Feedback"
-msgstr "Feedback van werknemers."
+msgstr "Feedback van werknemers"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__employee_feedback_published
 msgid "Employee Feedback Published"
-msgstr "Feedback van werknemers gepubliceerd."
+msgstr "Feedback van werknemers gepubliceerd"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__employee_feedback_template
@@ -845,7 +851,7 @@ msgstr "Naam werknemer"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__employee_user_id
 msgid "Employee User"
-msgstr "Werknemer Gebruiker"
+msgstr "Werknemer gebruiker"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -884,7 +890,7 @@ msgstr "Feedback-sjablonen"
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Fill appraisal for %s"
-msgstr ""
+msgstr "Beoordeling invullen voor %s"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__date_final_interview
@@ -954,17 +960,17 @@ msgstr "Groepeer op..."
 #. module: hr_appraisal
 #: model:mail.template,name:hr_appraisal.mail_template_appraisal_confirm
 msgid "HR: Appraisal Confirmation"
-msgstr ""
+msgstr "HR: Beoordelingsbevestiging"
 
 #. module: hr_appraisal
 #: model:mail.template,name:hr_appraisal.mail_template_appraisal_request_from_employee
 msgid "HR: Employee Appraisal Request"
-msgstr ""
+msgstr "HR: Verzoek om beoordeling van werknemers"
 
 #. module: hr_appraisal
 #: model:mail.template,name:hr_appraisal.mail_template_appraisal_request
 msgid "HR: Manager appraisal request"
-msgstr ""
+msgstr "HR: Manager beoordelingsverzoek"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__has_message
@@ -1005,7 +1011,7 @@ msgstr "Indien aangevinkt vragen nieuwe berichten je aandacht."
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__message_has_error
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr "indien aangevinkt hebben sommige leveringen een fout."
+msgstr "Indien aangevinkt hebben sommige berichten een afleverfout."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__image_1920
@@ -1231,7 +1237,7 @@ msgstr "Naam"
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid "Needs improvement"
-msgstr "Moet worden verbeterd."
+msgstr "Moet worden verbeterd"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_calendar_event_id
@@ -1308,12 +1314,12 @@ msgstr "Aantal berichten met leveringsfout"
 #. module: hr_appraisal
 #: model:res.groups,name:hr_appraisal.group_hr_appraisal_user
 msgid "Officer : Access all appraisals"
-msgstr ""
+msgstr "Functionaris: toegang tot alle beoordelingen"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__ongoing_appraisal_count
 msgid "Ongoing Appraisal Count"
-msgstr ""
+msgstr "Lopende beoordelingstelling"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal_goal.py:0
@@ -1356,7 +1362,7 @@ msgstr "Plan beoordelingen met je collega's, verzamel en bespreek feedback."
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Previous Appraisals"
-msgstr ""
+msgstr "Vorige beoordelingen"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__note
@@ -1368,6 +1374,8 @@ msgstr "Privé notitie"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Private note (only accessible to people set as managers)"
 msgstr ""
+"Privénotitie (alleen toegankelijk voor mensen die zijn ingesteld als "
+"manager)"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__progression
@@ -1472,17 +1480,23 @@ msgstr "Versturen via e-mail"
 msgid ""
 "Sent automatically to both employee and manager when appraisal is confirmed"
 msgstr ""
+"Wordt automatisch verzonden naar zowel werknemer als manager wanneer "
+"beoordeling is bevestigd"
 
 #. module: hr_appraisal
 #: model:mail.template,description:hr_appraisal.mail_template_appraisal_request_from_employee
 msgid ""
 "Sent manually to the employee by the manager who wants to do an appraisal"
 msgstr ""
+"Handmatig verzonden naar de medewerker door de manager die een beoordeling "
+"wil doen"
 
 #. module: hr_appraisal
 #: model:mail.template,description:hr_appraisal.mail_template_appraisal_request
 msgid "Sent manually to the manager by the employee who wants an appraisal"
 msgstr ""
+"Handmatig naar de manager gestuurd door de medewerker die een beoordeling "
+"wil"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_note__sequence
@@ -1535,7 +1549,7 @@ msgstr ""
 #: code:addons/hr_appraisal/models/res_company.py:0
 #, python-format
 msgid "Strongly Exceed Expectations"
-msgstr "Overtreft de verwachtingen sterk."
+msgstr "Overtreft de verwachtingen sterk"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__subject
@@ -1567,7 +1581,7 @@ msgstr ""
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "The appraisal's status has been set to Done by %s"
-msgstr ""
+msgstr "De status van de beoordeling is ingesteld op Gereed door %s"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__note
@@ -1622,6 +1636,8 @@ msgid ""
 "The employee's feedback will be published without their consent. Do you "
 "really want to publish it? This action will be logged in the chatter."
 msgstr ""
+"De feedback van de medewerker wordt zonder diens toestemming gepubliceerd. "
+"Wil je het echt publiceren? Deze actie wordt geregistreerd in de chatter."
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
@@ -1696,7 +1712,7 @@ msgstr "Gebruikersinhoud"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__waiting_feedback
 msgid "Waiting Feedback from Employee/Managers"
-msgstr "Wachten op feedback van werknemer/managers."
+msgstr "Wachten op feedback van werknemer/managers"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__website_message_ids
@@ -1765,13 +1781,13 @@ msgstr "Bijv. Presenteer jezelf aan je nieuwe team"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
-msgid "months after recruitment,"
-msgstr "maanden na in dienst,"
+msgid "months after recruitment, then after"
+msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
-msgid "months,"
-msgstr "maanden,"
+msgid "months, then every"
+msgstr ""
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
@@ -1792,16 +1808,6 @@ msgstr "als deze zijn gepubliceerd"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_view_activity
 msgid "text-danger"
 msgstr "text-danger"
-
-#. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
-msgid "then after"
-msgstr "dan na"
-
-#. module: hr_appraisal
-#: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
-msgid "then every"
-msgstr "dan elke"
 
 #. module: hr_appraisal
 #: model:mail.template,subject:hr_appraisal.mail_template_appraisal_request_from_employee

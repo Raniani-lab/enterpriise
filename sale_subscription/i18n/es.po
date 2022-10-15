@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
@@ -273,11 +273,6 @@ msgstr ""
 msgid ""
 "<span class=\"badge rounded-pill text-bg-warning\"><i class=\"fa fa-fw fa-"
 "refresh\"/> To Renew</span>"
-msgstr ""
-
-#. module: sale_subscription
-#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
-msgid "<span class=\"ms-1\">days</span>"
 msgstr ""
 
 #. module: sale_subscription
@@ -2395,11 +2390,6 @@ msgid "Reason"
 msgstr "Motivo"
 
 #. module: sale_subscription
-#: model:ir.model.fields,help:sale_subscription.field_sale_order__rating_last_feedback
-msgid "Reason of the rating"
-msgstr "Causa de la calificación"
-
-#. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__recurrence_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__recurrence_id
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template_line__recurrence_id
@@ -3690,6 +3680,11 @@ msgstr "Su suscripción está cerrada."
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 msgid "archived product(s)"
 msgstr ""
+
+#. module: sale_subscription
+#: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
+msgid "days"
+msgstr "días"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form

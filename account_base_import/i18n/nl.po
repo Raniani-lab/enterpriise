@@ -250,7 +250,7 @@ msgstr ""
 #, python-format
 msgid "Use predefined format to import your data faster."
 msgstr ""
-"Gebruik een vooraf gedefinieerde indeling om uw gegevens sneller te "
+"Gebruik een vooraf gedefinieerde indeling om je gegevens sneller te "
 "importeren."
 
 #. module: account_base_import

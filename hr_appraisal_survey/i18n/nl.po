@@ -3,8 +3,8 @@
 # 	* hr_appraisal_survey
 # 
 # Translators:
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # Martin Trigaux, 2022
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -129,6 +129,26 @@ msgid ""
 "            </ul>\n"
 "        "
 msgstr ""
+"<h2>Algemeen doel van werknemersbeoordeling</h2>\n"
+"            <ul>\n"
+"                <li>Een duidelijke en open communicatie van prestatieverwachtingen op gang brengen</li>\n"
+"                <li>Om medewerkers te helpen bij hun professionele groei, door het identificeren van sterke punten en kansen voor ontwikkeling</li>\n"
+"            </ul>\n"
+"\n"
+"            <h2>Aan het begin van de beoordelingsperiode</h2>\n"
+"            <ul>\n"
+"                <li>Het is de gezamenlijke verantwoordelijkheid van de werknemer en de leidinggevende (taxateur) om een haalbaar werkplan voor het komende jaar op te stellen, inclusief belangrijke werknemersverantwoordelijkheden en bijbehorende benchmarks waartegen de resultaten zullen worden beoordeeld.</li>\n"
+"                <li>Kritieke of sleutelelementen van prestatie- en professionele ontwikkelingsbehoeften (indien aanwezig), moeten op dit moment ook worden opgemerkt</li>\n"
+"            </ul>\n"
+"\n"
+"            <h2>Aan het einde van de beoordelingsperiode</h2>\n"
+"            <ul>\n"
+"                <li>De werknemer is verantwoordelijk voor het invullen van een concept van het beoordelingsformulier als hulpmiddel voor zelfbeoordeling en als startpunt voor de beoordeling door de supervisor. Per criterium kan de medewerker voorbeelden van prestaties toevoegen. Nadat het formulier is ingevuld, stuurt de werknemer het naar zijn leidinggevende.</li>\n"
+"                <li>Het is de primaire verantwoordelijkheid van de supervisor om de nodige input te verzamelen van de juiste feedbackbronnen (interne en/of externe klanten, collega's).</li>\n"
+"                <li>De supervisor synthetiseert en integreert alle input in de voltooide beoordeling. De motivatie van de evaluatie wordt toegelicht in de ad-hocvelden.</li>\n"
+"                <li>De werknemer kan ervoor kiezen om opmerkingen of uitleg te geven over de voltooide beoordeling.</li>\n"
+"            </ul>\n"
+"        "
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view
@@ -142,7 +162,7 @@ msgstr "<i class=\"fa fa-fw fa-arrow-right\"/>Enquête bewerken"
 #: model:survey.question,description:hr_appraisal_survey.appraisal_360_9
 #: model:survey.survey,description:hr_appraisal_survey.opinion_form
 msgid "<p> </p>"
-msgstr ""
+msgstr "<p> </p>"
 
 #. module: hr_appraisal_survey
 #: model:survey.survey,description:hr_appraisal_survey.appraisal_360_feedback_template
@@ -151,6 +171,9 @@ msgid ""
 "            This typically includes the employee's manager, peers, and direct reports.</p>\n"
 "        "
 msgstr ""
+"<p>360 graden feedback is een systeem of proces waarin managers feedback vragen aan de mensen die om de werknemer heen werken.\n"
+"            Dit omvat doorgaans de manager, collega's en direct ondergeschikten van de werknemer.</p>\n"
+"        "
 
 #. module: hr_appraisal_survey
 #: model:survey.question,description:hr_appraisal_survey.appraisal_4
@@ -158,6 +181,9 @@ msgid ""
 "<p>Identify professional, performance, or project objectives you recommend "
 "for employee’s continued career development over the coming year.</p>"
 msgstr ""
+"<p>Identificeer professionele, prestatie- of projectdoelstellingen die je "
+"aanbeveelt voor de verdere loopbaanontwikkeling van medewerkers in het "
+"komende jaar.</p>"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,description:hr_appraisal_survey.appraisal_3
@@ -172,6 +198,15 @@ msgid ""
 "            </ol>\n"
 "        "
 msgstr ""
+"<p>De taxateur moet de belangrijkste werkprestaties en prestaties van de werknemer beoordelen volgens de onderstaande maatstaf:</p>\n"
+"            <ol>\n"
+"                <li> Overtreft aanzienlijk de normen en verwachtingen die voor de functie worden vereist</li>\n"
+"                <li> Overtreft normen en verwachtingen</li>\n"
+"                <li> Voldoe aan de normen en verwachtingen</li>\n"
+"                <li> Voldeed niet aan de normen en verwachtingen</li>\n"
+"                <li> Aanzienlijk onder de normen en verwachtingen</li>\n"
+"            </ol>\n"
+"        "
 
 #. module: hr_appraisal_survey
 #: model:survey.survey,description:hr_appraisal_survey.appraisal_feedback_template
@@ -179,6 +214,8 @@ msgid ""
 "<p>This survey allows you to give a feedback about your collaboration with an employee. Filling it helps us improving the appraisal process.</p>\n"
 "        "
 msgstr ""
+"<p>Met deze enquête kun je feedback geven over je samenwerking met een medewerker. Door het in te vullen, kunnen we het beoordelingsproces verbeteren.</p>\n"
+"        "
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_view_form
@@ -222,7 +259,7 @@ msgid ""
 "keeping efficiency"
 msgstr ""
 "Aanpasbaarheid: vermogen om zich aan te passen aan veranderingen in de "
-"organisatie en de efficiëntie te behouden."
+"organisatie en de efficiëntie te behouden"
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.actions.act_window,help:hr_appraisal_survey.survey_survey_action_appraisal
@@ -242,12 +279,12 @@ msgstr "Aanvullende opmerkingen"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_6
 msgid "Admit my mistakes"
-msgstr ""
+msgstr "Geef mijn fouten toe"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.x_360_5_5
 msgid "Almost always"
-msgstr ""
+msgstr "Bijna altijd"
 
 #. module: hr_appraisal_survey
 #: code:addons/hr_appraisal_survey/wizard/appraisal_ask_feedback.py:0
@@ -257,7 +294,7 @@ msgid ""
 "href=\"%s\" target=\"_blank\">survey</a>"
 msgstr ""
 "Er werd om een beoordelingsfeedback gevraagd. Neem even de tijd om de <a "
-"href=\"%s\" target=\"_blank\">enquête</a> in te vullen."
+"href=\"%s\" target=\"_blank\">enquête</a> in te vullen"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_11
@@ -309,7 +346,7 @@ msgstr "Beoordeling van"
 #. module: hr_appraisal_survey
 #: model:mail.template,name:hr_appraisal_survey.mail_template_appraisal_ask_feedback
 msgid "Appraisal: Ask Feedback"
-msgstr ""
+msgstr "Beoordeling: Feedback vragen"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_1_5
@@ -325,7 +362,7 @@ msgstr "Vraag feedback"
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_appraisal_ask_feedback
 msgid "Ask Feedback for Appraisal"
-msgstr "Vraag feedback voor beoordeling."
+msgstr "Vraag feedback voor beoordeling"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_hr_appraisal__employee_feedback_ids
@@ -345,7 +382,7 @@ msgstr "Auteur"
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view
 msgid "Back to the appraisal"
-msgstr "Terug naar de beoordeling."
+msgstr "Terug naar de beoordeling"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__can_edit_body
@@ -372,7 +409,7 @@ msgstr "Dichtbij"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_3
 msgid "Collaborate effectively with others to achieve shared goals"
-msgstr ""
+msgstr "Effectief samenwerken met anderen om gedeelde doelen te bereiken"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_9
@@ -411,7 +448,7 @@ msgstr "Inhoud"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_2
 msgid "Create space for different ideas and options to be voiced"
-msgstr ""
+msgstr "Creëer ruimte voor verschillende ideeën en opties om geuit te worden"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__create_uid
@@ -467,7 +504,7 @@ msgstr "Weergavenaam"
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_10
 msgid "Do you have any comment to tell me and help me improve?"
-msgstr ""
+msgstr "Heb je een opmerking om me te vertellen en me te helpen verbeteren?"
 
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_hr_appraisal
@@ -503,7 +540,7 @@ msgstr "Enthousiasme & betrokkenheid naar het project/opdrachten"
 #: code:addons/hr_appraisal_survey/wizard/appraisal_ask_feedback.py:0
 #, python-format
 msgid "Fill the feedback form on survey"
-msgstr "ul het feedbackformulier op de enquête in."
+msgstr "Vul het feedbackformulier op de enquête in"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__email_from
@@ -513,22 +550,22 @@ msgstr "Van"
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_5
 msgid "How do you feel to work with me? Do I ... "
-msgstr ""
+msgstr "Hoe vind je het om met mij samen te werken? Heb ik... "
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.appraisal_360_3_sug5
 msgid "I'm not from the company."
-msgstr ""
+msgstr "Ik ben niet van het bedrijf."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.appraisal_360_3_sug3
 msgid "I'm part of your management."
-msgstr ""
+msgstr "Ik maak deel uit van je management."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.appraisal_360_3_sug4
 msgid "I'm referring to you."
-msgstr ""
+msgstr "Ik verwijs naar jou."
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__id
@@ -582,7 +619,7 @@ msgstr "Leiderschap: ondersteun ondergeschikten in hun professionele groei"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_1
 msgid "Listen well to others"
-msgstr ""
+msgstr "Luister goed naar anderen"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__template_id
@@ -613,7 +650,7 @@ msgstr "Doelstellingen"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.x_360_5_4
 msgid "Often"
-msgstr ""
+msgstr "Vaak"
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
@@ -666,7 +703,7 @@ msgstr "Stiptheid en aanwezigheid"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.x_360_5_2
 msgid "Rarely"
-msgstr ""
+msgstr "Zelden"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__employee_ids
@@ -676,7 +713,7 @@ msgstr "Ontvangers"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_7
 msgid "Recognize the contributions of teammates and peers"
-msgstr ""
+msgstr "Erken de bijdragen van teamgenoten en collega's"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__render_model
@@ -705,7 +742,7 @@ msgstr ""
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_5
 msgid "Seek to understand the problem before working on a solution"
-msgstr ""
+msgstr "Probeer het probleem te begrijpen voordat je aan een oplossing werkt"
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.appraisal_ask_feedback_view_form
@@ -720,17 +757,17 @@ msgstr "Verzonden enquêtes"
 #. module: hr_appraisal_survey
 #: model:mail.template,description:hr_appraisal_survey.mail_template_appraisal_ask_feedback
 msgid "Sent to employees to gather appraisal feedback"
-msgstr ""
+msgstr "Verzonden naar werknemers om beoordelingsfeedback te verzamelen"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_4
 msgid "Show good judgment in decision making"
-msgstr ""
+msgstr "Toon gezond verstand bij het nemen van beslissingen"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.x_360_5_3
 msgid "Sometimes"
-msgstr ""
+msgstr "Soms"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__subject
@@ -811,6 +848,9 @@ msgid ""
 "The following employees do not have any email : \n"
 "%s"
 msgstr ""
+"Deze medewerker heeft geen e-mailadres geregistreerd en zal geen e-mail ontvangen.\n"
+"De volgende medewerkers hebben geen e-mail:\n"
+"%s"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,help:hr_appraisal_survey.field_hr_department__appraisal_survey_template_id
@@ -862,32 +902,32 @@ msgstr "Bekijk resultaten"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.appraisal_360_3_sug1
 msgid "We're colleagues, for the same manager."
-msgstr ""
+msgstr "We zijn collega's, voor dezelfde manager."
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.appraisal_360_3_sug2
 msgid "We're colleagues, in different teams."
-msgstr ""
+msgstr "We zijn collega's, in verschillende teams."
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_6
 msgid "What should I do in order to improve on my day-to-day job?"
-msgstr ""
+msgstr "Wat moet ik doen om mijn dagelijkse werk te verbeteren?"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_7
 msgid "What's my greatest strength?"
-msgstr ""
+msgstr "Wat is mijn grootste kracht?"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_8
 msgid "What's my greatest weakness?"
-msgstr ""
+msgstr "Wat is mijn grootste zwakte?"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_3
 msgid "What's the relation between us?"
-msgstr ""
+msgstr "Wat is de relatie tussen ons?"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_360_2

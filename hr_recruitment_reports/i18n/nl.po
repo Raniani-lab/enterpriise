@@ -23,7 +23,7 @@ msgstr ""
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__count
 msgid "# Applicant"
-msgstr ""
+msgstr "# Sollicitant"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__hired
@@ -33,7 +33,7 @@ msgstr "# Aangenomen"
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__hiring_ratio
 msgid "# Hired Ratio"
-msgstr ""
+msgstr "# Aanneemratio"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__meetings_amount
@@ -59,7 +59,7 @@ msgstr "Analyse"
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_stage_report__applicant_id
 msgid "Applicant"
-msgstr "Kandidaat"
+msgstr "Solicitant"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__name
@@ -72,7 +72,7 @@ msgstr "Naam sollicitant"
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
 msgid "Applicant that have been enrolled into the company."
-msgstr ""
+msgstr "Aanvrager die zijn ingeschreven in het bedrijf."
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__company_id
@@ -90,7 +90,7 @@ msgstr "Aangemaakt door"
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_stage_report__days_in_stage
 msgid "Days In Stage"
-msgstr ""
+msgstr "Dagen in fase"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__display_name
@@ -107,13 +107,13 @@ msgstr "Einddatum"
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_source_view_dashboard
 msgid "From creation till hire"
-msgstr "Van creatie tot aanstelling"
+msgstr "Van aanmaken tot aannemen"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_view_search
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_stage_report_view_search
 msgid "Group By"
-msgstr "Groeperen op"
+msgstr "Groepeer op"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields.selection,name:hr_recruitment_reports.selection__hr_recruitment_report__state__is_hired
@@ -131,12 +131,12 @@ msgstr "Aangeworven mensen"
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #, python-format
 msgid "Hiring ratio"
-msgstr ""
+msgstr "Aanneemratio"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_team_view_dashboard
 msgid "Hiring ratio (%)"
-msgstr ""
+msgstr "Aanneemratio (%)"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__id
@@ -223,7 +223,7 @@ msgstr "Wervingspercentage"
 #. module: hr_recruitment_reports
 #: model:ir.model,name:hr_recruitment_reports.model_hr_recruitment_stage_report
 msgid "Recruitment Stage Analysis"
-msgstr ""
+msgstr "Analyse wervingsfase"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__refuse_reason_id
@@ -251,7 +251,7 @@ msgstr "Bron"
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_team_view_graph
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_view_source_pivot
 msgid "Source Analysis"
-msgstr ""
+msgstr "Bronanalyse"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__stage_id
@@ -272,12 +272,12 @@ msgstr "Startdatum"
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_view_search
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_stage_report_view_search
 msgid "State"
-msgstr "Provincie / Staat"
+msgstr "Status"
 
 #. module: hr_recruitment_reports
 #: model:ir.actions.act_window,name:hr_recruitment_reports.recruitment_report_team_action
 msgid "Team Performance"
-msgstr ""
+msgstr "Teamprestaties"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
@@ -285,6 +285,8 @@ msgid ""
 "The % is based on the total of applicant that have been hired divided by the"
 " total of applicant."
 msgstr ""
+"Het % is gebaseerd op het totaal aantal sollicitanten dat is aangenomen, "
+"gedeeld door het totaal aantal sollicitanten."
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
@@ -292,12 +294,14 @@ msgid ""
 "The process duration is based on the time between the applicant creation and"
 " the stage \"hired\" or \"refused\"."
 msgstr ""
+"De procesduur is gebaseerd op de tijd tussen het aanmaken van de sollicitant"
+" en de fase \"ingehuurd\" of \"geweigerd\"."
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.actions.act_window,help:hr_recruitment_reports.recruitment_report_source_action
 #: model_terms:ir.actions.act_window,help:hr_recruitment_reports.recruitment_report_source_job_action
 msgid "This report performs analysis on your recruitment source."
-msgstr ""
+msgstr "Dit rapport voert analyses uit op je wervingsbron."
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.actions.act_window,help:hr_recruitment_reports.recruitment_report_action
@@ -305,17 +309,17 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:hr_recruitment_reports.recruitment_stage_report_action
 #: model_terms:ir.actions.act_window,help:hr_recruitment_reports.recruitment_stage_report_job_action
 msgid "This report performs analysis on your recruitment."
-msgstr "Dit rapport voert een analyse uit van je rekrutering."
+msgstr "Dit rapport voert een analyse uit van je werving."
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.actions.act_window,help:hr_recruitment_reports.recruitment_report_team_action
 msgid "This report performs analysis on your teams' performance."
-msgstr ""
+msgstr "Dit rapport voert analyses uit op de prestaties van je teams."
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_inherit_kanban_view
 msgid "Time By Stages"
-msgstr ""
+msgstr "Tijd per stadia"
 
 #. module: hr_recruitment_reports
 #: model:ir.actions.act_window,name:hr_recruitment_reports.recruitment_stage_report_action
@@ -324,39 +328,39 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_stage_report_view_pivot
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_stage_report_view_search
 msgid "Time In Stage Analysis"
-msgstr ""
+msgstr "Tijd in fase-analyse"
 
 #. module: hr_recruitment_reports
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #, python-format
 msgid "Total Hired"
-msgstr ""
+msgstr "Totaal ingehuurd"
 
 #. module: hr_recruitment_reports
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #, python-format
 msgid "Total Meetings"
-msgstr ""
+msgstr "Totaal aantal vergaderingen"
 
 #. module: hr_recruitment_reports
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_team_view_dashboard
 #, python-format
 msgid "Total applicants"
-msgstr ""
+msgstr "Totaal aantal aanvragers"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_team_view_dashboard
 msgid "Total hired"
-msgstr ""
+msgstr "Totaal ingehuurd"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_team_view_dashboard
 msgid "Total meetings"
-msgstr ""
+msgstr "Totaal aantal vergaderingen"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_source_view_dashboard
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
 msgid "weeks"
-msgstr "Weken"
+msgstr "weken"

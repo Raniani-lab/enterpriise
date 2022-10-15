@@ -474,7 +474,7 @@ msgid ""
 "Deleting this activity will delete ALL its children activities. Are you "
 "sure?"
 msgstr ""
-"Als u deze activiteit verwijdert, worden ALLE onderliggende activiteiten "
+"Als je deze activiteit verwijdert, worden ALLE onderliggende activiteiten "
 "verwijderd. Weet je het zeker?"
 
 #. module: marketing_automation

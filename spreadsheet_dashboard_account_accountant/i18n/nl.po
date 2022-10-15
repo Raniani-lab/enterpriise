@@ -1044,8 +1044,8 @@ msgstr "netto-omzet - inkoopwaarde"
 msgid ""
 "number of times you can pay off current debts with cash generated per year"
 msgstr ""
-"aantal keren dat u lopende schulden kunt afbetalen met contant geld dat per "
-"jaar wordt gegenereerd"
+"aantal keren dat je lopende schulden kunt afbetalen met contant geld dat per"
+" jaar wordt gegenereerd"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web

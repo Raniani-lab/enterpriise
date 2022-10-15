@@ -3,17 +3,18 @@
 # 	* website_enterprise
 # 
 # Translators:
-# Levent Karakaş <levent@mektup.at>, 2019
-# Murat Kaplan <muratk@projetgrup.com>, 2019
-# Cécile Collart <cco@odoo.com>, 2019
+# Murat Kaplan <muratk@projetgrup.com>, 2022
+# abc Def <hdogan1974@gmail.com>, 2022
+# Gökhan Erdoğdu <gokhan.erdogdu@mechsoft.com.tr>, 2022
+# Tugay Hatıl <tugayh@projetgrup.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.4+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-12 12:56+0000\n"
-"PO-Revision-Date: 2019-08-26 09:39+0000\n"
-"Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
+"POT-Creation-Date: 2022-09-20 09:50+0000\n"
+"PO-Revision-Date: 2022-09-22 05:50+0000\n"
+"Last-Translator: Tugay Hatıl <tugayh@projetgrup.com>, 2022\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -22,16 +23,28 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n > 1);\n"
 
 #. module: website_enterprise
-#: model_terms:ir.ui.view,arch_db:website_enterprise.user_navbar
-msgid "Applications"
-msgstr "Başvurular"
+#: model:website.configurator.feature,name:website_enterprise.feature_module_appointment
+msgid "Appointment"
+msgstr "randevu"
 
 #. module: website_enterprise
-#: model_terms:ir.ui.view,arch_db:website_enterprise.user_navbar_inherit_website_enterprise
-msgid "New Appointment Type"
-msgstr "Nouveau type de rendez-vous"
+#. openerp-web
+#: code:addons/website_enterprise/static/src/js/systray_items/new_content.js:0
+#, python-format
+msgid "Appointment Form"
+msgstr "Randevu Formu"
 
 #. module: website_enterprise
-#: model_terms:ir.ui.view,arch_db:website_enterprise.user_navbar
-msgid "Website"
-msgstr "Websitesi"
+#: model:website.configurator.feature,name:website_enterprise.feature_module_helpdesk
+msgid "Helpdesk"
+msgstr "Yardım Masası"
+
+#. module: website_enterprise
+#: model:website.configurator.feature,description:website_enterprise.feature_module_helpdesk
+msgid "Offer support with a ticketing system"
+msgstr ""
+
+#. module: website_enterprise
+#: model:website.configurator.feature,description:website_enterprise.feature_module_appointment
+msgid "Self-service booking system"
+msgstr "Self servis rezervasyon sistemi"

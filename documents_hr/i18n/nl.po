@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # 
 msgid ""
@@ -62,6 +63,21 @@ msgid ""
 "    </tbody></table>\n"
 "                "
 msgstr ""
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0px auto;\"><tbody>\n"
+"        <tr><td valign=\"top\" style=\"text-align: left; font-size: 14px;\">\n"
+"            Hallo <t t-esc=\"object.name\"/>, je persoonlijke documenten toegang link is beschikbaar voor je.<br/><br/>\n"
+"            In deze map vind je al je persoonlijke HR-documenten.<br/><br/>\n"
+"            Bewaar deze link veilig.<br/><br/>\n"
+"            <div style=\"text-align: center; padding: 16px 0px 16px 0px; font-size: 14px;\">\n"
+"                <a t-attf-href=\"{{ object.documents_share_id.full_url }}\" target=\"_blank\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\">\n"
+"                    Je Documenten\n"
+"                </a>\n"
+"            </div>\n"
+"           Prettige Dag,<br/>\n"
+"           Het HR Team\n"
+"        </td></tr>\n"
+"    </tbody></table>\n"
+"                "
 
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_absences
@@ -136,6 +152,8 @@ msgid ""
 "Employee's private email must be set to use \"Send Access Link\" function:\n"
 "%s"
 msgstr ""
+"De privé e-mail van de werknemer moet worden ingesteld om de functie \"Verzend Toegangslink\" te gebruiken::\n"
+"%s"
 
 #. module: documents_hr
 #: model:documents.tag,name:documents_hr.documents_hr_documents_employees
@@ -151,12 +169,12 @@ msgstr "HR"
 #: code:addons/documents_hr/models/hr_employee.py:0
 #, python-format
 msgid "HR Documents: %s"
-msgstr ""
+msgstr "HR Documenten: %s"
 
 #. module: documents_hr
 #: model:mail.template,name:documents_hr.mail_template_document_folder_link
 msgid "HR: Document Access Link"
-msgstr ""
+msgstr "HR: Document Toegangslink"
 
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_res_config_settings__documents_hr_settings
@@ -166,29 +184,32 @@ msgstr "Personeelszaken"
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_hr_departure_wizard__send_hr_documents_access_link
 msgid "Send Access Link"
-msgstr ""
+msgstr "Toegangslink versturen"
 
 #. module: documents_hr
 #: model:ir.actions.server,name:documents_hr.ir_actions_server_send_access_link
 msgid "Send HR Documents Access Link"
-msgstr ""
+msgstr "Verzend HR-documenten Toegangslink"
 
 #. module: documents_hr
 #: model:ir.model.fields,help:documents_hr.field_hr_departure_wizard__send_hr_documents_access_link
 msgid ""
 "Send an email to the user with a share link to all the documents he owns."
 msgstr ""
+"Stuur een e-mail naar de gebruiker met een gedeelde link naar alle "
+"documenten die hij bezit."
 
 #. module: documents_hr
 #: model:mail.template,description:documents_hr.mail_template_document_folder_link
 msgid "Sent manually when recording an employee departure"
 msgstr ""
+"Handmatig verzonden bij de registratie van het vertrek van een werknemer"
 
 #. module: documents_hr
 #: code:addons/documents_hr/models/hr_employee.py:0
 #, python-format
 msgid "The access link has been sent to the employee."
-msgstr ""
+msgstr "De toegangslink werd naar de werknemer gestuurd."
 
 #. module: documents_hr
 #: model:ir.model,name:documents_hr.model_res_users
@@ -222,3 +243,5 @@ msgstr "hr standaard werkruimte"
 #: model:mail.template,subject:documents_hr.mail_template_document_folder_link
 msgid "{{ object.name }}, your personal documents access link is available"
 msgstr ""
+"{{ object.name }}, de link voor toegang tot je persoonlijke documenten is "
+"beschikbaar"

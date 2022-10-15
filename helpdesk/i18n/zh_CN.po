@@ -4,17 +4,17 @@
 # 
 # Translators:
 # Raymond Yu <cl_yu@hotmail.com>, 2022
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022
 # Martin Trigaux, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -331,7 +331,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_partner_form_inherit_helpdesk
 msgid "<span class=\"o_stat_text\"> Tickets</span>"
-msgstr "服务单"
+msgstr "<span class=\"o_stat_text\">服务单"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
@@ -738,13 +738,6 @@ msgid ""
 msgstr ""
 
 #. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_stage__template_id
-msgid ""
-"Automated email sent to the ticket's customer when the ticket reaches this "
-"stage."
-msgstr "当工单到该阶段时，自动给客户发送邮件。"
-
-#. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__auto_assignment
 msgid "Automatic Assignment"
 msgstr "自动赋值"
@@ -1061,11 +1054,6 @@ msgid "Contact"
 msgstr "联系人"
 
 #. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_team__use_fsm
-msgid "Convert tickets into Field Service tasks"
-msgstr "‎将票证转换为现场服务任务‎"
-
-#. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_coupons
 msgid "Coupons"
 msgstr "优惠券"
@@ -1349,6 +1337,16 @@ msgid "Dropdown menu"
 msgstr "下拉菜单"
 
 #. module: helpdesk
+#: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__assign_method__balanced
+msgid "Each user has an equal number of open tickets"
+msgstr ""
+
+#. module: helpdesk
+#: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__assign_method__randomly
+msgid "Each user is assigned an equal number of tickets"
+msgstr ""
+
+#. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Edit"
 msgstr "编辑"
@@ -1368,6 +1366,14 @@ msgstr "电子邮箱别名"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_stage__template_id
 msgid "Email Template"
 msgstr "EMail模板"
+
+#. module: helpdesk
+#: model:ir.model.fields,help:helpdesk.field_helpdesk_stage__template_id
+msgid ""
+"Email automatically sent to the customer when the ticket reaches this stage.\n"
+"By default, the email will be sent from the email alias of the helpdesk team.\n"
+"Otherwise it will be sent from the company's email address, or from the catchall (as defined in the System Parameters)."
+msgstr ""
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__email_cc
@@ -1749,11 +1755,6 @@ msgid "Hours to SLA Deadline"
 msgstr ""
 
 #. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__sla_deadline_hours
-msgid "Hours to the closest deadline of all SLA applied on this ticket"
-msgstr ""
-
-#. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla__id
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__id
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_status__id
@@ -1800,11 +1801,11 @@ msgid "If checked, some messages have a delivery error."
 msgstr "如果勾选此项， 某些消息将会产生传递错误。"
 
 #. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__closed_by_partner
+#: model:ir.model.fields,help:helpdesk.field_helpdesk_team__portal_show_rating
 msgid ""
-"If checked, this means the ticket was closed through the customer portal by "
-"the customer."
-msgstr "如果勾选此项，工单将允许被客户通过客户门户关闭。"
+"If enabled, portal users will have access to your customer satisfaction statistics from the last 30 days in their portal.\n"
+"They will only have access to the ratings themselves, and not to the written feedback if any was left. You can also manually hide ratings of your choosing."
+msgstr ""
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__alias_bounced_content
@@ -1824,13 +1825,6 @@ msgstr "在"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "In #{kanban_getcolorname(record.color.raw_value)}"
 msgstr "在 #{kanban_getcolorname(record.color.raw_value)}"
-
-#. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_team__use_website_helpdesk_livechat
-msgid ""
-"In Channel: You can create a new ticket by typing /helpdesk [ticket title]. "
-"You can search ticket by typing /helpdesk_search [keyword],[ticket number],."
-msgstr ""
 
 #. module: helpdesk
 #: code:addons/helpdesk/models/helpdesk.py:0
@@ -1877,13 +1871,6 @@ msgstr "阶段"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__auto_close_day
 msgid "Inactive Period(days)"
 msgstr "不活跃期（天）"
-
-#. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_team__from_stage_ids
-msgid ""
-"Inactive tickets in these stages will be automatically closed. Leave empty "
-"to take into account all the stages from the team."
-msgstr "这些阶段的不活跃的工票将被自动关闭。留空，以考虑到团队的所有阶段。"
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__privacy_visibility__invited_internal
@@ -2066,11 +2053,6 @@ msgid "Let's view your <b>team's tickets</b>."
 msgstr "让我们来看看你的<b>团队的工票</b>。"
 
 #. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__email_cc
-msgid "List of cc from incoming emails."
-msgstr "收到的邮件里的抄送列表。"
-
-#. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_website_helpdesk_livechat
 msgid "Live Chat"
 msgstr "在线聊天"
@@ -2112,6 +2094,13 @@ msgstr "确保按时处理工票"
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_sla_action_main
 msgid "Make sure tickets are handled on time by using SLA Policies.<br>"
 msgstr "通过使用SLA政策，确保工票得到及时处理。<br>"
+
+#. module: helpdesk
+#: model:ir.model.fields,help:helpdesk.field_helpdesk_sla__time
+msgid ""
+"Maximum number of working hours a ticket should take to reach the target "
+"stage, starting from the date it was created."
+msgstr ""
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.rating_rating_action_helpdesk
@@ -2249,15 +2238,10 @@ msgid "New"
 msgstr "新建"
 
 #. module: helpdesk
-#: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__assign_method__balanced
+#: model:ir.model.fields,help:helpdesk.field_helpdesk_team__assign_method
 msgid ""
-"New tickets are assigned to the users with the least number of open tickets "
-"(Balanced)"
-msgstr ""
-
-#. module: helpdesk
-#: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__assign_method__randomly
-msgid "New tickets are evenly distributed among users (Round-robin)"
+"New tickets will automatically be assigned to the team members that are "
+"available, according to their working hours and their time off."
 msgstr ""
 
 #. module: helpdesk
@@ -2449,20 +2433,6 @@ msgid "Ongoing"
 msgstr "正在进行"
 
 #. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_sla__ticket_type_ids
-msgid ""
-"Only apply the SLA to a specific ticket type. If left empty it will apply to"
-" all types."
-msgstr "仅应用SLA到特定类型的工单，如果留空，则应用到所有类型。"
-
-#. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_sla__tag_ids
-msgid ""
-"Only apply the SLA to tickets with specific tags. If left empty it will "
-"apply to all tags."
-msgstr "仅将 SLA 应用于具有特定标签的工单。如果留空将会应用到所有类型上。"
-
-#. module: helpdesk
 #: code:addons/helpdesk/controllers/portal.py:0
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_report_analysis_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
@@ -2500,30 +2470,6 @@ msgstr "我们的客户满意度"
 #: model_terms:ir.ui.view,arch_db:helpdesk.portal_my_home_menu_helpdesk
 msgid "Our Ratings"
 msgstr "我们的点评"
-
-#. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_stage__legend_blocked
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__legend_blocked
-msgid ""
-"Override the default value displayed for the blocked state for kanban "
-"selection, when the task or issue is in that stage."
-msgstr "当任务或者议题在这个阶段的时候，覆盖用来看板选择中显示阻塞状态的默认值"
-
-#. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_stage__legend_done
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__legend_done
-msgid ""
-"Override the default value displayed for the done state for kanban "
-"selection, when the task or issue is in that stage."
-msgstr "当任务或者议题在这个阶段的时候，覆盖用来看板选择中显示阻塞状态的默认值"
-
-#. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_stage__legend_normal
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__legend_normal
-msgid ""
-"Override the default value displayed for the normal state for kanban "
-"selection, when the task or issue is in that stage."
-msgstr "当任务或者议题在这个阶段的时候，覆盖用来看板选择中显示阻塞状态的默认值"
 
 #. module: helpdesk
 #: model:ir.ui.menu,name:helpdesk.helpdesk_menu_team_dashboard
@@ -2827,11 +2773,6 @@ msgid "Ready"
 msgstr "就绪"
 
 #. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__rating_last_feedback
-msgid "Reason of the rating"
-msgstr "点评的理由"
-
-#. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid ""
 "Receive notifications whenever tickets are created, rated or discussed on in"
@@ -2878,11 +2819,6 @@ msgstr "发布的退款"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_credit_notes
 msgid "Refunds"
 msgstr "退款"
-
-#. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_team__use_helpdesk_sale_timesheet
-msgid "Reinvoice the time spent on ticket through tasks."
-msgstr "通过任务重新调整在工单上花费的时间。"
 
 #. module: helpdesk
 #: model:helpdesk.tag,name:helpdesk.tag_repair
@@ -2993,6 +2929,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "SLA Policies"
 msgstr "SLA策略"
+
+#. module: helpdesk
+#: model:ir.model.fields,help:helpdesk.field_res_partner__sla_ids
+#: model:ir.model.fields,help:helpdesk.field_res_users__sla_ids
+msgid ""
+"SLA Policies that will automatically apply to the tickets submitted by this "
+"customer."
+msgstr ""
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
@@ -3250,13 +3194,6 @@ msgid "Source"
 msgstr "来源"
 
 #. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_stage__team_ids
-msgid ""
-"Specific team that uses this stage. Other teams will not be able to see or "
-"use this stage."
-msgstr "特定团队使用这个节点后，其他团队将无法查看或使用此节点。"
-
-#. module: helpdesk
 #: code:addons/helpdesk/controllers/portal.py:0
 #: code:addons/helpdesk/controllers/portal.py:0
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__stage_id
@@ -3284,13 +3221,6 @@ msgstr "阶段描述和状态含义"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_stage_view_form
 msgid "Stage Search"
 msgstr "阶段搜索"
-
-#. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_team__to_stage_id
-msgid ""
-"Stage to which inactive tickets will be automatically moved once the period "
-"of inactivity is reached."
-msgstr "一旦达到不活动期，不活动工票将自动转移到哪个阶段。"
 
 #. module: helpdesk
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_stage_action
@@ -3463,18 +3393,6 @@ msgid "Templates"
 msgstr "模板"
 
 #. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_sla__exclude_stage_ids
-msgid ""
-"The amount of time the ticket spends in this stage will not be taken into "
-"account when evaluating the status of the SLA Policy."
-msgstr "在评估 SLA 策略状态时，不会考虑票证在此阶段花费的时间。"
-
-#. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__sla_deadline
-msgid "The closest deadline of all SLA applied on this ticket"
-msgstr "所有适用于此工票的SLA中最接近的期限"
-
-#. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__alias_model_id
 msgid ""
 "The model (Odoo Document Kind) to which this alias corresponds. Any incoming"
@@ -3507,6 +3425,13 @@ msgid "The team does not allow ticket closing through portal"
 msgstr "团队不允许通过门户关闭工单"
 
 #. module: helpdesk
+#: model:ir.model.fields,help:helpdesk.field_helpdesk_sla__exclude_stage_ids
+msgid ""
+"The time spent in these stages won't be taken into account in the "
+"calculation of the SLA."
+msgstr ""
+
+#. module: helpdesk
 #: code:addons/helpdesk/models/helpdesk.py:0
 #, python-format
 msgid ""
@@ -3530,24 +3455,6 @@ msgid "This"
 msgstr "此"
 
 #. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_sla__partner_ids
-msgid ""
-"This SLA Policy will apply to any tickets from the selected customers. Leave"
-" empty to apply this SLA Policy to any ticket without distinction."
-msgstr "此SLA政策将应用于所选客户的任何工票。留空以将此SLA政策不加区分地应用于任何票据。"
-
-#. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__assign_hours
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__close_hours
-msgid "This duration is based on the working calendar of the team"
-msgstr "这一期限是基于团队的工作日程。"
-
-#. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__open_hours
-msgid "This duration is not based on the working calendar of the team"
-msgstr "这一期限不以团队的工作日程为基础。"
-
-#. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_ticket__campaign_id
 msgid ""
 "This is a name that helps you keep track of your different campaign efforts,"
@@ -3565,11 +3472,6 @@ msgid ""
 "This is the source of the link, e.g. Search Engine, another domain, or name "
 "of email list"
 msgstr "这是链接源，例如，搜索引擎、其他域名或EMail列表名称"
-
-#. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_team__use_helpdesk_timesheet
-msgid "This requires to have project module installed."
-msgstr "这需要安装项目模块。"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_stage_view_form
@@ -3757,9 +3659,9 @@ msgid "Tickets Search"
 msgstr "搜索工单"
 
 #. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_sla__priority
-msgid "Tickets under this priority will not be taken into account."
-msgstr "低于该优先级的工单不会进入该账户。"
+#: model:ir.model.fields,help:helpdesk.field_helpdesk_stage__fold
+msgid "Tickets in a folded stage are considered as closed."
+msgstr ""
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_helpdesk_sale_timesheet
@@ -3775,11 +3677,6 @@ msgstr "关闭时间（小时）"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__assign_hours
 msgid "Time to first assignment (hours)"
 msgstr "到第一次任务的时间（小时）"
-
-#. module: helpdesk
-#: model:ir.model.fields,help:helpdesk.field_helpdesk_sla__time
-msgid "Time to reach given stage based on ticket creation date"
-msgstr "根据工票创建日期，达到指定阶段的时间"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_helpdesk_timesheet

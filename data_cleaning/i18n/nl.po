@@ -187,7 +187,7 @@ msgstr "Negeren"
 #. module: data_cleaning
 #: model_terms:ir.ui.view,arch_db:data_cleaning.view_data_cleaning_record_search
 msgid "Discarded"
-msgstr "Weggegooid"
+msgstr "Negeerd"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_model__display_name

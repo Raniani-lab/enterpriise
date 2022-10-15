@@ -7,9 +7,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2021-12-07 10:57+0000\n"
+"POT-Creation-Date: 2022-10-10 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -52,11 +52,6 @@ msgid "Lot/Serial Number"
 msgstr "Partij/Serienummer"
 
 #. module: helpdesk_stock
-#: model:ir.model.fields,help:helpdesk_stock.field_helpdesk_ticket__lot_id
-msgid "Lot/Serial number concerned by the ticket"
-msgstr "Partij/Serienummer betrokken op het ticket"
-
-#. module: helpdesk_stock
 #: model:ir.model.fields,field_description:helpdesk_stock.field_stock_return_picking__picking_id
 msgid "Picking"
 msgstr "Picken"
@@ -70,8 +65,10 @@ msgstr "Product"
 
 #. module: helpdesk_stock
 #: model:ir.model.fields,help:helpdesk_stock.field_helpdesk_ticket__product_id
-msgid "Product concerned by the ticket"
-msgstr "Product betrokken op het ticket"
+msgid ""
+"Product this ticket is about. If selected, only the sales orders, deliveries"
+" and invoices including this product will be visible."
+msgstr ""
 
 #. module: helpdesk_stock
 #: model_terms:ir.ui.view,arch_db:helpdesk_stock.helpdesk_ticket_view_form_inherit_stock_user

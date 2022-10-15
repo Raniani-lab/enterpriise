@@ -3,43 +3,23 @@
 # 	* spreadsheet_edition
 # 
 # Translators:
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # Martin Trigaux, 2022
+# Jolien De Paepe, 2022
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:43+0000\n"
+"POT-Creation-Date: 2022-10-10 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: nl\n"
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
-
-#. module: spreadsheet_edition
-#. openerp-web
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
-#, python-format
-msgid "(Graph -"
-msgstr "(Grafiek -"
-
-#. module: spreadsheet_edition
-#. openerp-web
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
-#, python-format
-msgid "(List #"
-msgstr "(Lijst #"
-
-#. module: spreadsheet_edition
-#. openerp-web
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
-#, python-format
-msgid "(Pivot #"
-msgstr "(Scharnier #"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__active
@@ -177,8 +157,6 @@ msgstr "Datum"
 
 #. module: spreadsheet_edition
 #. openerp-web
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
-#: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Date field"
@@ -682,14 +660,14 @@ msgstr "Selecteer een menu..."
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "Select a spreadsheet to insert your %s."
-msgstr "Selecteer een spreadsheet om uw %s in te voegen."
+msgstr "Selecteer een spreadsheet om je %s in te voegen."
 
 #. module: spreadsheet_edition
 #. openerp-web
 #: code:addons/spreadsheet_edition/static/src/assets/components/ir_menu_selector/ir_menu_selector.js:0
 #, python-format
 msgid "Select an Odoo menu to link in your spreadsheet"
-msgstr "Selecteer een Odoo-menu om te linken in uw spreadsheet"
+msgstr "Selecteer een Odoo-menu om te linken in je spreadsheet"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -743,6 +721,13 @@ msgstr "Spreadsheets"
 #, python-format
 msgid "Stacked barchart"
 msgstr "Gestapeld staafdiagram"
+
+#. module: spreadsheet_edition
+#. openerp-web
+#: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/odoo_line/odoo_line_config_panel.xml:0
+#, python-format
+msgid "Stacked linechart"
+msgstr "Gestapeld lijngrafiek"
 
 #. module: spreadsheet_edition
 #. openerp-web

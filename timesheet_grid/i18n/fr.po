@@ -13,7 +13,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -530,6 +530,13 @@ msgid "Decrease Time"
 msgstr "Diminuer le temps"
 
 #. module: timesheet_grid
+#: model:ir.model.fields,help:timesheet_grid.field_account_analytic_line__employee_id
+msgid ""
+"Define an 'hourly cost' on the employee to track the cost of their time."
+msgstr ""
+"Définissez un 'coût horaire' sur l'employé pour suivre le coût de son temps."
+
+#. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
 msgid "Delete"
 msgstr "Supprimer"
@@ -761,39 +768,6 @@ msgid "ID"
 msgstr "ID"
 
 #. module: timesheet_grid
-#: model:ir.model.fields,help:timesheet_grid.field_res_company__prevent_old_timesheets_encoding
-#: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__prevent_old_timesheets_encoding
-msgid ""
-"If checked, encoding of timesheets older than a certain number of days will "
-"be blocked"
-msgstr ""
-"Si coché, l'encodage des feuilles de temps antérieures à un certain nombre "
-"de jours sera bloqué"
-
-#. module: timesheet_grid
-#: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_manager_allow
-msgid "If checked, send an email to all manager"
-msgstr "Si cochée, envoyer un email à tous les responsables"
-
-#. module: timesheet_grid
-#: model:ir.model.fields,help:timesheet_grid.field_res_company__timesheet_mail_manager_allow
-msgid ""
-"If checked, send an email to all managers who have not validated their "
-"timesheet"
-msgstr ""
-"Si cochée, envoyer un email à tous les responsables qui n’ont pas validé "
-"leur feuille de temps"
-
-#. module: timesheet_grid
-#: model:ir.model.fields,help:timesheet_grid.field_res_company__timesheet_mail_employee_allow
-#: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_user_allow
-msgid ""
-"If checked, send an email to all users who have not recorded their timesheet"
-msgstr ""
-"Si cochée, envoyer un email à tous les utilisateurs qui n’ont pas enregistré"
-" leur feuille de temps"
-
-#. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/js/components/timesheet_uom_hour_toggle/timesheet_uom_hour_toggle.xml:0
 #: code:addons/timesheet_grid/static/src/js/timesheet_uom_timer.js:0
@@ -973,6 +947,28 @@ msgstr "Aucunes activités à valider."
 #: model_terms:ir.actions.act_window,help:timesheet_grid.timesheet_grid_to_validate_action
 msgid "No timesheets to validate"
 msgstr "Aucune feuille de temps à valider"
+
+#. module: timesheet_grid
+#: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_manager_delay
+msgid ""
+"Number of days after the end of the week/month after which an automatic "
+"email reminder will be sent to timesheet managers that still have timesheets"
+" to validate."
+msgstr ""
+"Nombre de jours après la fin de la semaine/mois après lesquels un rappel "
+"automatique par email sera envoyé aux gestionnaires de feuilles de temps qui"
+" ont encore des feuilles de temps à valider."
+
+#. module: timesheet_grid
+#: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_user_delay
+msgid ""
+"Numbers of days after the end of the week/month after which an automatic "
+"email reminder will be sent to timesheet users that still have timesheets to"
+" encode (according to their working hours)."
+msgstr ""
+"Nombre de jours après la fin de la semaine/mois après lesquels un email de "
+"rappel automatique sera envoyé aux utilisateurs de feuilles de temps qui ont"
+" encore des feuilles de temps à encoder (selon leurs heures de travail)."
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
@@ -1214,6 +1210,22 @@ msgstr ""
 "est 'Heures'."
 
 #. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+msgid ""
+"The duration of timesheets encoded through the timer will automatically be "
+"rounded up to this number. For instance, if you stop your timer at 00:16:56,"
+" the duration of the timesheet entry will automatically be rounded up to "
+"00:30 (assuming you have a round up of 15 min). We recommend having the same"
+" value for the minimal duration and for the round up."
+msgstr ""
+"La durée des feuilles de temps encodées via le minuteur sera automatiquement"
+" arrondie à ce nombre. Par exemple, si vous arrêtez votre chronomètre à "
+"00:16:56, la durée de saisie de la feuille de temps sera automatiquement "
+"arrondie à 00:30 (en supposant que vous avez un arrondi de 15 min). Nous "
+"recommandons d'avoir la même valeur pour la durée minimale et pour l'arrondi"
+" vers le haut."
+
+#. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_controller_mixin.js:0
 #, python-format
@@ -1371,6 +1383,23 @@ msgid ""
 msgstr ""
 "Les feuilles de temps antérieures au %s (inclus) ont été validées, et ne "
 "peuvent plus être %s."
+
+#. module: timesheet_grid
+#: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
+msgid ""
+"Timesheets encoded via the timer that do not meet the minimal duration will "
+"automatically be rounded up to the defined value. For instance, if you stop "
+"your timer at 00:04:36, the duration of the timesheet entry will "
+"automatically be rounded up to 00:15 (assuming you have a minimal duration "
+"of 15 min). We recommend having the same value for the minimal duration and "
+"for the round up."
+msgstr ""
+"Les feuilles de temps encodées via le minuteur qui ne respectent pas la "
+"durée minimale seront automatiquement arrondies à la valeur définie. Par "
+"exemple, si vous arrêtez votre chronomètre à 00:04:36, la durée de saisie de"
+" la feuille de temps sera automatiquement arrondie à 00:15 (en supposant que"
+" vous disposez d'une durée minimale de 15 min). Nous recommandons d'avoir la"
+" même valeur pour la durée minimale et pour l'arrondi vers le haut."
 
 #. module: timesheet_grid
 #: model:ir.actions.act_window,name:timesheet_grid.action_timesheet_previous_month

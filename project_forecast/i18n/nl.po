@@ -114,7 +114,7 @@ msgid ""
 "Schedule your human and material resources across roles, projects and sales "
 "orders."
 msgstr ""
-"Plan uw menselijke en materiële middelen over rollen, projecten en "
+"Plan je menselijke en materiële middelen over rollen, projecten en "
 "verkooporders."
 
 #. module: project_forecast

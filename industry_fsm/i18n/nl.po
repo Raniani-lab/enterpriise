@@ -3,8 +3,8 @@
 # 	* industry_fsm
 # 
 # Translators:
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # Martin Trigaux, 2022
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,7 +35,7 @@ msgstr "'Werkbon %s - %s' % (object.name, object.partner_id.name)"
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "<b>Review and sign</b> the <b>task report</b> with your customer."
-msgstr ""
+msgstr "<b>Bekijk en onderteken</b> het <b>taakrapport</b> met de klant."
 
 #. module: industry_fsm
 #. openerp-web
@@ -43,7 +43,7 @@ msgstr ""
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "<b>Send your task report</b> to your customer."
-msgstr ""
+msgstr "<b>Stuur je taakrapport</b> naar de klant."
 
 #. module: industry_fsm
 #: model:mail.template,body_html:industry_fsm.mail_template_data_intervention_details
@@ -93,7 +93,7 @@ msgstr ""
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.portal_task_sign_button
 msgid "<i class=\"fa fa-check me-1\"/>Sign"
-msgstr ""
+msgstr "<i class=\"fa fa-check me-1\"/>Ondertekenen"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_sharing_inherit_project_task_view_form
@@ -115,6 +115,13 @@ msgid ""
 "            </p>\n"
 "        "
 msgstr ""
+"<p>\n"
+"                Beste <t t-out=\"object.partner_id.name of 'Klant'\">Klant</t>,<br/><br/>\n"
+"                Bijgaand vind je het werkbon voor het werk op locatie. <br/><br/>\n"
+"                Neem gerust contact met ons op als je vragen hebt.<br/><br/>\n"
+"                Met vriendelijke groet,<br/><br/>\n"
+"            </p>\n"
+"        "
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
@@ -130,7 +137,7 @@ msgstr ""
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
 msgid "<strong class=\"me-2\">Total</strong>"
-msgstr ""
+msgstr "<strong class=\"me-2\">Totaal</strong>"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
@@ -140,7 +147,7 @@ msgstr "<strong>Klant: </strong>"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_task
 msgid "<strong>Planned Date:</strong>"
-msgstr ""
+msgstr "<strong>Geplande datum:</strong>"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
@@ -174,6 +181,7 @@ msgstr "Alle taken"
 msgid ""
 "Analyze the progress of your tasks and the performance of your workers."
 msgstr ""
+"Analyseer de voortgang van je taken en de prestaties van je werknemers."
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__ancestor_id
@@ -317,6 +325,8 @@ msgid ""
 "Confirm the <b>time spent</b> on your task. <i>Tip: note that the duration "
 "has automatically been rounded to 15 minutes.</i>"
 msgstr ""
+"Bevestig de <b>bestede tijd</b> aan je taak. <i>Tip: houd er rekening mee "
+"dat de duur automatisch is afgerond op 15 minuten.</i>"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_res_partner
@@ -341,7 +351,7 @@ msgstr "Maak project aan"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.res_config_settings_view_form
 msgid "Create custom worksheet templates"
-msgstr ""
+msgstr "Aangepaste werkbonsjablonen maken"
 
 #. module: industry_fsm
 #: model:res.groups,name:industry_fsm.group_fsm_quotation_from_task
@@ -365,7 +375,7 @@ msgstr ""
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_view_form_inherit
 msgid "Create reports to be signed off by your customers"
-msgstr ""
+msgstr "Maak rapporten die door je klanten moeten worden ondertekend"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard__create_uid
@@ -382,7 +392,7 @@ msgstr "Aangemaakt op"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_res_config_settings__module_industry_fsm_report
 msgid "Custom Worksheets"
-msgstr ""
+msgstr "Aangepaste werkbonnen"
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/models/project_task.py:0
@@ -501,7 +511,7 @@ msgstr "Ontevreden"
 #: code:addons/industry_fsm/models/project_task.py:0
 #, python-format
 msgid "Do you want to stop the running timers?"
-msgstr ""
+msgstr "Wil je de lopende timers stoppen?"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__hours_effective
@@ -512,7 +522,7 @@ msgstr "Werkelijke uren"
 #. module: industry_fsm
 #: model:mail.template,description:industry_fsm.mail_template_data_task_report
 msgid "Email sent when clicking on \"send report\" in a task"
-msgstr ""
+msgstr "E-mail verzonden bij het klikken op \"rapport verzenden\" in een taak"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__planned_date_end
@@ -550,12 +560,12 @@ msgstr "Buitendienst"
 #. module: industry_fsm
 #: model:mail.template,name:industry_fsm.mail_template_data_intervention_details
 msgid "Field Service: Intervention Scheduled"
-msgstr ""
+msgstr "Buitendienst: interventie gepland"
 
 #. module: industry_fsm
 #: model:mail.template,name:industry_fsm.mail_template_data_task_report
 msgid "Field Service: Task Report"
-msgstr ""
+msgstr "Field Service: Taakrapport"
 
 #. module: industry_fsm
 #. openerp-web
@@ -572,7 +582,7 @@ msgstr "Vind hier je routebeschrijving voor de taken van vandaag."
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_fsm
 msgid "Find here your upcoming tasks for the next few days."
-msgstr ""
+msgstr "Vind hier je aankomende taken voor de komende dagen."
 
 #. module: industry_fsm
 #: model:ir.model.fields,help:industry_fsm.field_report_project_task_user_fsm__is_closed
@@ -599,6 +609,8 @@ msgid ""
 "Give it a <b>title</b> <i>(e.g. Boiler maintenance, Air-conditioning "
 "installation, etc.).</i>"
 msgstr ""
+"Geef het een <b>titel</b> <i>(bijv. Ketelonderhoud, Airco-installatie, "
+"etc.).</i>"
 
 #. module: industry_fsm
 #. openerp-web
@@ -676,6 +688,8 @@ msgstr "Foutieve handtekening gegevens."
 #, python-format
 msgid "Invite your customer to <b>validate and sign your task report</b>."
 msgstr ""
+"Nodig je klant uit om <b>je taakrapport te bevestigen en te "
+"ondertekenen</b>."
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__milestone_reached
@@ -747,6 +761,8 @@ msgid ""
 "Let's <b>mark your task as done!</b> <i>Tip: when doing so, your stock will "
 "automatically be updated, and your task will be closed.</i>"
 msgstr ""
+"Laten we <b>je taak als voltooid markeren!</b> <i>Tip: als je dit doet, "
+"wordt je voorraad automatisch bijgewerkt en wordt je taak gesloten.</i>"
 
 #. module: industry_fsm
 #. openerp-web
@@ -800,13 +816,13 @@ msgstr "Milestones"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "My Department's Projects"
-msgstr ""
+msgstr "De projecten van mijn afdeling"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "My Department's Tasks"
-msgstr ""
+msgstr "Taken van mijn afdeling"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -816,7 +832,7 @@ msgstr "Mijn favoriete projecten"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "My Favorites Projects"
-msgstr ""
+msgstr "Mijn favoriete projecten"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -891,7 +907,7 @@ msgstr "Geen taken gevonden. Maak er één aan!"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Not Starred"
-msgstr ""
+msgstr "Geen ster"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -907,6 +923,8 @@ msgid ""
 "Open your <b>worksheet</b> in order to fill it in with the details of your "
 "intervention."
 msgstr ""
+"Open je <b>werkbon</b> om het in te vullen met de details van je "
+"interventie."
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__overtime
@@ -1067,7 +1085,7 @@ msgstr "Tevreden"
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Save time by automatically generating a <b>signature</b>."
-msgstr ""
+msgstr "Bespaar tijd door automatisch een <b>handtekening</b> te genereren."
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_fsm_planning_groupby_project
@@ -1087,7 +1105,7 @@ msgstr "Doorzoek planning"
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Select the <b>customer</b> for your task."
-msgstr ""
+msgstr "Selecteer de <b>klant</b> voor je taak."
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
@@ -1106,6 +1124,8 @@ msgid ""
 "Set this template on a project's stage to automate email when tasks reach "
 "stages"
 msgstr ""
+"Stel deze sjabloon in op de fase van een project om e-mail te automatiseren "
+"wanneer taken de fasen bereiken"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.res_config_settings_action_fsm
@@ -1152,6 +1172,8 @@ msgid ""
 "Some employees are still running their timer for this task. Are you sure you"
 " want to continue?"
 msgstr ""
+"Sommige medewerkers laten hun timer nog lopen voor deze taak. Weet je zeker "
+"dat je door wilt gaan?"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__stage_id
@@ -1237,12 +1259,12 @@ msgstr "Taak aangepaste werkbon"
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_project_task_stop_timers_wizard
 msgid "Task stop running timers confirmation wizard"
-msgstr ""
+msgstr "Taak stop met het uitvoeren van timers bevestigingswizard"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_project_task_stop_timers_wizard_line
 msgid "Task stop running timers confirmation wizard line"
-msgstr ""
+msgstr "Taak stop met het uitvoeren van timers bevestigingswizard regel"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.project_tasks_action_fsm
@@ -1268,7 +1290,7 @@ msgstr "Takenanalyse"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Tasks Soon in Overtime"
-msgstr ""
+msgstr "Taken binnenkort in overwerk"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -1309,7 +1331,7 @@ msgstr "Bestede tijd"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_res_config_settings__module_industry_fsm_sale
 msgid "Time and Material Invoicing"
-msgstr ""
+msgstr "Tijd- en materiaalfacturering"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
@@ -1346,6 +1368,8 @@ msgid ""
 "To get things done, plan activities and use the task status.<br>\n"
 "                Collaborate efficiently by chatting in real-time or via email."
 msgstr ""
+"Plan activiteiten en gebruik de taakstatus om dingen voor elkaar te krijgen.<br>\n"
+"                Werk efficiënt samen door in realtime of via e-mail te chatten."
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_tasks_action_fsm
@@ -1383,7 +1407,7 @@ msgstr "Ongelezen berichten"
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Use the breadcrumbs to return to your <b>task</b>."
-msgstr ""
+msgstr "Gebruik de broodkruimels om terug te keren naar je <b>taak</b>."
 
 #. module: industry_fsm
 #: model:res.groups,name:industry_fsm.group_fsm_user
@@ -1440,7 +1464,7 @@ msgstr "Werkbon"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "Worksheet Complete"
-msgstr ""
+msgstr "Werkbon voltooid"
 
 #. module: industry_fsm
 #: model:mail.template,report_name:industry_fsm.mail_template_data_task_report
@@ -1492,7 +1516,7 @@ msgstr "Is FSM?"
 #. module: industry_fsm
 #: model:ir.actions.server,name:industry_fsm.fsm_customer_ratings_server_action
 msgid "project.project.fsm"
-msgstr ""
+msgstr "project.project.fsm"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_user_view_pivot

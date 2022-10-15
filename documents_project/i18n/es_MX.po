@@ -25,7 +25,7 @@ msgstr ""
 #: code:addons/documents_project/models/project_project.py:0
 #, python-format
 msgid "%(project_name)s's Documents"
-msgstr ""
+msgstr "Documentos de %(project_name)s"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_workflow_rule

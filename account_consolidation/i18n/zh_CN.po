@@ -4,6 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# 稀饭~~ <wangwhai@qq.com>, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -11,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:22+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -89,21 +91,21 @@ msgstr "(Re)重新计算"
 #: code:addons/account_consolidation/static/src/components/move_line_list/move_line_list.xml:0
 #, python-format
 msgid ") and the consolidated company ("
-msgstr ""
+msgstr ") 和合并后的公司 ("
 
 #. module: account_consolidation
 #. openerp-web
 #: code:addons/account_consolidation/static/src/components/move_line_list/move_line_list.xml:0
 #, python-format
 msgid ") have different currencies and the company is consolidated at"
-msgstr ""
+msgstr ") 有不同的货币，公司合并在"
 
 #. module: account_consolidation
 #. openerp-web
 #: code:addons/account_consolidation/static/src/components/move_line_list/move_line_list.xml:0
 #, python-format
 msgid ") have different currencies."
-msgstr ""
+msgstr ") 有不同的货币。"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.cell_template_consolidation_report
@@ -116,11 +118,13 @@ msgid ""
 "<i class=\"fa fa-caret-down\" role=\"img\" aria-label=\"Unfolded\" "
 "title=\"Unfolded\"/>"
 msgstr ""
+"<i class=\"fa fa-caret-down\" role=\"img\" aria-label=\"Unfolded\" "
+"title=\"Unfolded\"/>"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.line_template_consolidation_report
 msgid "<i class=\"fa fa-caret-right\" role=\"img\" aria-label=\"Folded\" title=\"Folded\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-caret-right\" role=\"img\" aria-label=\"Folded\" title=\"Folded\"/>"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_kanban
@@ -137,6 +141,8 @@ msgid ""
 "<span class=\"fa fa-bar-chart\"/>\n"
 "                Comparison"
 msgstr ""
+"<span class=\"fa fa-bar-chart\"/>\n"
+"                比较"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.search_template_consolidation_report_journals
@@ -144,6 +150,8 @@ msgid ""
 "<span class=\"fa fa-book\"/>\n"
 "                Journals:"
 msgstr ""
+"<span class=\"fa fa-book\"/>\n"
+"                日记账："
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_company_period_form
@@ -862,7 +870,7 @@ msgstr "编辑"
 #: code:addons/account_consolidation/report/trial_balance.py:0
 #, python-format
 msgid "Edit %s"
-msgstr ""
+msgstr "编辑 %s"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__currency_rate_end
@@ -1005,7 +1013,7 @@ msgstr "过去"
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__invert_sign
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_group__invert_sign
 msgid "Invert Balance Sign"
-msgstr ""
+msgstr "反转平衡符号"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_is_follower
@@ -1414,14 +1422,14 @@ msgstr "子群组"
 #: code:addons/account_consolidation/static/src/components/move_line_list/move_line_list.xml:0
 #, python-format
 msgid "Take into account that the consolidation ("
-msgstr ""
+msgstr "考虑到合并 ("
 
 #. module: account_consolidation
 #. openerp-web
 #: code:addons/account_consolidation/static/src/components/move_line_list/move_line_list.xml:0
 #, python-format
 msgid "Take into account that this company is consolidated at"
-msgstr ""
+msgstr "考虑到该公司合并于"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__currency_id
@@ -1480,7 +1488,7 @@ msgstr "试算平衡表"
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_consolidation_trial_balance_report_handler
 msgid "Trial Balance Custom Handler"
-msgstr ""
+msgstr "试算表自定义处理程序"
 
 #. module: account_consolidation
 #: code:addons/account_consolidation/models/consolidation_period.py:0

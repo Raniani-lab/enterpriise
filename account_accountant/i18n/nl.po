@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
 "Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -54,7 +54,7 @@ msgstr "/&gt;"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_form_inherit
 msgid "1 Bank Transaction"
-msgstr ""
+msgstr "1 Banktransactie"
 
 #. module: account_accountant
 #: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_0
@@ -84,7 +84,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 msgid "<i class=\"fa fa-check\"/> Matched"
-msgstr ""
+msgstr "<i class=\"fa fa-check\"/> Komt overeen"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
@@ -239,7 +239,7 @@ msgstr "Boekhoudkundige sluitingsdata"
 #: model:ir.actions.act_window,name:account_accountant.action_bank_statement_line_form_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_form_bank_rec_widget
 msgid "Add a Transaction"
-msgstr ""
+msgstr "Een transactie toevoegen"
 
 #. module: account_accountant
 #: model_terms:ir.actions.act_window,help:account_accountant.account_tag_action
@@ -314,7 +314,7 @@ msgstr "Kostenplaats"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__analytic_distribution_stored_char
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_distribution_stored_char
 msgid "Analytic Distribution Stored Char"
-msgstr "Analytische distributie Opgeslagen Char"
+msgstr "Kostenplaatsdistributie Opgeslagen Char"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__use_anglo_saxon
@@ -395,7 +395,6 @@ msgstr "Controleer alle"
 #. module: account_accountant
 #. openerp-web
 #: code:addons/account_accountant/static/src/components/move_line_list/move_line_list.xml:0
-#: code:addons/account_accountant/static/src/js/legacy_move_line_list_view.js:0
 #, python-format
 msgid "Choose a line to preview its attachments."
 msgstr "Kies een regel om de bijlagen te bekijken."
@@ -483,7 +482,7 @@ msgstr "Maak afletter model"
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_bank_statement_form_bank_rec_widget
 msgid "Create Statement"
-msgstr ""
+msgstr "Verklaring maken"
 
 #. module: account_accountant
 #. openerp-web
@@ -707,102 +706,102 @@ msgstr "Forceer prijs inclusief belastingen"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_account_id
 msgid "Form Account"
-msgstr ""
+msgstr "Account aanmaken"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_amount_currency
 msgid "Form Amount Currency"
-msgstr ""
+msgstr "Formulier Bedrag Valuta"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_balance
 msgid "Form Balance"
-msgstr ""
+msgstr "Formulier Saldo"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_currency_id
 msgid "Form Currency"
-msgstr ""
+msgstr "Formulier Valuta"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_date
 msgid "Form Date"
-msgstr ""
+msgstr "Formulier Datum"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_extra_text
 msgid "Form Extra Text"
-msgstr ""
+msgstr "Formulier Extra tekst "
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_flag
 msgid "Form Flag"
-msgstr ""
+msgstr "Formulier Vlag"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_force_negative_sign
 msgid "Form Force Negative Sign"
-msgstr ""
+msgstr "Form Forceer negatief teken"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_index
 msgid "Form Index"
-msgstr ""
+msgstr "Formulier Index"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_name
 msgid "Form Name"
-msgstr ""
+msgstr "Formulier Naam"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_id
 msgid "Form Partner"
-msgstr ""
+msgstr "Formulier Relatie"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_currency_id
 msgid "Form Partner Currency"
-msgstr ""
+msgstr "Formulier Relatievaluta"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_payable_account_id
 msgid "Form Partner Payable Account"
-msgstr ""
+msgstr "Formulier Relatie crediteurenrekening"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_payable_amount
 msgid "Form Partner Payable Amount"
-msgstr ""
+msgstr "Formulier Relatie te betalen bedrag"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_receivable_account_id
 msgid "Form Partner Receivable Account"
-msgstr ""
+msgstr "Formulier Relatie debiteurenrekening"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_receivable_amount
 msgid "Form Partner Receivable Amount"
-msgstr ""
+msgstr "Formulier Relatie te ontvangen bedrag"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_single_currency_mode
 msgid "Form Single Currency Mode"
-msgstr ""
+msgstr "Formulier modus voor één valuta"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_suggest_amount_currency
 msgid "Form Suggest Amount Currency"
-msgstr ""
+msgstr "Formulier Bedrag voorstellen Valuta"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_suggest_balance
 msgid "Form Suggest Balance"
-msgstr ""
+msgstr "Formulier Saldo voorstellen"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_tax_ids
 msgid "Form Tax"
-msgstr ""
+msgstr "Formulier BTW"
 
 #. module: account_accountant
 #: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_0
@@ -901,7 +900,7 @@ msgstr "Ongeldig"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Invalid statements"
-msgstr ""
+msgstr "Ongeldige afschriften"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_bank_rec_widget__state
@@ -1150,7 +1149,7 @@ msgstr "Op elkaar afgestemd"
 #: code:addons/account_accountant/models/account_payment.py:0
 #, python-format
 msgid "Matched Transactions"
-msgstr "Overeenkomende transacties"
+msgstr "Afgeletterde transacties"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__matching_rules_allow_auto_reconcile
@@ -1205,7 +1204,6 @@ msgstr "Volgende actie Todo"
 #. module: account_accountant
 #. openerp-web
 #: code:addons/account_accountant/static/src/components/move_line_list/move_line_list.xml:0
-#: code:addons/account_accountant/static/src/js/legacy_move_line_list_view.js:0
 #, python-format
 msgid "No attachments linked."
 msgstr "Geen bijlagen gekoppeld."
@@ -1213,7 +1211,7 @@ msgstr "Geen bijlagen gekoppeld."
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "No statement"
-msgstr ""
+msgstr "Geen afschrift"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__tax_lock_date
@@ -1269,7 +1267,7 @@ msgstr "Open hoeveelheid"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
 msgid "Open Amount in Currency"
-msgstr ""
+msgstr "Open bedrag in valuta"
 
 #. module: account_accountant
 #. openerp-web
@@ -1321,7 +1319,7 @@ msgstr "Crediteuren"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Payable:"
-msgstr "te betalen:"
+msgstr "Te betalen:"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_payment_form_inherit_account_accountant
@@ -1421,7 +1419,7 @@ msgstr "Debiteuren"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Receivable:"
-msgstr "te ontvangen:"
+msgstr "Te ontvangen:"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
@@ -1729,6 +1727,14 @@ msgid "There is nothing to reconcile."
 msgstr "Er is niets af te letteren."
 
 #. module: account_accountant
+#: code:addons/account_accountant/models/account_bank_statement.py:0
+#, python-format
+msgid ""
+"This bank transaction has been automatically validated using the "
+"reconciliation model '%s'."
+msgstr ""
+
+#. module: account_accountant
 #. openerp-web
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
@@ -1765,7 +1771,7 @@ msgstr "Te controleren"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 msgid "To check"
-msgstr ""
+msgstr "Controleren"
 
 #. module: account_accountant
 #. openerp-web
@@ -1800,13 +1806,13 @@ msgstr "Overboekingsrekeningen"
 #: model:ir.cron,cron_name:account_accountant.auto_reconcile_bank_statement_line
 #: model:ir.cron,name:account_accountant.auto_reconcile_bank_statement_line
 msgid "Try to reconcile automatically your statement lines"
-msgstr "Probeer uw afschriftregels automatisch op elkaar af te stemmen"
+msgstr "Probeer je afschriftregels automatisch op elkaar af te stemmen"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/res_company.py:0
 #, python-format
 msgid "Unreconciled statements lines"
-msgstr ""
+msgstr "Niet-afgeletterde afschriftregels"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__valid
@@ -1836,7 +1842,7 @@ msgstr "Weergave"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "View models"
-msgstr ""
+msgstr "Bekijk modellen"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__wizard_id
@@ -1869,7 +1875,7 @@ msgid ""
 "You can not have an overlap between two fiscal years, please correct the "
 "start and/or end dates of your fiscal years."
 msgstr ""
-"Je kunt geen overlapping hebben tussen twee boekjaren, wijzig a.u.b. de "
+"Je kunt geen overlapping hebben tussen twee boekjaren, wijzig a.je.b. de "
 "start en/of einddatum van je boekjaren."
 
 #. module: account_accountant
@@ -1909,6 +1915,12 @@ msgid ""
 msgstr ""
 "Je kunt de te betalen en te ontvangen rekeningen van meerdere relaties niet "
 "tegelijkertijd afletteren."
+
+#. module: account_accountant
+#: code:addons/account_accountant/wizard/account_change_lock_date.py:0
+#, python-format
+msgid "You cannot set a lock date in the future."
+msgstr ""
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0

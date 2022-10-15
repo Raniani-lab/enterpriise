@@ -3,17 +3,17 @@
 # 	* social_facebook
 # 
 # Translators:
-# Lucia Pacheco <lpo@odoo.com>, 2022
 # Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2022
 # Martin Trigaux, 2022
+# Braulio D. López Vázquez <bdl@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~15.4+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-06-09 14:11+0000\n"
+"POT-Creation-Date: 2022-10-10 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Braulio D. López Vázquez <bdl@odoo.com>, 2022\n"
 "Language-Team: Spanish (Mexico) (https://www.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,13 +28,13 @@ msgstr "<b class=\"d-block mb-2\">Página de Facebook</b>"
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.social_stream_post_view_kanban
-msgid "<i class=\"fa fa-comments\" title=\"Comments\"/>"
-msgstr "<i class=\"fa fa-comments\" title=\"Comentarios\"/>"
+msgid "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
+msgstr "<i class=\"fa fa-comments me-1\" title=\"Comentarios\"/>"
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.social_stream_post_view_kanban
-msgid "<i class=\"fa fa-thumbs-up\" title=\"Likes\"/>"
-msgstr "<i class=\"fa fa-thumbs-up\" title=\"Me gusta\"/>"
+msgid "<i class=\"fa fa-thumbs-up me-1\" title=\"Likes\"/>"
+msgstr "<i class=\"fa fa-thumbs-up me-1\" title=\"Me gusta\"/>"
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_live_post__facebook_post_id
@@ -123,7 +123,7 @@ msgstr "ID del autor de Facebook"
 
 #. module: social_facebook
 #. openerp-web
-#: code:addons/social_facebook/static/src/js/stream_post_facebook_comments.js:0
+#: code:addons/social_facebook/static/src/js/stream_post_kanban_record.js:0
 #, python-format
 msgid "Facebook Comments"
 msgstr "Comentarios de Facebook"
@@ -338,13 +338,6 @@ msgstr "No cuenta con una suscripción activa. Compre una aquí: %s"
 #: model_terms:ir.ui.view,arch_db:social_facebook.social_stream_post_view_kanban
 msgid "added an event"
 msgstr "agregar un evento"
-
-#. module: social_facebook
-#. openerp-web
-#: code:addons/social_facebook/static/src/js/stream_post_facebook_comments.js:0
-#, python-format
-msgid "comment/reply"
-msgstr "comentar/responder"
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.facebook_preview

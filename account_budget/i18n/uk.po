@@ -3,16 +3,15 @@
 # 	* account_budget
 # 
 # Translators:
-# Martin Trigaux, 2019
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-09 11:58+0000\n"
-"PO-Revision-Date: 2019-08-26 09:34+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
+"PO-Revision-Date: 2022-09-22 05:45+0000\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,6 +39,20 @@ msgstr "\"Дата початку\" бюджетного рядка повинн
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_kanban
 msgid "<i class=\"fa fa-clock-o\" role=\"img\" aria-label=\"Period\" title=\"Period\"/>"
 msgstr "<i class=\"fa fa-clock-o\" role=\"img\" aria-label=\"Period\" title=\"Period\"/>"
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+msgid ""
+"<i class=\"fa fa-long-arrow-right mx-2\" aria-label=\"Arrow icon\" "
+"title=\"Arrow\"/>"
+msgstr ""
+"<i class=\"fa fa-long-arrow-right mx-2\" aria-label=\"Arrow icon\" "
+"title=\"Arrow\"/>"
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
+msgid "<span class=\"o_stat_text\">Budget</span>"
+msgstr "<span class=\"o_stat_text\">Бюджет</span>"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post__account_ids
@@ -73,6 +86,11 @@ msgid "Activity State"
 msgstr "Стан дії"
 
 #. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "Іконка типу дії"
+
+#. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget_lines__practical_amount
 msgid "Amount really earned/spent."
 msgstr "Сума дійсно зароблена/витрачена."
@@ -98,9 +116,9 @@ msgid "Analytic Account"
 msgstr "Аналітичний рахунок"
 
 #. module: account_budget
-#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__analytic_group_id
-msgid "Analytic Group"
-msgstr "Аналітична група"
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__analytic_plan_id
+msgid "Analytic Plan"
+msgstr ""
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
@@ -110,14 +128,13 @@ msgstr "Затвердити"
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_attachment_count
 msgid "Attachment Count"
-msgstr "Підрахунок прикріплень"
+msgstr "Підрахунок прикріплення"
 
 #. module: account_budget
 #: model:ir.model,name:account_budget.model_crossovered_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__crossovered_budget_id
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_tree
-#: model_terms:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "Budget"
 msgstr "Бюджет"
@@ -126,7 +143,7 @@ msgstr "Бюджет"
 #: model:ir.actions.act_window,name:account_budget.act_account_analytic_account_cb_lines
 #: model_terms:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
 msgid "Budget Items"
-msgstr "Елементи бюджету"
+msgstr "Пункти бюджету"
 
 #. module: account_budget
 #: model:ir.model,name:account_budget.model_crossovered_budget_lines
@@ -147,7 +164,6 @@ msgstr "Рядки бюджету"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__name
-#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Budget Name"
 msgstr "Назва бюджету"
 
@@ -176,7 +192,7 @@ msgstr "Бюджетні позиції"
 #: model:ir.ui.menu,name:account_budget.menu_act_crossovered_budget_view
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
 msgid "Budgets"
-msgstr "Бюджети"
+msgstr "Бюджет"
 
 #. module: account_budget
 #: model:ir.actions.act_window,name:account_budget.act_crossovered_budget_lines_view
@@ -237,12 +253,17 @@ msgstr "Створив"
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__create_date
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__create_date
 msgid "Created on"
-msgstr "Створено на"
+msgstr "Створено"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__currency_id
 msgid "Currency"
 msgstr "Валюта"
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
+msgid "Date"
+msgstr "Дата"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post__display_name
@@ -255,7 +276,7 @@ msgstr "Назва для відображення"
 #: model:ir.model.fields.selection,name:account_budget.selection__crossovered_budget__state__done
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Done"
-msgstr "Готово"
+msgstr "Виконано"
 
 #. module: account_budget
 #: model:ir.model.fields.selection,name:account_budget.selection__crossovered_budget__state__draft
@@ -280,24 +301,24 @@ msgid "Entries..."
 msgstr "Записи..."
 
 #. module: account_budget
-#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
-msgid "Exception Activities"
-msgstr "Виключення дій"
-
-#. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_follower_ids
 msgid "Followers"
 msgstr "Підписники"
 
 #. module: account_budget
-#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_channel_ids
-msgid "Followers (Channels)"
-msgstr "Підписники (Канали)"
-
-#. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_partner_ids
 msgid "Followers (Partners)"
 msgstr "Підписники (Партнери)"
+
+#. module: account_budget
+#: model:ir.model.fields,help:account_budget.field_crossovered_budget__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr "Іконка зі шрифтом Font awesome, напр. fa-tasks"
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+msgid "From"
+msgstr "Від"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
@@ -308,6 +329,11 @@ msgstr "Майбутні дії"
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
 msgid "Group By"
 msgstr "Групувати за"
+
+#. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__has_message
+msgid "Has Message"
+msgstr "Є повідомлення"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post__id
@@ -328,7 +354,6 @@ msgstr "Іконка для визначення виключення дії."
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_needaction
-#: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_unread
 msgid "If checked, new messages require your attention."
 msgstr "Якщо позначено, то нові повідомлення будуть потребувати вашої уваги."
 
@@ -353,7 +378,7 @@ msgstr "Стежить"
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget____last_update
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines____last_update
 msgid "Last Modified on"
-msgstr "Останні зміни на"
+msgstr "Остання модифікація"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post__write_uid
@@ -390,10 +415,20 @@ msgid "Messages"
 msgstr "Повідомлення"
 
 #. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "Дедлайн моєї дії"
+
+#. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post__name
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__name
 msgid "Name"
-msgstr "Ім'я"
+msgstr "Назва"
+
+#. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr "Наступна подія календаря дій"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_date_deadline
@@ -433,12 +468,7 @@ msgstr "Кількість повідомлень, які потебують д�
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr "Кількість повідомлень з помилковою доставкою"
-
-#. module: account_budget
-#: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_unread_counter
-msgid "Number of unread messages"
-msgstr "Кількість непрочитаних повідомлень"
+msgstr "Кількість повідомлень з помилковою дставкою"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__paid_date
@@ -533,19 +563,20 @@ msgstr "Бюджет повинен мати хоча б один рахунок
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__theoritical_amount
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
-msgid "Theoretical Amount"
-msgstr "Теоретична сума"
-
-#. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
-msgid "Theoritical Amount"
+msgid "Theoretical Amount"
 msgstr "Теоретична сума"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
-msgid "Theoritical amount"
+msgid "Theoretical amount"
 msgstr "Теоретична сума"
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+msgid "To"
+msgstr "До"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
@@ -555,7 +586,7 @@ msgstr "Необхідно затвердити"
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "To Approve Budgets"
-msgstr "Затвердити бюджет"
+msgstr "Бюджети до підтвердження"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
@@ -563,19 +594,14 @@ msgid "Today Activities"
 msgstr "Сьогоднішні дії"
 
 #. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_account_analytic_account__total_planned_amount
+msgid "Total Planned Amount"
+msgstr "Всього запланована сума"
+
+#. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr "Тип виключення дії на записі."
-
-#. module: account_budget
-#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_unread
-msgid "Unread Messages"
-msgstr "Непрочитані повідомлення"
-
-#. module: account_budget
-#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_unread_counter
-msgid "Unread Messages Counter"
-msgstr "Кількість непрочитаних повідомлень"
+msgstr "Тип дії виключення на записі."
 
 #. module: account_budget
 #: model_terms:ir.actions.act_window,help:account_budget.act_crossovered_budget_view
@@ -608,3 +634,8 @@ msgid ""
 msgstr ""
 "Ви повинні ввести принаймні бюджетну позицію або аналітичний рахунок на "
 "бюджетному рядку."
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+msgid "e.g. Budget 2023: Optimistic"
+msgstr ""

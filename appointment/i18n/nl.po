@@ -4,14 +4,14 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Bert Burggraaf, 2022
+# 04a2cd0fd6ee22172c36ea91f27a38c5_60041bf, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
 "Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -755,7 +755,7 @@ msgstr "Gekozen door de klant"
 #: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Click in your calendar to pick meeting time proposals."
-msgstr "Klik in uw agenda om voorstellen voor vergadertijden te kiezen."
+msgstr "Klik in je agenda om voorstellen voor vergadertijden te kiezen."
 
 #. module: appointment
 #: model:onboarding.onboarding.step,button_text:appointment.appointment_onboarding_create_appointment_type_step
@@ -1061,7 +1061,7 @@ msgstr "Google Agenda"
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_search
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_search
 msgid "Group By"
-msgstr "Groeperen op"
+msgstr "Groepeer op"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__has_message
@@ -1077,7 +1077,7 @@ msgstr "Hoe deel te nemen:"
 #: model:ir.model.fields,help:appointment.field_appointment_type__assign_method
 msgid "How users will be assigned to meetings customers book on your website."
 msgstr ""
-"Hoe gebruikers worden toegewezen aan vergaderingen die klanten boeken op uw "
+"Hoe gebruikers worden toegewezen aan vergaderingen die klanten boeken op je "
 "website."
 
 #. module: appointment
@@ -1094,7 +1094,7 @@ msgstr "ID"
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Indien aangevinkt, vragen nieuwe berichten uw aandacht."
+msgstr "Indien aangevinkt, vragen nieuwe berichten je aandacht."
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_has_error
@@ -1110,6 +1110,13 @@ msgid ""
 msgstr ""
 "Indien leeg, worden alle gebruikers als beschikbaar beschouwd.\n"
 "Indien ingesteld, worden alleen de geselecteerde gebruikers in aanmerking genomen voor dit slot."
+
+#. module: appointment
+#. openerp-web
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Insert Appointment Link"
+msgstr ""
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form_insert_link
@@ -1214,7 +1221,7 @@ msgstr "Laatst geupdate op"
 #: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Link Copied in your clipboard !"
-msgstr "Link Gekopieerd naar uw klembord!"
+msgstr "Link Gekopieerd naar je klembord!"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form
@@ -1452,7 +1459,7 @@ msgid ""
 "Only letters, numbers, underscores and dashes are allowed in your links."
 msgstr ""
 "Alleen letters, cijfers, onderstrepingstekens en streepjes zijn toegestaan "
-"in uw links."
+"in je links."
 
 #. module: appointment
 #: code:addons/appointment/models/appointment_invite.py:0
@@ -1905,7 +1912,7 @@ msgstr "Hun eerste beschikbaarheid is"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_appointments
 msgid "There is no appointment linked to your account."
-msgstr "Er is geen afspraak gekoppeld aan uw account."
+msgstr "Er is geen afspraak gekoppeld aan je account."
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
@@ -2106,7 +2113,7 @@ msgstr "Jouw email*"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Your Name*"
-msgstr "Uw naam*"
+msgstr "Je naam*"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
@@ -2116,7 +2123,7 @@ msgstr "Jouw telefoon nummer*"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Your appointment is in less than"
-msgstr "Uw afspraak is over minder dan"
+msgstr "Je afspraak is over minder dan"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form

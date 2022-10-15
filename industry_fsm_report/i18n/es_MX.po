@@ -65,6 +65,8 @@ msgid ""
 "Create templates for each type of intervention you have and customize their "
 "content with your own custom fields."
 msgstr ""
+"Cree plantillas para cada tipo de intervención que tiene y personalice su "
+"contenido con sus propios campos personalizados."
 
 #. module: industry_fsm_report
 #: model_terms:ir.actions.act_window,help:industry_fsm_report.fsm_worksheets_action_settings
@@ -156,7 +158,7 @@ msgstr "Enviar reporte"
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_task_worksheet_template_3
 msgid "Serial Number"
-msgstr "Nº de serie"
+msgstr "Número de serie"
 
 #. module: industry_fsm_report
 #: model:ir.model,name:industry_fsm_report.model_project_task

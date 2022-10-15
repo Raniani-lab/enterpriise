@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:42+0000\n"
+"POT-Creation-Date: 2022-10-10 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Japanese (https://www.transifex.com/odoo/teams/41243/ja/)\n"
@@ -274,7 +274,8 @@ msgstr "プロジェクト"
 #: model:ir.model.fields,help:helpdesk_timesheet.field_helpdesk_team__project_id
 #: model:ir.model.fields,help:helpdesk_timesheet.field_helpdesk_ticket__project_id
 msgid ""
-"Project to which the tickets (and the timesheets) will be linked by default."
+"Project to which the timesheets of this helpdesk team's tickets will be "
+"linked."
 msgstr ""
 
 #. module: helpdesk_timesheet
@@ -333,19 +334,6 @@ msgid "Tasks"
 msgstr "タスク"
 
 #. module: helpdesk_timesheet
-#: model:ir.model.fields,help:helpdesk_timesheet.field_helpdesk_ticket__use_helpdesk_timesheet
-msgid "This requires to have project module installed."
-msgstr ""
-
-#. module: helpdesk_timesheet
-#: model:ir.model.fields,help:helpdesk_timesheet.field_helpdesk_team__timesheet_encode_uom_id
-msgid ""
-"This will set the unit of measure used to encode timesheet. This will simply provide tools\n"
-"        and widgets to help the encoding. All reporting will still be expressed in hours (default value)."
-msgstr ""
-"ここでタイムシート入力の単位を指定します。入力を補佐するツールやウィジェットでこの単位が使われます。ここでの指定にかかわらず、レポートでの表示は時間(デフォルト値)単位となります。"
-
-#. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_create_timesheet__ticket_id
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.hr_timesheet_line_search_inherit_helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.hr_timesheet_line_tree_inherit_helpdesk_timesheet
@@ -385,6 +373,13 @@ msgstr "チケット"
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_create_timesheet__time_spent
 msgid "Time"
 msgstr "時間"
+
+#. module: helpdesk_timesheet
+#: model:ir.model.fields,help:helpdesk_timesheet.field_helpdesk_ticket__timesheet_ids
+msgid ""
+"Time spent on this ticket. By default, your timesheets will be linked to the sales order item of your ticket.\n"
+"Remove the sales order item to make your timesheet entries non billable."
+msgstr ""
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__timer_pause

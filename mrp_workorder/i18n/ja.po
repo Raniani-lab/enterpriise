@@ -9,7 +9,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
 "Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Japanese (https://www.transifex.com/odoo/teams/41243/ja/)\n"
@@ -28,25 +28,21 @@ msgstr ""
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
-msgid "<b>%s suggests to use this document as instruction</b>"
+msgid ""
+"<b>%s suggests to use this document as instruction</b><br/><img style='max-"
+"width: 75%%' class='img-fluid' src=%s/>"
 msgstr ""
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
-msgid "<b>New Instruction suggested by %s</b><br/>%s<br/>"
+msgid "<b>New Instruction suggested by %s</b><br/>%s<br/><b>Reason: %s</b>"
 msgstr ""
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/models/quality.py:0
 #, python-format
 msgid "<b>New Step suggested by %s</b><br/><b>Reason:</b>%s"
-msgstr ""
-
-#. module: mrp_workorder
-#: code:addons/mrp_workorder/wizard/propose_change.py:0
-#, python-format
-msgid "<b>Reason: %s</b>"
 msgstr ""
 
 #. module: mrp_workorder
@@ -324,6 +320,12 @@ msgid "Delete this Step"
 msgstr ""
 
 #. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__is_deleted
+msgid "Deleted in production"
+msgstr ""
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_mrp_workorder_additional_product_wizard
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_propose_change_wizard
 msgid "Discard"
@@ -334,6 +336,11 @@ msgstr "破棄"
 #: model:ir.model.fields,field_description:mrp_workorder.field_propose_change__display_name
 msgid "Display Name"
 msgstr "表示名"
+
+#. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
+msgid "Document"
+msgstr "ドキュメント"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__qty_done
@@ -437,8 +444,12 @@ msgid ""
 msgstr ""
 
 #. module: mrp_workorder
-#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_routing_workcenter__quality_point_count
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
+msgid "Instruction"
+msgstr ""
+
+#. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_mrp_routing_workcenter__quality_point_count
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_routing_workcenter_tree_view_inherited
 msgid "Instructions"
 msgstr "説明"
@@ -716,6 +727,7 @@ msgid "Products"
 msgstr "プロダクト"
 
 #. module: mrp_workorder
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_propose_change_wizard
 msgid "Propose Change"
 msgstr ""
@@ -798,11 +810,6 @@ msgid "Quantity"
 msgstr "数量"
 
 #. module: mrp_workorder
-#: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
-msgid "Reason"
-msgstr "理由"
-
-#. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "Record production"
 msgstr ""
@@ -847,11 +854,6 @@ msgstr "担当者"
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__result
 msgid "Result"
 msgstr "結果"
-
-#. module: mrp_workorder
-#: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
-msgid "Save"
-msgstr "保存"
 
 #. module: mrp_workorder
 #. openerp-web
@@ -1005,6 +1007,7 @@ msgstr "タイマー"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__title
+#: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
 msgid "Title"
 msgstr "タイトル"
 
@@ -1243,6 +1246,11 @@ msgstr ""
 #, python-format
 msgid "minutes"
 msgstr "分"
+
+#. module: mrp_workorder
+#: model:ir.model.fields,field_description:mrp_workorder.field_propose_change__title
+msgid "title"
+msgstr "タイトル"
 
 #. module: mrp_workorder
 #: model:product.product,description_sale:mrp_workorder.product_product_stool_foot_1

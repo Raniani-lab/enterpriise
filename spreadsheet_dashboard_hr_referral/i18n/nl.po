@@ -37,7 +37,7 @@ msgstr "Sollicitaties"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Applications by Creation Date"
-msgstr ""
+msgstr "Sollicitaties op aanmaakdatum"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -85,21 +85,21 @@ msgstr "Aangenomen"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired Ratio"
-msgstr ""
+msgstr "Aanneemratio"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired by referral"
-msgstr ""
+msgstr "Aangemomen door verwijzing"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired ratio"
-msgstr ""
+msgstr "Ingehuurde verhouding"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -122,7 +122,7 @@ msgstr "Medium"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Most Hired Job Positions"
-msgstr ""
+msgstr "Meest aangenomen vacatures"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -144,14 +144,14 @@ msgstr "Nieuwe sollicitanten"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "New Hires"
-msgstr ""
+msgstr "Nieuw aangenomen"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "New applicants"
-msgstr ""
+msgstr "Nieuwe sollicitanten"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -179,14 +179,14 @@ msgstr "Vorige"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Process Duration"
-msgstr "Duur proces"
+msgstr "Procesduur"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Process duration"
-msgstr ""
+msgstr "Procesduur"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -204,7 +204,7 @@ msgstr "Ratio"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recent Applications"
-msgstr ""
+msgstr "Recente sollicitaties"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -221,35 +221,35 @@ msgstr "Recruiter"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Company"
-msgstr ""
+msgstr "Wervingsanalyse per bedrijf"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Job"
-msgstr ""
+msgstr "Wervingsanalyse per vacature"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Medium"
-msgstr ""
+msgstr "Wervingsanalyse per medium"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Recruiter"
-msgstr ""
+msgstr "Wervingsanalyse door recruiter"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recruitment Analysis by Source"
-msgstr ""
+msgstr "Wervingsanalyse per bron"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -263,7 +263,7 @@ msgstr "Doorverwijzing ratio"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Referral rate"
-msgstr ""
+msgstr "Verwijzingspercentage"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -285,14 +285,14 @@ msgstr "Fase"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Companies"
-msgstr ""
+msgstr "Topbedrijven"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Job Positions"
-msgstr ""
+msgstr "Top vacatures"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -306,7 +306,7 @@ msgstr "Topmediums"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Recruiters"
-msgstr ""
+msgstr "Toprecruiters"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web

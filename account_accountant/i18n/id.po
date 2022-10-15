@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
 "Last-Translator: arfa simoncelli, 2022\n"
 "Language-Team: Indonesian (https://www.transifex.com/odoo/teams/41243/id/)\n"
@@ -387,7 +387,6 @@ msgstr "Check all"
 #. module: account_accountant
 #. openerp-web
 #: code:addons/account_accountant/static/src/components/move_line_list/move_line_list.xml:0
-#: code:addons/account_accountant/static/src/js/legacy_move_line_list_view.js:0
 #, python-format
 msgid "Choose a line to preview its attachments."
 msgstr "Pilih sebuah garis untuk melihat data lampirannya."
@@ -1172,7 +1171,6 @@ msgstr ""
 #. module: account_accountant
 #. openerp-web
 #: code:addons/account_accountant/static/src/components/move_line_list/move_line_list.xml:0
-#: code:addons/account_accountant/static/src/js/legacy_move_line_list_view.js:0
 #, python-format
 msgid "No attachments linked."
 msgstr ""
@@ -1680,6 +1678,14 @@ msgid "There is nothing to reconcile."
 msgstr "Tidak ada yang perlu direkonsiliasi."
 
 #. module: account_accountant
+#: code:addons/account_accountant/models/account_bank_statement.py:0
+#, python-format
+msgid ""
+"This bank transaction has been automatically validated using the "
+"reconciliation model '%s'."
+msgstr ""
+
+#. module: account_accountant
 #. openerp-web
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
@@ -1853,6 +1859,12 @@ msgstr ""
 msgid ""
 "You cannot reconcile the payable and receivable accounts of multiple "
 "partners together at the same time."
+msgstr ""
+
+#. module: account_accountant
+#: code:addons/account_accountant/wizard/account_change_lock_date.py:0
+#, python-format
+msgid "You cannot set a lock date in the future."
 msgstr ""
 
 #. module: account_accountant

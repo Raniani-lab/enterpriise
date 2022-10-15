@@ -3,8 +3,8 @@
 # 	* voip
 # 
 # Translators:
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # Martin Trigaux, 2022
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:22+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,21 +30,21 @@ msgstr "# Cases"
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "%(number of missed calls)s missed calls"
-msgstr ""
+msgstr "%(aantal gemiste oproepen)s gemiste oproepen"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "1 missed call"
-msgstr ""
+msgstr "1 gemiste oproep"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "2 missed calls"
-msgstr ""
+msgstr "2 gemiste oproepen"
 
 #. module: voip
 #. openerp-web
@@ -54,6 +54,9 @@ msgid ""
 "A hardware error occured while trying to access audio recording device. "
 "Please make sure your drivers are up to date and try again."
 msgstr ""
+"Er is een hardwarefout opgetreden bij het proberen toegang te krijgen tot "
+"het audio-opnameapparaat. Zorg ervoor dat je stuurprogramma's up-to-date "
+"zijn en probeer het opnieuw."
 
 #. module: voip
 #. openerp-web
@@ -91,6 +94,8 @@ msgid ""
 "An error occured involving the audio recording device "
 "(%(errorName)s):</br>%(errorMessage)s"
 msgstr ""
+"Er is een fout opgetreden met betrekking tot het audio-opnameapparaat "
+"(%(errorName)s):</br>%(errorMessage)s"
 
 #. module: voip
 #. openerp-web
@@ -156,14 +161,14 @@ msgstr "Gespreksduur: %(min)smin %(sec)ssec"
 #: model:ir.model.fields,field_description:voip.field_res_users__should_call_from_another_device
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__should_call_from_another_device
 msgid "Call from another device"
-msgstr ""
+msgstr "Bellen vanaf een ander apparaat"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "Call rejected (reason: \"%(reasonPhrase)s\")"
-msgstr ""
+msgstr "Oproep afgewezen (reden: \"%(reasonPhrase)s\")"
 
 #. module: voip
 #: code:addons/voip/models/voip_phonecall.py:0
@@ -199,7 +204,7 @@ msgstr "Annuleren"
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #, python-format
 msgid "Cancel the activity"
-msgstr "annuleer de activiteit"
+msgstr "Annuleer de activiteit"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__cancel
@@ -217,6 +222,10 @@ msgid ""
 " runs over HTTPS and that your browser is not set to deny access to media "
 "devices."
 msgstr ""
+"Geen toegang tot audio-opnameapparaat. Als je de toegang tot je microfoon "
+"hebt geweigerd, verleen deze dan en probeer het opnieuw. Zorg er anders voor"
+" dat deze website via HTTPS draait en dat je browser niet is ingesteld om "
+"toegang tot media-apparaten te weigeren."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__how_to_call_on_mobile
@@ -228,6 +237,11 @@ msgid ""
 "            • Ask: Always ask whether the softphone or the device's phone must be used\n"
 "        "
 msgstr ""
+"Kies de methode die moet worden gebruikt om te bellen bij gebruik van de mobiele applicatie:\n"
+"            • VoIP: gebruik altijd de Odoo-softphone\n"
+"            • Telefoon van apparaat: gebruik altijd de telefoon van het apparaat\n"
+"            • Vragen: altijd vragen of de softphone of de telefoon van het apparaat moet worden gebruikt\n"
+"        "
 
 #. module: voip
 #. openerp-web
@@ -309,7 +323,7 @@ msgstr "Demo"
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_users_settings__how_to_call_on_mobile__phone
 msgid "Device's phone"
-msgstr ""
+msgstr "Telefoon van apparaat"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__direction
@@ -357,7 +371,7 @@ msgstr "Duur"
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__duration
 msgid "Duration in minutes."
-msgstr "Duur in minuten"
+msgstr "Duur in minuten."
 
 #. module: voip
 #. openerp-web
@@ -380,7 +394,7 @@ msgstr "Einde gesprek"
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Enter number or name"
-msgstr "Voer nummer of naam in."
+msgstr "Voer nummer of naam in"
 
 #. module: voip
 #. openerp-web
@@ -393,7 +407,7 @@ msgstr "Geef het nummer in..."
 #: model:ir.model.fields,field_description:voip.field_res_users__external_device_number
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__external_device_number
 msgid "External device number"
-msgstr ""
+msgstr "Nummer extern apparaat"
 
 #. module: voip
 #. openerp-web
@@ -404,6 +418,9 @@ msgid ""
 "wrong. Please have an administrator verify the websocket server URL in the "
 "General Settings."
 msgstr ""
+"Kan de user-agent niet starten. De URL van de websocket-server kan verkeerd "
+"zijn. Laat een beheerder de websocket-server-URL verifiëren in de Algemene "
+"instellingen."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__sequence
@@ -434,7 +451,7 @@ msgstr "Beëindigd"
 #: model:ir.model.fields,field_description:voip.field_res_users__how_to_call_on_mobile
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__how_to_call_on_mobile
 msgid "How to place calls on mobile"
-msgstr ""
+msgstr "Hoe te bellen op mobiel"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__id
@@ -448,6 +465,8 @@ msgstr "ID"
 #: model:ir.model.fields,help:voip.field_res_users_settings__should_auto_reject_incoming_calls
 msgid "If enabled, incoming calls will be automatically declined in Odoo."
 msgstr ""
+"Indien ingeschakeld, worden inkomende oproepen automatisch geweigerd in "
+"Odoo."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__should_call_from_another_device
@@ -457,6 +476,10 @@ msgid ""
 "device number\". Use this option to place the call in Odoo but handle it "
 "from another device - e.g. your desk phone."
 msgstr ""
+"Indien ingeschakeld, zal het plaatsen van een oproep in Odoo de oproep "
+"doorverbinden naar het \"Externe apparaatnummer\". Gebruik deze optie om de "
+"oproep in Odoo te plaatsen maar af te handelen vanaf een ander apparaat - "
+"b.v. je bureautelefoon."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__external_device_number
@@ -465,6 +488,8 @@ msgid ""
 "If the \"Call from another device\" option is enabled, calls placed in Odoo "
 "will be transfered to this phone number."
 msgstr ""
+"Als de optie \"Bellen vanaf een ander apparaat\" is ingeschakeld, worden "
+"oproepen die in Odoo zijn geplaatst, doorgeschakeld naar dit telefoonnummer."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__7d
@@ -659,7 +684,7 @@ msgstr "Mijn telefoongesprekken"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Next activities"
-msgstr ""
+msgstr "Volgende activiteiten"
 
 #. module: voip
 #. openerp-web
@@ -669,6 +694,8 @@ msgid ""
 "No audio recording device available. The application requires a microphone "
 "in order to be used."
 msgstr ""
+"Geen audio-opnameapparaat beschikbaar. De applicatie vereist een microfoon "
+"om te kunnen worden gebruikt."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__pending
@@ -772,6 +799,8 @@ msgid ""
 "Please try again later. If the problem persists, you may want to ask an "
 "administrator to check the configuration."
 msgstr ""
+"Probeer het later opnieuw. Als het probleem zich blijft voordoen, kun je een"
+" beheerder vragen om de configuratie te controleren."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_config_settings__mode__prod
@@ -798,7 +827,7 @@ msgstr "Vernieuw het paneel"
 #: code:addons/voip/static/src/models/registerer.js:0
 #, python-format
 msgid "Registration rejected: %(statusCode)s %(reasonPhrase)s."
-msgstr ""
+msgstr "Registratie afgewezen: %(statusCode)s %(reasonPhrase)s."
 
 #. module: voip
 #. openerp-web
@@ -818,7 +847,7 @@ msgstr "Gesprek afwijzen"
 #: model:ir.model.fields,field_description:voip.field_res_users__should_auto_reject_incoming_calls
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__should_auto_reject_incoming_calls
 msgid "Reject incoming calls"
-msgstr ""
+msgstr "Inkomende oproepen weigeren"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__rejected
@@ -870,7 +899,7 @@ msgstr "Bellen..."
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.res_config_settings_view_form
 msgid "Schedule &amp; make calls from your database"
-msgstr "Plan &amp; bellen vanuit je database."
+msgstr "Plan &amp; bellen vanuit je database"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__reschedule_option
@@ -923,6 +952,8 @@ msgid ""
 "Some documents cannot be added to the call queue as they do not have a phone"
 " number set: %(record_names)s"
 msgstr ""
+"Sommige documenten kunnen niet worden toegevoegd aan de wachtrij omdat er "
+"geen telefoonnummer is ingesteld: %(record_names)s"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__reschedule_date
@@ -961,7 +992,7 @@ msgstr "Gesprek opnemen"
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__pbx_ip
 msgid "The IP address of your PBX Server"
-msgstr ""
+msgstr "Het IP-adres van je PBX-server"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__wsServer
@@ -974,6 +1005,7 @@ msgstr "De URL van je websocket"
 #, python-format
 msgid "The connection cannot be made.</br> Please check your configuration."
 msgstr ""
+"De verbinding kan niet worden gemaakt.</br> Controleer je configuratie."
 
 #. module: voip
 #. openerp-web
@@ -984,6 +1016,9 @@ msgid ""
 "verify the websocket server URL in the General Settings. If the problem "
 "persists, this is probably an issue with the server."
 msgstr ""
+"De fout kan afkomstig zijn van de transportlaag. Laat een beheerder de "
+"websocket-server-URL verifiëren in de Algemene instellingen. Als het "
+"probleem aanhoudt, is dit waarschijnlijk een probleem met de server."
 
 #. module: voip
 #. openerp-web
@@ -994,12 +1029,16 @@ msgid ""
 "connection cannot be made. Please check your configuration.</br> (Reason "
 "received: %(reasonPhrase)s)"
 msgstr ""
+"Het nummer is onjuist, de gebruikersgegevens kunnen onjuist zijn of de "
+"verbinding kan niet worden gemaakt. Controleer je configuratie.</br> (Reden "
+"ontvangen: %(reasonPhrase)s)"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__voip_secret
 #: model:ir.model.fields,help:voip.field_res_users_settings__voip_secret
 msgid "The password that will be used to register with the PBX server."
 msgstr ""
+"Het wachtwoord dat zal worden gebruikt om te registreren bij de PBX-server."
 
 #. module: voip
 #. openerp-web
@@ -1025,6 +1064,9 @@ msgid ""
 "that you are reaching the right server (PBX server IP in the General "
 "Settings) and that the credentials in your user preferences are correct."
 msgstr ""
+"De server heeft je niet kunnen verifiëren. Laat een beheerder controleren of"
+" je de juiste server bereikt (PBX-server-IP in de algemene instellingen) en "
+"dat de inloggegevens in je gebruikersvoorkeuren correct zijn."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__state
@@ -1044,6 +1086,8 @@ msgid ""
 "The username (typically the extension number) that will be used to register "
 "with the PBX server."
 msgstr ""
+"De gebruikersnaam (meestal het toestelnummer) die zal worden gebruikt om te "
+"registreren bij de PBX-server."
 
 #. module: voip
 #. openerp-web
@@ -1053,6 +1097,8 @@ msgid ""
 "The websocket connection with the server has been lost. Please try to "
 "refresh the page."
 msgstr ""
+"De websocket-verbinding met de server is verbroken. Probeer de pagina te "
+"vernieuwen."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__open
@@ -1107,7 +1153,7 @@ msgstr "VOIP telefoongesprekken per gebruiker rapport"
 #. module: voip
 #: model:ir.model,name:voip.model_voip_queue_mixin
 msgid "VOIP Queue support"
-msgstr ""
+msgstr "Ondersteuning voor VoIP-wachtrij"
 
 #. module: voip
 #. openerp-web
@@ -1117,12 +1163,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:voip.res_users_view_form_preferences
 #, python-format
 msgid "VoIP"
-msgstr ""
+msgstr "VoIP"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.voip_res_users_settings_view_form
 msgid "VoIP Configuration"
-msgstr ""
+msgstr "VoIP-configuratie"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__mode
@@ -1133,13 +1179,13 @@ msgstr "VoIP omgeving"
 #: model:ir.model.fields,field_description:voip.field_res_users__voip_secret
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__voip_secret
 msgid "VoIP secret"
-msgstr ""
+msgstr "VoIP-geheim"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__voip_username
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__voip_username
 msgid "VoIP username / Extension number"
-msgstr ""
+msgstr "VoIP-gebruikersnaam / Toestelnummer"
 
 #. module: voip
 #. openerp-web
@@ -1158,7 +1204,7 @@ msgstr "WebSocket"
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "You are already in a call"
-msgstr "Je bent reeds in een telefoongesprek."
+msgstr "Je bent reeds in een telefoongesprek"
 
 #. module: voip
 #. openerp-web

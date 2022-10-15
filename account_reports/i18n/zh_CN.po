@@ -4,16 +4,17 @@
 # 
 # Translators:
 # Jeffery CHEN <jeffery9@gmail.com>, 2022
-# Martin Trigaux, 2022
 # keecome <7017511@qq.com>, 2022
+# Martin Trigaux, 2022
+# 稀饭~~ <wangwhai@qq.com>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:23+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: keecome <7017511@qq.com>, 2022\n"
+"Last-Translator: 稀饭~~ <wangwhai@qq.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -73,13 +74,13 @@ msgstr "&amp;nbsp;"
 msgid ""
 "'Open General Ledger' caret option is only available form report lines "
 "targetting accounts."
-msgstr ""
+msgstr "“打开总帐”插入符号选项仅适用于针对帐户的表单报表行。"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "'external' engine does not support groupby, limit nor offset."
-msgstr ""
+msgstr "“外部”引擎不支持分组、限制或抵消。"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
@@ -102,22 +103,22 @@ msgstr "(没有群组)"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
 msgid ", Grouped by month"
-msgstr ""
+msgstr "，按月分组"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
 msgid ", Sorted by date"
-msgstr ""
+msgstr "，按日期排序"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
 msgid ", Sorted by number"
-msgstr ""
+msgstr "，按数字排序"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "-> Check your tax report"
-msgstr ""
+msgstr "-> 查看纳税申报表"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
@@ -128,25 +129,25 @@ msgstr "-> 刷新"
 #: model:account.report.column,name:account_reports.aged_payable_report_period1
 #: model:account.report.column,name:account_reports.aged_receivable_report_period1
 msgid "1-30"
-msgstr ""
+msgstr "1-30"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.aged_payable_report_period2
 #: model:account.report.column,name:account_reports.aged_receivable_report_period2
 msgid "31-60"
-msgstr ""
+msgstr "31-60"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.aged_payable_report_period3
 #: model:account.report.column,name:account_reports.aged_receivable_report_period3
 msgid "61-90"
-msgstr ""
+msgstr "61-90"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.aged_payable_report_period4
 #: model:account.report.column,name:account_reports.aged_receivable_report_period4
 msgid "91-120"
-msgstr ""
+msgstr "91-120"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -173,6 +174,8 @@ msgid ""
 "<span class=\"fa fa-book\"/>\n"
 "                Report:"
 msgstr ""
+"<span class=\"fa fa-book\"/>\n"
+"                报告："
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_fiscal_position_choser
@@ -257,6 +260,8 @@ msgid ""
 "<span class=\"fa fa-filter\"/>\n"
 "                    Codes:"
 msgstr ""
+"<span class=\"fa fa-filter\"/>\n"
+"                    代码："
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_groupby_fields
@@ -273,6 +278,8 @@ msgid ""
 "<span class=\"fa fa-filter\"/>\n"
 "            Horizontal Group:"
 msgstr ""
+"<span class=\"fa fa-filter\"/>\n"
+"            水平组："
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -295,6 +302,8 @@ msgid ""
 "<span class=\"fa fa-home\"/>\n"
 "            Tax Unit:"
 msgstr ""
+"<span class=\"fa fa-home\"/>\n"
+"            税务单位："
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -351,7 +360,7 @@ msgstr ""
 msgid ""
 "<span>Intrastat taxes are applied on unexpected journal entries "
 "(international or between non intrastat countries).</span>"
-msgstr ""
+msgstr "<span>内部统计税适用于意外的日记帐分录（国际或非内部统计国家/地区之间）。</span>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_tax_report
@@ -381,17 +390,17 @@ msgstr "<span>此报告仅显示活动公司的数据。</span>"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 msgid "=&gt; Audit"
-msgstr ""
+msgstr "=&gt; 审计"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 msgid "=&gt; Journal Items"
-msgstr ""
+msgstr "=&gt; 日记项目"
 
 #. module: account_reports
 #: model:ir.model.constraint,message:account_reports.constraint_account_report_horizontal_group_name_uniq
 msgid "A horizontal group with the same name already exists."
-msgstr ""
+msgstr "具有相同名称的水平组已存在。"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_tax.py:0
@@ -424,6 +433,12 @@ msgid "Account Chart Template"
 msgstr "科目表模版"
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Account Code"
+msgstr "帐户代码"
+
+#. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_display_representative_field
 msgid "Account Display Representative Field"
 msgstr "账户显示代表字段"
@@ -431,7 +446,7 @@ msgstr "账户显示代表字段"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_custom_handler
 msgid "Account Report Custom Handler"
-msgstr ""
+msgstr "帐户报告自定义处理程序"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_footnote
@@ -480,13 +495,24 @@ msgid "Accounts"
 msgstr "科目"
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.account_report_form
+msgid "Accounts Coverage Report"
+msgstr "账户覆盖率报告"
+
+#. module: account_reports
 #: model:account.report.expression,report_line_name:account_reports.multicurrency_revaluation_to_adjust_adjustment
 #: model:account.report.expression,report_line_name:account_reports.multicurrency_revaluation_to_adjust_balance_currency
 #: model:account.report.expression,report_line_name:account_reports.multicurrency_revaluation_to_adjust_balance_current
 #: model:account.report.expression,report_line_name:account_reports.multicurrency_revaluation_to_adjust_balance_operation
 #: model:account.report.line,name:account_reports.multicurrency_revaluation_to_adjust
 msgid "Accounts To Adjust"
-msgstr ""
+msgstr "要调整的帐户"
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Accounts coverage"
+msgstr "账户覆盖范围"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_mail_activity_type__category
@@ -554,7 +580,7 @@ msgstr "高级"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_aged_partner_balance_report_handler
 msgid "Aged Partner Balance Custom Handler"
-msgstr ""
+msgstr "老年伴侣余额自定义处理程序"
 
 #. module: account_reports
 #: model:account.report,name:account_reports.aged_payable_report
@@ -622,19 +648,19 @@ msgstr "所有日记账"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "All Payable"
-msgstr ""
+msgstr "全部应付"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "All Receivable"
-msgstr ""
+msgstr "所有应收账款"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "All receivable/payable"
-msgstr ""
+msgstr "所有应收/应付款项"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.account_financial_report_ec_sales_amount
@@ -654,13 +680,13 @@ msgstr "货币总额"
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Amount In Currency"
-msgstr ""
+msgstr "货币金额"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Amount in currency: %s"
-msgstr ""
+msgstr "货币金额： %s"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -670,7 +696,14 @@ msgstr "分析会计"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Analytic Plans:"
-msgstr ""
+msgstr "分析计划："
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
+msgid ""
+"Analytic filters will include analytic items without accounting "
+"correspondence"
+msgstr "分析过滤器将包括没有会计对应关系的分析项目"
 
 #. module: account_reports
 #. openerp-web
@@ -729,7 +762,7 @@ msgstr "平均债务天数"
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "B: %s"
-msgstr ""
+msgstr "B: %s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_journal_report.py:0
@@ -754,17 +787,17 @@ msgstr "资产负债表"
 #. module: account_reports
 #: model:account.report.column,name:account_reports.multicurrency_revaluation_report_balance_current
 msgid "Balance at Current Rate"
-msgstr ""
+msgstr "当前汇率余额"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.multicurrency_revaluation_report_balance_operation
 msgid "Balance at Operation Rate"
-msgstr ""
+msgstr "按操作速率平衡"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.multicurrency_revaluation_report_balance_currency
 msgid "Balance in Foreign Currency"
-msgstr ""
+msgstr "外币余额"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
@@ -808,7 +841,7 @@ msgstr "银行对账报告"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_bank_reconciliation_report_handler
 msgid "Bank Reconciliation Report Custom Handler"
-msgstr ""
+msgstr "银行对帐报表自定义处理程序"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_bank_view0
@@ -818,7 +851,7 @@ msgstr "银行和现金科目"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
+msgstr "单个对账单行的银行对帐小部件"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_general_ledger.py:0
@@ -832,7 +865,7 @@ msgstr "基本金额"
 #, python-format
 msgid ""
 "Can't open partner reconciliation for line id %s ; model should res.partner."
-msgstr ""
+msgstr "无法打开行 ID %s 的合作伙伴对帐 ;模型应该与合作伙伴。"
 
 #. module: account_reports
 #. openerp-web
@@ -848,13 +881,13 @@ msgstr "取消"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Cannot audit tax from another model than account.tax."
-msgstr ""
+msgstr "无法从除帐户税以外的其他模型审核税款。"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Cannot generate carryover values for all fiscal positions at once!"
-msgstr ""
+msgstr "不能一次生成所有财政头寸的结转值！"
 
 #. module: account_reports
 #. openerp-web
@@ -867,19 +900,19 @@ msgstr "结转"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Carryover adjustment for tax unit"
-msgstr ""
+msgstr "税额单位结转调整"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Carryover can only be generated for a single column group."
-msgstr ""
+msgstr "只能为单个列组生成结转。"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Carryover from %s to %s"
-msgstr ""
+msgstr "从 %s 到 %s 的结转"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_executivesummary_cash0
@@ -889,7 +922,7 @@ msgstr "现金"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_cash_flow_report_handler
 msgid "Cash Flow Report Custom Handler"
-msgstr ""
+msgstr "现金流量报表自定义处理程序"
 
 #. module: account_reports
 #: model:account.report,name:account_reports.cash_flow_report
@@ -1076,19 +1109,19 @@ msgstr "收入成本"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Could not expand term %s while evaluating formula %s"
-msgstr ""
+msgstr "在计算公式 %s 时无法展开项 %s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Could not find template %s, used as %s of %s."
-msgstr ""
+msgstr "找不到模板 %s，用作 %s 的 %s。"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Could not parse account_code formula from token '%s'"
-msgstr ""
+msgstr "无法从令牌 '%s' 解析account_code公式"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_tax_unit__country_id
@@ -1110,7 +1143,7 @@ msgstr "创建条目"
 #. module: account_reports
 #: model:ir.actions.server,name:account_reports.action_create_report_menu
 msgid "Create Menu Item"
-msgstr ""
+msgstr "创建菜单项"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__create_uid
@@ -1207,12 +1240,12 @@ msgstr "自定义"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__custom_handler_model_id
 msgid "Custom Handler Model"
-msgstr ""
+msgstr "自定义处理程序模型"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__custom_handler_model_name
 msgid "Custom Handler Model Name"
-msgstr ""
+msgstr "自定义处理程序模型名称"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.bank_reconciliation_report_date
@@ -1321,7 +1354,7 @@ msgstr "EC销售明细行"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_ec_sales_report_handler
 msgid "EC Sales Report Custom Handler"
-msgstr ""
+msgstr "EC 销售报告自定义处理程序"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_equity0
@@ -1334,7 +1367,7 @@ msgstr "权益"
 msgid ""
 "Editing a manual report line is not allowed in multivat setup when "
 "displaying data from all fiscal positions."
-msgstr ""
+msgstr "在 multivat 设置中，在显示所有会计状况的数据时，不允许编辑手动报表行。"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -1342,7 +1375,7 @@ msgstr ""
 msgid ""
 "Editing a manual report line is not allowed when multiple companies are "
 "selected."
-msgstr ""
+msgstr "选择多个公司时，不允许编辑手动报告行。"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_trial_balance_report.py:0
@@ -1375,7 +1408,13 @@ msgstr "上季度的期末"
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Ending Balance :"
-msgstr ""
+msgstr "期末余额 ："
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Error message"
+msgstr "错误消息"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template
@@ -1440,7 +1479,7 @@ msgid ""
 "Expected payment date as manually set through the customer statement(e.g: if"
 " you had the customer on the phone and want to remember the date he promised"
 " he would pay)"
-msgstr ""
+msgstr "通过客户对账单手动设置的预期付款日期（例如：如果您让客户在电话上并希望记住他承诺他将付款的日期）"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__expense_provision_account_id
@@ -1456,7 +1495,7 @@ msgstr "费用备计划科目"
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
 #, python-format
 msgid "Expense Provision for %s"
-msgstr ""
+msgstr "%s 的费用准备金"
 
 #. module: account_reports
 #: model:account.report.expression,report_line_name:account_reports.account_financial_report_executivesummary_expenses0_balance
@@ -1504,7 +1543,7 @@ msgstr "字段"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Field %s does not exist on account.move.line."
-msgstr ""
+msgstr "字段 %s 在帐户上不存在。"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -1512,7 +1551,7 @@ msgstr ""
 msgid ""
 "Field %s of account.move.line is not stored, and hence cannot be used in a "
 "groupby expression"
-msgstr ""
+msgstr "不存储帐户的字段 %s，因此不能在分组表达式中使用"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -1520,12 +1559,12 @@ msgstr ""
 msgid ""
 "Field 'Custom Handler Model' can only reference records inheriting from "
 "[%s]."
-msgstr ""
+msgstr "字段“自定义处理程序模型”只能引用从 [%s] 继承的记录。"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__filter_analytic_groupby
 msgid "Filter Analytic Groupby"
-msgstr ""
+msgstr "筛选分析组通过"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -1550,7 +1589,7 @@ msgstr "脚注"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__footnotes_template
 msgid "Footnotes Template"
-msgstr ""
+msgstr "脚注模板"
 
 #. module: account_reports
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
@@ -1576,7 +1615,7 @@ msgstr "来自:"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard_format__fun_param
 msgid "Function Parameter"
-msgstr ""
+msgstr "函数参数"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard_format__fun_to_call
@@ -1596,7 +1635,7 @@ msgstr "总分类账"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_general_ledger_report_handler
 msgid "General Ledger Custom Handler"
-msgstr ""
+msgstr "总账自定义处理程序"
 
 #. module: account_reports
 #: code:addons/account_reports/wizard/report_export_wizard.py:0
@@ -1607,22 +1646,22 @@ msgstr "已生成文档"
 #. module: account_reports
 #: model:account.report,name:account_reports.generic_ec_sales_report
 msgid "Generic EC Sales List"
-msgstr ""
+msgstr "通用 EC 销售清单"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler
 msgid "Generic Tax Report Custom Handler"
-msgstr ""
+msgstr "通用税务报表自定义处理程序"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler_account_tax
 msgid "Generic Tax Report Custom Handler (Account -> Tax)"
-msgstr ""
+msgstr "通用税务报表自定义处理程序（科目 -> 税）"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler_tax_account
 msgid "Generic Tax Report Custom Handler (Tax -> Account)"
-msgstr ""
+msgstr "通用税务报表自定义处理程序（税务 -> 帐户）"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_sales_report.py:0
@@ -1661,7 +1700,7 @@ msgstr "分组"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Group By Months"
-msgstr ""
+msgstr "按月分组"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_horizontal_group_form
@@ -1671,7 +1710,7 @@ msgstr "群组名称"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Group by months"
-msgstr ""
+msgstr "按月分组"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -1681,7 +1720,7 @@ msgstr "群比："
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Grouped by month"
-msgstr ""
+msgstr "按月分组"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -1696,24 +1735,24 @@ msgstr "层级及小计"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_horizontal_group_rule__horizontal_group_id
 msgid "Horizontal Group"
-msgstr ""
+msgstr "水平组"
 
 #. module: account_reports
 #: model:ir.actions.act_window,name:account_reports.action_account_report_horizontal_groups
 #: model:ir.model.fields,field_description:account_reports.field_account_report__horizontal_group_ids
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_horizontal_groups
 msgid "Horizontal Groups"
-msgstr ""
+msgstr "水平组"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_horizontal_group
 msgid "Horizontal group for reports"
-msgstr ""
+msgstr "报表的水平组"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_horizontal_group_rule
 msgid "Horizontal group rule for reports"
-msgstr ""
+msgstr "报表的水平组规则"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -1743,6 +1782,8 @@ msgid ""
 "Impacted Tax Grids\n"
 "                                        &amp;nbsp;"
 msgstr ""
+"受影响的税收网格\n"
+"                                        &amp;nbsp;"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template
@@ -1750,9 +1791,14 @@ msgid "Include"
 msgstr "包括"
 
 #. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
+msgid "Include Analytic Simulations"
+msgstr "包括分析模拟"
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Include Payments"
-msgstr ""
+msgstr "包括付款"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -1770,6 +1816,11 @@ msgstr "包括在调整/准备金条目中"
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Include unposted entries"
 msgstr "包含未发布的分录"
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
+msgid "Including Analytic Simulations"
+msgstr "包括分析模拟"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
@@ -1805,7 +1856,7 @@ msgstr "收入拨备账户"
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
 #, python-format
 msgid "Income Provision for %s"
-msgstr ""
+msgstr "%s的收入准备金"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
@@ -1819,14 +1870,14 @@ msgstr "不一致的对账单"
 msgid ""
 "Inconsistent data: more than one external value at the same date for a "
 "'most_recent' external line."
-msgstr ""
+msgstr "数据不一致： 'most_recent'外行在同一日期有多个外部值。"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid ""
 "Inconsistent report_id in options dictionary. Options says %s; report is %s."
-msgstr ""
+msgstr "选项字典中的report_id不一致。选项说%s;报告为 %s。"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -1846,7 +1897,7 @@ msgstr "插入脚注"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Invalid token '%s' in account_codes formula '%s'"
-msgstr ""
+msgstr "公式 '%s 中的令牌'%s account_codes无效"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.partner_ledger_report_journal_code
@@ -1900,12 +1951,12 @@ msgstr "税务审计的会计分录"
 #: model:ir.actions.client,name:account_reports.action_account_report_ja
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_ja
 msgid "Journal Report"
-msgstr ""
+msgstr "日记报告"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_journal_report_handler
 msgid "Journal Report Custom Handler"
-msgstr ""
+msgstr "日记报告自定义处理程序"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -1997,14 +2048,14 @@ msgstr "行"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__line_template
 msgid "Line Template"
-msgstr ""
+msgstr "线条模板"
 
 #. module: account_reports
 #. openerp-web
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "Line without formula"
-msgstr ""
+msgstr "不带公式的行"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_form
@@ -2025,12 +2076,12 @@ msgstr "主要公司"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__main_table_header_template
 msgid "Main Table Header Template"
-msgstr ""
+msgstr "主表头模板"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__main_template
 msgid "Main Template"
-msgstr ""
+msgstr "主模板"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_tax_unit__main_company_id
@@ -2059,13 +2110,13 @@ msgstr "经理"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Manual value"
-msgstr ""
+msgstr "手动值"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Manual values"
-msgstr ""
+msgstr "手动值"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.partner_ledger_report_matching_number
@@ -2081,7 +2132,7 @@ msgstr "组织成员"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Method '%s' must start with the '%s' prefix."
-msgstr ""
+msgstr "方法 '%s' 必须以 ''%s' 前缀开头。"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_horizontal_group_rule__res_model_name
@@ -2091,7 +2142,7 @@ msgstr "模型"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_multicurrency_revaluation_report_handler
 msgid "Multicurrency Revaluation Report Custom Handler"
-msgstr ""
+msgstr "多币种重估报表自定义处理程序"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_multicurrency_revaluation_wizard
@@ -2188,7 +2239,7 @@ msgstr "未找到所需准备金。"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Non Trade Partners"
-msgstr ""
+msgstr "非贸易伙伴"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -2325,7 +2376,7 @@ msgstr "业务伙伴分类账"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_partner_ledger_report_handler
 msgid "Partner Ledger Custom Handler"
-msgstr ""
+msgstr "合作伙伴分类帐自定义处理程序"
 
 #. module: account_reports
 #: model:ir.ui.menu,name:account_reports.account_reports_partners_reports_menu
@@ -2395,7 +2446,7 @@ msgstr "计划"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Please specify the accounts necessary for the Tax Closing Entry."
-msgstr ""
+msgstr "请指定税务结算条目所需的帐户。"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_fixed_assets_view0
@@ -2491,7 +2542,7 @@ msgstr "税收结算分录的提议。"
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
 #, python-format
 msgid "Provision for %(for_cur)s (1 %(comp_cur)s = %(rate)s %(for_cur)s)"
-msgstr ""
+msgstr "规定 %(for_cur)s (1 %(comp_cur)s = %(rate)s %(for_cur)s)"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -2553,6 +2604,12 @@ msgid "Report Name"
 msgstr "报告名称"
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "Report lines mentioning the account code"
+msgstr "提及帐户代码的报告行"
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 msgid "Reporting"
 msgstr "报告"
@@ -2611,7 +2668,7 @@ msgstr "保存"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__search_template
 msgid "Search Template"
-msgstr ""
+msgstr "搜索模板"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template_with_filter_input_accounts
@@ -2623,7 +2680,7 @@ msgstr "搜索账户"
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "Search line"
-msgstr ""
+msgstr "搜索行"
 
 #. module: account_reports
 #. openerp-web
@@ -2658,32 +2715,32 @@ msgstr "显示警告凭证"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Show payment lines"
-msgstr ""
+msgstr "显示付款行"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "Some controls failed."
-msgstr ""
+msgstr "某些控件失败。"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Sort By Date"
-msgstr ""
+msgstr "按日期排序"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Sort by date"
-msgstr ""
+msgstr "按日期排序"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Sorted by date"
-msgstr ""
+msgstr "按日期排序"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Sorted by number"
-msgstr ""
+msgstr "按数字排序"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_res_company__account_representative_id
@@ -2707,7 +2764,7 @@ msgstr "从"
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Starting Balance :"
-msgstr ""
+msgstr "起始余额 ："
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_manager__summary
@@ -2718,7 +2775,7 @@ msgstr "摘要"
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "T: %s"
-msgstr ""
+msgstr "T: %s"
 
 #. module: account_reports
 #. openerp-web
@@ -2837,6 +2894,8 @@ msgid ""
 "Taxes Applied\n"
 "                            &amp;nbsp;"
 msgstr ""
+"已申请税款\n"
+"                            &amp;nbsp;"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_ir_actions_account_report_download
@@ -2853,6 +2912,12 @@ msgstr "文本"
 #, python-format
 msgid "The Book balance in Odoo dated today"
 msgstr "Odoo的书余额日期为今天"
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "The company's country does not match the report's country."
+msgstr "该公司的国家/地区与报告所在的国家/地区不匹配。"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_tax_unit__country_id
@@ -2911,6 +2976,28 @@ msgid "This Quarter"
 msgstr "本季度"
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid ""
+"This account exists in the Chart of Accounts but is not mentioned in any "
+"line of the report"
+msgstr "此帐户存在于会计科目表中，但在报告的任何行中均未提及"
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid ""
+"This account is reported in a line of the report but does not exist in the "
+"Chart of Accounts"
+msgstr "此科目在报表的某一行中报告，但在会计科目表中不存在"
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid "This account is reported in multiple lines of the report"
+msgstr "此帐户在报告的多行中报告"
+
+#. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 msgid ""
 "This allows you to choose the position of totals in your financial reports."
@@ -2949,7 +3036,7 @@ msgstr "总计%s"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Trade Partners"
-msgstr ""
+msgstr "贸易伙伴"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
@@ -2985,7 +3072,7 @@ msgstr "试算平衡表"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_trial_balance_report_handler
 msgid "Trial Balance Custom Handler"
-msgstr ""
+msgstr "试算表自定义处理程序"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_sales_report.py:0
@@ -2999,7 +3086,7 @@ msgstr "三角形"
 msgid ""
 "Trying to build account hierarchy from a model different from "
 "account.account: %s"
-msgstr ""
+msgstr "尝试从不同于帐户的模型构建帐户层次结构： %s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -3007,19 +3094,19 @@ msgstr ""
 msgid ""
 "Trying to expand a group for a line which was not generated by a report "
 "line: %s"
-msgstr ""
+msgstr "尝试展开不是由报告行生成的行的组： %s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Trying to expand a line without an expansion function."
-msgstr ""
+msgstr "尝试在没有扩展函数的情况下展开一条线。"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Trying to expand groupby results on lines without a groupby value."
-msgstr ""
+msgstr "尝试在没有分组值的行上扩展分组结果。"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_journal_report.py:0
@@ -3028,7 +3115,7 @@ msgstr ""
 msgid ""
 "Trying to use the journal line expand function on a line that is not linked "
 "to a journal."
-msgstr ""
+msgstr "尝试在未链接到日志的行上使用日记帐行展开功能。"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_unaffected_earnings0
@@ -3071,13 +3158,13 @@ msgstr "未知业务伙伴"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Unknown bound criterium: %s"
-msgstr ""
+msgstr "未知绑定标准：%s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Unknown date scope: %s"
-msgstr ""
+msgstr "未知日期范围： %s"
 
 #. module: account_reports
 #: model:account.report,name:account_reports.multicurrency_revaluation_report
@@ -3121,6 +3208,7 @@ msgid "View Carryover Lines"
 msgstr "查看结转明细行"
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_partner_ledger.py:0
 #: code:addons/account_reports/models/account_report.py:0
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
@@ -3135,6 +3223,7 @@ msgid "View Partner"
 msgstr "查看合作伙伴"
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_partner_ledger.py:0
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "View Payment"
@@ -3169,13 +3258,13 @@ msgstr "带有草稿分录"
 #: code:addons/account_reports/models/account_general_ledger.py:0
 #, python-format
 msgid "Wrong ID for general ledger line to expand: %s"
-msgstr ""
+msgstr "要展开的总帐行的 ID 错误： %s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_partner_ledger.py:0
 #, python-format
 msgid "Wrong ID for partner ledger line to expand: %s"
-msgstr ""
+msgstr "要展开的合作伙伴分类帐行的 ID 错误： %s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -3227,7 +3316,7 @@ msgstr "起始余额与上一个期末余额不同"
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "in the next period."
-msgstr ""
+msgstr "在下一个时期。"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template
@@ -3285,7 +3374,7 @@ msgstr "未发布会计凭证"
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "were carried over to this line from previous period."
-msgstr ""
+msgstr "从前一时期延续到这条线上。"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template
@@ -3297,14 +3386,14 @@ msgstr "这不是银行对账单或付款的结果。"
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "will be carried over to"
-msgstr ""
+msgstr "将被结转到"
 
 #. module: account_reports
 #. openerp-web
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "will be carried over to this line in the next period."
-msgstr ""
+msgstr "将在下一个期间结转到此行。"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template
@@ -3316,7 +3405,7 @@ msgstr "⇒总分类帐"
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_general_ledger_report
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_partner_ledger_report
 msgid "⇒ Journal Items"
-msgstr ""
+msgstr "⇒日记帐项目"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template

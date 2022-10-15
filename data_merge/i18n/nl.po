@@ -270,7 +270,7 @@ msgstr "Negeren"
 #: model_terms:ir.ui.view,arch_db:data_merge.data_merge_record_view_search_merge_action
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_record_search
 msgid "Discarded"
-msgstr "Weggegooid"
+msgstr "Genegeerd"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__display_name
@@ -379,7 +379,7 @@ msgstr "Is verwijderd"
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__is_discarded
 msgid "Is Discarded"
-msgstr "Wordt weggegooid"
+msgstr "Is genegeerd"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__is_master

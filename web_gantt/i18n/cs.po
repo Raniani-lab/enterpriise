@@ -3,23 +3,33 @@
 # 	* web_gantt
 # 
 # Translators:
-# Martin Trigaux, 2019
-# Michal Veselý <michal@veselyberanek.net>, 2019
-# trendspotter <j.podhorecky@volny.cz>, 2019
+# karolína schusterová <karolina.schusterova@vdp.sk>, 2022
+# Michal Veselý <michal@veselyberanek.net>, 2022
+# trendspotter <jirka.p@volny.cz>, 2022
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-23 11:39+0000\n"
-"PO-Revision-Date: 2019-08-26 09:38+0000\n"
-"Last-Translator: trendspotter <j.podhorecky@volny.cz>, 2019\n"
+"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"PO-Revision-Date: 2022-09-22 05:49+0000\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: \n"
 "Language: cs\n"
 "Plural-Forms: nplurals=4; plural=(n == 1 && n % 1 == 0) ? 0 : (n >= 2 && n <= 4 && n % 1 == 0) ? 1: (n % 1 != 0 ) ? 2 : 3;\n"
+
+#. module: web_gantt
+#. openerp-web
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
+#: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
+#, python-format
+msgid "&nbsp;"
+msgstr "&nbsp;"
 
 #. module: web_gantt
 #. openerp-web
@@ -33,14 +43,14 @@ msgstr "Přidat"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Add record"
-msgstr ""
+msgstr "Přidat záznam"
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/js/gantt_controller.js:0
 #, python-format
 msgid "Are you sure to delete this record?"
-msgstr ""
+msgstr "Opravdu chcete tento záznam smazat?"
 
 #. module: web_gantt
 #: model:ir.model,name:web_gantt.model_base
@@ -52,7 +62,7 @@ msgstr "Základní část"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Collapse rows"
-msgstr ""
+msgstr "Sbalit řádky"
 
 #. module: web_gantt
 #. openerp-web
@@ -74,7 +84,7 @@ msgstr "Den"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Expand rows"
-msgstr ""
+msgstr "Rozbalte řádky"
 
 #. module: web_gantt
 #. openerp-web
@@ -91,11 +101,43 @@ msgid "Gantt View"
 msgstr "Gantův diagram"
 
 #. module: web_gantt
+#: code:addons/web_gantt/models/ir_ui_view.py:0
+#, python-format
+msgid "Gantt child can only be field or template, got %s"
+msgstr ""
+
+#. module: web_gantt
+#: code:addons/web_gantt/models/ir_ui_view.py:0
+#, python-format
+msgid "Gantt must have a 'date_start' attribute"
+msgstr ""
+
+#. module: web_gantt
+#: code:addons/web_gantt/models/ir_ui_view.py:0
+#, python-format
+msgid "Gantt must have a 'date_stop' attribute"
+msgstr ""
+
+#. module: web_gantt
+#: code:addons/web_gantt/models/ir_ui_view.py:0
+#, python-format
+msgid ""
+"Gantt must have a 'dependency_inverted_field' attribute once the "
+"'dependency_field' is specified"
+msgstr ""
+
+#. module: web_gantt
+#: code:addons/web_gantt/models/ir_ui_view.py:0
+#, python-format
+msgid "Gantt view can contain only one templates tag"
+msgstr ""
+
+#. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/js/gantt_model.js:0
 #, python-format
-msgid "Grouping by date is not supported, ignoring it"
-msgstr ""
+msgid "Grouping by date is not supported"
+msgstr "Seskupování podle data není podporováno"
 
 #. module: web_gantt
 #: code:addons/web_gantt/models/models.py:0
@@ -104,10 +146,15 @@ msgid "Insufficient fields for Gantt View!"
 msgstr ""
 
 #. module: web_gantt
-#. openerp-web
-#: code:addons/web_gantt/static/src/js/gantt_model.js:0
+#: code:addons/web_gantt/models/ir_ui_view.py:0
 #, python-format
-msgid "Invalid group by"
+msgid "Invalid attributes (%s) in gantt view. Attributes must be in (%s)"
+msgstr ""
+
+#. module: web_gantt
+#: code:addons/web_gantt/models/ir_ui_view.py:0
+#, python-format
+msgid "Invalid default_scale '%s' in gantt"
 msgstr ""
 
 #. module: web_gantt
@@ -160,6 +207,14 @@ msgid "Previous"
 msgstr "Předchozí"
 
 #. module: web_gantt
+#: code:addons/web_gantt/models/models.py:0
+#, python-format
+msgid ""
+"Records that are in the past cannot be automatically rescheduled. They "
+"should be manually rescheduled instead."
+msgstr ""
+
+#. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
@@ -188,6 +243,11 @@ msgid "Undefined %s"
 msgstr ""
 
 #. module: web_gantt
+#: model:ir.model,name:web_gantt.model_ir_ui_view
+msgid "View"
+msgstr "Pohled"
+
+#. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/js/gantt_view.js:0
 #, python-format
@@ -200,3 +260,17 @@ msgstr "Týden"
 #, python-format
 msgid "Year"
 msgstr "Rok"
+
+#. module: web_gantt
+#: code:addons/web_gantt/models/models.py:0
+#, python-format
+msgid "You cannot reschedule %s towards %s."
+msgstr ""
+
+#. module: web_gantt
+#: code:addons/web_gantt/models/models.py:0
+#, python-format
+msgid ""
+"You cannot reschedule tasks that do not follow a direct dependency path. "
+"Only the first task has been automatically rescheduled."
+msgstr ""

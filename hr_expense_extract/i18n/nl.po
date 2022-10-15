@@ -128,12 +128,12 @@ msgstr "Valuta"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__res_company__expense_extract_show_ocr_option_selection__auto_send
 msgid "Digitize automatically"
-msgstr ""
+msgstr "Automatisch digitaliseren"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__res_company__expense_extract_show_ocr_option_selection__manual_send
 msgid "Digitize on demand only"
-msgstr ""
+msgstr "Alleen op aanvraag digitaliseren"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_receipt__display_name
@@ -145,7 +145,7 @@ msgstr "Weergavenaam"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__res_company__expense_extract_show_ocr_option_selection__no_send
 msgid "Do not digitize"
-msgstr ""
+msgstr "Niet digitaliseren"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_error_message
@@ -368,7 +368,7 @@ msgstr "Rapporteer deze declaratie aan je manager voor goedkeuring."
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
 msgid "Resend For Digitization"
-msgstr ""
+msgstr "Opnieuw verzenden voor digitalisering"
 
 #. module: hr_expense_extract
 #: code:addons/hr_expense_extract/wizard/expense_sample_receipt.py:0
@@ -386,7 +386,7 @@ msgstr "Voorbeeldbon: %s"
 #: model:ir.actions.server,name:hr_expense_extract.hr_expense_parse_action_server
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
 msgid "Send For Digitization"
-msgstr ""
+msgstr "Verzenden voor digitalisering"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_res_company__expense_extract_show_ocr_option_selection
@@ -421,6 +421,8 @@ msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
 "between 5 and 10 seconds."
 msgstr ""
+"De gegevensextractie is nog niet klaar. De extractie duurt meestal tussen de"
+" 5 en 10 seconden."
 
 #. module: hr_expense_extract
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
@@ -434,6 +436,8 @@ msgid ""
 "The file has been sent and is being processed. It usually takes between 5 "
 "and 10 seconds."
 msgstr ""
+"Het bestand is verzonden en wordt verwerkt. Het duurt meestal tussen de 5 en"
+" 10 seconden."
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__to_validate
@@ -477,7 +481,7 @@ msgstr "Wacht op extractie"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__waiting_upload
 msgid "Waiting upload"
-msgstr ""
+msgstr "Wachten op uploaden"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__waiting_validation

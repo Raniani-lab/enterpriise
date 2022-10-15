@@ -3,16 +3,16 @@
 # 	* social
 # 
 # Translators:
-# Martin Trigaux, 2022
 # SeongHyeon Cho <jaymz9634@gmail.com>, 2022
 # Linkup <link-up@naver.com>, 2022
+# Martin Trigaux, 2022
 # JH CHOI <hwangtog@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: JH CHOI <hwangtog@gmail.com>, 2022\n"
 "Language-Team: Korean (https://www.transifex.com/odoo/teams/41243/ko/)\n"
@@ -97,7 +97,6 @@ msgstr "활동 유형 아이콘"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_kanban_controller.js:0
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Add"
@@ -246,7 +245,6 @@ msgstr "계정을 연결할 수 있습니까?"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_comment_delete.js:0
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
 #, python-format
@@ -262,7 +260,7 @@ msgstr ""
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_kanban_renderer.js:0
+#: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Click to refresh."
 msgstr ""
@@ -278,13 +276,6 @@ msgstr "클릭"
 #, python-format
 msgid "Comment Image"
 msgstr "댓글 이미지"
-
-#. module: social
-#. openerp-web
-#: code:addons/social/static/src/js/stream_post_comments.js:0
-#, python-format
-msgid "Comments"
-msgstr "의견"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__company_id
@@ -399,7 +390,7 @@ msgstr "이 계정에 통계가 있는지 여부를 정의합니다."
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_comment_delete.js:0
+#: code:addons/social/static/src/js/stream_post_comment.js:0
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Delete Comment"
@@ -435,10 +426,10 @@ msgstr "표시명"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/xml/social_templates.xml:0
+#: code:addons/social/static/src/js/stream_post_comment.js:0
 #, python-format
-msgid "Do you really want to delete that"
-msgstr "정말로 삭제 하시겠습니까?"
+msgid "Do you really want to delete %s"
+msgstr ""
 
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_post__state__draft
@@ -869,6 +860,13 @@ msgid "Main Attachment"
 msgstr "주요 첨부 파일"
 
 #. module: social
+#. openerp-web
+#: code:addons/social/static/src/xml/social_templates.xml:0
+#, python-format
+msgid "Main actions"
+msgstr "주요 활동"
+
+#. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__max_post_length
 msgid "Max Post Length"
 msgstr ""
@@ -968,9 +966,9 @@ msgstr "새로운 게시물"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_kanban_renderer.js:0
+#: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
-msgid "New content available."
+msgid "New content available"
 msgstr ""
 
 #. module: social
@@ -1107,13 +1105,6 @@ msgstr "채널에 참여한 사람들이 친구 또는 팔로어의 피드(공�
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_comment_delete.js:0
-#, python-format
-msgid "Ok"
-msgstr "확인"
-
-#. module: social
-#. openerp-web
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Or add"
@@ -1160,7 +1151,9 @@ msgstr "이미지 게시"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/post_kanban_images_carousel.js:0
+#: code:addons/social/static/src/js/post_kanban_view.js:0
+#: code:addons/social/static/src/js/stream_post_comments.js:0
+#: code:addons/social/static/src/js/stream_post_kanban_record.js:0
 #, python-format
 msgid "Post Images"
 msgstr "이미지 게시"
@@ -1477,7 +1470,7 @@ msgstr "소셜 : 예약된 게시물 게시"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_kanban_controller.js:0
+#: code:addons/social/static/src/js/stream_post_kanban_dashboard.js:0
 #, python-format
 msgid ""
 "Sorry, you're not allowed to re-link this account, please contact your "
@@ -1812,6 +1805,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
 msgid "before posting."
 msgstr "게시하기 전에."
+
+#. module: social
+#. openerp-web
+#: code:addons/social/static/src/js/stream_post_comment.js:0
+#, python-format
+msgid "comment/reply"
+msgstr "댓글/답글"
 
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_stream

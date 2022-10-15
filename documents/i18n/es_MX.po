@@ -4,16 +4,16 @@
 # 
 # Translators:
 # Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2022
-# Braulio D. López Vázquez <bdl@odoo.com>, 2022
 # Martin Trigaux, 2022
+# Braulio D. López Vázquez <bdl@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Braulio D. López Vázquez <bdl@odoo.com>, 2022\n"
 "Language-Team: Spanish (Mexico) (https://www.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,24 +44,10 @@ msgstr "%s Documentos (%s bloqueados)"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload_service.js:0
-#, python-format
-msgid "%s Files"
-msgstr "%s Archivos"
-
-#. module: documents
-#. openerp-web
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "%s file(s) not moved because they are locked by another user"
 msgstr "%s archivo o archivos sin mover porque otro usuario los bloqueó"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "(%s/%sMB)"
-msgstr "(%s/%sMB)"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
@@ -709,7 +695,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload_service.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "An error occured while uploading."
 msgstr "Ocurrió un error en la subida."
@@ -852,14 +838,6 @@ msgstr "Puede subir"
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Cancel"
 msgstr "Cancelar"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.xml:0
-#: code:addons/documents/static/src/views/helper/documents_file_upload.xml:0
-#, python-format
-msgid "Cancel Upload"
-msgstr "Cancelar subida"
 
 #. module: documents
 #: model_terms:documents.folder,description:documents.documents_internal_folder
@@ -1093,6 +1071,13 @@ msgid "Description"
 msgstr "Descripción"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_form
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_form
+msgid "Discard"
+msgstr "Descartar"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_facet__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_folder__display_name
@@ -1105,13 +1090,6 @@ msgstr "Descripción"
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__display_name
 msgid "Display Name"
 msgstr "Nombre en pantalla"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "Do you really want to cancel the upload of %s?"
-msgstr "¿Realmente desea cancelar la subida de %s?"
 
 #. module: documents
 #. openerp-web
@@ -1184,7 +1162,7 @@ msgstr "Lista de documentos"
 #. module: documents
 #: model:mail.template,name:documents.mail_template_document_request
 msgid "Document: Document Request"
-msgstr ""
+msgstr "Documento: solicitud de documento"
 
 #. module: documents
 #. openerp-web
@@ -1313,7 +1291,7 @@ msgstr "CC del correo electrónico"
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
-#: code:addons/documents/static/src/views/documents_controller_mixin.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #: model:ir.model.fields.selection,name:documents.selection__documents_document__thumbnail_status__error
 #, python-format
 msgid "Error"
@@ -1367,7 +1345,7 @@ msgstr "Tamaño del archivo"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/documents_controller_mixin.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "File is too large."
 msgstr "El archivo es muy grande."
@@ -1697,11 +1675,6 @@ msgstr "Enlace"
 #: model:ir.model.fields.selection,name:documents.selection__documents_workflow_rule__create_model__link_to_record
 msgid "Link to record"
 msgstr "Vínculo por registrar"
-
-#. module: documents
-#: model:ir.model.fields,help:documents.field_documents_document__email_cc
-msgid "List of cc from incoming emails."
-msgstr "Lista de cc en correos electrónicos entrantes."
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__state__live
@@ -2130,13 +2103,6 @@ msgid "Presentations"
 msgstr "Presentaciones"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "Processing..."
-msgstr "Procesando..."
-
-#. module: documents
 #: model:documents.tag,name:documents.documents_internal_template_project
 msgid "Project"
 msgstr "Proyecto"
@@ -2287,6 +2253,13 @@ msgid "Sales"
 msgstr "Ventas"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_form
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_form
+msgid "Save"
+msgstr "Guardar"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_option
 msgid "Schedule Activity"
 msgstr "Programar una actividad"
@@ -2319,7 +2292,7 @@ msgstr "Enviar al departamento legal"
 #. module: documents
 #: model:mail.template,description:documents.mail_template_document_request
 msgid "Sent to partner when requesting a document from them"
-msgstr ""
+msgstr "Se envía al partner cuando se le solicita un documento"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
@@ -2606,7 +2579,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/form/share_form_controller.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "The share url has been copied to your clipboard."
@@ -2777,13 +2750,6 @@ msgstr "Subir por correo electrónico"
 #, python-format
 msgid "Upload file request"
 msgstr "Subir solicitud de archivo"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "Uploading... (%s%)"
-msgstr "Subiendo... (%s%)"
 
 #. module: documents
 #: model:ir.model,name:documents.model_res_users
@@ -3097,7 +3063,7 @@ msgstr "compartido por"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload_service.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "status code: %s, message: %s"
 msgstr "código de estado: %s, mensaje: %s"

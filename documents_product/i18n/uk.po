@@ -3,16 +3,15 @@
 # 	* documents_product
 # 
 # Translators:
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
-# Martin Trigaux, 2019
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-13 11:38+0000\n"
-"PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"POT-Creation-Date: 2022-09-20 09:48+0000\n"
+"PO-Revision-Date: 2022-09-22 05:46+0000\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -71,14 +70,14 @@ msgid "Default Tags"
 msgstr "Теги за замовчуванням"
 
 #. module: documents_product
+#: model:documents.facet,name:documents_product.documents_product_documents_facet
+msgid "Documents"
+msgstr "Документи"
+
+#. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__documents_product_settings
 msgid "Documents Product Settings"
 msgstr "Налаштування товару документу"
-
-#. module: documents_product
-#: model:ir.model.fields,field_description:documents_product.field_documents_workflow_rule__has_business_option
-msgid "Has Business Option"
-msgstr "Має бізнес-функцію"
 
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_msds_tag
@@ -96,7 +95,7 @@ msgid "Plans"
 msgstr "Плани"
 
 #. module: documents_product
-#: model:ir.model,name:documents_product.model_product_product
+#: model:ir.model,name:documents_product.model_product_template
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__documents_product_settings
 msgid "Product"
 msgstr "Товар"
@@ -108,14 +107,14 @@ msgid "Product Tags"
 msgstr "Теги товару"
 
 #. module: documents_product
-#: model:ir.model,name:documents_product.model_product_template
-msgid "Product Template"
-msgstr "Шаблон товару"
+#: model:ir.model,name:documents_product.model_product_product
+msgid "Product Variant"
+msgstr "Варіант товару"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_folder
 msgid "Product Workspace"
-msgstr "Папка товару"
+msgstr "Робоча область товару"
 
 #. module: documents_product
 #: model:ir.model.fields.selection,name:documents_product.selection__documents_workflow_rule__create_model__product_template
@@ -140,4 +139,4 @@ msgstr "Папка"
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_folder
 msgid "product default workspace"
-msgstr "папка товару за замовчуванням"
+msgstr "робоча область товару за замовчуванням"

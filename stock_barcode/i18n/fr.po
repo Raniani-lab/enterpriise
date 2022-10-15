@@ -12,7 +12,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Cécile Collart <cco@odoo.com>, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
@@ -396,8 +396,11 @@ msgid "Demo Data Active"
 msgstr "Données de démonstration activées"
 
 #. module: stock_barcode
+#. openerp-web
+#: code:addons/stock_barcode/static/src/components/line.xml:0
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__picking_location_dest_id
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
+#, python-format
 msgid "Destination Location"
 msgstr "Emplacement de destination"
 
@@ -408,7 +411,6 @@ msgstr "Colis de destination"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Destination location must be scanned"
@@ -444,13 +446,13 @@ msgid ""
 "which rate?"
 msgstr ""
 "Le préparateur doit-il mettre dans un colis les produits scannés ? Si oui, à"
-" quel tarif ?"
+" quel fréquence ?"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_picking_type__restrict_scan_dest_location
 msgid "Does the picker have to scan the destination? If yes, at which rate?"
 msgstr ""
-"Le préparateur doit-il scanner la destination ? Si oui, à quel tarif ?"
+"Le préparateur doit-il scanner la destination ? Si oui, à quel fréquence ?"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_cancel_operation_view
@@ -481,7 +483,7 @@ msgstr "Factice"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_backorder_confirmation__empty_move_count
 msgid "Empty Move Count"
-msgstr ""
+msgstr "Nombre de déplacements vides"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
@@ -516,19 +518,12 @@ msgstr "Forcer une destination sur tous les produits"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__barcode_validation_all_product_packed
 msgid "Force all products to be packed"
-msgstr ""
+msgstr "Forcer le colisage de tous les produits"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__restrict_put_in_pack
 msgid "Force put in pack?"
-msgstr "Forcer la mise en colisage ?"
-
-#. module: stock_barcode
-#. openerp-web
-#: code:addons/stock_barcode/static/src/components/main.xml:0
-#, python-format
-msgid "From"
-msgstr "De"
+msgstr "Forcer le colisage ?"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
@@ -582,13 +577,6 @@ msgstr "Ajustements d'inventaire"
 #: model:ir.model,name:stock_barcode.model_stock_location
 msgid "Inventory Locations"
 msgstr "Emplacements de l'inventaire"
-
-#. module: stock_barcode
-#. openerp-web
-#: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
-#, python-format
-msgid "Inventory adjustment was saved"
-msgstr "Ajustement sauvé"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__is_completed
@@ -662,13 +650,6 @@ msgid "Mandatory Source Location"
 msgstr "Emplacement source obligatoire"
 
 #. module: stock_barcode
-#. openerp-web
-#: code:addons/stock_barcode/static/src/components/main.xml:0
-#, python-format
-msgid "Next"
-msgstr "Suivant"
-
-#. module: stock_barcode
 #: model:ir.model.fields.selection,name:stock_barcode.selection__stock_picking_type__restrict_put_in_pack__no
 #: model:ir.model.fields.selection,name:stock_barcode.selection__stock_picking_type__restrict_scan_dest_location__no
 msgid "No"
@@ -721,7 +702,7 @@ msgstr "Nomenclature"
 
 #. module: stock_barcode
 #. openerp-web
-#: code:addons/stock_barcode/static/src/models/barcode_model.js:0
+#: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Not the expected scan"
 msgstr "Pas le scan attendu"
@@ -789,7 +770,7 @@ msgstr "Qté de Conditionnements"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_backorder_confirmation__partial_move_count
 msgid "Partial Move Count"
-msgstr ""
+msgstr "Nombre de déplacements partiels"
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.stock_picking_action_form
@@ -827,22 +808,8 @@ msgstr "Veuillez scanner à nouveau"
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
-msgid "Press Next or scan another product"
-msgstr "Appuyez sur Suivant ou scannez un autre produit"
-
-#. module: stock_barcode
-#. openerp-web
-#: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
-#, python-format
 msgid "Press Validate or scan another product"
 msgstr "Appuyez sur Valider ou scannez un autre produit"
-
-#. module: stock_barcode
-#. openerp-web
-#: code:addons/stock_barcode/static/src/components/main.xml:0
-#, python-format
-msgid "Previous"
-msgstr "Précedent"
 
 #. module: stock_barcode
 #. openerp-web
@@ -922,7 +889,7 @@ msgstr "Variante d'article"
 #: code:addons/stock_barcode/static/src/components/main.xml:0
 #, python-format
 msgid "Put In Pack"
-msgstr "Mettre Dans un Colis"
+msgstr "Faire les colis"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
@@ -968,6 +935,13 @@ msgstr "Scannez un(e)"
 
 #. module: stock_barcode
 #. openerp-web
+#: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
+#, python-format
+msgid "Scan a location"
+msgstr "Scanner un emplacement"
+
+#. module: stock_barcode
+#. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
@@ -993,8 +967,15 @@ msgstr "Scannez un numéro de lot puis l'emplacement de destination"
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
+msgid "Scan a package"
+msgstr "Scanner un colis"
+
+#. module: stock_barcode
+#. openerp-web
+#: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
+#, python-format
 msgid "Scan a package or put in pack"
-msgstr "Scanner un colis ou mettre en pack"
+msgstr "Scanner un colis ou mettre en colis"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1005,7 +986,15 @@ msgstr "Scannez un colis ou l'emplacement de destination"
 
 #. module: stock_barcode
 #. openerp-web
+#: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
+#, python-format
+msgid "Scan a package, the destination location or another product"
+msgstr "Scannez un colis, le lieu de destination ou un autre produit"
+
+#. module: stock_barcode
+#. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_model.js:0
+#: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan a product"
 msgstr "Scannez un produit"
@@ -1016,6 +1005,20 @@ msgstr "Scannez un produit"
 #, python-format
 msgid "Scan a product before scanning a tracking number"
 msgstr "Scannez un produit avant de scanner un numéro de suivi"
+
+#. module: stock_barcode
+#. openerp-web
+#: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
+#, python-format
+msgid "Scan a product from %s"
+msgstr "Scannez un produit de %s"
+
+#. module: stock_barcode
+#. openerp-web
+#: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
+#, python-format
+msgid "Scan a product in %s or scan another location"
+msgstr "Scannez un produit dans %s ou scannez un autre emplacement"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1127,6 +1130,7 @@ msgstr "Scanner un autre numéro de série"
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_model.js:0
+#: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan lot numbers for product %s to change their quantity"
 msgstr ""
@@ -1148,6 +1152,13 @@ msgstr "Scanner plus de numéros de lot ou un colis"
 
 #. module: stock_barcode
 #. openerp-web
+#: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
+#, python-format
+msgid "Scan more products in %s or scan another location"
+msgstr "Scannez plus de produits dans %s ou scannez un autre emplacement"
+
+#. module: stock_barcode
+#. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan more products or a package"
@@ -1163,6 +1174,7 @@ msgstr "Scanner plus de produits, ou scanner un nouvel emplacement source"
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_model.js:0
+#: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan more products, or scan the destination location"
 msgstr "Scannez plus de produits ou scannez l'emplacement de destination"
@@ -1170,6 +1182,7 @@ msgstr "Scannez plus de produits ou scannez l'emplacement de destination"
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_model.js:0
+#: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan serial numbers for product %s to change their quantity"
 msgstr ""
@@ -1188,20 +1201,6 @@ msgstr "Scannez l'emplacement de destination"
 #, python-format
 msgid "Scan the package %s"
 msgstr "Scanner le colis %s"
-
-#. module: stock_barcode
-#. openerp-web
-#: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
-#, python-format
-msgid "Scan the reserved lot number"
-msgstr "Scannez le numéro de lot réservé"
-
-#. module: stock_barcode
-#. openerp-web
-#: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
-#, python-format
-msgid "Scan the reserved serial number"
-msgstr "Scannez le numéro de série réservé"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1294,9 +1293,17 @@ msgid "Show Barcode Nomenclature"
 msgstr "Montrer la nomenclature du code-barres"
 
 #. module: stock_barcode
+#: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__show_barcode_validation
+msgid "Show Barcode Validation"
+msgstr "Afficher la validation des codes-barres"
+
+#. module: stock_barcode
+#. openerp-web
+#: code:addons/stock_barcode/static/src/components/line.xml:0
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__picking_location_id
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
+#, python-format
 msgid "Source Location"
 msgstr "Emplacement d'origine"
 
@@ -1316,6 +1323,15 @@ msgstr "Stock package type"
 #, python-format
 msgid "Tap to scan"
 msgstr "Toucher pour scanner"
+
+#. module: stock_barcode
+#: model:ir.model.fields,help:stock_barcode.field_stock_picking_type__show_barcode_validation
+msgid ""
+"Technical field used to compute whether the \"Final Validation\" group "
+"should be displayed, solving combined groups/invisible complexity."
+msgstr ""
+"Champ technique utilisé pour calculer si le groupe \"Validation finale\" "
+"doit être affiché, résolvant les groupes combinés/complexité invisible."
 
 #. module: stock_barcode
 #. openerp-web
@@ -1389,13 +1405,6 @@ msgstr "Ce transfert est annulé"
 #, python-format
 msgid "This serial number is already used."
 msgstr "Ce numéro de série est déjà utilisé"
-
-#. module: stock_barcode
-#. openerp-web
-#: code:addons/stock_barcode/static/src/components/main.xml:0
-#, python-format
-msgid "To"
-msgstr "Vers"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
@@ -1523,7 +1532,7 @@ msgstr "Vous avez traité moins d'articles que la demande initiale :"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "You must scan a package or put in pack"
-msgstr "Vous devez scanner un colis ou mettre en pack"
+msgstr "Vous devez scanner un colis ou mettre en colis"
 
 #. module: stock_barcode
 #. openerp-web

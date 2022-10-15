@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,6 +45,8 @@ msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
 "                        Buy credits"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"                        Koop credits"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
@@ -51,6 +54,8 @@ msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
 "                        Refresh"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"                        Vernieuwen"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
@@ -58,6 +63,8 @@ msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
 "                        Reload AI Data"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"                        AI-gegevens opnieuw laden"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
@@ -65,6 +72,8 @@ msgid ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
 "                        Resend For Digitization"
 msgstr ""
+"<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
+"                        Opnieuw verzenden voor digitalisering"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.res_config_settings_view_form
@@ -118,7 +127,7 @@ msgstr "Factuurreferentie"
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Bill is being Digitized"
-msgstr ""
+msgstr "Bill wordt gedigitaliseerd"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_bank_statement_line__extract_can_show_resend_button
@@ -153,7 +162,7 @@ msgstr "Configuratie instellingen"
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Couldn't reload AI data."
-msgstr ""
+msgstr "Kan AI-gegevens niet opnieuw laden."
 
 #. module: account_invoice_extract
 #. openerp-web
@@ -186,24 +195,24 @@ msgstr "Klantfacturen"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_out_invoice_digitalization_mode
 msgid "Digitization mode on customer invoices"
-msgstr ""
+msgstr "Digitaliseringsmodus op klantfacturen"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_in_invoice_digitalization_mode
 msgid "Digitization mode on vendor bills"
-msgstr ""
+msgstr "Digitaliseringsmodus op facturen van leveranciers"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_in_invoice_digitalization_mode__auto_send
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_out_invoice_digitalization_mode__auto_send
 msgid "Digitize automatically"
-msgstr ""
+msgstr "Automatisch digitaliseren"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_in_invoice_digitalization_mode__manual_send
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_out_invoice_digitalization_mode__manual_send
 msgid "Digitize on demand only"
-msgstr ""
+msgstr "Alleen op aanvraag digitaliseren"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__display_name
@@ -214,7 +223,7 @@ msgstr "Schermnaam"
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_in_invoice_digitalization_mode__no_send
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_out_invoice_digitalization_mode__no_send
 msgid "Do not digitize"
-msgstr ""
+msgstr "Niet digitaliseren"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.res_config_settings_view_form
@@ -233,14 +242,14 @@ msgstr "Foutmelding"
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_attachment_id
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_payment__extract_attachment_id
 msgid "Extract Attachment"
-msgstr ""
+msgstr "Bijlage uitpakken"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_bank_statement_line__extract_populated_fields
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_populated_fields
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_payment__extract_populated_fields
 msgid "Extract Populated Fields"
-msgstr ""
+msgstr "Ingevulde velden extraheren"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_bank_statement_line__extract_word_ids
@@ -287,13 +296,13 @@ msgstr "ID van de aanvraag tot IAP-OCR"
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Invalid PDF (Conversion error)"
-msgstr ""
+msgstr "Ongeldige pdf (conversiefout)"
 
 #. module: account_invoice_extract
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Invalid PDF (Unable to get page count)"
-msgstr ""
+msgstr "Ongeldige pdf (kan het aantal pagina's niet ophalen)"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__invoice_id
@@ -311,7 +320,7 @@ msgstr "Factuurdatum"
 #: model:ir.cron,cron_name:account_invoice_extract.ir_cron_ocr_parse
 #: model:ir.cron,name:account_invoice_extract.ir_cron_ocr_parse
 msgid "Invoice OCR: Parse Invoices"
-msgstr ""
+msgstr "Factuur-OCR: facturen ontleden"
 
 #. module: account_invoice_extract
 #: model:ir.actions.server,name:account_invoice_extract.ir_cron_update_ocr_status_ir_actions_server
@@ -325,7 +334,7 @@ msgstr "Factuur OCR: update alle statussen"
 #: model:ir.cron,cron_name:account_invoice_extract.ir_cron_ocr_validate
 #: model:ir.cron,name:account_invoice_extract.ir_cron_ocr_validate
 msgid "Invoice OCR: Validate Invoices"
-msgstr ""
+msgstr "Factuur-OCR: facturen valideren"
 
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_account_move
@@ -366,17 +375,17 @@ msgstr "Onvoldoende credit"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__ocr_selected
 msgid "Ocr Selected"
-msgstr ""
+msgstr "Ocr geselecteerd"
 
 #. module: account_invoice_extract
 #: model:ir.actions.server,name:account_invoice_extract.model_account_send_for_digitalization
 msgid "Send Bills for digitization"
-msgstr ""
+msgstr "Facturen verzenden voor digitalisering"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "Send For Digitization"
-msgstr ""
+msgstr "Verzenden voor digitalisering"
 
 #. module: account_invoice_extract
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
@@ -394,14 +403,14 @@ msgstr "Server niet bereikbaar, probeer het later opnieuw"
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_single_line_per_tax
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_config_settings__extract_single_line_per_tax
 msgid "Single Invoice Line Per Tax"
-msgstr ""
+msgstr "Enkele factuurregel per belasting"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_bank_statement_line__extract_status_code
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_status_code
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_payment__extract_status_code
 msgid "Status code"
-msgstr "Status code"
+msgstr "Statuscode"
 
 #. module: account_invoice_extract
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
@@ -416,7 +425,7 @@ msgstr ""
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "The bill has been populated by AI."
-msgstr ""
+msgstr "De rekening is ingevuld door AI."
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
@@ -424,6 +433,8 @@ msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
 "between 5 and 10 seconds."
 msgstr ""
+"De gegevensextractie is nog niet klaar. De extractie duurt meestal tussen de"
+" 5 en 10 seconden."
 
 #. module: account_invoice_extract
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
@@ -435,14 +446,14 @@ msgstr "Het document werd niet gevonden"
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "The document has been rejected because it is too small"
-msgstr ""
+msgstr "Het document is afgewezen omdat het te klein is"
 
 #. module: account_invoice_extract
 #. openerp-web
 #: code:addons/account_invoice_extract/static/src/xml/populated_fields_tooltip.xml:0
 #, python-format
 msgid "The following fields were populated by the OCR:"
-msgstr ""
+msgstr "De volgende velden zijn ingevuld door de OCR:"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__to_validate
@@ -479,7 +490,7 @@ msgstr "Wacht op extractie"
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__waiting_upload
 msgid "Waiting upload"
-msgstr ""
+msgstr "Wachten op uploaden"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__waiting_validation
@@ -529,6 +540,8 @@ msgid ""
 "You can always change the mapping by clicking on one field in the Invoice "
 "form and select the appropriate value in the PDF."
 msgstr ""
+"U kunt de toewijzing altijd wijzigen door op één veld in het "
+"factuurformulier te klikken en de juiste waarde in de PDF te selecteren."
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr

@@ -3,15 +3,18 @@
 # 	* delivery_dhl
 # 
 # Translators:
-# Martin Trigaux, 2019
+# Evgeniia Kotova, 2022
+# Martin Trigaux, 2022
+# Ivan Kropotkin <yelizariev@itpp.dev>, 2022
+# Irina Fedulova <istartlin@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 09:35+0000\n"
-"Last-Translator: Martin Trigaux, 2019\n"
+"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"PO-Revision-Date: 2022-09-22 05:46+0000\n"
+"Last-Translator: Irina Fedulova <istartlin@gmail.com>, 2022\n"
 "Language-Team: Russian (https://www.transifex.com/odoo/teams/41243/ru/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -20,39 +23,44 @@ msgstr ""
 "Plural-Forms: nplurals=4; plural=(n%10==1 && n%100!=11 ? 0 : n%10>=2 && n%10<=4 && (n%100<12 || n%100>14) ? 1 : n%10==0 || (n%10>=5 && n%10<=9) || (n%100>=11 && n%100<=14)? 2 : 3);\n"
 
 #. module: delivery_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
+msgid "'rate': {}, 'ship': {}, 'return': {}"
+msgstr ""
+
+#. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__0
 msgid "0 - Logistics Services"
-msgstr ""
+msgstr "0 - Услуги логистики"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__1
 msgid "1 - Domestic Express 12:00"
-msgstr ""
+msgstr "1 - Отечественный Express 12:00"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__2
 msgid "2 - B2C"
-msgstr ""
+msgstr "2 - B2C"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__3
 msgid "3 - B2C"
-msgstr ""
+msgstr "3 - B2C"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__4
 msgid "4 - Jetline"
-msgstr ""
+msgstr "4 - Jetline"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__5
 msgid "5 - Sprintline"
-msgstr ""
+msgstr "5 - Sprintline"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__6
 msgid "6 - Secureline"
-msgstr ""
+msgstr "6 - Secureline"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_template__6x4_a4_pdf
@@ -72,12 +80,12 @@ msgstr "6X4_thermal"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__7
 msgid "7 - Express Easy"
-msgstr ""
+msgstr "7 - Express Easy"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__8
 msgid "8 - Express Easy"
-msgstr ""
+msgstr "8 - Express Easy"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_template__8x4_a4_pdf
@@ -117,12 +125,12 @@ msgstr "8X4_thermal"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__9
 msgid "9 - Europack"
-msgstr ""
+msgstr "9 - Europack"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__a
 msgid "A - Auto Reversals"
-msgstr ""
+msgstr "A - Auto Reversals"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_region_code__am
@@ -137,15 +145,15 @@ msgstr "Азиатско-Тихоокеанский Регион"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__b
 msgid "B - Break Bulk Express"
-msgstr ""
+msgstr "B - Break Bulk Express"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__c
 msgid "C - Medical Express"
-msgstr ""
+msgstr "C - Medical Express"
 
 #. module: delivery_dhl
-#: model:ir.model.fields,field_description:delivery_dhl.field_product_packaging__package_carrier_type
+#: model:ir.model.fields,field_description:delivery_dhl.field_stock_package_type__package_carrier_type
 msgid "Carrier"
 msgstr "Перевозчик"
 
@@ -160,15 +168,25 @@ msgid "Check this if your package is dutiable."
 msgstr "Отметьте этот флажок, если ваш пакет облагается пошлиной."
 
 #. module: delivery_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
+msgid "Custom Data"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_custom_data_request
+msgid "Custom data for DHL requests,"
+msgstr ""
+
+#. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__d
 msgid "D - Express Worldwide"
 msgstr "D - Express Worldwide"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__delivery_type__dhl
-#: model:ir.model.fields.selection,name:delivery_dhl.selection__product_packaging__package_carrier_type__dhl
+#: model:ir.model.fields.selection,name:delivery_dhl.selection__stock_package_type__package_carrier_type__dhl
 msgid "DHL"
-msgstr ""
+msgstr "DHL"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_account_number
@@ -181,9 +199,30 @@ msgid "DHL Configuration"
 msgstr "Конфигурация DHL"
 
 #. module: delivery_dhl
-#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_default_packaging_id
-msgid "DHL Default Packaging Type"
-msgstr "DHL Тип упаковки по умолчанию"
+#: code:addons/delivery_dhl/models/delivery_dhl.py:0
+#: code:addons/delivery_dhl/models/delivery_dhl.py:0
+#, python-format
+msgid "DHL Documents"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_eu_dom
+#: model:product.product,name:delivery_dhl.product_product_delivery_dhl_eu_dom
+#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_eu_dom_product_template
+msgid "DHL EU"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_eu_intl
+#: model:product.product,name:delivery_dhl.product_product_delivery_dhl_eu_intl
+#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_eu_intl_product_template
+msgid "DHL EU -> International"
+msgstr ""
+
+#. module: delivery_dhl
+#: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_default_package_type_id
+msgid "DHL Package Type"
+msgstr ""
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_password
@@ -193,7 +232,7 @@ msgstr "DHL Пароль"
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_product_code
 msgid "DHL Product"
-msgstr ""
+msgstr "товар DHL"
 
 #. module: delivery_dhl
 #: model_terms:ir.ui.view,arch_db:delivery_dhl.res_config_settings_view_form_sale
@@ -214,18 +253,18 @@ msgid "DHL SiteID"
 msgstr "DHL SiteID"
 
 #. module: delivery_dhl
-#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_dom
-#: model:product.product,name:delivery_dhl.product_product_delivery_dhl_usa
-#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_usa_product_template
-msgid "DHL USA"
-msgstr "DHL USA"
+#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_us_dom
+#: model:product.product,name:delivery_dhl.product_product_delivery_dhl_us_dom
+#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_us_dom_product_template
+msgid "DHL US"
+msgstr ""
 
 #. module: delivery_dhl
-#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_intl
-#: model:product.product,name:delivery_dhl.product_product_delivery_dhl_intl
-#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_intl_product_template
-msgid "DHL USA -> International"
-msgstr "DHL США-> международного"
+#: model:delivery.carrier,name:delivery_dhl.delivery_carrier_dhl_us_intl
+#: model:product.product,name:delivery_dhl.product_product_delivery_dhl_us_intl
+#: model:product.template,name:delivery_dhl.product_product_delivery_dhl_us_intl_product_template
+msgid "DHL US -> International"
+msgstr ""
 
 #. module: delivery_dhl
 #: code:addons/delivery_dhl/models/dhl_request.py:0
@@ -235,6 +274,12 @@ msgid ""
 msgstr ""
 "Номер учетной записи DHL отсутствует, пожалуйста, измените настройки метода "
 "доставки."
+
+#. module: delivery_dhl
+#: code:addons/delivery_dhl/models/dhl_request.py:0
+#, python-format
+msgid "DHL doesn't support products with name greater than 75 characters."
+msgstr ""
 
 #. module: delivery_dhl
 #: code:addons/delivery_dhl/models/dhl_request.py:0
@@ -254,9 +299,14 @@ msgid "Dutiable Material"
 msgstr "Облагаемый пошлиной материал"
 
 #. module: delivery_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
+msgid "Duties paid by"
+msgstr ""
+
+#. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__e
 msgid "E - Express 9:00"
-msgstr ""
+msgstr "E - Express 9:00"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_image_format__epl2
@@ -271,22 +321,28 @@ msgstr "Европа"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__f
 msgid "F - Freight Worldwide"
-msgstr ""
+msgstr "F - Freight Worldwide"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__g
 msgid "G - Domestic Economy Select"
-msgstr ""
+msgstr "G - Domestic Economy Select"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__h
 msgid "H - Economy Select"
+msgstr "H - Economy Select"
+
+#. module: delivery_dhl
+#: code:addons/delivery_dhl/models/delivery_dhl.py:0
+#, python-format
+msgid "Hint: The destination may not require the dutiable option."
 msgstr ""
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__i
 msgid "I - Break Bulk Economy"
-msgstr ""
+msgstr "I - Break Bulk Economy"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_package_dimension_unit__i
@@ -294,9 +350,15 @@ msgid "Inches"
 msgstr "Дюймы "
 
 #. module: delivery_dhl
+#: code:addons/delivery_dhl/models/delivery_dhl.py:0
+#, python-format
+msgid "Invalid syntax for DHL custom data."
+msgstr ""
+
+#. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__j
 msgid "J - Jumbo Box"
-msgstr ""
+msgstr "J - Jumbo Box"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__k
@@ -311,6 +373,11 @@ msgstr "Килограммы "
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__l
 msgid "L - Express 10:30"
+msgstr "L - Express 10:30"
+
+#. module: delivery_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
+msgid "Label Format"
 msgstr ""
 
 #. module: delivery_dhl
@@ -326,7 +393,7 @@ msgstr "Шаблон метки"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__m
 msgid "M - Express 10:30"
-msgstr ""
+msgstr "M - Express 10:30"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__n
@@ -336,12 +403,17 @@ msgstr "N - Внутренний экспресс"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__o
 msgid "O - DOM Express 10:30"
-msgstr ""
+msgstr "O - DOM Express 10:30"
+
+#. module: delivery_dhl
+#: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
+msgid "Options"
+msgstr "Параметры"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__p
 msgid "P - Express Worldwide"
-msgstr ""
+msgstr "P - Express Worldwide"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_image_format__pdf
@@ -361,6 +433,14 @@ msgstr "Единица веса упаковки"
 #. module: delivery_dhl
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
+msgid ""
+"Please define an incoterm in the associated sale order or set a default "
+"incoterm for the company in the accounting's settings."
+msgstr ""
+
+#. module: delivery_dhl
+#: code:addons/delivery_dhl/models/dhl_request.py:0
+#, python-format
 msgid "Please provide at least one item to ship."
 msgstr "Укажите, пожалуйста, хотя бы один элемент для отгрузки."
 
@@ -370,11 +450,6 @@ msgid "Pounds"
 msgstr "Фунты"
 
 #. module: delivery_dhl
-#: model:ir.model,name:delivery_dhl.model_product_packaging
-msgid "Product Packaging"
-msgstr "Тара"
-
-#. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__delivery_type
 msgid "Provider"
 msgstr "Провайдер"
@@ -382,12 +457,12 @@ msgstr "Провайдер"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__q
 msgid "Q - Medical Express"
-msgstr ""
+msgstr "Q - Medical Express"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__r
 msgid "R - GlobalMail Business"
-msgstr ""
+msgstr "R - GlobalMail Business"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_duty_payment__r
@@ -402,7 +477,7 @@ msgstr "Регион"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__s
 msgid "S - Same Day"
-msgstr ""
+msgstr "S - Same Day"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_duty_payment__s
@@ -419,6 +494,11 @@ msgstr "Отправка, созданная в DHL <br/> <b>Номер Отсл
 #. module: delivery_dhl
 #: model:ir.model,name:delivery_dhl.model_delivery_carrier
 msgid "Shipping Methods"
+msgstr "Методы доставки"
+
+#. module: delivery_dhl
+#: model:ir.model,name:delivery_dhl.model_stock_package_type
+msgid "Stock package type"
 msgstr ""
 
 #. module: delivery_dhl
@@ -432,7 +512,7 @@ msgstr "T - Экспресс 12:00"
 msgid ""
 "The address of the customer is missing or wrong (Missing field(s) :\n"
 " %s)"
-msgstr ""
+msgstr "Адрес клиента отсутствует или неправильная (отсутствует поле (я): %s)"
 
 #. module: delivery_dhl
 #: code:addons/delivery_dhl/models/dhl_request.py:0
@@ -445,12 +525,20 @@ msgstr ""
 " %s)"
 
 #. module: delivery_dhl
+#: model:ir.model.fields,help:delivery_dhl.field_delivery_carrier__dhl_custom_data_request
+msgid ""
+"The custom data in DHL is organized like the inside of a json file.\n"
+"        There are 3 possible keys: 'rate', 'ship', 'return', to which you can add your custom data.\n"
+"        More info on https://xmlportal.dhl.com/"
+msgstr ""
+
+#. module: delivery_dhl
 #: code:addons/delivery_dhl/models/dhl_request.py:0
 #, python-format
 msgid ""
-"The estimated price cannot be computed because the weight of your product is"
-" missing."
-msgstr "Невозможно произвести оценку стоимости, т. к. не указан вес."
+"The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n"
+" %s"
+msgstr ""
 
 #. module: delivery_dhl
 #: code:addons/delivery_dhl/models/delivery_dhl.py:0
@@ -463,35 +551,39 @@ msgstr ""
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__u
 msgid "U - Express Worldwide"
-msgstr ""
+msgstr "U - Express Worldwide"
 
 #. module: delivery_dhl
-#: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_intl
-#: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_usa
-#: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_intl_product_template
-#: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_usa_product_template
+#: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_eu_dom
+#: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_eu_intl
+#: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_us_dom
+#: model:product.product,uom_name:delivery_dhl.product_product_delivery_dhl_us_intl
+#: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_eu_dom_product_template
+#: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_eu_intl_product_template
+#: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_us_dom_product_template
+#: model:product.template,uom_name:delivery_dhl.product_product_delivery_dhl_us_intl_product_template
 msgid "Units"
-msgstr ""
+msgstr "Единицы"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__v
 msgid "V - Europack"
-msgstr ""
+msgstr "V - Europack"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__w
 msgid "W - Economy Select"
-msgstr ""
+msgstr "W - Economy Select"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__x
 msgid "X - Express Envelope"
-msgstr ""
+msgstr "X - Express Envelope"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__y
 msgid "Y - Express 12:00"
-msgstr ""
+msgstr "Y - Express 12:00"
 
 #. module: delivery_dhl
 #: code:addons/delivery_dhl/models/delivery_dhl.py:0
@@ -500,9 +592,15 @@ msgid "You can't cancel DHL shipping without pickup date."
 msgstr "Вы не можете отменить отправку DHL без даты отправки."
 
 #. module: delivery_dhl
+#: code:addons/delivery_dhl/models/delivery_dhl.py:0
+#, python-format
+msgid "You cannot delete the commercial invoice sequence."
+msgstr ""
+
+#. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__z
 msgid "Z - Destination Charges"
-msgstr ""
+msgstr "Z - Destination Charges"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_image_format__zpl2

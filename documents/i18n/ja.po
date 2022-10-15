@@ -3,17 +3,17 @@
 # 	* documents
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Norimichi Sugimoto <norimichi.sugimoto@tls-ltd.co.jp>, 2022
 # Ryoko Tsuda <ryoko@quartile.co>, 2022
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:41+0000\n"
+"POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Ryoko Tsuda <ryoko@quartile.co>, 2022\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Japanese (https://www.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,23 +44,9 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload_service.js:0
-#, python-format
-msgid "%s Files"
-msgstr ""
-
-#. module: documents
-#. openerp-web
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "%s file(s) not moved because they are locked by another user"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "(%s/%sMB)"
 msgstr ""
 
 #. module: documents
@@ -576,7 +562,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload_service.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "An error occured while uploading."
 msgstr ""
@@ -714,14 +700,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Cancel"
 msgstr "取消"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.xml:0
-#: code:addons/documents/static/src/views/helper/documents_file_upload.xml:0
-#, python-format
-msgid "Cancel Upload"
-msgstr ""
 
 #. module: documents
 #: model_terms:documents.folder,description:documents.documents_internal_folder
@@ -949,6 +927,13 @@ msgid "Description"
 msgstr "説明"
 
 #. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_form
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_form
+msgid "Discard"
+msgstr "破棄"
+
+#. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_facet__display_name
 #: model:ir.model.fields,field_description:documents.field_documents_folder__display_name
@@ -961,13 +946,6 @@ msgstr "説明"
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__display_name
 msgid "Display Name"
 msgstr "表示名"
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "Do you really want to cancel the upload of %s?"
-msgstr ""
 
 #. module: documents
 #. openerp-web
@@ -1167,7 +1145,7 @@ msgstr "メールCC"
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.js:0
-#: code:addons/documents/static/src/views/documents_controller_mixin.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #: model:ir.model.fields.selection,name:documents.selection__documents_document__thumbnail_status__error
 #, python-format
 msgid "Error"
@@ -1221,7 +1199,7 @@ msgstr "ファイルサイズ"
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/documents_controller_mixin.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "File is too large."
 msgstr ""
@@ -1533,11 +1511,6 @@ msgstr "リンク"
 #: model:ir.model.fields.selection,name:documents.selection__documents_workflow_rule__create_model__link_to_record
 msgid "Link to record"
 msgstr ""
-
-#. module: documents
-#: model:ir.model.fields,help:documents.field_documents_document__email_cc
-msgid "List of cc from incoming emails."
-msgstr "受信メールからのccのリスト。"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__state__live
@@ -1959,13 +1932,6 @@ msgid "Presentations"
 msgstr "プレゼンテーション"
 
 #. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "Processing..."
-msgstr ""
-
-#. module: documents
 #: model:documents.tag,name:documents.documents_internal_template_project
 msgid "Project"
 msgstr "プロジェクト"
@@ -2114,6 +2080,13 @@ msgstr "SMS配信エラー"
 #: model:documents.tag,name:documents.documents_internal_knowledge_sales
 msgid "Sales"
 msgstr "販売"
+
+#. module: documents
+#: model_terms:ir.ui.view,arch_db:documents.facet_view_form
+#: model_terms:ir.ui.view,arch_db:documents.folder_view_form
+#: model_terms:ir.ui.view,arch_db:documents.tag_view_form
+msgid "Save"
+msgstr "保存"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_option
@@ -2423,7 +2396,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/form/share_form_controller.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "The share url has been copied to your clipboard."
@@ -2584,13 +2557,6 @@ msgstr ""
 #: code:addons/documents/models/mail_activity.py:0
 #, python-format
 msgid "Upload file request"
-msgstr ""
-
-#. module: documents
-#. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload.js:0
-#, python-format
-msgid "Uploading... (%s%)"
 msgstr ""
 
 #. module: documents
@@ -2897,7 +2863,7 @@ msgstr ""
 
 #. module: documents
 #. openerp-web
-#: code:addons/documents/static/src/views/helper/documents_file_upload_service.js:0
+#: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "status code: %s, message: %s"
 msgstr ""

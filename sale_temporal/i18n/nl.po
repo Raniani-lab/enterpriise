@@ -6,6 +6,7 @@
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
+"Last-Translator: Gunther Clauwaert <gclauwae@hotmail.com>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -53,7 +54,7 @@ msgstr "Bedrijf"
 #: model_terms:ir.actions.act_window,help:sale_temporal.product_pricing_action
 #: model_terms:ir.actions.act_window,help:sale_temporal.sale_temporal_recurrence_action
 msgid "Create a new recurrence"
-msgstr ""
+msgstr "Een nieuwe herhaling aanmaken"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__create_uid
@@ -76,7 +77,7 @@ msgstr "Valuta"
 #: model:ir.model.fields,field_description:sale_temporal.field_product_product__product_pricing_ids
 #: model:ir.model.fields,field_description:sale_temporal.field_product_template__product_pricing_ids
 msgid "Custom Pricings"
-msgstr ""
+msgstr "Prijzen op maat"
 
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__day
@@ -103,7 +104,7 @@ msgstr "Duur"
 #: model:ir.model.fields,help:sale_temporal.field_product_product__display_price
 #: model:ir.model.fields,help:sale_temporal.field_product_template__display_price
 msgid "First leasing pricing of the product"
-msgstr ""
+msgstr "Eerste huurprijzen van het product"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__id
@@ -119,13 +120,13 @@ msgstr "Interne notitie"
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_subscription_order_view_form
 msgid "Internal notes"
-msgstr ""
+msgstr "Interne notities"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_product__is_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_template__is_temporal
 msgid "Is Temporal"
-msgstr ""
+msgstr "Is tijdelijk"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing____last_update
@@ -149,7 +150,7 @@ msgstr "Laatst geupdate op"
 #: model:ir.model.fields,field_description:sale_temporal.field_product_product__display_price
 #: model:ir.model.fields,field_description:sale_temporal.field_product_template__display_price
 msgid "Leasing price"
-msgstr ""
+msgstr "Huurprijs"
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_sale_temporal_recurrence__duration
@@ -157,6 +158,8 @@ msgid ""
 "Minimum duration before this rule is applied. If set to 0, it represents a "
 "fixed temporal price."
 msgstr ""
+"Minimumduur voordat deze regel wordt toegepast. Indien ingesteld op 0, "
+"vertegenwoordigt dit een vaste tijdsduur."
 
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__month
@@ -242,17 +245,17 @@ msgstr "Herhaling"
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricelist__product_pricing_ids
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Recurring Price Rules"
-msgstr ""
+msgstr "Terugkerende prijsregels"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Recurring Pricelist Rules"
-msgstr ""
+msgstr "Regels voor terugkerende prijslijsten"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_temporal_recurrence
 msgid "Sale temporal Recurrence"
-msgstr ""
+msgstr "Verkoop tijdelijke herhaling"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_order
@@ -270,6 +273,8 @@ msgid ""
 "Select Variants of the Product for which this rule applies. Leave empty if "
 "this rule applies for any variant of this template."
 msgstr ""
+"Selecteer Varianten van het Product waarvoor deze regel geldt. Laat leeg als"
+" deze regel geldt voor elke variant van deze sjabloon."
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_pricing__product_template_id
@@ -291,7 +296,7 @@ msgstr ""
 #: code:addons/sale_temporal/models/product_template.py:0
 #, python-format
 msgid "The product (%s) has incompatible values: %s"
-msgstr ""
+msgstr "Product (%s) heeft onverenigbare waarden: %s"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__unit
@@ -320,10 +325,12 @@ msgid ""
 "You cannot have multiple pricing for the same variant, recurrence and "
 "pricelist"
 msgstr ""
+"U kunt niet meerdere prijzen hebben voor dezelfde variant, herhaling en "
+"prijslijst"
 
 #. module: sale_temporal
 #: code:addons/sale_temporal/models/product_pricing.py:0
 #: code:addons/sale_temporal/models/product_pricing.py:0
 #, python-format
 msgid "all variants"
-msgstr ""
+msgstr "alle varianten"

@@ -3,21 +3,23 @@
 # 	* website_twitter_wall
 # 
 # Translators:
-# Ediz Duman <neps1192@gmail.com>, 2019
-# Martin Trigaux, 2019
-# Levent Karakaş <levent@mektup.at>, 2019
-# Murat Kaplan <muratk@projetgrup.com>, 2019
-# Ahmet Altinisik <aaltinisik@altinkaya.com.tr>, 2019
-# Buket Şeker <buket_skr@hotmail.com>, 2019
-# Cécile Collart <cco@odoo.com>, 2019
+# Cécile Collart <cco@odoo.com>, 2022
+# Levent Karakaş <levent@mektup.at>, 2022
+# Ertuğrul Güreş <ertugrulg@projetgrup.com>, 2022
+# Ediz Duman <neps1192@gmail.com>, 2022
+# Halil, 2022
+# Martin Trigaux, 2022
+# Murat Durmuş <muratd@projetgrup.com>, 2022
+# Buket Şeker <buket_skr@hotmail.com>, 2022
+# Murat Kaplan <muratk@projetgrup.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 09:39+0000\n"
-"Last-Translator: Cécile Collart <cco@odoo.com>, 2019\n"
+"POT-Creation-Date: 2022-09-20 09:50+0000\n"
+"PO-Revision-Date: 2022-09-22 05:50+0000\n"
+"Last-Translator: Murat Kaplan <muratk@projetgrup.com>, 2022\n"
 "Language-Team: Turkish (https://www.transifex.com/odoo/teams/41243/tr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,7 +30,7 @@ msgstr ""
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_walls
 msgid "<b>Hey! No wall found</b>"
-msgstr "<b>Hey! Aucun mur trouvé</b>"
+msgstr "<b>Hey! Duvar bulunamadı</b>"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_walls
@@ -46,8 +48,8 @@ msgid ""
 "<span class=\"o_stat_text\">Live Mode</span>\n"
 "                                <span class=\"o_stat_text\">is <strong class=\"text-danger\"> Off </strong></span>"
 msgstr ""
-"<span class=\"o_stat_text\">Le mode live</span>\n"
-"<span class=\"o_stat_text\"> est <strong class=\"text-danger\">désactivé</strong></span>"
+"<span class=\"o_stat_text\">Canlı Mod</span>\n"
+"                                <span class=\"o_stat_text\"><strong class=\"text-danger\"> Kapalı </strong></span>"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
@@ -55,13 +57,13 @@ msgid ""
 "<span class=\"o_stat_text\">Live Mode</span>\n"
 "                                <span class=\"o_stat_text\">is <strong class=\"text-success\"> On </strong></span>"
 msgstr ""
-"<span class=\"o_stat_text\">Le mode live</span>\n"
-"<span class=\"o_stat_text\"> est <strong class=\"text-success\">activé</strong></span>"
+"<span class=\"o_stat_text\">Canlı Mod</span>\n"
+"                                <span class=\"o_stat_text\"> <strong class=\"text-success\"> Açık </strong></span>"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__access_token
 msgid "Access Token"
-msgstr "Erişim Token'ı"
+msgstr "Erişim Anahtarı"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__active
@@ -69,6 +71,7 @@ msgid "Active"
 msgstr "Etkin"
 
 #. module: website_twitter_wall
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_search
 msgid "Archived"
 msgstr "Arşivlendi"
@@ -76,7 +79,7 @@ msgstr "Arşivlendi"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__can_publish
 msgid "Can Publish"
-msgstr ""
+msgstr "Yayınlanabilir"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__create_uid
@@ -91,10 +94,13 @@ msgstr "Oluşturulma"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Decrease zoom level"
-msgstr "Diminuer le niveau de zoom"
+msgstr "Zum seviyesini azaltın"
 
 #. module: website_twitter_wall
+#. openerp-web
+#: code:addons/website_twitter_wall/static/src/xml/website_twitter_wall_tweet.xml:0
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
+#, python-format
 msgid "Delete this tweet"
 msgstr "Bu Tweeti Sil"
 
@@ -116,7 +122,7 @@ msgstr "Tam ekrandan çık"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Hey! No tweet found"
-msgstr "Hey! Aucun tweet trouvé"
+msgstr "Hey! Tweet bulunamadı"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__id
@@ -131,32 +137,32 @@ msgstr "Görsel"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Increase zoom level"
-msgstr "Augmenter le niveau de zoom"
+msgstr "Yakınlaştırma seviyesini artırın"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__is_live
 msgid "Is Live"
-msgstr "Est actif"
+msgstr "Yayında"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__is_published
 msgid "Is Published"
-msgstr "Est publié"
+msgstr "Yayınlandı"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__is_live
 msgid "Is live mode on/off"
-msgstr "Le mode direct est-il activé / désactivé"
+msgstr "Canlı mod açık / kapalı"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall____last_update
 msgid "Last Modified on"
-msgstr "Son Güncelleme"
+msgstr "Son Düzenleme"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__last_search
 msgid "Last Search"
-msgstr "Dernière recherche"
+msgstr "Son Arama"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__write_uid
@@ -176,21 +182,20 @@ msgstr "Liste Görünümü"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Live mode"
-msgstr ""
+msgstr "Canlı mod"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields.selection,name:website_twitter_wall.selection__website_twitter_wall__mode__mixed
 msgid "Mixed"
-msgstr ""
+msgstr "Karışık"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__mode
 msgid "Most recent tweets, most popular tweets, or both"
-msgstr "Les plus récents tweets, les plus populaires, ou les deux"
+msgstr "En son tweetler, en popüler tweetler veya her ikisi"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__name
-#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "Name"
 msgstr "Adı"
 
@@ -202,12 +207,12 @@ msgstr "Popüler"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 msgid "Query operators"
-msgstr "Opérateurs de requêtes"
+msgstr "Sorgu operatörleri"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields.selection,name:website_twitter_wall.selection__website_twitter_wall__mode__recent
 msgid "Recent"
-msgstr "Récent"
+msgstr "Son"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
@@ -217,32 +222,37 @@ msgstr "Tekrarla"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_search
 msgid "Search CRM Score"
-msgstr ""
+msgstr "CRM Puanını Ara"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__search_pattern
 msgid "Search string"
-msgstr ""
+msgstr "Arama dizisi"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on facebook"
-msgstr "Partagez #{wall.name} sur facebook"
+msgstr "Facebook'ta # {wall.name} paylaşın"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on google+"
-msgstr "Partagez #{wall.name} sur google +"
+msgstr "Google + 'da # {wall.name} paylaşın"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on linkedin"
-msgstr "Partagez #{wall.name} sur linkedin"
+msgstr "Linkedin'de # {wall.name} paylaşın"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_share
 msgid "Share #{wall.name} on twitter"
-msgstr "Partagez #{wall.name} sur Twitter"
+msgstr "Twitter'da # {wall.name} paylaşın"
+
+#. module: website_twitter_wall
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.snippet_options
+msgid "Share Option"
+msgstr ""
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
@@ -252,7 +262,7 @@ msgstr "Karıştır"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Single view"
-msgstr "Vue unique"
+msgstr "Tekli görünüm"
 
 #. module: website_twitter_wall
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:0
@@ -260,35 +270,33 @@ msgstr "Vue unique"
 msgid ""
 "The Twitter authentication failed. Please check your API key and secret."
 msgstr ""
-"L'authentification Twitter a échoué. Veuillez vérifier votre clé API et "
-"votre secret."
+"Twitter kimlik doğrulaması başarısız oldu. Lütfen API anahtarınızı ve "
+"sırrınızı kontrol edin."
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__website_url
 msgid "The full URL to access the document through the website."
-msgstr "Belgeye web sitesinden erişim için tam URL adresi."
+msgstr "Web sitesi aracılığıyla belgeye erişmek için tam URL."
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__search_pattern
 msgid ""
-"The search criteria to get the tweets you want. You can use the Twitter "
-"query operators."
+"The search criteria to get the tweets you want. You can use the Twitter query operators.\n"
+"You can also use the special \"favorites:screen_name\" operator to get the favorited tweets of \"screen_name\"."
 msgstr ""
-"Les critères de recherche pour obtenir les tweets que vous voulez. Vous "
-"pouvez utiliser les opérateurs de requête Twitter."
 
 #. module: website_twitter_wall
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:0
 #, python-format
 msgid "The tweets search failed. Check your credentials and access token"
 msgstr ""
-"La recherche sur les tweets a échoué. Vérifiez vos identifiants et votre "
-"jeton d'accès"
+"Tweet arama başarısız oldu. Kimlik bilgilerinizi ve erişim kodunuzu kontrol "
+"edin"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Three columns view"
-msgstr "Vue trois colonnes"
+msgstr "Üç sütun görünümü"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__total_tweets
@@ -297,18 +305,14 @@ msgid "Total Tweets"
 msgstr "Tüm Tweetler"
 
 #. module: website_twitter_wall
-#: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__tweet_ids
-msgid "Tweet"
-msgstr "Tweet"
-
-#. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_tweet__tweet_html
 msgid "Tweet Html"
-msgstr ""
+msgstr "Tweet Html"
 
 #. module: website_twitter_wall
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:0
 #: model:ir.actions.act_window,name:website_twitter_wall.website_twitter_tweet_action
+#: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__tweet_ids
 #: model:ir.ui.menu,name:website_twitter_wall.website_twitter_tweet_menu
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_tweet_view_form
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_tweet_view_tree
@@ -330,22 +334,22 @@ msgstr "Twitter API Sırrı"
 #. module: website_twitter_wall
 #: model:ir.ui.menu,name:website_twitter_wall.menu_website_twitter_wall_root
 msgid "Twitter Wall"
-msgstr "Mur Twitter"
+msgstr "Twitter Duvarı"
 
 #. module: website_twitter_wall
-#: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_footer_custom
-msgid "Twitter wall"
-msgstr "Mur Twitter"
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.snippet_options
+msgid "Twitter Wall Page"
+msgstr ""
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Two columns view"
-msgstr ""
+msgstr "İki sütun görünümü"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__mode
 msgid "Type of tweets"
-msgstr "Type de tweets"
+msgstr "Tweetler türü"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__website_published
@@ -356,7 +360,12 @@ msgstr "Mevcut web sitesinde görülebilir"
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_tweet__wall_ids
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_tweet_view_form
 msgid "Wall"
-msgstr "Mur"
+msgstr "Duvar"
+
+#. module: website_twitter_wall
+#: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
+msgid "Wall Name"
+msgstr ""
 
 #. module: website_twitter_wall
 #: model:ir.actions.act_window,name:website_twitter_wall.website_twitter_wall_action
@@ -364,7 +373,7 @@ msgstr "Mur"
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_tree
 msgid "Walls"
-msgstr "Murs"
+msgstr "Duvarlar"
 
 #. module: website_twitter_wall
 #: model:ir.model,name:website_twitter_wall.model_website_twitter_tweet
@@ -379,5 +388,5 @@ msgstr "Web Sitesi URL Adresi"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
-msgid "Your wall name"
-msgstr "Senin Duvar Adın"
+msgid "e.g. My Twitter Wall"
+msgstr ""

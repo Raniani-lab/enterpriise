@@ -671,8 +671,8 @@ msgid ""
 "Once the quotation is confirmed, it becomes a rental order.<br> You will be "
 "able to create an invoice and collect the payment."
 msgstr ""
-"Una vez que el cliente confirme la cotización, esta se transformará en una "
-"orden de alquiler.<br> Podrá crear una factura y cobrar."
+"Una vez que el cliente confirme la cotización, se transformará en una orden "
+"de alquiler.<br> Podrá crear una factura y cobrar."
 
 #. module: sale_renting
 #. openerp-web
@@ -1273,7 +1273,7 @@ msgid ""
 "Those values are applied to any new rental product and can be changed on "
 "product forms."
 msgstr ""
-"Estos valores se aplican a cualquier producto nuevo de alquiler y se pueden "
+"Se aplican estos valores a cualquier producto nuevo de alquiler y se pueden "
 "modificar en la información del producto."
 
 #. module: sale_renting

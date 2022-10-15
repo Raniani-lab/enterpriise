@@ -470,7 +470,7 @@ msgstr "Ultimo aggiornamento il"
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Late Activities"
-msgstr "Ultime attività"
+msgstr "Attività in ritardo"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__email_cc

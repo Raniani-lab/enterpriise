@@ -3,16 +3,17 @@
 # 	* account_asset
 # 
 # Translators:
-# Martin Trigaux, 2022
 # Mijail Todorovich <mijailtodorovich+git@gmail.com>, 2022
+# Sergio Hevia <sah@talleresbernesga.com>, 2022
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Mijail Todorovich <mijailtodorovich+git@gmail.com>, 2022\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -48,6 +49,14 @@ msgid "# Posted Depreciation Entries"
 msgstr "# Entradas de Depreciación Contabilizadas"
 
 #. module: account_asset
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid ""
+"%s Future entries will be recomputed to depreciate the asset following the "
+"changes."
+msgstr ""
+
+#. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "%s created from invoice: %s"
@@ -66,10 +75,15 @@ msgid "%s y"
 msgstr "%s a"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:0
+#: code:addons/account_asset/models/account_move.py:0
 #, python-format
-msgid "(prorata entry)"
-msgstr "(entrada proporcional)"
+msgid "%s: Depreciation"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
+msgid "(incl."
+msgstr ""
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -82,6 +96,38 @@ msgstr "Se generó un gasto diferido para este movimiento:"
 #, python-format
 msgid "A deferred revenue has been created for this move:"
 msgstr "Se generó un ingreso diferido para este movimiento:"
+
+#. module: account_asset
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid "A depreciation entry will be posted on and including the date %s."
+msgstr ""
+
+#. module: account_asset
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid ""
+"A depreciation entry will be posted on and including the date %s. <br/> %s "
+"Future entries will be recomputed to depreciate the asset following the "
+"changes."
+msgstr ""
+
+#. module: account_asset
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid ""
+"A depreciation entry will be posted on and including the date %s.<br/> A "
+"disposal entry will be posted on the %s account <b>%s</b>."
+msgstr ""
+
+#. module: account_asset
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid ""
+"A depreciation entry will be posted on and including the date %s.<br/> A "
+"second entry will neutralize the original income and post the  outcome of "
+"this sale on account <b>%s</b>."
+msgstr ""
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -251,16 +297,15 @@ msgid "Activity Type Icon"
 msgstr "Ícono de tipo de actvidad"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+msgid "Add an internal note"
+msgstr ""
+
+#. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "All the lines should be from the same account"
-msgstr "Todas las líneas deben ser de la misma cuenta"
-
-#. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:0
-#, python-format
-msgid "All the lines should be from the same move type"
 msgstr "Todas las líneas deben ser de la misma cuenta"
 
 #. module: account_asset
@@ -285,6 +330,13 @@ msgstr "Un activo tiene una matriz cuando se obtiene de una ganancia "
 #, python-format
 msgid "An asset has been created for this move:"
 msgstr "Se creó un activo para este movimiento:"
+
+#. module: account_asset
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid "An asset will be created for the value increase of the asset. <br/>"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution
@@ -336,7 +388,7 @@ msgstr ""
 msgid ""
 "Asset Cancelled <br>The account %(exp_acc)s has been credited by "
 "%(exp_delta)s, while the account %(dep_acc)s has been debited by "
-"%(dep_delta)s. This corresponds to %(move_count)s %(mthd)s "
+"%(dep_delta)s. This corresponds to %(move_count)s cancelled "
 "%(word)s:<br>%(entries)s"
 msgstr ""
 
@@ -353,18 +405,9 @@ msgid "Asset Id Display Name"
 msgstr "Nombre de visualización de la identificación del activo"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_ids_display_name
-#: model:ir.model.fields,field_description:account_asset.field_account_move__asset_ids_display_name
-#: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_ids_display_name
-msgid "Asset Ids Display Name"
-msgstr "Nombre de visualización de la identificación del activo"
-
-#. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_manually_modified
-#: model:ir.model.fields,field_description:account_asset.field_account_move__asset_manually_modified
-#: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_manually_modified
-msgid "Asset Manually Modified"
-msgstr "Activo modificado manualmente"
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_lifetime_days
+msgid "Asset Lifetime Days"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__asset_model
@@ -400,6 +443,11 @@ msgid "Asset Options"
 msgstr "Opciones de activos"
 
 #. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_paused_days
+msgid "Asset Paused Days"
+msgstr ""
+
+#. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset_report_handler
 msgid "Asset Report Custom Handler"
 msgstr ""
@@ -433,26 +481,30 @@ msgstr "Activo creado"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
-#: code:addons/account_asset/models/account_asset.py:0
 #, python-format
-msgid "Asset paused"
-msgstr "Activo en pausa"
+msgid "Asset disposed. %s"
+msgstr ""
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
-msgid "Asset sold or disposed. Accounting entry awaiting for validation."
-msgstr "Activo vendido o desechado. Asiento contable esperando validación."
+msgid "Asset paused. %s"
+msgstr ""
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid "Asset sold. %s"
+msgstr ""
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
-msgid "Asset unpaused"
-msgstr "Activo sin pausa"
+msgid "Asset unpaused. %s"
+msgstr ""
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_move.py:0
-#, python-format
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Asset(s)"
 msgstr "Activo(s)"
 
@@ -512,6 +564,16 @@ msgid "Automation"
 msgstr "Automatización"
 
 #. module: account_asset
+#: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__daily_computation
+msgid "Based on days per period"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
+msgid "Bills"
+msgstr "Facturas"
+
+#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__book_value
 msgid "Book Value"
 msgstr "Valor contable"
@@ -537,11 +599,6 @@ msgid "Cancelled"
 msgstr "Cancelado"
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
-msgid "Category of asset"
-msgstr "Categoría del activo"
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__children_ids
 msgid "Children"
 msgstr "Sujetos"
@@ -550,14 +607,10 @@ msgstr "Sujetos"
 #: model:ir.model.fields,help:account_asset.field_account_asset__method
 msgid ""
 "Choose the method to use to compute the amount of depreciation lines.\n"
-"  * Straight Line: Calculated on basis of: Gross Value / Number of Depreciations\n"
+"  * Straight Line: Calculated on basis of: Gross Value / Duration\n"
 "  * Declining: Calculated on basis of: Residual Value * Declining Factor\n"
 "  * Declining then Straight Line: Like Declining but with a minimum depreciation value equal to the straight line value."
 msgstr ""
-"Elige el método que quieres utilizar para calcular el monto de las líneas de depreciación.\n"
-"  * Línea recta: Calculado con base en: Valor bruto / Número de amortizaciones\n"
-"  * Declinando: Calculado sobre la base de: Valor residual * Factor de disminución\n"
-"  * En declive luego en línea recta: En declive con un valor mínimo de depreciación igual al valor de la línea recta."
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__close
@@ -575,6 +628,11 @@ msgstr "Compañías"
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__company_id
 msgid "Company"
 msgstr "Compañía"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__prorata_computation_type
+msgid "Computation"
+msgstr "Cálculo"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -595,6 +653,11 @@ msgstr "Calcular ingreso"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Confirm"
 msgstr "Confirmar"
+
+#. module: account_asset
+#: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__constant_periods
+msgid "Constant Periods"
+msgstr ""
 
 #. module: account_asset
 #: model:ir.actions.server,name:account_asset.action_account_aml_to_asset
@@ -689,7 +752,7 @@ msgid "Current Values"
 msgstr "Valores actuales"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_asset_modify__invoice_id
+#: model:ir.model.fields,field_description:account_asset.field_asset_modify__invoice_ids
 msgid "Customer Invoice"
 msgstr "Factura del cliente"
 
@@ -698,6 +761,13 @@ msgstr "Factura del cliente"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Date"
 msgstr "Fecha"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_depreciation_beginning_date
+#: model:ir.model.fields,field_description:account_asset.field_account_move__asset_depreciation_beginning_date
+#: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_depreciation_beginning_date
+msgid "Date of the beginning of the depreciation"
+msgstr ""
 
 #. module: account_asset
 #: code:addons/account_asset/report/account_assets_report.py:0
@@ -743,6 +813,7 @@ msgid "Deferred Expense Amount"
 msgstr "Cantidad de gastos diferidos"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Deferred Expense Model"
 msgstr "Modelo de gastos diferidos"
@@ -769,8 +840,7 @@ msgid "Deferred Expense name"
 msgstr "Nombre de gasto diferido"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_move.py:0
-#, python-format
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Deferred Expense(s)"
 msgstr "Gasto(s) diferido(s)"
 
@@ -806,6 +876,7 @@ msgid "Deferred Revenue Amount"
 msgstr "Cantidad de ingresos diferidos"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Deferred Revenue Model"
 msgstr "Modelo de ingresos diferidos"
@@ -832,8 +903,7 @@ msgid "Deferred Revenue name"
 msgstr "Nombre de Ingresos diferidos"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_move.py:0
-#, python-format
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Deferred Revenue(s)"
 msgstr "Ingreso(s) diferido(s)"
 
@@ -892,6 +962,9 @@ msgid "Depreciated Amount"
 msgstr "Monto depreciado"
 
 #. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__depreciation_value
+#: model:ir.model.fields,field_description:account_asset.field_account_move__depreciation_value
+#: model:ir.model.fields,field_description:account_asset.field_account_payment__depreciation_value
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Depreciation"
 msgstr "Amortización"
@@ -925,11 +998,6 @@ msgid "Depreciation Method"
 msgstr "Método de depreciación"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__depreciation_number_import
-msgid "Depreciation Number Import"
-msgstr "Importación de números de depreciación"
-
-#. module: account_asset
 #: model:account.report,name:account_asset.assets_report
 #: model:ir.actions.client,name:account_asset.action_account_report_assets
 #: model:ir.ui.menu,name:account_asset.menu_action_account_report_assets
@@ -939,8 +1007,8 @@ msgstr "Programa de depreciación"
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
-msgid "Depreciation board modified"
-msgstr "Tabla de depreciación modificada"
+msgid "Depreciation board modified %s"
+msgstr ""
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
@@ -958,11 +1026,6 @@ msgstr "Entrada de depreciación %s anulada (%s)"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__display_account_asset_id
 msgid "Display Account Asset"
 msgstr "Visualizar cuenta de activo"
-
-#. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__display_model_choice
-msgid "Display Model Choice"
-msgstr "Elección del modelo a desplegar "
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__display_name
@@ -1011,6 +1074,8 @@ msgid "Draft Asset"
 msgstr "Borrador del activo"
 
 #. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__method_number
+#: model:ir.model.fields,field_description:account_asset.field_asset_modify__method_number
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_kanban
 msgid "Duration"
@@ -1020,16 +1085,6 @@ msgstr "Duración"
 #: model:account.report.column,name:account_asset.assets_report_duration_rate
 msgid "Duration / Rate"
 msgstr "Duración / Tasa"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
-msgid "Existing Depreciation Schedule"
-msgstr "Programa de depreciación existente"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
-msgid "Existing Depreciations"
-msgstr "Depreciaciones existentes"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
@@ -1078,22 +1133,6 @@ msgstr "Reconocimiento de gastos"
 #: model:account.report.column,name:account_asset.assets_report_first_depreciation
 msgid "First Depreciation"
 msgstr "Primera depreciación"
-
-#. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__first_depreciation_date
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
-msgid "First Depreciation Date"
-msgstr "Primera fecha de depreciación"
-
-#. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__first_depreciation_date_import
-msgid "First Depreciation Date Import"
-msgstr "Importar la fecha de la primera depreciación"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "First Recognition Date"
-msgstr "Primera fecha de reconocimiento"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__account_asset_id
@@ -1183,11 +1222,6 @@ msgid "Has Message"
 msgstr "Tiene un mensaje"
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
-msgid "How would you like to modify this asset's depreciation?"
-msgstr ""
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__id
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__id
 msgid "ID"
@@ -1215,17 +1249,6 @@ msgid "If checked, some messages have a delivery error."
 msgstr "Si aparece marcado, algunos mensajes tienen un error en el envío."
 
 #. module: account_asset
-#: model:ir.model.fields,help:account_asset.field_account_asset__prorata
-msgid ""
-"If set, specifies the start date for the first period's computation. By "
-"default, it is set to the day's date rather than the Start Date of the "
-"fiscal year."
-msgstr ""
-"Si está establecido, especifica la fecha de inicio del cálculo del primer "
-"periodo. De forma predeterminada, se establece la fecha del día en lugar de "
-"la fecha de inicio del año fiscal."
-
-#. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_account__asset_model
 msgid ""
 "If this is selected, an expense/revenue will be created automatically when "
@@ -1233,24 +1256,6 @@ msgid ""
 msgstr ""
 "Si se seleccionas esta opción, se creará un gasto/ingreso de forma "
 "automática cuando se registren los elementos del diario en esta cuenta."
-
-#. module: account_asset
-#: model:ir.model.fields,help:account_asset.field_account_asset__first_depreciation_date_import
-msgid ""
-"In case of an import from another software, provide the first depreciation "
-"date in it."
-msgstr ""
-"En caso de una importación desde otro software, proporciona la primera fecha"
-" de depreciación en él."
-
-#. module: account_asset
-#: model:ir.model.fields,help:account_asset.field_account_asset__depreciation_number_import
-msgid ""
-"In case of an import from another software, provide the number of "
-"depreciations already done before starting with Odoo."
-msgstr ""
-"En caso de una importación desde otro software, proporciona el número de "
-"depreciaciones ya realizadas antes de comenzar con Odoo."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__already_depreciated_amount_import
@@ -1265,12 +1270,12 @@ msgstr ""
 " modelo."
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
-msgid "Increase Accounts"
-msgstr "Cuentas de Incremento"
+#: model:ir.model.fields,field_description:account_asset.field_asset_modify__informational_text
+msgid "Informational Text"
+msgstr ""
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_asset_modify__invoice_line_id
+#: model:ir.model.fields,field_description:account_asset.field_asset_modify__invoice_line_ids
 msgid "Invoice Line"
 msgstr "Linea de factura"
 
@@ -1355,6 +1360,13 @@ msgid "Linear"
 msgstr "Lineal"
 
 #. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__linked_asset_type
+#: model:ir.model.fields,field_description:account_asset.field_account_move__linked_asset_type
+#: model:ir.model.fields,field_description:account_asset.field_account_payment__linked_asset_type
+msgid "Linked Asset Type"
+msgstr ""
+
+#. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__gain_or_loss__loss
 msgid "Loss"
 msgstr "Pérdidas"
@@ -1397,11 +1409,6 @@ msgstr "Método"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_kanban
 msgid "Model"
 msgstr "Modelo"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
-msgid "Modification reason"
-msgstr "Motivo de modificación"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
@@ -1457,16 +1464,6 @@ msgid "My Activity Deadline"
 msgstr "Mi fecha límite de actividad"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_asset_modify__need_date
-msgid "Need Date"
-msgstr "Requiere fecha"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
-msgid "New Values"
-msgstr "Nuevos valores"
-
-#. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__value_residual
 msgid "New residual amount for the asset"
 msgstr "Nueva cantidad residual del activo"
@@ -1513,6 +1510,11 @@ msgid "No"
 msgstr "No"
 
 #. module: account_asset
+#: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__none
+msgid "No Prorata"
+msgstr ""
+
+#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__non_deductible_tax_value
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__non_deductible_tax_value
 msgid "Non Deductible Tax Value"
@@ -1529,15 +1531,9 @@ msgid "Not Depreciable Value"
 msgstr "Valor no depreciable"
 
 #. module: account_asset
-#: model:ir.model.fields,help:account_asset.field_account_asset__first_depreciation_date
-msgid ""
-"Note that this date does not alter the computation of the first journal "
-"entry in case of prorata temporis assets. It simply changes its accounting "
-"date"
-msgstr ""
-"Ten en cuenta que esta fecha no altera el cálculo del primer asiento del "
-"diario en caso de activos distribuidos a lo largo del tiempo. Simplemente "
-"cambia su fecha contable"
+#: model:ir.model.fields,field_description:account_asset.field_asset_modify__name
+msgid "Note"
+msgstr "Nota"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__number_asset_ids
@@ -1552,8 +1548,6 @@ msgid "Number of Actions"
 msgstr "Número de acciones"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__method_number
-#: model:ir.model.fields,field_description:account_asset.field_asset_modify__method_number
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_purchase_tree
 msgid "Number of Depreciations"
 msgstr "Número de depreciaciones"
@@ -1575,6 +1569,13 @@ msgstr "Numero de reconocimientos"
 #: model:ir.model.fields,help:account_asset.field_account_asset__gross_increase_count
 msgid "Number of assets made to increase the value of the asset"
 msgstr "Número de activos realizados para aumentar el valor del activo"
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_number_days
+#: model:ir.model.fields,field_description:account_asset.field_account_move__asset_number_days
+#: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_number_days
+msgid "Number of days"
+msgstr "Número de días"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__total_depreciation_entries_count
@@ -1624,6 +1625,11 @@ msgid "Pause"
 msgstr "Detener"
 
 #. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__paused_prorata_date
+msgid "Paused Prorata Date"
+msgstr ""
+
+#. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_purchase_tree
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
@@ -1641,25 +1647,15 @@ msgid "Prorata Date"
 msgstr "Fecha de distribución"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__prorata
-msgid "Prorata Temporis"
-msgstr "Tiempo de distribución"
-
-#. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__purchase
 msgid "Purchase: Asset"
 msgstr "Compra: Activo"
 
 #. module: account_asset
-#: code:addons/account_asset/wizard/asset_modify.py:0
-#, python-format
-msgid "Re-evaluate Depreciation"
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
+msgid "Recognition Values"
 msgstr ""
-
-#. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_asset_modify__name
-msgid "Reason"
-msgstr "Motivo"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__asset_ids
@@ -1672,20 +1668,14 @@ msgid "Related Expenses"
 msgstr "Gastos relacionados"
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
-msgid "Related Purchase"
-msgstr "Compra relacionada"
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__related_purchase_value
+msgid "Related Purchase Value"
+msgstr ""
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Related Sales"
 msgstr "Ventas relacionadas"
-
-#. module: account_asset
-#: code:addons/account_asset/models/account_move.py:0
-#, python-format
-msgid "Report of reversal for {name}"
-msgstr "Informe de cambio para {name}"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -1694,6 +1684,7 @@ msgid "Reset to running"
 msgstr "Restablecer en proceso"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Residual Amount to Recognize"
 msgstr "Cantidad residual a reconocer"
@@ -1709,9 +1700,7 @@ msgid "Resume"
 msgstr "Reanudar"
 
 #. module: account_asset
-#: code:addons/account_asset/wizard/asset_modify.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
-#, python-format
 msgid "Resume Depreciation"
 msgstr "Reanudar depreciación"
 
@@ -1754,13 +1743,6 @@ msgstr "Nombre del Ingreso"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Revenue Recognition"
 msgstr "Reconocimiento de Ingresos"
-
-#. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__reversal_move_id
-#: model:ir.model.fields,field_description:account_asset.field_account_move__reversal_move_id
-#: model:ir.model.fields,field_description:account_asset.field_account_payment__reversal_move_id
-msgid "Reversal Move"
-msgstr "Movimiento de cambio"
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:0
@@ -1816,11 +1798,6 @@ msgstr "Vender"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
-msgid "Set manually the original values or"
-msgstr "Establecer manualmente los valores originales o"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Set to Draft"
 msgstr "Establecer como borrador"
 
@@ -1847,11 +1824,6 @@ msgstr "Faltan algunos campos {}"
 #, python-format
 msgid "Some required values are missing"
 msgstr "Faltan algunos valores requeridos"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
-msgid "Start Depreciating"
-msgstr "Empezar a depreciar"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__state
@@ -1910,7 +1882,7 @@ msgid "The children are the gains in value of this asset"
 msgstr "Los valores subordinados son las ganancias en valor de este activo"
 
 #. module: account_asset
-#: model:ir.model.fields,help:account_asset.field_asset_modify__invoice_id
+#: model:ir.model.fields,help:account_asset.field_asset_modify__invoice_ids
 msgid ""
 "The disposal invoice is needed in order to generate the closing journal "
 "entry."
@@ -1931,7 +1903,7 @@ msgid "The remaining value on the last depreciation line must be 0"
 msgstr "El valor restante en la última línea de depreciación debe ser 0"
 
 #. module: account_asset
-#: model:ir.model.fields,help:account_asset.field_asset_modify__invoice_line_id
+#: model:ir.model.fields,help:account_asset.field_asset_modify__invoice_line_ids
 msgid "There are multiple lines that could be the related to this asset"
 msgstr "Hay varias líneas que podrían estar relacionadas con este activo"
 
@@ -1954,12 +1926,9 @@ msgid "Total"
 msgstr "Total"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:0
-#, python-format
-msgid "Trying to pause an asset without any future depreciation line"
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__total_depreciable_value
+msgid "Total Depreciable Value"
 msgstr ""
-"Este movimiento se anuló por intentar poner un activo en pausa sin ninguna "
-"línea de depreciación futura"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
@@ -1988,6 +1957,11 @@ msgstr "Tipo de cuenta"
 #: model:ir.model.fields,help:account_asset.field_account_asset__activity_exception_decoration
 msgid "Type of the exception activity on record."
 msgstr "Tipo de actividad de excepción registrada."
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
+msgid "Value at Import"
+msgstr ""
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:0
@@ -2035,6 +2009,14 @@ msgid "Years"
 msgstr "Años"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_move.py:0
+#, python-format
+msgid ""
+"You can't post an entry related to a draft asset. Please post the asset "
+"before."
+msgstr ""
+
+#. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "You cannot archive a record that is not closed"
@@ -2055,18 +2037,6 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid ""
-"You cannot cancel an asset having depreciation entries prior to the lock "
-"date. As the asset is published in the Depreciation Schedule, you might need"
-" to dispose of it."
-msgstr ""
-"No puede cancelar un activo que tiene asientos de depreciación anteriores a "
-"la fecha de bloqueo. Como el activo está publicado en el programa de "
-"depreciación, tal vez necesite desecharlo."
-
-#. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:0
-#, python-format
-msgid ""
 "You cannot create an asset from lines containing credit and debit on the "
 "account or with a null amount"
 msgstr ""
@@ -2080,17 +2050,15 @@ msgid "You cannot delete a document that is in %s state."
 msgstr "No puede eliminar un documento que está en estado %s."
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:0
-#, python-format
-msgid ""
-"You cannot pause an asset with posted depreciation lines in the future "
-"without reverting them."
-msgstr ""
-
-#. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "You cannot reset to draft an entry related to a posted asset"
+msgstr ""
+
+#. module: account_asset
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid "You cannot resume at a date equal to or before the pause date"
 msgstr ""
 
 #. module: account_asset
@@ -2111,9 +2079,8 @@ msgid "date to"
 msgstr ""
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:0
-#, python-format
-msgid "deleted"
+#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
+msgid "depreciable)"
 msgstr ""
 
 #. module: account_asset
@@ -2142,24 +2109,3 @@ msgstr ""
 #, python-format
 msgid "entry"
 msgstr ""
-
-#. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:0
-#, python-format
-msgid "reversed"
-msgstr ""
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
-msgid "select the related expense"
-msgstr ""
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
-msgid "select the related income"
-msgstr ""
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
-msgid "select the related purchases"
-msgstr "Selecciona las compras relacionadas"

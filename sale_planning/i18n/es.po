@@ -10,7 +10,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:43+0000\n"
+"POT-Creation-Date: 2022-10-10 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: marcescu, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
@@ -105,10 +105,9 @@ msgstr "Técnico de TI"
 #: model:ir.model.fields,help:sale_planning.field_product_template__planning_enabled
 msgid ""
 "If enabled, a shift will automatically be generated for the selected role "
-"when confirming the Sales Order."
+"when confirming the Sales Order. Only employees with this role will "
+"automatically be assigned shifts for Sales Orders containing this service."
 msgstr ""
-"Si se habilita, se generará un turno de forma automática para el rol "
-"seleccionado al confirmar la orden de venta."
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search
@@ -260,6 +259,14 @@ msgstr "Elemento del pedido de venta"
 #: model:ir.model,name:sale_planning.model_sale_order_line
 msgid "Sales Order Line"
 msgstr "Línea de pedido de venta"
+
+#. module: sale_planning
+#: model:ir.model.fields,help:sale_planning.field_planning_slot__sale_line_id
+msgid ""
+"Sales order item for which this shift will be performed. When sales orders "
+"are automatically planned, the remaining hours of the sales order item, as "
+"well as the role defined on the service, are taken into account."
+msgstr ""
 
 #. module: sale_planning
 #: model:ir.actions.act_window,name:sale_planning.sale_planning_action_schedule_by_sale_order

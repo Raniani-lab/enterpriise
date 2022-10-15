@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:43+0000\n"
+"POT-Creation-Date: 2022-10-10 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Yoshi Tashiro (Quartile) <tashiro@roomsfor.hk>, 2022\n"
 "Language-Team: Japanese (https://www.transifex.com/odoo/teams/41243/ja/)\n"
@@ -35,13 +35,13 @@ msgstr ""
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_stream_post_view_kanban
-msgid "<i class=\"fa fa-comments\" title=\"Comments\"/>"
-msgstr "<i class=\"fa fa-comments\" title=\"Comments\"/>"
+msgid "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
+msgstr ""
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_stream_post_view_kanban
-msgid "<i class=\"fa fa-thumbs-up\" title=\"Likes\"/>"
-msgstr "<i class=\"fa fa-thumbs-up\" title=\"Likes\"/>"
+msgid "<i class=\"fa fa-thumbs-up me-1\" title=\"Likes\"/>"
+msgstr ""
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.youtube_preview
@@ -585,7 +585,7 @@ msgstr ""
 
 #. module: social_youtube
 #. openerp-web
-#: code:addons/social_youtube/static/src/js/stream_post_youtube_comments.js:0
+#: code:addons/social_youtube/static/src/js/stream_post_kanban_record.js:0
 #, python-format
 msgid "YouTube Comments"
 msgstr ""
@@ -727,13 +727,6 @@ msgid ""
 "Your videos metadata including title and view counts (but never the video "
 "itself)"
 msgstr ""
-
-#. module: social_youtube
-#. openerp-web
-#: code:addons/social_youtube/static/src/js/stream_post_youtube_comments.js:0
-#, python-format
-msgid "comment/reply"
-msgstr "コメント/返信"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_post_view_form

@@ -148,8 +148,8 @@ msgstr "Estructura salarial"
 msgid ""
 "The Expense Journal \"%s\" has not properly configured the default Account!"
 msgstr ""
-"¡El diario de gastos \"%s\" no configuró de forma adecuada la cuenta "
-"predeterminada!"
+"¡El diario de gastos \"%s\" no configuró la cuenta predeterminada de forma "
+"adecuada!"
 
 #. module: hr_payroll_account
 #: model:ir.model.fields,help:hr_payroll_account.field_hr_salary_rule__not_computed_in_net

@@ -3,20 +3,22 @@
 # 	* quality
 # 
 # Translators:
-# Martin Trigaux, 2019
-# Jaroslav Helemik Nemec <nemec@helemik.cz>, 2019
-# Jakub Lohnisky <jakub@lepremier.cz>, 2019
-# Jan Horzinka <jan.horzinka@centrum.cz>, 2019
-# Michal Veselý <michal@veselyberanek.net>, 2019
-# trendspotter <j.podhorecky@volny.cz>, 2019
+# Jaroslav Helemik Nemec <nemec@helemik.cz>, 2022
+# karolína schusterová <karolina.schusterova@vdp.sk>, 2022
+# Jan Horzinka <jan.horzinka@centrum.cz>, 2022
+# Pauline Thiry <pth@odoo.com>, 2022
+# Martin Trigaux, 2022
+# Michal Veselý <michal@veselyberanek.net>, 2022
+# Rastislav Brencic <rastislav.brencic@azet.sk>, 2022
+# trendspotter <jirka.p@volny.cz>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-27 09:17+0000\n"
-"PO-Revision-Date: 2019-08-26 09:37+0000\n"
-"Last-Translator: trendspotter <j.podhorecky@volny.cz>, 2019\n"
+"POT-Creation-Date: 2022-09-23 08:22+0000\n"
+"PO-Revision-Date: 2022-09-22 05:48+0000\n"
+"Last-Translator: trendspotter <jirka.p@volny.cz>, 2022\n"
 "Language-Team: Czech (https://www.transifex.com/odoo/teams/41243/cs/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,18 +66,37 @@ msgstr "Aktivní"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_ids
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_ids
 msgid "Activities"
 msgstr "Aktivity"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_exception_decoration
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Dekorace výjimky aktivity"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_state
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_state
 msgid "Activity State"
 msgstr "Stav aktivity"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_type_icon
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "Ikona typu aktivity"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__additional_note
+msgid "Additional Note"
+msgstr "Doplňková poznámka"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_check__additional_note
+msgid "Additional remarks concerning this check."
+msgstr ""
 
 #. module: quality
 #: model:res.groups,name:quality.group_quality_manager
@@ -105,17 +126,22 @@ msgstr "Zabezpečení aliasu kontaktu"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_name
 msgid "Alias Name"
-msgstr "Název zástupce"
+msgstr "Název aliasu"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_domain
 msgid "Alias domain"
-msgstr "Alias domény"
+msgstr "Doména aliasu"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_model_id
 msgid "Aliased Model"
-msgstr "Model s aliasem"
+msgstr "Model aliasu"
+
+#. module: quality
+#: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
+msgid "Archived"
+msgstr "Archivováno"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_attachment_count
@@ -143,14 +169,7 @@ msgstr ""
 
 #. module: quality
 #. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:0
-#, python-format
-msgid "Clear"
-msgstr "Vymazat"
-
-#. module: quality
-#. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:0
+#: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
 #, python-format
 msgid "Close"
 msgstr "Zavřít"
@@ -221,6 +240,11 @@ msgstr "Vytvořeno"
 #: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Creation Date"
 msgstr "Datum vytvoření"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_bounced_content
+msgid "Custom Bounced Message"
+msgstr "Vlastní odrazená zpráva"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__date_assign
@@ -298,20 +322,18 @@ msgid "Followers"
 msgstr "Sledující"
 
 #. module: quality
-#: model:ir.model.fields,field_description:quality.field_quality_alert__message_channel_ids
-#: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_channel_ids
-#: model:ir.model.fields,field_description:quality.field_quality_check__message_channel_ids
-#: model:ir.model.fields,field_description:quality.field_quality_point__message_channel_ids
-msgid "Followers (Channels)"
-msgstr "Sledující (Kanály)"
-
-#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_partner_ids
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_partner_ids
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_partner_ids
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "Sledující (Partneři)"
+msgstr "Sledující (partneři)"
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert__activity_type_icon
+#: model:ir.model.fields,help:quality.field_quality_check__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr "Skvělá ikona písma, např. fa-úkoly"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
@@ -322,6 +344,14 @@ msgstr "Budoucí činnosti"
 #: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Group By"
 msgstr "Seskupit podle"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__has_message
+#: model:ir.model.fields,field_description:quality.field_quality_alert_team__has_message
+#: model:ir.model.fields,field_description:quality.field_quality_check__has_message
+#: model:ir.model.fields,field_description:quality.field_quality_point__has_message
+msgid "Has Message"
+msgstr "Má zprávu"
 
 #. module: quality
 #: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__2
@@ -351,23 +381,21 @@ msgstr ""
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_exception_icon
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_exception_icon
 msgid "Icon"
 msgstr "Ikona"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__activity_exception_icon
+#: model:ir.model.fields,help:quality.field_quality_check__activity_exception_icon
 msgid "Icon to indicate an exception activity."
 msgstr "Ikona označuje vyjímečnou aktivitu."
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__message_needaction
-#: model:ir.model.fields,help:quality.field_quality_alert__message_unread
 #: model:ir.model.fields,help:quality.field_quality_alert_team__message_needaction
-#: model:ir.model.fields,help:quality.field_quality_alert_team__message_unread
 #: model:ir.model.fields,help:quality.field_quality_check__message_needaction
-#: model:ir.model.fields,help:quality.field_quality_check__message_unread
 #: model:ir.model.fields,help:quality.field_quality_point__message_needaction
-#: model:ir.model.fields,help:quality.field_quality_point__message_unread
 msgid "If checked, new messages require your attention."
 msgstr "Pokud je zaškrtnuto, nové zprávy vyžadují vaši pozornost."
 
@@ -382,6 +410,15 @@ msgstr "Pokud je zaškrtnuto, nové zprávy vyžadují vaši pozornost."
 #: model:ir.model.fields,help:quality.field_quality_point__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
 msgstr "Pokud je zaškrtnuto, některé zprávy mají chybu při doručení."
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_alert_team__alias_bounced_content
+msgid ""
+"If set, this content will automatically be sent out to unauthorized users "
+"instead of the default message."
+msgstr ""
+"Pokud je nastaveno, bude tento obsah místo výchozí zprávy automaticky "
+"odeslán neoprávněným uživatelům."
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
@@ -399,7 +436,7 @@ msgstr "Instrukce"
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_is_follower
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_is_follower
 msgid "Is Follower"
-msgstr "je Sledující"
+msgstr "Je sledující"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert____last_update
@@ -445,13 +482,17 @@ msgstr "Zpožděné činnosti"
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__email_cc
 msgid "List of cc from incoming emails."
-msgstr ""
+msgstr "Seznam cc z příchozích e-mailů."
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__lot_id
-#: model:ir.model.fields,field_description:quality.field_quality_check__lot_id
 msgid "Lot"
 msgstr "Dávka"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__lot_id
+msgid "Lot/Serial"
+msgstr "Šarže / seriové číslo"
 
 #. module: quality
 #: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__1
@@ -483,6 +524,12 @@ msgid "Messages"
 msgstr "Zprávy"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__my_activity_date_deadline
+#: model:ir.model.fields,field_description:quality.field_quality_check__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "Termín mé aktivity"
+
+#. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "My Alerts"
 msgstr ""
@@ -491,11 +538,10 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_alert__name
 #: model:ir.model.fields,field_description:quality.field_quality_alert_stage__name
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__name
-#: model:ir.model.fields,field_description:quality.field_quality_check__name
 #: model:ir.model.fields,field_description:quality.field_quality_point_test_type__name
 #: model:ir.model.fields,field_description:quality.field_quality_reason__name
 msgid "Name"
-msgstr "Název"
+msgstr "Jméno"
 
 #. module: quality
 #: code:addons/quality/models/quality.py:0
@@ -513,17 +559,26 @@ msgid "New"
 msgstr "Nové"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert__activity_calendar_event_id
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr "Další událost z kalendáře aktivit"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_date_deadline
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr "Termín další aktivity"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_summary
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_summary
 msgid "Next Activity Summary"
 msgstr "Souhrn další aktivity"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_type_id
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_type_id
 msgid "Next Activity Type"
 msgstr "Další typ aktivity"
 
@@ -534,6 +589,8 @@ msgid ""
 "No quality team found for this company.\n"
 "Please go to configuration and create one first."
 msgstr ""
+"Pro tuto společnost nebyl nalezen žádný tým kvality.\n"
+"Nejprve přejděte do konfigurace a vytvořte jeden."
 
 #. module: quality
 #: model:ir.model.fields.selection,name:quality.selection__quality_alert__priority__0
@@ -585,23 +642,15 @@ msgid "Number of messages with delivery error"
 msgstr "Počet zpráv s chybou při doručení"
 
 #. module: quality
-#: model:ir.model.fields,help:quality.field_quality_alert__message_unread_counter
-#: model:ir.model.fields,help:quality.field_quality_alert_team__message_unread_counter
-#: model:ir.model.fields,help:quality.field_quality_check__message_unread_counter
-#: model:ir.model.fields,help:quality.field_quality_point__message_unread_counter
-msgid "Number of unread messages"
-msgstr "Počet nepřečtených zpráv"
+#: model:ir.model.fields,field_description:quality.field_quality_point__picking_type_ids
+msgid "Operation Types"
+msgstr ""
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_form
 #: model_terms:ir.ui.view,arch_db:quality.quality_point_view_tree
-msgid "Operation"
-msgstr "Úkon"
-
-#. module: quality
-#: model:ir.model.fields,field_description:quality.field_quality_point__picking_type_id
-msgid "Operation Type"
-msgstr ""
+msgid "Operations"
+msgstr "Úkony"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_force_thread_id
@@ -627,12 +676,12 @@ msgstr "Majitel"
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_parent_model_id
 msgid "Parent Model"
-msgstr "Nadřízený Model"
+msgstr "Nadřazený model"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr "ID vlákna nadřízeného záznamu"
+msgstr "ID vlákna nadřazeného záznamu"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert_team__alias_parent_model_id
@@ -641,6 +690,14 @@ msgid ""
 " necessarily the model given by alias_model_id (example: project "
 "(parent_model) and task (model))"
 msgstr ""
+"Nadřazený model s aliasem. Model obsahující odkaz na alias nemusí být nutně "
+"modelem daným od alias_model_id (příklad: project (parent_model) a task "
+"(model))"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__partner_id
+msgid "Partner"
+msgstr "Partner"
 
 #. module: quality
 #: model:quality.reason,name:quality.reason_parts
@@ -671,6 +728,10 @@ msgid ""
 "- partners: only authenticated partners\n"
 "- followers: only followers of the related document or members of following channels\n"
 msgstr ""
+"Zásady zveřejňování zpráv v dokumentu pomocí poštovní brány.\n"
+"- každý: každý může psát\n"
+"- partneři: pouze ověření partneři\n"
+"- sledující: pouze sledující související dokument nebo členové následujících kanálů\n"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__action_preventive
@@ -680,21 +741,29 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__priority
 msgid "Priority"
-msgstr "Přednost"
+msgstr "Priorita"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__product_tmpl_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__product_id
-#: model:ir.model.fields,field_description:quality.field_quality_point__product_tmpl_id
 #: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Product"
 msgstr "Produkt"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_point__product_category_ids
+msgid "Product Categories"
+msgstr "Kategorie produktů"
+
+#. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__product_id
-#: model:ir.model.fields,field_description:quality.field_quality_point__product_id
 msgid "Product Variant"
 msgstr "Varianta výrobku"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_point__product_ids
+msgid "Products"
+msgstr "Produkty"
 
 #. module: quality
 #: model:ir.model,name:quality.model_quality_alert
@@ -728,6 +797,18 @@ msgid "Quality Control Test Type"
 msgstr ""
 
 #. module: quality
+#: model:ir.model.fields,help:quality.field_quality_point__product_category_ids
+msgid ""
+"Quality Point will apply to every Products in the selected Product "
+"Categories."
+msgstr ""
+
+#. module: quality
+#: model:ir.model.fields,help:quality.field_quality_point__product_ids
+msgid "Quality Point will apply to every selected Products."
+msgstr ""
+
+#. module: quality
 #: model:ir.model,name:quality.model_quality_tag
 msgid "Quality Tag"
 msgstr ""
@@ -743,6 +824,7 @@ msgid "Record Thread ID"
 msgstr "ID vlákna záznamu"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__name
 #: model:ir.model.fields,field_description:quality.field_quality_point__name
 msgid "Reference"
 msgstr "Reference"
@@ -757,6 +839,7 @@ msgstr "Odpovědný"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_user_id
+#: model:ir.model.fields,field_description:quality.field_quality_check__activity_user_id
 msgid "Responsible User"
 msgstr "Zodpovědný uživatel"
 
@@ -810,6 +893,7 @@ msgstr "Stav"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__activity_state
+#: model:ir.model.fields,help:quality.field_quality_check__activity_state
 msgid ""
 "Status based on activities\n"
 "Overdue: Due date is already passed\n"
@@ -824,16 +908,16 @@ msgstr ""
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_tag__name
 msgid "Tag Name"
-msgstr "Název značky"
+msgstr "Název tagu"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__tag_ids
 msgid "Tags"
-msgstr "Štítky"
+msgstr "Tagy"
 
 #. module: quality
 #. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:0
+#: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
 #, python-format
 msgid "Take a Picture"
 msgstr "Vyfotit"
@@ -844,6 +928,11 @@ msgstr "Vyfotit"
 #: model:ir.model.fields,field_description:quality.field_quality_point__team_id
 msgid "Team"
 msgstr "Tým"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_alert_stage__team_ids
+msgid "Teams"
+msgstr "Týmy"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__test_type
@@ -902,6 +991,7 @@ msgid "The quality user uses the quality process"
 msgstr "Kvalitní uživatel používá proces kvality"
 
 #. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_check__title
 #: model:ir.model.fields,field_description:quality.field_quality_point__title
 msgid "Title"
 msgstr "Název"
@@ -924,31 +1014,9 @@ msgstr "Typ"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__activity_exception_decoration
+#: model:ir.model.fields,help:quality.field_quality_check__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
-
-#. module: quality
-#: model:ir.model.fields,field_description:quality.field_quality_alert__message_unread
-#: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_unread
-#: model:ir.model.fields,field_description:quality.field_quality_check__message_unread
-#: model:ir.model.fields,field_description:quality.field_quality_point__message_unread
-msgid "Unread Messages"
-msgstr "Nepřečtené zprávy"
-
-#. module: quality
-#: model:ir.model.fields,field_description:quality.field_quality_alert__message_unread_counter
-#: model:ir.model.fields,field_description:quality.field_quality_alert_team__message_unread_counter
-#: model:ir.model.fields,field_description:quality.field_quality_check__message_unread_counter
-#: model:ir.model.fields,field_description:quality.field_quality_point__message_unread_counter
-msgid "Unread Messages Counter"
-msgstr "Počítadlo nepřečtených zpráv"
-
-#. module: quality
-#. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:0
-#, python-format
-msgid "Uploading..."
-msgstr "Nahrávání..."
+msgstr "Typ zaznamenané výjimečné aktivity."
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_tag__color
@@ -972,7 +1040,7 @@ msgstr "Velmi vysoko"
 
 #. module: quality
 #. openerp-web
-#: code:addons/quality/static/src/xml/widget_template.xml:0
+#: code:addons/quality/static/src/tablet_image_field/tablet_image_field.xml:0
 #, python-format
 msgid "Viewer"
 msgstr "Prohlížeč"
@@ -983,7 +1051,7 @@ msgstr "Prohlížeč"
 #: model:ir.model.fields,field_description:quality.field_quality_check__website_message_ids
 #: model:ir.model.fields,field_description:quality.field_quality_point__website_message_ids
 msgid "Website Messages"
-msgstr "Zprávy Webové stránky"
+msgstr "Zprávy webstránky"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__website_message_ids
@@ -991,7 +1059,7 @@ msgstr "Zprávy Webové stránky"
 #: model:ir.model.fields,help:quality.field_quality_check__website_message_ids
 #: model:ir.model.fields,help:quality.field_quality_point__website_message_ids
 msgid "Website communication history"
-msgstr "Historie komunikace Webové stránky"
+msgstr "Historie komunikace webstránky"
 
 #. module: quality
 #: model:quality.reason,name:quality.reason_wo
@@ -1001,4 +1069,9 @@ msgstr ""
 #. module: quality
 #: model:quality.reason,name:quality.reason_workcenter
 msgid "Workcenter Failure"
-msgstr ""
+msgstr "Selhání pracovního střediska"
+
+#. module: quality
+#: model:ir.model.fields,field_description:quality.field_quality_point_test_type__active
+msgid "active"
+msgstr "aktivní"

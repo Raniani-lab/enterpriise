@@ -125,7 +125,7 @@ msgid ""
 "                        </span>"
 msgstr ""
 "<span class=\"bg-white opacity-75 w-100 h-100 o_salary_rule_overlay position-absolute top-0 end-0 w-100 h-100 text-center d-flex rechtvaardigen-content-center flex-column fs-3 \">\n"
-"                            Sla uw salarisregel op om parameterwaarden toe te voegen.\n"
+"                            Sla je salarisregel op om parameterwaarden toe te voegen.\n"
 "                        </span>"
 
 #. module: hr_payroll
@@ -725,7 +725,7 @@ msgid ""
 "Check the <strong>Work Entries</strong> linked to your newly created "
 "Contract."
 msgstr ""
-"Controleer de <strong>Werkboekingen</strong> die zijn gekoppeld aan uw nieuw"
+"Controleer de <strong>Werkboekingen</strong> die zijn gekoppeld aan je nieuw"
 " gemaakte contract."
 
 #. module: hr_payroll
@@ -794,7 +794,7 @@ msgstr ""
 #, python-format
 msgid "Click on Employees to pick one of your <strong>Employees</strong>."
 msgstr ""
-"Klik op Werknemers om een van uw <strong>Werknemers</strong> te kiezen."
+"Klik op Werknemers om een van je <strong>Werknemers</strong> te kiezen."
 
 #. module: hr_payroll
 #. openerp-web
@@ -805,7 +805,7 @@ msgid ""
 "<strong>Contracts</strong> and <strong>Payslips</strong>."
 msgstr ""
 "Klik op Salaris om de <strong>Werkboekingen</strong>, "
-"<strong>Contracten</strong> en <strong>Loonstroken</strong> van uw werknemer"
+"<strong>Contracten</strong> en <strong>Loonstroken</strong> van je werknemer"
 " te beheren."
 
 #. module: hr_payroll
@@ -2387,7 +2387,7 @@ msgid ""
 "On the first tab is the amount of worked time giving you a <strong>gross "
 "amount</strong>."
 msgstr ""
-"Op het eerste tabblad staat de hoeveelheid gewerkte tijd, wat u een "
+"Op het eerste tabblad staat de hoeveelheid gewerkte tijd, wat je een "
 "<strong>bruto bedrag</strong> geeft."
 
 #. module: hr_payroll
@@ -2398,7 +2398,7 @@ msgid ""
 "On the second tab is the computation of the rules linked to the Structure "
 "resulting in a <strong>net amount</strong>."
 msgstr ""
-"Op het tweede tabblad vindt u de berekening van de regels die aan de "
+"Op het tweede tabblad vind je de berekening van de regels die aan de "
 "Structuur zijn gekoppeld, wat resulteert in een "
 "<strong>nettobedrag</strong>."
 
@@ -2410,7 +2410,7 @@ msgid ""
 "On the smartbutton, you can find all the <strong>Payslips</strong> included "
 "in the Batch."
 msgstr ""
-"Op de slimme knop vindt u alle <strong>Loonstroken</strong> die in de Batch "
+"Op de slimme knop vind je alle <strong>Loonstroken</strong> die in de Batch "
 "zijn opgenomen."
 
 #. module: hr_payroll
@@ -3415,7 +3415,7 @@ msgid ""
 "rate. It's used here to compute your part-time percentage."
 msgstr ""
 "De standaardkalender is de kalender die wordt gebruikt door de mensen die "
-"tegen een tarief van 100% werken. Het wordt hier gebruikt om uw parttime "
+"tegen een tarief van 100% werken. Het wordt hier gebruikt om je parttime "
 "percentage te berekenen."
 
 #. module: hr_payroll

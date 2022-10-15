@@ -3,16 +3,15 @@
 # 	* mrp_maintenance
 # 
 # Translators:
-# Martin Trigaux, 2019
-# Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019
+# Martin Trigaux, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:05+0000\n"
-"PO-Revision-Date: 2019-08-26 09:37+0000\n"
-"Last-Translator: Alina Lisnenko <alinasemeniuk1@gmail.com>, 2019\n"
+"POT-Creation-Date: 2022-10-04 09:42+0000\n"
+"PO-Revision-Date: 2022-09-22 05:47+0000\n"
+"Last-Translator: Martin Trigaux, 2022\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,14 +25,29 @@ msgid "<span class=\"o_stat_text\">Maintenance</span>"
 msgstr "<span class=\"o_stat_text\">Обслуговування</span>"
 
 #. module: mrp_maintenance
+#: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_request__company_id
+msgid "Company"
+msgstr "Компанія"
+
+#. module: mrp_maintenance
 #: model:ir.model.fields,help:mrp_maintenance.field_maintenance_equipment__estimated_next_failure
 msgid "Computed as Latest Failure Date + MTBF"
 msgstr "Обчислено як Дата останньої помилки + MTBF"
 
 #. module: mrp_maintenance
+#: model:maintenance.equipment,name:mrp_maintenance.equipment_furniture1
+msgid "Crosscut Saw: 8 ppi."
+msgstr "Поперечна пила: 8 ppi."
+
+#. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_request_view_form_inherit_mrp
 msgid "Discard"
 msgstr "Відмінити"
+
+#. module: mrp_maintenance
+#: model:maintenance.equipment,name:mrp_maintenance.equipment_furniture3
+msgid "Drill Machine"
+msgstr "Свердло"
 
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_workcenter_view_form_inherit_maintenance
@@ -43,7 +57,7 @@ msgstr "Обладнання"
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_workcenter_view_form_inherit_maintenance
 msgid "Equipments"
-msgstr "Обладнання"
+msgstr "Устаткування"
 
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_workcenter_view_form_inherit_maintenance
@@ -70,6 +84,11 @@ msgstr "Очікуваний середній час між невдачею"
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
 msgid "Expected Mean Time Between Failure"
 msgstr "Очікуваний середній час між невдачею"
+
+#. module: mrp_maintenance
+#: model:maintenance.equipment.category,name:mrp_maintenance.equipment_furniture_tools
+msgid "Furniture Tools"
+msgstr "Меблеві інструменти"
 
 #. module: mrp_maintenance
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_equipment_view_form_inherit_mrp
@@ -108,8 +127,11 @@ msgid "Maintenance Equipment"
 msgstr "Технічне обслуговування"
 
 #. module: mrp_maintenance
+#. openerp-web
+#: code:addons/mrp_maintenance/static/src/components/menuPopup.xml:0
 #: model:ir.model,name:mrp_maintenance.model_maintenance_request
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_production_view_form_inherit_maintenance
+#, python-format
 msgid "Maintenance Request"
 msgstr "Запит на технічне обслуговування"
 
@@ -118,11 +140,6 @@ msgstr "Запит на технічне обслуговування"
 #, python-format
 msgid "Maintenance Requests"
 msgstr "Запити на технічне обслуговування"
-
-#. module: mrp_maintenance
-#: model_terms:ir.ui.view,arch_db:mrp_maintenance.mrp_workorder_tablet_view_form_inherit_maintenance
-msgid "Maintenance request"
-msgstr "Запит на обслуговування"
 
 #. module: mrp_maintenance
 #: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_request__production_id
@@ -139,8 +156,8 @@ msgstr "Середній час між невдачею"
 msgid ""
 "Mean Time Between Failure, computed based on done corrective maintenances."
 msgstr ""
-"Середній час між помилками, обчислений на основі виконаного коригувального "
-"змісту."
+"Середній час між помилками, обчислений на основі виконуваному коригувальному"
+" змісту."
 
 #. module: mrp_maintenance
 #: model:ir.model.fields,help:mrp_maintenance.field_maintenance_equipment__mttr
@@ -166,6 +183,11 @@ msgid "Operation"
 msgstr "Операція"
 
 #. module: mrp_maintenance
+#: model:ir.model.fields,field_description:mrp_maintenance.field_maintenance_request__production_company_id
+msgid "Production Company"
+msgstr "Виробнича компанія"
+
+#. module: mrp_maintenance
 #: model:ir.model,name:mrp_maintenance.model_mrp_production
 msgid "Production Order"
 msgstr "Замовлення на виробництво"
@@ -179,6 +201,11 @@ msgstr "Запит"
 #: model_terms:ir.ui.view,arch_db:mrp_maintenance.maintenance_request_view_form_inherit_mrp
 msgid "Save"
 msgstr "Зберегти"
+
+#. module: mrp_maintenance
+#: model:maintenance.equipment,name:mrp_maintenance.equipment_furniture2
+msgid "Scrub Plane"
+msgstr "Рубанок"
 
 #. module: mrp_maintenance
 #: model:ir.model,name:mrp_maintenance.model_mrp_workcenter

@@ -3,21 +3,22 @@
 # 	* sale_ebay
 # 
 # Translators:
-# Martin Trigaux, 2019
-# ExcaliberX <excaliberx@gmail.com>, 2019
-# Yihya Hugirat <hugirat@gmail.com>, 2019
-# hed shefetr <hed@laylinetech.com>, 2019
-# דודי מלכה <Dudimalka6@gmail.com>, 2019
-# ZVI BLONDER <ZVIBLONDER@gmail.com>, 2019
-# Amit Spilman <amit@laylinetech.com>, 2019
+# NoaFarkash, 2022
+# דודי מלכה <Dudimalka6@gmail.com>, 2022
+# Martin Trigaux, 2022
+# Lilach Gilliam <lilach.gilliam@gmail.com>, 2022
+# ExcaliberX <excaliberx@gmail.com>, 2022
+# hed shefer <hed@laylinetech.com>, 2022
+# Yihya Hugirat <hugirat@gmail.com>, 2022
+# ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-23 11:39+0000\n"
-"PO-Revision-Date: 2019-08-26 09:38+0000\n"
-"Last-Translator: Amit Spilman <amit@laylinetech.com>, 2019\n"
+"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"PO-Revision-Date: 2022-09-22 05:48+0000\n"
+"Last-Translator: ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -69,7 +70,7 @@ msgstr ""
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Sales Team</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">צוות מכירות</span>"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -88,7 +89,24 @@ msgstr ""
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid ""
+"<span class=\"o_form_label\">eBay Marketplace Account Deletion/Closure "
+"Notifications</span>"
+msgstr ""
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">eBay Options</span>"
+msgstr ""
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "Activate Other Currencies"
+msgstr "הפעל מטבעות אחרים"
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "Add other countries"
 msgstr ""
 
 #. module: sale_ebay
@@ -108,12 +126,6 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_type__chinese
 msgid "Auction"
-msgstr ""
-
-#. module: sale_ebay
-#: model:ir.model.fields,field_description:sale_ebay.field_res_country__ebay_available
-#: model:ir.model.fields,field_description:sale_ebay.field_res_currency__ebay_available
-msgid "Availability To Use For eBay API"
 msgstr ""
 
 #. module: sale_ebay
@@ -162,7 +174,7 @@ msgstr "קוד"
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_res_config_settings
 msgid "Config Settings"
-msgstr "הגדרות תצורה"
+msgstr "הגדר הגדרות"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:0
@@ -176,6 +188,11 @@ msgid "Contact"
 msgstr "איש קשר"
 
 #. module: sale_ebay
+#: model:ir.actions.act_window,name:sale_ebay.action_country_all_form
+msgid "Countries"
+msgstr "ארצות"
+
+#. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Countries & Currencies"
 msgstr ""
@@ -184,7 +201,7 @@ msgstr ""
 #: model:ir.model,name:sale_ebay.model_res_country
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_country
 msgid "Country"
-msgstr "מדינה"
+msgstr "ארץ"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__create_uid
@@ -238,13 +255,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__display_name
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__display_name
 msgid "Display Name"
-msgstr "הצג שם"
+msgstr "שם לתצוגה"
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "Documentation"
+msgstr "תיעוד"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_listing_duration
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_listing_duration
 msgid "Duration"
-msgstr "משך"
+msgstr "משך זמן"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/sale_order.py:0
@@ -278,7 +300,7 @@ msgstr ""
 #: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_stock_sync_ir_actions_server
 #: model:ir.cron,cron_name:sale_ebay.ir_cron_sale_ebay_stock_sync
 #: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_stock_sync
-msgid "Ebay: synchronise stock (for 'get new orders' synchronisation)"
+msgid "Ebay: synchronise stock"
 msgstr ""
 
 #. module: sale_ebay
@@ -286,16 +308,6 @@ msgstr ""
 #: model:ir.cron,cron_name:sale_ebay.ir_cron_sale_ebay_categories
 #: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_categories
 msgid "Ebay: update categories"
-msgstr ""
-
-#. module: sale_ebay
-#: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_status_10_ir_actions_server
-#: model:ir.actions.server,name:sale_ebay.ir_cron_sale_ebay_status_5_ir_actions_server
-#: model:ir.cron,cron_name:sale_ebay.ir_cron_sale_ebay_status_10
-#: model:ir.cron,cron_name:sale_ebay.ir_cron_sale_ebay_status_5
-#: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_status_10
-#: model:ir.cron,name:sale_ebay.ir_cron_sale_ebay_status_5
-msgid "Ebay: update product status"
 msgstr ""
 
 #. module: sale_ebay
@@ -340,6 +352,11 @@ msgid "Gallery Plus"
 msgstr ""
 
 #. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "Generate Token"
+msgstr ""
+
+#. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__gtc
 msgid "Good 'Til Cancelled (only for fixed price)"
 msgstr ""
@@ -351,7 +368,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_policy__id
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_site__id
 msgid "ID"
-msgstr "תעודה מזהה"
+msgstr "מזהה"
+
+#. module: sale_ebay
+#: model:ir.model.fields,help:sale_ebay.field_res_country__ebay_available
+#: model:ir.model.fields,help:sale_ebay.field_res_currency__ebay_available
+msgid "If activated, can be used for eBay."
+msgstr ""
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -447,6 +470,11 @@ msgid "Location"
 msgstr "מיקום"
 
 #. module: sale_ebay
+#: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_account_deletion_endpoint
+msgid "Marketplace account deletion notification endpoint"
+msgstr ""
+
+#. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Mode"
 msgstr "מצב"
@@ -499,6 +527,14 @@ msgid "Payment Policy"
 msgstr ""
 
 #. module: sale_ebay
+#: code:addons/sale_ebay/models/res_config_settings.py:0
+#, python-format
+msgid ""
+"Please provide your ebay production keys before enabling the account "
+"deletion notifications."
+msgstr ""
+
+#. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Policies"
 msgstr "מדיניות"
@@ -515,19 +551,19 @@ msgid "Private Listing"
 msgstr ""
 
 #. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_product_product
+#: model:ir.model,name:sale_ebay.model_product_template
 msgid "Product"
 msgstr "מוצר"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Product Categories"
-msgstr "קטגוריות מוצר"
+msgstr "קטגוריות מוצרים"
 
 #. module: sale_ebay
-#: model:ir.model,name:sale_ebay.model_product_template
-msgid "Product Template"
-msgstr "תבנית למוצר "
+#: model:ir.model,name:sale_ebay.model_product_product
+msgid "Product Variant"
+msgstr "וריאנט מוצר"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/sale_order.py:0
@@ -553,11 +589,6 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_prod_token
 msgid "Production Token"
-msgstr ""
-
-#. module: sale_ebay
-#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
-msgid "Products & Transactions"
 msgstr ""
 
 #. module: sale_ebay
@@ -643,7 +674,7 @@ msgstr "מדיניות משלוח"
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_start_date
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_start_date
 msgid "Start Date"
-msgstr "תאריך התחלה"
+msgstr "תאריך תחילה"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_price
@@ -685,18 +716,23 @@ msgid "Sync now"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:0
 #: code:addons/sale_ebay/models/sale_order.py:0
 #, python-format
 msgid "The Buyer Chose The Following Delivery Method :\n"
 msgstr ""
 
 #. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:0
-#: code:addons/sale_ebay/models/product.py:0
 #: code:addons/sale_ebay/models/sale_order.py:0
 #, python-format
 msgid "The Buyer Posted :\n"
+msgstr ""
+
+#. module: sale_ebay
+#: code:addons/sale_ebay/models/res_config_settings.py:0
+#, python-format
+msgid ""
+"The python 'cryptography' module is not installed on your server.\n"
+"It is necessary to support eBay account deletion notifications, please contact your system administrator to install it."
 msgstr ""
 
 #. module: sale_ebay
@@ -732,16 +768,19 @@ msgid ""
 msgstr ""
 
 #. module: sale_ebay
-#: model:ir.model.fields,help:sale_ebay.field_product_product__ebay_template_id
-#: model:ir.model.fields,help:sale_ebay.field_product_template__ebay_template_id
-msgid "This field contains the template that will be used."
+#: code:addons/sale_ebay/models/res_partner.py:0
+#, python-format
+msgid ""
+"This is an automated notification as a deletion request has been received from eBay concerning the account \"%s (%s)\". The account has been anonymised already and his portal access revoked (if they had any).\n"
+"\n"
+"However, personal information might remain in linked documents, please review them according to laws that apply."
 msgstr ""
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_title
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_title
 msgid "Title"
-msgstr "כותרת"
+msgstr "תואר"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_stock_picking
@@ -765,9 +804,20 @@ msgid "Use eBay"
 msgstr ""
 
 #. module: sale_ebay
+#: model:ir.model.fields,field_description:sale_ebay.field_res_country__ebay_available
+#: model:ir.model.fields,field_description:sale_ebay.field_res_currency__ebay_available
+msgid "Use on eBay"
+msgstr ""
+
+#. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "Variants"
 msgstr "מאפיינים"
+
+#. module: sale_ebay
+#: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_verification_token
+msgid "Verification Token"
+msgstr ""
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_zip_code
@@ -778,7 +828,7 @@ msgstr "מיקוד"
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay"
-msgstr ""
+msgstr "eBay"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_category
@@ -788,6 +838,7 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_description
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_description
+#: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 msgid "eBay Description"
 msgstr ""
 
@@ -825,6 +876,11 @@ msgid "eBay Listing ID"
 msgstr ""
 
 #. module: sale_ebay
+#: model:mail.activity.type,summary:sale_ebay.ebay_GDPR_notification
+msgid "eBay Odoo connector notification - account deletion"
+msgstr ""
+
+#. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_policy
 msgid "eBay Policy"
 msgstr ""
@@ -857,19 +913,20 @@ msgid "eBay Website"
 msgstr ""
 
 #. module: sale_ebay
+#: model:mail.activity.type,name:sale_ebay.ebay_GDPR_notification
+msgid "eBay connector: account deletion notification"
+msgstr ""
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "eBay documentation"
+msgstr ""
+
+#. module: sale_ebay
 #: code:addons/sale_ebay/models/sale_ebay.py:0
 #, python-format
 msgid ""
 "eBay error: Impossible to synchronize the categories. \n"
-"'%s'"
-msgstr ""
-
-#. module: sale_ebay
-#: code:addons/sale_ebay/models/product.py:0
-#: code:addons/sale_ebay/models/product.py:0
-#, python-format
-msgid ""
-"eBay error: Impossible to synchronize the products. \n"
 "'%s'"
 msgstr ""
 
@@ -882,6 +939,13 @@ msgstr ""
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay parameters"
+msgstr ""
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid ""
+"eBay requires supporting customer account deletion/closure notifications.\n"
+"                                Please follow the"
 msgstr ""
 
 #. module: sale_ebay
@@ -928,4 +992,9 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_sales_team
 msgid "ebay Sales Team"
+msgstr ""
+
+#. module: sale_ebay
+#: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
+msgid "to setup this mechanism."
 msgstr ""

@@ -25,21 +25,21 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Available time (min)t"
-msgstr ""
+msgstr "Beschikbare tijd (min)t"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Average Cost / Unit"
-msgstr ""
+msgstr "Gemiddelde kosten / eenheid"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Average cost / unitt"
-msgstr ""
+msgstr "Gemiddelde kosten / eenheid"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
@@ -68,35 +68,35 @@ msgstr "Productieorders"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing Orders by Operation Type"
-msgstr ""
+msgstr "Productieorders per bewerkingstype"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing Orders by Product"
-msgstr ""
+msgstr "Productieorders per product"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing Orders by Responsible"
-msgstr ""
+msgstr "Productieorders door verantwoordelijke"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing orders"
-msgstr ""
+msgstr "Productieorders"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Most Produced Products"
-msgstr ""
+msgstr "Meest geproduceerde producten"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
@@ -151,7 +151,7 @@ msgstr "Product"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Productive time (min)t"
-msgstr ""
+msgstr "Productieve tijd (min)t"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
@@ -176,7 +176,7 @@ msgstr "Verantwoordelijke"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Top Operation Types"
-msgstr ""
+msgstr "Belangrijkste soorten bewerkingen"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
@@ -190,56 +190,56 @@ msgstr "Topproducten"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Top Responsibles"
-msgstr ""
+msgstr "Topverantwoordelijken"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Total quantity"
-msgstr ""
+msgstr "Totalekwantiteit"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Total time (min)t"
-msgstr ""
+msgstr "Totale tijd (min)t"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Weekly Production"
-msgstr ""
+msgstr "Wekelijkse productie"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "avg cost - current"
-msgstr ""
+msgstr "gemiddelde kosten - huidig"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "avg cost - previous"
-msgstr ""
+msgstr "gemiddelde kosten - vorige"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "oee - current"
-msgstr ""
+msgstr "oee - stroom"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "oee - previous"
-msgstr ""
+msgstr "oee - vorige"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
@@ -256,11 +256,11 @@ msgstr "sinds vorige periode"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "stats mo - current"
-msgstr ""
+msgstr "statistieken ma - huidig"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "stats mo - previous"
-msgstr ""
+msgstr "statistieken ma - vorige"

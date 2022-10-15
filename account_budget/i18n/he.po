@@ -3,21 +3,25 @@
 # 	* account_budget
 # 
 # Translators:
-# Martin Trigaux, 2019
-# Fishfur A Banter <fishfurbanter@gmail.com>, 2019
-# Moshe Flam <pashute@gmail.com>, 2019
-# Yihya Hugirat <hugirat@gmail.com>, 2019
-# שהאב חוסיין <shhab89@gmail.com>, 2019
-# hed shefetr <hed@laylinetech.com>, 2019
-# דודי מלכה <Dudimalka6@gmail.com>, 2019
+# Lilach Gilliam <lilach@apprcase.com>, 2022
+# hed shefer <hed@laylinetech.com>, 2022
+# שהאב חוסיין <shhab89@gmail.com>, 2022
+# Fishfur A Banter <fishfurbanter@gmail.com>, 2022
+# Ofir Blum <ofir.blum@gmail.com>, 2022
+# דודי מלכה <Dudimalka6@gmail.com>, 2022
+# Yihya Hugirat <hugirat@gmail.com>, 2022
+# Martin Trigaux, 2022
+# Moshe Flam <pashute@gmail.com>, 2022
+# Lilach Gilliam <lilach.gilliam@gmail.com>, 2022
+# ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-09-09 11:58+0000\n"
-"PO-Revision-Date: 2019-08-26 09:34+0000\n"
-"Last-Translator: דודי מלכה <Dudimalka6@gmail.com>, 2019\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
+"PO-Revision-Date: 2022-09-22 05:45+0000\n"
+"Last-Translator: ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,7 +35,7 @@ msgstr ""
 msgid ""
 "\"End Date\" of the budget line should be included in the Period of the "
 "budget"
-msgstr ""
+msgstr "יש לכלול את \"תאריך הסיום\" של שורת התקציב בתקופת התקציב"
 
 #. module: account_budget
 #: code:addons/account_budget/models/account_budget.py:0
@@ -39,18 +43,32 @@ msgstr ""
 msgid ""
 "\"Start Date\" of the budget line should be included in the Period of the "
 "budget"
-msgstr ""
+msgstr "יש לכלול את \"תאריך הההתחלה\" של שורת התקציב בתקופת התקציב"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_kanban
 msgid "<i class=\"fa fa-clock-o\" role=\"img\" aria-label=\"Period\" title=\"Period\"/>"
+msgstr "<i class=\"fa fa-clock-o\" role=\"img\" aria-label=\"Period\" title=\"Period\"/>"
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+msgid ""
+"<i class=\"fa fa-long-arrow-right mx-2\" aria-label=\"Arrow icon\" "
+"title=\"Arrow\"/>"
 msgstr ""
+"<i class=\"fa fa-long-arrow-right mx-2\" aria-label=\"Arrow icon\" "
+"title=\"Arrow\"/>"
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
+msgid "<span class=\"o_stat_text\">Budget</span>"
+msgstr "<span class=\"o_stat_text\">תקציב</span>"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post__account_ids
 #: model_terms:ir.ui.view,arch_db:account_budget.view_budget_post_form
 msgid "Accounts"
-msgstr "חשבונות"
+msgstr "משתמשים"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__percentage
@@ -70,7 +88,7 @@ msgstr "פעילויות"
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "סימון פעילות חריגה"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_state
@@ -78,14 +96,19 @@ msgid "Activity State"
 msgstr "מצב פעילות"
 
 #. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_type_icon
+msgid "Activity Type Icon"
+msgstr "סוג פעילות"
+
+#. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget_lines__practical_amount
 msgid "Amount really earned/spent."
-msgstr ""
+msgstr "סכום שנצבר / הוצא באמת."
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget_lines__theoritical_amount
 msgid "Amount you are supposed to have earned/spent at this date."
-msgstr ""
+msgstr "סכום שאתה אמור להרוויח / להוציא בתאריך זה."
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget_lines__planned_amount
@@ -93,6 +116,8 @@ msgid ""
 "Amount you plan to earn/spend. Record a positive amount if it is a revenue "
 "and a negative amount if it is a cost."
 msgstr ""
+"סכום שאתה מתכנן להרוויח / להוציא. רשום סכום חיובי אם מדובר בהכנסה וסכום "
+"שלילי אם מדובר בעלות."
 
 #. module: account_budget
 #: model:ir.model,name:account_budget.model_account_analytic_account
@@ -101,8 +126,8 @@ msgid "Analytic Account"
 msgstr "חשבון אנליטי"
 
 #. module: account_budget
-#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__analytic_group_id
-msgid "Analytic Group"
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__analytic_plan_id
+msgid "Analytic Plan"
 msgstr ""
 
 #. module: account_budget
@@ -113,14 +138,13 @@ msgstr "אשר"
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_attachment_count
 msgid "Attachment Count"
-msgstr "ספירת קבצים מצורפים"
+msgstr "כמות קבצים מצורפים"
 
 #. module: account_budget
 #: model:ir.model,name:account_budget.model_crossovered_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__crossovered_budget_id
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_tree
-#: model_terms:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "Budget"
 msgstr "תקציב"
@@ -129,7 +153,7 @@ msgstr "תקציב"
 #: model:ir.actions.act_window,name:account_budget.act_account_analytic_account_cb_lines
 #: model_terms:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
 msgid "Budget Items"
-msgstr "פריטי תקציב"
+msgstr "פריטים תקציביים"
 
 #. module: account_budget
 #: model:ir.model,name:account_budget.model_crossovered_budget_lines
@@ -150,14 +174,13 @@ msgstr "שורות תקציב"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__name
-#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Budget Name"
 msgstr "שם התקציב"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__crossovered_budget_state
 msgid "Budget State"
-msgstr ""
+msgstr "מצב תקציב"
 
 #. module: account_budget
 #: model:ir.model,name:account_budget.model_account_budget_post
@@ -166,13 +189,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_budget.view_budget_post_search
 #: model_terms:ir.ui.view,arch_db:account_budget.view_budget_post_tree
 msgid "Budgetary Position"
-msgstr "מיקום התקציב"
+msgstr "סעיף תקציבי"
 
 #. module: account_budget
 #: model:ir.actions.act_window,name:account_budget.open_budget_post_form
 #: model:ir.ui.menu,name:account_budget.menu_budget_post_form
 msgid "Budgetary Positions"
-msgstr "מיקומי התקציבים"
+msgstr "סעיפים תקציביים"
 
 #. module: account_budget
 #: model:ir.actions.act_window,name:account_budget.act_crossovered_budget_view
@@ -185,7 +208,7 @@ msgstr "תקציבים"
 #: model:ir.actions.act_window,name:account_budget.act_crossovered_budget_lines_view
 #: model:ir.ui.menu,name:account_budget.menu_act_crossovered_budget_lines_view
 msgid "Budgets Analysis"
-msgstr ""
+msgstr "ניתוח תקציבים"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
@@ -195,7 +218,7 @@ msgstr "בטל תקציב"
 #. module: account_budget
 #: model:ir.model.fields.selection,name:account_budget.selection__crossovered_budget__state__cancel
 msgid "Cancelled"
-msgstr "מבוטל"
+msgstr "בוטל"
 
 #. module: account_budget
 #: model_terms:ir.actions.act_window,help:account_budget.act_crossovered_budget_view
@@ -215,6 +238,7 @@ msgid ""
 "Comparison between practical and theoretical amount. This measure tells you "
 "if you are below or over budget."
 msgstr ""
+"השוואה בין כמות מעשית ותיאורטית. מדד זה אומר לך אם אתה מתחת לתקציב או לא."
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
@@ -224,7 +248,7 @@ msgstr "אשר"
 #. module: account_budget
 #: model:ir.model.fields.selection,name:account_budget.selection__crossovered_budget__state__confirm
 msgid "Confirmed"
-msgstr "אושר"
+msgstr "מאושר"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post__create_uid
@@ -246,11 +270,16 @@ msgid "Currency"
 msgstr "מטבע"
 
 #. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
+msgid "Date"
+msgstr "תאריך"
+
+#. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post__display_name
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__display_name
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__display_name
 msgid "Display Name"
-msgstr "הצג שם"
+msgstr "שם לתצוגה"
 
 #. module: account_budget
 #: model:ir.model.fields.selection,name:account_budget.selection__crossovered_budget__state__done
@@ -267,7 +296,7 @@ msgstr "טיוטה"
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "Draft Budgets"
-msgstr "טיוטות תקציב"
+msgstr "טיוטת תקציבים"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__date_to
@@ -278,12 +307,7 @@ msgstr "תאריך סיום"
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Entries..."
-msgstr ""
-
-#. module: account_budget
-#: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
-msgid "Exception Activities"
-msgstr ""
+msgstr "רשומות ..."
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_follower_ids
@@ -291,14 +315,19 @@ msgid "Followers"
 msgstr "עוקבים"
 
 #. module: account_budget
-#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_channel_ids
-msgid "Followers (Channels)"
-msgstr "עוקבים (ערוצים)"
-
-#. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "עוקבים (שותפים)"
+msgstr "עוקבים (לקוחות/ספקים)"
+
+#. module: account_budget
+#: model:ir.model.fields,help:account_budget.field_crossovered_budget__activity_type_icon
+msgid "Font awesome icon e.g. fa-tasks"
+msgstr "פונט מדהים למשל עבור משימות fa-tasks"
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+msgid "From"
+msgstr "מ"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
@@ -311,11 +340,16 @@ msgid "Group By"
 msgstr "קבץ לפי"
 
 #. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__has_message
+msgid "Has Message"
+msgstr "יש הודעה"
+
+#. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post__id
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__id
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__id
 msgid "ID"
-msgstr "תעודה מזהה"
+msgstr "מזהה"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_exception_icon
@@ -325,29 +359,28 @@ msgstr "סמל"
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr ""
+msgstr "סמל לציון פעילות חריגה."
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_needaction
-#: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_unread
 msgid "If checked, new messages require your attention."
-msgstr "אם מסומן, אז הודעה חדשה דורשת התייחסותכם."
+msgstr "אם מסומן, הודעות חדשות דורשות את תשומת לבך."
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_has_error
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr "אם סומן, בחלק מההודעות קיימת שגיאת משלוח."
+msgstr "אם מסומן, בחלק מההודעות קיימת שגיאת משלוח."
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__is_above_budget
 msgid "Is Above Budget"
-msgstr ""
+msgstr "מעל התקציב"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_is_follower
 msgid "Is Follower"
-msgstr "האם עוקב"
+msgstr "עוקב"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post____last_update
@@ -373,7 +406,7 @@ msgstr "עדכון אחרון ב"
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "Late Activities"
-msgstr "פעילויות מאוחרות"
+msgstr "פעילויות באיחור"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_main_attachment_id
@@ -383,12 +416,17 @@ msgstr "קובץ ראשי מצורף "
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_has_error
 msgid "Message Delivery error"
-msgstr "הודעת שגיאת משלוח"
+msgstr "הודעת שגיאת שליחה"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_ids
 msgid "Messages"
 msgstr "הודעות"
+
+#. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__my_activity_date_deadline
+msgid "My Activity Deadline"
+msgstr "מועד אחרון לפעילות שלי"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post__name
@@ -397,14 +435,19 @@ msgid "Name"
 msgstr "שם"
 
 #. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr "הפעילות הבאה ביומן"
+
+#. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr "מועד האחרון לפעילות הבאה"
+msgstr "מועד אחרון לפעילות הבאה"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_summary
 msgid "Next Activity Summary"
-msgstr "תקציר הפעילות הבאה "
+msgstr "תיאור הפעילות הבאה "
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_type_id
@@ -414,32 +457,27 @@ msgstr "סוג הפעילות הבאה"
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
 msgid "Not Cancelled"
-msgstr ""
+msgstr "לא בוטל"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_needaction_counter
 msgid "Number of Actions"
-msgstr "מספר הפעולות"
+msgstr "מספר פעולות"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "מספר השגיאות"
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr "מספר ההודעות המחייבות פעולה"
+msgstr "מספר הודעות המחייבות פעולה"
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_has_error_counter
 msgid "Number of messages with delivery error"
 msgstr "מספר הודעות עם שגיאת משלוח"
-
-#. module: account_budget
-#: model:ir.model.fields,help:account_budget.field_crossovered_budget__message_unread_counter
-msgid "Number of unread messages"
-msgstr "מספר ההודעות שלא נקראו"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__paid_date
@@ -461,25 +499,25 @@ msgstr "סכום מתוכנן"
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
 msgid "Planned amount"
-msgstr ""
+msgstr "סכום מתוכנן"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__practical_amount
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 #: model_terms:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
 msgid "Practical Amount"
-msgstr "סכום מעשי"
+msgstr "סכום בפועל"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
 msgid "Practical amount"
-msgstr ""
+msgstr "סכום בפועל"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Reset to Draft"
-msgstr "הפוך לטיוטה"
+msgstr "החזר לטיוטה"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__user_id
@@ -494,18 +532,18 @@ msgstr "משתמש אחראי"
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "שגיאה בשליחת SMS"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "Show all records which has next action date is before today"
-msgstr "הצג את כל הרשומות שתאריך הפעולה הבא שלהם הוא לפני היום"
+msgstr "הצג את כל הרשומות שתאריך הפעולה הבא שלהן הוא עד היום"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__date_from
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__date_from
 msgid "Start Date"
-msgstr "תאריך התחלה"
+msgstr "תאריך תחילה"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__state
@@ -520,7 +558,7 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
-"מצב על בסיס פעילויות\n"
+"סטטוס על בסיס פעילויות\n"
 "איחור: תאריך היעד כבר חלף\n"
 "היום: תאריך הפעילות הוא היום\n"
 "מתוכנן: פעילויות עתידיות."
@@ -529,74 +567,71 @@ msgstr ""
 #: code:addons/account_budget/models/account_budget.py:0
 #, python-format
 msgid "The budget must have at least one account."
-msgstr ""
+msgstr "התקציב חייב לכלול לפחות חשבון אחד."
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__theoritical_amount
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
-msgid "Theoretical Amount"
-msgstr "כמות אמורה"
-
-#. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_account_analytic_account_form_inherit_budget
-msgid "Theoritical Amount"
-msgstr "כמות אמורה"
+msgid "Theoretical Amount"
+msgstr "סכום תיאורטי"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_graph
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_pivot
-msgid "Theoritical amount"
+msgid "Theoretical amount"
 msgstr ""
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+msgid "To"
+msgstr "ל"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "To Approve"
-msgstr "על מנת לאשר"
+msgstr "ממתין לאישור מנהל"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "To Approve Budgets"
-msgstr "על מנת לאשר תקציבים"
+msgstr "לאשר תקציבים"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "Today Activities"
-msgstr "פעילויות של היום"
+msgstr "פעילויות היום"
+
+#. module: account_budget
+#: model:ir.model.fields,field_description:account_budget.field_account_analytic_account__total_planned_amount
+msgid "Total Planned Amount"
+msgstr "סה\"כ סכום מתוכנן"
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
-
-#. module: account_budget
-#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_unread
-msgid "Unread Messages"
-msgstr "הודעות שלא נקראו"
-
-#. module: account_budget
-#: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_unread_counter
-msgid "Unread Messages Counter"
-msgstr "מספר הודעות שלא נקראו"
+msgstr "סוג הפעילות החריגה ברשומה."
 
 #. module: account_budget
 #: model_terms:ir.actions.act_window,help:account_budget.act_crossovered_budget_view
 msgid "Use budgets to compare actual with expected revenues and costs"
 msgstr ""
+"השתמש בתקציבים כדי להשוות הכנסות ועלויות בפועל לעומת הכנסות ועלויות צפויות"
 
 #. module: account_budget
 #: model:ir.model.fields.selection,name:account_budget.selection__crossovered_budget__state__validate
 msgid "Validated"
-msgstr "אומת"
+msgstr "אושרה"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__website_message_ids
 msgid "Website Messages"
-msgstr "הודעות מהאתר אינטרנט"
+msgstr "הודעות מאתר האינטרנט"
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget__website_message_ids
 msgid "Website communication history"
-msgstr "היסטורית התקשרויות מהאתר"
+msgstr "היסטורית התקשרויות מאתר האינטרנט"
 
 #. module: account_budget
 #: code:addons/account_budget/models/account_budget.py:0
@@ -604,4 +639,9 @@ msgstr "היסטורית התקשרויות מהאתר"
 msgid ""
 "You have to enter at least a budgetary position or analytic account on a "
 "budget line."
+msgstr "עליך להזין לפחות סעיף תקציבי או חשבון אנליטי בשורת תקציב."
+
+#. module: account_budget
+#: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
+msgid "e.g. Budget 2023: Optimistic"
 msgstr ""

@@ -3,8 +3,8 @@
 # 	* account_online_synchronization
 # 
 # Translators:
-# Gunther Clauwaert <gclauwae@hotmail.com>, 2022
 # Martin Trigaux, 2022
+# Gunther Clauwaert <gclauwae@hotmail.com>, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # 
 msgid ""
@@ -162,7 +162,7 @@ msgstr "Banksynchronisatie: toestemming bijwerken"
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "Bank Synchronization: Update your consent"
-msgstr "Banksynchronisatie: werk uw toestemming bij"
+msgstr "Banksynchronisatie: werk je toestemming bij"
 
 #. module: account_online_synchronization
 #: model:ir.model,name:account_online_synchronization.model_bank_rec_widget
@@ -390,7 +390,7 @@ msgstr "Id gebruikt om account te identificeren door externe provider"
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Indien aangevinkt, vragen nieuwe berichten uw aandacht."
+msgstr "Indien aangevinkt, vragen nieuwe berichten je aandacht."
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__message_has_error
@@ -401,12 +401,12 @@ msgstr "Indien aangevinkt, hebben sommige berichten een bezorgfout."
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__inverse_balance_sign
 msgid "If checked, the balance sign will be inverted"
-msgstr ""
+msgstr "Indien aangevinkt, wordt het saldoteken omgekeerd."
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_account__inverse_transaction_sign
 msgid "If checked, the transaction sign will be inverted"
-msgstr ""
+msgstr "Indien aangevinkt, wordt het transactieteken omgekeerd."
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__auto_sync
@@ -420,7 +420,7 @@ msgstr ""
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__provider_data
 msgid "Information needed to interact with third party provider"
-msgstr ""
+msgstr "Informatie nodig om te communiceren met een externe provider"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,help:account_online_synchronization.field_account_online_link__name
@@ -442,12 +442,12 @@ msgstr "Ongeldige waarde voor configuratieparameter proxy_mode."
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__inverse_balance_sign
 msgid "Inverse Balance Sign"
-msgstr ""
+msgstr "Omkeren balans teken"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__inverse_transaction_sign
 msgid "Inverse Transaction Sign"
-msgstr ""
+msgstr "Omkeren transactie teken"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__message_is_follower

@@ -3,15 +3,16 @@
 # 	* quality_mrp
 # 
 # Translators:
-# דודי מלכה <Dudimalka6@gmail.com>, 2019
+# דודי מלכה <Dudimalka6@gmail.com>, 2022
+# ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server saas~12.5+e\n"
+"Project-Id-Version: Odoo Server saas~14.5+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2019-08-26 08:04+0000\n"
-"PO-Revision-Date: 2019-08-26 09:37+0000\n"
-"Last-Translator: דודי מלכה <Dudimalka6@gmail.com>, 2019\n"
+"POT-Creation-Date: 2021-09-14 10:59+0000\n"
+"PO-Revision-Date: 2022-09-22 05:48+0000\n"
+"Last-Translator: ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -21,34 +22,50 @@ msgstr ""
 
 #. module: quality_mrp
 #: model_terms:ir.ui.view,arch_db:quality_mrp.mrp_production_view_form_inherit_quality
-msgid ""
-"<span class=\"o_stat_text text-success\" attrs=\"{'invisible': [('quality_check_fail', '=', True)]}\">Quality Checks</span>\n"
-"                    <span class=\"o_stat_text text-danger\" attrs=\"{'invisible': [('quality_check_fail', '!=', True)]}\">Quality Checks</span>"
+msgid "<span class=\"o_stat_text text-danger\">Quality Checks</span>"
 msgstr ""
-"<span class=\"o_stat_text text-success\" attrs=\"{'invisible': [('quality_check_fail', '=', True)]}\">בדיקות איכות</span>\n"
-"                    <span class=\"o_stat_text text-danger\" attrs=\"{'invisible': [('quality_check_fail', '!=', True)]}\">בדיקות איכות</span>"
+
+#. module: quality_mrp
+#: model_terms:ir.ui.view,arch_db:quality_mrp.mrp_production_view_form_inherit_quality
+msgid "<span class=\"o_stat_text text-success\">Quality Checks</span>"
+msgstr ""
 
 #. module: quality_mrp
 #: model_terms:ir.ui.view,arch_db:quality_mrp.mrp_production_view_form_inherit_quality
 msgid "<span class=\"o_stat_text\">Quality Alerts</span>"
+msgstr "<span class=\"o_stat_text\">התראות איכות</span>"
+
+#. module: quality_mrp
+#: model_terms:ir.ui.view,arch_db:quality_mrp.mrp_production_view_form_inherit_quality
+msgid "<span class=\"o_stat_text\">Quality Checks</span>"
+msgstr ""
+
+#. module: quality_mrp
+#: model_terms:ir.ui.view,arch_db:quality_mrp.worksheet_page
+msgid "<strong>Manufacturing Order : </strong>"
 msgstr ""
 
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__quality_alert_ids
 msgid "Alerts"
-msgstr "התראה"
+msgstr "התראות"
 
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__check_ids
 msgid "Checks"
-msgstr "בדיקות"
+msgstr "שיקים"
+
+#. module: quality_mrp
+#: model:ir.model,name:quality_mrp.model_stock_move_line
+msgid "Product Moves (Stock Move Line)"
+msgstr "תנועות המוצר (תנועת שורת מלאי)"
 
 #. module: quality_mrp
 #: model:ir.model,name:quality_mrp.model_mrp_production
 #: model:ir.model.fields,field_description:quality_mrp.field_quality_alert__production_id
 #: model:ir.model.fields,field_description:quality_mrp.field_quality_check__production_id
 msgid "Production Order"
-msgstr "הזמנת ייצור"
+msgstr "הוראת ייצור"
 
 #. module: quality_mrp
 #: model:ir.model,name:quality_mrp.model_quality_alert
@@ -59,7 +76,7 @@ msgstr "התראת איכות"
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__quality_alert_count
 msgid "Quality Alert Count"
-msgstr "ספירת התראות איכות"
+msgstr "כמות התראות איכות"
 
 #. module: quality_mrp
 #: model:ir.model,name:quality_mrp.model_quality_check
@@ -74,7 +91,7 @@ msgstr "בדיקת איכות נכשלה"
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__quality_check_todo
 msgid "Quality Check Todo"
-msgstr "נדרשת בדיקת איכות"
+msgstr "בדיקת איכות לביצוע"
 
 #. module: quality_mrp
 #: model:ir.actions.act_window,name:quality_mrp.quality_check_action_mo
@@ -83,7 +100,17 @@ msgid "Quality Checks"
 msgstr "בדיקות איכות"
 
 #. module: quality_mrp
+#: model:ir.model,name:quality_mrp.model_quality_point
+msgid "Quality Control Point"
+msgstr "נקודת בקרת איכות"
+
+#. module: quality_mrp
+#: model:ir.model,name:quality_mrp.model_stock_move
+msgid "Stock Move"
+msgstr "תנועת מלאי"
+
+#. module: quality_mrp
 #: code:addons/quality_mrp/models/mrp_production.py:0
 #, python-format
 msgid "You still need to do the quality checks!"
-msgstr "אתה עדיין נידרש לבצע בדיקות איכות!"
+msgstr "אתה עדיין צריך לבצע את בדיקות האיכות!"

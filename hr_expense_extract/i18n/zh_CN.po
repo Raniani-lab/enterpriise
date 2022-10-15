@@ -7,6 +7,7 @@
 # Raymond Yu <cl_yu@hotmail.com>, 2022
 # Martin Trigaux, 2022
 # keecome <7017511@qq.com>, 2022
+# 稀饭~~ <wangwhai@qq.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: keecome <7017511@qq.com>, 2022\n"
+"Last-Translator: 稀饭~~ <wangwhai@qq.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -130,12 +131,12 @@ msgstr "币种"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__res_company__expense_extract_show_ocr_option_selection__auto_send
 msgid "Digitize automatically"
-msgstr ""
+msgstr "自动数字化"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__res_company__expense_extract_show_ocr_option_selection__manual_send
 msgid "Digitize on demand only"
-msgstr ""
+msgstr "仅按需数字化"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_receipt__display_name
@@ -147,7 +148,7 @@ msgstr "显示名称"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__res_company__expense_extract_show_ocr_option_selection__no_send
 msgid "Do not digitize"
-msgstr ""
+msgstr "不数字化"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_error_message
@@ -386,7 +387,7 @@ msgstr "样品收据: %s"
 #: model:ir.actions.server,name:hr_expense_extract.hr_expense_parse_action_server
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
 msgid "Send For Digitization"
-msgstr ""
+msgstr "发送以进行数字化"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_res_company__expense_extract_show_ocr_option_selection
@@ -420,7 +421,7 @@ msgstr ""
 msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
 "between 5 and 10 seconds."
-msgstr ""
+msgstr "数据提取尚未完成。提取通常需要5到10秒。"
 
 #. module: hr_expense_extract
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
@@ -477,7 +478,7 @@ msgstr "等待导出"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__waiting_upload
 msgid "Waiting upload"
-msgstr ""
+msgstr "等待上传"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__waiting_validation

@@ -382,7 +382,7 @@ msgid ""
 "                        non-recurring revenues in these invoices for this particular salesperson."
 msgstr ""
 "Enlista todas las facturas que contengan ventas no recurrentes y la cantidad de\n"
-"                        ingresos no recurrentes en estas facturas de este vendedor en especial."
+"                        ingresos no recurrentes en estas facturas de este vendedor en específico."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -393,7 +393,7 @@ msgid ""
 "                    revenues in these invoices for this particular salesperson."
 msgstr ""
 "Enlista todas las facturas que contengan ventas no recurrentes y la cantidad de ingresos\n"
-"no recurrentes en estas facturas de este vendedor en especial."
+"                     no recurrentes en estas facturas de este vendedor en específico."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -773,7 +773,7 @@ msgstr "Crecimiento de suscripciones"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Subscriptions plans"
-msgstr ""
+msgstr "Planes de suscripción"
 
 #. module: sale_subscription_dashboard
 #. openerp-web

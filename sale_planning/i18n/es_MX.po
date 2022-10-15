@@ -11,7 +11,7 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-04 09:43+0000\n"
+"POT-Creation-Date: 2022-10-10 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
 "Last-Translator: Braulio D. López Vázquez <bdl@odoo.com>, 2022\n"
 "Language-Team: Spanish (Mexico) (https://www.transifex.com/odoo/teams/41243/es_MX/)\n"
@@ -82,7 +82,7 @@ msgstr "Fecha de finalización"
 #. module: sale_planning
 #: model:planning.role,name:sale_planning.planning_role_tester
 msgid "Functional Tester"
-msgstr ""
+msgstr "Probador funcional"
 
 #. module: sale_planning
 #: model:product.product,uom_name:sale_planning.developer_product
@@ -96,7 +96,7 @@ msgstr "Horas"
 #: model:product.product,name:sale_planning.technical_maintainance_product
 #: model:product.template,name:sale_planning.technical_maintainance_product_product_template
 msgid "IT Technical Maintenance (Plan services)"
-msgstr "Mantenimiento mecánico de TI (Plan de servicios)"
+msgstr "Mantenimiento técnico de TI (planear servicios)"
 
 #. module: sale_planning
 #: model:planning.role,name:sale_planning.planning_role_technician
@@ -109,10 +109,13 @@ msgstr "Técnico de TI"
 #: model:ir.model.fields,help:sale_planning.field_product_template__planning_enabled
 msgid ""
 "If enabled, a shift will automatically be generated for the selected role "
-"when confirming the Sales Order."
+"when confirming the Sales Order. Only employees with this role will "
+"automatically be assigned shifts for Sales Orders containing this service."
 msgstr ""
 "Si se habilita, se generará un turno de forma automática para la función "
-"seleccionada al confirmar la orden de venta."
+"seleccionada al confirmar la orden de venta. Solo se asignarán turnos a los "
+"empleados con esta función se asignarán de forma automática para las órdenes"
+" de venta que contienen este servicio."
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search
@@ -266,6 +269,18 @@ msgid "Sales Order Line"
 msgstr "Línea de la orden de venta"
 
 #. module: sale_planning
+#: model:ir.model.fields,help:sale_planning.field_planning_slot__sale_line_id
+msgid ""
+"Sales order item for which this shift will be performed. When sales orders "
+"are automatically planned, the remaining hours of the sales order item, as "
+"well as the role defined on the service, are taken into account."
+msgstr ""
+"Artículo de orden de venta para el que se realizará este turno. Cuando las "
+"órdenes de venta se planean de forma automática, se consideran las horas "
+"restantes del artículo de la orden de venta, así como la función que se "
+"define en el servicio."
+
+#. module: sale_planning
 #: model:ir.actions.act_window,name:sale_planning.sale_planning_action_schedule_by_sale_order
 msgid "Schedule by Sales Order"
 msgstr "Programar por orden de venta"
@@ -360,12 +375,12 @@ msgstr "Ver planeación"
 #: code:addons/sale_planning/static/src/views/hooks.js:0
 #, python-format
 msgid "View Shifts"
-msgstr ""
+msgstr "Ver turnos"
 
 #. module: sale_planning
 #: model:planning.role,name:sale_planning.planning_role_planner
 msgid "Work Planner"
-msgstr ""
+msgstr "Planeador de trabajo"
 
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.product_template_form_view_invoice_policy_inherit_sale_planning

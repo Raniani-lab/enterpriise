@@ -12,9 +12,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:47+0000\n"
+"POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
 "Last-Translator: Lars Aam <lars.aam@vikenfiber.no>, 2022\n"
 "Language-Team: Norwegian Bokmål (https://www.transifex.com/odoo/teams/41243/nb/)\n"
@@ -99,7 +99,6 @@ msgstr "Ikon type Aktivitet"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_kanban_controller.js:0
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Add"
@@ -248,7 +247,6 @@ msgstr ""
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_comment_delete.js:0
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
 #, python-format
@@ -264,7 +262,7 @@ msgstr ""
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_kanban_renderer.js:0
+#: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Click to refresh."
 msgstr ""
@@ -280,13 +278,6 @@ msgstr "Klikk"
 #, python-format
 msgid "Comment Image"
 msgstr ""
-
-#. module: social
-#. openerp-web
-#: code:addons/social/static/src/js/stream_post_comments.js:0
-#, python-format
-msgid "Comments"
-msgstr "Kommentarer"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__company_id
@@ -399,7 +390,7 @@ msgstr ""
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_comment_delete.js:0
+#: code:addons/social/static/src/js/stream_post_comment.js:0
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Delete Comment"
@@ -435,9 +426,9 @@ msgstr "Visningsnavn"
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/xml/social_templates.xml:0
+#: code:addons/social/static/src/js/stream_post_comment.js:0
 #, python-format
-msgid "Do you really want to delete that"
+msgid "Do you really want to delete %s"
 msgstr ""
 
 #. module: social
@@ -869,6 +860,13 @@ msgid "Main Attachment"
 msgstr "Hovedvedlegg"
 
 #. module: social
+#. openerp-web
+#: code:addons/social/static/src/xml/social_templates.xml:0
+#, python-format
+msgid "Main actions"
+msgstr ""
+
+#. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__max_post_length
 msgid "Max Post Length"
 msgstr ""
@@ -966,9 +964,9 @@ msgstr ""
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_kanban_renderer.js:0
+#: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
-msgid "New content available."
+msgid "New content available"
 msgstr ""
 
 #. module: social
@@ -1105,13 +1103,6 @@ msgstr ""
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_comment_delete.js:0
-#, python-format
-msgid "Ok"
-msgstr "Ok"
-
-#. module: social
-#. openerp-web
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Or add"
@@ -1158,7 +1149,9 @@ msgstr ""
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/post_kanban_images_carousel.js:0
+#: code:addons/social/static/src/js/post_kanban_view.js:0
+#: code:addons/social/static/src/js/stream_post_comments.js:0
+#: code:addons/social/static/src/js/stream_post_kanban_record.js:0
 #, python-format
 msgid "Post Images"
 msgstr ""
@@ -1475,7 +1468,7 @@ msgstr ""
 
 #. module: social
 #. openerp-web
-#: code:addons/social/static/src/js/stream_post_kanban_controller.js:0
+#: code:addons/social/static/src/js/stream_post_kanban_dashboard.js:0
 #, python-format
 msgid ""
 "Sorry, you're not allowed to re-link this account, please contact your "
@@ -1809,6 +1802,13 @@ msgstr ""
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
 msgid "before posting."
+msgstr ""
+
+#. module: social
+#. openerp-web
+#: code:addons/social/static/src/js/stream_post_comment.js:0
+#, python-format
+msgid "comment/reply"
 msgstr ""
 
 #. module: social

@@ -663,6 +663,23 @@ class Payslip(models.Model):
                     'action': self._dashboard_default_action(invalid_gender_str, 'hr.employee', invalid_language_employees.ids),
                 })
 
+            # WORK ADDRESS VALIDATION
+            address_employees = self.env['hr.employee'].search([
+                ('company_id', 'in', belgian_companies.ids),
+                ('employee_type', 'in', ['employee', 'student']),
+                ('contract_id.state', 'in', ['open', 'close']),
+            ])
+            work_addresses = address_employees.mapped('address_id')
+            location_units = self.env['l10n_be.dmfa.location.unit'].search([('partner_id', 'in', work_addresses.ids)])
+            invalid_addresses = work_addresses - location_units.mapped('partner_id')
+            if invalid_addresses:
+                invalid_address_str = _('Work addresses without ONSS identification code')
+                res.append({
+                    'string': invalid_address_str,
+                    'count': len(invalid_addresses),
+                    'action': self._dashboard_default_action(invalid_address_str, 'res.partner', invalid_addresses.ids),
+                })
+
         return res
 
     def _get_ffe_contribution_rate(self, worker_count):

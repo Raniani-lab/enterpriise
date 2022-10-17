@@ -9,7 +9,7 @@
             <xpath expr="//notebook" position="inside">
                 <page string="Equipment" name="equipment">
                     <field name="equipment_ids" widget="many2many">
-                        <tree string="Equipments">
+                        <tree string="Equipment">
                             <field name="name"/>
                             <field name="technician_user_id"/>
                             <field name="category_id"/>

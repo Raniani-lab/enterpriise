@@ -13,7 +13,7 @@ Maintenance in MRP
 * Preventive vs corrective maintenance
 * Define different stages for your maintenance requests
 * Plan maintenance requests (also recurring preventive)
-* Equipments related to workcenters
+* Equipment related to workcenters
 * MTBF, MTTR, ...
 """,
     'depends': ['mrp_workorder', 'maintenance'],

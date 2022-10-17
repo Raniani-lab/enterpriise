@@ -76,7 +76,7 @@
 
     <menuitem
         id="maintenance.menu_equipment_form"
-        name="Equipments"
+        name="Equipment"
         parent="maintenance.menu_maintenance_title"
         groups="maintenance.group_equipment_manager,base.group_user"
         sequence="2"/>

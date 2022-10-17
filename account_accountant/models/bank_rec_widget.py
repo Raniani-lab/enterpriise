@@ -455,8 +455,8 @@ class BankRecWidget(models.Model):
                 'bank_rec_widget_st_line_currency_id': wizard.transaction_currency_id.id,
             }
 
-            if st_line.partner_id:
-                context['search_default_name'] = st_line.partner_id.name
+            if wizard.partner_id:
+                context['search_default_name'] = wizard.partner_id.name
 
             dynamic_filters = []
 

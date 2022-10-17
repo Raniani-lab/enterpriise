@@ -35,7 +35,7 @@ class SaleOrder(models.Model):
 
         with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._process_invoices_to_send',
                   wraps=_mock_process_invoices_to_send):
-            self._test_demo_generate_subscriptions_unpatched
+            self._test_demo_generate_subscriptions_unpatched()
 
     def _test_demo_generate_subscriptions_unpatched(self):
         self._test_demo_flush_tracking()

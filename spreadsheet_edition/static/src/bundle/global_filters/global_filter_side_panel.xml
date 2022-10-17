@@ -50,6 +50,7 @@
                     type="text"
                     class="o_input o_global_filter_label"
                     t-model="state.label"
+                    t-ref="labelInput"
                     t-att-placeholder="placeholder"/>
             </div>
         </div>

@@ -5,7 +5,6 @@ import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import CommandResult from "@spreadsheet/o_spreadsheet/cancelled_reason";
 import { RecordsSelector } from "@spreadsheet/global_filters/components/records_selector/records_selector";
 import { useService } from "@web/core/utils/hooks";
-import { LegacyComponent } from "@web/legacy/legacy_component";
 import { ModelSelector } from "@web/core/model_selector/model_selector";
 import { sprintf } from "@web/core/utils/strings";
 import { FilterFieldOffset } from "./components/filter_field_offset";
@@ -14,7 +13,7 @@ import { DateFilterValue } from "@spreadsheet/global_filters/components/filter_d
 import { globalFiltersFieldMatchers } from "@spreadsheet/global_filters/plugins/global_filters_core_plugin";
 import { SpreadsheetModelFieldSelector } from "./components/model_field_selector/spreadsheet_model_field_selector";
 
-const { onMounted, onWillStart, useState } = owl;
+const { onMounted, onWillStart, Component, useRef, useState } = owl;
 const uuidGenerator = new spreadsheet.helpers.UuidGenerator();
 
 const RANGE_TYPES = [
@@ -48,7 +47,7 @@ const ALLOWED_FIELD_TYPES = {
  * This is the side panel to define/edit a global filter.
  * It can be of 3 different type: text, date and relation.
  */
-export default class FilterEditorSidePanel extends LegacyComponent {
+export default class FilterEditorSidePanel extends Component {
     /**
      * @constructor
      */
@@ -83,6 +82,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
         this.loadValues();
         this.orm = useService("orm");
         this.notification = useService("notification");
+        this.labelInput = useRef("labelInput");
 
         this.relativeDateRangesTypes = RELATIVE_DATE_RANGE_TYPES;
         this.dateRangeTypes = RANGE_TYPES;
@@ -185,7 +185,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
     }
 
     onMounted() {
-        this.el.querySelector(".o_global_filter_label").focus();
+        this.labelInput.el.focus();
     }
 
     /**

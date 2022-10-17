@@ -6,10 +6,10 @@ registerPatch({
     name: "Chatter",
     lifecycleHooks: {
         _created() {
-            this.env.bus.on("voip_reload_chatter", undefined, this._onReload);
+            this.env.bus.addEventListener("voip_reload_chatter", this._onReload);
         },
         _willDelete() {
-            this.env.bus.off("voip_reload_chatter", undefined, this._onReload);
+            this.env.bus.removeEventListener("voip_reload_chatter", this._onReload);
         },
     },
     recordMethods: {

@@ -3,12 +3,15 @@
 
 from collections import OrderedDict
 
-from odoo import api, fields, models
+from odoo import _, api, fields, models
+from odoo.exceptions import ValidationError
 
 class Document(models.Model):
     _inherit = 'documents.document'
 
     is_shared = fields.Boolean(compute='_compute_is_shared', search='_search_is_shared')
+    project_id = fields.Many2one('project.project', compute='_compute_project_id', search='_search_project_id')
+    task_id = fields.Many2one('project.task', compute='_compute_task_id', search='_search_task_id')
 
     def _compute_is_shared(self):
         search_domain = [
@@ -65,6 +68,81 @@ class Document(models.Model):
         if (operator == '=') ^ value:
             domain.insert(0, '!')
         return domain
+
+    @api.depends('res_id', 'res_model')
+    def _compute_project_id(self):
+        for record in self:
+            if record.res_model == 'project.project':
+                record.project_id = self.env['project.project'].browse(record.res_id)
+            elif record.res_model == 'project.task':
+                record.project_id = self.env['project.task'].browse(record.res_id).project_id
+            else:
+                record.project_id = False
+
+    @api.model
+    def _search_project_id(self, operator, value):
+        if operator in ('=', '!=') and isinstance(value, bool): # needs to be the first condition as True and False are instances of int
+            if not value:
+                operator = operator == "=" and "!=" or "="
+            comparator = operator == "=" and "|" or "&"
+            return [
+                comparator, ("res_model", operator, "project.project"), ("res_model", operator, "project.task"),
+            ]
+        elif operator in ('=', '!=', "in", "not in") and (isinstance(value, int) or isinstance(value, list)):
+            return [
+                "|", "&", ("res_model", "=", "project.project"), ("res_id", operator, value),
+                     "&", ("res_model", "=", "project.task"),
+                          ("res_id", "inselect", self.env["project.task"]._search([("project_id", operator, value)]).select()),
+            ]
+        elif operator in ("ilike", "not ilike", "=", "!=") and isinstance(value, str):
+            query_project = self.env["project.project"]._search([(self.env["project.project"]._rec_name, operator, value)], order="id asc") # we don't care about the order
+            project_select, project_where_params = query_project.select("id")
+            # We may need to flush `res_model` `res_id` if we ever get a flow that assigns + search at the same time..
+            # We only apply security rules to projects as security rules on documents will be applied prior
+            # to this leaf. Not applying security rules on tasks might give more result than expected but it would not allow
+            # access to an unauthorized document.
+            return [
+                ("id", "inselect", (f"""
+                    WITH helper as (
+                        {project_select}
+                    )
+                    SELECT document.id
+                    FROM documents_document document
+                    LEFT JOIN project_project project ON project.id=document.res_id AND document.res_model = 'project.project'
+                    LEFT JOIN project_task task ON task.id=document.res_id AND document.res_model = 'project.task'
+                    WHERE COALESCE(task.project_id, project.id) IN (SELECT id FROM helper)
+                """, project_where_params))
+            ]
+        else:
+            raise ValidationError(_("Invalid project search"))
+
+    @api.depends('res_id', 'res_model')
+    def _compute_task_id(self):
+        for record in self:
+            record.task_id = record.res_model == 'project.task' and self.env['project.task'].browse(record.res_id)
+
+    @api.model
+    def _search_task_id(self, operator, value):
+        if operator in ('=', '!=') and isinstance(value, bool):
+            if not value:
+                operator = operator == "=" and "!=" or "="
+            return [
+                ("res_model", operator, "project.task"),
+            ]
+        elif operator in ('=', '!=', "in", "not in") and (isinstance(value, int) or isinstance(value, list)):
+            return [
+                "&", ("res_model", "=", "project.task"), ("res_id", operator, value),
+            ]
+        elif operator in ("ilike", "not ilike", "=", "!=") and isinstance(value, str):
+            query_task = self.env["project.task"]._search([(self.env["project.task"]._rec_name, operator, value)], order="id asc")
+            document_task_alias = query_task.join(
+                "project_task", "id", "documents_document", "res_id", "document", "{rhs}.res_model = 'project.task'"
+            )
+            return [
+                ("id", "inselect", query_task.select(f"{document_task_alias}.id")),
+            ]
+        else:
+            raise ValidationError(_("Invalid task search"))
 
     @api.model
     def search_panel_select_range(self, field_name, **kwargs):

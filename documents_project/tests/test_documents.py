@@ -28,6 +28,12 @@ class TestCaseDocumentsBridgeProject(TestProjectCommon):
             'mimetype': 'text/plain',
             'folder_id': self.folder_a_a.id,
         })
+        self.attachment_txt_2 = self.env['documents.document'].create({
+            'datas': TEXT,
+            'name': 'file2.txt',
+            'mimetype': 'text/plain',
+            'folder_id': self.folder_a_a.id,
+        })
         self.workflow_rule_task = self.env['documents.workflow.rule'].create({
             'domain_folder_id': self.folder_a.id,
             'name': 'workflow rule create task on f_a',
@@ -199,3 +205,97 @@ class TestCaseDocumentsBridgeProject(TestProjectCommon):
         })
         projects._compute_attached_document_count()
         self.assertEqual(self.project_pigs.document_count, 2, "The documents linked to the tasks of the project should be taken into account.")
+
+    def test_project_document_search(self):
+        # 1. Linking documents to projects/tasks
+        projects = self.project_pigs | self.project_goats
+        self.assertEqual(projects[0].document_count, 0, "No project should have document linked to it initially")
+        self.assertEqual(projects[1].document_count, 0, "No project should have document linked to it initially")
+        self.attachment_txt.write({
+            'res_model': 'project.project',
+            'res_id': projects[0].id,
+        })
+        self.attachment_txt_2.write({
+            'res_model': 'project.project',
+            'res_id': projects[1].id,
+        })
+        doc_gif = self.env['documents.document'].create({
+            'datas': GIF,
+            'name': 'fileText_test.txt',
+            'mimetype': 'text/plain',
+            'folder_id': self.folder_a_a.id,
+            'res_model': 'project.task',
+            'res_id': self.task_1.id,
+        })
+
+        # 2. Project_id search tests
+        # docs[0] --> projects[0] "Pigs"
+        # docs[1] --> projects[1] "Goats"
+        # docs[2] --> task "Pigs UserTask" --> projects[0] "Pigs"
+        docs = self.attachment_txt + self.attachment_txt_2 + doc_gif
+        # Needed for `inselect` leafs
+        docs.flush_recordset()
+        search_domains = [
+            [('project_id', 'ilike', 'pig')],
+            [('project_id', '=', 'pig')],
+            [('project_id', '!=', 'Pigs')],
+            [('project_id', '=', projects[0].id)],
+            [('project_id', '!=', False)],
+            [('project_id', '=', True)],
+            [('project_id', '=', False)],
+            [('project_id', 'in', projects.ids)],
+            [('project_id', '!=', projects[0].id)],
+            [('project_id', 'not in', projects.ids)],
+            ['|', ('project_id', 'in', [projects[1].id]), ('project_id', '=', 'Pigs')],
+        ]
+        expected_results = [
+            docs[0] + docs[2],
+            self.env['documents.document'],
+            docs[1],
+            docs[0] + docs[2],
+            docs[0] + docs[1] + docs[2],
+            docs[0] + docs[1] + docs[2],
+            (self.env['documents.document'].search([]) - docs[0] - docs[1] - docs[2]),
+            docs[0] + docs[1] + docs[2],
+            docs[1],
+            self.env['documents.document'],
+            docs[0] + docs[1] + docs[2],
+        ]
+        for domain, result in zip(search_domains, expected_results):
+            self.assertEqual(self.env['documents.document'].search(domain), result, "The result of the search on the field project_id/task_id is incorrect (domain used: %s)" % domain)
+
+        # 3. Task_id search tests
+        task_2 = self.env['project.task'].with_context({'mail_create_nolog': True}).create({
+            'name': 'Goats UserTask',
+            'project_id': projects[1].id})
+
+        self.attachment_txt.write({
+            'res_model': 'project.task',
+            'res_id': task_2,
+        })
+        # docs[0] --> tasks[1]  "Goats UserTask"
+        # docs[2] --> tasks[0] "Pigs UserTask"
+        tasks = self.task_1 | task_2
+        self.env.flush_all()
+        search_domains = [
+            [('task_id', 'ilike', 'pig')],
+            [('task_id', '=', 'pig')],
+            [('task_id', '!=', 'Pigs UserTask')],
+            [('task_id', '=', tasks[1].id)],
+            [('task_id', '!=', False)],
+            [('task_id', '=', False)],
+            [('task_id', 'not in', tasks.ids)],
+            ['&', ('task_id', 'in', tasks.ids), '!', ('task_id', 'ilike', 'goats')],
+        ]
+        expected_results = [
+            docs[2],
+            self.env['documents.document'],
+            docs[0],
+            docs[0],
+            docs[0] + docs[2],
+            (self.env['documents.document'].search([]) - docs[0] - docs[2]),
+            self.env['documents.document'],
+            docs[2],
+        ]
+        for domain, result in zip(search_domains, expected_results):
+            self.assertEqual(self.env['documents.document'].search(domain), result, "The result of the search on the field project_id/task_id is incorrect (domain used: %s)" % domain)

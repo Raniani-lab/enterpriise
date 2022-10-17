@@ -1264,6 +1264,7 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
             studioShowInvisible: this._getShowInvisible(),
             x2mField: this.x2mField,
             type: nextViewType,
+            breadcrumbs: [],
         };
 
         config.onNodeClicked = (params) => {

@@ -13,11 +13,15 @@ registerModel({
                 return;
             }
             const chatter = this.activityViewOwner && this.activityViewOwner.activityBoxView.chatter;
+            const reloadFunc = this.activityListViewItemOwner && this.activityListViewItemOwner.reloadFunc;
             const webRecord = this.activityListViewItemOwner && this.activityListViewItemOwner.webRecord;
             const thread = this.activity.thread;
             await this.activity.approval.approve();
             if (chatter && chatter.exists()) {
                 chatter.reloadParentView();
+            }
+            if (reloadFunc) {
+                reloadFunc();
             }
             if (webRecord) {
                 webRecord.model.load({ resId: thread.id });
@@ -28,11 +32,15 @@ registerModel({
                 return;
             }
             const chatter = this.activityViewOwner && this.activityViewOwner.activityBoxView.chatter;
+            const reloadFunc = this.activityListViewItemOwner && this.activityListViewItemOwner.reloadFunc;
             const webRecord = this.activityListViewItemOwner && this.activityListViewItemOwner.webRecord;
             const thread = this.activity.thread;
             await this.activity.approval.refuse();
             if (chatter && chatter.exists()) {
                 chatter.reloadParentView();
+            }
+            if (reloadFunc) {
+                reloadFunc();
             }
             if (webRecord) {
                 webRecord.model.load({ resId: thread.id });

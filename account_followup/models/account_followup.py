@@ -18,7 +18,7 @@ class FollowupLine(models.Model):
 
     mail_template_id = fields.Many2one(comodel_name='mail.template')
     send_email = fields.Boolean('Send Email', default=True)
-    join_invoices = fields.Boolean(string="Join Invoices", default=True)
+    join_invoices = fields.Boolean(string="Attach Invoices", default=True)
 
     sms_template_id = fields.Many2one(comodel_name='sms.template')
     send_sms = fields.Boolean('Send SMS Message')

@@ -46,7 +46,7 @@
                                 bg_color="bg-warning"
                                 attrs="{'invisible': [('followup_status', '!=', 'with_overdue_invoices')]}"/>
                         <div class="oe_title">
-                            <h1><field name="name" readonly="True" required="True"/> <small><field name="trust" widget="followup_trust_widget"/></small></h1>
+                            <h1><field name="name" readonly="True" required="True" class="oe_inline"/> <small><field name="trust" widget="followup_trust_widget" class="oe_inline"/></small></h1>
                         </div>
                         <group name="schedule">
                             <group>

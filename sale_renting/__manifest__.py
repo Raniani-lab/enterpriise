@@ -10,7 +10,7 @@
         Manage user and manager notifications
     """,
 
-    'website': "https://www.odoo.com",
+    'website': "https://www.odoo.com/app/rental",
 
     'category': 'Sales/Sales',
     'sequence': 160,

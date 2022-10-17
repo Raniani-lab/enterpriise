@@ -725,3 +725,69 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
             ]
         })
         wizard_id.generate_lot()
+
+    def test_fsm_update_salesperson(self):
+        '''Check that the edit of the person assigned to a task of the field service project updates the salesperson on the sale order.'''
+        # create a project that does not have the fsm tag (fsm_project exists)
+        other_project = self.env['project.project'].create({
+            'name': 'Other Project',
+            'is_fsm': False,
+        })
+        # create service products
+        product_field_service, product_other_service = self.env['product.product'].create([
+            {
+                'name': "Field service product",
+                'type': 'service',
+                'service_tracking': 'task_global_project',
+                'project_id': self.fsm_project.id,
+            },
+            {
+                'name': "Other service product",
+                'type': 'service',
+                'service_tracking': 'task_global_project',
+                'project_id': other_project.id,
+            }
+        ])
+        # create sales
+        sale_order_field_service, sale_order_other_service = self.env['sale.order'].with_context(mail_notrack=True, mail_create_nolog=True).create([
+            {'partner_id': self.partner_1.id},
+            {'partner_id': self.partner_1.id},
+        ])
+        sale_order_lines = self.env['sale.order.line'].create([
+            {
+                'order_id': sale_order_field_service.id,
+                'name': product_field_service.name,
+                'product_id': product_field_service.id,
+            },
+            {
+                'order_id': sale_order_other_service.id,
+                'name': product_other_service.name,
+                'product_id': product_other_service.id,
+            },
+        ])
+        sales_orders = sale_order_field_service + sale_order_other_service
+        # confirm sales to create the related task automatically
+        sales_orders.action_confirm()
+        # check salespersons
+        self.assertEqual(sale_order_field_service.user_id, self.env.user)
+        self.assertEqual(sale_order_other_service.user_id, self.env.user)
+        # create other users
+        project_user2, project_user3 = self.env['res.users'].create([
+            {
+                'name': 'User 2',
+                'login': 'user2',
+            },
+            {
+                'name': 'User 3',
+                'login': 'user3',
+            }
+        ])
+        # change the person assigned to the task
+        sales_orders.state = 'draft'
+        sale_order_lines.task_id.write({
+                'user_ids': [Command.set([self.project_user.id, project_user2.id, project_user3.id])]
+        })
+        sales_orders.action_confirm()
+        # check that there is a change only for the sale order which concerns the field service
+        self.assertEqual(sale_order_field_service.user_id, self.project_user, 'The salesperson must have been updated')
+        self.assertEqual(sale_order_other_service.user_id, self.env.user, 'The salesperson must not have been updated')

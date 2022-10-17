@@ -6,6 +6,7 @@ from dateutil.relativedelta import relativedelta
 
 from odoo import http
 from odoo.exceptions import AccessError, MissingError, ValidationError
+from odoo.fields import Command
 from odoo.http import request
 from odoo.tools.translate import _
 from odoo.tools.misc import format_date
@@ -263,6 +264,7 @@ class PaymentPortal(payment_portal.PaymentPortal):
             tx_sudo = self._create_transaction(
                 custom_create_values={
                     **common_callback_values,
+                    'sale_order_ids': [Command.set([order_id])],
                     'callback_method': '_reconcile_and_assign_token',
                 },
                 is_validation=is_validation,
@@ -275,6 +277,7 @@ class PaymentPortal(payment_portal.PaymentPortal):
             tx_sudo = self._create_transaction(
                 custom_create_values={
                     **common_callback_values,
+                    'sale_order_ids': [Command.set([order_id])],
                     'callback_method': '_assign_token',
                 },
                 is_validation=is_validation,

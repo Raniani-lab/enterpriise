@@ -597,14 +597,6 @@ const DialingPanel = Widget.extend({
                 renderHeader: false,
             }).open({shouldFocusButtons: true});
         });
-        if (useVOIP && mobile.methods.setupVoip) {
-            const hasMicroPhonePermission = await mobile.methods.setupVoip();
-            if (!hasMicroPhonePermission) {
-                await new Promise(resolve => Dialog.alert(this, _t("You must allow the access to the microphone on your device. Otherwise, the VoIP call receiver will not hear you."), {
-                    confirm_callback: resolve,
-                }));
-            }
-        }
         return useVOIP;
     },
 

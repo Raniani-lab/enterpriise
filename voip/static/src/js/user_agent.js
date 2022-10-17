@@ -2,11 +2,9 @@ odoo.define('voip.UserAgent', function (require) {
 "use strict";
 
 const Class = require('web.Class');
-const concurrency = require('web.concurrency');
 const core = require('web.core');
 const { escape, sprintf } = require('@web/core/utils/strings');
 const mixins = require('web.mixins');
-const mobile = require('web_mobile.core');
 const ServicesMixin = require('web.ServicesMixin');
 
 const _t = core._t;
@@ -27,7 +25,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         var self = this;
         mixins.EventDispatcherMixin.init.call(this);
         this.setParent(parent);
-        this._updateCallState(CALL_STATE.NO_CALL);
+        this._callState = CALL_STATE.NO_CALL;
         /**
          * The phone number of the current external party.
          */
@@ -115,7 +113,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             this.voip.ringtoneRegistry.ringbackTone.play({ loop: true });
             this._timerAcceptedTimeout = this._demoTimeout(() => this._onOutgoingInvitationAccepted());
             this._isOutgoing = true;
-            this._updateCallState(CALL_STATE.RINGING_CALL);
+            this._callState = CALL_STATE.RINGING_CALL;
             return;
         }
         this._makeCall(number);
@@ -139,7 +137,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this.messaging.messagingBus.trigger('sip_rejected', this._currentCallParams);
         this.voip.ringtoneRegistry.incomingCallRingtone.stop();
         this._sipSession = false;
-        this._updateCallState(CALL_STATE.NO_CALL);
+        this._callState = CALL_STATE.NO_CALL;
         if (this._currentInviteSession) {
             this._currentInviteSession.reject({ statusCode: 603 });
         }
@@ -170,7 +168,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     transfer(number) {
         if (this.voip.mode === 'demo') {
-            this._updateCallState(CALL_STATE.NO_CALL);
+            this._callState = CALL_STATE.NO_CALL;
             this.messaging.messagingBus.trigger('sip_bye');
             return;
         }
@@ -207,7 +205,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         const inviteSession = this._currentInviteSession;
 
         if (this.voip.mode === 'demo') {
-            this._updateCallState(CALL_STATE.ONGOING_CALL);
+            this._callState = CALL_STATE.ONGOING_CALL;
             this.messaging.messagingBus.trigger('sip_incoming_call', this._currentCallParams);
             return;
         }
@@ -234,7 +232,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     _cancelEstablishingSession() {
         this.voip.ringtoneRegistry.stopAll();
-        this._updateCallState(CALL_STATE.NO_CALL);
+        this._callState = CALL_STATE.NO_CALL;
         this.messaging.messagingBus.trigger('sip_cancel_outgoing');
         if (this._sipSession) {
             this._sipSession.cancel();
@@ -423,7 +421,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 },
             });
             this._isOutgoing = true;
-            this._updateCallState(CALL_STATE.RINGING_CALL);
+            this._callState = CALL_STATE.RINGING_CALL;
             this.voip.triggerError(_t("Please accept the use of the microphone."));
         } catch (err) {
             this.voip.triggerError(_t("The connection cannot be made.</br> Please check your configuration."));
@@ -500,36 +498,8 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         }
         this._sipSession = false;
         this._cleanRemoteAudio();
-        this._updateCallState(CALL_STATE.NO_CALL);
+        this._callState = CALL_STATE.NO_CALL;
         this.messaging.messagingBus.trigger('sip_bye');
-    },
-    _updateCallState(newState) {
-        this._callState = newState;
-        if (!mobile.methods.changeAudioMode) {
-            return;
-        }
-        let mode = false;
-        switch (this._callState) {
-            case CALL_STATE.NO_CALL:
-                mode = 'NO_CALL';
-                break;
-            case CALL_STATE.RINGING_CALL:
-                mode = 'RINGING_CALL';
-                break;
-            case CALL_STATE.ONGOING_CALL:
-                mode = 'CALL';
-                break;
-            case CALL_STATE.CANCELING_CALL:
-            case CALL_STATE.REJECTING_CALL:
-                // check if we are already in existing call
-                mode = this._isOutgoing ? false : 'NO_CALL';
-                break;
-            default: // Don't update if call state set with an unknown value
-                mode = false;
-        }
-        if (mode) {
-            concurrency.delay(50).then(() => mobile.methods.changeAudioMode({mode}));
-        }
     },
 
     //--------------------------------------------------------------------------
@@ -546,7 +516,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     _onBye({ incomingByeRequest: bye }) {
         this._sipSession = false;
         this._cleanRemoteAudio();
-        this._updateCallState(CALL_STATE.NO_CALL);
+        this._callState = CALL_STATE.NO_CALL;
         this.messaging.messagingBus.trigger('sip_bye');
     },
     /**
@@ -594,7 +564,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             this.messaging.messagingBus.trigger('sip_error_resolved');
             this.voip.ringtoneRegistry.dialTone.play({ loop: true });
         } else {
-            this._updateCallState(CALL_STATE.ONGOING_CALL);
+            this._callState = CALL_STATE.ONGOING_CALL;
             this.messaging.messagingBus.trigger('sip_incoming_call', this._currentCallParams);
         }
     },
@@ -615,7 +585,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._currentInviteSession.reject({ statusCode: 487 });
         this.messaging.messagingBus.trigger('sip_cancel_incoming', this._currentCallParams);
         this._sipSession = false;
-        this._updateCallState(CALL_STATE.NO_CALL);
+        this._callState = CALL_STATE.NO_CALL;
     },
     /**
      * Handles the invite event.
@@ -745,7 +715,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             content = _.str.sprintf(_t("Incoming call from %s"), number);
         }
         this._isOutgoing = false;
-        this._updateCallState(CALL_STATE.RINGING_CALL);
+        this._callState = CALL_STATE.RINGING_CALL;
         if (this.call('multi_tab', 'isOnMainTab')) {
             this.voip.ringtoneRegistry.incomingCallRingtone.play({ loop: true });
         }
@@ -776,7 +746,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @param {SIP.SessionDialog} response.session
      */
     _onOutgoingInvitationAccepted(response) {
-        this._updateCallState(CALL_STATE.ONGOING_CALL);
+        this._callState = CALL_STATE.ONGOING_CALL;
         this.voip.ringtoneRegistry.stopAll();
         if (
             this.voip.mode === 'prod' &&
@@ -827,7 +797,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         }
         this._sipSession = false;
         this.voip.ringtoneRegistry.stopAll();
-        this._updateCallState(CALL_STATE.NO_CALL);
+        this._callState = CALL_STATE.NO_CALL;
         const errorMessage = (() => {
             switch (response.message.statusCode) {
                 case 404: // Not Found

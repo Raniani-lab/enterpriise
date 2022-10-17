@@ -202,8 +202,7 @@
                     <button class="oe_stat_button" name="action_redirect_to_clicks" type="object" icon="fa-mouse-pointer">
                         <field name="click_count" string="Clicks" widget="statinfo"/>
                     </button>
-                    <button class="oe_stat_button" icon="fa-thumbs-up" name="engagement"
-                        attrs="{'invisible': [('engagement', '=', 0)]}" disabled="disabled">
+                    <button class="oe_stat_button o_social_post_engagement_stat_btn" icon="fa-thumbs-up" disabled="disabled" attrs="{'invisible': [('engagement', '=', 0)]}">
                         <field string="Engagement" name="engagement" widget="statinfo" />
                     </button>
                     <button class="oe_stat_button" icon="fa-newspaper-o" type="object" name="social_stream_post_action_my"

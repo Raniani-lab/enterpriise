@@ -209,7 +209,11 @@ Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, 
             SELECT emp.id,
                    emp.niss
               FROM hr_employee emp
-             WHERE company_id IN %s
+              JOIN hr_contract con
+              ON con.id = emp.contract_id
+              AND con.state in ('open', 'close')
+             WHERE emp.company_id IN %s
+               AND emp.employee_type IN ('employee', 'student')
                AND emp.active=TRUE
         ''', (tuple(c.id for c in self.env.companies if c.country_id.code == 'BE'),))
         return [row['id'] for row in self.env.cr.dictfetchall() if not row['niss'] or not self._validate_niss(row['niss'])]

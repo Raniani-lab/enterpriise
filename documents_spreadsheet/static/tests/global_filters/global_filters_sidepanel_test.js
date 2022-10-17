@@ -145,7 +145,7 @@ QUnit.module(
 
             await openGlobalFilterSidePanel();
             await click(target, ".o_side_panel_filter_icon.fa-cog");
-            const name = target.querySelector(".o_pivot_field_matching .fw-medium").innerText;
+            const name = target.querySelector(".o_spreadsheet_field_matching .fw-medium").innerText;
             assert.strictEqual(name, "Hello");
         });
 
@@ -165,7 +165,7 @@ QUnit.module(
 
             await openGlobalFilterSidePanel();
             await click(target, ".o_side_panel_filter_icon.fa-cog");
-            const name = target.querySelector(".o_pivot_field_matching .fw-medium").innerText;
+            const name = target.querySelector(".o_spreadsheet_field_matching .fw-medium").innerText;
             assert.strictEqual(name, "Hello");
         });
 
@@ -333,7 +333,7 @@ QUnit.module(
                 await openGlobalFilterSidePanel();
                 await clickCreateFilter("relation");
                 await selectModelForRelation("product");
-                const fieldMatching = target.querySelector(".o_pivot_field_matching div");
+                const fieldMatching = target.querySelector(".o_spreadsheet_field_matching div");
                 assert.equal(
                     fieldMatching.innerText,
                     "partner (Pivot #1)",
@@ -371,9 +371,9 @@ QUnit.module(
                 });
                 await openGlobalFilterSidePanel();
                 await clickCreateFilter("relation");
-                assert.containsNone(target, ".o_pivot_field_matching");
+                assert.containsNone(target, ".o_spreadsheet_field_matching");
                 await selectModelForRelation("product");
-                assert.containsOnce(target, ".o_pivot_field_matching");
+                assert.containsOnce(target, ".o_spreadsheet_field_matching");
             }
         );
 
@@ -685,9 +685,9 @@ QUnit.module(
 
             await click(target, "input#date_automatic_filter");
 
-            const pivotFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[0];
-            const listFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[1];
-            const graphFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[2];
+            const pivotFieldMatching = target.querySelectorAll(".o_spreadsheet_field_matching")[0];
+            const listFieldMatching = target.querySelectorAll(".o_spreadsheet_field_matching")[1];
+            const graphFieldMatching = target.querySelectorAll(".o_spreadsheet_field_matching")[2];
 
             await selectFieldMatching("date", pivotFieldMatching);
             await selectFieldMatching("date", listFieldMatching);
@@ -733,9 +733,9 @@ QUnit.module(
 
             await click(target, "input#date_automatic_filter");
 
-            const pivotFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[0];
-            const listFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[1];
-            const chartFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[2];
+            const pivotFieldMatching = target.querySelectorAll(".o_spreadsheet_field_matching")[0];
+            const listFieldMatching = target.querySelectorAll(".o_spreadsheet_field_matching")[1];
+            const chartFieldMatching = target.querySelectorAll(".o_spreadsheet_field_matching")[2];
 
             // pivot
             await selectFieldMatching("date", pivotFieldMatching);
@@ -802,9 +802,9 @@ QUnit.module(
             );
             await testUtils.fields.editAndTrigger(relativeSelection, "last_month", ["change"]);
 
-            const pivotFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[0];
-            const listFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[1];
-            const graphFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[2];
+            const pivotFieldMatching = target.querySelectorAll(".o_spreadsheet_field_matching")[0];
+            const listFieldMatching = target.querySelectorAll(".o_spreadsheet_field_matching")[1];
+            const graphFieldMatching = target.querySelectorAll(".o_spreadsheet_field_matching")[2];
 
             await selectFieldMatching("date", pivotFieldMatching);
             await selectFieldMatching("date", listFieldMatching);
@@ -1303,12 +1303,12 @@ QUnit.module(
                 assert.equal(panel.querySelectorAll(".o_input")[0].value, "This month");
                 assert.equal(panel.querySelectorAll(".o_input")[1].value, "month");
 
-                const pivotField = panel.querySelectorAll(".o_pivot_field_matching ")[0];
+                const pivotField = panel.querySelectorAll(".o_spreadsheet_field_matching ")[0];
                 const pivotFieldValue = pivotField.querySelector(".o_field_selector_value span");
                 assert.equal(pivotFieldValue.textContent.trim(), "Date");
                 assert.equal(pivotField.querySelector("select").value, "0");
 
-                const listField = panel.querySelectorAll(".o_pivot_field_matching ")[1];
+                const listField = panel.querySelectorAll(".o_spreadsheet_field_matching ")[1];
                 const listFieldValue = listField.querySelector(".o_field_selector_value span");
                 assert.equal(listFieldValue.textContent.trim(), "Date");
                 assert.equal(listField.querySelector("select").value, "1");
@@ -1327,7 +1327,10 @@ QUnit.module(
             });
             await openGlobalFilterSidePanel();
             await click(target, "i.o_side_panel_filter_icon.fa-cog");
-            assert.hasClass(target.querySelector(".o_pivot_field_matching"), "o_missing_field");
+            assert.hasClass(
+                target.querySelector(".o_spreadsheet_field_matching"),
+                "o_missing_field"
+            );
         });
 
         QUnit.test("Can save with an empty field", async function (assert) {

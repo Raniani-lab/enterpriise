@@ -17,6 +17,7 @@
     'assets': {
         'spreadsheet.o_spreadsheet': [
             'spreadsheet_edition/static/src/bundle/**/*.js',
+            'spreadsheet_edition/static/src/bundle/**/filter_editor_side_panel.xml',
             'spreadsheet_edition/static/src/bundle/**/*.xml',
             ('remove', 'spreadsheet_edition/static/src/bundle/actions/control_panel/spreadsheet_breadcrumbs.xml'),
             ('remove', 'spreadsheet_edition/static/src/bundle/pivot/pivot.xml'),

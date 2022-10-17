@@ -4,18 +4,31 @@ import { _t, _lt } from "@web/core/l10n/translation";
 
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 
-import FilterEditorSidePanel from "./filter_editor_side_panel";
 import GlobalFiltersSidePanel from "./global_filters_side_panel";
 import { FilterComponent } from "./filter_component";
 
 import "./operational_transform";
+import DateFilterEditorSidePanel from "./components/filter_editor/date_filter_editor_side_panel";
+import TextFilterEditorSidePanel from "./components/filter_editor/text_filter_editor_side_panel";
+import RelationFilterEditorSidePanel from "./components/filter_editor/relation_filter_editor_side_panel";
 
 const { sidePanelRegistry, topbarComponentRegistry, cellMenuRegistry } = spreadsheet.registries;
 
-sidePanelRegistry.add("FILTERS_SIDE_PANEL", {
+sidePanelRegistry.add("DATE_FILTER_SIDE_PANEL", {
     title: _t("Filter properties"),
-    Body: FilterEditorSidePanel,
+    Body: DateFilterEditorSidePanel,
 });
+
+sidePanelRegistry.add("TEXT_FILTER_SIDE_PANEL", {
+    title: _t("Filter properties"),
+    Body: TextFilterEditorSidePanel,
+});
+
+sidePanelRegistry.add("RELATION_FILTER_SIDE_PANEL", {
+    title: _t("Filter properties"),
+    Body: RelationFilterEditorSidePanel,
+});
+
 
 sidePanelRegistry.add("GLOBAL_FILTERS_SIDE_PANEL", {
     title: _t("Filters"),

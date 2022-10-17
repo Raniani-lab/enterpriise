@@ -1,13 +1,13 @@
 /** @odoo-module */
 
 import { FilterValue } from "@spreadsheet/global_filters/components/filter_value/filter_value";
-import { LegacyComponent } from "@web/legacy/legacy_component";
 
+const { Component } = owl;
 /**
  * This is the side panel to define/edit a global filter.
  * It can be of 3 different type: text, date and relation.
  */
-export default class GlobalFiltersSidePanel extends LegacyComponent {
+export default class GlobalFiltersSidePanel extends Component {
     setup() {
         this.getters = this.env.model.getters;
     }
@@ -29,27 +29,38 @@ export default class GlobalFiltersSidePanel extends LegacyComponent {
     }
 
     newText() {
-        this.env.openSidePanel("FILTERS_SIDE_PANEL", { type: "text" });
+        this.env.openSidePanel("TEXT_FILTER_SIDE_PANEL");
     }
 
     newDate() {
-        this.env.openSidePanel("FILTERS_SIDE_PANEL", { type: "date" });
+        this.env.openSidePanel("DATE_FILTER_SIDE_PANEL");
     }
 
     newRelation() {
-        this.env.openSidePanel("FILTERS_SIDE_PANEL", { type: "relation" });
+        this.env.openSidePanel("RELATION_FILTER_SIDE_PANEL");
     }
 
+    /**
+     * @param {string} id
+     */
     onEdit(id) {
-        this.env.openSidePanel("FILTERS_SIDE_PANEL", { id });
-    }
-
-    onDelete() {
-        if (this.id) {
-            this.env.model.dispatch("REMOVE_GLOBAL_FILTER", { id: this.id });
+        const filter = this.env.model.getters.getGlobalFilter(id);
+        if (!filter) {
+            return;
         }
-        this.trigger("close-side-panel");
+        switch (filter.type) {
+            case "text":
+                this.env.openSidePanel("TEXT_FILTER_SIDE_PANEL", { id });
+                break;
+            case "date":
+                this.env.openSidePanel("DATE_FILTER_SIDE_PANEL", { id });
+                break;
+            case "relation":
+                this.env.openSidePanel("RELATION_FILTER_SIDE_PANEL", { id });
+                break;
+        }
     }
 }
+
 GlobalFiltersSidePanel.template = "spreadsheet_edition.GlobalFiltersSidePanel";
 GlobalFiltersSidePanel.components = { FilterValue };

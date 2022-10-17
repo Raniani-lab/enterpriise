@@ -15,6 +15,13 @@ export class FilterFieldOffset extends Component {
     setup() {
         this.fieldsOffsets = FIELD_OFFSETS;
     }
+
+    /**
+     * @param {Event & { target: HTMLSelectElement }} ev
+     */
+    onOffsetSelected(ev) {
+        this.props.onOffsetSelected(parseInt(ev.target.value));
+    }
 }
 FilterFieldOffset.template = "spreadsheet_edition.FilterFieldOffset";
 FilterFieldOffset.props = {

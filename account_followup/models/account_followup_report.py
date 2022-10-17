@@ -7,7 +7,7 @@ from odoo import models, fields, api
 from odoo.exceptions import UserError
 from odoo.tools.misc import formatLang, format_date, get_lang
 from odoo.tools.translate import _
-from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, html2plaintext
+from odoo.tools import DEFAULT_SERVER_DATE_FORMAT, html2plaintext, plaintext2html
 
 
 class AccountFollowupReport(models.AbstractModel):
@@ -250,7 +250,7 @@ class AccountFollowupReport(models.AbstractModel):
             template_src = mail_template.body_html
 
         partner_followup_responsible_id = partner._get_followup_responsible()
-        responsible_signature = html2plaintext(partner_followup_responsible_id.signature or partner_followup_responsible_id.name)
+        responsible_signature = partner_followup_responsible_id.signature or partner_followup_responsible_id.name
         default_body = _("""Dear %s,
 
 
@@ -260,10 +260,10 @@ Would your payment have been carried out after this mail was sent, please ignore
 
 Best Regards,
 
-%s
+""", partner.name)
 
-""", partner.name, responsible_signature)
-        return self._get_rendered_body(partner.id, template_src, default_body, engine='qweb', post_process=True)
+        default_body_html = plaintext2html(default_body) + responsible_signature  # responsible_signature is an html field
+        return self._get_rendered_body(partner.id, template_src, default_body_html, engine='qweb', post_process=True)
 
     @api.model
     def _get_email_subject(self, options):

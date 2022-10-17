@@ -7,7 +7,7 @@
             <form>
                 <field name="can_edit_body" invisible="1"/>
 
-                <group name="main" col="4">
+                <group name="main" col="4" style="margin-bottom: 30px;">
                     <group colspan="1">
                         <group string="Actions" name="options" colspan="2" col="1">
                             <group name="print" colspan="1">
@@ -44,14 +44,24 @@
                 </group>
 
                 <group name="email_header" attrs="{'invisible':[('email','=',False)]}">
-                    <group colspan="1">
-                        <field name="email_recipient_ids" string="Email Recipients" widget="many2many_tags_email"
-                               placeholder="Add contacts to notify..."
-                               context="{'force_email':True, 'show_email':True, 'no_create_edit': True}"/>
+                    <group colspan="2" col="6">
+                        <group colspan="1">
+                            <label for="email_recipient_ids"/>
+                        </group>
+                        <group colspan="5">
+                            <field name="email_recipient_ids" string="Email Recipients" widget="many2many_tags_email"
+                                   placeholder="Add contacts to notify..." nolabel="1"
+                                   context="{'force_email':True, 'show_email':True, 'no_create_edit': True}" colspan="2"/>
+                        </group>
                     </group>
-                    <group colspan="2">
-                        <field name="subject" string="Email Subject" placeholder="Kind reminder!"
-                               attrs="{'required': [('email', '=', True)]}"/>
+                    <group colspan="2" col="6">
+                        <group colspan="1">
+                            <label for="subject"/>
+                        </group>
+                        <group colspan="5">
+                            <field name="subject" string="Email Subject" placeholder="Kind reminder!" nolabel="1"
+                                   attrs="{'required': [('email', '=', True)]}" colspan="2"/>
+                        </group>
                     </group>
                 </group>
 

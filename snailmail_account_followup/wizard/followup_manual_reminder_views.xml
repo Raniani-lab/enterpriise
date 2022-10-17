@@ -16,7 +16,7 @@
                     <attribute name="string">Print/Letter</attribute>
                 </group>
                 <group name="main" position="after">
-                    <div name="snailmail_cost" attrs="{'invisible':[('snailmail','=',False)]}" class="text-start d-inline-block">
+                    <div name="snailmail_cost" attrs="{'invisible':[('snailmail','=',False)]}" class="text-start d-inline-block" style="margin-bottom: 15px;">
                         <span> Sending this document by post will cost
                             <b>
                                 <field name="snailmail_cost" options="{'digits':[0,0]}" class="mr4"/>

@@ -100,9 +100,8 @@ class Task(models.Model):
     def write(self, vals):
         result = super().write(vals)
         if 'user_ids' in vals:
-            for task in self:
-                user = task.user_ids[:1]
-                sale_order = task.sale_order_id.sudo()
-                if sale_order.state in ['draft', 'sent'] and user != sale_order.user_id:
+            for sale_order in self.filtered("is_fsm").sale_order_id.sudo().filtered(lambda order: order.state in ['draft', 'sent']):
+                user = self.user_ids[:1]
+                if user != sale_order.user_id:
                     sale_order.write({'user_id': user.id})
         return result

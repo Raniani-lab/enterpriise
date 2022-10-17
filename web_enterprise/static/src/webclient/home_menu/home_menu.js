@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { isIosApp, isMacOS } from "@web/core/browser/feature_detection";
+import { isIosApp, isMobileOS, isMacOS } from "@web/core/browser/feature_detection";
 import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 import { useService } from "@web/core/utils/hooks";
 import { ExpirationPanel } from "./expiration_panel";
@@ -65,7 +65,9 @@ export class HomeMenu extends Component {
         });
 
         onMounted(() => {
-            this._focusInput();
+            if (!isMobileOS()) {
+                this._focusInput();
+            }
         });
 
         onPatched(() => {
@@ -260,6 +262,9 @@ export class HomeMenu extends Component {
     }
 
     _onInputBlur() {
+        if (isMobileOS()) {
+            return;
+        }
         // if we blur search input to focus on body (eg. click on any
         // non-interactive element) restore focus to avoid IME input issue
         setTimeout(() => {

@@ -10,11 +10,11 @@ import { ormService } from "@web/core/orm_service";
 import { registry } from "@web/core/registry";
 import { uiService } from "@web/core/ui/ui_service";
 import { HomeMenu } from "@web_enterprise/webclient/home_menu/home_menu";
+import { browser } from "@web/core/browser/browser";
 import testUtils from "web.test_utils";
 import { enterpriseSubscriptionService } from "@web_enterprise/webclient/home_menu/enterprise_subscription_service";
 import { session } from "@web/session";
 import { templates } from "@web/core/assets";
-
 
 const { App, EventBus } = owl;
 const patchDate = testUtils.mock.patchDate;
@@ -364,6 +364,29 @@ QUnit.module(
                 await testUtils.dom.triggerEvent(window, "keydown", { key: "a" });
                 await nextTick();
                 assert.strictEqual(document.activeElement, homeMenuInput);
+            }
+        );
+
+        QUnit.test(
+            "home search input shouldn't be focused on mobile devices [REQUIRE FOCUS]",
+            async function (assert) {
+                // simulate a mobile devices
+                patchWithCleanup(
+                    browser,
+                    Object.assign({}, browser, {
+                        setTimeout: (fn) => fn(),
+                        navigator: {
+                            userAgent: "Chrome/0.0.0 (Linux; Android 13; Odoo TestSuite)",
+                        },
+                    })
+                );
+                const target = getFixture();
+                await createHomeMenu(homeMenuProps);
+                const homeMenuInput = target.querySelector(".o_search_hidden");
+                assert.notOk(
+                    homeMenuInput.matches(":focus"),
+                    "home menu search input shouldn't be have the focus"
+                );
             }
         );
     }

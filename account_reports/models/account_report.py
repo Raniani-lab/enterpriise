@@ -4170,17 +4170,21 @@ class AccountReport(models.Model):
             reported_accounts = self.env["account.account"]
             if expr.engine == "domain":
                 domain = literal_eval(expr.formula.strip())
+                accounts_domain = []
                 for j, operand in enumerate(domain):
                     if isinstance(operand, tuple):
                         operand = list(operand)
+                        # Skip tuples that will not be used in the new domain to retrieve the reported accounts
                         if not operand[0].startswith('account_id.'):
+                            if domain[j - 1] in ("&", "|", "!"):  # Remove the operator linked to the tuple if it exists
+                                accounts_domain.pop()
                             continue
                         operand[0] = operand[0].replace('account_id.', '')
                         # Check that the code exists in the CoA
                         if operand[0] == 'code' and not self.env["account.account"].search([operand]):
                             non_existing_codes[operand[2]] |= expr.report_line_id
-                    domain[j] = operand
-                reported_accounts = self.env['account.account'].search(domain)
+                    accounts_domain.append(operand)
+                reported_accounts = self.env['account.account'].search(accounts_domain)
             elif expr.engine == "account_codes":
                 account_codes = []
                 for token in ACCOUNT_CODES_ENGINE_SPLIT_REGEX.split(expr.formula.replace(' ', '')):
@@ -4198,10 +4202,11 @@ class AccountReport(models.Model):
                     })
                 for account_code in account_codes:
                     reported_account_codes.append(account_code)
+                    excl_tuples = [("code", "=like", excl_code + "%") for excl_code in account_code['exclude']]
                     reported_accounts |= self.env["account.account"].search([
                         *common_account_domain,
                         ("code", "=like", account_code['prefix'] + "%"),
-                        *[("code", "not like", excl) for excl in account_code['exclude']],
+                        *[excl_domain for excl_tuple in excl_tuples for excl_domain in ("!", excl_tuple)],
                     ])
                     # Check that the code exists in the CoA
                     if not self.env["account.account"].search([
@@ -4222,7 +4227,9 @@ class AccountReport(models.Model):
             for expr2 in expressions[:i + 1]:
                 reported_accounts2 = accounts_by_expressions[expr2.id]
                 for duplicate_account in (reported_accounts & reported_accounts2):
-                    if len(expr.report_line_id | expr2.report_line_id) > 1:
+                    if len(expr.report_line_id | expr2.report_line_id) > 1 \
+                       and expr.date_scope == expr2.date_scope \
+                       and expr.subformula == expr2.subformula:
                         candidate_duplicate_codes[duplicate_account.code] |= expr.report_line_id | expr2.report_line_id
 
         # Check that the duplicates are not false positives because of the balance character
@@ -4248,7 +4255,7 @@ class AccountReport(models.Model):
                 ('account_type', 'not in', ("off_balance", "income", "income_other", "expense", "expense_depreciation", "expense_direct_cost"))
             ])
         else:
-            accounts_in_coa = self.env["account.account"].search([common_account_domain])
+            accounts_in_coa = self.env["account.account"].search(*[common_account_domain])
         for account_in_coa in accounts_in_coa:
             if account_in_coa not in all_reported_accounts:
                 non_reported_codes.add(account_in_coa.code)

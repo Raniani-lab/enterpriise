@@ -65,6 +65,12 @@ export const studioService = {
                     // but not editable by studio
                     return false;
                 }
+                if (action.res_model === "knowledge.article") {
+                    // The knowledge form view is very specific and custom, it doesn't make sense
+                    // to edit it. Editing the list and kanban is more debatable, but for simplicity's sake
+                    // we set them to not editable too.
+                    return false;
+                }
                 return action.res_model ? true : false;
             }
             return false;

@@ -12,7 +12,6 @@
         'note',
         'hr_work_entry_contract_enterprise',
         'mail',
-        'web_dashboard',
         'web_editor',
     ],
     'data': [

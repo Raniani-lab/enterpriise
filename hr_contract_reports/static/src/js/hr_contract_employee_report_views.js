@@ -4,10 +4,8 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { graphView } from "@web/views/graph/graph_view";
 import { pivotView } from "@web/views/pivot/pivot_view";
-import { PieChart } from "@web/views/widgets/pie_chart/pie_chart";
 
 const viewRegistry = registry.category("views");
-const widgetRegistry = registry.category("view_widgets");
 
 const { useComponent } = owl;
 
@@ -67,13 +65,3 @@ viewRegistry.add("contract_employee_report_pivot", {
     ...pivotView,
     Controller: HrContractEmployeeReportPivotController,
 });
-
-export class HrContractEmployeeReportPieChart extends PieChart {
-    get viewProps() {
-        const viewProps = super.viewProps;
-        viewProps.type = "contract_employee_report_graph";
-        return viewProps;
-    }
-}
-
-widgetRegistry.add("contract_employee_report_pie_chart", HrContractEmployeeReportPieChart);

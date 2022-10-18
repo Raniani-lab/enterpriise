@@ -14,7 +14,6 @@ registerPatch({
                         'form',
                         'calendar',
                         'pivot',
-                        'graph',
                         'cohort',
                         'dashboard',
                         'map',

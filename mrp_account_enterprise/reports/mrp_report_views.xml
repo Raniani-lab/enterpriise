@@ -85,22 +85,10 @@
             </field>
         </record>
 
-        <record id="mrp_report_dashboard_view" model="ir.ui.view">
-            <field name="name">mrp.report.dashboard.view</field>
-            <field name="model">mrp.report</field>
-            <field name="mode">primary</field>
-            <field name="arch" type="xml">
-                <dashboard sample="1">
-                    <view type="graph" ref="mrp_account_enterprise.mrp_report_graph_view"/>
-                    <view type="pivot" ref="mrp_account_enterprise.mrp_report_pivot_view"/>
-                </dashboard>
-            </field>
-        </record>
-
         <record id="mrp_report_dashboard_action" model="ir.actions.act_window">
             <field name="name">Production Analysis</field>
             <field name="res_model">mrp.report</field>
-            <field name="view_mode">dashboard</field>
+            <field name="view_mode">graph,pivot</field>
             <field name="search_view_id" ref="mrp_account_enterprise.mrp_report_search_view"/>
             <field name="context" eval="{
                 'search_default_filter_date_finished': 1}"/>

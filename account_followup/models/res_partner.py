@@ -14,8 +14,18 @@ _logger = logging.getLogger(__name__)
 class ResPartner(models.Model):
     _inherit = 'res.partner'
 
-    followup_next_action_date = fields.Date(string='Next reminder', copy=False, company_dependent=True,
-                                           help="The date before which no follow-up action should be taken.")
+    followup_next_action_date = fields.Date(
+        string='Next reminder',
+        copy=False,
+        company_dependent=True,
+        help="""The date before which no follow-up action should be taken.
+                You can set it manually if desired but it is automatically set when follow-ups are processed.
+                The date is computed according to the following rules (depending on the follow-up levels):
+                - default -> next date set in {next level delay - current level delay} days
+                - if no next level -> next date set in {current level delay - previous level delay} days
+                - if no next level AND no previous level -> next date set in {current level delay} days
+                - if no level defined at all -> next date never automatically set""",
+    )
 
     # readonly=False in order to be able to edit it directly in the view form, without having to click on 'Edit'
     # It's mainly used for usability purposes to easily include/exclude unreconciled move lines
@@ -191,7 +201,7 @@ class ResPartner(models.Model):
             partner.unreconciled_aml_ids = values.get(partner.id, False)
 
     def _set_followup_line_on_unreconciled_amls(self):
-        today = fields.Date.today()
+        today = fields.Date.context_today(self)
         for partner in self:
             current_followup_line = partner.followup_line_id
             previous_followup_line = self.env['account_followup.followup.line'].search([('delay', '<', current_followup_line.delay), ('company_id', '=', self.env.company.id)], order='delay desc', limit=1)
@@ -289,15 +299,13 @@ class ResPartner(models.Model):
         """Updates the followup_next_action_date of the right account move lines
         """
         self.ensure_one()
+        if followup_line:
+            next_date = followup_line._get_next_date()
+            self.followup_next_action_date = datetime.strftime(next_date, DEFAULT_SERVER_DATE_FORMAT)
+            msg = _('Next Reminder Date set to %s', format_date(self.env, self.followup_next_action_date))
+            self.message_post(body=msg)
 
-        # Arbitrary 14 days delay (like the _get_next_date() method) if there is no followup_line
-        # This will be changed/removed in an upcoming improvement
-        next_date = followup_line._get_next_date() if followup_line else fields.Date.today() + timedelta(days=14)
-        self.followup_next_action_date = datetime.strftime(next_date, DEFAULT_SERVER_DATE_FORMAT)
-        msg = _('Next Reminder Date set to %s', format_date(self.env, self.followup_next_action_date))
-        self.message_post(body=msg)
-
-        today = fields.Date.today()
+        today = fields.Date.context_today(self)
         for aml in self._get_included_unreconciled_aml_ids():
             aml.followup_line_id = followup_line
             aml.last_followup_date = today
@@ -346,7 +354,7 @@ class ResPartner(models.Model):
         """ returns the followup plan of the current user's company
         in the form of a dictionary with
          * keys being the different possible lines of followup for account.move.line's (None or IDs of account_followup.followup.line)
-         * values being a dict of 3 elements:
+         * values being a dict of 2 elements:
            - 'next_followup_line_id': the followup ID of the next followup line
            - 'next_delay': the delay in days of the next followup line
         """

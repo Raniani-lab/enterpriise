@@ -163,6 +163,8 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             addCover: (ev) => this.addCover(ev),
             addIcon: () => this.addIcon(),
             addProperties: (ev) => this.addProperties(ev),
+            convertToArticle: () => this.setIsArticleItem(false),
+            convertToItem: () => this.setIsArticleItem(true),
             copyArticleAsPrivate: () => this.copyArticleAsPrivate(),
             createArticle: (category, targetParentId) => this.createArticle(category, targetParentId),
             onChangeCoverClick: () => this.onChangeCoverClick(),
@@ -362,6 +364,11 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         this._setTreeFavoriteListener();
     }
 
+    async setIsArticleItem(newArticleItemStatus){
+        await this.props.record.update({is_article_item: newArticleItemStatus});
+        await this.props.record.save({stayInEdition: true});
+        this._renderTree(this.resId, '/knowledge/tree_panel');
+    }
 
     //--------------------------------------------------------------------------
     // Handlers

@@ -85,6 +85,7 @@ class Article(models.Model):
         copy=True)
     has_item_children = fields.Boolean('Has article item children?', compute="_compute_has_article_children")
     has_article_children = fields.Boolean('Has normal article children?', compute="_compute_has_article_children")
+    has_item_parent = fields.Boolean('Is the parent an Item ?', related='parent_id.is_article_item')
     is_article_item = fields.Boolean('Is Item?', index=True)
     is_desynchronized = fields.Boolean(
         string="Desyncronized with parents",

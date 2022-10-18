@@ -24,6 +24,8 @@
                 <field name="user_permission" invisible="1"/>
                 <field name="to_delete" invisible="1"/>
                 <field name="cover_image_id" invisible="1"/>
+                <field name="has_article_children" invisible="1"/>
+                <field name="has_item_parent" invisible="1"/>
                 <div class="o_knowledge_form_view d-sm-flex h-100" t-ref="root" t-att-style="sidebarSize ? `--knowledge-article-sidebar-size: ${sidebarSize}px` : ''">
                     <aside class="o_knowledge_aside d-print-none flex-shrink-0 p-0 bg-view">
                         <div class="d-flex flex-column h-100">
@@ -193,6 +195,17 @@
                                                 </button>
                                                 <a role="button" class="dropdown-item" t-on-click="copyArticleAsPrivate">
                                                     <i class="fa fa-fw fa-lg fa-copy"/> Create a Copy
+                                                </a>
+                                                <a role="button" class="dropdown-item"
+                                                    title="Article items are not showed in the left-side menu&#10;but are shown in inserted kanban/list views"
+                                                    attrs="{'invisible': ['|', ('is_article_item', '=', True), '|', ('parent_id', '=', False), ('active', '=', False)]}"
+                                                    t-on-click="convertToItem">
+                                                    <i class="fa fa-fw fa-lg fa-tasks"/> Convert into Article Item
+                                                </a>
+                                                <a role="button" class="dropdown-item"
+                                                    attrs="{'invisible': ['|', ('is_article_item', '=', False), ('has_item_parent', '=', True)]}"
+                                                    t-on-click="convertToArticle">
+                                                    <i class="fa fa-fw fa-lg fa-sitemap"/> Convert into Article
                                                 </a>
                                                 <div class="dropdown-divider" attrs="{'invisible': [('active', '=', False)]}"/>
                                                 <div class="dropdown-item user-select-none" attrs="{'invisible': [('active', '=', False)]}"

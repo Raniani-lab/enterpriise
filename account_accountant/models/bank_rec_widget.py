@@ -456,7 +456,7 @@ class BankRecWidget(models.Model):
             }
 
             if wizard.partner_id:
-                context['search_default_name'] = wizard.partner_id.name
+                context['search_default_partner_id'] = wizard.partner_id.id
 
             dynamic_filters = []
 

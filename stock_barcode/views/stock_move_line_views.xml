@@ -134,12 +134,14 @@
             <templates>
                 <t t-name="kanban-box">
                     <div>
-                        <strong><field name="product_id"/></strong>
+                        <field name="product_id" class="fw-bold"/>
                         <div class="row">
                             <div class="col-6">
-                                <field name="lot_id" groups="stock.group_production_lot"/>
-                                <field name="quantity" string="Quantity Done"/>
-                                <field name="product_uom_id" string="Unit of Measure" groups="uom.group_uom"/>
+                                <field name="lot_id" groups="stock.group_production_lot" class="d-block" attrs="{'invisible': [('lot_id', '=', False)]}"/>
+                                <div>
+                                    <field name="quantity" string="Quantity Done"/>
+                                    <field name="product_uom_id" string="Unit of Measure" groups="uom.group_uom" class="ms-1"/>
+                                </div>
                             </div>
                         </div>
                     </div>

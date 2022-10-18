@@ -54,7 +54,7 @@ class AccountReconcileModel(models.Model):
 
         aml_domain = self._get_invoice_matching_amls_domain(st_line, partner)
         query = self.env['account.move.line']._where_calc(aml_domain)
-        _aml_tables, aml_where_clause, aml_where_params = query.get_sql()
+        aml_tables, aml_where_clause, aml_where_params = query.get_sql()
 
         # Find the existing amls from sale orders.
         query = self.env['sale.order']._where_calc([
@@ -68,15 +68,15 @@ class AccountReconcileModel(models.Model):
         self._cr.execute(
             f'''
                 SELECT account_move_line.id
-                FROM {so_tables}
+                FROM {aml_tables}, {so_tables}
                 JOIN sale_order_line so_line ON so_line.order_id = sale_order.id
                 JOIN sale_order_line_invoice_rel rel ON rel.order_line_id = so_line.id
                 JOIN account_move_line inv_line ON inv_line.id = rel.invoice_line_id
-                JOIN account_move account_move_line__move_id ON account_move_line__move_id.id = inv_line.move_id
-                JOIN account_move_line ON account_move_line.move_id = account_move_line__move_id.id
+                JOIN account_move inv_line__move_id ON inv_line__move_id.id = inv_line.move_id
                 WHERE {so_where_clause}
                     AND {aml_where_clause}
                     AND (''' + ' OR '.join(additional_conditions) + f''')
+                    AND account_move_line.move_id = inv_line__move_id.id
                 ORDER BY {aml_order_by}
             ''',
             so_where_params + aml_where_params + params,

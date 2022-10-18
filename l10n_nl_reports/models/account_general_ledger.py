@@ -88,8 +88,16 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                 self.pool['account.account'].name.translate else 'account.name'
             tax_name = f"COALESCE(tax.name->>'{lang}', tax.name->>'en_US')" if \
                 self.pool['account.tax'].name.translate else 'tax.name'
-            for offset in range(0, count, batch_size):
-                self._cr.execute(f"""
+            for dummy in range(0, count, batch_size):
+                self.env.cr.execute(f"""
+                    WITH partner_bank AS (
+                        SELECT DISTINCT ON (res_partner_bank.partner_id, res_partner_bank.company_id) partner_id, company_id,
+                            res_partner_bank.id as id,
+                            res_partner_bank.sanitized_acc_number as sanitized_acc_number,
+                            res_bank.bic as bank_bic
+                            FROM res_partner_bank
+                            LEFT JOIN res_bank ON res_partner_bank.bank_id = res_bank.id
+                    )
                     SELECT * FROM (
                         SELECT DISTINCT ON (account_move_line.id)
                            journal.id AS journal_id,
@@ -143,7 +151,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                            partner.country_id AS partner_country_id,
                            partner_bank.id AS partner_bank_id,
                            partner_bank.sanitized_acc_number AS partner_sanitized_acc_number,
-                           bank.bic AS partner_bic,
+                           partner_bank.bank_bic AS partner_bic,
                            partner.write_uid AS partner_write_uid,
                            partner.write_date AS partner_write_date,
                            partner.customer_rank AS partner_customer_rank,
@@ -162,8 +170,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                         LEFT JOIN res_currency currency ON account_move_line.currency_id = currency.id
                         LEFT JOIN res_currency currency2 ON account_move_line.company_currency_id = currency2.id
                         LEFT JOIN res_country country ON partner.country_id = country.id
-                        LEFT JOIN res_partner_bank partner_bank ON partner.id = partner_bank.partner_id and partner_bank.company_id = account_move_line.company_id
-                        LEFT JOIN res_bank bank ON partner_bank.bank_id = bank.id
+                        LEFT JOIN partner_bank ON partner_bank.partner_id = partner.id AND partner_bank.company_id = account_move_line.company_id
                         LEFT JOIN res_country_state state ON partner.state_id = state.id
                         LEFT JOIN ir_property credit_limit ON credit_limit.res_id = 'res.partner,' || partner.id AND credit_limit.name = 'credit_limit'
                         LEFT JOIN res_partner parent_partner ON parent_partner.id = partner.parent_id

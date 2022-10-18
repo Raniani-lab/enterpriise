@@ -32,7 +32,10 @@ class HrPayslip(models.Model):
     @api.model
     def _get_dashboard_warnings(self):
         res = super()._get_dashboard_warnings()
-        leaves_to_defer = self.env['hr.leave'].search_read([('payslip_state', '=', 'blocked')], fields=['id'])
+        leaves_to_defer = self.env['hr.leave'].search_read([
+            ('payslip_state', '=', 'blocked'),
+            ('state', '=', 'validate'),
+        ], fields=['id'])
         if leaves_to_defer:
             res.append({
                 'string': _('Time Off To Defer'),

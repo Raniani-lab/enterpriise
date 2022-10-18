@@ -24,12 +24,13 @@ class IoTController(http.Controller):
         fobj = io.BytesIO()
         with zipfile.ZipFile(fobj, 'w', zipfile.ZIP_DEFLATED) as zf:
             for module in module_ids.mapped('name') + ['hw_drivers']:
-                iot_handlers = pathlib.Path(get_module_path(module)) / 'iot_handlers'
-
-                for handler in iot_handlers.glob('*/*'):
-                    if handler.is_file() and not handler.name.startswith(('.', '_')):
-                        # In order to remove the absolute path
-                        zf.write(handler, handler.relative_to(iot_handlers))
+                module_path = get_module_path(module)
+                if module_path:
+                    iot_handlers = pathlib.Path(module_path) / 'iot_handlers'
+                    for handler in iot_handlers.glob('*/*'):
+                        if handler.is_file() and not handler.name.startswith(('.', '_')):
+                            # In order to remove the absolute path
+                            zf.write(handler, handler.relative_to(iot_handlers))
 
         return fobj.getvalue()
 

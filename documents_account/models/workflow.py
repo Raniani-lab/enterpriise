@@ -18,59 +18,28 @@ class WorkflowActionRuleAccount(models.Model):
             new_obj = None
             invoice_ids = []
             for document in documents:
-
-                if document.res_model == 'account.move' and document.res_id:
-                    move = self.env['account.move'].browse(document.res_id)
-                else:
-                    move = self.env['account.move']
-
-                create_values = {
-                    'default_move_type': invoice_type,
-                }
-                if invoice_type not in ['out_refund', 'out_invoice']:
-                    create_values['narration'] = False
-                if move.statement_line_id:
-                    create_values['default_suspense_statement_line_id'] = move.statement_line_id.id
-
-                if self.partner_id:
-                    if invoice_type in ['in_invoice', 'in_refund']:
-                        payment_term_id = self.partner_id.property_supplier_payment_term_id.id
-                    elif invoice_type in ['out_invoice', 'out_refund']:
-                        payment_term_id = self.partner_id.property_payment_term_id.id
-                    create_values.update(
-                        default_partner_id=self.partner_id.id,
-                        default_invoice_payment_term_id=payment_term_id
-                    )
-                elif document.partner_id:
-                    if invoice_type in ['in_invoice', 'in_refund']:
-                        payment_term_id = document.partner_id.property_supplier_payment_term_id.id
-                    elif invoice_type in ['out_invoice', 'out_refund']:
-                        payment_term_id = document.partner_id.property_payment_term_id.id
-                    create_values.update(
-                        default_partner_id=document.partner_id.id,
-                        default_invoice_payment_term_id=payment_term_id
-                    )
-
-                if move.is_invoice():
-                    invoice_ids.append(document.res_id)
-                else:
-                    with Form(self.env['account.move'].with_context(create_values)) as invoice_form:
-                        # ignore view required fields (it will fail on create for really required field)
-                        for modifiers in invoice_form._view['modifiers'].values():
-                            modifiers.pop("required", None)
-                        new_obj = invoice_form.save()
-
-                    body = "<p>created from Documents app</p>"
-                    # the 'no_document' key in the context indicates that this ir_attachment has already a
-                    # documents.document and a new document shouldn't be automatically generated.
-                    # message_post ignores attachment that are not on mail.compose message, so we link the attachment explicitly afterwards
-                    new_obj.with_context(default_move_type=invoice_type).message_post(body=body)
-                    document.attachment_id.with_context(no_document=True).write({
-                        'res_model': 'account.move',
-                        'res_id': new_obj.id,
-                    })
-                    document.attachment_id.register_as_main_attachment()  # needs to be called explicitly since we bypassed the standard attachment creation mechanism
+                doc_res_id = document.res_id
+                doc_res_model = document.res_model
+                if doc_res_model == 'account.move' and doc_res_id:
+                    new_obj = self.env['account.move'].browse(document.res_id)
+                    if new_obj.statement_line_id:
+                        new_obj.suspense_statement_line_id = new_obj.statement_line_id.id
                     invoice_ids.append(new_obj.id)
+                    continue
+                new_obj = self.env['account.journal'].with_context(default_move_type=invoice_type)._create_document_from_attachment(attachment_ids=document.attachment_id.id)
+                if doc_res_model == 'account.move.line' and doc_res_id:
+                    new_obj.document_request_line_id = doc_res_id
+                partner = self.partner_id or document.partner_id
+                if partner:
+                    new_obj.partner_id = partner
+                    new_obj._onchange_partner_id()
+                # the 'no_document' key in the context indicates that this ir_attachment has already a
+                # documents.document and a new document shouldn't be automatically generated.
+                document.attachment_id.with_context(no_document=True).write({
+                    'res_model': 'account.move',
+                    'res_id': new_obj.id,
+                })
+                invoice_ids.append(new_obj.id)
 
             context = dict(self._context, default_move_type=invoice_type)
             action = {

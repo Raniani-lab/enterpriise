@@ -327,7 +327,7 @@ class AccountJournal(models.Model):
             InstrId = etree.SubElement(PmtId, "InstrId")
             InstrId.text = sanitize_communication(payment['name'][:35])
         EndToEndId = etree.SubElement(PmtId, "EndToEndId")
-        EndToEndId.text = (PmtInfId.text + str(payment['id']))[-30:]
+        EndToEndId.text = (PmtInfId.text + str(payment['id']))[-30:].strip()
         Amt = etree.SubElement(CdtTrfTxInf, "Amt")
 
         currency_id = self.env['res.currency'].search([('id', '=', payment['currency_id'])], limit=1)

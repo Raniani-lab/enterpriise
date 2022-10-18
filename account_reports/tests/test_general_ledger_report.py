@@ -1,14 +1,16 @@
 # -*- coding: utf-8 -*-
 # pylint: disable=C0326
 from .common import TestAccountReportsCommon
+import odoo.tests
 
 from odoo import fields
 from odoo.tests import tagged
+from freezegun import freeze_time
 
 import json
 
 @tagged('post_install', '-at_install')
-class TestGeneralLedgerReport(TestAccountReportsCommon):
+class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
     @classmethod
     def setUpClass(cls, chart_template_ref=None):
         super().setUpClass(chart_template_ref=chart_template_ref)
@@ -466,3 +468,20 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
                 ('Total',                               ''),
             ],
         )
+
+    @freeze_time('2017-07-11')
+    def test_tour_account_reports_search(self):
+        move_07_2017 = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': fields.Date.from_string('2017-07-10'),
+            'journal_id': self.company_data['default_journal_sale'].id,
+            'line_ids': [
+                (0, 0, {'debit': 1000.0, 'credit': 0.0, 'name': '2017_1_1',
+                        'account_id': self.company_data['default_account_receivable'].id}),
+                (0, 0, {'debit': 0.0, 'credit': 1000.0, 'name': '2017_1_2',
+                        'account_id': self.company_data['default_account_revenue'].id}),
+            ],
+        })
+        move_07_2017.action_post()
+
+        self.start_tour("/web", 'account_reports_search', login=self.env.user.login)

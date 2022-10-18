@@ -180,16 +180,16 @@ export default class MpsLineComponent extends Component {
     }
 
     _onMouseOverReplenish(ev) {
-        const el = this.replenishRow.el.getElementsByClassName('o_mrp_mps_forced_replenish')[0];
-        if (el) {
-            el.classList.add('o_mrp_mps_hover');
+        const el = this.replenishRow.el.getElementsByClassName('o_mrp_mps_forced_replenish');
+        if (el && el[0]) {
+            el[0].classList.add('o_mrp_mps_hover');
         }
     }
 
     _onMouseOutReplenish(ev) {
-        const el = this.replenishRow.el.getElementsByClassName('o_mrp_mps_hover')[0];
-        if (el) {
-            el.classList.remove('o_mrp_mps_hover');
+        const el = this.replenishRow.el.getElementsByClassName('o_mrp_mps_hover');
+        if (el && el[0]) {
+            el[0].classList.remove('o_mrp_mps_hover');
         }
     }
 

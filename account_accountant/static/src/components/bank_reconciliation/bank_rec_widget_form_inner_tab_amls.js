@@ -40,10 +40,30 @@ BankRecWidgetFormInnerTabAmlsController.props = {
     bankRecRecord: { type: Object, optional: true },
 }
 
+export class BankRecWidgetFormInnerTabAmlsModel extends listView.Model {
+    setup(params, { action, dialog, notification, rpc, user, view, company }) {
+        super.setup(...arguments);
+        this.storedDomainString = null;
+    }
+    /**
+    * @override
+    * the list of AMLs don't need to be fetched from the server every time the form view is re-rendered.
+    * this disables the retrieval, while still ensuring that the search bar works.
+    */
+    async load(params = {}) {
+        const currentDomain = params.domain.toString();
+        if (currentDomain !== this.storedDomainString) {
+            this.storedDomainString = currentDomain;
+            return super.load(params);
+        }
+    }
+}
+
 export const BankRecWidgetFormInnerTabAmls = {
     ...listView,
     Controller: BankRecWidgetFormInnerTabAmlsController,
     Renderer: BankRecWidgetFormInnerTabAmlsRenderer,
+    Model: BankRecWidgetFormInnerTabAmlsModel,
 }
 
 registry.category("views").add("bank_rec_widget_form_amls_list", BankRecWidgetFormInnerTabAmls);

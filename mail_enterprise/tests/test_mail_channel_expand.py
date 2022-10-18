@@ -24,4 +24,7 @@ class TestMailChannelExpand(HttpCase):
             message_type='comment',
             subtype_xmlid='mail.mt_comment'
         )
+        # clear all bus notifications, so that tour does not replay old notifications
+        # on a more recent state with init_messaging
+        self.env['bus.bus'].search([]).unlink()
         self.start_tour("/web", 'mail_enterprise/static/tests/tours/mail_channel_expand_test_tour.js', login='testuser')

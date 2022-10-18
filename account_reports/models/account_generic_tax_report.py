@@ -327,7 +327,7 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
      # -------------------------------------------------------------------------
 
     def caret_option_audit_tax(self, options, params):
-        report = self.env.ref('account.generic_tax_report')
+        report = self.env['account.report'].browse(options['report_id'])
         model, tax_id = report._get_model_info_from_id(params['line_id'])
 
         if model != 'account.tax':
@@ -369,7 +369,7 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
             'type': 'ir.actions.act_window',
             'name': _('Journal Items for Tax Audit'),
             'res_model': 'account.move.line',
-            'views': [[self.env.ref('account.view_move_line_tax_audit_tree').id, 'list'], [False, 'form']],
+            'views': [[self.env.ref('account.view_move_line_tax_audit_tree').id, 'list']],
             'domain': domain,
             'context': ctx,
         }

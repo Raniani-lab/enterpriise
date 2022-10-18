@@ -810,7 +810,7 @@ class SpanishMod347TaxReportCustomHandler(models.AbstractModel):
             JOIN {ct_query} ON currency_table.company_id = account_move_line.company_id
             WHERE {where_clause}
             GROUP BY account_move_line.partner_id
-            HAVING(SUM(currency_table.rate * account_move_line.balance) <= %s)
+            HAVING SUM(currency_table.rate * account_move_line.balance * (CASE WHEN account_move_line__move_id.move_type IN ('in_invoice', 'in_refund') THEN -1 ELSE 1 END)) <= %s
         """
 
         self._cr.execute(partners_to_exclude_query, partners_to_exclude_params)

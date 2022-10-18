@@ -32,7 +32,7 @@ const ALLOWED_FIELD_TYPES = {
 
 /**
  * @typedef {import("@spreadsheet/data_sources/metadata_repository").Field} Field
- * @typedef {import("@spreadsheet/global_filters/plugins/global_filters_core_plugin").FilterMatchingField} FilterMatchingField
+ * @typedef {import("@spreadsheet/global_filters/plugins/global_filters_core_plugin").FieldMatching} FieldMatching
  *
  * @typedef State
  * @property {boolean} saved

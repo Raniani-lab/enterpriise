@@ -104,7 +104,7 @@ tour.register('rental_tour', {
     content: _t("Confirm the returned quantities and hit Validate."),
     position: 'bottom',
 }, {
-    trigger: '.text-bg-success:contains("Returned")',
+    trigger: '.text-bg-default:contains("Returned")',
     content: _t("You're done with your fist rental. Congratulations !"),
     run() {},
 }]);

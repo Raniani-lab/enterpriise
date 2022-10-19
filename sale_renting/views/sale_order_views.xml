@@ -37,12 +37,12 @@
                     }"/>
             </button>
             <xpath expr="//div[@name='button_box']" position="after">
-                <div class="badge rounded-pill text-bg-info float-end fs-6 border-0"
+                <div class="badge rounded-pill text-bg-success float-end fs-6 border-0"
                     attrs="{'invisible': [
                     '|', ('has_rented_products', '=', False),
                     '|', ('state', 'not in', ['sale', 'done']),
-                    '|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', True)]}">Confirmed</div>
-                <div class="badge rounded-pill text-bg-info float-end fs-6 border-0"
+                    '|', ('rental_status', '!=', 'pickup'), ('has_late_lines', '=', True)]}">Booked</div>
+                <div class="badge rounded-pill text-bg-danger float-end fs-6 border-0"
                     attrs="{'invisible': [
                     '|', ('has_rented_products', '=', False),
                     '|', ('state', 'not in', ['sale', 'done']),
@@ -57,7 +57,7 @@
                     '|', ('has_rented_products', '=', False),
                     '|', ('state', 'not in', ['sale', 'done']),
                     '|', ('rental_status', '!=', 'return'), ('has_late_lines', '=', False)]}">Late Return</div>
-                <div class="badge rounded-pill text-bg-success float-end fs-6 border-0"
+                <div class="badge rounded-pill text-bg-default float-end fs-6 border-0"
                     attrs="{'invisible': [
                     '|', ('has_rented_products', '=', False),
                     '|', ('state', 'not in', ['sale', 'done']), ('rental_status', '!=', 'returned')]}">Returned</div>
@@ -145,22 +145,23 @@
         <field name="model">sale.order</field>
         <field name="arch" type="xml">
             <tree sample="1"
-                decoration-info="rental_status in ['draft', 'sent']"
+                decoration-info="rental_status == 'draft'"
+                decoration-primary="rental_status == 'sent'"
                 decoration-muted="rental_status == 'cancel'">
                 <field name="has_rented_products" invisible="1"/>
                 <field name="has_late_lines" invisible="1"/>
                 <field name="name" readonly="1" decoration-bf="1"/>
                 <field name="date_order" widget='date'/>
-                <field name="next_action_date" widget='remaining_days'
-                    attrs="{'invisible': ['|', ('rental_status','=','pickup'), ('rental_status','=','returned')]}"/>
+                <field name="next_action_date" widget='remaining_days'/>
                 <field name="partner_id" readonly="1"/>
                 <field name="user_id" optional="show" widget='many2one_avatar_user'/>
                 <field name="team_id" optional="hide"/>
                 <field name="amount_total" sum="Total Tax Included" widget="monetary" decoration-bf="1"/>
                 <field name="rental_status" widget='badge'
-                    decoration-info="rental_status == 'draft' or rental_status == 'sent'"
-                    decoration-warning="rental_status == 'pickup'"
-                    decoration-success="rental_status == 'return'"
+                    decoration-info="rental_status == 'draft'"
+                    decoration-primary="rental_status == 'sent'"
+                    decoration-success="rental_status == 'pickup'"
+                    decoration-warning="rental_status == 'return'"
                     attrs="{'invisible': [('has_rented_products', '=', False)]}"/>
                 <field name="state" invisible="1"/>
                 <field name="currency_id" invisible="1"/>
@@ -188,10 +189,10 @@
                 <div class="oe_kanban_bottom_left text-muted">
                     <span>
                     <t t-out="record.name.value"/>
-                    <span t-if="record.next_action_date.value" t-attf-class="#{record.has_late_lines.raw_value and record.rental_status.raw_value=='return' ? 'text-danger' : 'text-muted' } ">
-                        <br/>
+                    <br/>
+                    <span t-if="record.next_action_date.value" t-attf-class="#{record.has_late_lines.raw_value ? 'text-danger' : 'text-muted'}">
                         <t t-if="record.has_late_lines.raw_value">
-                        Late
+                        <i class="fa fa-warning"/> Late
                         </t>
                         <t t-if="record.rental_status.raw_value=='pickup'">
                         Pickup:
@@ -214,7 +215,7 @@
                     attrs="{'invisible': [
                                 '|', ('state', '!=', 'sale'),
                                 '|', ('rental_status', '=', False), ('has_rented_products', '=', False)]}"
-                    options="{'classes': {'pickup': 'info', 'return': 'warning', 'returned': 'success'}}"/>
+                    options="{'classes': {'pickup': 'success', 'return': 'warning', 'returned': 'default'}}"/>
             </xpath>
         </field>
     </record>

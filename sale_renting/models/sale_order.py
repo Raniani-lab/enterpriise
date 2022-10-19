@@ -12,7 +12,7 @@ class SaleOrder(models.Model):
     rental_status = fields.Selection([
         ('draft', 'Quotation'),
         ('sent', 'Quotation Sent'),
-        ('pickup', 'Confirmed'),
+        ('pickup', 'Booked'),
         ('return', 'Picked-up'),
         ('returned', 'Returned'),
         ('cancel', 'Cancelled'),

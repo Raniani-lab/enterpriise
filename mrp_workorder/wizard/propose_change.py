@@ -82,7 +82,7 @@ class ProposeChange(models.TransientModel):
         """ Returns a local url that points to the image field of a given browse record. """
         return '/web/image/%s/%s/%s' % (record._name, record.id, field)
 
-    def _do_set_picture(self, notify_bom):
+    def _do_set_picture(self, notify_bom=True):
         self.ensure_one()
         self.step_id.worksheet_document = self.picture
         bom = self.step_id.workorder_id.production_id.bom_id

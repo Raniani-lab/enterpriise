@@ -46,7 +46,7 @@
             <span class="btn btn-secondary p-0"
                   style="font-size: 18px;"
                   t-on-click.stop="openReport"
-                  t-esc="data.balance_amount"/>
+                  t-out="data.balance_amount"/>
         </div>
     </t>
 
@@ -109,13 +109,13 @@
                     <thead>
                         <t t-foreach="data.columns" t-as="column" t-key="column[0]">
                             <t t-if="['amount_currency', 'debit', 'credit'].includes(column[0])">
-                                <th class="o_list_number_th text-end" t-esc="column[1]"/>
+                                <th class="o_list_number_th text-end" t-out="column[1]"/>
                             </t>
                             <t t-elif="column[0] === '__trash'">
                                 <th class="o_list_actions_header"/>
                             </t>
                             <t t-else="">
-                                <th t-esc="column[1]"/>
+                                <th t-out="column[1]"/>
                             </t>
                         </t>
                     </thead>
@@ -137,20 +137,20 @@
                                         <td class="o_data_cell o_field_cell o_list_many2one"
                                             field="account_id"
                                             t-att-title="line.account_id.display"
-                                            t-esc="line.account_id.display"/>
+                                            t-out="line.account_id.display"/>
                                     </t>
                                     <t t-if="column[0] === 'partner'">
                                         <t t-if="line.flag.value == 'liquidity' &amp;&amp; !line.partner_id.id">
                                             <td class="o_data_cell o_field_cell o_list_many2one text-muted"
                                                 field="partner_id"
                                                 t-att-title="data.partner_name or ''"
-                                                t-esc="data.partner_name or ''"/>
+                                                t-out="data.partner_name or ''"/>
                                         </t>
                                         <t t-else="">
                                             <td class="o_data_cell o_field_cell o_list_many2one"
                                                 field="partner_id"
                                                 t-att-title="line.partner_id.display"
-                                                t-esc="line.partner_id.display"/>
+                                                t-out="line.partner_id.display"/>
                                         </t>
                                     </t>
                                     <t t-if="column[0] === 'date'">
@@ -162,7 +162,7 @@
                                         <t t-else="">
                                             <td class="o_data_cell o_field_cell"
                                                 field="date"
-                                                t-esc="line.date.display"/>
+                                                t-out="line.date.display"/>
                                         </t>
                                     </t>
                                     <t t-if="column[0] === 'label'">
@@ -175,18 +175,18 @@
                                                         <span class="o_form_uri"
                                                                 style="cursor: pointer"
                                                                 t-att-move-id="line.source_aml_move_id.id"
-                                                                t-esc="line.source_aml_move_name.value"
+                                                                t-out="line.source_aml_move_name.value"
                                                                 t-on-click.stop="() => this.showMove(line.source_aml_move_id.id)"/>
                                                         <span class="mr4">:</span>
                                                     </t>
                                                     <span t-att-title="!!data.extra_notes and !state.extraNoteVisible ? data.extra_notes : line.name.value"
-                                                          t-esc="line.name.value"
+                                                          t-out="line.name.value"
                                                           field="name"/>
                                                     <t t-if="data.extra_notes and state.extraNoteVisible">
                                                         <br/>
                                                         <span t-att-class="'text-muted'"
                                                               t-att-title="data.extra_notes"
-                                                              t-esc="data.extra_notes"
+                                                              t-out="data.extra_notes"
                                                               field="extra_notes"/>
                                                     </t>
                                                 </div>
@@ -201,11 +201,11 @@
                                                         <span class="o_form_uri"
                                                               style="cursor: pointer"
                                                               t-att-move-id="line.source_aml_move_id.id"
-                                                              t-esc="line.source_aml_move_name.value"
+                                                              t-out="line.source_aml_move_name.value"
                                                               t-on-click="() => this.showMove(line.source_aml_move_id.id)"/>
                                                         <span class="mr4">:</span>
                                                     </t>
-                                                    <span t-esc="line.name.value" field="name"/>
+                                                    <span t-out="line.name.value" field="name"/>
                                                 </div>
                                             </td>
                                         </t>
@@ -213,7 +213,7 @@
                                             <td class="o_data_cell o_field_cell o_list_char"
                                                 field="name"
                                                 t-att-title="line.name.value">
-                                                <div class="o_bank_rec_widget_lines_widget_label" field="name" t-esc="line.name.value"/>
+                                                <div class="o_bank_rec_widget_lines_widget_label" field="name" t-out="line.name.value"/>
                                             </td>
                                         </t>
                                     </t>
@@ -221,7 +221,7 @@
                                         <td class="o_data_cell o_field_cell o_many2many_tags_cell"
                                             field="analytic_distribution"
                                             t-att-title="line.analytic_distribution.display"
-                                            t-esc="line.analytic_distribution.display"/>
+                                            t-out="line.analytic_distribution.display"/>
                                     </t>
                                     <t t-if="column[0] === 'amount_currency'">
                                         <t t-if="line.flag.value == 'exchange_diff'">
@@ -231,18 +231,18 @@
                                             <td class="o_data_cell o_field_cell o_list_number"
                                                 field="amount_currency"
                                                 style="justify-content: right; display: flex; flex-direction: column;">
-                                                <span field="amount_currency" t-esc="line.amount_currency.display"/>
+                                                <span field="amount_currency" t-out="line.amount_currency.display"/>
                                                 <span class="text-muted"
                                                       style="text-decoration: line-through;"
                                                       field="amount_currency"
-                                                      t-esc="line.source_amount_currency.display"/>
+                                                      t-out="line.source_amount_currency.display"/>
                                             </td>
                                         </t>
                                         <t t-else="">
                                             <td class="o_data_cell o_field_cell o_list_number"
                                                 field="amount_currency"
                                                 style="justify-content: right;"
-                                                t-esc="line.amount_currency.is_zero ? '' : line.amount_currency.display"/>
+                                                t-out="line.amount_currency.is_zero ? '' : line.amount_currency.display"/>
                                         </t>
                                     </t>
                                     <t t-if="column[0] === 'currency'">
@@ -253,7 +253,7 @@
                                             <td class="o_data_cell o_field_cell o_list_many2one"
                                                 field="currency_id"
                                                 t-att-title="line.currency_id.display"
-                                                t-esc="line.currency_id.display"/>
+                                                t-out="line.currency_id.display"/>
                                         </t>
                                     </t>
                                     <t t-if="column[0] === 'taxes'">
@@ -269,18 +269,18 @@
                                             <td class="o_data_cell o_field_cell o_list_number"
                                                 field="debit"
                                                 style="justify-content: right; display: flex; flex-direction: column;">
-                                                <span field="debit" t-esc="line.debit.display"/>
+                                                <span field="debit" t-out="line.debit.display"/>
                                                 <span class="text-muted"
                                                       style="text-decoration: line-through;"
                                                       field="debit"
-                                                      t-esc="line.source_debit.display"/>
+                                                      t-out="line.source_debit.display"/>
                                             </td>
                                         </t>
                                         <t t-else="">
                                             <td class="o_data_cell o_field_cell o_list_number"
                                                 field="debit"
                                                 style="justify-content: right;"
-                                                t-esc="line.debit.is_zero ? '' : line.debit.display"/>
+                                                t-out="line.debit.is_zero ? '' : line.debit.display"/>
                                         </t>
                                     </t>
                                     <t t-if="column[0] === 'credit'">
@@ -288,18 +288,18 @@
                                             <td class="o_data_cell o_field_cell o_list_number"
                                                 field="credit"
                                                 style="justify-content: right; display: flex; flex-direction: column;">
-                                                <span field="credit" t-esc="line.credit.display"/>
+                                                <span field="credit" t-out="line.credit.display"/>
                                                 <span class="text-muted"
                                                       style="text-decoration: line-through;"
                                                       field="credit"
-                                                      t-esc="line.source_credit.display"/>
+                                                      t-out="line.source_credit.display"/>
                                             </td>
                                         </t>
                                         <t t-else="">
                                             <td class="o_data_cell o_field_cell o_list_number"
                                                 field="credit"
                                                 style="justify-content: right;"
-                                                t-esc="line.credit.is_zero ? '' : line.credit.display"/>
+                                                t-out="line.credit.is_zero ? '' : line.credit.display"/>
                                         </t>
                                     </t>
                                     <t t-if="column[0] === '__trash'">
@@ -329,7 +329,7 @@
                 <span>
                     <span class="o_badge_text" t-att-title="tag_name">
                         <span role="img"/>
-                        <span class="o_tag_badge_text" t-esc="tag_name"/>
+                        <span class="o_tag_badge_text" t-out="tag_name"/>
                     </span>
                 </span>
             </div>

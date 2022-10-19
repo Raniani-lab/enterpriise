@@ -156,7 +156,7 @@
                                type="object" name="action_open_account_online_link"
                                t-att-class="'oe_inline ' + (test_warning_expiring_date ? test_danger_expiring_date ? 'text-danger' : 'text-warning' : '')">
                                 <t t-if="record.expiring_synchronization_due_day.value &gt; 7">
-                                    Consent expires on <t t-esc="luxon.DateTime.fromISO(record.expiring_synchronization_date.raw_value).toFormat('dd MMM')"/>
+                                    Consent expires on <t t-out="luxon.DateTime.fromISO(record.expiring_synchronization_date.raw_value).toFormat('dd MMM')"/>
                                 </t>
                                 <t t-elif="record.expiring_synchronization_due_day.value == 0">
                                     Consent expires today
@@ -165,7 +165,7 @@
                                     Consent expired
                                 </t>
                                 <t t-else="">
-                                    Consent expires in <t t-esc="record.expiring_synchronization_due_day.value"/> day<t t-if="record.expiring_synchronization_due_day.value &gt; 1">s</t>
+                                    Consent expires in <t t-out="record.expiring_synchronization_due_day.value"/> day<t t-if="record.expiring_synchronization_due_day.value &gt; 1">s</t>
                                 </t>
                             </a>
                             <br attrs="{'invisible': [('expiring_synchronization_date', '=', None)]}"/>
@@ -177,7 +177,7 @@
 
                     <t t-if="record.account_online_link_state.raw_value === 'connected'">
                         <span groups="account.group_account_user" class="text-muted" t-if="(record.next_link_synchronization !== undefined)">
-                            Next sync: <t t-esc="luxon.DateTime.fromISO(record.next_link_synchronization.raw_value).toFormat('dd MMM HH:mm:ss')"/>
+                            Next sync: <t t-out="luxon.DateTime.fromISO(record.next_link_synchronization.raw_value).toFormat('dd MMM HH:mm:ss')"/>
                         </span>
                         <br/>
                     </t>

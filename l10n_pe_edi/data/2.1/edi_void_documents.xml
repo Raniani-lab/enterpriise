@@ -18,17 +18,17 @@
             </ext:UBLExtensions>
             <cbc:UBLVersionID>2.0</cbc:UBLVersionID>
             <cbc:CustomizationID>1.0</cbc:CustomizationID>
-            <cbc:ID t-esc="void_number"/>
-            <cbc:ReferenceDate t-esc="reference_date"/>
-            <cbc:IssueDate t-esc="certificate_date"/>
+            <cbc:ID t-out="void_number"/>
+            <cbc:ReferenceDate t-out="reference_date"/>
+            <cbc:IssueDate t-out="certificate_date"/>
             <cac:Signature>
                 <cbc:ID>IDSignKG</cbc:ID>
                 <cac:SignatoryParty>
                     <cac:PartyIdentification>
-                        <cbc:ID t-esc="company.vat"/>
+                        <cbc:ID t-out="company.vat"/>
                     </cac:PartyIdentification>
                     <cac:PartyName>
-                        <cbc:Name t-esc="company.name.upper()"/>
+                        <cbc:Name t-out="company.name.upper()"/>
                     </cac:PartyName>
                 </cac:SignatoryParty>
                 <cac:DigitalSignatureAttachment>
@@ -38,11 +38,11 @@
                 </cac:DigitalSignatureAttachment>
             </cac:Signature>
             <cac:AccountingSupplierParty>
-                <cbc:CustomerAssignedAccountID t-esc="company.vat"/>
-                <cbc:AdditionalAccountID t-esc="company.partner_id.l10n_latam_identification_type_id.l10n_pe_vat_code"/>
+                <cbc:CustomerAssignedAccountID t-out="company.vat"/>
+                <cbc:AdditionalAccountID t-out="company.partner_id.l10n_latam_identification_type_id.l10n_pe_vat_code"/>
                 <cac:Party>
                     <cac:PartyLegalEntity>
-                        <cbc:RegistrationName t-esc="company.name.upper()"/>
+                        <cbc:RegistrationName t-out="company.name.upper()"/>
                     </cac:PartyLegalEntity>
                 </cac:Party>
             </cac:AccountingSupplierParty>
@@ -50,11 +50,11 @@
             <sac:VoidedDocumentsLine t-foreach="records" t-as="invoice">
                 <t t-set="id_value" t-value="id_value + 1"/>
                 <t t-set="serie_folio" t-value="invoice._l10n_pe_edi_get_serie_folio()"/>
-                <cbc:LineID t-esc="id_value"/>
-                <cbc:DocumentTypeCode t-esc="invoice.l10n_latam_document_type_id.code"/>
-                <sac:DocumentSerialID t-esc="serie_folio['serie']"/>
-                <sac:DocumentNumberID t-esc="serie_folio['folio']"/>
-                <sac:VoidReasonDescription t-esc="invoice.l10n_pe_edi_cancel_reason"/>
+                <cbc:LineID t-out="id_value"/>
+                <cbc:DocumentTypeCode t-out="invoice.l10n_latam_document_type_id.code"/>
+                <sac:DocumentSerialID t-out="serie_folio['serie']"/>
+                <sac:DocumentNumberID t-out="serie_folio['folio']"/>
+                <sac:VoidReasonDescription t-out="invoice.l10n_pe_edi_cancel_reason"/>
             </sac:VoidedDocumentsLine>
         </VoidedDocuments>
     </template>

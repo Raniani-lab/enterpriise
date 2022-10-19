@@ -11,7 +11,7 @@
                     <br/>Customs:
                     <ul>
                         <t t-foreach="custom_numbers" t-as="custom_number">
-                            <li><span t-esc="custom_number"/></li>
+                            <li><span t-out="custom_number"/></li>
                         </t>
                     </ul>
                 </t>
@@ -53,11 +53,11 @@
                                 </thead>
                                 <tbody>
                                     <tr>
-                                        <td><span t-esc="cfdi_vals['ext_trade_operation_type']"/></td>
-                                        <td><span t-esc="cfdi_vals['ext_trade_certificate_key']"/></td>
-                                        <td><span t-esc="cfdi_vals['ext_trade_certificate_source']"/></td>
-                                        <td t-if="cfdi_vals['ext_trade_nb_certificate_origin'] == '1'"><span t-esc="cfdi_vals['ext_trade_certificate_origin']"/></td>
-                                        <td><span t-esc="cfdi_vals['ext_trade_subdivision']"/></td>
+                                        <td><span t-out="cfdi_vals['ext_trade_operation_type']"/></td>
+                                        <td><span t-out="cfdi_vals['ext_trade_certificate_key']"/></td>
+                                        <td><span t-out="cfdi_vals['ext_trade_certificate_source']"/></td>
+                                        <td t-if="cfdi_vals['ext_trade_nb_certificate_origin'] == '1'"><span t-out="cfdi_vals['ext_trade_certificate_origin']"/></td>
+                                        <td><span t-out="cfdi_vals['ext_trade_subdivision']"/></td>
                                     </tr>
                                 </tbody>
                             </table>
@@ -72,10 +72,10 @@
                                 </thead>
                                 <tbody>
                                 <tr>
-                                <td t-if="cfdi_vals['ext_trade_nb_reliable_exporter']"><span t-esc="cfdi_vals['ext_trade_nb_reliable_exporter']"/></td>
-                                <td><span t-esc="cfdi_vals['ext_trade_incoterm']"/></td>
-                                <td><span t-esc="cfdi_vals['ext_trade_rate_usd']"/></td>
-                                <td><span t-esc="cfdi_vals['ext_trade_total_usd']"/></td>
+                                <td t-if="cfdi_vals['ext_trade_nb_reliable_exporter']"><span t-out="cfdi_vals['ext_trade_nb_reliable_exporter']"/></td>
+                                <td><span t-out="cfdi_vals['ext_trade_incoterm']"/></td>
+                                <td><span t-out="cfdi_vals['ext_trade_rate_usd']"/></td>
+                                <td><span t-out="cfdi_vals['ext_trade_total_usd']"/></td>
                                 </tr>
                                 </tbody>
                             </table>

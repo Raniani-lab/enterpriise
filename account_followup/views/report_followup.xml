@@ -18,7 +18,7 @@
 
         <template id="cell_template_followup_report">
             <div t-att-class="classes" t-att-style="style">
-                <t t-esc="cell.get('name')"/>
+                <t t-out="cell.get('name')"/>
             </div>
         </template>
 
@@ -71,7 +71,7 @@
                     </div>
                 </div>
                 <p style="margin-top: 35px;">
-                    Date: <span t-esc="today" t-options="{'widget': 'date'}"/><br/>
+                    Date: <span t-out="today" t-options="{'widget': 'date'}"/><br/>
                     <t t-if='partner_addr.ref'>Customer ref: <span t-field="partner_addr.ref"/></t>
                 </p>
             </div>
@@ -85,7 +85,7 @@
                 <div class="o_account_reports_summary">
                     <div class="o_account_report_summary" role="alert">
                         <span class="o_account_report_summary_content" t-att-style="'' if report_summary else 'display: none;'">
-                            <t t-esc="report_summary" t-options="{'widget': 'text'}"/>
+                            <t t-out="report_summary" t-options="{'widget': 'text'}"/>
                         </span>
                         <span class="o_account_report_summary_placeholder" t-att-style="'display: none;' if report_summary or context.get('print_mode') else ''">
                             Add a note

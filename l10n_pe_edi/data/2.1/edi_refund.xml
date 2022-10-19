@@ -5,7 +5,7 @@
             <t xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
                 <cbc:CreditedQuantity
                         t-att-unitCode="line.product_uom_id.l10n_pe_edi_measure_unit_code"
-                        t-esc='line.quantity'/>
+                        t-out='line.quantity'/>
             </t>
         </xpath>
     </template>
@@ -15,13 +15,13 @@
             <t xmlns:cac="urn:oasis:names:specification:ubl:schema:xsd:CommonAggregateComponents-2"
                xmlns:cbc="urn:oasis:names:specification:ubl:schema:xsd:CommonBasicComponents-2">
                 <cac:DiscrepancyResponse t-if="record.l10n_latam_document_type_id.code == '07'">
-                    <cbc:ResponseCode t-esc="record.l10n_pe_edi_refund_reason"/>
-                    <cbc:Description t-esc="record.ref"/>
+                    <cbc:ResponseCode t-out="record.l10n_pe_edi_refund_reason"/>
+                    <cbc:Description t-out="record.ref"/>
                 </cac:DiscrepancyResponse>
                 <cac:BillingReference>
                     <cac:InvoiceDocumentReference t-if="record.reversed_entry_id">
-                        <cbc:ID t-esc="record.reversed_entry_id.name.replace(' ', '')"/>
-                        <cbc:DocumentTypeCode t-esc="record.reversed_entry_id.l10n_latam_document_type_id.code"/>
+                        <cbc:ID t-out="record.reversed_entry_id.name.replace(' ', '')"/>
+                        <cbc:DocumentTypeCode t-out="record.reversed_entry_id.l10n_latam_document_type_id.code"/>
                     </cac:InvoiceDocumentReference>
                 </cac:BillingReference>
             </t>
@@ -32,13 +32,13 @@
                 <cac:LegalMonetaryTotal>
                     <cbc:LineExtensionAmount
                             t-att-currencyID="record.currency_id.name"
-                            t-esc="format_float(record.amount_untaxed)"/>
+                            t-out="format_float(record.amount_untaxed)"/>
                     <cbc:TaxInclusiveAmount
                             t-att-currencyID="record.currency_id.name"
-                            t-esc="format_float(record.amount_total)"/>
+                            t-out="format_float(record.amount_total)"/>
                     <cbc:PayableAmount
                             t-att-currencyID="record.currency_id.name"
-                            t-esc="format_float(record.amount_total)"/>
+                            t-out="format_float(record.amount_total)"/>
                 </cac:LegalMonetaryTotal>
                 <cac:CreditNoteLine t-foreach="invoice_line_vals_list" t-as="line_vals">
                     <t t-call="l10n_pe_edi.pe_ubl_2_1_refund_line"/>

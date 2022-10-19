@@ -18,19 +18,19 @@
         <xpath expr="//div[hasclass('row')]//div[@name='address_not_same_as_shipping']//t[@t-set='address']" position="after">
             <span t-if="is_cfdi_signed and o.company_id.vat != o.l10n_mx_edi_cfdi_supplier_rfc">
                 <span>XML VAT: </span>
-                <span t-esc="o.l10n_mx_edi_cfdi_supplier_rfc"/>
+                <span t-out="o.l10n_mx_edi_cfdi_supplier_rfc"/>
             </span>
         </xpath>
         <xpath expr="//div[hasclass('row')]//div[@name='address_same_as_shipping']//t[@t-set='address']" position="after">
             <span t-if="is_cfdi_signed and o.company_id.vat != o.l10n_mx_edi_cfdi_supplier_rfc">
                 <span>XML VAT: </span>
-                <span t-esc="o.l10n_mx_edi_cfdi_supplier_rfc"/>
+                <span t-out="o.l10n_mx_edi_cfdi_supplier_rfc"/>
             </span>
         </xpath>
         <xpath expr="//div[hasclass('row')]//div[@name='no_shipping']//t[@t-set='address']" position="after">
             <span t-if="is_cfdi_signed and o.company_id.vat != o.l10n_mx_edi_cfdi_supplier_rfc">
                 <span>XML VAT: </span>
-                <span t-esc="o.l10n_mx_edi_cfdi_supplier_rfc"/>
+                <span t-out="o.l10n_mx_edi_cfdi_supplier_rfc"/>
             </span>
         </xpath>
 
@@ -41,22 +41,22 @@
                 <t t-if="cfdi_vals.get('usage')">
                     <div name="cfdi_vals['usage']" t-att-class="o_grid_layout">
                         <strong>Usage:</strong>
-                        <p><span t-esc="cfdi_vals['usage']"/><span> - </span><span t-field="o.l10n_mx_edi_usage"/></p>
+                        <p><span t-out="cfdi_vals['usage']"/><span> - </span><span t-field="o.l10n_mx_edi_usage"/></p>
                     </div>
                 </t>
                 <t t-if="o.l10n_mx_edi_payment_method_id">
                     <div t-att-class="o_grid_layout">
                         <strong>Payment Way:</strong>
-                        <p t-esc="'%s - %s' % (o.l10n_mx_edi_payment_method_id.code, o.l10n_mx_edi_payment_method_id.name)"/>
+                        <p t-out="'%s - %s' % (o.l10n_mx_edi_payment_method_id.code, o.l10n_mx_edi_payment_method_id.name)"/>
                     </div>
                 </t>
                 <div t-att-class="o_grid_layout">
                     <strong>Payment Method:</strong>
-                    <p t-esc="cfdi_vals.get('payment_method')"/>
+                    <p t-out="cfdi_vals.get('payment_method')"/>
                 </div>
                 <div t-if="cfdi_vals.get('bank_account')" t-att-class="o_grid_layout">
                     <strong>Bank Account:</strong>
-                    <p t-esc="cfdi_vals['bank_account']"/>
+                    <p t-out="cfdi_vals['bank_account']"/>
                 </div>
                 <t t-set="o_grid_layout" t-value="original_o_grid_layout"/>
             </t>
@@ -85,7 +85,7 @@
         <xpath expr="//div[@t-if='not is_html_empty(o.narration)']" position="before">
             <t t-if="is_cfdi_signed">
                 <p>
-                    <span t-esc="o._l10n_mx_edi_cfdi_amount_to_text()"/>
+                    <span t-out="o._l10n_mx_edi_cfdi_amount_to_text()"/>
                 </p>
             </t>
         </xpath>
@@ -106,31 +106,31 @@
                             <span>Digital stamp of the emitter</span>
                         </div>
                         <div class="digital-stamp-content">
-                            <span t-esc="cfdi_vals.get('sello')"/>
+                            <span t-out="cfdi_vals.get('sello')"/>
                         </div>
                         <div class="digital-stamp">
                             <span>Digital stamp SAT</span>
                         </div>
                         <div class="digital-stamp-content">
-                            <span t-esc="cfdi_vals.get('sello_sat')"/>
+                            <span t-out="cfdi_vals.get('sello_sat')"/>
                         </div>
                         <div class="digital-stamp">
                             <span>Original chain complement of digital certification SAT</span>
                         </div>
                         <div class="digital-stamp-content">
-                            <span class="nowrap" t-esc="cfdi_vals.get('cadena')"/>
+                            <span class="nowrap" t-out="cfdi_vals.get('cadena')"/>
                         </div>
                         <div class="digital-stamp">
                             <span>Extra Info</span>
                         </div>
                         <div class="digital-stamp-content">
-                            <span>Emitter certificate:</span> <span t-esc="cfdi_vals.get('certificate_number')"/>
-                            <span> | SAT Certificate:</span> <span t-esc="cfdi_vals.get('certificate_sat_number')"/>
-                            <span> | Expedition place:</span> <span t-esc="cfdi_vals.get('expedition')"/>
-                            <span> | Fiscal Regime:</span><span t-esc="cfdi_vals.get('fiscal_regime')"/>
-                            <span> | Emission Date:</span> <span t-esc="cfdi_vals.get('emission_date_str')"/>
-                            <span> | Certification Date:</span> <span t-esc="cfdi_vals.get('stamp_date')"/>
-                            <span> | Fiscal Folio:</span> <span t-esc="cfdi_vals.get('uuid')"/>
+                            <span>Emitter certificate:</span> <span t-out="cfdi_vals.get('certificate_number')"/>
+                            <span> | SAT Certificate:</span> <span t-out="cfdi_vals.get('certificate_sat_number')"/>
+                            <span> | Expedition place:</span> <span t-out="cfdi_vals.get('expedition')"/>
+                            <span> | Fiscal Regime:</span><span t-out="cfdi_vals.get('fiscal_regime')"/>
+                            <span> | Emission Date:</span> <span t-out="cfdi_vals.get('emission_date_str')"/>
+                            <span> | Certification Date:</span> <span t-out="cfdi_vals.get('stamp_date')"/>
+                            <span> | Fiscal Folio:</span> <span t-out="cfdi_vals.get('uuid')"/>
                         </div>
                         <div class="digital-stamp-content text-center">
                             <strong>This document is a printed representation of a CFDI</strong>

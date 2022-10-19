@@ -11,24 +11,24 @@
 
             <xpath expr="//div[@t-if='not is_html_empty(o.narration)']" position="before">
                 <p>
-                    <span><b>SON:</b> <t t-esc="extra_edi_vals.get('amount_to_text')"/></span>
+                    <span><b>SON:</b> <t t-out="extra_edi_vals.get('amount_to_text')"/></span>
                 </p>
             </xpath>
 
             <xpath expr="//h2/span[contains(@t-if, 'out_invoice')]" position="replace">
-                <span t-if="o.move_type == 'out_invoice' and o.state == 'posted'" t-esc="o.l10n_latam_document_type_id.report_name"/>
+                <span t-if="o.move_type == 'out_invoice' and o.state == 'posted'" t-out="o.l10n_latam_document_type_id.report_name"/>
             </xpath>
 
             <xpath expr="//h2/span[contains(@t-if, 'out_refund')]" position="replace">
-                <span t-if="o.move_type == 'out_refund' and o.state == 'posted'" t-esc="o.l10n_latam_document_type_id.report_name"/>
+                <span t-if="o.move_type == 'out_refund' and o.state == 'posted'" t-out="o.l10n_latam_document_type_id.report_name"/>
             </xpath>
 
             <xpath expr="//h2/span[@t-field='o.name']" position="replace">
-                <span t-if="o.name != '/'" t-esc="o.name.replace(' ', '')"/>
+                <span t-if="o.name != '/'" t-out="o.name.replace(' ', '')"/>
             </xpath>
             <!-- QR-code -->
             <xpath expr="//div[@id='qrcode']" position="after">
-                    <p t-if="spot" t-esc="spot['spot_message']"/>
+                    <p t-if="spot" t-out="spot['spot_message']"/>
                     <p>
                         <img t-if="extra_edi_vals" class="border border-dark rounded" t-att-src="'/report/barcode/?barcode_type=%s&amp;value=%s&amp;width=%s&amp;height=%s' % ('QR', extra_edi_vals['qr_str'], 100, 100)"/>
                     </p>

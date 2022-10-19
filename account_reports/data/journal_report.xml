@@ -11,10 +11,10 @@
     <template id="cell_template_journal_audit_report" inherit_id="account_reports.cell_template" primary="True">
         <xpath expr="//span[@t-out=&quot;cell.get('name')&quot;]" position="replace">
             <t t-if="cell.get('name_right')">
-                <span class="o_account_report_column_value"><t t-esc="cell.get('name')"/> <strong t-esc="cell.get('name_right')"/></span>
+                <span class="o_account_report_column_value"><t t-out="cell.get('name')"/> <strong t-out="cell.get('name_right')"/></span>
             </t>
             <t t-else="">
-                <span class="o_account_report_column_value" t-esc="cell.get('name')"/>
+                <span class="o_account_report_column_value" t-out="cell.get('name')"/>
             </t>
         </xpath>
     </template>
@@ -28,24 +28,24 @@
                     <t t-if="not context.get('print_mode')">
                         <t t-if="'move_id' in line and 'date' in line">
                             <a t-att-data-line_id="line.get('id')" action="journal_report_action_open_business_doc">
-                                <t t-esc="line.get('name')"/>
+                                <t t-out="line.get('name')"/>
                             </a>
                             <t t-if="'date' in line">
-                                - <t t-esc="line.get('date')"/>
+                                - <t t-out="line.get('date')"/>
                             </t>
                         </t>
-                        <t t-else="" t-esc="line.get('name')"/>
+                        <t t-else="" t-out="line.get('name')"/>
                     </t>
                     <t t-else="">
-                        <t t-esc="line.get('name')"/> <br/>
-                        <t t-esc="line.get('date')"/>
+                        <t t-out="line.get('name')"/> <br/>
+                        <t t-out="line.get('date')"/>
                     </t>
                 </t>
                 <!-- Update the ellipsis so that id match the complete line name -->
                 <span class="account_report_line_name" t-att-title="line.get('title_hover')">
-                    <t t-esc="line_name"/>
+                    <t t-out="line_name"/>
                     <span class="js_account_report_line_footnote" t-att-data-id="line['id']">
-                        <sup t-if="line.get('footnote')"><b class="o_account_reports_footnote_sup"><a t-att-href="'#footnote'+line['footnote']"></a><t t-esc="line['footnote']"/></b></sup>
+                        <sup t-if="line.get('footnote')"><b class="o_account_reports_footnote_sup"><a t-att-href="'#footnote'+line['footnote']"></a><t t-out="line['footnote']"/></b></sup>
                     </span>
                     &amp;nbsp;<a t-if="'journal_id' in line" t-att-data-line_id="line.get('id')" t-att-data-journal_id="line.get('journal_id')" t-att-data-name="line.get('name')" t-att-data-journal_type="line.get('journal_type')" action="open_journal_items" class="no_print oe_link_reports" groups="account.group_account_user"> => Journal Items </a>
                 </span>
@@ -84,19 +84,19 @@
                                 <tr t-foreach="taxes[country_name]" t-as="tax">
                                     <t t-if="country_name_size > 1">
                                         <t t-if="tax_index == 0">
-                                            <td><span t-esc="country_name"/></td>
+                                            <td><span t-out="country_name"/></td>
                                         </t>
                                         <t t-else="">
                                             <td/>
                                         </t>
                                     </t>
 
-                                    <td class="account_report_line_name"><a t-att-data-date_from="line.get('date_from')" t-att-data-date_to="line.get('date_to')"  t-att-data-line_id="tax['line_id']" t-esc="tax['name']" action="journal_report_action_dropdown_audit_default_tax_report"/></td>
+                                    <td class="account_report_line_name"><a t-att-data-date_from="line.get('date_from')" t-att-data-date_to="line.get('date_to')"  t-att-data-line_id="tax['line_id']" t-out="tax['name']" action="journal_report_action_dropdown_audit_default_tax_report"/></td>
                                     <td class="text-end font-monospace">
-                                        <span t-esc="tax['base_amount']"/>
+                                        <span t-out="tax['base_amount']"/>
                                     </td>
                                     <td class="text-end font-monospace">
-                                        <span t-esc="tax['tax_amount']"/>
+                                        <span t-out="tax['tax_amount']"/>
                                     </td>
                                 </tr>
                             </t>
@@ -133,21 +133,21 @@
                                 <tr t-foreach="grids[country_name]" t-as="grid_name">
                                     <t t-if="country_name_size > 1">
                                         <t t-if="grid_name_index == 0">
-                                            <td><span t-esc="country_name"/></td>
+                                            <td><span t-out="country_name"/></td>
                                         </t>
                                         <t t-else="">
                                             <td/>
                                         </t>
                                     </t>
-                                    <td class="account_report_line_name"><a t-esc="grid_name" t-att-data-date_from="line.get('date_from')" t-att-data-date_to="line.get('date_to')"  t-att-data-tag_id="grids[country_name][grid_name]['tag_id']" action="journal_report_tax_tag_template_open_aml"/></td>
+                                    <td class="account_report_line_name"><a t-out="grid_name" t-att-data-date_from="line.get('date_from')" t-att-data-date_to="line.get('date_to')"  t-att-data-tag_id="grids[country_name][grid_name]['tag_id']" action="journal_report_tax_tag_template_open_aml"/></td>
                                     <td class="text-end font-monospace">
-                                        <span t-esc="grids[country_name][grid_name].get('+', 0)"/>
+                                        <span t-out="grids[country_name][grid_name].get('+', 0)"/>
                                     </td>
                                     <td class="text-end font-monospace">
-                                        <span t-esc="grids[country_name][grid_name].get('-', 0)"/>
+                                        <span t-out="grids[country_name][grid_name].get('-', 0)"/>
                                     </td>
                                     <td class="text-end font-monospace">
-                                        <span t-esc="grids[country_name][grid_name]['impact']"/>
+                                        <span t-out="grids[country_name][grid_name]['impact']"/>
                                     </td>
                                 </tr>
                             </t>

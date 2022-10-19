@@ -16,11 +16,11 @@
 
         <xpath expr="//div[hasclass('row')]/div[1]" position="after">
             <div t-if="is_cfdi_signed and o.company_id.vat != o.l10n_mx_edi_cfdi_supplier_rfc" class="col-6">
-                <span>XML VAT: </span><span t-esc="o.l10n_mx_edi_cfdi_supplier_rfc"></span>
+                <span>XML VAT: </span><span t-out="o.l10n_mx_edi_cfdi_supplier_rfc"></span>
             </div>
             <div t-if="is_cfdi_signed and o.l10n_mx_edi_payment_method_id" class="col-6">
                 <strong>Payment Way CFDI:</strong>
-                <span t-esc="'%s - %s' % (o.l10n_mx_edi_payment_method_id.code, o.l10n_mx_edi_payment_method_id.name)"/>
+                <span t-out="'%s - %s' % (o.l10n_mx_edi_payment_method_id.code, o.l10n_mx_edi_payment_method_id.name)"/>
             </div>
         </xpath>
 
@@ -39,31 +39,31 @@
                             <span>Digital stamp of the emitter</span>
                         </div>
                         <div class="digital-stamp-content">
-                            <span t-esc="cfdi_vals.get('sello')"/>
+                            <span t-out="cfdi_vals.get('sello')"/>
                         </div>
                         <div class="digital-stamp">
                             <span>Digital stamp SAT</span>
                         </div>
                         <div class="digital-stamp-content">
-                            <span t-esc="cfdi_vals.get('sello_sat')"/>
+                            <span t-out="cfdi_vals.get('sello_sat')"/>
                         </div>
                         <div class="digital-stamp">
                             <span>Original chain complement of digital certification SAT</span>
                         </div>
                         <div class="digital-stamp-content">
-                            <span class="nowrap" t-esc="cfdi_vals.get('cadena')"/>
+                            <span class="nowrap" t-out="cfdi_vals.get('cadena')"/>
                         </div>
                         <div class="digital-stamp">
                             <span>Extra Info</span>
                         </div>
                         <div class="digital-stamp-content">
-                            <span>Emitter certificate:</span> <span t-esc="cfdi_vals.get('certificate_number')"/>
-                            <span> | SAT Certificate:</span> <span t-esc="cfdi_vals.get('certificate_sat_number')"/>
-                            <span> | Expedition place:</span> <span t-esc="cfdi_vals.get('expedition')"/>
-                            <span> | Fiscal Regime:</span><span t-esc="cfdi_vals.get('fiscal_regime')"/>
-                            <span> | Emission Date:</span> <span t-esc="cfdi_vals.get('emission_date_str')"/>
-                            <span> | Certification Date:</span> <span t-esc="cfdi_vals.get('stamp_date')"/>
-                            <span> | Fiscal Folio:</span> <span t-esc="cfdi_vals.get('uuid')"/>
+                            <span>Emitter certificate:</span> <span t-out="cfdi_vals.get('certificate_number')"/>
+                            <span> | SAT Certificate:</span> <span t-out="cfdi_vals.get('certificate_sat_number')"/>
+                            <span> | Expedition place:</span> <span t-out="cfdi_vals.get('expedition')"/>
+                            <span> | Fiscal Regime:</span><span t-out="cfdi_vals.get('fiscal_regime')"/>
+                            <span> | Emission Date:</span> <span t-out="cfdi_vals.get('emission_date_str')"/>
+                            <span> | Certification Date:</span> <span t-out="cfdi_vals.get('stamp_date')"/>
+                            <span> | Fiscal Folio:</span> <span t-out="cfdi_vals.get('uuid')"/>
                         </div>
                         <div class="digital-stamp-content text-center">
                             <strong>This document is a printed representation of a CFDI</strong>
@@ -85,20 +85,20 @@
                 <table class="table table-sm" t-if="acc_em or acc_re">
                     <thead>
                         <tr>
-                            <th t-if="vat_em"><t t-esc="o.company_id.account_fiscal_country_id.vat_label or 'VAT'"/><span> Emitter Acc. Ord.</span></th>
+                            <th t-if="vat_em"><t t-out="o.company_id.account_fiscal_country_id.vat_label or 'VAT'"/><span> Emitter Acc. Ord.</span></th>
                             <th t-if="bank_em">Bank Name Acc. Ord.</th>
                             <th t-if="acc_em">Account Ord.</th>
-                            <th t-if="vat_re"><t t-esc="o.company_id.account_fiscal_country_id.vat_label or 'VAT'"/> <span>Emitter Acc. Ben.</span></th>
+                            <th t-if="vat_re"><t t-out="o.company_id.account_fiscal_country_id.vat_label or 'VAT'"/> <span>Emitter Acc. Ben.</span></th>
                             <th t-if="acc_re">Account Ben.</th>
                         </tr>
                     </thead>
                     <tbody>
                         <tr>
-                            <td t-if="vat_em"><span t-esc="vat_em"/></td>
-                            <td t-if="bank_em"><span t-esc="bank_em"/></td>
-                            <td t-if="acc_em"><span t-esc="acc_em"/></td>
-                            <td t-if="vat_re"><span t-esc="vat_re"/></td>
-                            <td t-if="acc_re"><span t-esc="acc_re"/></td>
+                            <td t-if="vat_em"><span t-out="vat_em"/></td>
+                            <td t-if="bank_em"><span t-out="bank_em"/></td>
+                            <td t-if="acc_em"><span t-out="acc_em"/></td>
+                            <td t-if="vat_re"><span t-out="vat_re"/></td>
+                            <td t-if="acc_re"><span t-out="acc_re"/></td>
                         </tr>
                     </tbody>
                 </table>
@@ -118,19 +118,19 @@
                     <tbody>
                         <tr t-foreach="docs_related" t-as="inv">
                             <t t-set="inv_currency" t-value="o.env['res.currency'].search([('name', '=', inv.get('MonedaDR'))], limit=1)"/>
-                            <td><span t-esc="o.reconciled_invoice_ids.filtered(lambda i: i.l10n_mx_edi_cfdi_uuid == inv.get('IdDocumento')).name or ''"/></td>
-                            <td><span t-esc="inv.get('IdDocumento')"/></td>
-                            <td class="text-end"><span t-esc="inv.get('NumParcialidad', '')"/></td>
+                            <td><span t-out="o.reconciled_invoice_ids.filtered(lambda i: i.l10n_mx_edi_cfdi_uuid == inv.get('IdDocumento')).name or ''"/></td>
+                            <td><span t-out="inv.get('IdDocumento')"/></td>
+                            <td class="text-end"><span t-out="inv.get('NumParcialidad', '')"/></td>
                             <td class="text-end">
-                                <span t-esc="float(inv.get('ImpSaldoAnt', ''))" t-options="{'widget': 'monetary', 'display_currency': inv_currency}"/>
+                                <span t-out="float(inv.get('ImpSaldoAnt', ''))" t-options="{'widget': 'monetary', 'display_currency': inv_currency}"/>
                             </td>
                             <td class="text-end">
-                                <span t-esc="float(inv.get('ImpPagado', ''))" t-options="{'widget': 'monetary', 'display_currency': inv_currency}"/>
+                                <span t-out="float(inv.get('ImpPagado', ''))" t-options="{'widget': 'monetary', 'display_currency': inv_currency}"/>
                             </td>
                             <td class="text-end">
-                                <span t-esc="float(inv.get('ImpSaldoInsoluto', ''))" t-options="{'widget': 'monetary', 'display_currency': inv_currency}"/>
+                                <span t-out="float(inv.get('ImpSaldoInsoluto', ''))" t-options="{'widget': 'monetary', 'display_currency': inv_currency}"/>
                             </td>
-                            <td><span t-esc="inv.get('MonedaDR')"/></td>
+                            <td><span t-out="inv.get('MonedaDR')"/></td>
                         </tr>
                     </tbody>
                 </table>
@@ -151,7 +151,7 @@
                             <td><span t-field="inv.invoice_date"/></td>
                             <td><span t-field="inv.name"/></td>
                             <td class="text-end"><span t-field="inv.amount_total"/></td>
-                            <td class="text-end"><span t-esc="inv.amount_total - inv.amount_residual" t-options="{'widget': 'monetary', 'display_currency': inv.currency_id}"/></td>
+                            <td class="text-end"><span t-out="inv.amount_total - inv.amount_residual" t-options="{'widget': 'monetary', 'display_currency': inv.currency_id}"/></td>
                             <td class="text-end"><span t-field="inv.amount_residual"/></td>
                         </tr>
                     </tbody>

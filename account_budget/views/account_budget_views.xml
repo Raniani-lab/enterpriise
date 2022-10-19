@@ -207,8 +207,8 @@ Budgets
                             <div class="row">
                                 <div class="col-10">
                                     <i class="fa fa-clock-o" role="img" aria-label="Period" title="Period"/>
-                                    <t t-esc="record.date_from.value"/>-
-                                    <t t-esc="record.date_to.value"/>
+                                    <t t-out="record.date_from.value"/>-
+                                    <t t-out="record.date_to.value"/>
                                 </div>
                                 <div class="col-2">
                                     <span class="float-end">

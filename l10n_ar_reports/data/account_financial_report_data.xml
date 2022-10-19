@@ -6,7 +6,7 @@
                 <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
                     <span class="fa fa-filter"/>
                     Tax Type:
-                        <t t-esc="options['ar_vat_book_tax_types_available'][options['ar_vat_book_tax_type_selected']]"/>
+                        <t t-out="options['ar_vat_book_tax_types_available'][options['ar_vat_book_tax_type_selected']]"/>
                 </button>
                 <div class="dropdown-menu o_filter_menu" role="menu">
                     <t t-foreach="options['ar_vat_book_tax_types_available'].items()" t-as="tax_type">
@@ -14,7 +14,7 @@
                            data-filter="ar_vat_book_tax_type_selected"
                            t-att-title="tax_type[1]"
                            t-att-data-id="tax_type[0]">
-                            <t t-esc="tax_type[1]"/>
+                            <t t-out="tax_type[1]"/>
                         </a>
                     </t>
                 </div>

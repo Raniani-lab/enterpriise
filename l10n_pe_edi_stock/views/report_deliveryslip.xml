@@ -47,7 +47,7 @@
                 <div class="row mt-3" id='pe_notes' t-if="o.l10n_pe_edi_observation">
                     <div class="col-12">
                         <div class="text-center">
-                            <strong t-if="o.l10n_pe_edi_observation">Notes: </strong> <span t-esc="o.l10n_pe_edi_observation" t-if="o.l10n_pe_edi_observation"/>
+                            <strong t-if="o.l10n_pe_edi_observation">Notes: </strong> <span t-out="o.l10n_pe_edi_observation" t-if="o.l10n_pe_edi_observation"/>
                         </div>
                     </div>
                 </div>

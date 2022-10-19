@@ -2,7 +2,7 @@
 <templates>
 
     <t t-name="account.OpenBankRecWidget" owl="1">
-        <a href="#" t-esc="props.value" t-on-click.prevent.stop="(ev) => this.openBankRec()"/>
+        <a href="#" t-out="props.value" t-on-click.prevent.stop="(ev) => this.openBankRec()"/>
     </t>
 
 </templates>

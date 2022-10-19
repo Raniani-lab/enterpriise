@@ -163,7 +163,7 @@ if records:
                                         </strong>
                                     </div>
                                     <div class="col-6 text-end">
-                                        <strong><i class="fa fa-clock-o" aria-label="Date" role="img" title="Date"/> <t t-esc="record.date.value"/></strong>
+                                        <strong><i class="fa fa-clock-o" aria-label="Date" role="img" title="Date"/> <t t-out="record.date.value"/></strong>
                                     </div>
                                 </div>
                                 <div class="row">

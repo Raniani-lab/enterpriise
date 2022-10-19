@@ -14,7 +14,7 @@ import { ChatterContainer, ChatterContainerHook } from "../chatter_container";
 import { StudioHook } from "../studio_hook_component";
 import { InnerGroup, OuterGroup } from "./form_editor_groups";
 
-const { useRef, useEffect, useSubEnv } = owl;
+import { useRef, useEffect, useSubEnv } from "@odoo/owl";
 
 const hookPositionTolerance = 50;
 

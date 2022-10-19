@@ -8,7 +8,7 @@ import { studioIsVisible } from "@web_studio/client_action/view_editors/utils";
 import { useService } from "@web/core/utils/hooks";
 import { fieldVisualFeedback } from "@web/views/fields/field";
 
-const { useState, Component } = owl;
+import { useState, Component } from "@odoo/owl";
 
 export function useStudioRef(refName = "studioRef", onClick) {
     // create two hooks and call them here?

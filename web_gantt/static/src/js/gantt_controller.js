@@ -10,7 +10,7 @@ import { SelectCreateDialog } from "@web/views/view_dialogs/select_create_dialog
 
 const QWeb = core.qweb;
 const _t = core._t;
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 export function removeDomainLeaf(domain, keysToRemove) {
     function processLeaf(elements, idx, operatorCtx, newDomain) {

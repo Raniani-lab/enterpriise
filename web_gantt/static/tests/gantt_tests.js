@@ -22,7 +22,7 @@ initialDate = new Date(initialDate.getTime() - initialDate.getTimezoneOffset() *
 
 const { toggleFilterMenu, toggleMenuItem } = require("@web/../tests/search/helpers");
 
-const { markup } = owl;
+const { markup } = require("@odoo/owl");
 
 const FORMAT = "YYYY-MM-DD HH:mm:ss";
 // This function is used to be sure that the unavailabilities will be displayed

@@ -4,7 +4,7 @@ import NewModel from "web_studio.NewModel";
 import { ComponentAdapter } from "web.OwlCompatibility";
 import { useService } from "@web/core/utils/hooks";
 
-const { Component, onWillUpdateProps, xml } = owl;
+import { Component, onWillUpdateProps, xml } from "@odoo/owl";
 
 class NewModelItemAdapter extends ComponentAdapter {
     setup() {

@@ -31,7 +31,7 @@ const { MapRenderer } = require("@web_map/map_view/map_renderer");
 
 const { registry } = require("@web/core/registry");
 
-const { xml } = owl;
+const { xml } = require("@odoo/owl");
 
 function getCurrentMockServer() {
     return LegacyMockServer.currentMockServer;

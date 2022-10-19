@@ -1,7 +1,7 @@
 /** @odoo-module */
 import { _lt } from "@web/core/l10n/translation";
 
-const { Component, xml } = owl;
+import { Component, xml } from "@odoo/owl";
 /*
  * Injected in the Field.js template
  * Allows to overlay the Field's Component widget to prompt

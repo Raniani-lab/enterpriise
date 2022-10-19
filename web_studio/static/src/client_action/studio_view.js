@@ -2,7 +2,7 @@
 
 import { WithSearch } from "@web/search/with_search/with_search";
 
-const { Component, xml, useSubEnv } = owl;
+import { Component, xml, useSubEnv } from "@odoo/owl";
 
 const HEIGHT = "height: 100%;";
 

@@ -13,7 +13,7 @@ const { FormViewDialog } = require("@web/views/view_dialogs/form_view_dialog");
 var qweb = core.qweb;
 var _t = core._t;
 
-const { Component, markup } = owl;
+const { Component, markup } = require("@odoo/owl");
 
 var GridController = AbstractController.extend({
     custom_events: Object.assign({}, AbstractController.prototype.custom_events, {

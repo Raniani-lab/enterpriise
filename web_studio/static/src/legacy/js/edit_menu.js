@@ -14,7 +14,7 @@ var Widget = require('web.Widget');
 var Many2One = relational_fields.FieldMany2One;
 const FieldRadio = relational_fields.FieldRadio;
 var _t = core._t;
-const { Component } = owl;
+const { Component } = require("@odoo/owl");
 
 var MenuItem = Widget.extend({
     template: 'web_studio.EditMenu.MenuItem',

@@ -9,8 +9,8 @@ result = payslip.dict.vehicle_id._get_car_atn(date=payslip.dict.date_from)
 salary_simulation = payslip.dict.env.context.get('salary_simulation')
 if not salary_simulation:
     first_period_contract_ids = payslip.dict._get_period_contracts()
-    first_period_contract = contract.browse(first_period_contract_ids).filtered(lambda c: c.transport_mode_car)[0]
-    result = result if payslip.contract_id == first_period_contract else 0
+    first_period_contract = contract.browse(first_period_contract_ids).filtered(lambda c: c.transport_mode_car)
+    result = result if (first_period_contract and payslip.contract_id == first_period_contract[0]) else 0
             </field>
         </record>
         <record id="l10n_be_hr_payroll.cp200_employees_salary_company_car_2" model="hr.salary.rule">

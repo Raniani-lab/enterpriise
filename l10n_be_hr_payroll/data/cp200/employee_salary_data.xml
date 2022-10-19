@@ -131,8 +131,8 @@ salary_simulation = payslip.dict.env.context.get('salary_simulation')
 result = 5.0
 if not salary_simulation:
     first_period_contract_ids = payslip.dict._get_period_contracts()
-    first_period_contract = contract.browse(first_period_contract_ids).filtered(lambda c: c.internet)[0]
-    result = result if payslip.contract_id == first_period_contract else 0
+    first_period_contract = contract.browse(first_period_contract_ids).filtered(lambda c: c.internet)
+    result = result if (first_period_contract and payslip.contract_id == first_period_contract[0]) else 0
         </field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         <field name="appears_on_payroll_report" eval="True"/>
@@ -154,8 +154,8 @@ elif contract.mobile and contract.internet:
 salary_simulation = payslip.dict.env.context.get('salary_simulation')
 if not salary_simulation:
     first_period_contract_ids = payslip.dict._get_period_contracts()
-    first_period_contract = contract.browse(first_period_contract_ids).filtered(lambda c: c.mobile)[0]
-    result = result if payslip.contract_id == first_period_contract else 0
+    first_period_contract = contract.browse(first_period_contract_ids).filtered(lambda c: c.mobile)
+    result = result if (first_period_contract and payslip.contract_id == first_period_contract[0]) else 0
         </field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         <field name="appears_on_payroll_report" eval="True"/>
@@ -171,8 +171,8 @@ if not salary_simulation:
         <field name="amount_select">code</field>
         <field name="amount_python_compute">
 first_period_contract_ids = payslip.dict._get_period_contracts()
-first_period_contract = contract.browse(first_period_contract_ids).filtered(lambda c: c.has_laptop)[0]
-result = payslip.rule_parameter('cp200_bik_laptop') if payslip.contract_id == first_period_contract else 0
+first_period_contract = contract.browse(first_period_contract_ids).filtered(lambda c: c.has_laptop)
+result = payslip.rule_parameter('cp200_bik_laptop') if (first_period_contract and payslip.contract_id == first_period_contract[0]) else 0
         </field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         <field name="appears_on_payroll_report" eval="True"/>
@@ -283,8 +283,8 @@ result = contract.car_atn
 salary_simulation = payslip.dict.env.context.get('salary_simulation')
 if not salary_simulation:
     first_period_contract_ids = payslip.dict._get_period_contracts()
-    first_period_contract = contract.browse(first_period_contract_ids).filtered(lambda c: c.transport_mode_car)[0]
-    result = result if payslip.contract_id == first_period_contract else 0
+    first_period_contract = contract.browse(first_period_contract_ids).filtered(lambda c: c.transport_mode_car)
+    result = result if (first_period_contract and payslip.contract_id == first_period_contract[0]) else 0
         </field>
         <field name="struct_id" ref="hr_payroll_structure_cp200_employee_salary"/>
         <field name="appears_on_payroll_report" eval="True"/>
@@ -492,8 +492,8 @@ else:
             lambda c: (c.transport_mode_public or c.transport_mode_train) and not (c.time_credit and not c.work_time_rate)
         )
         if first_period_contracts:
-            first_period_contract = first_period_contracts[0]
-            result = (contract.public_transport_reimbursed_amount + contract.train_transport_reimbursed_amount) if payslip.contract_id == first_period_contract else 0
+            first_period_contract = first_period_contracts
+            result = (contract.public_transport_reimbursed_amount + contract.train_transport_reimbursed_amount) if (first_period_contract and payslip.contract_id == first_period_contract[0]) else 0
         else:
             result = 0
         </field>
@@ -612,8 +612,8 @@ result = -contract.l10n_be_canteen_cost if result_rules['BASIC']['total'] else 0
 salary_simulation = payslip.dict.env.context.get('salary_simulation')
 if not salary_simulation:
     first_period_contract_ids = payslip.dict._get_period_contracts()
-    first_period_contract = contract.browse(first_period_contract_ids).filtered(lambda c: c.l10n_be_canteen_cost)[0]
-    result = result if payslip.contract_id == first_period_contract else 0
+    first_period_contract = contract.browse(first_period_contract_ids).filtered(lambda c: c.l10n_be_canteen_cost)
+    result = result if (first_period_contract and payslip.contract_id == first_period_contract[0]) else 0
         </field>
         <field name="struct_id" ref="l10n_be_hr_payroll.hr_payroll_structure_cp200_employee_salary"/>
     </record>

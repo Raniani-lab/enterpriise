@@ -179,6 +179,10 @@ class L10nBeEcoVouchersWizard(models.TransientModel):
                     })],
                     'payslip_run_id': self.env.context.get('batch_id', False),
                 })
+                if not payslip.contract_id:
+                    history = self.env['hr.contract.history'].search([('employee_id', '=', payslip.employee_id.id)], limit=1)
+                    contracts = history.contract_ids.filtered(lambda c: c.active and c.state in ['open', 'close'])[0]
+                    payslip.contract_id = contracts[0] if contracts else False
                 payslips |= payslip
                 payslip.with_context(no_paid_amount=True).compute_sheet()
         action = self.env["ir.actions.actions"]._for_xml_id("hr_payroll.action_view_hr_payslip_month_form")

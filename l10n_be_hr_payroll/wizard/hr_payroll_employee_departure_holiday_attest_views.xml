@@ -42,6 +42,7 @@
                             <field name="date_to"/>
                             <field name="line_ids" invisible="1"/>
                             <field name="basic_wage" sum="Total basic wage"/>
+                            <field name="gross_wage" sum="Total gross wage"/>
                             <field name="net_wage" sum="Total net wage"/>
                             <field name="state"/>
                         </tree>
@@ -57,6 +58,7 @@
                             <field name="date_to"/>
                             <field name="line_ids" invisible="1"/>
                             <field name="basic_wage" sum="Total basic wage"/>
+                            <field name="gross_wage" sum="Total gross wage"/>
                             <field name="net_wage" sum="Total net wage"/>
                             <field name="state"/>
                         </tree>

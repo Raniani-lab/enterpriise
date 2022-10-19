@@ -115,6 +115,7 @@ class HrPayslip(models.Model):
     normal_wage = fields.Integer(compute='_compute_normal_wage', store=True)
     compute_date = fields.Date('Computed On')
     basic_wage = fields.Monetary(compute='_compute_basic_net', store=True)
+    gross_wage = fields.Monetary(compute='_compute_basic_net', store=True)
     net_wage = fields.Monetary(compute='_compute_basic_net', store=True)
     currency_id = fields.Many2one(related='contract_id.currency_id')
     warning_message = fields.Char(compute='_compute_warning_message', store=True, readonly=False)
@@ -285,9 +286,10 @@ class HrPayslip(models.Model):
 
     @api.depends('line_ids.total')
     def _compute_basic_net(self):
-        line_values = (self._origin)._get_line_values(['BASIC', 'NET'])
+        line_values = (self._origin)._get_line_values(['BASIC', 'GROSS', 'NET'])
         for payslip in self:
             payslip.basic_wage = line_values['BASIC'][payslip._origin.id]['total']
+            payslip.gross_wage = line_values['GROSS'][payslip._origin.id]['total']
             payslip.net_wage = line_values['NET'][payslip._origin.id]['total']
 
     @api.depends('worked_days_line_ids.number_of_hours', 'worked_days_line_ids.is_paid')

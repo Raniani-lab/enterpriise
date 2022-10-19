@@ -24,7 +24,7 @@ tour.register('planning_tour', {
         content: _t("Assign a <b>resource</b>, or leave it open for the moment. <i>Tip: Create open shifts for the roles you will be needing to complete a mission. Then, assign those open shifts to the resources that are available.</i>"),
         position: "right",
     }, {
-        trigger: ".o_field_widget[name='role_id']",
+        trigger: ".o_field_widget[name='role_id'] .o_field_many2one_selection",
         content: _t("Write the <b>role</b> your employee will perform (<i>e.g. Chef, Bartender, Waiter, etc.</i>). <i>Tip: Create open shifts for the roles you will be needing to complete a mission. Then, assign those open shifts to the resources that are available.</i>"),
         position: "right",
     }, {
@@ -40,7 +40,7 @@ tour.register('planning_tour', {
         content: _t("If you are happy with your planning, you can now <b>send</b> it to your employees."),
         position: "bottom",
     }, {
-        trigger: "button[name='action_send']",
+        trigger: "button[name='action_check_emails']",
         content: _t("<b>Publish & send</b> your employee's planning."),
         position: "bottom",
     }, {

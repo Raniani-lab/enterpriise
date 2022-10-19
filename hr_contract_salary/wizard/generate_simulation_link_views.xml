@@ -6,20 +6,19 @@
         <field name="arch" type="xml">
             <form string="Generate a Simulation Link">
                 <group>
-                    <field name="contract_id"/>
-                    <field name="job_title" />
                     <field name="employee_job_id" />
+                    <field name="job_title" />
                     <field name="display_warning_message" invisible="1"/>
                 </group>
                 <div class="alert alert-warning" role="alert" attrs="{'invisible':[('display_warning_message', '=', False)]}">
                     This job position does not have any contract template related and the advantages will be related to the current employee contract instead of the new job position.
                 </div>
                 <group>
+                    <field name="contract_id"/>
                     <field name="department_id" />
                     <field name="contract_start_date"/>
                     <field name="company_id" invisible="1" />
                     <field name="employee_contract_id" invisible="1"/>
-                    <field name="employee_contract_employee_id" invisible="1"/>
                     <field name="employee_id" invisible="1"/>
                     <field name="applicant_id" invisible="1"/>
                     <field name="currency_id" invisible="1"/>
@@ -58,7 +57,7 @@
         <field name="res_model">generate.simulation.link</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="generate_simulation_link_view_form"/>
-        <field name="context">{'active_id' : active_id, 'active_model': 'hr.contract'}</field>
+        <field name="context">{'default_employee_contract_id' : active_id}</field>
         <field name="target">new</field>
     </record>
 
@@ -68,8 +67,7 @@
         <field name="res_model">generate.simulation.link</field>
         <field name="view_mode">form</field>
         <field name="view_id" ref="generate_simulation_link_view_form"/>
-        <field name="context">{'active_id' : active_id, 'active_model': 'hr.applicant'}</field>
+        <field name="context">{'default_applicant_id' : active_id}</field>
         <field name="target">new</field>
     </record>
-
 </odoo>

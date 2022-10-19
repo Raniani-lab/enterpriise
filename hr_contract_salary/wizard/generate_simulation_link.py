@@ -13,66 +13,21 @@ class GenerateSimulationLink(models.TransientModel):
     _name = 'generate.simulation.link'
     _description = 'Generate Simulation Link'
 
-    @api.model
-    def default_get(self, fields):
-        result = super(GenerateSimulationLink, self).default_get(fields)
-        if not set(fields) & set(['contract_id', 'employee_id', 'employee_contract_id', 'applicant_id']):
-            return result
-        model = self.env.context.get('active_model')
-        if model == 'hr.contract':
-            contract_id = self.env.context.get('active_id')
-            contract = self.env['hr.contract'].sudo().browse(contract_id)
-            result['employee_job_id'] = contract.job_id or contract.default_contract_id.job_id
-            if contract.employee_id:
-                result['employee_id'] = contract.employee_id.id
-                result['employee_contract_id'] = contract_id
-                result['contract_id'] = contract_id
-            elif contract.job_id and contract.job_id.default_contract_id:
-                result['contract_id'] = contract.job_id.default_contract_id.id or False
-        elif model == 'hr.applicant':
-            applicant_id = self.env.context.get('active_id')
-            applicant = self.env['hr.applicant'].sudo().browse(applicant_id)
-            if not applicant.access_token or applicant.access_token_end_date < Date.today():
-                applicant.access_token = uuid.uuid4().hex
-                applicant.access_token_end_date = self.env['hr.applicant']._get_access_token_end_date()
-            result['applicant_id'] = applicant_id
-            contract = applicant.job_id.default_contract_id
-            result['contract_id'] = applicant.job_id.default_contract_id.id
-            if applicant.job_id:
-                result['employee_job_id'] = applicant.job_id
-                result['job_title'] = applicant.job_id.name
-        return result
-
-    def get_contract_domain(self):
-        return [
-            '|',
-            ('employee_id', '=', False),
-            ('employee_id', '=', self.employee_contract_id.employee_id.id)]
-
     contract_id = fields.Many2one(
         'hr.contract', string="Offer Template", required=True,
-        compute='_compute_from_job', store=True, readonly=False,
-        domain="['|', ('employee_id', '=', False), ('employee_id', '=', employee_contract_employee_id)]")
+        domain="['|', ('employee_id', '=', False), ('employee_id', '=', employee_id)]")
     employee_contract_id = fields.Many2one('hr.contract')
-    employee_contract_employee_id = fields.Many2one(related='employee_contract_id.employee_id', string="contract employee")
-    employee_id = fields.Many2one('hr.employee')
-    final_yearly_costs = fields.Monetary(
-        string="Yearly Cost", required=True,
-        compute='_compute_from_contract_id', readonly=False, store=True)
+    employee_id = fields.Many2one('hr.employee', related='employee_contract_id.employee_id')
+    final_yearly_costs = fields.Monetary(string="Yearly Cost", required=True)
     currency_id = fields.Many2one(related='contract_id.currency_id')
     applicant_id = fields.Many2one('hr.applicant')
-    job_title = fields.Char("Job Title", compute='_compute_from_job', store=True, readonly=False)
+    job_title = fields.Char("Job Title")
     company_id = fields.Many2one(related="contract_id.company_id")
     employee_job_id = fields.Many2one(
         'hr.job', string="Job Position",
-        store=True,
-        readonly=False,
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     department_id = fields.Many2one(
         'hr.department', string="Department",
-        compute='_compute_from_job',
-        store=True,
-        readonly=False,
         domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]")
     contract_start_date = fields.Date("Contract Start Date", default=fields.Date.context_today)
 
@@ -107,10 +62,9 @@ class GenerateSimulationLink(models.TransientModel):
                 url = url + url_encode(params)
             wizard.url = url
 
-    @api.depends('contract_id', 'applicant_id')
-    def _compute_from_contract_id(self):
-        for wizard in self:
-            wizard.final_yearly_costs = wizard.contract_id.final_yearly_costs
+    @api.onchange('contract_id')
+    def _onchange_contract_id(self):
+        self.final_yearly_costs = self.contract_id.final_yearly_costs
 
     @api.depends('employee_job_id')
     def _compute_warning_message(self):
@@ -124,27 +78,38 @@ class GenerateSimulationLink(models.TransientModel):
                 wizard.display_warning_message = False
 
     @api.depends('employee_job_id')
-    def _compute_from_job(self):
+    def _compute_warning_message(self):
         for wizard in self:
-            wizard.job_title = wizard.employee_job_id.name
-            if wizard.employee_job_id.department_id:
-                wizard.department_id = wizard.employee_job_id.department_id
+            current_job = wizard.employee_contract_id.job_id
+            new_job = wizard.employee_job_id
 
-            model = self.env.context.get('active_model')
-            if model == 'hr.contract':
-                if wizard.employee_job_id != wizard.employee_contract_id.job_id:
-                    wizard.contract_id = wizard.contract_id\
-                        or wizard.employee_contract_id.default_contract_id\
-                        or wizard.employee_contract_id
-                else:
-                    wizard.contract_id = wizard.employee_contract_id or wizard.employee_contract_id.default_contract_id
-            elif model == 'hr.applicant':
-                wizard.contract_id = wizard.employee_job_id.default_contract_id
+            if (not current_job or current_job.id != new_job.id) and not new_job.default_contract_id:
+                wizard.display_warning_message = True
+            else:
+                wizard.display_warning_message = False
+
+    @api.onchange('applicant_id', 'employee_contract_id')
+    def _onchange_job_selection(self):
+        self.employee_job_id = self.employee_contract_id.job_id or self.applicant_id.job_id
+
+    @api.onchange('employee_job_id')
+    def _onchange_employee_job_id(self):
+        self.job_title = self.employee_job_id.name
+        if self.employee_job_id.department_id:
+            self.department_id = self.employee_job_id.department_id
+
+        if self.employee_contract_id and (self.employee_job_id == self.employee_contract_id.job_id or not self.employee_job_id.default_contract_id):
+            self.contract_id = self.employee_contract_id
+        else:
+            self.contract_id = self.employee_job_id.default_contract_id
 
     def name_get(self):
         return [(w.id, w.employee_id.name or w.applicant_id.partner_name) for w in self]
 
     def send_offer(self):
+        if self.applicant_id and (not self.applicant_id.access_token or self.applicant_id.access_token_end_date < fields.Date.today()):
+            self.applicant_id.access_token = uuid.uuid4().hex
+            self.applicant_id.access_token_end_date = self.env['hr.applicant']._get_access_token_end_date()
         try:
             template_id = self.env.ref('hr_contract_salary.mail_template_send_offer').id
         except ValueError:

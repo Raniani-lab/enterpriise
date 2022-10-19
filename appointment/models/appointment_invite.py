@@ -155,6 +155,12 @@ class AppointmentShare(models.Model):
                 url_encode(invite._get_redirect_url_parameters()),
             )
 
+    def _get_meeting_categories_for_appointment(self):
+        """ Get the categories that will be linked to the meetings created from the invite
+            :return <calendar.event.type> recordset:
+        """
+        return self.env.ref('appointment.calendar_event_type_data_online_appointment', raise_if_not_found=False)
+
     def _get_redirect_url_parameters(self):
         self.ensure_one()
         url_param = {

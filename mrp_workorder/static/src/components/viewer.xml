@@ -8,7 +8,7 @@
             </div>
         </t>
         <t t-elif="type === 'google_slide'">
-            <div class="o_tablet_document">
+            <div class="o_tablet_document" t-ref="slide_viewer">
                 <SlidesViewer t-props="viewerProps"/>
             </div>
         </t>

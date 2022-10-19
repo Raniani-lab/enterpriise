@@ -125,7 +125,7 @@ class Tablet extends Component {
 
     get worksheetData() {
         if (this.selectedStep) {
-            if (this.selectedStep.worksheet_document) {
+            if (this.selectedStep.source_document === "custom" && this.selectedStep.worksheet_document) {
                 return {
                     resModel: 'quality.check',
                     resId: this.state.selectedStepId,
@@ -133,7 +133,7 @@ class Tablet extends Component {
                     value: this.selectedStep.worksheet_document,
                     page: 1,
                 };
-            } else if (this.selectedStep.worksheet_url) {
+            } else if (this.selectedStep.source_document === "custom" && this.selectedStep.worksheet_url) {
                 return {
                     resModel: "quality.point",
                     resId: this.selectedStep.point_id,

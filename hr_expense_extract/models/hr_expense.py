@@ -292,6 +292,7 @@ class HrExpense(models.Model):
 
     def retry_ocr(self):
         """Retry to contact iap to submit the first attachment in the chatter"""
+        self.ensure_one()
         if not self.env.company.expense_extract_show_ocr_option_selection or self.env.company.expense_extract_show_ocr_option_selection == 'no_send':
             return False
         attachments = self.message_main_attachment_id
@@ -313,6 +314,8 @@ class HrExpense(models.Model):
                 'user_lang': self.env.user.lang,
                 'user_email': self.env.user.email,
             }
+            baseurl = self.get_base_url()
+            webhook_url = f"{baseurl}/hr_expense_extract/request_done"
             params = {
                 'account_token': account_token.account_token,
                 'version': CLIENT_OCR_VERSION,
@@ -320,6 +323,7 @@ class HrExpense(models.Model):
                 'documents': [x.datas.decode('utf-8') for x in attachments],
                 'file_names': [x.name for x in attachments],
                 'user_infos': user_infos,
+                'webhook_url': webhook_url,
                 }
             try:
                 result = iap_tools.iap_jsonrpc(endpoint, params=params)

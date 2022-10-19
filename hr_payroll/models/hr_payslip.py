@@ -624,6 +624,8 @@ class HrPayslip(models.Model):
     def _get_payslip_lines(self):
         line_vals = []
         for payslip in self:
+            if not payslip.contract_id:
+                raise UserError(_("There's no contract set on payslip %s for %s. Check that there is at least a contract set on the employee form.", payslip.name, payslip.employee_id.name))
 
             localdict = self.env.context.get('force_payslip_localdict', None)
             if localdict is None:

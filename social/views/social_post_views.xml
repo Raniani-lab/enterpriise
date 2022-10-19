@@ -85,7 +85,7 @@
                                     </t>
                                 </div>
                             </div>
-                            <div id="post-stats" class="d-flex bg-100 px-3 py-1 border-bottom">
+                            <div id="post-stats" class="d-flex bg-100 px-3 py-1 border-bottom flex-wrap">
                                 <div class="px-2 text-center">
                                     <small>Clicks:</small>
                                     <small class="fw-bold" t-esc="record.click_count.raw_value"/>

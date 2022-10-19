@@ -70,7 +70,7 @@
                                 <div class="col-lg-10">
                                     <h3>Import contacts</h3>
                                     <p>Import customers or suppliers (partners) and their contacts using a
-                                        <a class="fw-bold" href="https://docs.google.com/spreadsheets/d/1UUapTtjyzC6lMLECBcDN0SiJjhNjHbiXVnv5JSNS7Hg/edit?usp=sharing" target="blank">
+                                        <a class="fw-bold" href="/base/static/xls/res_partner.xlsx" aria-label="Download" title="Download">
                                             template.
                                         </a>
                                     </p>
@@ -84,7 +84,7 @@
                                 <div class="col-lg-10">
                                     <h3>Import Chart of Accounts</h3>
                                     <p>Import the Chart of Accounts and initial balances using a
-                                        <a class="fw-bold" href="https://docs.google.com/spreadsheets/d/1rneV51mYaA5uTJlQlfYGg9Yy0fYiORu13xiNbK7ANYk/edit?usp=sharing" target="blank">
+                                        <a class="fw-bold" href="/account/static/xls/coa_import_template.xlsx" aria-label="Download" title="Download">
                                             template.
                                         </a>
                                     </p>
@@ -99,7 +99,7 @@
                                 <div class="col-lg-10">
                                     <h3>Import Journal Items</h3>
                                     <p>Optional, but useful to import open receivables &amp; payables using a
-                                        <a class="fw-bold" href="https://docs.google.com/spreadsheets/d/17a8GjOCjRyQGOLGZt8CeA-nxKzW4Dys5gq5UplAAT2A/edit?usp=sharing" target="blank">
+                                        <a class="fw-bold" href="/account/static/xls/aml_import_template.xlsx" aria-label="Download" title="Download">
                                             template.
                                         </a>
                                     </p>
@@ -114,7 +114,7 @@
                 </div>
 
             </div>
-            
+
         </div>
     </t>
 

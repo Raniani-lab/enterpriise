@@ -38,7 +38,8 @@ class SignContract(Sign):
             ]
             if contract and request_template_id in contract_documents:
                 self._update_contract_on_signature(request_item, contract)
-                return dict(result, **{'url': '/salary_package/thank_you/' + str(contract.id)})
+                if request_item.sign_request_id.nb_closed == 1:
+                    return dict(result, **{'url': '/salary_package/thank_you/' + str(contract.id)})
         return result
 
     def _update_contract_on_signature(self, request_item, contract):

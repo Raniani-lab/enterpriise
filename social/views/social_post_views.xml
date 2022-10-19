@@ -45,7 +45,7 @@
                         <div t-attf-class="oe_kanban_global_click o_social_post_kanban #{record.has_post_errors.raw_value ? 'o_social_post_kanban_error' : ''} d-flex flex-column p-0">
                             <div class="o_social_post_header d-flex justify-content-between border-bottom py-2 px-3">
                                 <div class="o_social_post_media d-flex align-items-center">
-                                    <t t-foreach="record.media_ids.raw_value" t-as="media_id">
+                                    <t t-foreach="record.media_ids.raw_value" t-as="media_id" t-key="media_id_index">
                                         <t t-if="record.live_posts_by_media.raw_value"> <!-- unset in sample mode -->
                                             <img class="img me-1" width="16" t-att-title="title" t-attf-src="/web/image/social.media/#{media_id}/image/16x16" alt="Media"/>
                                         </t>
@@ -69,7 +69,7 @@
                                     t-att-data-images="record.image_urls.raw_value">
                                     <t t-set="image_urls_json" t-value="JSON.parse(record.image_urls.raw_value || '[]')"/>  <!-- fallback on '[]' necessary as unset in sample mode -->
 
-                                    <t t-foreach="image_urls_json.length > 2 ? image_urls_json.slice(0, 2) : image_urls_json" t-as="image_url">
+                                    <t t-foreach="image_urls_json.length > 2 ? image_urls_json.slice(0, 2) : image_urls_json" t-as="image_url" t-key="image_url_index">
                                         <t t-if="image_url_index == 1 &amp; record.image_ids.raw_value.length > 2">
                                             <a class="o_social_stream_post_image_more position-relative d-flex ms-1"
                                                 t-on-click.stop="() => this.onClickMoreImages(image_url_index, image_urls_json)">

@@ -3392,6 +3392,14 @@ msgstr ""
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
+msgid ""
+"There's no contract set on payslip %s for %s. Check that there is at least a"
+" contract set on the employee form."
+msgstr ""
+
+#. module: hr_payroll
+#: code:addons/hr_payroll/models/hr_payslip.py:0
+#, python-format
 msgid "This action is forbidden on validated payslips."
 msgstr ""
 

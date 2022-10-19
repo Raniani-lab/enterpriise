@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from collections import defaultdict
 from odoo import api, Command, fields, models, _
 from odoo.osv import expression
 from odoo.exceptions import ValidationError
@@ -40,17 +41,24 @@ class AccountAnalyticLine(models.Model):
             if line.helpdesk_ticket_id:
                 line.partner_id = line.helpdesk_ticket_id.partner_id or line.partner_id
 
-    def _timesheet_preprocess(self, vals):
-        helpdesk_ticket_id = vals.get('helpdesk_ticket_id')
-        if helpdesk_ticket_id:
-            ticket = self.env['helpdesk.ticket'].browse(helpdesk_ticket_id)
-            if ticket.project_id:
-                vals['project_id'] = ticket.project_id.id
-            vals.update({
-                'account_id': ticket.analytic_account_id.id,
-            })
-        vals = super(AccountAnalyticLine, self)._timesheet_preprocess(vals)
-        return vals
+    def _timesheet_preprocess(self, vals_list):
+        vals_list_per_ticket_id = defaultdict(list)
+        for vals in vals_list:
+            if vals.get('helpdesk_ticket_id'):
+                vals_list_per_ticket_id[vals['helpdesk_ticket_id']].append(vals)
+        if vals_list_per_ticket_id:
+            tickets_per_id = {
+                ticket['id']: ticket
+                for ticket in self.env['helpdesk.ticket'].sudo().browse(list(vals_list_per_ticket_id))
+            }
+            for ticket_id, vals_list in vals_list_per_ticket_id.items():
+                ticket = tickets_per_id[ticket_id]
+                vals_update = {'account_id': ticket.analytic_account_id.id}
+                if ticket.project_id:
+                    vals_update['project_id'] = ticket.project_id.id
+                for vals in vals_list:
+                    vals.update(vals_update)
+        return super(AccountAnalyticLine, self)._timesheet_preprocess(vals_list)
 
     def _timesheet_get_portal_domain(self):
         domain = super(AccountAnalyticLine, self)._timesheet_get_portal_domain()

@@ -136,6 +136,8 @@ class HrContractSalary(http.Controller):
             return {'redirect_to_job': value}
         if field_name == 'allow':
             return {'whitelist': value}
+        if field_name == 'part':
+            return {'part_time': True}
 
         if field_name in old_value:
             old_value = old_value[field_name]
@@ -165,6 +167,7 @@ class HrContractSalary(http.Controller):
             'department_id': False,
             'job_title': False,
             'whitelist': False,
+            'part_time': False,
             'final_yearly_costs': contract.final_yearly_costs,
         })
         return values
@@ -678,7 +681,9 @@ class HrContractSalary(http.Controller):
         })
 
         result['new_gross'] = round(new_gross, 2)
-        new_contract = new_contract.with_context(origin_contract_id=contract.id)
+        new_contract = new_contract.with_context(
+            origin_contract_id=contract.id,
+            simulation_working_schedule=kw.get('simulation_working_schedule', '100'))
         result.update(self._get_compute_results(new_contract))
 
         request.env.cr.rollback()

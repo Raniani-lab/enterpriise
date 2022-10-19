@@ -437,6 +437,10 @@ class HrContractSalary(main.HrContractSalary):
         resume = result['resume_lines_mapped']['Monthly Salary']
         if 'SALARY' in resume and resume.get('wage_with_holidays') and resume['wage_with_holidays'][1] != resume['SALARY'][1]:
             ordered_fields = ['wage_with_holidays', 'SALARY', 'NET']
+            if new_contract.env.context.get('simulation_working_schedule', '100') != '100':
+                salary_tuple = result['resume_lines_mapped']['Monthly Salary']['SALARY']
+                salary_tuple = (_('Gross (Part Time)'), salary_tuple[1], salary_tuple[2])
+                result['resume_lines_mapped']['Monthly Salary']['SALARY'] = salary_tuple
         else:
             ordered_fields = ['wage_with_holidays', 'NET']
         result['resume_lines_mapped']['Monthly Salary'] = {field: resume.get(field, 0) for field in ordered_fields}

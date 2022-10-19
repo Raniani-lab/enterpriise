@@ -171,10 +171,13 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                 const appliesOn = $(area).attr('applies-on');
                 advantages[appliesOn][area.name] = area.value;
             });
-        $('select.advantage_input,select.personal_info').toArray().forEach(select => {
-            const appliesOn = $(select).attr('applies-on');
-            advantages[appliesOn][select.name] = $(select).val();
-        });
+        $('select.advantage_input,select.personal_info')
+            .toArray()
+            .filter(select => select.name !== 'simulation_working_schedule')
+            .forEach(select => {
+                const appliesOn = $(select).attr('applies-on');
+                advantages[appliesOn][select.name] = $(select).val();
+            });
         return advantages;
     },
 
@@ -460,6 +463,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                 params: {
                     'contract_id': parseInt($("input[name='contract']").val()),
                     'advantages': self.getAdvantages({includeFiles: false}),
+                    'simulation_working_schedule': $("select[name='simulation_working_schedule']").val(),
                 },
             }).then(data => {
                 $("input[name='wage']").val(data['new_gross']);

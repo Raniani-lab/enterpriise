@@ -44,14 +44,6 @@
             <xpath expr="//field[@name='check_ids']/tree/field[@name='user_id']" position="attributes">
                 <attribute name="attrs">{'column_invisible': [('parent.allow_employee', '!=', False)]}</attribute>
             </xpath>
-            <xpath expr="//field[@name='time_ids']/tree/field[@name='employee_id']" position="after">
-                <field name="employee_cost" attrs="{
-                    'column_invisible': [('parent.allow_employee', '=', False)],
-                    'invisible': [('employee_id', '=', False)]}"/>
-                <field name="total_cost" attrs="{
-                    'column_invisible': [('parent.allow_employee', '=', False)],
-                    'invisible': [('employee_id', '=', False)]}"/>
-            </xpath>
         </field>
     </record>
 

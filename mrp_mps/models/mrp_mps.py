@@ -275,7 +275,8 @@ class MrpProductionSchedule(models.Model):
                 continue
             dummy, components = bom.explode(record.product_id, 1)
             for component in components:
-                components_list.add((component[0].product_id.id, record.warehouse_id.id, record.company_id.id))
+                if component[0].product_id.type != 'consu':
+                    components_list.add((component[0].product_id.id, record.warehouse_id.id, record.company_id.id))
         for component in components_list:
             if self.env['mrp.production.schedule'].search([
                 ('product_id', '=', component[0]),

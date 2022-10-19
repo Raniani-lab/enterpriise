@@ -198,7 +198,7 @@ class HrExpense(models.Model):
     def _check_status(self):
         self.ensure_one()
         endpoint = self.env['ir.config_parameter'].sudo().get_param(
-            'hr_expense_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/expense_extract/get_result'
+            'hr_expense_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/expense/1/get_result'
         params = {
                 'version': CLIENT_OCR_VERSION,
                 'document_id': self.extract_remote_id
@@ -302,7 +302,7 @@ class HrExpense(models.Model):
         ):
             account_token = self.env['iap.account'].get('invoice_ocr')
             endpoint = self.env['ir.config_parameter'].sudo().get_param(
-                    'hr_expense_extract_endpoint', 'https://iap-extract.odoo.com') + '/iap/expense_extract/parse'
+                    'hr_expense_extract_endpoint', 'https://iap-extract.odoo.com') + '/api/extract/expense/1/parse'
 
             #this line contact iap to create account if this is the first request. This allow iap to give free credits if the database is elligible
             self.env['iap.account'].get_credits('invoice_ocr')

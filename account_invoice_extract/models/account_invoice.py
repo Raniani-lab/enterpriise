@@ -264,7 +264,7 @@ class AccountMove(models.Model):
                 'webhook_url': webhook_url,
             }
             try:
-                result = self._contact_iap_extract('/iap/invoice_extract/parse', params)
+                result = self._contact_iap_extract('/api/extract/invoice/1/parse', params)
                 self.extract_status_code = result['status_code']
                 if result['status_code'] == SUCCESS:
                     if self.env['ir.config_parameter'].sudo().get_param("account_invoice_extract.already_notified", True):
@@ -813,7 +813,7 @@ class AccountMove(models.Model):
             params = {
                 'document_id': self.extract_remote_id
             }
-            result = self._contact_iap_extract('/iap/invoice_extract/get_result', params=params)
+            result = self._contact_iap_extract('/api/extract/invoice/1/get_result', params=params)
             self.extract_status_code = result['status_code']
             if result['status_code'] == SUCCESS:
                 self.extract_state = "waiting_validation"

@@ -23,12 +23,7 @@ tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
     content: Markup(_t('Choose a <b>name</b> for your product <i>(e.g. Bolts, Screws, Boiler, etc.).</i>')),
     position: 'right',
 }, {
-    trigger: ".o_form_button_save",
-    content: _t("Save your <b>product</b>."),
-    position: "bottom",
-}, {
-    trigger: ".breadcrumb-item:not(.active):last",
-    extra_trigger: ".o_form_saved",
+    trigger: ".breadcrumb-item.o_back_button",
     content: Markup(_t("Use the breadcrumbs to navigate to your <b>list of products</b>.")),
     position: "bottom",
 }, {
@@ -38,7 +33,7 @@ tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
     content: _t('Click on your product to add it to your <b>list of materials</b>. <i>Tip: for large quantities, click on the number to edit it directly.</i>'),
     position: 'right',
 }, {
-    trigger: ".breadcrumb-item:not(.active):last",
+    trigger: ".breadcrumb-item.o_back_button",
     extra_trigger: '.o_fsm_material_kanban',
     content: Markup(_t("Use the breadcrumbs to return to your <b>task</b>.")),
     position: "bottom"

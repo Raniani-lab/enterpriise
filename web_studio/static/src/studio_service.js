@@ -4,7 +4,7 @@ import { delay } from "web.concurrency";
 import legacyBus from "web_studio.bus";
 import { resetViewCompilerCache } from "@web/views/view_compiler";
 
-const { EventBus } = owl;
+import { EventBus } from "@odoo/owl";
 
 const URL_VIEW_KEY = "_view_type";
 const URL_ACTION_KEY = "_action";

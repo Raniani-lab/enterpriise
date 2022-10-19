@@ -79,7 +79,7 @@ odoo.define('web_mobile.hooks', function (require) {
 
 const { backButtonManager } = require('web_mobile.core');
 
-const { onMounted, onPatched, onWillUnmount, useComponent } = owl;
+const { onMounted, onPatched, onWillUnmount, useComponent } = require("@odoo/owl");
 
 /**
  * This hook provides support for executing code when the back button is pressed

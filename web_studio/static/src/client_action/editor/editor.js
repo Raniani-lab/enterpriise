@@ -9,7 +9,7 @@ import { EditorMenu } from "./editor_menu/editor_menu";
 
 import { mapDoActionOptionAPI } from "@web/legacy/backend_utils";
 
-const { Component, EventBus, onWillStart, useSubEnv } = owl;
+import { Component, EventBus, onWillStart, useSubEnv } from "@odoo/owl";
 
 const editorTabRegistry = registry.category("web_studio.editor_tabs");
 

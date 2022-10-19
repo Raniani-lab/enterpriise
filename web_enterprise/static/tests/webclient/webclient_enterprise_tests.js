@@ -18,7 +18,7 @@ import { registerCleanup } from "@web/../tests/helpers/cleanup";
 import { errorService } from "@web/core/errors/error_service";
 import { browser } from "@web/core/browser/browser";
 
-const { Component, xml } = owl;
+import { Component, xml } from "@odoo/owl";
 
 let serverData;
 let fixture;

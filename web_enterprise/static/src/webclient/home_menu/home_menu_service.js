@@ -10,7 +10,7 @@ import {
 } from "@web/webclient/actions/action_service";
 import { HomeMenu } from "./home_menu";
 
-const { Component, onMounted, onWillUnmount, xml } = owl;
+import { Component, onMounted, onWillUnmount, xml } from "@odoo/owl";
 
 export const homeMenuService = {
     dependencies: ["action", "router"],

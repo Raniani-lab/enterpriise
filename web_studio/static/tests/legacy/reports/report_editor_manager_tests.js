@@ -10,7 +10,7 @@ var studioTestUtils = require('web_studio.testUtils');
 var session = require('web.session');
 const { patchWithCleanup } = require("@web/../tests/helpers/utils");
 
-const { useEffect } = owl;
+const { useEffect } = require("@odoo/owl");
 
 function getFloatSizeFromPropertyInPixels($element, propertyName) {
     var size = $element.css(propertyName);

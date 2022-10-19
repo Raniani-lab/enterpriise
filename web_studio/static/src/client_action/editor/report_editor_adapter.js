@@ -5,7 +5,7 @@ import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 
-const { Component, xml } = owl;
+import { Component, xml } from "@odoo/owl";
 
 class ReportEditorAdapter extends ComponentAdapter {
     constructor(props) {

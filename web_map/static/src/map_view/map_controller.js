@@ -8,7 +8,7 @@ import { useSetupView } from "@web/views/view_hook";
 import { Layout } from "@web/search/layout";
 import { usePager } from "@web/search/pager_hook";
 
-const { Component, onWillUnmount, onWillStart } = owl;
+import { Component, onWillUnmount, onWillStart } from "@odoo/owl";
 
 export class MapController extends Component {
     setup() {

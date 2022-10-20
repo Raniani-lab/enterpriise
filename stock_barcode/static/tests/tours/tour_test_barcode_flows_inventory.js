@@ -328,13 +328,14 @@ registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_produ
     {
         trigger: '.o_barcode_line',
         run: function() {
+            helper.assertLinesCount(2);
             helper.assertLineSourceLocation(0, "WH/Stock/Section 1");
             helper.assertLineQty(0, "3 / 3");
             helper.assertLineSourceLocation(1, "WH/Stock/Section 2");
             helper.assertLineQty(1, "0 / 5");
         }
     },
-    // Scans Section 1 then scans productlot1.
+    // Scans Section 1 then scans productlot1 -> It should update the first productlot1's line.
     { trigger: '.o_barcode_line', run: 'scan LOC-01-01-00' },
     {
         trigger: '.o_barcode_line:first-child [name=source_location].o_highlight',
@@ -349,12 +350,79 @@ registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_produ
             helper.assertLineQty(1, "0 / 5");
         }
     },
+    // Scans productserial1 -> As we are in Section 1, it should get sn1, sn2 and sn3.
+    { trigger: '.o_barcode_client_action', run: 'scan productserial1' },
+    {
+        trigger: '.o_barcode_line:nth-child(2).o_selected',
+        run: function() {
+            helper.assertLinesCount(3);
+            const serialLine = helper.getLine({ barcode: "productserial1" });
+            helper.assertLineSourceLocation(serialLine, "WH/Stock/Section 1");
+            helper.assertLineQty(1, "? / 3");
+        }
+    },
+    // Shows sublines.
+    { trigger: '.o_barcode_line.o_selected .btn.o_toggle_sublines .fa-caret-down' },
+    {
+        trigger: '.o_sublines',
+        run: function() {
+            helper.assertSublinesCount(3)
+            const [subline1, subline2, subline3] = helper.getSublines();
+            helper.assertLineQty(subline1, "? / 1");
+            helper.assertLineQty(subline2, "? / 1");
+            helper.assertLineQty(subline3, "? / 1");
+            helper.assert(subline1.querySelector('.o_line_lot_name').innerText, "sn1");
+            helper.assert(subline2.querySelector('.o_line_lot_name').innerText, "sn2");
+            helper.assert(subline3.querySelector('.o_line_lot_name').innerText, "sn3");
+        }
+    },
+    // Hides sublines.
+    { trigger: '.o_barcode_line.o_selected .btn.o_toggle_sublines .fa-caret-up' },
+    // Scans Section 2 then scans productlot1 -> It should update the second productlot1's line.
+    { trigger: '.o_barcode_line', run: 'scan LOC-01-02-00' },
+    {
+        trigger: '.o_barcode_line:nth-child(3) [name=source_location].o_highlight',
+        run: 'scan lot1',
+    },
+    {
+        trigger: '.o_barcode_line:nth-child(3).o_selected',
+        run: function() {
+            const [lotLine1, lotLine2] = helper.getLines({ barcode: "productlot1" });
+            helper.assertLineSourceLocation(lotLine1, "WH/Stock/Section 1");
+            helper.assertLineQty(0, "4 / 3");
+            helper.assertLineSourceLocation(lotLine2, "WH/Stock/Section 2");
+            helper.assertLineQty(2, "1 / 5");
+        }
+    },
+    // Scans productserial1 -> No existing quant in Section 2 for this product so creates a new line.
+    { trigger: '.o_barcode_client_action', run: 'scan productserial1' },
+    {
+        trigger: '.o_barcode_line:nth-child(4).o_selected',
+        run: function() {
+            helper.assertLinesCount(4);
+            const [serialLine1, serialLine2] = helper.getLines({ barcode: 'productserial1' });
+            helper.assertLineSourceLocation(serialLine1, "WH/Stock/Section 1");
+            helper.assertLineQty(serialLine1, "? / 3");
+            helper.assertLineSourceLocation(serialLine2, "WH/Stock/Section 2");
+            helper.assertLineQty(serialLine2, "0");
+        }
+    },
+    ...stepUtils.validateBarcodeOperation(),
+    {
+        trigger: '.o_stock_barcode_main_menu',
+        run: function () {
+            helper.assertErrorMessage('The inventory adjustment has been validated');
+        },
+    },
 ]});
 
 registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_product_permissive_quants', {test: true, steps: [
-
+    { trigger: '.button_inventory' },
     {
-        trigger: '.button_inventory',
+        trigger: '.o_barcode_client_action',
+        run: function() {
+            helper.assertLinesCount(0);
+        }
     },
 
     // Scan a product tracked by lot that has a quant without lot_id, then scan a product's lot.
@@ -364,6 +432,15 @@ registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_produ
     },
     {
         trigger: '.o_barcode_line:contains("productlot1")',
+        run: function() {
+            helper.assertLinesCount(1);
+            helper.assertSublinesCount(0);
+            const line = helper.getLine();
+            helper.assertLineQty(line, "? / 5");
+        }
+    },
+    {
+        trigger: '.o_barcode_client_action',
         run: 'scan lot1',
     },
     {
@@ -378,17 +455,14 @@ registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_produ
         run: function () {
             helper.assertLinesCount(1);
             helper.assertSublinesCount(2);
+            const [subline1, subline2] = helper.getSublines();
+            helper.assertLineQty(subline1, "? / 5");
+            helper.assertLineQty(subline2, "2");
         }
     },
 
-    {
-        trigger: '.o_barcode_line .o_barcode_line:not(:contains("lot1")) .o_line_button.o_set.o_difference'
-    },
-    {
-        trigger: '.o_sublines .o_barcode_line:not(:contains("lot1")) .o_line_button.o_set:not(.o_difference)'
-    },
-
-    ...stepUtils.validateBarcodeOperation('.o_sublines .o_barcode_line:not(:contains("lot1")) .o_line_button.o_set .fa-check'),
+    { trigger: '.o_sublines .o_barcode_line:first-child .o_line_button.o_set:not(.o_difference)' },
+    ...stepUtils.validateBarcodeOperation('.o_sublines .o_barcode_line:first-child .o_line_button.o_set .fa-check'),
 
     {
         trigger: '.o_stock_barcode_main_menu',

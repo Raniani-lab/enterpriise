@@ -68,6 +68,11 @@ class StockQuant(models.Model):
         action = self.env['ir.actions.actions']._for_xml_id('stock_barcode.stock_barcode_inventory_client_action')
         return dict(action, target='fullscreen')
 
+    @api.model
+    def get_existing_quant_and_related_data(self, domain):
+        quants = self.search(domain)
+        return quants.get_stock_barcode_data_records()
+
     def _get_stock_barcode_data(self):
         locations = self.env['stock.location']
         company_id = self.env.company.id

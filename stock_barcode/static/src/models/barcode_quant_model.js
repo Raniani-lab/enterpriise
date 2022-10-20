@@ -148,7 +148,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
     }
 
     getQtyDone(line) {
-        return line.inventory_quantity;
+        return line.inventory_quantity_set ? line.inventory_quantity : 0;
     }
 
     getQtyDemand(line) {
@@ -291,54 +291,78 @@ export default class BarcodeQuantModel extends BarcodeModel {
                 domain.push(['lot_id.name', '=', params.fieldsParams.lot_name]);
             } else if (params.fieldsParams.lot_id) { // Search for a quant with the exact same lot.
                 domain.push(['lot_id', '=', params.fieldsParams.lot_id.id]);
-            } else { // Search for a quant with no lot.
-                domain.push(['lot_id', '=', false]);
             }
         }
         if (params.fieldsParams.package_id) {
             domain.push(['package_id', '=', params.fieldsParams.package_id]);
         }
-        const quant = await this.orm.searchRead(
-            'stock.quant',
-            domain,
-            ['id', 'inventory_date', 'inventory_quantity', 'inventory_quantity_set', 'quantity', 'user_id'],
-            { limit: 1 }
-        );
-        if (quant.length) {
+        const res = await this.orm.call( 'stock.quant', 'get_existing_quant_and_related_data', [domain]);
+        this.cache.setCache(res.records);
+        const quants = res.records['stock.quant'];
+        if (quants.length === 1 && (
+            product.tracking === 'none' || params.fieldsParams.lot_name || params.fieldsParams.lot_id)) {
             const inventory_quantity = params.fieldsParams.inventory_quantity || 1;
-            Object.assign(params.fieldsParams, quant[0], { inventory_quantity });
+            params.fieldsParams = Object.assign({}, params.fieldsParams, { inventory_quantity });
         }
-        const newLine = await super._createNewLine(params);
-        if (quant.length) {
-            // If the quant already exits, we add it into the `initialState` to
-            // avoid comparison issue with the `currentState` when the save occurs.
-            this.initialState.lines.push(Object.assign({}, newLine, quant[0]));
+        let newLine = false;
+        if (quants.length) { // Found existing quants: create a line for each one.
+            const lineIds = this.currentState.lines.map(l => l.id);
+            for (const quant of quants) {
+                if (lineIds.includes(quant.id)) {
+                    continue; // Don't create line for quant if there is already a line for it.
+                }
+                const lineParams = {
+                    fieldsParams: Object.assign({}, quant, params.fieldsParams),
+                };
+                const newlyCreatedLine = await super._createNewLine(lineParams);
+                // Keeps the first created line so that the one who will be selected.
+                newLine = newLine || newlyCreatedLine;
+                // If the quant already exits, we add it into the `initialState` to
+                // avoid comparison issue with the `currentState` when the save occurs.
+                const lineWithOriginalQuantValues = Object.assign({}, newlyCreatedLine, {
+                    inventory_date: quant.inventory_date,
+                    inventory_quantity: quant.inventory_quantity,
+                    inventory_quantity_set: quant.inventory_quantity_set,
+                    quantity: quant.quantity,
+                    user_id: quant.user_id,
+                });
+                this.initialState.lines.push(lineWithOriginalQuantValues);
+            }
+        } else { // No existing quant: creates an empty new line.
+            newLine = await super._createNewLine(params);
         }
         return newLine;
     }
 
     _convertDataToFieldsParams(args) {
-        const params = {
-            inventory_quantity: args.quantity,
-            lot_id: args.lot,
-            lot_name: args.lotName,
-            owner_id: args.owner,
-            package_id: args.package || args.resultPackage,
-            product_id: args.product,
-            product_uom_id: args.product && args.product.uom_id,
-        };
+        const params = {};
+        const argsPackage = args.package || args.resultPackage;
+        // Set the fields in `params` only if they are in `args`.
+        args.quantity && (params.inventory_quantity = args.quantity);
+        args.lot && (params.lot_id = args.lot);
+        args.lotName && (params.lot_name = args.lotName);
+        args.owner && (params.owner_id = args.owner);
+        argsPackage && (params.package_id = argsPackage);
+        args.product && (params.product_id = args.product);
+        args.product && args.product.uom_id && (params.product_uom_id = args.product.uom_id);
         return params;
     }
 
     _getNewLineDefaultValues(fieldsParams) {
         const defaultValues = super._getNewLineDefaultValues(...arguments);
-        return Object.assign(defaultValues, {
+        Object.assign(defaultValues, {
             inventory_date: new Date().toISOString().slice(0, 10),
             inventory_quantity: 0,
-            inventory_quantity_set: true,
             quantity: (fieldsParams && fieldsParams.quantity) || 0,
             user_id: this.userId,
         });
+        // Marks the new line's quantity as set only if it's not an existing quant (no `quantity`)
+        // or if it already has a counted quantity. It's to avoid tragedy if the user applies by
+        // mistake the inventory adjustment after scanned a product with multiple serial/lot numbers
+        if (fieldsParams.quantity === undefined || fieldsParams.inventory_quantity) {
+            defaultValues.inventory_quantity_set = true;
+        }
+        return defaultValues
     }
 
     _getFieldToWrite() {

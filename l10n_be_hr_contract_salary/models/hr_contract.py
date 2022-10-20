@@ -60,6 +60,8 @@ class HrContract(models.Model):
             'private_car_reimbursed_amount',
             'yearly_commission_cost',
             'meal_voucher_average_monthly_amount',
+            'l10n_be_bicyle_cost',
+            'double_holiday_wage',
         ]
 
     def _get_advantage_values_company_car_total_depreciated_cost(self, contract, advantages):

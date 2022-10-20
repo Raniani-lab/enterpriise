@@ -132,17 +132,21 @@ class HrContract(models.Model):
             description = advantage.description
         return html_sanitize(description)
 
-    def _get_advantage_fields(self):
+    def _get_advantage_fields(self, triggers=True):
         types = ('float', 'integer', 'monetary', 'boolean')
+        if not triggers:
+            types += ('text',)
         nonstored_whitelist = self._advantage_white_list()
         advantage_fields = set(
             field.name for field in self._fields.values() if field.type in types and (field.store or not field.store and field.name in nonstored_whitelist))
+        if not triggers:
+            advantage_fields |= {'wage_with_holidays'}
         return tuple(advantage_fields - self._advantage_black_list())
 
     @api.model
     def _advantage_black_list(self):
         return set(MAGIC_COLUMNS + [
-            'wage_with_holidays', 'wage_on_signature', 'active',
+            'wage_on_signature', 'active',
             'date_generated_from', 'date_generated_to'])
 
     @api.model

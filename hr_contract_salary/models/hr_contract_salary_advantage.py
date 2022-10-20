@@ -10,7 +10,7 @@ class HrContractSalaryAdvantage(models.Model):
     _order = 'sequence'
 
     def _get_field_domain(self):
-        fields_ids = self.env['hr.contract']._get_advantage_fields()
+        fields_ids = self.env['hr.contract']._get_advantage_fields(triggers=False)
         return [
             ('model', '=', 'hr.contract'),
             ('name', 'in', fields_ids),

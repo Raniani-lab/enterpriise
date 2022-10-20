@@ -217,6 +217,15 @@ class HrContract(models.Model):
         return [('id', 'in' if value else 'not in', below_contracts.ids)]
 
 
+    @api.model
+    def _advantage_white_list(self):
+        return super()._advantage_white_list() + [
+            'insurance_amount',
+            'ip_value',
+            'l10n_be_ambulatory_insurance_amount',
+            'meal_voucher_paid_monthly_by_employer',
+        ]
+
     @api.depends('has_hospital_insurance', 'insured_relative_adults', 'insured_relative_spouse')
     def _compute_insured_relative_adults_total(self):
         for contract in self:

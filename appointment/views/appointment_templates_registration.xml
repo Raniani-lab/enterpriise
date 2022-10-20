@@ -112,9 +112,9 @@
                                     class="card o_appointment_user_short_card border-1 shadow-sm mb-3"
                                     itemscope="itemscope"
                                     itemtype="http://schema.org/Employee">
-                                    <header t-if="appointment_type.avatars_display == 'show'" class="overflow-hidden bg-secondary rounded-top">
-                                        <img t-attf-src="/appointment/#{appointment_type.id}/avatar?user_id=#{staff_user.id}"
-                                             class="w-100 h-100 rounded-top o_object_fit_cover o_appointment_avatar_background"/>
+                                    <header t-if="appointment_type.avatars_display == 'show'" class="bg-secondary rounded-top o_appointment_avatar_container">
+                                        <div t-attf-style="background-image: url('/appointment/#{appointment_type.id}/avatar?user_id=#{staff_user.id}');"
+                                             class="o_appointment_avatar_background"/>
                                     </header>
                                     <main class="card-body">
                                         <h2 class="mb-0" t-out="staff_user.name"/>

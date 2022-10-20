@@ -19,16 +19,12 @@ $wo-border-separation: $border-width solid $border-color;
         left: 25%;
         width: 50%;
         position: fixed;
-        background: $o-gray-200;
+        background: $o-gray-100;
 
         button{
             box-shadow: none;
             outline: none;
             border: none;
-        }
-
-        button:hover{
-            background: default;
         }
 
         .body.traceback {

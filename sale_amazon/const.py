@@ -48,7 +48,8 @@ API_OPERATIONS_MAPPING = {
     },
     'getOrderItems': {
         'url_path': '/orders/v0/orders/{param}/orderItems',
-        'restricted_resource_path': '/orders/v0/orders/{this_is_bullshit}/orderItems',
+        # Amazon requires the path to include the placeholder "{orderID}" to grant the RDT.
+        'restricted_resource_path': '/orders/v0/orders/{orderId}/orderItems',
         'restricted_resource_data_elements': ['buyerInfo']
     },
 }

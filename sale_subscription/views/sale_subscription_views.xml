@@ -403,6 +403,13 @@
                        attrs="{'invisible': ['|', ('state', 'in', ['sale', 'done']), ('subscription_management', '=', 'upsell')]}"
                        domain="[('is_subscription', '=', True)]"/>
             </field>
+            <!-- This remove the attributes -->
+            <label name="recurrence_label" position="attributes">
+                <attribute name="attrs"></attribute>
+            </label>
+            <div name="recurrence_block" position="attributes">
+                <attribute name="attrs"></attribute>
+            </div>
         </field>
     </record>
 

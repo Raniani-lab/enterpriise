@@ -87,7 +87,8 @@ class TestPurchaseOrder(TestCommissionsSetup):
         self.referrer.commission_plan_id = self.gold_plan
         self.referrer.grade_id = self.gold
 
-        form = Form(self.env['sale.order'].with_user(self.salesman).with_context(tracking_disable=True))
+        form = Form(self.env['sale.order'].with_user(self.salesman).with_context(tracking_disable=True),
+                    view=self.env.ref('sale_subscription.sale_subscription_primary_form_view'))
         form.partner_id = self.customer
         form.partner_invoice_id = self.customer
         form.partner_shipping_id = self.customer

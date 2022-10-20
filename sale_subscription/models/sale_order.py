@@ -99,6 +99,7 @@ class SaleOrder(models.Model):
     recurring_details = fields.Html(compute='_compute_recurring_details')
     renew_state = fields.Selection(
         [('renewing', 'Renewing'), ('renewed', 'Renewed')], compute='_compute_renew_state')
+    has_recurring_line = fields.Boolean(compute='_compute_has_recurring_line')
 
     _sql_constraints = [
         ('sale_subscription_stage_coherence',
@@ -373,6 +374,12 @@ class SaleOrder(models.Model):
             ('subscription_management', '=', 'upsell')
         ]).subscription_id
         upsell_order_ids.is_upselling = True
+
+    @api.depends('order_line')
+    def _compute_has_recurring_line(self):
+        recurring_product_orders = self.order_line.filtered(lambda l: l.product_id.recurring_invoice).order_id
+        recurring_product_orders.has_recurring_line = True
+        (self - recurring_product_orders).has_recurring_line = False
 
     def _compute_renew_state(self):
         self.renew_state = False

@@ -41,7 +41,8 @@ class TestSaleOrder(TestCommissionsSetup):
         """Some data should be forwarded from the sale order to the subscription."""
         self.referrer.commission_plan_id = self.gold_plan
 
-        form = Form(self.env['sale.order'].with_user(self.salesman).with_context(tracking_disable=True))
+        form = Form(self.env['sale.order'].with_user(self.salesman).with_context(tracking_disable=True),
+                    view=self.env.ref('sale_subscription.sale_subscription_primary_form_view'))
         form.partner_id = self.customer
         form.referrer_id = self.referrer
         # form.commission_plan_frozen = False

@@ -1318,8 +1318,9 @@ class AccountReport(models.Model):
     # OPTIONS: CUSTOM
     ####################################################
     def _init_options_custom(self, options, previous_options=None):
-        if self.custom_handler_model_id:
-            self.env[self.custom_handler_model_name]._custom_options_initializer(self, options, previous_options)
+        custom_handler_model = self._get_custom_handler_model()
+        if custom_handler_model:
+            self.env[custom_handler_model]._custom_options_initializer(self, options, previous_options)
 
     ####################################################
     # OPTIONS: CORE
@@ -1633,6 +1634,13 @@ class AccountReport(models.Model):
     ####################################################
     # MISC
     ####################################################
+
+    def _get_custom_handler_model(self):
+        """ Check whether the current report has a custom handler and if it does, return its name.
+            Otherwise, try to fall back on the root report.
+        """
+        return self.custom_handler_model_name or self.root_report_id.custom_handler_model_name or None
+
     def dispatch_report_action(self, options, action, action_param=None):
         """ Dispatches calls made by the client to either the report itself, or its custom handler if it exists.
             The action should be a public method, by definition, but a check is made to make sure
@@ -1641,10 +1649,9 @@ class AccountReport(models.Model):
         self.ensure_one()
         check_method_name(action)
         args = [options, action_param] if action_param is not None else [options]
-        if self.custom_handler_model_id:
-            handler = self.env[self.custom_handler_model_name]
-            if hasattr(handler, action):
-                return getattr(handler, action)(*args)
+        custom_handler_model = self._get_custom_handler_model()
+        if custom_handler_model and hasattr(self.env[custom_handler_model], action):
+            return getattr(self.env[custom_handler_model], action)(*args)
         return getattr(self, action)(*args)
 
     def _get_custom_report_function(self, function_name, prefix):

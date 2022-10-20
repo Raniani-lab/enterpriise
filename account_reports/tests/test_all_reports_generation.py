@@ -68,15 +68,17 @@ class TestAllReportsGeneration(AccountTestInvoicingCommon):
                         function_params.append(option_button['action_param'])
 
                     action = option_button['action']
-                    if report.custom_handler_model_id and hasattr(self.env[report.custom_handler_model_name], action):
-                        action_dict = getattr(self.env[report.custom_handler_model_name], action)(*function_params)
+                    custom_handler_model = report._get_custom_handler_model()
+                    if custom_handler_model and hasattr(self.env[custom_handler_model], action):
+                        action_dict = getattr(self.env[custom_handler_model], action)(*function_params)
                     else:
                         action_dict = getattr(report, action)(*function_params)
 
                     if action_dict['type'] == 'ir_actions_account_report_download':
                         file_gen = action_dict['data']['file_generator']
-                        if report.custom_handler_model_id and hasattr(self.env[report.custom_handler_model_name], file_gen):
-                            file_gen_res = getattr(self.env[report.custom_handler_model_name], file_gen)(options)
+                        custom_handler_model = report._get_custom_handler_model()
+                        if custom_handler_model and hasattr(self.env[custom_handler_model], file_gen):
+                            file_gen_res = getattr(self.env[custom_handler_model], file_gen)(options)
                         else:
                             file_gen_res = getattr(report, file_gen)(options)
 

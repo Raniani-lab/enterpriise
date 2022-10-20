@@ -31,7 +31,7 @@ class DocumentViewer extends Component {
                     iframe.contentDocument.querySelector('.toolbar').style.display = 'none';
                     iframe.contentDocument.querySelector('body').style.background = 'none';
                     iframe.contentDocument.querySelector('#viewerContainer').style.boxShadow = 'none';
-                    iframe.contentDocument.querySelector('#mainContainer').style.margin = '-2.5em';
+                    iframe.contentDocument.querySelector('#mainContainer').style.marginTop = '-2.5em';
                 });
         }
     }

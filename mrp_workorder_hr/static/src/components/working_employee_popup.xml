@@ -14,7 +14,7 @@
                             </button>
                         </div>
                         <div class="text-end">
-                            <MrpTimer ongoing="line.ongoing" duration="line.duration"/>
+                            <MrpTimer ongoing="line.ongoing" value="line.duration" readonly="true"/>
                         </div>
                         <div class="text-end">
 

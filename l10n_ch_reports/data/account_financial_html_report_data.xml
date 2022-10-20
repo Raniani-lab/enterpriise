@@ -458,7 +458,7 @@
                             <record id="account_financial_report_line_ch_290" model="account.report.line">
                                 <field name="name">Legal capital reserves</field>
                                 <field name="code">CH_290</field>
-                                <field name="aggregation_formula">CH_290_A + CH_290_B</field>
+                                <field name="aggregation_formula">CH_290_A.balance + CH_290_B.balance</field>
                                 <field name="children_ids">
                                     <record id="account_financial_report_line_ch_290_a" model="account.report.line">
                                         <field name="name">Legal reserves</field>
@@ -472,18 +472,18 @@
                                             </record>
                                         </field>
                                     </record>
-                                    <record id="account_financial_report_line_ch_290_a" model="account.report.line">
+                                    <record id="account_financial_report_line_ch_290_b" model="account.report.line">
                                         <field name="name">Previous years' profit or loss</field>
                                         <field name="code">CH_290_B</field>
                                         <field name="expression_ids">
-                                            <record id="account_financial_report_line_ch_290_a_domain" model="account.report.expression">
+                                            <record id="account_financial_report_line_ch_290_b_domain" model="account.report.expression">
                                                 <field name="label">domain</field>
                                                 <field name="engine">domain</field>
                                                 <field name="date_scope">from_beginning</field>
                                                 <field name="formula">[('account_id.internal_group', 'in', ('income', 'expense'))]</field>
                                                 <field name="subformula">-sum</field>
                                             </record>
-                                            <record id="account_financial_report_line_ch_290_a_balance" model="account.report.expression">
+                                            <record id="account_financial_report_line_ch_290_b_balance" model="account.report.expression">
                                                 <field name="label">balance</field>
                                                 <field name="engine">aggregation</field>
                                                 <field name="formula">CH_290_A.balance - CH_290_B.domain</field>

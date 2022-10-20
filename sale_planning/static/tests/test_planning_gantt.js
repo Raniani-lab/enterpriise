@@ -56,16 +56,17 @@ QUnit.module('SalePlanning > GanttView', {
                 ],
             }
         };
-        ganttViewParams.mockRPCHook = function (route, args) {
-            return null;
-        };
         ganttViewParams.mockRPC = function (route, args) {
-            const prom = ganttViewParams.mockRPCHook(route, args);
-            if (prom !== null) {
-                return prom;
-            } else {
-                return this._super.apply(this, arguments);
+            if (args.method === "gantt_resource_work_interval") {
+                return Promise.resolve(
+                    [{ false: [
+                                ["2021-10-12 08:00:00", "2022-10-12 12:00:00"],
+                            ],
+                        },
+                    ]
+                );
             }
+            return this._super.apply(this, arguments);
         };
     }
 });

@@ -18,12 +18,12 @@
                     <div t-if="checkInstruction" class="o_tablet_instruction_note">
                         <t t-out="checkInstruction"/>
                     </div>
-                    <t t-if="worksheetData">
-                        <DocumentViewer t-props="worksheetData"/>
-                    </t>
                 </t>
                 <t t-elif="steps.length !== 0">
                     <SummaryStep workorder="workorderId"/>
+                </t>
+                <t t-if="(state.selectedStepId || steps.length === 0) &amp;&amp; worksheetData">
+                    <DocumentViewer t-props="worksheetData"/>
                 </t>
             </div>
         </div>

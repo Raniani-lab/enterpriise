@@ -6,6 +6,7 @@
         <field name="model">project.task</field>
         <field name="arch" type="xml">
             <tree string="Tasks" multi_edit="1" sample="1" default_order="planned_date_begin">
+                <field name="company_id" invisible="1"/>
                 <field name="progress" invisible="1"/>
                 <field name="child_text" invisible="1"/>
                 <field name="priority" widget="priority" optional="hide" nolabel="1"/>

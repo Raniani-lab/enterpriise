@@ -142,6 +142,8 @@ class FedexRequest():
                 self.RequestedShipment.SpecialServicesRequested.SpecialServiceTypes.append('SATURDAY_DELIVERY')
 
     def set_currency(self, currency):
+        # set perferred currency as GBP instead of UKL
+        currency = 'GBP' if currency == 'UKL' else currency
         self.RequestedShipment.PreferredCurrency = currency
         # ask Fedex to include our preferred currency in the response
         self.RequestedShipment.RateRequestTypes = 'PREFERRED'

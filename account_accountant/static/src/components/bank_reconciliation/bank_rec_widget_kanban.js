@@ -64,13 +64,13 @@ export class BankRecKanbanController extends KanbanController {
                 };
             },
         });
-        // to avoid a flicker we call recordsLoaded only when the model is ready
-        this.model.addEventListener("update", () => this.recordsLoaded(), { once: true });
+        // to avoid a flicker we call kanbanRecordsReady only when the model is ready
+        this.model.addEventListener("update", () => this.kanbanRecordsReady(), { once: true });
         this.env.searchModel.addEventListener("update", () => this.userSearched());
     }
 
     userSearched() {
-        this.model.addEventListener("update", () => this.recordsLoaded(), { once: true });
+        this.model.addEventListener("update", () => this.kanbanRecordsReady(), { once: true });
     }
 
     get bankRecFormViewProps() {
@@ -88,7 +88,10 @@ export class BankRecKanbanController extends KanbanController {
         }
     }
 
-    recordsLoaded() {
+    kanbanRecordsReady() {
+        // Once the view is ready,
+        // select either the same line when returning to the view using breadcrumbs,
+        // or the line in the context, and finally the first available line
         if (this.props.state && this.props.state.lastStLineId) {
             this.selectStLine(this.props.state.lastStLineId);
             this.props.state.lastStLineId = null;
@@ -97,6 +100,7 @@ export class BankRecKanbanController extends KanbanController {
         } else {
             this.selectStLine(this.getNextAvailableStLine());
         }
+        // the journal id is required for the global info component
         if (!this.default_journal_id && this.state.selectedStLineId) {
             this.default_journal_id = this.recordById(this.state.selectedStLineId).data.journal_id[0];
         }
@@ -158,7 +162,7 @@ export class BankRecKanbanController extends KanbanController {
             const nextStLineId = this.getNextAvailableStLine(action_data.st_line_id);
             this.selectStLine(nextStLineId);
         } else if (action_data.type === "refresh" || !action_data) {
-            await this.reload();
+            this.reload();
         }
     }
 }

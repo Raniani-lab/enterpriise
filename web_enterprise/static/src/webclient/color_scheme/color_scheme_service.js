@@ -8,18 +8,18 @@ import { switchColorSchemeItem } from "./color_scheme_menu_items";
 const serviceRegistry = registry.category("services");
 const userMenuRegistry = registry.category("user_menuitems");
 
-export const colorThemeService = {
+export const colorSchemeService = {
     dependencies: ["cookie", "ui"],
 
     start(env, { cookie, ui }) {
         userMenuRegistry.add("color_scheme.switch", switchColorSchemeItem);
         return {
-            switchToColorScheme(theme) {
-                cookie.setCookie("color_scheme", theme);
+            switchToColorScheme(scheme) {
+                cookie.setCookie("color_scheme", scheme);
                 ui.block();
                 browser.location.reload();
             },
         };
     },
 };
-serviceRegistry.add("color_scheme", colorThemeService);
+serviceRegistry.add("color_scheme", colorSchemeService);

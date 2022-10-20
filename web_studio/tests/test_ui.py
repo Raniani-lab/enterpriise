@@ -2,6 +2,7 @@
 # -*- coding: utf-8 -*-
 
 import odoo.tests
+from odoo import Command
 
 
 @odoo.tests.tagged('post_install', '-at_install')
@@ -25,3 +26,45 @@ class TestUi(odoo.tests.HttpCase):
 
     def test_approval(self):
         self.start_tour("/web?debug=tests", 'web_studio_approval_tour', login="admin")
+
+
+@odoo.tests.tagged('post_install', '-at_install')
+class TestStudioUIUnit(odoo.tests.HttpCase):
+
+    @classmethod
+    def setUpClass(cls):
+        super().setUpClass()
+        cls.testView = cls.env["ir.ui.view"].create({
+            "name": "simple partner",
+            "model": "res.partner",
+            "type": "form",
+            "arch": '''
+                <form>
+                    <field name="name" />
+                </form>
+            '''
+        })
+        cls.testAction = cls.env["ir.actions.act_window"].create({
+            "name": "simple partner",
+            "res_model": "res.partner",
+            "view_ids": [Command.create({"view_id": cls.testView.id, "view_mode": "form"})]
+        })
+        cls.testActionXmlId = cls.env["ir.model.data"].create({
+            "name": "studio_test_partner_action",
+            "model": "ir.actions.act_window",
+            "module": "web_studio",
+            "res_id": cls.testAction.id,
+        })
+        cls.testMenu = cls.env["ir.ui.menu"].create({
+            "name": "Studio Test Partner",
+            "action": "ir.actions.act_window,%s" % cls.testAction.id
+        })
+        cls.testMenuXmlId = cls.env["ir.model.data"].create({
+            "name": "studio_test_partner_menu",
+            "model": "ir.ui.menu",
+            "module": "web_studio",
+            "res_id": cls.testMenu.id,
+        })
+
+    def test_form_view_not_altered_by_studio_xml_edition(self):
+        self.start_tour("/web?debug=tests", 'web_studio_test_form_view_not_altered_by_studio_xml_edition', login="admin", timeout=200)

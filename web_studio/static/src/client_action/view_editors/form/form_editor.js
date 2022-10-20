@@ -9,11 +9,24 @@ import { mapActiveFieldsToFieldsInfo } from "@web/views/legacy_utils";
 import { OPTIONS_BY_WIDGET } from "@web_studio/legacy/js/views/view_editor_sidebar";
 import { registry } from "@web/core/registry";
 
+class Model extends formView.Model {}
+Model.Record = class RecordNoEdit extends formView.Model.Record {
+    get isInEdition() {
+        return false;
+    }
+};
+
 const formEditor = {
     ...formView,
     Compiler: FormEditorCompiler,
     Renderer: FormEditorRenderer,
     Controller: FormEditorController,
+    props(genericProps, editor, config) {
+        const props = formView.props(genericProps, editor, config);
+        props.Model = Model;
+        props.preventEdit = true;
+        return props;
+    },
 };
 registry.category("studio_editors").add("form", formEditor);
 

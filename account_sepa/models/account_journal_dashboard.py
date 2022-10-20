@@ -5,18 +5,15 @@ from odoo import models, api, _
 class account_journal(models.Model):
     _inherit = "account.journal"
 
-    def get_journal_dashboard_datas(self):
-        domain_sepa_ct_to_send = [
-            ('journal_id', '=', self.id),
+    def _get_journal_dashboard_data_batched(self):
+        dashboard_data = super()._get_journal_dashboard_data_batched()
+        self._fill_dashboard_data_count(dashboard_data, 'account.payment', 'num_sepa_ct_to_send', [
             ('payment_method_line_id.code', '=', 'sepa_ct'),
             ('state', '=', 'posted'),
             ('is_move_sent', '=', False),
             ('is_matched', '=', False),
-        ]
-        return dict(
-            super(account_journal, self).get_journal_dashboard_datas(),
-            num_sepa_ct_to_send=self.env['account.payment'].search_count(domain_sepa_ct_to_send)
-        )
+        ])
+        return dashboard_data
 
     def action_sepa_ct_to_send(self):
         payment_method_line = self.outbound_payment_method_line_ids.filtered(lambda l: l.code == 'sepa_ct')

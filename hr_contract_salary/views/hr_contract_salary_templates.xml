@@ -26,7 +26,6 @@
                                 <input type="hidden" name="whitelist" t-att-value="whitelist"/>
                                 <input type="text" name="wage" applies-on="contract" t-att-value="contract.wage" class="d-none" disabled="disabled"/>
                                 <input type="text" name="final_yearly_costs" applies-on="contract" t-att-value="contract.final_yearly_costs" class="d-none" disabled="disabled"/>
-
                                 <t t-call="hr_contract_salary.salary_package_advantages"/>
                                 <t t-call="hr_contract_salary.salary_package_sidebar"/>
                             </div>
@@ -74,7 +73,11 @@
                                             applies-on="contract"
                                             t-att-name="'fold_' + advantage.field"
                                             t-att-checked="initial_values['fold_' + advantage.field]"
-                                            t-att-data-requested_documents="advantage.requested_documents"/>
+                                            t-att-data-requested_documents="advantage.requested_documents"
+                                            t-att-data-advantage_ids-dependent="dependent_advantages[advantage]"
+                                            t-att-data-advantage_ids-mandatory="mandatory_advantages[advantage]"
+                                            t-att-data-advantage_ids-mandatory-names="mandatory_advantages_names[advantage]"
+                                            />
                                         <div class="hr_cs_control_indicator"/>
                                     </label>
                                 </t>
@@ -91,7 +94,11 @@
                                             applies-on="contract"
                                             t-att-value="initial_values[advantage.field]"
                                             t-att-list="advantage.field + '_range'"
-                                            t-att-name="advantage.field + '_slider'"/>
+                                            t-att-name="advantage.field + '_slider'"
+                                            t-att-data-advantage_ids-dependent="dependent_advantages[advantage]"
+                                            t-att-data-advantage_ids-mandatory="mandatory_advantages[advantage]"
+                                            t-att-data-advantage_ids-mandatory-names="mandatory_advantages_names[advantage]"
+                                            />
                                         <span class="badge text-bg-secondary"><t t-esc="advantage.slider_max"/></span>
                                         <datalist t-att-id="advantage.field + '_range'">
                                             <t t-set="step" t-value="(advantage.slider_max - advantage.slider_min) / 10.0"/>
@@ -110,7 +117,11 @@
                                                     applies-on="contract"
                                                     t-att-checked="not initial_values[advantage.field] if (len(advantage.value_ids) &lt;= 2 and value.value == 0) else (initial_values[advantage.field] if (len(advantage.value_ids) &lt;= 2 and value.value != 0) else (initial_values[advantage.field] == float(value.value)))"
                                                     t-att-class="'hide_description' if value.hide_description else ''"
-                                                    t-att-data-requested_documents="advantage.requested_documents"/>
+                                                    t-att-data-requested_documents="advantage.requested_documents"
+                                                    t-att-data-advantage_ids-dependent="dependent_advantages[advantage]"
+                                                    t-att-data-advantage_ids-mandatory="mandatory_advantages[advantage]"
+                                                    t-att-data-advantage_ids-mandatory-names="mandatory_advantages_names[advantage]"
+                                                    />
                                                 <t t-esc="value.name"/>
                                                 <div t-att-class="'hr_cs_control_indicator' + (' hr_cs_control_no' if value.color == 'red' else '')"/>
                                             </label>
@@ -124,7 +135,11 @@
                                             t-att-name="advantage.field + '_manual'"
                                             t-att-data-field-type="advantage.manual_res_field_id.ttype"
                                             t-att-data-requested_documents="advantage.requested_documents"
-                                            t-att-value="initial_values[advantage.field + '_manual']"/>
+                                            t-att-value="initial_values[advantage.field + '_manual']"
+                                            t-att-data-advantage_ids-dependent="dependent_advantages[advantage]"
+                                            t-att-data-advantage_ids-mandatory="mandatory_advantages[advantage]"
+                                            t-att-data-advantage_ids-mandatory-names="mandatory_advantages_names[advantage]"
+                                            />
                                     </t>
                                     <t t-if="advantage.display_type == 'text'">
                                         <textarea

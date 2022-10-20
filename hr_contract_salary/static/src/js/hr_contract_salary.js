@@ -5,6 +5,7 @@ const concurrency = require('web.concurrency');
 const publicWidget = require('web.public.widget');
 const utils = require('web.utils');
 const {qweb, _t} = require('web.core');
+const { sprintf } = require("@web/core/utils/strings");
 
 publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
     selector: '#hr_cs_form',
@@ -62,7 +63,39 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         return Promise.all([
             this._super(),
             this.updateGross(),
+            this.setUpAdvantages(),
         ]);
+    },
+
+    setUpAdvantages() {
+        // When we load the advantages, if any of the advantage is not set and it has
+        // dependent advantages, unset those dependent advantages
+        $('input')
+            .toArray()
+            .forEach(async input => {
+                let dependentAdvantages = $(input).data('advantage_ids-dependent');
+                if (dependentAdvantages) {
+                    dependentAdvantages = dependentAdvantages.trim().split(' ');
+                    for (const dependentAdvantage of dependentAdvantages) {
+                        let newValue = $(input).data('value');
+                        if (input.type === 'radio') {
+                            const target = $("input[name='" + input.name + "']").toArray().find(elem => elem.checked);
+                            newValue = $(target).data('value');
+                            if (newValue === 'No') {
+                                newValue = 0;
+                            }
+                        } else if (input.type === 'checkbox') {
+                            newValue = input.checked;
+                        } else {
+                            newValue = input.value;
+                        }
+                        const mandatoryAdvantageSelected = Boolean(+newValue);
+                        if (!mandatoryAdvantageSelected) {
+                            this.updateDependentAdvantages(dependentAdvantage, mandatoryAdvantageSelected);
+                        }
+                    }
+                }
+            });
     },
 
     initializeUnsetSliders() {
@@ -269,6 +302,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                 hide ? document_div.addClass('d-none') : document_div.removeClass('d-none');
             });
         }
+
         let newValue;
         if (event.target.type === 'radio') {
             const target = $("input[name='" + event.target.name + "']").toArray().find(elem => elem.checked);
@@ -283,7 +317,97 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
         } else {
             newValue = event.target.value;
         }
-        if (event.target.type !== 'file') {
+
+        const dependentAdvantages = $(event.target).data('advantage_ids-dependent');
+
+        const mandatoryAdvantageSelected = Boolean(+newValue);
+        this.updateDependentAdvantages(dependentAdvantages, mandatoryAdvantageSelected);
+        await this.updateAfterChangingAdvantage(event.target.type, advantageField, newValue);
+    },
+
+    updateDependentAdvantages (dependentAdvantages, mandatoryAdvantageSelected) {
+        if (!dependentAdvantages) {
+            return;
+        }
+        dependentAdvantages.trim().split(' ').forEach(async dependentAdvantage => {
+            /*
+            Let's say the advantage X depends on A, B, C
+            If one of the mandatory advantages, A, is selected
+                check that the B and C are selected too - if yes
+                    Enable X
+            Else
+                disable X
+            */
+            const target = $("input[name='" + dependentAdvantage + "']");
+            if (!mandatoryAdvantageSelected) { // Here we unset the dependent advantage
+                let dependentAdvantageSelected =  this.checkInputSelected(dependentAdvantage);
+                let dependentAdvantageField = dependentAdvantage;
+                let type = target.toArray()[0].type;
+                if (dependentAdvantage.includes('select_')) {
+                    dependentAdvantageField = dependentAdvantage.replace("select_", "");
+                    type = 'select';
+                } else if (dependentAdvantage.includes('manual')) {
+                    type = 'manual';
+                    dependentAdvantageField = dependentAdvantage.replace("_manual", "");
+                } else if (dependentAdvantage.includes('_slider')) {
+                    type = 'slider';
+                    dependentAdvantageField = dependentAdvantage.replace("_slider", "");
+                } else if (dependentAdvantage.includes('_radio')) {
+                    type = 'radio';
+                    dependentAdvantageField = dependentAdvantage.replace("_radio", "");
+                }
+                if (dependentAdvantageSelected) { // no need to update it if it was not selected to start with
+                    let targetType = target.toArray()[0].type;
+                    if (targetType === 'checkbox') {
+                        target.click();
+                    } else if (targetType === 'radio') {
+                        const toCheck = target.toArray().filter(elem => elem.dataset.value == '0.0');
+                        toCheck[0].click();
+                    }
+                    $(target).val(0).trigger('change');
+                    await this.updateAfterChangingAdvantage(type, dependentAdvantageField, 0);
+                }
+                target.attr("disabled", "disabled");
+                target.parent().addClass('o_disabled');
+
+                const mandatoryAdvantagesNames = $(target).data('advantage_ids-mandatory-names').trim().split(';').filter(elem => elem != '');
+                const dep = mandatoryAdvantagesNames.shift();
+                let title = sprintf(_t('In order to choose %s, first you need to choose:\n %s'), dep, mandatoryAdvantagesNames.join('\n '));
+
+                $(target).closest('div').parent().attr("title", title);
+                $(target).closest('div')[0].style.cursor = "pointer";
+            } else {
+                const mandatoryAdvantages = $(target).data('advantage_ids-mandatory').trim().split(' ');
+                const allMandatorySelected = mandatoryAdvantages.every(adv => this.checkInputSelected(adv));
+                if (allMandatorySelected) {
+                    const targets = $("input[name='" + dependentAdvantage + "']").toArray().filter(elem => elem.hasAttribute('disabled'));
+                    if (targets) {
+                        $(targets).removeAttr('disabled');
+                        target.parent().removeClass('o_disabled');
+                        $(target).closest('div')[0].style.cursor = "";
+                        $(target).closest('div').removeAttr('title');
+                    }
+                }
+            }
+        });
+    },
+
+    checkInputSelected(advantage) {
+        const target = $("input[name='" + advantage + "']").toArray();
+        let type = target[0].type;
+        let newValue;
+        if (type === 'radio') {
+            newValue = $(target.find(elem => elem.checked)).data('value');
+        } else if (type === 'checkbox') {
+            newValue = target[0].checked;
+        } else {
+            newValue = target[0].value;
+        }
+        return Boolean(+newValue);
+    },
+
+    async updateAfterChangingAdvantage(type, advantageField, newValue) {
+        if (type !== 'file') {
             const result = await this._rpc({
                 route: '/salary_package/onchange_advantage',
                 params: {
@@ -293,7 +417,7 @@ publicWidget.registry.SalaryPackageWidget = publicWidget.Widget.extend({
                     'advantages': this.getAdvantages({includeFiles: false}),
                 },
             });
-            if (event.target.type !== 'select') {
+            if (type !== 'select') {
                 $("input[name='" + advantageField + "']").val(result.new_value);
             }
             $("span[name='description_" + advantageField + "']").html(result.description);

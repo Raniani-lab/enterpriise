@@ -37,13 +37,6 @@ hrContractSalary.include({
         }
     },
 
-    onchange_mobility: function() {
-        this._super.apply(this, arguments);
-        var fuel_card_div = $("div[name='fuel_card']");
-        // Don't hide the fuel card if no car is chosen
-        fuel_card_div.removeClass("hidden");
-    },
-
     onchangeFoldedResetInteger(advantageField) {
         if (advantageField === 'private_car_reimbursed_amount_manual' || advantageField === 'l10n_be_bicyle_cost_manual') {
             return false;

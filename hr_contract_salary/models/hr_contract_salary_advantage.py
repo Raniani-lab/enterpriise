@@ -55,6 +55,10 @@ class HrContractSalaryAdvantage(models.Model):
     advantage_type_id = fields.Many2one(
         'hr.contract.salary.advantage.type', required=True,
         default=lambda self: self.env.ref('hr_contract_salary.l10n_be_monthly_benefit', raise_if_not_found=False))
+    advantage_ids = fields.Many2many(
+        'hr.contract.salary.advantage', 'hr_contract_salary_advantage_rel', 'advantage_ids', 'mandatory_advantage_ids',
+        help='All advantages in this field need to be selected, as a condition for the current one to be editable. Before edition, the current advantage is always set to false.',
+        string="Mandatory Advantages", domain="[('id', '!=', id)]")
     folded = fields.Boolean()
     fold_label = fields.Char(translate=True)
     fold_res_field_id = fields.Many2one(

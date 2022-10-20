@@ -385,20 +385,45 @@ class HrContractSalary(http.Controller):
                     values[current_section].append((value.value, value.value))
             dropdown_group_options[dropdown_group_advantage.field] = values
         advantage_types = sorted(advantages.mapped('advantage_type_id'), key=lambda x: x.sequence)
-        return mapped_advantages, advantage_types, dropdown_options, dropdown_group_options, initial_values
+        mapped_dependent_advantages = defaultdict(lambda: '')
+        mapped_mandatory_advantages = defaultdict(lambda: '')
+        # When the dependent advantage is disabled, on hover over we display the information
+        # regarding which (mandatory) advantages need to be selected, in order to be able to select
+        # the (dependent) advantage in question. For this purpose, here we build the string for each dependent advantage.
+        # The string starts with the display name of the dependent advantage and is followed by the display names
+        # of the mandatory advantages, separated by semicolon.
+        mapped_mandatory_advantages_names = defaultdict(lambda: '')
+        for dependent_advantage in advantages:
+            mapped_mandatory_advantages_names[dependent_advantage] = (dependent_advantage.fold_label or dependent_advantage.name) + ';'
+            if dependent_advantage.folded:
+                dependent_name = 'fold_%s' % (dependent_advantage.field)
+            else:
+                dependent_name = dependent_advantage.field + '_' + dependent_advantage.display_type
+            dependent_advantage_str = dependent_name + ' '
+            for mandatory_advantage in dependent_advantage.advantage_ids:
+                mapped_dependent_advantages[mandatory_advantage] += dependent_advantage_str
+                if mandatory_advantage.folded:
+                    mandatory_name = 'fold_%s' % (mandatory_advantage.field)
+                else:
+                    mandatory_name = mandatory_advantage.field + '_' + mandatory_advantage.display_type
+                mapped_mandatory_advantages[dependent_advantage] += mandatory_name + ' '
+                mapped_mandatory_advantages_names[dependent_advantage] += (mandatory_advantage.fold_label or mandatory_advantage.name) + ';'
+        return mapped_advantages, mapped_dependent_advantages, mapped_mandatory_advantages, mapped_mandatory_advantages_names, advantage_types, dropdown_options, dropdown_group_options, initial_values
 
     def _get_salary_package_values(self, contract):
         mapped_personal_infos, dropdown_options_1, initial_values_1 = self._get_personal_infos(contract)
-        mapped_advantages, advantage_types, dropdown_options_2, dropdown_group_options, initial_values_2 = self._get_advantages_values(contract)
+        mapped_advantages, mapped_dependent_advantages, mandatory_advantages, mandatory_advantages_names, advantage_types, dropdown_options_2, dropdown_group_options, initial_values_2 = self._get_advantages_values(contract)
         all_initial_values = {**initial_values_1, **initial_values_2}
         all_initial_values = {key: round(value, 2) if isinstance(value, float) else value for key, value in all_initial_values.items()}
         all_dropdown_options = {**dropdown_options_1, **dropdown_options_2}
-
         return {
             'contract': contract,
             'states': request.env['res.country.state'].search([]),
             'countries': request.env['res.country'].search([]),
             'advantages': mapped_advantages,
+            'dependent_advantages': mapped_dependent_advantages,
+            'mandatory_advantages': mandatory_advantages,
+            'mandatory_advantages_names': mandatory_advantages_names,
             'advantage_types': advantage_types,
             'mapped_personal_infos': mapped_personal_infos,
             'dropdown_options': all_dropdown_options,

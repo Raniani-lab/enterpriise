@@ -80,6 +80,7 @@
                                     The current requested documents are the followings: <field name="requested_documents_fields_string" nolabel="1"/>
                                 </span>
                             </div>
+                            <field name="advantage_ids" widget="many2many_tags"/>
                             <field name="requested_documents" invisible="1"/>
                             <separator string="Activity"/>
                             <field name="activity_type_id" options="{'no_create_edit': True}"/>

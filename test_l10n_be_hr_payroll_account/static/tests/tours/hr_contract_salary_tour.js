@@ -299,10 +299,17 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour', {
             extra_trigger: 'input[name="Gross"][value="3103.16"]',
             run: 'click',
         },
+        // In order to choose Fuel card, the mandatory advantage, company car, should be selected first
+        {
+            content: "Choose a car",
+            trigger: 'input[name="fold_company_car_total_depreciated_cost"]',
+            extra_trigger: 'input[name="Gross"][value="3000"]',
+            run: 'click',
+        },
         {
             content: "Take Fuel Card",
             trigger: 'input[list="fuel_card_range"]',
-            extra_trigger: 'input[name="Gross"][value="3000"]',
+            extra_trigger: 'input[name="Gross"][value="2671.14"]',
             run: function () {
                 $('input[list="fuel_card_range"]').val(250);
                 $('input[list="fuel_card_range"]').trigger('change');
@@ -311,11 +318,17 @@ registry.category("web_tour.tours").add('hr_contract_salary_tour', {
         {
             content: "Untake Fuel Card",
             trigger: 'input[list="fuel_card_range"]',
-            extra_trigger: 'input[name="Gross"][value="2828.06"]',
+            extra_trigger: 'input[name="Gross"][value="2499.2"]',
             run: function () {
                 $('input[list="fuel_card_range"]').val(0);
                 $('input[list="fuel_card_range"]').trigger('change');
             },
+        },
+        {
+            content: "Unchoose a car",
+            trigger: 'input[name="fold_company_car_total_depreciated_cost"]',
+            extra_trigger: 'input[name="Gross"][value="2671.14"]',
+            run: 'click',
         },
         {
             content: "Name",

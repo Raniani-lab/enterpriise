@@ -62,7 +62,7 @@ class DocumentViewer extends Component {
             readonly: true,
         };
         viewerProps['record']['data'][this.props.resField] = this.props.resField;
-        viewerProps['record']['data'][`$(this.props.resField)_page`] = this.props.page || 1;
+        viewerProps['record']['data'][`${this.props.resField}_page`] = this.props.page || 1;
         if (this.type === 'pdf') {
             viewerProps['fileNameField'] = this.props.resField;
         }

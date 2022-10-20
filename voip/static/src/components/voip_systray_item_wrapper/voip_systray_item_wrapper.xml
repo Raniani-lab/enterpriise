@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+    <t t-name="voip.SystrayItemWrapper" owl="1">
+        <t t-if="messaging">
+            <VoipSystrayItemView record="messaging.voip.systrayItem"/>
+        </t>
+        <t t-else="">
+            <!-- div on which to apply the rotation for the spinner -->
+            <div class="d-flex align-items-center">
+                <i class="o_VoipSystrayItemWrapper_spinner fa fa-circle-o-notch fa-spin mx-2 text-white" title="Please wait…"/>
+            </div>
+        </t>
+    </t>
+</templates>

@@ -73,6 +73,7 @@ const DialingPanel = Widget.extend({
         this._onSipErrorResolved = this._onSipErrorResolved.bind(this);
         this._onSipIncomingCall = this._onSipIncomingCall.bind(this);
         this._onSipRejected = this._onSipRejected.bind(this);
+        this._onToggleSoftphoneDisplay = this._onToggleSoftphoneDisplay.bind(this);
         this.title = this._getTitle();
     },
     async willStart() {
@@ -126,10 +127,7 @@ const DialingPanel = Widget.extend({
             },
         });
         core.bus.on('transfer_call', this, this._onTransferCall);
-        core.bus.on('voip_onToggleDisplay', this, function () {
-            this._resetMissedCalls();
-            this._onToggleDisplay();
-        });
+        this._messaging.messagingBus.addEventListener('toggle-softphone-display', this._onToggleSoftphoneDisplay);
 
         this.call('bus_service', 'addEventListener', 'notification', this._onBusNotification.bind(this));
 
@@ -150,6 +148,7 @@ const DialingPanel = Widget.extend({
         this._messaging.messagingBus.removeEventListener('sip_error_resolved', this._onSipErrorResolved);
         this._messaging.messagingBus.removeEventListener('sip_incoming_call', this._onSipIncomingCall);
         this._messaging.messagingBus.removeEventListener('sip_rejected', this._onSipRejected);
+        this._messaging.messagingBus.removeEventListener('toggle-softphone-display', this._onToggleSoftphoneDisplay);
     },
 
     //--------------------------------------------------------------------------
@@ -970,6 +969,13 @@ const DialingPanel = Widget.extend({
             this._$tabsPanel.show();
             this._$keypad.hide();
         }
+    },
+    /**
+     * @private
+     */
+    _onToggleSoftphoneDisplay() {
+        this._resetMissedCalls();
+        this._onToggleDisplay();
     },
     /**
      * @private

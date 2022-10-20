@@ -2,7 +2,7 @@
 
 import { registry } from "@web/core/registry";
 
-import { VoipSystrayItem } from "@voip/js/voip_systray_item";
+import { VoipSystrayItemWrapper } from "@voip/components/voip_systray_item_wrapper/voip_systray_item_wrapper";
 import { DialingPanelContainer } from "@voip/js/dialing_panel_container";
 import { browser } from "@web/core/browser/browser";
 import { sprintf } from "@web/core/utils/strings";
@@ -24,7 +24,7 @@ export const voipService = {
 
         if (isEmployee) {
             bus = new EventBus();
-            systrayRegistry.add('voip', { Component: VoipSystrayItem, props: { bus } });
+            systrayRegistry.add('voip', { Component: VoipSystrayItemWrapper });
             mainComponentRegistry.add('voip.DialingPanelContainer', {
                 Component: DialingPanelContainer,
                 props: { bus },

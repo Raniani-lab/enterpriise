@@ -107,6 +107,14 @@ registerModel({
             default: {},
             inverse: "voip",
         }),
+        /**
+         * The button in the systray that is used to toggle the display of the
+         * softphone window.
+         */
+        systrayItem: one("VoipSystrayItemView", {
+            default: {},
+            inverse: "voip",
+        }),
         userAgent: one("UserAgent", {
             inverse: "voip",
         }),

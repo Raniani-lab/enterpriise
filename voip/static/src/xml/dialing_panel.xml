@@ -1,14 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
 
-<t t-name="voip.SystrayItem" owl="1">
-    <div>
-        <a href="#" title="Display Dialing Panel" t-on-click.prevent="onClick">
-            <i aria-label="Display Dialing Panel" class="oi oi-large oi-voip" role="img"/>
-        </a>
-    </div>
-</t>
-
 <!--
     @param {voip.dialingPanel} widget
 -->

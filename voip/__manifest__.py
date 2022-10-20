@@ -43,7 +43,6 @@ Allows to make call from next activities or with click-to-dial.
             'voip/static/src/js/phone_call_tab.js',
             'voip/static/src/js/phone_field.js',
             'voip/static/src/js/dialing_panel_container.js',
-            'voip/static/src/js/voip_systray_item.js',
             'voip/static/src/js/legacy_compatibility.js',
             'voip/static/src/js/user_agent.js',
             'voip/static/src/scss/voip.scss',

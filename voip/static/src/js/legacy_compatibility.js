@@ -6,7 +6,6 @@
 
 import { browser } from "@web/core/browser/browser";
 import { ComponentAdapter } from "web.OwlCompatibility";
-import core from "web.core";
 import { useBus } from "@web/core/utils/hooks";
 
 const { Component } = owl;
@@ -21,10 +20,6 @@ export class DialingPanelAdapter extends ComponentAdapter {
         this.env = Component.env;
 
         const voipBus = this.props.bus;
-
-        useBus(voipBus, "TOGGLE_DIALING_PANEL", () => {
-            core.bus.trigger('voip_onToggleDisplay');
-        });
 
         useBus(voipBus, "VOIP-CALL", (ev) => {
             const payload = ev.detail;

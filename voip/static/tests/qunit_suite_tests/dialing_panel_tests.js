@@ -7,7 +7,6 @@ import UserAgent from 'voip.UserAgent';
 
 import mobile from 'web_mobile.core';
 
-import core from 'web.core';
 import { registry } from '@web/core/registry';
 import { ComponentAdapter } from "web.OwlCompatibility";
 import testUtils from 'web.test_utils';
@@ -35,7 +34,7 @@ async function createDialingPanel(params) {
     const result = await start({
         ...params,
     });
-    core.bus.trigger('voip_onToggleDisplay');
+    result.messaging.messagingBus.trigger('toggle-softphone-display');
     await testUtils.nextTick();
     return result;
 }
@@ -552,7 +551,7 @@ QUnit.test('DialingPanel is closable with the BackButton in the mobile app', asy
         },
     });
 
-    await createDialingPanel({
+    const { messaging } = await createDialingPanel({
         async mockRPC(route, args) {
             if (args.method === 'get_pbx_config') {
                 return { mode: 'demo' };
@@ -577,7 +576,7 @@ QUnit.test('DialingPanel is closable with the BackButton in the mobile app', asy
         'overrideBackButton: false',
     ], "should be disabled when closed");
 
-    core.bus.trigger('voip_onToggleDisplay');
+    messaging.messagingBus.trigger('toggle-softphone-display');
     await testUtils.nextTick();
     await testUtils.dom.click(document.querySelector('.o_dial_fold'));
     assert.verifySteps([

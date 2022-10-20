@@ -552,7 +552,6 @@ class AccountMove(models.Model):
                 raise Exception(error)
             if 'credit_error' in response and response['credit_error']:
                 _logger.warning("Credit error on partner_autocomplete call")
-                return False
         except KeyError:
             _logger.warning("Partner autocomplete isn't installed, supplier creation from VAT is disabled")
             return False
@@ -564,22 +563,18 @@ class AccountMove(models.Model):
             country_id = self.env['res.country'].search([('code', '=', response.get('company_data').get('country_code',''))])
             state_id = self.env['res.country.state'].search([('name', '=', response.get('company_data').get('state_name',''))])
             resp_values = response.get('company_data')
+
+            values = {field: resp_values[field] for field in ('name', 'vat', 'street', 'city', 'zip', 'phone', 'email', 'partner_gid') if field in resp_values}
+            values['is_company'] = True
+
             if 'bank_ids' in resp_values:
-                resp_values['bank_ids'] = [(0, 0, vals) for vals in resp_values['bank_ids']]
-            values = {
-                'name': resp_values.get('name', ''),
-                'vat': resp_values.get('vat', ''),
-                'bank_ids': resp_values.get('bank_ids', ''),
-                'street': resp_values.get('street', ''),
-                'city': resp_values.get('city', ''),
-                'zip': resp_values.get('zip', ''),
-                'state_id': state_id and state_id.id,
-                'country_id': country_id and country_id.id,
-                'phone': resp_values.get('phone', ''),
-                'email': resp_values.get('email', ''),
-                'is_company': True,
-                'partner_gid': resp_values.get('partner_gid', ''),
-            }
+                values['bank_ids'] = [(0, 0, vals) for vals in resp_values['bank_ids']]
+
+            if country_id:
+                values['country_id'] = country_id.id
+                if state_id:
+                    values['state_id'] = state_id.id
+
             new_partner = self.env["res.partner"].with_context(clean_context(self.env.context)).create(values)
             return new_partner
         return False

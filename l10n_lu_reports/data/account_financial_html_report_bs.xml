@@ -243,14 +243,14 @@
                                                 <field name="code">LU_BS_167</field>
                                                 <field name="groupby">account_id</field>
                                                 <field name="foldable" eval="True"/>
-                                                <field name="domain_formula">sum( [ '|', '|', '|', '|', '|', ('account_id.code', '=like', '4011%'), ('account_id.code', '=like', '4012%'), ('account_id.code', '=like', '4013%'), ('account_id.code', '=like', '4014%'), ('account_id.code', '=like', '4019%'), ('account_id.code', '=like', '44113%') ])</field>
+                                                <field name="account_codes_formula">4011 + 4012 + 4013 + 4014 + 4019 + 44113</field>
                                             </record>
                                             <record id="account_financial_report_l10n_lu_bs_line_1_4_2_1_2" model="account.report.line">
                                                 <field name="name">b) becoming due and payable after more than one year</field>
                                                 <field name="code">LU_BS_169</field>
                                                 <field name="groupby">account_id</field>
                                                 <field name="foldable" eval="True"/>
-                                                <field name="domain_formula">sum( [ '|', '|', ('account_id.code', '=like', '4021%'), ('account_id.code', '=like', '4029%'), ('account_id.code', '=like', '44123%') ])</field>
+                                                <field name="account_codes_formula">4021 + 4029 + 44123</field>
                                             </record>
                                         </field>
                                     </record>
@@ -352,7 +352,7 @@
                                 <field name="code">LU_BS_197</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
-                                <field name="domain_formula">sum( [ '|', ('account_id.code', '=like', '5130%'), '|', ('account_id.code', '=like', '5131%'), '|', ('account_id.code', '=like', '516%'), '|', ('account_id.code', '=like', '5170%'), '|', ('account_id.code', '=like', '5171%'), ('account_id.code', '=like', '518%') ])</field>
+                                <field name="account_codes_formula">5130 + 5131 + 516 + 5170 + 5171 + 518</field>
                             </record>
                         </field>
                     </record>
@@ -589,7 +589,7 @@
                                         <field name="code">LU_BS_357</field>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="domain_formula">-sum( [ '|', ('account_id.code', '=like', '1941%'), '|', ('account_id.code', '=like', '5132%'), ('account_id.code', '=like', '5172%') ])</field>
+                                        <field name="account_codes_formula">-1941 - 5132 - 5172</field>
                                     </record>
                                     <record id="account_financial_report_l10n_lu_bs_line_2_3_2_2" model="account.report.line">
                                         <field name="name">b) becoming due and payable after more than one year</field>

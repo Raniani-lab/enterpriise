@@ -98,14 +98,14 @@
                                         <field name="code">LU_BSABR_203</field>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="domain_formula">sum( [ '|', '|', '|', '|', '|', '|', '|', '|', ('account_id.code', '=like', '4011%'), ('account_id.code', '=like', '4012%'), ('account_id.code', '=like', '4013%'), ('account_id.code', '=like', '4014%'), ('account_id.code', '=like', '4019%'), ('account_id.code', '=like', '4111%'), ('account_id.code', '=like', '4121%'), ('account_id.code', '=like', '421%'), ('account_id.code', '=like', '44113%') ])</field>
+                                        <field name="account_codes_formula">4011 + 4012 + 4013 + 4014 + 401 + 4111 + '4121 + 421 + 44113</field>
                                     </record>
                                     <record id="account_financial_report_l10n_lu_bs_abr_line_1_4_2_2" model="account.report.line">
                                         <field name="name">b) becoming due and payable after more than one year</field>
                                         <field name="code">LU_BSABR_205</field>
                                         <field name="groupby">account_id</field>
                                         <field name="foldable" eval="True"/>
-                                        <field name="domain_formula">sum( [ '|', '|', '|', '|', '|', ('account_id.code', '=like', '4021%'), ('account_id.code', '=like', '4029%'), ('account_id.code', '=like', '4112%'), ('account_id.code', '=like', '4122%'), ('account_id.code', '=like', '422%'), ('account_id.code', '=like', '44123%') ])</field>
+                                        <field name="account_codes_formula">4021 + 4029 + 4112 + 4122 + 422 + 44123</field>
                                     </record>
                                 </field>
                             </record>
@@ -121,7 +121,7 @@
                                 <field name="code">LU_BSABR_197</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
-                                <field name="domain_formula">sum( [ '|', ('account_id.code', '=like', '5130%'), '|', ('account_id.code', '=like', '5131%'), '|', ('account_id.code', '=like', '516%'), '|', ('account_id.code', '=like', '5170%'), '|', ('account_id.code', '=like', '5171%'), ('account_id.code', '=like', '518%') ])</field>
+                                <field name="account_codes_formula">5130 + 5131 + 516 + 5170 + 5171 + 518</field>
                             </record>
                         </field>
                     </record>
@@ -240,7 +240,7 @@
                                 <field name="code">LU_BSABR_453</field>
                                 <field name="groupby">account_id</field>
                                 <field name="foldable" eval="True"/>
-                                <field name="domain_formula">-sum( [ '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', '|', ('account_id.code', '=like', '1911%'), ('account_id.code', '=like', '1921%'), ('account_id.code', '=like', '1931%'), ('account_id.code', '=like', '1941%'), ('account_id.code', '=like', '431%'), '&amp;', ('account_id.code', '=like', '4411%'), ('account_id.code', 'not like', '44113%'), ('account_id.code', '=like', '4421%'), ('account_id.code', '=like', '4511%'), ('account_id.code', '=like', '4521%'), ('account_id.code', '=like', '46%'), ('account_id.code', '=like', '471%'), ('account_id.code', '=like', '5132%'), ('account_id.code', '=like', '5172%'), ('account_id.code', '=like', '4015%') ])</field>
+                                <field name="account_codes_formula">-1911 - 1921 - 1931 - 1941 - 431 - 4411\(44113) - 4421 - 4511 - 4521 - 46 - 471 - 5132 - 5172 - 4015</field>
                             </record>
                             <record id="account_financial_report_l10n_lu_bs_abr_line_2_3_2" model="account.report.line">
                                 <field name="name">b) becoming due and payable after more than one year</field>

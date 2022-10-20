@@ -17,8 +17,8 @@ odoo.define("project_timesheet_forecast.project_timesheet_forecast_tests", funct
                     fields: {
                         id: {string: "ID", type: "integer"},
                         name: {string: "Name", type: "char"},
-                        start: {string: "Start Date", type: "datetime"},
-                        stop: {string: "Stop Date", type: "datetime"},
+                        start_datetime: {string: "Start Date", type: "datetime"},
+                        end_datetime: {string: "Stop Date", type: "datetime"},
                         time: {string: "Time", type: "float"},
                         effective_hours: {string: "Effective Hours", type: "float"},
                         planned_hours: {string: "Initially Planned Hours", type: "float"},
@@ -36,13 +36,13 @@ odoo.define("project_timesheet_forecast.project_timesheet_forecast_tests", funct
                         display_warning_dependency_in_gantt: { string: "Display Warning Dependency", type: "boolean", default: false},
                     },
                     records: [
-                        {id: 1, name: 'Do what you gotta do', start: '2020-06-10 08:30:00', stop: '2020-06-10 12:30:00', 
+                        {id: 1, name: 'Do what you gotta do', start_datetime: '2020-06-10 08:30:00', end_datetime: '2020-06-10 12:30:00',
                         project_id: 1, employee_id: 100, allocated_hours: 5, effective_hours: 0, percentage_hours: 0.0, planned_hours: 3, task_id: 1},
-                        {id: 2, name: 'Or not', start: '2020-06-20 08:30:00', stop: '2020-06-20 10:30:00', 
+                        {id: 2, name: 'Or not', start_datetime: '2020-06-20 08:30:00', end_datetime: '2020-06-20 10:30:00',
                         project_id: 2, employee_id: 200, allocated_hours: 10, effective_hours: 2, percentage_hours: 20.0, planned_hours: 5, task_id: 2},
-                        {id: 3, name: "Ain't Your Mama", start: '2020-06-21 08:30:00', stop: '2020-06-21 10:30:00',
+                        {id: 3, name: "Ain't Your Mama", start_datetime: '2020-06-21 08:30:00', end_datetime: '2020-06-21 10:30:00',
                         project_id: 2, employee_id: 200, allocated_hours: 10, effective_hours: 0, percentage_hours: 0.0, planned_hours: 5},
-                        {id: 4, name: "...", start: '2020-06-20 08:30:00', stop: '2020-06-20 10:30:00',
+                        {id: 4, name: "...", start_datetime: '2020-06-20 08:30:00', end_datetime: '2020-06-20 10:30:00',
                         project_id: 2, employee_id: 200, effective_hours: 2, percentage_hours: 0.0, planned_hours: 5, task_id: 2},
                     ],
                 },
@@ -89,7 +89,7 @@ odoo.define("project_timesheet_forecast.project_timesheet_forecast_tests", funct
                 View: ForecastTimesheetGanttView,
                 model: 'tasks',
                 data: this.data,
-                arch: '<gantt date_start="start" date_stop="stop" sample="0" progress="percentage_hours"/>',
+                arch: '<gantt date_start="start_datetime" date_stop="end_datetime" sample="0" progress="percentage_hours"/>',
                 viewOptions: {
                     initialDate: initialDate,
                 },
@@ -103,6 +103,12 @@ odoo.define("project_timesheet_forecast.project_timesheet_forecast_tests", funct
 
                     } else if (route === '/web/dataset/call_kw/tasks/read_group') {
                         throw Error("Should not call read_group when no groupby !");
+                    } else if (args.method === "gantt_resource_work_interval") {
+                        return Promise.resolve(
+                            [
+                                { },
+                            ]
+                        );
                     }
                     return this._super.apply(this, arguments);
                 },

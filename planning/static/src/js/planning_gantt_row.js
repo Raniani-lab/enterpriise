@@ -1,8 +1,13 @@
 /** @odoo-module alias=planning.PlanningGanttRow **/
 
+import fieldUtils from 'web.field_utils';
+
+import { getIntervalStepAccordingToScaleInterval, serializeDateTimeAccordingToScale } from "./planning_gantt_utils";
 import HrGanttRow from 'hr_gantt.GanttRow';
 import EmployeeWithJobTitle from '@planning/js/widgets/employee_m2o_with_job_title';
-import fieldUtils from 'web.field_utils';
+
+const { DateTime } = luxon;
+
 
 const PlanningGanttRow = HrGanttRow.extend({
     template: 'PlanningGanttView.Row',
@@ -51,16 +56,74 @@ const PlanningGanttRow = HrGanttRow.extend({
     },
 
     /**
-     * Return the total allocated hours
+     * Return a step according to scale interval.
      *
+     * @throws Error if the scale or the scale interval is unknown.
+     * @return {*} Object that can be passed to Luxon DateTime plus() method.
      * @private
+     */
+    _getIntervalStepAccordingToScaleInterval() {
+        return getIntervalStepAccordingToScaleInterval(this.state.scale, this.SCALES);
+    },
+
+    /**
+     * Serialize the provided Luxon DateTime according to the provided timezone.
+     *
+     * @param date a Luxon DateTime.
+     * @return {*} Luxon DateTime.
+     * @private
+     */
+    _serializeDateTimeAccordingToScale(date) {
+        const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
+        return serializeDateTimeAccordingToScale(date, this.state.scale, this.SCALES, tz);
+    },
+    /**
+     * Return the allocated hours for the provided pills and date.
+     *
+     * @param pills The pills the allocated hours have to be computed for.
+     * @param date The date the allocated hours have to be computed for.
+     * @return {number}
+     * @private
+     */
+    _getAllocatedHours(pills, date) {
+        const dateKey = this._serializeDateTimeAccordingToScale(DateTime.fromSeconds(date.unix()));
+        return pills.reduce(
+            (accumulator, current) => accumulator + (dateKey in current.allocatedHoursDict ? current.allocatedHoursDict[dateKey] : 0),
+            0
+        );
+    },
+
+    /**
      * @override
-     * @param {Object} pill
-     * @returns {string}
      */
     _getAggregateGroupedPillsDisplayName(pill) {
-        const totalAllocatedHours = pill.aggregatedPills.reduce((acc, val) => acc + val.allocated_hours, 0).toFixed(2);
-        return fieldUtils.format.float_time(totalAllocatedHours);
+        const totalAllocatedHours = pill.intervals.reduce(
+            (accumulator, interval) => {
+                if (interval[0] < pill.stopDate && interval[0] >= pill.startDate) {
+                    // As if a pill cross several Gantt intervals, it is currently added several times to
+                    // aggregatedPills. So we need to ensure that it is only taken once into account, that's why we
+                    // need to use the Set.
+                    accumulator += this._getAllocatedHours([...new Set(pill.aggregatedPills)], interval[0]);
+                }
+                return accumulator;
+            },
+            0.0
+        );
+        return totalAllocatedHours ? fieldUtils.format.float_time(totalAllocatedHours) : "";
+    },
+
+    /**
+     * @override
+     */
+    _getPillCount(pillsInThisInterval, intervalStart) {
+        return this._getAllocatedHours(pillsInThisInterval, intervalStart);
+    },
+
+    /**
+     * @override
+     */
+    _isPillsInInterval(pill, intervalStart, intervalStop) {
+        return this._super(...arguments) && this._getAllocatedHours([pill], intervalStart);
     },
 
 });

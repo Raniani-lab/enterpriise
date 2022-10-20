@@ -1195,20 +1195,13 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
             arch = getSubArch(arch, `${fullXpath}/${nextViewType}`);
         }
 
-        // determine view and controller classes
-        const view = editorsRegistry.contains(nextViewType) && this.mode === "edition"
-            ? editorsRegistry.get(nextViewType)
-            : viewRegistry.get(nextViewType);
+        // Get the editor, it should honor the View Interface
+        // We also need the original view, in case we are not in edition mode
+        let editor = editorsRegistry.contains(nextViewType) ? editorsRegistry.get(nextViewType) : null;
+        const view = viewRegistry.get(nextViewType);
+        const getControllerProps = editor ? editor.props : view.props;
+        editor = editor && this.mode === "edition" ? editor : view;
 
-        if (view.type === "form") {
-            const newModel = class newModel extends view.Model {};
-            newModel.Record = class newRecord extends view.Model.Record {
-                get isInEdition() {
-                    return false;
-                }
-            };
-            view.Model = newModel;
-        }
         if (this.mode !== "edition") {
             resetViewCompilerCache();
         }
@@ -1241,10 +1234,6 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
 
         if (["list", "tree", "form"].includes(nextViewType) && this.mode === "edition" && x2ManyInfo) {
             controllerProps.parentRecord = x2ManyInfo.parentRecord;
-        }
-
-        if (nextViewType === "form") {
-            controllerProps.preventEdit = true;
         }
 
         if (custom_view_id) {
@@ -1319,10 +1308,10 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
             this._onViewChange({data});
         }
 
-        controllerProps = view.props ? view.props(controllerProps, view, config) : controllerProps;
+        controllerProps = getControllerProps ? getControllerProps(controllerProps, editor, config) : controllerProps;
 
-        const Controller = view.Controller;
-        const SearchModelClass = view.SearchModel || SearchModel;
+        const Controller = editor.Controller;
+        const SearchModelClass = editor.SearchModel || SearchModel;
 
         const env = extendEnv(this.wowlEnv, { config });
         const studioViewProps = {

@@ -287,6 +287,26 @@ var GanttRow = Widget.extend({
         });
     },
     /**
+     * Get the pill count in order to perform totals.
+     * This function is meant to be overriden.
+     * @private
+     */
+    _getPillCount(pillsInThisInterval, intervalStart, intervalStop) {
+        return pillsInThisInterval.length;
+    },
+    /**
+     * Returns whether the pill is part of the interval.
+     *
+     * @param pill The pill
+     * @param intervalStart The start date and time of the interval.
+     * @param intervalStop The stop date and time of the interval.
+     * @return {boolean}
+     * @private
+     */
+    _isPillsInInterval(pill, intervalStart, intervalStop) {
+        return pill.startDate < intervalStop && pill.stopDate > intervalStart;
+    },
+    /**
      * Aggregate overlapping pills in group rows
      *
      * @private
@@ -310,9 +330,7 @@ var GanttRow = Widget.extend({
 
         this.pills = _.reduce(intervals, function (pills, intervalStart) {
             var intervalStop = intervalStart.clone().add(cellTime, timeToken);
-            var pillsInThisInterval = _.filter(self.pills, function (pill) {
-                return pill.startDate < intervalStop && pill.stopDate > intervalStart;
-            });
+            var pillsInThisInterval = _.filter(self.pills, pill => self._isPillsInInterval(pill, intervalStart, intervalStop));
             if (pillsInThisInterval.length) {
                 var previousPill = pills[pills.length - 1];
                 var isContinuous = previousPill &&
@@ -322,10 +340,12 @@ var GanttRow = Widget.extend({
                     // Enlarge previous pill so that it spans the current slot
                     previousPill.stopDate = intervalStop;
                     previousPill.aggregatedPills = previousPill.aggregatedPills.concat(pillsInThisInterval);
+                    previousPill.intervals.push([intervalStart, intervalStop]);
                 } else {
                     var newPill = {
                         id: 0,
-                        count: pillsInThisInterval.length,
+                        intervals: [[intervalStart, intervalStop]],
+                        count: self._getPillCount(pillsInThisInterval, intervalStart, intervalStop),
                         aggregatedPills: pillsInThisInterval,
                         startDate: moment.max(_.min(pillsInThisInterval, 'startDate').startDate, intervalStart),
                         stopDate: moment.min(_.max(pillsInThisInterval, 'stopDate').stopDate, intervalStop),

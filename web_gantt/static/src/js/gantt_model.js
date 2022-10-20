@@ -344,6 +344,21 @@ export default AbstractModel.extend({
     //--------------------------------------------------------------------------
 
     /**
+     * Post `_fetchData` process that relies on `this.rows`.
+     * @private
+     * @returns [Promise]
+     */
+    _fetchDataPostProcess() {
+        const proms = [];
+        if (this.displayUnavailability && !this.isSampleModel) {
+            proms.push(this._fetchUnavailability());
+        }
+        if (this.progressBarFields && !this.isSampleModel) {
+            proms.push(this._fetchProgressBarData());
+        }
+        return proms;
+    },
+    /**
      * Fetches records to display (and groups if necessary).
      *
      * @private
@@ -390,14 +405,7 @@ export default AbstractModel.extend({
                 parentPath: [],
                 records: this.ganttData.records,
             });
-            const proms = [];
-            if (this.displayUnavailability && !this.isSampleModel) {
-                proms.push(this._fetchUnavailability());
-            }
-            if (this.progressBarFields && !this.isSampleModel) {
-                proms.push(this._fetchProgressBarData());
-            }
-            return Promise.all(proms);
+            return Promise.all(this._fetchDataPostProcess());
         });
     },
     /**

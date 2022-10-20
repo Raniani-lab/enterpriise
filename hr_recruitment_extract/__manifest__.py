@@ -17,5 +17,8 @@
     'auto_install': True,
     'license': 'OEEL-1',
     'assets': {
+        'mail.assets_messaging': [
+            'hr_recruitment_extract/static/src/models/*.js',
+        ],
     }
 }

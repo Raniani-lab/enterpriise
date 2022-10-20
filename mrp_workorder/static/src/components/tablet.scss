@@ -200,7 +200,7 @@ $o-wo-tablet-text: color-contrast($o-wo-tablet-bg, $body-color, #FFF);
             .o_tablet_document {
                 width: 100%;
                 height: 100%;
-                overflow: auto;
+                overflow: hidden;
                 iframe {
                     border: none;
                     width: 100%;

@@ -60,10 +60,10 @@ export class WorkingEmployeePopup extends Component {
             ['employee_id']
         ]);
         this.lines = productivityLines.map((pl) => {
-            let duration = pl.duration * 60;
+            let duration = pl.duration;
             const ongoingTimerIndex = pl.date_end.indexOf(null);
             if ( ongoingTimerIndex != -1 ){
-                const additionalDuration = moment(new Date()).diff(moment(time.auto_str_to_date(pl.date_start[ongoingTimerIndex])), 'seconds');
+                const additionalDuration = moment(new Date()).diff(moment(time.auto_str_to_date(pl.date_start[ongoingTimerIndex])), 'minutes');
                 duration += additionalDuration;
             }
             return {

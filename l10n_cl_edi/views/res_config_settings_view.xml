@@ -8,7 +8,7 @@
         <field name="arch" type="xml">
 
             <xpath expr="//block[@id='l10n_cl_section']" position="inside">
-                    <setting string="Tax payer information" company_dependent="1" help="Define the tax payer type and SII regional office for your company. This is mandatory for electronic invoicing.">
+                <setting string="Tax payer information" company_dependent="1" help="Define the tax payer type and SII regional office for your company. This is mandatory for electronic invoicing.">
                     <div class="content-group">
                         <div class="row mt16">
                             <label string="Taxpayer" for="l10n_cl_sii_taxpayer_type" class="col-lg-3 o_light_label"/>
@@ -32,7 +32,7 @@
                         </div>
                     </div>
                 </setting>
-                <setting string="SII Web Services" company_dependent="1" help="Please choose your DTE service provider (values depend on Test or Production).">
+                <setting string="SII Web Services" company_dependent="1" help="Please choose your DTE service provider. If possible, avoid selecting SII Demo mode in a production database.">
                     <field name="l10n_cl_dte_service_provider" class="col-lg-8 o_light_label" widget="radio"/>
                 </setting>
                 <setting string="Legal Electronic Invoicing Data" company_dependent="1" help="Hint: &quot;Factura Electrónica/Sistema de Certificación de Mercado/Actualizar datos de la empresa autorizada&quot;.">

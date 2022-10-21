@@ -21,7 +21,7 @@
         </div>
         <div class="o_side_panel_section">
             <div class="o_side_panel_title" t-if="def.orderBy.length !== 0">Sorting</div>
-            <t t-foreach="def.orderBy" t-as="sort" t-key="sort">
+            <t t-foreach="def.orderBy" t-as="sort" t-key="sort_index">
                 <div t-esc="formatSort(sort)"/>
             </t>
             <div class="o_pivot_last_update"><i>Last updated at <t t-esc="getLastUpdate()"/></i></div>

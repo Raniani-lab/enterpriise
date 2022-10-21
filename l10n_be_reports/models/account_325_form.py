@@ -135,10 +135,10 @@ class Form325(models.Model):
         compute='_compute_debtor_citizen_identification', store=True,
     )
 
-    reference_year = fields.Integer(
+    reference_year = fields.Char(
         string='Reference Year',
         required=True,
-        default=lambda x: fields.Date.context_today(x).year - 1,
+        default=lambda x: str(fields.Date.context_today(x).year - 1),
         readonly=True,
     )
     is_test = fields.Boolean(
@@ -183,7 +183,7 @@ class Form325(models.Model):
     form_281_50_ids = fields.One2many('l10n_be.form.281.50', 'form_325_id', string='Forms 281.50')
     form_281_50_count = fields.Integer(string='Forms 281.50 count', compute='_compute_form_281_50_count')
     form_281_50_total_amount = fields.Monetary(
-        string='Forms 281.50 total amount',
+        string='Forms 281.50 total',
         compute='_compute_form_281_50_total_amount',
     )
 
@@ -378,7 +378,7 @@ class Form325(models.Model):
             return {}
 
         self.env.cr.execute("""
-            SELECT COALESCE(move.commercial_partner_id, line.partner_id), 
+            SELECT COALESCE(move.commercial_partner_id, line.partner_id),
                    ROUND(SUM(line.balance), %(decimal_places)s) AS balance
               FROM account_move_line line
               JOIN account_move move on line.move_id = move.id

@@ -16,8 +16,8 @@ export class TimesheetUOMHourTimer extends Component {
 
     get displayButton() {
         return this.props.record.data.display_timer
-            && this.props.record.mode === "readonly"
-            && !this.props.record.isReadonly(this.props.name);
+            && (this.props.record.mode === "readonly"
+                || this.props.record.isReadonly(this.props.name));
     }
 
     get iconClass() {

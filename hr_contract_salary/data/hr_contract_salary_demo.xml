@@ -32,8 +32,8 @@
         <field name="required" eval="True"/>
         <field name="responsible_id" ref="sign.sign_item_role_employee"/>
         <field name="page">1</field>
-        <field name="posX">0.273</field>
-        <field name="posY">0.158</field>
+        <field name="posX">0.257</field>
+        <field name="posY">0.160</field>
         <field name="template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="width">0.150</field>
         <field name="height">0.015</field>
@@ -45,8 +45,8 @@
         <field name="required" eval="True"/>
         <field name="responsible_id" ref="sign.sign_item_role_employee"/>
         <field name="page">1</field>
-        <field name="posX">0.707</field>
-        <field name="posY">0.158</field>
+        <field name="posX">0.693</field>
+        <field name="posY">0.160</field>
         <field name="template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="width">0.150</field>
         <field name="height">0.015</field>
@@ -84,10 +84,23 @@
         <field name="required" eval="True"/>
         <field name="responsible_id" ref="sign.sign_item_role_employee"/>
         <field name="page">1</field>
-        <field name="posX">0.195</field>
-        <field name="posY">0.184</field>
+        <field name="posX">0.189</field>
+        <field name="posY">0.185</field>
         <field name="template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="width">0.270</field>
+        <field name="height">0.015</field>
+    </record>
+
+    <record id="sign_item_cdi_developer_06" model="sign.item">
+        <field name="type_id" ref="sign.sign_item_type_date"/>
+        <field name="name"></field>
+        <field name="required" eval="True"/>
+        <field name="responsible_id" ref="hr_contract_sign.sign_item_role_job_responsible"/>
+        <field name="page">2</field>
+        <field name="posX">0.649</field>
+        <field name="posY">0.613</field>
+        <field name="template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
+        <field name="width">0.150</field>
         <field name="height">0.015</field>
     </record>
 
@@ -97,8 +110,8 @@
         <field name="required" eval="True"/>
         <field name="responsible_id" ref="hr_contract_sign.sign_item_role_job_responsible"/>
         <field name="page">2</field>
-        <field name="posX">0.333</field>
-        <field name="posY">0.575</field>
+        <field name="posX">0.287</field>
+        <field name="posY">0.579</field>
         <field name="template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="width">0.200</field>
         <field name="height">0.050</field>
@@ -110,8 +123,8 @@
         <field name="required" eval="True"/>
         <field name="responsible_id" ref="sign.sign_item_role_employee"/>
         <field name="page">2</field>
-        <field name="posX">0.333</field>
-        <field name="posY">0.665</field>
+        <field name="posX">0.285</field>
+        <field name="posY">0.661</field>
         <field name="template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="width">0.200</field>
         <field name="height">0.050</field>
@@ -123,8 +136,8 @@
         <field name="required" eval="True"/>
         <field name="responsible_id" ref="sign.sign_item_role_employee"/>
         <field name="page">2</field>
-        <field name="posX">0.665</field>
-        <field name="posY">0.694</field>
+        <field name="posX">0.649</field>
+        <field name="posY">0.695</field>
         <field name="template_id" ref="hr_contract_salary.sign_template_cdi_developer"/>
         <field name="width">0.150</field>
         <field name="height">0.015</field>

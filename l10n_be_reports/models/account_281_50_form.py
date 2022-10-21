@@ -40,7 +40,7 @@ class Form28150(models.Model):
         string='Income debtor BCE number',
         related='form_325_id.debtor_bce_number',
     )
-    reference_year = fields.Integer(
+    reference_year = fields.Char(
         string='Reference year',
         related='form_325_id.reference_year',
     )

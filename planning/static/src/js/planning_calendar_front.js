@@ -29,36 +29,51 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
         this._super.apply(this, arguments);
     },
     start: function () {
-       if ($('.message_slug').attr('value')) {
-           $("#PlanningToast").toast('show');
-       }
-       this._super.apply(this, arguments);
-       this.calendarElement = this.$(".o_calendar_widget")[0];
-       const employeeSlotsFcData = JSON.parse($('.employee_slots_fullcalendar_data').attr('value'));
-       const openSlotsIds = $('.open_slots_ids').attr('value');
-       const locale = $('.locale').attr('value');
-       // default date: first event of either assigned slots or open shifts
-       const defaultStart = moment($('.default_start').attr('value')).toDate();
-       const defaultView = $('.default_view').attr('value');
-       const minTime = $('.mintime').attr('value');
-       const maxTime = $('.maxtime').attr('value');
-       let calendarHeaders = {
-           left: 'dayGridMonth,timeGridWeek,listMonth',
-           center: 'title',
-           right: 'today,prev,next'
-       };
-       if (employeeSlotsFcData.length === 0) {
-           // There are no event to display. This is probably an empty slot sent for assignment
-           calendarHeaders = {
+        if ($('.message_slug').attr('value')) {
+            $("#PlanningToast").toast('show');
+        }
+        this._super.apply(this, arguments);
+        this.calendarElement = this.$(".o_calendar_widget")[0];
+        const employeeSlotsFcData = JSON.parse($('.employee_slots_fullcalendar_data').attr('value'));
+        const openSlotsIds = $('.open_slots_ids').attr('value');
+        const locale = $('.locale').attr('value');
+        // initialise popovers and add the event listeners
+        $('[data-bs-toggle="popover"]').popover();
+        // code used to dismiss popover when clicking outside of it
+        $('body').on('click', function (e) {
+            var parentElsClassList = $(e.target).parents().map(function() {
+                return [...this.classList];
+            })
+            if (!['assignee-cell', 'contact-assignee-popover'].some(el => [...parentElsClassList].includes(el))) {
+                $('[data-bs-toggle="popover"]').popover('hide');
+            }
+        });
+        // code used to dismiss popover when opening another popover 
+        $('[data-bs-toggle="popover"]').on('click', function (e) {
+            $('[data-bs-toggle="popover"]').not(this).popover('hide');
+        });
+        // default date: first event of either assigned slots or open shifts
+        const defaultStart = moment($('.default_start').attr('value')).toDate();
+        const defaultView = $('.default_view').attr('value');
+        const minTime = $('.mintime').attr('value');
+        const maxTime = $('.maxtime').attr('value');
+        let calendarHeaders = {
+            left: 'dayGridMonth,timeGridWeek,listMonth',
+            center: 'title',
+            right: 'today,prev,next',
+        };
+        if (employeeSlotsFcData.length === 0) {
+            // There are no event to display. This is probably an empty slot sent for assignment
+            calendarHeaders = {
                 left: false,
                 center: 'title',
                 right: false,
             };
-       }
-       let titleFormat = 'MMMM YYYY';
-        // The calendar is displayed if there are slots (open or not)
-       if (defaultView && (employeeSlotsFcData || openSlotsIds)) {
-           this.calendar = new FullCalendar.Calendar($("#calendar_employee")[0], {
+        }
+        let titleFormat = 'MMMM YYYY';
+            // The calendar is displayed if there are slots (open or not)
+        if (defaultView && (employeeSlotsFcData || openSlotsIds)) {
+            this.calendar = new FullCalendar.Calendar($("#calendar_employee")[0], {
                 // Settings
                 plugins: [
                     'moment',
@@ -94,10 +109,10 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
                 eventClick: this.eventFunction.bind(this),
                 buttonText: { today: "Today",  dayGridMonth: "Month", timeGridWeek: "Week", listMonth: 'List'},
                 noEventsMessage: '',
-                });
-                this.calendar.setOption('locale', locale);
-                this.calendar.render();
-           }
+            });
+            this.calendar.setOption('locale', locale);
+            this.calendar.render();
+        }
     },
     eventRenderFunction: function (calRender) {
         const eventContent = calRender.el.querySelectorAll('.fc-time, .fc-title');
@@ -111,6 +126,11 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
         }
         calRender.el.classList.add('cursor-pointer');
         calRender.el.childNodes[0].classList.add('fw-bold');
+        if (calRender.event.extendedProps.request_to_switch && !calRender.event.extendedProps.allow_self_unassign) {
+            calRender.el.style.borderColor = 'rgb(255, 172, 0)';
+            calRender.el.style.borderWidth = '5px';
+            calRender.el.style.opacity = '0.7';
+        }
     },
     formatDateAsBackend: function (date) {
         const weekday = moment(date).format('ddd.');
@@ -124,6 +144,12 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
         const employeeToken = $('.employee_token').attr('value');
         $(".modal-title").text(calEvent.event.title);
         $(".modal-header").css("background-color", calEvent.event.backgroundColor);
+        if (calEvent.event.extendedProps.request_to_switch && !calEvent.event.extendedProps.allow_self_unassign) {
+            document.getElementById("switch-warning").style.display = "block";
+            $(".warning-text").text("You requested to switch this shift. Other employees can now assign themselves to it.");
+        } else {
+            document.getElementById("switch-warning").style.display = "none";
+        }
         $('.o_start_date').text(this.formatDateAsBackend(calEvent.event.start));
         let textValue = this.formatDateAsBackend(calEvent.event.end);
         if (calEvent.event.extendedProps.alloc_hours) {
@@ -158,7 +184,26 @@ publicWidget.registry.PlanningView = publicWidget.Widget.extend({
         } else {
             document.getElementById("dismiss_shift").style.display = "none";
         }
+        if (
+            !calEvent.event.extendedProps.request_to_switch
+            && !calEvent.event.extendedProps.is_past
+            && !calEvent.event.extendedProps.allow_self_unassign
+            ) {
+            document.getElementById("switch_shift").style.display = "block";
+        } else {
+            document.getElementById("switch_shift").style.display = "none";
+        }
+        if (
+            calEvent.event.extendedProps.request_to_switch
+            && !calEvent.event.extendedProps.allow_self_unassign
+            ) {
+            document.getElementById("cancel_switch").style.display = "block";
+        } else {
+            document.getElementById("cancel_switch").style.display = "none";
+        }
         $("#modal_action_dismiss_shift").attr("action", "/planning/" + planningToken + "/" + employeeToken + "/unassign/" + calEvent.event.extendedProps.slot_id);
+        $("#modal_action_switch_shift").attr("action", "/planning/" + planningToken + "/" + employeeToken + "/switch/" + calEvent.event.extendedProps.slot_id);
+        $("#modal_action_cancel_switch").attr("action", "/planning/" + planningToken + "/" + employeeToken + "/cancel_switch/" + calEvent.event.extendedProps.slot_id);
         $("#fc-slot-onclick-modal").modal("show");
     },
 });

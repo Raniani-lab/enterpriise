@@ -3,13 +3,16 @@
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
+from odoo.exceptions import UserError
 
 from odoo import fields
 from odoo.tests.common import Form
+from odoo.tests import new_test_user
 
+from odoo.addons.mail.tests.common import MockEmail
 from .common import TestCommonPlanning
 
-class TestPlanning(TestCommonPlanning):
+class TestPlanning(TestCommonPlanning, MockEmail):
 
     @classmethod
     def setUpClass(cls):
@@ -275,3 +278,61 @@ class TestPlanning(TestCommonPlanning):
         test_week = test_week.save()
         self.assertEqual(test_week.start_datetime, datetime(2019, 6, 24, 8, 0), 'It should adjust to employee calendar: 0am -> 9pm')
         self.assertEqual(test_week.end_datetime, datetime(2019, 6, 28, 17, 0), 'It should adjust to employee calendar: 0am -> 9pm')
+
+    def test_shift_switching(self):
+        """ The purpose of this test is to check the main back-end mechanism of switching shifts between employees """
+        bert_user = new_test_user(self.env,
+                                  login='bert_user',
+                                  groups='planning.group_planning_user',
+                                  name='Bert User',
+                                  email='user@example.com')
+        self.employee_bert.user_id = bert_user.id
+        joseph_user = new_test_user(self.env,
+                                    login='joseph_user',
+                                    groups='planning.group_planning_user',
+                                    name='Joseph User',
+                                    email='juser@example.com')
+        self.employee_joseph.user_id = joseph_user.id
+
+        # Lets first try to switch a shift that is in the past - should throw an error
+        self.slot.resource_id = self.employee_bert.resource_id
+        self.assertEqual(self.slot.is_past, True, 'The shift for this test should be in the past')
+        with self.assertRaises(UserError):
+            self.slot.with_user(bert_user).action_switch_shift()
+
+        # Lets now try to switch a shift that is not ours - it should again throw an error
+        self.assertEqual(self.slot.resource_id, self.employee_bert.resource_id, 'The shift should be assigned to Bert')
+        with self.assertRaises(UserError):
+            self.slot.with_user(joseph_user).action_switch_shift()
+
+        # Lets now to try to switch a shift that is both in the future and is ours - this should not throw an error
+        test_slot = self.env['planning.slot'].create({
+            'start_datetime': datetime.now() + relativedelta(days=2),
+            'end_datetime': datetime.now() + relativedelta(days=4),
+            'state': 'published',
+            'employee_id': bert_user.employee_id.id,
+            'resource_id': self.employee_bert.resource_id.id,
+        })
+
+        with self.mock_mail_gateway():
+            self.assertEqual(test_slot.request_to_switch, False, 'Before requesting to switch, the request to switch should be False')
+            test_slot.with_user(bert_user).action_switch_shift()
+            self.assertEqual(test_slot.request_to_switch, True, 'After the switch action, the request to switch should be True')
+
+            # Lets now assign another user to the shift - this should remove the request to switch and assign the shift
+            test_slot.with_user(joseph_user).action_self_assign()
+            self.assertEqual(test_slot.request_to_switch, False, 'After the assign action, the request to switch should be False')
+            self.assertEqual(test_slot.resource_id, self.employee_joseph.resource_id, 'The shift should now be assigned to Joseph')
+
+            # Lets now create a new request and then change the start datetime of the switch - this should remove the request to switch
+            test_slot.with_user(joseph_user).action_switch_shift()
+            self.assertEqual(test_slot.request_to_switch, True, 'After the switch action, the request to switch should be True')
+            test_slot.write({'start_datetime': (datetime.now() + relativedelta(days=3)).strftime("%Y-%m-%d %H:%M:%S")})
+            self.assertEqual(test_slot.request_to_switch, False, 'After the change, the request to switch should be False')
+
+        self.assertEqual(len(self._new_mails), 1)
+        self.assertMailMailWEmails(
+            [bert_user.partner_id.email],
+            None,
+            author=joseph_user.partner_id,
+        )

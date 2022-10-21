@@ -155,7 +155,7 @@
     <record id="planning.planning_action_my_calendar" model="ir.actions.act_window">
         <field name="domain">[('start_datetime', '!=', False), ('end_datetime', '!=', False)]</field>
         <field name="context">{
-            'search_default_my_shifts': 1, 'search_default_open_shifts': 1,
+            'search_default_my_shifts': 1, 'search_default_open_shifts': 1, 'search_default_unwanted_shifts': 1,
             'planning_expand_employee': 1, 'planning_expand_role': 1, 'planning_expand_sale_line_id': 1,
         }</field>
     </record>

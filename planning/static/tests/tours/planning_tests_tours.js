@@ -111,3 +111,54 @@ tour.register('planning_test_tour', {
     auto: true,
     run: function () {}
 }]);
+
+tour.register('planning_shift_switching_backend', {
+    url: '/web',
+    test: true,
+}, [{
+    trigger: '.o_app[data-menu-xmlid="planning.planning_menu_root"]',
+    content: "Get in the planning app",
+}, {
+    trigger: '.o_gantt_pill :contains("bert")',
+    content: "Click on one of your shifts in the gantt view",
+}, {
+    trigger: 'button[name="action_switch_shift"]',
+    content: "Click on the 'Switch Shift' button on the Gantt Form view modal",
+}, {
+    trigger: '.o_gantt_button_scale[data-value="day"]', 
+    content: "Change the gantt scale from week to day",
+}, {
+    trigger: '.o_gantt_pill :contains("bert")',
+    content: "Click on the unwanted shift in the gantt view again",
+}, {
+    trigger: '.alert-warning:contains("The employee assigned would like to switch shifts with someone else.")',
+    content: "Check that the warning has been shown",
+}, {
+    trigger: '.btn-close',
+    content: "Click on the close button to hide the shift form modal",
+}]);
+
+tour.register('planning_assigning_unwanted_shift_backend', {
+    url: '/web',
+    test: true,
+}, [{
+    trigger: '.o_app[data-menu-xmlid="planning.planning_menu_root"]',
+    content: "Get in the planning app",
+}, {
+    trigger: '.o_gantt_pill :contains("bert")',
+    content: "Click on the unwanted shift of the employee",
+}, {
+    trigger: ".o_field_widget[name='resource_id'] input",
+    content: "Assign this shift to another employee.",
+    run: 'text joseph',
+}, {
+    trigger: ".o-autocomplete--dropdown-item > a:contains('joseph')",
+    auto: true,
+    in_modal: false,
+}, {
+    trigger: "button[special='save']",
+    content: "Save this shift once it is ready.",
+}, {
+    trigger: '.o_gantt_pill :contains("joseph")',
+    content: "Click again on the newly assigned shift",
+}]);

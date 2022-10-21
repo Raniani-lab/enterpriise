@@ -80,6 +80,7 @@ class Planning(models.Model):
     overlap_slot_count = fields.Integer('Overlapping Slots', compute='_compute_overlap_slot_count', search='_search_overlap_slot_count')
     is_past = fields.Boolean('Is This Shift In The Past?', compute='_compute_past_shift')
     is_users_role = fields.Boolean('Is the shifts role one of the current user roles', compute='_compute_is_users_role')
+    request_to_switch = fields.Boolean('Has there been a request to switch on this shift slot?', default=False, readonly=True)
 
     # time allocation
     allocation_type = fields.Selection([
@@ -167,7 +168,16 @@ class Planning(models.Model):
     def _compute_past_shift(self):
         now = fields.Datetime.now()
         for slot in self:
-            slot.is_past = slot.end_datetime < now if slot.end_datetime else False
+            if slot.end_datetime:
+                if slot.end_datetime < now:
+                    slot.is_past = True
+                    # We have to do this (below), for the field to be set automatically to False when the shift is in the past
+                    if slot.request_to_switch:
+                        slot.sudo().request_to_switch = False
+                else:
+                    slot.is_past = False
+            else:
+                slot.is_past = False
 
     @api.depends('resource_id.employee_id', 'resource_type')
     def _compute_employee_id(self):
@@ -775,8 +785,23 @@ class Planning(models.Model):
         return super().create(vals_list)
 
     def write(self, values):
-        if 'resource_id' in values and self.env['resource.resource'].browse(values['resource_id']).resource_type == 'material':
+        new_resource = self.env['resource.resource'].browse(values['resource_id']) if 'resource_id' in values else None
+        if new_resource and new_resource.resource_type == 'material':
             values['state'] = 'published'
+        # if the resource_id is changed while the shift has already been published and the resource is human, that means that the shift has been re-assigned
+        # and thus we should send the email about the shift re-assignment
+        if (new_resource and self.state == 'published'
+                and self.resource_type == 'user'
+                and new_resource.resource_type == 'user'):
+            self._send_shift_assigned(self, new_resource)
+        # if the "resource_id" or the "start/end_datetime" fields meaningfully change when there is a request to switch, remove the request to switch
+        for slot in self:
+            if slot.request_to_switch and (
+                (new_resource and slot.resource_id != new_resource)
+                or ('start_datetime' in values and slot.start_datetime != datetime.strptime(values['start_datetime'], '%Y-%m-%d %H:%M:%S'))
+                or ('end_datetime' in values and slot.end_datetime != datetime.strptime(values['end_datetime'], '%Y-%m-%d %H:%M:%S'))
+            ):
+                values['request_to_switch'] = False
         # detach planning entry from recurrency
         if any(fname in values.keys() for fname in self._get_fields_breaking_recurrency()) and not values.get('recurrency_id'):
             values.update({'recurrency_id': False})
@@ -836,7 +861,7 @@ class Planning(models.Model):
         # user must at least 'read' the shift to self assign (Prevent any user in the system (portal, ...) to assign themselves)
         if not self.check_access_rights('read', raise_exception=False):
             raise AccessError(_("You don't have the right to self assign."))
-        if self.resource_id:
+        if self.resource_id and not self.request_to_switch:
             raise UserError(_("You can not assign yourself to an already assigned shift."))
         return self.sudo().write({'resource_id': self.env.user.employee_id.resource_id.id if self.env.user.employee_id else False})
 
@@ -852,6 +877,30 @@ class Planning(models.Model):
         if self.employee_id != self.env.user.employee_id:
             raise UserError(_("You can not unassign another employee than yourself."))
         return self.sudo().write({'resource_id': False})
+
+    def action_switch_shift(self):
+        """ Allow planning user to make shift available for other people to assign themselves to. """
+        self.ensure_one()
+        # same as with self-assign, a user must be able to 'read' the shift in order to request a switch
+        if not self.check_access_rights('read', raise_exception=False):
+            raise AccessError(_("You don't have the right to switch shifts."))
+        if self.employee_id != self.env.user.employee_id:
+            raise UserError(_("You can not request to switch a shift that is assigned to another user."))
+        if self.is_past:
+            raise UserError(_("You cannot switch a shift that is in the past."))
+        return self.sudo().write({'request_to_switch': True})
+
+    def action_cancel_switch(self):
+        """ Allows the planning user to cancel the shift switch if they change their mind at a later date """
+        self.ensure_one()
+        # same as above, the user rights are checked in order for the operation to be completed
+        if not self.check_access_rights('read', raise_exception=False):
+            raise AccessError(_("You don't have the right to cancel a request to switch."))
+        if self.employee_id != self.env.user.employee_id:
+            raise UserError(_("You can not cancel a request to switch made by another user."))
+        if self.is_past:
+            raise UserError(_("You cannot cancel a request to switch that is in the past."))
+        return self.sudo().write({'request_to_switch': False})
 
     # ----------------------------------------------------
     # Gantt - Calendar view
@@ -1544,6 +1593,29 @@ class Planning(models.Model):
             'state': 'published',
             'publication_warning': False,
         })
+
+    def _send_shift_assigned(self, slot, human_resource):
+        email_from = slot.company_id.email or ''
+        assignee = slot.resource_id.employee_id
+
+        template = self.env.ref('planning.email_template_shift_switch_email', raise_if_not_found=False)
+        start_datetime = self._format_datetime_to_user_tz(slot.start_datetime, assignee.env, tz=assignee.tz, lang_code=assignee.user_partner_id.lang)
+        end_datetime = self._format_datetime_to_user_tz(slot.end_datetime, assignee.env, tz=assignee.tz, lang_code=assignee.user_partner_id.lang)
+        template_context = {
+            'assignee': assignee,
+            'employee': human_resource.employee_id,
+            'start_datetime': start_datetime,
+            'end_datetime': end_datetime,
+        }
+        if template and assignee != human_resource.employee_id:
+            template.with_context(**template_context).send_mail(
+                slot.id,
+                email_values={
+                    'email_to': assignee.work_email,
+                    'email_from': email_from,
+                },
+                email_layout_xmlid='mail.mail_notification_light',
+            )
 
     # ---------------------------------------------------
     # Slots generation/copy

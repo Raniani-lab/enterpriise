@@ -1,3 +1,5 @@
+import json
+
 import odoo
 from odoo import api
 from odoo.tools import DotDict
@@ -322,3 +324,41 @@ class TestEditView(TestStudioController):
         </form>"""
 
         self.assertViewArchEqual(base_view.get_combined_arch(), expected_arch)
+
+    def test_edit_attribute_studio_groups(self):
+        """ Tests the behavior of setting the attribute `studio_groups` on field view nodes having a `groups=` attribute
+        A second goal is to test the behavior of a field node having a `groups=` attribute set on the node
+        and another `groups=` on the field definition in the model.
+        e.g.
+        `code = fields.Text(string='Python Code', groups='base.group_system',`
+        `<field name="code" groups="base.group_no_one"/>`
+        For this above case, a temporary technical node is created during the view postprocessing,
+        wrapping the `<field groups="..."` node,
+        to simulate a AND between the two groups: you must have BOTH groups in order to see the given field node,
+        and the technical node should not remain in the end.
+        """
+        # Ensure there is a group on the `code` field, as the goal of this test is to test the behavior
+        # of a field having a group in the model definition in addition to another group on the field node in the view.
+        self.assertEqual(self.env['ir.actions.server']._fields['code'].groups, 'base.group_system')
+        view = self.env['ir.ui.view'].create({
+            'name': 'foo',
+            'type': 'tree',
+            'model': 'ir.actions.server',
+            'arch': """
+                <tree>
+                    <field name="name"/>
+                    <field name="state" groups="base.group_no_one"/>
+                    <field name="code" groups="base.group_no_one"/>
+                </tree>"""
+        })
+        with self.debug_mode():
+            arch = self.env['ir.actions.server'].with_context(studio=True).get_view(view.id)['arch']
+            tree = etree.fromstring(arch)
+            children = list(tree.iterdescendants())
+            self.assertEqual(len(children), 3, 'The tree view must have only 3 descendants in total, the 3 fields')
+            name, state, code = children
+            self.assertFalse(name.get('studio_groups'))
+            self.assertTrue(state.get('studio_groups'))
+            self.assertTrue(code.get('studio_groups'))
+            for node in (state, code):
+                self.assertEqual(json.loads(node.get('studio_groups'))[0]['name'], 'Technical Features')

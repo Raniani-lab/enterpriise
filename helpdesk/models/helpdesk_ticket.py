@@ -730,12 +730,7 @@ class HelpdeskTicket(models.Model):
         if keep_reached:  # keep only the reached one to avoid losing reached_date info
             sla_status_to_remove = sla_status_to_remove.filtered(lambda status: not status.reached_datetime)
 
-        # if we are going to recreate many sla.status, then add norecompute to avoid 2 recomputation (unlink + recreate). Here,
-        # `norecompute` will not trigger recomputation. It will be done on the create multi (if value list is not empty).
-        if sla_status_value_list:
-            sla_status_to_remove.with_context(norecompute=True)
-
-        # unlink status and create the new ones in 2 operations (recomputation optimized)
+        # unlink status and create the new ones in 2 operations
         sla_status_to_remove.unlink()
         return self.env['helpdesk.sla.status'].create(sla_status_value_list)
 

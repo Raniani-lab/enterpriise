@@ -461,7 +461,7 @@ export default class BarcodeModel extends EventBus {
     toggleSublines(line) {
         const lineKey = this.groupKey(line);
         this.unfoldLineKey = this.unfoldLineKey === lineKey ? false : lineKey;
-        if (this.unfoldLineKey === lineKey) {
+        if (this.unfoldLineKey === lineKey && (!this.selectedLine || this.unfoldLineKey != this.groupKey(this.selectedLine))) {
             this.selectLine(line);
         }
         this.trigger('update');

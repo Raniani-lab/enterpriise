@@ -368,6 +368,14 @@ msgstr ""
 
 #. module: appointment
 #: model:res.groups,name:appointment.group_appointment_manager
+#. openerp-web
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Add a specific appointment."
+msgstr ""
+
+#. module: appointment
+#: model:res.groups,name:appointment.group_calendar_manager
 msgid "Administrator"
 msgstr ""
 
@@ -470,6 +478,13 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_calendar_event__appointment_answer_input_ids
 msgid "Appointment Answers"
+msgstr ""
+
+#. module: appointment
+#. openerp-web
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Appointment"
 msgstr ""
 
 #. module: appointment
@@ -673,7 +688,17 @@ msgid "CC to"
 msgstr ""
 
 #. module: appointment
+#. openerp-web
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Basic blocks"
+msgstr ""
+
+#. module: appointment
+#. openerp-web
 #: model:ir.ui.menu,name:appointment.calendar_appointment_type_menu_action
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
+#, python-format
 msgid "Calendar"
 msgstr ""
 
@@ -1064,6 +1089,7 @@ msgid ""
 msgstr ""
 
 #. module: appointment
+#: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form_insert_link
 #. openerp-web
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
 #, python-format
@@ -1071,7 +1097,7 @@ msgid "Insert Appointment Link"
 msgstr ""
 
 #. module: appointment
-#: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form_insert_link
+#: model_terms:ir.ui.view,arch_db:appointment.calendar_appointment_insert_share_view_form
 msgid "Insert link"
 msgstr ""
 
@@ -1561,6 +1587,13 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
 msgid "Schedule an Appointment"
+msgstr ""
+
+#. module: appointment
+#. openerp-web
+#: code:addons/appointment/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Schedule an appointment."
 msgstr ""
 
 #. module: appointment

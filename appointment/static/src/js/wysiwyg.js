@@ -14,13 +14,13 @@ Wysiwyg.include({
     _getPowerboxOptions: function () {
         const options = this._super.apply(this, arguments);
         const {commands, categories} = options;
-        categories.push({ name: 'Navigation', priority: 40 });
+        categories.push({ name: _t('Navigation'), priority: 40 });
         commands.push(...[
             {
-                category: 'Navigation',
-                name: 'Appointment',
+                category: _t('Navigation'),
+                name: _t('Appointment'),
                 priority: 10,
-                description: 'Add a specific appointment.',
+                description: _t('Add a specific appointment.'),
                 fontawesome: 'fa-calendar',
                 callback: async () => {
                     const restoreSelection = preserveCursor(this.odooEditor.document);
@@ -44,10 +44,10 @@ Wysiwyg.include({
                 },
             },
             {
-                category: 'Navigation',
-                name: 'Calendar',
+                category: _t('Navigation'),
+                name: _t('Calendar'),
                 priority: 10,
-                description: 'Schedule an appointment.',
+                description: _t('Schedule an appointment.'),
                 fontawesome: 'fa-calendar',
                 callback: () => {
                     const link = parseHTML('<a>Our Appointment Types</a>');

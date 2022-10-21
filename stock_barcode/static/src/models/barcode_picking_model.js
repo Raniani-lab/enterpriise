@@ -111,6 +111,11 @@ export default class BarcodePickingModel extends BarcodeModel {
         return this.lineCanBeSelected(line);
     }
 
+    lineCanBeTakenFromTheCurrentLocation(line) {
+        // A line with no qty. done can be taken regardless its location (it will be overridden).
+        return super.lineCanBeTakenFromTheCurrentLocation(line) || !this.getQtyDone(line);
+    }
+
     async updateLine(line, args) {
         await super.updateLine(...arguments);
         let { location_dest_id, result_package_id } = args;

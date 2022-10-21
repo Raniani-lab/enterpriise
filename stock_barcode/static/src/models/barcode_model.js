@@ -1227,9 +1227,9 @@ export default class BarcodeModel extends EventBus {
      */
     lineCanBeTakenFromTheCurrentLocation(line) {
         return Boolean(
+            !this.groups.group_stock_multi_locations ||
             !this.lastScanned.sourceLocation || // No current location so we don't care.
-            this.lastScanned.sourceLocation.id == line.location_id.id || // Line at the right location !
-            !this.getQtyDone(line) // Line has no qty. done so we can take it (its location will be overrided).
+            this.lastScanned.sourceLocation.id == line.location_id.id // Line at the right location.
         );
     }
 
@@ -1347,12 +1347,11 @@ export default class BarcodeModel extends EventBus {
             )) {
                 continue;
             }
-            if (this._lineIsNotComplete(line)) {
+            if (this._lineIsNotComplete(line) && this.lineCanBeTakenFromTheCurrentLocation(line)) {
                 // Found a uncompleted compatible line, stop searching if it has the same location
                 // than the scanned one (or if no location was scanned).
                 foundLine = line;
-                if ((!this.lastScanned.sourceLocation || line.location_id.id == this.lastScanned.sourceLocation.id) &&
-                    (this.tracking === 'none' || !dataLotName || dataLotName === lineLotName)) {
+                if (this.tracking === 'none' || !dataLotName || dataLotName === lineLotName) {
                     break;
                 }
             }

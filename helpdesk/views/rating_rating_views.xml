@@ -161,9 +161,6 @@
                     <field name="rating_text" decoration-danger="rating_text == 'ko'" decoration-warning="rating_text == 'ok'" decoration-success="rating_text == 'top'" class="fw-bold"/>
                 </div>
             </div>
-            <xpath expr="//sheet/group" position="inside">
-                <field name="feedback" position="move"/>
-            </xpath>
         </field>
     </record>
 

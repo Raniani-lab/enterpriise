@@ -312,6 +312,36 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
     },
 ]);
 
+tour.register('test_inventory_adjustment_tracked_product_multilocation', {test: true}, [
+    { trigger: '.button_inventory' },
+    {
+        trigger: '.o_barcode_line',
+        run: function() {
+            const [line1, line2] = helper.getLine({barcode: 'productlot1'});
+            helper.assertLineSourceLocation(line1, "WH/Stock/Section 1");
+            helper.assertLineQuantityOnReservedQty(0, "3 / 3");
+            helper.assertLineSourceLocation(line2, "WH/Stock/Section 2");
+            helper.assertLineQuantityOnReservedQty(1, "0 / 5");
+        }
+    },
+    // Scans Section 1 then scans productlot1.
+    { trigger: '.o_barcode_line', run: 'scan LOC-01-01-00' },
+    {
+        trigger: '.o_barcode_line:first-child [name=source_location].o_highlight',
+        run: 'scan lot1',
+    },
+    {
+        trigger: '.o_barcode_line:first-child.o_selected',
+        run: function() {
+            const [line1, line2] = helper.getLine({barcode: 'productlot1'});
+            helper.assertLineSourceLocation(line1, "WH/Stock/Section 1");
+            helper.assertLineQuantityOnReservedQty(0, "4 / 3");
+            helper.assertLineSourceLocation(line2, "WH/Stock/Section 2");
+            helper.assertLineQuantityOnReservedQty(1, "0 / 5");
+        }
+    },
+]);
+
 tour.register('test_inventory_create_quant', {test: true}, [
     { trigger: '.button_inventory' },
     {

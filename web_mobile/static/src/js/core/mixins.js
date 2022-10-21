@@ -3,6 +3,7 @@ odoo.define('web_mobile.mixins', function (require) {
 
 const session = require('web.session');
 const mobile = require('web_mobile.core');
+const { isIosApp } = require('@web/core/browser/feature_detection');
 
 /**
  * Mixin to setup lifecycle methods and allow to use 'backbutton' events sent
@@ -51,7 +52,11 @@ const UpdateDeviceAccountControllerMixin = {
      */
     async save() {
         const changedFields = await this._super(...arguments);
-        await session.updateAccountOnMobileDevice();
+        const updated = session.updateAccountOnMobileDevice();
+        // Crapy workaround for unupdatable Odoo Mobile App iOS (Thanks Apple :@)
+        if (!isIosApp()){
+            await updated;
+        }
         return changedFields;
     },
 };

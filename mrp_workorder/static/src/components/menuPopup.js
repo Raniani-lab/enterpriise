@@ -55,6 +55,11 @@ class MenuPopup extends Component {
     }
 }
 
+MenuPopup.props = {
+    popupData: Object,
+    onClose: Function,
+    onClosePopup: Function,
+};
 MenuPopup.template = 'mrp_workorder.MenuPopup';
 
 export default MenuPopup;

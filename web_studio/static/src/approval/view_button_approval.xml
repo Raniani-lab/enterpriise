@@ -5,7 +5,7 @@
 			<attribute name="t-attf-studio_approval">{{ approval ? true : undefined }}</attribute>
 		</xpath>
 		<xpath expr="//t[@t-slot='contents']" position="after" >
-			<StudioApproval t-if="approval" approval="approval" resId="approval.resId" inStudio="approval.inStudio"/>
+			<StudioApproval t-if="approval" approval="approval"/>
 		</xpath>
 	</t>
 </templates>

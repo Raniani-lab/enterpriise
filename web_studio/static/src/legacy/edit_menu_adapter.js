@@ -69,6 +69,7 @@ export class EditMenuItem extends Component {
     }
 }
 EditMenuItem.components = { EditMenuItemAdapter };
+EditMenuItem.props = {};
 EditMenuItem.template = xml`
   <t>
     <div t-if="!menus.getCurrentApp()"/>

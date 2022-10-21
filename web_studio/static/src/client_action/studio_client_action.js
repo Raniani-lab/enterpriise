@@ -3,6 +3,7 @@
 import { registry } from "@web/core/registry";
 import { useBus, useService } from "@web/core/utils/hooks";
 import { cleanDomFromBootstrap } from "@web/legacy/utils";
+import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 import { computeAppsAndMenuItems } from "@web/webclient/menus/menu_helpers";
 import { ComponentAdapter } from "web.OwlCompatibility";
 import { AppCreatorWrapper } from "./app_creator/app_creator";
@@ -70,6 +71,7 @@ export class StudioClientAction extends Component {
     }
 }
 StudioClientAction.template = "web_studio.StudioClientAction";
+StudioClientAction.props = { ...standardActionServiceProps };
 StudioClientAction.components = {
     StudioNavbar,
     StudioHomeMenu,

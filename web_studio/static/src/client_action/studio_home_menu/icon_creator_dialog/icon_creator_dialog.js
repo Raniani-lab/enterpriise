@@ -67,5 +67,10 @@ export class IconCreatorDialog extends Component {
     }
 }
 IconCreatorDialog.title = _lt("Edit Application Icon");
+IconCreatorDialog.props = {
+    editedAppData: Object,
+    appId: Number,
+    close: Function,
+};
 IconCreatorDialog.template = "web_studio.IconCreatorDialog";
 IconCreatorDialog.components = { Dialog, IconCreator };

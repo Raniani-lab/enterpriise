@@ -27,6 +27,7 @@ export class VoipSystrayItemWrapper extends owl.Component {
     }
 
 }
+VoipSystrayItemWrapper.props = {};
 
 Object.assign(VoipSystrayItemWrapper, {
     components: { VoipSystrayItemView: getMessagingComponent("VoipSystrayItemView") },

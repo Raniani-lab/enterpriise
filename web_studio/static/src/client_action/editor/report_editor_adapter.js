@@ -3,6 +3,7 @@ import { ComponentAdapter } from "web.OwlCompatibility";
 import ReportEditorManager from "web_studio.ReportEditorManager";
 import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
+import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 
 const { Component, xml } = owl;
 
@@ -192,4 +193,5 @@ class ReportEditorAdapter extends ComponentAdapter {
 export class ReportEditor extends Component {}
 ReportEditor.template = xml`<div class="o_web_studio_client_action"><ReportEditorAdapter /></div>`;
 ReportEditor.components = { ReportEditorAdapter };
+ReportEditor.props = { ...standardActionServiceProps };
 registry.category("actions").add("web_studio.report_editor", ReportEditor);

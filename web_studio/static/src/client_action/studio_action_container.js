@@ -12,3 +12,7 @@ export class StudioActionContainer extends ActionContainer {
         }
     }
 }
+StudioActionContainer.props = {
+    ...ActionContainer.props,
+    initialAction: { type: String, optional: true },
+};

@@ -21,5 +21,9 @@ export class SelectionPopup extends Component {
         this.props.onClosePopup('SelectionPopup');
     }
 }
-
+SelectionPopup.props = {
+    popupData: Object,
+    onClosePopup: Function,
+    onSelectEmployee: Function,
+};
 SelectionPopup.template = 'mrp_workorder_hr.SelectionPopup';

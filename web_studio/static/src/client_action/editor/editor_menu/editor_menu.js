@@ -108,6 +108,10 @@ export class EditorMenu extends Component {
         this.props.switchTab({ tab });
     }
 }
+EditorMenu.props = {
+    switchTab: Function,
+    switchView: Function,
+};
 EditorMenu.template = "web_studio.EditorMenu";
 EditorMenu.viewTypes = [
     {

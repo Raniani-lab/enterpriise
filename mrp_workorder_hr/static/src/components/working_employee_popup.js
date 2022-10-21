@@ -77,4 +77,12 @@ export class WorkingEmployeePopup extends Component {
 }
 
 WorkingEmployeePopup.components = { MrpTimer };
+WorkingEmployeePopup.props = {
+    popupData: Object,
+    onAddEmployee: Function,
+    onLockEmployee: Function,
+    onStartEmployee: Function,
+    onStopEmployee: Function,
+    onClosePopup: Function,
+};
 WorkingEmployeePopup.template = 'mrp_workorder_hr.WorkingEmployeePopup';

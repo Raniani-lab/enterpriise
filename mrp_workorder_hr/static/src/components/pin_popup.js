@@ -49,5 +49,9 @@ export class PinPopup extends Component {
     }
 
 }
-
+PinPopup.props = {
+    popupData: Object,
+    onClosePopup: Function,
+    onPinValidate: Function,
+};
 PinPopup.template = 'mrp_workorder_hr.PinPopup';

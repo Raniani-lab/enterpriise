@@ -313,7 +313,6 @@ export default AbstractController.extend({
             title: _t("Plan"),
             resModel: this.modelName,
             domain: this._getPlanDialogDomain(state),
-            views: this.dialogViews,
             context: Object.assign({}, this.context, context),
             onSelected: (resIds) => {
                 if (resIds.length) {

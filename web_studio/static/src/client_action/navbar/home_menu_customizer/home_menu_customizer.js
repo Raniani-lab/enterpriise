@@ -94,4 +94,5 @@ export class HomeMenuCustomizer extends Component {
     }
 }
 HomeMenuCustomizer.template = "web_studio.HomeMenuCustomizer";
+HomeMenuCustomizer.props = {};
 HomeMenuCustomizer.components = { Dropdown, DropdownItem, FileInput };

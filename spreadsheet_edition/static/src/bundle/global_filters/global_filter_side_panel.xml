@@ -107,6 +107,7 @@
                 t-if="state.type === 'relation' and state.relation.relatedModel.technical"
                 resModel="state.relation.relatedModel.technical"
                 resIds="state.relation.defaultValue"
+                placeholder="placeholder"
                 t-key="state.relation.relatedModel.technical"
                 onValueChanged.bind="onValuesSelected"
             />

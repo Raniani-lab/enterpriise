@@ -103,6 +103,7 @@ export class Editor extends Component {
     }
 }
 Editor.template = "web_studio.Editor";
+Editor.props = {};
 Editor.components = {
     EditorMenu,
     StudioActionContainer,

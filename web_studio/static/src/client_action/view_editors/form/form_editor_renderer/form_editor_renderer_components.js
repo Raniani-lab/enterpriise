@@ -166,6 +166,11 @@ export class FormLabel extends components.FormLabel {
     }
 }
 FormLabel.template = "web_studio.FormLabel";
+FormLabel.props = {
+    ...components.FormLabel.props,
+    studioXpath: String,
+    studioIsVisible: { type: Boolean, optional: true },
+};
 
 /*
  * ViewButton:

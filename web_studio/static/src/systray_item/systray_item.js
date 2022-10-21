@@ -23,6 +23,7 @@ class StudioSystray extends Component {
     }
 }
 StudioSystray.template = "web_studio.SystrayItem";
+StudioSystray.props = {};
 
 export const systrayItem = {
     Component: StudioSystray,

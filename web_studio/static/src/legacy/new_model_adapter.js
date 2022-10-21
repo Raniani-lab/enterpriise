@@ -50,3 +50,4 @@ NewModelItem.template = xml`
   </t>
 `;
 NewModelItem.components = { NewModelItemAdapter };
+NewModelItem.props = {};

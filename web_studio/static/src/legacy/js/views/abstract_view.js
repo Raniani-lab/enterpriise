@@ -105,18 +105,27 @@ AbstractView.include({
     },
 });
 
-function filterUnwantedProps(ComponentType, params) {
-    const props = ComponentType.props;
-    if (!props) {
-        return params;
-    }
-    const newParams = {};
-    Object.entries(params).forEach(([k, v]) => {
-        if (k in props) {
-            newParams[k] = v;
+    function filterUnwantedProps(Component, props) {
+        // This if, can be removed once all the Components have the props defined
+        if (Component.props) {
+            let componentKeys = null;
+            if (Component.props instanceof Array) {
+                componentKeys = Component.props.map((x) => x.replace("?", ""));
+            } else {
+                componentKeys = Object.keys(Component.props);
+            }
+            if (componentKeys.includes("*")) {
+                return props;
+            } else {
+                return Object.keys(props)
+                    .filter((k) => componentKeys.includes(k))
+                    .reduce((o, k) => {
+                        o[k] = props[k];
+                        return o;
+                    }, {});
+            }
+        } else {
+            return props;
         }
-    });
-    return newParams;
-}
-
+    }
 });

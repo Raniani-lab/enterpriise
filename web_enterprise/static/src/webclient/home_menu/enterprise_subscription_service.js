@@ -171,6 +171,7 @@ class ExpiredSubscriptionBlockUI extends Component {
         this.subscription = useState(useService("enterprise_subscription"));
     }
 }
+ExpiredSubscriptionBlockUI.props = {};
 ExpiredSubscriptionBlockUI.template = xml`
 <t t-if="subscription.daysLeft &lt;= 0">
     <div class="o_blockUI"/>

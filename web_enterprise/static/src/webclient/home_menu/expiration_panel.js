@@ -74,4 +74,5 @@ export class ExpirationPanel extends Component {
 }
 
 ExpirationPanel.template = "DatabaseExpirationPanel";
+ExpirationPanel.props = {};
 ExpirationPanel.components = { Transition };

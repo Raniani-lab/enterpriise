@@ -21,6 +21,10 @@ class FooterComponent extends Component {
     }
 }
 FooterComponent.template = "web_enterprise.HomeMenu.CommandPalette.Footer";
+FooterComponent.props = {
+    //prop added by the command palette
+    switchNamespace: { type: Function, optional: true },
+};
 /**
  * Home menu
  *

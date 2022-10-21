@@ -11,7 +11,6 @@
             </xpath>
             <xpath expr="//header" position='after'>
                 <field name="extract_state" attrs="{'invisible':True}"/>
-                <field name="extract_word_ids" attrs="{'invisible':True}"/>
                 <field name="extract_can_show_send_button" attrs="{'invisible':True}"/>
                 <div role="status" class="alert alert-danger mb8 text-center"
                      attrs="{'invisible':['|',

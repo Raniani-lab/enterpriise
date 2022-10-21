@@ -39,15 +39,6 @@ ERROR_MESSAGES = {
 }
 
 
-class HrExpenseExtractionWords(models.Model):
-    _name = "hr.expense.extract.words"
-    _description = "Extracted words from expense scan"
-
-    expense_id = fields.Many2one("hr.expense", string="Expense")
-    word_text = fields.Char()
-    word_page = fields.Integer()
-
-
 class HrExpense(models.Model):
     _inherit = ['hr.expense']
     _order = "state_processed desc, date desc, id desc"
@@ -89,7 +80,6 @@ class HrExpense(models.Model):
     extract_status_code = fields.Integer("Status code", copy=False)
     extract_error_message = fields.Text("Error message", compute=_compute_error_message)
     extract_remote_id = fields.Integer("Id of the request to IAP-OCR", default="-1", copy=False, readonly=True)
-    extract_word_ids = fields.One2many("hr.expense.extract.words", inverse_name="expense_id", copy=False)
     extract_can_show_send_button = fields.Boolean("Can show the ocr send button", compute=_compute_show_send_button)
     # We want to see the records that are just processed by OCR at the top of the list
     state_processed = fields.Boolean(string='Status regarding OCR status', compute=_compute_state_processed, store=True)
@@ -198,7 +188,6 @@ class HrExpense(models.Model):
         if result['status_code'] == SUCCESS:
             self.extract_state = "waiting_validation"
             ocr_results = result['results'][0]
-            self.extract_word_ids.unlink()
 
             description_ocr = ocr_results['description']['selected_value']['content'] if 'description' in ocr_results else ""
             total_ocr = ocr_results['total']['selected_value']['content'] if 'total' in ocr_results else ""

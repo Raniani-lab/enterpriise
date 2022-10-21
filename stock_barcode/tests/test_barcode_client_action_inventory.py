@@ -110,6 +110,26 @@ class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(mls_with_lot.filtered(lambda ml: ml.lot_id.name == 'lot3').qty_done, 1)
         self.assertEqual(set(mls_with_sn.mapped('lot_id.name')), set(['serial1', 'serial2', 'serial3']))
 
+    def test_inventory_create_quant(self):
+        """ Creates a quant and checks it will not be deleted until the inventory was validated.
+        """
+        Quant = self.env['stock.quant']
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+        self.start_tour(url, 'test_inventory_create_quant', login='admin', timeout=180)
+
+        Quant._unlink_zero_quants()
+        product1_quant = Quant.search([('product_id', '=', self.product1.id)])
+        self.assertEqual(len(product1_quant), 1)
+        self.assertEqual(product1_quant.inventory_quantity, 0.0)
+
+        # Validates the inventory, then checks there is no 0 qty quant.
+        product1_quant.action_validate()
+        Quant.invalidate_model()  # Updates the cache.
+        Quant._unlink_zero_quants()
+        product1_quant = Quant.search([('product_id', '=', self.product1.id)])
+        self.assertEqual(len(product1_quant), 0)
+
     def test_inventory_nomenclature(self):
         """ Simulate scanning a product and its weight
         thanks to the barcode nomenclature """

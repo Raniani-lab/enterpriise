@@ -67,15 +67,14 @@ class AssetModify(models.TransientModel):
 
     @api.depends('asset_id')
     def _get_selection_modify_options(self):
-        options = [
-            ('dispose', "Dispose"),
-            ('sell', "Sell"),
-            ('modify', "Re-evaluate"),
-            ('pause', "Pause"),
-        ]
         if self.env.context.get('resume_after_pause'):
-            options = [('resume', 'Resume')]
-        return options
+            return [('resume', _('Resume'))]
+        return [
+            ('dispose', _("Dispose")),
+            ('sell', _("Sell")),
+            ('modify', _("Re-evaluate")),
+            ('pause', _("Pause")),
+        ]
 
     @api.depends('company_id')
     def _compute_accounts(self):

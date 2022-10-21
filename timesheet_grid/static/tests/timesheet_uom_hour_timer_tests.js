@@ -45,7 +45,7 @@ QUnit.module("timesheet_grid", (hooks) => {
         const treeView = serverData.views["account.analytic.line,false,list"];
         serverData.views["account.analytic.line,false,list"] = treeView.replace(
             `name="unit_amount"`,
-            `name="unit_amount" attrs="{ 'readonly': [['id', '=', 6]] }"`
+            `name="unit_amount" attrs="{ 'readonly': [['timer_start', '!=', False], ['timer_pause', '=', False]] }"`
         );
         for (let index = 0; index < serverData.models["account.analytic.line"].records.length; index++) {
             const record = serverData.models["account.analytic.line"].records[index];
@@ -89,10 +89,12 @@ QUnit.module("timesheet_grid", (hooks) => {
         _checkButtonVisibility(secondRow, false, assert);
     });
 
-    QUnit.test("button is not displayed when in readonly", async function (assert) {
+    QUnit.test("button is displayed when timer is running", async function (assert) {
         await makeView(makeViewArgs);
-        const sixthRow = target.querySelector(".o_list_table .o_data_row:nth-of-type(6)");
-        _checkButtonVisibility(sixthRow, false, assert);
+        const thirdRow = target.querySelector(".o_list_table .o_data_row:nth-of-type(3)");
+        _checkButtonVisibility(thirdRow, true, assert);
+        await click(thirdRow, 'div[name="unit_amount"]');
+        _checkButtonVisibility(thirdRow, true, assert);
     });
 
     QUnit.test("button is not displayed when display_timer is false", async function (assert) {

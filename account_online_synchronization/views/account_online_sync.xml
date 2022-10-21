@@ -33,7 +33,7 @@
                             </group>
                         </group>
                         <group>
-                            <field name="account_online_account_ids" nolabel="1" widget="one2many" mode="tree" string="Online Accounts" attrs="{'invisible': [('provider_data', '=', False)]}">
+                            <field name="account_online_account_ids" nolabel="1" widget="one2many" mode="tree" string="Online Accounts" attrs="{'invisible': [('provider_data', '=', False)]}" colspan="2">
                                 <tree create="false" editable="bottom"> <!-- Clicks on records (for edit) are blocked -->
                                     <field name="name" required="1"/>
                                     <field name="account_number"/>

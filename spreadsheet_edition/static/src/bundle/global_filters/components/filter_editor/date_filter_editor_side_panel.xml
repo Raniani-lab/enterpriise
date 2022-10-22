@@ -6,6 +6,7 @@
         </xpath>
         <xpath expr="//div[@name='field-match']" position="after">
             <FilterFieldOffset
+                active="!!props.fieldMatchings[object_index].fieldMatch.chain"
                 onOffsetSelected="(value) => props.onOffsetSelected(object_index, value)"
                 selectedOffset="object.fieldMatch and object.fieldMatch.offset || 0"
             />

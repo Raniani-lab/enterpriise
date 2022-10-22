@@ -778,58 +778,88 @@ QUnit.module(
             assertDateDomainEqual(assert, "date", "2022-05-01", "2022-05-31", chartDomain);
         });
 
-        QUnit.test("Create a new empty relative date filter", async (assert) => {
-            const { model } = await createSpreadsheetFromPivotView();
-            insertListInSpreadsheet(model, {
-                model: "partner",
-                columns: ["foo", "bar", "date", "product_id"],
-            });
-            insertChartInSpreadsheet(model);
-            await nextTick();
-            await openGlobalFilterSidePanel();
-            await clickCreateFilter("date");
-            await editGlobalFilterLabel("My Label");
+        QUnit.test(
+            "Cannot a new date filter with period offsets without setting the field chain first",
+            async (assert) => {
+                await createSpreadsheetFromPivotView();
+                await nextTick();
+                await openGlobalFilterSidePanel();
+                await clickCreateFilter("date");
+                await editGlobalFilterLabel("My Label");
 
-            const range = target.querySelector(".o_input:nth-child(2)");
-            await testUtils.fields.editAndTrigger(range, "relative", ["change"]);
+                const pivotFieldMatching = target.querySelectorAll(
+                    ".o_spreadsheet_field_matching"
+                )[0];
+                const offsetInput = target.querySelector(".o_filter_field_offset select.o_input");
+                assert.ok(offsetInput.disabled);
 
-            const relativeSelection = target.querySelector("select.o_relative_date_selection");
-            const values = relativeSelection.querySelectorAll("option");
-            assert.deepEqual(
-                [...values].map((val) => val.value),
-                ["", ...RELATIVE_DATE_RANGE_TYPES.map((item) => item.type)]
-            );
-            await testUtils.fields.editAndTrigger(relativeSelection, "", ["change"]);
+                // pivot
+                await selectFieldMatching("date", pivotFieldMatching);
+                assert.notOk(offsetInput.disabled);
+            }
+        );
 
-            const pivotFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[0];
-            const listFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[1];
-            const graphFieldMatching = target.querySelectorAll(".o_pivot_field_matching")[2];
+        QUnit.test(
+            "Create a new relative date filter with an empty default value",
+            async (assert) => {
+                const { model } = await createSpreadsheetFromPivotView();
+                insertListInSpreadsheet(model, {
+                    model: "partner",
+                    columns: ["foo", "bar", "date", "product_id"],
+                });
+                insertChartInSpreadsheet(model);
+                await nextTick();
+                await openGlobalFilterSidePanel();
+                await clickCreateFilter("date");
+                await editGlobalFilterLabel("My Label");
 
-            await selectFieldMatching("date", pivotFieldMatching);
-            await selectFieldMatching("date", listFieldMatching);
-            await selectFieldMatching("date", graphFieldMatching);
+                const range = target.querySelector(".o_input:nth-child(2)");
+                await testUtils.fields.editAndTrigger(range, "relative", ["change"]);
 
-            await testUtils.fields.editAndTrigger(
-                graphFieldMatching.querySelector("select"),
-                "-2",
-                ["change"]
-            );
+                const relativeSelection = target.querySelector("select.o_relative_date_selection");
+                const values = relativeSelection.querySelectorAll("option");
+                assert.deepEqual(
+                    [...values].map((val) => val.value),
+                    ["", ...RELATIVE_DATE_RANGE_TYPES.map((item) => item.type)]
+                );
+                await testUtils.fields.editAndTrigger(relativeSelection, "", ["change"]);
 
-            await saveGlobalFilter();
+                const pivotFieldMatching = target.querySelectorAll(
+                    ".o_spreadsheet_field_matching"
+                )[0];
+                const listFieldMatching = target.querySelectorAll(
+                    ".o_spreadsheet_field_matching"
+                )[1];
+                const graphFieldMatching = target.querySelectorAll(
+                    ".o_spreadsheet_field_matching"
+                )[2];
 
-            const [globalFilter] = model.getters.getGlobalFilters();
-            assert.equal(globalFilter.label, "My Label");
-            assert.equal(globalFilter.defaultValue, "");
-            assert.equal(globalFilter.rangeType, "relative");
-            assert.equal(globalFilter.type, "date");
-            const pivotDomain = model.getters.getPivotComputedDomain("1");
-            assert.deepEqual(pivotDomain, []);
-            const listDomain = model.getters.getListComputedDomain("1");
-            assert.deepEqual(listDomain, []);
-            const chartId = model.getters.getOdooChartIds()[0];
-            const chartDomain = model.getters.getChartDataSource(chartId).getComputedDomain();
-            assert.deepEqual(chartDomain, []);
-        });
+                await selectFieldMatching("date", pivotFieldMatching);
+                await selectFieldMatching("date", listFieldMatching);
+                await selectFieldMatching("date", graphFieldMatching);
+
+                await testUtils.fields.editAndTrigger(
+                    graphFieldMatching.querySelector("select"),
+                    "-2",
+                    ["change"]
+                );
+
+                await saveGlobalFilter();
+
+                const [globalFilter] = model.getters.getGlobalFilters();
+                assert.equal(globalFilter.label, "My Label");
+                assert.equal(globalFilter.defaultValue, "");
+                assert.equal(globalFilter.rangeType, "relative");
+                assert.equal(globalFilter.type, "date");
+                const pivotDomain = model.getters.getPivotComputedDomain("1");
+                assert.deepEqual(pivotDomain, []);
+                const listDomain = model.getters.getListComputedDomain("1");
+                assert.deepEqual(listDomain, []);
+                const chartId = model.getters.getOdooChartIds()[0];
+                const chartDomain = model.getters.getChartDataSource(chartId).getComputedDomain();
+                assert.deepEqual(chartDomain, []);
+            }
+        );
 
         QUnit.test("Create a new relative date filter", async function (assert) {
             patchDate(2022, 6, 14, 0, 0, 0);

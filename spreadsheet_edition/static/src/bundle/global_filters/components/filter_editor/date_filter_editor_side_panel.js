@@ -126,7 +126,7 @@ export default class DateFilterEditorSidePanel extends AbstractFilterEditorSideP
     onDateOptionChange(ev) {
         // TODO t-model does not work ?
         this.dateState.type = ev.target.value;
-        this.state.date.defaultValue = this.state.date.type !== "relative" ? {} : "";
+        this.dateState.defaultValue = this.dateState.type !== "relative" ? {} : "";
     }
 
     toggleDefaultsToCurrentPeriod(ev) {

@@ -368,7 +368,7 @@ export default class FilterEditorSidePanel extends LegacyComponent {
     onDateOptionChange(ev) {
         // TODO t-model does not work ?
         this.state.date.type = ev.target.value;
-        this.state.date.defaultValue = {};
+        this.state.date.defaultValue = this.state.date.type !== "relative" ? {} : "";
     }
 
     toggleDefaultsToCurrentPeriod(ev) {

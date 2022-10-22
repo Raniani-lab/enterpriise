@@ -35,7 +35,7 @@ msgid ""
 "Receipt - %s' %(object.name)) or 'Order - %s' % (object.name)"
 msgstr ""
 "(object.rental_status not in ('draft', 'sent') and 'Reçu de livraison ou de "
-"retour - %s' %(object.name)) or 'Order - %s' % (object.name)"
+"retour - %s' %(object.name)) or 'Commande - %s' % (object.name)"
 
 #. module: sale_renting
 #: code:addons/sale_renting/wizard/rental_configurator.py:0

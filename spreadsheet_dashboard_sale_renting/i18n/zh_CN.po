@@ -193,7 +193,7 @@ msgstr "销售员"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Customers"
-msgstr ""
+msgstr "顶级客户"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
@@ -207,14 +207,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Products"
-msgstr ""
+msgstr "最佳产品"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Salespeople"
-msgstr ""
+msgstr "最佳销售员"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
@@ -237,4 +237,4 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "since last period"
-msgstr ""
+msgstr "从上期以来"

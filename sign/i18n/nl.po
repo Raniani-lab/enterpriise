@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -55,7 +56,7 @@ msgstr "%s de handtekening is bevestigd per sms met het telefoonnummer %s."
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "%s: missing credits for extra-authentication"
-msgstr ""
+msgstr "%s: ontbrekende kredieten voor extra authenticatie"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -180,7 +181,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
 msgid "<i class=\"fa fa-arrow-right\"/> Buy credits"
-msgstr ""
+msgstr "<i class=\"fa fa-arrow-right\"/> Kredieten aanschaffen"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -522,6 +523,8 @@ msgid ""
 "Allow signatories to provide their identity using itsme® (available in "
 "Belgium and the Netherlands)."
 msgstr ""
+"Laat ondertekenaars hun identiteit bevestigen met itsme® (beschikbaar in "
+"België en Nederland)."
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__refusal_allowed
@@ -1586,6 +1589,9 @@ msgid ""
 "having sent the request. Useful to replace a signatory who is out of office,"
 " etc."
 msgstr ""
+"Indien aangevinkt kan de ontvanger van een document met deze rol gewijzigd "
+"worden nadat het verzoek is verstuurd. Handig om een ondertekenaar te "
+"vervangen die niet op kantoor is, enz. "
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__message_has_error
@@ -1602,6 +1608,11 @@ msgid ""
 "                        </code> \n"
 "                        menu."
 msgstr ""
+"Indien je deze notificaties niet meer wil ontvangen, kan je de extra authenticatiestap desactiveren in het \n"
+"                        <code>\n"
+"                            Ondertekenen &gt; Configuratie & Rollen\n"
+"                        </code> \n"
+"                        menu."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
@@ -1609,6 +1620,8 @@ msgid ""
 "If you wish, you can request the document again after buying more credits "
 "for the operation."
 msgstr ""
+"Als je wilt, kun je het document opnieuw opvragen nadat je meer kredieten "
+"hebt gekocht voor de operatie."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__in_progress_count
@@ -2968,7 +2981,7 @@ msgstr "Ondertekende doc."
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__signed_without_extra_auth
 msgid "Signed Without Extra Authentication"
-msgstr ""
+msgstr "Ondertekend zonder extra authenticatie"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
@@ -3181,7 +3194,7 @@ msgstr "Sjablonen %s\""
 #: code:addons/sign/static/src/views/hooks.js:0
 #, python-format
 msgid "Template %s"
-msgstr ""
+msgstr "Sjabloon %s"
 
 #. module: sign
 #. openerp-web
@@ -3638,7 +3651,7 @@ msgstr "Upload een PDF-bestand om als sjabloon te gebruiken."
 #: code:addons/sign/static/src/views/common.xml:0
 #, python-format
 msgid "Upload a pdf that you want to sign directly"
-msgstr ""
+msgstr "Upload een PDF die je onmiddellijk wilt ondertekenen"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
@@ -3743,7 +3756,7 @@ msgstr "Bekeken/gedownload door"
 #: model:ir.ui.menu,name:sign.sign_request_waiting_for_me
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Waiting for me"
-msgstr "Wachten op mij"
+msgstr "Wachtend op mij"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
@@ -3820,7 +3833,7 @@ msgstr "Hoe zit het met die conversies die ik zie?"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
 msgid "Why am I seeing this?"
-msgstr ""
+msgstr "Waarom zie ik dit?"
 
 #. module: sign
 #. openerp-web
@@ -3879,7 +3892,7 @@ msgstr "Je kunt deze ondertekenaar niet opnieuw toewijzen"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
 msgid "You have less than 20 credits remaining for"
-msgstr ""
+msgstr "Je hebt minder dan 20 kredieten over voor"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_refused
@@ -3892,6 +3905,8 @@ msgid ""
 "You have templates or requests using a role with an extra-authentication step with few credits remaining.<br/>\n"
 "                To remove this warning, disable the extra-authentication step in the <code>Configuration &gt; Roles</code> menu, or buy credits."
 msgstr ""
+"Je hebt sjablonen of verzoeken die een rol met een extra authenticatiestap gebruiken met weinig kredieten over.<br/>\n"
+"                Om deze waarschuwing te verwijderen kan je de extra authenticatiestap desactiveren in het <code>Configuratie &gt; Rollen</code> menu, of meer kredieten aanschaffen."
 
 #. module: sign
 #: code:addons/sign/models/sign_request.py:0
@@ -4008,6 +4023,8 @@ msgstr "en:"
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
 msgid "authentication step will be skipped if you are out of credits."
 msgstr ""
+"authenticatiestap zal worden overgeslagen indien je geen kredieten meer "
+"hebt."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
@@ -4020,6 +4037,8 @@ msgid ""
 "because you don't have enough credits for this operation. \n"
 "                    The signatory was able to finish signing, but was not asked to authenticate fully."
 msgstr ""
+"want je hebt niet genoeg kredieten voor deze operatie. \n"
+"                    De ondertekenaar kon het document ondertekenen, maar werd niet gevraagd om volledig te authenticeren."
 
 #. module: sign
 #. openerp-web
@@ -4070,7 +4089,7 @@ msgstr "is bewerkt, aangevuld en ondertekend door"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
 msgid "has been signed by"
-msgstr ""
+msgstr "werd ondertekend door"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
@@ -4147,7 +4166,7 @@ msgstr "we hebben een verbruikslijst voor 1000 kg papierverbruik."
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
 msgid "without the requested extra-authentification step ("
-msgstr ""
+msgstr "zonder de gevraagde extra authenticatiestap ("
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed

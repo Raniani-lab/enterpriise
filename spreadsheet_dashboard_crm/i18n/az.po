@@ -26,7 +26,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid " days"
-msgstr ""
+msgstr " gün"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -46,7 +46,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "# Leads"
-msgstr ""
+msgstr "# Lidlər"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -173,7 +173,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected"
-msgstr ""
+msgstr "Ehtimal edilən"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -271,7 +271,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Əvvəlki"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web

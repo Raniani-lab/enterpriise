@@ -63,7 +63,7 @@ msgstr "平均订单金额"
 #. module: event_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:event_sale_dashboard.event_sale_report_view_dashboard
 msgid "Avg. Amount /Registration"
-msgstr ""
+msgstr "平均注册金额"
 
 #. module: event_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:event_sale_dashboard.event_sale_report_view_dashboard
@@ -73,7 +73,7 @@ msgstr "平均每日注册数"
 #. module: event_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:event_sale_dashboard.event_sale_report_view_dashboard
 msgid "Avg. Registrations Sold /Day"
-msgstr ""
+msgstr "平均每天售出注册数"
 
 #. module: event_sale_dashboard
 #: model:ir.model,name:event_sale_dashboard.model_event_sale_report

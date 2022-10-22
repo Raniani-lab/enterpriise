@@ -120,7 +120,7 @@ msgstr ""
 #. module: documents_hr
 #: model:ir.model.fields,field_description:documents_hr.field_hr_employee__documents_share_id
 msgid "Documents Share"
-msgstr ""
+msgstr "ドキュメント共有"
 
 #. module: documents_hr
 #: model:ir.model,name:documents_hr.model_hr_employee

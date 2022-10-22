@@ -184,7 +184,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Locked"
-msgstr ""
+msgstr "Blok edilib"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -252,7 +252,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "Növbəti"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -430,7 +430,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Statistics"
-msgstr ""
+msgstr "Statistika"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -474,7 +474,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Task"
-msgstr ""
+msgstr "Tapşırıq"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -663,4 +663,4 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "sign in"
-msgstr ""
+msgstr "Daxil ol"

@@ -6,6 +6,7 @@
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -212,8 +213,8 @@ msgid ""
 "An unexisting package type was scanned. This part of the barcode can't be "
 "processed."
 msgstr ""
-"Er is een niet-bestaand verpakkingstype gescand. Dit deel van de barcode kan"
-" niet worden verwerkt."
+"Er is een niet-bestaand pakkettype gescand. Dit deel van de barcode kan niet"
+" worden verwerkt."
 
 #. module: stock_barcode
 #. openerp-web
@@ -405,7 +406,7 @@ msgstr "Bestemming"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "Destination Package"
-msgstr "Doel verpakking"
+msgstr "Bestemming Pakket"
 
 #. module: stock_barcode
 #. openerp-web
@@ -933,7 +934,7 @@ msgstr "Scan een"
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan a location"
-msgstr ""
+msgstr "Scan een locatie"
 
 #. module: stock_barcode
 #. openerp-web
@@ -963,28 +964,28 @@ msgstr "Scan een partijnummer en vervolgens de bestemmingslocatie"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a package"
-msgstr ""
+msgstr "Scan een pakket"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a package or put in pack"
-msgstr "Een verpakking scannen of in verpakking doen"
+msgstr "Een pakket scannen of inpakken"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a package or the destination location"
-msgstr "Scan een verpakking of de bestemmingslocatie"
+msgstr "Scan een pakket of de bestemmingslocatie"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a package, the destination location or another product"
-msgstr ""
+msgstr "Scan een pakket, de bestemmingslocatie of een ander product"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1006,34 +1007,34 @@ msgstr "Scan een product voordat je een trackingnummer scant"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product from %s"
-msgstr ""
+msgstr "Scan een product van %s"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan a product in %s or scan another location"
-msgstr ""
+msgstr "Scan een product in %s of scan een andere locatie"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product or a package"
-msgstr "Scan een product of verpakking"
+msgstr "Scan een product of een pakket"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/models/stock_picking.py:0
 #, python-format
 msgid "Scan a product or a package to filter the transfers."
-msgstr "Scan een product of een verpakking om de transfers te filteren."
+msgstr "Scan een product of een pakket om de transfers te filteren."
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product or another package"
-msgstr "Scan een product of een andere verpakking"
+msgstr "Scan een product of een ander pakket"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1054,14 +1055,14 @@ msgstr "Scan een product en vervolgens de bestemmingslocatie"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product, a package or the destination location"
-msgstr "Scan een product, een verpakking of de bestemmingslocatie"
+msgstr "Scan een product, een pakket of de bestemmingslocatie"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product, a package or the destination location."
-msgstr "Scan een product, een verpakking of de bestemmingslocatie."
+msgstr "Scan een product, een pakket of de bestemmingslocatie."
 
 #. module: stock_barcode
 #. openerp-web
@@ -1075,7 +1076,7 @@ msgstr "Een serienummer scannen"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a serial number or a package"
-msgstr "Scan een serienummer of een verpakking"
+msgstr "Scan een serienummer of een pakket"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1105,8 +1106,8 @@ msgstr "Scan een overdracht of een product om je gegevens te filteren"
 #, python-format
 msgid "Scan a transfer, a product or a package to filter your records"
 msgstr ""
-"Scan een overschrijving, een product of een verpakking om je administratie "
-"te filteren"
+"Scan een overschrijving, een product of een pakket om je administratie te "
+"filteren"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1142,21 +1143,21 @@ msgstr "Scan meer partijnummers"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan more lot numbers or a package"
-msgstr "Scan meer partijnummers of een verpakking"
+msgstr "Scan meer partijnummers of een pakket"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan more products in %s or scan another location"
-msgstr ""
+msgstr "Scan meer producten in %s of scan een andere locatie"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan more products or a package"
-msgstr "Scan meer producten of een verpakking"
+msgstr "Scan meer producten of een pakket"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1207,7 +1208,7 @@ msgstr "Scan de bronlocatie"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan the source location or a package"
-msgstr "Scan de bronlocatie of een verpakking"
+msgstr "Scan de bronlocatie of een pakket"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1288,7 +1289,7 @@ msgstr "Barcodenomenclatuur weergeven"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__show_barcode_validation
 msgid "Show Barcode Validation"
-msgstr ""
+msgstr "Toon Barcode Validatie"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1303,12 +1304,12 @@ msgstr "Bronlocatie"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 msgid "Source Package"
-msgstr "Bron verpakking"
+msgstr "Bron Pakket"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_package_type
 msgid "Stock package type"
-msgstr "Verpakkingssoort"
+msgstr "Type voorraadpakket"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1323,6 +1324,9 @@ msgid ""
 "Technical field used to compute whether the \"Final Validation\" group "
 "should be displayed, solving combined groups/invisible complexity."
 msgstr ""
+"Technisch veld dat gebruikt wordt om te berekenen of de groep \"Definitieve "
+"Validatie\" moet worden weergegeven, waarmee gecombineerde "
+"groepen/onzichtbare complexiteit worden opgelost."
 
 #. module: stock_barcode
 #. openerp-web
@@ -1374,7 +1378,7 @@ msgstr "Er is niets om af te drukken op deze pagina."
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "This package is already scanned."
-msgstr "Deze verpakking is al gescand."
+msgstr "Dit pakket is al gescand."
 
 #. module: stock_barcode
 #. openerp-web
@@ -1407,8 +1411,7 @@ msgstr "Te verwerken"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "To use packages, enable 'Packages' in the settings"
-msgstr ""
-"Om verpakkingen te gebruiken, activeer 'Verpakkingen' in de instellingen"
+msgstr "Om pakketten te gebruiken, activeer 'Pakketten' in de instellingen"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_picking
@@ -1490,8 +1493,8 @@ msgid ""
 "You are expected to scan one or more products or a package available at the "
 "picking location"
 msgstr ""
-"Er wordt van je verwacht dat je één of meerdere producten of een verpakking "
-"op de picklocatie scant"
+"Er wordt van je verwacht dat je één of meerdere producten of een pakket op "
+"de picklocatie scant"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1513,8 +1516,8 @@ msgstr "Het is de bedoeling dat je %s of een andere bronlocatie scant"
 #, python-format
 msgid "You can't apply a package type. First, scan product or select a line"
 msgstr ""
-"Je kunt geen verpakkingstype toepassen. Scan eerst het product of selecteer "
-"een regel"
+"Je kunt geen pakkettype toepassen. Scan eerst het product of selecteer een "
+"regel"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation
@@ -1591,7 +1594,7 @@ msgstr "bewerkingssoort"
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "package"
-msgstr "verpakking"
+msgstr "pakket"
 
 #. module: stock_barcode
 #. openerp-web

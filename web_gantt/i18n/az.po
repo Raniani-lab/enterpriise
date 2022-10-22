@@ -27,7 +27,7 @@ msgstr ""
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "&nbsp;"
-msgstr ""
+msgstr "&nbsp;"
 
 #. module: web_gantt
 #. openerp-web
@@ -41,14 +41,14 @@ msgstr "Əlavə edin"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Add record"
-msgstr ""
+msgstr "Qeyd əlavə et"
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/js/gantt_controller.js:0
 #, python-format
 msgid "Are you sure to delete this record?"
-msgstr ""
+msgstr "Bu qeydi silməyə əminsiniz?"
 
 #. module: web_gantt
 #: model:ir.model,name:web_gantt.model_base
@@ -60,7 +60,7 @@ msgstr "Baza"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Collapse rows"
-msgstr ""
+msgstr "Sıraların Dağılması"
 
 #. module: web_gantt
 #. openerp-web
@@ -82,7 +82,7 @@ msgstr "Gün"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Expand rows"
-msgstr ""
+msgstr "Cərgələri uzatmaq"
 
 #. module: web_gantt
 #. openerp-web
@@ -96,7 +96,7 @@ msgstr "Gant"
 #: code:addons/web_gantt/static/src/js/gantt_view.js:0
 #, python-format
 msgid "Gantt View"
-msgstr ""
+msgstr "Gant Görünüşü"
 
 #. module: web_gantt
 #: code:addons/web_gantt/models/ir_ui_view.py:0
@@ -141,7 +141,7 @@ msgstr ""
 #: code:addons/web_gantt/models/models.py:0
 #, python-format
 msgid "Insufficient fields for Gantt View!"
-msgstr ""
+msgstr "Gant Görüntüsü üçün sahələr kifayət etmir!"
 
 #. module: web_gantt
 #: code:addons/web_gantt/models/ir_ui_view.py:0
@@ -174,7 +174,7 @@ msgstr "Ad:"
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "Növbəti"
 
 #. module: web_gantt
 #. openerp-web
@@ -195,14 +195,14 @@ msgstr ""
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Plan existing"
-msgstr ""
+msgstr "Mövcud olanı planlaşdırın"
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Əvvəlki"
 
 #. module: web_gantt
 #: code:addons/web_gantt/models/models.py:0
@@ -217,14 +217,14 @@ msgstr ""
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Start:"
-msgstr ""
+msgstr "Başla:"
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Stop:"
-msgstr ""
+msgstr "Saxlayın:"
 
 #. module: web_gantt
 #. openerp-web
@@ -238,7 +238,7 @@ msgstr "Bu gün"
 #: code:addons/web_gantt/static/src/js/gantt_model.js:0
 #, python-format
 msgid "Undefined %s"
-msgstr ""
+msgstr "Təyin olunmayan %s"
 
 #. module: web_gantt
 #: model:ir.model,name:web_gantt.model_ir_ui_view

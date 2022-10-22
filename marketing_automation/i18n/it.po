@@ -3,6 +3,7 @@
 # 	* marketing_automation
 # 
 # Translators:
+# Sergio Zanchetta <primes2h@gmail.com>, 2022
 # Martin Trigaux, 2022
 # 
 msgid ""
@@ -259,7 +260,7 @@ msgstr "Filtro applicato"
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
 msgid "Archived"
-msgstr "Archiviato"
+msgstr "In archivio"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -429,7 +430,7 @@ msgstr "Creato da"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__create_date
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__create_date
 msgid "Created on"
-msgstr "Creato il"
+msgstr "Data creazione"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_campaign__ab_testing_schedule_datetime
@@ -789,7 +790,7 @@ msgstr "Email inviata e non recapitata"
 #: code:addons/marketing_automation/models/marketing_trace.py:0
 #, python-format
 msgid "Manually"
-msgstr "Manualmente"
+msgstr "Manuale"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_participant.py:0

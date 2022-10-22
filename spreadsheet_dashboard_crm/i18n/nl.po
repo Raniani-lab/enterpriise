@@ -391,7 +391,7 @@ msgstr "Toplanden"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Lost Reasons"
-msgstr "Top verloren redenen"
+msgstr "Topverliesredenen"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -414,7 +414,7 @@ msgstr "Beste kansen"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Sales Teams"
-msgstr "Top verkoopteams"
+msgstr "Topverkoopteams"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -568,7 +568,7 @@ msgstr "sluiten"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top cities"
-msgstr "top steden"
+msgstr "topsteden"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -576,28 +576,28 @@ msgstr "top steden"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top countries"
-msgstr "top landen"
+msgstr "toplanden"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top lost reasons"
-msgstr "top verloren redenen"
+msgstr "topverliesredenen"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top medium"
-msgstr "top medium"
+msgstr "topmedium"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top mediums"
-msgstr "top mediums"
+msgstr "topmediums"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -605,39 +605,39 @@ msgstr "top mediums"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top sales team"
-msgstr "top verkoopteam"
+msgstr "topverkoopteam"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top salespeople"
-msgstr "top verkopers"
+msgstr "topverkopers"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top salesperson"
-msgstr "top verkoper"
+msgstr "topverkoper"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top source"
-msgstr "top bron"
+msgstr "topbron"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top sources"
-msgstr "top bronnen"
+msgstr "topbronnen"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top tags"
-msgstr "top labels"
+msgstr "toplabels"

@@ -215,6 +215,8 @@ msgid ""
 "Records that are in the past cannot be automatically rescheduled. They "
 "should be manually rescheduled instead."
 msgstr ""
+"Los registros anteriores no se pueden reprogramar de forma automática, "
+"deberá hacerse de forma manual."
 
 #. module: web_gantt
 #. openerp-web

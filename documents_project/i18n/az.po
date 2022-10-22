@@ -32,11 +32,13 @@ msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
 msgstr ""
+"Bu şərtlərə uyğun olan bütün əlavələr üçün mövcud olacaq şərt və "
+"əməliyyatlar dəsti"
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_ask_for_validation
 msgid "Ask for Validation"
-msgstr ""
+msgstr "Təsdiq üçün xahiş edin"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_ir_attachment
@@ -61,7 +63,7 @@ msgstr "Yaradın"
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule
 msgid "Create a Task"
-msgstr ""
+msgstr "Tapşırıq yarat"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_project__documents_tag_ids
@@ -71,7 +73,7 @@ msgstr "Susmaya Görə Teqlər"
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_deprecate
 msgid "Deprecate"
-msgstr ""
+msgstr "Etiraz etmək"
 
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_deprecated
@@ -105,7 +107,7 @@ msgstr ""
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_folder
 msgid "Documents Workspace"
-msgstr ""
+msgstr "Sənədlərin İş Sahəsi"
 
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_draft
@@ -120,7 +122,7 @@ msgstr ""
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_mark_as_draft
 msgid "Mark As Draft"
-msgstr ""
+msgstr "Layihə kimi işarələ"
 
 #. module: documents_project
 #: code:addons/documents_project/models/folder.py:0
@@ -159,7 +161,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents_project.field_project_project__shared_document_ids
 #: model:ir.model.fields,field_description:documents_project.field_project_task__shared_document_ids
 msgid "Shared Documents"
-msgstr ""
+msgstr "Paylaşılan Sənədlər"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_project__shared_document_count
@@ -175,7 +177,7 @@ msgstr ""
 #: model:ir.model,name:documents_project.model_project_task
 #: model:ir.model.fields.selection,name:documents_project.selection__documents_workflow_rule__create_model__project_task
 msgid "Task"
-msgstr ""
+msgstr "Tapşırıq"
 
 #. module: documents_project
 #: code:addons/documents_project/models/workflow.py:0
@@ -221,7 +223,7 @@ msgstr ""
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_to_validate
 msgid "To Validate"
-msgstr ""
+msgstr "Təsdiq Etmək Üçün"
 
 #. module: documents_project
 #: model_terms:ir.actions.act_window,help:documents_project.action_view_documents_project_task
@@ -249,7 +251,7 @@ msgstr "Təsdiqləndi"
 #: model:ir.model.fields,field_description:documents_project.field_project_project__documents_folder_id
 #: model:ir.model.fields,field_description:documents_project.field_project_task__documents_folder_id
 msgid "Workspace"
-msgstr ""
+msgstr "İş sahəsi "
 
 #. module: documents_project
 #: model:ir.model.fields,help:documents_project.field_project_project__documents_folder_id

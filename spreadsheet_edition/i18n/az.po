@@ -66,7 +66,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_list_side_panel.xml:0
 #, python-format
 msgid "Back"
-msgstr ""
+msgstr "Geri"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -173,7 +173,7 @@ msgstr "Gün"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Default value"
-msgstr ""
+msgstr "Defolt Dəyər"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -271,7 +271,7 @@ msgstr "Filterlər"
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -450,7 +450,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.js:0
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "Növbəti"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -497,7 +497,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.js:0
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Əvvəlki"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -813,7 +813,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.js:0
 #, python-format
 msgid "never"
-msgstr ""
+msgstr "Heç vaxt"
 
 #. module: spreadsheet_edition
 #: model:ir.model.constraint,message:spreadsheet_edition.constraint_spreadsheet_revision_parent_revision_unique

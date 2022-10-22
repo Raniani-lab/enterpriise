@@ -24,7 +24,7 @@ msgstr ""
 #: code:addons/project_forecast/models/project.py:0
 #, python-format
 msgid "%s's Planning"
-msgstr ""
+msgstr "%s的计划"
 
 #. module: project_forecast
 #: model:ir.ui.menu,name:project_forecast.planning_menu_schedule_by_project
@@ -53,7 +53,7 @@ msgstr "未找到班次。让我们创建一个！"
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
 msgid "Plan your resources for this project"
-msgstr ""
+msgstr "为这个项目规划你的资源"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_project_view_form_simplified_inherit_forecast
@@ -128,7 +128,7 @@ msgstr "班次模板"
 #. module: project_forecast
 #: model:planning.role,name:project_forecast.planning_role_tester
 msgid "Tester"
-msgstr ""
+msgstr "测试人"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_project__total_forecast_time

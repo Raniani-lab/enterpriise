@@ -5,10 +5,10 @@
 # Translators:
 # Lukas Van Cauter <cvl@odoo.com>, 2022
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2022
-# Jolien De Paepe, 2022
 # Martin Trigaux, 2022
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -106,7 +106,7 @@ msgstr "Uitgestelde omzet zijn aangemaakt voor deze boeking:"
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "A depreciation entry will be posted on and including the date %s."
-msgstr ""
+msgstr "Een afschrijving zal worden geboekt op et inclusief de datum %s."
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:0
@@ -116,6 +116,9 @@ msgid ""
 "Future entries will be recomputed to depreciate the asset following the "
 "changes."
 msgstr ""
+"Een afschrijving zal worden geboekt op en inclusief de datum %s. <br/> %s "
+"Toekomstige boekingen zullen opnieuw worden berekend om het actief af te "
+"schrijven na de wijzigingen."
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:0
@@ -124,6 +127,8 @@ msgid ""
 "A depreciation entry will be posted on and including the date %s.<br/> A "
 "disposal entry will be posted on the %s account <b>%s</b>."
 msgstr ""
+"Een afschrijving zal worden geboekt op en inclusief de datum %s.<br/> Een "
+"afschrijving zal worden geboekt op de %s rekening <b>%s</b>."
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:0
@@ -133,6 +138,9 @@ msgid ""
 "second entry will neutralize the original income and post the  outcome of "
 "this sale on account <b>%s</b>."
 msgstr ""
+"Een afschrijving zal worden geboekt op en inclusief de datum %s.<br/> Een "
+"tweede boeking neutraliseert het oorspronkelijk inkomen en boekt het "
+"resultaat van deze verkoop op de rekening <b>%s</b>."
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -399,6 +407,10 @@ msgid ""
 "%(dep_delta)s. This corresponds to %(move_count)s cancelled "
 "%(word)s:<br>%(entries)s"
 msgstr ""
+"Actief geannuleerd <br>De rekening %(exp_acc)s is gecrediteerd voor "
+"%(exp_delta)s, terwijl de rekening %(dep_acc)s is gedebiteerd voor "
+"%(dep_delta)s. Dit komt overeen met %(move_count)s geannuleerde "
+"%(word)s:<br>%(entries)s"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__account_asset_counterpart_id
@@ -458,7 +470,7 @@ msgstr "Activa Gepauzeerde Dagen"
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset_report_handler
 msgid "Asset Report Custom Handler"
-msgstr "Aangepaste handler voor activarapporten"
+msgstr "Aangepaste handler voor activarapportage"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__asset_type
@@ -619,6 +631,10 @@ msgid ""
 "  * Declining: Calculated on basis of: Residual Value * Declining Factor\n"
 "  * Declining then Straight Line: Like Declining but with a minimum depreciation value equal to the straight line value."
 msgstr ""
+"Kies de methode die gebruikt kan worden om de hoeveelheid afschrijvingsregels te berekenen.\n"
+"  * Lineair: Berekend op basis van: Bruto waarde / Duur\n"
+"  * Dalend: Berekend op basis van: Restwaarde * Dalende factor\n"
+"  * Dalend, vervolgens lineair: Idem als Dalend, maar met een minimale afschrijvingswaarde gelijk aan de lineaire waarde."
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__close
@@ -1665,7 +1681,7 @@ msgstr "Inkopen: Activa"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Recognition Values"
-msgstr ""
+msgstr "Afschrijvingswaardes"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__asset_ids
@@ -2077,7 +2093,7 @@ msgstr ""
 #, python-format
 msgid "You cannot resume at a date equal to or before the pause date"
 msgstr ""
-"U kunt niet hervatten op een datum gelijk aan of eerder dan de pauzedatum"
+"Je kunt niet hervatten op een datum gelijk aan of eerder dan de pauzedatum"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_balance

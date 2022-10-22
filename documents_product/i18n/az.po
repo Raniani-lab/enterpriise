@@ -37,11 +37,13 @@ msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
 msgstr ""
+"Bu şərtlərə uyğun olan bütün əlavələr üçün mövcud olacaq şərt və "
+"əməliyyatlar dəsti"
 
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
 msgid "Centralize files attached to products"
-msgstr ""
+msgstr "Məhsullara əlavə olunmuş faylları mərkəzləşdirin"
 
 #. module: documents_product
 #: model:ir.model,name:documents_product.model_res_company
@@ -61,7 +63,7 @@ msgstr "Yaradın"
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_sheet_tag
 msgid "DataSheets"
-msgstr ""
+msgstr "Verilənlər Cədvəli"
 
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
@@ -76,12 +78,12 @@ msgstr "Sənədlər"
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__documents_product_settings
 msgid "Documents Product Settings"
-msgstr ""
+msgstr "Məhsul Parametrləri Sənədləri"
 
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_msds_tag
 msgid "MSDS"
-msgstr ""
+msgstr "Maddi Təhlükəsizlik Məlumat Vərəqələri"
 
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_new_tag
@@ -91,7 +93,7 @@ msgstr "Yeni"
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_plans_tag
 msgid "Plans"
-msgstr ""
+msgstr "Planlar "
 
 #. module: documents_product
 #: model:ir.model,name:documents_product.model_product_template
@@ -103,22 +105,22 @@ msgstr "Məhsul"
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_tags
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_tags
 msgid "Product Tags"
-msgstr ""
+msgstr "Məhsul Etiketləri"
 
 #. module: documents_product
 #: model:ir.model,name:documents_product.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Məhsul Çeşidi"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_folder
 msgid "Product Workspace"
-msgstr ""
+msgstr "Məhsulun İş Sahəsi"
 
 #. module: documents_product
 #: model:ir.model.fields.selection,name:documents_product.selection__documents_workflow_rule__create_model__product_template
 msgid "Product template"
-msgstr ""
+msgstr "Məhsul Şablonu"
 
 #. module: documents_product
 #: model:documents.folder,name:documents_product.documents_product_folder
@@ -128,14 +130,14 @@ msgstr "Məhsullar"
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_specs_tag
 msgid "Specs"
-msgstr ""
+msgstr "Xüsusiyyətlər"
 
 #. module: documents_product
 #: model_terms:ir.ui.view,arch_db:documents_product.res_config_settings_view_form
 msgid "Workspace"
-msgstr ""
+msgstr "İş sahəsi "
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_folder
 msgid "product default workspace"
-msgstr ""
+msgstr "məhsulun susmaya görə iş sahəsi"

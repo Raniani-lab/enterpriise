@@ -62,7 +62,7 @@ msgstr "HTTP Marşrutizasiyası"
 #. module: mail_mobile
 #: model:ir.model,name:mail_mobile.model_iap_account
 msgid "IAP Account"
-msgstr ""
+msgstr "IAP Hesabı"
 
 #. module: mail_mobile
 #: model_terms:ir.ui.view,arch_db:mail_mobile.res_config_settings_view_form
@@ -85,7 +85,7 @@ msgstr ""
 #. module: mail_mobile
 #: model:ir.model.fields,field_description:mail_mobile.field_res_config_settings__enable_ocn
 msgid "Push Notifications"
-msgstr ""
+msgstr "Push bildirişlər"
 
 #. module: mail_mobile
 #: model_terms:ir.ui.view,arch_db:mail_mobile.res_config_settings_view_form

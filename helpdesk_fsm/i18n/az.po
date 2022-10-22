@@ -24,7 +24,7 @@ msgstr ""
 #: model:project.task,legend_blocked:helpdesk_fsm.helpdesk_fsm_task_1
 #: model:project.task,legend_blocked:helpdesk_fsm.helpdesk_fsm_task_2
 msgid "Blocked"
-msgstr ""
+msgstr "Bloklanıb"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__company_id
@@ -107,7 +107,7 @@ msgstr ""
 #. module: helpdesk_fsm
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr ""
+msgstr "Dəstək xidməti Qrup"
 
 #. module: helpdesk_fsm
 #: model:ir.model,name:helpdesk_fsm.model_helpdesk_ticket
@@ -117,13 +117,13 @@ msgstr "Dəstək Xidməti Bileti"
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: helpdesk_fsm
 #: model:project.task,legend_normal:helpdesk_fsm.helpdesk_fsm_task_1
 #: model:project.task,legend_normal:helpdesk_fsm.helpdesk_fsm_task_2
 msgid "In Progress"
-msgstr ""
+msgstr "Həyata Keçirilməkdə"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task____last_update
@@ -160,7 +160,7 @@ msgstr ""
 #: model:project.task,legend_done:helpdesk_fsm.helpdesk_fsm_task_1
 #: model:project.task,legend_done:helpdesk_fsm.helpdesk_fsm_task_2
 msgid "Ready"
-msgstr ""
+msgstr "Hazır"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__helpdesk_ticket_id
@@ -172,7 +172,7 @@ msgstr ""
 #: model:ir.model,name:helpdesk_fsm.model_project_task
 #, python-format
 msgid "Task"
-msgstr ""
+msgstr "Tapşırıq"
 
 #. module: helpdesk_fsm
 #: model:mail.message.subtype,description:helpdesk_fsm.mt_team_ticket_task_done

@@ -50,7 +50,7 @@ msgstr "Ləğv edin"
 #. module: website_event_track_gantt
 #: model:ir.model,name:website_event_track_gantt.model_event_event
 msgid "Event"
-msgstr ""
+msgstr "Tədbir"
 
 #. module: website_event_track_gantt
 #: model:ir.model,name:website_event_track_gantt.model_event_track

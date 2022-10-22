@@ -3,6 +3,7 @@
 # 	* hr_contract_sign
 # 
 # Translators:
+# erpgo translator <jumshud@erpgo.az>, 2022
 # Jumshud Sultanov <cumshud@gmail.com>, 2022
 # 
 msgid ""
@@ -58,7 +59,7 @@ msgstr "Qoşma"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__contract_id
 msgid "Contract"
-msgstr ""
+msgstr "Müqavilə"
 
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_contract_history
@@ -121,7 +122,7 @@ msgstr "İşçi"
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_contract
 msgid "Employee Contract"
-msgstr ""
+msgstr "İşçilərin  Müqaviləsi"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__employee_role_id
@@ -145,7 +146,7 @@ msgstr "İşçilər"
 #. module: hr_contract_sign
 #: model:sign.item.role,name:hr_contract_sign.sign_item_role_job_responsible
 msgid "HR Responsible"
-msgstr ""
+msgstr "HR Məsuliyyət"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__has_both_template
@@ -155,7 +156,7 @@ msgstr ""
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__is_signature_request
@@ -322,9 +323,9 @@ msgstr ""
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_contract_history_view_form
 msgid "document"
-msgstr ""
+msgstr "sənəd"
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_contract_history_view_form
 msgid "documents"
-msgstr ""
+msgstr "Sənədlər"

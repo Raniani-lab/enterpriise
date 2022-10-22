@@ -23,7 +23,7 @@ msgstr ""
 #. module: helpdesk_repair
 #: model:helpdesk.ticket,legend_blocked:helpdesk_repair.helpdesk_repair_ticket_1
 msgid "Blocked"
-msgstr ""
+msgstr "Bloklanıb"
 
 #. module: helpdesk_repair
 #: model:ir.actions.act_window,name:helpdesk_repair.action_repair_order_form
@@ -33,7 +33,7 @@ msgstr ""
 #. module: helpdesk_repair
 #: model:ir.model,name:helpdesk_repair.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr ""
+msgstr "Dəstək xidməti Qrup"
 
 #. module: helpdesk_repair
 #: model:ir.model,name:helpdesk_repair.model_helpdesk_ticket
@@ -43,12 +43,12 @@ msgstr "Dəstək Xidməti Bileti"
 #. module: helpdesk_repair
 #: model:helpdesk.ticket,legend_normal:helpdesk_repair.helpdesk_repair_ticket_1
 msgid "In Progress"
-msgstr ""
+msgstr "Həyata Keçirilməkdə"
 
 #. module: helpdesk_repair
 #: model:helpdesk.ticket,legend_done:helpdesk_repair.helpdesk_repair_ticket_1
 msgid "Ready"
-msgstr ""
+msgstr "Hazır"
 
 #. module: helpdesk_repair
 #: model:ir.model.fields,help:helpdesk_repair.field_repair_order__ticket_id

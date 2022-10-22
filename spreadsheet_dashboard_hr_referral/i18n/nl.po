@@ -292,7 +292,7 @@ msgstr "Topbedrijven"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Job Positions"
-msgstr "Top vacatures"
+msgstr "Topvacatures"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web

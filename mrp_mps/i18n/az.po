@@ -117,12 +117,12 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_mrp_bom
 msgid "Bill of Material"
-msgstr ""
+msgstr "Məhsul Resepti"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__bom_id
 msgid "Bill of Materials"
-msgstr ""
+msgstr "Məhsul Reseptləri"
 
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_production_schedule_form_view
@@ -173,7 +173,7 @@ msgstr "Tarixdə yaradıldı"
 #. module: mrp_mps
 #: model:ir.model.fields.selection,name:mrp_mps.selection__res_company__manufacturing_period__day
 msgid "Daily"
-msgstr ""
+msgstr "Gündəlik"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__date
@@ -183,7 +183,7 @@ msgstr "Tarix"
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_mrp_production_schedule__product_uom_id
 msgid "Default unit of measure used for all stock operations."
-msgstr ""
+msgstr "Bütün anbar əməliyyatları üçün istifadə olunan standart ölçü vahidi."
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_res_company__manufacturing_period
@@ -328,7 +328,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__id
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: mrp_mps
 #. openerp-web
@@ -366,7 +366,7 @@ msgstr ""
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_forecast_details_form_view
 msgid "Manufacturing Orders"
-msgstr ""
+msgstr "İstehsal Sifarişləri"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_res_company__manufacturing_period
@@ -461,7 +461,7 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Məhsul Çeşidi"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__production_schedule_id
@@ -557,7 +557,7 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_purchase_order__date_planned_mps
 msgid "Scheduled Date"
-msgstr ""
+msgstr "Planlaşdırılmış Tarix"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_bom__schedule_count
@@ -584,7 +584,7 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_stock_rule
 msgid "Stock Rule"
-msgstr ""
+msgstr "Stok Qaydaları"
 
 #. module: mrp_mps
 #. openerp-web
@@ -705,11 +705,11 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields.selection,name:mrp_mps.selection__res_company__manufacturing_period__week
 msgid "Weekly"
-msgstr ""
+msgstr "Həftəlik"
 
 #. module: mrp_mps
 #. openerp-web
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "by"
-msgstr ""
+msgstr "tərəfindən"

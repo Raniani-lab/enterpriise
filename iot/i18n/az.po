@@ -3,6 +3,7 @@
 # 	* iot
 # 
 # Translators:
+# erpgo translator <jumshud@erpgo.az>, 2022
 # Jumshud Sultanov <cumshud@gmail.com>, 2022
 # 
 msgid ""
@@ -318,7 +319,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:iot.field_iot_device__id
 #: model:ir.model.fields,field_description:iot.field_iot_keyboard_layout__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: iot
 #: model:ir.model,name:iot.model_iot_device
@@ -457,7 +458,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__manufacturer
 msgid "Manufacturer"
-msgstr ""
+msgstr "İstehsalçı"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__name

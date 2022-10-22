@@ -7,6 +7,7 @@
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2022
 # Martin Trigaux, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -386,7 +387,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "<span>Some partners are missing a VAT number.</span>"
-msgstr "<span>Bij sommige relaties missen een btw-nummer.</span>"
+msgstr "<span>Bij sommige relaties missen een BTW-nummer.</span>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_tax_report
@@ -466,7 +467,7 @@ msgstr "Boekhouding weergeven vertegenwoordiger veld"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_custom_handler
 msgid "Account Report Custom Handler"
-msgstr "Aangepaste handler voor accountrapporten"
+msgstr "Aangepaste handler voor boekhoudrapportage"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_footnote
@@ -504,7 +505,7 @@ msgstr "Boekhoudkundige rapportregel"
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_tree
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_report_search
 msgid "Accounting Reports"
-msgstr "Boekhoudkundige rapporten"
+msgstr "Boekhoudkundige rapportages"
 
 #. module: account_reports
 #. openerp-web
@@ -517,7 +518,7 @@ msgstr "Kostenplaatsen"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_form
 msgid "Accounts Coverage Report"
-msgstr ""
+msgstr "Accountdekkingsrapport"
 
 #. module: account_reports
 #: model:account.report.expression,report_line_name:account_reports.multicurrency_revaluation_to_adjust_adjustment
@@ -532,7 +533,7 @@ msgstr "Rekeningen om aan te passen"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Accounts coverage"
-msgstr ""
+msgstr "Accountdekking"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_mail_activity_type__category
@@ -726,6 +727,8 @@ msgid ""
 "Analytic filters will include analytic items without accounting "
 "correspondence"
 msgstr ""
+"Kostenplaatsfilters zullen kostenplaatsitems bevatten zonder boekhoudkundige"
+" correspondentie"
 
 #. module: account_reports
 #. openerp-web
@@ -1552,7 +1555,7 @@ msgstr "Exporteren"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_reports_export_wizard_format
 msgid "Export format for accounting's reports"
-msgstr "Exporteer formaat voor boekhoudkundige rapporten"
+msgstr "Exporteer formaat voor boekhoudkundige rapportages"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard__export_format_ids
@@ -1562,7 +1565,7 @@ msgstr "Exporteer naar"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_reports_export_wizard
 msgid "Export wizard for accounting's reports"
-msgstr "Exporteer wizard voor boekhoudkundige rapporten"
+msgstr "Exporteer wizard voor boekhoudkundige rapportages"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_expression_form
@@ -1786,12 +1789,12 @@ msgstr "Horizontale groepen"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_horizontal_group
 msgid "Horizontal group for reports"
-msgstr "Horizontale groep voor rapporten"
+msgstr "Horizontale groep voor rapportages"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_horizontal_group_rule
 msgid "Horizontal group rule for reports"
-msgstr "Horizontale groepsregel voor rapporten"
+msgstr "Horizontale groepsregel voor rapportages"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -1832,7 +1835,7 @@ msgstr "Inclusief"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "Include Analytic Simulations"
-msgstr ""
+msgstr "Omvat kostenplaatssimulaties"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
@@ -1859,7 +1862,7 @@ msgstr "Inclusief ongeboekte boekingen"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "Including Analytic Simulations"
-msgstr ""
+msgstr "inclusief kostenplaatssimulaties"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
@@ -2266,7 +2269,7 @@ msgstr "Geen vergelijking"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "No VAT number associated with your company. Please define one."
-msgstr "Geen btw-nummer gekoppeld aan het bedrijf. Definieer er een."
+msgstr "Geen BTW-nummer gekoppeld aan het bedrijf. Definieer er een."
 
 #. module: account_reports
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
@@ -2654,7 +2657,7 @@ msgstr "Rapportnaam"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Report lines mentioning the account code"
-msgstr ""
+msgstr "Rapportregels die de rekeningcode vermelden"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -2796,7 +2799,7 @@ msgid ""
 "reports."
 msgstr ""
 "Geef een accountantskantoor op dat als vertegenwoordiger zal optreden bij "
-"het exporteren van rapporten."
+"het exporteren van rapportages."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -2947,7 +2950,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_ir_actions_account_report_download
 msgid "Technical model for accounting report downloads"
-msgstr "Technisch model voor het downloaden van boekhoudrapporten"
+msgstr "Technisch model voor het downloaden van boekhoudrapportages"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_footnote__text
@@ -2965,6 +2968,7 @@ msgstr "De boekbalans in Odoo is vandaag gedateerd"
 #, python-format
 msgid "The company's country does not match the report's country."
 msgstr ""
+"Het land van het bedrijf komt niet overeen met het land op het rapport."
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_tax_unit__country_id
@@ -2972,7 +2976,7 @@ msgid ""
 "The country in which this tax unit is used to group your companies' tax "
 "reports declaration."
 msgstr ""
-"Het land waarin deze fiscale btw-eenheid wordt gebruikt om de aangiften van "
+"Het land waarin deze fiscale BTW-eenheid wordt gebruikt om de aangiften van "
 "de vennootschappen te groeperen."
 
 #. module: account_reports
@@ -3036,6 +3040,8 @@ msgid ""
 "This account exists in the Chart of Accounts but is not mentioned in any "
 "line of the report"
 msgstr ""
+"Deze rekening bestaat in de rekeningschema, maar wordt niet vermeld in een "
+"regel van het rapport"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -3044,19 +3050,21 @@ msgid ""
 "This account is reported in a line of the report but does not exist in the "
 "Chart of Accounts"
 msgstr ""
+"Deze rekening wordt vermeld in een regel van het rapport, maar bestaat niet "
+"in het rekeningschema"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "This account is reported in multiple lines of the report"
-msgstr ""
+msgstr "Deze rekening wordt vermeld in meerdere regels van het rapport"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 msgid ""
 "This allows you to choose the position of totals in your financial reports."
 msgstr ""
-"Hiermee kun je de positie van totalen in je financiële rapporten kiezen."
+"Hiermee kun je de positie van totalen in je financiële rapportages kiezen."
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_generic_tax_report.py:0

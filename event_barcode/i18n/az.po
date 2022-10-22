@@ -105,12 +105,12 @@ msgstr ""
 #: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
 #, python-format
 msgid "Event"
-msgstr ""
+msgstr "Tədbir"
 
 #. module: event_barcode
 #: model:ir.model,name:event_barcode.model_event_registration
 msgid "Event Registration"
-msgstr ""
+msgstr "Tədbir qeydiyyatı"
 
 #. module: event_barcode
 #. openerp-web
@@ -157,7 +157,7 @@ msgstr "Çap edin"
 #: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
 #, python-format
 msgid "Registration"
-msgstr ""
+msgstr "Qeydiyyat"
 
 #. module: event_barcode
 #: code:addons/event_barcode/controllers/main.py:0
@@ -242,7 +242,7 @@ msgstr "Xəbərdarlıq"
 #: code:addons/event_barcode/static/src/xml/event_barcode.xml:0
 #, python-format
 msgid "Welcome to"
-msgstr ""
+msgstr "Xoş gəlmisiniz"
 
 #. module: event_barcode
 #. openerp-web

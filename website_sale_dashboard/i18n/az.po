@@ -86,7 +86,7 @@ msgstr ""
 #: code:addons/website_sale_dashboard/static/src/xml/website_sale_dashboard.xml:0
 #, python-format
 msgid "Go to Website"
-msgstr ""
+msgstr "Veb-sayta gedin"
 
 #. module: website_sale_dashboard
 #: model:ir.model.fields.selection,name:website_sale_dashboard.selection__res_company__website_sale_dashboard_onboarding_state__just_done
@@ -116,7 +116,7 @@ msgstr ""
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
 msgid "Orders"
-msgstr ""
+msgstr "Sifarişlər"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.view_online_sales_graph
@@ -167,4 +167,4 @@ msgstr "Veb sayt"
 #. module: website_sale_dashboard
 #: model:ir.actions.act_window,name:website_sale_dashboard.sale_dashboard
 msgid "eCommerce Dashboard"
-msgstr ""
+msgstr "e-Ticarət Nəzarət Paneli"

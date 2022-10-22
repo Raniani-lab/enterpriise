@@ -112,7 +112,7 @@ msgstr "Kanal"
 #: code:addons/social_youtube/static/src/xml/social_youtube_templates.xml:0
 #, python-format
 msgid "Clear"
-msgstr ""
+msgstr "AYDIN"
 
 #. module: social_youtube
 #: code:addons/social_youtube/models/social_stream_post.py:0
@@ -207,7 +207,7 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account_revoke_youtube__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_account_revoke_youtube____last_update
@@ -557,7 +557,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:social_youtube.selection__social_media__media_type__youtube
 #: model:social.media,name:social_youtube.social_media_youtube
 msgid "YouTube"
-msgstr ""
+msgstr "Youtube"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_access_token

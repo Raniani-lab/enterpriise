@@ -64,7 +64,7 @@ msgstr "Əlçatanlıq"
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_order_wizard_line__qty_available
 msgid "Available"
-msgstr ""
+msgstr "Mövcud"
 
 #. module: sale_stock_renting
 #. openerp-web
@@ -98,7 +98,7 @@ msgstr ""
 #: model:ir.model.fields,help:sale_stock_renting.field_rental_wizard__tracking
 #: model:ir.model.fields,help:sale_stock_renting.field_sale_order_line__tracking
 msgid "Ensure the traceability of a storable product in your warehouse."
-msgstr ""
+msgstr "Anbarınızda  saxlanıla bilən məhsulunun izlənməsini təmin edin."
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_order_wizard__has_lines_missing_stock
@@ -134,7 +134,7 @@ msgstr "Jurnal Girişi"
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_stock_lot
 msgid "Lot/Serial"
-msgstr ""
+msgstr "Partiya/ Seriya"
 
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form
@@ -214,7 +214,7 @@ msgstr ""
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Məhsul Çeşidi"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__qty_available_during_period
@@ -277,7 +277,7 @@ msgstr ""
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_sale_order_line
 msgid "Sales Order Line"
-msgstr ""
+msgstr "Satış Sifarişi Sətri"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_product_product__preparation_time
@@ -296,7 +296,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.rental_report_search_view_inherit_lots
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.rental_schedule_view_search_inherit_lots
 msgid "Serial Number"
-msgstr ""
+msgstr "Seriya Nömrəsi"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__lot_ids
@@ -363,7 +363,7 @@ msgstr ""
 #: model:product.product,uom_name:sale_stock_renting.rental_stock_product_1
 #: model:product.template,uom_name:sale_stock_renting.rental_stock_product_1_product_template
 msgid "Units"
-msgstr ""
+msgstr "Vahidlər"
 
 #. module: sale_stock_renting
 #. openerp-web
@@ -376,7 +376,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__warehouse_id
 #: model:ir.model.fields,field_description:sale_stock_renting.field_sale_rental_schedule__warehouse_id
 msgid "Warehouse"
-msgstr ""
+msgstr "Anbar"
 
 #. module: sale_stock_renting
 #: code:addons/sale_stock_renting/wizard/rental_configurator.py:0
@@ -387,7 +387,7 @@ msgstr ""
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form
 msgid "hours"
-msgstr ""
+msgstr "Saatlar"
 
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.product_template_inherit_view_form_stock_rental

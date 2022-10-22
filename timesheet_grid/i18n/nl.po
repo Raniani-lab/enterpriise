@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -446,6 +447,8 @@ msgid ""
 "Configure reminders in timesheet settings to remind managers to validate "
 "timesheets"
 msgstr ""
+"Configureer herinneringen in de urenstaatinstellingen om managers eraan te "
+"herinneren urenstaten te valideren."
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/task.py:0
@@ -528,6 +531,8 @@ msgstr "Tijd verminderen"
 msgid ""
 "Define an 'hourly cost' on the employee to track the cost of their time."
 msgstr ""
+"Bepaal een 'uurtarief' op de werknemer om de kost van hun tijd bij te "
+"houden."
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
@@ -948,6 +953,9 @@ msgid ""
 "email reminder will be sent to timesheet managers that still have timesheets"
 " to validate."
 msgstr ""
+"Aantal dagen na het einde van de week/maand waarna een automatische "
+"e-mailherinnering wordt verzonden naar de urenstaatmanagers die nog "
+"urenstaten moeten valideren."
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_user_delay
@@ -956,6 +964,9 @@ msgid ""
 "email reminder will be sent to timesheet users that still have timesheets to"
 " encode (according to their working hours)."
 msgstr ""
+"Aantal dagen na het einde van de week/maand waarna een automatische "
+"e-mailherinnering wordt verzonden naar urenstaatgebruikers die nog "
+"urenstaten moeten encoderen (volgens hun werkuren)."
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
@@ -1109,6 +1120,8 @@ msgid ""
 "Set reminders in settings to notify employees who didn't record their "
 "timesheet"
 msgstr ""
+"Stel herinneringen in de instellingen in om werknemers op de hoogte te "
+"stellen die hun urenstaat niet hebben geregistreerd"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -1202,6 +1215,12 @@ msgid ""
 "00:30 (assuming you have a round up of 15 min). We recommend having the same"
 " value for the minimal duration and for the round up."
 msgstr ""
+"De duur van urenstaten die via de timer zijn gecodeerd, wordt automatisch "
+"naar boven afgerond op dit cijfer. Als je bijvoorbeeld je timer stopt op "
+"00:16:56, wordt de duur van de urenstaat automatisch naar boven afgerond op "
+"00:30 (ervan uitgaande dat je een afronding van 15 min ingesteld hebt). We "
+"raden aan om dezelfde waarde te gebruiken voor de minimale duur en voor de "
+"afronding."
 
 #. module: timesheet_grid
 #. openerp-web
@@ -1371,6 +1390,12 @@ msgid ""
 "of 15 min). We recommend having the same value for the minimal duration and "
 "for the round up."
 msgstr ""
+"Via de timer gecodeerde urenstaten die niet aan de minimale duur voldoen, "
+"worden automatisch naar boven afgerond op de bepaalde waarde. Als je "
+"bijvoorbeeld je timer stopt op 00:04:36, wordt de duur van de urenstaat "
+"automatisch naar boven afgerond op 00:15 (ervan uitgaande dat je een "
+"minimale duur van 15 min ingesteld hebt). We raden aan om dezelfde waarde te"
+" gebruiken voor de minimale duur en voor de afronding."
 
 #. module: timesheet_grid
 #: model:ir.actions.act_window,name:timesheet_grid.action_timesheet_previous_month

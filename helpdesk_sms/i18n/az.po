@@ -22,7 +22,7 @@ msgstr ""
 #. module: helpdesk_sms
 #: model:ir.model,name:helpdesk_sms.model_helpdesk_stage
 msgid "Helpdesk Stage"
-msgstr ""
+msgstr "Dəstək xidməti Mərhələ"
 
 #. module: helpdesk_sms
 #: model:ir.model,name:helpdesk_sms.model_helpdesk_ticket

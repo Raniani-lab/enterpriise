@@ -61,7 +61,7 @@ msgstr "平均交易规模"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Average deal size"
-msgstr ""
+msgstr "平均交易规模"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -84,14 +84,14 @@ msgstr "城市"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Close Rate"
-msgstr ""
+msgstr "关闭率"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Close rate"
-msgstr ""
+msgstr "关闭率"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -105,14 +105,14 @@ msgstr "已关闭"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed count"
-msgstr ""
+msgstr "已关闭数量"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed revenue"
-msgstr ""
+msgstr "已关闭的收入"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -139,7 +139,7 @@ msgstr "当前"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Current period"
-msgstr ""
+msgstr "当期"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -210,7 +210,7 @@ msgstr "KPI"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Leads by Month"
-msgstr ""
+msgstr "按月分类的线索"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -218,7 +218,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Lost Reason"
-msgstr "失去原因"
+msgstr "丢失原因"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -235,7 +235,7 @@ msgstr "媒介"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Open opportunities"
-msgstr ""
+msgstr "开放的商机"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -249,7 +249,7 @@ msgstr "商机"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Percentage closed"
-msgstr ""
+msgstr "已关闭的百分比"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -280,7 +280,7 @@ msgstr "上一页"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Previous period"
-msgstr ""
+msgstr "上期"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -385,7 +385,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Countries"
-msgstr ""
+msgstr "最佳国家"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -400,14 +400,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Mediums"
-msgstr ""
+msgstr "最佳媒介"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Opportunities"
-msgstr ""
+msgstr "最佳机会"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -415,7 +415,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Sales Teams"
-msgstr ""
+msgstr "最佳销售团队"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -423,7 +423,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Salespeople"
-msgstr ""
+msgstr "最佳销售员"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -431,14 +431,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Sources"
-msgstr ""
+msgstr "最佳来源"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Tags"
-msgstr ""
+msgstr "最佳标签"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -459,42 +459,42 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total leads"
-msgstr ""
+msgstr "所有线索"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Won leads"
-msgstr ""
+msgstr "赢得的线索"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "average deal size - current"
-msgstr ""
+msgstr "平均交易规模 - 当前"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "average deal size - previous"
-msgstr ""
+msgstr "平均交易规模 - 以前"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "close rate - current"
-msgstr ""
+msgstr "关闭率 - 当前"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "close rate - previous"
-msgstr ""
+msgstr "关闭率 - 以前"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -531,7 +531,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "last period"
-msgstr ""
+msgstr "上期"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -548,7 +548,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "since last period"
-msgstr ""
+msgstr "从上期以来"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -569,7 +569,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top cities"
-msgstr ""
+msgstr "最佳城市"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -577,7 +577,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top countries"
-msgstr ""
+msgstr "最佳国家"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -591,14 +591,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top medium"
-msgstr ""
+msgstr "最佳媒体"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top mediums"
-msgstr ""
+msgstr "最佳媒体"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -606,39 +606,39 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top sales team"
-msgstr ""
+msgstr "最佳销售团队"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top salespeople"
-msgstr ""
+msgstr "最佳销售员"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top salesperson"
-msgstr ""
+msgstr "最佳销售员"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top source"
-msgstr ""
+msgstr "最佳来源"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "top sources"
-msgstr ""
+msgstr "最佳来源"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top tags"
-msgstr ""
+msgstr "最佳标记"

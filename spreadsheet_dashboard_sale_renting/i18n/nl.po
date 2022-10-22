@@ -49,7 +49,7 @@ msgstr "Klant"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Daily Rentals"
-msgstr ""
+msgstr "Dagelijkse verhuren"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
@@ -94,7 +94,7 @@ msgstr "Periode"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Picked-up Qty"
-msgstr ""
+msgstr "Opgehaalde hoeveelheid"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
@@ -132,28 +132,28 @@ msgstr "Offertes"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Customer"
-msgstr ""
+msgstr "Verhuuranalyse per klant"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Product"
-msgstr ""
+msgstr "Verhuuranalyse per product"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Product Category"
-msgstr ""
+msgstr "Verhuuranalyse per productcategorie"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Rental Analysis by Salesman"
-msgstr ""
+msgstr "Verhuuranalyse per verkoper"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
@@ -167,7 +167,7 @@ msgstr "Verhuur"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Returned Qty"
-msgstr ""
+msgstr "Geretourneerde hoeveelheid"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
@@ -201,7 +201,7 @@ msgstr "Topklanten"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Product Categories"
-msgstr "Top productcategoriën"
+msgstr "Topproductcategoriën"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
@@ -222,14 +222,14 @@ msgstr "Topverkopers"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "rental stats - current"
-msgstr ""
+msgstr "verhuur statistieken - actueel"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "rental stats - previous"
-msgstr ""
+msgstr "verhuur statistieken - vorige"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web

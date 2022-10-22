@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Leonardo J. Caballero G. <leonardocaballero@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Leonardo J. Caballero G. <leonardocaballero@gmail.com>, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -63,12 +64,13 @@ msgstr "Hace 30 días"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "<i>There is no invoice during this period.</i>"
-msgstr ""
+msgstr "<i>No hay facturas correspondientes a este periodo.</i>"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "<i>There is no subscription modification during this period.</i>"
 msgstr ""
+"<i>No hay modificaciones de suscripción correspondientes a este periodo.</i>"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
@@ -146,7 +148,7 @@ msgstr "MRR Actual"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "Current MRR ("
-msgstr ""
+msgstr "MRR actual ("
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -378,6 +380,8 @@ msgid ""
 "List all invoices containing non-recurring sales and the amount of\n"
 "                        non-recurring revenues in these invoices for this particular salesperson."
 msgstr ""
+"Enlista todas las facturas que contengan ventas no recurrentes y la cantidad de\n"
+"                        ingresos no recurrentes en estas facturas de este vendedor en específico."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -461,7 +465,7 @@ msgstr "NRR"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "NRR ("
-msgstr ""
+msgstr "NRR ("
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -583,7 +587,7 @@ msgstr "MRR Previo"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "Previous MRR ("
-msgstr ""
+msgstr "MRR anterior ("
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -722,6 +726,10 @@ msgid ""
 "                        (e.g. two upsells occuring on the same day, or a subscription getting closed and re-opened\n"
 "                        on the same day)."
 msgstr ""
+"Las modificaciones de la suscripción agrupan todas las modificaciones que sucedieron en el\n"
+"                        periodo seleccionado. Tenga en cuenta que las modificaciones hechas en un mismo día se pueden agrupar\n"
+"                        (p. ej., dos ventas adicionales que se realizaron el mismo día o una suscripción que se canceló y se volvió a activar\n"
+"                        el mismo día)."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -765,7 +773,7 @@ msgstr "Crecimiento de suscripciones:"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Subscriptions plans"
-msgstr ""
+msgstr "Planes de suscripción"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -907,7 +915,7 @@ msgstr "tasa de cancelación; su base de suscripciones será"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "graphic"
-msgstr ""
+msgstr "gráfico"
 
 #. module: sale_subscription_dashboard
 #. openerp-web

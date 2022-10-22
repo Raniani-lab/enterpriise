@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:43+0000\n"
 "PO-Revision-Date: 2022-09-29 09:37+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,7 +27,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Agent"
-msgstr ""
+msgstr "Agent"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -49,21 +50,21 @@ msgstr "Klant"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to assign"
-msgstr ""
+msgstr "Uren om toe te wijzen"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to close"
-msgstr ""
+msgstr "Uren tot sluiting"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to respond"
-msgstr ""
+msgstr "Uren om te reageren"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -108,28 +109,28 @@ msgstr "Team"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Assigned To"
-msgstr ""
+msgstr "Ticketanalyse per Toegewezen aan"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Customer"
-msgstr ""
+msgstr "Ticketanalyse per klant"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Team"
-msgstr ""
+msgstr "Ticketanalyse per team"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Ticket Type"
-msgstr ""
+msgstr "Ticketanalyse per ticketsoort"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -156,14 +157,14 @@ msgstr "Tickets"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Tickets by Stage"
-msgstr ""
+msgstr "Tickets per fase"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Tickets by Type"
-msgstr ""
+msgstr "Tickets per type"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -177,21 +178,21 @@ msgstr "Tijd om toe te wijzen"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Close"
-msgstr ""
+msgstr "Tijd om te sluiten"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Respond"
-msgstr ""
+msgstr "Tijd om te reageren"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Agents"
-msgstr ""
+msgstr "Top Agenten"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -205,14 +206,14 @@ msgstr "Topklanten"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Teams"
-msgstr ""
+msgstr "Topteams"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Ticket Types"
-msgstr ""
+msgstr "Top ticketsoorten"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web

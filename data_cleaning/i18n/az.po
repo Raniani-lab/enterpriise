@@ -3,6 +3,7 @@
 # 	* data_cleaning
 # 
 # Translators:
+# erpgo translator <jumshud@erpgo.az>, 2022
 # Jumshud Sultanov <cumshud@gmail.com>, 2022
 # 
 msgid ""
@@ -83,7 +84,7 @@ msgstr ""
 #. module: data_cleaning
 #: model:ir.model.fields.selection,name:data_cleaning.selection__data_cleaning_model__cleaning_mode__automatic
 msgid "Automatic"
-msgstr ""
+msgstr "Avtomatik"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_rule__action_case
@@ -258,7 +259,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__id
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_rule__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_model____last_update
@@ -329,7 +330,7 @@ msgstr ""
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_model__notify_frequency
 msgid "Notify"
-msgstr ""
+msgstr "Bildirmək"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_model__notify_frequency_period
@@ -365,7 +366,7 @@ msgstr ""
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__rule_ids
 msgid "Rule"
-msgstr ""
+msgstr "Qayda"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_model__rule_ids

@@ -5,6 +5,7 @@
 # Translators:
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # Martin Trigaux, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,12 +34,15 @@ msgid ""
 "<b>%s suggests to use this document as instruction</b><br/><img style='max-"
 "width: 75%%' class='img-fluid' src=%s/>"
 msgstr ""
+"<b>%s stelt voor dit document als instructie te gebruiken</b><br/><img "
+"style='max-width: 75%%' class='img-fluid' src=%s/>"
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
 msgid "<b>New Instruction suggested by %s</b><br/>%s<br/><b>Reason: %s</b>"
 msgstr ""
+"<b>Nieuwe instructie voorgesteld door %s</b><br/>%s<br/><b>Reden: %s</b>"
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/models/quality.py:0
@@ -325,7 +329,7 @@ msgstr "Deze stap verwijderen"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__is_deleted
 msgid "Deleted in production"
-msgstr ""
+msgstr "In productie verwijderen"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
@@ -453,7 +457,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
 msgid "Instruction"
-msgstr ""
+msgstr "Instructie"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_routing_workcenter__quality_point_count

@@ -33,7 +33,7 @@ msgstr ""
 #. module: purchase_enterprise
 #: model_terms:ir.ui.view,arch_db:purchase_enterprise.purchase_report_view_dashboard
 msgid "Orders"
-msgstr ""
+msgstr "Sifarişlər"
 
 #. module: purchase_enterprise
 #: model_terms:ir.ui.view,arch_db:purchase_enterprise.purchase_report_view_dashboard

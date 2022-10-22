@@ -6,6 +6,7 @@
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2022
 # Martin Trigaux, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1359,7 +1360,7 @@ msgstr "Kies een datum om te blokkeren"
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Please install the 'Accounting Reports' module."
-msgstr "Installeer de module 'Boekhoudingsrapporten'."
+msgstr "Installeer de module 'Boekhoudrapportage'."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1457,7 +1458,7 @@ msgstr "Afgeletterd"
 #: model:ir.actions.client,name:account_accountant.action_manual_reconciliation
 #: model:ir.ui.menu,name:account_accountant.menu_action_manual_reconciliation
 msgid "Reconciliation"
-msgstr "Aflettering"
+msgstr "Afletteren"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1618,7 +1619,7 @@ msgstr "Suggesties"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_ids
 msgid "Tax"
-msgstr "Btw"
+msgstr "BTW"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_base_amount_currency
@@ -1645,7 +1646,7 @@ msgstr "BTW verdelingsregel"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__tax_lock_date
 msgid "Tax Return Lock Date"
-msgstr "Vergrendelingsdatum btw-aangifte"
+msgstr "Vergrendelingsdatum BTW-aangifte"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_tag_ids
@@ -1659,7 +1660,7 @@ msgstr "Belastinglabel"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #, python-format
 msgid "Taxes"
-msgstr "Btw"
+msgstr "BTW"
 
 #. module: account_accountant
 #. openerp-web
@@ -1733,6 +1734,8 @@ msgid ""
 "This bank transaction has been automatically validated using the "
 "reconciliation model '%s'."
 msgstr ""
+"Deze banktransactie is automatisch gevalideerd met behulp van het "
+"aflettermodel '%s'."
 
 #. module: account_accountant
 #. openerp-web
@@ -1920,7 +1923,7 @@ msgstr ""
 #: code:addons/account_accountant/wizard/account_change_lock_date.py:0
 #, python-format
 msgid "You cannot set a lock date in the future."
-msgstr ""
+msgstr "Je kan geen vergrendelingsdatum vastleggen in de toekomst."
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0

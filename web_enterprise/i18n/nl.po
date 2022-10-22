@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:24+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +25,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "%s days"
-msgstr ""
+msgstr "%s dagen"
 
 #. module: web_enterprise
 #. openerp-web
@@ -119,6 +120,8 @@ msgid ""
 "Contact your sales representative to help you to unlink your previous "
 "database"
 msgstr ""
+"Contacteer je verkoper om je te helpen met het ontkoppelen van je vorige "
+"database"
 
 #. module: web_enterprise
 #. openerp-web
@@ -171,7 +174,7 @@ msgstr "HTTP routing"
 #: code:addons/web_enterprise/static/src/webclient/navbar/navbar.js:0
 #, python-format
 msgid "Home menu"
-msgstr ""
+msgstr "Startpagina"
 
 #. module: web_enterprise
 #. openerp-web
@@ -193,7 +196,7 @@ msgstr "Log in als administrator om het probleem te corrigeren."
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Login to your Odoo.com dashboard then unlink your previous database:"
-msgstr ""
+msgstr "Login op je Odoo.com dashboard en ontkoppel je vorige database:"
 
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_ui_menu
@@ -256,7 +259,7 @@ msgstr "Plak de code hier"
 #: code:addons/web_enterprise/static/src/webclient/navbar/navbar.js:0
 #, python-format
 msgid "Previous view"
-msgstr ""
+msgstr "Vorige weergave"
 
 #. module: web_enterprise
 #. openerp-web
@@ -342,7 +345,7 @@ msgstr "Abonnementscode:"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/home_menu.xml:0
 #, python-format
 msgid "TIP"
-msgstr ""
+msgstr "TIP"
 
 #. module: web_enterprise
 #. openerp-web
@@ -360,6 +363,7 @@ msgid ""
 "Thank you, your registration was successful! Your database is valid until "
 "%s."
 msgstr ""
+"Dank je, je registratie was succesvol! Jouw database id geldig tot %s."
 
 #. module: web_enterprise
 #. openerp-web
@@ -377,21 +381,21 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "This database has expired. "
-msgstr ""
+msgstr "Deze database is vervallen."
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "This database will expire in %s. "
-msgstr ""
+msgstr "Deze database vervalt in %s. "
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "This demo database will expire in %s. "
-msgstr ""
+msgstr "Deze demo database vervalt in %s. "
 
 #. module: web_enterprise
 #. openerp-web
@@ -497,4 +501,4 @@ msgstr "aan de abonnement eigenaar (e-mail:"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/home_menu.xml:0
 #, python-format
 msgid "— open me anywhere with"
-msgstr ""
+msgstr "— open me overal met"

@@ -33,11 +33,11 @@ msgid ""
 "</div>"
 msgstr ""
 "<div style=\"margin: 0px; padding: 0px;\">\n"
-"    <p>Estimado/a,<br/></p>\n"
+"    <p>Apreciable,<br/></p>\n"
 "    <p>No hay más créditos en su cuenta OCR de factura para compras dentro de la aplicación.<br/>\n"
 "    Puede cargar su cuenta OCR de facturación para compras dentro de la aplicación en la página de configuración de Contabilidad.</p>\n"
 "    <p>Atentamente,<br/></p>\n"
-"    <p>Odoo S.A. de C.V</p>\n"
+"    <p>Odoo S.A.</p>\n"
 "</div>"
 
 #. module: account_invoice_extract
@@ -128,7 +128,7 @@ msgstr "Referencia de factura"
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Bill is being Digitized"
-msgstr ""
+msgstr "La factura se está digitalizando"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_bank_statement_line__extract_can_show_resend_button
@@ -163,7 +163,7 @@ msgstr "Ajustes de configuración"
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Couldn't reload AI data."
-msgstr ""
+msgstr "No se pudieron recargar los datos de IA."
 
 #. module: account_invoice_extract
 #. openerp-web
@@ -196,12 +196,12 @@ msgstr "Facturas de cliente"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_out_invoice_digitalization_mode
 msgid "Digitization mode on customer invoices"
-msgstr ""
+msgstr "Modo de digitalización en las facturas de los clientes"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_in_invoice_digitalization_mode
 msgid "Digitization mode on vendor bills"
-msgstr ""
+msgstr "Modo de digitalización en las facturas de los clientes"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__res_company__extract_in_invoice_digitalization_mode__auto_send
@@ -243,14 +243,14 @@ msgstr "Mensaje de error"
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_attachment_id
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_payment__extract_attachment_id
 msgid "Extract Attachment"
-msgstr ""
+msgstr "Extraer el archivo adjunto"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_bank_statement_line__extract_populated_fields
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_move__extract_populated_fields
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_payment__extract_populated_fields
 msgid "Extract Populated Fields"
-msgstr ""
+msgstr "Extraer campos llenos"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_bank_statement_line__extract_word_ids
@@ -297,13 +297,13 @@ msgstr "ID de la solicitud para IAP-OCR"
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Invalid PDF (Conversion error)"
-msgstr ""
+msgstr "PDF no válido (error de conversión)"
 
 #. module: account_invoice_extract
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Invalid PDF (Unable to get page count)"
-msgstr ""
+msgstr "PDF no válido (no fue posible obtener el número de páginas)"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__invoice_id
@@ -321,7 +321,7 @@ msgstr "Fecha de factura"
 #: model:ir.cron,cron_name:account_invoice_extract.ir_cron_ocr_parse
 #: model:ir.cron,name:account_invoice_extract.ir_cron_ocr_parse
 msgid "Invoice OCR: Parse Invoices"
-msgstr ""
+msgstr "OCR de la factura: analizar facturas"
 
 #. module: account_invoice_extract
 #: model:ir.actions.server,name:account_invoice_extract.ir_cron_update_ocr_status_ir_actions_server
@@ -335,7 +335,7 @@ msgstr "OCR de facturas: Actualizar todos los estados"
 #: model:ir.cron,cron_name:account_invoice_extract.ir_cron_ocr_validate
 #: model:ir.cron,name:account_invoice_extract.ir_cron_ocr_validate
 msgid "Invoice OCR: Validate Invoices"
-msgstr ""
+msgstr "OCR de la factura: Validar facturas"
 
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_account_move
@@ -376,12 +376,12 @@ msgstr "No tiene crédito suficiente"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__ocr_selected
 msgid "Ocr Selected"
-msgstr ""
+msgstr "OCR seleccionado"
 
 #. module: account_invoice_extract
 #: model:ir.actions.server,name:account_invoice_extract.model_account_send_for_digitalization
 msgid "Send Bills for digitization"
-msgstr ""
+msgstr "Enviar facturas para digitalización"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
@@ -393,14 +393,13 @@ msgstr "Enviar para digitalización"
 #, python-format
 msgid "Server is currently under maintenance. Please retry later"
 msgstr ""
-"El servidor se encuentra actualmente en mantenimiento. Por favor, inténtelo "
-"más tarde."
+"El servidor se encuentra actualmente en mantenimiento. Inténtelo más tarde."
 
 #. module: account_invoice_extract
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Server not available. Please retry later"
-msgstr "El servidor no está disponible. Por favor, inténtelo más tarde."
+msgstr "El servidor no está disponible. Inténtelo más tarde."
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_single_line_per_tax
@@ -428,7 +427,7 @@ msgstr ""
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "The bill has been populated by AI."
-msgstr ""
+msgstr "La factura se llenó con IA."
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
@@ -449,14 +448,14 @@ msgstr "No se pudo encontrar el documento."
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "The document has been rejected because it is too small"
-msgstr ""
+msgstr "Se rechazó el documento porque es muy pequeño"
 
 #. module: account_invoice_extract
 #. openerp-web
 #: code:addons/account_invoice_extract/static/src/xml/populated_fields_tooltip.xml:0
 #, python-format
 msgid "The following fields were populated by the OCR:"
-msgstr ""
+msgstr "Los siguientes campos se llenaron con el OCR:"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__to_validate
@@ -543,6 +542,8 @@ msgid ""
 "You can always change the mapping by clicking on one field in the Invoice "
 "form and select the appropriate value in the PDF."
 msgstr ""
+"Siempre se puede cambiar el mapeo dando clic en uno de los campos en el "
+"formulario y seleccione el valor apropiado en PDF."
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr

@@ -152,7 +152,7 @@ msgid ""
 "Unable to connect to the online exchange rate platform. The web service may "
 "be temporary down. Please try again in a moment."
 msgstr ""
-"Impossible de se connecter à la plate-forme de taux de change en ligne. Le "
+"Impossible de se connecter à la plateforme de taux de change en ligne. Le "
 "service web est peut être temporairement hors service. Veuillez, s'il vous "
 "plaît, ré-essayer dans quelques minutes."
 

@@ -29,7 +29,7 @@ msgstr "%s (コピー)"
 #. module: worksheet
 #: model_terms:ir.ui.view,arch_db:worksheet.worksheet_template_view_form
 msgid "<span class=\"o_stat_text\">Worksheets</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">ワークシート</span>"
 
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__action_id

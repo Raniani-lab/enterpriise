@@ -167,7 +167,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:partner_commission.field_commission_plan__id
 #: model:ir.model.fields,field_description:partner_commission.field_commission_rule__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: partner_commission
 #: model:ir.model.fields,help:partner_commission.field_commission_rule__product_id
@@ -249,7 +249,7 @@ msgstr "Ad"
 #. module: partner_commission
 #: model:res.groups,name:partner_commission.group_commission_user
 msgid "Own Documents Only"
-msgstr ""
+msgstr "Yalnız Şəxsi Sənədlər"
 
 #. module: partner_commission
 #: model:ir.actions.server,name:partner_commission.cron_confirm_purchase_orders_ir_actions_server
@@ -317,7 +317,7 @@ msgstr "Rüblük"
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_commission_rule__rate
 msgid "Rate"
-msgstr ""
+msgstr "Qiymətləndirmə"
 
 #. module: partner_commission
 #: model:ir.model.constraint,message:partner_commission.constraint_commission_rule_check_rate
@@ -362,7 +362,7 @@ msgstr ""
 #. module: partner_commission
 #: model:ir.model,name:partner_commission.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Satış Sifarişi"
 
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_commission_rule__sequence
@@ -403,12 +403,12 @@ msgstr ""
 #: model:product.product,uom_name:partner_commission.product_commission
 #: model:product.template,uom_name:partner_commission.product_commission_product_template
 msgid "Units"
-msgstr ""
+msgstr "Vahidlər"
 
 #. module: partner_commission
 #: model:ir.model.fields.selection,name:partner_commission.selection__res_company__commission_automatic_po_frequency__weekly
 msgid "Weekly"
-msgstr ""
+msgstr "Həftəlik"
 
 #. module: partner_commission
 #: model:ir.model.fields,help:partner_commission.field_commission_rule__is_capped

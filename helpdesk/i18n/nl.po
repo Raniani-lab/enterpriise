@@ -6,6 +6,7 @@
 # Lukas Van Cauter <cvl@odoo.com>, 2022
 # Martin Trigaux, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -82,7 +83,7 @@ msgstr "7 dagen om af te ronden"
 #. module: helpdesk
 #: model:helpdesk.sla,name:helpdesk.helpdesk_sla_3
 msgid "8 hours to finish"
-msgstr ""
+msgstr "8 uren om af te ronden"
 
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
@@ -1453,12 +1454,12 @@ msgstr "Dropdown menu"
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__assign_method__balanced
 msgid "Each user has an equal number of open tickets"
-msgstr ""
+msgstr "Elke gebruiker heeft een gelijk aantal open tickets."
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__assign_method__randomly
 msgid "Each user is assigned an equal number of tickets"
-msgstr ""
+msgstr "Elke gebruiker werd een gelijk aantal tickets toegewezen"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
@@ -1488,6 +1489,9 @@ msgid ""
 "By default, the email will be sent from the email alias of the helpdesk team.\n"
 "Otherwise it will be sent from the company's email address, or from the catchall (as defined in the System Parameters)."
 msgstr ""
+"E-mail automatisch verzonden naar de klant als het ticket deze fase bereikt.\n"
+"De e-mail zal standaard worden verzonden van het e-mailalias van het helpdesk team.\n"
+"Anders zal de e-mail worden verzonden van het e-mailadres van het bedrijf of van de catch-all (zoals ingesteld in de Systeeminstellingen)."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__email_cc
@@ -1515,7 +1519,7 @@ msgstr ""
 #. module: helpdesk
 #: model:mail.template,description:helpdesk.rating_ticket_request_email_template
 msgid "Enable \"customer ratings\" feature on the helpdesk team"
-msgstr ""
+msgstr "Activeer de \"klantenbeoordeling\"-functie op het helpdesk team"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_website_helpdesk_slides
@@ -1809,17 +1813,17 @@ msgstr "Helpdesk tickets"
 #. module: helpdesk
 #: model:mail.template,name:helpdesk.new_ticket_request_email_template
 msgid "Helpdesk: Request Acknowledgment"
-msgstr ""
+msgstr "Helpdesk: Vraag ontvangstbevestiging aan"
 
 #. module: helpdesk
 #: model:mail.template,name:helpdesk.solved_ticket_request_email_template
 msgid "Helpdesk: Ticket Closed"
-msgstr ""
+msgstr "Helpdesk: Ticket gesloten"
 
 #. module: helpdesk
 #: model:mail.template,name:helpdesk.rating_ticket_request_email_template
 msgid "Helpdesk: Ticket Rating Request"
-msgstr ""
+msgstr "Helpdesk: Beoordelingsverzoek ticket"
 
 #. module: helpdesk
 #. openerp-web
@@ -1932,6 +1936,8 @@ msgid ""
 "If enabled, portal users will have access to your customer satisfaction statistics from the last 30 days in their portal.\n"
 "They will only have access to the ratings themselves, and not to the written feedback if any was left. You can also manually hide ratings of your choosing."
 msgstr ""
+"Indien geactiveerd, hebben portalgebruikers toegang tot uw klanttevredenheidsstatistieken van de afgelopen 30 dagen in hun portaal.\n"
+"Ze hebben alleen toegang tot de beoordelingen zelf en niet tot de schriftelijke feedback als die er nog is. Je kan beoordelingen naar keuze ook handmatig verbergen."
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__alias_bounced_content
@@ -2238,6 +2244,8 @@ msgid ""
 "Maximum number of working hours a ticket should take to reach the target "
 "stage, starting from the date it was created."
 msgstr ""
+"Maximaal aantal werkuren dat een ticket nodig heeft om het doelstadium te "
+"bereiken, te beginnen vanaf de datum waarop het is gemaakt."
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.rating_rating_action_helpdesk
@@ -2382,6 +2390,8 @@ msgid ""
 "New tickets will automatically be assigned to the team members that are "
 "available, according to their working hours and their time off."
 msgstr ""
+"Nieuwe tickets worden automatisch toegewezen aan de beschikbare teamleden, "
+"volgens hun werkuren en hun verlofdagen."
 
 #. module: helpdesk
 #: code:addons/helpdesk/controllers/portal.py:0
@@ -3095,6 +3105,8 @@ msgid ""
 "SLA Policies that will automatically apply to the tickets submitted by this "
 "customer."
 msgstr ""
+"SLA afspraken die automatisch van toepassing zijn op de tickets die door "
+"deze klant worden ingediend."
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
@@ -3601,6 +3613,8 @@ msgid ""
 "The time spent in these stages won't be taken into account in the "
 "calculation of the SLA."
 msgstr ""
+"De tijd die in deze fases word gespendeerd wordt niet meegenomen in de "
+"berekening van de SLA."
 
 #. module: helpdesk
 #: code:addons/helpdesk/models/helpdesk.py:0
@@ -3844,7 +3858,7 @@ msgstr "Tickets zoeken"
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_stage__fold
 msgid "Tickets in a folded stage are considered as closed."
-msgstr ""
+msgstr "Tickets in een gevouwen fase worden als gesloten beschouwd."
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__use_helpdesk_sale_timesheet
@@ -4095,6 +4109,8 @@ msgid ""
 "We provide 24/7 support, Monday through Friday. Ticket responses are usually provided within 2 working days.<br>\n"
 "            Support is mainly provided in English. We can also assist in Spanish, French, and Dutch."
 msgstr ""
+"Wij bieden 24/7 ondersteuning, van maandag tot en met vrijdag. Antwoorden op tickets worden doorgaans binnen 2 werkdagen bezorgd.<br>\n"
+"Ondersteuning wordt voornamelijk in het Engels geboden. We kunnen ook helpen in het Spaans, Frans en Nederlands."
 
 #. module: helpdesk
 #: model:helpdesk.tag,name:helpdesk.tag_website

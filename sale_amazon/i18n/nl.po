@@ -999,7 +999,7 @@ msgstr "Of de picking aan Amazon moet worden gemeld of niet."
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_marketplace__tax_included
 msgid "Whether the price includes the tax amount or not."
-msgstr "Of de prijs nu inclusief btw is of niet."
+msgstr "Of de prijs nu inclusief BTW is of niet."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_stock_location__amazon_location

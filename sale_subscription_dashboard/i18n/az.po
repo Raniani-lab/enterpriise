@@ -258,7 +258,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Exponential"
-msgstr ""
+msgstr "Göstərici nömrəsi"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
@@ -309,7 +309,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "In"
-msgstr ""
+msgstr "-də"
 
 #. module: sale_subscription_dashboard
 #: model:ir.actions.act_window,name:sale_subscription_dashboard.action_move_line_entries_report
@@ -629,7 +629,7 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #: model:ir.model,name:sale_subscription_dashboard.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Satış Sifarişi"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -841,7 +841,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:0
 #, python-format
 msgid "Unknown error"
-msgstr ""
+msgstr "Bilinməyən xəta"
 
 #. module: sale_subscription_dashboard
 #. openerp-web

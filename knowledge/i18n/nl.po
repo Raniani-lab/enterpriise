@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -191,12 +192,12 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-plus-circle me-1\"/>Create"
-msgstr ""
+msgstr "<i class=\"fa fa-plus-circle me-1\"/>Maken"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"fa fa-share-alt me-1\"/>Share"
-msgstr ""
+msgstr "<i class=\"fa fa-share-alt me-1\"/>Delen"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_kanban
@@ -468,7 +469,7 @@ msgstr ""
 "            <span style=\"font-weight: bolder;\">\n"
 "                <font class=\"text-o-color-2\">begin met typen</font>\n"
 "            </span>\n"
-"            (<span style=\"font-style: italic;\">documentatie, tips, rapporten, ...</span>)\n"
+"            (<span style=\"font-style: italic;\">documentatie, tips, rapportages, ...</span>)\n"
 "        </span>"
 
 #. module: knowledge
@@ -1506,7 +1507,7 @@ msgstr "Dupliceren"
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "Embed a View"
-msgstr ""
+msgstr "Een weergave insluiten"
 
 #. module: knowledge
 #. openerp-web
@@ -1746,28 +1747,28 @@ msgstr "Koppeling invoegen"
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "Insert a Kanban View"
-msgstr ""
+msgstr "Een Kanban-weergave invoegen"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Insert a Kanban view of article items"
-msgstr ""
+msgstr "Een Kanban-weergave van artikelitems invoegen"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js:0
 #, python-format
 msgid "Insert a List View"
-msgstr ""
+msgstr "Een lijstweergave invoegen"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Insert a List view of article items"
-msgstr ""
+msgstr "Een lijstweergave van artikelitems invoegen"
 
 #. module: knowledge
 #. openerp-web
@@ -1845,14 +1846,14 @@ msgstr "Is het eigenschapsveld leeg?"
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Item Kanban"
-msgstr ""
+msgstr "Kanbanitem"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Item List"
-msgstr ""
+msgstr "Lijstitem"
 
 #. module: knowledge
 #: model:ir.ui.menu,name:knowledge.knowledge_menu_root
@@ -1879,7 +1880,7 @@ msgstr "Wizard Kennis uitnodigen"
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_trash
 msgid "Last Edit Date"
-msgstr ""
+msgstr "Datum van laatste bijwerking"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__last_edition_uid
@@ -1993,7 +1994,7 @@ msgstr "Ledeninformatie"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__root_article_id
 msgid "Menu Article"
-msgstr ""
+msgstr "Menu Artikel"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_has_error

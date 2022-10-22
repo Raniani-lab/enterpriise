@@ -236,7 +236,7 @@ msgstr "显示最小数量保证"
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_res_company__mrp_mps_show_demand_forecast
 msgid "Display Demand Forecast"
-msgstr "显示预测数量"
+msgstr "显示需求预测"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_res_company__mrp_mps_show_indirect_demand
@@ -382,7 +382,7 @@ msgstr "制造期间"
 #: model:ir.ui.menu,name:mrp_mps.mrp_mps_report_menu
 #, python-format
 msgid "Master Production Schedule"
-msgstr "主生产调度"
+msgstr "主生产计划"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__max_to_replenish_qty
@@ -402,7 +402,7 @@ msgstr "每月"
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__move_ids
 msgid "Move"
-msgstr "凭证"
+msgstr "移动"
 
 #. module: mrp_mps
 #. openerp-web
@@ -531,7 +531,7 @@ msgstr "补货数量已被手工更新"
 #. module: mrp_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.mrp_mps_forecast_details_form_view
 msgid "Requests for quotation"
-msgstr "采购在途"
+msgstr "询价"
 
 #. module: mrp_mps
 #. openerp-web
@@ -692,7 +692,7 @@ msgstr "时间范围"
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__replenish_qty
 #, python-format
 msgid "To Replenish"
-msgstr "补货计划"
+msgstr "待补给"
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_mrp_production_schedule__min_to_replenish_qty

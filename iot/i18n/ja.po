@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # 江口和志 <sandwhale1010@gmail.com>, 2022
+# Ryoko Tsuda <ryoko@quartile.co>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-27 15:40+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: 江口和志 <sandwhale1010@gmail.com>, 2022\n"
+"Last-Translator: Ryoko Tsuda <ryoko@quartile.co>, 2022\n"
 "Language-Team: Japanese (https://www.transifex.com/odoo/teams/41243/ja/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,6 +30,11 @@ msgid ""
 "                    1. Read the pairing code from a display or thermal printer connected to the IoT Box.<br/>\n"
 "                    2. Enter the code below and click on \"Pair\".<br/>"
 msgstr ""
+"0. IoT ボックスの電源を入れる<br/><br/>\n"
+"\n"
+"                    <strong>A. イーサネット接続</strong><br/>\n"
+"                    1. IoT Boxに接続されたディスプレイやサーマルプリンタから、ペアリングコードを読み取ります。<br/>\n"
+"                    2. 下記のコードを入力し、\"ペア\"をクリックしてください。<br/>"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_kanban
@@ -50,6 +56,12 @@ msgid ""
 "                    4. You will be redirected to the IoT Box Homepage<br/>\n"
 "                    5. Paste the token in token field and follow the steps described on the IoT Box Homepage<br/>"
 msgstr ""
+"<strong>B. WiFi 接続 (または、イーサネットがつながらない場合)</strong><br/>\n"
+"                    1. IoT Boxにイーサネットケーブルが接続されていないことを確認します。<br/>\n"
+"                    2. 下記のトークンをコピーしてください。<br/>\n"
+"                    3. IoT BoxのWiFiネットワークに接続します（利用可能なWiFiネットワーク内に表示されているはずです）。<br/>\n"
+"                    4. IoT Boxのホームページが表示されます。<br/>\n"
+"                    5. トークン欄にトークンを貼り付け、IoT Boxホームページに記載されている手順に従ってください。<br/>"
 
 #. module: iot
 #: model:ir.model,name:iot.model_add_iot_box
@@ -88,7 +100,7 @@ msgstr "バーコードスキャナ"
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__bluetooth
 msgid "Bluetooth"
-msgstr ""
+msgstr "Bluetooth"
 
 #. module: iot
 #. openerp-web
@@ -96,12 +108,12 @@ msgstr ""
 #: code:addons/iot/static/src/views/box_list_view.xml:0
 #, python-format
 msgid "CONNECT"
-msgstr ""
+msgstr "接続"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__camera
 msgid "Camera"
-msgstr ""
+msgstr "カメラ"
 
 #. module: iot
 #. openerp-web
@@ -178,7 +190,7 @@ msgstr "接続"
 #: model:ir.actions.act_window,name:iot.action_add_iot_box
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 msgid "Connect an IoT Box"
-msgstr ""
+msgstr "IoTボックスの接続"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__connection
@@ -198,14 +210,14 @@ msgstr "IoTボックスへの接続に失敗しました"
 #: code:addons/iot/static/src/views/iot_device_form.js:0
 #, python-format
 msgid "Connection to device failed"
-msgstr ""
+msgstr "機器との接続に失敗しました"
 
 #. module: iot
 #. openerp-web
 #: code:addons/iot/static/src/iot_report_action.js:0
 #, python-format
 msgid "Connection to printer failed"
-msgstr ""
+msgstr "プリンタとの接続に失敗しました"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__create_uid
@@ -311,7 +323,7 @@ msgstr "グループ化"
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__hdmi
 msgid "Hdmi"
-msgstr ""
+msgstr "HDMI"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__id
@@ -357,7 +369,7 @@ msgstr "イメージバージョン"
 #. module: iot
 #: model:ir.ui.menu,name:iot.iot_menu_root
 msgid "IoT"
-msgstr ""
+msgstr "IoT"
 
 #. module: iot
 #: model:ir.model,name:iot.model_iot_box
@@ -381,7 +393,7 @@ msgstr "IoT ボックス"
 #: model:ir.model.fields,field_description:iot.field_ir_actions_report__device_id
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "IoT Device"
-msgstr ""
+msgstr "IoT 機器"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__is_scanner
@@ -391,7 +403,7 @@ msgstr "スキャナー"
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__keyboard
 msgid "Keyboard"
-msgstr ""
+msgstr "キーボード"
 
 #. module: iot
 #: model:ir.model,name:iot.model_iot_keyboard_layout
@@ -443,7 +455,7 @@ msgstr "レイアウト"
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__manual_measurement
 msgid "Manual Measurement"
-msgstr ""
+msgstr "手動計測"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__manual_measurement
@@ -475,7 +487,7 @@ msgstr "ネットワーク"
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
 msgid "No IoT Box found !"
-msgstr ""
+msgstr "IoTボックスが見つかりません！"
 
 #. module: iot
 #. openerp-web
@@ -487,12 +499,12 @@ msgstr "OdooがIoT Boxに到達できません。"
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 msgid "Pair"
-msgstr ""
+msgstr "ペア"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_add_iot_box__pairing_code
 msgid "Pairing Code"
-msgstr ""
+msgstr "ペアリングコード"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__payment
@@ -533,7 +545,7 @@ msgstr "プリンタ"
 #: code:addons/iot/static/src/iot_report_action.js:0
 #, python-format
 msgid "Printer "
-msgstr ""
+msgstr "プリンタ"
 
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_form
@@ -610,7 +622,7 @@ msgstr "成功"
 #: code:addons/iot/static/src/iot_report_action.js:0
 #, python-format
 msgid "Successfully sent to printer!"
-msgstr ""
+msgstr "プリンタへの送信に成功しました！"
 
 #. module: iot
 #: code:addons/iot/wizard/add_iot_box.py:0
@@ -618,17 +630,17 @@ msgstr ""
 msgid ""
 "The pairing code you provided was not found in our system. Please check that"
 " you entered it correctly."
-msgstr ""
+msgstr "入力されたペアリングコードは、システム内で見つかりませんでした。正しく入力されているかどうか、ご確認ください。"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_device_action_search_iot_box
 msgid "There is no device connected to this IoT Box"
-msgstr ""
+msgstr "このIoT ボックスに接続されたデバイスはありません。"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_device_action
 msgid "There is no device connected to your IoT Boxes"
-msgstr ""
+msgstr "IoT ボックスに接続されたデバイスはありません。"
 
 #. module: iot
 #. openerp-web
@@ -650,24 +662,24 @@ msgstr "タイプ"
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__connection
 msgid "Type of connection."
-msgstr ""
+msgstr "接続タイプ"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__type
 msgid "Type of device."
-msgstr ""
+msgstr "機器タイプ"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_iot_device__display_url
 msgid ""
 "URL of the page that will be displayed by the device, leave empty to use the"
 " customer facing display of the POS."
-msgstr ""
+msgstr "機器で表示されるページのURL。POSの顧客向けディスプレイとして使用する場合は空欄にします。"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__direct
 msgid "USB"
-msgstr ""
+msgstr "USB"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_keyboard_layout__variant
@@ -678,19 +690,19 @@ msgstr "製品バリアント"
 #: code:addons/iot/wizard/add_iot_box.py:0
 #, python-format
 msgid "We had troubles pairing your IoT Box. Please try again later."
-msgstr ""
+msgstr "IoTボックスのペアリングに問題が発生しました。後ほどもう一度お試しください。"
 
 #. module: iot
 #: model:ir.model.fields,help:iot.field_ir_actions_report__device_id
 msgid ""
 "When setting a device here, the report will be printed through this device "
 "on the IoT Box"
-msgstr ""
+msgstr "ここで機器を設定すると、この機器を通してIoT Boxでレポートが印刷されます"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
 msgid "connect"
-msgstr ""
+msgstr "接続"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action

@@ -22,7 +22,7 @@ msgstr ""
 #. module: helpdesk_sale
 #: model:ir.model,name:helpdesk_sale.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr ""
+msgstr "Dəstək xidməti Qrup"
 
 #. module: helpdesk_sale
 #: model:ir.model,name:helpdesk_sale.model_helpdesk_ticket
@@ -43,21 +43,24 @@ msgid ""
 "information aims at easing your After Sales process and only serves "
 "indicative purposes."
 msgstr ""
+"Bu biletin aid olduğu Satış Sifarişinə istinad. Bu məlumatın quraşdırılması "
+"satışdan sonrakı xidmət prosesinin sadələşdirilməsinə yönəlib və yalnız "
+"istiqamətli məqsədlərə xidmət edir."
 
 #. module: helpdesk_sale
 #: model:ir.model,name:helpdesk_sale.model_helpdesk_sla_report_analysis
 msgid "SLA Status Analysis"
-msgstr ""
+msgstr "SLA Statusunun Təhlili"
 
 #. module: helpdesk_sale
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale.helpdesk_ticket_view_search_inherit_helpdesk_sale
 msgid "Sales Order"
-msgstr ""
+msgstr "Satış Sifarişi"
 
 #. module: helpdesk_sale
 #: model:ir.model,name:helpdesk_sale.model_helpdesk_ticket_report_analysis
 msgid "Ticket Analysis"
-msgstr ""
+msgstr "Bilet Analizi"
 
 #. module: helpdesk_sale
 #: model:res.groups,name:helpdesk_sale.group_use_helpdesk_sale_timesheet

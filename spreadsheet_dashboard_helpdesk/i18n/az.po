@@ -85,7 +85,7 @@ msgstr "Müddət"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Əvvəlki"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -93,7 +93,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Rating"
-msgstr ""
+msgstr "Qiymətləndirmə"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -149,7 +149,7 @@ msgstr "Biletin Növü"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Tickets"
-msgstr ""
+msgstr "Biletlər"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web

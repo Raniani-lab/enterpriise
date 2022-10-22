@@ -3,8 +3,8 @@
 # 	* delivery_easypost
 # 
 # Translators:
-# Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2022
 # Martin Trigaux, 2022
+# Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-09 14:09+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2022\n"
 "Language-Team: Spanish (Mexico) (https://www.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -303,8 +303,8 @@ msgstr "PNG"
 #, python-format
 msgid "Package type used in pack %s is not configured for easypost."
 msgstr ""
-"El embalaje del producto utilizado en el paquete %s no está configurado para"
-" easypost."
+"El tipo de embalaje del producto utilizado en el paquete %s no está "
+"configurado para easypost."
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:0
@@ -327,7 +327,7 @@ msgstr "Proveedor"
 #: code:addons/delivery_easypost/models/delivery_carrier.py:0
 #, python-format
 msgid "Return Label<br/>"
-msgstr "Etiqueta de retorno <br/>"
+msgstr "Etiqueta de devolución<br/>"
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:0
@@ -423,7 +423,7 @@ msgid ""
 "The estimated price cannot be computed because the weight of your product is"
 " missing."
 msgstr ""
-"El precio estimado no se puede calcular porque no se encontró el peso de tu "
+"El precio estimado no se puede calcular porque no se encontró el peso de su "
 "producto."
 
 #. module: delivery_easypost

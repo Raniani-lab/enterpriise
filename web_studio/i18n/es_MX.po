@@ -1676,7 +1676,7 @@ msgstr "Correo electrónico"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Email Alias"
-msgstr "Seudónimo de correo"
+msgstr "Seudónimo de correo electrónico"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_mail_template
@@ -1974,7 +1974,7 @@ msgstr ""
 #: model:mail.activity.type,name:web_studio.mail_activity_data_approve
 #, python-format
 msgid "Grant Approval"
-msgstr ""
+msgstr "Conceder aprobación"
 
 #. module: web_studio
 #. openerp-web
@@ -2317,7 +2317,7 @@ msgstr "Intervalo"
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Invalid studio_approval %s in button"
-msgstr "studio_approval no válido %s en el botón"
+msgstr "studio_approval %s no válido en el botón"
 
 #. module: web_studio
 #. openerp-web
@@ -2914,8 +2914,8 @@ msgid ""
 "Only groups with an external ID can be used here. Please choose another "
 "group or assign manually an external ID to this group."
 msgstr ""
-"Solo se pueden utilizar aquí los grupos con un ID externo. Por favor, elija "
-"otro grupo o asigne manualmente un ID externo para este grupo."
+"Solo se pueden utilizar aquí los grupos con un ID externo. Elija otro grupo "
+"o asigne manualmente un ID externo para este grupo."
 
 #. module: web_studio
 #. openerp-web
@@ -3531,9 +3531,9 @@ msgid ""
 "Set an <b>email alias</b>. Then, try to send an email to this address; it "
 "will create a document automatically for you. Pretty cool, huh?"
 msgstr ""
-"Establezca un <b>alias de correo electrónico</b>. Luego, intente enviar un "
-"correo electrónico a esta dirección; automáticamente creará un documento "
-"para ti. Increíble, ¿no?"
+"Establezca un <b>seudónimo de correo electrónico</b>. Luego, intente enviar "
+"un correo electrónico a esta dirección; automáticamente se creará un "
+"documento. Increíble, ¿no?"
 
 #. module: web_studio
 #. openerp-web
@@ -3724,7 +3724,7 @@ msgstr "Entrada de aprobación de Studio"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_approval_request
 msgid "Studio Approval Request"
-msgstr ""
+msgstr "Solicitud de aprobación de Studio"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_approval_rule
@@ -3886,6 +3886,8 @@ msgid ""
 "The description will be shown to users to understand why they must ask for "
 "approval."
 msgstr ""
+"Se mostrará la descripción a los usuarios para que entiendan por qué deben "
+"solicitar la aprobación."
 
 #. module: web_studio
 #. openerp-web
@@ -4112,6 +4114,8 @@ msgstr ""
 #, python-format
 msgid "This user will be assigned a next activity when approval is requested."
 msgstr ""
+"Se le asignará la siguiente actividad al usuario una vez que se solicite la "
+"aprobación."
 
 #. module: web_studio
 #. openerp-web
@@ -4345,7 +4349,7 @@ msgstr "Si el usuario actual puede aprobar la regla"
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_model__abstract
 msgid "Whether this model is abstract"
-msgstr ""
+msgstr "Si este modelo es abstracto"
 
 #. module: web_studio
 #. openerp-web
@@ -4468,7 +4472,7 @@ msgstr "Le encanta destruir las cosas, ¿verdad?"
 #: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
 #, python-format
 msgid "You must have at least one option set"
-msgstr ""
+msgstr "Debe establecer al menos una opción."
 
 #. module: web_studio
 #. openerp-web

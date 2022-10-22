@@ -33,7 +33,7 @@ msgstr "Analitik Hesab"
 #. module: helpdesk_sale_timesheet
 #: model:helpdesk.ticket,legend_blocked:helpdesk_sale_timesheet.helpdesk_ticket_24
 msgid "Blocked"
-msgstr ""
+msgstr "Bloklanıb"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_helpdesk_ticket_convert_wizard
@@ -88,12 +88,12 @@ msgstr "Dəstək xidməti"
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_helpdesk_sla
 msgid "Helpdesk SLA Policies"
-msgstr ""
+msgstr "Dəstək xidməti SLA siyasətləri"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr ""
+msgstr "Dəstək xidməti Qrup"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_helpdesk_ticket
@@ -108,7 +108,7 @@ msgstr "Saatlar"
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet
 msgid "Hours Spent"
-msgstr ""
+msgstr "Sərf olunan saatlar"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet
@@ -118,7 +118,7 @@ msgstr ""
 #. module: helpdesk_sale_timesheet
 #: model:helpdesk.ticket,legend_normal:helpdesk_sale_timesheet.helpdesk_ticket_24
 msgid "In Progress"
-msgstr ""
+msgstr "Həyata Keçirilməkdə"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_product_template
@@ -145,7 +145,7 @@ msgstr ""
 #. module: helpdesk_sale_timesheet
 #: model:helpdesk.ticket,legend_done:helpdesk_sale_timesheet.helpdesk_ticket_24
 msgid "Ready"
-msgstr ""
+msgstr "Hazır"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__sale_order_id
@@ -187,7 +187,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_product_product__sla_id
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_product_template__sla_id
 msgid "SLA Policy"
-msgstr ""
+msgstr "SLA Strategiyası"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,help:helpdesk_sale_timesheet.field_product_product__sla_id
@@ -203,7 +203,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_sale_timesheet
 #, python-format
 msgid "Sales Order"
-msgstr ""
+msgstr "Satış Sifarişi"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__sale_line_id
@@ -243,7 +243,7 @@ msgstr ""
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.sale_order_form_inherit_helpdesk_sale
 msgid "Tickets"
-msgstr ""
+msgstr "Biletlər"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.helpdesk_ticket_view_search_inherit_helpdesk_sale_timesheet

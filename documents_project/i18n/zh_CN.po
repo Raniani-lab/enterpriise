@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022
+# Raymond Yu <cl_yu@hotmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-27 15:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022\n"
+"Last-Translator: Raymond Yu <cl_yu@hotmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +25,7 @@ msgstr ""
 #: code:addons/documents_project/models/project_project.py:0
 #, python-format
 msgid "%(project_name)s's Documents"
-msgstr ""
+msgstr "%(project_name)s的文档"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_workflow_rule
@@ -46,7 +47,7 @@ msgstr "附件"
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.edit_project_document_form_inherit
 msgid "Categorize and share your documents with your customers"
-msgstr ""
+msgstr "将文档分类并与客户共享"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_facet
@@ -76,7 +77,7 @@ msgstr "不赞成"
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_deprecated
 msgid "Deprectated"
-msgstr ""
+msgstr "已弃用"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_document
@@ -100,7 +101,7 @@ msgstr "文档"
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.edit_project_document_form_inherit
 msgid "Documents &amp; Analytics"
-msgstr ""
+msgstr "文档和分析"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_documents_folder
@@ -115,7 +116,7 @@ msgstr "草稿"
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_document__is_shared
 msgid "Is Shared"
-msgstr ""
+msgstr "被分享"
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule_mark_as_draft
@@ -126,23 +127,23 @@ msgstr "标记为草稿"
 #: code:addons/documents_project/models/folder.py:0
 #, python-format
 msgid "Merged Workspace"
-msgstr ""
+msgstr "合并工作区"
 
 #. module: documents_project
 #: code:addons/documents_project/models/workflow.py:0
 #, python-format
 msgid "New task from Documents"
-msgstr ""
+msgstr "来自文档的新任务"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_project__document_count
 msgid "Number of documents in Project"
-msgstr ""
+msgstr "项目里的文档数"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_task__document_count
 msgid "Number of documents in Task"
-msgstr ""
+msgstr "任务里的文档数"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_project_project
@@ -164,7 +165,7 @@ msgstr "共享文档"
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_project__shared_document_count
 msgid "Shared Documents Count"
-msgstr ""
+msgstr "共享文档计数"
 
 #. module: documents_project
 #: model:documents.facet,name:documents_project.documents_project_status
@@ -181,7 +182,7 @@ msgstr "任务"
 #: code:addons/documents_project/models/workflow.py:0
 #, python-format
 msgid "Task created from document"
-msgstr ""
+msgstr "从文档创建的任务"
 
 #. module: documents_project
 #: code:addons/documents_project/models/folder.py:0
@@ -189,7 +190,7 @@ msgstr ""
 msgid ""
 "The \"%s\" workspace is required by the Project application and cannot be "
 "deleted."
-msgstr ""
+msgstr "“%s”工作区是项目应用程序所需的，无法删除"
 
 #. module: documents_project
 #: code:addons/documents_project/models/project_project.py:0
@@ -197,7 +198,7 @@ msgstr ""
 msgid ""
 "The \"%s\" workspace should either be in the \"%s\" company like this "
 "project or be open to all companies."
-msgstr ""
+msgstr "\"%s\"工作区应该像这个项目一样在\"%s\"公司，或者对所有公司开放。"
 
 #. module: documents_project
 #: code:addons/documents_project/models/folder.py:0
@@ -206,7 +207,7 @@ msgid ""
 "This workspace should remain in the same company as the \"%s\" project to "
 "which it is linked. Please update the company of the \"%s\" project, or "
 "leave the company of this workspace empty."
-msgstr ""
+msgstr "此工作区应与其链接到的\"%s\"项目保持在同一家公司中。 请更新\"%s\"项目的公司，或将此工作区的公司留空。"
 
 #. module: documents_project
 #: code:addons/documents_project/models/folder.py:0
@@ -217,6 +218,10 @@ msgid ""
 "\n"
 "Please update the company of those projects, or leave the company of this workspace empty."
 msgstr ""
+"此工作区应与其链接到的以下项目保持在同一家公司中:\n"
+"%s\n"
+"\n"
+"请更新这些项目的公司，或将此工作区的公司留空。"
 
 #. module: documents_project
 #: model:documents.tag,name:documents_project.documents_project_status_to_validate
@@ -229,6 +234,8 @@ msgid ""
 "Upload <span class=\"fw-normal\">a file or </span>drag <span class=\"fw-"
 "normal\">it here.</span>"
 msgstr ""
+"上传<span class=\"fw-normal\">一个文件或者</span>拖动<span class=\"fw-"
+"normal\">到这里。</span>"
 
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_project_task__project_use_documents
@@ -258,7 +265,7 @@ msgid ""
 "Workspace in which all of the documents of this project will be categorized."
 " All of the attachments of your tasks will be automatically added as "
 "documents in this workspace as well."
-msgstr ""
+msgstr "将在此项目的所有文档进行分类的工作区。 您的任务的所有附件也将自动添加为此工作区中的文档。"
 
 #. module: documents_project
 #: code:addons/documents_project/models/project_project.py:0
@@ -269,14 +276,18 @@ msgid ""
 "\n"
 "Please update the company of all projects so that they remain in the same company as their workspace, or leave the company of the \"%s\" workspace blank."
 msgstr ""
+"您无法更改此项目的公司，因为它的工作区链接到仍在\"%s\"公司中的其他以下项目:\n"
+"%s\n"
+"\n"
+"请更新所有项目的公司，以便它们与其工作区保持在同一家公司，或将\"%s\"工作区的公司留空。"
 
 #. module: documents_project
 #: code:addons/documents_project/models/folder.py:0
 #, python-format
 msgid "You cannot set a company on the Projects workspace."
-msgstr ""
+msgstr "您无法在\"项目\"工作区上设置公司。"
 
 #. module: documents_project
 #: model_terms:ir.ui.view,arch_db:documents_project.share_page
 msgid "documents shared"
-msgstr ""
+msgstr "分享的文档"

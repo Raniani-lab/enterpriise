@@ -69,7 +69,7 @@ msgstr "Davam edin"
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter_productivity__total_cost
 msgid "Cost"
-msgstr ""
+msgstr "Maya dəyəri"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter_productivity__currency_id
@@ -100,7 +100,7 @@ msgstr ""
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workorder__employee_name
 msgid "Employee Name"
-msgstr ""
+msgstr "İşçinin Adı"
 
 #. module: mrp_workorder_hr
 #. openerp-web
@@ -180,22 +180,22 @@ msgstr ""
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_workcenter
 msgid "Work Center"
-msgstr ""
+msgstr "İş Mərkəzi"
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_routing_workcenter
 msgid "Work Center Usage"
-msgstr ""
+msgstr "İş Mərkəzinin İstifadəsi"
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_workorder
 msgid "Work Order"
-msgstr ""
+msgstr "İş Sifarişi"
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_workcenter_productivity
 msgid "Workcenter Productivity Log"
-msgstr ""
+msgstr "İş mərkəzinin Məhsuldarlığı Jurnalı"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workorder__employee_ids

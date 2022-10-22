@@ -29,7 +29,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Applications"
-msgstr ""
+msgstr "Ərizələr"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -66,7 +66,7 @@ msgstr "Tarix"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Department"
-msgstr ""
+msgstr "Şöbə"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -137,7 +137,7 @@ msgstr "Ad"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "New Applications"
-msgstr ""
+msgstr "Yeni Müraciətlər"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -172,7 +172,7 @@ msgstr "Mövqe"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Əvvəlki"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -197,7 +197,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Rate"
-msgstr ""
+msgstr "Qiymətləndirmə"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web

@@ -38,12 +38,12 @@ msgstr "İştirakçılar"
 #. module: event_enterprise
 #: model:ir.model,name:event_enterprise.model_event_registration
 msgid "Event Registration"
-msgstr ""
+msgstr "Tədbir qeydiyyatı"
 
 #. module: event_enterprise
 #: model:ir.model.fields,field_description:event_enterprise.field_event_registration__event_begin_date
 msgid "Event Start Date"
-msgstr ""
+msgstr "Tədbirin Başlama Tarixi "
 
 #. module: event_enterprise
 #: model_terms:ir.ui.view,arch_db:event_enterprise.event_event_view_map

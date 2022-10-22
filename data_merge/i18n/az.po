@@ -3,8 +3,8 @@
 # 	* data_merge
 # 
 # Translators:
-# Jumshud Sultanov <cumshud@gmail.com>, 2022
 # erpgo translator <jumshud@erpgo.az>, 2022
+# Jumshud Sultanov <cumshud@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: erpgo translator <jumshud@erpgo.az>, 2022\n"
+"Last-Translator: Jumshud Sultanov <cumshud@gmail.com>, 2022\n"
 "Language-Team: Azerbaijani (https://www.transifex.com/odoo/teams/41243/az/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -72,7 +72,7 @@ msgstr "Aktiv"
 #. module: data_merge
 #: model:ir.model.fields.selection,name:data_merge.selection__data_merge_model__removal_mode__archive
 msgid "Archive"
-msgstr ""
+msgstr "Arxiv"
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.data_merge_model_view_search
@@ -99,7 +99,7 @@ msgstr ""
 #. module: data_merge
 #: model:ir.model.fields.selection,name:data_merge.selection__data_merge_model__merge_mode__automatic
 msgid "Automatic"
-msgstr ""
+msgstr "Avtomatik"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_ir_model__is_merge_enabled
@@ -138,12 +138,12 @@ msgstr ""
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__record_create_uid
 msgid "Created By"
-msgstr ""
+msgstr "Tərəfindən yaradılıb"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__record_create_date
 msgid "Created On"
-msgstr ""
+msgstr "Tarixdə yaradıldı"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__create_uid
@@ -333,7 +333,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_rule__id
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_record_list
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_ir_model__is_merge_enabled
@@ -518,7 +518,7 @@ msgstr ""
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__notify_frequency
 msgid "Notify"
-msgstr ""
+msgstr "Bildirmək"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__notify_frequency_period
@@ -571,7 +571,7 @@ msgstr ""
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_record_search
 msgid "Rule"
-msgstr ""
+msgstr "Qayda"
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_model_form
@@ -663,7 +663,7 @@ msgstr ""
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__used_in
 msgid "Used In"
-msgstr ""
+msgstr "İstifadə olunur"
 
 #. module: data_merge
 #: model:ir.model.fields.selection,name:data_merge.selection__data_merge_model__notify_frequency_period__weeks

@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Leonardo J. Caballero G. <leonardocaballero@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Leonardo J. Caballero G. <leonardocaballero@gmail.com>, 2022\n"
 "Language-Team: Spanish (https://www.transifex.com/odoo/teams/41243/es/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,7 +29,7 @@ msgstr "# Cuentas"
 #: code:addons/social/models/social_post.py:0
 #, python-format
 msgid "%s (max %s chars)"
-msgstr ""
+msgstr "%s (máximo %s caracteres)"
 
 #. module: social
 #. openerp-web
@@ -45,7 +46,7 @@ msgstr "<b>Ha ocurrido un error al intentar vincular su cuenta</b>"
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
 msgid "<i class=\"fa fa-globe\" title=\"See the post\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-globe\" title=\"See the post\"/>"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_kanban
@@ -60,6 +61,8 @@ msgid ""
 "<strong>Congrats! Come back in a few minutes to check your "
 "statistics.</strong>"
 msgstr ""
+"<strong>¡Felicidades! Regrese en unos minutos para revisar sus "
+"estadísticas.</strong>"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__message_needaction
@@ -102,7 +105,7 @@ msgstr "Añadir"
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.utm_campaign_view_form
 msgid "Add Post"
-msgstr ""
+msgstr "Añadir Publicación"
 
 #. module: social
 #. openerp-web
@@ -200,6 +203,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
 msgid "Before posting, links will be converted to be trackable."
 msgstr ""
+"Antes de publicar, los enlaces se convertirán para que sean rastreables."
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_stream_post_view_search
@@ -313,6 +317,8 @@ msgid ""
 "Contains the social media handle of the person that created this account. "
 "E.g: '@odoo.official' for the 'Odoo' Twitter account"
 msgstr ""
+"Contiene el identificador de redes sociales de la persona que creó esta "
+"cuenta. Por ejemplo: '@odoo.official' para la cuenta de Twitter 'Odoo'"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_live_post__message
@@ -415,7 +421,7 @@ msgstr "Descripción"
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.res_config_settings_view_form
 msgid "Developer Accounts"
-msgstr ""
+msgstr "Cuentas de desarrollador"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__display_name
@@ -435,7 +441,7 @@ msgstr "Nombre mostrado"
 #: code:addons/social/static/src/js/stream_post_comment.js:0
 #, python-format
 msgid "Do you really want to delete %s"
-msgstr ""
+msgstr "¿De verdad quieres borrar %s?"
 
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_post__state__draft
@@ -449,6 +455,8 @@ msgid ""
 "Due to length restrictions, the following posts cannot be posted:\n"
 " %s"
 msgstr ""
+"Debido a restricciones de longitud, las siguientes publicaciones no se pueden publicar:\n"
+" %s"
 
 #. module: social
 #. openerp-web
@@ -468,6 +476,8 @@ msgid ""
 "Enable this option and load demo data to test the social module.<br/>\n"
 "                                        This must never be used on a production database!"
 msgstr ""
+"Habilite esta opción y cargue datos de demostración para probar el módulo social.<br/>\n"
+"                                        ¡Esto nunca debe usarse en una base de datos de producción!"
 
 #. module: social
 #. openerp-web
@@ -576,7 +586,7 @@ msgstr "Agrupar por"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__social_account_handle
 msgid "Handle / Short Name"
-msgstr ""
+msgstr "Manipulador / Nombre corto"
 
 #. module: social
 #. openerp-web
@@ -806,7 +816,7 @@ msgstr "Vínculo de URL"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Link a new account"
-msgstr ""
+msgstr "Vincule una cuenta nueva"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_media_view_kanban
@@ -833,7 +843,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,help:social.field_social_live_post__live_post_link
 msgid "Link of the live post on the target media."
-msgstr ""
+msgstr "Enlace de la publicación en vivo en los medios de destino."
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
@@ -883,7 +893,7 @@ msgstr "Acciones principales"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__max_post_length
 msgid "Max Post Length"
-msgstr ""
+msgstr "Longitud máxima de la publicación"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__media_ids
@@ -915,7 +925,7 @@ msgstr "Error de Envío de Mensaje"
 #: model:ir.model.fields,field_description:social.field_social_post__message_length
 #: model:ir.model.fields,field_description:social.field_social_post_template__message_length
 msgid "Message Length"
-msgstr ""
+msgstr "Longitud del mensaje"
 
 #. module: social
 #: code:addons/social/models/social_post.py:0
@@ -985,7 +995,7 @@ msgstr "Nueva publicación"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "New content available"
-msgstr ""
+msgstr "Nuevo contenido disponible"
 
 #. module: social
 #. openerp-web
@@ -1136,7 +1146,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Or add"
-msgstr ""
+msgstr "O añadir"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__audience_trend
@@ -1389,6 +1399,8 @@ msgstr ""
 msgid ""
 "Set a maximum number of characters can be posted in post. 0 for no limit."
 msgstr ""
+"Establezca un número máximo de caracteres que se pueden publicar en la "
+"publicación. 0 para sin límite."
 
 #. module: social
 #: model:ir.actions.act_window,name:social.action_social_global_settings
@@ -1502,7 +1514,7 @@ msgstr "Flujos sociales"
 #. module: social
 #: model:res.groups,name:social.group_social_user
 msgid "Social User"
-msgstr ""
+msgstr "Usuario social"
 
 #. module: social
 #: model:ir.actions.server,name:social.ir_cron_post_scheduled_ir_actions_server
@@ -1750,6 +1762,8 @@ msgid ""
 "Use your own Developer Accounts on our Social app.\n"
 "                            Those credentials are provided in the developer section of your professional social media account."
 msgstr ""
+"Use sus propias cuentas de desarrollador en nuestra aplicación social.\n"
+"                            Esas credenciales se proporcionan en la sección de desarrollador de su cuenta profesional de redes sociales."
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__media_type
@@ -1845,6 +1859,8 @@ msgid ""
 "You cannot delete these UTM Mediums as they are linked to the following social accounts in Social:\n"
 "%(social_accounts)s"
 msgstr ""
+"No puede borras estos medios UTM ya que están vinculados a las siguientes redes sociales en Social:\n"
+"%(social_accounts)s"
 
 #. module: social
 #: code:addons/social/models/utm_source.py:0
@@ -1853,6 +1869,8 @@ msgid ""
 "You cannot delete these UTM Sources as they are linked to social posts in Social:\n"
 "%(utm_sources)s"
 msgstr ""
+"No puede borrar estas fuentes UTM ya que están vinculadas al publicaciones de Social:\n"
+"%(utm_sources)s"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form
@@ -1864,7 +1882,7 @@ msgstr "Su publicación."
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "a Stream from an existing account"
-msgstr ""
+msgstr "una secuencia para una cuenta existente"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_template_view_form

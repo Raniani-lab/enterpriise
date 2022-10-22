@@ -99,7 +99,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_inter_company_rules.field_res_company__rule_type
 #: model:ir.model.fields,field_description:account_inter_company_rules.field_res_config_settings__rule_type
 msgid "Rule"
-msgstr ""
+msgstr "Qayda"
 
 #. module: account_inter_company_rules
 #: model:ir.model.fields,field_description:account_inter_company_rules.field_res_config_settings__rules_company_id

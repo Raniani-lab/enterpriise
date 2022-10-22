@@ -227,7 +227,7 @@ msgstr "Kampaniya"
 #: model:ir.actions.act_window,name:social.action_view_utm_campaigns
 #: model:ir.ui.menu,name:social.menu_social_campaign
 msgid "Campaigns"
-msgstr ""
+msgstr "Kampaniyalar"
 
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_view_utm_campaigns
@@ -266,7 +266,7 @@ msgstr ""
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
 msgid "Clicks"
-msgstr ""
+msgstr "kliklər"
 
 #. module: social
 #. openerp-web
@@ -488,7 +488,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:social.selection__social_live_post__state__failed
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_kanban
 msgid "Failed"
-msgstr ""
+msgstr "Uğursuz oldu"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_live_post__failure_reason
@@ -598,7 +598,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_stream_post_image__id
 #: model:ir.model.fields,field_description:social.field_social_stream_type__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_exception_icon
@@ -970,7 +970,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "Növbəti"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_calendar_event_id
@@ -1228,7 +1228,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Əvvəlki"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__post_method
@@ -1253,7 +1253,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_live_post__state__ready
 msgid "Ready"
-msgstr ""
+msgstr "Hazır"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post__media_type
@@ -1297,7 +1297,7 @@ msgstr "SMS-in Çatdırılmasında xəta"
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
 msgid "Schedule"
-msgstr ""
+msgstr "Qrafik"
 
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_post__post_method__scheduled
@@ -1307,12 +1307,12 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_post__state__scheduled
 msgid "Scheduled"
-msgstr ""
+msgstr "Planlaşdırılmış "
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__scheduled_date
 msgid "Scheduled Date"
-msgstr ""
+msgstr "Planlaşdırılmış Tarix"
 
 #. module: social
 #: code:addons/social/models/social_post.py:0
@@ -1323,7 +1323,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_post__post_method__now
 msgid "Send now"
-msgstr ""
+msgstr "İndi Göndər"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream__sequence
@@ -1672,7 +1672,7 @@ msgstr ""
 #: code:addons/social/models/social_post.py:0
 #, python-format
 msgid "Unknown error"
-msgstr ""
+msgstr "Bilinməyən xəta"
 
 #. module: social
 #: code:addons/social/models/social_post_template.py:0
@@ -1718,7 +1718,7 @@ msgstr "Veb saytın kommunikasiya tarixçəsi"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__post_method
 msgid "When"
-msgstr ""
+msgstr "Partiyanı"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__published_date

@@ -31,7 +31,7 @@ msgstr "Fəaliyyət Pəncərə Görünüşü"
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "Add a Line"
-msgstr ""
+msgstr "Sətir əlavə edin"
 
 #. module: web_grid
 #. openerp-web
@@ -50,7 +50,7 @@ msgstr "Baza"
 #: code:addons/web_grid/models/models.py:0
 #, python-format
 msgid "Can not use fields of type %s as grid columns"
-msgstr ""
+msgstr "% S tipli sahələri cədvəl sütunları kimi istifadə etmək olmur"
 
 #. module: web_grid
 #. openerp-web
@@ -74,7 +74,7 @@ msgstr "Şəbəkə"
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "Növbəti"
 
 #. module: web_grid
 #. openerp-web
@@ -96,14 +96,14 @@ msgstr "Heçbiri"
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Əvvəlki"
 
 #. module: web_grid
 #. openerp-web
 #: code:addons/web_grid/static/src/xml/grid_view.xml:0
 #, python-format
 msgid "See all the records aggregated in this cell"
-msgstr ""
+msgstr "Bu bölməyə toplanan bütün qeydiyyatlara bax"
 
 #. module: web_grid
 #: code:addons/web_grid/models/models.py:0
@@ -111,6 +111,8 @@ msgstr ""
 #, python-format
 msgid "The field used as readonly type must have a group_operator attribute."
 msgstr ""
+"Yalnız oxunaqlı bir növ kimi istifadə olunan sahənin group_operator atributu"
+" olmalıdır."
 
 #. module: web_grid
 #. openerp-web
@@ -119,6 +121,7 @@ msgstr ""
 msgid ""
 "The sectioned grid view can't handle groups with different columns sets"
 msgstr ""
+"Bölməli şəbəkə görünüşü fərqli sütun dəstləri olan qrupları idarə edə bilməz"
 
 #. module: web_grid
 #. openerp-web
@@ -152,6 +155,8 @@ msgid ""
 "Week %(weeknumber)s\n"
 "%(week_start)s - %(week_end)s"
 msgstr ""
+"Həftə %(weeknumber)s\n"
+"%(week_start)s - %(week_end)s"
 
 #. module: web_grid
 #. openerp-web

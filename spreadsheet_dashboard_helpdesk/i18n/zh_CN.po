@@ -26,7 +26,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Agent"
-msgstr ""
+msgstr "代理"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -49,21 +49,21 @@ msgstr "客户"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to assign"
-msgstr ""
+msgstr "指派的小时数"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to close"
-msgstr ""
+msgstr "关闭时间"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to respond"
-msgstr ""
+msgstr "回复的时间"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -93,7 +93,7 @@ msgstr "上一页"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Rating"
-msgstr "点评"
+msgstr "评价"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -170,42 +170,42 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Assign"
-msgstr ""
+msgstr "分配时间"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Close"
-msgstr ""
+msgstr "关闭时间"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Respond"
-msgstr ""
+msgstr "回应时间"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Agents"
-msgstr ""
+msgstr "最佳代理"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Customers"
-msgstr ""
+msgstr "最佳客户"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Teams"
-msgstr ""
+msgstr "最佳团队"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -221,7 +221,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "last period"
-msgstr ""
+msgstr "上期"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -229,18 +229,18 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "since last period"
-msgstr ""
+msgstr "从上期以来"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "stats - current"
-msgstr ""
+msgstr "统计 - 当前"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "stats - previous"
-msgstr ""
+msgstr "统计 - 以前"

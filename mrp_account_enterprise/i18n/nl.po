@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -77,7 +78,7 @@ msgstr "<span>Hoeveelheid</span>"
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "<span>Resource</span>"
-msgstr ""
+msgstr "<span>Resource</span>"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
@@ -164,7 +165,7 @@ msgstr "Componentkosten / Eenheid"
 msgid ""
 "Component cost per unit produced (in product UoM) of manufacturing order"
 msgstr ""
-"Componentkosten per geproduceerde eenheid (in producteenheidseenheid) van "
+"Componentkosten per geproduceerde eenheid (in productmaateenheid) van "
 "productieorder"
 
 #. module: mrp_account_enterprise
@@ -224,8 +225,7 @@ msgstr "Kosten van afval"
 #: model:ir.model.fields,help:mrp_account_enterprise.field_mrp_report__unit_cost
 msgid "Cost per unit produced (in product UoM) of manufacturing order"
 msgstr ""
-"Kosten per geproduceerde eenheid (in producteenheidseenheid) van "
-"productieorder"
+"Kosten per geproduceerde eenheid (in productmaateenheid) van productieorder"
 
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__currency_id
@@ -289,7 +289,7 @@ msgstr "Nog geen gegevens!"
 msgid ""
 "Operation cost per unit produced (in product UoM) of manufacturing order"
 msgstr ""
-"Bedrijfskosten per geproduceerde eenheid (in producteenheidseenheid) van "
+"Bedrijfskosten per geproduceerde eenheid (in productmaateenheid) van "
 "productieorder"
 
 #. module: mrp_account_enterprise
@@ -379,6 +379,8 @@ msgid ""
 "Total cost of manufacturing order (component + operation costs + "
 "subcontracting cost)"
 msgstr ""
+"Totale kosten van productieorder (onderdeel + bedrijfskosten + "
+"onderaanemingskosten)"
 
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,help:mrp_account_enterprise.field_mrp_report__operation_cost

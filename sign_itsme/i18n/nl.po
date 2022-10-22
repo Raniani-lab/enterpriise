@@ -105,12 +105,12 @@ msgstr "Via itsme®"
 #: code:addons/sign_itsme/controllers/main.py:0
 #, python-format
 msgid "itsme® IAP service could not be found."
-msgstr ""
+msgstr "itsme® IAP dienst kon niet gevonden worden."
 
 #. module: sign_itsme
 #: model:ir.model.fields,field_description:sign_itsme.field_sign_request_item__itsme_signer_birthdate
 msgid "itsme® Signer's Birthdate"
-msgstr ""
+msgstr "Geboortedatum ondertekenaar itsme®"
 
 #. module: sign_itsme
 #: model:ir.model.fields,field_description:sign_itsme.field_sign_request_item__itsme_signer_name
@@ -120,4 +120,4 @@ msgstr "Naam ondertekenaar itsme®"
 #. module: sign_itsme
 #: model:ir.model.fields,field_description:sign_itsme.field_sign_request_item__itsme_validation_hash
 msgid "itsme® Validation Token"
-msgstr ""
+msgstr "Validatie token itsme®"

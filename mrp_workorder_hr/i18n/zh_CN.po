@@ -27,7 +27,7 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/components/working_employee_popup.xml:0
 #, python-format
 msgid "+ New Operator"
-msgstr ""
+msgstr "+ 新操作员"
 
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workorder_view_tablet_form_inherit_workorder_hr
@@ -59,7 +59,7 @@ msgstr "取消"
 #: code:addons/mrp_workorder_hr/static/src/components/tablet.js:0
 #, python-format
 msgid "Change Worker"
-msgstr ""
+msgstr "更换工人"
 
 #. module: mrp_workorder_hr
 #. openerp-web
@@ -92,7 +92,7 @@ msgstr "员工"
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_routing_workcenter__employee_ratio
 msgid "Employee Capacity"
-msgstr ""
+msgstr "员工能力"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__employee_costs_hour
@@ -116,12 +116,12 @@ msgstr "登录"
 #: code:addons/mrp_workorder_hr/static/src/js/mrp_workorder_hr.js:0
 #, python-format
 msgid "Logged in!"
-msgstr ""
+msgstr "已登录！"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_routing_workcenter__employee_ratio
 msgid "Number of employee needed to produce one batch"
-msgstr ""
+msgstr "生产一批产品所需的员工数量"
 
 #. module: mrp_workorder_hr
 #. openerp-web
@@ -145,7 +145,7 @@ msgstr "密码？"
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_propose_change
 msgid "Propose a change in the production"
-msgstr ""
+msgstr "生产的改变提议"
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_quality_check
@@ -177,7 +177,7 @@ msgstr "停止"
 #: code:addons/mrp_workorder_hr/static/src/js/mrp_workorder_hr.js:0
 #, python-format
 msgid "This employee is not allowed on this workcenter"
-msgstr ""
+msgstr "该员工不允许在这个工作中心工作"
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_workcenter
@@ -202,29 +202,29 @@ msgstr "工作中心生产力日志"
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workorder__employee_ids
 msgid "Working Employees"
-msgstr ""
+msgstr "在职员工"
 
 #. module: mrp_workorder_hr
 #. openerp-web
 #: code:addons/mrp_workorder_hr/static/src/js/mrp_workorder_hr.js:0
 #, python-format
 msgid "Wrong password !"
-msgstr ""
+msgstr "错误的密码！"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_workcenter_productivity__employee_id
 msgid "employee that record this working time"
-msgstr ""
+msgstr "记录该工作时间的员工"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter_productivity__employee_cost
 msgid "employee_cost"
-msgstr ""
+msgstr "employee_cost"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__employee_ids
 msgid "employees with access"
-msgstr ""
+msgstr "有权限的员工"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,help:mrp_workorder_hr.field_mrp_workcenter__employee_ids
@@ -234,4 +234,4 @@ msgstr ""
 #. module: mrp_workorder_hr
 #: model_terms:ir.ui.view,arch_db:mrp_workorder_hr.mrp_workcenter_form_view_inherit
 msgid "per employee"
-msgstr ""
+msgstr "每位员工"

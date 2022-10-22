@@ -37,12 +37,14 @@ msgid ""
 "A set of condition and actions which will be available to all attachments "
 "matching the conditions"
 msgstr ""
+"Bu şərtlərə uyğun olan bütün əlavələr üçün mövcud olacaq şərt və "
+"əməliyyatlar dəsti"
 
 #. module: documents_hr_recruitment
 #: model:ir.model,name:documents_hr_recruitment.model_hr_applicant
 #: model:ir.model.fields.selection,name:documents_hr_recruitment.selection__documents_workflow_rule__create_model__hr_applicant
 msgid "Applicant"
-msgstr ""
+msgstr "Namizəd"
 
 #. module: documents_hr_recruitment
 #: model:documents.tag,name:documents_hr_recruitment.documents_recruitment_sheet_tag
@@ -52,7 +54,7 @@ msgstr "Ləğv olundu"
 #. module: documents_hr_recruitment
 #: model_terms:ir.ui.view,arch_db:documents_hr_recruitment.res_config_settings_view_form
 msgid "Centralize files attached to applications and job positions"
-msgstr ""
+msgstr "Ərizə və vakansiyalara əlavə olunmuş faylları mərkəzləşdirin"
 
 #. module: documents_hr_recruitment
 #: model:ir.model,name:documents_hr_recruitment.model_res_company
@@ -89,12 +91,12 @@ msgstr "Sənədlər"
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__documents_recruitment_settings
 msgid "Documents Recruitment Settings"
-msgstr ""
+msgstr "İşə qəbul Parametrləri Sənədləri"
 
 #. module: documents_hr_recruitment
 #: model:documents.tag,name:documents_hr_recruitment.documents_recruitment_new_tag
 msgid "Inbox"
-msgstr ""
+msgstr "Mesaj qutusu"
 
 #. module: documents_hr_recruitment
 #: model:ir.model,name:documents_hr_recruitment.model_hr_job
@@ -110,27 +112,27 @@ msgstr "Seçim"
 #. module: documents_hr_recruitment
 #: model:documents.tag,name:documents_hr_recruitment.documents_recruitment_plans_tag
 msgid "Recruitment Reserve"
-msgstr ""
+msgstr "İşçilərin seçimi üçün ehtiyat"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__recruitment_tag_ids
 msgid "Recruitment Tag"
-msgstr ""
+msgstr "Seçim etiketi"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_config_settings__recruitment_tag_ids
 msgid "Recruitment Tags"
-msgstr ""
+msgstr "Seçim etiketləri"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_company__recruitment_folder_id
 msgid "Recruitment Workspace"
-msgstr ""
+msgstr "Seçim sahəsi"
 
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_res_config_settings__recruitment_folder_id
 msgid "Recruitment default workspace"
-msgstr ""
+msgstr "İşçilər üçün susmaya görə iş məkanı"
 
 #. module: documents_hr_recruitment
 #: model:documents.facet,name:documents_hr_recruitment.documents_recruitment_documents_facet
@@ -140,4 +142,4 @@ msgstr ""
 #. module: documents_hr_recruitment
 #: model_terms:ir.ui.view,arch_db:documents_hr_recruitment.res_config_settings_view_form
 msgid "Workspace"
-msgstr ""
+msgstr "İş sahəsi "

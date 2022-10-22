@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -820,6 +821,8 @@ msgid ""
 "Company linked to the material resource. Leave empty for the resource to be "
 "available in every company."
 msgstr ""
+"Bedrijf gekoppeld aan het materiële middel. Laat dit open zodat het middel "
+"beschikbaar is in elk bedrijf."
 
 #. module: planning
 #: model:ir.model,name:planning.model_res_config_settings
@@ -948,6 +951,10 @@ msgid ""
 "Create open shifts for the roles you need to complete a mission. Then, "
 "assign those open shifts to the resources that are available."
 msgstr ""
+"Definieer de rollen die je werknemers vervullen (bijv. chef-kok, barman, "
+"ober...). Creëer open diensten voor de rollen die je nodig hebt om een "
+"missie te voltooien. Wijs die openstaande diensten vervolgens toe aan de "
+"beschikbare werknemers."
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -1082,13 +1089,15 @@ msgstr "Eli Lambert (Ober)"
 #. module: planning
 #: model:mail.template,description:planning.email_template_slot_single
 msgid "Email sent automatically when publishing a shift"
-msgstr ""
+msgstr "Automatisch verzonden e-mail bij het publiceren van een dienst"
 
 #. module: planning
 #: model:mail.template,description:planning.email_template_planning_planning
 msgid ""
 "Email sent automatically when publishing the schedule of your employees"
 msgstr ""
+"Automatisch verzonden e-mail bij het publiceren van het uurrooster van je "
+"werknemers"
 
 #. module: planning
 #: model:ir.model,name:planning.model_hr_employee
@@ -1455,6 +1464,8 @@ msgid ""
 "Modifications made to a shift only impact the current shift and not the other ones that are part of the recurrence. The same goes when deleting a recurrent shift. Disable this option to stop the recurrence.\n"
 "To avoid polluting your database and performance issues, shifts are only created for the next 6 months. They are then gradually created as time passes by in order to always get shifts 6 months ahead. This value can be modified from the settings of Planning, in debug mode."
 msgstr ""
+"Wijzigingen in een dienst hebben alleen invloed op de huidige dienst en niet op de andere die deel uitmaken van de herhaling. Hetzelfde geldt voor het verwijderen van een terugkerende dienst. Schakel deze optie uit om herhaling te stoppen.\n"
+"Om vervuiling van je database en prestatieproblemen te voorkomen, worden ploegendiensten alleen voor de volgende 6 maanden gemaakt. Ze worden dan geleidelijk aangemaakt naarmate de tijd verstrijkt, om de diensten altijd 6 maanden vooruit aan te maken. Deze waarde kan worden gewijzigd vanuit de instellingen van Planning, in debug-modus."
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__publication_warning
@@ -1698,12 +1709,12 @@ msgstr "Planning:"
 #. module: planning
 #: model:mail.template,name:planning.email_template_planning_planning
 msgid "Planning: New Schedule"
-msgstr ""
+msgstr "Planning: Nieuwe dienst"
 
 #. module: planning
 #: model:mail.template,name:planning.email_template_slot_single
 msgid "Planning: New Shift"
-msgstr ""
+msgstr "Planning: Nieuwe dienst"
 
 #. module: planning
 #: model:ir.actions.server,name:planning.ir_cron_forecast_schedule_ir_actions_server
@@ -1877,6 +1888,8 @@ msgid ""
 "Role that will be selected by default when creating a shift for this employee.\n"
 "This role will also have precedence over the other roles of the employee when planning orders."
 msgstr ""
+"Rol die standaard worden gekozen bij het creëren van een dienst voor deze werknemer.\n"
+"Deze rol heeft ook voorrang op de andere rollen van de medewerker bij het plannen van orders."
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_roles
@@ -1894,6 +1907,10 @@ msgid ""
 "Additionally, the employee will only be assigned orders for these roles (with the default planning role having precedence over the other ones).\n"
 "Leave empty for the employee to be assigned shifts regardless of the role."
 msgstr ""
+"Rollen die de medewerker kan invullen. Bij het aanmaken van een dienst voor deze medewerker worden alleen de diensttemplates voor deze rollen getoond.\n"
+"Evenzo worden alleen de openstaande diensten die beschikbaar zijn voor deze rollen naar de werknemer verzonden wanneer het uurrooster wordt gepubliceerd.\n"
+"Bovendien krijgt de werknemer alleen orders voor deze rollen toegewezen (waarbij de standaard planningsrol voorrang heeft op de andere).\n"
+"Laat leeg zodat de werknemer diensten krijgt toegewezen, ongeacht de rol."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt

@@ -10,6 +10,7 @@
 # Lucas Deliege <lud@odoo.com>, 2022
 # Martin Trigaux, 2022
 # Cécile Collart <cco@odoo.com>, 2022
+# Christophe Klopfert, 2022
 # Jolien De Paepe, 2022
 # 
 msgid ""
@@ -60,6 +61,8 @@ msgid ""
 "%s Future entries will be recomputed to depreciate the asset following the "
 "changes."
 msgstr ""
+"%s Les écritures futures seront recalculées pour amortir l'actif suivant les"
+" changements."
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
@@ -107,7 +110,7 @@ msgstr "Un produit différé a été créé pour ce mouvement :"
 #, python-format
 msgid "A depreciation entry will be posted on and including the date %s."
 msgstr ""
-"Une écriture d'amortissement sera publiée le et comprendra la date %s."
+"Une écriture d'amortissement sera comptabilisée le et comprendra la date %s."
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:0
@@ -117,6 +120,9 @@ msgid ""
 "Future entries will be recomputed to depreciate the asset following the "
 "changes."
 msgstr ""
+"Une écriture d'amortissement sera comptabilisée le et comprendra la date %s."
+" <br/> %s Les écritures futures seront recalculées pour amortir l'actif "
+"suivant les changements."
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:0
@@ -125,6 +131,9 @@ msgid ""
 "A depreciation entry will be posted on and including the date %s.<br/> A "
 "disposal entry will be posted on the %s account <b>%s</b>."
 msgstr ""
+"Une écriture d'amortissement sera comptabilisée le et comprendra la date "
+"%s.<br/> Une écriture d'élimination sera comptabilisée dans le compte %s "
+"<b>%s</b>."
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:0
@@ -134,6 +143,9 @@ msgid ""
 "second entry will neutralize the original income and post the  outcome of "
 "this sale on account <b>%s</b>."
 msgstr ""
+"Une écriture d'amortissement sera comptabilisée le et comprendra la date "
+"%s.<br/> Une seconde écriture neutralisera le revenu original et "
+"comptabilisera le résultat de cette vente dans le compte <b>%s</b>."
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -1377,7 +1389,7 @@ msgstr "Linéaire"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__linked_asset_type
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__linked_asset_type
 msgid "Linked Asset Type"
-msgstr "Types d'immobilisation liés"
+msgstr "Type d'immobilisation lié"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__gain_or_loss__loss

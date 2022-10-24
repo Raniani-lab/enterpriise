@@ -31,7 +31,7 @@ const PhoneCallRecentTab = PhoneCallTab.extend({
      * @return {Promise<voip.PhoneCall>} resolved with phoneCall
      */
     async callFromNumber(number) {
-        const phoneCallData = await this._rpc({
+        const phoneCallData = await this.messaging.rpc({
             model: 'voip.phonecall',
             method: 'create_from_number',
             args: [number],
@@ -51,7 +51,7 @@ const PhoneCallRecentTab = PhoneCallTab.extend({
      * @return {voip.PhoneCall}
      */
     async callFromPhoneWidget({ number, resId, resModel }) {
-        const phoneCallData = await this._rpc({
+        const phoneCallData = await this.messaging.rpc({
             model: 'voip.phonecall',
             method: 'create_from_phone_widget',
             args: [resModel, resId, number],
@@ -71,7 +71,7 @@ const PhoneCallRecentTab = PhoneCallTab.extend({
     async initPhoneCall(phoneCall) {
         const _super = this._super.bind(this, ...arguments); // limitation of class.js
         if (!phoneCall) {
-            const phoneCallData = await this._rpc({
+            const phoneCallData = await this.messaging.rpc({
                 model: 'voip.phonecall',
                 method: 'create_from_recent',
                 args: [this._currentPhoneCallId],
@@ -88,7 +88,7 @@ const PhoneCallRecentTab = PhoneCallTab.extend({
      */
     async refreshPhonecallsStatus() {
         this._isLazyLoadFinished = false;
-        const phoneCallsData = await this._rpc({
+        const phoneCallsData = await this.messaging.rpc({
             model: 'voip.phonecall',
             method: 'get_recent_list',
             args: [false, 0, 10],
@@ -104,7 +104,7 @@ const PhoneCallRecentTab = PhoneCallTab.extend({
             this._searchExpr = search;
             this._offset = 0;
             this._isLazyLoadFinished = false;
-            const phoneCallsData = await this._rpc({
+            const phoneCallsData = await this.messaging.rpc({
                 model: 'voip.phonecall',
                 method: 'get_recent_list',
                 args: [search, this._offset, this._limit],
@@ -129,7 +129,7 @@ const PhoneCallRecentTab = PhoneCallTab.extend({
     async _lazyLoadPhonecalls() {
         this._isLazyLoading = true;
         const search = this._searchExpr ? this._searchExpr : false;
-        const phoneCallsData = await this._rpc({
+        const phoneCallsData = await this.messaging.rpc({
             model: 'voip.phonecall',
             method: 'get_recent_list',
             args: [search, this._offset, this._limit],

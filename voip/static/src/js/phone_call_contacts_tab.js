@@ -41,13 +41,13 @@ const PhoneCallContactsTab = PhoneCallTab.extend({
         // if a state exists, a call was previously made so we use log it as created from a recent call
         let phoneCallData;
         if (currentPhoneCall.state) {
-            phoneCallData = await this._rpc({
+            phoneCallData = await this.messaging.rpc({
                 model: 'voip.phonecall',
                 method: 'create_from_recent',
                 args: [currentPhoneCall.id],
             });
         } else {
-            phoneCallData = await this._rpc({
+            phoneCallData = await this.messaging.rpc({
                 model: 'voip.phonecall',
                 method: 'create_from_contact',
                 args: [currentPhoneCall.partnerId],
@@ -63,19 +63,21 @@ const PhoneCallContactsTab = PhoneCallTab.extend({
     async refreshPhonecallsStatus() {
         this._offset = 0;
         this._isLazyLoadFinished = false;
-        const contactsData = await this._rpc({
+        const contactsData = await this.messaging.rpc({
             model: 'res.partner',
             method: 'search_read',
-            fields: [
-                'display_name',
-                'email',
-                'id',
-                'avatar_128',
-                'mobile',
-                'phone'
-            ],
-            domain: ['|', ['phone', '!=', false], ['mobile', '!=', false]],
-            limit: this._limit,
+            kwargs: {
+                domain: ['|', ['phone', '!=', false], ['mobile', '!=', false]],
+                fields: [
+                    'avatar_128',
+                    'display_name',
+                    'email',
+                    'id',
+                    'mobile',
+                    'phone',
+                ],
+                limit: this._limit,
+            },
         });
         return this._parseContactsData(contactsData);
     },
@@ -104,20 +106,22 @@ const PhoneCallContactsTab = PhoneCallTab.extend({
             }
             this._offset = 0;
             this._isLazyLoadFinished = false;
-            const contactsData = await this._rpc({
-                domain: ['|', ['phone', '!=', false], ['mobile', '!=', false]].concat(this._searchDomain),
-                fields: [
-                    'email',
-                    'display_name',
-                    'id',
-                    'avatar_128',
-                    'mobile',
-                    'phone',
-                ],
-                limit: this._limit,
+            const contactsData = await this.messaging.rpc({
                 method: 'search_read',
                 model: 'res.partner',
-                offset: this._offset,
+                kwargs: {
+                    domain: ['|', ['phone', '!=', false], ['mobile', '!=', false], ...this._searchDomain],
+                    fields: [
+                        'avatar_128',
+                        'display_name',
+                        'email',
+                        'id',
+                        'mobile',
+                        'phone',
+                    ],
+                    limit: this._limit,
+                    offset: this._offset,
+                },
             });
             return this._parseContactsData(contactsData);
         } else {
@@ -138,25 +142,27 @@ const PhoneCallContactsTab = PhoneCallTab.extend({
      */
     async _lazyLoadPhonecalls() {
         this._isLazyLoading = true;
-        const dom = [
+        const domain = [
             '|',
             ['phone', '!=', false],
-            ['mobile', '!=', false]
-        ].concat(this._searchDomain ? this._searchDomain : []);
-        const contactsData = await this._rpc({
+            ['mobile', '!=', false],
+        ].concat(this._searchDomain || []);
+        const contactsData = await this.messaging.rpc({
             model: 'res.partner',
             method: 'search_read',
-            domain: dom,
-            fields: [
-                'display_name',
-                'email',
-                'id',
-                'avatar_128',
-                'mobile',
-                'phone',
-            ],
-            limit: this._limit,
-            offset: this._offset
+            kwargs: {
+                domain,
+                fields: [
+                    'avatar_128',
+                    'display_name',
+                    'email',
+                    'id',
+                    'mobile',
+                    'phone',
+                ],
+                limit: this._limit,
+                offset: this._offset
+            },
         });
         if (contactsData.length < this._limit) {
             this._isLazyLoadFinished = true;

@@ -34,14 +34,6 @@ const DialingPanel = Widget.extend({
         'input .o_dial_search_input': '_onInputSearch',
         'keyup .o_dial_keypad_input': '_onKeyupKeypadInput',
     },
-    custom_events: {
-        'fold_panel': '_onFoldPanel',
-        'muteCall': '_onMuteCall',
-        'resetMissedCalls': '_resetMissedCalls',
-        'showHangupButton': '_onShowHangupButton',
-        'switch_keypad': '_onSwitchKeypad',
-        'unmuteCall': '_onUnmuteCall',
-    },
     /**
      * @constructor
      */
@@ -77,7 +69,8 @@ const DialingPanel = Widget.extend({
         this.title = this._getTitle();
     },
     async willStart() {
-        this._messaging = await owl.Component.env.services.messaging.get();
+        this.messaging = await owl.Component.env.services.messaging.get();
+        this.messaging.voip.update({ legacyDialingPanelWidget: this });
     },
     /**
      * @override
@@ -106,49 +99,43 @@ const DialingPanel = Widget.extend({
         this._$incomingCallButtons.hide();
         this._$keypad.hide();
 
-        this._messaging.messagingBus.addEventListener('changeStatus', this._onChangeStatus);
-        this._messaging.messagingBus.addEventListener('incomingCall', this._onIncomingCall);
-        this._messaging.messagingBus.addEventListener('sip_accepted', this._onSipAccepted);
-        this._messaging.messagingBus.addEventListener('sip_bye', this._onSipBye);
-        this._messaging.messagingBus.addEventListener('sip_cancel_incoming', this._onSipCancelIncoming);
-        this._messaging.messagingBus.addEventListener('sip_cancel_outgoing', this._onSipCancelOutgoing);
-        this._messaging.messagingBus.addEventListener('sip_error', this._onSipError);
-        this._messaging.messagingBus.addEventListener('sip_error_resolved', this._onSipErrorResolved);
-        this._messaging.messagingBus.addEventListener('sip_incoming_call', this._onSipIncomingCall);
-        this._messaging.messagingBus.addEventListener('sip_rejected', this._onSipRejected);
+        this.messaging.messagingBus.addEventListener('changeStatus', this._onChangeStatus);
+        this.messaging.messagingBus.addEventListener('incomingCall', this._onIncomingCall);
+        this.messaging.messagingBus.addEventListener('sip_accepted', this._onSipAccepted);
+        this.messaging.messagingBus.addEventListener('sip_bye', this._onSipBye);
+        this.messaging.messagingBus.addEventListener('sip_cancel_incoming', this._onSipCancelIncoming);
+        this.messaging.messagingBus.addEventListener('sip_cancel_outgoing', this._onSipCancelOutgoing);
+        this.messaging.messagingBus.addEventListener('sip_error', this._onSipError);
+        this.messaging.messagingBus.addEventListener('sip_error_resolved', this._onSipErrorResolved);
+        this.messaging.messagingBus.addEventListener('sip_incoming_call', this._onSipIncomingCall);
+        this.messaging.messagingBus.addEventListener('sip_rejected', this._onSipRejected);
         /**
          * UserAgent must be created after the event listeners have been added
          * so that errors triggered during the initialization of the user agent
          * using sip_error are caught.
          */
-        this._messaging.voip.update({
+        this.messaging.voip.update({
             userAgent: {
                 legacyUserAgent: new UserAgent(this),
             },
         });
         core.bus.on('transfer_call', this, this._onTransferCall);
-        this._messaging.messagingBus.addEventListener('toggle-softphone-display', this._onToggleSoftphoneDisplay);
+        this.messaging.messagingBus.addEventListener('toggle-softphone-display', this._onToggleSoftphoneDisplay);
 
         this.call('bus_service', 'addEventListener', 'notification', this._onBusNotification.bind(this));
-
-        for (const tab of Object.values(this._tabs)) {
-            tab.on('callNumber', this, ev => this._makeCall(ev.data.number));
-            tab.on('hidePanelHeader', this, () => this._hideHeader());
-            tab.on('showPanelHeader', this, () => this._showHeader());
-        }
     },
     destroy() {
-        this._messaging.messagingBus.removeEventListener('changeStatus', this._onChangeStatus);
-        this._messaging.messagingBus.removeEventListener('incomingCall', this._onIncomingCall);
-        this._messaging.messagingBus.removeEventListener('sip_accepted', this._onSipAccepted);
-        this._messaging.messagingBus.removeEventListener('sip_bye', this._onSipBye);
-        this._messaging.messagingBus.removeEventListener('sip_cancel_incoming', this._onSipCancelIncoming);
-        this._messaging.messagingBus.removeEventListener('sip_cancel_outgoing', this._onSipCancelOutgoing);
-        this._messaging.messagingBus.removeEventListener('sip_error', this._onSipError);
-        this._messaging.messagingBus.removeEventListener('sip_error_resolved', this._onSipErrorResolved);
-        this._messaging.messagingBus.removeEventListener('sip_incoming_call', this._onSipIncomingCall);
-        this._messaging.messagingBus.removeEventListener('sip_rejected', this._onSipRejected);
-        this._messaging.messagingBus.removeEventListener('toggle-softphone-display', this._onToggleSoftphoneDisplay);
+        this.messaging.messagingBus.removeEventListener('changeStatus', this._onChangeStatus);
+        this.messaging.messagingBus.removeEventListener('incomingCall', this._onIncomingCall);
+        this.messaging.messagingBus.removeEventListener('sip_accepted', this._onSipAccepted);
+        this.messaging.messagingBus.removeEventListener('sip_bye', this._onSipBye);
+        this.messaging.messagingBus.removeEventListener('sip_cancel_incoming', this._onSipCancelIncoming);
+        this.messaging.messagingBus.removeEventListener('sip_cancel_outgoing', this._onSipCancelOutgoing);
+        this.messaging.messagingBus.removeEventListener('sip_error', this._onSipError);
+        this.messaging.messagingBus.removeEventListener('sip_error_resolved', this._onSipErrorResolved);
+        this.messaging.messagingBus.removeEventListener('sip_incoming_call', this._onSipIncomingCall);
+        this.messaging.messagingBus.removeEventListener('sip_rejected', this._onSipRejected);
+        this.messaging.messagingBus.removeEventListener('toggle-softphone-display', this._onToggleSoftphoneDisplay);
     },
 
     //--------------------------------------------------------------------------
@@ -205,6 +192,28 @@ const DialingPanel = Widget.extend({
         } else {
             this.displayNotification({ title: YOUR_ARE_ALREADY_IN_A_CALL });
         }
+    },
+    hideHeader() {
+        this._hideHeader();
+    },
+    makeCall(number, phoneCall) {
+        this._makeCall(number, phoneCall);
+    },
+    resetMissedCalls(forceReset) {
+        this._resetMissedCalls(forceReset);
+    },
+    showHangupButton() {
+        this._showHangupButton();
+    },
+    showHeader() {
+        this._showHeader();
+    },
+    switchKeypad() {
+        this._$keypadInput.val(this._$searchInput.val());
+        this._onToggleKeypad();
+    },
+    toggleFold() {
+        this._toggleFold();
     },
 
     //--------------------------------------------------------------------------
@@ -316,7 +325,7 @@ const DialingPanel = Widget.extend({
                 await this._toggleDisplay();
             }
             await this._activeTab.initPhoneCall(phoneCall);
-            this._messaging.voip.userAgent.legacyUserAgent.makeCall(number);
+            this.messaging.voip.userAgent.legacyUserAgent.makeCall(number);
             this._isInCall = true;
         } else {
             this.displayNotification({ title: YOUR_ARE_ALREADY_IN_A_CALL });
@@ -337,7 +346,7 @@ const DialingPanel = Widget.extend({
      * @private
      */
     async _fetchMissedCallFromServer() {
-        const missedCalls = await this._rpc({
+        const missedCalls = await this.messaging.rpc({
             model: 'voip.phonecall',
             method: 'get_missed_call_info'
         });
@@ -383,10 +392,10 @@ const DialingPanel = Widget.extend({
      *
      * @private
      */
-    _resetMissedCalls(data={'data': {'forceReset': false}}) {
-        if (this._missedCounter > 0 && (data['data']['forceReset'] || (this._isFolded && this._isShow))) {
+    _resetMissedCalls(forceReset = false) {
+        if (this._missedCounter > 0 && (forceReset || (this._isFolded && this._isShow))) {
             this._missedCounter = 0;
-            this._rpc({
+            this.messaging.rpc({
                 model: 'res.users',
                 method: 'reset_last_seen_phone_call',
             });
@@ -532,7 +541,7 @@ const DialingPanel = Widget.extend({
             return true;
         }
 
-        const mobileCallMethod = this._messaging.currentUser.res_users_settings_id.how_to_call_on_mobile;
+        const mobileCallMethod = this.messaging.currentUser.res_users_settings_id.how_to_call_on_mobile;
         // avoid ask choice if value is set
         if (mobileCallMethod !== 'ask') {
             return mobileCallMethod === 'voip';
@@ -552,7 +561,7 @@ const DialingPanel = Widget.extend({
 
             const processChoice = useVoip => {
                 if ($checkbox.find('input[type="checkbox"]').is(':checked')) {
-                    this._messaging.voip.userAgent.legacyUserAgent.updateCallPreference(useVoip ? 'voip' : 'phone');
+                    this.messaging.voip.userAgent.legacyUserAgent.updateCallPreference(useVoip ? 'voip' : 'phone');
                 }
                 resolve(useVoip);
             };
@@ -607,7 +616,7 @@ const DialingPanel = Widget.extend({
      * @private
      */
     _onClickAcceptButton() {
-        this._messaging.voip.userAgent.legacyUserAgent.acceptIncomingCall();
+        this.messaging.voip.userAgent.legacyUserAgent.acceptIncomingCall();
         this._$mainButtons.show();
         this._$incomingCallButtons.hide();
     },
@@ -683,7 +692,7 @@ const DialingPanel = Widget.extend({
      * @private
      */
     _onClickHangupButton() {
-        this._messaging.voip.userAgent.legacyUserAgent.hangup();
+        this.messaging.voip.userAgent.legacyUserAgent.hangup();
         this._cancelCall();
         this._activeTab._selectPhoneCall(this._activeTab._currentPhoneCallId);
     },
@@ -702,14 +711,14 @@ const DialingPanel = Widget.extend({
             return;
         }
         this._isPostpone = true;
-        this._messaging.voip.userAgent.legacyUserAgent.hangup();
+        this.messaging.voip.userAgent.legacyUserAgent.hangup();
     },
     /**
      * @private
      */
     _onClickRejectButton() {
         this.$el.css('zIndex', '');
-        this._messaging.voip.userAgent.legacyUserAgent.rejectIncomingCall();
+        this.messaging.voip.userAgent.legacyUserAgent.rejectIncomingCall();
     },
     /**
      * @private
@@ -764,14 +773,6 @@ const DialingPanel = Widget.extend({
      * @param {OdooEvent} ev
      * @return {Promise}
      */
-    _onFoldPanel(ev) {
-        return this._toggleFold();
-    },
-    /**
-     * @private
-     * @param {OdooEvent} ev
-     * @return {Promise}
-     */
     _onInputSearch(ev) {
         return this._activeTab.searchPhoneCall($(ev.currentTarget).val());
     },
@@ -781,7 +782,7 @@ const DialingPanel = Widget.extend({
      */
     _onKeypadButtonClick(number) {
         if (this._isInCall) {
-            this._messaging.voip.userAgent.legacyUserAgent.sendDtmf(number);
+            this.messaging.voip.userAgent.legacyUserAgent.sendDtmf(number);
         }
         this._$keypadInput.val(this._$keypadInput.val() + number);
     },
@@ -806,12 +807,6 @@ const DialingPanel = Widget.extend({
     /**
      * @private
      */
-    _onMuteCall() {
-        this._messaging.voip.userAgent.legacyUserAgent.muteCall();
-    },
-    /**
-     * @private
-     */
     async _onNotificationRefreshVoip() {
         if (this._isInCall) {
             return;
@@ -820,12 +815,6 @@ const DialingPanel = Widget.extend({
             return;
         }
         return this._activeTab.refreshPhonecallsStatus();
-    },
-    /**
-     * @private
-     */
-    _onShowHangupButton() {
-        this._showHangupButton();
     },
     /**
      * @private
@@ -945,13 +934,6 @@ const DialingPanel = Widget.extend({
     /**
      * @private
      */
-    _onSwitchKeypad() {
-        this._$keypadInput.val(this._$searchInput.val());
-        this._onToggleKeypad();
-    },
-    /**
-     * @private
-     */
     async _onToggleDisplay() {
         await this._toggleDisplay();
         return this._refreshPhoneCallsStatus();
@@ -982,13 +964,7 @@ const DialingPanel = Widget.extend({
      * @param {string} number
      */
     _onTransferCall(number) {
-        this._messaging.voip.userAgent.legacyUserAgent.transfer(number);
-    },
-    /**
-     * @private
-     */
-    _onUnmuteCall() {
-        this._messaging.voip.userAgent.legacyUserAgent.unmuteCall();
+        this.messaging.voip.userAgent.legacyUserAgent.transfer(number);
     },
 });
 

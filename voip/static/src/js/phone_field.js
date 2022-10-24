@@ -14,20 +14,6 @@ Phone.include({
     // Private
     //--------------------------------------------------------------------------
 
-    /**
-     * Uses the DialingPanel to perform the call.
-     *
-     * @private
-     * @param {string} number
-     */
-    _call(number) {
-        this.trigger_up('voip_call', {
-            number,
-            resId: this.res_id,
-            resModel: this.model,
-        });
-    },
-
     async _hasPbxConfig() {
         const { voip } = await owl.Component.env.services.messaging.get();
         return (
@@ -55,8 +41,13 @@ Phone.include({
         }
         const canMadeVoipCall = await this._hasPbxConfig();
         if (canMadeVoipCall) {
+            const messaging = await owl.Component.env.services.messaging.get();
             ev.preventDefault();
-            this._call(this.value);
+            messaging.env.services.voip.call({
+                number: this.value,
+                resId: this.res_id,
+                resModel: this.model,
+            });
         }
     },
 });

@@ -57,7 +57,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._timerAcceptedTimeout = undefined;
 
         owl.Component.env.services.messaging.get().then((messaging) => {
-            this._messaging = messaging;
+            this.messaging = messaging;
             this.voip = messaging.voip;
             this._initUserAgent();
         });
@@ -83,11 +83,11 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * @param useVoIPChoice
      */
     async updateCallPreference(useVoIPChoice) {
-        await this._messaging.rpc(
+        await this.messaging.rpc(
             {
                 model: 'res.users.settings',
                 method: 'set_res_users_settings',
-                args: [[this._messaging.currentUser.res_users_settings_id.id], {
+                args: [[this.messaging.currentUser.res_users_settings_id.id], {
                     how_to_call_on_mobile: useVoIPChoice,
                 }],
             },
@@ -136,7 +136,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      * Reject an incoming Call
      */
     rejectIncomingCall() {
-        this._messaging.messagingBus.trigger('sip_rejected', this._currentCallParams);
+        this.messaging.messagingBus.trigger('sip_rejected', this._currentCallParams);
         this.voip.ringtoneRegistry.incomingCallRingtone.stop();
         this._sipSession = false;
         this._updateCallState(CALL_STATE.NO_CALL);
@@ -171,7 +171,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     transfer(number) {
         if (this.voip.mode === 'demo') {
             this._updateCallState(CALL_STATE.NO_CALL);
-            this._messaging.messagingBus.trigger('sip_bye');
+            this.messaging.messagingBus.trigger('sip_bye');
             return;
         }
         if (this._callState !== CALL_STATE.ONGOING_CALL) {
@@ -208,7 +208,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
 
         if (this.voip.mode === 'demo') {
             this._updateCallState(CALL_STATE.ONGOING_CALL);
-            this._messaging.messagingBus.trigger('sip_incoming_call', this._currentCallParams);
+            this.messaging.messagingBus.trigger('sip_incoming_call', this._currentCallParams);
             return;
         }
         if (!inviteSession) {
@@ -235,7 +235,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     _cancelEstablishingSession() {
         this.voip.ringtoneRegistry.stopAll();
         this._updateCallState(CALL_STATE.NO_CALL);
-        this._messaging.messagingBus.trigger('sip_cancel_outgoing');
+        this.messaging.messagingBus.trigger('sip_cancel_outgoing');
         if (this._sipSession) {
             this._sipSession.cancel();
             this._sipSession = false;
@@ -278,7 +278,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             }
         }
         this.$remoteAudio.srcObject = remoteStream;
-        if (!this._messaging.isInQUnitTest) {
+        if (!this.messaging.isInQUnitTest) {
             this.$remoteAudio.play().catch(() => {});
         }
     },
@@ -344,7 +344,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     _getUaConfig() {
         const isDebug = owl.Component.env.isDebug() !== '';
         return {
-            authorizationPassword: this._messaging.currentUser.res_users_settings_id.voip_secret,
+            authorizationPassword: this.messaging.currentUser.res_users_settings_id.voip_secret,
             authorizationUsername: this.voip.authorizationUsername,
             delegate: {
                 onDisconnect: (error) => this._onDisconnect(error),
@@ -359,7 +359,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 server: this.voip.webSocketUrl,
                 traceSip: isDebug,
             },
-            uri: window.SIP.UserAgent.makeURI(`sip:${this._messaging.currentUser.res_users_settings_id.voip_username}@${this.voip.pbxAddress}`),
+            uri: window.SIP.UserAgent.makeURI(`sip:${this.messaging.currentUser.res_users_settings_id.voip_username}@${this.voip.pbxAddress}`),
         };
     },
     /**
@@ -370,7 +370,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
     async _initUserAgent() {
         if (this.voip.mode === 'prod') {
             this.voip.triggerError(_t("Connecting..."));
-            if (!this._messaging.device.hasRtcSupport || !navigator.mediaDevices) {
+            if (!this.messaging.device.hasRtcSupport || !navigator.mediaDevices) {
                 this.voip.triggerError(_t("Your browser could not support WebRTC. Please check your configuration."));
                 return;
             }
@@ -400,7 +400,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             return;
         }
         try {
-            number = this._messaging.voip.cleanPhoneNumber(number);
+            number = this.messaging.voip.cleanPhoneNumber(number);
             this._currentCallParams = { number };
             let calleeURI;
             if (this.voip.willCallFromAnotherDevice) {
@@ -501,7 +501,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._sipSession = false;
         this._cleanRemoteAudio();
         this._updateCallState(CALL_STATE.NO_CALL);
-        this._messaging.messagingBus.trigger('sip_bye');
+        this.messaging.messagingBus.trigger('sip_bye');
     },
     _updateCallState(newState) {
         this._callState = newState;
@@ -547,7 +547,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this._sipSession = false;
         this._cleanRemoteAudio();
         this._updateCallState(CALL_STATE.NO_CALL);
-        this._messaging.messagingBus.trigger('sip_bye');
+        this.messaging.messagingBus.trigger('sip_bye');
     },
     /**
      * Triggered when the transport transitions from connected state.
@@ -591,11 +591,11 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
      */
     _onGetUserMediaSuccess(stream) {
         if (this._isOutgoing) {
-            this._messaging.messagingBus.trigger('sip_error_resolved');
+            this.messaging.messagingBus.trigger('sip_error_resolved');
             this.voip.ringtoneRegistry.dialTone.play({ loop: true });
         } else {
             this._updateCallState(CALL_STATE.ONGOING_CALL);
-            this._messaging.messagingBus.trigger('sip_incoming_call', this._currentCallParams);
+            this.messaging.messagingBus.trigger('sip_incoming_call', this._currentCallParams);
         }
     },
     /**
@@ -613,7 +613,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             this._notification = undefined;
         }
         this._currentInviteSession.reject({ statusCode: 487 });
-        this._messaging.messagingBus.trigger('sip_cancel_incoming', this._currentCallParams);
+        this.messaging.messagingBus.trigger('sip_cancel_incoming', this._currentCallParams);
         this._sipSession = false;
         this._updateCallState(CALL_STATE.NO_CALL);
     },
@@ -629,7 +629,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             inviteSession.reject({ statusCode: 603 });
             return;
         }
-        if (this._messaging.currentUser.res_users_settings_id.should_auto_reject_incoming_calls) {
+        if (this.messaging.currentUser.res_users_settings_id.should_auto_reject_incoming_calls) {
             /**
              * 488: "Not Acceptable Here"
              * Request doesn't succeed but may succeed elsewhere.
@@ -687,33 +687,48 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
                 ['sanitized_mobile', 'ilike', number],
             ];
         }
-        let contacts = await this._rpc({
+        let contacts = await this.messaging.rpc({
             model: 'res.partner',
             method: 'search_read',
-            domain: [['user_ids', '!=', false]].concat(domain),
-            fields: ['id', 'display_name'],
+            kwargs: {
+                domain: [['user_ids', '!=', false], ...domain],
+                fields: [
+                    'display_name',
+                    'id',
+                ],
+            },
         });
         if (!contacts.length) {
-            contacts = await this._rpc({
+            contacts = await this.messaging.rpc({
                 model: 'res.partner',
                 method: 'search_read',
-                domain: domain,
-                fields: ['id', 'display_name'],
+                kwargs: {
+                    domain,
+                    fields: [
+                        'display_name',
+                        'id',
+                    ],
+                },
             });
         }
         /* Fallback if inviteSession.remoteIdentity.uri.type didn't give the correct country prefix
         */
         if (!contacts.length) {
             let lastSixDigitsNumber = number.substr(number.length - 6)
-            contacts = await this._rpc({
+            contacts = await this.messaging.rpc({
                 model: 'res.partner',
                 method: 'search_read',
-                domain: [
-                    '|',
-                    ['sanitized_phone', '=like', '%'+lastSixDigitsNumber],
-                    ['sanitized_mobile', '=like', '%'+lastSixDigitsNumber],
-                ],
-                fields: ['id', 'display_name'],
+                kwargs: {
+                    domain: [
+                        '|',
+                        ['sanitized_phone', '=like', '%'+lastSixDigitsNumber],
+                        ['sanitized_mobile', '=like', '%'+lastSixDigitsNumber],
+                    ],
+                    fields: [
+                        'display_name',
+                        'id',
+                    ],
+                },
             });
         }
         const incomingCallParams = { number };
@@ -736,7 +751,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         }
         this._notification = this._sendNotification('Odoo', content);
         this._currentCallParams = incomingCallParams;
-        this._messaging.messagingBus.trigger('incomingCall', incomingCallParams);
+        this.messaging.messagingBus.trigger('incomingCall', incomingCallParams);
 
         if (!window.Notifcation || !window.Notification.requestPermission) {
            this._onWindowNotificationPermissionRequested({ content, inviteSession });
@@ -765,12 +780,12 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         this.voip.ringtoneRegistry.stopAll();
         if (
             this.voip.mode === 'prod' &&
-            this._messaging.currentUser.res_users_settings_id.should_call_from_another_device &&
+            this.messaging.currentUser.res_users_settings_id.should_call_from_another_device &&
             this._currentNumber
         ) {
             this.transfer(this._currentNumber);
         } else {
-            this._messaging.messagingBus.trigger('sip_accepted');
+            this.messaging.messagingBus.trigger('sip_accepted');
         }
     },
     /**
@@ -792,7 +807,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
         if (statusCode === 183 /* Session Progress */ || statusCode === 180 /* Ringing */) {
             this.voip.ringtoneRegistry.dialTone.stop();
             this.voip.ringtoneRegistry.ringbackTone.play({ loop: true });
-            this._messaging.messagingBus.trigger('changeStatus');
+            this.messaging.messagingBus.trigger('changeStatus');
         }
     },
     /**
@@ -833,7 +848,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             }
         })();
         this.voip.triggerError(errorMessage, { isNonBlocking: true });
-        this._messaging.messagingBus.trigger('sip_cancel_outgoing');
+        this.messaging.messagingBus.trigger('sip_cancel_outgoing');
     },
     /**
      * Triggered when receiving a response with status code 2xx to the REFER

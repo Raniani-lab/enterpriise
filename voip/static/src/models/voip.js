@@ -93,6 +93,12 @@ registerModel({
             default: false,
         }),
         /**
+         * Legacy widget that was used as the core of the VoIP application. It
+         * is provided as a field to ease its retrieval but newer code should
+         * not rely on it as the goal is to get rid of it at some point.
+         */
+        legacyDialingPanelWidget: attr(),
+        /**
          * Either 'demo' or 'prod'. In demo mode, phone calls are simulated in
          * the interface but no RTC sessions are actually established.
          */

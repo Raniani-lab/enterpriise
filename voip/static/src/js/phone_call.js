@@ -69,6 +69,7 @@ const PhoneCall = Widget.extend({
         this.imageSmall = partner_avatar_128;
         this.isContact = isContact;
         this.isRecent = isRecent;
+        this.messaging = parent.messaging;
         this.minutes = Math.floor(duration).toString();
         this.mobileNumber = mobile;
         this.name = name;
@@ -99,7 +100,7 @@ const PhoneCall = Widget.extend({
         if (this.id === undefined) {
             console.warn('phonecall has no id!');
         } else {
-            await this._rpc({
+            await this.messaging.rpc({
                 model: 'voip.phonecall',
                 method: 'hangup_call',
                 args: [this.id],
@@ -121,7 +122,7 @@ const PhoneCall = Widget.extend({
             console.warn('phonecall has no id!');
             return;
         }
-        return this._rpc({
+        return this.messaging.rpc({
             model: 'voip.phonecall',
             method: 'canceled_call',
             args: [this.id],
@@ -136,9 +137,7 @@ const PhoneCall = Widget.extend({
      * @private
      */
     _onClick() {
-        this.trigger_up('selectCall', {
-            phoneCallId: this.id,
-        });
+        this.getParent().selectPhoneCall(this.id);
     },
     /**
      * @private
@@ -148,9 +147,7 @@ const PhoneCall = Widget.extend({
     _onClickRemovePhoneCall(ev) {
         ev.stopPropagation();
         ev.preventDefault();
-        this.trigger_up('removePhoneCall', {
-            phoneCallId: this.id,
-        });
+        this.getParent().removePhoneCall(this.id);
     },
 });
 

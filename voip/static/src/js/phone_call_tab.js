@@ -9,14 +9,6 @@ const Widget = require('web.Widget');
 
 const PhoneCallTab = Widget.extend({
     template: 'voip.PhoneCallTab',
-    custom_events: {
-        cancelActivity: '_onCancelActivity',
-        clickedOnNumber: '_onClickedOnNumber',
-        closePhonecallDetails: '_onClosePhonecallDetails',
-        markActivityDone: '_onMarkActivityDone',
-        removePhoneCall: '_onRemovePhoneCall',
-        selectCall: '_onSelectCall',
-    },
     /**
      * @constructor
      */
@@ -52,8 +44,13 @@ const PhoneCallTab = Widget.extend({
         const number = selectedPhoneCall.phoneNumber || selectedPhoneCall.mobileNumber;
         if (number) {
             this._currentPhoneCallId = this._selectedPhoneCallId;
-            this.trigger_up('callNumber', { number });
+            this.messaging.voip.legacyDialingPanelWidget.makeCall(number);
         }
+    },
+    async callFromDetails(number) {
+        this._currentPhoneCallId = this._selectedPhoneCallId;
+        const phoneCall = await this._getPhoneCall(this._selectedPhoneCallId);
+        this.messaging.voip.legacyDialingPanelWidget.makeCall(number, phoneCall);
     },
     /**
      * When the user clicks on the call button when on a tab, without details open
@@ -66,9 +63,9 @@ const PhoneCallTab = Widget.extend({
             const phoneCall = this._phoneCalls[0]
             const number = phoneCall.phoneNumber;
             this._currentPhoneCallId = phoneCall.id;
-            this.trigger_up('callNumber', { number });
+            this.messaging.voip.legacyDialingPanelWidget.makeCall(number);
         } else {
-            this.trigger_up('switch_keypad');
+            this.messaging.voip.legacyDialingPanelWidget.switchKeypad();
         }
     },
     /**
@@ -76,6 +73,9 @@ const PhoneCallTab = Widget.extend({
      */
     changeRinging() {
         this._phoneCallDetails.setStatusRinging();
+    },
+    closePhonecallDetails() {
+        this._closePhoneDetails();
     },
     /**
      * Triggers the hangup process then refreshes the tab.
@@ -100,7 +100,7 @@ const PhoneCallTab = Widget.extend({
      */
     async initPhoneCall() {
         this._phoneCallDetails.showCallDisplay();
-        this.trigger_up('showHangupButton');
+        this.messaging.voip.legacyDialingPanelWidget.showHangupButton();
     },
     /**
      * Called when the call is answered and then no more ringing.
@@ -132,7 +132,7 @@ const PhoneCallTab = Widget.extend({
      * @return {Promise}
      */
     async onIncomingCall({ number, partnerId }) {
-        const phoneCallData = await this._rpc({
+        const phoneCallData = await this.messaging.rpc({
             model: 'voip.phonecall',
             method: 'create_from_incoming_call',
             args: [number, partnerId],
@@ -152,7 +152,7 @@ const PhoneCallTab = Widget.extend({
      * @return {Promise}
      */
     async onIncomingCallAccepted({ number, partnerId }) {
-        const phoneCallData = await this._rpc({
+        const phoneCallData = await this.messaging.rpc({
             model: 'voip.phonecall',
             method: 'create_from_incoming_call_accepted',
             args: [[this._currentPhoneCallId], number, partnerId],
@@ -173,7 +173,7 @@ const PhoneCallTab = Widget.extend({
      * @return {Promise}
      */
     async onMissedCall({ number, partnerId }, displayMissedDetails=false) {
-        const phoneCallData = await this._rpc({
+        const phoneCallData = await this.messaging.rpc({
             model: 'voip.phonecall',
             method: 'create_from_missed_call',
             args: [[this._currentPhoneCallId], number, partnerId],
@@ -196,7 +196,7 @@ const PhoneCallTab = Widget.extend({
      * @return {Promise}
      */
     async onRejectedCall({ number, partnerId }) {
-        const phoneCallData = await this._rpc({
+        const phoneCallData = await this.messaging.rpc({
             model: 'voip.phonecall',
             method: 'create_from_rejected_call',
             args: [[this._currentPhoneCallId], number, partnerId],
@@ -212,11 +212,23 @@ const PhoneCallTab = Widget.extend({
      * @return {Promise}
      */
     async refreshPhonecallsStatus() {
-        const phoneCallsData = await this._rpc({
+        const phoneCallsData = await this.messaging.rpc({
             model: 'voip.phonecall',
             method: 'get_next_activities_list'
         });
         this._parsePhoneCalls(phoneCallsData);
+    },
+    /**
+     * @param {integer} phoneCallId
+     */
+    async removePhoneCall(phoneCallId) {
+        const resId = await this.messaging.rpc({
+            model: 'voip.phonecall',
+            method: 'remove_from_queue',
+            args: [phoneCallId],
+        });
+        await this.refreshPhonecallsStatus();
+        this.messaging.messagingBus.trigger('on-call-activity-removed', resId);
     },
     /**
      * Hides the phonecall that doesn't match the search. Overriden in each tab.
@@ -225,6 +237,9 @@ const PhoneCallTab = Widget.extend({
      * @return {Promise}
      */
     async searchPhoneCall(search) {},
+    selectPhoneCall(phoneCallId) {
+        this._selectPhoneCall(phoneCallId);
+    },
 
     //--------------------------------------------------------------------------
     // Private
@@ -249,7 +264,7 @@ const PhoneCallTab = Widget.extend({
     async _closePhoneDetails() {
         await this.replace(this._phoneCallDetails.$el);
         this._selectedPhoneCallId = false;
-        this.trigger_up('showPanelHeader');
+        this.messaging.voip.legacyDialingPanelWidget.showHeader();
         this.refreshPhonecallsStatus();
     },
     /**
@@ -320,10 +335,12 @@ const PhoneCallTab = Widget.extend({
         if (phoneCall) {
             return phoneCall;
         }
-        const phoneCallData = await this._rpc({
+        const phoneCallData = await this.messaging.rpc({
             model: 'voip.phonecall',
             method: 'search_read',
-            domain: [['id', '=', phoneCallId]],
+            kwargs: {
+                domain: [['id', '=', phoneCallId]],
+            },
         });
         const id = await this._displayInQueue(phoneCallData[0]);
         return this._phoneCalls.find(phoneCall => phoneCall.id === id);
@@ -379,48 +396,13 @@ const PhoneCallTab = Widget.extend({
         this._phoneCallDetails = new PhoneCallDetails(this, phoneCall);
         await this._phoneCallDetails.replace($el);
         this._selectedPhoneCallId = phoneCallId;
-        this.trigger_up('hidePanelHeader');
+        this.messaging.voip.legacyDialingPanelWidget.hideHeader();
     },
 
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
 
-    /**
-     * @private
-     * @return {Promise}
-     */
-    async _onClosePhonecallDetails() {
-        this.trigger_up('resetMissedCalls', {forceReset: true});
-        return this._closePhoneDetails();
-    },
-    /**
-     * @private
-     * @param {OdooEvent} ev
-     * @param {string} ev.data.number the number that will be called
-     */
-    async _onClickedOnNumber(ev) {
-        this._currentPhoneCallId = this._selectedPhoneCallId;
-        this.trigger_up('callNumber', {
-            number: ev.data.number,
-            phoneCall: await this._getPhoneCall(this._selectedPhoneCallId),
-        });
-    },
-    /**
-     * @private
-     * @param {OdooEvent} ev
-     * @param {Object} ev.data
-     * @param {integer} ev.data.phoneCallId
-     */
-    async _onRemovePhoneCall(ev) {
-        const resId = await this._rpc({
-            model: 'voip.phonecall',
-            method: 'remove_from_queue',
-            args: [ev.data.phoneCallId],
-        });
-        await this.refreshPhonecallsStatus();
-        this.messaging.messagingBus.trigger('on-call-activity-removed', resId);
-    },
     /**
      * @private
      * @param {ScrollEvent} ev
@@ -443,16 +425,6 @@ const PhoneCallTab = Widget.extend({
         }
         this._offset += this._limit;
         this._lazyLoadPhonecalls();
-    },
-    /**
-     * @private
-     * @param {OdooEvent} ev
-     * @param {Object} ev.data
-     * @param {integer} ev.data.phoneCallId
-     * @return {Promise}
-     */
-    _onSelectCall(ev) {
-        return this._selectPhoneCall(ev.data.phoneCallId);
     },
 });
 

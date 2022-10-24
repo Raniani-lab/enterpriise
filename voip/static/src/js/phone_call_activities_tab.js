@@ -43,7 +43,7 @@ const PhoneCallActivitiesTab = PhoneCallTab.extend({
         if (this._currentPhoneCallId) {
             return this._selectPhoneCall(this._currentPhoneCallId);
         }
-        const phoneCallData = await this._rpc({
+        const phoneCallData = await this.messaging.rpc({
             model: 'voip.phonecall',
             method: 'get_from_activity_id',
             args: [activityId]
@@ -51,6 +51,14 @@ const PhoneCallActivitiesTab = PhoneCallTab.extend({
         const phoneCallId = await this._displayInQueue(phoneCallData);
         this._currentPhoneCallId = phoneCallId;
         return this._selectPhoneCall(phoneCallId);
+    },
+    async cancelActivity() {
+        if (this.isAutoCallMode) {
+            await this.refreshPhonecallsStatus();
+            return this._autoCall();
+        } else {
+            return this._closePhoneDetails();
+        }
     },
     /**
      * Escape string in order to use it in a regex
@@ -84,7 +92,7 @@ const PhoneCallActivitiesTab = PhoneCallTab.extend({
         }
         const currentPhoneCall = this._getCurrentPhoneCall();
         currentPhoneCall.callTries += 1;
-        await this._rpc({
+        await this.messaging.rpc({
             model: 'voip.phonecall',
             method: 'init_call',
             args: [this._currentPhoneCallId],
@@ -144,35 +152,6 @@ const PhoneCallActivitiesTab = PhoneCallTab.extend({
         this.isAutoCallMode = false;
         return this._super(...arguments);
     },
-
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
-
-    /**
-     * @private
-     * @override
-     * @return {Promise}
-     */
-    async _onCancelActivity() {
-        if (this.isAutoCallMode) {
-            await this.refreshPhonecallsStatus();
-            return this._autoCall();
-        } else {
-            return this._closePhoneDetails();
-        }
-    },
-    /**
-     * @private
-     * @override
-     * @return {Promise}
-     */
-    async _onMarkActivityDone() {
-        if (this.isAutoCallMode) {
-            await this.refreshPhonecallsStatus();
-            return this._autoCall();
-        }
-    }
 });
 
 return PhoneCallActivitiesTab;

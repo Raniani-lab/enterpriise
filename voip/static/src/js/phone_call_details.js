@@ -1,7 +1,6 @@
 odoo.define('voip.PhoneCallDetails', function (require) {
 "use strict";
 
-const config = require('web.config');
 const core = require('web.core');
 const session = require('web.session');
 const Widget = require('web.Widget');
@@ -49,6 +48,7 @@ const PhoneCallDetails = Widget.extend({
         this.email = phoneCall.email;
         this.id = phoneCall.id;
         this.imageSmall = phoneCall.imageSmall;
+        this.messaging = parent.messaging;
         this.minutes = phoneCall.minutes;
         this.mobileNumber = phoneCall.mobileNumber;
         this.name = phoneCall.name;
@@ -91,7 +91,7 @@ const PhoneCallDetails = Widget.extend({
         this._onInputNumberDebounced = _.debounce(this._onInputNumber.bind(this), 350);
 
         var self = this;
-        var number = this.getParent().getParent()._messaging.voip.cleanedExternalDeviceNumber;
+        var number = this.messaging.voip.cleanedExternalDeviceNumber;
         $('.o_dial_transfer_button').popover({
             placement: 'top',
             delay: {show: 0, hide: 100},
@@ -211,14 +211,17 @@ const PhoneCallDetails = Widget.extend({
      */
     async _onClickActivityDone(ev) {
         ev.preventDefault();
-        await this._rpc({
+        await this.messaging.rpc({
             model: 'mail.activity',
             method: 'action_done',
             args: [[this.activityId]],
         });
         Component.env.bus.trigger('voip_reload_chatter');
         this._$phoneCallActivityButtons.hide();
-        this.trigger_up('markActivityDone');
+        if (this.getParent().isAutoCallMode) {
+            await this.getParent().refreshPhonecallsStatus();
+            return this.getParent()._autoCall();
+        }
     },
     /**
      * @private
@@ -226,9 +229,7 @@ const PhoneCallDetails = Widget.extend({
      */
     _onClickCallNumber(ev) {
         ev.preventDefault();
-        this.trigger_up('clickedOnNumber', {
-            number: ev.currentTarget.text,
-        });
+        this.getParent().callFromDetails(ev.currentTarget.text);
     },
     /**
      * @private
@@ -236,13 +237,13 @@ const PhoneCallDetails = Widget.extend({
      */
     async _onClickCancel(ev) {
         ev.preventDefault();
-        await this._rpc({
+        await this.messaging.rpc({
             model: 'mail.activity',
             method: 'unlink',
             args: [[this.activityId]],
         });
         this._$phoneCallActivityButtons.hide();
-        this.trigger_up('cancelActivity');
+        this.getParent().cancelActivity();
     },
     /**
      * @private
@@ -256,7 +257,8 @@ const PhoneCallDetails = Widget.extend({
      */
     _onClickDetailsClose() {
         $('.o_dial_transfer_button').popover('hide');
-        this.trigger_up('closePhonecallDetails');
+        this.messaging.voip.legacyDialingPanelWidget.resetMissedCalls(true);
+        this.getParent().closePhonecallDetails();
     },
     /**
      * @private
@@ -264,44 +266,34 @@ const PhoneCallDetails = Widget.extend({
      */
     _onClickEmail(ev) {
         ev.preventDefault();
-        this.trigger_up('fold_panel');
+        this.messaging.voip.legacyDialingPanelWidget.toggleFold();
         if (this._activityResModel && this.activityResId) {
-            this.do_action({
+            this.messaging.env.services.action.doAction({
+                type: 'ir.actions.act_window',
+                res_model: 'mail.compose.message',
+                views: [[false, 'form']],
+                target: 'new',
                 context: {
                     default_res_id: this.activityResId,
-                    default_composition_mode: 'comment',
                     default_model: this._activityResModel,
                     default_partner_ids: this.partnerId ? [this.partnerId] : [],
+                    default_composition_mode: 'comment',
                     default_use_template: true,
                 },
-                key2: 'client_action_multi',
-                multi: 'True',
-                res_model: 'mail.compose.message',
-                src_model: 'voip.phonecall',
-                target: 'new',
-                type: 'ir.actions.act_window',
-                views: [[false, 'form']],
-            }, {
-                fullscreen: config.device.isMobile
             });
         } else if (this.partnerId) {
-            this.do_action({
+            this.messaging.env.services.action.doAction({
+                type: 'ir.actions.act_window',
+                res_model: 'mail.compose.message',
+                views: [[false, 'form']],
+                target: 'new',
                 context: {
                     default_res_id: this.partnerId,
-                    default_composition_mode: 'comment',
                     default_model: 'res.partner',
                     default_partner_ids: [this.partnerId],
+                    default_composition_mode: 'comment',
                     default_use_template: true,
                 },
-                key2: 'client_action_multi',
-                multi: 'True',
-                res_model: 'mail.compose.message',
-                src_model: 'voip.phonecall',
-                target: 'new',
-                type: 'ir.actions.act_window',
-                views: [[false, 'form']],
-            }, {
-                fullscreen: config.device.isMobile
             });
         }
     },
@@ -311,21 +303,20 @@ const PhoneCallDetails = Widget.extend({
      */
     _onClickLog(ev) {
         ev.preventDefault();
-        this.trigger_up('fold_panel');
-        this.do_action({
+        this.messaging.voip.legacyDialingPanelWidget.toggleFold();
+        this.messaging.env.services.action.doAction({
             type: 'ir.actions.act_window',
+            res_id: this.activityId,
             res_model: 'mail.activity',
-            view_mode: 'form',
             views: [[false, 'form']],
+            view_mode: 'form',
             target: 'new',
             context: {
                 default_res_id: this.activityResId,
                 default_res_model: this._activityResModel,
             },
-            res_id: this.activityId,
         }, {
-            fullscreen: config.device.isMobile,
-            on_close: () => Component.env.bus.trigger('voip_reload_chatter'),
+            onClose: () => Component.env.bus.trigger('voip_reload_chatter'),
         });
     },
     /**
@@ -335,12 +326,12 @@ const PhoneCallDetails = Widget.extend({
     _onClickMuteButton(ev) {
         ev.preventDefault();
         if (!this._isMuted) {
-            this.trigger_up('muteCall');
+            this.messaging.voip.userAgent.legacyUserAgent.muteCall();
             this._$muteIcon.removeClass('fa-microphone');
             this._$muteIcon.addClass('fa-microphone-slash');
             this._isMuted = true;
         } else {
-            this.trigger_up('unmuteCall');
+            this.messaging.voip.userAgent.legacyUserAgent.unmuteCall();
             this._$muteIcon.addClass('fa-microphone');
             this._$muteIcon.removeClass('fa-microphone-slash');
             this._isMuted = false;
@@ -352,7 +343,7 @@ const PhoneCallDetails = Widget.extend({
      */
     _onClickRescheduleActivity(ev) {
         ev.preventDefault();
-        this.trigger_up('fold_panel');
+        this.messaging.voip.legacyDialingPanelWidget.toggleFold();
         var res_id, res_model;
         if (this.activityResId) {
             res_id = this.activityResId;
@@ -362,19 +353,17 @@ const PhoneCallDetails = Widget.extend({
             res_model = 'res.partner';
         }
         if (res_id) {
-            this.do_action({
+            this.messaging.env.services.action.doAction({
                 type: 'ir.actions.act_window',
+                res_id: false,
                 res_model: 'mail.activity',
-                view_mode: 'form',
                 views: [[false, 'form']],
+                view_mode: 'form',
                 target: 'new',
                 context: {
                     default_res_id: res_id,
                     default_res_model: res_model,
                 },
-                res_id: false,
-            }, {
-                fullscreen: config.device.isMobile
             });
         }
     },
@@ -385,7 +374,7 @@ const PhoneCallDetails = Widget.extend({
      */
     async _onClickToPartner(ev) {
         ev.preventDefault();
-        this.trigger_up('fold_panel');
+        this.messaging.voip.legacyDialingPanelWidget.toggleFold();
         let resId = this.partnerId;
         if (!this.partnerId) {
             let domain = [];
@@ -400,7 +389,7 @@ const PhoneCallDetails = Widget.extend({
             } else if (this.mobileNumber) {
                 domain = [['mobile', '=', this.mobileNumber]];
             }
-            const ids = await this._rpc({
+            const ids = await this.messaging.rpc({
                 method: 'search_read',
                 model: "res.partner",
                 kwargs: {
@@ -414,34 +403,30 @@ const PhoneCallDetails = Widget.extend({
             }
         }
         if (resId !== undefined) {
-            this.do_action({
-                res_id: resId,
-                res_model: "res.partner",
-                target: 'new',
+            this.messaging.env.services.action.doAction({
                 type: 'ir.actions.act_window',
+                res_id: resId,
+                res_model: 'res.partner',
                 views: [[false, 'form']],
-            }, {
-                fullscreen: config.device.isMobile
+                target: 'new',
             });
         } else {
             const context = {};
             if (this.phoneNumber) {
-                context.phoneNumber = this.phoneNumber;
+                context.default_phone = this.phoneNumber;
             }
             if (this.email) {
-                context.email = this.email;
+                context.default_email = this.email;
             }
             if (this.mobileNumber) {
-                context.mobileNumber = this.mobileNumber;
+                context.default_mobile = this.mobileNumber;
             }
-            this.do_action({
-                context,
-                res_model: 'res.partner',
-                target: 'new',
+            this.messaging.env.services.action.doAction({
                 type: 'ir.actions.act_window',
+                res_model: 'res.partner',
                 views: [[false, 'form']],
-            }, {
-                fullscreen: config.device.isMobile
+                target: 'new',
+                context,
             });
         }
     },
@@ -453,22 +438,22 @@ const PhoneCallDetails = Widget.extend({
         ev.preventDefault();
         const resModel = this._activityResModel;
         const resId = this.activityResId;
-        const viewId = await this._rpc({
+        const viewId = await this.messaging.rpc({
             model: resModel,
             method: 'get_formview_id',
             args: [[resId]],
-            context: session.user_context,
+            kwargs: {
+                context: session.user_context,
+            },
         });
-        this.do_action({
+        this.messaging.env.services.action.doAction({
+            type: 'ir.actions.act_window',
             res_id: resId,
             res_model: resModel,
-            type: 'ir.actions.act_window',
             views: [[viewId || false, 'form']],
             view_mode: 'form',
             view_type: 'form',
             target: 'new',
-        }, {
-            fullscreen: config.device.isMobile
         });
     },
     /**
@@ -507,12 +492,19 @@ const PhoneCallDetails = Widget.extend({
                 ['name', 'ilike', value],
             ];
         }
-        let contacts = await this._rpc({
+        let contacts = await this.messaging.rpc({
             model: 'res.partner',
             method: 'search_read',
-            domain: [['user_ids', '!=', false]].concat(domain),
-            fields: ['id', 'display_name', 'sanitized_phone', 'sanitized_mobile'],
-            limit: 8,
+            kwargs: {
+                domain: [['user_ids', '!=', false], ...domain],
+                fields: [
+                    'display_name',
+                    'id',
+                    'sanitized_mobile',
+                    'sanitized_phone',
+                ],
+                limit: 8,
+            },
         });
         var lines = ''
         for (let i = 0; i < contacts.length; i++) {

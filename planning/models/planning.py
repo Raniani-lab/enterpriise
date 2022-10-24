@@ -460,15 +460,16 @@ class Planning(models.Model):
                 slot.repeat_interval = slot.recurrency_id.repeat_interval
         (self - recurrency_slots).update(self.default_get(['repeat_interval']))
 
-    @api.depends('recurrency_id.repeat_until', 'repeat')
+    @api.depends('recurrency_id.repeat_until', 'repeat', 'repeat_type')
     def _compute_repeat_until(self):
         for slot in self:
-            if slot.recurrency_id:
-                slot.repeat_until = slot.recurrency_id.repeat_until
-            elif slot.repeat:
-                slot.repeat_until = slot.start_datetime + relativedelta(weeks=1)
-            else:
-                slot.repeat_until = False
+            repeat_until = False
+            if slot.repeat and slot.repeat_type == 'until':
+                if slot.recurrency_id and slot.recurrency_id.repeat_until:
+                    repeat_until = slot.recurrency_id.repeat_until
+                elif slot.start_datetime:
+                    repeat_until = slot.start_datetime + relativedelta(weeks=1)
+            slot.repeat_until = repeat_until
 
     @api.depends('recurrency_id.repeat_number', 'repeat_type')
     def _compute_repeat_number(self):

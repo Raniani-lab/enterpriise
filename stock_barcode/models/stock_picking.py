@@ -297,7 +297,7 @@ class StockPickingType(models.Model):
             if picking_type.code == 'internal' and\
                picking_type.restrict_scan_dest_location == 'optional' and\
                picking_type.restrict_scan_source_location == 'mandatory':
-                raise UserError(_("If the source location must be scanned for each product, the destination location must be either scanned after each line too, either not scanned at all."))
+                raise UserError(_("If the source location must be scanned, then the destination location must either be scanned after each product or not scanned at all."))
 
     def get_action_picking_tree_ready_kanban(self):
         return self._get_action('stock_barcode.stock_picking_action_kanban')

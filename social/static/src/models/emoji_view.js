@@ -16,8 +16,8 @@ registerPatch({
             if (!this.emojiGridItemViewOwner.emojiGridRowViewOwner) {
                 return;
             }
-            if (this.emojiGridItemViewOwner.emojiGridRowViewOwner.emojiGridViewOwner.emojiPickerViewOwner.popoverViewOwner.socialOwnerAsEmojiPicker) {
-                this.emojiGridItemViewOwner.emojiGridRowViewOwner.emojiGridViewOwner.emojiPickerViewOwner.popoverViewOwner.socialOwnerAsEmojiPicker.onClickEmoji(this);
+            if (this.emojiPickerViewOwner.popoverViewOwner.socialOwnerAsEmojiPicker) {
+                this.emojiPickerViewOwner.popoverViewOwner.socialOwnerAsEmojiPicker.onClickEmoji(this);
                 return;
             }
             return this._super(ev);

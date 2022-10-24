@@ -81,6 +81,7 @@ export class DocumentsListRendererCheckBox extends CheckBox {
         if (ev.target.tagName !== "INPUT") {
             return;
         }
+        ev.stopPropagation();
         this.props.onChange(ev);
     }
 }

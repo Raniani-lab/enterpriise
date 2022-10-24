@@ -95,8 +95,12 @@
                     <filter string="Country" name="country" domain="[]" context="{'group_by': 'country_id'}"/>
                     <filter string="Industry" name="industry" domain="[]" context="{'group_by': 'industry_id'}"/>
                     <filter string="Template" name="template" domain="[]" context="{'group_by': 'template_id'}"/>
-                    <filter string="Order Date" name="start_month" domain="[]" context="{'group_by': 'date_order'}" />
-                    <filter string="End Date" name="end_month" domain="[]" context="{'group_by': 'end_date'}" />
+                    <filter string="Order Date" name="start_month" domain="[]" context="{'group_by': 'date_order'}"/>
+                    <filter string="End Date" name="end_month" domain="[]" context="{'group_by': 'end_date'}"/>
+                    <filter string="Sale Order" name="name" domain="[]" context="{'group_by': 'name'}"/>
+                    <filter string="Next Invoice Date" name="next_invoice_date" domain="[]" context="{'group_by': 'next_invoice_date'}"/>
+                    <filter string="Sale Order State" name="state" domain="[]" context="{'group_by': 'state'}"/>
+                    <filter string="Recurrence" name="recurrence_id" domain="[]" context="{'group_by': 'recurrence_id'}"/>
                 </group>
             </search>
         </field>

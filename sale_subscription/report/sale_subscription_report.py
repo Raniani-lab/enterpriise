@@ -1,7 +1,11 @@
+# -*- coding: utf-8 -*-
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+
 from odoo import fields, models
 
 
-class sale_subscription_report(models.Model):
+class SaleSubscriptionReport(models.Model):
     _name = "sale.subscription.report"
     _description = "Subscription Analysis"
     _auto = False
@@ -38,13 +42,24 @@ class sale_subscription_report(models.Model):
         ('done', 'Good'),
         ('bad', 'Bad')], string="Health", readonly=True)
     stage_id = fields.Many2one('sale.order.stage', string='Stage', readonly=True)
+    state = fields.Selection(selection=[
+            ('draft', "Quotation"),
+            ('sent', "Quotation Sent"),
+            ('sale', "Sales Order"),
+            ('done', "Locked"),
+            ('cancel', "Cancelled"),
+        ],
+        string="Status", readonly=True)
+    next_invoice_date = fields.Date('Next Invoice Date', readonly=True)
+    recurrence_id = fields.Many2one('sale.temporal.recurrence', 'Recurrence', readonly=True)
+    origin_order_id = fields.Many2one('sale.order', string='First contract', readonly=True)
 
     def _case_value_or_one(self, value):
         return f'CASE COALESCE({ value }, 0) WHEN 0 THEN 1.0 ELSE { value } END'
 
     def _select(self):
         select_str = f"""
-             SELECT min(l.id) as id,
+                    min(l.id) as id,
                     sub.name as name,
                     l.product_id as product_id,
                     l.product_uom as product_uom,
@@ -84,7 +99,11 @@ class sale_subscription_report(models.Model):
                     partner.country_id as country_id,
                     partner.commercial_partner_id as commercial_partner_id,
                     partner.industry_id as industry_id,
-                    sub.close_reason_id as close_reason_id
+                    sub.close_reason_id as close_reason_id,
+                    sub.state as state,
+                    sub.next_invoice_date as next_invoice_date,
+                    sub.recurrence_id as recurrence_id,
+                    sub.origin_order_id as origin_order_id
         """
         return select_str
 
@@ -110,12 +129,12 @@ class sale_subscription_report(models.Model):
 
     def _where(self):
         return """
-            WHERE sub.is_subscription is true
+            sub.is_subscription is true
         """
 
     def _group_by(self):
         group_by_str = """
-            GROUP BY l.product_id,
+                    l.product_id,
                     l.product_uom,
                     t.categ_id,
                     sub.analytic_account_id,
@@ -138,7 +157,11 @@ class sale_subscription_report(models.Model):
                     partner.country_id,
                     partner.commercial_partner_id,
                     partner.industry_id,
-                    sub.close_reason_id
+                    sub.close_reason_id,
+                    sub.state,
+                    sub.next_invoice_date,
+                    sub.recurrence_id,
+                    sub.origin_order_id
         """
         return group_by_str
 
@@ -148,8 +171,8 @@ class sale_subscription_report(models.Model):
 
     def _query(self):
         return """
-            %s
-            FROM ( %s )
-            %s
-            %s
-            """ % (self._select(), self._from(), self._where(), self._group_by())
+            SELECT %s
+              FROM ( %s )
+             WHERE %s
+          GROUP BY %s
+        """ % (self._select(), self._from(), self._where(), self._group_by())

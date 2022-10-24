@@ -3149,7 +3149,7 @@ QUnit.module('documents_kanban_tests.js', {
                         <t t-set="fileUpload" t-value="getFileUpload(props.record)"/>
                         <i t-if="!fileUpload" class="fa fa-circle-thin o_record_selector" title="Select document"/>
                         <t t-else="">
-                            <FileUploadProgressBar fileUpload="fileUpload"/>
+                            <div class="o_file_upload_progress_bar"/>
                         </t>
                     </div>
                 </t></templates></kanban>`,

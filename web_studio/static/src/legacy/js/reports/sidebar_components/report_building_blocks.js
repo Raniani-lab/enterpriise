@@ -21,6 +21,7 @@ var AbstractNewBuildingBlock = Abstract.extend({
     fa: false,
     description: false,
     addEmptyRowsTargets: true,
+    modelWhitelist: [],
     events: _.extend({}, Abstract.prototype.events, {
         mouseenter: '_onHover',
         focusin: '_onHover',
@@ -851,6 +852,7 @@ var TableBlockTotal = AbstractNewBuildingBlock.extend({
     dropIn: '.page',
     hookClass: 'o_web_studio_hook_total',
     dropColumns: [[0, 5], [2, 5]],
+    modelWhitelist: ['account.move', 'sale.order', 'purchase.order'],
     add: function () {
         var self = this;
         var callersArguments = arguments;
@@ -864,8 +866,7 @@ var TableBlockTotal = AbstractNewBuildingBlock.extend({
                         return field.type === 'many2one';
                     },
                     followRelations: function (field) {
-                        return field.type === 'many2one' &&
-                            field.relation !== 'account.move' && field.relation !== 'sale.order' && field.relation !== 'purchase.order';
+                        return field.type === 'many2one' && !self.modelWhitelist.includes(field.relation);
                     },
                 };
                 var availableKeys = self._getContextKeys(self.node);

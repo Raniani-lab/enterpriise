@@ -350,7 +350,14 @@ var ReportEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
                 class: 'o_web_studio_field_type_container',
             });
             _.each(components, function (Component) {
-                defs.push(new Component(self, { models: self.models }).appendTo($componentsContainer));
+                const component = new Component(self, { models: self.models });
+                const reportModel = self.report && self.report.model;
+                // Don't add component if the report model is not compatible with this one
+                // Example: Don't display Subtotal & Total block in other models than
+                // purchase.order, sale.order, account.move
+                if (!reportModel || !component.modelWhitelist.length || component.modelWhitelist.includes(reportModel)){
+                    defs.push(component.appendTo($componentsContainer));
+                }
             });
             $sidebarContent.append($componentsContainer);
         });

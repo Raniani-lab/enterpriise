@@ -1,7 +1,7 @@
 /** @odoo-module */
 
-import { appendAttr, isComponentNode } from "@web/views/view_compiler";
-import { computeXpath } from "@web_studio/client_action/view_editors/xml_utils";
+import { isComponentNode } from "@web/views/view_compiler";
+import { computeXpath, applyInvisible } from "@web_studio/client_action/view_editors/xml_utils";
 import { createElement } from "@web/core/utils/xml";
 import { formView } from "@web/views/form/form_view";
 import { objectToString } from "@web/views/form/form_compiler";
@@ -125,38 +125,7 @@ export class FormEditorCompiler extends formView.Compiler {
     }
 
     applyInvisible(invisible, compiled, params) {
-        // Just return the node if it is always Visible
-        if (!invisible) {
-            return compiled;
-        }
-
-        let isVisileExpr;
-        // If invisible is dynamic (via Domain), pass a props or apply the studio class.
-        if (typeof invisible !== "boolean") {
-            const recordExpr = params.recordExpr || "props.record";
-            isVisileExpr = `!evalDomainFromRecord(${recordExpr},${JSON.stringify(invisible)})`;
-            if (isComponentNode(compiled)) {
-                compiled.setAttribute("studioIsVisible", isVisileExpr);
-            } else {
-                appendAttr(compiled, "class", `o_web_studio_show_invisible:!${isVisileExpr}`);
-            }
-        } else {
-            if (isComponentNode(compiled)) {
-                compiled.setAttribute("studioIsVisible", "false");
-            } else {
-                appendAttr(compiled, "class", `o_web_studio_show_invisible:true`);
-            }
-        }
-
-        // Finally, put a t-if on the node that accounts for the parameter in the config.
-        const studioShowExpr = `env.config.studioShowInvisible`;
-        isVisileExpr = isVisileExpr ? `(${isVisileExpr} or ${studioShowExpr})` : studioShowExpr;
-        if (compiled.hasAttribute("t-if")) {
-            const formerTif = compiled.getAttribute("t-if");
-            isVisileExpr = `( ${formerTif} ) and ${isVisileExpr}`;
-        }
-        compiled.setAttribute("t-if", isVisileExpr);
-        return compiled;
+        return applyInvisible(invisible, compiled, params);
     }
 
     createLabelFromField(fieldId, fieldName, fieldString, label, params) {

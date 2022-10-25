@@ -1,5 +1,5 @@
 /** @odoo-module **/
-const { Component, xml } = owl;
+import { Component, xml } from "@odoo/owl";
 
 const formGrid = xml`
     <div class="o_web_studio_hook"
@@ -9,6 +9,13 @@ const formGrid = xml`
         t-att-data-type="props.type">
             <span class="o_web_studio_hook_separator" />
     </div>
+`;
+
+const kanbanRecord = xml`
+    <span class="o_web_studio_hook"
+        t-att-data-xpath="props.xpath"
+        t-att-data-position="props.position"
+        t-att-data-type="props.type" />
 `;
 
 const defaultTemplate = xml`
@@ -27,4 +34,5 @@ StudioHook.props = ["xpath?", "position?", "type?", "colSpan?", "subTemplate?", 
 StudioHook.subTemplates = {
     formGrid,
     defaultTemplate,
+    kanbanRecord,
 };

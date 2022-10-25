@@ -14,11 +14,19 @@ export class StudioView extends Component {
             SearchModel: this.props.SearchModel,
             context: this.props.context,
             domain: this.props.domain,
+            globalState: this.props.globalState,
+            searchViewArch: this.props.searchViewArch,
+            searchViewFields: this.props.searchViewFields,
+            irFilters: this.props.searchViewIrFilters,
         };
 
         useSubEnv({
             config: { ...this.env.config },
             __beforeLeave__: null,
+            __getGlobalState__: null,
+            __getLocalState__: null,
+            __getContext__: null,
+            __getOrderBy__: null,
         });
     }
 }

@@ -1,11 +1,14 @@
 .o_web_studio_client_action {
-    .o_web_studio_editor_manager .o_web_studio_view_renderer .o_legacy_kanban_view {
+    .o_web_studio_editor_manager .o_web_studio_view_renderer .o_kanban_view {
         .o_kanban_record {
 
             &.o_kanban_demo {
                 min-height: 70px;
                 opacity: 0.2;
                 padding: 0;
+                & > div  {
+                    height: unset;
+                }
             }
             &.o_kanban_ghost {
                 opacity: 0;
@@ -30,13 +33,24 @@
                     color: $o-brand-primary;
                 }
             }
+        
+            .o-web-studio-editor--element-clickable {
+                // HOVER HANDLING
+                &:hover {
+                    cursor: pointer;
+                    outline: 1px dashed $o-brand-primary;
+                }
 
-            .o_web_studio_hovered {
-                outline: 1px dashed $o-brand-primary;
-                cursor: pointer;
-            }
-            .o_web_studio_clicked {
-                outline: 1px dashed black;
+                // CLICK HANDLING
+                &.o-web-studio-editor--element-clicked {
+                    outline: 2px solid $o-brand-primary;
+                    &.btn {
+                        outline: 2px solid darken($o-brand-primary, 5%);
+                    }
+                    &:not(.o_statusbar_status) {
+                        outline-offset: -2px;
+                    }
+                }
             }
 
             .o_web_studio_hook {

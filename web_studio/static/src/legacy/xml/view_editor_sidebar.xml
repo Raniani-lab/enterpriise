@@ -942,7 +942,8 @@
 <t t-name="web_studio.ViewEditorSidebar.div">
     <div t-if="widget.view_type === 'kanban' and widget.state.$node and widget.state.$node.hasClass('o_dropdown_kanban')" class="o_web_studio_sidebar_checkbox">
         <div class="form-check">
-            <input type="checkbox" id="set_cover" name="set_cover" class="form-check-input" t-att-checked="widget.state.$node.find('a[data-type=set_cover]').length ? 'checked' : undefined"/>
+            <t t-set="hasCoverSetter" t-value="widget.state.$node[0].dataset.hasCoverSetter" />
+            <input type="checkbox" id="set_cover" name="set_cover" class="form-check-input" t-att-checked="hasCoverSetter ? 'checked' : undefined"/>
             <label for="set_cover" class="form-check-label">Set Cover Image</label>
         </div>
     </div>

@@ -14,13 +14,16 @@ class MrpWorkorder(models.Model):
     allow_employee = fields.Boolean(related='workcenter_id.allow_employee')
 
     def _compute_duration(self):
+        wo_ids_with_employees = set()
         wo_ids_without_employees = set()
         for wo in self:
             if not wo.workcenter_id.allow_employee:
                 wo_ids_without_employees.add(wo.id)
                 continue
+            wo_ids_with_employees.add(wo.id)
             now = fields.Datetime.now()
             wo.duration = self._intervals_duration([(t.date_start, t.date_end or now, t) for t in wo.time_ids])
+        self.env['mrp.workorder'].browse(wo_ids_with_employees)._create_or_update_analytic_entry()
         return super(MrpWorkorder, self.env['mrp.workorder'].browse(wo_ids_without_employees))._compute_duration()
 
     @api.depends('employee_ids')

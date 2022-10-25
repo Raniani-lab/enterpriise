@@ -88,7 +88,7 @@ class Tablet extends Component {
         this.viewsId = this.data['views'];
         this.steps = this.data['quality.check'];
         this.state.workingState = this.data.working_state;
-        if (this.steps.length && this.steps.every(step => step.quality_state !== 'none')) {
+        if (this.steps.length && this.steps.every(step => step.quality_state !== 'none') && !this.data['mrp.workorder'].current_quality_check_id) {
             this.createSummaryStep();
         } else {
             this.state.selectedStepId = this.data['mrp.workorder'].current_quality_check_id;

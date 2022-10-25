@@ -250,17 +250,12 @@ class AccountJournal(models.Model):
             if len(filtered_st_lines) > 0:
                 # Remove values that won't be used to create records
                 st_vals.pop('transactions', None)
-                number = st_vals.pop('number', None)
                 # Create the statement
                 st_vals['line_ids'] = [[0, False, line] for line in filtered_st_lines]
                 statement = BankStatement.with_context(default_journal_id=self.id).create(st_vals)
+                if not statement.name:
+                    statement.name = st_vals['reference']
                 statement_ids.append(statement.id)
-                if number and number.isdecimal():
-                    statement._set_next_sequence()
-                    format, format_values = statement._get_sequence_format_param(statement.name)
-                    format_values['seq'] = int(number)
-                    #build the full name like BNK/2016/00135 by just giving the number '135'
-                    statement.name = format.format(**format_values)
                 statement_line_ids.extend(statement.line_ids.ids)
         if len(statement_line_ids) == 0:
             raise UserError(_('You already have imported that file.'))

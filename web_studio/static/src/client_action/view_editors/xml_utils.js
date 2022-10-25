@@ -1,7 +1,8 @@
 /** @odoo-module */
+import { isComponentNode, appendAttr } from "@web/views/view_compiler";
 
 const nodeWeak = new WeakMap();
-export function computeXpath(node, upperBoundTag = "form") {
+export function computeXpath(node, upperBoundSelector = "form") {
     if (nodeWeak.has(node)) {
         return nodeWeak.get(node);
     }
@@ -15,8 +16,8 @@ export function computeXpath(node, upperBoundTag = "form") {
     }
     let xpath = `${tagName}[${count}]`;
     const parent = node.parentElement;
-    if (tagName !== upperBoundTag) {
-        const parentXpath = computeXpath(parent, upperBoundTag);
+    if (!node.matches(upperBoundSelector)) {
+        const parentXpath = computeXpath(parent, upperBoundSelector);
         xpath = `${parentXpath}/${xpath}`;
     } else {
         xpath = `/${xpath}`;
@@ -99,3 +100,40 @@ const serializer = new XMLSerializer();
 export const serializeXmlToString = (xml) => {
     return serializer.serializeToString(xml);
 };
+
+// This function should be used in Compilers to apply the "invisible" modifiers on
+// the compiled templates's nodes
+export function applyInvisible(invisible, compiled, params) {
+    // Just return the node if it is always Visible
+    if (!invisible) {
+        return compiled;
+    }
+
+    let isVisileExpr;
+    // If invisible is dynamic (via Domain), pass a props or apply the studio class.
+    if (typeof invisible !== "boolean") {
+        const recordExpr = params.recordExpr || "props.record";
+        isVisileExpr = `!evalDomainFromRecord(${recordExpr},${JSON.stringify(invisible)})`;
+        if (isComponentNode(compiled)) {
+            compiled.setAttribute("studioIsVisible", isVisileExpr);
+        } else {
+            appendAttr(compiled, "class", `o_web_studio_show_invisible:!${isVisileExpr}`);
+        }
+    } else {
+        if (isComponentNode(compiled)) {
+            compiled.setAttribute("studioIsVisible", "false");
+        } else {
+            appendAttr(compiled, "class", `o_web_studio_show_invisible:true`);
+        }
+    }
+
+    // Finally, put a t-if on the node that accounts for the parameter in the config.
+    const studioShowExpr = `env.config.studioShowInvisible`;
+    isVisileExpr = isVisileExpr ? `(${isVisileExpr} or ${studioShowExpr})` : studioShowExpr;
+    if (compiled.hasAttribute("t-if")) {
+        const formerTif = compiled.getAttribute("t-if");
+        isVisileExpr = `( ${formerTif} ) and ${isVisileExpr}`;
+    }
+    compiled.setAttribute("t-if", isVisileExpr);
+    return compiled;
+}

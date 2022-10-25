@@ -17,7 +17,7 @@ var { session } = require('@web/session');
 
 var studioTestUtils = require('web_studio.testUtils');
 
-const { patchWithCleanup } = require("@web/../tests/helpers/utils");
+const { patchWithCleanup, nextTick, makeDeferred } = require("@web/../tests/helpers/utils");
 const { registerCleanup } = require("@web/../tests/helpers/cleanup");
 
 const { openStudio, registerStudioDependencies } = require("@web_studio/../tests/helpers");
@@ -2352,7 +2352,7 @@ QUnit.module('ViewEditorManager', {
             "view type should be kanban");
         assert.containsOnce(vem, '.o_web_studio_kanban_view_editor',
             "there should be a kanban editor");
-        assert.containsNone(vem, '.o_web_studio_kanban_view_editor [data-node-id]',
+        assert.containsNone(vem, '.o_web_studio_kanban_view_editor .o-web-studio-editor--element-clickable',
             "there should be no node");
         assert.containsNone(vem, '.o_web_studio_kanban_view_editor .o_web_studio_hook',
             "there should be no hook");
@@ -2363,11 +2363,12 @@ QUnit.module('ViewEditorManager', {
         assert.expect(18);
 
         var vem = await studioTestUtils.createViewEditorManager({
+            serverData,
             model: 'coucou',
             arch: "<kanban>" +
                     "<templates>" +
                         "<t t-name='kanban-box'>" +
-                            "<div class='o_kanban_record'>" +
+                            "<div class='oe_kanban_card'>" +
                                 "<field name='display_name'/>" +
                             "</div>" +
                         "</t>" +
@@ -2382,9 +2383,9 @@ QUnit.module('ViewEditorManager', {
             "first record should not be a ghost");
         assert.doesNotHaveClass(vem.$('.o_kanban_record:first'), 'o_kanban_demo',
             "first record should not be a demo");
-        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor [data-node-id]',
+        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o-web-studio-editor--element-clickable',
             "there should be one node");
-        assert.hasClass(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'),'o_web_studio_widget_empty',
+        assert.hasClass(vem.$('.o_web_studio_kanban_view_editor .o-web-studio-editor--element-clickable'),'o_web_studio_widget_empty',
             "the empty node should have the empty class");
         assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o_web_studio_hook',
             "there should be one hook");
@@ -2397,13 +2398,13 @@ QUnit.module('ViewEditorManager', {
         assert.containsOnce(vem, '.o_kanban_record .o_web_studio_add_kanban_image',
             "there should be the hook for image");
 
-        await testUtils.dom.click(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'));
+        await testUtils.dom.click(vem.$('.o_web_studio_kanban_view_editor .o-web-studio-editor--element-clickable'));
 
         assert.hasClass(vem.$('.o_web_studio_sidebar').find('.o_web_studio_properties'),'active',
             "the Properties tab should now be active");
         assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field',
             "the sidebar should now display the field properties");
-        assert.hasClass(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'),'o_web_studio_clicked',
+        assert.hasClass(vem.$('.o_web_studio_kanban_view_editor .o-web-studio-editor--element-clickable'),'o-web-studio-editor--element-clicked',
             "the field should have the clicked style");
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('select[name="widget"]').val(), "char",
             "the widget in sidebar should be set by default");
@@ -2411,22 +2412,197 @@ QUnit.module('ViewEditorManager', {
             "the display attribute should be Default");
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('input[name="string"]').val(), "Display Name",
             "the field should have the label Display Name in the sidebar");
+    });
 
+    QUnit.test('no studio hook after a conditional field in the arch', async function (assert) {
+        /*
+         * When a condition is set directly on a field in the arch, no studio hook is pushed
+         * meaning there is no way to put another field just after that one.
+         * This is a requirement, otherwise the arch itself is at risk of being broken
+         * ie: `<field t-elif="someCondifiton" /><field name="newField" /><t t-else=""/>`
+         * is never valid.
+         */
+        serverData.models["coucou"].fields.xram = { type: "char", string: "xram" };
+        serverData.models["coucou"].records = [{ id: 1 }];
+
+        await studioTestUtils.createViewEditorManager({
+            serverData,
+            model: 'coucou',
+            arch: `<kanban>
+                    <field name="xram" />
+                    <templates>
+                        <t t-name='kanban-box'>
+                            <div class='oe_kanban_card'>
+                                <field t-if="record.xram.raw_value === 'lrak'" name='display_name'/>
+                                <field t-elif="record.xram.raw_value === 'groucho'" name='display_name' />
+                                <field t-else="" name='display_name' />
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>`,
+        });
+        assert.containsNone(target, ".o_kanban_record .o_web_studio_hook");
+    });
+
+    QUnit.test('indulge if components are present in the arch', async function (assert) {
+        await studioTestUtils.createViewEditorManager({
+            serverData,
+            model: 'coucou',
+            arch: `<kanban>
+                    <field name="display_name" />
+                    <templates>
+                        <t t-name='kanban-box'>
+                            <div class='oe_kanban_card'>
+                                <div class="rendered" />
+                                <MyComponent t-props="someProps" />
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>`,
+        });
+
+        assert.containsOnce(target, ".rendered");
+    });
+
+    QUnit.test('prevent crash when accessing details of implementation', async function (assert) {
+        // the XML editor button is only available in debug mode
+        const initialDebugMode = odoo.debug;
+        odoo.debug = true;
+
+        registerCleanup(() => {
+            odoo.debug = initialDebugMode;
+        })
+
+        const XMLEditorDef = makeDeferred();
+        patchWithCleanup(ace.prototype, {
+            start: async function () {
+                const res = this._super.apply(this, arguments);
+                await res;
+                XMLEditorDef.resolve();
+                return res;
+            }
+        });
+
+        const arch = `
+            <kanban>
+                <templates>
+                    <t t-name='kanban-box'>
+                        <div class='oe_kanban_card'>
+                            <div t-if="myDetailMethod()" />
+                        </div>
+                    </t>
+                </templates>
+            </kanban>`;
+
+        await studioTestUtils.createViewEditorManager({
+            serverData,
+            model: 'coucou',
+            arch,
+            viewID: 1,
+            mockRPC(route, args) {
+                if (route === '/web_editor/get_assets_editor_resources') {
+                    return Promise.resolve({
+                        views: [{
+                            active: true,
+                            arch: arch,
+                            id: 1,
+                            inherit_id: false,
+                            name: "base view",
+                        }, {
+                            active: true,
+                            arch: "<data/>",
+                            id: 42,
+                            inherit_id: 1,
+                            name: "studio view",
+                        }],
+                        scss: [],
+                        js: [],
+                    });
+                }
+            }
+        });
+        await nextTick();
+        assert.strictEqual(target.querySelector(".o_kanban_record").textContent, "Preview is not available");
+
+        await click(target, ".o_web_studio_sidebar .o_web_studio_view");
+        await click(target, ".o_web_studio_sidebar .o_web_studio_xml_editor");
+        await XMLEditorDef;
+        assert.strictEqual(target.querySelector(".o_kanban_record").textContent, "Preview is not available");
+    });
+
+    QUnit.test("disable global click", async (assert) => {
+        registry.category("services").add("action", {
+            start() {
+                return {
+                    doAction() {
+                        assert.step("action done")
+                    },
+                    loadState() {},
+                    doActionButton() {
+                        assert.step("action done")
+                    }
+                }
+            }
+        })
+        const arch = `
+            <kanban action="42" type="object" >
+                <field name="display_name" />
+                <templates>
+                    <t t-name='kanban-box'>
+                        <div class='oe_kanban_card'/>
+                    </t>
+                </templates>
+            </kanban>`;
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            serverData,
+            model: 'coucou',
+            arch
+        })
+        // sanity check
+        vem.wowlEnv.services.action.doAction();
+        assert.verifySteps(["action done"]);
+
+        await click(target.querySelector(".o_kanban_record"));
+        assert.verifySteps([]);
+    })
+
+    QUnit.test("button with text node are correctly rendered", async (assert) => {
+        const arch = `
+            <kanban action="42" type="object" >
+                <field name="display_name" />
+                <templates>
+                    <t t-name='kanban-box'>
+                        <button type="object" name="42">Some action</button>
+                    </t>
+                </templates>
+            </kanban>`;
+
+        await studioTestUtils.createViewEditorManager({
+            serverData,
+            model: 'coucou',
+            arch
+        });
+
+        assert.strictEqual(target.querySelector(".o_kanban_record button").textContent, "Some action");
     });
 
     QUnit.test('kanban editor with async widget', async function (assert) {
-        var done = assert.async();
         assert.expect(7);
 
-        var fieldDef = testUtils.makeTestPromise();
-        var FieldChar = fieldRegistry.get('char');
-        fieldRegistry.add('asyncwidget', FieldChar.extend({
-            willStart: function () {
-                return fieldDef;
-            },
-        }));
+        const fieldDef = testUtils.makeTestPromise();
+        const owlFieldRegistry = registry.category("fields");
+        const FieldChar = owlFieldRegistry.get('char');
+        class MyFieldChar extends FieldChar {
+            setup() {
+                owl.onWillStart(() => {
+                    return fieldDef;
+                })
+            }
+        }
+        owlFieldRegistry.add("asyncwidget", MyFieldChar);
 
-        var prom = studioTestUtils.createViewEditorManager({
+        const prom = studioTestUtils.createViewEditorManager({
             model: 'coucou',
             arch: "<kanban>" +
                     "<templates>" +
@@ -2437,28 +2613,26 @@ QUnit.module('ViewEditorManager', {
                 "</kanban>",
         });
 
-        assert.containsNone(document.body, '.o_web_studio_kanban_view_editor');
+        assert.containsNone(target, '.o_web_studio_kanban_view_editor');
         fieldDef.resolve();
 
-        prom.then(async function (vem) {
-            assert.containsOnce(document.body, '.o_web_studio_kanban_view_editor');
+        const vem = await prom;
 
-            assert.containsOnce(vem, '.o_web_studio_kanban_view_editor [data-node-id]');
-            assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o_web_studio_hook');
+        assert.containsOnce(target, '.o_web_studio_kanban_view_editor');
 
-            await testUtils.dom.click(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'));
+        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o-web-studio-editor--element-clickable');
+        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o_web_studio_hook');
 
-            assert.hasClass(vem.$('.o_web_studio_sidebar .o_web_studio_properties'), 'active');
-            assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field',
-            "the sidebar should now display the field properties");
-            assert.hasClass(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'), 'o_web_studio_clicked');
+        await testUtils.dom.click(vem.$('.o_web_studio_kanban_view_editor .o-web-studio-editor--element-clickable'));
 
-            done();
-        });
+        assert.hasClass(vem.$('.o_web_studio_sidebar .o_web_studio_properties'), 'active');
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field',
+        "the sidebar should now display the field properties");
+        assert.hasClass(vem.$('.o_web_studio_kanban_view_editor .o-web-studio-editor--element-clickable'), 'o-web-studio-editor--element-clicked');
     });
 
-    QUnit.test('changing tab should reset selected_node_id', async function(assert) {
-        assert.expect(5);
+    QUnit.test('changing tab should reset the selected node', async function(assert) {
+        assert.expect(4);
 
         var vem = await studioTestUtils.createViewEditorManager({
             model: 'coucou',
@@ -2477,23 +2651,22 @@ QUnit.module('ViewEditorManager', {
         // switch tab to 'view' click on 'show invisible elements'
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('.o_web_studio_view'));
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#show_invisible'));
-        assert.containsNone(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'), 'o_web_studio_clicked',
+        assert.containsNone(target, ".o-web-studio-editor--element-clickable.o-web-studio-editor--element-clicked",
             "the field should not have the clicked style");
 
         // select field 'display_name'
-        await testUtils.dom.click(vem.$('.o_web_studio_kanban_view_editor [data-node-id="1"]'));
-        assert.hasClass(vem.$('.o_web_studio_widget_empty[data-node-id="1"]'), 'o_web_studio_clicked',
+        await testUtils.dom.click(vem.$(".o_web_studio_kanban_view_editor span.o-web-studio-editor--element-clickable[data-field-name='display_name']"));
+        assert.hasClass(vem.$('.o_web_studio_widget_empty.o-web-studio-editor--element-clickable'), 'o-web-studio-editor--element-clicked',
             "the field should have the clicked style");
-
-        assert.strictEqual(vem.editor.recordEditor.selected_node_id, 1, "selected_node_id should be 1");
 
         // changing tab (should reset selected_node_id)
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('.o_web_studio_view'));
-        assert.strictEqual(vem.editor.recordEditor.selected_node_id, false, "selected_node_id should be false");
+        assert.containsNone(target, ".o-web-studio-editor--element-clicked",
+            "no clicked element is present");
 
         // unchecked 'show invisible'
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#show_invisible'));
-        assert.containsNone(vem.$('.o_web_studio_widget_empty [data-node-id]'),'o_web_studio_clicked',
+        assert.containsNone(target, ".o-web-studio-editor--element-clicked",
             "the field should not have the clicked style");
 
     });
@@ -2516,7 +2689,7 @@ QUnit.module('ViewEditorManager', {
                 "</kanban>",
         });
 
-        assert.containsNone(vem, '.o_web_studio_kanban_view_editor [data-node-id]',
+        assert.containsNone(vem, '.o_web_studio_kanban_view_editor .o-web-studio-editor--element-clickable',
             "there should be no visible node");
         assert.hasAttrValue(vem.$('input#show_invisible'), 'checked', undefined,
             "show invisible checkbox is not checked");
@@ -2524,9 +2697,9 @@ QUnit.module('ViewEditorManager', {
         // click on 'show invisible elements
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#show_invisible'));
 
-        assert.containsN(vem, '.o_web_studio_kanban_view_editor [data-node-id]', 3,
+        assert.containsN(vem, '.o_web_studio_kanban_view_editor .o-web-studio-editor--element-clickable', 3,
             "the 3 invisible fields should be visible now");
-        assert.containsN(vem, '.o_web_studio_kanban_view_editor .o_web_studio_show_invisible[data-node-id]', 3,
+        assert.containsN(vem, '.o_web_studio_kanban_view_editor .o_web_studio_show_invisible.o-web-studio-editor--element-clickable', 3,
             "the 3 fields should have the correct class for background");
 
     });
@@ -2722,12 +2895,12 @@ QUnit.module('ViewEditorManager', {
                 "</kanban>",
         });
 
-        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor [data-node-id]',
+        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o-web-studio-editor--element-clickable',
             "there should be one node");
         assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o_web_studio_hook',
             "there should be one hook");
 
-        await testUtils.dom.click(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'));
+        await testUtils.dom.click(vem.$('.o_web_studio_kanban_view_editor .o-web-studio-editor--element-clickable'));
 
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('select[name="widget"]').val(), "email",
             "the widget in sidebar should be correctly set");
@@ -2737,8 +2910,6 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('grouped kanban editor', async function (assert) {
-        assert.expect(4);
-
         var vem = await studioTestUtils.createViewEditorManager({
             model: 'coucou',
             arch: "<kanban default_group_by='display_name'>" +
@@ -2752,15 +2923,20 @@ QUnit.module('ViewEditorManager', {
                 "</kanban>",
         });
 
-        assert.hasClass(vem.$('.o_web_studio_kanban_view_editor'),'o_kanban_grouped',
+        assert.hasClass(vem.$('.o_web_studio_kanban_view_editor '),'o_kanban_grouped',
             "the editor should be grouped");
-        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor [data-node-id]',
+        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o-web-studio-editor--element-clickable',
             "there should be one node");
-        assert.hasClass(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'),'o_web_studio_widget_empty',
+        assert.hasClass(vem.$('.o_web_studio_kanban_view_editor .o-web-studio-editor--element-clickable'),'o_web_studio_widget_empty',
             "the empty node should have the empty class");
         assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o_web_studio_hook',
             "there should be one hook");
 
+        assert.containsNone(vem, ".o_kanban_header_title");
+        assert.containsNone(vem, ".o_kanban_counter");
+        assert.containsN(vem, ".o_kanban_group", 2);
+        assert.containsN(vem, ".o_kanban_group:nth-child(1) .o_kanban_record.o_kanban_demo", 6);
+        assert.containsN(vem, ".o_kanban_group:nth-child(2) .o_kanban_record.o_kanban_demo", 7);
     });
 
     QUnit.test('grouped kanban editor with record', async function (assert) {
@@ -2786,9 +2962,9 @@ QUnit.module('ViewEditorManager', {
 
         assert.hasClass(vem.$('.o_web_studio_kanban_view_editor'),'o_kanban_grouped',
             "the editor should be grouped");
-        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor [data-node-id]',
+        assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o-web-studio-editor--element-clickable',
             "there should be one node");
-        assert.doesNotHaveClass(vem.$('.o_web_studio_kanban_view_editor [data-node-id]'), 'o_web_studio_widget_empty',
+        assert.doesNotHaveClass(vem.$('.o_web_studio_kanban_view_editor .o-web-studio-editor--element-clickable'), 'o_web_studio_widget_empty',
             "the empty node should not have the empty class");
         assert.containsOnce(vem, '.o_web_studio_kanban_view_editor .o_web_studio_hook',
             "there should be one hook");
@@ -2843,6 +3019,35 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual($('.modal-body:first').text(), "Are you sure you want to remove this div from the view?",
             "should display the correct message");
         await testUtils.dom.click($('.modal .btn-primary'));
+    });
+
+    QUnit.test("specific dropdown arch with distinct parts in a '<a />' tag", async (assert) => {
+        await studioTestUtils.createViewEditorManager({
+            model: 'coucou',
+            arch: `
+                <kanban>
+                    <templates>
+                        <t t-name="kanban-box" >
+                            <div>
+                                <div class="dropdown-menu o_kanban_card_manage_section">
+                                    <div role="menuitem">
+                                        <a class="dropdown-item" role="menuitem">View</a>
+                                    </div>
+                                </div>
+                                <a class="o_dropdown_kanban o_kanban_manage_toggle_button">
+                                    <i class="fa fa-ellipsis-v myCustomClass"/>
+                                </a>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            `,
+        });
+
+        assert.containsOnce(target, ".o_kanban_record .dropdown");
+        await click(target.querySelector(".o_kanban_record .myCustomClass"));
+        assert.containsOnce(target, ".o_web_studio_properties.active");
+        assert.strictEqual(target.querySelector(".o_web_studio_sidebar_content").textContent.trim(), "");
     });
 
     QUnit.test('kanban editor remove "Set Cover Image" from dropdown menu', async function (assert) {
@@ -2935,6 +3140,247 @@ QUnit.module('ViewEditorManager', {
         // Click the confirm button
         await testUtils.dom.click($('.modal .modal-footer .btn-primary'));
 
+    });
+
+    QUnit.test("drag and drop a new field", async (assert) => {
+        const newArch = `
+            <kanban>
+                <templates>
+                    <t t-name='kanban-box'>
+                        <div class='oe_kanban_card'>
+                            <field name='display_name'/>
+                            <field name='char_field' display="full" />
+                        </div>
+                    </t>
+                </templates>
+            </kanban>`;
+
+        await studioTestUtils.createViewEditorManager({
+            serverData,
+            model: 'coucou',
+            arch: `<kanban>
+                    <templates>
+                        <t t-name='kanban-box'>
+                            <div class='oe_kanban_card'>
+                                <field name='display_name'/>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>`,
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.step("edit_view");
+                    assert.deepEqual(args.operations[0], {
+                        "node": {
+                            "attrs": {
+                                "display": "full",
+                                "name": "char_field"
+                            },
+                            "tag": "field"
+                        },
+                        "position": "after",
+                        "target": {
+                            "attrs": {
+                                "name": "display_name"
+                            },
+                            "tag": "field",
+                            "xpath_info": [
+                                {
+                                    "indice": 1,
+                                    "tag": "kanban"
+                                }, {
+                                    "indice": 1,
+                                    "tag": "templates"
+                                }, {
+                                    "indice": 1,
+                                    "tag": "t"
+                                }, {
+                                    "indice": 1,
+                                    "tag": "div"
+                                }, {
+                                    "indice": 1,
+                                    "tag": "field"
+                                }
+                            ]
+                        },
+                        "type": "add"
+                    })
+                    return getCurrentMockServer()._mockReturnView(newArch, "coucou");
+                }
+            },
+        });
+        await click(target, ".o_web_studio_sidebar .o_web_studio_sidebar_header [name='new']");
+
+        await testUtils.dom.dragAndDrop(
+            $(target.querySelector(".o_web_studio_sidebar_content .o_web_studio_component")),
+            $(target.querySelector(".o_web_studio_kanban_view_editor .o_web_studio_hook"))
+        );
+        assert.verifySteps(["edit_view"])
+    });
+
+    QUnit.test("placeholder for set but empty avatar", async (assert) => {
+        serverData.models["coucou"].fields.avatar = { type: "binary", string: "A vatar" }
+        serverData.models["coucou"].records = [{
+            id: 1,
+            avatar: false,
+        }];
+
+        await studioTestUtils.createViewEditorManager({
+            serverData,
+            model: 'coucou',
+            arch: `<kanban>
+                    <field name="avatar" invisible="1"/>
+                    <templates>
+                        <t t-name='kanban-box'>
+                            <div class='oe_kanban_card'>
+                               <t name="user_avatar" t-if="record.avatar.raw_value">
+                                    <img t-att-src="kanban_image('coucou', 'avatar', record.avatar.raw_value)" class="oe_kanban_avatar" alt="Avatar"/>
+                                </t>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>`,
+        });
+        assert.containsNone(target, "img.oe_kanban_avatar");
+        assert.containsOnce(target, "span.oe_kanban_avatar");
+    });
+
+    QUnit.test("add tags with no many2many field", async (assert) => {
+        const coucouFieldsFiltered = Object.entries(serverData.models["coucou"].fields)
+            .filter(([fname, field]) => !field.type === "many2many");
+        serverData.models["coucou"].fields = Object.fromEntries(coucouFieldsFiltered);
+
+        await studioTestUtils.createViewEditorManager({
+            serverData,
+            model: 'coucou',
+            arch: `<kanban>
+                    <templates>
+                        <t t-name='kanban-box'>
+                            <div class='oe_kanban_card' />
+                        </t>
+                    </templates>
+                </kanban>`,
+        });
+        await click(target, ".o_web_studio_add_kanban_tags")
+        assert.containsOnce(target, ".modal");
+        assert.strictEqual(target.querySelector(".modal-body").textContent, "You first need to create a many2many field in the form view.");
+    });
+
+    QUnit.test("add tags", async (assert) => {
+        serverData.models["coucou"].fields.m2m = { type: "many2many", string: "many 2 many", relation: "res.partner"};
+        const newArch = `
+            <kanban>
+                <templates>
+                    <t t-name='kanban-box'>
+                        <div class='oe_kanban_card'>
+                             <field name="m2m"/>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>`;
+
+        await studioTestUtils.createViewEditorManager({
+            serverData,
+            model: 'coucou',
+            arch: `<kanban>
+                    <templates>
+                        <t t-name='kanban-box'>
+                            <div class='oe_kanban_card' />
+                        </t>
+                    </templates>
+                </kanban>`,
+
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.step("edit_view");
+                    assert.deepEqual(args.operations[0], {
+                        "node": {
+                            "attrs": {
+                            "name": "m2m"
+                            },
+                            "tag": "field"
+                        },
+                        "position": "inside",
+                        "target": {
+                            "attrs": {},
+                            "xpath_info": [
+                                {
+                                    "indice": 1,
+                                    "tag": "kanban"
+                                }, {
+                                    "indice": 1,
+                                    "tag": "templates"
+                                }, {
+                                    "indice": 1,
+                                    "tag": "t"
+                                }, {
+                                    "indice": 1,
+                                    "tag": "div"
+                                }
+                            ]
+                        },
+                        "type": "add"
+                    });
+                    return getCurrentMockServer()._mockReturnView(newArch, "coucou");
+                }
+            }
+        });
+        await click(target, ".o_web_studio_add_kanban_tags");
+        await click(target.querySelector(".modal .modal-footer .btn-primary"));
+        assert.verifySteps(["edit_view"]);
+        assert.containsNone(target,".o_web_studio_add_kanban_tags");
+    });
+
+    QUnit.test("add dropdown", async (assert) => {
+        const newArch = `
+            <kanban>
+                <templates>
+                    <t t-name='kanban-box'>
+                        <div class='oe_kanban_card'>
+                            <div class="o_dropdown_kanban dropdown" name="kanban_dropdown">
+                              <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu" role="button">
+                                <span class="fa fa-ellipsis-v"/>
+                              </a>
+                              <div class="dropdown-menu" role="menu" name="studio_div_e269b5">
+                                <t t-if="widget.editable">
+                                  <a type="edit" class="dropdown-item">Edit</a>
+                                </t>
+                                <t t-if="widget.deletable">
+                                  <a type="delete" class="dropdown-item">Delete</a>
+                                </t>
+                                <ul class="oe_kanban_colorpicker" data-field="x_color"/>
+                              </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>`;
+
+        await studioTestUtils.createViewEditorManager({
+            serverData,
+            model: 'coucou',
+            arch: `<kanban>
+                    <templates>
+                        <t t-name='kanban-box'>
+                            <div class='oe_kanban_card' />
+                        </t>
+                    </templates>
+                </kanban>`,
+
+            mockRPC: function (route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.step("edit_view");
+                    assert.deepEqual(args.operations[0], {
+                         "type": "kanban_dropdown"
+                    });
+                    return getCurrentMockServer()._mockReturnView(newArch, "coucou");
+                }
+            }
+        });
+        await click(target, ".o_web_studio_add_dropdown");
+        await click(target.querySelector(".modal .modal-footer .btn-primary"));
+        assert.verifySteps(["edit_view"]);
+        assert.containsNone(target,".o_web_studio_add_dropdown");
     });
 
     QUnit.module('Search');

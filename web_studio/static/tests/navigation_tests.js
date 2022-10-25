@@ -7,6 +7,7 @@ import {
     nextTick,
     patchWithCleanup,
 } from "@web/../tests/helpers/utils";
+import { toggleFilterMenu, toggleMenuItem } from "@web/../tests/search/helpers";
 import { companyService } from "@web/webclient/company_service";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { getActionManagerServerData } from "@web/../tests/webclient/helpers";
@@ -145,7 +146,7 @@ QUnit.module("Studio", (hooks) => {
                 "/web_studio/activity_allowed",
                 "/web_studio/get_studio_view_arch",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/search_read",
+                "/web/dataset/call_kw/partner/web_search_read",
             ],
             "should have opened the action in Studio"
         );
@@ -317,7 +318,7 @@ QUnit.module("Studio", (hooks) => {
                 "/web_studio/activity_allowed",
                 "/web_studio/get_studio_view_arch",
                 "/web/dataset/call_kw/partner/get_views",
-                "/web/dataset/search_read",
+                "/web/dataset/call_kw/partner/web_search_read",
             ],
             "should have opened the action in Studio"
         );
@@ -526,6 +527,74 @@ QUnit.module("Studio", (hooks) => {
             );
         }
     );
+
+    QUnit.test("entering a kanban keeps the user's domain", async (assert) => {
+        serverData.views["pony,false,kanban"] = `
+            <kanban>
+                <field name="display_name" />
+                <templates>
+                    <t t-name="kanban-box">
+                        <field name="display_name" />
+                    </t>
+                </templates>
+            </kanban>
+        `;
+
+        serverData.views["pony,58,search"] = `
+            <search>
+                <filter name="apple" string="apple" domain="[('name', 'ilike', 'Apple')]" />
+            </search>
+        `;
+
+        serverData.menus[43] = {
+            id: 43,
+            children: [],
+            name: "kanban",
+            appID: 43,
+            actionID: 43,
+            xmlid: "app_43",
+        };
+        serverData.menus.root.children.push(43);
+        serverData.actions[43] = {
+            id: 43,
+            name: "Pony Action 43",
+            res_model: "pony",
+            type: "ir.actions.act_window",
+            views: [[false, "kanban"]],
+            search_view_id: [58],
+            xml_id: "action_43",
+        };
+
+        const mockRPC = async (route, args) => {
+            if (args.method === "web_search_read") {
+                assert.step(`${args.method}: ${JSON.stringify(args.kwargs)}`);
+            }
+        };
+
+        await createEnterpriseWebClient({
+            serverData,
+            mockRPC,
+        });
+        assert.verifySteps([]);
+        await click(target.querySelector(".o_app[data-menu-xmlid=app_43]"));
+        assert.containsOnce(target, ".o_kanban_view");
+        assert.verifySteps([
+            `web_search_read: {"limit":40,"offset":0,"order":"","count_limit":10001,"context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"bin_size":true},"domain":[],"fields":["display_name"]}`,
+        ]);
+
+        await toggleFilterMenu(target);
+        await toggleMenuItem(target, "Apple");
+        assert.verifySteps([
+            `web_search_read: {"limit":40,"offset":0,"order":"","count_limit":10001,"context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"bin_size":true},"domain":[["name","ilike","Apple"]],"fields":["display_name"]}`,
+        ]);
+
+        await openStudio(target);
+        assert.containsOnce(target, ".o_web_studio_kanban_view_editor");
+        assert.verifySteps([
+            `web_search_read: {"limit":1,"offset":0,"order":"","count_limit":10001,"context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"studio":1,"bin_size":true},"domain":[["name","ilike","Apple"]],"fields":["display_name"]}`,
+        ]);
+        assert.strictEqual(target.querySelector(".o_kanban_record").textContent, "Applejack");
+    });
 
     QUnit.test(
         "open Studio with editable form view and check context propagation",

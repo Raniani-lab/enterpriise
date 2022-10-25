@@ -372,6 +372,9 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
         assert.containsOnce(target, ".o_menu_sections .o_menu_sections_more");
 
         await openStudio(target);
+        // Because the kanban is converted, this legacyNextTick ensures we wait through the two
+        // compatibility layers
+        await legacyExtraNextTick();
         await Promise.all(adapted);
         assert.strictEqual(
             target.querySelectorAll(".o_studio header .o_menu_sections > *:not(.d-none)").length,
@@ -381,6 +384,9 @@ QUnit.module("Studio > navbar coordination", (hooks) => {
 
         const state = webClient.env.services.router.current.hash;
         await loadState(webClient, state);
+        // Because the kanban is converted, this legacyNextTick ensures we wait through the two
+        // compatibility layers
+        await legacyExtraNextTick();
         await Promise.all(adapted);
         assert.strictEqual(
             target.querySelectorAll(".o_studio header .o_menu_sections > *:not(.d-none)").length,

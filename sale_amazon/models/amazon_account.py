@@ -202,10 +202,15 @@ class AmazonAccount(models.Model):
 
     @api.model_create_multi
     def create(self, vals_list):
+        amazon_accounts_rg = self.read_group(
+            [], ['team_id', 'location_id'], ['team_id', 'location_id'], lazy=False
+        )
+        amazon_teams_ids = [a['team_id'][0] for a in amazon_accounts_rg]
+        amazon_locations_ids = [a['location_id'][0] for a in amazon_accounts_rg]
         for vals in vals_list:
             # Find or create the location of the Amazon warehouse to be associated with this account
             location = self.env['stock.location'].search([
-                ('amazon_location', '=', True),
+                ('id', 'in', amazon_locations_ids),
                 '|', ('company_id', '=', False), ('company_id', '=', vals.get('company_id')),
             ], limit=1)
             if not location:
@@ -217,20 +222,18 @@ class AmazonAccount(models.Model):
                     'usage': 'internal',
                     'location_id': parent_location_data[0]['view_location_id'][0],
                     'company_id': vals.get('company_id'),
-                    'amazon_location': True,
                 })
             vals.update({'location_id': location.id})
 
             # Find or create the sales team to be associated with this account
             team = self.env['crm.team'].search([
-                ('amazon_team', '=', True),
+                ('id', 'in', amazon_teams_ids),
                 '|', ('company_id', '=', False), ('company_id', '=', vals.get('company_id')),
             ], limit=1)
             if not team:
                 team = self.env['crm.team'].create({
                     'name': 'Amazon',
                     'company_id': vals.get('company_id'),
-                    'amazon_team': True,
                 })
             vals.update({'team_id': team.id})
 

@@ -36,7 +36,7 @@ export class DocumentsKanbanRecord extends DocumentsRecordMixin(KanbanModel.Reco
         if (!ev.target.files.length) {
             return;
         }
-        await this.model.env.bus.trigger("documents-upload-files", {
+        await this.model.env.documentsView.bus.trigger("documents-upload-files", {
             files: ev.target.files,
             folderId: this.data.folder_id && this.data.folder_id[0],
             recordId: this.resId,

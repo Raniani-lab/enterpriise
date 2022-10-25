@@ -87,7 +87,7 @@ result = rules.NET > categories.NET * 0.10''',
     note = fields.Html(string='Description')
 
     def _raise_error(self, localdict, error_type, e):
-        raise UserError(_("""%s:
+        raise UserError(_("""%s
 - Employee: %s
 - Contract: %s
 - Payslip: %s

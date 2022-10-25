@@ -27,7 +27,7 @@ class MrpWorkcenterProductivity(models.Model):
         else:
             account = self.workorder_id.production_id.analytic_account_id
             aa_vals = self.workorder_id._prepare_analytic_line_values(account, duration, amount)
-            aa_vals['name']: _("[EMPL] %s", self.employee_id.name)
+            aa_vals['name'] = _("[EMPL] %s - %s", self.workorder_id.display_name, self.employee_id.name)
             aa_vals['employee_id'] = self.employee_id.id
             self.workorder_id.employee_analytic_account_line_ids = [Command.create(aa_vals)]
 

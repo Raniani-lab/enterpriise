@@ -425,7 +425,7 @@ var ManualModel = BasicModel.extend({
         if ('amount' in values) {
             prop.base_amount = values.amount;
         }
-        if ('name' in values || 'force_tax_included' in values || 'amount' in values || 'account_id' in values) {
+        if ('name' in values || 'force_tax_included' in values || 'amount' in values || 'account_id' in values || 'analytic_account_id' in values) {
             prop.__tax_to_recompute = true;
         }
         line.createForm = _.pick(prop, this.quickCreateFields);
@@ -791,6 +791,7 @@ var ManualModel = BasicModel.extend({
                                 'name': prop.name ? prop.name + " " + tax.name : tax.name,
                                 'date': prop.date,
                                 'account_id': tax.account_id ? [tax.account_id, null] : prop.account_id,
+                                'analytic_account_id': tax.analytic ? prop.analytic_account_id : false,
                                 'analytic': tax.analytic,
                                 '__focus': false
                             });
@@ -875,13 +876,6 @@ var ManualModel = BasicModel.extend({
      */
     _formatNameGet: function (value) {
         return value ? (value.id ? value : {'id': value[0], 'display_name': value[1]}) : false;
-    },
-    _formatMany2ManyTags: function (value) {
-        var res = [];
-        for (var i=0, len=value.length; i<len; i++) {
-            res[i] = {'id': value[i][0], 'display_name': value[i][1]};
-        }
-        return res;
     },
     _formatMany2ManyTagsTax: function(value) {
         var res = [];

@@ -84,7 +84,7 @@ result = rules.NET > categories.NET * 0.10''',
     amount_percentage_base = fields.Char(string='Percentage based on', help='result will be affected to a variable')
     partner_id = fields.Many2one('res.partner', string='Partner',
         help="Eventual third party involved in the salary payment of the employees.")
-    note = fields.Html(string='Description')
+    note = fields.Html(string='Description', translate=True)
 
     def _raise_error(self, localdict, error_type, e):
         raise UserError(_("""%s

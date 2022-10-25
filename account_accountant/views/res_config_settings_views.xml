@@ -43,8 +43,8 @@
                 </setting>
             </block>
             <xpath expr="//block[@id='account_vendor_bills']" position="inside">
-                <setting string="Predict vendor bill accounts" help="The system will try to predict the accounts on vendor bill lines based on history of previous bills">
-                    <field name="module_account_predictive_bills"/>
+                <setting string="Predict vendor bill product" help="The system will try to predict the product on vendor bill lines based on the label of the line">
+                    <field name="predict_bill_product"/>
                 </setting>
             </xpath>
         </field>

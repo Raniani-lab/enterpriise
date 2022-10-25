@@ -5,5 +5,6 @@ from . import test_account_fiscal_year
 from . import test_reconciliation_widget
 from . import test_bank_rec_widget
 from . import test_bank_rec_widget_tour
+from . import test_prediction
 from . import test_reconciliation_matching_rules
 from . import test_ui

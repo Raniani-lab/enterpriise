@@ -2094,7 +2094,7 @@ class TestTaxReport(TestAccountReportsCommon):
 
         move_form = Form(self.env['account.move'] \
                     .with_company(self.company_data['company']) \
-                    .with_context(default_move_type='entry', account_predictive_bills_disable_prediction=True))
+                    .with_context(default_move_type='entry'))
         move_form.date = fields.Date.today()
         with move_form.line_ids.new() as base_line_form:
             base_line_form.name = "Base line"

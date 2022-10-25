@@ -13,6 +13,8 @@ class TestBillsPrediction(AccountTestInvoicingCommon):
     def setUpClass(cls, chart_template_ref=None):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
+        cls.company_data['company'].predict_bill_product = True
+
         cls.test_partners = cls.env['res.partner'].create([{'name': 'test partner %s' % i} for i in range(7)])
 
         expense_type = 'expense'

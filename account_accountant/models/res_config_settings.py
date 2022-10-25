@@ -18,9 +18,9 @@ class ResConfigSettings(models.TransientModel):
                                        related='company_id.fiscalyear_lock_date', readonly=False)
     tax_lock_date = fields.Date("Tax Lock Date", related='company_id.tax_lock_date', readonly=False)
     use_anglo_saxon = fields.Boolean(string='Anglo-Saxon Accounting', related='company_id.anglo_saxon_accounting', readonly=False)
-    module_account_predictive_bills = fields.Boolean(string="Account Predictive Bills")
     invoicing_switch_threshold = fields.Date(string="Invoicing Switch Threshold", related='company_id.invoicing_switch_threshold', readonly=False)
     group_fiscal_year = fields.Boolean(string='Fiscal Years', implied_group='account_accountant.group_fiscal_year')
+    predict_bill_product = fields.Boolean(string="Predict Bill Product", related='company_id.predict_bill_product', readonly=False)
 
     @api.constrains('fiscalyear_last_day', 'fiscalyear_last_month')
     def _check_fiscalyear(self):

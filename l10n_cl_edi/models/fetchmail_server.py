@@ -256,8 +256,7 @@ class FetchmailServer(models.Model):
             except Exception as error:
                 _logger.info(error)
                 with self.env['account.move'].with_context(
-                        default_move_type=default_move_type, allowed_company_ids=[company_id],
-                        account_predictive_bills_disable_prediction=True)._get_edi_creation() as invoice_form:
+                        default_move_type=default_move_type, allowed_company_ids=[company_id])._get_edi_creation() as invoice_form:
                     msgs.append(str(error))
                     invoice_form.partner_id = partner
                     invoice_form.l10n_latam_document_type_id = document_type
@@ -308,8 +307,7 @@ class FetchmailServer(models.Model):
         """
         with self.env['account.move'].with_context(
                 default_invoice_source_email=from_address,
-                default_move_type=default_move_type, allowed_company_ids=[company_id],
-                account_predictive_bills_disable_prediction=True)._get_edi_creation() as invoice_form:
+                default_move_type=default_move_type, allowed_company_ids=[company_id])._get_edi_creation() as invoice_form:
             journal = self._get_dte_purchase_journal(company_id)
             if journal:
                 invoice_form.journal_id = journal

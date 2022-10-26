@@ -393,7 +393,10 @@
                  <attribute name="optional">show</attribute>
             </field>
             <field name="recurrence_id" position="attributes">
-                <attribute name="attrs">{'readonly': [('subscription_management', '=', 'upsell')], 'required': [('subscription_management', '!=', 'upsell')]}</attribute>
+                <attribute name="attrs">
+                    {'readonly': ['|', ('subscription_management', '=', 'upsell'), ('state', 'not in', ['draft', 'sent'])],
+                    'required': [('subscription_management', '!=', 'upsell')]}
+                </attribute>
             </field>
             <field name="sale_order_template_id" position="replace">
                 <field name="sale_order_template_id" string="Subscription Plan"

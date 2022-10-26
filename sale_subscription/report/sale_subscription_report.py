@@ -17,7 +17,7 @@ class SaleSubscriptionReport(models.Model):
     product_uom = fields.Many2one('uom.uom', 'Unit of Measure', readonly=True)
     recurring_monthly = fields.Float('Monthly Recurring Revenue', readonly=True)
     recurring_yearly = fields.Float('Yearly Recurring Revenue', readonly=True)
-    recurring_total = fields.Float('Recurring Price', readonly=True)
+    recurring_total = fields.Float('Recurring Amount', readonly=True)
     quantity = fields.Float('Quantity', readonly=True)
     partner_id = fields.Many2one('res.partner', 'Customer', readonly=True)
     user_id = fields.Many2one('res.users', 'Salesperson', readonly=True)
@@ -64,20 +64,26 @@ class SaleSubscriptionReport(models.Model):
                     l.product_id as product_id,
                     l.product_uom as product_uom,
                     sub.analytic_account_id as analytic_account_id,
-                    SUM (
-                        coalesce(l.price_subtotal / nullif(sub.amount_untaxed, 0), 0)
+                    SUM(
+                        coalesce(
+                         CASE WHEN t.recurring_invoice THEN l.price_subtotal ELSE 0 END
+                          / nullif(rc.recurring_subtotal, 0), 0
+                        )
                         * sub.recurring_monthly
                         * { self._case_value_or_one('sub.currency_rate') }
                         * { self._case_value_or_one('currency_table.rate') }
                     ) as recurring_monthly,
-                    SUM (
-                        coalesce(l.price_subtotal / nullif(sub.amount_untaxed, 0), 0)
+                    SUM(
+                        coalesce(
+                         CASE WHEN t.recurring_invoice THEN l.price_subtotal ELSE 0 END
+                          / nullif(rc.recurring_subtotal, 0), 0
+                        )
                         * sub.recurring_monthly * 12
                         * { self._case_value_or_one('sub.currency_rate') }
                         * { self._case_value_or_one('currency_table.rate') }
                     ) as recurring_yearly,
                     SUM (
-                        l.price_subtotal
+                        CASE WHEN t.recurring_invoice THEN l.price_subtotal ELSE 0 END
                         * { self._case_value_or_one('sub.currency_rate') }
                         * { self._case_value_or_one('currency_table.rate') }
                     ) as recurring_total,
@@ -109,15 +115,30 @@ class SaleSubscriptionReport(models.Model):
 
     def _from(self):
         from_str = """
-                sale_order_line l
-                    join sale_order sub on (l.order_id=sub.id)
-                    join sale_order_stage stage on sub.stage_id = stage.id
-                    left outer join account_analytic_account a on sub.id=a.id
-                    join res_partner partner on sub.partner_id = partner.id
-                    left join product_product p on (l.product_id=p.id)
-                    left join product_template t on (p.product_tmpl_id=t.id)
-                    left join uom_uom u on (u.id=l.product_uom)
-                    join {currency_table} ON currency_table.company_id = sub.company_id
+                    sale_order_line l
+            JOIN    sale_order sub on (l.order_id=sub.id)
+            JOIN    sale_order_stage stage on sub.stage_id = stage.id
+            JOIN    res_partner partner on sub.partner_id = partner.id
+            LEFT JOIN product_product p on (l.product_id=p.id)
+            LEFT JOIN product_template t on (p.product_tmpl_id=t.id)
+            LEFT JOIN uom_uom u on (u.id=l.product_uom)
+            LEFT OUTER JOIN account_analytic_account a on sub.id=a.id
+            LEFT JOIN ( 
+                SELECT 
+                    sub.id AS id,
+                    SUM(l.price_subtotal) AS recurring_subtotal
+                FROM 
+                            sale_order_line l
+                    JOIN    sale_order sub ON (l.order_id=sub.id)
+                    LEFT JOIN product_product p ON (l.product_id=p.id)
+                    LEFT JOIN product_template t ON (p.product_tmpl_id=t.id)
+                WHERE 
+                    sub.is_subscription
+                AND t.recurring_invoice
+                GROUP BY
+                    sub.id
+            ) rc ON rc.id = sub.id
+            JOIN    {currency_table} ON currency_table.company_id = sub.company_id
         """.format(
             currency_table=self.env['res.currency']._get_query_currency_table(
                 {
@@ -129,7 +150,7 @@ class SaleSubscriptionReport(models.Model):
 
     def _where(self):
         return """
-            sub.is_subscription is true
+            sub.is_subscription
         """
 
     def _group_by(self):

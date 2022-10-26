@@ -16,6 +16,15 @@ let target;
 QUnit.module("Studio", (hooks) => {
     hooks.beforeEach(() => {
         serverData = getActionManagerServerData();
+        serverData.views["base.automation,false,list"] = '<tree><field name="name"/></tree>';
+        serverData.views["base.automation,false,search"] = "<search></search>";
+        serverData.models["base.automation"] = {
+            fields: {
+                id: { string: "Id", type: "integer" },
+                name: { string: "Name", type: "char" },
+            },
+            records: [],
+        };
         registerStudioDependencies();
         patchWithCleanup(session, { is_system: true });
         target = getFixture();
@@ -76,5 +85,16 @@ QUnit.module("Studio", (hooks) => {
             target,
             ".o_studio .o_web_studio_editor .o_web_studio_list_view_editor"
         );
+    });
+
+    QUnit.test("should render the no content helper of studio actions", async function (assert) {
+        const webClient = await createEnterpriseWebClient({ serverData });
+        await doAction(webClient, 3);
+        await click(target.querySelector(".o_web_studio_navbar_item a"));
+        const automationsLink = [...target.querySelectorAll(".o_web_studio_menu_item a")].find(
+            (link) => link.textContent === "Automations"
+        );
+        await click(automationsLink);
+        assert.containsOnce(target, ".no_content_helper_class");
     });
 });

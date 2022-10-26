@@ -4,7 +4,7 @@
 import time
 import datetime
 
-from odoo.tests.common import SavepointCase, tagged
+from odoo.tests.common import tagged
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.tools.float_utils import float_compare
 

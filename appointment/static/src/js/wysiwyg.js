@@ -34,10 +34,11 @@ Wysiwyg.include({
                         title: _t("Insert Appointment Link"),
                         mode: "edit",
                         insertLink: (url) => {
-                            const link = `<a href="${url}">Schedule an Appointment</a>`;
+                            const link = parseHTML('<a>Schedule an Appointment</a>');
+                            link.href = url;
                             this.focus();
                             restoreSelection();
-                            this.odooEditor.execCommand('insert', parseHTML(link));
+                            this.odooEditor.execCommand('insert', link);
                         },
                     });
                 },
@@ -49,8 +50,9 @@ Wysiwyg.include({
                 description: 'Schedule an appointment.',
                 fontawesome: 'fa-calendar',
                 callback: () => {
-                    const link = `<a href="${window.location.origin}/appointment">Our Appointment Types</a>`;
-                    this.odooEditor.execCommand('insert', parseHTML(link));
+                    const link = parseHTML('<a>Our Appointment Types</a>');
+                    link.href = `${window.location.origin}/appointment`;
+                    this.odooEditor.execCommand('insert', link);
                 },
             },
         ]);

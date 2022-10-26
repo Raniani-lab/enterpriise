@@ -155,17 +155,14 @@
                             <a groups="account.group_account_user" attrs="{'invisible': [('expiring_synchronization_date', '=', False)]}"
                                type="object" name="action_open_account_online_link"
                                t-att-class="'oe_inline ' + (test_warning_expiring_date ? test_danger_expiring_date ? 'text-danger' : 'text-warning' : '')">
-                                <t t-if="record.expiring_synchronization_due_day.value &gt; 7">
-                                    Consent expires on <t t-out="luxon.DateTime.fromISO(record.expiring_synchronization_date.raw_value).toFormat('dd MMM')"/>
-                                </t>
-                                <t t-elif="record.expiring_synchronization_due_day.value == 0">
+                                <t t-if="record.expiring_synchronization_due_day.value == 0">
                                     Consent expires today
                                 </t>
                                 <t t-elif="record.expiring_synchronization_due_day.value &lt; 0">
                                     Consent expired
                                 </t>
-                                <t t-else="">
-                                    Consent expires in <t t-out="record.expiring_synchronization_due_day.value"/> day<t t-if="record.expiring_synchronization_due_day.value &gt; 1">s</t>
+                                <t t-elif="record.expiring_synchronization_due_day.value &lt; 7">
+                                    Consent expires in <t t-esc="record.expiring_synchronization_due_day.value"/> day<t t-if="record.expiring_synchronization_due_day.value &gt; 1">s</t>
                                 </t>
                             </a>
                             <br attrs="{'invisible': [('expiring_synchronization_date', '=', False)]}"/>

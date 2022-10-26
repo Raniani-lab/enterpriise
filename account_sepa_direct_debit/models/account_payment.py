@@ -115,7 +115,7 @@ class AccountPayment(models.Model):
         """ Generates a group of payments in the same PmtInfo node, provided
         that they share the same journal."""
         PmtInf = create_xml_node(CstmrDrctDbtInitn, 'PmtInf')
-        create_xml_node(PmtInf, 'PmtInfId', str(payment_info_counter))
+        create_xml_node(PmtInf, 'PmtInfId', CstmrDrctDbtInitn.find('GrpHdr/MsgId').text + '/' + str(payment_info_counter))
         create_xml_node(PmtInf, 'PmtMtd', 'DD')
         create_xml_node(PmtInf, 'BtchBookg',askBatchBooking and 'true' or 'false')
         create_xml_node(PmtInf, 'NbOfTxs', str(len(self)))

@@ -151,7 +151,7 @@
                 }">
                 <t t-set="cellPath" t-value="path.concat([rowIndex, cell_index]).join('.')"/>
                 <t t-set="cellReadOnly" t-value="!props.editableCells || cell.readonly"/>
-                <div t-att-class="_getCellClassMap(cell)" t-attf-data-path="cellPath">
+                <div t-att-class="_getCellClassMap(cell)" t-att-data-path="cellPath">
                     <t t-if="cell.size or !cellReadOnly">
                         <i class="fa fa-search-plus o_grid_cell_information" t-on-click="() => this._onClickCellInformation(cellPath)"
                             title="See all the records aggregated in this cell">

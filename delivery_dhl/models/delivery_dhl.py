@@ -200,7 +200,7 @@ class Providerdhl(models.Model):
                 price = float(shipping_charge)
             else:
                 quote_currency = self.env['res.currency'].search([('name', '=', shipping_currency)], limit=1)
-                price = quote_currency._convert(float(shipping_charge), order_currency, order.company_id or picking.company_id, order.date_order or fields.Date.today())
+                price = quote_currency._convert(float(shipping_charge), order_currency, order.company_id if order else picking.company_id, order.date_order if order else fields.Date.today())
             return {'success': True,
                     'price': price,
                     'error_message': False,

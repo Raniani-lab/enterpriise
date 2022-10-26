@@ -198,7 +198,7 @@ class AccountAsset(models.Model):
         for asset in self:
             distribution_asset = {}
             amount_total = sum(asset.original_move_line_ids.mapped("balance"))
-            if not float_is_zero(amount_total, precision_rounding=self.currency_id.rounding):
+            if not float_is_zero(amount_total, precision_rounding=asset.currency_id.rounding):
                 for line in asset.original_move_line_ids._origin:
                     if line.analytic_distribution:
                         for account, distribution in line.analytic_distribution.items():

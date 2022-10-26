@@ -31,32 +31,32 @@ QUnit.test('activity with approval to be made by logged user', async function (a
     });
     assert.containsOnce(
         document.body,
-        '.o_Activity',
+        '.o_ActivityView',
         "should have activity component"
     );
     assert.containsOnce(
         document.body,
-        '.o_Activity_sidebar',
+        '.o_ActivityView_sidebar',
         "should have activity sidebar"
     );
     assert.containsOnce(
         document.body,
-        '.o_Activity_core',
+        '.o_ActivityView_core',
         "should have activity core"
     );
     assert.containsOnce(
         document.body,
-        '.o_Activity_user',
+        '.o_ActivityView_user',
         "should have activity user"
     );
     assert.containsOnce(
         document.body,
-        '.o_Activity_info',
+        '.o_ActivityView_info',
         "should have activity info"
     );
     assert.containsNone(
         document.body,
-        '.o_Activity_note',
+        '.o_ActivityView_note',
         "should not have activity note"
     );
     assert.containsNone(
@@ -66,37 +66,37 @@ QUnit.test('activity with approval to be made by logged user', async function (a
     );
     assert.containsNone(
         document.body,
-        '.o_Activity_mailTemplates',
+        '.o_ActivityView_mailTemplates',
         "should not have activity mail templates"
     );
     assert.containsNone(
         document.body,
-        '.o_Activity_editButton',
+        '.o_ActivityView_editButton',
         "should not have activity Edit button"
     );
     assert.containsNone(
         document.body,
-        '.o_Activity_cancelButton',
+        '.o_ActivityView_cancelButton',
         "should not have activity Cancel button"
     );
     assert.containsNone(
         document.body,
-        '.o_Activity_markDoneButton',
+        '.o_ActivityView_markDoneButton',
         "should not have activity Mark as Done button"
     );
     assert.containsNone(
         document.body,
-        '.o_Activity_uploadButton',
+        '.o_ActivityView_uploadButton',
         "should not have activity Upload button"
     );
     assert.containsOnce(
         document.body,
-        '.o_Approval_approveButton',
+        '.o_ApprovalView_approveButton',
         "should have approval approve button"
     );
     assert.containsOnce(
         document.body,
-        '.o_Approval_refuseButton',
+        '.o_ApprovalView_refuseButton',
         "should have approval refuse button"
     );
 });
@@ -126,81 +126,81 @@ QUnit.test('activity with approval to be made by another user', async function (
     });
     assert.containsOnce(
         document.body,
-        '.o_Activity',
+        '.o_ActivityView',
         "should have activity component"
     );
     assert.containsOnce(
         document.body,
-        '.o_Activity_sidebar',
+        '.o_ActivityView_sidebar',
         "should have activity sidebar"
     );
     assert.containsOnce(
         document.body,
-        '.o_Activity_core',
+        '.o_ActivityView_core',
         "should have activity core"
     );
     assert.containsOnce(
         document.body,
-        '.o_Activity_user',
+        '.o_ActivityView_user',
         "should have activity user"
     );
     assert.containsOnce(
         document.body,
-        '.o_Activity_info',
+        '.o_ActivityView_info',
         "should have activity info"
     );
     assert.containsNone(
         document.body,
-        '.o_Activity_note',
+        '.o_ActivityView_note',
         "should not have activity note"
     );
     assert.containsNone(
         document.body,
-        '.o_Activity_details',
+        '.o_ActivityView_details',
         "should not have activity details"
     );
     assert.containsNone(
         document.body,
-        '.o_Activity_mailTemplates',
+        '.o_ActivityView_mailTemplates',
         "should not have activity mail templates"
     );
     assert.containsNone(
         document.body,
-        '.o_Activity_editButton',
+        '.o_ActivityView_editButton',
         "should not have activity Edit button"
     );
     assert.containsNone(
         document.body,
-        '.o_Activity_cancelButton',
+        '.o_ActivityView_cancelButton',
         "should not have activity Cancel button"
     );
     assert.containsNone(
         document.body,
-        '.o_Activity_markDoneButton',
+        '.o_ActivityView_markDoneButton',
         "should not have activity Mark as Done button"
     );
     assert.containsNone(
         document.body,
-        '.o_Activity_uploadButton',
+        '.o_ActivityView_uploadButton',
         "should not have activity Upload button"
     );
     assert.containsNone(
         document.body,
-        '.o_Approval_approveButton',
+        '.o_ApprovalView_approveButton',
         "should not have approval approve button"
     );
     assert.containsNone(
         document.body,
-        '.o_Approval_refuseButton',
+        '.o_ApprovalView_refuseButton',
         "should not have approval refuse button"
     );
     assert.containsOnce(
         document.body,
-        '.o_Approval_toApproveText',
+        '.o_ApprovalView_toApproveText',
         "should contain 'To approve' text container"
     );
     assert.strictEqual(
-        document.querySelector('.o_Approval_toApproveText').textContent.trim(),
+        document.querySelector('.o_ApprovalView_toApproveText').textContent.trim(),
         "To Approve",
         "should contain 'To approve' text"
     );
@@ -239,16 +239,16 @@ QUnit.test('approve approval', async function (assert) {
     });
     assert.containsOnce(
         document.body,
-        '.o_Activity',
+        '.o_ActivityView',
         "should have activity component"
     );
     assert.containsOnce(
         document.body,
-        '.o_Approval_approveButton',
+        '.o_ApprovalView_approveButton',
         "should have approval approve button"
     );
 
-    document.querySelector('.o_Approval_approveButton').click();
+    document.querySelector('.o_ApprovalView_approveButton').click();
     assert.verifySteps(['action_approve'], "Approve button should trigger the right rpc call");
 });
 
@@ -285,16 +285,16 @@ QUnit.test('refuse approval', async function (assert) {
     });
     assert.containsOnce(
         document.body,
-        '.o_Activity',
+        '.o_ActivityView',
         "should have activity component"
     );
     assert.containsOnce(
         document.body,
-        '.o_Approval_refuseButton',
+        '.o_ApprovalView_refuseButton',
         "should have approval refuse button"
     );
 
-    document.querySelector('.o_Approval_refuseButton').click();
+    document.querySelector('.o_ApprovalView_refuseButton').click();
     assert.verifySteps(['action_refuse'], "Refuse button should trigger the right rpc call");
 });
 

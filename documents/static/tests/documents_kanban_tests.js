@@ -2094,20 +2094,20 @@ QUnit.module('documents_kanban_tests.js', {
 
         assert.containsOnce(target, '.o_ActivityBox',
             "should display the activity area");
-        assert.containsOnce(target, '.o_Activity',
+        assert.containsOnce(target, '.o_ActivityView',
             "should display an activity");
-        assert.strictEqual(target.querySelectorAll('.o_Activity_markDoneButton').length, 1,
+        assert.strictEqual(target.querySelectorAll('.o_ActivityView_markDoneButton').length, 1,
             "should display the activity mark done button");
-        assert.containsOnce(target, '.o_Activity_editButton',
+        assert.containsOnce(target, '.o_ActivityView_editButton',
             "should display the activity Edit button");
-        assert.containsOnce(target, '.o_Activity_cancelButton',
+        assert.containsOnce(target, '.o_ActivityView_cancelButton',
             "should display the activity Cancel button");
         
         await click(find(target, '.o_kanban_record', 'blip'));
 
         assert.containsOnce(target, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
-        assert.containsNone(target, '.o_Activity',
+        assert.containsNone(target, '.o_ActivityView',
             "should not display an activity");
     });
 

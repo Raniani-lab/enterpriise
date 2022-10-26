@@ -3,7 +3,7 @@
 import { registerMessagingComponent } from '@mail/utils/messaging_component';
 import { LegacyComponent } from "@web/legacy/legacy_component";
 
-class SignRequest extends LegacyComponent {
+export class SignRequestView extends LegacyComponent {
 
     /**
      * @override
@@ -25,11 +25,9 @@ class SignRequest extends LegacyComponent {
 
 }
 
-Object.assign(SignRequest, {
+Object.assign(SignRequestView, {
     props: { record: Object },
-    template: 'sign.SignRequest',
+    template: 'sign.SignRequestView',
 });
 
-registerMessagingComponent(SignRequest);
-
-export default SignRequest;
+registerMessagingComponent(SignRequestView);

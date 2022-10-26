@@ -4,7 +4,7 @@
     <t t-inherit="mail.ActivityListViewItem" t-inherit-mode="extension">
         <xpath expr="//button[hasclass('o_ActivityListViewItem_markAsDone')]" position="after">
             <t t-if="activityListViewItem.approvalView">
-                <Approval record="activityListViewItem.approvalView"/>
+                <ApprovalView record="activityListViewItem.approvalView"/>
             </t>
         </xpath>
     </t>

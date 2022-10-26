@@ -74,7 +74,7 @@ odoo.define('approvals_tour', function(require) {
             run: 'click',
         },
         {
-            trigger: '.o_Approval_approveButton',
+            trigger: '.o_ApprovalView_approveButton',
             content: 'approve the request via activity',
             run: 'click',
         },

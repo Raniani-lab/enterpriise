@@ -38,26 +38,26 @@ QUnit.test('activity: rendering - only with mobile number', async function (asse
     });
     assert.containsOnce(
         document.body,
-        '.o_Activity_voipNumberMobile',
+        '.o_ActivityView_voipNumberMobile',
         "should have a container for mobile"
     );
     assert.containsOnce(
-        document.querySelector('.o_Activity_voipNumberMobile'),
-        '.o_Activity_voipCallMobile',
+        document.querySelector('.o_ActivityView_voipNumberMobile'),
+        '.o_ActivityView_voipCallMobile',
         "should have a link for mobile"
     );
     assert.containsNone(
         document.body,
-        'o_Activity_voipNumberPhone',
+        'o_ActivityView_voipNumberPhone',
         "should not have a container for phone"
     );
     assert.containsNone(
         document.body,
-        'o_Activity_voipCallPhone',
+        'o_ActivityView_voipCallPhone',
         "should not have a link for phone"
     );
     assert.strictEqual(
-        document.querySelector('.o_Activity_voipNumberMobile').textContent.trim(),
+        document.querySelector('.o_ActivityView_voipNumberMobile').textContent.trim(),
         '+3212345678',
         "should have correct mobile number without a tag"
     );
@@ -81,24 +81,24 @@ QUnit.test('activity: rendering - only with phone number', async function (asser
     });
     assert.containsOnce(
         document.body,
-        '.o_Activity_voipNumberPhone'
+        '.o_ActivityView_voipNumberPhone'
     );
     assert.containsOnce(
-        document.querySelector('.o_Activity_voipNumberPhone'),
-        '.o_Activity_voipCallPhone'
+        document.querySelector('.o_ActivityView_voipNumberPhone'),
+        '.o_ActivityView_voipCallPhone'
     );
     assert.containsNone(
         document.body,
-        'o_Activity_voipNumberMobile',
+        'o_ActivityView_voipNumberMobile',
         "should not have a container for mobile"
     );
     assert.containsNone(
         document.body,
-        'o_Activity_voipCallMobile',
+        'o_ActivityView_voipCallMobile',
         "should not have a link for mobile"
     );
     assert.strictEqual(
-        document.querySelector('.o_Activity_voipNumberPhone').textContent.trim(),
+        document.querySelector('.o_ActivityView_voipNumberPhone').textContent.trim(),
         '+3287654321',
         "should have correct phone number without a tag"
     );
@@ -123,32 +123,32 @@ QUnit.test('activity: rendering - with both mobile and phone number', async func
     });
     assert.containsOnce(
         document.body,
-        '.o_Activity_voipNumberMobile',
+        '.o_ActivityView_voipNumberMobile',
         "should have a container for mobile"
     );
     assert.containsOnce(
-        document.querySelector('.o_Activity_voipNumberMobile'),
-        '.o_Activity_voipCallMobile',
+        document.querySelector('.o_ActivityView_voipNumberMobile'),
+        '.o_ActivityView_voipCallMobile',
         "should have a link for mobile"
     );
     assert.strictEqual(
-        document.querySelector('.o_Activity_voipNumberMobile').textContent.trim(),
+        document.querySelector('.o_ActivityView_voipNumberMobile').textContent.trim(),
         'Mobile: +3212345678',
         "should have correct mobile number with a tag"
     );
 
     assert.containsOnce(
         document.body,
-        '.o_Activity_voipNumberPhone',
+        '.o_ActivityView_voipNumberPhone',
         "should have container for phone"
     );
     assert.containsOnce(
-        document.querySelector('.o_Activity_voipNumberPhone'),
-        '.o_Activity_voipCallPhone',
+        document.querySelector('.o_ActivityView_voipNumberPhone'),
+        '.o_ActivityView_voipCallPhone',
         "should have a link for phone"
     );
     assert.strictEqual(
-        document.querySelector('.o_Activity_voipNumberPhone').textContent.trim(),
+        document.querySelector('.o_ActivityView_voipNumberPhone').textContent.trim(),
         'Phone: +3287654321',
         "should have correct phone number with a tag"
     );
@@ -183,7 +183,7 @@ QUnit.test('activity: calling - only with mobile', async function (assert) {
     });
 
 
-    document.querySelector('.o_Activity_voipCallMobile').click();
+    document.querySelector('.o_ActivityView_voipCallMobile').click();
     assert.verifySteps(
         ['voip_call_mobile_triggered'],
         "A voip call has to be triggered"
@@ -220,7 +220,7 @@ QUnit.test('activity: calling - only with phone', async function (assert) {
         views: [[false, 'form']],
     });
 
-    document.querySelector('.o_Activity_voipCallPhone').click();
+    document.querySelector('.o_ActivityView_voipCallPhone').click();
     assert.verifySteps(
         ['voip_call_phone_triggered'],
         "A voip call has to be triggered"

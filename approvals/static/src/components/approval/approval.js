@@ -4,7 +4,7 @@ import { registerMessagingComponent } from '@mail/utils/messaging_component';
 
 const { Component } = owl;
 
-class Approval extends Component {
+class ApprovalView extends Component {
 
     /**
      * @returns {ApprovalView}
@@ -15,9 +15,9 @@ class Approval extends Component {
 
 }
 
-Object.assign(Approval, {
+Object.assign(ApprovalView, {
     props: { record: Object },
-    template: 'approvals.Approval',
+    template: 'approvals.ApprovalView',
 });
 
-registerMessagingComponent(Approval);
+registerMessagingComponent(ApprovalView);

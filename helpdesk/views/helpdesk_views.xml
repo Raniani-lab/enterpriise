@@ -462,7 +462,7 @@
                 <filter string="SLA in Progress" domain="[('sla_status_ids.status', '=', 'ongoing')]" name="sla_inprogress" groups="helpdesk.group_use_sla"/>
                 <filter string="SLA Failed" domain="[('sla_fail', '=', True)]" name="sla_failed" groups="helpdesk.group_use_sla"/>
                 <separator/>
-                <filter string="Unread Messages" domain="[('message_needaction','=',True)]" name="message_needaction"/>
+                <filter string="Unread Messages" domain="[('message_needaction','=',True)]" name="message_needaction" groups="mail.group_mail_notification_type_inbox"/>
                 <separator/>
                 <filter string="Open" domain="[('stage_id.fold', '=', False)]" name="is_open"/>
                 <filter string="Closed" domain="[('stage_id.fold', '=', True)]" name="is_close"/>

@@ -107,14 +107,15 @@ class HrExpense(models.Model):
 
     def attach_document(self, **kwargs):
         """when an attachment is uploaded, send the attachment to iap-extract if this is the first attachment"""
+        self._autosend_for_digitization()
+
+    def _autosend_for_digitization(self):
         if self.env.company.expense_extract_show_ocr_option_selection == 'auto_send':
-            for record in self:
-                if record.extract_state == "no_extract_requested":
-                    record.action_manual_send_for_digitization()
+            self.filtered('extract_can_show_send_button').action_manual_send_for_digitization()
 
     def _message_set_main_attachment_id(self, attachment_ids):
         super(HrExpense, self)._message_set_main_attachment_id(attachment_ids)
-        self.attach_document()
+        self._autosend_for_digitization()
 
     def get_validation(self, field):
 

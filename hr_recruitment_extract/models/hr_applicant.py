@@ -318,13 +318,11 @@ class HrApplicant(models.Model):
             'url': url,
         }
 
+    def _autosend_for_digitization(self):
+        if self.env.company.recruitment_extract_show_ocr_option_selection == 'auto_send':
+            self.filtered('extract_can_show_send_button').action_manual_send_for_digitization()
+
     def _message_set_main_attachment_id(self, attachment_ids):
         res = super()._message_set_main_attachment_id(attachment_ids)
-        for applicant in self:
-            if applicant._needs_auto_extract() and applicant.message_main_attachment_id:
-                applicant.action_manual_send_for_digitization()
+        self._autosend_for_digitization()
         return res
-
-    def _needs_auto_extract(self):
-        """ Returns `True` if the document should be automatically sent to the extraction server"""
-        return self.extract_state == "no_extract_requested"

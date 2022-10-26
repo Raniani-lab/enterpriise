@@ -35,10 +35,11 @@ class Document(models.Model):
     _name = "documents.document"
     _inherit = ["documents.document", "spreadsheet.collaborative.mixin"]
 
+    _spreadsheet_data_field = "datas"
+
     handler = fields.Selection(
         [("spreadsheet", "Spreadsheet")], ondelete={"spreadsheet": "cascade"}
     )
-    raw = fields.Binary(related="attachment_id.raw", readonly=False)
 
     @api.model_create_multi
     def create(self, vals_list):
@@ -51,7 +52,7 @@ class Document(models.Model):
     def write(self, vals):
         if 'mimetype' in vals and 'handler' not in vals:
             vals['handler'] = 'spreadsheet' if vals['mimetype'] == 'application/o-spreadsheet' else False
-        if 'raw' in vals:
+        if 'spreadsheet_data' in vals:
             self._update_spreadsheet_contributors()
         if all(document.handler == 'spreadsheet' for document in self):
             vals = self._resize_thumbnail_value(vals)
@@ -111,6 +112,9 @@ class Document(models.Model):
             if document.handler == 'spreadsheet':
                 self.env['spreadsheet.contributor']._update(self.env.user, document)
 
+    def _filter_non_spreadsheets(self):
+        return self.filtered(lambda document: document.handler == "spreadsheet")
+
     @api.model
     def action_open_new_spreadsheet(self, vals=None):
         if vals is None:
@@ -161,7 +165,7 @@ class Document(models.Model):
 
         self.ensure_one()
 
-        file = io.BytesIO(self.raw)
+        file = io.BytesIO(self.attachment_id.raw)
         if not zipfile.is_zipfile(file) or self.mimetype != "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
             raise UserError(_("The file is not a xlsx file"))
 
@@ -192,6 +196,6 @@ class Document(models.Model):
                 "handler": "spreadsheet",
                 "mimetype": "application/o-spreadsheet",
                 "name": self.name.replace(".xlsx", ""),
-                "raw": json.dumps(unzipped)
+                "spreadsheet_data": json.dumps(unzipped)
             })
             return doc.id

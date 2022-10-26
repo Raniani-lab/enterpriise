@@ -12,10 +12,12 @@ patch(
          * @returns {Promise<{ data: string, revisions: object[] }>}
          */
         async _fetchDashboardData(dashboardId) {
-            const data = await this.orm.call("spreadsheet.dashboard", "join_spreadsheet_session", [
-                dashboardId,
-            ]);
-            return { data: data.raw, revisions: data.revisions };
+            const { data, revisions } = await this.orm.call(
+                "spreadsheet.dashboard",
+                "join_spreadsheet_session",
+                [dashboardId]
+            );
+            return { data, revisions };
         },
     }
 );

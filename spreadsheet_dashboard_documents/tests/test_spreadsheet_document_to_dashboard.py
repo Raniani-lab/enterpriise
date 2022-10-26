@@ -10,7 +10,7 @@ class TestSpreadsheetDocumentToDashboard(TransactionCase):
         document = self.env["documents.document"].create(
             {
                 "name": "a document",
-                "raw": r'{"sheets": []}',
+                "spreadsheet_data": r'{"sheets": []}',
                 "handler": "spreadsheet",
                 "mimetype": "application/o-spreadsheet",
             }
@@ -30,8 +30,8 @@ class TestSpreadsheetDocumentToDashboard(TransactionCase):
         self.assertEqual(dashboard.group_ids, self.env.ref("documents.group_documents_user"))
         self.assertEqual(dashboard.dashboard_group_id, group)
         self.assertEqual(
-            dashboard.raw,
-            b'{"sheets": []}',
+            dashboard.spreadsheet_data,
+            '{"sheets": []}',
         )
         self.assertEqual(
             next_action,
@@ -52,7 +52,7 @@ class TestSpreadsheetDocumentToDashboard(TransactionCase):
         document = self.env["documents.document"].create(
             {
                 "name": "a document",
-                "raw": r'{"sheets": []}',
+                "spreadsheet_data": r'{"sheets": []}',
                 "handler": "spreadsheet",
                 "mimetype": "application/o-spreadsheet",
             }
@@ -70,8 +70,8 @@ class TestSpreadsheetDocumentToDashboard(TransactionCase):
         self.assertEqual(dashboard.group_ids, self.env.ref("base.group_user"))
         self.assertEqual(dashboard.dashboard_group_id, group)
         self.assertEqual(
-            dashboard.raw,
-            b'{"sheets": []}',
+            dashboard.spreadsheet_data,
+            '{"sheets": []}',
         )
         self.assertEqual(
             next_action,
@@ -92,7 +92,7 @@ class TestSpreadsheetDocumentToDashboard(TransactionCase):
         document = self.env["documents.document"].create(
             {
                 "name": "a document",
-                "raw": r'{"sheets": []}',
+                "spreadsheet_data": r'{"sheets": []}',
                 "handler": "spreadsheet",
                 "mimetype": "application/o-spreadsheet",
             }

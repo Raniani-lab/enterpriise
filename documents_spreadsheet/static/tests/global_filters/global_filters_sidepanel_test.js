@@ -322,7 +322,7 @@ QUnit.module(
                 const serverData = getBasicServerData();
                 serverData.models["documents.document"].records.push({
                     id: 45,
-                    raw: JSON.stringify(spreadsheetData),
+                    spreadsheet_data: JSON.stringify(spreadsheetData),
                     name: "Spreadsheet",
                     handler: "spreadsheet",
                 });
@@ -578,7 +578,7 @@ QUnit.module(
             const serverData = getBasicServerData();
             serverData.models["documents.document"].records.push({
                 id: 45,
-                raw: JSON.stringify(spreadsheetData),
+                spreadsheet_data: JSON.stringify(spreadsheetData),
                 name: "Spreadsheet",
                 handler: "spreadsheet",
             });
@@ -640,7 +640,7 @@ QUnit.module(
                 const serverData = getBasicServerData();
                 serverData.models["documents.document"].records.push({
                     id: 45,
-                    raw: JSON.stringify(spreadsheetData),
+                    spreadsheet_data: JSON.stringify(spreadsheetData),
                     name: "Spreadsheet",
                     handler: "spreadsheet",
                 });

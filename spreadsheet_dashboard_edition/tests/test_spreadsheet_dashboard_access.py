@@ -28,7 +28,7 @@ class SpreadsheetDashboardAccess(TransactionCase):
         )
         # only read access, no one ever joined this dashboard
         result = dashboard.with_user(self.user).join_spreadsheet_session()
-        self.assertEqual(result["raw"], {})
+        self.assertEqual(result["data"], {})
 
     def test_update_data_reset_collaborative(self):
         dashboard_group = self.env["spreadsheet.dashboard.group"].create({

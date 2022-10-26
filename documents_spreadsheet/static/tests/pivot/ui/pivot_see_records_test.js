@@ -17,7 +17,7 @@ QUnit.test("Can see records and go back after a pivot insertion", async function
     const models = getBasicData();
     models["documents.document"].records = [
         {
-            raw: JSON.stringify(m.exportData()),
+            spreadsheet_data: JSON.stringify(m.exportData()),
             name: "a spreadsheet",
             folder_id: 1,
             handler: "spreadsheet",

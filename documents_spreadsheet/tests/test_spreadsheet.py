@@ -1,5 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+import base64
+
 from freezegun import freeze_time
 from psycopg2 import IntegrityError
 
@@ -45,7 +48,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
 
     def test_spreadsheet_default_folder(self):
         document = self.env["documents.document"].create({
-            "raw": r"{}",
+            "spreadsheet_data": r"{}",
             "handler": "spreadsheet",
             "mimetype": "application/o-spreadsheet",
         })
@@ -58,7 +61,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
             'name': 'Spreadsheet - Test Folder',
         })
         document = self.env["documents.document"].create({
-            "raw": r"{}",
+            "spreadsheet_data": r"{}",
             "handler": "spreadsheet",
             "mimetype": "application/o-spreadsheet",
         })
@@ -73,14 +76,14 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         """Default spreadsheet folder is not assigned to normal documents"""
         with self.assertRaises(IntegrityError), mute_logger('odoo.sql_db'):
             self.env["documents.document"].create({
-                "raw": r"{}",
+                "spreadsheet_data": r"{}",
                 "mimetype": "application/o-spreadsheet",
             })
 
     def test_spreadsheet_no_default_folder(self):
         """Folder is not overwritten by the default spreadsheet folder"""
         document = self.env["documents.document"].create({
-            "raw": r"{}",
+            "spreadsheet_data": r"{}",
             "folder_id": self.folder.id,
             "handler": "spreadsheet",
             "mimetype": "application/o-spreadsheet",
@@ -196,7 +199,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         document = self.create_spreadsheet()
         archived_document = self.env["documents.document"].create(
             {
-                "raw": r"{}",
+                "spreadsheet_data": r"{}",
                 "folder_id": self.folder.id,
                 "active": False,
                 "handler": "spreadsheet",
@@ -229,7 +232,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
             spreadsheet1 = self.create_spreadsheet()
         with freeze_time("2020-02-15 18:00"):
             spreadsheet2 = self.create_spreadsheet()
-        spreadsheet1.raw = "data"
+        spreadsheet1.spreadsheet_data = "data"
         spreadsheets = self.env["documents.document"].get_spreadsheets_to_display([])
         spreadsheet_ids = [s["id"] for s in spreadsheets]
         self.assertEqual(spreadsheet_ids, [spreadsheet1.id, spreadsheet2.id])
@@ -292,7 +295,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         )
 
         with self.assertRaises(AccessError, msg="record rule should have raised"):
-            manager_doc.with_user(user).raw = "{}"
+            manager_doc.with_user(user).spreadsheet_data = "{}"
 
     def test_spreadsheet_to_display_access_field_groups(self):
         existing_groups = self.env["documents.document"]._fields["name"].groups
@@ -377,12 +380,12 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         template.name = "bye"
         template.unlink()
 
-    def test_contributor_write_raw(self):
+    def test_contributor_write_spreadsheet_data(self):
         document = self.create_spreadsheet()
         user = new_test_user(
             self.env, "Test Manager", groups="documents.group_documents_manager"
         )
-        document.with_user(user).write({"raw": r"{}"})
+        document.with_user(user).write({"spreadsheet_data": r"{}"})
         contributor = self.env["spreadsheet.contributor"].search(
             [("user_id", "=", user.id), ("document_id", "=", document.id)]
         )
@@ -404,7 +407,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
 
     def test_document_replacement_with_handler(self):
         document = self.env["documents.document"].create({
-            "raw": r"{}",
+            "spreadsheet_data": r"{}",
             "folder_id": self.folder.id,
             "handler": "spreadsheet",
             "mimetype": "application/o-spreadsheet",
@@ -412,7 +415,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         vals = {
             "name": "file",
             "folder_id": self.folder.id,
-            "raw": r"{}",
+            "spreadsheet_data": r"{}",
             "handler": "spreadsheet"
         }
         document.write(vals)
@@ -421,7 +424,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
     def test_document_replacement_with_mimetype(self):
 
         document = self.env["documents.document"].create({
-            "raw": r"{}",
+            "spreadsheet_data": r"{}",
             "folder_id": self.folder.id,
             "handler": "spreadsheet",
             "mimetype": "application/o-spreadsheet",
@@ -437,7 +440,7 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
 
     def test_document_replacement_with_mimetype_and_handler(self):
         document = self.env["documents.document"].create({
-            "raw": r"{}",
+            "spreadsheet_data": r"{}",
             "folder_id": self.folder.id,
             "handler": "spreadsheet",
             "mimetype": "application/o-spreadsheet",
@@ -445,9 +448,40 @@ class SpreadsheetDocuments(SpreadsheetTestCommon):
         vals = {
             "name": "spreadsheet_file",
             "folder_id": self.folder.id,
-            "raw": r"{}",
+            "spreadsheet_data": r"{}",
             "mimetype": "application/octet-stream",
             "handler": "spreadsheet"
         }
         document.write(vals)
         self.assertEqual(document.handler, "spreadsheet", "the handler must contain the value of the handler mentioned in vals")
+
+    def test_read_spreadsheet_data(self):
+        document = self.env["documents.document"].create({
+            "name": "test.txt",
+            "datas": base64.encodebytes(b"{}"),
+            "handler": "spreadsheet",
+            "mimetype": "application/o-spreadsheet",
+            "folder_id": self.folder.id,
+        })
+        self.assertEqual(document.spreadsheet_data, "{}")
+
+    def test_read_non_spreadsheet_data(self):
+        document = self.env["documents.document"].create({
+            "name": "test.txt",
+            "datas": TEXT,
+            "mimetype": "text/plain",
+            "folder_id": self.folder.id,
+        })
+        self.assertEqual(document.spreadsheet_data, False)
+
+    def test_write_spreadsheet_data(self):
+        document = self.env["documents.document"].create({
+            "name": "test.txt",
+            "datas": base64.encodebytes(b"{}"),
+            "handler": "spreadsheet",
+            "mimetype": "application/o-spreadsheet",
+            "folder_id": self.folder.id,
+        })
+        data = b"{ sheets: [] }"
+        document.spreadsheet_data = data
+        self.assertEqual(document.datas, base64.b64encode(data))

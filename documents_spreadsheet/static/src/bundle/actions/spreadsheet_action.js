@@ -59,7 +59,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
      */
     _initializeWith(record) {
         this.state.isFavorited = record.is_favorited;
-        this.spreadsheetData = record.raw;
+        this.spreadsheetData = record.data;
         this.stateUpdateMessages = record.revisions;
         this.snapshotRequested = record.snapshot_requested;
         this.state.spreadsheetName = record.name;
@@ -112,7 +112,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
     async _onMakeCopy({ data, thumbnail }) {
         const defaultValues = {
             mimetype: "application/o-spreadsheet",
-            raw: JSON.stringify(data),
+            spreadsheet_data: JSON.stringify(data),
             spreadsheet_snapshot: false,
             thumbnail,
         };
@@ -134,7 +134,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
     async _onSpreadsheetSaved({ data, thumbnail }) {
         await this.orm.write("documents.document", [this.resId], {
             thumbnail,
-            raw: JSON.stringify(data),
+            spreadsheet_data: JSON.stringify(data),
             mimetype: "application/o-spreadsheet",
         });
     }

@@ -68,7 +68,7 @@ class DashboardEditAction extends AbstractSpreadsheetAction {
      * @param {SpreadsheetRecord} record
      */
     _initializeWith(record) {
-        this.spreadsheetData = record.raw;
+        this.spreadsheetData = record.spreadsheet_data;
         this.stateUpdateMessages = record.revisions;
         this.snapshotRequested = record.snapshot_requested;
         this.state.spreadsheetName = record.name;

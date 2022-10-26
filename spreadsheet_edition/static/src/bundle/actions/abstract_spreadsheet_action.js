@@ -12,7 +12,7 @@ import { loadSpreadsheetDependencies } from "@spreadsheet/helpers/helpers";
  * @typedef SpreadsheetRecord
  * @property {number} id
  * @property {string} name
- * @property {string} raw
+ * @property {string} data
  * @property {Object[]} revisions
  * @property {boolean} snapshot_requested
  * @property {Boolean} isReadonly

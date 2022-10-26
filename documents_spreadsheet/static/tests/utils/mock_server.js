@@ -22,7 +22,7 @@ registry
         const spreadsheetId = this.mockCreate("documents.document", {
             name: "Untitled spreadsheet",
             mimetype: "application/o-spreadsheet",
-            raw: "{}",
+            spreadsheet_data: "{}",
             handler: "spreadsheet",
         });
         return {

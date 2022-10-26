@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import base64
+
 from .common import SpreadsheetTestCommon
 from odoo.tools import file_open
 from odoo.exceptions import UserError
@@ -10,9 +12,9 @@ class SpreadsheetImportXlsx(SpreadsheetTestCommon):
         """Import xlsx"""
         folder = self.env["documents.folder"].create({"name": "Test folder"})
         with file_open('documents_spreadsheet/tests/data/test.xlsx', 'rb') as f:
-            raw = f.read()
+            spreadsheet_data = base64.encodebytes(f.read())
             document_xlsx = self.env['documents.document'].create({
-                'raw': raw,
+                'datas': spreadsheet_data,
                 'name': 'text.xlsx',
                 'mimetype': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
                 'folder_id': folder.id
@@ -25,9 +27,9 @@ class SpreadsheetImportXlsx(SpreadsheetTestCommon):
         """Import xlsx with wrong mime type raisese an error"""
         folder = self.env["documents.folder"].create({"name": "Test folder"})
         with file_open('documents_spreadsheet/tests/data/test.xlsx', 'rb') as f:
-            raw = f.read()
+            spreadsheet_data = base64.encodebytes(f.read())
             document_xlsx = self.env['documents.document'].create({
-                'raw': raw,
+                'datas': spreadsheet_data,
                 'name': 'text.xlsx',
                 'mimetype': 'text/plain',
                 'folder_id': folder.id
@@ -42,7 +44,7 @@ class SpreadsheetImportXlsx(SpreadsheetTestCommon):
         """Import a xlsx which isn't a zip raises error"""
         folder = self.env["documents.folder"].create({"name": "Test folder"})
         document_xlsx = self.env['documents.document'].create({
-            'raw': b"yolo",
+            'datas': base64.encodebytes(b"yolo"),
             'name': 'text.xlsx',
             'mimetype': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'folder_id': folder.id
@@ -57,7 +59,7 @@ class SpreadsheetImportXlsx(SpreadsheetTestCommon):
         folder = self.env["documents.folder"].create({"name": "Test folder"})
         document_xlsx = self.env['documents.document'].create({
             # Minimum zip file
-            'raw': b"\x50\x4B\x05\x06\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00",
+            'datas': base64.encodebytes(b"\x50\x4B\x05\x06\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00\x00"),
             'name': 'text.xlsx',
             'mimetype': 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet',
             'folder_id': folder.id

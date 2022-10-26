@@ -101,7 +101,7 @@ async function initTestEnvWithBlankSpreadsheet(params = {}) {
     const documentsFolderId1 = pyEnv["documents.folder"].create({ has_write_access: true });
     pyEnv["documents.document"].create({
         name: "My spreadsheet",
-        raw: "{}",
+        spreadsheet_data: "{}",
         is_favorited: false,
         folder_id: documentsFolderId1,
         handler: "spreadsheet",

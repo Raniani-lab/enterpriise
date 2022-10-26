@@ -75,7 +75,7 @@ QUnit.module(
             });
             pyEnv["documents.document"].create({
                 name: "My spreadsheet",
-                raw: "{}",
+                spreadsheet_data: "{}",
                 is_favorited: false,
                 folder_id: documentsFolderId1,
                 handler: "spreadsheet",
@@ -115,21 +115,21 @@ QUnit.module(
             pyEnv["documents.document"].create([
                 {
                     name: "My spreadsheet",
-                    raw: "{}",
+                    spreadsheet_data: "{}",
                     is_favorited: false,
                     folder_id: documentsFolderId1,
                     handler: "spreadsheet",
                 },
                 {
                     name: "",
-                    raw: "{}",
+                    spreadsheet_data: "{}",
                     is_favorited: true,
                     folder_id: documentsFolderId1,
                     handler: "spreadsheet",
                 },
                 {
                     name: "",
-                    raw: "{}",
+                    spreadsheet_data: "{}",
                     folder_id: documentsFolderId1,
                     handler: "spreadsheet",
                 },

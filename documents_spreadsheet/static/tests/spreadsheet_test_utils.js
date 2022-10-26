@@ -88,7 +88,7 @@ export async function createSpreadsheet(params = {}) {
         documents.push({
             id: spreadsheetId,
             name: UNTITLED_SPREADSHEET_NAME,
-            raw: "{}",
+            spreadsheet_data: "{}",
         });
         params = { ...params, spreadsheetId };
     }

@@ -74,7 +74,7 @@ class SpreadsheetCollaborative(SpreadsheetTestCommon):
     def test_join_spreadsheet_session(self):
         spreadsheet = self.create_spreadsheet()
         data = spreadsheet.join_spreadsheet_session()
-        self.assertEqual(data["raw"], {})
+        self.assertEqual(data["data"], {})
         self.assertEqual(data["revisions"], [], "It should not have past revisions")
 
     def test_join_active_spreadsheet_session(self):
@@ -82,10 +82,10 @@ class SpreadsheetCollaborative(SpreadsheetTestCommon):
         commands = self.new_revision_data(spreadsheet)
         spreadsheet.join_spreadsheet_session()
         spreadsheet.dispatch_spreadsheet_message(commands)
-        data = spreadsheet.join_spreadsheet_session()
+        spreadsheet = spreadsheet.join_spreadsheet_session()
         del commands["clientId"]
-        self.assertEqual(data["raw"], {})
-        self.assertEqual(data["revisions"], [commands], "It should have past revisions")
+        self.assertEqual(spreadsheet["data"], {})
+        self.assertEqual(spreadsheet["revisions"], [commands], "It should have past revisions")
 
     def test_snapshot_spreadsheet_save_data(self):
         spreadsheet = self.create_spreadsheet()
@@ -197,7 +197,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
         )
         cls.spreadsheet = cls.env["documents.document"].create(
             {
-                "raw": b"{}",
+                "spreadsheet_data": b"{}",
                 "folder_id": cls.folder.id,
                 "handler": "spreadsheet",
                 "mimetype": "application/o-spreadsheet",
@@ -337,7 +337,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
         self.folder.read_group_ids = self.group
         spreadsheet = self.env["documents.document"].create(
             {
-                "raw": b"{}",
+                "spreadsheet_data": b"{}",
                 "folder_id": self.folder.id,
                 "handler": "spreadsheet",
                 "mimetype": "application/o-spreadsheet",
@@ -345,7 +345,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
         )
         # no one ever joined this spreadsheet
         result = spreadsheet.with_user(self.user).join_spreadsheet_session()
-        self.assertEqual(result["raw"], {})
+        self.assertEqual(result["data"], {})
 
     def test_join_snapshot_request(self):
         with freeze_time("2020-02-02 18:00"):

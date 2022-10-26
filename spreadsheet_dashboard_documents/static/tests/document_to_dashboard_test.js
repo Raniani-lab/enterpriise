@@ -68,6 +68,6 @@ QUnit.test("document's data is saved when opening wizard", async (assert) => {
     const { env, model } = await createSpreadsheet({ serverData, spreadsheetId: 2 });
     setCellContent(model, "A1", "a cell updated");
     await doMenuAction(topbarMenuRegistry, ["file", "add_document_to_dashboard"], env);
-    const data = JSON.parse(serverData.models["documents.document"].records[1].raw);
+    const data = JSON.parse(serverData.models["documents.document"].records[1].spreadsheet_data);
     assert.strictEqual(data.sheets[0].cells.A1.content, "a cell updated");
 });

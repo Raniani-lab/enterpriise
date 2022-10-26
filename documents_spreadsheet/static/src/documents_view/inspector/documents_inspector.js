@@ -72,7 +72,7 @@ patch(DocumentsInspector.prototype, "documents_spreadsheet_documents_inspector",
                     params: {
                         orm: this.orm,
                         name: record.name,
-                        data: record.raw,
+                        data: record.data,
                         stateUpdateMessages: record.revisions,
                     },
                 });

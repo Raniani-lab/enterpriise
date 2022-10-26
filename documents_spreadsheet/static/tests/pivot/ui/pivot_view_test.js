@@ -614,7 +614,7 @@ QUnit.module("spreadsheet pivot view", {}, () => {
         const models = getBasicData();
         models["documents.document"].records = [
             {
-                raw: JSON.stringify(model.exportData()),
+                spreadsheet_data: JSON.stringify(model.exportData()),
                 name: "a spreadsheet",
                 folder_id: 1,
                 handler: "spreadsheet",

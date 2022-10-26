@@ -24,7 +24,7 @@ serverData.models["documents.document"].records = [
     {
         id: 1,
         name: "My spreadsheet",
-        raw: "{}",
+        spreadsheet_data: "{}",
         folder_id: 1,
         handler: "spreadsheet",
         is_favorited: false,
@@ -32,7 +32,7 @@ serverData.models["documents.document"].records = [
     {
         id: 2,
         name: "Untitled spreadsheet",
-        raw: "{}",
+        spreadsheet_data: "{}",
         folder_id: 1,
         handler: "spreadsheet",
         is_favorited: false,
@@ -40,7 +40,7 @@ serverData.models["documents.document"].records = [
     {
         id: 3,
         name: "My image",
-        raw: "{}",
+        spreadsheet_data: "{}",
         folder_id: 1,
         handler: "image",
         is_favorited: false,
@@ -252,7 +252,7 @@ QUnit.module("documents_spreadsheet > Spreadsheet Selector Dialog", { beforeEach
                 id: i,
                 handler: "spreadsheet",
                 name: `Spreadsheet_${i}`,
-                raw: "{}",
+                spreadsheet_data: "{}",
             });
         }
         const { target } = await mountSpreadsheetSelectorDialog({

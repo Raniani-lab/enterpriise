@@ -9,7 +9,7 @@ import psycopg2
 from datetime import timedelta
 from typing import Dict, Any, List
 
-from odoo import fields, models
+from odoo import api, fields, models
 from odoo.exceptions import AccessError
 from odoo.tools import mute_logger
 
@@ -22,7 +22,9 @@ class SpreadsheetCollaborativeMixin(models.AbstractModel):
     _name = "spreadsheet.collaborative.mixin"
     _description = "Collaboration on spreadsheets"
 
-    raw = fields.Binary()
+    _spreadsheet_data_field = False # field name storing the base64-encoded json data
+
+    spreadsheet_data = fields.Text(compute="_compute_spreadsheet_data", inverse="_inverse_spreadsheet_data")
     spreadsheet_snapshot = fields.Binary()
     spreadsheet_revision_ids = fields.One2many(
         "spreadsheet.revision",
@@ -30,6 +32,28 @@ class SpreadsheetCollaborativeMixin(models.AbstractModel):
         domain=lambda self: [('res_model', '=', self._name)],
         groups="base.group_system",
     )
+
+    @api.depends(lambda self: [self._spreadsheet_data_field] if self._spreadsheet_data_field else [])
+    def _compute_spreadsheet_data(self):
+        field_name = self._get_spreadsheet_data_field()
+        spreadsheets = self._filter_non_spreadsheets()
+        (self - spreadsheets).spreadsheet_data = False
+        for spreadsheet in spreadsheets:
+            spreadsheet.spreadsheet_data = base64.b64decode(spreadsheet[field_name]).decode()
+
+    def _inverse_spreadsheet_data(self):
+        field_name = self._get_spreadsheet_data_field()
+        for spreadsheet in self:
+            spreadsheet[field_name] = base64.b64encode(spreadsheet.spreadsheet_data.encode())
+
+    def _filter_non_spreadsheets(self):
+        return self
+
+    def _get_spreadsheet_data_field(self):
+        field_name = self._spreadsheet_data_field
+        if not field_name:
+            raise NotImplementedError("incorrect implementation of 'spreadsheet.collaborative.mixin': no data field provided")
+        return field_name
 
     def join_spreadsheet_session(self):
         """Join a spreadsheet session.
@@ -48,7 +72,7 @@ class SpreadsheetCollaborativeMixin(models.AbstractModel):
         return {
             "id": self.id,
             "name": self.display_name,
-            "raw": self._get_spreadsheet_snapshot(),
+            "data": self._get_spreadsheet_snapshot(),
             "revisions": self.sudo()._build_spreadsheet_messages(),
             "snapshot_requested": can_write and self._should_be_snapshotted(),
             "isReadonly": not can_write,
@@ -127,7 +151,7 @@ class SpreadsheetCollaborativeMixin(models.AbstractModel):
             {"type": "SNAPSHOT_CREATED", "version": 1},
         )
         if is_accepted:
-            self.spreadsheet_snapshot = base64.encodebytes(
+            self.spreadsheet_snapshot = base64.b64encode(
                 json.dumps(spreadsheet_snapshot).encode("utf-8")
             )
             self._delete_spreadsheet_revisions()
@@ -142,7 +166,7 @@ class SpreadsheetCollaborativeMixin(models.AbstractModel):
 
     def _get_spreadsheet_snapshot(self):
         if not self.spreadsheet_snapshot:
-            self.sudo().spreadsheet_snapshot = base64.encodebytes(self.raw)
+            self.sudo().spreadsheet_snapshot = base64.b64encode(self.spreadsheet_data.encode())
         return json.loads(base64.decodebytes(self.spreadsheet_snapshot))
 
     def _should_be_snapshotted(self):

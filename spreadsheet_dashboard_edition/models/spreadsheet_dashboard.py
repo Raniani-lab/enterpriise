@@ -5,6 +5,8 @@ class SpreadsheetDashboard(models.Model):
     _name = 'spreadsheet.dashboard'
     _inherit = ['spreadsheet.dashboard', 'spreadsheet.collaborative.mixin']
 
+    _spreadsheet_data_field = "data"
+
     file_name = fields.Char(compute='_compute_file_name')
 
     def action_edit_dashboard(self):

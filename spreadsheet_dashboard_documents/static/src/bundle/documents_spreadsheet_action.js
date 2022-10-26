@@ -33,7 +33,7 @@ patch(SpreadsheetAction.prototype, "spreadsheet_dashboard_documents.SpreadsheetA
         const resId = this.resId;
         const name = this.state.spreadsheetName;
         await this.env.services.orm.write("documents.document", [resId], {
-            raw: JSON.stringify(model.exportData()),
+            spreadsheet_data: JSON.stringify(model.exportData()),
         });
         this.env.services.action.doAction(
             {

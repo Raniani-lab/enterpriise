@@ -97,7 +97,7 @@ QUnit.module(
                 mockRPC: async function (route, args) {
                     if (args.method === "join_spreadsheet_session") {
                         return {
-                            raw: {},
+                            data: {},
                             name: "name",
                             revisions: [],
                             isReadonly: true,

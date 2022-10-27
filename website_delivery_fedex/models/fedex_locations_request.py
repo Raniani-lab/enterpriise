@@ -58,7 +58,7 @@ class FEDEXLocationsRequest(FedexRequest):
         self.Constraints = self.factory.SearchLocationConstraints()
         self.Constraints.RadiusDistance = self.factory.Distance()
         self.Constraints.RadiusDistance.Value = carrier.fedex_locations_radius_value
-        self.Constraints.RadiusDistance.Units = carrier.fedex_locations_radius_unit
+        self.Constraints.RadiusDistance.Units = carrier.fedex_locations_radius_unit.name.upper()
 
     def process_locs(self):
         _logger = logging.getLogger(__name__)
@@ -99,6 +99,8 @@ class FEDEXLocationsRequest(FedexRequest):
             raise UserError(_('There was an error retrieving Fedex localisations:\n%s', fault))
         except IOError:
             raise UserError(_('Fedex Server Not Found'))
+        except ValueError:
+            raise UserError(_('No Fedex pick-up points available for that shipping address'))
         return self._sanitize_response(response)
 
     def _sanitize_response(self, response):

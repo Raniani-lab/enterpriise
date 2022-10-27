@@ -3,6 +3,7 @@
 import re
 import math
 import requests
+import json
 from werkzeug.urls import url_join
 
 
@@ -98,7 +99,18 @@ class SendCloud:
         data = {
             'parcels': parcels
         }
-        res = self._send_request('parcels', 'post', data, params={'errors': 'verbose-carrier'})
+
+        parameters = {
+            'errors': 'verbose-carrier',
+        }
+
+        # the id of the access_point needs to be passed as parameter following Sendcloud API's
+        if picking.sale_id.access_point_address:
+            data = json.loads(picking.sale_id.order_line[0].order_id.access_point_address)
+            access_point_id = data['id']
+            parameters['to_service_point'] = access_point_id
+
+        res = self._send_request('parcels', 'post', data, params=parameters)
         res_parcels = res.get('parcels')
         if not res_parcels:
             raise UserError(_('Something went wrong, parcel not returned from Sendcloud'))
@@ -130,8 +142,8 @@ class SendCloud:
         res = self._send_request('user/addresses/sender')
         return res.get('sender_addresses', [])
 
-    def _send_request(self, endpoint, method='get', data=None, params=None):
-        url = url_join(BASE_URL, endpoint)
+    def _send_request(self, endpoint, method='get', data=None, params=None, route=BASE_URL):
+        url = url_join(route, endpoint)
         self.logger(f'{url}\n{method}\n{data}', f'sendcloud request {endpoint}')
         if method not in ['get', 'post']:
             raise Exception(f'Unhandled request method {method}')

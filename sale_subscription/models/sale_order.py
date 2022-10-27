@@ -1098,7 +1098,6 @@ class SaleOrder(models.Model):
         auto_commit = automatic and not bool(config['test_enable'] or config['test_file'])
         Mail = self.env['mail.mail']
         today = fields.Date.today()
-        stages_in_progress = self.env['sale.order.stage'].search([('category', '=', 'progress')])
         if len(self) > 0:
             all_subscriptions = self.filtered(lambda so: so.is_subscription and so.subscription_management != 'upsell' and not so.payment_exception)
             need_cron_trigger = False
@@ -1127,7 +1126,8 @@ class SaleOrder(models.Model):
         if auto_commit:
             self.env.cr.commit()
         for subscription in all_subscriptions:
-            if subscription.stage_id not in stages_in_progress:
+            # We only invoice contract in sale state. Locked contracts are invoiced in advance. They are frozen.
+            if not (subscription.state == 'sale' and subscription.stage_category == 'progress'):
                 continue
             try:
                 subscription = subscription[0] # Trick to not prefetch other subscriptions, as the cache is currently invalidated at each iteration

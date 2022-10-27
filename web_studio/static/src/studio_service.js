@@ -23,7 +23,6 @@ export const SUPPORTED_VIEW_TYPES = [
     "activity",
     "calendar",
     "cohort",
-    "dashboard",
     "form",
     "gantt",
     "graph",

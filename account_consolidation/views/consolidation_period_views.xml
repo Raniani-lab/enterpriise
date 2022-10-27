@@ -140,7 +140,7 @@
             <field name="priority">1</field>
             <field name="arch" type="xml">
                 <kanban class="o_kanban_dashboard o_account_kanban"
-                        banner_route="/account_consolidation/dashboard_onboarding">
+                        banner_route="/onboarding/account_consolidation_dashboard">
                     <field name="color"/>
                     <field name="chart_id"/> <!-- Needed to allow chart color update -->
                     <templates>

@@ -11,6 +11,7 @@ It also provides new tools to analyse your data.
     """,
     'depends': ['website_sale'],
     'data': [
+        'data/onboarding_data.xml',
         'views/dashboard_view.xml',
     ],
     'auto_install': ['website_sale'],

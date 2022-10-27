@@ -15,10 +15,6 @@ export class SpreadsheetTemplateAction extends AbstractSpreadsheetAction {
         this.orm = useService("orm");
     }
 
-    exposeSpreadsheet(spreadsheet) {
-        this.spreadsheet = spreadsheet;
-    }
-
     _initializeWith(record) {
         this.spreadsheetData = base64ToJson(record.data);
         this.state.spreadsheetName = record.name;

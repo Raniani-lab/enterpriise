@@ -27,7 +27,6 @@
         onMakeCopy.bind="_onMakeCopy"
         onNewSpreadsheet.bind="_onNewSpreadsheet"
         onSpreadsheetSaved.bind="_onSpreadsheetSaved"
-        exposeSpreadsheet.bind="exposeSpreadsheet"
     />
 </div>
 

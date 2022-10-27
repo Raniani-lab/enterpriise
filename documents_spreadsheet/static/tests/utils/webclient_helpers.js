@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { busService } from '@bus/services/bus_service';
+import { busService } from "@bus/services/bus_service";
 import { multiTabService } from "@bus/multi_tab_service";
 
 import { InsertListSpreadsheetMenu } from "@spreadsheet_edition/assets/list_view/insert_list_spreadsheet_menu_owl";
@@ -13,6 +13,10 @@ import { registry } from "@web/core/registry";
 import { uiService } from "@web/core/ui/ui_service";
 import { viewService } from "@web/views/view_service";
 import { makeFakeSpreadsheetService } from "@spreadsheet_edition/../tests/utils/collaborative_helpers";
+import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
+
+const { Spreadsheet } = spreadsheet;
 
 const serviceRegistry = registry.category("services");
 
@@ -31,7 +35,7 @@ export async function prepareWebClientForSpreadsheet() {
     serviceRegistry.add("view", viewService, { force: true }); // #action-serv-leg-compat-js-class
     serviceRegistry.add("orm", ormService, { force: true }); // #action-serv-leg-compat-js-class
     serviceRegistry.add("bus_service", busService);
-    serviceRegistry.add('multi_tab', multiTabService);
+    serviceRegistry.add("multi_tab", multiTabService);
     registry.category("favoriteMenu").add(
         "insert-list-spreadsheet-menu",
         {
@@ -46,13 +50,18 @@ export async function prepareWebClientForSpreadsheet() {
     );
 }
 
+function getChildFromComponent(component, cls) {
+    return Object.values(component.__owl__.children).find((child) => child.component instanceof cls)
+        .component;
+}
+
 /**
  * Return the odoo spreadsheet component
  * @param {*} actionManager
- * @returns {Component}
+ * @returns {SpreadsheetComponent}
  */
 export function getSpreadsheetComponent(actionManager) {
-    return actionManager.spreadsheet;
+    return getChildFromComponent(actionManager, SpreadsheetComponent);
 }
 
 /**
@@ -61,7 +70,7 @@ export function getSpreadsheetComponent(actionManager) {
  * @returns {Component}
  */
 export function getOSpreadsheetComponent(actionManager) {
-    return getSpreadsheetComponent(actionManager).spreadsheet;
+    return getChildFromComponent(getSpreadsheetComponent(actionManager), Spreadsheet);
 }
 
 /**

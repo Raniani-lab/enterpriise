@@ -33,10 +33,6 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
         this.spreadsheetCollaborative = useService("spreadsheet_collaborative");
     }
 
-    exposeSpreadsheet(spreadsheet) {
-        this.spreadsheet = spreadsheet;
-    }
-
     async onWillStart() {
         await super.onWillStart();
         this.transportService = this.spreadsheetCollaborative.getCollaborativeChannel(

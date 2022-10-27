@@ -27,8 +27,6 @@ export default class SpreadsheetComponent extends LegacyComponent {
         this.action = useService("action");
         this.notifications = useService("notification");
 
-        this.props.exposeSpreadsheet(this);
-
         useSubEnv({
             newSpreadsheet: this.newSpreadsheet.bind(this),
             makeCopy: this.makeCopy.bind(this),
@@ -121,10 +119,6 @@ export default class SpreadsheetComponent extends LegacyComponent {
         });
 
         onWillUnmount(() => this._onLeave());
-    }
-
-    exposeSpreadsheet(spreadsheet) {
-        this.spreadsheet = spreadsheet;
     }
 
     /**
@@ -383,16 +377,11 @@ SpreadsheetComponent.props = {
     onNewSpreadsheet: {
         type: Function,
     },
-    exposeSpreadsheet: {
-        type: Function,
-        optional: true,
-    },
 };
 SpreadsheetComponent.defaultProps = {
     isReadonly: false,
     snapshotRequested: false,
     showFormulas: false,
     stateUpdateMessages: [],
-    exposeSpreadsheet: () => {},
     onDownload: () => {},
 };

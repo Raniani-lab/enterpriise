@@ -8,7 +8,7 @@ import { createSpreadsheetTemplate } from "../spreadsheet_test_utils";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { setCellContent } from "@spreadsheet/../tests/utils/commands";
 import { getCellValue } from "@spreadsheet/../tests/utils/getters";
-import { SpreadsheetTemplateAction } from "@documents_spreadsheet/bundle/actions/spreadsheet_template/spreadsheet_template_action";
+import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
 
 const { onMounted } = owl;
 const { Model } = spreadsheet;
@@ -93,11 +93,11 @@ QUnit.module("documents_spreadsheet > template action", {}, () => {
                 },
             ];
             let spreadSheetComponent;
-            patchWithCleanup(SpreadsheetTemplateAction.prototype, {
+            patchWithCleanup(SpreadsheetComponent.prototype, {
                 setup() {
                     this._super();
                     onMounted(() => {
-                        spreadSheetComponent = this.spreadsheet;
+                        spreadSheetComponent = this;
                     });
                 },
             });

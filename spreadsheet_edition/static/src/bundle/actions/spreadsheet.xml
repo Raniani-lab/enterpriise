@@ -2,9 +2,7 @@
 <templates>
 
     <div t-name="spreadsheet_edition.SpreadsheetComponent" class="o_spreadsheet_container o_field_highlight" owl="1">
-        <Spreadsheet model="model"
-                     exposeSpreadsheet.bind="exposeSpreadsheet"
-        />
+        <Spreadsheet model="model" />
         <Dialog t-if="state.dialog.isDisplayed"
             title="state.dialog.title || 'Odoo Spreadsheet'"
             size="'medium'"

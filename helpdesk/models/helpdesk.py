@@ -928,6 +928,15 @@ class HelpdeskTeam(models.Model):
             if teams_dict[ticket.team_id.id]['to_stage_id']:
                 ticket.write({'stage_id': teams_dict[ticket.team_id.id]['to_stage_id'][0]})
 
+    def action_view_helpdesk_rating(self):
+        action = self.env['ir.actions.act_window']._for_xml_id('helpdesk.rating_rating_action_helpdesk')
+
+        ticket_ids = list(self.env['helpdesk.ticket']._search([('team_id.company_id', 'in', self._context.get('allowed_company_ids'))]))
+        action['domain'] = expression.AND([
+            ast.literal_eval(action.get('domain', '[]')),
+            [('res_id', 'in', ticket_ids)],
+        ])
+        return action
     # ---------------------------------------------------
     # Mail gateway
     # ---------------------------------------------------

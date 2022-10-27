@@ -18,4 +18,4 @@ FilterComponent.template = "spreadsheet_edition.FilterComponent";
 
 FilterComponent.components = { Menu };
 
-
+FilterComponent.props = {};

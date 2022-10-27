@@ -47,7 +47,6 @@ const { getNodesFromXpath, getLegacyNode, xpathToLegacyXpathInfo, serializeXmlTo
 const CONVERTED_VIEWS = [
     "calendar",
     "cohort",
-    "dashboard",
     "graph",
     "map",
     "pivot",

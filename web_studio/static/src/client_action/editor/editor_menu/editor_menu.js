@@ -155,11 +155,6 @@ EditorMenu.viewTypes = [
         iconClasses: "fa fa-tasks",
     },
     {
-        title: _lt("Dashboard"),
-        type: "dashboard",
-        iconClasses: "fa fa-tachometer",
-    },
-    {
         title: _lt("Cohort"),
         type: "cohort",
         iconClasses: "oi oi-view-cohort",

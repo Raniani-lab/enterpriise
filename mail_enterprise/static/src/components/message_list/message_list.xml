@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="mail_enterprise.MessageList" t-inherit="mail.MessageList" t-inherit-mode="extension" owl="1">
-        <xpath expr="//Message" position="replace">
+    <t t-name="mail_enterprise.MessageListView" t-inherit="mail.MessageListView" t-inherit-mode="extension" owl="1">
+        <xpath expr="//MessageView" position="replace">
             <t t-if="messageView and messageView.swiperView">
                 <SwiperView record="messageView.swiperView"/>
             </t>

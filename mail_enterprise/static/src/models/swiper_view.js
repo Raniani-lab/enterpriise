@@ -63,10 +63,10 @@ registerModel({
                     return 'Message';
                 }
                 if (this.notificationGroupViewOwner) {
-                    return 'NotificationGroup';
+                    return 'NotificationGroupView';
                 }
                 if (this.threadNeedactionPreviewViewOwner) {
-                    return 'ThreadNeedactionPreview';
+                    return 'ThreadNeedactionPreviewView';
                 }
                 return clear();
             },

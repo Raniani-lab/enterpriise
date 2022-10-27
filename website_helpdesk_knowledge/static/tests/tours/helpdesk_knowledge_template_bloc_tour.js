@@ -26,7 +26,7 @@ tour.register('helpdesk_pick_template_as_message_from_knowledge', {
     trigger: '.o_mail_send',
     run: 'click'
 }, { // check that the chatter contains the content of the template block
-    trigger: '.oe_chatter .o_Message_content p:contains("Hello world")',
+    trigger: '.oe_chatter .o_MessageView_content p:contains("Hello world")',
 }]);
 
 tour.register('helpdesk_pick_template_as_description_from_knowledge', {

@@ -31,17 +31,17 @@ QUnit.test('message list desc order', async function (assert) {
         res_model: 'res.partner',
     });
 
-    const messageItems = document.querySelectorAll(`.o_MessageList_item`);
+    const messageItems = document.querySelectorAll(`.o_MessageListView_item`);
     assert.notOk(
-        messageItems[0].classList.contains("o_MessageList_loadMore"),
+        messageItems[0].classList.contains("o_MessageListView_loadMore"),
         "load more link should NOT be before messages"
     );
     assert.ok(
-        messageItems[messageItems.length - 1].classList.contains("o_MessageList_loadMore"),
+        messageItems[messageItems.length - 1].classList.contains("o_MessageListView_loadMore"),
         "load more link should be after messages"
     );
     assert.strictEqual(
-        document.querySelectorAll(`.o_Message`).length,
+        document.querySelectorAll(`.o_MessageView`).length,
         30,
         "should have 30 messages at the beginning"
     );
@@ -63,7 +63,7 @@ QUnit.test('message list desc order', async function (assert) {
         },
     });
     assert.strictEqual(
-        document.querySelectorAll(`.o_Message`).length,
+        document.querySelectorAll(`.o_MessageView`).length,
         60,
         "should have 60 messages after scrolled to bottom"
     );
@@ -72,7 +72,7 @@ QUnit.test('message list desc order', async function (assert) {
         document.querySelector(`.o_ThreadView_messageList`).scrollTop = 0;
     });
     assert.strictEqual(
-        document.querySelectorAll(`.o_Message`).length,
+        document.querySelectorAll(`.o_MessageView`).length,
         60,
         "scrolling to top should not trigger any message fetching"
     );

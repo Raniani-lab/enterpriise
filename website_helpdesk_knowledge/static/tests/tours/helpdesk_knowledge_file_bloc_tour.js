@@ -21,7 +21,7 @@ tour.register('helpdesk_pick_file_as_attachment_from_knowledge', {
     trigger: '.o_knowledge_behavior_type_file .o_knowledge_toolbar_button_text:contains("Use as Attachment")',
     run: 'click',
 }, { // check that the file is added to the attachments
-    trigger: '.o_AttachmentBox .o_AttachmentImage',
+    trigger: '.o_AttachmentBoxView .o_AttachmentImage',
 }]);
 
 tour.register('helpdesk_pick_file_as_message_attachment_from_knowledge', {

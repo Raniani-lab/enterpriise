@@ -36,8 +36,8 @@ QUnit.test('[technical] /helpdesk command gets a body as kwarg', async function 
     });
     await openDiscuss();
 
-    await insertText('.o_ComposerTextInput_textarea', "/helpdesk something");
-    await click('.o_Composer_buttonSend');
+    await insertText('.o_ComposerTextInputView_textarea', "/helpdesk something");
+    await click('.o_ComposerView_buttonSend');
     assert.verifySteps([
         'execute command helpdesk. body: /helpdesk something',
     ]);

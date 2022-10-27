@@ -12,9 +12,9 @@ tour.register('mail_enterprise/static/tests/tours/mail_channel_expand_test_tour.
     test: true,
 }, [{
     content: "Click on chat window header expand button to open channel in Discuss",
-    trigger: '.o_ChatWindow:has(.o_ChatWindowHeader_name:contains("test-mail-channel-expand-tour")) .o_ChatWindowHeader_commandExpand',
+    trigger: '.o_ChatWindow:has(.o_ChatWindowHeaderView_name:contains("test-mail-channel-expand-tour")) .o_ChatWindowHeaderView_commandExpand',
 }, {
     content: "Check that first message of #test-mail-channel-expand-tour is shown in Discuss app",
-    trigger: '.o_Discuss .o_Message_content:contains("test-message-mail-channel-expand-tour")',
+    trigger: '.o_DiscussView .o_MessageView_content:contains("test-message-mail-channel-expand-tour")',
     run: () => {},
 }]);

@@ -1927,7 +1927,7 @@ QUnit.module('documents_kanban_tests.js', {
         );
         assert.containsOnce(target, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
-        assert.containsN(target, '.o_document_chatter_container .o_Chatter .o_Message', 2,
+        assert.containsN(target, '.o_document_chatter_container .o_Chatter .o_MessageView', 2,
             "should display two messages in the chatter");
     });
 
@@ -1983,11 +1983,11 @@ QUnit.module('documents_kanban_tests.js', {
             "should display the chatter"
         );
         assert.containsOnce(target,
-            '.o_document_chatter_container .o_FollowerListMenu',
+            '.o_document_chatter_container .o_FollowerListMenuView',
             "should display the follower widget"
         );
         assert.strictEqual(
-            target.querySelector('.o_FollowerListMenu_buttonFollowersCount').textContent,
+            target.querySelector('.o_FollowerListMenuView_buttonFollowersCount').textContent,
             "2",
             "should have two followers"
         );
@@ -2092,7 +2092,7 @@ QUnit.module('documents_kanban_tests.js', {
         assert.containsOnce(target, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
 
-        assert.containsOnce(target, '.o_ActivityBox',
+        assert.containsOnce(target, '.o_ActivityBoxView',
             "should display the activity area");
         assert.containsOnce(target, '.o_ActivityView',
             "should display an activity");
@@ -2152,26 +2152,26 @@ QUnit.module('documents_kanban_tests.js', {
 
         assert.containsOnce(target, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
-        assert.containsNone(target, '.o_document_chatter_container .o_Composer',
+        assert.containsNone(target, '.o_document_chatter_container .o_ComposerView',
             "chatter composer should not be open");
 
         // open the composer
         await click(target.querySelector('.o_document_chatter_container .o_ChatterTopbar_buttonSendMessage'));
 
-        assert.containsOnce(target, '.o_document_chatter_container .o_Composer',
+        assert.containsOnce(target, '.o_document_chatter_container .o_ComposerView',
             "chatter composer should be open");
 
         // write and send a message (need to wait the Send button to be enabled)
-        target.querySelector(`.o_ComposerTextInput_textarea`).focus();
+        target.querySelector(`.o_ComposerTextInputView_textarea`).focus();
         await afterNextRender(() => {
             document.execCommand('insertText', false, "Some message");
         });
-        await click(target.querySelector('.o_Composer_buttonSend'));
-        assert.containsOnce(target, '.o_Message',
+        await click(target.querySelector('.o_ComposerView_buttonSend'));
+        assert.containsOnce(target, '.o_MessageView',
             "a message should have been created"
         );
         assert.strictEqual(
-            target.querySelector('.o_Message_content').textContent,
+            target.querySelector('.o_MessageView_content').textContent,
             "Some message",
             "the created message should have the right body"
         );
@@ -2214,9 +2214,9 @@ QUnit.module('documents_kanban_tests.js', {
         );
         assert.containsOnce(target, '.o_document_chatter_container .o_Chatter',
             "should display the chatter");
-        assert.containsOnce(target, '.o_document_chatter_container .o_Message',
+        assert.containsOnce(target, '.o_document_chatter_container .o_MessageView',
             "should display one message in the chatter");
-        assert.strictEqual(target.querySelector('.o_Message .o_Message_content').innerText.trim(),
+        assert.strictEqual(target.querySelector('.o_MessageView .o_MessageView_content').innerText.trim(),
             "Message on 'yop'", "should display the correct message");
 
         // select another record
@@ -2224,9 +2224,9 @@ QUnit.module('documents_kanban_tests.js', {
 
         assert.containsOnce(target, '.o_document_chatter_container .o_Chatter',
             "should still display the chatter");
-        assert.containsOnce(target, '.o_document_chatter_container .o_Message',
+        assert.containsOnce(target, '.o_document_chatter_container .o_MessageView',
             "should display one message in the chatter");
-        assert.strictEqual(target.querySelector('.o_Message .o_Message_content').innerText.trim(),
+        assert.strictEqual(target.querySelector('.o_MessageView .o_MessageView_content').innerText.trim(),
             "Message on 'blip'", "should display the correct message");
     });
 

@@ -67,7 +67,7 @@ QUnit.test('Message list loads new messages on scroll', async function (assert) 
         'Initial message fetch should be done'
     );
 
-    const allMessages = document.querySelectorAll('.o_MessageList_message');
+    const allMessages = document.querySelectorAll('.o_MessageListView_message');
     const lastMessage = allMessages[allMessages.length - 1];
     await afterEvent({
         eventName: 'o-thread-view-hint-processed',
@@ -222,14 +222,14 @@ QUnit.test('Message list is scrolled to new message after posting a message', as
 
     await afterNextRender(() =>
         editInput(
-            document.querySelector('.o_ComposerTextInput_textarea'),
+            document.querySelector('.o_ComposerTextInputView_textarea'),
             "New Message"
         )
     );
     assert.verifySteps([], "Message post should not yet be done");
 
     await afterNextRender(() =>
-        document.querySelector('.o_Composer_buttonSend').click()
+        document.querySelector('.o_ComposerView_buttonSend').click()
     );
     assert.verifySteps(['/mail/message/post'], "Message post should be done");
     assert.strictEqual(controllerContentEl.scrollTop, 0,

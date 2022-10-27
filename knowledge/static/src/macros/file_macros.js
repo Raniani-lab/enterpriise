@@ -15,7 +15,7 @@ export class UseAsAttachmentMacro extends AbstractMacro {
                 this.validatePage();
                 const el = this.getFirstVisibleElement('.o_ChatterTopbar_buttonToggleAttachments');
                 if (el) {
-                    const attachmentBoxEl = this.getFirstVisibleElement('.o_AttachmentBox_content');
+                    const attachmentBoxEl = this.getFirstVisibleElement('.o_AttachmentBoxView_content');
                     if (attachmentBoxEl) {
                         return attachmentBoxEl;
                     } else {
@@ -60,13 +60,13 @@ export class AttachToMessageMacro extends AbstractMacro {
         }, {
             trigger: function() {
                 this.validatePage();
-                return this.getFirstVisibleElement('.o_Composer_buttonAttachment');
+                return this.getFirstVisibleElement('.o_ComposerView_buttonAttachment');
             }.bind(this),
             action: dragAndDrop.bind(this, 'dragenter', this.data.dataTransfer),
         }, {
             trigger: function () {
                 this.validatePage();
-                return this.getFirstVisibleElement('.o_Composer_dropZone');
+                return this.getFirstVisibleElement('.o_ComposerView_dropZone');
             }.bind(this),
             action: dragAndDrop.bind(this, 'drop', this.data.dataTransfer),
         }, this.unblockUI);

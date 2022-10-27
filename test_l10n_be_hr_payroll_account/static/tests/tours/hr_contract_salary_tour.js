@@ -115,9 +115,9 @@ Tour.register('hr_contract_salary_tour', {
         },
         {
             content: "Unlog + Go on Configurator",
-            trigger: '.o_Chatter .o_Message:eq(0) a',
+            trigger: '.o_Chatter .o_MessageView:eq(0) a',
             run: function () {
-                var simulation_link = $(".o_Chatter .o_Message:eq(0) a")[0].href;
+                var simulation_link = $(".o_Chatter .o_MessageView:eq(0) a")[0].href;
                 // Retrieve the link without the origin to avoid
                 // mismatch between localhost:8069 and 127.0.0.1:8069
                 // when running the tour with chrome headless
@@ -987,9 +987,9 @@ Tour.register('hr_contract_salary_tour_2', {
         },
         {
             content: "Go on configurator",
-            trigger: '.o_Chatter .o_Message:eq(0) a',
+            trigger: '.o_Chatter .o_MessageView:eq(0) a',
             run: function () {
-                var simulation_link = $(".o_Chatter .o_Message:eq(0) a")[0].href;
+                var simulation_link = $(".o_Chatter .o_MessageView:eq(0) a")[0].href;
                 // Retrieve the link without the origin to avoid
                 // mismatch between localhost:8069 and 127.0.0.1:8069
                 // when running the tour with chrome headless

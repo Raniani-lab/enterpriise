@@ -1,13 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates xml:space="preserve">
-    <t t-name="mail_enterprise.NotificationList" t-inherit="mail.NotificationList" t-inherit-mode="extension" owl="1">
-        <xpath expr="//NotificationGroup" position="replace">
+    <t t-name="mail_enterprise.NotificationListView" t-inherit="mail.NotificationListView" t-inherit-mode="extension" owl="1">
+        <xpath expr="//NotificationGroupView" position="replace">
             <t t-if="notificationView and notificationView.swiperView">
                 <SwiperView record="notificationView.swiperView"/>
             </t>
             <t t-else="">$0</t>
         </xpath>
-        <xpath expr="//ThreadNeedactionPreview" position="replace">
+        <xpath expr="//ThreadNeedactionPreviewView" position="replace">
             <t t-if="notificationView and notificationView.swiperView">
                 <SwiperView record="notificationView.swiperView"/>
             </t>

@@ -29,7 +29,7 @@ export class SendAsMessageMacro extends AbstractMacro {
         }, {
             trigger: function() {
                 this.validatePage();
-                return this.getFirstVisibleElement('.o_Composer_buttonFullComposer');
+                return this.getFirstVisibleElement('.o_ComposerView_buttonFullComposer');
             }.bind(this),
             action: 'click',
         }, {

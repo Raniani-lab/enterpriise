@@ -130,7 +130,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             inputFiles(chatter.composerView.fileUploader.fileInput, files)
         );
 
-        await click('.o_Composer_buttonSend');
+        await click('.o_ComposerView_buttonSend');
         assert.containsN(document.body, '.arrow', 2,
             "Display arrows if there multiple attachments");
 

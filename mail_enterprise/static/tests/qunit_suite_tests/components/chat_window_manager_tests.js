@@ -61,7 +61,7 @@ QUnit.test('[technical] chat window should properly override the back button', a
     await start();
     await afterNextRender(() => document.querySelector(`.o_MessagingMenu_toggler`).click());
     await afterNextRender(() =>
-        document.querySelector(`.o_MessagingMenu_dropdownMenu .o_NotificationList_preview`).click()
+        document.querySelector(`.o_MessagingMenu_dropdownMenu .o_NotificationListView_preview`).click()
     );
     assert.verifySteps(
         ['overrideBackButton: true'],
@@ -69,7 +69,7 @@ QUnit.test('[technical] chat window should properly override the back button', a
     );
 
     await afterNextRender(() =>
-        document.querySelector('.o_ChatWindowHeader_commandBack').click()
+        document.querySelector('.o_ChatWindowHeaderView_commandBack').click()
     );
     // The messaging menu is re-open when a chat window is closed,
     // so we need to close it because it overrides the back button too.

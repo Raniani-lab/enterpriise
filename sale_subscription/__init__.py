@@ -5,6 +5,7 @@ from . import controllers
 from . import models
 from . import report
 from . import wizard
+from . import populate
 
 
 def _pre_init_sale_subscription(cr):

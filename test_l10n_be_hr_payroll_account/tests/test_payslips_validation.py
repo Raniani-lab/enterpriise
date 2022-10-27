@@ -387,6 +387,34 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
                     ("4", 13.8, 16.6, "afternoon", "1", "35")]],
         }])
 
+        cls.resource_calendar_4_5_monday_off_equal_morning_afternoon = cls.env['resource.calendar'].create([{
+            'name': "Test Calendar: 4/5 Monday/Friday Afternoon Off (equal morning/afternoon)",
+            'company_id': cls.env.company.id,
+            'hours_per_day': 6.08,
+            'tz': "Europe/Brussels",
+            'two_weeks_calendar': False,
+            'hours_per_week': 30.4,
+            'full_time_required_hours': 38.0,
+            'attendance_ids': [(5, 0, 0)] + [(0, 0, {
+                'name': "Attendance",
+                'dayofweek': dayofweek,
+                'hour_from': hour_from,
+                'hour_to': hour_to,
+                'day_period': day_period,
+                'work_entry_type_id': cls.env.ref('hr_work_entry.work_entry_type_attendance').id
+
+            }) for dayofweek, hour_from, hour_to, day_period in [
+                ("0", 9.0, 12.8, "morning"),
+                ("1", 9.0, 12.8, "morning"),
+                ("1", 13.8, 17.6, "afternoon"),
+                ("2", 9.0, 12.8, "morning"),
+                ("2", 13.8, 17.6, "afternoon"),
+                ("3", 9.0, 12.8, "morning"),
+                ("3", 13.8, 17.6, "afternoon"),
+                ("4", 9.0, 12.8, "morning"),
+            ]],
+        }])
+
         cls.employee = cls.env['hr.employee'].create([{
             'name': "Test Employee",
             'address_home_id': cls.address_home.id,
@@ -8703,3 +8731,92 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         net_account_move_line = refund.move_id.line_ids.filtered(lambda l: l.name == 'Net Salary')
         self.assertAlmostEqual(net_account_move_line.debit, 2203.54, places=2)
         self.assertAlmostEqual(net_account_move_line.credit, 0.0, places=2)
+
+    def test_sick_time_off_without_guaranteed_salary_half_days_no_attendances(self):
+        # Check the sick time off is not counted twice on half/full days
+        # if only sick time off without attendances (and without guaranteed salary)
+
+        self.contract.write({
+            'wage_on_signature': 3846.00,
+            'resource_calendar_id': self.resource_calendar_4_5_monday_off_equal_morning_afternoon.id,
+        })
+
+        sick_leave_1 = self.env['hr.leave'].new({
+            'name': 'Sick Time Off 16 days',
+            'employee_id': self.employee.id,
+            'holiday_status_id': self.sick_time_off_type.id,
+            'request_date_from': datetime.date(2022, 9, 26),
+            'request_date_to': datetime.date(2022, 10, 17),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
+            'number_of_days': 16,
+        })
+        sick_leave_1._compute_date_from_to()
+        sick_leave_1 = self.env['hr.leave'].create(sick_leave_1._convert_to_write(sick_leave_1._cache))
+
+        sick_leave_2 = self.env['hr.leave'].new({
+            'name': 'Sick Time Off 20 days',
+            'employee_id': self.employee.id,
+            'holiday_status_id': self.sick_time_off_type.id,
+            'request_date_from': datetime.date(2022, 10, 18),
+            'request_date_to': datetime.date(2022, 11, 14),
+            'request_hour_from': '7',
+            'request_hour_to': '18',
+            'number_of_days': 20,
+        })
+        sick_leave_2._compute_date_from_to()
+        sick_leave_2 = self.env['hr.leave'].create(sick_leave_2._convert_to_write(sick_leave_2._cache))
+
+        (sick_leave_1 + sick_leave_2).action_validate()
+
+        self.contract._generate_work_entries(datetime.date(2022, 10, 1), datetime.date(2022, 10, 31))
+        payslip = self._generate_payslip(datetime.date(2022, 10, 1), datetime.date(2022, 10, 31))
+
+        self.assertEqual(len(payslip.worked_days_line_ids), 4)
+        self.assertEqual(len(payslip.input_line_ids), 0)
+
+        # Without guaranteed salary
+        wds = payslip.worked_days_line_ids
+        sick = wds.filtered(lambda wd: wd.code == "LEAVE214" and wd.number_of_hours == 7.6)
+        self.assertAlmostEqual(sick.amount, 0, places=2)
+        sick = wds.filtered(lambda wd: wd.code == "LEAVE214" and wd.number_of_hours == 15.2)
+        self.assertAlmostEqual(sick.amount, 0, places=2)
+        # Sick time off
+        sick = wds.filtered(lambda wd: wd.code == "LEAVE110" and wd.number_of_hours == 26.6)
+        self.assertAlmostEqual(sick.amount, 776.6, places=2)
+        sick = wds.filtered(lambda wd: wd.code == "LEAVE110" and wd.number_of_hours == 76.0)
+        self.assertAlmostEqual(sick.amount, 2403.75, places=2)
+
+        payslip_results = {
+            'BASIC': 3180.35,
+            'ATN.INT': 5.0,
+            'ATN.MOB': 4.0,
+            'SALARY': 3189.35,
+            'ONSS': -416.85,
+            'ONSSTOTAL': 416.85,
+            'ATN.CAR': 162.42,
+            'GROSSIP': 2934.92,
+            'IP.PART': -795.09,
+            'GROSS': 2139.84,
+            'P.P': -361.61,
+            'PPTOTAL': 361.61,
+            'ATN.CAR.2': -162.42,
+            'ATN.INT.2': -5.0,
+            'ATN.MOB.2': -4.0,
+            'M.ONSS': -21.22,
+            'MEAL_V_EMP': 0,
+            'REP.FEES': 150.0,
+            'IP': 795.09,
+            'IP.DED': -59.63,
+            'NET': 2471.04,
+            'REMUNERATION': 2385.26,
+            'ONSSEMPLOYERBASIC': 798.29,
+            'ONSSEMPLOYERFFE': 2.23,
+            'ONSSEMPLOYERMFFE': 3.19,
+            'ONSSEMPLOYERCPAE': 7.34,
+            'ONSSEMPLOYERRESTREINT': 53.9,
+            'ONSSEMPLOYERUNEMP': 3.19,
+            'ONSSEMPLOYER': 868.14,
+            'CO2FEE': 28.17,
+        }
+        self._validate_payslip(payslip, payslip_results)

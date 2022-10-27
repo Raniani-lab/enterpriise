@@ -25,6 +25,7 @@
                         <img
                             tabindex="0"
                             t-on-focus="() => this._selectTemplate(null)"
+                            t-on-dblclick="_createSpreadsheet"
                             t-att-class="_isSelected(null) ? 'o-template-selected': ''"
                             src="spreadsheet/static/img/spreadsheet.svg"
                             t-att-title="Blank"/>
@@ -38,6 +39,7 @@
                             tabindex="0"
                             t-att-class="_isSelected(template.id) ? 'o-template-selected': ''"
                             t-on-focus="() => this._selectTemplate(template.id)"
+                            t-on-dblclick="_createSpreadsheet"
                             t-attf-src="/web/image?model=spreadsheet.template&amp;id={{template.id}}&amp;field=thumbnail"
                             t-att-title="template.name"/>
                         <div class="o-template-item-name" t-esc="template.name"/>

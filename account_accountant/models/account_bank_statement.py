@@ -1,5 +1,7 @@
-# -*- coding: utf-8 -*-
 from odoo import _, api, fields, models
+from odoo.addons.base.models.res_bank import sanitize_account_number
+from odoo.osv.expression import get_unaccent_wrapper
+from odoo.tools import html2plaintext
 
 from dateutil.relativedelta import relativedelta
 
@@ -33,6 +35,10 @@ class AccountBankStatementLine(models.Model):
         action = self.env['ir.actions.act_window']._for_xml_id('account_accountant.action_bank_statement_line_form_bank_rec_widget')
         action['context'] = {'default_journal_id': self._context['default_journal_id']}
         return action
+
+    ####################################################
+    # RECONCILIATION PROCESS
+    ####################################################
 
     @api.model
     def _action_open_bank_reconciliation_widget(self, extra_domain=None, default_context=None, name=None):
@@ -128,3 +134,112 @@ class AccountBankStatementLine(models.Model):
         # some statement lines left.
         if nb_auto_reconciled_lines and has_more_st_lines_to_reconcile:
             self.env.ref('account_accountant.auto_reconcile_bank_statement_line')._trigger()
+
+    def _retrieve_partner(self):
+        self.ensure_one()
+
+        # Retrieve the partner from the statement line.
+        if self.partner_id:
+            return self.partner_id
+
+        # Retrieve the partner from the bank account.
+        if self.account_number:
+            account_number_nums = sanitize_account_number(self.account_number)
+            if account_number_nums:
+                domain = [('sanitized_acc_number', 'ilike', account_number_nums)]
+                for extra_domain in ([('company_id', '=', self.company_id.id)], []):
+                    bank_accounts = self.env['res.partner.bank'].search(extra_domain + domain)
+                    if len(bank_accounts.partner_id) == 1:
+                        return bank_accounts.partner_id
+
+        # Retrieve the partner from the partner name.
+        if self.partner_name:
+            domain = [
+                ('parent_id', '=', False),
+                ('name', 'ilike', self.partner_name),
+            ]
+            for extra_domain in ([('company_id', '=', self.company_id.id)], []):
+                partner = self.env['res.partner'].search(extra_domain + domain, limit=1)
+                if partner:
+                    return partner
+
+        # Retrieve the partner from the 'reconcile models'.
+        rec_models = self.env['account.reconcile.model'].search([
+            ('rule_type', '!=', 'writeoff_button'),
+            ('company_id', '=', self.company_id.id),
+        ])
+        for rec_model in rec_models:
+            partner = rec_model._get_partner_from_mapping(self)
+            if partner and rec_model._is_applicable_for(self, partner):
+                return partner
+
+        # Retrieve the partner from statement line text values.
+        st_line_text_values = self._get_st_line_strings_for_matching()
+        unaccent = get_unaccent_wrapper(self._cr)
+        sub_queries = []
+        params = []
+        for text_value in st_line_text_values:
+            if not text_value:
+                continue
+
+            # Find a partner having a name contained inside the statement line values.
+            # Take care a partner could contain some special characters in its name that needs to be escaped.
+            sub_queries.append(rf'''
+                {unaccent("%s")} ~* ('^' || (
+                   SELECT STRING_AGG(CONCAT('(?=.*\m', chunk[1], '\M)'), '')
+                   FROM regexp_matches({unaccent('partner.name')}, '\w{{3,}}', 'g') AS chunk
+                ))
+            ''')
+            params.append(text_value)
+
+        if sub_queries:
+            self.env['res.partner'].flush_model(['company_id', 'name'])
+            self.env['account.move.line'].flush_model(['partner_id', 'company_id'])
+            self._cr.execute(
+                '''
+                    SELECT aml.partner_id
+                    FROM account_move_line aml
+                    JOIN res_partner partner ON
+                        aml.partner_id = partner.id
+                        AND partner.name IS NOT NULL
+                        AND partner.active
+                        AND ((''' + ') OR ('.join(sub_queries) + '''))
+                    WHERE aml.company_id = %s
+                    LIMIT 1
+                ''',
+                params + [self.company_id.id],
+            )
+            row = self._cr.fetchone()
+            if row:
+                return self.env['res.partner'].browse(row[0])
+
+        return self.env['res.partner']
+
+    def _get_st_line_strings_for_matching(self, allowed_fields=None):
+        """ Collect the strings that could be used on the statement line to perform some matching.
+
+        :param allowed_fields: A explicit list of fields to consider.
+        :return: A list of strings.
+        """
+        self.ensure_one()
+
+        def _get_text_value(field_name):
+            if self._fields[field_name].type == 'html':
+                return self[field_name] and html2plaintext(self[field_name])
+            else:
+                return self[field_name]
+
+        st_line_text_values = []
+        if allowed_fields is None or 'payment_ref' in allowed_fields:
+            value = _get_text_value('payment_ref')
+            if value:
+                st_line_text_values.append(value)
+        if allowed_fields is None or 'narration' in allowed_fields:
+            value = _get_text_value('narration')
+            if value:
+                st_line_text_values.append(value)
+        if allowed_fields is None or 'ref' in allowed_fields:
+            value = _get_text_value('ref')
+            if value:
+                st_line_text_values.append(value)
+        return st_line_text_values

@@ -1,7 +1,15 @@
+@keyframes white-flash {
+    from { filter: brightness(2) } to { filter: none }
+}
+
 .o_barcode_client_action {
     display: flex;
     background-color: $o-view-background-color;
     overflow: auto;
+
+    &.o_white_flash {
+        animation: white-flash 200ms;
+    }
 
     .o_strong {
         font-weight: bold;

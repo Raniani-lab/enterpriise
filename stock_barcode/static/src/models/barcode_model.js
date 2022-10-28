@@ -935,6 +935,10 @@ export default class BarcodeModel extends EventBus {
             barcodeData.error = parseErrorMessage;
         }
 
+        if (barcodeData.match) { // Makes flash the screen if the scanned barcode was recognized.
+            this.trigger('flash');
+        }
+
         // Process each data in order, starting with non-ambiguous data type.
         if (barcodeData.action) { // As action is always a single data, call it and do nothing else.
             return await barcodeData.action();
@@ -987,6 +991,7 @@ export default class BarcodeModel extends EventBus {
                 // anything else, we assume it's a new lot/serial number.
                 if (previousProduct.tracking !== 'none' &&
                     !barcodeData.match && this.canCreateNewLot) {
+                    this.trigger('flash');
                     barcodeData.lotName = barcode;
                     barcodeData.product = previousProduct;
                 }

@@ -53,6 +53,7 @@ class MainComponent extends Component {
             this.groups = barcodeData.groups;
             this.env.model.setData(barcodeData);
             this.state.displayNote = Boolean(this.env.model.record.note);
+            this.env.model.on('flash', this, this.flashScreen);
             this.env.model.on('process-action', this, this._onDoAction);
             this.env.model.on('refresh', this, this._onRefreshState);
             this.env.model.on('update', this, () => this.render(true));
@@ -67,6 +68,7 @@ class MainComponent extends Component {
         });
 
         onWillUnmount(() => {
+            this.env.model.off('flash', this, this.flashScreen)
             bus.off('barcode_scanned', this, this._onBarcodeScanned);
             bus.off('refresh', this, this._onRefreshState);
             bus.off('warning', this, this._onWarning);
@@ -192,6 +194,16 @@ class MainComponent extends Component {
         } else {
             this.toggleBarcodeLines();
         }
+    }
+
+    flashScreen() {
+        const clientAction = document.querySelector('.o_barcode_client_action');
+        // Resets the animation (in case it still going).
+        clientAction.style.animation = 'none';
+        clientAction.offsetHeight; // Trigger reflow.
+        clientAction.style.animation = null;
+        // Adds the CSS class linked to the keyframes animation `white-flash`.
+        clientAction.classList.add('o_white_flash');
     }
 
     putInPack(ev) {

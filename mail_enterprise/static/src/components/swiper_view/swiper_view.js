@@ -5,7 +5,7 @@ import { registerMessagingComponent } from '@mail/utils/messaging_component';
 
 import { ActionSwiper } from '@web/core/action_swiper/action_swiper';
 
-const { Component } = owl;
+import { Component } from '@odoo/owl';
 
 export class SwiperView extends Component {
 

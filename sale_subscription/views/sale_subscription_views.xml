@@ -139,6 +139,7 @@
                     <filter string="Next Invoice Date" name="next_invoice_date" domain="[]" context="{'group_by' : 'next_invoice_date'}" />
                     <filter string="Recurrence" name="recurrence" domain="[]" context="{'group_by' : 'recurrence_id'}" />
                     <filter string="Pricelist" name="pricelist_id" domain="[]" context="{'group_by' : 'pricelist_id'}" />
+                    <filter string="First contract" name="origin_order_id" domain="[]" context="{'group_by' : 'origin_order_id'}" />
                 </group>
             </search>
         </field>

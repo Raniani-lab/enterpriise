@@ -322,25 +322,27 @@ class SaleOrder(models.Model):
 
     @api.depends('origin_order_id')
     def _compute_history_count(self):
-        if not self.origin_order_id:
+        subscription_history_needed = self.mapped('is_subscription') + self.mapped('subscription_management')
+        if not any(subscription_history_needed):
             self.history_count = 0
             return
+        origin_ids = self.origin_order_id.ids + self.ids
         result = self.env['sale.order'].read_group([
                 ('state', '!=', 'cancel'),
-                ('origin_order_id', 'in', self.origin_order_id.ids)
+                ('origin_order_id', 'in', origin_ids)
             ],
             ['origin_order_id'],
             ['origin_order_id']
         )
-        counters = {data['origin_order_id'][0]: data['origin_order_id_count'] for data in result}
+        counters = {data['origin_order_id'][0]: data['origin_order_id_count'] + 1 for data in result}
         for so in self:
-            so.history_count = counters.get(so.origin_order_id.id, 0)
+            so.history_count = counters.get(so.origin_order_id.id or so.id, 0)
 
     @api.depends('is_subscription', 'subscription_management')
     def _compute_origin_order_id(self):
         for order in self:
-            if (order.is_subscription or order.subscription_management == 'upsell') and not order.origin_order_id:
-                order.origin_order_id = order.subscription_id or order.id
+            if order.subscription_management in ['renew', 'upsell'] and not order.origin_order_id:
+                order.origin_order_id = order.subscription_id
 
     @api.model
     def _read_group_stage_ids(self, stages, domain, order):
@@ -745,9 +747,9 @@ class SaleOrder(models.Model):
     def open_subscription_history(self):
         self.ensure_one()
         action = self._get_associated_so_action()
-        genealogy_orders_ids = self.search([('origin_order_id', 'in', self.origin_order_id.ids)])
+        origin_order_id = self.origin_order_id.id or self.id
         action['name'] = "History"
-        action['domain'] = [('id', 'in', genealogy_orders_ids.ids)]
+        action['domain'] = ['|', ('id', '=', origin_order_id), ('origin_order_id', '=', origin_order_id)]
         return action
 
     def action_open_subscriptions(self):
@@ -771,7 +773,8 @@ class SaleOrder(models.Model):
 
     def action_sale_order_log(self):
         action = self.env["ir.actions.actions"]._for_xml_id("sale_subscription.action_sale_order_log")
-        genealogy_orders_ids = self.search([('origin_order_id', 'in', self.origin_order_id.ids)])
+        origin_order_ids = self.origin_order_id.ids + self.ids
+        genealogy_orders_ids = self.search(['|', ('id', 'in', origin_order_ids), ('origin_order_id', 'in', origin_order_ids)])
         action.update({
             'name': _('MRR changes'),
             'domain': [('order_id', 'in', genealogy_orders_ids.ids), ('event_type', '!=', '3_transfer')],

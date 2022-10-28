@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
-from odoo.tools import str2bool
+
 
 class PaymentTransaction(models.Model):
     _inherit = 'payment.transaction'
@@ -14,6 +14,18 @@ class PaymentTransaction(models.Model):
     def _compute_renewal_allowed(self):
         for tx in self:
             tx.renewal_allowed = tx.state in ('done', 'authorized')
+
+    def _reconcile_after_done(self):
+        # override to force invoice creation if the transaction is done for a subscription
+        # We don't take care of the sale.automatic_invoice parameter in that case.
+        res = super()._reconcile_after_done()
+        tx_to_invoice = self.env['payment.transaction']
+        for tx in self:
+            if tx.sale_order_ids.filtered(lambda so: so.state in ('sale', 'done') and so.is_subscription) and not tx.invoice_ids:
+                tx_to_invoice |= tx
+        tx_to_invoice._invoice_sale_orders()
+        tx_to_invoice._send_invoice()
+        return res
 
     def _get_invoiced_subscription_transaction(self):
         # create the invoices for the transactions that are not yet linked to invoice
@@ -36,13 +48,5 @@ class PaymentTransaction(models.Model):
         # We have to do it here because when a client confirms and pay a SO from the portal with success_payment
         # The next_invoice_date won't be update by the reconcile_pending_transaction callback (do_payment is not called)
         # Create invoice
-        res = super(PaymentTransaction, transaction_to_invoice)._invoice_sale_orders()
-        if str2bool(self.env['ir.config_parameter'].sudo().get_param('sale.automatic_invoice')):
-            today = fields.Date.today()
-            order_to_update_ids = self.env['sale.order']
-            for order in self.sale_order_ids:
-                if order.recurrence_id and order.payment_token_id and order.start_date <= order.next_invoice_date <= today:
-                    order_to_update_ids |= order
-            order_to_update_ids._update_next_invoice_date()
-            order_to_update_ids.order_line._reset_subscription_qty_to_invoice()
+        res = super(PaymentTransaction, transaction_to_invoice.with_context(subscription_force_next_invoice_date=True))._invoice_sale_orders()
         return res

@@ -311,6 +311,10 @@ class TestSubscription(TestSubscriptionCommon):
     def test_renewal(self):
         """ Test subscription renewal """
         with freeze_time("2021-11-18"):
+            # We reset the renew alert to make sure it will run with freezetime
+            subscription_alert = self.env.ref('sale_subscription.subscription_to_renew')
+            subscription_alert.automation_id.last_run = False
+            subscription_alert.automation_id._check(automatic=False) # manually trigger the actions
             self.subscription.write({'start_date': False, 'next_invoice_date': False})
             # add an so line with a different uom
             uom_dozen = self.env.ref('uom.product_uom_dozen').id
@@ -330,9 +334,8 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(self.subscription.next_invoice_date, datetime.date(2021, 12, 18))
 
         with freeze_time("2021-12-18"):
-            self.env['sale.order'].cron_subscription_expiration()
+            subscription_alert.automation_id._check(automatic=False) # manually trigger the actions
             self.assertTrue(self.subscription.to_renew)
-
             action = self.subscription.prepare_renewal_order()
             renewal_so = self.env['sale.order'].browse(action['res_id'])
             # check produt_uom_qty

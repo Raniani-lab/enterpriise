@@ -83,6 +83,19 @@
             <field name="category">closed</field>
             <field name="fold">True</field>
         </record>
+        <!-- Alerts -->
+        <record id="subscription_to_renew" model="sale.order.alert">
+            <field name="name">Set To renew when the end date is in less than a month</field>
+            <field name="rating_operator"/>
+            <field name="mrr_change_period"/>
+            <field name="trigger_condition">on_time</field>
+            <field name="trg_date_id" search="[('model', '=', 'sale.order'), ('name', '=', 'end_date')]"
+                   model="ir.model.fields"/>
+            <field name="trg_date_range">-1</field>
+            <field name="trg_date_range_type">month</field>
+            <field name="action">set_to_renew</field>
+            <field name="order_state">sale</field>
+        </record>
     </data>
 
 </odoo>

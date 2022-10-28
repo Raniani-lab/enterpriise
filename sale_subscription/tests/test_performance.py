@@ -11,6 +11,8 @@ class TestSubscriptionPerformance(TestSubscriptionCommon):
     @users('__system__')
     @warmup
     def test_recurring_order_creation_perf(self):
+        # Prevent trigger base_automation actions
+        self.env['sale.order.alert'].search([]).unlink()
         ORDER_COUNT = 100
         partners = self.env['res.partner'].create([{
             'name': 'Jean-Luc %s' % (idx),

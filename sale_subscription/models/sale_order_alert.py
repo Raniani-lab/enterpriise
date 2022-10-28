@@ -55,6 +55,15 @@ class SaleOrderAlert(models.Model):
     stage_to_id = fields.Many2one('sale.order.stage')
     stage_category = fields.Selection([('draft', 'Quotation'), ('progress', 'In Progress'), ('paused', 'Invoicing Pause'), ('closed', 'Closed')])
     stage_id = fields.Many2one('sale.order.stage', string='Stage')
+    order_state = fields.Selection(
+        selection=[
+            ('draft', "Quotation"),
+            ('sent', "Quotation Sent"),
+            ('sale', "Sales Order"),
+            ('done', "Locked"),
+            ('cancel', "Cancelled"),
+        ],
+        string="Status")
     activity_user = fields.Selection([
         ('contract', 'Subscription Salesperson'),
         ('channel_leader', 'Sales Team Leader'),
@@ -109,6 +118,8 @@ class SaleOrderAlert(models.Model):
                 domain += [('stage_id', '=', alert.stage_to_id.id)]
             if alert.stage_category:
                 domain += [('stage_category', '=', alert.stage_category)]
+            if alert.order_state:
+                domain += [('state', '=', alert.order_state)]
             super(SaleOrderAlert, alert).write({'filter_domain': domain})
 
     def unlink(self):

@@ -1333,7 +1333,7 @@ class SaleOrder(models.Model):
         today = fields.Date.today()
         next_month = today + relativedelta(months=1)
         # set to pending if date is in less than a month
-        domain_pending = [('is_subscription', '=', True), ('end_date', '<', next_month), ('stage_category', '=', 'progress'), ('state', '=', 'sale')]
+        domain_pending = [('is_subscription', '=', True), ('end_date', '<', next_month), ('stage_category', '=', 'progress')]
         subscriptions_pending = self.search(domain_pending)
         subscriptions_pending.set_to_renew()
         # set to close if date is passed or if locked sale order is passed
@@ -1346,7 +1346,7 @@ class SaleOrder(models.Model):
             ('to_renew', '=', True)]
         subscriptions_close = self.search(domain_close)
         subscriptions_close.set_close()
-        return dict(pending=subscriptions_pending.ids, closed=subscriptions_close.ids)
+        return dict(closed=subscriptions_close.ids)
 
     def _get_subscription_delta(self, date):
         self.ensure_one()

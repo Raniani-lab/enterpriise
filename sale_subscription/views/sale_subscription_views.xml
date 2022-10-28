@@ -522,9 +522,10 @@
                             <label for="rating_percentage" string="Rating Satisfaction"/>
                             <div class="o_row">
                                 <field name="rating_operator"/>
-                                <field name="rating_percentage"/>
-                                <strong>%</strong>
+                                <field name="rating_percentage" attrs="{'invisible': [('rating_operator', '=', False)]}"/>
+                                <strong attrs="{'invisible': [('rating_operator', '=', False)]}">%</strong>
                             </div>
+                            <field name="order_state"/>
                             <field name="stage_category"/>
                             <label for="stage_from_id" string="Stage goes from"/>
                             <div class="o_row">
@@ -582,6 +583,7 @@
                         <group name="activity_details">
                             <field name="activity_type_id" options="{'no_create': True, 'no_open': True}" attrs="{'required': [('action', '=', 'next_activity')]}"/>
                             <field name="activity_summary" placeholder="e.g. Discuss proposal"/>
+                            <field name="activity_note" placeholder="Log a note..."/>
                         </group>
                         <group name="activitity_deadlines">
                             <label for="activity_date_deadline_range"/>
@@ -596,9 +598,6 @@
                                 attrs="{'invisible': ['|', ('action', '!=', 'next_activity'), ('activity_user', '!=', 'users')],
                                         'required': [('action', '=', 'next_activity'), ('activity_user', '=', 'users')]}"/>
                         </group>
-                    </group>
-                    <group>
-                        <field name="activity_note" placeholder="Log a note..."/>
                     </group>
                 </sheet>
             </form>

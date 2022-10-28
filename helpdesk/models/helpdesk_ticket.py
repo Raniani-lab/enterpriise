@@ -365,7 +365,7 @@ class HelpdeskTicket(models.Model):
                 if not min_deadline or status.deadline < min_deadline:
                     min_deadline = status.deadline
 
-            ticket.write({
+            ticket.update({
                 'sla_deadline': min_deadline,
                 'sla_deadline_hours': ticket.team_id.resource_calendar_id.get_work_duration_data\
                     (now, min_deadline, compute_leaves=True)['hours'] if min_deadline else 0.0,

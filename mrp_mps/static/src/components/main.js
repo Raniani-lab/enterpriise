@@ -5,13 +5,14 @@ import { MrpMpsSearchModel } from '../search/mrp_mps_search_model';
 import MpsLineComponent from '@mrp_mps/components/line';
 import { MasterProductionScheduleModel } from '@mrp_mps/models/master_production_schedule_model';
 import { registry } from "@web/core/registry";
-import { useBus, useService } from "@web/core/utils/hooks";
+import { useService } from "@web/core/utils/hooks";
 import { CheckBox } from "@web/core/checkbox/checkbox";
 import { getDefaultConfig } from "@web/views/view";
 import { usePager } from "@web/search/pager_hook";
-import { CallbackRecorder, useSetupAction } from "@web/webclient/actions/action_hook";
+import { useSetupAction } from "@web/webclient/actions/action_hook";
+import { WithSearch } from "@web/search/with_search/with_search";
 
-const { Component, onWillStart, useSubEnv, useChildSubEnv } = owl;
+const { Component, onWillStart, useSubEnv } = owl;
 
 class MainComponent extends Component {
     //--------------------------------------------------------------------------
@@ -25,12 +26,12 @@ class MainComponent extends Component {
 
         const { orm, action, dialog } = this;
         this.model = new MasterProductionScheduleModel(this.props, { orm, action, dialog });
+        this.withSearchProps = null;
 
         useSubEnv({
             manufacturingPeriods: [],
             model: this.model,
-            __getContext__: new CallbackRecorder(),
-            __getOrderBy__: new CallbackRecorder(),
+            defaultPageLimit: 20,
             config: {
                 ...getDefaultConfig(),
                 offset: 0,
@@ -45,42 +46,11 @@ class MainComponent extends Component {
             },
         });
 
-        this.SearchModel = new MrpMpsSearchModel(this.env, {
-            user: useService("user"),
-            orm: this.orm,
-            view: useService("view"),
-        });
-        useChildSubEnv({
-            searchModel: this.SearchModel,
-        });
-
-        useBus(this.SearchModel, "update", () => {
-            this.env.config.offset = 0;
-            this.env.config.limit = 20;
-            this.model.load(this.SearchModel.domain, this.env.config.offset, this.env.config.limit);
-        });
-
         onWillStart(async () => {
             this.env.config.setDisplayName(this.env._t("Master Production Schedule"));
-            const views = await this.viewService.loadViews(
-                {
-                    resModel: "mrp.production.schedule",
-                    context: this.props.action.context,
-                    views: [[false, "search"]],
-                }
-            );
-            await this.SearchModel.load({
-                resModel: "mrp.production.schedule",
-                context: this.props.action.context,
-                orderBy: "id",
-                searchMenuTypes: ['filter', 'favorite'],
-                searchViewArch: views.views.search.arch,
-                searchViewId: views.views.search.id,
-                searchViewFields: views.fields,
-                loadIrFilters: true
-            });
+            this.withSearchProps = await this._prepareWithSearchProps();
             this.model.on('update', this, () => this.render(true));
-            const domain = this.props.action.domain || this.SearchModel.domain;
+            const domain = this.props.action.domain;
             await this.model.load(domain, this.env.config.offset, this.env.config.limit);
         });
 
@@ -92,11 +62,32 @@ class MainComponent extends Component {
                 onUpdate: async ({ offset, limit }) => {
                     this.env.config.offset = offset;
                     this.env.config.limit = limit;
-                    this.model.load(this.SearchModel.domain, offset, limit);
-                    this.render(true);
+                    this.model.load(undefined, offset, limit);
                 },
             };
         });
+    }
+
+    async _prepareWithSearchProps() {
+        this.MrpMpsControlPanel = MrpMpsControlPanel;
+        const views = await this.viewService.loadViews(
+            {
+                resModel: "mrp.production.schedule",
+                context: this.props.action.context,
+                views: [[false, "search"]],
+            }
+        );
+        return {
+            SearchModel: MrpMpsSearchModel,
+            resModel: "mrp.production.schedule",
+            context: this.props.action.context,
+            orderBy: ["id"],
+            searchMenuTypes: ['filter', 'favorite'],
+            searchViewArch: views.views.search.arch,
+            searchViewId: views.views.search.id,
+            searchViewFields: views.fields,
+            loadIrFilters: true
+        };
     }
 
     get lines() {
@@ -123,7 +114,7 @@ class MainComponent extends Component {
 
 MainComponent.template = 'mrp_mps.mrp_mps';
 MainComponent.components = {
-    MrpMpsControlPanel,
+    WithSearch,
     MpsLineComponent,
     CheckBox,
 };

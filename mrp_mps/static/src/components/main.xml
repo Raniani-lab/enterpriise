@@ -2,7 +2,9 @@
 <templates xml:space="preserve">
 
     <div t-name="mrp_mps.mrp_mps" class="main o_action" owl="1">
-        <MrpMpsControlPanel/>
+        <WithSearch t-props="withSearchProps">
+            <t t-component="MrpMpsControlPanel"/>
+        </WithSearch>
         <div class="o_mrp_mps o_content bg-view">
             <t t-if="lines.length">
                 <div class="text-nowrap mr0 ml0">

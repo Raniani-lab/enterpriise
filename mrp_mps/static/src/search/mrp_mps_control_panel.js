@@ -2,7 +2,7 @@
 
 import { GroupMenu } from "./group_menu";
 import { download } from "@web/core/network/download";
-import { useService } from "@web/core/utils/hooks";
+import { useBus, useService } from "@web/core/utils/hooks";
 import { ActionMenus } from "@web/search/action_menus/action_menus";
 import { ControlPanel } from "@web/search/control_panel/control_panel";
 import { ExportDataDialog } from "@web/views/view_dialogs/export_data_dialog";
@@ -13,6 +13,12 @@ export class MrpMpsControlPanel extends ControlPanel {
         super.setup();
         this.rpc = useService("rpc");
         this.dialogService = useService("dialog");
+
+        useBus(this.env.searchModel, "update", () => {
+            this.env.config.offset = 0;
+            this.env.config.limit = this.env.defaultPageLimit;
+            this.model.load(this.env.searchModel.domain, this.env.config.offset, this.env.config.limit);
+        });
     }
 
     get model() {
@@ -57,11 +63,11 @@ export class MrpMpsControlPanel extends ControlPanel {
     }
 
     _onMouseOverReplenish(ev) {
-        this.model.mouseOverReplenish()
+        this.model.mouseOverReplenish();
     }
 
     _onMouseOutReplenish(ev) {
-        this.model.mouseOutReplenish()
+        this.model.mouseOutReplenish();
     }
 
     _onClickCreate(ev) {

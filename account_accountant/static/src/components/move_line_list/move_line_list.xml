@@ -18,7 +18,7 @@
     <t t-name="account_accountant.AttachmentPreview" owl="1">
         <div class="o_attachment_preview" t-att-class="{'hidden': !attachmentPreviewState.displayAttachment}">
             <t t-if="this.attachmentPreviewState.displayAttachment">
-                <t t-if="this.attachmentPreviewState.thread">
+                <t t-if="this.attachmentPreviewState.thread and this.attachmentPreviewState.thread.attachmentsInWebClientView.length > 0">
                     <WebClientViewAttachmentViewContainer
                             threadId="this.attachmentPreviewState.thread.id"
                             threadModel="this.attachmentPreviewState.thread.model"

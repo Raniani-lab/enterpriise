@@ -1,15 +1,16 @@
 /** @odoo-module **/
 
-
 const { useState } = owl;
 
+import { useModels } from "@mail/component_hooks/use_models";
 import { WebClientViewAttachmentViewContainer } from "@mail/components/web_client_view_attachment_view_container/web_client_view_attachment_view_container";
+import { insert } from '@mail/model/model_field_command';
+
 import { registry } from "@web/core/registry";
 import { useService, useBus } from "@web/core/utils/hooks";
 import { listView } from "@web/views/list/list_view";
 import { ListRenderer } from "@web/views/list/list_renderer";
 import { ListController } from "@web/views/list/list_controller";
-import { insert } from '@mail/model/model_field_command';
 import { SIZES } from '@web/core/ui/ui_service';
 
 export class AccountMoveLineListController extends ListController {
@@ -24,6 +25,7 @@ export class AccountMoveLineListController extends ListController {
             thread: null,
         });
         useBus(this.ui.bus, "resize", this.evaluatePreviewEnabled);
+        useModels();
     }
 
     togglePreview() {
@@ -59,7 +61,9 @@ export class AccountMoveLineListController extends ListController {
             id: accountMoveLineData.data.move_id[0],
             model: accountMoveLineData.fields["move_id"].relation,
         });
-        thread.update({ mainAttachment: thread.attachments[0] });
+        if (!thread.mainAttachment && thread.attachmentsInWebClientView.length > 0) {
+            thread.update({ mainAttachment: thread.attachmentsInWebClientView[0] });
+        }
         this.attachmentPreviewState.thread = thread;
     }
 }

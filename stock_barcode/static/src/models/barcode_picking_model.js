@@ -609,10 +609,12 @@ export default class BarcodePickingModel extends BarcodeModel {
     async validate() {
         if (this.config.restrict_scan_dest_location == 'mandatory' &&
             !this.lastScanned.destLocation && this.selectedLine) {
+            this.playErrorSound();
             return this.notification.add(_t("Destination location must be scanned"), { type: 'danger' });
         }
         if (this.config.lines_need_to_be_packed &&
             this.currentState.lines.some(line => this._lineNeedsToBePacked(line))) {
+            this.playErrorSound();
             return this.notification.add(_t("All products need to be packed"), { type: 'danger' });
         }
         return await super.validate();
@@ -986,6 +988,7 @@ export default class BarcodePickingModel extends BarcodeModel {
                 if (packageLine.qty_done) {
                     this.lastScanned.packageId = packageLine.package_id.id;
                     const message = _t("This package is already scanned.");
+                    this.playErrorSound();
                     this.notification.add(message, { type: 'danger' });
                     return this.trigger('update');
                 }
@@ -1108,6 +1111,7 @@ export default class BarcodePickingModel extends BarcodeModel {
     async _putInPack(additionalContext = {}) {
         const context = Object.assign({ barcode_view: true }, additionalContext);
         if (!this.groups.group_tracking_lot) {
+            this.playErrorSound();
             return this.notification.add(
                 _t("To use packages, enable 'Packages' in the settings"),
                 { type: 'danger'}
@@ -1181,6 +1185,7 @@ export default class BarcodePickingModel extends BarcodeModel {
                         _t("Scanned quantity uses %s as Unit of Measure, but this UoM is not compatible with the line's one (%s)."),
                         args.uom.name, lineUOM.name
                     );
+                    this.playErrorSound();
                     return this.notification.add(message, { title: _t("Wrong Unit of Measure"), type: 'danger' });
                 } else if (args.uom.id !== lineUOM.id) {
                     // Compatible but not the same UoM => Need a conversion.

@@ -6,6 +6,7 @@ import { Mutex } from "@web/core/utils/concurrency";
 import LazyBarcodeCache from '@stock_barcode/lazy_barcode_cache';
 import { _t } from 'web.core';
 import { sprintf } from '@web/core/utils/strings';
+import { url } from '@web/core/utils/urls';
 import { useService } from "@web/core/utils/hooks";
 import { FNC1_CHAR } from "barcodes_gs1_nomenclature/static/src/js/barcode_parser.js";
 
@@ -25,6 +26,11 @@ export default class BarcodeModel extends EventBus {
         // Keeps track of list scanned record(s) by type.
         this.lastScanned = { packageId: false, product: false, sourceLocation: false };
         this._currentLocation = false; // Reminds the current source when the scanned one is forgotten.
+        this.errorSound = new Audio();
+        this.errorSound.src = this.errorSound.canPlayType('audio/ogg') ?
+            url('/stock_barcode/static/src/audio/error.ogg') :
+            url('/stock_barcode/static/src/audio/error.mp3');
+        this.errorSound.load();
     }
 
     setData(data) {
@@ -344,6 +350,11 @@ export default class BarcodeModel extends EventBus {
         return foundLine;
     }
 
+    playErrorSound() {
+        this.errorSound.currentTime = 0;
+        this.errorSound.play();
+    }
+
     async refreshCache(records) {
         this.cache.setCache(records);
         this._createState();
@@ -542,6 +553,7 @@ export default class BarcodeModel extends EventBus {
                     _t("Scanned quantity uses %s as Unit of Measure, but this UoM is not compatible with the product's one (%s)."),
                     paramsUOM.name, productUOM.name
                 );
+                this.playErrorSound();
                 this.notification.add(message, { title: _t("Wrong Unit of Measure"), type: 'danger'});
                 return false;
             }
@@ -572,6 +584,8 @@ export default class BarcodeModel extends EventBus {
             'O-BTN.validate': () => {
                 if (this.canBeValidate) {
                     this.validate();
+                } else {
+                    this.playErrorSound();
                 }
             },
         };
@@ -928,6 +942,7 @@ export default class BarcodeModel extends EventBus {
         // Depending of the configuration, the user can be forced to scan a specific barcode type.
         const check = this._checkBarcode(barcodeData);
         if (check.error) {
+            this.playErrorSound();
             return this.notification.add(check.message, { title: check.title, type: "danger" });
         }
 
@@ -990,6 +1005,7 @@ export default class BarcodeModel extends EventBus {
                     barcodeData.error = _t("You are expected to scan one or more products.");
                 }
             }
+            this.playErrorSound();
             return this.notification.add(barcodeData.error, { type: 'danger' });
         }
         if (barcodeData.weight) { // the encoded weight is based on the product's UoM
@@ -1019,6 +1035,7 @@ export default class BarcodeModel extends EventBus {
             for (const line of this.currentState.lines) {
                 if (line.product_id.tracking === 'serial' && this.getQtyDone(line) !== 0 &&
                     ((line.lot_id && line.lot_id.name) || line.lot_name) === lotName) {
+                    this.playErrorSound();
                     return this.notification.add(
                         _t("The scanned serial number is already used."),
                         { type: 'danger' }

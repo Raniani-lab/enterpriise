@@ -540,10 +540,24 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertAlmostEqual(self.subscription.recurring_monthly, 5.84, msg='70 / 12')
 
     def test_compute_kpi(self):
-        self.subscription_tmpl.write({'good_health_domain': "[('recurring_monthly', '>=', 120.0)]",
-                                      'bad_health_domain': "[('recurring_monthly', '<=', 80.0)]",
-                                      })
-        self.subscription.recurring_monthly = 80.0
+        self.env['sale.order.alert'].create([
+            {
+                'name': 'Bad domain Setup',
+                'trigger_condition': 'on_create_or_write',
+                'mrr_min': 0,
+                'mrr_max': 80,
+                'stage_category': 'progress',
+                'action': 'set_health_value',
+                'health': 'bad'
+            }, {
+                'name': 'Good domain Setup',
+                'trigger_condition': 'on_create_or_write',
+                'mrr_min': 120,
+                'mrr_max': 9999,
+                'action': 'set_health_value',
+                'health': 'done'
+            },
+        ])
         self.subscription.action_confirm()
         self.env['sale.order']._cron_update_kpi()
         self.assertEqual(self.subscription.health, 'bad')

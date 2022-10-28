@@ -494,7 +494,7 @@
                     </div>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
-                        <label for="name" string="Alert Name"/>
+                        <label for="name" string="Action Name"/>
                         <h1><field name="name" placeholder="e.g. Closed Subscription"/></h1>
                     </div>
                     <div attrs="{'invisible': [('cron_nextcall', '=', False)]}">
@@ -525,6 +525,7 @@
                                 <field name="rating_percentage"/>
                                 <strong>%</strong>
                             </div>
+                            <field name="stage_category"/>
                             <label for="stage_from_id" string="Stage goes from"/>
                             <div class="o_row">
                                 <field name="stage_from_id" placeholder="Initial"/>
@@ -554,6 +555,9 @@
                                    context="{'default_model_id': model_id}"
                                    attrs="{'invisible': [('action', '!=', 'sms')],
                                            'required': [('action', '=', 'sms')]}"/>
+                            <field name="health"
+                                   attrs="{'invisible': [('action', '!=', 'set_health_value')],
+                                           'required': [('action', '=', 'set_health_value')]}"/>
                         </group>
                         <group name="action_details">
                             <field name="model_id" invisible="1"/>
@@ -605,7 +609,7 @@
         <field name="name">sale.subscription.alert.view.tree</field>
         <field name="model">sale.order.alert</field>
         <field name="arch" type="xml">
-            <tree string="Alerts">
+            <tree string="Automated actions">
                 <field name="name"/>
                 <field name="company_id" groups="base.group_multi_company"/>
                 <field name="subscription_count"/>
@@ -614,7 +618,7 @@
     </record>
 
     <record id="sale_subscription_alert_action" model="ir.actions.act_window">
-        <field name="name">Alerts</field>
+        <field name="name">Automated actions</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order.alert</field>
         <field name="view_mode">tree,form</field>
@@ -784,15 +788,6 @@
                     <field name="company_id" invisible="1"/>
                 </group>
             </group>
-            <xpath expr="//page[@name='terms_and_conditions']" position="after">
-                <page name="health" string="Health Check" attrs="{'invisible': [('is_subscription', '=', False)]}" groups="base.group_no_one">
-                    <label for="good_health_domain" string="Good Health"/><span class="o_status o_status_green"/>
-                    <field name="good_health_domain" widget="domain" options="{'model': 'sale.order'}"/>
-                    <separator/>
-                    <label for="bad_health_domain" string="Bad Health"/><span class="o_status o_status_red"/>
-                    <field name="bad_health_domain" widget="domain" options="{'model': 'sale.order'}"/>
-                </page>
-            </xpath>
         </field>
     </record>
 
@@ -818,5 +813,5 @@
     <menuitem action="sale_temporal.sale_temporal_recurrence_action" name="Recurrence periods" id="menu_sale_subscription_periods" parent="menu_sale_subscription_config" sequence="20" groups="sales_team.group_sale_manager"/>
     <menuitem action="sale_subscription_template_action" id="menu_template_of_subscription" parent="menu_sale_subscription_config" sequence="4" groups="sales_team.group_sale_manager"/>
     <menuitem id="menu_sale_subscription_stage" name="Subscription Stages" parent="menu_sale_subscription_config" action="sale_subscription_stage_action" sequence="5" groups="sales_team.group_sale_manager"/>
-    <menuitem id="menu_sale_subscription_alert" name="Alerts" parent="menu_sale_subscription_config" action="sale_subscription_alert_action" sequence="8"/>
+    <menuitem id="menu_sale_subscription_alert" name="Automated actions" parent="menu_sale_subscription_config" action="sale_subscription_alert_action" sequence="8"/>
 </odoo>

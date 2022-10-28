@@ -27,8 +27,12 @@ class SaleOrderAlert(models.Model):
     automation_id = fields.Many2one('base.automation', 'Automated Action', required=True, ondelete='restrict')
     action = fields.Selection([
         ('next_activity', 'Create next activity'),
-        ('set_stage', 'Set a stage on the subscription'), ('set_to_renew', 'Mark as To Renew'), ('email', 'Send an email to the customer'),
-        ('sms', 'Send an SMS Text Message to the customer')], string='Action', required=True, default=None)
+        ('set_stage', 'Set a stage on the subscription'),
+        ('set_to_renew', 'Mark as To Renew'),
+        ('email', 'Send an email to the customer'),
+        ('sms', 'Send an SMS Text Message to the customer'),
+        ('set_health_value', 'Set Contract Health value')
+    ], string='Action', required=True, default=None)
     trigger_condition = fields.Selection([
         ('on_create_or_write', 'Modification'), ('on_time', 'Timed Condition')], string='Trigger On', required=True, default='on_create_or_write')
     currency_id = fields.Many2one('res.currency', string='Currency', default=lambda self: self.env.company.currency_id)
@@ -49,6 +53,7 @@ class SaleOrderAlert(models.Model):
     rating_operator = fields.Selection([('>', 'greater than'), ('<', 'less than')], string='Rating Operator', default='>')
     stage_from_id = fields.Many2one('sale.order.stage', help="Trigger on changes of stage. Trigger over all stages if not set")
     stage_to_id = fields.Many2one('sale.order.stage')
+    stage_category = fields.Selection([('draft', 'Quotation'), ('progress', 'In Progress'), ('paused', 'Invoicing Pause'), ('closed', 'Closed')])
     stage_id = fields.Many2one('sale.order.stage', string='Stage')
     activity_user = fields.Selection([
         ('contract', 'Subscription Salesperson'),
@@ -58,6 +63,15 @@ class SaleOrderAlert(models.Model):
     activity_user_ids = fields.Many2many('res.users', string='Specific Users')
     subscription_count = fields.Integer(compute='_compute_subscription_count')
     cron_nextcall = fields.Datetime(compute='_compute_nextcall', store=False)
+    health = fields.Selection([('normal', 'Neutral'), ('done', 'Good'), ('bad', 'Bad')], string="Health", help="Show the health status")
+
+    @api.onchange('trigger_condition', 'automation_id')
+    def _onchange_automation_trigger(self):
+        # This method is needed to force saving the automation_id.trigger according to trigger_condition value
+        # Overriding create/write does is not sufficient anymore as the automation_id.trg_date_range_type is
+        # evaluated before calling super/write.
+        for alert in self:
+            alert.automation_id.trigger = alert.trigger_condition
 
     def _get_selection_mrr_change_unit(self):
         return [('percentage', '%'), ('currency', self.env.company.currency_id.symbol)]
@@ -93,6 +107,8 @@ class SaleOrderAlert(models.Model):
                 domain += [('percentage_satisfaction', alert.rating_operator, alert.rating_percentage)]
             if alert.stage_to_id:
                 domain += [('stage_id', '=', alert.stage_to_id.id)]
+            if alert.stage_category:
+                domain += [('stage_category', '=', alert.stage_category)]
             super(SaleOrderAlert, alert).write({'filter_domain': domain})
 
     def unlink(self):
@@ -109,7 +125,7 @@ class SaleOrderAlert(models.Model):
     def _configure_alert_from_action(self, vals_list):
         # Unlink the children server actions if not needed anymore
         self.filtered(lambda alert: alert.action != 'next_activity' and alert.child_ids).unlink()
-        field_names = ['stage_id', 'to_renew']
+        field_names = ['stage_id', 'to_renew', 'health']
         tag_fields = self.env['ir.model.fields'].search([('model', 'in', self.mapped('model_name')), ('name', 'in', field_names)])
         for alert, vals in zip(self, vals_list):
             field_name = None
@@ -120,13 +136,16 @@ class SaleOrderAlert(models.Model):
             elif alert.action == 'set_to_renew':
                 field_name = 'to_renew'
                 action_value = True
+            elif alert.action == 'set_health_value':
+                field_name = 'health'
+                action_value = alert.health
             if field_name and action_value:
                 tag_field = tag_fields.filtered(lambda t: t.name == field_name)
                 # Require sudo to write on ir.actions.server fields
                 super(SaleOrderAlert, alert.sudo()).write({
                     'state': 'object_write',
                     'fields_lines': [(5, 0, 0), (0, False, {
-                        'evaluation_type': 'equation',
+                        'evaluation_type': 'value',
                         'col1': tag_field.id,
                         'value': action_value})
                     ]}
@@ -136,9 +155,6 @@ class SaleOrderAlert(models.Model):
                 super(SaleOrderAlert, alert).write({'state': action})
             elif vals.get('action') == 'next_activity' or vals.get('activity_user_ids') or vals.get('activity_user'):
                 alert._set_activity_action()
-
-
-
 
     @api.model_create_multi
     def create(self, vals_list):

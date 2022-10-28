@@ -942,26 +942,12 @@ class SaleOrder(models.Model):
         for subscription in self:
             delta_1month = subscription._get_subscription_delta(fields.Date.today() - relativedelta(months=1))
             delta_3months = subscription._get_subscription_delta(fields.Date.today() - relativedelta(months=3))
-            health = subscription._get_subscription_health()
-            subscription.write({'kpi_1month_mrr_delta': delta_1month['delta'], 'kpi_1month_mrr_percentage': delta_1month['percentage'],
-                                'kpi_3months_mrr_delta': delta_3months['delta'], 'kpi_3months_mrr_percentage': delta_3months['percentage'],
-                                'health': health})
-
-    def _get_subscription_health(self):
-        self.ensure_one()
-        domain = [('id', '=', self.id)]
-        # avoid computing domain for False values and empty domains []
-        bad_health_domain = bool(self.sale_order_template_id.bad_health_domain) and domain + literal_eval(
-            self.sale_order_template_id.bad_health_domain.strip())
-        good_health_domain = bool(self.sale_order_template_id.bad_health_domain) and domain + literal_eval(
-            self.sale_order_template_id.good_health_domain.strip())
-        if bad_health_domain and self.search_count(bad_health_domain):
-            health = 'bad'
-        elif good_health_domain and self.search_count(good_health_domain):
-            health = 'done'
-        else:
-            health = 'normal'
-        return health
+            subscription.write({
+                'kpi_1month_mrr_delta': delta_1month['delta'],
+                'kpi_1month_mrr_percentage': delta_1month['percentage'],
+                'kpi_3months_mrr_delta': delta_3months['delta'],
+                'kpi_3months_mrr_percentage': delta_3months['percentage'],
+            })
 
     def _get_portal_return_action(self):
         """ Return the action used to display orders when returning from customer portal. """

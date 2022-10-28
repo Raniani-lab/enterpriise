@@ -30,10 +30,6 @@ class SaleOrderTemplate(models.Model):
         string="Automatic Closing", default=15,
         help="If the chosen payment method has failed to renew the subscription after this time, "
              "the subscription is automatically closed.")
-    good_health_domain = fields.Char(string='Good Health', default='[]',
-                                     help="Domain used to change subscription's Kanban state with a 'Good' rating")
-    bad_health_domain = fields.Char(string='Bad Health', default='[]',
-                                    help="Domain used to change subscription's Kanban state with a 'Bad' rating")
 
     # ARJ TODO master: use a setting or a config parameter
     invoice_mail_template_id = fields.Many2one(

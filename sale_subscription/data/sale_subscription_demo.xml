@@ -77,8 +77,6 @@
         <record id="monthly_template" model="sale.order.template">
             <field name="name">Monthly</field>
             <field name="recurrence_id" ref="sale_temporal.recurrence_monthly"/>
-            <field name="good_health_domain">[('recurring_monthly', '&gt;=', 20)]</field>
-            <field name="bad_health_domain">[('recurring_monthly', '&lt;', 20)]</field>
             <field name="recurring_rule_boundary">limited</field>
             <field name="recurring_rule_count">6</field>
             <field name="recurring_rule_type">year</field>
@@ -188,5 +186,18 @@
             <field name="activity_user">contract</field>
             <field name="activity_note">Please call the client to get some feedback about its subscription.</field>
         </record>
+
+        <record id="subscription_alert_bad_health" model="sale.order.alert">
+            <field name="name">Update health value according to MRR</field>
+            <field name="mrr_min">0</field>
+            <field name="mrr_max">20</field>
+            <field name="stage_category">progress</field>
+            <field name="trigger_condition">on_create_or_write</field>
+            <field name="action">set_health_value</field>
+            <field name="health">bad</field>
+        </record>
+
+       <function model="sale.order.alert" name="run_cron_manually" eval="[[ref('subscription_alert_bad_health')]]"/>
+
     </data>
 </odoo>

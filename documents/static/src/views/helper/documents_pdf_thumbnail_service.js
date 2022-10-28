@@ -20,7 +20,6 @@ export const documentsPdfThumbnailService = {
         
         const checkForThumbnail = async (record) => {
             let initialWorkerSrc = false;
-            let initialWorkerMessageHandler = false;
             if (!record.isPdf() ||
                 record.hasThumbnail() ||
                 record.data.thumbnail_status === 'error' ||
@@ -39,8 +38,6 @@ export const documentsPdfThumbnailService = {
                 // Force usage of worker to avoid hanging the tab.
                 initialWorkerSrc = window.pdfjsLib.GlobalWorkerOptions.workerSrc;
                 window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'web/static/lib/pdfjs/build/pdf.worker.js';
-                initialWorkerMessageHandler = window.pdfjsWorker.WorkerMessageHandler;
-                window.pdfjsWorker.WorkerMessageHandler = false;
             } catch (_error) {
                 enabled = false;
                 return;
@@ -79,7 +76,6 @@ export const documentsPdfThumbnailService = {
                 }
                 // Restore pdfjs's state
                 window.pdfjsLib.GlobalWorkerOptions.workerSrc = initialWorkerSrc;
-                window.pdfjsWorker.WorkerMessageHandler = initialWorkerMessageHandler;
             }
         };
         const enqueueRecord = (record) => {

@@ -400,7 +400,6 @@ class MrpProductionWorkcenterLine(models.Model):
             return True
 
         self.ensure_one()
-        self._check_sn_uniqueness()
         self._check_company()
         if any(x.quality_state == 'none' for x in self.check_ids if x.test_type != 'instructions'):
             raise UserError(_('You still need to do the quality checks!'))

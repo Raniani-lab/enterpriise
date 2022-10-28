@@ -2858,6 +2858,31 @@ tour.register('test_put_in_pack_scan_package', {test: true}, [
     ...tour.stepUtils.validateBarcodeForm(),
 ]);
 
+tour.register('test_put_in_pack_new_lines', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan P00001',
+    },
+    {
+        trigger: '.o_notification.border-danger',
+    },
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan product1',
+    },
+    {
+        trigger: '.o_barcode_line:contains("product1")',
+        run: 'scan P00001',
+    },
+    {
+        trigger: '.o_barcode_line:contains("product1"):contains("P00001")',
+        run: 'scan O-BTN.validate',
+    },
+    {
+        trigger: '.o_notification.border-success',
+    },
+]);
+
 tour.register('test_picking_owner_scan_package', {test: true}, [
     {
         trigger: '.o_stock_barcode_main_menu:contains("Barcode Scanning")',

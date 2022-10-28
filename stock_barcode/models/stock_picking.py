@@ -87,18 +87,19 @@ class StockPicking(models.Model):
         if self.env.user.has_group('uom.group_uom'):
             uoms |= self.env['uom.uom'].search([])
 
+        # Fetch `stock.location`
+        source_locations = self.env['stock.location'].search([('id', 'child_of', self.location_id.ids)])
+        destination_locations = self.env['stock.location'].search([('id', 'child_of', self.location_dest_id.ids)])
+        locations = move_lines.location_id | move_lines.location_dest_id | source_locations | destination_locations
+
         # Fetch `stock.quant.package` and `stock.package.type` if group_tracking_lot.
         packages = self.env['stock.quant.package']
         package_types = self.env['stock.package.type']
         if self.env.user.has_group('stock.group_tracking_lot'):
             packages |= move_lines.package_id | move_lines.result_package_id
-            packages |= self.env['stock.quant.package']._get_usable_packages()
+            packages |= self.env['stock.quant.package'].with_context(pack_locs=destination_locations.ids)._get_usable_packages()
             package_types = package_types.search([])
 
-        # Fetch `stock.location`
-        source_locations = self.env['stock.location'].search([('id', 'child_of', self.location_id.ids)])
-        destination_locations = self.env['stock.location'].search([('id', 'child_of', self.location_dest_id.ids)])
-        locations = move_lines.location_id | move_lines.location_dest_id | source_locations | destination_locations
         data = {
             "records": {
                 "stock.picking": self.read(self._get_fields_stock_barcode(), load=False),

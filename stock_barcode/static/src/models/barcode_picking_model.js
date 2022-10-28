@@ -951,6 +951,7 @@ export default class BarcodePickingModel extends BarcodeModel {
     async _processPackage(barcodeData) {
         const { packageName } = barcodeData;
         const recPackage = barcodeData.package;
+        const defaultDestLocationId = this._defaultDestLocation().id;
         this.lastScanned.packageId = false;
         if (barcodeData.packageType && !recPackage) {
             // Scanned a package type and no existing package: make a put in pack (forced package type).
@@ -961,7 +962,7 @@ export default class BarcodePickingModel extends BarcodeModel {
             barcodeData.stopped = true;
             return await this._putInPack({ default_name: packageName });
         } else if (!recPackage || (
-            recPackage.location_id && recPackage.location_id != this.location.id
+            recPackage.location_id && ![defaultDestLocationId, this.location.id].includes(recPackage.location_id)
         )) {
             return; // No package, package's type or package's name => Nothing to do.
         }
@@ -995,7 +996,9 @@ export default class BarcodePickingModel extends BarcodeModel {
             [recPackage.quant_ids]
         );
         const quants = res.records['stock.quant'];
-        if (!quants.length) { // Empty package => Assigns it to the last scanned line.
+        // If the package is empty or is already at the destination location,
+        // assign it to the last scanned line.
+        if (!quants.length || recPackage.location_id === defaultDestLocationId) {
             const currentLine = this.selectedLine || this.lastScannedLine;
             if (currentLine && !currentLine.result_package_id) {
                 await this._assignEmptyPackage(currentLine, recPackage);

@@ -44,6 +44,9 @@ It assigns manager and user access rights to the Administrator for the accountin
     'uninstall_hook': "uninstall_hook",
     'license': 'OEEL-1',
     'assets': {
+        'mail.assets_messaging': [
+            'account_accountant/static/src/models/*.js',
+        ],
         'web.assets_backend': [
             'account_accountant/static/src/js/tours/account_accountant.js',
             'account_accountant/static/src/js/reconciliation/*.js',

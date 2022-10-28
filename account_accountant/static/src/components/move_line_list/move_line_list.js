@@ -4,7 +4,6 @@ const { useState } = owl;
 
 import { useModels } from "@mail/component_hooks/use_models";
 import { WebClientViewAttachmentViewContainer } from "@mail/components/web_client_view_attachment_view_container/web_client_view_attachment_view_container";
-import { insert } from '@mail/model/model_field_command';
 
 import { registry } from "@web/core/registry";
 import { useService, useBus } from "@web/core/utils/hooks";
@@ -47,17 +46,14 @@ export class AccountMoveLineListController extends ListController {
             this.attachmentPreviewState.thread = null;
             return;
         }
-        const attachments = insert(
-            accountMoveLineData.data.move_attachment_ids.records.map(
-                attachment => ({ id: attachment.resId, mimetype: attachment.data.mimetype }),
-            ),
-        );
         const messaging = await this.messaging.get();
         // As the real thread is AccountMove and the attachment are from AccountMove
         // We prevent this hack to leak into the WebClientViewAttachmentViewContainer here
         // by declaring the model as account.move instead of account.move.line
         const thread = messaging.models['Thread'].insert({
-            attachments,
+            extraAttachments: accountMoveLineData.data.move_attachment_ids.records.map(
+                attachment => ({ id: attachment.resId, mimetype: attachment.data.mimetype }),
+            ),
             id: accountMoveLineData.data.move_id[0],
             model: accountMoveLineData.fields["move_id"].relation,
         });

@@ -62,3 +62,13 @@ class QualityCheck(models.Model):
     def _check_to_unlink(self):
         self.ensure_one()
         return super()._check_to_unlink() and not self.workorder_id
+
+    def action_pass_and_next(self):
+        self.ensure_one()
+        super().do_pass()
+        return self._next()
+
+    def action_fail_and_next(self):
+        self.ensure_one()
+        super().do_fail()
+        return self._next()

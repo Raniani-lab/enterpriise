@@ -64,3 +64,6 @@ export default class GlobalFiltersSidePanel extends Component {
 
 GlobalFiltersSidePanel.template = "spreadsheet_edition.GlobalFiltersSidePanel";
 GlobalFiltersSidePanel.components = { FilterValue };
+GlobalFiltersSidePanel.props = {
+    onCloseSidePanel: { type: Function, optional: true },
+};

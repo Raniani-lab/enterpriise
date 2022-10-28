@@ -13,3 +13,10 @@ export default class FilterEditorLabel extends Component {
     }
 }
 FilterEditorLabel.template = "spreadsheet_edition.FilterEditorLabel";
+
+FilterEditorLabel.props = {
+    label: { type: String, optional: true },
+    placeholder: { type: String, optional: true },
+    inputClass: { type: String, optional: true },
+    setLabel: Function,
+};

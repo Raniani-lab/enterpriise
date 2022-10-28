@@ -39,3 +39,11 @@ FilterEditorFieldMatching.template = "spreadsheet_edition.FilterEditorFieldMatch
 FilterEditorFieldMatching.components = {
     SpreadsheetModelFieldSelector,
 };
+
+FilterEditorFieldMatching.props = {
+    // See AbstractFilterEditorSidePanel fieldMatchings
+    fieldMatchings: Array,
+    wrongFieldMatchings: Array,
+    selectField: Function,
+    filterModelFieldSelectorField: Function,
+};

@@ -260,3 +260,8 @@ export default class AbstractFilterEditorSidePanel extends Component {
         this.env.openSidePanel("GLOBAL_FILTERS_SIDE_PANEL", {});
     }
 }
+
+AbstractFilterEditorSidePanel.props = {
+    id: { type: String, optional: true },
+    onCloseSidePanel: { type: Function, optional: true },
+};

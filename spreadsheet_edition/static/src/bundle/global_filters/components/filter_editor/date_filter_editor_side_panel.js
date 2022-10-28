@@ -37,6 +37,11 @@ DateFilterEditorFieldMatching.components = {
 
 DateFilterEditorFieldMatching.template = "spreadsheet_edition.DateFilterEditorFieldMatching";
 
+DateFilterEditorFieldMatching.props = {
+    ...FilterEditorFieldMatching.props,
+    onOffsetSelected: Function,
+};
+
 /**
  * This is the side panel to define/edit a global filter of type "date".
  */

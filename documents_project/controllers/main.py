@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import base64
-import itertools
 import logging
 
 from odoo import http
@@ -45,6 +44,19 @@ class DocumentsProjectShareRoute(ShareRoute):
         if not avatar:
             return request.env['ir.http']._placeholder()
         return base64.b64decode(avatar)
+
+    def _create_uploaded_documents(self, files, share, folder, documents_values=None):
+        documents_values = documents_values or {}
+        project = folder._get_project_from_closest_ancestor()
+        if project:
+            documents_values.update({
+                'res_model': 'project.project',
+                'res_id': project.id,
+                'tag_ids': project.documents_tag_ids.ids,
+            })
+            if project.partner_id and not share.partner_id.id:
+                documents_values['partner_id'] = project.partner_id.id
+        return super()._create_uploaded_documents(files, share, folder, documents_values)
 
 # ------------------------------------------------------------------------------
 # Project routes
@@ -272,39 +284,16 @@ class DocumentsProjectShareRoute(ShareRoute):
 
     @http.route()
     def upload_document(self, folder_id, ufile, tag_ids, **kwargs):
-        """
-        When uploading a document to a folder, if the folder is linked to
-        exactly one project, we link the document to that project, set its
-        partner as the one set on the project, and, if any, we add the default
-        tags set on the project.
-
-        If the current folder doesn't match the criteria, but one of its parents
-        does, we want to select the closest ancestor among them, and link it to
-        the document and set the partner and tags.
-        """
         if not kwargs.get('res_model') and not kwargs.get('res_id'):
             current_folder = request.env['documents.folder'].browse(int(folder_id))
-            project_search_read = request.env['project.project'].search_read(
-                [('documents_folder_id', 'parent_of', current_folder.id)],
-                ['documents_folder_id', 'documents_tag_ids', 'id', 'partner_id'],
-            )
-            # dict {folder_id: position}, where position is a value used to sort projects by their folder_id
-            folder_id_order = {int(folder_id): i for i, folder_id in enumerate(current_folder.parent_path[:-1].split('/')[::-1])}
-            project_search_read.sort(key=lambda project: folder_id_order[project['documents_folder_id'][0]])
-            projects_vals_per_folder_id = itertools.groupby(project_search_read, lambda project: project['documents_folder_id'])
-
-            for dummy, projects in projects_vals_per_folder_id:
-                projects = list(projects)
-                if len(projects) != 1:
-                    continue
-                project = projects[0]
+            project = current_folder._get_project_from_closest_ancestor()
+            if project:
                 kwargs.update({
                     'res_model': 'project.project',
-                    'res_id': project['id'],
+                    'res_id': project.id,
                 })
-                if project['partner_id']:
-                    kwargs['partner_id'] = project['partner_id'][0]
+                if project.partner_id:
+                    kwargs['partner_id'] = project.partner_id.id
                 if not tag_ids:
-                    tag_ids = ','.join(str(tag_id) for tag_id in project['documents_tag_ids'])
-                break
+                    tag_ids = ','.join(str(tag_id) for tag_id in project.documents_tag_ids.ids)
         return super().upload_document(folder_id, ufile, tag_ids, **kwargs)

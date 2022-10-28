@@ -116,7 +116,7 @@ class Document(models.Model):
                 # Avoid inconsistency in the data, write both at the same time.
                 # In case a check_access is done between res_id and res_model modification,
                 # an access error can be received. (Mail causes this check_access)
-                attachment.write({'res_model': record.res_model, 'res_id': record.res_id})
+                attachment.sudo().write({'res_model': record.res_model, 'res_id': record.res_id})
 
     @api.onchange('url')
     def _onchange_url(self):

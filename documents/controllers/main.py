@@ -8,7 +8,7 @@ import logging
 import os
 from contextlib import ExitStack
 
-from odoo import http
+from odoo import Command, http
 from odoo.exceptions import AccessError
 from odoo.http import request, content_disposition
 from odoo.tools.translate import _
@@ -312,6 +312,31 @@ class ShareRoute(http.Controller):
 
         return request.not_found()
 
+    def _create_uploaded_documents(self, files, share, folder, documents_values=None):
+        documents_values = {
+            'tag_ids': [Command.set(share.tag_ids.ids)],
+            'partner_id': share.partner_id.id,
+            'owner_id': share.owner_id.id,
+            'folder_id': folder.id,
+            **(documents_values or {}),
+        }
+        documents = request.env['documents.document']
+        max_upload_size = documents.get_document_max_upload_limit()
+        for file in files:
+            data = file.read()
+            if max_upload_size and len(data) > max_upload_size:
+                # TODO return error when converted to json
+                logger.exception("File is too large.")
+                raise Exception
+            document_dict = {
+                'mimetype': file.content_type,
+                'name': file.filename,
+                'datas': base64.b64encode(data),
+                **documents_values,
+            }
+            documents |= documents.with_user(share.create_uid).with_context(binary_field_real_user=http.request.env.user).create(document_dict)
+        return documents
+
     # Upload file(s) route.
     @http.route(["/document/upload/<int:share_id>/<token>/",
                  "/document/upload/<int:share_id>/<token>/<int:document_id>"],
@@ -370,26 +395,10 @@ class ShareRoute(http.Controller):
                 available_documents.message_post(body=chatter_message)
         elif not document_id and available_documents is not False:
             try:
-                max_upload_size = Documents.get_document_max_upload_limit()
-                for file in request.httprequest.files.getlist('files'):
-                    data = file.read()
-                    if max_upload_size and (len(data) > int(max_upload_size)):
-                        # TODO return error when converted to json
-                        return logger.exception("File is too Large.")
-                    mimetype = file.content_type
-                    document_dict = {
-                        'mimetype': mimetype,
-                        'name': file.filename,
-                        'datas': base64.b64encode(data),
-                        'tag_ids': [(6, 0, share.tag_ids.ids)],
-                        'partner_id': share.partner_id.id,
-                        'owner_id': share.owner_id.id,
-                        'folder_id': folder_id,
-                    }
-                    document = Documents.with_user(share.create_uid).with_context(binary_field_real_user=http.request.env.user).create(document_dict)
-                    document.message_post(body=chatter_message)
-                    if share.activity_option:
-                        document.documents_set_activity(settings_record=share)
+                documents = self._create_uploaded_documents(request.httprequest.files.getlist('files'), share, folder)
+                documents.message_post(body=chatter_message)
+                if share.activity_option:
+                    documents.documents_set_activity(settings_record=share)
 
             except Exception:
                 logger.exception("Failed to upload document")

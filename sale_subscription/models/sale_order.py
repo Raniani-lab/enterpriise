@@ -1211,7 +1211,7 @@ class SaleOrder(models.Model):
         # When a token is present the update is done in reconcile_pending_transaction
         order_to_update = self.env['sale.order']
         for order in self:
-            if order.is_subscription and order.state == 'sale' and not order.payment_token_id:
+            if order.is_subscription and order.state == 'sale' and (not order.payment_token_id or self.env.context.get('subscription_force_next_invoice_date')):
                 order_to_update |= order
 
         order_to_update._update_next_invoice_date()
@@ -1488,7 +1488,6 @@ class SaleOrder(models.Model):
             for order in tx.invoice_ids.invoice_line_ids.sale_line_ids.mapped('order_id'):
                 if order.is_subscription and order.state == 'sale':
                     order_to_update |= order
-
             order_to_update._update_next_invoice_date()
             order_to_update.order_line._reset_subscription_qty_to_invoice()
 

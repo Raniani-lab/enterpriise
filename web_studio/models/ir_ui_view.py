@@ -53,8 +53,10 @@ class View(models.Model):
 
         if self._context.get('studio'):
             for node in tree.xpath('//*[@groups]'):
+                if node.tag == 't':
+                    continue
                 self.set_studio_groups(node)
-                if node.tag not in ('field', 't') and not self.user_has_groups(node.attrib.pop('groups')):
+                if node.tag != 'field' and not self.user_has_groups(node.attrib.pop('groups')):
                     modifiers = json.loads(node.attrib.pop('modifiers', '{}'))
                     modifiers['invisible'] = True
                     node.set('modifiers', json.dumps(modifiers))

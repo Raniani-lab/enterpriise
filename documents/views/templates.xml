@@ -20,7 +20,7 @@
                     })"/>;
                 </script>
 
-                <t t-call-assets="web.assets_common" t-css="false"/>
+                <t t-call-assets="web.assets_frontend" t-js="false"/>
 
                 <t t-if="request.httprequest.cookies.get('color_scheme') == 'dark'">
                     <t t-call-assets="web.dark_mode_assets_common" t-js="false"/>
@@ -180,27 +180,7 @@
                 <b onclick="$('.o_request_upload').trigger('click')" style="cursor:pointer;">Upload it</b>.
             </h3>
 
-            <figure t-if="document.mimetype and 'image' in document.mimetype" class="o_docs_single_container o_has_preview text-center" role="group">
-                <t t-set="shareType" t-value="'o_share_single o_has_preview'"/>
-
-                <div class="o_loading_img text-center mt128">
-                    <i class="fa fa-circle-o-notch fa-spin text-white fa-3x mb8" role="img" aria-label="Loading" title="Loading"/><div>Loading</div>
-                </div>
-                <img class="img-responsive" t-att-alt="document.name" t-att-title="document.name" t-attf-src="#{document.mimetype and 'gif' in document.mimetype and normal_preview_URL + file_token or preview_URL + file_token}"/>
-                <div class="o_docs_single_actions col-sm-12 row g-0 justify-content-between flex-row flex-wrap align-items-baseline text-start mt68">
-                    <figcaption class="mb8">
-                        <span t-if="'url' not in document.type"><b t-esc="document.name"/> • <small><t t-call="documents.format_file_size"/></small></span>
-                        <span t-else="">URL</span>
-                    </figcaption>
-                    <a t-att-href="file_URL" target="new" t-att-title="'Download ' + document.name" class="btn o_docs_btn">
-                        <span t-if="'url' in document.type"><i class="fa fa-link"/> Go to URL</span>
-                        <span t-else=""><i class="fa fa-download fa-fw"/> Download</span>
-                    </a>
-                </div>
-            </figure>
-
-
-            <div t-else="" class="o_docs_single_container">
+            <div class="o_docs_single_container">
                 <t t-set="shareType" t-value="'o_share_single'"/>
 
 

@@ -1216,7 +1216,7 @@ msgstr "Stop de <b>timer</b> als je klaar bent."
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_subtasks
 msgid "Sub-tasks"
-msgstr "Sub-taken"
+msgstr "Subtaken"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_tree

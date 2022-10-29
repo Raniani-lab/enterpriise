@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # Jolien De Paepe, 2022
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Jolien De Paepe, 2022\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -3897,7 +3897,7 @@ msgstr "Je hebt minder dan 20 kredieten over voor"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_refused
 msgid "You have refused the document"
-msgstr "U heeft het document afgewezen"
+msgstr "Je hebt het document afgewezen"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
@@ -3913,13 +3913,13 @@ msgstr ""
 #, python-format
 msgid "You must specify one signer for each role of your sign template"
 msgstr ""
-"U moet één ondertekenaar opgeven voor elke rol van je ondertekensjabloon"
+"Je moet één ondertekenaar opgeven voor elke rol van je ondertekensjabloon"
 
 #. module: sign
 #: code:addons/sign/models/sign_request.py:0
 #, python-format
 msgid "You need to define a signatory"
-msgstr "U moet een ondertekenaar definiëren"
+msgstr "Je moet een ondertekenaar definiëren"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_my_requests_action
@@ -3927,7 +3927,7 @@ msgid ""
 "You will find all documents that you participate in here, either as a "
 "signatory or as the person who requested the signature."
 msgstr ""
-"U vindt hier alle documenten waaraan je deelneemt, hetzij als ondertekenaar,"
+"Je vind hier alle documenten waaraan je deelneemt, hetzij als ondertekenaar,"
 " hetzij als de persoon die de handtekening heeft aangevraagd."
 
 #. module: sign
@@ -3947,7 +3947,7 @@ msgstr "Je ontvangt per post een kopie van het ondertekende document."
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action
 msgid "You're one click away from automating your signature process!"
 msgstr ""
-"U bent één klik verwijderd van het automatiseren van je "
+"Je bent één klik verwijderd van het automatiseren van je "
 "ondertekeningsproces!"
 
 #. module: sign
@@ -4029,7 +4029,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
 msgid "authentication. The"
-msgstr ""
+msgstr "authenticatie. De"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits

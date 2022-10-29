@@ -32,11 +32,13 @@ msgid ""
 "<i class=\"fa fa-check-circle fa-1x text-success me-2\" role=\"img\" aria-"
 "label=\"Success\" title=\"Success\"/>"
 msgstr ""
+"<i class=\"fa fa-check-circle fa-1x text-success me-2\" role=\"img\" aria-"
+"label=\"Éxito\" title=\"Éxito\"/>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar
 msgid "<span class=\"navbar-brand h4 my-0 me-auto\">Help Center</span>"
-msgstr ""
+msgstr "<span class=\"navbar-brand h4 my-0 me-auto\">Centro de ayuda</span>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
@@ -159,7 +161,7 @@ msgstr "Atención al cliente"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Date Filter"
-msgstr ""
+msgstr "Filtro de fecha"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_form_view_id
@@ -176,7 +178,7 @@ msgstr "Ayuda"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Help Center Page"
-msgstr ""
+msgstr "Página del centro de ayuda"
 
 #. module: website_helpdesk
 #: code:addons/website_helpdesk/models/website.py:0
@@ -267,7 +269,7 @@ msgstr "El equipo de la empresa y la empresa del sitio web debe ser la misma."
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Type Filter"
-msgstr ""
+msgstr "Filtro de tipo"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__feature_form_url

@@ -540,7 +540,7 @@ msgid ""
 "You can always change the mapping by clicking on one field in the Invoice "
 "form and select the appropriate value in the PDF."
 msgstr ""
-"U kunt de toewijzing altijd wijzigen door op één veld in het "
+"Je kunt de toewijzing altijd wijzigen door op één veld in het "
 "factuurformulier te klikken en de juiste waarde in de PDF te selecteren."
 
 #. module: account_invoice_extract

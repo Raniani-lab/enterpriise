@@ -32,7 +32,7 @@ msgstr "%(amount)s (固定)"
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
 msgid "%s %s"
-msgstr ""
+msgstr "%s%s"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__active
@@ -53,7 +53,7 @@ msgstr "公司"
 #: model_terms:ir.actions.act_window,help:sale_temporal.product_pricing_action
 #: model_terms:ir.actions.act_window,help:sale_temporal.sale_temporal_recurrence_action
 msgid "Create a new recurrence"
-msgstr ""
+msgstr "创建新复现"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__create_uid
@@ -76,7 +76,7 @@ msgstr "币种"
 #: model:ir.model.fields,field_description:sale_temporal.field_product_product__product_pricing_ids
 #: model:ir.model.fields,field_description:sale_temporal.field_product_template__product_pricing_ids
 msgid "Custom Pricings"
-msgstr ""
+msgstr "定制价格"
 
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__day
@@ -103,7 +103,7 @@ msgstr "时长"
 #: model:ir.model.fields,help:sale_temporal.field_product_product__display_price
 #: model:ir.model.fields,help:sale_temporal.field_product_template__display_price
 msgid "First leasing pricing of the product"
-msgstr ""
+msgstr "产品的首次租赁定价"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__id
@@ -125,7 +125,7 @@ msgstr "内部说明"
 #: model:ir.model.fields,field_description:sale_temporal.field_product_product__is_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_template__is_temporal
 msgid "Is Temporal"
-msgstr ""
+msgstr "是时间性的"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing____last_update
@@ -149,14 +149,14 @@ msgstr "最后更新时间"
 #: model:ir.model.fields,field_description:sale_temporal.field_product_product__display_price
 #: model:ir.model.fields,field_description:sale_temporal.field_product_template__display_price
 msgid "Leasing price"
-msgstr ""
+msgstr "租赁价格"
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_sale_temporal_recurrence__duration
 msgid ""
 "Minimum duration before this rule is applied. If set to 0, it represents a "
 "fixed temporal price."
-msgstr ""
+msgstr "应用此规则之前的最小持续时间。 如果设置为0，则表示固定的时间性价格。"
 
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__month
@@ -206,7 +206,7 @@ msgstr "价格"
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_product_pricing
 msgid "Pricing rule of temporal products"
-msgstr ""
+msgstr "时间性产品的价格规则"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_product_template
@@ -242,12 +242,12 @@ msgstr "定期"
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricelist__product_pricing_ids
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Recurring Price Rules"
-msgstr ""
+msgstr "重复性价格规则"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Recurring Pricelist Rules"
-msgstr ""
+msgstr "重复性价格表规则"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_temporal_recurrence
@@ -269,7 +269,7 @@ msgstr "销售订单行"
 msgid ""
 "Select Variants of the Product for which this rule applies. Leave empty if "
 "this rule applies for any variant of this template."
-msgstr ""
+msgstr "选择适用此规则的产品的多属性。 如果此规则适用于此模板的任何变体，请留空。"
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_pricing__product_template_id
@@ -290,7 +290,7 @@ msgstr "定价持续时间必须大于或等于0"
 #: code:addons/sale_temporal/models/product_template.py:0
 #, python-format
 msgid "The product (%s) has incompatible values: %s"
-msgstr ""
+msgstr "产品(%s)有不兼容的值：%s"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__unit
@@ -318,11 +318,11 @@ msgstr "年"
 msgid ""
 "You cannot have multiple pricing for the same variant, recurrence and "
 "pricelist"
-msgstr ""
+msgstr "您不能为同一个变体、复发和价格表设置多个定价"
 
 #. module: sale_temporal
 #: code:addons/sale_temporal/models/product_pricing.py:0
 #: code:addons/sale_temporal/models/product_pricing.py:0
 #, python-format
 msgid "all variants"
-msgstr ""
+msgstr "所有变体"

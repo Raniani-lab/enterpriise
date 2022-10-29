@@ -3,8 +3,8 @@
 # 	* helpdesk_sale_loyalty
 # 
 # Translators:
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
 # 
 msgid ""
@@ -46,7 +46,7 @@ msgstr "优惠券方案"
 #: code:addons/helpdesk_sale_loyalty/wizard/helpdesk_sale_coupon_generate.py:0
 #, python-format
 msgid "Coupon created"
-msgstr ""
+msgstr "已创建的优惠券"
 
 #. module: helpdesk_sale_loyalty
 #: model:loyalty.card,point_name:helpdesk_sale_loyalty.coupon_demo_1
@@ -63,7 +63,7 @@ msgstr "优惠券"
 #. module: helpdesk_sale_loyalty
 #: model:ir.model.fields,field_description:helpdesk_sale_loyalty.field_helpdesk_ticket__coupons_count
 msgid "Coupons count"
-msgstr ""
+msgstr "优惠券数量"
 
 #. module: helpdesk_sale_loyalty
 #: model:ir.model.fields,field_description:helpdesk_sale_loyalty.field_helpdesk_sale_coupon_generate__create_uid
@@ -134,4 +134,4 @@ msgstr "发送"
 #. module: helpdesk_sale_loyalty
 #: model:ir.model.fields,field_description:helpdesk_sale_loyalty.field_helpdesk_sale_coupon_generate__ticket_id
 msgid "Ticket"
-msgstr "门票"
+msgstr "工单"

@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Raymond Yu <cl_yu@hotmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Raymond Yu <cl_yu@hotmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -282,6 +283,12 @@ msgid ""
 "- 2 letters or digits: location code\n"
 "- 3 letters or digits: branch code, optional\n"
 msgstr ""
+"合作伙伴“%s”关联银行“%s”的银行账户“%s”BIC代码“%s”不符合规定的惯例。\n"
+"它必须包含8或11个字符，并符合以下结构：\n"
+"- 4个字母：机构代码或银行代码\n"
+"- 2个字母：国家代码\n"
+"- 2个字母或数字：位置代码\n"
+"- 3个字母或数字：分行代码，可选\n"
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_journal.py:0

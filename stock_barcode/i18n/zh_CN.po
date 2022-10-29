@@ -6,6 +6,7 @@
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022
 # Martin Trigaux, 2022
 # Jeffery CHEN <jeffery9@gmail.com>, 2022
+# Raymond Yu <cl_yu@hotmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
+"Last-Translator: Raymond Yu <cl_yu@hotmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -110,7 +111,7 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban_2
 msgid "<i class=\"fa fa-lg fa-archive\" title=\"Package\"/>"
-msgstr "<i class=\"fa fa-lg fa-archive\" title=“包装”/>"
+msgstr "<i class=\"fa fa-lg fa-archive\" title=“包裹”/>"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode_kanban_2
@@ -198,7 +199,7 @@ msgstr ""
 msgid ""
 "An unexisting package type was scanned. This part of the barcode can't be "
 "processed."
-msgstr "扫描了一个不存在的包装类型。条形码的这一部分不能被处理。"
+msgstr "扫描了一个不存在的包裹类型。条形码的这一部分不能被处理。"
 
 #. module: stock_barcode
 #. openerp-web
@@ -716,7 +717,7 @@ msgstr "包裹"
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Package type %s was correctly applied to the package %s"
-msgstr "包装类型%s被正确地应用于%s包装"
+msgstr "包裹类型%s被正确地应用于%s包裹"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_quant_package
@@ -726,12 +727,12 @@ msgstr "包裹"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_packaging_id
 msgid "Packaging"
-msgstr "包装规格"
+msgstr "包装"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_packaging_uom_qty
 msgid "Packaging Quantity"
-msgstr "包装规格数量"
+msgstr "包装数量"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_backorder_confirmation__partial_move_count
@@ -831,7 +832,7 @@ msgstr "产品移动(移库明细)"
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_product_packaging
 msgid "Product Packaging"
-msgstr "产品包装规格"
+msgstr "产品包装"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_stock_quant_ids
@@ -1158,7 +1159,7 @@ msgstr "扫描目的位置"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan the package %s"
-msgstr ""
+msgstr "扫描包裹%s"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1265,7 +1266,7 @@ msgstr "源包裹"
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_package_type
 msgid "Stock package type"
-msgstr "库存包装类型"
+msgstr "库存包裹类型"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1364,7 +1365,7 @@ msgstr "待处理"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "To use packages, enable 'Packages' in the settings"
-msgstr "要使用包装，在设置中启用 “包装”"
+msgstr "要使用包裹，在设置中启用 “包裹”"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_stock_picking
@@ -1441,7 +1442,7 @@ msgstr "错误的计量单位"
 msgid ""
 "You are expected to scan one or more products or a package available at the "
 "picking location"
-msgstr "你要扫描一个或多个产品或一个分拣单可获得的包装"
+msgstr "你要扫描一个或多个产品或一个分拣单可获得的包裹"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1462,7 +1463,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "You can't apply a package type. First, scan product or select a line"
-msgstr "你不能应用包装类型。首先，扫描产品或选择一个行"
+msgstr "你不能应用包裹类型。首先，扫描产品或选择一个行"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation

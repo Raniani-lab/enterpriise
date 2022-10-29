@@ -21,6 +21,8 @@
 # marcescu, 2022
 # Marc Tormo i Bochaca <mtbochaca@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Cristian Cruz, 2022
+# Óscar Fonseca <tecnico@extreme-micro.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -28,7 +30,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Óscar Fonseca <tecnico@extreme-micro.com>, 2022\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -617,12 +619,12 @@ msgstr "Tots els tiquets"
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_team__privacy_visibility__internal
 msgid "All internal users"
-msgstr "Tots/es els/les usaris/àries interns/es"
+msgstr "Tots els usuaris interns"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "Allow your customers to close their own tickets"
-msgstr ""
+msgstr "Permetre als clients tancar els seus propis tiquets"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_delete_wizard
@@ -709,7 +711,7 @@ msgstr "Assignat a"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis_closed
 msgid "Assignee"
-msgstr ""
+msgstr "Assignador"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -769,7 +771,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_avg
 #, python-format
 msgid "Average Rating"
-msgstr ""
+msgstr "Valoració mitjana"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_avg_percentage

@@ -3,8 +3,8 @@
 # 	* industry_fsm
 # 
 # Translators:
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
 # 
 msgid ""
@@ -364,7 +364,7 @@ msgstr "创建项目来组织你的任务，并为每个项目定义不同的工
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_view_form_inherit
 msgid "Create reports to be signed off by your customers"
-msgstr ""
+msgstr "创建报告，由你的客户签字确认"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard__create_uid
@@ -1459,11 +1459,11 @@ msgid ""
 "format_datetime(object.planned_date_end, tz=object.partner_id.tz, "
 "lang_code=object.partner_id.lang) or '' }}"
 msgstr ""
-"你的干预计划 {{ object.planned_date_begin 和 object.planned_date_end 和 '从' + "
-"format_datetime(object.planned_date_begin, tz=object.partner_id.tz, "
-"lang_code=object.partner_id.lang) + '到' + "
+"你的干预已安排 {{ object.planned_date_begin and object.planned_date_end and 'from "
+"the ' + format_datetime(object.planned_date_begin, tz=object.partner_id.tz, "
+"lang_code=object.partner_id.lang) + ' to the ' + "
 "format_datetime(object.planned_date_end, tz=object.partner_id.tz, "
-"lang_code=object.partner_id.lang) 或' }}."
+"lang_code=object.partner_id.lang) or '' }}"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.fsm_form_view_comment

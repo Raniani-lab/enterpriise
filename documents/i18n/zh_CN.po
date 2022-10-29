@@ -676,7 +676,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "An error occured while uploading."
-msgstr ""
+msgstr "上传中发生错误"
 
 #. module: documents
 #. openerp-web
@@ -1019,7 +1019,7 @@ msgstr "删除"
 #. module: documents
 #: model:ir.actions.act_window,name:documents.documents_folder_deletion_wizard_action
 msgid "Delete Confirmation"
-msgstr ""
+msgstr "删除确认"
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_deprecate

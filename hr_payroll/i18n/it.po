@@ -1780,7 +1780,7 @@ msgstr "Icona per indicare un'attività eccezione."
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip_run__message_needaction
 #: model:ir.model.fields,help:hr_payroll.field_hr_salary_attachment__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr "Se selezionato, nuovi messaggi richiedono attenzione."
+msgstr "Se selezionata, nuovi messaggi richiedono attenzione."
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip__message_has_error
@@ -1790,7 +1790,7 @@ msgstr "Se selezionato, nuovi messaggi richiedono attenzione."
 #: model:ir.model.fields,help:hr_payroll.field_hr_salary_attachment__message_has_error
 #: model:ir.model.fields,help:hr_payroll.field_hr_salary_attachment__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr "Se selezionato, alcuni messaggi presentano un errore di consegna."
+msgstr "Se selezionata, alcuni messaggi presentano un errore di consegna."
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_salary_rule__active
@@ -2495,7 +2495,7 @@ msgstr "Nome busta paga"
 #: model:ir.ui.menu,name:hr_payroll.menu_report_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
 msgid "Payroll"
-msgstr "Paghe"
+msgstr "Libro paga"
 
 #. module: hr_payroll
 #: model:ir.actions.server,name:hr_payroll.action_reset_work_entries

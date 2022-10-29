@@ -8,6 +8,7 @@
 # Arnau Ros, 2022
 # Martin Trigaux, 2022
 # marcescu, 2022
+# Cristian Cruz, 2022
 # 
 msgid ""
 msgstr ""
@@ -15,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:42+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: marcescu, 2022\n"
+"Last-Translator: Cristian Cruz, 2022\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -49,7 +50,7 @@ msgstr "%s (còpia)"
 #: code:addons/documents_spreadsheet/static/src/bundle/components/spreadsheet_component.js:0
 #, python-format
 msgid "%s - Template"
-msgstr ""
+msgstr "%s - Plantilla"
 
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.res_config_settings_view_form_inherit_documents_spreadsheet
@@ -87,7 +88,7 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/spreadsheet_template/template_dialog.xml:0
 #, python-format
 msgid "Blank spreadsheet"
-msgstr ""
+msgstr "Full de càlcul en blanc"
 
 #. module: documents_spreadsheet
 #: model_terms:documents.folder,description:documents_spreadsheet.documents_spreadsheet_folder
@@ -260,7 +261,7 @@ msgstr ""
 #. module: documents_spreadsheet
 #: model_terms:documents.folder,description:documents_spreadsheet.documents_spreadsheet_folder
 msgid "Move them to another workspace"
-msgstr ""
+msgstr "Mou-los a un altre espai de treball"
 
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.spreadsheet_template_view_search
@@ -284,12 +285,12 @@ msgstr "Full de càlcul nou"
 #: code:addons/documents_spreadsheet/static/src/spreadsheet_template/spreadsheet_template_dialog.js:0
 #, python-format
 msgid "New sheet saved in Documents"
-msgstr ""
+msgstr "Full nou desat a Documents"
 
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.spreadsheet_template_view_tree
 msgid "New spreadsheet"
-msgstr ""
+msgstr "Nou full de càlcul"
 
 #. module: documents_spreadsheet
 #. openerp-web
@@ -297,14 +298,14 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/spreadsheet_selector_dialog/document_selector_panel.js:0
 #, python-format
 msgid "New spreadsheet created in Documents"
-msgstr ""
+msgstr "Nou full de càlcul creat a Documents"
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/bundle/actions/spreadsheet_template/spreadsheet_template_action.js:0
 #, python-format
 msgid "New spreadsheet template created"
-msgstr ""
+msgstr "S'ha creat una nova plantilla de full de càlcul"
 
 #. module: documents_spreadsheet
 #: model:ir.actions.act_window,name:documents_spreadsheet.spreadsheet_revision_action
@@ -315,7 +316,7 @@ msgstr "Revisions"
 #. module: documents_spreadsheet
 #: model:ir.actions.act_window,name:documents_spreadsheet.save_spreadsheet_template_action
 msgid "Save as template"
-msgstr ""
+msgstr "Desa com a plantilla"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_template__sequence
@@ -329,43 +330,43 @@ msgstr "Seqüència"
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.document_view_search_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.spreadsheet_revision_view_search
 msgid "Spreadsheet"
-msgstr ""
+msgstr "Full de càlcul"
 
 #. module: documents_spreadsheet
 #: model:ir.model,name:documents_spreadsheet.model_spreadsheet_contributor
 msgid "Spreadsheet Contributor"
-msgstr ""
+msgstr "Col·laborador de fulls de càlcul"
 
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.spreadsheet_document_view_kanban
 msgid "Spreadsheet Preview"
-msgstr ""
+msgstr "Vista prèvia del full de càlcul"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_documents_document__spreadsheet_revision_ids
 msgid "Spreadsheet Revision"
-msgstr ""
+msgstr "Revisió del full de càlcul"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_documents_document__spreadsheet_snapshot
 msgid "Spreadsheet Snapshot"
-msgstr ""
+msgstr "Instantània del full de càlcul"
 
 #. module: documents_spreadsheet
 #: model:ir.model,name:documents_spreadsheet.model_spreadsheet_template
 msgid "Spreadsheet Template"
-msgstr ""
+msgstr "Plantilla de full de càlcul"
 
 #. module: documents_spreadsheet
 #: model:ir.model,name:documents_spreadsheet.model_save_spreadsheet_template
 msgid "Spreadsheet Template Save Wizard"
-msgstr ""
+msgstr "Assistent per desar plantilles de full de càlcul"
 
 #. module: documents_spreadsheet
 #: model:ir.actions.act_window,name:documents_spreadsheet.spreadsheet_template_action
 #: model:ir.ui.menu,name:documents_spreadsheet.menu_technical_spreadsheet_template
 msgid "Spreadsheet Templates"
-msgstr ""
+msgstr "Plantilles de full de càlcul"
 
 #. module: documents_spreadsheet
 #. openerp-web
@@ -375,6 +376,8 @@ msgid ""
 "Spreadsheets mass download not yet supported.\n"
 " Download spreadsheets individually instead."
 msgstr ""
+"La baixada massiva de fulls de càlcul encara no s'admet.\n"
+" Baixeu fulls de càlcul individualment."
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_save_spreadsheet_template__template_name
@@ -385,20 +388,20 @@ msgstr "Nom de plantilla"
 #: code:addons/documents_spreadsheet/models/document.py:0
 #, python-format
 msgid "The file is not a xlsx file"
-msgstr ""
+msgstr "El fitxer no és un fitxer xlsx"
 
 #. module: documents_spreadsheet
 #: code:addons/documents_spreadsheet/models/document.py:0
 #, python-format
 msgid "The xlsx file is corrupted"
-msgstr ""
+msgstr "El fitxer xlsx està malmès"
 
 #. module: documents_spreadsheet
 #: code:addons/documents_spreadsheet/models/document.py:0
 #: code:addons/documents_spreadsheet/models/document.py:0
 #, python-format
 msgid "The xlsx file is too big"
-msgstr ""
+msgstr "El fitxer xlsx és massa gran"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_save_spreadsheet_template__thumbnail
@@ -411,14 +414,14 @@ msgstr "Miniatura"
 #: code:addons/documents_spreadsheet/static/src/bundle/components/control_panel/spreadsheet_breadcrumbs.xml:0
 #, python-format
 msgid "Toggle favorite"
-msgstr ""
+msgstr "Commuta com a preferit"
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/bundle/actions/spreadsheet_template/spreadsheet_template_action.js:0
 #, python-format
 msgid "Untitled spreadsheet template"
-msgstr ""
+msgstr "Plantilla de full de càlcul sense títol"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_contributor__user_id
@@ -437,10 +440,11 @@ msgstr "Espai de treball"
 msgid ""
 "Your file is about to be saved as an Odoo Spreadsheet to allow for edition."
 msgstr ""
+"Your file is about to be saved as an Odoo Spreadsheet to allow for edition."
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/spreadsheet_selector_dialog/document_selector_panel.xml:0
 #, python-format
 msgid "getPageTitle('SPREADSHEET')"
-msgstr ""
+msgstr "getPageTitle('FULL DE CÀLCUL')"

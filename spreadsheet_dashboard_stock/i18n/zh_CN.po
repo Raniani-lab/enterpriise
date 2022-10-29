@@ -34,28 +34,28 @@ msgstr " 天"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Average Cycle Time"
-msgstr ""
+msgstr "平均循环时间"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Average Delay"
-msgstr ""
+msgstr "平均延迟"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Avg cycle time"
-msgstr ""
+msgstr "平均循环时间"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Avg delay"
-msgstr ""
+msgstr "平均延迟"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -133,7 +133,7 @@ msgstr "产品"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Product quantity"
-msgstr ""
+msgstr "产品数量"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -178,7 +178,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Locations"
-msgstr ""
+msgstr "最佳位置"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web

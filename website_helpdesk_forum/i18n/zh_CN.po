@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:50+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -224,7 +225,7 @@ msgstr "标签"
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_forum_post__ticket_id
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_select_forum_wizard__ticket_id
 msgid "Ticket"
-msgstr "门票"
+msgstr "工单"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_select_forum_wizard__title

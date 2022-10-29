@@ -7,6 +7,8 @@
 # 智能科技奇客罗方 <alanljj@gmail.com>, 2022
 # Martin Trigaux, 2022
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022
+# Raymond Yu <cl_yu@hotmail.com>, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -14,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:47+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022\n"
+"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -127,7 +129,7 @@ msgstr "亚马逊电子邮件"
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_sale_order_line__amazon_item_ref
 msgid "Amazon Item Ref"
-msgstr ""
+msgstr "亚马逊项目参考"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_stock_location__amazon_location
@@ -606,7 +608,7 @@ msgid ""
 "Products delivered to Amazon customers must have their respective parts in "
 "the same package. Operations related to the product %s were not all "
 "confirmed at once."
-msgstr "交付给亚马逊客户的产品必须将其各自的部件放在同一个包装中。与产品%s有关的操作没有一次性全部确认。"
+msgstr "交付给亚马逊客户的产品必须将其各自的部件放在同一个包裹中。与产品%s有关的操作没有一次性全部确认。"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_marketplace__region
@@ -676,7 +678,7 @@ msgstr "卖家中心网址"
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__seller_key
 msgid "Seller Key"
-msgstr ""
+msgstr "卖家密钥"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__base_marketplace_id

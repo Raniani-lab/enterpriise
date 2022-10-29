@@ -243,7 +243,7 @@ msgstr "与竞争对手相比最好"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "COGS"
-msgstr ""
+msgstr "COGS"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web

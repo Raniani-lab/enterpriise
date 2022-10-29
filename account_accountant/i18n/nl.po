@@ -85,7 +85,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 msgid "<i class=\"fa fa-check\"/> Matched"
-msgstr "<i class=\"fa fa-check\"/> Komt overeen"
+msgstr "<i class=\"fa fa-check\"/> Afgeletterd"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
@@ -1144,7 +1144,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Matched"
-msgstr "Op elkaar afgestemd"
+msgstr "Afgeletterd"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/account_payment.py:0
@@ -1236,7 +1236,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Not Matched"
-msgstr "Niet geëvenaard"
+msgstr "Openstaand"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget

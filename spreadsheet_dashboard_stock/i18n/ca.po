@@ -38,28 +38,28 @@ msgstr "dies"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Average Cycle Time"
-msgstr ""
+msgstr "Temps de cicle mitjà"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Average Delay"
-msgstr ""
+msgstr "Retard mitjà"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Avg cycle time"
-msgstr ""
+msgstr "Temps de cicle mitjà"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Avg delay"
-msgstr ""
+msgstr "Retard mitjà"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -74,7 +74,7 @@ msgstr "Actiu"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "KPI"
-msgstr ""
+msgstr "KPI"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -89,7 +89,7 @@ msgstr "Ubicació"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Moved Quantity"
-msgstr ""
+msgstr "Quantitat moguda"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -137,7 +137,7 @@ msgstr "Producte"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Product quantity"
-msgstr ""
+msgstr "Quantitat de producte"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -154,42 +154,42 @@ msgstr "Quantitat"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Destination Address "
-msgstr ""
+msgstr "Anàlisi de moviments d'estoc per adreça de destinació"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Destination Location"
-msgstr ""
+msgstr "Anàlisi de moviments d'estoc per ubicació de destinació"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Product"
-msgstr ""
+msgstr "Anàlisi de moviments d'estoc per producte"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Warehouse"
-msgstr ""
+msgstr "Anàlisi de moviments d'estoc per magatzem"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Locations"
-msgstr ""
+msgstr "Ubicacions principals"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Partners"
-msgstr ""
+msgstr "Principals socis"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -203,7 +203,7 @@ msgstr "Productes Top"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Warehouses"
-msgstr ""
+msgstr "Magatzems superiors"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -218,7 +218,7 @@ msgstr "Magatzem"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Weekly Stock Moves"
-msgstr ""
+msgstr "Moviments d'accions setmanals"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -226,25 +226,25 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "last period"
-msgstr ""
+msgstr "darrer període"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "since last period"
-msgstr ""
+msgstr "des de l'últim període"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "stats - current"
-msgstr ""
+msgstr "estadístiques - actual"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "stats - previous"
-msgstr ""
+msgstr "estadístiques - anteriors"

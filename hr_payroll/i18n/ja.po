@@ -2506,7 +2506,7 @@ msgstr ""
 #: model:ir.cron,cron_name:hr_payroll.ir_cron_generate_payslip_pdfs
 #: model:ir.cron,name:hr_payroll.ir_cron_generate_payslip_pdfs
 msgid "Payroll: Generate pdfs"
-msgstr ""
+msgstr "給与：PDF生成"
 
 #. module: hr_payroll
 #: model:mail.template,name:hr_payroll.mail_template_new_payslip
@@ -2518,7 +2518,7 @@ msgstr "給与：新規給与明細"
 #: model:ir.cron,cron_name:hr_payroll.ir_cron_update_payroll_data
 #: model:ir.cron,name:hr_payroll.ir_cron_update_payroll_data
 msgid "Payroll: Update data"
-msgstr ""
+msgstr "給与：データ更新"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0

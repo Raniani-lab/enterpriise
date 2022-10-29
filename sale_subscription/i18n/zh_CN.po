@@ -2508,7 +2508,7 @@ msgstr "价格"
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_product_pricing
 msgid "Pricing rule of temporal products"
-msgstr ""
+msgstr "时间性产品的价格规则"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription

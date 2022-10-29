@@ -37,12 +37,12 @@ msgstr "<span class=\"o_stat_text\">记录</span>"
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_analysis_report__allocated_hours_cost
 msgid "Allocated Hours Cost"
-msgstr ""
+msgstr "分配的时间成本"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,help:project_timesheet_forecast.field_planning_analysis_report__remaining_hours
 msgid "Allocated hours minus the effective hours."
-msgstr ""
+msgstr "分配的时间减去有效时间"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_slot__allow_timesheets
@@ -90,7 +90,7 @@ msgstr "实际时数"
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_analysis_report__effective_hours_cost
 msgid "Effective Hours Cost"
-msgstr ""
+msgstr "有效的小时成本"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__employee_id
@@ -106,7 +106,7 @@ msgstr "编码计量单位天数"
 #. module: project_timesheet_forecast
 #: model:ir.actions.server,name:project_timesheet_forecast.planning_slot_generate_timesheet_action
 msgid "Generate Timesheets"
-msgstr ""
+msgstr "生成工时表"
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
@@ -152,7 +152,7 @@ msgstr "我的团队"
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.planning_slot_view_search_inherit_project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_forecast_view_search_inherit_project_timesheet_forecast
 msgid "No Timesheets"
-msgstr ""
+msgstr "没有工时表"
 
 #. module: project_timesheet_forecast
 #: model_terms:ir.actions.act_window,help:project_timesheet_forecast.project_timesheet_forecast_report_action
@@ -176,7 +176,7 @@ msgstr "在该班次的时间范围内，该员工的时间表上该任务（及
 msgid ""
 "Number of hours the employee recorded on their Timesheetes for this task "
 "(and its sub-tasks) for the period of this shift."
-msgstr ""
+msgstr "员工在此轮班期间在其时间表上记录此任务（及其子任务）的小时数"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__planned_hours
@@ -252,21 +252,21 @@ msgstr "已计划的时间"
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #, python-format
 msgid "The timesheet entries have successfully been generated."
-msgstr ""
+msgstr "工时表条目已成功生成"
 
 #. module: project_timesheet_forecast
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #, python-format
 msgid "There are no timesheets to generate or you don't have the right."
-msgstr ""
+msgstr "没有工时表可以生成，或者你没有权限"
 
 #. module: project_timesheet_forecast
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #, python-format
 msgid ""
 "This project isn't expected to have slot during this period. Planned hours :"
-msgstr ""
+msgstr "这个项目预计在此期间不会有档期。计划的时间："
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_slot__timesheet_ids
@@ -309,7 +309,7 @@ msgstr "时间表可以记录在这个档位上。"
 msgid ""
 "Track the progress of your projects by comparing the hours initially planned"
 " with the effective hours recorded"
-msgstr ""
+msgstr "通过比较最初计划的小时数和记录的有效小时数来跟踪项目的进度"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__line_type
@@ -320,4 +320,4 @@ msgstr "类型"
 #: code:addons/project_timesheet_forecast/models/project_forecast.py:0
 #, python-format
 msgid "You do not have the right to create timesheets."
-msgstr ""
+msgstr "您没有创建工时表的权限"

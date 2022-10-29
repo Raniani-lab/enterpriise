@@ -190,7 +190,7 @@ msgstr "最佳产品"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Top Responsibles"
-msgstr ""
+msgstr "最佳负责人"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web

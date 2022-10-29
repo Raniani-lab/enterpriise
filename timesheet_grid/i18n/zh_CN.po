@@ -131,6 +131,83 @@ msgid ""
 "</table>\n"
 "            "
 msgstr ""
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"padding-top: 16px; background-color: #F1F1F1; font-family:Verdana, Arial,sans-serif; color: #454748; width: 100%; border-collapse:separate;\"><tr><td align=\"center\">\n"
+"<table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"padding: 16px; background-color: white; color: #454748; border-collapse:separate;\">\n"
+"<tbody>\n"
+"    <!-- HEADER -->\n"
+"    <tr>\n"
+"        <td align=\"center\" style=\"min-width: 590px;\">\n"
+"            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                <tr><td valign=\"middle\">\n"
+"                    <span style=\"font-size: 10px;\">您的工时表</span><br/>\n"
+"                    <span style=\"font-size: 20px; font-weight: bold;\" t-out=\"object.name or ''\">Abigail Peterson</span>\n"
+"                </td><td valign=\"middle\" align=\"right\">\n"
+"                    <img t-attf-src=\"/logo.png?company={{ object.company_id.id }}\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" t-att-alt=\"object.company_id.name\"/>\n"
+"                </td></tr>\n"
+"                <tr><td colspan=\"2\" style=\"text-align:center;\">\n"
+"                  <hr width=\"100%\" style=\"background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;\"/>\n"
+"                </td></tr>\n"
+"            </table>\n"
+"        </td>\n"
+"    </tr>\n"
+"    <!-- CONTENT -->\n"
+"    <tr>\n"
+"        <td align=\"center\" style=\"min-width: 590px;\">\n"
+"            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
+"                    <t t-set=\"timesheet_hours\" t-value=\"ctx.get('timesheet_hours', 0)\"/>\n"
+"                    <t t-set=\"working_hours\" t-value=\"ctx.get('working_hours', 0)\"/>\n"
+"                    <div>\n"
+"                        您好 <t t-out=\"object.name or ''\">Abigail Peterson</t>,<br/><br/>\n"
+"                        这是一个友好的提醒，请记录您在以下期间的工作时间: <t t-out=\"ctx.get('date_start') or ''\">05/05/2021</t> <i class=\"fa fa-long-arrow-right\"/> <t t-out=\"ctx.get('date_stop') or ''\">05/06/2021</t>.\n"
+"                        就目前而言，您 <t t-if=\"timesheet_hours != 0\">仅仅</t> 记录了 <t t-out=\"'%d' %int(timesheet_hours)\">2</t><t t-if=\"timesheet_hours % 1 != 0\" t-out=\"':%02d' % (round(timesheet_hours % 1 * 60))\">:30</t> 小时在要求的 <t t-out=\"'%d' %int(working_hours)\">8</t><t t-if=\"working_hours % 1 != 0\" t-out=\"':%02d' % (round(working_hours % 1 * 60))\">:30</t>中。<br/>\n"
+"                        <div t-if=\"ctx.get('action_url')\" style=\"margin: 16px 0px 16px 0px;\">\n"
+"                            <a t-att-href=\"ctx.get('action_url')\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;\">请填写您的工时表</a>\n"
+"                        </div>\n"
+"                        <br/>谢谢！<br/>\n"
+"                        <t t-if=\"user.signature\">\n"
+"                            <t t-out=\"user.signature or ''\">--<br/>Mitchell Admin</t>\n"
+"                        </t>\n"
+"                    </div>\n"
+"                </td></tr>\n"
+"                <tr><td style=\"text-align:center;\">\n"
+"                    <hr width=\"100%\" style=\"background-color:rgb(204,204,204);border:medium none;clear:both;display:block;font-size:0px;min-height:1px;line-height:0; margin: 16px 0px 16px 0px;\"/>\n"
+"                </td></tr>\n"
+"            </table>\n"
+"        </td>\n"
+"    </tr>\n"
+"    <!-- FOOTER -->\n"
+"    <tr>\n"
+"        <td align=\"center\" style=\"min-width: 590px;\">\n"
+"            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; font-size: 11px; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
+"                <tr><td valign=\"middle\" align=\"left\">\n"
+"                    <t t-out=\"object.company_id.name or ''\">您的公司</t>\n"
+"                </td></tr>\n"
+"                <tr><td valign=\"middle\" align=\"left\" style=\"opacity: 0.7;\">\n"
+"                    <t t-out=\"object.company_id.phone or ''\">+1 650-123-4567</t>\n"
+"                    <t t-if=\"object.company_id.email\">\n"
+"                        | <a t-attf-href=\"'mailto:%s' % {{ object.company_id.email }}\" style=\"text-decoration:none; color: #454748;\" t-out=\"object.company_id.email or ''\">info@yourcompany.com</a>\n"
+"                    </t>\n"
+"                    <t t-if=\"object.company_id.website\">\n"
+"                        | <a t-attf-href=\"'%s' % {{ object.company_id.website }}\" style=\"text-decoration:none; color: #454748;\" t-out=\"object.company_id.website or ''\">http://www.example.com</a>\n"
+"                    </t>\n"
+"                </td></tr>\n"
+"            </table>\n"
+"        </td>\n"
+"    </tr>\n"
+"</tbody>\n"
+"</table>\n"
+"</td></tr>\n"
+"<!-- POWERED BY -->\n"
+"<tr><td align=\"center\" style=\"min-width: 590px;\">\n"
+"    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;\">\n"
+"      <tr><td style=\"text-align: center; font-size: 13px;\">\n"
+"        技术提供 <a target=\"_blank\" href=\"https://www.odoo.com?utm_source=db&amp;utm_medium=mail\" style=\"color: #875A7B;\">Odoo</a>\n"
+"      </td></tr>\n"
+"    </table>\n"
+"</td></tr>\n"
+"</table>\n"
+"            "
 
 #. module: timesheet_grid
 #: model:mail.template,body_html:timesheet_grid.mail_template_timesheet_reminder_manager
@@ -295,7 +372,7 @@ msgstr "添加任务"
 msgid ""
 "After a certain date, users will not be able to create, modify, or delete "
 "their timesheets. However, managers will still be able to do so."
-msgstr ""
+msgstr "在某个日期之后，用户将不能创建、修改或删除他们的工时表。但是，管理人员仍然能够这样做。"
 
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate_all_timesheets
@@ -328,7 +405,7 @@ msgstr "苹果应用商店"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
 msgid "Block encoding of timesheets after a certain date"
-msgstr ""
+msgstr "在某个日期之后的工时表阻断编码"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__can_edit
@@ -345,7 +422,7 @@ msgstr "取消"
 msgid ""
 "Check that your employees correctly filled in their timesheets and that "
 "their time is billable."
-msgstr ""
+msgstr "检查您的员工是否正确地填写了他们的工时表，以及他们的时间是否可以计费。"
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_res_company
@@ -362,7 +439,7 @@ msgstr "配置设置"
 msgid ""
 "Configure reminders in timesheet settings to remind managers to validate "
 "timesheets"
-msgstr ""
+msgstr "在工时表设置中配置提醒，提醒管理人员验证工时表"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/task.py:0
@@ -375,7 +452,7 @@ msgstr "确认花费的时间"
 #: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
 msgid "Congratulations, you are now a master of Timesheets."
-msgstr ""
+msgstr "恭喜您，您现在是一个工时表的大师。"
 
 #. module: timesheet_grid
 #: model_terms:ir.actions.act_window,help:timesheet_grid.action_timesheet_previous_month
@@ -420,7 +497,7 @@ msgstr "天"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_gantt_timesheet
 msgid "Days Spent —"
-msgstr "花费的日子 -"
+msgstr "花费的天数 —"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__reminder_manager_delay
@@ -444,7 +521,7 @@ msgstr "减少时间"
 #: model:ir.model.fields,help:timesheet_grid.field_account_analytic_line__employee_id
 msgid ""
 "Define an 'hourly cost' on the employee to track the cost of their time."
-msgstr ""
+msgstr "给员工定义一个 \"每小时成本\"，以跟踪他们的时间成本。"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
@@ -487,7 +564,7 @@ msgstr "说明"
 msgid ""
 "Difference between the number of %s allocated to the project and the number "
 "of %s recorded."
-msgstr ""
+msgstr "分配给项目的%s数量与记录的%s数量之间的差异。"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -496,7 +573,7 @@ msgstr ""
 msgid ""
 "Difference between the number of %s allocated to the task and the number of "
 "%s recorded."
-msgstr ""
+msgstr "分配给任务的%s数量与记录的%s数量之间的差异。"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -521,7 +598,7 @@ msgstr "记录的小时数与雇员根据合同应该工作的小时数之间的
 #: code:addons/timesheet_grid/static/src/js/widgets/timesheets_m2o_widget.js:0
 #, python-format
 msgid "Difference between the time allocated and the time recorded."
-msgstr ""
+msgstr "分配的时间和记录的时间之间的差异。"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
@@ -579,7 +656,7 @@ msgstr "显示考勤表时间"
 #, python-format
 msgid ""
 "Download our web/mobile apps to track your time from anywhere, even offline."
-msgstr ""
+msgstr "下载我们的网络/移动应用程序，在任何地方，甚至在离线情况下跟踪你的时间。"
 
 #. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__account_analytic_line__validated_status__draft
@@ -706,7 +783,7 @@ msgstr "最后更新时间"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee__last_validated_timesheet_date
 msgid "Last Validated Timesheet Date"
-msgstr ""
+msgstr "最后验证的工时表日期"
 
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate_previous_week
@@ -723,6 +800,8 @@ msgid ""
 "can also directly add 15 minutes to this project by hitting the <b>shift + "
 "[A] keys</b>.</i>"
 msgstr ""
+"通过按<b>[a]键</b>启动这个项目的<b>定时器</b>。通过这些键轻松地从一个项目切换到另一个项目。<i>提示：你也可以通过按<b>shift "
+"+ [A]键</b>直接为这个项目增加15分钟。</i>"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -762,7 +841,7 @@ msgstr "合并"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_merge_wizard_view_form
 msgid "Merge Timesheet"
-msgstr ""
+msgstr "合并工时表"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
@@ -770,7 +849,7 @@ msgstr ""
 #: model:ir.model,name:timesheet_grid.model_hr_timesheet_merge_wizard
 #, python-format
 msgid "Merge Timesheets"
-msgstr ""
+msgstr "合并工时表"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__timesheet_min_duration
@@ -840,7 +919,7 @@ msgstr "没有需要验证的活动。"
 #. module: timesheet_grid
 #: model_terms:ir.actions.act_window,help:timesheet_grid.timesheet_grid_to_validate_action
 msgid "No timesheets to validate"
-msgstr ""
+msgstr "没有需要验证的工时表"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_manager_delay
@@ -848,7 +927,7 @@ msgid ""
 "Number of days after the end of the week/month after which an automatic "
 "email reminder will be sent to timesheet managers that still have timesheets"
 " to validate."
-msgstr ""
+msgstr "周/月结束后的天数，之后将向仍有工时表需要验证的工时表经理发送自动电子邮件提醒。"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_user_delay
@@ -856,7 +935,7 @@ msgid ""
 "Numbers of days after the end of the week/month after which an automatic "
 "email reminder will be sent to timesheet users that still have timesheets to"
 " encode (according to their working hours)."
-msgstr ""
+msgstr "周/月结束后的天数，之后将向仍有工时表需要编码的工时表用户发送自动电子邮件提醒（根据其工作时间）。"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
@@ -1005,7 +1084,7 @@ msgstr "如果解析线代表考勤表轴的话。"
 msgid ""
 "Set reminders in settings to notify employees who didn't record their "
 "timesheet"
-msgstr ""
+msgstr "在设置中设置提醒，通知没有记录工时表的员工"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -1049,7 +1128,7 @@ msgstr "停止"
 msgid ""
 "Stop the <b>timer</b> when you are done. <i>Tip: hit <b>[Enter]</b> in the "
 "description to automatically log your activity.</i>"
-msgstr ""
+msgstr "完成后停止<b>计时器</b>。 <i>提示：点击描述中的<B>[Enter]</b>自动记录您的活动。</i>"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
@@ -1060,7 +1139,7 @@ msgstr "停止计时器"
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "Suspicious Durations"
-msgstr ""
+msgstr "可疑的持续时间"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -1092,13 +1171,15 @@ msgid ""
 "00:30 (assuming you have a round up of 15 min). We recommend having the same"
 " value for the minimal duration and for the round up."
 msgstr ""
+"通过计时器编码的工时表的持续时间将自动四舍五入到这个数字上。例如，如果您在00:16:56停止您的定时器，工时表条目的持续时间将自动四舍五入为00:30"
+" (假设您有一个四舍五入的15分钟)。我们建议最小持续时间和四舍五入的数值一样。"
 
 #. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_controller_mixin.js:0
 #, python-format
 msgid "The timesheet entry has successfully been created."
-msgstr ""
+msgstr "工时表条目已成功创建。"
 
 #. module: timesheet_grid
 #: model:ir.model.constraint,message:timesheet_grid.constraint_project_task_create_timesheet_time_positive
@@ -1109,7 +1190,7 @@ msgstr "时间表的时间必须为正数"
 #: code:addons/timesheet_grid/wizard/timesheet_merge_wizard.py:0
 #, python-format
 msgid "The timesheets have successfully been merged."
-msgstr ""
+msgstr "工时表已成功被合并。"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
@@ -1127,7 +1208,7 @@ msgstr "考勤表已成功验证。"
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid "There are no timesheets to merge."
-msgstr ""
+msgstr "没有需要合并的工时表。"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
@@ -1135,14 +1216,14 @@ msgstr ""
 msgid ""
 "There are no timesheets to reset to draft or they have already been "
 "invoiced."
-msgstr ""
+msgstr "没有工时表可以重设为草稿，或者已经开过发票。"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/task.py:0
 #, python-format
 msgid ""
 "This project isn't expected to have task during this period. Planned hours :"
-msgstr ""
+msgstr "这个项目预计在此期间不会有任务。计划的时间："
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task_create_timesheet__time_spent
@@ -1181,7 +1262,7 @@ msgstr "考勤表审批人"
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_timesheet_grid_mixin
 msgid "Timesheet Grid mixin"
-msgstr ""
+msgstr "工时表网格混合"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__duration_unit_amount
@@ -1243,7 +1324,7 @@ msgstr "工时表分析报告"
 msgid ""
 "Timesheets before the %s (included) have been validated, and can no longer "
 "be %s."
-msgstr ""
+msgstr "在%s (包含)之前的工时表已被验证，并且不能再被%s看到。"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
@@ -1255,6 +1336,9 @@ msgid ""
 "of 15 min). We recommend having the same value for the minimal duration and "
 "for the round up."
 msgstr ""
+"通过计时器编码的不符合最小持续时间的工时表将自动四舍五入到定义的值。 "
+"例如，如果您在00:04:36停止计时器，工时表条目的持续时间将自动四舍五入到00:15（假设您的最小持续时间为15分钟）。 "
+"我们建议最小持续时间和四舍五入的数值一样。"
 
 #. module: timesheet_grid
 #: model:ir.actions.act_window,name:timesheet_grid.action_timesheet_previous_month
@@ -1344,7 +1428,7 @@ msgstr "验证完毕的线"
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_grid_all_timesheets_action_server
 msgid "Validation All Timesheet Server Action"
-msgstr ""
+msgstr "验证所有工时表服务器操作"
 
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_grid_week_action_server
@@ -1448,14 +1532,14 @@ msgstr "天数"
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid "deleted"
-msgstr ""
+msgstr "已删除"
 
 #. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "letter shortcut"
-msgstr ""
+msgstr "信件快捷方式"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -1480,7 +1564,7 @@ msgstr "修改"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "or a"
-msgstr ""
+msgstr "或"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -1494,11 +1578,11 @@ msgstr "按下"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "press Shift + a letter shortcut"
-msgstr ""
+msgstr "按Shift+字母快捷键"
 
 #. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "to add"
-msgstr ""
+msgstr "添加"

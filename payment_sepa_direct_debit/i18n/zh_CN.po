@@ -576,7 +576,7 @@ msgstr "用于通过短信代码验证的电话号码"
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_payment_provider__code
 msgid "The technical code of this payment provider."
-msgstr ""
+msgstr "该支付提供商的技术代码。"
 
 #. module: payment_sepa_direct_debit
 #: code:addons/payment_sepa_direct_debit/models/payment_transaction.py:0

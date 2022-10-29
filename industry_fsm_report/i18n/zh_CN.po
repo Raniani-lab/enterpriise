@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022
+# Raymond Yu <cl_yu@hotmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:42+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022\n"
+"Last-Translator: Raymond Yu <cl_yu@hotmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -26,6 +27,8 @@ msgid ""
 "<span class=\"fa fa-pencil me-1\" aria-label=\"Worksheet Template\" "
 "title=\"Worksheet Template\"/>"
 msgstr ""
+"<span class=\"fa fa-pencil me-1\" aria-label=\"Worksheet Template\" "
+"title=\"Worksheet Template\"/>"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.view_worksheet_template_kanban
@@ -35,12 +38,12 @@ msgstr "<span class=\"o_label\">工作表</span>"
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_task_view_gantt_fsm_worksheet
 msgid "<strong>Template — </strong>"
-msgstr "<strong>模板-- </strong>"
+msgstr "<strong>模板 — </strong>"
 
 #. module: industry_fsm_report
 #: model:ir.ui.menu,name:industry_fsm_report.project_task_menu_planning_by_project_fsm
 msgid "By Worksheet Template"
-msgstr ""
+msgstr "按工作表模板"
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__worksheet_color
@@ -55,14 +58,14 @@ msgstr "注释"
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.project_project_form_inherit_industry_fsm_report
 msgid "Create reports to be signed off by your customers"
-msgstr ""
+msgstr "创建报告，由你的客户签字确认"
 
 #. module: industry_fsm_report
 #: model:ir.model.fields,help:industry_fsm_report.field_project_task__worksheet_template_id
 msgid ""
 "Create templates for each type of intervention you have and customize their "
 "content with your own custom fields."
-msgstr ""
+msgstr "为您拥有的每种类型的干预创建模板，并使用您自己的自定义字段定制其内容。"
 
 #. module: industry_fsm_report
 #: model_terms:ir.actions.act_window,help:industry_fsm_report.fsm_worksheets_action_settings
@@ -105,7 +108,7 @@ msgstr "FSM任务分析"
 msgid ""
 "I hereby certify that this device meets the requirements of an acceptable "
 "device at the time of testing."
-msgstr "我在此证明，该设备在测试时符合可接受设备的要求。"
+msgstr "我在此证明，该设备在测试时符合可接受设备的需求。"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_task_worksheet_template_3
@@ -130,7 +133,7 @@ msgstr "没有找到工作表模板。让我们创建一个!"
 #. module: industry_fsm_report
 #: model:ir.actions.act_window,name:industry_fsm_report.project_task_action_fsm_planning_groupby_worksheet
 msgid "Planning by Worksheet Template"
-msgstr ""
+msgstr "通过工作表模板进行计划"
 
 #. module: industry_fsm_report
 #: model:ir.model,name:industry_fsm_report.model_project_project

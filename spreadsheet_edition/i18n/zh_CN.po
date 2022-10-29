@@ -511,7 +511,7 @@ msgstr "季"
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_collaborative_mixin__raw
 msgid "Raw"
-msgstr ""
+msgstr "原始的"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -713,7 +713,7 @@ msgstr "电子表格快照"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "Spreadsheets"
-msgstr ""
+msgstr "电子表格"
 
 #. module: spreadsheet_edition
 #. openerp-web

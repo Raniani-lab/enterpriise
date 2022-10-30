@@ -98,36 +98,24 @@
                             </div>
                         </group>
                     </group>
-                    <group groups="planning.group_planning_manager">
-                        <group>
-                            <div colspan="2" class="o_checkbox_optional_field" groups="planning.group_planning_manager">
-                                <label for="repeat"/>
-                                <div>
-                                    <field name="repeat"/>
-                                    <div attrs="{'invisible': [('repeat', '=', False)]}" class="d-flex flex-column flex-grow-1">
-                                        <div class="d-flex">
-                                            <label for="repeat_interval" string="Every"/>
-                                            <field name="repeat_interval" class="flex-shrink-1" style="max-width: 4rem;"/>
-                                            <field name="repeat_unit" class="ms-2"/>
-                                        </div>
-                                        <div class="d-flex">
-                                            <field name="repeat_type" nolabel="1" attrs="{'required': [('repeat', '=', True)]}" class="flex-shrink-1" />
-                                            <span class="d-flex flex-shrink-1">
-                                                <field name="repeat_until" class="flex-shrink-1 ms-2" nolabel="1" attrs="{'invisible': [('repeat_type', '!=', 'until')], 'required': [('repeat_type', '=', 'until'), ('repeat', '=', True)]}"/>
-                                                <field name="repeat_number" class="flex-shrink-1 ms-2" attrs="{'invisible': [('repeat_type', '!=', 'x_times')], 'required': [('repeat_type', '=', 'x_times'), ('repeat', '=', True)]}" style="max-width: 4rem;"/>
-                                            </span>
-                                        </div>
-                                    </div>
-                                </div>
+                    <div class="my-4 d-block d-md-flex" groups="planning.group_planning_manager">
+                        <label for="repeat"/>
+                        <field name="repeat"/>
+                        <div class="o_checkbox_optional_field">
+                            <div attrs="{'invisible': [('repeat', '=', False)]}" class="d-flex">
+                                <label for="repeat_interval" string="Every"/>
+                                <field name="repeat_interval" class="ms-2" style="max-width: 4rem;"/>
+                                <field name="repeat_unit" class="ms-2"/>
+                                <field name="repeat_type" nolabel="1" class="ms-2" attrs="{'required': [('repeat', '=', True)]}"/>
+                                <field name="repeat_until" class="ms-2" nolabel="1" attrs="{'invisible': [('repeat_type', '!=', 'until')], 'required': [('repeat_type', '=', 'until'), ('repeat', '=', True)]}"/>
+                                <field name="repeat_number" class="ms-2" attrs="{'invisible': [('repeat_type', '!=', 'x_times')], 'required': [('repeat_type', '=', 'x_times'), ('repeat', '=', True)]}" style="max-width: 4rem;"/>
                             </div>
-                            <field name="allow_template_creation" invisible="1"/>
-                            <div colspan="2" class="o_checkbox_optional_field" attrs="{'invisible': [('allow_template_creation', '=', False)]}" groups="planning.group_planning_manager">
-                                <label for="template_creation"/>
-                                <field name="template_creation"/>
-                            </div>
-                        </group>
-                    </group>
-                    <field name="name" placeholder="Additional note sent to the employee"/>
+                        </div>
+                    </div>
+                    <field name="allow_template_creation" invisible="1"/>
+                    <label for="template_creation"></label>
+                    <field name="template_creation" nolabel="1" groups="planning.group_planning_manager"/>
+                    <field name="name" nolabel="1" placeholder="Additional note sent to the employee"/>
                 </sheet>
             </form>
         </field>

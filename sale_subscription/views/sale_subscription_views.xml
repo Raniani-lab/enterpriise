@@ -57,7 +57,7 @@
 
     <record id="action_sale_order_log" model="ir.actions.act_window">
         <field name="name">MRR Analysis</field>
-        <field name="view_mode">tree,graph,form</field>
+        <field name="view_mode">tree,graph</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order.log</field>
     </record>

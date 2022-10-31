@@ -15,7 +15,7 @@ class NewModelItemAdapter extends ComponentAdapter {
         if (ev.name === "reload_menu_data") {
             this.props.reloadMenuData(ev);
         } else if (ev.name === "menu_clicked") {
-            this.props.editNewModel(ev);
+            this.props.editNewModel(Object.assign({}, ev, {detail: ev.data}));
         }
         super._trigger_up(...arguments);
     }

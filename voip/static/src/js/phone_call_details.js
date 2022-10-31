@@ -1,6 +1,7 @@
 odoo.define('voip.PhoneCallDetails', function (require) {
 "use strict";
 
+const config = require('web.config');
 const core = require('web.core');
 const session = require('web.session');
 const Widget = require('web.Widget');
@@ -266,7 +267,9 @@ const PhoneCallDetails = Widget.extend({
      */
     _onClickEmail(ev) {
         ev.preventDefault();
-        this.messaging.voip.legacyDialingPanelWidget.toggleFold();
+        if (!config.device.isMobileDevice) {
+            this.messaging.voip.legacyDialingPanelWidget.toggleFold();
+        }
         if (this._activityResModel && this.activityResId) {
             this.messaging.env.services.action.doAction({
                 type: 'ir.actions.act_window',
@@ -303,7 +306,9 @@ const PhoneCallDetails = Widget.extend({
      */
     _onClickLog(ev) {
         ev.preventDefault();
-        this.messaging.voip.legacyDialingPanelWidget.toggleFold();
+        if (!config.device.isMobileDevice) {
+            this.messaging.voip.legacyDialingPanelWidget.toggleFold();
+        }
         this.messaging.env.services.action.doAction({
             type: 'ir.actions.act_window',
             res_id: this.activityId,
@@ -343,7 +348,9 @@ const PhoneCallDetails = Widget.extend({
      */
     _onClickRescheduleActivity(ev) {
         ev.preventDefault();
-        this.messaging.voip.legacyDialingPanelWidget.toggleFold();
+        if (!config.device.isMobileDevice) {
+            this.messaging.voip.legacyDialingPanelWidget.toggleFold();
+        }
         var res_id, res_model;
         if (this.activityResId) {
             res_id = this.activityResId;
@@ -374,7 +381,9 @@ const PhoneCallDetails = Widget.extend({
      */
     async _onClickToPartner(ev) {
         ev.preventDefault();
-        this.messaging.voip.legacyDialingPanelWidget.toggleFold();
+        if (!config.device.isMobileDevice) {
+            this.messaging.voip.legacyDialingPanelWidget.toggleFold();
+        }
         let resId = this.partnerId;
         if (!this.partnerId) {
             let domain = [];

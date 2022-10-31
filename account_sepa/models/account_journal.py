@@ -175,9 +175,7 @@ class AccountJournal(models.Model):
     def _get_document(self, pain_version):
         if pain_version == 'pain.001.001.03.ch.02':
             Document = self._create_pain_001_001_03_ch_document()
-        elif pain_version == 'pain.001.003.03':
-            Document = self._create_pain_001_003_03_document()
-        else: #The german version will also use the create_pain_001_001_03_document since the version 001.003.03 is deprecated
+        else: #The German version will also use the create_pain_001_001_03_document since the version 001.003.03 is deprecated
             Document = self._create_pain_001_001_03_document()
 
         return Document
@@ -203,7 +201,7 @@ class AccountJournal(models.Model):
 
     def _create_pain_001_003_03_document(self):
         """ This funtion is now deprecated since pain.001.003.03 cannot be used anymore.
-            Create a sepa credit transfer file that follows the german specific guidelines, as established
+            Create a sepa credit transfer file that follows the German specific guidelines, as established
             by the German Bank Association (Deutsche Kreditwirtschaft) (pain.001.003.03)
 
             :param doc_payments: recordset of account.payment to be exported in the XML document returned

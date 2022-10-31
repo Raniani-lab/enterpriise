@@ -264,7 +264,9 @@ const PhoneCallDetails = Widget.extend({
      */
     _onClickEmail(ev) {
         ev.preventDefault();
-        this.trigger_up('fold_panel');
+        if (!config.device.isMobileDevice) {
+            this.trigger_up('fold_panel');
+        }
         if (this._activityResModel && this.activityResId) {
             this.do_action({
                 context: {
@@ -311,7 +313,9 @@ const PhoneCallDetails = Widget.extend({
      */
     _onClickLog(ev) {
         ev.preventDefault();
-        this.trigger_up('fold_panel');
+        if (!config.device.isMobileDevice) {
+            this.trigger_up('fold_panel');
+        }
         this.do_action({
             type: 'ir.actions.act_window',
             res_model: 'mail.activity',
@@ -352,7 +356,9 @@ const PhoneCallDetails = Widget.extend({
      */
     _onClickRescheduleActivity(ev) {
         ev.preventDefault();
-        this.trigger_up('fold_panel');
+        if (!config.device.isMobileDevice) {
+            this.trigger_up('fold_panel');
+        }
         var res_id, res_model;
         if (this.activityResId) {
             res_id = this.activityResId;
@@ -385,7 +391,9 @@ const PhoneCallDetails = Widget.extend({
      */
     async _onClickToPartner(ev) {
         ev.preventDefault();
-        this.trigger_up('fold_panel');
+        if (!config.device.isMobileDevice) {
+            this.trigger_up('fold_panel');
+        }
         let resId = this.partnerId;
         if (!this.partnerId) {
             let domain = [];

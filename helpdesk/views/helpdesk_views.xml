@@ -713,13 +713,15 @@
                     <field name="fold" invisible="1"/>
                     <div class="oe_title">
                         <h1><field name="name" class="field_name" placeholder="e.g. Product arrived damaged"/></h1>
-                        <field name="sla_status_ids" widget="helpdesk_sla_many2many_tags" attrs="{'invisible': [('use_sla', '=', False)]}" options="{'color_field': 'color', 'no_edit_color': True}" readonly="1" groups="helpdesk.group_use_sla"/>
-                        <span attrs="{'invisible': ['|', '|', ('sla_deadline', '=', False), ('use_sla', '=', False), ('fold', '=', True)]}" groups="helpdesk.group_use_sla" class="mx-2 text-muted">
-                            <i class="fa fa-lg fa-clock-o me-2" aria-label="Sla Deadline" title="Sla Deadline"/>
-                            <field name="sla_deadline" widget="remaining_days"/>
-                        </span>
                     </div>
-                    <group class="mb-0">
+                    <div class="d-flex mb-4">
+                        <field name="sla_status_ids" widget="helpdesk_sla_many2many_tags" attrs="{'invisible': [('use_sla', '=', False)]}" options="{'color_field': 'color', 'no_edit_color': True}" class="mb-0" readonly="1" groups="helpdesk.group_use_sla"/>
+                        <div attrs="{'invisible': ['|', ('sla_deadline', '=', False), ('use_sla', '=', False)]}" groups="helpdesk.group_use_sla" class="mx-2 text-muted d-inline-flex align-items-center h-100">
+                            <i class="fa fa-lg fa-clock-o me-2 mt-1" aria-label="Sla Deadline" title="Sla Deadline"/>
+                            <field name="sla_deadline" class="mb-0" widget="remaining_days"/>
+                        </div>
+                    </div>
+                    <group class="mb-0 mt-4">
                         <group>
                             <field name="active" invisible="1"/>
                             <field name="team_id" required="1" context="{'default_use_sla': True}"/>

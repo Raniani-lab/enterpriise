@@ -207,7 +207,7 @@
                     <field name="legend_normal" invisible="1"/>
                     <field name="legend_blocked" invisible="1"/>
                     <field name="legend_done" invisible="1"/>
-                    <field name="name" placeholder="e.g. Product arrived damaged"/>
+                    <field name="name" string="Ticket Title" placeholder="e.g. Product arrived damaged"/>
                     <field name="domain_user_ids" invisible="1"/>
                     <field name="team_id" required="1" invisible="context.get('default_team_id')"  options="{'no_open': True}"/>
                     <field name="user_id" domain="[('id', 'in', domain_user_ids)]" options="{'no_open': True}"/>
@@ -381,7 +381,7 @@
                     </div>
                     <notebook>
                         <page string="Description" name="description">
-                            <field name="description" placeholder="Description of the ticket..."/>
+                            <field name="description" placeholder="Add details about this ticket..."/>
                         </page>
                     </notebook>
                 </sheet>

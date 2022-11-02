@@ -302,7 +302,7 @@
                 <field name="name"/>
                 <field name="member_ids"/>
                 <field name="company_id" groups="base.group_multi_company"/>
-                <filter string="My Teams" domain="[('member_ids', 'in', [uid]), ('auto_assignment', '=', True)]" name="my_team"/>
+                <filter string="My Teams" domain="[('member_ids', 'in', [uid]), ('auto_assignment', '=', True)]" name="my_team" groups="helpdesk.group_auto_assignment"/>
                 <filter string="Followed Teams" domain="[('message_is_follower', '=', True)]" name="my_follow_team"/>
                 <separator/>
                 <filter string="Archived" domain="[('active', '=', False)]" name="archived"/>
@@ -356,10 +356,10 @@
                                         <span>Reporting</span>
                                     </div>
                                     <div role="menuitem">
-                                        <a name="%(helpdesk.helpdesk_ticket_analysis_action)d" type="action" context="{'search_default_team_id': active_id}">Tickets Analysis</a>
+                                        <a name="%(helpdesk.helpdesk_ticket_analysis_dashboard_action)d" type="action" context="{'search_default_team_id': active_id}">Tickets Analysis</a>
                                     </div>
                                     <div role="menuitem">
-                                        <a name="%(helpdesk.helpdesk_sla_report_analysis_action)d" type="action" context="{'search_default_team_id': active_id}">SLA Status Analysis</a>
+                                        <a name="%(helpdesk.helpdesk_sla_report_analysis_dashboard_action)d" type="action" context="{'search_default_team_id': active_id}">SLA Status Analysis</a>
                                     </div>
                                 </div>
                             </div>

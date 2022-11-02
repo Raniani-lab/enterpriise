@@ -340,6 +340,7 @@ class HelpdeskTeam(models.Model):
         teams = super(HelpdeskTeam, self.with_context(mail_create_nosubscribe=True)).create(vals_list)
         teams.sudo()._check_sla_group()
         teams.sudo()._check_rating_group()
+        teams.sudo()._check_auto_assignment_group()
         teams.sudo()._check_modules_to_install()
         if teams.filtered(lambda x: x.auto_close_ticket):
             teams._update_cron()
@@ -357,6 +358,8 @@ class HelpdeskTeam(models.Model):
             self.sudo()._check_sla_group()
         if 'use_rating' in vals:
             self.sudo()._check_rating_group()
+        if 'auto_assignment' in vals:
+            self.sudo()._check_auto_assignment_group()
         self.sudo()._check_modules_to_install()
         if 'auto_close_ticket' in vals:
             self._update_cron()
@@ -467,6 +470,16 @@ class HelpdeskTeam(models.Model):
             self._get_helpdesk_user_group()\
                 .write({'implied_ids': [Command.unlink(use_rating_group.id)]})
             use_rating_group.write({'users': [Command.clear()]})
+
+    def _check_auto_assignment_group(self):
+        has_auto_assignment_group = self.user_has_groups('helpdesk.group_auto_assignment')
+        has_auto_assignment = self.env['helpdesk.team'].search_count([('auto_assignment', '=', True)], limit=1)
+        group_auto_assignment = self.env.ref('helpdesk.group_auto_assignment')
+        if has_auto_assignment and not has_auto_assignment_group:
+            self._get_helpdesk_user_group().write({'implied_ids': [Command.link(group_auto_assignment.id)]})
+        elif not has_auto_assignment and has_auto_assignment_group:
+            self._get_helpdesk_user_group().write({'implied_ids': [Command.unlink(group_auto_assignment.id)]})
+            group_auto_assignment.write({'users': [Command.clear()]})
 
     @api.model
     def _get_field_modules(self):

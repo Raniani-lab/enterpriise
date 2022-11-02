@@ -16,6 +16,18 @@
         </field>
     </record>
 
+    <record id="helpdesk_ticket_view_pivot_analysis_dashboard" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.report.analysis.pivot.dashboard</field>
+        <field name="model">helpdesk.ticket.report.analysis</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_pivot_analysis"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='team_id']" position="attributes">
+                <attribute name="invisible">1</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <record id="helpdesk_ticket_view_pivot_7days_analysis_inherit_dashboard" model="ir.ui.view">
         <field name="name">helpdesk.ticket.view.pivot.7days.analysis.inherit</field>
         <field name="model">helpdesk.ticket.report.analysis</field>
@@ -99,6 +111,18 @@
                 <field name="ticket_stage_id"/>
                 <field name="ticket_open_hours" widget="float_time"/>
             </graph>
+        </field>
+    </record>
+
+    <record id="helpdesk_ticket_view_graph_analysis_dashboard" model="ir.ui.view">
+        <field name="name">helpdesk.ticket.view.graph.analysis.dashboard</field>
+        <field name="model">helpdesk.ticket.report.analysis</field>
+        <field name="inherit_id" ref="helpdesk.helpdesk_ticket_view_graph_analysis"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//graph" position="attributes">
+                <attribute name="stacked">False</attribute>
+            </xpath>
         </field>
     </record>
 
@@ -248,6 +272,36 @@
         <field name="view_mode">cohort</field>
         <field name="view_id" ref="helpdesk_ticket_report_view_cohort"/>
         <field name="act_window_id" ref="helpdesk_ticket_analysis_action"/>
+    </record>
+
+    <record id="helpdesk_ticket_analysis_dashboard_action" model="ir.actions.act_window">
+        <field name="name">Ticket Analysis</field>
+        <field name="res_model">helpdesk.ticket.report.analysis</field>
+        <field name="view_mode">pivot,graph,cohort</field>
+        <field name="context">{
+            'search_default_group_by_create_date': 1,
+        }</field>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_empty_folder">
+                No data yet!
+            </p><p>
+                Get statistics on your tickets and how long it takes to assign and resolve them.
+            </p>
+        </field>
+    </record>
+
+    <record id="action_helpdesk_ticket_analysis_dashboard_graph_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="5"/>
+        <field name="view_mode">graph</field>
+        <field name="view_id" ref="helpdesk_ticket_view_graph_analysis_dashboard"/>
+        <field name="act_window_id" ref="helpdesk_ticket_analysis_dashboard_action"/>
+    </record>
+
+    <record id="action_helpdesk_ticket_analysis_dashboard_pivot_view" model="ir.actions.act_window.view">
+        <field name="sequence" eval="10"/>
+        <field name="view_mode">pivot</field>
+        <field name="view_id" ref="helpdesk_ticket_view_pivot_analysis_dashboard"/>
+        <field name="act_window_id" ref="helpdesk_ticket_analysis_dashboard_action"/>
     </record>
 
 </odoo>

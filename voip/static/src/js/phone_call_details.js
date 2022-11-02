@@ -134,7 +134,7 @@ const PhoneCallDetails = Widget.extend({
         this._$closeDetails.show();
         this._$phoneCallInfo.show();
         this._$phoneCallInCall.hide();
-        this._$phoneCallReceivingCall.hide();
+        this._$phoneCallReceivingCall.removeClass('d-flex');
         this.$el.removeClass('in_call');
     },
     /**
@@ -146,7 +146,7 @@ const PhoneCallDetails = Widget.extend({
         this._$phoneCallInfoName.hide();
         this._$phoneCallDetails.addClass('details_incoming_call pt-5');
 
-        this._$phoneCallReceivingCall.show();
+        this._$phoneCallReceivingCall.addClass('d-flex');
 
         this.$('.o_phonecall_top').html(QWeb.render('voip.PhoneCallStatus', {
             status: 'connecting',

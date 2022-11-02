@@ -886,7 +886,7 @@ class JournalReportCustomHandler(models.AbstractModel):
             'type': 'ir.actions.act_window',
             'name': _('Journal Items for Tax Audit'),
             'res_model': 'account.move.line',
-            'views': [[self.env.ref('account.view_move_line_tax_audit_tree').id, 'list'], [False, 'form']],
+            'views': [[self.env.ref('account.view_move_line_tax_audit_tree').id, 'list']],
             'domain': domain,
             'context': self.env.context,
         }

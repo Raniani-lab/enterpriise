@@ -129,7 +129,12 @@
                                t-value="line.flag == 'auto_balance' and 'o_bank_rec_auto_balance_line' or ''"/>
 
                             <tr class="o_data_row o_list_no_open"
-                                t-att-class="{'o_bank_rec_liquidity_line': line.flag.value == 'liquidity', 'o_bank_rec_auto_balance_line': line.flag.value == 'auto_balance', 'o_bank_rec_selected_line': line.index.value == data.form_index}"
+                                t-att-class="{
+                                    'o_bank_rec_liquidity_line': line.flag.value == 'liquidity',
+                                    'o_bank_rec_auto_balance_line': line.flag.value == 'auto_balance',
+                                    'o_bank_rec_selected_line': line.index.value == data.form_index,
+                                    'o_bank_rec_expanded_line': data.extra_notes and state.extraNoteVisible and line.flag.value == 'liquidity',
+                                }"
                                 t-on-click="(ev) => this.mountLine(ev, line.index.value)">
 
                                 <t t-foreach="data.columns" t-as="column" t-key="column[0]">
@@ -179,16 +184,9 @@
                                                                 t-on-click.stop="() => this.showMove(line.source_aml_move_id.id)"/>
                                                         <span class="mr4">:</span>
                                                     </t>
-                                                    <span t-att-title="!!data.extra_notes and !state.extraNoteVisible ? data.extra_notes : line.name.value"
+                                                    <span t-att-title="(data.extra_notes and !state.extraNoteVisible) ? data.extra_notes : line.name.value"
                                                           t-esc="line.name.value"
                                                           field="name"/>
-                                                    <t t-if="data.extra_notes and state.extraNoteVisible">
-                                                        <br/>
-                                                        <span t-att-class="'text-muted'"
-                                                              t-att-title="data.extra_notes"
-                                                              t-esc="data.extra_notes"
-                                                              field="extra_notes"/>
-                                                    </t>
                                                 </div>
                                             </td>
                                         </t>
@@ -310,6 +308,19 @@
                                         </td>
                                     </t>
                                 </t>
+                            </tr>
+                            <!-- Ensure the same color band will be applied -->
+                            <tr t-if="line.flag.value == 'liquidity'"/>
+                            <tr t-if="line.flag.value == 'liquidity'"
+                                t-att-class="{'o_bank_rec_selected_line': line.index.value == data.form_index}">
+                                <td t-if="data.extra_notes and state.extraNoteVisible"
+                                    t-att-colspan="data.columns.length"
+                                    class="text-wrap"
+                                    t-on-click="() => state.extraNoteVisible = !state.extraNoteVisible">
+                                    <span class="text-muted fst-italic"
+                                          t-esc="data.extra_notes"
+                                          field="extra_notes"/>
+                                </td>
                             </tr>
                         </t>
 

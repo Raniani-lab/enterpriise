@@ -92,8 +92,8 @@ class DocumentFolder(models.Model):
         does, this method will return the project linked to the closest ancestor
         matching the criteria.
 
-        :return: The project linked to the closest valid ancestor, or False if
-        no project is found.
+        :return: The project linked to the closest valid ancestor, or an empty
+        recordset if no project is found.
         """
         self.ensure_one()
         project_read_group = self.env['project.project'].sudo()._read_group(
@@ -105,7 +105,7 @@ class DocumentFolder(models.Model):
         folder_id_order = {int(folder_id): i for i, folder_id in enumerate(reversed(self.parent_path[:-1].split('/')))}
         eligible_projects = [project for project in project_read_group if project['documents_folder_id_count'] == 1]
         if not eligible_projects:
-            return False
+            return self.env['project.project']
 
         eligible_projects.sort(key=lambda project: folder_id_order[project['documents_folder_id'][0]])
         return self.env['project.project'].sudo().search([('documents_folder_id', '=', eligible_projects[0]['documents_folder_id'][0])], limit=1)

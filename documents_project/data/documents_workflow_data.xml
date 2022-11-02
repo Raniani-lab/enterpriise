@@ -92,5 +92,24 @@
             <field name="facet_id" ref="documents_project_status"/>
             <field name="tag_id" ref="documents_project_status_deprecated"/>
         </record>
+
+        <record id="documents_project_rule_task" model="documents.workflow.rule" forcecreate="0">
+            <field name="sequence">3</field>
+            <field name="name">Create a Task</field>
+            <field name="activity_option">True</field>
+            <field name="excluded_tag_ids" eval="[Command.link(ref('documents_project_status_deprecated'))]"/>
+            <field name="activity_type_id" ref="documents.mail_documents_activity_data_tv"/>
+            <field name="create_model">project.task</field>
+            <field name="condition_type">domain</field>
+            <field name="domain" eval="[('res_model', '!=', 'project.task')]"/>
+            <field name="domain_folder_id" ref="documents_project_folder"/>
+        </record>
+
+        <record id="documents_workflow_action_task" model="documents.workflow.action" forcecreate="0">
+            <field name="workflow_rule_id" ref="documents_project_rule"/>
+            <field name="action">replace</field>
+            <field name="facet_id" ref="documents_project_status"/>
+            <field name="tag_id" ref="documents_project_status_to_validate"/>
+        </record>
     </data>
 </odoo>

@@ -10,11 +10,13 @@ class WorkflowActionRuleTask(models.Model):
     def create_record(self, documents=None):
         rv = super(WorkflowActionRuleTask, self).create_record(documents=documents)
         if self.create_model == 'project.task':
+            project = documents.folder_id._get_project_from_closest_ancestor() if len(documents.folder_id) == 1 else self.env['project.project']
             document_msg = _('Task created from document')
             new_obj = self.env[self.create_model].create({
                 'name': " / ".join(documents.mapped('name')) or _("New task from Documents"),
                 'user_ids': [Command.set(self.env.user.ids)],
                 'partner_id': documents.partner_id.id if len(documents.partner_id) == 1 else False,
+                'project_id': project.id,
             })
             task_action = {
                 'type': 'ir.actions.act_window',
@@ -32,7 +34,8 @@ class WorkflowActionRuleTask(models.Model):
 
             for document in documents:
                 this_document = document
-                if (document.res_model or document.res_id) and document.res_model != 'documents.document':
+                if (document.res_model or document.res_id) and document.res_model != 'documents.document'\
+                    and not (project and document.res_model == 'project.project' and document.res_id == project.id):
                     this_document = document.copy()
                     attachment_id_copy = document.attachment_id.with_context(no_document=True).copy()
                     this_document.write({'attachment_id': attachment_id_copy.id})

@@ -6,7 +6,7 @@
         <field name="model">social.post</field>
         <field name="inherit_id" ref="social.social_post_view_form"/>
         <field name="arch" type="xml">
-            <xpath expr="//button[@name='engagement']" position="before">
+            <xpath expr="//button[hasclass('o_social_post_engagement_stat_btn')]" position="before">
                 <button class="oe_stat_button" name="action_redirect_to_quotations"  type="object"
                     icon="fa-pencil-square-o" groups="sales_team.group_sale_salesman">
                     <field name="sale_quotation_count" string="Quotations" widget="statinfo"/>

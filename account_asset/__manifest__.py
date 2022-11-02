@@ -35,5 +35,8 @@ Keeps track of depreciations, and creates corresponding journal entries.
         'web.assets_backend': [
             'account_asset/static/src/**/*',
         ],
+        'web.dark_mode_assets_backend': [
+            'account_asset/static/src/scss/*.dark.scss',
+        ],
     }
 }

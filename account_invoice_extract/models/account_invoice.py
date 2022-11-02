@@ -693,6 +693,24 @@ class AccountMove(models.Model):
                             taxes_found |= taxes_record
         return taxes_found
 
+    def _get_currency(self, currency_ocr, partner_id):
+        for comparison in ['=ilike', 'ilike']:
+            possible_currencies = self.env["res.currency"].search([
+                '|', '|',
+                ('currency_unit_label', comparison, currency_ocr),
+                ('name', comparison, currency_ocr),
+                ('symbol', comparison, currency_ocr),
+            ])
+            if possible_currencies:
+                break
+
+        partner_last_invoice_currency = partner_id.invoice_ids[:1].currency_id
+        if partner_last_invoice_currency in possible_currencies:
+            return partner_last_invoice_currency
+        if self.company_id.currency_id in possible_currencies:
+            return self.company_id.currency_id
+        return possible_currencies[:1]
+
     def _get_invoice_lines(self, ocr_results):
         """
         Get write values for invoice lines.
@@ -940,9 +958,7 @@ class AccountMove(models.Model):
                     move_form.name = invoice_id_ocr
 
             if currency_ocr and (move_form.currency_id == move_form.company_currency_id or force_write):
-                currency = self.env["res.currency"].search([
-                        '|', '|', ('currency_unit_label', 'ilike', currency_ocr),
-                        ('name', 'ilike', currency_ocr), ('symbol', 'ilike', currency_ocr)], limit=1)
+                currency = self._get_currency(currency_ocr, move_form.partner_id)
                 if currency:
                     move_form.currency_id = currency
 

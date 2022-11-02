@@ -281,7 +281,7 @@ class MexicanAccountReportCustomHandler(models.AbstractModel):
         for label, partner_to_value_list in label_dict.items():
             for partner_id, value in partner_to_value_list:
                 partner_to_label_val.setdefault(self.env['res.partner'].browse(partner_id), {})[label] = value
-        return partner_to_label_val
+        return dict(sorted(partner_to_label_val.items(), key=lambda item: item[0].name))
 
     def check_for_error_on_partner(self, partners):
         partner_missing_information = self.env['res.partner']

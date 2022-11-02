@@ -7,6 +7,8 @@ import { clear } from '@mail/model/model_field_command';
 registerModel({
     name: 'ApprovalView',
     identifyingMode: 'xor',
+    template: 'approvals.ApprovalView',
+    templateGetter: 'approvalView',
     recordMethods: {
         async onClickApprove() {
             if (!this.exists()) {

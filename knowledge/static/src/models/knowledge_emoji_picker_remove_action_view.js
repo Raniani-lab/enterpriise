@@ -8,6 +8,8 @@ import { one } from '@mail/model/model_field';
  */
 registerModel({
     name: 'KnowledgeEmojiPickerRemoveActionView',
+    template: 'mail.KnowledgeEmojiPickerRemoveActionView',
+    templateGetter: 'knowledgeEmojiPickerRemoveActionView',
     recordMethods: {
         onClick() {
             this.messaging.knowledge.onClickRemoveEmoji();

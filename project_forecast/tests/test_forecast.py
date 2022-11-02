@@ -80,3 +80,31 @@ class TestForecastCreationAndEditing(TestCommonForecast):
         self.slot.write(values)
 
         self.assertEqual(self.slot.allocated_hours, 8 * 6, 'allocated hours should be equal to the real period since the resource has a flexible hours.')
+
+    def test_shift_creation_from_project(self):
+        self.env.user.tz = 'Asia/Calcutta'
+        self.env.user.company_id.resource_calendar_id.tz = 'Asia/Calcutta'
+        PlanningTemplate = self.env['planning.slot.template']
+        Project = self.env['project.project']
+
+        project_a = Project.create({'name': 'project_a'})
+        project_b = Project.create({'name': 'project_b'})
+
+        template_a = PlanningTemplate.create({
+            'start_time': 8,
+            'duration': 2.0,
+            'project_id': project_a.id
+        })
+        self.assertEqual(template_a.duration_days, 1, "Duration in days should be a 1 day according to resource calendar.")
+        self.assertEqual(template_a.end_time, 10.0, "End time should be 2 hours from start hours.")
+
+        template_b = PlanningTemplate.create({
+            'start_time': 8,
+            'duration': 4.0,
+            'project_id': project_b.id
+        })
+        slot = self.env['planning.slot'].create({'template_id': template_a.id})
+        self.assertEqual(slot.project_id.id, slot.template_autocomplete_ids.mapped('project_id').id, "Project of the slot and shift template should be same.")
+
+        slot.template_id = template_b.id
+        self.assertEqual(slot.project_id.id, slot.template_autocomplete_ids.mapped('project_id').id, "Project of the slot and shift template should be same.")

@@ -353,3 +353,32 @@ class TestPlanning(TestCommonPlanning, MockEmail):
         with self.assertRaises(ValidationError):
             # only try to get the name, this triggers its compute
             template_slot.name
+
+    def test_shift_creation_from_role(self):
+        self.env.user.tz = 'Asia/Calcutta'
+        self.env.user.company_id.resource_calendar_id.tz = 'Asia/Calcutta'
+        PlanningRole = self.env['planning.role']
+        PlanningTemplate = self.env['planning.slot.template']
+
+        role_a = PlanningRole.create({'name': 'role a'})
+        role_b = PlanningRole.create({'name': 'role b'})
+
+        template_a = PlanningTemplate.create({
+            'start_time': 8,
+            'duration': 2.0,
+            'role_id': role_a.id
+        })
+        self.assertEqual(template_a.duration_days, 1, "Duration in days should be a 1 day according to resource calendar.")
+        self.assertEqual(template_a.end_time, 10.0, "End time should be 2 hours from start hours.")
+
+        template_b = PlanningTemplate.create({
+            'start_time': 8,
+            'duration': 4.0,
+            'role_id': role_b.id
+        })
+
+        slot = self.env['planning.slot'].create({'template_id': template_a.id})
+        self.assertEqual(slot.role_id.id, slot.template_autocomplete_ids.mapped('role_id').id, "Role of the slot and shift template should be same.")
+
+        slot.template_id = template_b.id
+        self.assertEqual(slot.role_id.id, slot.template_autocomplete_ids.mapped('role_id').id, "Role of the slot and shift template should be same.")

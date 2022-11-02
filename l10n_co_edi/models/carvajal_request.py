@@ -206,15 +206,19 @@ class CarvajalRequest():
         except Exception as e:
             return self._handle_exception(e)
 
-        if response.processStatus == 'PROCESSING':
+        processStatus = response.processStatus if hasattr(response, 'processStatus') else None
+        processName = response.processName if hasattr(response, 'processName') else None
+        legalStatus = response.legalStatus if hasattr(response, 'legalStatus') else None
+
+        if processStatus == 'OK' and \
+                processName in ('PDF_CREATION', 'ISSUANCE_CHECK_DELIVERY', 'SEND_TO_RECEIVER', 'SEND_TO_SENDER') and \
+                legalStatus == 'ACCEPTED':
+            return self._download(invoice)
+        elif processStatus == 'PROCESSING' or \
+                (processStatus == 'OK' and legalStatus != 'REJECTED') or (processStatus == 'FAIL' and legalStatus == 'RETRY'):
             return {'error': _('The invoice is still processing by Carvajal.'), 'blocking_level': 'info'}
-        legalStatus = response.legalStatus if hasattr(response, 'legalStatus') else 'REJECTED'
-        if legalStatus == 'ACCEPTED':
-            if invoice.move_type in ('out_invoice', 'out_refund', 'in_invoice', 'in_refund'):
-                return self._download(invoice)
-            else:
-                return {}
-        msg = (_('The invoice was rejected by Carvajal: %s', html_escape(response['errorMessage']).replace('\n', '<br/>'))
-               if hasattr(response, 'errorMessage') and response['errorMessage']
-               else _('The invoice was rejected by Carvajal but no error message was received.'))
-        return {'error': msg, 'blocking_level': 'error'}
+        else:  # legalStatus == 'REJECTED' or (processStatus == 'FAIL' and legalStatus != 'RETRY')
+            msg = (_('The invoice was rejected by Carvajal: %s', html_escape(response['errorMessage']).replace('\n', '<br/>'))
+                   if hasattr(response, 'errorMessage') and response['errorMessage']
+                   else _('The invoice was rejected by Carvajal but no error message was received.'))
+            return {'error': msg, 'blocking_level': 'error'}

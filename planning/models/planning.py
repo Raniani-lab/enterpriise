@@ -79,6 +79,7 @@ class Planning(models.Model):
     conflicting_slot_ids = fields.Many2many('planning.slot', compute='_compute_overlap_slot_count')
     overlap_slot_count = fields.Integer('Overlapping Slots', compute='_compute_overlap_slot_count', search='_search_overlap_slot_count')
     is_past = fields.Boolean('Is This Shift In The Past?', compute='_compute_past_shift')
+    is_users_role = fields.Boolean('Is the shifts role one of the current user roles', compute='_compute_is_users_role')
 
     # time allocation
     allocation_type = fields.Selection([
@@ -198,6 +199,12 @@ class Planning(models.Model):
     def _compute_is_assigned_to_me(self):
         for slot in self:
             slot.is_assigned_to_me = slot.user_id == self.env.user
+
+    @api.depends('role_id')
+    def _compute_is_users_role(self):
+        user_resource_roles = self.env['resource.resource'].search([('user_id', '=', self.env.user.id)]).role_ids
+        for slot in self:
+            slot.is_users_role = (slot.role_id in user_resource_roles) or not user_resource_roles or not slot.role_id
 
     @api.depends('start_datetime', 'end_datetime')
     def _compute_allocation_type(self):

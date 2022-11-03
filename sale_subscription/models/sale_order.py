@@ -134,14 +134,6 @@ class SaleOrder(models.Model):
                 continue
             order.sale_order_template_id = order.company_id.sale_order_template_id
 
-    @api.depends('subscription_management', 'subscription_id')
-    def _compute_partner_invoice_id(self):
-        super()._compute_partner_invoice_id()
-        for order in self:
-            if not order.subscription_management or not order.subscription_id:
-                continue
-            order.partner_invoice_id = order.subscription_id.partner_invoice_id
-
     def _compute_type_name(self):
         other_orders = self.env['sale.order']
         for order in self:
@@ -151,14 +143,6 @@ class SaleOrder(models.Model):
             order.type_name = _('Subscription')
 
         super(SaleOrder, other_orders)._compute_type_name()
-
-    @api.depends('subscription_management', 'subscription_id')
-    def _compute_partner_shipping_id(self):
-        super()._compute_partner_shipping_id()
-        for order in self:
-            if not order.subscription_management or not order.subscription_id:
-                continue
-            order.partner_shipping_id = order.subscription_id.partner_shipping_id
 
     @api.depends('rating_percentage_satisfaction')
     def _compute_percentage_satisfaction(self):

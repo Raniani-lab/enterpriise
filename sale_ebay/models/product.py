@@ -84,7 +84,7 @@ class ProductTemplate(models.Model):
     ebay_sync_stock = fields.Boolean(string="Use Stock Quantity", default=False)
     ebay_best_offer = fields.Boolean(string="Allow Best Offer", default=False)
     ebay_private_listing = fields.Boolean(string="Private Listing", default=False)
-    ebay_start_date = fields.Datetime('Start Date', readonly=1, copy=False)
+    ebay_start_date = fields.Datetime('Start Date', readonly=True, copy=False)
     ebay_quantity_sold = fields.Integer(related='product_variant_ids.ebay_quantity_sold', store=True, readonly=False, copy=False)
     ebay_fixed_price = fields.Float(related='product_variant_ids.ebay_fixed_price', store=True, readonly=False)
     ebay_quantity = fields.Integer(related='product_variant_ids.ebay_quantity', store=True, readonly=False, default=1)

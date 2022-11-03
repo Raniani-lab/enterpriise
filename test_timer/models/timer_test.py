@@ -11,7 +11,7 @@ class TimerTest(models.Model):
     _name = 'timer.test'
     _inherit = ['timer.mixin']
 
-    name = fields.Char(required=1)
+    name = fields.Char(required=True)
 
 
 class OverrideInterruptionTimerTest(models.Model):

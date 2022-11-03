@@ -551,7 +551,7 @@ class WebStudioController(http.Controller):
                 'type': 'char',
                 'field_description': _('Filename for %s', op['node']['field_description']['name']),
             })
-            char_op['node']['attrs']['invisible'] = '1'
+            char_op['node']['attrs']['invisible'] = 'True'
 
             # put the filename field after the binary field
             char_op['target']['xpath_info'] = None

@@ -816,15 +816,14 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
             "display_name": doesNotHaveGroup.display_name,
         }])
 
-        modifiers = json.dumps({"column_invisible": True})
-        xml_temp = E.field(name="title", modifiers=modifiers, groups=doesNotHaveGroupXmlId.complete_name, studio_groups=studio_groups)
+        xml_temp = E.field(name="title", column_invisible="True", groups=doesNotHaveGroupXmlId.complete_name, studio_groups=studio_groups)
 
         expected = '''
             <tree>
-               <field name="display_name" modifiers="{modifiers}"/>
+               <field name="display_name"/>
                {xml_stringified}
              </tree>
-        '''.format(modifiers="{&quot;readonly&quot;: true}", xml_stringified=etree.tostring(xml_temp).decode("utf-8"))
+        '''.format(xml_stringified=etree.tostring(xml_temp).decode("utf-8"))
 
         assertViewArchEqual(self, arch, expected)
 

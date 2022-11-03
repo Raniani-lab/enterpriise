@@ -98,7 +98,6 @@ class TestEditView(TestStudioController):
             'node': {'tag': 'field',
                      'attrs': {'filename': 'x_studio_binary_field_WocAO_filename',
                                'name': 'x_studio_binary_field_WocAO',
-                               'modifiers': {},
                                'id': 'x_studio_binary_field_WocAO'},
                      'children': [],
                      'has_label': True},
@@ -159,7 +158,6 @@ class TestEditView(TestStudioController):
             'node': {'tag': 'field',
                      'attrs': {'filename': 'x_studio_binary_field_WocAO_filename',
                                'name': 'x_studio_binary_field_WocAO',
-                               'modifiers': {},
                                'id': 'x_studio_binary_field_WocAO'},
                      'children': [],
                      'has_label': True},
@@ -452,14 +450,14 @@ class TestEditView(TestStudioController):
                 <tree>
                     <field name="name" groups="base.group_no_one"/>
                 </tree>
-            """, {'column_invisible': True}),
+            """, {'column_invisible': 'True', 'invisible': None}),
             ('tree', """
                 <tree>
                     <header>
                         <button name="name" groups="base.group_no_one"/>
                     </header>
                 </tree>
-            """, {'invisible': True}),
+            """, {'invisible': 'True', 'column_invisible': None}),
             ('form', """
                 <form>
                     <field name="child_ids">
@@ -468,7 +466,7 @@ class TestEditView(TestStudioController):
                         </tree>
                     </field>
                 </form>
-            """, {'column_invisible': True}),
+            """, {'column_invisible': 'True', 'invisible': None}),
             ('tree', """
                 <tree>
                     <field name="child_ids">
@@ -477,7 +475,7 @@ class TestEditView(TestStudioController):
                         </form>
                     </field>
                 </tree>
-            """, {'invisible': True}),
+            """, {'invisible': 'True', 'column_invisible': None}),
         ]:
             view = self.env['ir.ui.view'].create({
                 'name': 'foo',
@@ -487,9 +485,9 @@ class TestEditView(TestStudioController):
             })
             arch = self.env['res.partner'].with_context(studio=True).get_view(view.id)['arch']
             tree = etree.fromstring(arch)
-            modifiers = json.loads(tree.xpath('//*[@name="name"]')[0].get('modifiers'))
+            node = tree.xpath('//*[@name="name"]')[0]
             for modifier, value in expected_modifiers.items():
-                self.assertEqual(modifiers.get(modifier), value)
+                self.assertEqual(node.get(modifier), value)
 
     def test_get_view_t_groups(self):
         """Tests the behavior of <t groups="..."></t> blocks with Studio."""
@@ -501,7 +499,7 @@ class TestEditView(TestStudioController):
                         <field name="name"/>
                     </t>
                 </form>
-            """, {}),
+            """, {'invisible': None}),
             # The user doesn't have the group of the `<t>` node, the `<t>` node **must remain**, and be invisible.
             ('form', """
                 <form>
@@ -509,7 +507,7 @@ class TestEditView(TestStudioController):
                         <field name="name"/>
                     </t>
                 </form>
-            """, {'invisible': True}),
+            """, {'invisible': 'True'}),
         ]:
             view = self.env['ir.ui.view'].create({
                 'name': 'foo',
@@ -520,9 +518,9 @@ class TestEditView(TestStudioController):
             arch = self.env['res.partner'].with_context(studio=True).get_view(view.id)['arch']
             tree = etree.fromstring(arch)
             self.assertTrue(tree.xpath('//t'))
-            modifiers = json.loads(tree.xpath('//t')[0].get('modifiers', '{}'))
+            node = tree.xpath('//t')[0]
             for modifier, value in expected_modifiers.items():
-                self.assertEqual(modifiers.get(modifier), value)
+                self.assertEqual(node.get(modifier), value)
 
     def test_open_users_form_with_studio(self):
         """Tests the res.users form view can be loaded with Studio.

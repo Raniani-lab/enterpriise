@@ -226,7 +226,7 @@ class TestWorkOrderProcessCommon(TestMrpWorkorderCommon):
         form.bom_id = self.bom_laptop
         mo_laptop = form.save()
         mo_laptop.action_confirm()
-        # <field name="qty_producing" attrs="{'invisible': [('state', '=', 'draft')]}"/>
+        # <field name="qty_producing" invisible="state == 'draft'"/>
         form = Form(mo_laptop)
         form.qty_producing = 2.0
         mo_laptop = form.save()

@@ -130,16 +130,12 @@ class View(models.Model):
                 return parent is not None and parent.tag == "tree"
 
             for node in set_invisible_nodes:
-                modifiers = json.loads(node.attrib.pop('modifiers', '{}'))
                 if is_in_tree(node):
-                    modifiers['column_invisible'] = True
+                    column_invisible = 'True'
+                    node.set('column_invisible', column_invisible)
                 else:
-                    modifiers['invisible'] = True
-                node.set('modifiers', json.dumps(modifiers))
-                if node.get('context-dependent-modifiers'):
-                    modifiers = json.loads(node.get('context-dependent-modifiers'))
-                    modifiers.pop('invisible', None)
-                    node.set('context-dependent-modifiers', json.dumps(modifiers))
+                    invisible = 'True'
+                    node.set('invisible', invisible)
 
             model = tree.get('model_access_rights')
             res = super(View, self)._postprocess_access_rights(tree)

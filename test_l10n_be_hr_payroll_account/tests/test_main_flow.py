@@ -60,10 +60,10 @@ class TestHR(common.TransactionCase):
         leave_type_form = Form(self.env['hr.leave.type'].with_user(user))
         leave_type_form.name = name
         leave_type_form.requires_allocation = requires_allocation
-        # attrs="{'invisible': [('requires_allocation', '=', 'no')]}"
+        # invisible="requires_allocation == 'no'"
         if requires_allocation == 'yes':
             leave_type_form.employee_requests = employee_requests
-            # attrs="{'invisible': ['|', ('requires_allocation', '=', 'no'), ('employee_requests', '=', 'no')]}"
+            # invisible="requires_allocation == 'no' or employee_requests == 'no'"
             if employee_requests == 'yes':
                 leave_type_form.allocation_validation_type = allocation_validation
         leave_type_form.leave_validation_type = validation
@@ -241,7 +241,7 @@ class TestHR(common.TransactionCase):
         contract_form.date_start = start
         contract_form.date_end = end
         if car:  # only for fleet manager
-            # attrs="{'invisible': [('transport_mode_car', '=', False)]}"
+            # invisible="not transport_mode_car"
             contract_form.transport_mode_car = True
             contract_form.car_id = car
         contract_form.wage = wage

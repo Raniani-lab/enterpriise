@@ -58,7 +58,7 @@ class CrmLeadConvert2Ticket(models.TransientModel):
         else:  # if partner is not on lead -> take partner phone first
             vals["partner_phone"] = partner.phone or lead.mobile or partner.mobile
         if lead.email_from:
-            vals['email'] = lead.email_from
+            vals['partner_email'] = lead.email_from
 
         # create and add a specific creation message
         ticket_sudo = self.env['helpdesk.ticket'].with_context(

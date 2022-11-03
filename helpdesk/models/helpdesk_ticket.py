@@ -257,8 +257,6 @@ class HelpdeskTicket(models.Model):
     partner_phone = fields.Char(string='Customer Phone', compute='_compute_partner_phone', inverse="_inverse_partner_phone", store=True, readonly=False)
     commercial_partner_id = fields.Many2one(related="partner_id.commercial_partner_id")
     closed_by_partner = fields.Boolean('Closed by Partner', readonly=True)
-    # Used in message_get_default_recipients, so if no partner is created, email is sent anyway
-    email = fields.Char(related='partner_email', string='Email on Customer', readonly=False)
     priority = fields.Selection(TICKET_PRIORITY, string='Priority', default='0', tracking=True)
     stage_id = fields.Many2one(
         'helpdesk.stage', string='Stage', compute='_compute_user_and_stage_ids', store=True,

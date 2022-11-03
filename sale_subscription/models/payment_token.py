@@ -35,6 +35,7 @@ class PaymentToken(models.Model):
                 'description': subscriptions._description,
                 'id': sub.id,
                 'name': sub.name,
-                'url': sub.get_portal_url()
+                'url': sub.get_portal_url(),
+                'active_subscription': sub.stage_category in ['progress', 'paused'],
             })
         return res

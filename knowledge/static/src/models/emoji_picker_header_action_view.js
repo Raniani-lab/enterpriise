@@ -37,7 +37,7 @@ registerPatch({
                 return this._super();
             },
         },
-        ownerAsRemove: one('EmojiPickerHeaderActionListView', {
+        ownerAsRemove: one('EmojiPickerView', {
             identifying: true,
             inverse: 'removeActionView',
         }),

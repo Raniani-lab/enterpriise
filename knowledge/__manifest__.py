@@ -55,7 +55,7 @@
             'knowledge/static/src/js/knowledge_utils.js',
             'knowledge/static/src/js/knowledge_plugin.js',
             'knowledge/static/src/views/*.js',
-            'knowledge/static/src/xml/chatter_topbar.xml',
+            'knowledge/static/src/xml/chatter.xml',
             'knowledge/static/src/xml/knowledge_command_palette.xml',
             'knowledge/static/src/services/*.js',
             'knowledge/static/src/macros/*.js',

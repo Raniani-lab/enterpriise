@@ -9,7 +9,7 @@ registerModel({
     recordMethods: {
         async onClickRequestSign() {
             const activity = this.activityViewOwner.activity;
-            const chatter = this.activityViewOwner.chatter;
+            const chatter = this.activityViewOwner.chatterOwner;
             await this.activityViewOwner.activity.requestSignature();
             if (activity.exists()) {
                 activity.update();

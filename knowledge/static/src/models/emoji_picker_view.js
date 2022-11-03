@@ -5,17 +5,14 @@ import { one } from '@mail/model/model_field';
 import { clear } from '@mail/model/model_field_command';
 
 registerPatch({
-    name: 'EmojiPickerHeaderActionListView',
+    name: 'EmojiPickerView',
     fields: {
         /**
          * Adds an action list in emoji picker to remove icon.
          */
         removeActionView: one('EmojiPickerHeaderActionView', {
             compute() {
-                if (!this.emojiPickerView) {
-                    return clear();
-                }
-                if (this.emojiPickerView.popoverViewOwner.knowledgeOwnerAsEmojiPicker) {
+                if (this.popoverViewOwner.knowledgeOwnerAsEmojiPicker) {
                     return {};
                 }
                 return clear();

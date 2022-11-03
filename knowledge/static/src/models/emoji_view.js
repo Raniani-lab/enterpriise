@@ -13,7 +13,7 @@ registerPatch({
          * @override
          */
         onClick(ev) {
-            if (!this.emojiGridItemViewOwner.emojiGridRowViewOwner) {
+            if (!this.emojiGridRowViewOwner) {
                 return;
             }
             if (this.emojiPickerViewOwner.popoverViewOwner.knowledgeOwnerAsEmojiPicker) {

@@ -13,7 +13,7 @@ registerModel({
             if (!this.exists()) {
                 return;
             }
-            const chatter = this.activityViewOwner && this.activityViewOwner.activityBoxView.chatter;
+            const chatter = this.activityViewOwner && this.activityViewOwner.chatterOwner;
             const reloadFunc = this.activityListViewItemOwner && this.activityListViewItemOwner.reloadFunc;
             const webRecord = this.activityListViewItemOwner && this.activityListViewItemOwner.webRecord;
             const thread = this.activity.thread;
@@ -32,7 +32,7 @@ registerModel({
             if (!this.exists()) {
                 return;
             }
-            const chatter = this.activityViewOwner && this.activityViewOwner.activityBoxView.chatter;
+            const chatter = this.activityViewOwner && this.activityViewOwner.chatterOwner;
             const reloadFunc = this.activityListViewItemOwner && this.activityListViewItemOwner.reloadFunc;
             const webRecord = this.activityListViewItemOwner && this.activityListViewItemOwner.webRecord;
             const thread = this.activity.thread;

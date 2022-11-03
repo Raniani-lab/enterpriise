@@ -2336,6 +2336,29 @@ QUnit.module('ViewEditorManager', {
         await testUtils.fields.editAndTrigger($labelInput, "Foo", ['change']);
     });
 
+    QUnit.test('Open form view with button_box in studio', async function (assert) {
+        assert.expect(1);
+
+        // studioIsVisible (button_box props) is used in debug
+        patchWithCleanup(odoo, { debug: true });
+        const action = serverData.actions["studio.coucou_action"];
+        action.views = [[1, "form"]];
+        action.res_model = "partner";
+        serverData.views["partner,1,form"] = /*xml*/`<form>
+            <div name="button_box" class="oe_button_box" modifiers='{"invisible": [["display_name", "=", false]]}'>
+                <button type="object" class="oe_stat_button" icon="fa-check-square">
+                    <field name="display_name"/>
+                </button>
+            </div>
+        </form>`
+        const webClient = await createEnterpriseWebClient({ serverData, legacyParams: {withLegacyMockServer: true}});
+        await doAction(webClient, "studio.coucou_action");
+        await openStudio(target);
+
+        const buttonBoxFieldEl = target.querySelector('.oe_button_box button .o_field_widget span');
+        assert.strictEqual(buttonBoxFieldEl.textContent, 'jean', 'there should be a button_box');
+    });
+
     QUnit.module('Kanban');
 
     QUnit.test('empty kanban editor', async function (assert) {

@@ -81,7 +81,11 @@ export class Notebook extends components.Notebook {
 }
 Notebook.template = "web_studio.Notebook.Hook";
 Notebook.components = { ...components.Notebook.components, StudioHook };
-Notebook.props = { ...components.Notebook.props, studioXpath: String };
+Notebook.props = {
+    ...components.Notebook.props,
+    studioIsVisible: { type: Boolean, optional: true },
+    studioXpath: String,
+};
 
 export class StatusBarFieldHook extends Component {
     onClick() {
@@ -166,3 +170,8 @@ export class ButtonBox extends components.ButtonBox {
         return { visible, additional };
     }
 }
+
+ButtonBox.props = {
+    ...components.ButtonBox.props,
+    studioIsVisible: { type: Boolean, optional: true },
+};

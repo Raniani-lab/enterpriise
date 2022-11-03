@@ -392,6 +392,7 @@ class MainComponent extends Component {
         this.env.services.dialog.add(ConfirmationDialog, { title, body: message });
     }
 }
+MainComponent.props = ["action", "actionId?", "className?", "globalState?", "resId?"];
 MainComponent.template = 'stock_barcode.MainComponent';
 MainComponent.components = {
     View,

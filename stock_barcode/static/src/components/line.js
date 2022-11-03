@@ -118,4 +118,5 @@ export default class LineComponent extends Component {
         this.env.model.setOnHandQuantity(this.line);
     }
 }
+LineComponent.props = ["displayUOM", "line", "subline?"];
 LineComponent.template = 'stock_barcode.LineComponent';

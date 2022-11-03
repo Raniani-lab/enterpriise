@@ -70,6 +70,13 @@ export class MainMenu extends Component {
         this.notificationService.add(res.warning, { type: 'danger' });
     }
 }
+MainMenu.props = ["action", "actionId", "className"];
+MainMenu.props = {
+    action: { Object },
+    actionId: { type: Number, optional: true },
+    className: String,
+    globalState: { type: Object, optional: true },
+};
 MainMenu.template = 'stock_barcode.MainMenu';
 
 registry.category('actions').add('stock_barcode_main_menu', MainMenu);

@@ -1,6 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
+import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
 import { useService } from "@web/core/utils/hooks";
 
 const { Component, onWillStart } = owl;
@@ -101,8 +102,11 @@ export class Digipad extends Component {
         this._notifyChanges();
     }
 }
-
 Digipad.template = 'stock_barcode.DigipadTemplate';
+Digipad.props = {
+    ...standardWidgetProps,
+    quantityField: { type: String }
+};
 Digipad.extractProps = ({ attrs }) => {
     return {
         quantityField: attrs.quantity_field,

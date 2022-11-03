@@ -113,7 +113,7 @@
                         </div>
                     </div>
                     <field name="allow_template_creation" invisible="1"/>
-                    <label for="template_creation"></label>
+                    <label for="template_creation" groups="planning.group_planning_manager"></label>
                     <field name="template_creation" nolabel="1" groups="planning.group_planning_manager"/>
                     <field name="name" nolabel="1" placeholder="Additional note sent to the employee"/>
                 </sheet>

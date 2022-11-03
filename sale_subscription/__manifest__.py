@@ -56,6 +56,7 @@ Features:
             'sale_subscription/static/src/js/tours/sale_subscription.js',
         ],
         'web.assets_frontend': [
+            'sale_subscription/static/src/js/manage_form.js',
             'sale_subscription/static/src/js/portal_subscription.js',
         ],
     }

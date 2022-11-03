@@ -2069,9 +2069,15 @@ msgid "Plan Details"
 msgstr ""
 
 #. module: sale_subscription
-#: model:ir.actions.act_window,name:sale_subscription.sale_subscription_template_action
-#: model:ir.ui.menu,name:sale_subscription.menu_template_of_subscription
-msgid "Plans"
+#. openerp-web
+#: code:addons/sale_subscription/static/src/js/manage_form.js:0
+#, python-format
+msgid "Please provide another payment method for these subscriptions."
+msgstr ""
+
+#. module: sale_subscription
+#: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_template__payment_mode__validate_send
+msgid "Post and Send"
 msgstr ""
 
 #. module: sale_subscription
@@ -3074,6 +3080,21 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid ""
 "This bar allows to filter the opportunities based on scheduled activities."
+msgstr ""
+
+#. module: sale_subscription
+#. openerp-web
+#: code:addons/sale_subscription/static/src/js/manage_form.js:0
+#, python-format
+msgid ""
+"This payment method cannot be removed as it is currently linked to the "
+"following active subscriptions:"
+msgstr ""
+
+#. module: sale_subscription
+#: code:addons/sale_subscription/models/sale_order.py:0
+#, python-format
+msgid "This operator is not supported"
 msgstr ""
 
 #. module: sale_subscription

@@ -3,8 +3,8 @@
 
     <t t-inherit="mail.ActivityView" t-inherit-mode="extension">
         <xpath expr="//*[@name='tools']" position="replace">
-            <t t-if="activityView.approvalView">
-                <ApprovalView record="activityView.approvalView"/>
+            <t t-if="approvalView">
+                <ApprovalView record="approvalView"/>
             </t>
             <t t-else="">$0</t>
         </xpath>

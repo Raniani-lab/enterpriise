@@ -3,23 +3,23 @@
 
     <t t-name="voip.ActivityView" t-inherit="mail.ActivityView" t-inherit-mode="extension">
         <xpath expr="//*[hasclass('o_ActivityView_info')]" position="after">
-            <t t-if="activityView.activity.phone">
+            <t t-if="activity.phone">
                 <div class="o_ActivityView_voipNumberPhone">
-                    <t t-if="activityView.activity.mobile">
+                    <t t-if="activity.mobile">
                         Phone:
                     </t>
-                    <a class="o_ActivityView_voipCallPhone" href="#" t-on-click="activityView.onClickLandlineNumber">
-                        <t t-esc="activityView.activity.phone"/>
+                    <a class="o_ActivityView_voipCallPhone" href="#" t-on-click="onClickLandlineNumber">
+                        <t t-esc="activity.phone"/>
                     </a>
                 </div>
             </t>
-            <t t-if="activityView.activity.mobile">
+            <t t-if="activity.mobile">
                 <div class="o_ActivityView_voipNumberMobile">
-                    <t t-if="activityView.activity.phone">
+                    <t t-if="activity.phone">
                         Mobile:
                     </t>
-                    <a class="o_ActivityView_voipCallMobile" href="#" t-on-click="activityView.onClickMobileNumber">
-                        <t t-esc="activityView.activity.mobile"/>
+                    <a class="o_ActivityView_voipCallMobile" href="#" t-on-click="onClickMobileNumber">
+                        <t t-esc="activity.mobile"/>
                     </a>
                 </div>
             </t>

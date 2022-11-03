@@ -3,8 +3,8 @@
 
     <t t-inherit="mail.ActivityView" t-inherit-mode="extension">
         <xpath expr="//*[hasclass('o_ActivityView_markDoneButton')]" position="replace">
-            <t t-if="activityView.signRequestView">
-                <SignRequestView record="activityView.signRequestView"/>
+            <t t-if="signRequestView">
+                <SignRequestView record="signRequestView"/>
             </t>
             <t t-else="">$0</t>
         </xpath>

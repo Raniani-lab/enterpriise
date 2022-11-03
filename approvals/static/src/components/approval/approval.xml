@@ -2,14 +2,13 @@
 <templates xml:space="preserve">
 
     <t t-name="approvals.ApprovalView" owl="1">
-        <t t-if="approvalView">
             <div class="o_ApprovalView" t-attf-class="{{ className }}" t-ref="root">
-                <t t-if="approvalView.activity.approval.status === 'pending'">
-                    <t t-if="approvalView.activity.approval.isCurrentPartnerApprover">
-                        <button class="o_ApprovalView_toolButton o_ApprovalView_approveButton btn btn-success btn-link ps-0 pt-0" t-on-click="approvalView.onClickApprove">
+                <t t-if="activity.approval.status === 'pending'">
+                    <t t-if="activity.approval.isCurrentPartnerApprover">
+                        <button class="o_ApprovalView_toolButton o_ApprovalView_approveButton btn btn-success btn-link ps-0 pt-0" t-on-click="onClickApprove">
                             <i class="fa fa-check"/> Approve
                         </button>
-                        <button class="o_ApprovalView_toolButton o_ApprovalView_refuseButton btn btn-danger btn-link pt-0" t-on-click="approvalView.onClickRefuse">
+                        <button class="o_ApprovalView_toolButton o_ApprovalView_refuseButton btn btn-danger btn-link pt-0" t-on-click="onClickRefuse">
                             <i class="fa fa-times"/> Refuse
                         </button>
                     </t>
@@ -20,7 +19,6 @@
                     </t>
                 </t>
             </div>
-        </t>
     </t>
 
 </templates>

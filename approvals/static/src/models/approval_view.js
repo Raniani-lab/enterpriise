@@ -8,7 +8,6 @@ registerModel({
     name: 'ApprovalView',
     identifyingMode: 'xor',
     template: 'approvals.ApprovalView',
-    templateGetter: 'approvalView',
     recordMethods: {
         async onClickApprove() {
             if (!this.exists()) {

@@ -6,7 +6,6 @@ import { one } from '@mail/model/model_field';
 registerModel({
     name: 'SignRequestView',
     template: 'sign.SignRequestView',
-    templateGetter: 'signRequestView',
     recordMethods: {
         async onClickRequestSign() {
             const activity = this.activityViewOwner.activity;

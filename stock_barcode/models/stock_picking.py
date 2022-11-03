@@ -207,16 +207,14 @@ class StockPicking(models.Model):
         picking_nums = 0
         additional_context = {'active_id': active_id}
         if barcode_type == 'product' or not barcode_type:
-            product = self.env['product.product'].search_read([('barcode', '=', barcode)], ['id'], limit=1)
+            product = self.env['product.product'].search([('barcode', '=', barcode)], limit=1)
             if product:
-                product_id = product[0]['id']
-                picking_nums = self.search_count(base_domain + [('product_id', '=', product_id)])
-                additional_context['search_default_product_id'] = product_id
+                picking_nums = self.search_count(base_domain + [('product_id', '=', product.id)])
+                additional_context['search_default_product_id'] = product.id
         if self.env.user.has_group('stock.group_tracking_lot') and (barcode_type == 'package' or (not barcode_type and not picking_nums)):
-            package = self.env['stock.quant.package'].search_read([('name', '=', barcode)], ['id'], limit=1)
+            package = self.env['stock.quant.package'].search([('name', '=', barcode)], limit=1)
             if package:
-                package_id = package[0]['id']
-                pack_domain = ['|', ('move_line_ids.package_id', '=', package_id), ('move_line_ids.result_package_id', '=', package_id)]
+                pack_domain = ['|', ('move_line_ids.package_id', '=', package.id), ('move_line_ids.result_package_id', '=', package.id)]
                 picking_nums = self.search_count(base_domain + pack_domain)
                 additional_context['search_default_move_line_ids'] = barcode
 

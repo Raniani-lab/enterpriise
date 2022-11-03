@@ -153,7 +153,7 @@ class TrialBalanceCustomHandler(models.AbstractModel):
         :return: the if of this analysis period
         :rtype: int
         """
-        return self.env['consolidation.period'].search_read([], ['id'], limit=1, order="id desc")[0]['id']
+        return self.env['consolidation.period'].search([], limit=1, order="id desc").id
 
     def _get_period_ids(self, options):
         """

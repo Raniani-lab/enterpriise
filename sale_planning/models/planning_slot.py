@@ -444,17 +444,17 @@ class PlanningSlot(models.Model):
             ], ['employee_id', 'end_datetime:max'], ['employee_id'], orderby='end_datetime desc')
             cache[priority] = [res['employee_id'][0] for res in search]
         elif priority == 'default_role':
-            search = self.env['hr.employee'].sudo().search_read([
+            search = self.env['hr.employee'].sudo().search([
                 ('default_planning_role_id', '=', self.role_id.id),
                 ('id', 'not in', employee_ids_to_exclude),
-            ], ['id'])
-            cache[priority] = [res['id'] for res in search]
+            ])
+            cache[priority] = search.ids
         elif priority == 'roles':
-            search = self.env['hr.employee'].search_read([
+            search = self.env['hr.employee'].search([
                 ('planning_role_ids', '=', self.role_id.id),
                 ('id', 'not in', employee_ids_to_exclude),
-            ], ['id'])
-            cache[priority] = [res['id'] for res in search]
+            ])
+            cache[priority] = search.ids
         return cache[priority].pop(0) if cache.get(priority) else None
 
     def _get_employee_to_assign(self, default_priority, employee_ids_to_exclude, cache, employee_per_sol):

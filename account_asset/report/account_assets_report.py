@@ -313,6 +313,8 @@ class AssetReportCustomHandler(models.AbstractModel):
         self.env['account.move.line'].check_access_rights('read')
         self.env['account.asset'].check_access_rights('read')
 
+        move_filter = f"""move.state {"!= 'cancel'" if options.get('all_entries') else "= 'posted'"}"""
+
         sql = f"""
             SELECT asset.id AS asset_id,
                    asset.parent_id AS parent_id,
@@ -331,9 +333,8 @@ class AssetReportCustomHandler(models.AbstractModel):
                    account.name AS account_name,
                    account.id AS account_id,
                    account.company_id AS company_id,
-                   COALESCE(SUM(move.depreciation_value) FILTER (WHERE move.date < %(date_from)s), 0) + COALESCE(asset.already_depreciated_amount_import, 0) AS depreciated_before,
-                   COALESCE(SUM(move.depreciation_value) FILTER (WHERE move.date BETWEEN %(date_from)s AND %(date_to)s), 0) AS depreciated_during,
-                   COALESCE(SUM(move.depreciation_value) FILTER (WHERE move.date > %(date_to)s), 0) AS remaining
+                   COALESCE(SUM(move.depreciation_value) FILTER (WHERE move.date < %(date_from)s AND {move_filter}), 0) + COALESCE(asset.already_depreciated_amount_import, 0) AS depreciated_before,
+                   COALESCE(SUM(move.depreciation_value) FILTER (WHERE move.date BETWEEN %(date_from)s AND %(date_to)s AND {move_filter}), 0) AS depreciated_during
               FROM account_asset AS asset
          LEFT JOIN account_account AS account ON asset.account_asset_id = account.id
          LEFT JOIN account_move move ON move.asset_id = asset.id
@@ -344,7 +345,6 @@ class AssetReportCustomHandler(models.AbstractModel):
                AND asset.state not in ('model', 'draft', 'cancelled')
                AND asset.asset_type = 'purchase'
                AND asset.active = 't'
-               AND move.state {"!= 'cancel'" if options.get('all_entries') else "= 'posted'"}
                AND reversal.id IS NULL
           GROUP BY asset.id, account.id
           ORDER BY account.code, asset.acquisition_date;

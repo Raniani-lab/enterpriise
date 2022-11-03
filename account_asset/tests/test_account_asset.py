@@ -1839,7 +1839,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         refund = self.env['account.move'].create({
             'move_type': 'in_refund',
             'partner_id': self.ref("base.res_partner_12"),
-            'invoice_date': fields.Date.today() - relativedelta(months=1),
+            'invoice_date': fields.Date.today() + relativedelta(month=1),
             'invoice_line_ids': [(0, 0, {'name': 'refund', 'account_id': depreciation_account.id, 'price_unit': 500})],
         })
         refund.action_post()

@@ -34,8 +34,6 @@ class FollowupManualReminder(models.TransientModel):
 
     # email fields
     email = fields.Boolean()
-    template_id = fields.Many2one(domain=[('model', '=', 'res.partner')])  # OVERRIDES mail.composer.mixin
-    email_add_signature = fields.Boolean(default=True)
     email_recipient_ids = fields.Many2many(string="Extra Recipients", comodel_name='res.partner',
                                            relation='rel_followup_manual_reminder_res_partner')  # override
 

@@ -18,8 +18,6 @@ class AppraisalAskFeedback(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
-        if not self.env.user.email:
-            raise UserError(_("Unable to post message, please configure the sender's email address."))
         result = super(AppraisalAskFeedback, self).default_get(fields)
         appraisal = self.env['hr.appraisal'].browse(result.get('appraisal_id'))
         if 'survey_template_id' in fields and appraisal and not result.get('survey_template_id'):
@@ -33,10 +31,6 @@ class AppraisalAskFeedback(models.TransientModel):
     attachment_ids = fields.Many2many(
         'ir.attachment', 'hr_appraisal_survey_mail_compose_message_ir_attachments_rel',
         'wizard_id', 'attachment_id', string='Attachments')
-    email_from = fields.Char(
-        'From', required=True,
-        default=lambda self: self.env.user.email_formatted,
-    )
     author_id = fields.Many2one(
         'res.partner', string='Author', required=True,
         default=lambda self: self.env.user.partner_id.id,
@@ -130,7 +124,7 @@ class AppraisalAskFeedback(models.TransientModel):
         }
         body = self.with_context(**ctx)._render_field('body', answer.ids)[answer.id]
         mail_values = {
-            'email_from': self.email_from,
+            'email_from': self.author_id.email_formatted,
             'author_id': self.author_id.id,
             'model': None,
             'res_id': None,

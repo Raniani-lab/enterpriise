@@ -17,8 +17,6 @@ class RequestAppraisal(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
-        if not self.env.user.email:
-            raise UserError(_("Unable to post message, please configure the sender's email address."))
         result = super(RequestAppraisal, self).default_get(fields)
         if not set(fields) & set(['employee_id', 'template_id', 'recipient_ids']):
             return result
@@ -60,10 +58,6 @@ class RequestAppraisal(models.TransientModel):
 
     appraisal_id = fields.Many2one('hr.appraisal', required=True)
     user_body = fields.Html('User Contents')
-    email_from = fields.Char(
-        'From', required=True,
-        default=lambda self: self.env.user.email_formatted,
-    )
     author_id = fields.Many2one(
         'res.partner', 'Author', required=True,
         default=lambda self: self.env.user.partner_id.id,
@@ -132,7 +126,6 @@ class RequestAppraisal(models.TransientModel):
         appraisal.with_context(mail_post_autofollow=True).message_post(
             author_id=self.author_id.id,
             body=body,
-            email_from=self.author_id.email,
             email_layout_xmlid='mail.mail_notification_light',
             message_type='comment',
             partner_ids=self.recipient_ids.ids,

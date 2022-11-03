@@ -97,6 +97,8 @@
         'web.qunit_suite_tests': [
             'documents/static/tests/documents_test_utils.js',
             'documents/static/tests/documents_kanban_tests.js',
+            'documents/static/tests/documents_folder_tests.js',
+            'documents/static/tests/documents_folder_form_tests.js',
             'documents/static/tests/documents_pdf_manager_tests.js',
             'documents/static/tests/documents_systray_activity_menu_tests.js',
         ],

@@ -2,10 +2,12 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import date, timedelta
+import base64
 
 from odoo import Command
 from odoo.tests.common import TransactionCase
 
+TEXT = base64.b64encode(bytes("TEST", 'utf-8'))
 
 class TestDocumentsFolder(TransactionCase):
     @classmethod
@@ -14,6 +16,12 @@ class TestDocumentsFolder(TransactionCase):
         cls.parent_folder = cls.env['documents.folder'].create({'name': 'Parent'})
         cls.folder = cls.env['documents.folder'].create({'name': 'Folder', 'parent_folder_id': cls.parent_folder.id})
         cls.child_folder = cls.env['documents.folder'].create({'name': 'Child', 'parent_folder_id': cls.folder.id})
+        cls.document = cls.env['documents.document'].create({
+            'datas': TEXT,
+            'name': 'file.txt',
+            'mimetype': 'text/plain',
+            'folder_id': cls.child_folder.id,
+        })
         cls.folders = cls.env['documents.folder'] | cls.parent_folder | cls.folder | cls.child_folder
 
     def test_is_shared(self):
@@ -196,3 +204,14 @@ class TestDocumentsFolder(TransactionCase):
         self.assertCountEqual(rule_copy.excluded_tag_ids.ids, sub_folder_tag_copy.ids, "The excluded tags of the copied rule should be updated to use the copied tags of the parent folder.")
         self.assertFalse(action_1_copy.facet_id and action_1_copy.tag_id, "The copy of the first action should have no facet and tag set")
         self.assertEqual((action_2_copy.facet_id.id, action_2_copy.tag_id.id), (sub_folder_facet_copy.id, sub_folder_tag_copy.id), "The facet and tag of the copy of the second action should be updated to use the copied tag and facet of the parent folder.")
+
+    def test_child_folder_delete_and_move_doc_to_parent(self):
+        wizard = self.env['documents.folder.deletion.wizard'].create({'folder_id': self.child_folder.id})
+        wizard.delete_and_move()
+        self.assertEqual(self.document.folder_id.id, self.folder.id, "The document should have been moved to the parent workspace")
+
+    def test_child_folder_delete(self):
+        wizard = self.env['documents.folder.deletion.wizard'].create({'folder_id': self.child_folder.id})
+        wizard.delete()
+        self.assertFalse(self.document.exists(), "Document should be deleted")
+        self.assertFalse(self.child_folder.exists(), "Folder should be deleted")

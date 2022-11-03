@@ -16,7 +16,7 @@
         <field name="name">Workspace tree</field>
         <field name="model">documents.folder</field>
         <field name="arch" type="xml">
-            <tree>
+            <tree string="Workspaces" js_class="folder_list">
                 <field name="sequence" widget="handle"/>
                 <field name="display_name" string="Workspace"/>
                 <field name="facet_ids"  widget="many2many_tags" string="Tag Categories"/>
@@ -31,7 +31,7 @@
         <field name="name">Workspace form</field>
         <field name="model">documents.folder</field>
         <field name="arch" type="xml">
-            <form>
+            <form js_class="folder_form">
                 <sheet>
                     <div class="oe_button_box" name="button_box">
                         <button name="action_see_actions" type="object" class="oe_stat_button" icon="fa-gears">

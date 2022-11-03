@@ -19,6 +19,11 @@ export async function createDocumentsView(params) {
     return makeView(params);
 }
 
+export async function createFolderView(params) {
+    params.searchViewArch = '<search></search>';
+    return makeView(params);
+}
+
 export async function createDocumentsViewWithMessaging(params) {
     const serverData = params.serverData || {};
     serverData.views = serverData.views || {};

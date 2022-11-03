@@ -17,6 +17,7 @@
             initCallback="initCallback"
             asyncInitCallback="asyncInitCallback"
             transportService="transportService"
+            fileStore="fileStore"
             snapshotRequested="snapshotRequested"
             onDownload.bind="_onDownload"
             onMakeCopy.bind="() => {}"

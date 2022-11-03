@@ -6,6 +6,7 @@ import { registry } from "@web/core/registry";
 import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
 import { SpreadsheetControlPanel } from "@spreadsheet_edition/bundle/actions/control_panel/spreadsheet_control_panel";
 import { useService } from "@web/core/utils/hooks";
+import { RecordFileStore } from "@spreadsheet_edition/bundle/image/record_file_store";
 
 /**
  * @typedef {import("@spreadsheet_edition/bundle/actions/abstract_spreadsheet_action").SpreadsheetRecord} SpreadsheetRecord
@@ -34,6 +35,7 @@ class DashboardEditAction extends AbstractSpreadsheetAction {
 
         /** @type {SpreadsheetCollaborativeService} */
         this.spreadsheetCollaborative = useService("spreadsheet_collaborative");
+        this.fileStore = new RecordFileStore("spreadsheet.dashboard", this.resId, this.http);
     }
 
     async onWillStart() {

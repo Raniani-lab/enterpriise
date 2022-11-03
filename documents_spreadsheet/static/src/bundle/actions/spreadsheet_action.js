@@ -12,6 +12,7 @@ import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { getDataFromTemplate } from "@documents_spreadsheet/bundle/helpers";
 import { AbstractSpreadsheetAction } from "@spreadsheet_edition/bundle/actions/abstract_spreadsheet_action";
 import { DocumentsSpreadsheetControlPanel } from "../components/control_panel/spreadsheet_control_panel";
+import { RecordFileStore } from "@spreadsheet_edition/bundle/image/record_file_store";
 
 const { Component, useState } = owl;
 const { createEmptyWorkbookData } = spreadsheet.helpers;
@@ -31,6 +32,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
         });
 
         this.spreadsheetCollaborative = useService("spreadsheet_collaborative");
+        this.fileStore = new RecordFileStore("documents.document", this.resId, this.http);
     }
 
     async onWillStart() {
@@ -50,17 +52,21 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
         const data = this.params.createFromTemplateId
             ? await getDataFromTemplate(this.env, this.orm, this.params.createFromTemplateId)
             : createEmptyWorkbookData(`${this.env._t("Sheet")}1`);
-        return this.orm.create("documents.document", [
+        return this.orm.create(
+            "documents.document",
+            [
+                {
+                    name: this.params.createFromTemplateName || UNTITLED_SPREADSHEET_NAME,
+                    mimetype: "application/o-spreadsheet",
+                    handler: "spreadsheet",
+                    raw: JSON.stringify(data),
+                    folder_id: this.params.createInFolderId,
+                },
+            ],
             {
-                name: this.params.createFromTemplateName || UNTITLED_SPREADSHEET_NAME,
-                mimetype: "application/o-spreadsheet",
-                handler: "spreadsheet",
-                raw: JSON.stringify(data),
-                folder_id: this.params.createInFolderId,
-            },
-        ], {
-            context: this.props.action.context,
-        });
+                context: this.props.action.context,
+            }
+        );
     }
 
     async _fetchData() {

@@ -20,6 +20,7 @@
         initCallback="initCallback"
         asyncInitCallback="asyncInitCallback"
         transportService="transportService"
+        fileStore="fileStore"
         snapshotRequested="snapshotRequested"
         onDownload.bind="_onDownload"
         spreadsheetSyncStatus.bind="_onSpreadsheetSyncStatus"

@@ -355,6 +355,10 @@ SpreadsheetComponent.props = {
         optional: true,
         type: Object,
     },
+    fileStore: {
+        optional: true,
+        type: Object,
+    },
     spreadsheetSyncStatus: {
         optional: true,
         type: Function,

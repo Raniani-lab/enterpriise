@@ -37,6 +37,7 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
         this.actionService = useService("action");
         this.notifications = useService("notification");
         this.orm = useService("orm");
+        this.http = useService("http")
         useSetupAction({
             getLocalState: () => {
                 return {

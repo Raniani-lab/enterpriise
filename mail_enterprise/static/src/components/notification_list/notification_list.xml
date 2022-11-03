@@ -2,21 +2,15 @@
 <templates xml:space="preserve">
     <t t-name="mail_enterprise.NotificationListView" t-inherit="mail.NotificationListView" t-inherit-mode="extension" owl="1">
         <xpath expr="//NotificationGroupView" position="replace">
-            <t t-if="notificationView and notificationView.swiperView">
-                <SwiperView record="notificationView.swiperView"/>
-            </t>
+            <SwiperView t-if="notificationView and notificationView.swiperView" record="notificationView.swiperView"/>
             <t t-else="">$0</t>
         </xpath>
         <xpath expr="//ThreadNeedactionPreviewView" position="replace">
-            <t t-if="notificationView and notificationView.swiperView">
-                <SwiperView record="notificationView.swiperView"/>
-            </t>
+            <SwiperView t-if="notificationView and notificationView.swiperView" record="notificationView.swiperView"/>
             <t t-else="">$0</t>
         </xpath>
         <xpath expr="//ChannelPreviewView" position="replace">
-            <t t-if="notificationView and notificationView.swiperView">
-                <SwiperView record="notificationView.swiperView"/>
-            </t>
+            <SwiperView t-if="notificationView and notificationView.swiperView" record="notificationView.swiperView"/>
             <t t-else="">$0</t>
         </xpath>
     </t>

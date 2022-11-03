@@ -2,9 +2,9 @@
 <templates xml:space="preserve">
 
     <t t-name="sign.SignRequestView" owl="1">
-            <button class="o_SignRequestView btn btn-link" t-attf-class="{{ className }}" title="Request Signature" t-on-click="onClickRequestSign" t-ref="root">
-                <i class="fa fa-pencil-square-o"/> Request Signature
-            </button>
+        <button class="o_SignRequestView btn btn-link" t-attf-class="{{ className }}" title="Request Signature" t-on-click="onClickRequestSign" t-ref="root">
+            <i class="fa fa-pencil-square-o"/> Request Signature
+        </button>
     </t>
 
 </templates>

@@ -3,9 +3,7 @@
 
     <t t-inherit="mail.ActivityListViewItem" t-inherit-mode="extension">
         <xpath expr="//button[hasclass('o_ActivityListViewItem_markAsDone')]" position="after">
-            <t t-if="approvalView">
-                <ApprovalView record="approvalView"/>
-            </t>
+            <ApprovalView t-if="approvalView" record="approvalView"/>
         </xpath>
     </t>
 

@@ -36,10 +36,10 @@ class PaymentToken(models.Model):
             )
 
         partner = self.env['res.partner'].browse(partner_id)
-        return self.env['payment.token'].search([
+        return self.env['payment.token'].sudo().search([
             ('provider_id', 'in', providers_ids),
             ('partner_id', 'child_of', partner.commercial_partner_id.id),
-        ])
+        ])# In sudo mode to read fields of the children of the commercial partner.
 
     def get_linked_records_info(self):
         """ Override of payment to add information about subscriptions linked to the current token.

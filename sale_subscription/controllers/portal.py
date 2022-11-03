@@ -261,24 +261,24 @@ class PaymentPortal(payment_portal.PaymentPortal):
         :return: None
         """
         order_sudo, redirection = self._get_subscription(access_token, order_id)
+        partner_id = request.env.user.partner_id
+
         if redirection:
             return redirection
-        new_token = request.env['payment.token'].browse(int(token_id)).exists()
-        if not new_token:
-            raise werkzeug.exceptions.NotFound()
 
-        try:
-            new_token.check_access_rights('read')
-            new_token.check_access_rule('read')
-        except AccessError:
-            raise werkzeug.exceptions.NotFound()
+        token_sudo = request.env['payment.token'].sudo().search([
+            ('id', '=', token_id),
+            ('partner_id', 'child_of', partner_id.commercial_partner_id.id),
+            # Bypass active_test context to make sure no archived tokens are used.
+            ('active', '=', True),
+        ])
 
-        if not new_token.sudo().active:
+        if not token_sudo:
             # Archived token are removed from existing subscriptions
             # and shouldn't be re-assigned through this route.
             raise werkzeug.exceptions.NotFound()
 
-        order_sudo.payment_token_id = new_token
+        order_sudo.payment_token_id = token_sudo
 
 
 class SalePortal(sale_portal.CustomerPortal):

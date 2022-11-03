@@ -125,7 +125,7 @@ class Tablet extends Component {
 
     get worksheetData() {
         if (this.selectedStep) {
-            if (this.selectedStep.source_document === "custom" && this.selectedStep.worksheet_document) {
+            if (this.selectedStep.source_document !== "operation" && this.selectedStep.worksheet_document) {
                 return {
                     resModel: 'quality.check',
                     resId: this.state.selectedStepId,
@@ -133,7 +133,7 @@ class Tablet extends Component {
                     value: this.selectedStep.worksheet_document,
                     page: 1,
                 };
-            } else if (this.selectedStep.source_document === "custom" && this.selectedStep.worksheet_url) {
+            } else if (this.selectedStep.source_document === "step" && this.selectedStep.worksheet_url) {
                 return {
                     resModel: "quality.point",
                     resId: this.selectedStep.point_id,
@@ -150,12 +150,12 @@ class Tablet extends Component {
                         value: this.data.operation.worksheet,
                         page: this.selectedStep.worksheet_page,
                     };
-                } else if (this.data.operation.worksheet_url) {
+                } else if (this.data.operation.worksheet_google_slide) {
                     return {
                         resModel: "mrp.routing.workcenter",
                         resId: this.data.operation.id,
-                        resField: "worksheet_url",
-                        value: this.data.operation.worksheet_url,
+                        resField: "worksheet_google_slide",
+                        value: this.data.operation.worksheet_google_slide,
                         page: this.selectedStep.worksheet_page,
                     };
                 } else {
@@ -170,6 +170,14 @@ class Tablet extends Component {
                 resId: this.data.operation.id,
                 resField: 'worksheet',
                 value: this.data.operation.worksheet,
+                page: 1,
+            };
+        } else if (this.data.operation.worksheet_google_slide) {
+            return {
+                resModel: "mrp.routing.workcenter",
+                resId: this.data.operation.id,
+                resField: "worksheet_google_slide",
+                value: this.data.operation.worksheet_google_slide,
                 page: 1,
             };
         } else {

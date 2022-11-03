@@ -85,10 +85,9 @@
                                     </t>
                                 </div>
                             </div>
-                            <div id="post-stats" class="d-flex bg-100 px-3 py-1 border-bottom flex-wrap">
+                            <div id="post-stats" class="d-flex bg-100 px-3 py-1 border-bottom">
                                 <div class="px-2 text-center">
-                                    <small>Clicks:</small>
-                                    <small class="fw-bold" t-esc="record.click_count.raw_value"/>
+                                    <small class="pe-1">Clicks:</small> <small class="fw-bold" t-esc="record.click_count.raw_value"/>
                                 </div>
                             </div>
                             <div class="d-flex flex-grow-0 align-items-center px-3 py-2">
@@ -104,7 +103,7 @@
                                     </t>
                                 </time>
                                 <div class="ms-2 me-3" title="Engagement">
-                                    <i class="fa fa-heart" />
+                                    <i class="fa fa-heart me-1" />
                                     <span t-esc="record.engagement.raw_value"/>
                                 </div>
 

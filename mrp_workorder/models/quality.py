@@ -75,6 +75,7 @@ class MrpRouting(models.Model):
         """
         return [
             'worksheet',
+            'worksheet_google_slide',
             'id',
         ]
 
@@ -540,4 +541,5 @@ class QualityCheck(models.Model):
         values = self.read(self._get_fields_list_for_tablet(), load=False)
         for check in values:
             check['worksheet_url'] = self.env['quality.check'].browse(check['id']).point_id.worksheet_url
+            check['source_document'] = self.env['quality.check'].browse(check['id']).point_id.source_document
         return values

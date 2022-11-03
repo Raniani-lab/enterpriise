@@ -43,7 +43,9 @@ class QualityCheck(models.Model):
             'company_id': self.company_id.id,
             'test_type_id': self.env.ref('quality.test_type_instructions', raise_if_not_found=False).id,
             'picking_type_ids': [Command.link(self.workorder_id.production_id.picking_type_id.id)],
+            'source_document': 'step',
             'note': self.note,
+            'worksheet_document': self.worksheet_document,
         }
         point = self.env['quality.point'].create(quality_point_data)
         self.point_id = point

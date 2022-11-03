@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
-import { getMessagingComponent } from "@mail/utils/messaging_component";
-import { useModels } from "@mail/component_hooks/use_models";
+import { useMessagingContainer } from '@mail/component_hooks/use_messaging_container';
 
 import { registry } from "@web/core/registry";
 import { standardFieldProps } from "@web/views/fields/standard_field_props";
@@ -20,7 +19,7 @@ export class CallQueueSwitchWrapper extends Component {
      * @override
      */
     setup() {
-        useModels();
+        useMessagingContainer();
         super.setup();
         this.callQueueSwitchView = undefined;
         this.id = this.nextId;
@@ -66,7 +65,6 @@ export class CallQueueSwitchWrapper extends Component {
 }
 
 Object.assign(CallQueueSwitchWrapper, {
-    components: { CallQueueSwitchView: getMessagingComponent("CallQueueSwitchView") },
     nextId: 0,
     props: { ...standardFieldProps },
     template: "voip.CallQueueSwitchWrapper",

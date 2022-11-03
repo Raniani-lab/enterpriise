@@ -2,7 +2,9 @@
 <templates xml:space="preserve">
 
     <t t-name="voip.CallQueueSwitchWrapper" owl="1">
-        <CallQueueSwitchView t-if="callQueueSwitchView" record="callQueueSwitchView"/>
+        <t t-if="isLoaded">
+            <CallQueueSwitchView t-if="callQueueSwitchView" record="callQueueSwitchView"/>
+        </t>
     </t>
 
 </templates>

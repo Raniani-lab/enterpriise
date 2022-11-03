@@ -14,6 +14,7 @@ import { clear } from "@mail/model/model_field_command";
  */
 registerModel({
     name: "CallQueueSwitchView",
+    template: "voip.CallQueueSwitchView",
     lifecycleHooks: {
         _created() {
             // useful to update the state of this view when the record is

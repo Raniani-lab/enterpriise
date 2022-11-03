@@ -1,11 +1,6 @@
 /** @odoo-module **/
 
-import { useModels } from "@mail/component_hooks/use_models";
-import { getMessagingComponent } from "@mail/utils/messaging_component";
-// Force the SystrayItemView to be loaded before its wrapper by importing it
-// explicitly. It ensures that VoipSystrayItemView has been registered as a
-// messaging component, allowing to retrieve it from getMessagingComponent.
-import "@voip/components/voip_systray_item_view/voip_systray_item_view";
+import { useMessagingContainer } from '@mail/component_hooks/use_messaging_container';
 
 /**
  * This wrapper is intended to provide integration with the models framework. It
@@ -18,8 +13,7 @@ export class VoipSystrayItemWrapper extends owl.Component {
      * @override
      */
     setup() {
-        useModels();
-        super.setup();
+        useMessagingContainer();
     }
 
     get messaging() {
@@ -30,6 +24,5 @@ export class VoipSystrayItemWrapper extends owl.Component {
 VoipSystrayItemWrapper.props = {};
 
 Object.assign(VoipSystrayItemWrapper, {
-    components: { VoipSystrayItemView: getMessagingComponent("VoipSystrayItemView") },
     template: "voip.SystrayItemWrapper",
 });

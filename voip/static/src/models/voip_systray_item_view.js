@@ -9,6 +9,7 @@ import { one } from "@mail/model/model_field";
  */
 registerModel({
     name: "VoipSystrayItemView",
+    template: "voip.SystrayItemView",
     recordMethods: {
         onClick() {
             this.messaging.messagingBus.trigger("toggle-softphone-display");

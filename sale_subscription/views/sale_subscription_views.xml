@@ -27,7 +27,11 @@
         <field name="name">sale.order.log.tree</field>
         <field name="model">sale.order.log</field>
         <field name="arch" type="xml">
-            <tree decoration-muted="event_type == '2_snapshot'" decoration-success="event_type == '1_change' and amount_signed &gt; 0" decoration-danger="event_type == '3_churn'" decoration-warning="event_type == '1_change' and amount_signed &lt; 0" editable="bottom">
+            <tree decoration-muted="event_type == '2_snapshot'"
+                  decoration-success="event_type == '1_change' and amount_signed &gt; 0"
+                  decoration-danger="event_type == '3_churn'"
+                  decoration-warning="event_type == '1_change' and amount_signed &lt; 0"
+                  create="0" delete="0">
                 <field name="order_id"/>
                 <field name="event_date"/>
                 <field name="event_type"/>
@@ -57,7 +61,7 @@
 
     <record id="action_sale_order_log" model="ir.actions.act_window">
         <field name="name">MRR Analysis</field>
-        <field name="view_mode">tree,graph,form</field>
+        <field name="view_mode">tree,graph</field>
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.order.log</field>
     </record>

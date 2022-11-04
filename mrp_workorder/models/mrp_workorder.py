@@ -539,8 +539,11 @@ class MrpProductionWorkcenterLine(models.Model):
         last30op = self.env['mrp.workorder'].search_read([
             ('operation_id', '=', self.operation_id.id),
             ('date_finished', '>', fields.datetime.today() - relativedelta(days=30)),
-        ], ['duration'], order='duration')
-        last30op = [item['duration'] for item in last30op]
+        ], ['duration', 'qty_produced'])
+        last30op = sorted([item['duration'] / item['qty_produced'] for item in last30op])
+        # show rainbow man only for the best time in the last 30 days.
+        if last30op:
+            show_rainbow = show_rainbow and float_compare((self.duration / self.qty_producing), last30op[0], precision_digits=2) <= 0
 
         score = 3
         if self.check_ids:

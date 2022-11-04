@@ -78,3 +78,17 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
 
     def test_form_view_not_altered_by_studio_xml_edition(self):
         self.start_tour("/web?debug=tests", 'web_studio_test_form_view_not_altered_by_studio_xml_edition', login="admin", timeout=200)
+
+    def test_edit_with_xml_editor(self):
+        studioView = self.env["ir.ui.view"].create({
+            'type': self.testView.type,
+            'model': self.testView.model,
+            'inherit_id': self.testView.id,
+            'mode': 'extension',
+            'priority': 99,
+            'arch': "<data><xpath expr=\"//field[@name='name']\" position=\"after\"> <div class=\"someDiv\"/></xpath></data>",
+            'name': "Odoo Studio: %s customization" % (self.testView.name)
+        })
+
+        self.start_tour("/web?debug=tests", 'web_studio_test_edit_with_xml_editor', login="admin", timeout=200)
+        self.assertEqual(studioView.arch, "<data/>")

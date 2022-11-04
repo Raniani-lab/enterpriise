@@ -676,13 +676,8 @@ Are you sure you want to remove the selection values of those records?""") % len
             view.write({'arch': view_arch})
             ViewModel = request.env[view.model]
             try:
-                fields_view = ViewModel.with_context(studio=True).get_view(view.id, view.type)
-                view_type = 'list' if view.type == 'tree' else view.type
-                models = fields_view['models']
-                return {
-                    'views': {view_type: fields_view},
-                    'model_fields': {model: request.env[model].fields_get() for model in models}
-                }
+                studio_view = self._get_studio_view(view)
+                return self._return_view(view, studio_view)
             except Exception:
                 return False
 

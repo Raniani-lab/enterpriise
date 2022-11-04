@@ -37,9 +37,9 @@ class HelpdeskTicketConvertWizard(models.TransientModel):
         for ticket, task in zip(tickets_to_convert, created_tasks):
             ticket.active = False
 
-            ticket.sudo().message_post(body=f"Ticket converted into task <a href='#' data-oe-model='project.task' data-oe-id='{task.id}'>{task.name}</a>")
+            ticket.sudo().message_post(body=_("Ticket converted into task %s", f"<a href='#' data-oe-model='project.task' data-oe-id='{task.id}'>{task.name}</a>"))
             task.sudo().message_post(
-                body=f"Task created from ticket <a href='#' data-oe-model='helpdesk.ticket' data-oe-id='{ticket.id}'>{ticket.name}</a>",
+                body=_("Task created from ticket %s", f"<a href='#' data-oe-model='helpdesk.ticket' data-oe-id='{ticket.id}'>{ticket.name}</a>"),
                 is_internal=True,
                 subtype_id=subtype_id,
             )

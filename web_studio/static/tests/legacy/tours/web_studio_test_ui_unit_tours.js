@@ -10,7 +10,7 @@ tour.register(
     },
     [
         {
-            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu'"
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']"
         },
         {
             trigger: ".o_form_view .o_form_editable"
@@ -25,6 +25,7 @@ tour.register(
             trigger: ".o_web_studio_xml_editor"
         },
         {
+            extra_trigger: ".o_ace_view_editor",
             trigger: ".o_web_studio_leave"
         },
         {

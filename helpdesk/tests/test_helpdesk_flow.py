@@ -489,3 +489,27 @@ Content-Transfer-Encoding: quoted-printable
         helpdesk_ticket.website_message_ids = self.env['mail.message'].create(email_vals_list)
         self.assertEqual(helpdesk_ticket.first_response_hours, 2.0)
         self.assertEqual(helpdesk_ticket.avg_response_hours, 5 / 3)
+
+    def test_ticket_count_according_to_partner(self):
+        # 1) create a partner
+        partner = self.env['res.partner'].create({
+            'name': 'Freddy Krueger'
+        })
+
+        # 2) create one open and one closed ticket
+        open_ticket, closed_ticket = self.env['helpdesk.ticket'].with_user(self.helpdesk_user).create([{
+            'name': 'open ticket',
+            'team_id': self.test_team.id,
+            'partner_id': partner.id,
+        }, {
+            'name': 'solved ticket',
+            'team_id': self.test_team.id,
+            'partner_id': partner.id,
+            'stage_id': self.stage_done.id,
+        }])
+
+        # 3) check ticket count according to partner ticket
+        self.assertEqual(open_ticket.partner_open_ticket_count, 0, "There should be no other open ticket than this one for this partner")
+        self.assertEqual(open_ticket.partner_ticket_count, 1, "There should be one other ticket than this one for this partner")
+        self.assertEqual(closed_ticket.partner_open_ticket_count, 1, "There should be one other open ticket than this one for this partner")
+        self.assertEqual(closed_ticket.partner_ticket_count, 1, "There should be one other ticket than this one for this partner")

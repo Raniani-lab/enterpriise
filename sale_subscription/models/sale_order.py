@@ -58,7 +58,7 @@ class SaleOrder(models.Model):
                              tracking=True,
                              help="The start date indicate when the subscription periods begin.")
     last_invoice_date = fields.Date(string='Last invoice date', compute='_compute_last_invoice_date')
-    recurring_live = fields.Boolean(string='Alive', compute='_compute_recurring_live', store=True)
+    recurring_live = fields.Boolean(string='Alive', compute='_compute_recurring_live', store=True, tracking=True)
     recurring_monthly = fields.Monetary(compute='_compute_recurring_monthly', string="Monthly Recurring Revenue",
                                         store=True, tracking=True)
     close_reason_id = fields.Many2one("sale.order.close.reason", string="Close Reason", copy=False, tracking=True)
@@ -183,18 +183,18 @@ class SaleOrder(models.Model):
 
     @api.depends(
         'order_line.recurring_monthly', 'stage_category', 'state', 'is_subscription', 'next_invoice_date')
+    @api.depends('stage_category', 'state', 'is_subscription', 'amount_untaxed')
     def _compute_recurring_monthly(self):
         """ Compute the amount monthly recurring revenue. When a subscription has a parent still ongoing.
         Depending on invoice_ids force the recurring monthly to be recomputed regularly, even for the first invoice
         where confirmation is set the next_invoice_date and first invoice do not update it (in automatic mode).
         """
-        today = fields.Date.today()
         for order in self:
-            if order.is_subscription and order.stage_category in ['progress', 'paused'] and \
-                    order.state in ['sale', 'done'] and order.start_date and order.start_date <= today:
-                order.recurring_monthly = sum(order.order_line.mapped('recurring_monthly'))
-            else:
-                order.recurring_monthly = 0
+            if not order.is_subscription or order.stage_category not in ['progress', 'paused'] or \
+                    order.state not in ['sale', 'done']:
+                order.recurring_monthly = 0.0
+                continue
+            order.recurring_monthly = sum(order.order_line.mapped('recurring_monthly'))
 
     def _compute_access_url(self):
         super()._compute_access_url()
@@ -265,18 +265,18 @@ class SaleOrder(models.Model):
             })
         return res
 
-    @api.depends('start_date', 'subscription_child_ids', 'recurring_monthly')
+    @api.depends('state', 'stage_category', 'start_date', 'next_invoice_date', 'subscription_id.state', 'subscription_id.stage_category')
     def _compute_recurring_live(self):
         """ The live state allows to select the latest running subscription of a family
             It is helpful to see on which record next activities should be saved, count the real number of live contracts etc
+            It depends on the parent state and stage because when a parent contrat is ended, the child renewal should
+            become alive.
         """
+        today = fields.Date.today()
         for order in self:
-            if not order.is_subscription:
+            if not order.is_subscription or order.state not in ['sale', 'done'] or order.stage_category not in ['progress', 'paused']:
                 order.recurring_live = False
-                continue
-            cur_round = order.company_id.currency_id.rounding
-            if not float_is_zero(order.recurring_monthly, precision_rounding=cur_round) and \
-                    (not order.subscription_child_ids or not any(order.subscription_child_ids.mapped('recurring_monthly'))):
+            elif order.start_date and order.start_date <= today:
                 order.recurring_live = True
             else:
                 order.recurring_live = False
@@ -382,62 +382,67 @@ class SaleOrder(models.Model):
                 order.renew_state = "renewing"
 
     def _create_mrr_log(self, template_value, initial_values):
-        alive_renewals = self.filtered(lambda sub: sub.subscription_id and sub.subscription_management == 'renew' and sub.stage_category == 'progress')
+        if self.stage_category not in ['progress', 'paused']:
+            return
+        confirmed_renewal = self.subscription_id and self.subscription_management == 'renew'
         alive_child_categories = self.subscription_child_ids.mapped('stage_category')
-        is_transfered_parent = any([stage == 'progress' for stage in alive_child_categories])
+        is_transfered_parent = any([stage in ['progress', 'paused'] for stage in alive_child_categories])
         cur_round = self.company_id.currency_id.rounding
-        old_mrr = initial_values['recurring_monthly']
+        old_mrr = initial_values.get('recurring_monthly', self.recurring_monthly)
         transfer_mrr = 0
         mrr_difference = self.recurring_monthly - old_mrr
-        today = fields.Date.today()
-        start_threshold = today - relativedelta(days=15) # we only account for the transfer parent for 15 days old new line at most to avoid counting the same lines multiple times
-        if self.id in alive_renewals.ids:
-            for line in self.order_line:
-                if line.parent_line_id and start_threshold <= line.order_id.start_date <= today:
-                    transfer_mrr += line.recurring_monthly - line.parent_line_id.recurring_monthly
-        if transfer_mrr:
+        if confirmed_renewal:
+            existing_transfer_log = self.order_log_ids.filtered(lambda ev: ev.event_type == '3_transfer')
+            if not existing_transfer_log:
+                # We transfer from the current MRR to the latest known MRR.
+                # The parent contrat is now done and its MRR is 0
+                parent_mrr = self.subscription_id.order_log_ids and self.subscription_id.order_log_ids[-1].recurring_monthly or 0
+                transfer_mrr = min([self.recurring_monthly, parent_mrr])
+        if not float_is_zero(transfer_mrr, precision_rounding=cur_round):
             transfer_values = template_value.copy()
-            amount_signed = transfer_mrr
-            recurring_monthly = self.recurring_monthly - transfer_mrr
-            if not float_is_zero(amount_signed, precision_rounding=cur_round):
-                transfer_values.update({'event_type': '3_transfer', 'amount_signed': amount_signed,
-                                        'recurring_monthly': recurring_monthly})
-                self.env['sale.order.log'].sudo().create(transfer_values)
+            transfer_values.update({
+                'event_type': '3_transfer',
+                'amount_signed': transfer_mrr,
+                'recurring_monthly': transfer_mrr,
+                'event_date': self.start_date,
+            })
+            self.env['sale.order.log'].sudo().create(transfer_values)
+            mrr_difference = self.recurring_monthly - transfer_mrr
 
         if not float_is_zero(mrr_difference, precision_rounding=cur_round):
             mrr_value = template_value.copy()
             event_type = '1_change' if self.order_log_ids else '0_creation'
             if is_transfered_parent:
                 event_type = '3_transfer'
-            amount_signed = mrr_difference - transfer_mrr
-            mrr_value.update({'event_type': event_type, 'amount_signed': amount_signed, 'recurring_monthly': self.recurring_monthly})
+            mrr_value.update({'event_type': event_type, 'amount_signed': mrr_difference, 'recurring_monthly': self.recurring_monthly})
             self.env['sale.order.log'].sudo().create(mrr_value)
 
     def _create_stage_log(self, values, initial_values):
         old_stage_id = initial_values['stage_id']
         new_stage_id = self.stage_id
         log = None
+        cur_round = self.company_id.currency_id.rounding
         mrr_change_value = {}
-        is_alive_renewal = self.subscription_id and self.subscription_management == 'renew' and self.stage_category == 'progress'
+        confirmed_renewal = self.subscription_id and self.subscription_management == 'renew' and self.stage_category in ['progress', 'paused']
         alive_renewed = self.subscription_child_ids.filtered(
-            lambda s: s.subscription_management == 'renew' and s.stage_category == 'progress' and s.recurring_monthly)
-        if is_alive_renewal and self.subscription_id.stage_category == 'closed' and self.subscription_id.recurring_monthly == 0:
-            # when the parent subscription is done, we don't register events as transfer anymore.
-            is_alive_renewal = False
-        if new_stage_id.category in ['progress', 'closed'] and old_stage_id.category != new_stage_id.category:
+            lambda s: s.subscription_management == 'renew' and s.recurring_live)
+        if new_stage_id.category in ['progress', 'paused', 'closed'] and old_stage_id.category != new_stage_id.category:
             # subscription started, churned or transferred to renew
-            if new_stage_id.category == 'progress':
-                if is_alive_renewal:
+            if new_stage_id.category in ['progress', 'paused']:
+                if confirmed_renewal:
                     # Transfer for the renewed value and MRR change for the rest
                     parent_mrr = self.subscription_id.recurring_monthly
                     # Creation of renewal: transfer and MRR change
                     event_type = '3_transfer'
                     amount_signed = parent_mrr
                     recurring_monthly = parent_mrr
-                    if self.recurring_monthly - parent_mrr != 0:
+                    if not float_is_zero(self.recurring_monthly - parent_mrr, precision_rounding=cur_round):
                         mrr_change_value = values.copy()
-                        mrr_change_value.update({'event_type': '1_change', 'recurring_monthly': self.recurring_monthly,
-                                                 'amount_signed': self.recurring_monthly - parent_mrr})
+                        mrr_change_value.update({
+                            'event_type': '1_change',
+                            'recurring_monthly': self.recurring_monthly,
+                            'amount_signed': self.recurring_monthly - parent_mrr
+                        })
                 else:
                     event_type = '0_creation'
                     amount_signed = self.recurring_monthly
@@ -446,12 +451,20 @@ class SaleOrder(models.Model):
                 event_type = '3_transfer' if alive_renewed else '2_churn'
                 amount_signed = - initial_values['recurring_monthly']
                 recurring_monthly = 0
+                if event_type == '3_transfer' and \
+                        float_is_zero(recurring_monthly, precision_rounding=cur_round) and \
+                        float_is_zero(amount_signed, precision_rounding=cur_round):
+                    # Avoid creating transfer log for free subscription that remains free
+                    return
 
-            if is_alive_renewal and (not self.recurring_monthly or self.start_date > fields.Date.today()):
+            if confirmed_renewal and self.start_date > fields.Date.today():
                 # We don't create logs for confirmed renewal that start in the future
                 return
-            values.update(
-                {'event_type': event_type, 'amount_signed': recurring_monthly, 'recurring_monthly': amount_signed})
+            values.update({
+                'event_type': event_type,
+                'amount_signed': recurring_monthly,
+                'recurring_monthly': amount_signed
+            })
             # prevent duplicate logs
             if not self.order_log_ids.filtered(
                 lambda ev: ev.event_type == values['event_type'] and ev.event_date == values['event_date']):
@@ -470,14 +483,18 @@ class SaleOrder(models.Model):
         if not self.is_subscription:
             return res
         updated_fields, dummy = res
-        values = {'event_date': fields.Date.context_today(self), 'order_id': self.id,
+        order_start_date = self.start_date or fields.Date.context_today(self)
+        values = {'event_date': max(fields.Date.context_today(self), order_start_date),
+                  'order_id': self.id,
                   'currency_id': self.currency_id.id,
-                  'category': self.stage_id.category, 'user_id': self.user_id.id,
-                  'team_id': self.team_id.id, }
+                  'category': self.stage_id.category,
+                  'user_id': self.user_id.id,
+                  'team_id': self.team_id.id}
         stage_log = None
+
         if 'stage_id' in initial_values:
             stage_log = self._create_stage_log(values, initial_values)
-        if 'recurring_monthly' in updated_fields and not stage_log:
+        if ('recurring_monthly' in updated_fields or 'recurring_live' in updated_fields) and not stage_log:
             self._create_mrr_log(values, initial_values)
         return res
 
@@ -682,9 +699,6 @@ class SaleOrder(models.Model):
         last_token = self.transaction_ids._get_last().token_id.id
         if last_token:
             self.payment_token_id = last_token
-
-
-
 
     def action_invoice_subscription(self):
         account_move = self._create_recurring_invoice()

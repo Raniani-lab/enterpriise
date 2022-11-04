@@ -69,6 +69,12 @@ export class BankRecKanbanController extends KanbanController {
         this.env.searchModel.addEventListener("update", () => this.userSearched());
     }
 
+    async onUpdatedPager() {
+        if (this.state.selectedStLineId && !this.recordById(this.state.selectedStLineId)) {
+            this.kanbanRecordsReady();
+        }
+    }
+
     userSearched() {
         this.model.addEventListener("update", () => this.kanbanRecordsReady(), { once: true });
     }

@@ -418,21 +418,10 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                 if aml.tax_line_id:
                     continue
 
-                if aml.price_total != 0:
-                    line_amount = aml.price_total
-                    # convert line_amount in company currency
-                    if aml.currency_id != aml.company_id.currency_id:
-                        line_amount = line_amount / (aml.amount_currency / aml.balance)
-                else:
-                    line_amount = aml.balance
+                aml_taxes = aml.tax_ids.compute_all(aml.balance, aml.company_id.currency_id, partner=aml.partner_id, handle_price_include=False)
+                line_amount = aml_taxes['total_included']
 
                 code_correction = ''
-                if aml.move_id.is_inbound():
-                    letter = 'h'
-                elif aml.move_id.is_outbound():
-                    letter = 's'
-                else:
-                    letter = 's'
                 if aml.tax_ids:
                     codes = set(aml.tax_ids.mapped('l10n_de_datev_code'))
                     if len(codes) == 1:
@@ -481,7 +470,6 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                     'waehrung': currency.name,
                     'line_base_amount': aml.price_total,
                     'line_base_currency': aml.currency_id.name,
-                    'sollhaben': letter,
                     'buschluessel': code_correction,
                     'gegenkonto': to_account_code,
                     'belegfeld1': receipt1[-36:],
@@ -496,13 +484,8 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             for match_key, line_value in line_values.items():
                 # For DateV, we can't have negative amount on a line, so we need to inverse the amount and inverse the
                 # credit/debit symbol.
-                if line_value['line_amount'] < 0:
-                    line_value['line_amount'] = -line_value['line_amount']
-                    if line_value['sollhaben'] == 'h':
-                        line_value['sollhaben'] = 's'
-                    else:
-                        line_value['sollhaben'] = 'h'
-
+                line_value['sollhaben'] = 'h' if line_value['line_amount'] < 0 else 's'
+                line_value['line_amount'] = abs(line_value['line_amount'])
                 # Idiotic program needs to have a line with 116 elements ordered in a given fashion as it
                 # does not take into account the header and non mandatory fields
                 array = ['' for x in range(116)]

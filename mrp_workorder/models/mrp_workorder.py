@@ -543,13 +543,10 @@ class MrpProductionWorkcenterLine(models.Model):
         ], ['duration'], order='duration')
         last30op = [item['duration'] for item in last30op]
 
-        passed_checks = len(list(check.quality_state == 'pass' for check in self.check_ids))
-        if passed_checks:
-            score = int(3.0 * len(self.check_ids) / passed_checks)
-        elif not self.check_ids:
-            score = 3
-        else:
-            score = 0
+        score = 3
+        if self.check_ids:
+            passed_checks = len(list(check for check in self.check_ids if check.quality_state == 'pass'))
+            score = int(3.0 * passed_checks / len(self.check_ids))
 
         return {
             'duration': self.duration,

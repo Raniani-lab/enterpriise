@@ -7,7 +7,7 @@ import { sprintf } from '@web/core/utils/strings';
 export default class BarcodeQuantModel extends BarcodeModel {
     constructor(params) {
         super(...arguments);
-        this.lineModel = params.model;
+        this.lineModel = this.resModel;
         this.validateMessage = _t("The inventory adjustment has been validated");
         this.validateMethod = 'action_validate';
     }
@@ -352,7 +352,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
             return {
                 route: '/stock_barcode/save_barcode_data',
                 params: {
-                    model: this.params.model,
+                    model: this.resModel,
                     res_id: false,
                     write_field: false,
                     write_vals: commands,

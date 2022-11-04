@@ -12,13 +12,14 @@ import { FNC1_CHAR } from "barcodes_gs1_nomenclature/static/src/js/barcode_parse
 const { EventBus } = owl;
 
 export default class BarcodeModel extends EventBus {
-    constructor(params, services) {
+    constructor(resModel, resId, services) {
         super();
         this.dialogService = useService('dialog');
         this.orm = services.orm;
         this.rpc = services.rpc;
         this.notification = services.notification;
-        this.params = params;
+        this.resId = resId;
+        this.resModel = resModel;
         this.unfoldLineKey = false;
         this.currentSortIndex = 0;
         // Keeps track of list scanned record(s) by type.
@@ -91,7 +92,7 @@ export default class BarcodeModel extends EventBus {
     getActionRefresh(newId) {
         return {
             route: '/stock_barcode/get_barcode_data',
-            params: {model: this.params.model, res_id: this.params.id || false},
+            params: {model: this.resModel, res_id: this.resId || false},
         };
     }
 
@@ -350,7 +351,7 @@ export default class BarcodeModel extends EventBus {
     }
 
     get recordIds() {
-        return [this.params.id];
+        return [this.resId];
     }
 
     get selectedLine() {
@@ -540,7 +541,7 @@ export default class BarcodeModel extends EventBus {
     async validate() {
         await this.save();
         const action = await this.orm.call(
-            this.params.model,
+            this.resModel,
             this.validateMethod,
             [this.recordIds],
             { context: { display_detailed_backorder: true } },
@@ -1420,7 +1421,7 @@ export default class BarcodeModel extends EventBus {
     }
 
     _getName() {
-        return this.cache.getRecord(this.params.model, this.params.id).name;
+        return this.cache.getRecord(this.resModel, this.resId).name;
     }
 
     // Response -> UI State

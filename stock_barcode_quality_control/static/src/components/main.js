@@ -13,15 +13,15 @@ patch(MainComponent.prototype, 'stock_barcode_quality_control', {
         ev.stopPropagation();
         await this.env.model.save();
         const res = await this.orm.call(
-            this.props.model,
+            this.resModel,
             this.env.model.openQualityChecksMethod,
-            [[this.props.id]]
+            [[this.resId]]
         );
         if (typeof res === 'object' && res !== null) {
             return bus.trigger('do-action', {
                 action: res,
                 options: {
-                    on_close: this._onRefreshState.bind(this, { recordId: this.props.id }),
+                    on_close: this._onRefreshState.bind(this, { recordId: this.resId }),
                 },
             });
         } else {

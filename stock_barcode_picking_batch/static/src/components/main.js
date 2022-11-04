@@ -36,10 +36,10 @@ patch(MainComponent.prototype, 'stock_barcode_picking_batch', {
     // Private
     //--------------------------------------------------------------------------
 
-    _getModel: function (params) {
-        const { rpc, notification, orm } = this;
-        if (params.model === 'stock.picking.batch') {
-            return new BarcodePickingBatchModel(params, { rpc, notification, orm });
+    _getModel: function () {
+        const { resId, resModel, rpc, notification, orm } = this;
+        if (this.resModel === 'stock.picking.batch') {
+            return new BarcodePickingBatchModel(resModel, resId, { rpc, notification, orm });
         }
         return this._super(...arguments);
     },

@@ -14,7 +14,7 @@ patch(BarcodePickingModel.prototype, 'stock_barcode_mrp_subcontracting', {
     getPickingToRecordComponents() {
         const displayValues = ["hide", "facultative", "mandatory"];
         let picking = this.record;
-        if (this.params.model === "stock.picking.batch") {
+        if (this.resModel === "stock.picking.batch") {
             const picking_id = this.record.picking_ids.reduce((prevId, currentId) => {
                 const currentPicking = this.cache.getRecord("stock.picking", currentId);
                 const currentValue = currentPicking.display_action_record_components;

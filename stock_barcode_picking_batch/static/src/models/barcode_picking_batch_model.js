@@ -118,7 +118,7 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
             const data = await this.orm.call(
                 'stock.picking.batch',
                 'action_add_pickings_and_confirm',
-                [[this.params.id],
+                [[this.resId],
                 {
                     picking_type_id: this.record.picking_type_id,
                     picking_ids: this.selectedPickings,
@@ -244,7 +244,7 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
 
     _getNewLineDefaultContext() {
         const defaultContextValues = super._getNewLineDefaultContext();
-        const batch = this.cache.getRecord(this.params.model, this.params.id);
+        const batch = this.cache.getRecord(this.resModel, this.resId);
         defaultContextValues.default_batch_id = batch.id;
         defaultContextValues.default_picking_id = batch.picking_ids[0];
         return defaultContextValues;
@@ -302,7 +302,7 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
      */
     async _setUser() {
         if (this._shouldAssignUser()) {
-            await this.orm.write(this.params.model, [this.record.id], { user_id: session.uid });
+            await this.orm.write(this.resModel, [this.record.id], { user_id: session.uid });
             this.record.user_id = session.uid;
             const pickings = [];
             for (const pickingId of this.record.picking_ids) {

@@ -621,12 +621,12 @@ export default class BarcodePickingModel extends BarcodeModel {
     }
 
     _getNewLineDefaultContext() {
-        const picking = this.cache.getRecord(this.params.model, this.params.id);
+        const picking = this.cache.getRecord(this.resModel, this.resId);
         return {
             default_company_id: picking.company_id,
             default_location_id: this._defaultLocation().id,
             default_location_dest_id: this._defaultDestLocation().id,
-            default_picking_id: this.params.id,
+            default_picking_id: this.resId,
             default_qty_done: 1,
         };
     }
@@ -634,9 +634,9 @@ export default class BarcodePickingModel extends BarcodeModel {
     async _cancel() {
         await this.save();
         await this.orm.call(
-            this.params.model,
+            this.resModel,
             'action_cancel',
-            [[this.params.id]]
+            [[this.resId]]
         );
         this._cancelNotification();
         this.trigger('history-back');
@@ -705,7 +705,7 @@ export default class BarcodePickingModel extends BarcodeModel {
     }
 
     async _closeValidate(ev) {
-        const record = await this.orm.read(this.params.model, [this.record.id], ["state"])
+        const record = await this.orm.read(this.resModel, [this.record.id], ["state"]);
         if (record[0].state === 'done') {
             // If all is OK, displays a notification and goes back to the previous page.
             this.notification.add(this.validateMessage, { type: 'success' });
@@ -761,7 +761,7 @@ export default class BarcodePickingModel extends BarcodeModel {
 
     _createLinesState() {
         const lines = [];
-        const picking = this.cache.getRecord(this.params.model, this.params.id);
+        const picking = this.cache.getRecord(this.resModel, this.resId);
         for (const id of picking.move_line_ids) {
             const smlData = this.cache.getRecord('stock.move.line', id);
             // Checks if this line is already in the picking's state to get back
@@ -823,7 +823,7 @@ export default class BarcodePickingModel extends BarcodeModel {
     }
 
     _getModelRecord() {
-        const record = this.cache.getRecord(this.params.model, this.params.id);
+        const record = this.cache.getRecord(this.resModel, this.resId);
         if (record.picking_type_id && record.state !== "cancel") {
             record.picking_type_id = this.cache.getRecord('stock.picking.type', record.picking_type_id);
         }
@@ -836,7 +836,7 @@ export default class BarcodePickingModel extends BarcodeModel {
             location_dest_id: this._defaultDestLocation(),
             reserved_uom_qty: false,
             qty_done: 0,
-            picking_id: this.params.id,
+            picking_id: this.resId,
         });
     }
 
@@ -859,8 +859,8 @@ export default class BarcodePickingModel extends BarcodeModel {
             return {
                 route: '/stock_barcode/save_barcode_data',
                 params: {
-                    model: this.params.model,
-                    res_id: this.params.id,
+                    model: this.resModel,
+                    res_id: this.resId,
                     write_field: 'move_line_ids',
                     write_vals: commands,
                 },
@@ -1102,9 +1102,9 @@ export default class BarcodePickingModel extends BarcodeModel {
         }
         await this.save();
         const result = await this.orm.call(
-            this.params.model,
+            this.resModel,
             'action_put_in_pack',
-            [[this.params.id]],
+            [[this.resId]],
             { context }
         );
         if (typeof result === 'object') {
@@ -1120,7 +1120,7 @@ export default class BarcodePickingModel extends BarcodeModel {
     async _setUser() {
         if (this.record.user_id != session.uid) {
             this.record.user_id = session.uid;
-            await this.orm.write(this.params.model, [this.record.id], { user_id: session.uid });
+            await this.orm.write(this.resModel, [this.record.id], { user_id: session.uid });
         }
     }
 

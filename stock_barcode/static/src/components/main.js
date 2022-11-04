@@ -34,9 +34,9 @@ class MainComponent extends Component {
         this.orm = useService('orm');
         this.notification = useService('notification');
         this.dialog = useService('dialog');
-        this.props.model = this.props.action.res_model;
-        this.props.id = this.props.action.context.active_id;
-        const model = this._getModel(this.props);
+        this.resModel = this.props.action.res_model;
+        this.resId = this.props.action.context.active_id || false;
+        const model = this._getModel();
         useSubEnv({model});
         this._scrollBehavior = 'smooth';
         this.isMobile = config.device.isMobile;
@@ -44,10 +44,7 @@ class MainComponent extends Component {
         onWillStart(async () => {
             const barcodeData = await this.rpc(
                 '/stock_barcode/get_barcode_data',
-                {
-                    model: this.props.model,
-                    res_id: this.props.id || false,
-                }
+                { model: this.resModel, res_id: this.resId }
             );
             this.groups = barcodeData.groups;
             this.env.model.setData(barcodeData);
@@ -151,12 +148,12 @@ class MainComponent extends Component {
     // Private
     //--------------------------------------------------------------------------
 
-    _getModel(params) {
+    _getModel() {
         const { rpc, orm, notification } = this;
-        if (params.model === 'stock.picking') {
-            return new BarcodePickingModel(params, { rpc, orm, notification });
-        } else if (params.model === 'stock.quant') {
-            return new BarcodeQuantModel(params, { rpc, orm, notification });
+        if (this.resModel === 'stock.picking') {
+            return new BarcodePickingModel(this.resModel, this.resId, { rpc, orm, notification });
+        } else if (this.resModel === 'stock.quant') {
+            return new BarcodeQuantModel(this.resModel, this.resId, { rpc, orm, notification });
         } else {
             throw new Error('No JS model define');
         }
@@ -169,9 +166,9 @@ class MainComponent extends Component {
     async cancel() {
         await this.env.model.save();
         const action = await this.orm.call(
-            this.props.model,
+            this.resModel,
             'action_cancel_from_barcode',
-            [[this.props.id]]
+            [[this.resId]]
         );
         const onClose = res => {
             if (res && res.cancelled) {
@@ -246,9 +243,9 @@ class MainComponent extends Component {
         }
         if (!action && method) {
             action = await this.orm.call(
-                this.props.model,
+                this.resModel,
                 method,
-                [[this.props.id]]
+                [[this.resId]]
             );
         }
         bus.trigger('do-action', { action, options });
@@ -261,7 +258,7 @@ class MainComponent extends Component {
 
     saveFormView(lineRecord) {
         const lineId = (lineRecord && lineRecord.data.id) || (this._editedLineParams && this._editedLineParams.currentId);
-        const recordId = (lineRecord.resModel === this.props.model) ? lineId : undefined
+        const recordId = (lineRecord.resModel === this.resModel) ? lineId : undefined;
         this._onRefreshState({ recordId, lineId });
     }
 

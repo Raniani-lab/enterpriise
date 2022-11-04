@@ -1718,7 +1718,7 @@ class Planning(models.Model):
                 self._gantt_progress_bar_resource_id(res_ids, start, stop),
                 warning=_("As there is no running contract during this period, this resource is not expected to work a shift. Planned hours:")
             )
-        raise NotImplementedError("This Progress Bar is not implemented.")
+        raise NotImplementedError(_("This Progress Bar is not implemented."))
 
     @api.model
     def gantt_progress_bar(self, fields, res_ids, date_start_str, date_stop_str):

@@ -1943,6 +1943,12 @@ msgid "The end date of a shift should be after its start date."
 msgstr ""
 
 #. module: planning
+#: code:addons/planning/models/planning_recurrency.py:0
+#, python-format
+msgid "The number of repetitions cannot be negative."
+msgstr ""
+
+#. module: planning
 #: model:ir.model.constraint,message:planning.constraint_planning_recurrency_check_repeat_interval_positive
 msgid "The recurrence should be greater than 0."
 msgstr ""
@@ -2051,6 +2057,12 @@ msgstr ""
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "There are no shifts to reset to draft."
+msgstr ""
+
+#. module: planning
+#: code:addons/planning/models/planning.py:0
+#, python-format
+msgid "This Progress Bar is not implemented."
 msgstr ""
 
 #. module: planning

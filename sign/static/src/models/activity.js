@@ -1,8 +1,6 @@
 /** @odoo-module **/
 
-import { registerPatch } from '@mail/model/model_core';
-// ensure that the model definition is loaded before the patch
-import '@mail/models/activity';
+import { registerPatch } from '@mail/model';
 
 registerPatch({
    name: 'Activity',

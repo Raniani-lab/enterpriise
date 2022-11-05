@@ -1,8 +1,6 @@
 /** @odoo-module **/
 
-import { registerPatch } from '@mail/model/model_core';
-import { insert } from '@mail/model/model_field_command';
-import { attr } from '@mail/model/model_field';
+import { attr, insert, registerPatch } from '@mail/model';
 
 registerPatch({
     name: 'MessagingInitializer',

@@ -4,7 +4,7 @@ import { useBus, useService } from "@web/core/utils/hooks";
 import { escape, sprintf } from "@web/core/utils/strings";
 import { memoize } from "@web/core/utils/functions";
 import { useSetupView } from "@web/views/view_hook";
-import { insert } from "@mail/model/model_field_command";
+import { insert } from "@mail/model";
 import { PdfManager } from "@documents/owl/components/pdf_manager/pdf_manager";
 import { x2ManyCommands } from "@web/core/orm_service";
 import { ShareFormViewDialog } from "@documents/views/helper/share_form_view_dialog";

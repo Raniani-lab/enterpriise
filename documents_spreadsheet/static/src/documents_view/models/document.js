@@ -1,7 +1,6 @@
 /** @odoo-module **/
 
-import { registerPatch } from "@mail/model/model_core";
-import "@documents/models/document";
+import { registerPatch } from "@mail/model";
 
 registerPatch({
     name: "Document",

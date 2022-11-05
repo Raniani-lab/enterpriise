@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { attr, clear, registerModel } from "@mail/model";
+import { attr, clear, Model } from "@mail/model";
 
 /**
  * Models a button in CRM leads Kanban view cards that deletes or creates call
@@ -10,7 +10,7 @@ import { attr, clear, registerModel } from "@mail/model";
  * The term "call queue" refers to the list of the elements in the "Next
  * activities" tab.
  */
-registerModel({
+ Model({
     name: "CallQueueSwitchView",
     template: "voip.CallQueueSwitchView",
     lifecycleHooks: {

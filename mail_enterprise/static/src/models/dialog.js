@@ -1,10 +1,10 @@
 /** @odoo-module **/
 
-import { registerPatch } from '@mail/model';
+import { Patch } from '@mail/model';
 
 import { useBackButton } from 'web_mobile.hooks';
 
-registerPatch({
+Patch({
     name: 'Dialog',
     componentSetup() {
         useBackButton(this.onBackButtonGlobal);

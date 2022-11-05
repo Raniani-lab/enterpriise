@@ -1,9 +1,9 @@
 /** @odoo-module **/
 
-import { registerPatch } from '@mail/model';
+import { Patch } from '@mail/model';
 import core from 'web.core';
 
-registerPatch({
+Patch({
     name: 'Chatter',
     recordMethods: {
         onClickChatterSearchArticle(event) {

@@ -1,11 +1,11 @@
 /** @odoo-module **/
 
-import { attr, registerModel } from '@mail/model';
+import { attr, Model } from '@mail/model';
 
 /**
  * Models a knowledge article.
  */
-registerModel({
+ Model({
     name: 'KnowledgeArticle',
     fields: {
         id: attr({

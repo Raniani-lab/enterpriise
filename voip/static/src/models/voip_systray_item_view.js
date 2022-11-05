@@ -1,12 +1,12 @@
 /** @odoo-module **/
 
-import { one, registerModel } from "@mail/model";
+import { one, Model } from "@mail/model";
 
 /**
  * Models a button in the systray that is used to toggle the display of the
  * softphone window.
  */
-registerModel({
+ Model({
     name: "VoipSystrayItemView",
     template: "voip.SystrayItemView",
     recordMethods: {

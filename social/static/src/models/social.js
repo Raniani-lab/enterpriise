@@ -1,11 +1,11 @@
 /** @odoo-module **/
 
-import { attr, clear, one, registerModel } from '@mail/model';
+import { attr, clear, one, Model } from '@mail/model';
 
 /**
  * Models the state in the scope of the module 'social'.
  */
-registerModel({
+ Model({
     name: 'Social',
     recordMethods: {
         /**

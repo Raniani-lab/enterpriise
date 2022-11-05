@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
-import { one, registerPatch } from "@mail/model";
+import { one, Patch } from "@mail/model";
 
-registerPatch({
+Patch({
     name: "Messaging",
     fields: {
         voip: one("Voip", {

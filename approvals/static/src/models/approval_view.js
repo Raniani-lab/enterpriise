@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
-import { clear, one, registerModel } from '@mail/model';
+import { clear, one, Model } from '@mail/model';
 
-registerModel({
+Model({
     name: 'ApprovalView',
     identifyingMode: 'xor',
     template: 'approvals.ApprovalView',

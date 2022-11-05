@@ -1,11 +1,11 @@
 /** @odoo-module **/
 
-import { attr, clear, many, one, registerModel } from '@mail/model';
+import { attr, clear, many, one, Model } from '@mail/model';
 
 /**
  * Models the state in the scope of the module 'knowledge'.
  */
-registerModel({
+ Model({
     name: 'Knowledge',
     recordMethods: {
         /**

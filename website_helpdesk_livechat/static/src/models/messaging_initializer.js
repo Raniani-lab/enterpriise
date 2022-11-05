@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
-import { attr, insert, registerPatch } from '@mail/model';
+import { attr, insert, Patch } from '@mail/model';
 
-registerPatch({
+Patch({
     name: 'MessagingInitializer',
     recordMethods: {
         /**

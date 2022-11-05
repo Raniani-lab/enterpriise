@@ -52,15 +52,7 @@ class DataMergeRecord(models.Model):
     ### Searchs
     #############
     def _search_company_id(self, operator, value):
-        records = self.with_context(active_test=False).search([])
-        if operator == 'in':
-            records = records.filtered(lambda r: r.company_id.id in value)
-        elif operator in ['=', '!=']:
-            op = py_operator.eq if operator == "=" else py_operator.ne
-            convert_to_compare = lambda r: bool(r) if isinstance(value, bool) else r
-            records = records.filtered(lambda r: op(convert_to_compare(r.company_id.id), value))
-        else:
-            raise NotImplementedError()
+        records = self.with_context(active_test=False).search([]).filtered_domain([('company_id', operator, value)])
         return [('id', 'in', records.ids)]
 
     #############

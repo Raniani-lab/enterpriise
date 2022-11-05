@@ -9,6 +9,7 @@ from odoo import api, fields, models
 class SpreadsheetRevision(models.Model):
     _name = "spreadsheet.revision"
     _description = "Collaborative spreadsheet revision"
+    _rec_name = 'revision_id'
 
     active = fields.Boolean(default=True)
     res_model = fields.Char(string="Model", required=True)

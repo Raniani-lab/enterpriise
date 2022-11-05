@@ -300,7 +300,7 @@ msgstr "Seleziona i numeri di serie disponibili."
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.rental_report_search_view_inherit_lots
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.rental_schedule_view_search_inherit_lots
 msgid "Serial Number"
-msgstr "Numero di Serie"
+msgstr "Numero di serie"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__lot_ids

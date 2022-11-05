@@ -233,7 +233,7 @@ msgstr "Data creazione"
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Creation Date"
-msgstr "Data di creazione"
+msgstr "Data creazione"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert_team__alias_bounced_content

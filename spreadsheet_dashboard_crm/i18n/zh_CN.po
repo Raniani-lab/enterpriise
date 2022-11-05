@@ -146,7 +146,7 @@ msgstr "当期"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to Assign"
-msgstr "分配天数"
+msgstr "指派天数"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -160,7 +160,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Days to assign"
-msgstr ""
+msgstr "指派天数"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -195,7 +195,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected revenue"
-msgstr ""
+msgstr "预计收入"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -356,7 +356,7 @@ msgstr "标签"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Tags"
-msgstr "标签"
+msgstr "标记"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -377,7 +377,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Cities"
-msgstr ""
+msgstr "首选城市"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -392,7 +392,7 @@ msgstr "最佳国家"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Lost Reasons"
-msgstr ""
+msgstr "首要丢失原因"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -407,7 +407,7 @@ msgstr "最佳媒介"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Opportunities"
-msgstr "最佳机会"
+msgstr "最佳商机"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -438,14 +438,14 @@ msgstr "最佳来源"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Tags"
-msgstr "最佳标签"
+msgstr "热门标记"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Total days to assign"
-msgstr ""
+msgstr "所有指派的天数"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -562,7 +562,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "to close"
-msgstr ""
+msgstr "待关闭"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -584,7 +584,7 @@ msgstr "最佳国家"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "top lost reasons"
-msgstr ""
+msgstr "最大的丢失原因"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web

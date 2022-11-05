@@ -90,7 +90,7 @@ msgid ""
 msgstr ""
 "\n"
 "            Sommige van je huurproducten (%(product)s) kunnen niet gehuurd worden tijdens de\n"
-"            geselecteerde periode en je winkelwagen moet worden bijgewerkt. Het spijt ons voor de\n"
+"            geselecteerde periode en je winkelmandje moet worden bijgewerkt. Het spijt ons voor de\n"
 "            ongemak.\n"
 "        "
 

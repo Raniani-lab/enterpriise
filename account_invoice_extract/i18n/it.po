@@ -98,7 +98,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__error_status
 #, python-format
 msgid "An error occurred"
-msgstr "Si è verificato un problema"
+msgstr "Si è verificato un errore"
 
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_ir_attachment
@@ -115,7 +115,7 @@ msgstr "Data fattura"
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Bill Reference"
-msgstr "Riferimento fattura"
+msgstr "Riferimento fattura/ricevuta"
 
 #. module: account_invoice_extract
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
@@ -262,7 +262,7 @@ msgstr ""
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_account_invoice_extract_words
 msgid "Extracted words from invoice scan"
-msgstr "Parole estratte dalla scansione delle fatture"
+msgstr "Parole estratte dall'acquisizione della fattura"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
@@ -290,13 +290,13 @@ msgstr "ID della richiesta a IAP-OCR"
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Invalid PDF (Conversion error)"
-msgstr ""
+msgstr "PDF non valido (errore di conversione)"
 
 #. module: account_invoice_extract
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Invalid PDF (Unable to get page count)"
-msgstr ""
+msgstr "PDF non valido (impossibile ottenere il numero di pagine)"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__invoice_id

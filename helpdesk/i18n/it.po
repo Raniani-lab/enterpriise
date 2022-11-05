@@ -1129,7 +1129,7 @@ msgstr "Data creazione"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_tree
 msgid "Creation Date"
-msgstr "Data di creazione"
+msgstr "Data creazione"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
@@ -4053,7 +4053,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "eLearning"
-msgstr "eLearning"
+msgstr "E-learning"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form

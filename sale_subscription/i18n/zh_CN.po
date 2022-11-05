@@ -8,6 +8,7 @@
 # Emily Jia <eji@odoo.com>, 2022
 # 稀饭~~ <wangwhai@qq.com>, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
+# digitalliuzg8888, 2022
 # 
 msgid ""
 msgstr ""
@@ -15,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Raymond Yu <cl_yu@hotmail.com>, 2022\n"
+"Last-Translator: digitalliuzg8888, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -29,7 +30,7 @@ msgstr ""
 msgid ""
 "\n"
 "%s to %s"
-msgstr ""
+msgstr "%s - 由 %s"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order.py:0
@@ -38,6 +39,8 @@ msgid ""
 "\n"
 "- You should wait for the current subscription period to pass. New quantities to invoice will be ready at the end of the current period."
 msgstr ""
+"\n"
+"- 您应该等待当前的订阅期过去。要开票的新数量将在当前期间结束时准备就绪。"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__percentage_satisfaction
@@ -48,7 +51,7 @@ msgstr "% 高兴"
 #: code:addons/sale_subscription/models/sale_order_line.py:0
 #, python-format
 msgid "%(product)s - %(duration)d %(unit)s"
-msgstr ""
+msgstr "%（产品）s - %（持续时间）d %（单位）s"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -361,7 +364,7 @@ msgstr "<i class=\"fa fa-print\"/> 打印"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "<i class=\"fa fa-refresh\"/> Renew"
-msgstr ""
+msgstr "<i j=\"0/\"> 更新</i>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -374,18 +377,20 @@ msgid ""
 "<span attrs=\"{'invisible': ['|', ('recurrence_id', '=', False), "
 "('subscription_management', '=', 'upsell')]}\">until</span>"
 msgstr ""
+"<span attrs=\"{'invisible': ['|', ('recurrence_id', '=', False), "
+"('subscription_management', '=', 'upsell')]}\">直到</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 msgid "<span class=\"align-middle\">for this subscription.</span>"
-msgstr ""
+msgstr "<span class=\"align-middle\">对于此订阅。</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
 msgid ""
 "<span class=\"badge rounded-pill text-bg-danger\"><i class=\"fa fa-fw fa-"
 "remove\"/> Closed</span>"
-msgstr ""
+msgstr "<span class=\"badge rounded-pill text-bg-danger\"><i j=\"1/\"> 闭</i></span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
@@ -393,6 +398,8 @@ msgid ""
 "<span class=\"badge rounded-pill text-bg-success\"><i class=\"fa fa-fw fa-"
 "check\"/> In Progress</span>"
 msgstr ""
+"<span class=\"badge rounded-pill text-bg-success\"><i j=\"1/\"> "
+"进行中</i></span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
@@ -400,6 +407,8 @@ msgid ""
 "<span class=\"badge rounded-pill text-bg-warning\"><i class=\"fa fa-fw fa-"
 "refresh\"/> To Renew</span>"
 msgstr ""
+"<span class=\"badge rounded-pill text-bg-warning\"><i j=\"1/\"> "
+"要续订</i></span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -407,6 +416,9 @@ msgid ""
 "<span groups=\"account.group_show_line_subtotals_tax_excluded\">Amount</span>\n"
 "                                                    <span groups=\"account.group_show_line_subtotals_tax_included\">Total Price</span>"
 msgstr ""
+"<span groups=\"account.group_show_line_subtotals_tax_excluded\">金额</span>\n"
+" <span groups=\"account.group_show_line_subtotals_tax_included\">总价</span><span groups=\"account.group_show_line_subtotals_tax_excluded\">金额</span>\n"
+"                                        <span groups=\"account.group_show_line_subtotals_tax_included\">总价</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -429,7 +441,7 @@ msgid ""
 "<strong>\n"
 "                            Recurrency\n"
 "                        </strong>"
-msgstr ""
+msgstr "<strong>重新出现                        </strong>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -449,7 +461,7 @@ msgstr "<strong>下一个计费金额：</strong>"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.report_saleorder_document
 msgid "<strong>Recurrence:</strong>"
-msgstr ""
+msgstr "<strong>复发：</strong>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -1035,7 +1047,7 @@ msgstr ""
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "A renewal quotation %s has been created"
-msgstr ""
+msgstr "已创建续订报价%s"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__action
@@ -1106,7 +1118,7 @@ msgstr "提醒"
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__recurring_live
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Alive"
-msgstr ""
+msgstr "活跃  Alive"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/controllers/portal.py:0
@@ -1123,7 +1135,7 @@ msgstr "金额："
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "An upsell quotation %s has been created"
-msgstr ""
+msgstr "已创建追加销售报价%s"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_account_analytic_account
@@ -1175,14 +1187,14 @@ msgid ""
 "Automatic payment succeeded. Payment reference: %(ref)s. Amount: %(amount)s."
 " Contract set to: In Progress, Next Invoice: %(inv)s. Email sent to "
 "customer."
-msgstr ""
+msgstr "自动付款成功。付款参考： %（参考）s. 金额： %（金额）s.合同设置为：进行中，下一张发票：%（inv）s。发送给客户的电子邮件。"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__payment_exception
 msgid ""
 "Automatic payment with token failed. The payment provider configuration and "
 "token should be checked"
-msgstr ""
+msgstr "使用令牌自动付款失败。应检查支付提供商的配置和令牌"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__website_published
@@ -1254,7 +1266,7 @@ msgstr "取消"
 #: model:product.product,name:sale_subscription.product_car_leasing
 #: model:product.template,name:sale_subscription.product_car_leasing_product_template
 msgid "Car Leasing (SUB)"
-msgstr ""
+msgstr "汽车租赁 （子）"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__stage_category
@@ -1437,7 +1449,7 @@ msgstr "确认"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Confirmed and not yet started"
-msgstr ""
+msgstr "已确认但尚未开始"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_res_partner
@@ -1448,17 +1460,17 @@ msgstr "联系人"
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_template__recurring_rule_type
 msgid "Contract duration"
-msgstr ""
+msgstr "平均合同期限"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__payment_exception
 msgid "Contract in exception"
-msgstr ""
+msgstr "例外合同"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Contracts whose payment has failed"
-msgstr ""
+msgstr "付款失败的合同"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__country_id
@@ -1551,6 +1563,9 @@ msgid ""
 "Upsell: The Sales Order added lines to the subscription\n"
 "Renewal: The Sales Order replaced the subscription's content with its own"
 msgstr ""
+"创建：销售订单创建了订阅\n"
+"追加销售：销售订单向订阅添加了行\n"
+"续订：销售订单将订阅的内容替换为自己的内容"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__cron_nextcall
@@ -1712,13 +1727,13 @@ msgstr "在这里输入这个阶段的内部要求。它将以工具提示的形
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "Error during renewal of contract %s (Payment not recorded)"
-msgstr ""
+msgstr "续约%s时出错（未记录付款）"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "Error: unable to put the subscription in a closed stage"
-msgstr ""
+msgstr "错误：无法将订阅置于封闭阶段"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__event_date
@@ -1738,7 +1753,7 @@ msgstr "外部ID"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Failed Payments"
-msgstr ""
+msgstr "付款失败"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__on_change_field_ids
@@ -1748,7 +1763,7 @@ msgstr "Fields that trigger the onchange."
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__origin_order_id
 msgid "First contract"
-msgstr ""
+msgstr "首次合同日期"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_template__recurring_rule_boundary__limited
@@ -1768,7 +1783,7 @@ msgstr "永远"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Frequency:"
-msgstr ""
+msgstr "频率："
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -1841,13 +1856,13 @@ msgstr "历史"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__history_count
 msgid "History Count"
-msgstr ""
+msgstr "历史驾驶员数量"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/product_pricing.py:0
 #, python-format
 msgid "Hourly and daily pricing are forbidden on recurring products"
-msgstr ""
+msgstr "经常性产品禁止按小时和按天定价"
 
 #. module: sale_subscription
 #: model:sale.order.close.reason,name:sale_subscription.close_reason_4
@@ -1980,6 +1995,7 @@ msgstr "结算单邮件模板"
 msgid ""
 "Invoice for subscription {{ ctx.get('code', ctx.get('subscription_name')) }}"
 msgstr ""
+"Invoice for subscription {{ ctx.get（'code'， ctx.get（'subscription_name'）） }}"
 
 #. module: sale_subscription
 #: model:mail.template,report_name:sale_subscription.mail_template_subscription_invoice
@@ -1996,36 +2012,38 @@ msgid ""
 "Invoice_{{ ctx.get('code', ctx.get('subscription_name')) }}_{{ "
 "format_date(ctx.get('previous_date')) }}"
 msgstr ""
+"Invoice_{{ ctx.get（'code'， ctx.get（'subscription_name'）） }}_{{ "
+"format_date（ctx.get（'previous_date'）） }}"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__journal_id
 msgid "Invoicing Journal"
-msgstr ""
+msgstr "开票日记帐"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_stage__category__paused
 msgid "Invoicing Pause"
-msgstr ""
+msgstr "开票暂停"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__is_subscription
 msgid "Is Subscription"
-msgstr ""
+msgstr "是否订阅"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__is_upselling
 msgid "Is Upselling"
-msgstr ""
+msgstr "加售"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__is_batch
 msgid "Is a Batch"
-msgstr ""
+msgstr "是一个批次"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__is_invoice_cron
 msgid "Is a Subscription invoiced in cron"
-msgstr ""
+msgstr "订阅是否在 cron 中开具发票"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_account_move
@@ -2093,7 +2111,7 @@ msgstr "最后更新时间"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__last_invoice_date
 msgid "Last invoice date"
-msgstr ""
+msgstr "最后发票日期"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -2147,13 +2165,13 @@ msgstr "记录一个备注..."
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 msgid "MRR"
-msgstr ""
+msgstr "MRR"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.action_sale_order_log
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_log_view_graph
 msgid "MRR Analysis"
-msgstr ""
+msgstr "MRR分析"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -2199,7 +2217,7 @@ msgstr "改变后的MRR"
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "MRR changes"
-msgstr ""
+msgstr "MRR 更改"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_log__recurring_monthly
@@ -2209,7 +2227,7 @@ msgstr "MRR，在应用该特定事件的变化之后"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
 msgid "MRR:"
-msgstr ""
+msgstr "MRR："
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2225,7 +2243,7 @@ msgstr "管理付款方式"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid ""
 "Managing payment methods requires to be logged in under the customer order."
-msgstr ""
+msgstr "管理付款方式需要根据客户订单登录。"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order.py:0
@@ -2233,7 +2251,7 @@ msgstr ""
 msgid ""
 "Manual payment succeeded. Payment reference: %s; Amount: %(amount)s. Invoice"
 " %(invoice)s"
-msgstr ""
+msgstr "人工付款成功。付款参考：%s;金额：%（金额）s。发票百分比（发票）"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__action__set_to_renew
@@ -2327,7 +2345,7 @@ msgstr "下一个结算单"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Next Invoice Date"
-msgstr ""
+msgstr "下一个发票日期"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
@@ -2343,12 +2361,12 @@ msgstr "无"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_sales_order_filter_subscription
 msgid "Not Recurring"
-msgstr ""
+msgstr "定期"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Not Started Yet"
-msgstr ""
+msgstr "尚未开始"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_note
@@ -2372,7 +2390,7 @@ msgstr ""
 #: model:sale.order.template.line,name:sale_subscription.montly_template_line
 #: model:sale.order.template.line,name:sale_subscription.yearly_template_line
 msgid "Office Cleaning Service (SUB)"
-msgstr ""
+msgstr "办公室清洁服务"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__on_change_field_ids
@@ -2421,7 +2439,7 @@ msgstr "超出"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__subscription_id
 msgid "Parent Contract"
-msgstr ""
+msgstr "母合同"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_line__parent_line_id
@@ -2447,7 +2465,7 @@ msgstr "付款方式"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Payment Failure"
-msgstr ""
+msgstr "付款失败"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_payment_token
@@ -2470,7 +2488,7 @@ msgstr "付款方式："
 msgid ""
 "Payment reminder for subscription {{ object.client_order_ref or object.name "
 "}}"
-msgstr ""
+msgstr "订阅 {{ object.client_order_ref 或 object.name }} 的付款提醒"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
@@ -2582,12 +2600,12 @@ msgstr "报价模板选项"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
 msgid "Quotation Template:"
-msgstr ""
+msgstr "报价模板"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__subscription_template_ids
 msgid "Quotation templates"
-msgstr ""
+msgstr "报价模板"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_ids
@@ -2671,7 +2689,7 @@ msgstr "重新提起"
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_periods
 msgid "Recurrence periods"
-msgstr ""
+msgstr "复发期"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__is_subscription
@@ -2689,7 +2707,7 @@ msgstr "经常性价格"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__recurring_rule_type
 msgid "Recurring Rule Type"
-msgstr ""
+msgstr "重复规则类型"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order_line.py:0
@@ -2697,7 +2715,7 @@ msgstr ""
 msgid ""
 "Recurring product are discounted according to the prorated period from %s to"
 " %s"
-msgstr ""
+msgstr "经常性产品根据按比例从%s到%s打折"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2709,12 +2727,12 @@ msgstr "参照："
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 #, python-format
 msgid "Renew"
-msgstr ""
+msgstr "更新"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__renew_state
 msgid "Renew State"
-msgstr ""
+msgstr "续订状态"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__subscription_management__renew
@@ -2730,17 +2748,17 @@ msgstr "允许更新"
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__subscription_management__renewal_so
 msgid "Renewal Quote"
-msgstr ""
+msgstr "续订报价"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__renew_state__renewed
 msgid "Renewed"
-msgstr ""
+msgstr "更新"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__renew_state__renewing
 msgid "Renewing"
-msgstr ""
+msgstr "更新"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_report
@@ -2797,7 +2815,7 @@ msgstr "销售订单"
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_alert
 msgid "Sale Order Alert"
-msgstr ""
+msgstr "销售订单提醒"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.action_sale_order_lines
@@ -2807,12 +2825,12 @@ msgstr "销售订单行"
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_log
 msgid "Sale Order Log"
-msgstr ""
+msgstr "销售订单日志"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_stage
 msgid "Sale Order Stage"
-msgstr ""
+msgstr "销售订单阶段"
 
 #. module: sale_subscription
 #: model:ir.actions.server,name:sale_subscription.ir_cron_sale_subscription_update_kpi_ir_actions_server
@@ -2910,7 +2928,7 @@ msgstr "选择新建的模板每次销售此产品模板都将生成新的订阅
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__user_closable
 msgid "Self closable"
-msgstr ""
+msgstr "可自闭"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_pending
@@ -2957,24 +2975,24 @@ msgstr "发送为（SMS）"
 #: model:mail.template,description:sale_subscription.email_payment_success
 msgid ""
 "Sent automatically with subscription invoice when payment is successful"
-msgstr ""
+msgstr "付款成功后与订阅发票一起自动发送"
 
 #. module: sale_subscription
 #: model:mail.template,description:sale_subscription.mail_template_subscription_invoice
 msgid "Sent manually to customers with the invoice in attachment"
-msgstr ""
+msgstr "手动发送给客户，发票附件中"
 
 #. module: sale_subscription
 #: model:mail.template,description:sale_subscription.email_payment_close
 msgid ""
 "Sent to customer to indicate that subscription is automatically terminated"
-msgstr ""
+msgstr "发送给客户以指示订阅自动终止"
 
 #. module: sale_subscription
 #: model:mail.template,description:sale_subscription.email_payment_reminder
 msgid ""
 "Sent to customer when payment failed but subscription is not yet cancelled"
-msgstr ""
+msgstr "付款失败但订阅尚未取消时发送给客户"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__sequence
@@ -3003,7 +3021,7 @@ msgstr "在订阅上设置一个阶段"
 msgid ""
 "Set on subscription's stage (e.g. Closed, Upsell) to ask a rating to "
 "customers"
-msgstr ""
+msgstr "设置订阅阶段（例如封闭式、追加销售）以向客户询问评分"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__binding_model_id
@@ -3015,7 +3033,7 @@ msgstr "设置一个值使得这个动作在给定模型的菜单中可用。"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__show_rec_invoice_button
 msgid "Show Rec Invoice Button"
-msgstr ""
+msgstr "显示“记录发票”按钮"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__starred
@@ -3140,7 +3158,7 @@ msgstr "订阅分析"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__subscription_child_ids
 msgid "Subscription Child"
-msgstr ""
+msgstr "订阅子项"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_close_reason
@@ -3172,7 +3190,7 @@ msgstr "订阅管理"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_primary_form_view
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "Subscription Plan"
-msgstr ""
+msgstr "订阅计划"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_product_product__recurring_invoice
@@ -3266,7 +3284,7 @@ msgstr "订阅:付款提醒"
 #. module: sale_subscription
 #: model:mail.template,name:sale_subscription.email_payment_success
 msgid "Subscription: Payment Success And Invoice"
-msgstr ""
+msgstr "订阅：付款成功和发票"
 
 #. module: sale_subscription
 #: model:sms.template,name:sale_subscription.sms_template_data_payment_failure
@@ -3286,7 +3304,7 @@ msgstr "订阅:要求评价"
 #. module: sale_subscription
 #: model:mail.template,name:sale_subscription.mail_template_subscription_invoice
 msgid "Subscription: Subscription Invoice"
-msgstr ""
+msgstr "订阅：订阅发票"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order_alert.py:0
@@ -3323,6 +3341,8 @@ msgid ""
 "Subscriptions can be automatically generated from sales orders in Sales or eCommerce\n"
 "                apps."
 msgstr ""
+"订阅可以从销售或电子商务中的销售订单自动生成\n"
+"                应用程序。"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -3387,7 +3407,7 @@ msgstr "模板"
 msgid ""
 "Template to be used on customized alerts for subscriptions requiring "
 "attention"
-msgstr ""
+msgstr "用于需要注意的订阅的自定义警报的模板"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_template_action
@@ -3409,7 +3429,7 @@ msgstr "时间性类型"
 #: model:mail.template,subject:sale_subscription.email_payment_close
 msgid ""
 "Termination of subscription {{ object.client_order_ref or object.name }}"
-msgstr ""
+msgstr "终止订阅 {{ object.client_order_ref 或 object.name }}"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -3442,7 +3462,7 @@ msgstr "通过网站访问单据的完整URL。"
 #. module: sale_subscription
 #: model:ir.model.constraint,message:sale_subscription.constraint_sale_order_check_start_date_lower_next_invoice_date
 msgid "The next invoice date of a sale order should be after its start date."
-msgstr ""
+msgstr "销售订单的下一个发票日期应在其开始日期之后。"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__next_invoice_date
@@ -3455,7 +3475,7 @@ msgstr "将在此日期上创建下一张结算单，那么期间将会延长。
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "The renewal %s has been canceled."
-msgstr ""
+msgstr "续订%s已被取消。"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -3467,36 +3487,36 @@ msgstr "警报的预定动作已被删除。更新订阅模块以重新创建它
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__start_date
 msgid "The start date indicate when the subscription periods begin."
-msgstr ""
+msgstr "开始日期指示订阅期的开始时间。"
 
 #. module: sale_subscription
 #: model:sale.order.close.reason,name:sale_subscription.close_reason_renew
 msgid "The subscription was renewed with a new plan."
-msgstr ""
+msgstr "订阅已通过新计划续订。"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order_line.py:0
 #, python-format
 msgid "The time unit cannot be used. Please chose one of these unit: %s."
-msgstr ""
+msgstr "不能使用时间单位。请选择以下单位之一：%s。"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "The upsell  %s has been confirmed."
-msgstr ""
+msgstr "追加销售%s已得到确认。"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "The upsell %s has been canceled."
-msgstr ""
+msgstr "追加销售%s已被取消。"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/controllers/portal.py:0
 #, python-format
 msgid "This Subscription is already running. There is no need to renew it."
-msgstr ""
+msgstr "此订阅已在运行。无需续订。"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
@@ -3515,24 +3535,24 @@ msgstr "当此阶段中没有任何记录要呈现时，将在看板视图中被
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "This subscription is renewed in %s with a change of plan."
-msgstr ""
+msgstr "此订阅在%s年续订，但计划发生了变化。"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
 msgid "This subscription is the renewal of subscription"
-msgstr ""
+msgstr "此订阅是订阅的续订"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
 msgid "This upsell order has been created from the subscription"
-msgstr ""
+msgstr "此追加销售订单是从订阅创建的"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid ""
 "This will trigger the action on all linked subsccriptions, regardless of "
 "possible timed conditions. Are you sure you want to proceed?"
-msgstr ""
+msgstr "这将触发对所有链接订阅的操作，而不考虑可能的定时条件。您确定要继续吗？"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__trigger_condition__on_time
@@ -3640,7 +3660,7 @@ msgstr ""
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "Unable to put the subscription in a progress stage"
-msgstr ""
+msgstr "无法将订阅置于进度阶段"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -3668,7 +3688,7 @@ msgstr "件"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
 msgid "Untaxed Total:"
-msgstr ""
+msgstr "不含税总计"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order.py:0
@@ -3688,7 +3708,7 @@ msgstr "加售"
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_action_upsell
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_upsell
 msgid "Upsells"
-msgstr ""
+msgstr "追加销售"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__usage
@@ -3833,7 +3853,7 @@ msgstr "年"
 msgid ""
 "You can not upsell a subscription that has not been invoiced yet. Please, "
 "update directly the %s contract or invoice it first."
-msgstr ""
+msgstr "您不能追加销售尚未开具发票的订阅。请直接更新%s合同或先开具发票。"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/res_partner.py:0
@@ -3841,20 +3861,20 @@ msgstr ""
 msgid ""
 "You can't archive the partner as it is used in the following recurring "
 "orders: %s"
-msgstr ""
+msgstr "您无法存档合作伙伴，因为它用于以下定期订单：%s"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid ""
 "You cannot save a sale order with a recurrence and no recurring product."
-msgstr ""
+msgstr "您不能保存具有重复周期且没有重复产品的销售订单。"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "You cannot save a sale order with recurring product and no recurrence."
-msgstr ""
+msgstr "您不能保存包含重复产品的销售订单，并且不会重复出现重复。"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order.py:0
@@ -3862,14 +3882,14 @@ msgstr ""
 msgid ""
 "You cannot set to draft a canceled quotation linked to invoiced "
 "subscriptions. Please create a new quotation."
-msgstr ""
+msgstr "您不能设置为起草链接到已开票订阅的已取消报价单。请创建一个新的报价单。"
 
 #. module: sale_subscription
 #: model:ir.model.constraint,message:sale_subscription.constraint_sale_order_sale_subscription_stage_coherence
 msgid ""
 "You cannot set to draft a confirmed subscription. Please create a new "
 "quotation"
-msgstr ""
+msgstr "不能设置为草稿已确认的订阅。请创建新报价"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
@@ -3911,7 +3931,7 @@ msgstr "你的计划"
 #: code:addons/sale_subscription/controllers/portal.py:0
 #, python-format
 msgid "Your subscription has been renewed until %s."
-msgstr ""
+msgstr "您的订阅已续订至 %s。"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -3921,7 +3941,7 @@ msgstr "您的订阅已关闭."
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 msgid "archived product(s)"
-msgstr ""
+msgstr "存档产品"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
@@ -3956,7 +3976,7 @@ msgstr "缺失的付款（来自"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "prices"
-msgstr ""
+msgstr "价格"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription

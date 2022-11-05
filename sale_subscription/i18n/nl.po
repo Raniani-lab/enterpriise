@@ -3051,7 +3051,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:mail.template,description:sale_subscription.mail_template_subscription_invoice
 msgid "Sent manually to customers with the invoice in attachment"
-msgstr "Manueel verzonden naar klanten met hun factuur in bijlage"
+msgstr "Handmatig verzonden naar klanten met hun factuur in bijlage"
 
 #. module: sale_subscription
 #: model:mail.template,description:sale_subscription.email_payment_close

@@ -8,12 +8,12 @@
 # שהאב חוסיין <shhab89@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Sagi Ahiel, 2022
-# Roy Sayag, 2022
 # Lilach Gilliam <lilach.gilliam@gmail.com>, 2022
 # ExcaliberX <excaliberx@gmail.com>, 2022
 # Yihya Hugirat <hugirat@gmail.com>, 2022
 # ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022
 # דודי מלכה <Dudimalka6@gmail.com>, 2022
+# Roy Sayag, 2022
 # 
 msgid ""
 msgstr ""
@@ -21,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: דודי מלכה <Dudimalka6@gmail.com>, 2022\n"
+"Last-Translator: Roy Sayag, 2022\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -63,7 +63,7 @@ msgstr "<i class=\"fa fa-print\"/> הדפס פעולות ברקוד"
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_operation_form_view
 msgid "<span class=\"o_stat_text\">Instructions</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">הוראות</span>"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_bom__activity_ids
@@ -90,14 +90,14 @@ msgstr "סוג פעילות"
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_mrp_workorder_additional_product_wizard
 #, python-format
 msgid "Add By-Product"
-msgstr ""
+msgstr "הוסף מוצר נלווה"
 
 #. module: mrp_workorder
 #. openerp-web
 #: code:addons/mrp_workorder/static/src/components/menuPopup.xml:0
 #, python-format
 msgid "Add By-product"
-msgstr ""
+msgstr "הוסף מוצר נלווה"
 
 #. module: mrp_workorder
 #. openerp-web
@@ -106,7 +106,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_mrp_workorder_additional_product_wizard
 #, python-format
 msgid "Add Component"
-msgstr ""
+msgstr "הוסף רכיב"
 
 #. module: mrp_workorder
 #. openerp-web
@@ -114,7 +114,7 @@ msgstr ""
 #: code:addons/mrp_workorder/static/src/components/menuPopup.xml:0
 #, python-format
 msgid "Add a Step"
-msgstr ""
+msgstr "הוסף שלב"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_mrp_workorder_additional_product_wizard
@@ -193,12 +193,12 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "CONTINUE"
-msgstr ""
+msgstr "המשך"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_check_view_form_tablet
 msgid "CONTINUE PRODUCTION"
-msgstr ""
+msgstr "המשך ייצור"
 
 #. module: mrp_workorder
 #. openerp-web
@@ -458,7 +458,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
 msgid "Instruction"
-msgstr ""
+msgstr "הוראה"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_routing_workcenter__quality_point_count
@@ -570,7 +570,7 @@ msgstr "מועד אחרון לפעילות שלי"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_propose_change__note
 msgid "New Instruction"
-msgstr ""
+msgstr "הוראה חדשה"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_check_view_form_tablet
@@ -610,7 +610,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.actions.act_window,help:mrp_workorder.mrp_workorder_action_tablet
 msgid "No work orders to do!"
-msgstr ""
+msgstr "אין הוראות עבודה לביצוע!"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_production_workorder_tree_editable_view_inherit_workorder
@@ -636,7 +636,7 @@ msgstr "סקירה כללית"
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "PAUSE"
-msgstr ""
+msgstr "השהה"
 
 #. module: mrp_workorder
 #: model:ir.model.fields.selection,name:mrp_workorder.selection__quality_point__test_report_type__pdf
@@ -742,7 +742,7 @@ msgstr "מוצרים"
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.add_quality_check_from_tablet
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_propose_change_wizard
 msgid "Propose Change"
-msgstr ""
+msgstr "הצע שינוי"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_propose_change
@@ -878,7 +878,7 @@ msgstr "פסול"
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_check_view_form_tablet
 msgid "Serial"
-msgstr ""
+msgstr "מספר סידורי"
 
 #. module: mrp_workorder
 #: model:ir.model.fields.selection,name:mrp_workorder.selection__propose_change__change_type__set_picture
@@ -986,7 +986,7 @@ msgstr ""
 #: code:addons/mrp_workorder/static/src/components/menuPopup.xml:0
 #, python-format
 msgid "Suggest a Worksheet improvement"
-msgstr ""
+msgstr "הצע שיפור להוראות העבודה"
 
 #. module: mrp_workorder
 #: model:ir.actions.client,name:mrp_workorder.tablet_client_action
@@ -1095,7 +1095,7 @@ msgstr ""
 #: code:addons/mrp_workorder/static/src/components/menuPopup.xml:0
 #, python-format
 msgid "Update Instructions"
-msgstr ""
+msgstr "עדכן הוראות"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_point_view_form_inherit_mrp
@@ -1190,7 +1190,7 @@ msgstr "סטטוס תחנת עבודה "
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder_additional_product__workorder_id
 #: model:ir.model.fields,field_description:mrp_workorder.field_propose_change__workorder_id
 msgid "Workorder"
-msgstr ""
+msgstr "הוראת עבודה"
 
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__worksheet_page

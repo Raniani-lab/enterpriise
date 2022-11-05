@@ -889,7 +889,7 @@ msgstr "Data creazione"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Creation Date"
-msgstr "Data di creazione"
+msgstr "Data creazione"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_workflow_rule__condition_type__criteria
@@ -1215,7 +1215,7 @@ msgstr "Contenuto del file (base64)"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__raw
 msgid "File Content (raw)"
-msgstr "Contenuto file (raw)"
+msgstr "Contenuto del file (raw)"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__file_size

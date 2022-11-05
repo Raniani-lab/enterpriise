@@ -30,7 +30,7 @@ msgstr "Conto bancario non indicato."
 #: code:addons/account_sepa/models/account_payment_register.py:0
 #, python-format
 msgid "A bank account must be set on the following documents: "
-msgstr "Un conto bancario deve essere impostato sui seguenti documenti:"
+msgstr "Nei seguenti documenti deve essere impostato un conto bancario:"
 
 #. module: account_sepa
 #: model:ir.model.fields.selection,name:account_sepa.selection__account_journal__sepa_pain_version__pain_001_001_03_austrian_004
@@ -55,7 +55,7 @@ msgstr "Prenotazione per lotti"
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_batch_payment
 msgid "Batch Payment"
-msgstr "Pagamenti a gruppo"
+msgstr "Pagamento raggruppato"
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_res_company
@@ -95,7 +95,7 @@ msgstr "Ha Sepa Ct Metodo di pagamento"
 #: model:ir.model.fields,field_description:account_sepa.field_res_company__sepa_orgid_id
 #: model:ir.model.fields,field_description:account_sepa.field_res_config_settings__sepa_orgid_id
 msgid "Identification"
-msgstr "Identificazione"
+msgstr "Identificativo"
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_company__sepa_orgid_id
@@ -128,7 +128,9 @@ msgstr ""
 msgid ""
 "Name of the Creditor Reference Party. Usage Rule: Limited to 70 characters "
 "in length."
-msgstr "Nome del creditore. Regola d'uso: lunghezza limitata a 70 caratteri."
+msgstr ""
+"Nome parte di riferimento del creditore. Regola di utilizzo: lunghezza "
+"limitata a 70 caratteri."
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_journal.py:0
@@ -140,7 +142,7 @@ msgstr "Nessun codice nazione definito per il partner %s."
 #: code:addons/account_sepa/models/account_journal.py:0
 #, python-format
 msgid "Partner %s has not bank account defined."
-msgstr "Il partner %s non ha un conto bancario definito."
+msgstr "Il partner %s non ha alcun conto bancario definito."
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_payment_method
@@ -150,7 +152,7 @@ msgstr "Metodi di pagamento"
 #. module: account_sepa
 #: model_terms:ir.ui.view,arch_db:account_sepa.account_journal_dashboard_kanban_view_inherited
 msgid "Payment to send via SEPA"
-msgstr "Pagamento da inviare via SEPA"
+msgstr "pagamento da inviare via SEPA"
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_payment
@@ -160,7 +162,7 @@ msgstr "Pagamenti"
 #. module: account_sepa
 #: model_terms:ir.ui.view,arch_db:account_sepa.account_journal_dashboard_kanban_view_inherited
 msgid "Payments to send via SEPA"
-msgstr "Pagamenti da inviare via SEPA"
+msgstr "pagamenti da inviare via SEPA"
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_journal.py:0
@@ -168,8 +170,8 @@ msgstr "Pagamenti da inviare via SEPA"
 msgid ""
 "Please first set a SEPA identification number in the accounting settings."
 msgstr ""
-"Si prega di impostare prima un numero di identificazione SEPA nelle "
-"impostazioni di contabilità."
+"Per prima cosa impostare un numero identificativo SEPA nelle impostazioni "
+"della contabilità."
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_payment_register
@@ -197,7 +199,7 @@ msgstr "Bonifico SEPA"
 #: code:addons/account_sepa/models/account_journal_dashboard.py:0
 #, python-format
 msgid "SEPA Credit Transfers to Send"
-msgstr "Bonifico SEPA da inviare"
+msgstr "Bonifici SEPA da inviare"
 
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_account_journal__sepa_pain_version
@@ -242,8 +244,8 @@ msgid ""
 "Some payments are not made on an IBAN recipient account. This batch might "
 "not be accepted by certain banks because of that."
 msgstr ""
-"Alcuni pagamenti non sono effettuati su un conto destinatario IBAN. Questo "
-"lotto potrebbe non essere accettato da alcune banche per questo motivo."
+"Alcuni pagamenti non sono effettuati su un conto destinatario IBAN. Per "
+"questo motivo alcune banche potrebbero non accettare questo raggruppamento."
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_batch_payment.py:0
@@ -257,7 +259,8 @@ msgstr ""
 #: code:addons/account_sepa/models/account_batch_payment.py:0
 #, python-format
 msgid "Some payments have no recipient bank account set."
-msgstr "Alcuni pagamenti non hanno un conto bancario destinatario impostato."
+msgstr ""
+"Alcuni pagamenti non hanno alcun conto bancario destinatario impostato."
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_batch_payment.py:0
@@ -266,8 +269,8 @@ msgid ""
 "Some payments were instructed in another currency than Euro. This batch "
 "might not be accepted by certain banks because of that."
 msgstr ""
-"Alcuni pagamenti sono stati istruiti in una valuta diversa dall'euro. Questo"
-" lotto potrebbe non essere accettato da alcune banche per questo motivo."
+"Alcuni pagamenti sono stati ordinati in una valuta diversa dall'euro. Per "
+"questo motivo alcune banche potrebbero non accettare questo raggruppamento."
 
 #. module: account_sepa
 #: model:ir.model.fields.selection,name:account_sepa.selection__account_journal__sepa_pain_version__pain_001_001_03_se
@@ -308,7 +311,7 @@ msgid ""
 "A valid IBAN account is required to use SEPA features."
 msgstr ""
 "Il conto %s, collegato al partner \"%s\", non è di tipo IBAN.\n"
-"Per usare le funzionalità SEPA è necessario un conto IBAN valido."
+"Per utilizzare le funzionalità SEPA è necessario un conto IBAN valido."
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_batch_payment.py:0
@@ -318,7 +321,7 @@ msgid ""
 "A valid IBAN account is required to use SEPA features."
 msgstr ""
 "Il conto %s, del registro \"%s\", non è di tipo IBAN.\n"
-"Per usare le funzionalità SEPA è necessario un conto IBAN valido."
+"Per utilizzare le funzionalità SEPA è necessario un conto IBAN valido."
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_journal.py:0
@@ -374,7 +377,7 @@ msgstr ""
 #: code:addons/account_sepa/models/account_journal.py:0
 #, python-format
 msgid "Too many transactions for a single file."
-msgstr "Troppe transazioni per un singolo file."
+msgstr "Troppe operazioni per un singolo file."
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_company__sepa_initiating_party_name
@@ -383,11 +386,11 @@ msgid ""
 "Will appear in SEPA payments as the name of the party initiating the "
 "payment. Limited to 70 characters."
 msgstr ""
-"Apparirà nei pagamenti SEPA come il nome della parte che ha iniziato il "
-"pagamento. Limitato a 70 caratteri. "
+"Compare nei pagamenti SEPA come nome della parte che ha intrapreso il "
+"pagamento. Limitato a 70 caratteri."
 
 #. module: account_sepa
 #: model:ir.model.fields,field_description:account_sepa.field_res_company__sepa_initiating_party_name
 #: model:ir.model.fields,field_description:account_sepa.field_res_config_settings__sepa_initiating_party_name
 msgid "Your Company Name"
-msgstr "Nome della Tua Azienda"
+msgstr "Nome azienda"

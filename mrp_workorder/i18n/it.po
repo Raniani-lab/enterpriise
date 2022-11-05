@@ -1143,7 +1143,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_check__workcenter_id
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_alert_view_search_inherit_mrp_workorder
 msgid "Work Center"
-msgstr "Centro di Lavoro"
+msgstr "Centro di lavoro"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_mrp_routing_workcenter
@@ -1153,7 +1153,7 @@ msgstr "Utilizzo centro di lavoro"
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_mrp_workorder
 msgid "Work Order"
-msgstr "Ordine di Lavoro"
+msgstr "Ordine di lavoro"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.quality_point_view_form_inherit_mrp
@@ -1257,7 +1257,7 @@ msgstr ""
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_workorder_view_form_tablet
 msgid "menu"
-msgstr "menu"
+msgstr "menù"
 
 #. module: mrp_workorder
 #. openerp-web

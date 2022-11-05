@@ -441,7 +441,7 @@ msgstr "USPS 一等邮件类型"
 #: model:product.product,name:delivery_usps.product_product_delivery_usps_international
 #: model:product.template,name:delivery_usps.product_product_delivery_usps_international_product_template
 msgid "USPS International Flat Rate Box"
-msgstr "USPS国际平价箱"
+msgstr "USPS 国际平价邮包"
 
 #. module: delivery_usps
 #: code:addons/delivery_usps/models/usps_request.py:0

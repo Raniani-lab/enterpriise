@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # Jolien De Paepe, 2022
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Jolien De Paepe, 2022\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -698,18 +698,18 @@ msgstr "Werknemer"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_employee_interval
 msgid "Employee Frequency"
-msgstr "Werknemer frequentie"
+msgstr "Werknemerfrequentie"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_employee_allow
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__reminder_user_allow
 msgid "Employee Reminder"
-msgstr "Werknemer herinnering"
+msgstr "Werknemerherinnering"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_employee_delay
 msgid "Employee Reminder Days"
-msgstr "Werknemer herinnering dagen"
+msgstr "Werknemerherinnering dagen"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__encoding_uom_id
@@ -845,18 +845,18 @@ msgstr "Blokkeerdatums"
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_allow
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__reminder_manager_allow
 msgid "Manager Reminder"
-msgstr "Manager herinnering"
+msgstr "Managerherinnering"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_delay
 msgid "Manager Reminder Days"
-msgstr "Manager herinnering dagen"
+msgstr "Managerherinnering dagen"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__timesheet_mail_manager_interval
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__reminder_manager_interval
 msgid "Manager Reminder Frequency"
-msgstr "Manager herinneringsfrequentie"
+msgstr "Managerherinneringsfrequentie"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_merge_wizard_view_form
@@ -1491,17 +1491,17 @@ msgstr "Goedgekeurde regel"
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_grid_all_timesheets_action_server
 msgid "Validation All Timesheet Server Action"
-msgstr "Validatie Alle actie op de urenstaatserver"
+msgstr "Bevestigen alle urenstaten serveractie"
 
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_grid_week_action_server
 msgid "Validation Timesheet Week_view Server Action"
-msgstr "Validatie urenstaat week_view serveractie"
+msgstr "Bevestig urenstaat week_view serveractie"
 
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_grid_month_action_server
 msgid "Validation Timesheet month_view Server Action"
-msgstr "Validatie urenstaat month_view serveractie"
+msgstr "Bevestig urenstaat month_view serveractie"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid

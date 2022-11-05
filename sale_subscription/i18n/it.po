@@ -281,6 +281,8 @@ msgid ""
 "<span groups=\"account.group_show_line_subtotals_tax_excluded\">Amount</span>\n"
 "                                                    <span groups=\"account.group_show_line_subtotals_tax_included\">Total Price</span>"
 msgstr ""
+"<span groups=\"account.group_show_line_subtotals_tax_excluded\">Importo</span>\n"
+"                                                    <span groups=\"account.group_show_line_subtotals_tax_included\">Prezzo totale</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -290,7 +292,7 @@ msgstr "<span>Sconto %</span>"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "<strong class=\"mr16\">Subtotal</strong>"
-msgstr "<strong class=\"mr16\">Imponibile</strong>"
+msgstr "<strong class=\"mr16\">Totale parziale</strong>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -328,7 +330,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "<strong>Subtotal</strong>"
-msgstr "<strong>Imponibile</strong>"
+msgstr "<strong>Totale parziale</strong>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form

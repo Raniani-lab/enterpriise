@@ -294,7 +294,7 @@ msgstr "添加内部说明..."
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "All the lines should be from the same account"
-msgstr "所有行应来自同一账户"
+msgstr "所有行应来自同一科目"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -917,7 +917,7 @@ msgstr "递延收入模型"
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Deferred expense"
-msgstr "待摊费用"
+msgstr "递延费用"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -948,7 +948,7 @@ msgstr "可贬值金额"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_remaining_value
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_remaining_value
 msgid "Depreciable Value"
-msgstr "可贬值价值"
+msgstr "可折旧价值"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form

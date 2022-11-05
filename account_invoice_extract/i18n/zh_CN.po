@@ -319,7 +319,7 @@ msgstr "开票日期"
 #: model:ir.cron,cron_name:account_invoice_extract.ir_cron_ocr_parse
 #: model:ir.cron,name:account_invoice_extract.ir_cron_ocr_parse
 msgid "Invoice OCR: Parse Invoices"
-msgstr "发票 OCR：解析发票"
+msgstr "结算单 OCR：解析结算单"
 
 #. module: account_invoice_extract
 #: model:ir.actions.server,name:account_invoice_extract.ir_cron_update_ocr_status_ir_actions_server
@@ -333,7 +333,7 @@ msgstr "结算单OCR：更新所有状态"
 #: model:ir.cron,cron_name:account_invoice_extract.ir_cron_ocr_validate
 #: model:ir.cron,name:account_invoice_extract.ir_cron_ocr_validate
 msgid "Invoice OCR: Validate Invoices"
-msgstr "发票 OCR：验证发票"
+msgstr "结算单 OCR：验证结算单"
 
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_account_move

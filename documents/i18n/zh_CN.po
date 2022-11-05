@@ -7,6 +7,7 @@
 # Martin Trigaux, 2022
 # Emily Jia <eji@odoo.com>, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Raymond Yu <cl_yu@hotmail.com>, 2022\n"
+"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +28,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid " + Add a tag"
-msgstr ""
+msgstr " + 添加一个标签"
 
 #. module: documents
 #. openerp-web
@@ -62,7 +63,7 @@ msgid ""
 "your documents in bulk with the split tool: launch user defined actions, "
 "request a signature, convert to vendor bills with AI, etc."
 msgstr ""
-"处理收到的邮件的一个简单方法是配置扫描仪以将PDF发送到您的工作区电子邮件。扫描的文件将自动出现在您的工作区中。然后，使用split工具批量处理文档：启动用户定义的动作、请求签名、使用AI转换为供应商账单等。"
+"处理收到的邮件的一个简单方法是配置扫描仪以将PDF发送到您的工作区电子邮件。扫描的文档将自动出现在您的工作区中。然后，使用split工具批量处理文档：启动用户定义的动作、请求签名、使用AI转换为供应商账单等。"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2017
@@ -90,7 +91,7 @@ msgid ""
 "                               </a>\n"
 "                             "
 msgstr ""
-"<b>文件上载者: </b> %s <br/>\n"
+"<b>文档上载者: </b> %s <br/>\n"
 "                               <b> 链接创建者： </b> %s <br/>\n"
 "                               <a class=\"btn btn-primary\" href=\"/web#id=%s&model=documents.share&view_type=form\" target=\"_blank\">\n"
 "                                  <b>%s</b>\n"
@@ -132,7 +133,7 @@ msgstr "<br/> 技术提供"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "<i class=\"fa fa fa-folder text-odoo me-2\" title=\"Workspace\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa fa-folder text-odoo me-2\" title=\"Workspace\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -176,6 +177,8 @@ msgid ""
 "<i class=\"fa fa-tag o_documents_tag_color ms-2\" attrs=\"{'invisible': "
 "[('tag_ids', '=', [])]}\" title=\"Tags\"/>"
 msgstr ""
+"<i class=\"fa fa-tag o_documents_tag_color ms-2\" attrs=\"{'invisible': "
+"[('tag_ids', '=', [])]}\" title=\"Tags\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
@@ -206,7 +209,7 @@ msgstr "<span style=\"color:white;\">&amp;nbsp;文档</span>"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "<span title=\"Requested Document\">Requested Document</span>"
-msgstr "<span title=\"Requested Document\">请求的文件</span>"
+msgstr "<span title=\"Requested Document\">请求的文档</span>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
@@ -331,7 +334,7 @@ msgstr ""
 "                                <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
 "                                    <tr><td valign=\"middle\">\n"
 "                                        <span style=\"font-size: 10px;\">\n"
-"                                            文件要求。<br/>\n"
+"                                            文档要求。<br/>\n"
 "                                            <t t-if=\"object.name\">\n"
 "                                                <span style=\"font-size: 20px; font-weight: bold;\" t-out=\"object.name or ''\">收件箱金融</span>\n"
 "                                            </t>\n"
@@ -353,7 +356,7 @@ msgstr ""
 "                                        <div>\n"
 "                                            你好，<t t-out=\"object.owner_id.name or ''\">OdooBot</t>。\n"
 "                                           <br/><br/>\n"
-"                                           <t t-out=\"object.create_uid.name or ''\">OdooBot</t><t t-out=\"object.create_uid.email or ''\">（odoobot@example.com</t>）要求您提供以下文件。\n"
+"                                           <t t-out=\"object.create_uid.name or ''\">OdooBot</t><t t-out=\"object.create_uid.email or ''\">（odoobot@example.com</t>）要求您提供以下文档。\n"
 "                                           <br/><br/>\n"
 "                                            <center>\n"
 "                                                <div>\n"
@@ -369,11 +372,11 @@ msgstr ""
 "                                                <br/>\n"
 "                                                <div style=\"margin: 16px 0px 16px 0px;\">\n"
 "                                                    <a t-att-href=\"object.full_url\" style=\"background-color: #875A7B; padding: 20px 30px 20px 30px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\">\n"
-"                                                        上传所需文件\n"
+"                                                        上传所需文档\n"
 "                                                    </a>\n"
 "                                                </div>\n"
 "                                            </center><br/>\n"
-"                                            请在链接过期前（计划在<t t-out=\"object.date_deadline or ''\">2021-05-17</t>）向我们提供所缺的文件。\n"
+"                                            请在链接过期前（计划在<t t-out=\"object.date_deadline or ''\">2021-05-17</t>）向我们提供所缺的文档。\n"
 "                                            <t t-if=\"user and user.signature\">\n"
 "                                                <br/>\n"
 "                                                <t t-out=\"user.signature or ''\">--<br/>Mitchell Admin</t>\n"
@@ -651,7 +654,7 @@ msgstr "允许您管理文档。"
 #: code:addons/documents/models/workflow.py:0
 #, python-format
 msgid "Already linked Documents"
-msgstr "已经链接的文件"
+msgstr "已经链接的文档"
 
 #. module: documents
 #: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
@@ -669,14 +672,14 @@ msgid ""
 "launch user defined actions, request a signature, convert to vendor bills "
 "with AI, etc."
 msgstr ""
-"处理收到的邮件的一个简单方法是配置扫描仪以将PDF发送到您的工作区电子邮件。扫描的文件将自动出现在您的工作区中。然后，使用split工具批量处理文档：启动用户定义的动作、请求签名、使用AI转换为供应商账单等。"
+"处理收到的邮件的一个简单方法是配置扫描仪以将PDF发送到您的工作区电子邮件。扫描的文档将自动出现在您的工作区中。然后，使用split工具批量处理文档：启动用户定义的动作、请求签名、使用AI转换为供应商账单等。"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "An error occured while uploading."
-msgstr "上传中发生错误"
+msgstr "上传时发生错误"
 
 #. module: documents
 #. openerp-web
@@ -765,7 +768,7 @@ msgid ""
 "class=\"o_folder_description_alias\"><strong>inbox-financial</strong> email "
 "alias</span>."
 msgstr ""
-"使用扫描的文件或发送至<span class=\"o_folder_description_alias\"><strong>inbox-"
+"使用扫描的文档或发送至<span class=\"o_folder_description_alias\"><strong>inbox-"
 "financial</strong></span>电子邮件别名的电子邮件，使你的收件箱自动化。"
 
 #. module: documents
@@ -796,7 +799,7 @@ msgstr "宣传册"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_mail_activity_type__folder_id
 msgid "By defining a folder, the upload activities will generate a document"
-msgstr "通过定义文件夹，上载活动将生成一个文档"
+msgstr "通过定义文档夹，上载活动将生成一个文档"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__can_upload
@@ -1071,7 +1074,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_list
 msgid "Document"
-msgstr "单据"
+msgstr "文档"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__document_count
@@ -1083,7 +1086,7 @@ msgstr "文档数"
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
 msgid "Document Name"
-msgstr "单据名称"
+msgstr "文档名称"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__owner_id
@@ -1112,7 +1115,7 @@ msgstr "文档请求：%s上载者：%s"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__has_write_access
 msgid "Document User Upload Rights"
-msgstr ""
+msgstr "文档用户上传权限"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_action
@@ -1127,7 +1130,7 @@ msgstr "文档列表"
 #. module: documents
 #: model:mail.template,name:documents.mail_template_document_request
 msgid "Document: Document Request"
-msgstr ""
+msgstr "文档：文档请求"
 
 #. module: documents
 #. openerp-web
@@ -1152,12 +1155,12 @@ msgstr "文档"
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder_deletion_wizard
 msgid "Documents Folder Deletion Wizard"
-msgstr ""
+msgstr "文档文件夹删除向导"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_link_to_record_wizard
 msgid "Documents Link to Record"
-msgstr "文件 链接到记录"
+msgstr "文档 链接到记录"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_share
@@ -1241,7 +1244,7 @@ msgstr "编辑"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "Edit the linked record"
-msgstr ""
+msgstr "编辑链接的记录"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -1313,7 +1316,7 @@ msgstr "文件大小"
 #: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "File is too large."
-msgstr ""
+msgstr "文件太大。"
 
 #. module: documents
 #: model:ir.model,name:documents.model_ir_binary
@@ -1477,7 +1480,7 @@ msgstr "收件箱"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__include_sub_folders
 msgid "Include Sub Folders"
-msgstr ""
+msgstr "包含子文件夹"
 
 #. module: documents
 #: model_terms:documents.folder,description:documents.documents_internal_folder
@@ -1506,18 +1509,18 @@ msgstr "是可编辑的附件"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__is_favorited
 msgid "Is Favorited"
-msgstr "很受欢迎"
+msgstr "是收藏"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_is_follower
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_is_follower
 msgid "Is Follower"
-msgstr "关注者"
+msgstr "是关注者"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__is_shared
 msgid "Is Shared"
-msgstr "被分享"
+msgstr "是分享"
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_internal_knowledge
@@ -1592,7 +1595,7 @@ msgstr "让我们处理这些账单：发送到财务工作区。"
 #: code:addons/documents/static/src/js/tours/documents.js:0
 #, python-format
 msgid "Let's process this document, coming from our scanner."
-msgstr "让我们处理这个文件，从我们的扫描仪。"
+msgstr "让我们处理这个文档，从我们的扫描仪。"
 
 #. module: documents
 #. openerp-web
@@ -1611,7 +1614,7 @@ msgstr "将读取组限制为其所有者的文档。"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__user_specific_write
 msgid "Limit Write Groups to the documents of which they are owner."
-msgstr "将写组限制在他们所拥有的文件中。"
+msgstr "将写组限制在他们所拥有的文档中。"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_link_to_record_form_view
@@ -1626,7 +1629,7 @@ msgstr "链接到记录"
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__state__live
 msgid "Live"
-msgstr "现场直播"
+msgstr "直播"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -1687,7 +1690,7 @@ msgstr "全部标记为完成"
 #. module: documents
 #: model:documents.folder,name:documents.documents_marketing_folder
 msgid "Marketing"
-msgstr "市场"
+msgstr "营销"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_has_error
@@ -1742,7 +1745,7 @@ msgstr "移动到工作区"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
 msgid "Move to parent workspace"
-msgstr ""
+msgstr "移动到上级工作区"
 
 #. module: documents
 #. openerp-web
@@ -1809,14 +1812,14 @@ msgstr "新建组"
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "New Tag"
-msgstr ""
+msgstr "新标签"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "New Workspace"
-msgstr ""
+msgstr "新工作区"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_calendar_event_id
@@ -1918,7 +1921,7 @@ msgstr "一个记录限制"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "Open chatter"
-msgstr "闲聊"
+msgstr "打开聊天"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_force_thread_id
@@ -1944,19 +1947,19 @@ msgstr "其他"
 #: model:ir.model.fields,field_description:documents.field_documents_folder__user_specific
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "Own Documents Only"
-msgstr "仅限自己的单据"
+msgstr "仅限自己的文档"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__user_specific_write
 msgid "Own Documents Only (Write)"
-msgstr "只有自己的文件（写）。"
+msgstr "只有自己的文档（写）。"
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_folder_check_user_specific
 msgid ""
 "Own Documents Only may not be enabled for write groups if it is not enabled "
 "for read groups."
-msgstr "如果没有为读组启用，则不能为写组启用 \"仅限自己的文件\"。"
+msgstr "如果没有为读组启用，则不能为写组启用 \"仅限自己的文档\"。"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__owner_id
@@ -1970,7 +1973,7 @@ msgstr "所有者"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "Owner: #{document.owner_id.name}"
-msgstr ""
+msgstr "拥有人: #{document.owner_id.name}"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -1995,7 +1998,7 @@ msgstr "父级路径"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_thread_id
 msgid "Parent Record Thread ID"
-msgstr "上级记录ID"
+msgstr "父级记录线程 ID"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__parent_folder_id
@@ -2018,7 +2021,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "Partial transfer"
-msgstr ""
+msgstr "部分转移"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_contact
@@ -2056,7 +2059,7 @@ msgstr "读取访问"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__read_group_ids
 msgid "Read Groups"
-msgstr "阅读组"
+msgstr "读取组"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__resource_ref
@@ -2121,7 +2124,7 @@ msgstr "请求"
 #: code:addons/documents/static/src/components/activity_menu_view/activity_menu_view.xml:0
 #, python-format
 msgid "Request a Document"
-msgstr "申请文档"
+msgstr "请求的文档"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.action_request_form
@@ -2153,7 +2156,7 @@ msgstr "资源模型名称"
 #: model:ir.model.fields,field_description:documents.field_documents_document__res_id
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__res_id
 msgid "Resource ID"
-msgstr "资源ID"
+msgstr "资源 ID"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__res_model
@@ -2215,7 +2218,7 @@ msgstr "全选：Shift + A"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
 msgid "Select document"
-msgstr ""
+msgstr "选择文档"
 
 #. module: documents
 #. openerp-web
@@ -2303,13 +2306,13 @@ msgstr "共享链接"
 #: code:addons/documents/models/share.py:0
 #, python-format
 msgid "Share selected files"
-msgstr ""
+msgstr "分享选择的文件"
 
 #. module: documents
 #: code:addons/documents/models/share.py:0
 #, python-format
 msgid "Share selected workspace"
-msgstr ""
+msgstr "分享限制的工作区"
 
 #. module: documents
 #. openerp-web
@@ -2487,7 +2490,7 @@ msgid ""
 " email that does not reply to an existing record will cause the creation of "
 "a new record of this model (e.g. a Project Task)"
 msgstr ""
-"相应于这个别名对应的模型(Odoo单据种类)。任何一封不属于对某个已存在的记录的到来邮件，将导致此模块中新记录的创建(例如，一个新的项目任务)。"
+"相应于这个别名对应的模型(Odoo文档种类)。任何一封不属于对某个已存在的记录的到来邮件，将导致此模块中新记录的创建(例如，一个新的项目任务)。"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_name
@@ -2535,7 +2538,7 @@ msgid ""
 "This document has been requested.\n"
 "                <b onclick=\"$('.o_request_upload').trigger('click')\" style=\"cursor:pointer;\">Upload it</b>."
 msgstr ""
-"已要求提供此文件。\n"
+"已要求提供此文档。\n"
 "                <b onclick=\"$('.o_request_upload').trigger('click')\" style=\"cursor:pointer;\">上传</b>."
 
 #. module: documents
@@ -2564,7 +2567,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/helper/documents_action_helper.xml:0
 #, python-format
 msgid "Tip: configure your scanner to send all documents to this address."
-msgstr "提示：将你的扫描仪配置为将所有文件发送到这个地址。"
+msgstr "提示：将你的扫描仪配置为将所有文档发送到这个地址。"
 
 #. module: documents
 #: model:digest.tip,name:documents.digest_tip_documents_0
@@ -2580,7 +2583,7 @@ msgstr "待验证"
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_tv
 msgid "To validate"
-msgstr "‎来验证‎"
+msgstr "‎待验证‎"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__tooltip
@@ -2621,7 +2624,7 @@ msgstr "URL"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "Un-archive"
-msgstr "解档"
+msgstr "取消归档"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
@@ -2655,7 +2658,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "Upload Document"
-msgstr "上传单据"
+msgstr "上传文档"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__email_drop
@@ -2665,7 +2668,7 @@ msgstr "通过邮件上传"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Upload by email"
-msgstr ""
+msgstr "通过邮件上传"
 
 #. module: documents
 #: code:addons/documents/models/mail_activity.py:0
@@ -2711,7 +2714,7 @@ msgstr "视频"
 #, python-format
 msgid ""
 "Want to become a <b>paperless company</b>? Let's discover Odoo Documents."
-msgstr "想成为一家无纸化公司吗？我们来看看Odoo文件。"
+msgstr "想成为一家无纸化公司吗？我们来看看Odoo文档。"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__website_message_ids
@@ -2834,7 +2837,7 @@ msgstr "删除"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "document"
-msgstr "单据"
+msgstr "文档"
 
 #. module: documents
 #. openerp-web
@@ -2848,7 +2851,7 @@ msgstr "文档"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "documents selected"
-msgstr "文档选择"
+msgstr "选择的文档"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
@@ -2900,7 +2903,7 @@ msgstr "例如，为了验证"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "e.g. Validate document"
-msgstr "例如：验证文件"
+msgstr "例如：验证文档"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
@@ -2919,7 +2922,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "folder_id"
-msgstr ""
+msgstr "folder_id"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__is_readonly_model
@@ -2938,14 +2941,14 @@ msgstr "名称"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "owner_id"
-msgstr ""
+msgstr "owner_id"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "partner_id"
-msgstr ""
+msgstr "partner_id"
 
 #. module: documents
 #. openerp-web

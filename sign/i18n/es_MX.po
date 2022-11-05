@@ -2390,7 +2390,7 @@ msgstr "Firmas solicitadas"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__required
 msgid "Required"
-msgstr "Requerido"
+msgstr "Obligatorio"
 
 #. module: sign
 #. openerp-web
@@ -3291,7 +3291,9 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.encrypted_ask_password
 msgid "The PDF's password is required to generate the final document."
-msgstr "Se requiere la contraseña del PDF para generar el documento final."
+msgstr ""
+"Es necesario contar con la contraseña del PDF para generar el documento "
+"final."
 
 #. module: sign
 #: code:addons/sign/models/sign_request.py:0
@@ -3962,8 +3964,9 @@ msgid ""
 "Your file is encrypted, PDF's password is required to generate final "
 "document. The final document will be encrypted with the same password."
 msgstr ""
-"Su archivo está protegido, se requiere la contraseña del PDF para generar el"
-" documento final. Se encriptará el documento final con la misma contraseña."
+"Su archivo está protegido, es necesario contar con la contraseña del PDF "
+"para generar el documento final. Se encriptará el documento final con la "
+"misma contraseña."
 
 #. module: sign
 #. openerp-web

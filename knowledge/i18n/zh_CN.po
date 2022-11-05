@@ -8,8 +8,8 @@
 # Emily Jia <eji@odoo.com>, 2022
 # 深圳 JM <3440895@qq.com>, 2022
 # Martin Trigaux, 2022
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -17,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Raymond Yu <cl_yu@hotmail.com>, 2022\n"
+"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2491,7 +2491,7 @@ msgstr "更新"
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
 msgid "Use as"
-msgstr ""
+msgstr "使用为"
 
 #. module: knowledge
 #. openerp-web

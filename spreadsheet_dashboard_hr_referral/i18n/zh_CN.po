@@ -85,7 +85,7 @@ msgstr "被雇佣的"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired Ratio"
-msgstr ""
+msgstr "聘用率"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -99,7 +99,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Hired ratio"
-msgstr ""
+msgstr "聘用率"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -122,7 +122,7 @@ msgstr "媒介"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Most Hired Job Positions"
-msgstr ""
+msgstr "最受欢迎的工作职位"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -144,14 +144,14 @@ msgstr "新的申请"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "New Hires"
-msgstr ""
+msgstr "新聘人员"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "New applicants"
-msgstr ""
+msgstr "新申请人"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -186,7 +186,7 @@ msgstr "过程持续时间"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Process duration"
-msgstr ""
+msgstr "过程时长"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -204,7 +204,7 @@ msgstr "比率"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Recent Applications"
-msgstr ""
+msgstr "最近的申请"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -263,7 +263,7 @@ msgstr "推荐比率"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Referral rate"
-msgstr ""
+msgstr "转介率"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -285,14 +285,14 @@ msgstr "阶段"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Companies"
-msgstr ""
+msgstr "热门公司"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Top Job Positions"
-msgstr ""
+msgstr "热门工作职位"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web

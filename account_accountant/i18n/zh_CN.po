@@ -830,7 +830,7 @@ msgstr "伟大！让我们继续。"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__group_tax_id
 msgid "Group Tax"
-msgstr "集团税"
+msgstr "群组税"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__id
@@ -1037,7 +1037,7 @@ msgstr "让我们使用 AI 填写表单<br/><br/><i>提示： 如果 OCR 尚未�
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__line_ids
 msgid "Line"
-msgstr "线路"
+msgstr "明细行"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_bank_rec_widget_line
@@ -1367,7 +1367,7 @@ msgstr "应收"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Receivable:"
-msgstr "应 收账 款："
+msgstr "应收账款："
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
@@ -1515,12 +1515,12 @@ msgstr "源金额货币"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_balance
 msgid "Source Balance"
-msgstr "源平衡"
+msgstr "源余额"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_credit
 msgid "Source Credit"
-msgstr "来源信用"
+msgstr "源贷方"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_debit
@@ -1739,7 +1739,7 @@ msgstr "交易货币"
 #: code:addons/account_accountant/models/account_move.py:0
 #, python-format
 msgid "Transfer Accounts"
-msgstr "转账"
+msgstr "转账账户"
 
 #. module: account_accountant
 #: model:ir.actions.server,name:account_accountant.auto_reconcile_bank_statement_line_ir_actions_server

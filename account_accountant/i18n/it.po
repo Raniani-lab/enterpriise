@@ -808,7 +808,7 @@ msgstr "Da questo momento è possibile:"
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Get back to the dashboard using your previous path…"
-msgstr "Ritorna alla bacheca utilizzando il precedente percorso..."
+msgstr "Ritorna alla bacheca utilizzando il precedente percorso…"
 
 #. module: account_accountant
 #. openerp-web
@@ -1641,7 +1641,7 @@ msgstr "Sono in media"
 #: code:addons/account_accountant/static/src/js/reconciliation/reconciliation_model.js:0
 #, python-format
 msgid "The amount %s is not a valid partial amount"
-msgstr "L'importo %snon è un importo parziale valido"
+msgstr "L'importo %s non è un importo parziale valido"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/account_fiscal_year.py:0
@@ -1672,7 +1672,7 @@ msgid ""
 "entries"
 msgstr ""
 "Non verranno prese in considerazione come registrazioni in contabilità le "
-"fatture fino a questa data "
+"fatture fino a questa data"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1841,7 +1841,7 @@ msgid ""
 "start and/or end dates of your fiscal years."
 msgstr ""
 "Impossibile avere una sovrapposizione tra due anni fiscali, correggere le "
-"relative date di inizio e/o di fine. "
+"relative date di inizio e/o di fine."
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
@@ -1953,7 +1953,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__manual
 msgid "manual"
-msgstr ""
+msgstr "manuale"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__new_aml

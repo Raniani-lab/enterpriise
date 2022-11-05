@@ -7,8 +7,8 @@
 # 智能科技奇客罗方 <alanljj@gmail.com>, 2022
 # Martin Trigaux, 2022
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022
-# Raymond Yu <cl_yu@hotmail.com>, 2022
 # Jeffery CHEN <jeffery9@gmail.com>, 2022
+# Raymond Yu <cl_yu@hotmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:47+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
+"Last-Translator: Raymond Yu <cl_yu@hotmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -140,14 +140,14 @@ msgstr "亚马逊库存位置"
 #: model:ir.model,name:sale_amazon.model_amazon_marketplace
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_marketplace_view_form
 msgid "Amazon Marketplace"
-msgstr "亚马逊市场"
+msgstr "亚马逊营销"
 
 #. module: sale_amazon
 #: model:ir.actions.act_window,name:sale_amazon.list_amazon_marketplace_action
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_marketplace_view_tree
 #: model_terms:ir.ui.view,arch_db:sale_amazon.res_config_settings_view_form
 msgid "Amazon Marketplaces"
-msgstr "亚马逊市场"
+msgstr "亚马逊营销"
 
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_amazon_offer
@@ -196,7 +196,7 @@ msgstr "亚马逊账户与亚马逊卖家中心账户相对应。"
 #: code:addons/sale_amazon/models/amazon_marketplace.py:0
 #, python-format
 msgid "Amazon marketplaces cannot be deleted."
-msgstr "亚马逊的市场不能被删除。"
+msgstr "亚马逊的营销不能被删除。"
 
 #. module: sale_amazon
 #: code:addons/sale_amazon/models/amazon_account.py:0
@@ -298,7 +298,7 @@ msgstr "将您的账户与亚马逊关联时出错。"
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__available_marketplace_ids
 msgid "Available Marketplaces"
-msgstr "可用的市场"
+msgstr "可用的营销"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.authorization_error
@@ -440,7 +440,7 @@ msgstr "ID"
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__active
 msgid ""
 "If made inactive, this account will no longer be synchronized with Amazon."
-msgstr ""
+msgstr "如果成为非活动状态，这个账户将不再与亚马逊同步。"
 
 #. module: sale_amazon
 #: code:addons/sale_amazon/models/amazon_account.py:0
@@ -522,11 +522,13 @@ msgid ""
 "Link your Amazon account with Odoo to start synchronizing your\n"
 "                                Amazon orders."
 msgstr ""
+"链接您的亚马逊帐户与Odoo开始同步您的\n"
+"                           亚马逊订单。"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer__marketplace_id
 msgid "Marketplace"
-msgstr "市场"
+msgstr "营销"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
@@ -683,7 +685,7 @@ msgstr "卖家密钥"
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__base_marketplace_id
 msgid "Sign-up Marketplace"
-msgstr "注册市场"
+msgstr "注册营销"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__location_id
@@ -700,7 +702,7 @@ msgstr "成功地更新了该账户可用的市场 !"
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__active_marketplace_ids
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer__active_marketplace_ids
 msgid "Sync Marketplaces"
-msgstr "同步市场"
+msgstr "同步营销"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
@@ -728,22 +730,22 @@ msgstr "含税"
 msgid ""
 "The Amazon region of the marketplace. Please refer to the Selling Partner "
 "API documentation to find the correct region."
-msgstr "亚马逊市场区域。请参阅销售伙伴 API 文档以查找正确的区域。"
+msgstr "亚马逊营销区域。请参阅销售伙伴 API 文档以查找正确的区域。"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_sale_order_line__amazon_item_ref
 msgid "The Amazon-defined item reference."
-msgstr ""
+msgstr "亚马逊定义的项目参考。"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_marketplace__api_ref
 msgid "The Amazon-defined marketplace reference."
-msgstr ""
+msgstr "亚马逊定义的市场参考。"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_sale_order__amazon_order_ref
 msgid "The Amazon-defined order reference."
-msgstr ""
+msgstr "亚马逊定义的订单参考。"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__team_id
@@ -753,7 +755,7 @@ msgstr "分配给亚马逊订单的销售团队进行报告"
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_offer__sku
 msgid "The Stock Keeping Unit."
-msgstr ""
+msgstr "库存保管单位"
 
 #. module: sale_amazon
 #: code:addons/sale_amazon/utils.py:0
@@ -775,7 +777,7 @@ msgstr ""
 #: model:ir.model.fields,help:sale_amazon.field_res_partner__amazon_email
 #: model:ir.model.fields,help:sale_amazon.field_res_users__amazon_email
 msgid "The encrypted email of the customer. Does not forward mails."
-msgstr ""
+msgstr " 客户的加密电子邮件，不要转发电子邮件。"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__last_orders_sync
@@ -790,7 +792,7 @@ msgstr "在此账户下的订单的最后同步日期。自此日期以来，状
 msgid ""
 "The location of the stock managed by Amazon under the Amazon Fulfillment "
 "program."
-msgstr ""
+msgstr "亚马逊在亚马逊物流方案下管理库存的位置。"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__refresh_token
@@ -800,18 +802,18 @@ msgstr "可以交换新访问令牌的长期令牌。"
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_offer__marketplace_id
 msgid "The marketplace of this offer."
-msgstr ""
+msgstr "这一提议的市场。"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__available_marketplace_ids
 msgid "The marketplaces this account has access to."
-msgstr ""
+msgstr "这个账户可以进入的市场。"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__active_marketplace_ids
 #: model:ir.model.fields,help:sale_amazon.field_amazon_offer__active_marketplace_ids
 msgid "The marketplaces this account sells on."
-msgstr ""
+msgstr "这个账户销售的市场。"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__aws_credentials_expiry
@@ -835,19 +837,19 @@ msgid ""
 "The order has been canceled by the Amazon customer while someproducts have "
 "already been delivered. Please create a return for this order to adjust the "
 "stock."
-msgstr ""
+msgstr "该订单已被亚马逊客户取消，而一些产品已经交付。 请为此订单创建退货以调整库存。"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__base_marketplace_id
 msgid ""
 "The original sign-up marketplace of this account. Used for authentication "
 "only."
-msgstr "这个账户的原始注册市场。仅用于认证。"
+msgstr "这个账户的原始注册营销。仅用于认证。"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_offer__account_id
 msgid "The seller account used to manage this product."
-msgstr ""
+msgstr "用于管理该产品的卖家账户。"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__aws_access_key
@@ -883,12 +885,12 @@ msgstr "用于查询具有 AWS 上假定 ARN 角色的 SP-API 的短期令牌。
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__name
 msgid "The user-defined name of the account."
-msgstr ""
+msgstr "用户定义的账户名称"
 
 #. module: sale_amazon
 #: model:ir.model.constraint,message:sale_amazon.constraint_amazon_marketplace_unique_api_ref
 msgid "There can only exist one marketplace for a given API Identifier."
-msgstr "对于一个给定的API标识符，只能存在一个市场。"
+msgstr "对于一个给定的API标识符，只能存在一个营销。"
 
 #. module: sale_amazon
 #: model:ir.model.constraint,message:sale_amazon.constraint_sale_order_unique_amazon_order_ref
@@ -908,7 +910,7 @@ msgid ""
 "This action will disconnect your account with Amazon and"
 "                                          cannot be undone. Are you sure you"
 " want to proceed?"
-msgstr ""
+msgstr "此动作将断开您与亚马逊的帐户，并且无法撤消。                 您确定要继续吗？"
 
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_stock_picking
@@ -947,24 +949,24 @@ msgstr "警告"
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_stock_picking__amazon_sync_pending
 msgid "Whether the picking must be notified to Amazon or not."
-msgstr ""
+msgstr "拣货是否要通知亚马逊。"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_marketplace__tax_included
 msgid "Whether the price includes the tax amount or not."
-msgstr ""
+msgstr "价格是否包括税金。"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_stock_location__amazon_location
 msgid ""
 "Whether this location represents the stock of a seller managed by Amazon "
 "under the Amazon Fulfillment program or not."
-msgstr ""
+msgstr "无论这个位置是否代表亚马逊根据亚马逊物流方案管理的卖家库存。"
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_crm_team__amazon_team
 msgid "Whether this sales team is associated with Amazon orders or not."
-msgstr ""
+msgstr "这个销售团队是否与亚马逊订单有关。"
 
 #. module: sale_amazon
 #: code:addons/sale_amazon/utils.py:0

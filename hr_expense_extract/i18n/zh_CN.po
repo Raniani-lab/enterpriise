@@ -4,10 +4,10 @@
 # 
 # Translators:
 # Jeffery CHEN <jeffery9@gmail.com>, 2022
-# Raymond Yu <cl_yu@hotmail.com>, 2022
 # Martin Trigaux, 2022
 # keecome <7017511@qq.com>, 2022
 # 稀饭~~ <wangwhai@qq.com>, 2022
+# Raymond Yu <cl_yu@hotmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: 稀饭~~ <wangwhai@qq.com>, 2022\n"
+"Last-Translator: Raymond Yu <cl_yu@hotmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,7 +28,7 @@ msgstr ""
 #: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
 #, python-format
 msgid "<b>Congratulations</b>, you are now an expert of Expenses."
-msgstr ""
+msgstr "<b>祝贺您！</b>您现在是一位费用专家。"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__amount
@@ -167,7 +167,7 @@ msgstr "费用"
 #: model:ir.cron,cron_name:hr_expense_extract.ir_cron_ocr_parse
 #: model:ir.cron,name:hr_expense_extract.ir_cron_ocr_parse
 msgid "Expense OCR: Parse Expenses"
-msgstr ""
+msgstr "费用OCR：解析费用"
 
 #. module: hr_expense_extract
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_update_ocr_status_ir_actions_server
@@ -181,7 +181,7 @@ msgstr "费用OCR：更新所有状态"
 #: model:ir.cron,cron_name:hr_expense_extract.ir_cron_ocr_validate
 #: model:ir.cron,name:hr_expense_extract.ir_cron_ocr_validate
 msgid "Expense OCR: Validate Expenses"
-msgstr ""
+msgstr "费用OCR：验证费用"
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_hr_expense_sheet
@@ -192,7 +192,7 @@ msgstr "费用报告"
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "Expense is being Digitized"
-msgstr ""
+msgstr "费用正在数字化"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_res_config_settings__expense_extract_show_ocr_option_selection
@@ -369,7 +369,7 @@ msgstr "向您的经理报告这项开支，以便确认。"
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
 msgid "Resend For Digitization"
-msgstr ""
+msgstr "重新发送以进行数字化"
 
 #. module: hr_expense_extract
 #: code:addons/hr_expense_extract/wizard/expense_sample_receipt.py:0
@@ -414,7 +414,7 @@ msgstr "状态代码"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__state_processed
 msgid "Status regarding OCR status"
-msgstr ""
+msgstr "有关OCR状态的状态"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -434,7 +434,7 @@ msgstr "无法找到文档"
 msgid ""
 "The file has been sent and is being processed. It usually takes between 5 "
 "and 10 seconds."
-msgstr ""
+msgstr "已发送的文件正在被处理，通常需要5到10秒。"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__to_validate

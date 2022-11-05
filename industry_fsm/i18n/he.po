@@ -257,12 +257,12 @@ msgstr "סגור"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Closed Last 30 Days"
-msgstr ""
+msgstr "נסגרו ב30 ימים האחרונים"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Closed Last 7 Days"
-msgstr ""
+msgstr "נסגרו ב7 הימים האחרונים"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__is_closed
@@ -822,13 +822,13 @@ msgstr "המשימות שלי"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "My Team's Projects"
-msgstr ""
+msgstr "פרוייקטים של הצוות שלי"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "My Team's Tasks"
-msgstr ""
+msgstr "משימות של הצוות שלי"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_partner_address_form_industry_fsm
@@ -1252,7 +1252,7 @@ msgstr "ניתוח נתוני משימות"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Tasks Soon in Overtime"
-msgstr ""
+msgstr "משימות שבקרוב יעברו את מגבלת השעות"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm

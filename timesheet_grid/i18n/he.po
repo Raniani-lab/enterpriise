@@ -13,8 +13,8 @@
 # ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022
 # Yihya Hugirat <hugirat@gmail.com>, 2022
 # דודי מלכה <Dudimalka6@gmail.com>, 2022
-# Roy Sayag, 2022
 # NoaFarkash, 2022
+# Roy Sayag, 2022
 # 
 msgid ""
 msgstr ""
@@ -22,7 +22,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: NoaFarkash, 2022\n"
+"Last-Translator: Roy Sayag, 2022\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -808,7 +808,7 @@ msgstr "השהה"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
 msgid "Pause timer"
-msgstr ""
+msgstr "השהה טיימר"
 
 #. module: timesheet_grid
 #. openerp-web

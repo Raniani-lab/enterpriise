@@ -30,12 +30,12 @@ msgstr "%s (copia)"
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "%s Payment Reminder - %s"
-msgstr ""
+msgstr "%s Promemoria pagamento - %s"
 
 #. module: account_followup
 #: model:ir.actions.report,print_report_name:account_followup.action_report_followup
 msgid "'Follow-up ' + object.display_name"
-msgstr ""
+msgstr "\"Sollecito \" + object.display_name"
 
 #. module: account_followup
 #: model:ir.model.fields,help:account_followup.field_res_partner__type
@@ -61,17 +61,17 @@ msgstr "30 giorni"
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line3
 msgid "40 Days"
-msgstr ""
+msgstr "40 giorni"
 
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line4
 msgid "50 Days"
-msgstr ""
+msgstr "50 giorni"
 
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line5
 msgid "60 Days"
-msgstr ""
+msgstr "60 giorni"
 
 #. module: account_followup
 #: model:mail.template,body_html:account_followup.email_template_followup_1
@@ -239,18 +239,18 @@ msgstr "Tipo di attività"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
 msgid "Add a note"
-msgstr "Aggiungi una nota"
+msgstr "Aggiungi nota"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Add contacts to notify..."
-msgstr "Aggiungere un contatto da notificare..."
+msgstr "Aggiungi contatti da notificare..."
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__type
 #: model:ir.model.fields,field_description:account_followup.field_res_users__type
 msgid "Address Type"
-msgstr "Tipo Indirizzo"
+msgstr "Tipologia indirizzo"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_search_view
@@ -305,7 +305,7 @@ msgstr "Contatto"
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 msgid "Content Template"
-msgstr ""
+msgstr "Modello del contenuto"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__body
@@ -399,7 +399,7 @@ msgstr ""
 #. module: account_followup
 #: model_terms:ir.actions.act_window,help:account_followup.action_account_followup_line_definition_form
 msgid "Define follow-up levels and their related actions"
-msgstr "Definire livelli di controllo dei pagamenti e le loro relative azioni"
+msgstr "Definisce i livelli di sollecito e le azioni correlate"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__name
@@ -425,7 +425,7 @@ msgstr "Nome visualizzato"
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "Due Date"
-msgstr "Data scadenza"
+msgstr "Scadenza"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__delay
@@ -445,7 +445,7 @@ msgstr ""
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Email Recipients"
-msgstr ""
+msgstr "Destinatari e-mail"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
@@ -460,46 +460,46 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__email_recipient_ids
 msgid "Extra Recipients"
-msgstr ""
+msgstr "Destinatari aggiuntivi"
 
 #. module: account_followup
 #: code:addons/account_followup/models/chart_template.py:0
 #, python-format
 msgid "First Reminder"
-msgstr "Primo sollecito"
+msgstr "Primo promemoria"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Follow up"
-msgstr ""
+msgstr "Sollecito"
 
 #. module: account_followup
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "Follow-up %s - %s"
-msgstr ""
+msgstr "Sollecito %s - %s"
 
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__res_partner__type__followup
 msgid "Follow-up Address"
-msgstr ""
+msgstr "Indirizzo sollecito"
 
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_followup_followup_line
 msgid "Follow-up Criteria"
-msgstr "Criteri Solleciti di Pagamento"
+msgstr "Criterio di sollecito"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_move_line__followup_line_id
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__followup_line_id
 #: model:ir.model.fields,field_description:account_followup.field_res_users__followup_line_id
 msgid "Follow-up Level"
-msgstr "Livello sollecito di pagamento"
+msgstr "Livello di sollecito"
 
 #. module: account_followup
 #: model:ir.ui.menu,name:account_followup.account_followup_menu
 msgid "Follow-up Levels"
-msgstr "Livelli di verifica"
+msgstr "Livelli di sollecito"
 
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_followup_report
@@ -520,7 +520,7 @@ msgstr "Rapporti di follow-up vista ad albero"
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__account_followup_followup_line__activity_default_responsible_type__followup
 msgid "Follow-up Responsible"
-msgstr "Responsabile Gestione Crediti"
+msgstr "Responsabile sollecito"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__followup_status
@@ -532,7 +532,7 @@ msgstr "Stato sollecito"
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_tree
 msgid "Follow-up Steps"
-msgstr "Passi Solleciti di Pagamento"
+msgstr "Fasi sollecito"
 
 #. module: account_followup
 #: code:addons/account_followup/models/account_followup_report.py:0
@@ -584,7 +584,7 @@ msgstr "Richiede azione"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Invoice No."
-msgstr ""
+msgstr "Fattura n°"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_move_line__invoice_date
@@ -643,18 +643,18 @@ msgstr "Ultimo aggiornamento il"
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_move_line__last_followup_date
 msgid "Latest Follow-up"
-msgstr "Ultimo Sollecito di Pagamento"
+msgstr "Ultimo sollecito"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Letter/Email Content"
-msgstr ""
+msgstr "Contenuto lettera/e-mail"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__mail_template_id
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__template_id
 msgid "Mail Template"
-msgstr "Modello email"
+msgstr "Modello e-mail"
 
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__res_partner__followup_reminder_type__manual
@@ -672,23 +672,23 @@ msgstr "Data prossima azione"
 #: code:addons/account_followup/models/res_partner.py:0
 #, python-format
 msgid "Next Reminder Date set to %s"
-msgstr "Prossima data di promemoria impostata per il %s"
+msgstr "Data prossimo promemoria impostata a %s"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__followup_next_action_date
 #: model:ir.model.fields,field_description:account_followup.field_res_users__followup_next_action_date
 msgid "Next reminder"
-msgstr ""
+msgstr "Prossimo promemoria"
 
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__res_partner__followup_status__no_action_needed
 msgid "No action needed"
-msgstr "Nessuna azione necessaria"
+msgstr "Nessuna azione richiesta"
 
 #. module: account_followup
 #: model_terms:ir.actions.act_window,help:account_followup.action_view_list_customer_statements
 msgid "No follow-up to send!"
-msgstr "Nessun promemoria da inviare!"
+msgstr "Nessun sollecito da inviare."
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__activity_note
@@ -736,13 +736,13 @@ msgstr "Origine"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_search_view
 msgid "Overdue Invoices"
-msgstr "Fatture scadute"
+msgstr "Fatture in ritardo"
 
 #. module: account_followup
 #: code:addons/account_followup/models/res_partner.py:0
 #, python-format
 msgid "Overdue Payments for %s"
-msgstr "Pagamenti in Ritardo per %s"
+msgstr "Pagamenti in ritardo per %s"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__partner_id
@@ -752,14 +752,14 @@ msgstr "Partner"
 #. module: account_followup
 #: model:ir.actions.act_window,name:account_followup.action_account_followup_line_definition_form
 msgid "Payment Follow-ups"
-msgstr "Solleciti di Pagamento"
+msgstr "Solleciti di pagamento"
 
 #. module: account_followup
 #: code:addons/account_followup/models/account_followup_report.py:0
 #: model:mail.template,name:account_followup.email_template_followup_1
 #, python-format
 msgid "Payment Reminder"
-msgstr "Sollecito Pagamento"
+msgstr "Promemoria di pagamento"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__print
@@ -824,12 +824,12 @@ msgstr "Addetto vendite"
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__create_activity
 msgid "Schedule Activity"
-msgstr "Pianifica Attività"
+msgstr "Programmazione attività"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_line_filter
 msgid "Search Follow-up"
-msgstr "Ricerca Sollecito di Pagamento"
+msgstr "Ricerca sollecito"
 
 #. module: account_followup
 #: model:mail.template,name:account_followup.demo_followup_email_template_2
@@ -864,17 +864,17 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__sms
 msgid "Sms"
-msgstr ""
+msgstr "SMS"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__sms_body
 msgid "Sms Body"
-msgstr ""
+msgstr "Corpo SMS"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Sms Content"
-msgstr ""
+msgstr "Contenuto SMS"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__sms_template_id
@@ -941,19 +941,19 @@ msgstr "Totale dovuto"
 #: model:ir.model.fields,field_description:account_followup.field_res_users__total_overdue
 #, python-format
 msgid "Total Overdue"
-msgstr "Totale Scaduto"
+msgstr "Totale in ritardo"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__unpaid_invoice_ids
 #: model:ir.model.fields,field_description:account_followup.field_res_users__unpaid_invoice_ids
 msgid "Unpaid Invoice"
-msgstr ""
+msgstr "Fattura non pagata"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__unpaid_invoices_count
 #: model:ir.model.fields,field_description:account_followup.field_res_users__unpaid_invoices_count
 msgid "Unpaid Invoices Count"
-msgstr ""
+msgstr "Numero di fatture non pagate"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__unreconciled_aml_ids
@@ -964,7 +964,7 @@ msgstr "Aml Non Riconciliato"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.followup_search_template
 msgid "With Overdue Invoices"
-msgstr "Con fatture scadute"
+msgstr "Con fatture in ritardo"
 
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__res_partner__followup_status__with_overdue_invoices
@@ -1012,7 +1012,7 @@ msgstr "es. Prima e-mail di promemoria"
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "payment reminder"
-msgstr "sollecito pagamento"
+msgstr "promemoria di pagamento"
 
 #. module: account_followup
 #: model:mail.template,subject:account_followup.demo_followup_email_template_2

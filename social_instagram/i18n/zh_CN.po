@@ -34,7 +34,7 @@ msgstr "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-heart me-1\" title=\"Likes\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-heart me-1\" title=\"Likes\"/>"
 
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.instagram_preview

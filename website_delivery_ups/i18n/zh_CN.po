@@ -60,7 +60,7 @@ msgstr "取消"
 #. module: website_delivery_ups
 #: model:ir.model.fields.selection,name:website_delivery_ups.selection__payment_provider__custom_mode__cash_on_delivery
 msgid "Cash On Delivery"
-msgstr ""
+msgstr "货到付款"
 
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog

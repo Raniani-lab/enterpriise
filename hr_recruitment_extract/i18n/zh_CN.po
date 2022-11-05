@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # 稀饭~~ <wangwhai@qq.com>, 2022
+# Raymond Yu <cl_yu@hotmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-27 15:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: 稀饭~~ <wangwhai@qq.com>, 2022\n"
+"Last-Translator: Raymond Yu <cl_yu@hotmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -170,7 +171,7 @@ msgstr "数字化重发"
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "Resend For Digitization"
-msgstr ""
+msgstr "重新发送数字化"
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_actions_server_digitize_cv
@@ -223,7 +224,7 @@ msgstr "无法找到文档"
 msgid ""
 "The file has been sent and is being processed. It usually takes between 5 "
 "and 10 seconds."
-msgstr ""
+msgstr "已发送的文件正在被处理，通常需要5到10秒。"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__to_validate

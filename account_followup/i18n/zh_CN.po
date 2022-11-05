@@ -589,7 +589,7 @@ msgstr "后续  %s - %s"
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__res_partner__type__followup
 msgid "Follow-up Address"
-msgstr "后续地址"
+msgstr "催款地址"
 
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_followup_followup_line

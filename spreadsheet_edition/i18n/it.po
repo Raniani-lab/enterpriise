@@ -537,7 +537,7 @@ msgstr "Record #"
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__res_id
 msgid "Record id"
-msgstr ""
+msgstr "ID record"
 
 #. module: spreadsheet_edition
 #. openerp-web

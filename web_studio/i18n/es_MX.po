@@ -1074,7 +1074,7 @@ msgstr "Campo de contacto"
 #: code:addons/web_studio/static/src/client_action/editor/new_view_dialogs/map_new_view_dialog.js:0
 #, python-format
 msgid "Contact Field Required"
-msgstr "Campo de contacto requerido"
+msgstr "Campo obligatorio de contacto"
 
 #. module: web_studio
 #. openerp-web
@@ -1221,7 +1221,7 @@ msgstr "Reportes personalizados"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Custom Sorting"
-msgstr "Clasificación personalizada"
+msgstr "Orden personalizado"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_base_module_uninstall__custom_views
@@ -3299,7 +3299,7 @@ msgstr "Reportes"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Required"
-msgstr "Requerido"
+msgstr "Obligatorio"
 
 #. module: web_studio
 #. openerp-web

@@ -571,7 +571,7 @@ msgstr "领导力：帮助下属的专业能力持续增长"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_1
 msgid "Listen well to others"
-msgstr ""
+msgstr "听听别人的意见"
 
 #. module: hr_appraisal_survey
 #: model:ir.model.fields,field_description:hr_appraisal_survey.field_appraisal_ask_feedback__template_id

@@ -24,7 +24,7 @@ msgstr ""
 #. module: mrp_workorder_plm
 #: model:mrp.eco.type,name:mrp_workorder_plm.ecotype_workorder
 msgid "BOM Updates"
-msgstr ""
+msgstr "BOM更新"
 
 #. module: mrp_workorder_plm
 #: model:mrp.eco.stage,legend_blocked:mrp_workorder_plm.ecostage_effective
@@ -32,7 +32,7 @@ msgstr ""
 #: model:mrp.eco.stage,legend_blocked:mrp_workorder_plm.ecostage_progress
 #: model:mrp.eco.stage,legend_blocked:mrp_workorder_plm.ecostage_validated
 msgid "Blocked"
-msgstr "暂停"
+msgstr "阻塞"
 
 #. module: mrp_workorder_plm
 #: model:ir.model.fields,help:mrp_workorder_plm.field_mrp_eco_routing_change__test_type

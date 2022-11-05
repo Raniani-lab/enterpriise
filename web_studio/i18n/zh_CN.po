@@ -390,7 +390,7 @@ msgstr "额外字段"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Address Block"
-msgstr "地址块"
+msgstr "地址组件"
 
 #. module: web_studio
 #. openerp-web
@@ -692,13 +692,13 @@ msgstr "空白"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks_registry.js:0
 #, python-format
 msgid "Block"
-msgstr "阻塞"
+msgstr "组件"
 
 #. module: web_studio
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "Blocked"
-msgstr "阻塞"
+msgstr "拦截"
 
 #. module: web_studio
 #. openerp-web
@@ -1543,7 +1543,7 @@ msgstr "向右拖动菜单创建子菜单"
 #: code:addons/web_studio/static/src/legacy/js/reports/report_editor.js:0
 #, python-format
 msgid "Drag building block here"
-msgstr "拖动构建块到这"
+msgstr "拖动组件到这"
 
 #. module: web_studio
 #: code:addons/web_studio/models/ir_ui_view.py:0
@@ -1666,7 +1666,7 @@ msgstr "EMail模板"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_mail_thread
 msgid "Email Thread"
-msgstr "邮件主题"
+msgstr "邮件会话"
 
 #. module: web_studio
 #. openerp-web

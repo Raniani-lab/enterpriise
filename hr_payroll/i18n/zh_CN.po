@@ -4,10 +4,11 @@
 # 
 # Translators:
 # liAnGjiA <liangjia@qq.com>, 2022
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022
 # Martin Trigaux, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
+# digitalliuzg8888, 2022
 # 
 msgid ""
 msgstr ""
@@ -15,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Raymond Yu <cl_yu@hotmail.com>, 2022\n"
+"Last-Translator: digitalliuzg8888, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -57,13 +58,13 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.actions.report,print_report_name:hr_payroll.action_report_payslip
 msgid "'Payslip - %s' % (object.name)"
-msgstr ""
+msgstr "“工资单 - %s” % （object.name）"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "(%s Payslips)"
-msgstr ""
+msgstr "（%s工资单）"
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip__state
@@ -102,7 +103,7 @@ msgstr "/ 月"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "1. Save documents to terminated employees"
-msgstr ""
+msgstr "1. 将文件保存给被解雇的员工"
 
 #. module: hr_payroll
 #: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_13th_month_salary
@@ -112,12 +113,12 @@ msgstr "第13期工资"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "2. Index salaries for Marketing department"
-msgstr ""
+msgstr "2. 市场部的指数工资"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "3. Create a new contract for Marc Demo with his new position"
-msgstr ""
+msgstr "3. 为马克·德莫（Marc Demo）的新职位创建新合同"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_rule_parameter_view_form
@@ -126,11 +127,15 @@ msgid ""
 "                            Save your Salary Rule in order to add Parameter Values.\n"
 "                        </span>"
 msgstr ""
+"<span class=\"bg-white opacity-75 w-100 h-100 o_salary_rule_overlay "
+"position-absolute top-0 end-0 w-100 h-100 text-center d-flex justify-"
+"content-center flex-column fs-3\">保存您的工资规则以添加参数值。                        "
+"</span>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_resource_calendar_view_form
 msgid "<span class=\"ms-2\"> hours/week</span>"
-msgstr ""
+msgstr "<span class=\"ms-2\"> 小时/周</span>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
@@ -208,7 +213,7 @@ msgstr ""
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_rule_parameter_view_form
 msgid "<span>Versions</span>"
-msgstr ""
+msgstr "<span>版本</span>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
@@ -228,7 +233,7 @@ msgstr "<strong>合同开始日期</strong>"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Contract Type</strong>"
-msgstr ""
+msgstr "合同类型"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
@@ -361,7 +366,7 @@ msgstr "活动类型图表"
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Add a <strong>name</strong> to the contract."
-msgstr ""
+msgstr "向合同添加 <strong>名称</strong> 。"
 
 #. module: hr_payroll
 #: model_terms:ir.actions.act_window,help:hr_payroll.action_view_hr_payroll_structure_from_type
@@ -376,7 +381,7 @@ msgstr "添加内部说明"
 #. module: hr_payroll
 #: model:ir.actions.server,name:hr_payroll.action_hr_payslip_run_generate
 msgid "Add payslips"
-msgstr ""
+msgstr "添加工资单"
 
 #. module: hr_payroll
 #: model:res.groups,name:hr_payroll.group_hr_payroll_manager
@@ -480,7 +485,7 @@ msgstr "已归档"
 #: code:addons/hr_payroll/static/src/components/dashboard/todo_list/todo_list.js:0
 #, python-format
 msgid "Are you sure you want to delete this note?"
-msgstr ""
+msgstr "确实要删除此注释吗？"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payroll_structure.py:0
@@ -495,7 +500,7 @@ msgstr "工资分配"
 #, python-format
 msgid ""
 "At least one previous negative net could be reported on this payslip for %s"
-msgstr ""
+msgstr "至少可以在此工资单上报告一个以前的负净值%s"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_attachment_count
@@ -627,7 +632,7 @@ msgstr "每两周"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "Board meeting summary :"
-msgstr ""
+msgstr "董事会会议摘要："
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_line_form
@@ -692,7 +697,7 @@ msgstr "改变职业"
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Check the <strong>Salary Structure Type</strong>."
-msgstr ""
+msgstr "检查 <strong>工资结构类型</strong>。"
 
 #. module: hr_payroll
 #. openerp-web
@@ -701,14 +706,14 @@ msgstr ""
 msgid ""
 "Check the <strong>Work Entries</strong> linked to your newly created "
 "Contract."
-msgstr ""
+msgstr "检查链接到新创建的合同的工作 <strong>条目</strong> 。"
 
 #. module: hr_payroll
 #. openerp-web
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Check the <strong>Working Schedule</strong>."
-msgstr ""
+msgstr "检查 <strong>工作时间表</strong>。"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payroll_structure.py:0
@@ -733,7 +738,7 @@ msgstr "选择工资本地化"
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Click here to create a new <strong>Contract</strong>."
-msgstr ""
+msgstr "单击此处创建新 <strong>合同</strong>。"
 
 #. module: hr_payroll
 #. openerp-web
@@ -741,14 +746,14 @@ msgstr ""
 #, python-format
 msgid ""
 "Click here to generate a <strong>Batch</strong> for the displayed Employees."
-msgstr ""
+msgstr "单击此处为显示的员工生成 <strong>批处理</strong> 。"
 
 #. module: hr_payroll
 #. openerp-web
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Click here to go back to the <strong>Employee's profile</strong>."
-msgstr ""
+msgstr "单击此处返回 <strong>员工资料</strong>。"
 
 #. module: hr_payroll
 #. openerp-web
@@ -756,14 +761,14 @@ msgstr ""
 #, python-format
 msgid ""
 "Click on <strong>Salary Information</strong> to access additional fields."
-msgstr ""
+msgstr "单击 <strong>“工资信息</strong> ”以访问其他字段。"
 
 #. module: hr_payroll
 #. openerp-web
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Click on Employees to pick one of your <strong>Employees</strong>."
-msgstr ""
+msgstr "单击“员工”以选择您的 <strong>一名员工</strong>。"
 
 #. module: hr_payroll
 #. openerp-web
@@ -773,20 +778,22 @@ msgid ""
 "Click on Payroll to manage your employee's <strong>Work Entries</strong>, "
 "<strong>Contracts</strong> and <strong>Payslips</strong>."
 msgstr ""
+"单击工资单以管理员工 <strong>的工作条目</strong>、 <strong>合同</strong> 和 "
+"<strong>工资单</strong>。"
 
 #. module: hr_payroll
 #. openerp-web
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Click on the <strong>Payslip</strong>."
-msgstr ""
+msgstr "点击 <strong>工资单</strong>。"
 
 #. module: hr_payroll
 #. openerp-web
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Click on the <strong>Work Entries</strong> menu."
-msgstr ""
+msgstr "单击“ <strong>工作条目</strong> ”菜单。"
 
 #. module: hr_payroll
 #. openerp-web
@@ -802,7 +809,7 @@ msgstr "关闭"
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Close the window."
-msgstr ""
+msgstr "关闭聊天视窗"
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_work_entry_type__round_days_type__half-up
@@ -902,7 +909,7 @@ msgstr "确认"
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Confirm the <strong>Payslip</strong>."
-msgstr ""
+msgstr "确认 <strong>工资单</strong>。"
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payslip_run__state__verify
@@ -927,7 +934,7 @@ msgstr "冲突"
 msgid ""
 "Congratulations! You created your first contract and generated your first "
 "payslip!"
-msgstr ""
+msgstr "祝贺！您创建了第一份合同并生成了第一张工资单！"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__contract_id
@@ -941,7 +948,7 @@ msgstr "合同"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__contract_domain_ids
 msgid "Contract Domain"
-msgstr ""
+msgstr "合约域名"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_structure_type_view_search
@@ -1034,7 +1041,7 @@ msgstr "创建一个新的合同"
 #: code:addons/hr_payroll/static/src/components/dashboard/todo_list/todo_list.xml:0
 #, python-format
 msgid "Create new todo note"
-msgstr ""
+msgstr "创建新的待办事项注释"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__create_uid
@@ -1091,7 +1098,7 @@ msgstr "退款通知"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract_history__time_credit
 msgid "Credit time"
-msgstr ""
+msgstr "信用时间"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__currency_id
@@ -1186,7 +1193,7 @@ msgstr "默认工作条目类型"
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Define a <strong>Wage</strong>."
-msgstr ""
+msgstr "定义 <strong>工资</strong>。"
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_contract__schedule_pay
@@ -1409,13 +1416,13 @@ msgstr "员工工资单"
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Employee Trends"
-msgstr ""
+msgstr "员工趋势"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Employee whose contracts and company are differents"
-msgstr ""
+msgstr "合同和公司不同的员工"
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_contract__hourly_wage
@@ -1442,31 +1449,31 @@ msgstr "员工"
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Employees (With Running Contracts) missing from open batches"
-msgstr ""
+msgstr "未结批次中缺少的员工（具有正在运行的合同）"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Employees With Both New And Running Contracts"
-msgstr ""
+msgstr "拥有新合同和正在运行的合同的员工"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Employees With Multiple Open Payslips of Same Type"
-msgstr ""
+msgstr "拥有多张相同类型未结工资单的员工"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Employees Without Running Contracts"
-msgstr ""
+msgstr "没有合同的员工"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Employees with payslips generated on the previous contract"
-msgstr ""
+msgstr "员工在上一份合同中生成了工资单"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
@@ -1518,7 +1525,7 @@ msgstr "导出工资单"
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "First, we'll create a new <strong>Contract</strong>."
-msgstr ""
+msgstr "首先，我们将创建一个新 <strong>合约</strong>。"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_line__amount_fix
@@ -1620,7 +1627,7 @@ msgstr "生成的薪资单"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "Give assurance card to new registered employees"
-msgstr ""
+msgstr "向新注册员工发放保证卡"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payroll_structure.py:0
@@ -1895,7 +1902,7 @@ msgstr "过去365天工资单"
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Last Departures"
-msgstr ""
+msgstr "末班车"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line____last_update
@@ -1988,7 +1995,7 @@ msgstr "工资类别的父级类别只用于报告目的"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "Links :"
-msgstr ""
+msgstr "链接"
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip__email_cc
@@ -2032,7 +2039,7 @@ msgstr "标记为已支付"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_report__master_department_id
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_report_view_search
 msgid "Master Department"
-msgstr ""
+msgstr "主部门"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__condition_range_max
@@ -2317,7 +2324,7 @@ msgstr "发送错误的消息数量"
 #. module: hr_payroll
 #: model:res.groups,name:hr_payroll.group_hr_payroll_user
 msgid "Officer : Manage all contracts"
-msgstr ""
+msgstr "干事 ： 管理所有合同"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
@@ -2331,7 +2338,7 @@ msgstr "于此"
 msgid ""
 "On the first tab is the amount of worked time giving you a <strong>gross "
 "amount</strong>."
-msgstr ""
+msgstr "在第一个选项卡上是工作时间，为您提供 <strong>总金额</strong>。"
 
 #. module: hr_payroll
 #. openerp-web
@@ -2340,7 +2347,7 @@ msgstr ""
 msgid ""
 "On the second tab is the computation of the rules linked to the Structure "
 "resulting in a <strong>net amount</strong>."
-msgstr ""
+msgstr "在第二个选项卡上是计算与结构相关的规则，从而产生 <strong>净金额</strong>。"
 
 #. module: hr_payroll
 #. openerp-web
@@ -2349,12 +2356,12 @@ msgstr ""
 msgid ""
 "On the smartbutton, you can find all the <strong>Payslips</strong> included "
 "in the Batch."
-msgstr ""
+msgstr "在智能按钮上，您可以找到批处理中包含的所有 <strong>工资单</strong> 。"
 
 #. module: hr_payroll
 #: model:ir.actions.server,name:hr_payroll.ir_actions_server_action_open_reporting
 msgid "Open Payroll Reporting"
-msgstr ""
+msgstr "打开工资单报告"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
@@ -2423,12 +2430,12 @@ msgstr "上级"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__time_credit
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_contract_form_inherit
 msgid "Part Time"
-msgstr ""
+msgstr "兼职"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__time_credit_type_id
 msgid "Part Time Work Entry Type"
-msgstr ""
+msgstr "兼职工作条目类型"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_line__partner_id
@@ -2491,7 +2498,7 @@ msgstr "工资册分析报告"
 #: model:ir.actions.client,name:hr_payroll.hr_payroll_dashboard_open
 #: model:note.tag,name:hr_payroll.payroll_note_tag
 msgid "Payroll Dashboard"
-msgstr ""
+msgstr "工资单仪表板"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.res_config_settings_view_form
@@ -2516,7 +2523,7 @@ msgstr "应用于贵国的薪资规则"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "Payroll tips &amp; tricks :"
-msgstr ""
+msgstr "工资单提示和技巧："
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_res_config_settings__module_hr_payroll_account
@@ -2672,13 +2679,13 @@ msgstr "工资单批处理"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_tree
 msgid "Payslips Count"
-msgstr ""
+msgstr "工资条个数"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Payslips Generated On Previous Contract"
-msgstr ""
+msgstr "上一份合同产生的工资单"
 
 #. module: hr_payroll
 #: model:ir.actions.act_window,name:hr_payroll.hr_payslip_action_view_to_pay
@@ -2689,7 +2696,7 @@ msgstr "待支付工资单"
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Payslips With Negative Amounts"
-msgstr ""
+msgstr "负金额的工资单"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_by_employees
@@ -2700,7 +2707,7 @@ msgstr "按员工分组的工资单"
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Payslips with negative NET"
-msgstr ""
+msgstr "净值为负的工资单"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_index__percentage
@@ -2730,7 +2737,7 @@ msgstr "期间"
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Pick an Employee to see his <strong>Contract's History</strong>."
-msgstr ""
+msgstr "选择员工以查看其 <strong>合同的历史记录</strong>。"
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payroll_report__work_entry_source__planning
@@ -2980,7 +2987,7 @@ msgstr "运行中"
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Running contracts coming to an end"
-msgstr ""
+msgstr "运行合同即将结束"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_employee__sim_card
@@ -3172,7 +3179,7 @@ msgstr "搜索结构类型"
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Select an <strong>HR Responsible</strong> for the contract."
-msgstr ""
+msgstr "选择负责合同的 <strong>HR</strong> 。"
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payroll_structure__schedule_pay__semi-annually
@@ -3183,7 +3190,7 @@ msgstr "半年"
 #. module: hr_payroll
 #: model:mail.template,description:hr_payroll.mail_template_new_payslip
 msgid "Sent to employee to notify them about their new payslip"
-msgstr ""
+msgstr "发送给员工以通知他们有关新工资单的信息"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__sequence
@@ -3200,7 +3207,7 @@ msgstr "单号规则"
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "Set the Contract as <strong><q>Running</q></strong>."
-msgstr ""
+msgstr "将协定设置为 <strong><q>正在运行</q></strong>。"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_form
@@ -3237,7 +3244,7 @@ msgstr "某些工作条目无法验证。"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__standard_calendar_id
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract_history__standard_calendar_id
 msgid "Standard Calendar"
-msgstr ""
+msgstr "标准日历"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_report__date_from
@@ -3343,7 +3350,7 @@ msgstr ""
 msgid ""
 "The Standard Calendar is the calendar used by the people working at a 100% "
 "rate. It's used here to compute your part-time percentage."
-msgstr ""
+msgstr "标准日历是以 100% 的费率工作的人员使用的日历。它在这里用于计算您的兼职百分比。"
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_work_entry_type__is_unforeseen
@@ -3432,7 +3439,7 @@ msgstr "工资单应处于草稿或等待状态。"
 msgid ""
 "The work entry type used when generating work entries to fit full time "
 "working schedule."
-msgstr ""
+msgstr "生成工作条目以适应全职工作计划时使用的工作条目类型。"
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_work_entry_type__unpaid_structure_ids
@@ -3467,7 +3474,7 @@ msgstr "此输入仅适用于那些结构。如果为空，则可在所有工资
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_contract_history__time_credit
 msgid "This is a credit time contract."
-msgstr ""
+msgstr "这是信用时间合同。"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
@@ -3630,7 +3637,7 @@ msgstr "不可预见的缺席"
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Unknown State"
-msgstr ""
+msgstr "未知状态"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_hr_work_entry_type_view_form_inherit
@@ -3683,7 +3690,7 @@ msgstr "用于工资单显示工资规则."
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_salary_rule__appears_on_employee_cost_dashboard
 msgid "Used to display the value in the employer cost dashboard."
-msgstr ""
+msgstr "用于在雇主成本仪表板中显示值。"
 
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_res_users
@@ -3693,19 +3700,19 @@ msgstr "用户"
 #. module: hr_payroll
 #: model:res.groups,comment:hr_payroll.group_hr_payroll_user
 msgid "User can manage all contracts, work entries and create payslips."
-msgstr ""
+msgstr "用户可以管理所有合同，工作条目并创建工资单。"
 
 #. module: hr_payroll
 #: model:res.groups,comment:hr_payroll.group_hr_payroll_employee_manager
 msgid ""
 "User can see his own contracts and the contracts of the people he's manager "
 "of."
-msgstr ""
+msgstr "用户可以查看自己的合同以及他所经理的人员的合同。"
 
 #. module: hr_payroll
 #: model:res.groups,comment:hr_payroll.group_hr_payroll_manager
 msgid "User have full access on the application."
-msgstr ""
+msgstr "用户对应用程序具有完全访问权限。"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_form
@@ -3732,12 +3739,12 @@ msgstr "版本"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__appears_on_employee_cost_dashboard
 msgid "View on Employer Cost Dashboard"
-msgstr ""
+msgstr "在雇主成本仪表板上查看"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__appears_on_payroll_report
 msgid "View on Payroll Reporting"
-msgstr ""
+msgstr "查看工资单报告"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_contract__wage_type
@@ -3784,7 +3791,7 @@ msgstr "四舍五入的工作条目类型的方式。"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "We have to improve our Payroll flow with the new Odoo process"
-msgstr ""
+msgstr "我们必须通过新的Odoo流程改善我们的薪资流程"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__website_message_ids
@@ -3857,7 +3864,7 @@ msgstr "工作条目分析报告"
 msgid ""
 "Work Entries are generated for each <strong>time period</strong> defined in "
 "the Working Schedule of the Contract."
-msgstr ""
+msgstr "为合同工作计划中定义的每个 <strong>时间段</strong> 生成工作条目。"
 
 #. module: hr_payroll
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_work_entry_report
@@ -3910,7 +3917,7 @@ msgstr "工作时间率与全职工作时间表的比率应在0到100％之间�
 #: model:ir.model.fields,help:hr_payroll.field_hr_contract__work_time_rate
 #: model:ir.model.fields,help:hr_payroll.field_hr_contract_history__work_time_rate
 msgid "Work time rate versus full time working schedule."
-msgstr ""
+msgstr "工作时间率与全职工作时间表的比率应在0到100％之间。"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_report__work_code
@@ -3959,7 +3966,7 @@ msgstr "工作安排"
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Working Schedule Changes"
-msgstr ""
+msgstr "工作时间表变更"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_salary_rule.py:0
@@ -3996,7 +4003,7 @@ msgstr "定义的范围条件错误。"
 #: code:addons/hr_payroll/static/src/js/tours/hr_payroll.js:0
 #, python-format
 msgid "You can access the Payslips from the Employee's Profile."
-msgstr ""
+msgstr "您可以从员工资料访问工资单。"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
@@ -4029,13 +4036,13 @@ msgstr "你不能删除一个正在运行的工资附件!"
 msgid ""
 "You cannot reset a batch to draft if some of the payslips have already been "
 "paid."
-msgstr ""
+msgstr "如果某些工资单已支付，则无法将批次重置为草稿。"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "You cannot validate a payslip on which the contract is cancelled"
-msgstr ""
+msgstr "您无法验证合同被取消的工资单"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/wizard/hr_payroll_index_wizard.py:0
@@ -4096,7 +4103,7 @@ msgstr "如：正常工资"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content
 msgid "https://www.odoo.com/fr_FR/slides/slide/manage-payroll-1002"
-msgstr ""
+msgstr "https://www.odoo.com/fr_FR/slides/slide/manage-payroll-1002"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip

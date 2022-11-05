@@ -274,7 +274,7 @@ msgstr "Amazon: sincronizzazione prelievi"
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.authorization_error
 msgid "An error occurred"
-msgstr "Si è verificato un problema"
+msgstr "Si è verificato un errore"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.authorization_error
@@ -571,7 +571,7 @@ msgstr "Follow-up all'ordine"
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 #, python-format
 msgid "Orders"
-msgstr "Ordinamenti"
+msgstr "Ordini"
 
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_product_template
@@ -679,7 +679,7 @@ msgstr "Iscrizione marketplace"
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__location_id
 msgid "Stock Location"
-msgstr "Ubicazione di magazzino"
+msgstr "Ubicazione di giacenza"
 
 #. module: sale_amazon
 #: code:addons/sale_amazon/models/amazon_account.py:0

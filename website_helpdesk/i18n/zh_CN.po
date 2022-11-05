@@ -226,7 +226,7 @@ msgstr "没有找到记录。请尝试另外的关键字。"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.knowledge_base
 msgid "Search for articles, best practices and more..."
-msgstr ""
+msgstr "搜索文章、最佳实践和更多……"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
@@ -260,12 +260,12 @@ msgstr "通过网站访问文档的完整网址。"
 #: code:addons/website_helpdesk/models/helpdesk.py:0
 #, python-format
 msgid "The team company and the website company should match"
-msgstr ""
+msgstr "团队公司和网站公司要匹配"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Type Filter"
-msgstr ""
+msgstr "类型筛选"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__feature_form_url

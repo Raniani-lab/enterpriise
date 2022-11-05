@@ -265,7 +265,7 @@ msgid ""
 "                        </span>"
 msgstr ""
 "<span class=\"o_stat_text\">\n"
-"                            上次评估\n"
+"                            上次评价\n"
 "                        </span>"
 
 #. module: hr_appraisal
@@ -1065,14 +1065,14 @@ msgstr "语言"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee_public__last_appraisal_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__last_appraisal_id
 msgid "Last Appraisal"
-msgstr "上次评估"
+msgstr "上次评价"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__last_appraisal_date
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__last_appraisal_date
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_users__last_appraisal_date
 msgid "Last Appraisal Date"
-msgstr "上次评估日期"
+msgstr "上次评价日期"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
@@ -1414,7 +1414,7 @@ msgstr "报告"
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_users_view_form
 msgid "Request Appraisal"
-msgstr "要求评估"
+msgstr "要求评价"
 
 #. module: hr_appraisal
 #: model:ir.actions.server,name:hr_appraisal.action_create_multi_appraisals
@@ -1573,7 +1573,7 @@ msgstr "这个说明的内容是员工不可见的。"
 #: model:ir.model.fields,help:hr_appraisal.field_hr_employee__last_appraisal_date
 #: model:ir.model.fields,help:hr_appraisal.field_res_users__last_appraisal_date
 msgid "The date of the last appraisal"
-msgstr "上次评估的日期"
+msgstr "上次评价的日期"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_employee__next_appraisal_date

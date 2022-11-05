@@ -3,8 +3,8 @@
 # 	* industry_fsm_sale
 # 
 # Translators:
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
 # 
 msgid ""
@@ -49,6 +49,15 @@ msgid ""
 "                            in your profile from where to draw stock.\n"
 "                        </p>"
 msgstr ""
+"<p class=\"o_view_nocontent_smiling_face\">\n"
+"                            没有找到产品。让我们创建一个！\n"
+"                        </p><p>\n"
+"                            追踪您用来完成任务的产品，并为您的客户开具货物的结算单。\n"
+"                            提示：使用工具包，您可以一次添加多个产品。\n"
+"                        </p><p>\n"
+"                            当您的任务被标记为完成时，您的库存将会自动更新。只需在您的个人资料中选择一个仓库\n"
+"                            来提取库存。\n"
+"                        </p>"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit_sale_timesheet
@@ -119,7 +128,7 @@ msgstr "一个FSM项目必须按任务费率或雇员费率计费。"
 #: code:addons/industry_fsm_sale/wizard/sale_make_invoice_advance.py:0
 #, python-format
 msgid "An invoice has been created: %s"
-msgstr ""
+msgstr "结算单已经被创建：%s"
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_account_analytic_line
@@ -266,7 +275,7 @@ msgstr "现场服务"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__fsm_partner_price_currency_id
 msgid "Fsm Partner Price Currency"
-msgstr ""
+msgstr "Fsm合作伙伴价格货币"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields.selection,name:industry_fsm_sale.selection__report_project_task_user_fsm__invoice_status__invoiced
@@ -323,7 +332,7 @@ msgstr "结算单"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__is_task_phone_update
 msgid "Is Task Phone Update"
-msgstr ""
+msgstr "任务手机是否更新"
 
 #. module: industry_fsm_sale
 #. openerp-web
@@ -382,7 +391,7 @@ msgstr "结算单数量"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__fsm_partner_price
 msgid "Partner Price"
-msgstr ""
+msgstr "伙伴价格"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__portal_quotation_count
@@ -578,7 +587,7 @@ msgstr "重新发起"
 #. module: industry_fsm_sale
 #: model:ir.model.fields,help:industry_fsm_sale.field_sale_order__task_id
 msgid "Task from which this quotation have been created"
-msgstr ""
+msgstr "创建此报价的任务"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_search_fsm_inherit_sale
@@ -649,21 +658,21 @@ msgstr "加售商机"
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Use the breadcrumbs to navigate to your <b>list of products</b>."
-msgstr ""
+msgstr "使用面包屑来浏览您的<b>产品清单</b>。"
 
 #. module: industry_fsm_sale
 #. openerp-web
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Use the breadcrumbs to return to your <b>task</b>."
-msgstr ""
+msgstr "使用面包屑来返回到您的<b>任务</b>。"
 
 #. module: industry_fsm_sale
 #. openerp-web
 #: code:addons/industry_fsm_sale/static/src/js/tours/industry_fsm_sale_tour.js:0
 #, python-format
 msgid "Wait for the invoice to show up"
-msgstr ""
+msgstr "等待结算单的出现"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__warning_message

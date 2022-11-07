@@ -453,6 +453,7 @@
                                            options="{'account_field': 'form_account_id', 'business_domain': 'general'}"
                                            attrs="{'invisible': ['|', ('form_flag', '=', 'liquidity'), ('form_index', '=', False)]}"/>
                                     <field name="form_date"
+                                           string="Date"
                                            attrs="{'invisible': ['|', ('form_flag', '!=', 'liquidity'), ('form_index', '=', False)], 'required': [('form_flag', '=', 'liquidity')]}"/>/>
                                 </group>
                                 <group>

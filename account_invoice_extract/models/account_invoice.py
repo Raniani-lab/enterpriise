@@ -815,30 +815,30 @@ class AccountMove(models.Model):
                 ocr_results = result['results'][0]
                 if 'full_text_annotation' in ocr_results:
                     self.message_main_attachment_id.index_content = ocr_results['full_text_annotation']
-                self.extract_word_ids.unlink()
 
                 self._save_form(ocr_results, force_write=force_write)
 
-                fields_with_boxes = ['supplier', 'date', 'due_date', 'invoice_id', 'currency', 'VAT_Number', 'total']
-                for field in fields_with_boxes:
-                    if field in ocr_results:
-                        value = ocr_results[field]
-                        data = []
-                        for word in value["words"]:
-                            ocr_chosen = value["selected_value"] == word
-                            data.append((0, 0, {
-                                "field": field,
-                                "ocr_selected": ocr_chosen,
-                                "user_selected": ocr_chosen,
-                                "word_text": word['content'],
-                                "word_page": word['page'],
-                                "word_box_midX": word['coords'][0],
-                                "word_box_midY": word['coords'][1],
-                                "word_box_width": word['coords'][2],
-                                "word_box_height": word['coords'][3],
-                                "word_box_angle": word['coords'][4],
-                            }))
-                        self.write({'extract_word_ids': data})
+                if not self.extract_word_ids:  # We don't want to recreate the boxes when the user clicks on "Reload AI data"
+                    fields_with_boxes = ['supplier', 'date', 'due_date', 'invoice_id', 'currency', 'VAT_Number', 'total']
+                    for field in fields_with_boxes:
+                        if field in ocr_results:
+                            value = ocr_results[field]
+                            data = []
+                            for word in value["words"]:
+                                ocr_chosen = value["selected_value"] == word
+                                data.append((0, 0, {
+                                    "field": field,
+                                    "ocr_selected": ocr_chosen,
+                                    "user_selected": ocr_chosen,
+                                    "word_text": word['content'],
+                                    "word_page": word['page'],
+                                    "word_box_midX": word['coords'][0],
+                                    "word_box_midY": word['coords'][1],
+                                    "word_box_width": word['coords'][2],
+                                    "word_box_height": word['coords'][3],
+                                    "word_box_angle": word['coords'][4],
+                                }))
+                            self.write({'extract_word_ids': data})
             elif result['status_code'] == NOT_READY:
                 self.extract_state = 'extract_not_ready'
             else:

@@ -5,7 +5,7 @@ import { attr, clear, many, one, Model } from '@mail/model';
 /**
  * Models the state in the scope of the module 'knowledge'.
  */
- Model({
+Model({
     name: 'Knowledge',
     recordMethods: {
         /**

@@ -5,7 +5,7 @@ import { one, Model } from '@mail/model';
 /**
  * Models specifically the remove action in the emoji picker.
  */
- Model({
+Model({
     name: 'KnowledgeEmojiPickerRemoveActionView',
     template: 'mail.KnowledgeEmojiPickerRemoveActionView',
     recordMethods: {

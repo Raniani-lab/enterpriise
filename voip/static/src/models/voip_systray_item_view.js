@@ -6,7 +6,7 @@ import { one, Model } from "@mail/model";
  * Models a button in the systray that is used to toggle the display of the
  * softphone window.
  */
- Model({
+Model({
     name: "VoipSystrayItemView",
     template: "voip.SystrayItemView",
     recordMethods: {

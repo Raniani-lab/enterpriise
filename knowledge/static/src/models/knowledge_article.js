@@ -5,7 +5,7 @@ import { attr, Model } from '@mail/model';
 /**
  * Models a knowledge article.
  */
- Model({
+Model({
     name: 'KnowledgeArticle',
     fields: {
         id: attr({

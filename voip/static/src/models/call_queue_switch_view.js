@@ -10,7 +10,7 @@ import { attr, clear, Model } from "@mail/model";
  * The term "call queue" refers to the list of the elements in the "Next
  * activities" tab.
  */
- Model({
+Model({
     name: "CallQueueSwitchView",
     template: "voip.CallQueueSwitchView",
     lifecycleHooks: {

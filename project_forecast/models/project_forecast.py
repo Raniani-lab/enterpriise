@@ -45,9 +45,7 @@ class PlanningShift(models.Model):
         return result
 
     def _name_get_fields(self):
-        fields = super(PlanningShift, self)._name_get_fields()
-        fields.insert(1, 'project_id')
-        return fields
+        return  super()._name_get_fields() + ['project_id']
 
     def _prepare_template_values(self):
         result = super(PlanningShift, self)._prepare_template_values()

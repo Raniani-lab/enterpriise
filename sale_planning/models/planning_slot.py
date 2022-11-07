@@ -21,6 +21,7 @@ class PlanningSlot(models.Model):
         help="Sales order item for which this shift will be performed. When sales orders are automatically planned,"
              " the remaining hours of the sales order item, as well as the role defined on the service, are taken into account.")
     sale_order_id = fields.Many2one('sale.order', string='Sales Order', related='sale_line_id.order_id', store=True)
+    partner_id = fields.Many2one('res.partner', related='sale_order_id.partner_id')
     role_product_ids = fields.One2many('product.template', related='role_id.product_ids')
     sale_line_plannable = fields.Boolean(related='sale_line_id.product_id.planning_enabled')
     allocated_hours = fields.Float(compute_sudo=True)
@@ -123,7 +124,7 @@ class PlanningSlot(models.Model):
 
     def _name_get_fields(self):
         """ List of fields that can be displayed in the name_get """
-        return super()._name_get_fields() + ['sale_line_id']
+        return ['partner_id'] + super()._name_get_fields() + ['sale_line_id']
 
     @api.model_create_multi
     def create(self, vals_list):

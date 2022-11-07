@@ -32,7 +32,7 @@ class PlanningSlot(models.Model):
         """ List of fields that can be displayed in the name_get """
         # Ensure this will be displayed in the right order
         name_get_fields = [item for item in super()._name_get_fields() if item not in ['sale_line_id', 'project_id']]
-        return name_get_fields + ['sale_line_id', 'project_id']
+        return name_get_fields + ['project_id', 'sale_line_id']
 
     # -----------------------------------------------------------------
     # Business methods

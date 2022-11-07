@@ -8,6 +8,7 @@ from werkzeug.urls import url_join
 
 from odoo import fields, _
 from odoo.exceptions import UserError
+from odoo.tools import float_repr
 
 BASE_URL = "https://panel.sendcloud.sc/api/v2/"
 
@@ -156,9 +157,8 @@ class SendCloud:
             parcel_items.append({
                 'description': commodity.product_id.name,
                 'quantity': commodity.qty,
-                # float_round util function does work well with numbers such as 0.7
-                'weight': round(carrier.sendcloud_convert_weight(commodity.product_id.weight), 3),
-                'value': round(commodity.monetary_value, 3),
+                'weight': float_repr(carrier.sendcloud_convert_weight(commodity.product_id.weight), 3),
+                'value': float_repr(commodity.monetary_value, 2),
                 'hs_code': hs_code[:8],
                 'origin_country': commodity.country_of_origin or '',
                 'sku': commodity.product_id.barcode or '',
@@ -229,7 +229,9 @@ class SendCloud:
             'is_return': is_return,
             'shipping_method_checkout_name': shipment_name,
             'customs_shipment_type': 4 if is_return else 2,
-            'customs_invoice_nr': picking.origin or ''
+            'customs_invoice_nr': picking.origin or '',
+            'total_order_value': picking.sale_id.amount_total,
+            'total_order_value_currency': picking.sale_id.currency_id.name
         }
         if sender_id:
             parcel_common.update({
@@ -254,7 +256,7 @@ class SendCloud:
             if not pkg.weight:
                 raise UserError(_("Ensure picking has shipping weight, if using packages, each package should have a shipping weight"))
             parcel.update({
-                'weight': pkg.weight,
+                'weight': float_repr(pkg.weight, 3),
                 'length': pkg.dimension['length'],
                 'width': pkg.dimension['width'],
                 'height': pkg.dimension['height'],

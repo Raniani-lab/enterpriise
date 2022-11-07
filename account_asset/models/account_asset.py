@@ -77,7 +77,7 @@ class AccountAsset(models.Model):
         compute='_compute_prorata_date', store=True, readonly=False,
     )
     paused_prorata_date = fields.Date(compute='_compute_paused_prorata_date')  # number of days to shift the computation of future deprecations
-    account_asset_id = fields.Many2one('account.account', string='Fixed Asset Account', compute='_compute_account_asset_id', help="Account used to record the purchase of the asset at its original price.", store=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain="[('company_id', '=', company_id), ('is_off_balance', '=', False)]")
+    account_asset_id = fields.Many2one('account.account', string='Fixed Asset Account', compute='_compute_account_asset_id', help="Account used to record the purchase of the asset at its original price.", store=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]}, domain="[('company_id', '=', company_id), ('account_type', '!=', 'off_balance')]")
     account_depreciation_id = fields.Many2one(
         comodel_name='account.account',
         string='Depreciation Account',

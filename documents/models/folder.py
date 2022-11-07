@@ -1,6 +1,6 @@
 # -*- coding: utf-8 -*-
 from odoo import _, api, Command, fields, models
-from odoo.exceptions import ValidationError
+from odoo.exceptions import UserError
 
 
 class DocumentFolder(models.Model):
@@ -15,10 +15,12 @@ class DocumentFolder(models.Model):
             'Own Documents Only may not be enabled for write groups if it is not enabled for read groups.')
     ]
 
-    @api.constrains('parent_folder_id')
-    def _check_parent_folder_id(self):
-        if not self._check_recursion():
-            raise ValidationError(_('You cannot create recursive folders.'))
+    @api.model
+    def _parent_store_update(self):
+        try:
+            super()._parent_store_update()
+        except UserError:
+            raise UserError(_("A workspace cannot have one of his child defined as Parent Workspace in order to avoid a recursion issue."))
 
     @api.model
     def default_get(self, fields):

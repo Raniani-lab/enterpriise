@@ -21,7 +21,7 @@
                 cursor: move !important;
             }
 
-            &.o-draggable--dragging {
+            &.o_dragged {
                 width: unset !important;
                 transform: rotate(-5deg);
                 box-shadow: 0 5px 25px -10px black;
@@ -47,9 +47,9 @@
 
             // CLICK HANDLING
             // On the main sibling
-            &.o-web-studio-editor--element-clicked:not(.o-draggable--dragging),
+            &.o-web-studio-editor--element-clicked:not(.o_dragged),
             // On the slave sibling
-            &.o-web-studio-editor--element-clicked:not(.o-draggable--dragging) + .o-web-studio-element-ghost {
+            &.o-web-studio-editor--element-clicked:not(.o_dragged) + .o-web-studio-element-ghost {
                 outline: 2px solid $o-brand-primary;
                 &.btn {
                     outline: 2px solid darken($o-brand-primary, 5%);

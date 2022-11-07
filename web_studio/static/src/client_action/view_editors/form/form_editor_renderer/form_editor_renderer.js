@@ -167,17 +167,11 @@ export class FormEditorRenderer extends formView.Renderer {
         useDraggable({
             ref: rootRef,
             elements: ".o-draggable",
-            onDragStart({ element }) {
-                element.classList.add("o-draggable--dragging");
-            },
             onDrag({ x, y, element }) {
                 element.classList.remove("o-draggable--drop-ready");
                 if (highlightNearestHook(element, { x, y })) {
                     element.classList.add("o-draggable--drop-ready");
                 }
-            },
-            onDragEnd({ element }) {
-                element.classList.remove("o-draggable--dragging");
             },
             onDrop: ({ element }) => {
                 const targetHook = getActiveHook(rootRef.el);

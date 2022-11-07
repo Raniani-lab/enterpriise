@@ -110,6 +110,17 @@ export default AbstractController.extend({
 
         this.isRTL = _t.database.parameters.direction === "rtl";
     },
+    /**
+     * @override
+     * Close the dialog if it is open.
+     */
+    on_detach_callback() {
+        if (this.closeDialog) {
+            this.closeDialog();
+            this.closeDialog = undefined;
+        }
+        return this._super.apply(this, arguments);
+    },
 
     //--------------------------------------------------------------------------
     // Public
@@ -242,7 +253,7 @@ export default AbstractController.extend({
         if (this.is_action_enabled('delete') && props.resId) {
             removeRecord = this._onDialogRemove.bind(this, props.resId)
         }
-        Component.env.services.dialog.add(FormViewDialog, {
+        this.closeDialog = Component.env.services.dialog.add(FormViewDialog, {
             title,
             resModel: this.modelName,
             viewId: this.dialogViews[0][0],
@@ -309,7 +320,7 @@ export default AbstractController.extend({
      */
     _openPlanDialog(context) {
         const state = this.model.get();
-        Component.env.services.dialog.add(SelectCreateDialog, {
+        this.closeDialog = Component.env.services.dialog.add(SelectCreateDialog, {
             title: _t("Plan"),
             resModel: this.modelName,
             domain: this._getPlanDialogDomain(state),

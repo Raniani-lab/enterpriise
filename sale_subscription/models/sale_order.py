@@ -4,7 +4,6 @@
 import logging
 from dateutil.relativedelta import relativedelta
 from psycopg2.extensions import TransactionRollbackError
-from psycopg2 import sql
 from ast import literal_eval
 from collections import defaultdict
 
@@ -242,7 +241,9 @@ class SaleOrder(models.Model):
         if not so_by_origin:
             return res
 
-        sql = """
+        so_with_origin.flush_recordset(fnames=['origin_order_id'])
+
+        query = """
             SELECT so.origin_order_id, array_agg(DISTINCT am.id)
             
             FROM sale_order so
@@ -252,10 +253,11 @@ class SaleOrder(models.Model):
             JOIN account_move am ON am.id = aml.move_id
             
             WHERE so.origin_order_id IN %s
+            AND am.company_id IN %s
             AND am.move_type IN ('out_invoice', 'out_refund')
             GROUP BY so.origin_order_id
         """
-        self.env.cr.execute(sql, [tuple(origin for origin in so_by_origin)])
+        self.env.cr.execute(query, [tuple(origin for origin in so_by_origin), tuple(self.env.companies.ids)])
         for origin_id, invoices_ids in self.env.cr.fetchall():
             so_by_origin[origin_id].update({
                 'invoice_ids': invoices_ids,

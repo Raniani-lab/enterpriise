@@ -1657,10 +1657,6 @@ class TestSubscription(TestSubscriptionCommon):
         subscription.action_confirm()
         subscription._create_recurring_invoice(automatic=True)
         self.assertEqual(subscription.order_line.qty_invoiced, 3, "The 3 products should be invoiced")
-        # _get_invoiced need info saved on the DB
-        invoice = subscription.order_line.invoice_lines.move_id
-        invoice.flush_recordset()
-        subscription.flush_recordset()
         subscription._get_invoiced()
         inv = subscription.invoice_ids
         inv.payment_state = 'paid'

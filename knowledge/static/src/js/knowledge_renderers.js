@@ -427,7 +427,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * @return {string} - first h1 in the body, "Untitled" if not found
      */
     _getFallbackTitle() {
-        const articleTitle = this.root.el.querySelector('.o_knowledge_editor h1');
+        const articleTitle = this.root.el.querySelector('.o_knowledge_editor .note-editable h1');
         if (articleTitle) {
             return articleTitle.textContent.trim() || this.env._t('Untitled');
         }

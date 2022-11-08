@@ -31,7 +31,6 @@ export class TemplateDialog extends Component {
             templates: [],
             templatesCount: 0,
             selectedTemplateId: null,
-            offset: 1,
             offset: 0,
             isCreating: false,
         });
@@ -102,7 +101,9 @@ export class TemplateDialog extends Component {
      * @returns {Promise<void>}
      */
     async _createSpreadsheet() {
-        if (!this._hasSelection()) return;
+        if (!this._hasSelection()) {
+            return;
+        }
         this.state.isCreating = true;
         const templateId = this.state.selectedTemplateId;
 

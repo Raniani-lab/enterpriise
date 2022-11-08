@@ -678,18 +678,6 @@ odoo.define('pos_blackbox_be.pos_blackbox_be', function (require) {
             return receipt;
         },
 
-        export_for_printing: function () {
-            var receipt = order_model_super.export_for_printing.bind(this)();
-
-            receipt = _.extend(receipt, {
-                'company': _.extend(receipt.company, {
-                    'street': this.pos.company.street
-                })
-            });
-
-            return receipt;
-        },
-
         // don't allow to add orderlines without a vat letter
         add_orderline: function (line) {
             if (line.get_vat_letter()) {

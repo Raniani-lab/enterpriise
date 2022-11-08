@@ -34,7 +34,6 @@ export class PayrollDashboardPayslipBatch extends Component {
      */
     onClickLine(batchID, batchName) {
         this.actionService.doAction({
-            name: batchName,
             type: 'ir.actions.act_window',
             name: this.env._t('Employee Payslips'),
             res_model: 'hr.payslip.run',

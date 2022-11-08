@@ -58,7 +58,6 @@ tour.register("test_sign_flow_tour",{
 }, {
     content: "Sign",
     trigger: 'button.btn-primary:contains("Sign all")',
-    run: 'click',
     extra_trigger: 'canvas.jSignature',
     run() {
         setTimeout(() => {

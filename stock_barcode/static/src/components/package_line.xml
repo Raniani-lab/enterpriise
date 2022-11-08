@@ -16,7 +16,8 @@
             <t t-call="stock_barcode.LineOwner"/>
             <t t-call="stock_barcode.LineDestinationLocation"/>
         </div>
-        <button t-on-click="openPackage" class="o_line_button o_package_content btn btn-secondary ms-2 ms-sm-4">
+        <button t-on-click="() => this.props.openPackage(this.line.package_id.id)"
+                class="o_line_button o_package_content btn btn-secondary ms-2 ms-sm-4">
             <i class="fa fa-2x fa-dropbox"/>
         </button>
     </div>

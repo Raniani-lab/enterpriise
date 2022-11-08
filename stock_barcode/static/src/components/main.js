@@ -58,16 +58,12 @@ class MainComponent extends Component {
 
         onMounted(() => {
             bus.on('barcode_scanned', this, this._onBarcodeScanned);
-            bus.on('edit-line', this, this._onEditLine);
-            bus.on('open-package', this, this._onOpenPackage);
             bus.on('refresh', this, this._onRefreshState);
             bus.on('warning', this, this._onWarning);
         });
 
         onWillUnmount(() => {
             bus.off('barcode_scanned', this, this._onBarcodeScanned);
-            bus.off('edit-line', this, this._onEditLine);
-            bus.off('open-package', this, this._onOpenPackage);
             bus.off('refresh', this, this._onRefreshState);
             bus.off('warning', this, this._onWarning);
         });
@@ -348,8 +344,7 @@ class MainComponent extends Component {
         });
     }
 
-    async _onEditLine(ev) {
-        let { line } = ev;
+    async onEditLine(line) {
         const virtualId = line.virtual_id;
         await this.env.model.save();
         // Updates the line id if it's missing, in order to open the line form view.
@@ -366,7 +361,7 @@ class MainComponent extends Component {
         this.env.services.notification.add(message, notifParams);
     }
 
-    _onOpenPackage(packageId) {
+    onOpenPackage(packageId) {
         this._inspectedPackageId = packageId;
         this.env.model.displayPackagePage();
     }

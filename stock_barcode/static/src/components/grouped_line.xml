@@ -18,7 +18,7 @@
             </div>
             <div class="o_sublines mb-2 flex-grow-1" t-if="opened">
                 <t t-foreach="line.lines" t-as="subline" t-key="subline.virtual_id">
-                    <LineComponent line="subline" displayUOM="props.displayUOM" subline="true"/>
+                    <LineComponent line="subline" displayUOM="props.displayUOM" subline="true" editLine="props.editLine"/>
                 </t>
             </div>
         </div>

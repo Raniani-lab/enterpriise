@@ -1,6 +1,5 @@
 /** @odoo-module **/
 
-import { bus } from 'web.core';
 const { Component } = owl;
 
 export default class LineComponent extends Component {
@@ -100,10 +99,6 @@ export default class LineComponent extends Component {
         return locationName.replace(new RegExp(currentLocation.name + '$'), '');
     }
 
-    edit() {
-        bus.trigger('edit-line', { line: this.line });
-    }
-
     addQuantity(quantity, ev) {
         this.env.model.updateLineQty(this.line.virtual_id, quantity);
     }
@@ -118,5 +113,5 @@ export default class LineComponent extends Component {
         this.env.model.setOnHandQuantity(this.line);
     }
 }
-LineComponent.props = ["displayUOM", "line", "subline?"];
+LineComponent.props = ["displayUOM", "line", "subline?", "editLine"];
 LineComponent.template = 'stock_barcode.LineComponent';

@@ -49,11 +49,11 @@
         </div>
         <div t-if="displayBarcodeLines &amp;&amp; (lines.length || packageLines.length)" class="o_barcode_lines"> <!-- Lines -->
             <t t-foreach="lines" t-as="line" t-key="line.virtual_id">
-                <GroupedLineComponent t-if="line.lines" line="line" displayUOM="groups.group_uom"/>
-                <LineComponent t-else="" line="line" displayUOM="groups.group_uom"/>
+                <GroupedLineComponent t-if="line.lines" line="line" displayUOM="groups.group_uom" editLine.bind="onEditLine"/>
+                <LineComponent t-else="" line="line" displayUOM="groups.group_uom" editLine.bind="onEditLine"/>
             </t>
             <t t-foreach="packageLines" t-as="line" t-key="line.virtual_id">
-                <PackageLineComponent line="line" displayUOM="false"/>
+                <PackageLineComponent line="line" displayUOM="false" openPackage.bind="onOpenPackage"/>
             </t>
         </div>
         <div t-if="displayProductPage"> <!-- Barcode Line Edit Form View -->

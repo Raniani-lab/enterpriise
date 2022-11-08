@@ -1,6 +1,5 @@
 /** @odoo-module **/
 
-import { bus } from 'web.core';
 import LineComponent from './line';
 
 export default class PackageLineComponent extends LineComponent {
@@ -26,10 +25,6 @@ export default class PackageLineComponent extends LineComponent {
             return doneQuantity / reservedQuantity;
         }
         return doneQuantity >= 0 ? 1 : 0;
-    }
-
-    openPackage() {
-        bus.trigger('open-package', this.line.package_id.id);
     }
 
     select(ev) {

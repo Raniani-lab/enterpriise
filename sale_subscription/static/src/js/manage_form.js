@@ -32,7 +32,7 @@ odoo.define('sale_subscription.manage_form', require => {
             );
             const $documentInfoList = $('<ul>');
             linkedRecordsInfo.forEach(documentInfo => {
-                if (documentInfo.active) {
+                if (documentInfo.active_subscription) {
                     $documentInfoList.append($('<li>').append($(
                         '<a>', {
                             href: documentInfo.url,

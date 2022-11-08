@@ -376,6 +376,20 @@
         <field name="view_mode">tree,form</field>
     </record>
 
+    <record id="sign_template_tag_action" model="ir.actions.act_window">
+        <field name="name">Tags</field>
+        <field name="res_model">sign.template.tag</field>
+        <field name="view_id" ref="sign_template_tag_view_tree"/>
+        <field name="help" type="html">
+            <p class="o_view_nocontent_smiling_face">
+                Create Sign Tags
+            </p>
+            <p>
+                Use Tags to manage your Sign Templates and Sign Requests
+            </p>
+        </field>
+    </record>
+
      <record id="sign_settings_action" model="ir.actions.act_window">
         <field name="name">Settings</field>
         <field name="res_model">res.config.settings</field>
@@ -405,6 +419,7 @@
     <!-- Menus -->
     <menuitem id="sign.sign_item_settings_menu" name="Settings" parent="sign.menu_sign_configuration" action="sign_settings_action" groups="sign.group_sign_manager"/>
     <menuitem id="sign.sign_item_role_menu" name="Roles" parent="sign.menu_sign_configuration" action="sign_item_role_action" groups="sign.group_sign_manager"/>
+    <menuitem id="sign.sign_template_tag_menu" name="Tags" parent="sign.menu_sign_configuration" action="sign_template_tag_action" groups="sign.group_sign_manager"/>
     <menuitem id="sign_report_green_savings" name="Green Savings" parent="sign_reports" action="sign.sign_report_green_savings_action"/>
     <menuitem id="sign_request_documents" name="All documents" parent="sign_request_menu" action="sign_request_action"/>
     <menuitem id="sign_request_waiting_for_me" name="Waiting for me" parent="sign_request_menu" action="sign_request_waiting_for_me_action"/>

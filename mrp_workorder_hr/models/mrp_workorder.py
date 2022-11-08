@@ -122,22 +122,3 @@ class MrpWorkorder(models.Model):
             duration += timer.loss_id._convert_to_duration(date_start, date_stop, timer.workcenter_id)
             date_start, date_stop, timer = interval
         return duration
-
-
-class MrpWorkcenterProductivity(models.Model):
-    _inherit = "mrp.workcenter.productivity"
-
-    employee_cost = fields.Monetary('employee_cost', default=0)
-    currency_id = fields.Many2one(related='company_id.currency_id')
-    total_cost = fields.Float('Cost', compute='_compute_total_cost')
-
-    @api.depends('employee_id', 'employee_cost')
-    def _compute_total_cost(self):
-        for time in self:
-            time.total_cost = time.employee_cost * time.duration
-
-    def _close(self):
-        for timer in self:
-            if timer.employee_id:
-                timer.employee_cost = timer.employee_id.hourly_cost
-        return super()._close()

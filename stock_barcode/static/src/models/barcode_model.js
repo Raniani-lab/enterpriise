@@ -54,7 +54,6 @@ export default class BarcodeModel extends EventBus {
 
         // UI stuff.
         this.name = this._getName();
-        this.view = 'barcodeLines'; // Could be also 'printMenu' or 'editFormView'.
         // Barcode's commands are returned by a method for override purpose.
         this.commands = this._getCommands();
     }
@@ -366,16 +365,10 @@ export default class BarcodeModel extends EventBus {
 
     // ACTIONS
 
-    displayBarcodeActions() {
-        this.view = 'actionsView';
-        this.trigger('update');
-    }
-
     /**
      * @param {integer} [lineId] if provided it checks if the line still exist (selects it or removes it from the lines' list)
      */
     async displayBarcodeLines(lineId) {
-        this.view = 'barcodeLines';
         if (lineId) { // If we pass a record id checks if the record still exist.
             const res = await this.orm.search(this.lineModel, [['id', '=', lineId]]);
             if (!res.length) { // The record was deleted, we remove the corresponding line.
@@ -386,22 +379,6 @@ export default class BarcodeModel extends EventBus {
                 this.selectLine(line);
             }
         }
-        this.trigger('update');
-    }
-
-    displayInformation() {
-        this.view = 'infoFormView';
-        this.trigger('update');
-    }
-
-    displayPackagePage() {
-        this.view = 'packagePage';
-        this.trigger('update');
-    }
-
-    displayProductPage() {
-        this.view = 'productPage';
-        this.trigger('update');
     }
 
     /**

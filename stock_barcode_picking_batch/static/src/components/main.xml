@@ -9,10 +9,10 @@
         </xpath>
         <!-- Hide the Barcode Lines part and display the Option Lines -->
         <xpath expr="//div[hasclass('o_barcode_lines')]" position="attributes">
-            <attribute name="t-if">displayBarcodeLines &amp;&amp; !isConfiguring</attribute>
+            <attribute name="t-if">state.view === 'barcodeLines' &amp;&amp; env.model.canBeProcessed &amp;&amp; !isConfiguring</attribute>
         </xpath>
         <xpath expr="//div[hasclass('o_barcode_lines')]" position="before">
-            <t t-if="displayBarcodeLines">
+            <t t-if="state.view === 'barcodeLines' &amp;&amp; env.model.canBeProcessed">
                 <t t-if="env.model.needPickingType">
                     <t t-foreach="env.model.pickingTypes" t-as="line" t-key="line.id">
                         <OptionLine line="line" additionalClass="'o_barcode_picking_type'"/>
@@ -27,7 +27,7 @@
         </xpath>
         <!-- Override footer to display "Confirm" button and hide other buttons if needed -->
         <xpath expr="//div[hasclass('o_action_buttons')]" position="attributes">
-            <attribute name="t-if">!isConfiguring</attribute>
+            <attribute name="t-if">state.view === 'barcodeLines' &amp;&amp; env.model.canBeProcessed &amp;&amp; !isConfiguring</attribute>
         </xpath>
         <xpath expr="//div[hasclass('o_barcode_control')]" position="after">
             <div t-if="isConfiguring" class="o_barcode_control d-flex">

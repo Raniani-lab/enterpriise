@@ -11,7 +11,7 @@
                     <span class="o_title navbar-text" t-esc="env.model.name"/>
                 </nav>
                 <nav class="navbar-nav">
-                    <t t-if="displayBarcodeApplication">
+                    <t t-if="state.view === 'barcodeLines'">
                         <button t-if="env.model.formViewId" t-on-click="toggleInformation" class="o_show_information btn nav-link">
                             <i class="fa fa-info-circle"/>
                         </button>
@@ -27,9 +27,9 @@
                     </button>
                 </nav>
             </div>
-            <t t-if="displayBarcodeApplication">
-                <div t-if="displayNote" class="alert alert-warning text-start mb-0">
-                    <button type="button" class="btn-close float-end" title="Close" aria-label="Close" t-on-click="hideNote"/>
+            <t t-if="state.view === 'barcodeLines'">
+                <div t-if="state.displayNote" class="alert alert-warning text-start mb-0">
+                    <button type="button" class="btn-close float-end" title="Close" aria-label="Close" t-on-click="() => this.state.displayNote = false"/>
                     <t t-esc="env.model.record.note"/>
                 </div>
                 <div class="o_barcode_lines_header row alert m-0 px-1 "
@@ -47,26 +47,26 @@
                 </div>
             </t>
         </div>
-        <div t-if="displayBarcodeLines &amp;&amp; (lines.length || packageLines.length)" class="o_barcode_lines"> <!-- Lines -->
+        <div t-if="state.view === 'barcodeLines' &amp;&amp; env.model.canBeProcessed" class="o_barcode_lines"> <!-- Lines -->
             <t t-foreach="lines" t-as="line" t-key="line.virtual_id">
-                <GroupedLineComponent t-if="line.lines" line="line" displayUOM="groups.group_uom" editLine.bind="onEditLine"/>
-                <LineComponent t-else="" line="line" displayUOM="groups.group_uom" editLine.bind="onEditLine"/>
+                <GroupedLineComponent t-if="line.lines" line="line" displayUOM="groups.group_uom" editLine.bind="onOpenProductPage"/>
+                <LineComponent t-else="" line="line" displayUOM="groups.group_uom" editLine.bind="onOpenProductPage"/>
             </t>
             <t t-foreach="packageLines" t-as="line" t-key="line.virtual_id">
                 <PackageLineComponent line="line" displayUOM="false" openPackage.bind="onOpenPackage"/>
             </t>
         </div>
-        <div t-if="displayProductPage"> <!-- Barcode Line Edit Form View -->
+        <div t-elif="state.view === 'productPage'"> <!-- Barcode Line Edit Form View -->
             <View t-props="lineFormViewProps"/>
         </div>
-        <div t-if="displayPackageContent"> <!-- Quants (in package) Kanban View -->
+        <div t-elif="state.view === 'packagePage'"> <!-- Quants (in package) Kanban View -->
             <View type="'kanban'"
                 viewId="packageKanbanViewId"
                 display="{ controlPanel: false }"
                 resModel="'stock.quant'"
                 domain="[['package_id', '=', _inspectedPackageId]]"/>
         </div>
-        <div t-if="displayInformation"> <!-- Res Model Form View -->
+        <div t-elif="state.view === 'infoFormView'"> <!-- Res Model Form View -->
             <View type="'form'" mode="'edit'"
                 viewId="env.model.formViewId"
                 display="{ controlPanel: false }"
@@ -76,7 +76,7 @@
                 onDiscard="() => this.toggleBarcodeLines()"/>
             <ChatterContainer threadModel="resModel" threadId="resId"/>
         </div>
-        <div t-if="displayBarcodeActions" class="o_barcode_settings flex-column h100">
+        <div t-elif="state.view === 'actionsView'" class="o_barcode_settings flex-column h100">
             <t t-foreach="env.model.printButtons" t-as="button" t-key="button.class">
                 <button class="btn-lg btn btn-light text-uppercase"
                     t-attf-class="{{button.class}}" t-esc="button.name"
@@ -88,9 +88,9 @@
                 Cancel
             </button>
         </div>
-        <div t-if="displayBarcodeLines" class="fixed-bottom"> <!-- Footer -->
+        <div t-if="state.view === 'barcodeLines' &amp;&amp; env.model.canBeProcessed" class="fixed-bottom"> <!-- Footer -->
             <div class="o_barcode_control o_action_buttons d-flex">
-                <button class="o_add_line btn btn-secondary text-uppercase" t-on-click="openProductPage">
+                <button class="o_add_line btn btn-secondary text-uppercase" t-on-click="onOpenProductPage">
                     <i class="fa fa-plus me-1"/> Add Product
                 </button>
                 <button t-if="env.model.displayPutInPackButton" t-on-click="putInPack"

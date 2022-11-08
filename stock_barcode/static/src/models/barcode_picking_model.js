@@ -577,6 +577,11 @@ export default class BarcodePickingModel extends BarcodeModel {
         return buttons;
     }
 
+    async save() {
+        await this._setUser(); // Set current user as picking's responsible.
+        return super.save();
+    }
+
     get selectedPackageLine() {
         return this.lastScanned.packageId && this.packageLines.find(pl => pl.result_package_id.id == this.lastScanned.packageId);
     }
@@ -595,11 +600,6 @@ export default class BarcodePickingModel extends BarcodeModel {
             return this.notification.add(_t("All products need to be packed"), { type: 'danger' });
         }
         return await super.validate();
-    }
-
-    async displayProductPage() {
-        await this._setUser(); // Set current user as picking's responsible.
-        super.displayProductPage();
     }
 
     // -------------------------------------------------------------------------

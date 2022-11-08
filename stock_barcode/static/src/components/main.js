@@ -16,7 +16,7 @@ import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_d
 import { View } from "@web/views/view";
 import { ManualBarcodeScanner } from './manual_barcode';
 
-const { Component, onMounted, onPatched, onWillStart, onWillUnmount, useSubEnv } = owl;
+const { Component, onMounted, onPatched, onWillStart, onWillUnmount, useState, useSubEnv } = owl;
 
 /**
  * Main Component
@@ -40,6 +40,10 @@ class MainComponent extends Component {
         useSubEnv({model});
         this._scrollBehavior = 'smooth';
         this.isMobile = config.device.isMobile;
+        this.state = useState({
+            view: "barcodeLines", // Could be also 'printMenu' or 'editFormView'.
+            displayNote: false,
+        });
 
         onWillStart(async () => {
             const barcodeData = await this.rpc(
@@ -48,6 +52,7 @@ class MainComponent extends Component {
             );
             this.groups = barcodeData.groups;
             this.env.model.setData(barcodeData);
+            this.state.displayNote = Boolean(this.env.model.record.note);
             this.env.model.on('process-action', this, this._onDoAction);
             this.env.model.on('notification', this, this._onNotification);
             this.env.model.on('refresh', this, this._onRefreshState);
@@ -79,34 +84,6 @@ class MainComponent extends Component {
 
     get displayHeaderInfoAsColumn() {
         return this.env.model.isDone || this.env.model.isCancelled;
-    }
-
-    get displayBarcodeApplication() {
-        return this.env.model.view === 'barcodeLines';
-    }
-
-    get displayBarcodeActions() {
-        return this.env.model.view === 'actionsView';
-    }
-
-    get displayBarcodeLines() {
-        return this.displayBarcodeApplication && this.env.model.canBeProcessed;
-    }
-
-    get displayInformation() {
-        return this.env.model.view === 'infoFormView';
-    }
-
-    get displayNote() {
-        return !this._hideNote && this.env.model.record.note;
-    }
-
-    get displayPackageContent() {
-        return this.env.model.view === 'packagePage';
-    }
-
-    get displayProductPage() {
-        return this.env.model.view === 'productPage';
     }
 
     get highlightValidateButton() {
@@ -218,24 +195,12 @@ class MainComponent extends Component {
     }
 
     async exit(ev) {
-        if (this.displayBarcodeApplication) {
+        if (this.state.view === "barcodeLines") {
             await this.env.model.save();
             this.env.config.historyBack();
         } else {
             this.toggleBarcodeLines();
         }
-    }
-
-    hideNote(ev) {
-        this._hideNote = true;
-        this.render();
-    }
-
-    async openProductPage() {
-        if (!this._editedLineParams) {
-            await this.env.model.save();
-        }
-        this.env.model.displayProductPage();
     }
 
     async print(action, method) {
@@ -265,19 +230,19 @@ class MainComponent extends Component {
         this._onRefreshState({ recordId, lineId });
     }
 
-    toggleBarcodeActions(ev) {
-        ev.stopPropagation();
-        this.env.model.displayBarcodeActions();
+    toggleBarcodeActions() {
+        this.state.view = "actionsView";
     }
 
     async toggleBarcodeLines(lineId) {
-        this._editedLineParams = undefined;
         await this.env.model.displayBarcodeLines(lineId);
+        this._editedLineParams = undefined;
+        this.state.view = "barcodeLines";
     }
 
     async toggleInformation() {
         await this.env.model.save();
-        this.env.model.displayInformation();
+        this.state.view = "infoFormView";
     }
 
     /**
@@ -298,13 +263,13 @@ class MainComponent extends Component {
      * @param {string} barcode
      */
     _onBarcodeScanned(barcode) {
-        if (this.displayBarcodeApplication) {
+        if (this.state.view === "barcodeLines") {
             this.env.model.processBarcode(barcode);
         }
     }
 
     _scrollToSelectedLine() {
-        if (!this.displayBarcodeLines) {
+        if (!this.state.view === "barcodeLines" && this.env.model.canBeProcessed) {
             this._scrollBehavior = 'auto';
             return;
         }
@@ -351,17 +316,6 @@ class MainComponent extends Component {
         });
     }
 
-    async onEditLine(line) {
-        const virtualId = line.virtual_id;
-        await this.env.model.save();
-        // Updates the line id if it's missing, in order to open the line form view.
-        if (!line.id && virtualId) {
-            line = this.env.model.pageLines.find(l => l.dummy_id === virtualId);
-        }
-        this._editedLineParams = this.env.model.getEditedLineParams(line);
-        await this.openProductPage();
-    }
-
     _onNotification(notifParams) {
         const { message } = notifParams;
         delete notifParams.message;
@@ -370,7 +324,20 @@ class MainComponent extends Component {
 
     onOpenPackage(packageId) {
         this._inspectedPackageId = packageId;
-        this.env.model.displayPackagePage();
+        this.state.view = "packagePage";
+    }
+
+    async onOpenProductPage(line) {
+        await this.env.model.save();
+        if (line) {
+            const virtualId = line.virtual_id;
+            // Updates the line id if it's missing, in order to open the line form view.
+            if (!line.id && virtualId) {
+                line = this.env.model.pageLines.find(l => l.dummy_id === virtualId);
+            }
+            this._editedLineParams = this.env.model.getEditedLineParams(line);
+        }
+        this.state.view = "productPage";
     }
 
     async _onRefreshState(paramsRefresh) {
@@ -379,6 +346,7 @@ class MainComponent extends Component {
         const result = await this.rpc(route, params);
         await this.env.model.refreshCache(result.data.records);
         await this.toggleBarcodeLines(lineId);
+        this.render();
     }
 
     /**

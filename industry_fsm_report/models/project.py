@@ -71,10 +71,11 @@ class Task(models.Model):
     def _compute_worksheet_template_id(self):
         # Change worksheet when the project changes, not project.allow_worksheet (YTI To confirm)
         for task in self:
-            if task.project_id.allow_worksheets:
-                task.worksheet_template_id = task.project_id.worksheet_template_id.id
-            else:
-                task.worksheet_template_id = False
+            if not task.worksheet_template_id:
+                if task.project_id.allow_worksheets:
+                    task.worksheet_template_id = task.project_id.worksheet_template_id.id
+                else:
+                    task.worksheet_template_id = False
 
     @api.depends('worksheet_template_id')
     def _compute_worksheet_count(self):

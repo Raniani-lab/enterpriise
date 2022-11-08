@@ -9,6 +9,12 @@ class TestWorksheet(TransactionCase):
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
+
+        # Enable the company setting
+        cls.env['res.config.settings'].create({
+            'group_subtask_project': True
+        }).execute()
+
         cls.worksheet_template = cls.env['worksheet.template'].create({
             'name': 'New worksheet',
             'color': 4,
@@ -33,12 +39,13 @@ class TestWorksheet(TransactionCase):
 
     def test_project_worksheet_template_propagation(self):
         """
-            1) Test project template propagation when changing task project
+            1) Test project template propagation when changing task project with empty worksheet template
             2) Test project template propagation when creating new task
         """
-        self.assertEqual(self.task.worksheet_template_id, self.fsm_project.worksheet_template_id)
-        self.assertTrue(self.second_fsm_project.worksheet_template_id)
-        self.assertNotEqual(self.task.worksheet_template_id, self.second_fsm_project.worksheet_template_id)
+        self.task.write({
+            'worksheet_template_id': False,
+        })
+        self.assertFalse(self.task.worksheet_template_id)
 
         self.task.write({
             'project_id': self.second_fsm_project.id,
@@ -52,3 +59,27 @@ class TestWorksheet(TransactionCase):
         })
         self.assertEqual(secondTask.worksheet_template_id, self.second_fsm_project.worksheet_template_id)
         self.assertTrue(secondTask.allow_worksheets)
+
+    def test_subtasks_worksheet_template_id_duplicate(self):
+        self.task.write({
+            'project_id': self.second_fsm_project.id,
+        })
+
+        self.first_subtask = self.env['project.task'].create({
+            'parent_id': self.task.id,
+            'name': '%s: substask1' % (self.task.name,),
+        })
+
+        self.second_subtask = self.env['project.task'].create({
+            'parent_id': self.task.id,
+            'name': '%s: subtask2' % (self.task.name,),
+            'worksheet_template_id': self.worksheet_template.id
+        })
+
+        subtask1_worksheet_template_id = self.second_fsm_project.tasks[-1].child_ids[0].worksheet_template_id
+        subtask2_worksheet_template_id = self.second_fsm_project.tasks[-1].child_ids[1].worksheet_template_id
+        task_copy = self.second_fsm_project.tasks[-1].copy()
+        subtask1_copy_worksheet_template_id = task_copy.child_ids[0].worksheet_template_id
+        subtask2_copy_worksheet_template_id = task_copy.child_ids[1].worksheet_template_id
+        self.assertEqual(subtask1_copy_worksheet_template_id, subtask1_worksheet_template_id, "When duplicating a task, subtasks should keep the same worksheet template that we set before.")
+        self.assertEqual(subtask2_copy_worksheet_template_id, subtask2_worksheet_template_id, "When duplicating a task, subtasks should keep the same worksheet template that we set before.")

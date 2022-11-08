@@ -875,7 +875,7 @@ class AccountAsset(models.Model):
         ctx = dict(self._context,
                 asset_type=asset_type,
                 default_asset_type=asset_type)
-        ctx.pop('default_move_type')
+        ctx.pop('default_move_type', None)
         action = {
             'name': _('Asset'),
             'view_mode': ','.join(view_mode),

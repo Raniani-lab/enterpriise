@@ -264,7 +264,7 @@ class WorksheetTemplate(models.Model):
                             <field name="x_%s_id"/>
                         </h1>
                         <group>
-                            <field name="x_comments"/>
+                            <field name="x_comments" placeholder="Add details about your intervention..."/>
                         </group>
                     </sheet>
                 </form>

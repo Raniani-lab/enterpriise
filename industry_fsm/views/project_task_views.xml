@@ -210,7 +210,7 @@
         <field name="arch" type="xml">
             <form string="comment" create="false" delete="false">
                 <sheet>
-                    <field name="comment"/>
+                    <field name="comment" placeholder="Add details about your intervention..."/>
                     <field name="name" invisible="1"/>
                 </sheet>
             </form>

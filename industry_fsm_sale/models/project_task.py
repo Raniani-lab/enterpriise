@@ -72,7 +72,7 @@ class Task(models.Model):
     @api.depends('partner_phone', 'partner_id.phone')
     def _compute_is_task_phone_update(self):
         for task in self:
-            task.is_task_phone_update = task.partner_phone != task.partner_id.phone
+            task.is_task_phone_update = task.partner_id.phone and task.partner_phone != task.partner_id.phone
 
     def _compute_quotation_count(self):
         quotation_data = self.sudo().env['sale.order'].read_group([('task_id', 'in', self.ids)], ['task_id'], ['task_id'])

@@ -285,7 +285,7 @@ var ManualModel = BasicModel.extend({
         })
     },
     /**
-    * Prepares a the reconciliation propositions for a line from the data
+    * Prepares a reconciliation propositions for a line from the data
     * returned by the server (get_reconciliation_dict_from_model).
     */
     prepare_propositions_from_server: function (widget_line, server_lines) {

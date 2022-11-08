@@ -364,13 +364,6 @@ export default class BarcodeModel extends EventBus {
         return true;
     }
 
-    get viewsWidgetData() {
-        return {
-            resModel: this.lineModel,
-            additionalContext: this._getNewLineDefaultContext(),
-        };
-    }
-
     // ACTIONS
 
     displayBarcodeActions() {

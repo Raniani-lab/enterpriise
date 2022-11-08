@@ -109,13 +109,6 @@ class MainComponent extends Component {
         return this.env.model.view === 'productPage';
     }
 
-    get lineFormViewData() {
-        const data = this.env.model.viewsWidgetData;
-        data.context = data.additionalContext;
-        data.resId = this._editedLineParams && this._editedLineParams.currentId;
-        return data;
-    }
-
     get highlightValidateButton() {
         return this.env.model.highlightValidateButton;
     }
@@ -126,6 +119,20 @@ class MainComponent extends Component {
 
     get isTransfer() {
         return this.currentSourceLocation && this.currentDestinationLocation;
+    }
+
+    get lineFormViewProps() {
+        return {
+            resId: this._editedLineParams && this._editedLineParams.currentId,
+            resModel: this.env.model.lineModel,
+            context: this.env.model._getNewLineDefaultContext(),
+            viewId: this.env.model.lineFormViewId,
+            display: { controlPanel: false },
+            mode: "edit",
+            type: "form",
+            onSave: (record) => this.saveFormView(record),
+            onDiscard: () => this.toggleBarcodeLines(),
+        };
     }
 
     get lines() {

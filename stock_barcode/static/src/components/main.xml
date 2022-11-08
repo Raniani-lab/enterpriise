@@ -57,14 +57,7 @@
             </t>
         </div>
         <div t-if="displayProductPage"> <!-- Barcode Line Edit Form View -->
-            <View type="'form'" mode="'edit'"
-                viewId="env.model.lineFormViewId"
-                resModel="lineFormViewData.resModel"
-                resId="lineFormViewData.resId"
-                display="{ controlPanel: false }"
-                context="lineFormViewData.context"
-                onSave="(record) => this.saveFormView(record)"
-                onDiscard="() => this.toggleBarcodeLines()"/>
+            <View t-props="lineFormViewProps"/>
         </div>
         <div t-if="displayPackageContent"> <!-- Quants (in package) Kanban View -->
             <View type="'kanban'"

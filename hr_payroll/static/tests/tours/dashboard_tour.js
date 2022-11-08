@@ -20,16 +20,12 @@ tour.register('payroll_dashboard_ui_tour', {
         trigger: 'tr.o_data_row td[name="name"]',
     },
     {
-        content: "Open contract history",
-        trigger: 'button[name="action_open_contract_history"]',
-    },
-    {
-        content: "Create new contract",
-        trigger: 'button[name="hr_contract_view_form_new_action"]',
+        content: "Open new contract form",
+        trigger: 'button[name="action_open_contract"]',
     },
     {
         content: "Input contract name",
-        trigger: '.o_field_char[name="name"] input',
+        trigger: '.modal-content .o_field_char[name="name"] input',
         run: 'text Laurie\'s Contract',
     },
     {
@@ -52,12 +48,16 @@ tour.register('payroll_dashboard_ui_tour', {
         trigger: 'button.o_form_button_save',
     },
     {
+        content: "Go on the contract",
+        trigger: 'button[name="action_open_contract"]',
+    },
+    {
         content: "Set contract as running",
         trigger: 'button[data-value="open"]',
     },
     {
         content: "Go back to dashboard",
-        trigger: 'li.breadcrumb-item:first',
+        trigger: 'a[data-menu-xmlid="hr_work_entry_contract_enterprise.menu_hr_payroll_root"]',
     },
     {
         content: "Check that the no contract error is gone",

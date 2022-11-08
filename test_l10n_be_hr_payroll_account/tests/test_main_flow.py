@@ -245,11 +245,12 @@ class TestHR(common.TransactionCase):
             contract_form.transport_mode_car = True
             contract_form.car_id = car
         contract_form.wage = wage
-        contract_form.state = state
         sign_template = self.env['sign.template'].search([], limit=1)
         contract_form.hr_responsible_id = self.user
         contract_form.sign_template_id = sign_template
         contract_form.contract_update_template_id = sign_template
+        contract_form.save()
+        contract_form.state = state
         return contract_form.save()
 
     def create_work_entry_type(self, user, name, code, is_leave=False, leave_type=None):

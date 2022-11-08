@@ -868,18 +868,13 @@ Tour.register('hr_contract_salary_tour_2', {
             run: 'click',
         },
         {
-            content: "Create",
-            trigger: '.o_statusbar_buttons button[name="hr_contract_view_form_new_action"]',
-            run: 'click',
-        },
-        {
             content: "Contract Reference",
-            trigger: '.oe_title [name="name"] input',
+            trigger: '.modal-content .o_field_widget[name="name"] input',
             run: 'text Mitchell Admin PFI Contract',
         },
         {
             content: "Salary Structure Type",
-            trigger: '.o_field_widget.o_field_many2one[name=structure_type_id]',
+            trigger: '.modal-content .o_field_widget.o_field_many2one[name=structure_type_id]',
             run: function (actions) {
                 actions.text("CP200: Belgian Employee", this.$anchor.find("input"));
             },
@@ -966,6 +961,16 @@ Tour.register('hr_contract_salary_tour_2', {
             content: "Contract Information",
             trigger: "div.o_field_boolean[name='ip'] input",
             run: "click",
+        },
+        {
+            content: "Save Contract",
+            trigger: '.modal-content .o_form_button_save',
+            run: 'click',
+        },
+        {
+            content: "Go on Contract",
+            trigger: '.oe_button_box .oe_stat_button:contains("In Contract Since")',
+            run: 'click',
         },
         {
             content: "Generate Simulation Link",

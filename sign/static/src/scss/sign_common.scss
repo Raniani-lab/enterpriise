@@ -134,6 +134,11 @@
         color: $o-main-text-color;
         .o_thankyou_message {
             margin-top: 14px;
+            &.alert {
+                border-radius: 0;
+                margin-left: -1rem !important;
+                margin-right: -1rem !important;
+            }
         }
         .o_thankyou_link {
             margin-top: 25px;

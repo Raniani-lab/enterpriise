@@ -103,6 +103,9 @@
 
     <div t-name="sign.thank_you_dialog">
         <div class="o_thankyou_message" t-out="widget.options.message"/>
+        <t t-if="widget.options.suggestSignUp">
+            <div class="o_thankyou_message alert alert-success py-4">Sign up for Odoo Sign to manage your own documents and signature requests.</div>
+        </t>
         <div class="o_thankyou_message" t-if="widget.has_next_document">Other documents have to be signed.</div>
     </div>
 

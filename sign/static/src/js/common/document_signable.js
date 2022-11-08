@@ -848,6 +848,7 @@ export const ThankYouDialog = Dialog.extend({
     options.size = options.size || "medium";
     options.technical = false;
     options.buttons = [];
+    options.suggestSignUp = (session.user_id === false);
     if (RedirectURL) {
       // check if url contains http:// or https://
       if (!/^(f|ht)tps?:\/\//i.test(RedirectURL)) {
@@ -863,10 +864,20 @@ export const ThankYouDialog = Dialog.extend({
     } else {
       const openDocumentButton = {
         text: _t("View Document"),
-        classes: "btn-primary",
+        classes: (options.suggestSignUp ? "btn-secondary" : "btn-primary"),
         click: this.viewDocument,
       };
       options.buttons.push(openDocumentButton);
+      if (options.suggestSignUp) {
+        const signUpButton = {
+          text: _t("Sign Up for free"),
+          classes: "btn-primary",
+          click: function () {
+            window.open('https://www.odoo.com/trial?selected_app=sign&utm_source=db&utm_medium=sign', '_blank');
+          },
+        };
+        options.buttons.push(signUpButton);
+      }
     }
     this.options = options;
     this.has_next_document = false;

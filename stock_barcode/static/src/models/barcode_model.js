@@ -1134,14 +1134,14 @@ export default class BarcodeModel extends EventBus {
         this.trigger('update');
     }
 
-    _processLocation(barcodeData) {
+    async _processLocation(barcodeData) {
         if (barcodeData.location) {
-            this._processLocationSource(barcodeData);
+            await this._processLocationSource(barcodeData);
             this.trigger('update');
         }
     }
 
-    _processLocationSource(barcodeData) {
+    async _processLocationSource(barcodeData) {
         this.location = barcodeData.location;
         barcodeData.stopped = true;
         // Unselects the line.

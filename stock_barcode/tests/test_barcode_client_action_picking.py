@@ -1814,6 +1814,88 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             {'product_id': self.productlot1.id, 'lot_ids': lot01.ids, 'quantity_done': 1},
         ])
 
+    def test_split_line_reservation(self):
+        """ Tests new lines created when a line is split to take
+            from qty in a different location than the reserved
+            The following cases:
+            - productlot1 available at given location
+            - product1 partially available at given location
+            - product2 not available
+        """
+        self.clean_access_rights()
+        self.env.user.write({'groups_id': [(4, self.env.ref('stock.group_production_lot').id, 0)]})
+        self.env.user.write({'groups_id': [(4, self.env.ref('stock.group_tracking_lot').id, 0)]})
+        self.env.user.write({'groups_id': [(4, self.env.ref('stock.group_stock_multi_locations').id, 0)]})
+        self.env.user.write({'groups_id': [(4, self.env.ref('stock.group_adv_location').id, 0)]})
+        lot01 = self.env['stock.lot'].create({
+            'name': "LOT01",
+            'product_id': self.productlot1.id,
+            'company_id': self.env.company.id,
+        })
+
+        lot02 = self.env['stock.lot'].create({
+            'name': "LOT02",
+            'product_id': self.productlot1.id,
+            'company_id': self.env.company.id,
+        })
+
+        lot03 = self.env['stock.lot'].create({
+            'name': "LOT03",
+            'product_id': self.productlot1.id,
+            'company_id': self.env.company.id,
+        })
+        # all 3 products are available in WH-STOCK
+        self.env['stock.quant']._update_available_quantity(self.productlot1, self.stock_location, 5, lot_id=lot01)
+        self.env['stock.quant']._update_available_quantity(self.productlot1, self.stock_location, 5, lot_id=lot02)
+        self.env['stock.quant']._update_available_quantity(self.product1, self.stock_location, 5)
+        self.env['stock.quant']._update_available_quantity(self.product2, self.stock_location, 5)
+        # lots are available in shelfs
+        self.env['stock.quant']._update_available_quantity(self.productlot1, self.shelf1, 2, lot_id=lot02)
+        self.env['stock.quant']._update_available_quantity(self.productlot1, self.shelf2, 2, lot_id=lot03)
+        # product 1 has some qty in shelf1
+        self.env['stock.quant']._update_available_quantity(self.product1, self.shelf1, 1)
+        # create delivery
+        picking_form = Form(self.env['stock.picking'])
+        picking_form.picking_type_id = self.picking_type_out
+        with picking_form.move_ids_without_package.new() as move:
+            move.product_id = self.productlot1
+            move.product_uom_qty = 5
+        with picking_form.move_ids_without_package.new() as move:
+            move.product_id = self.product1
+            move.product_uom_qty = 4
+        with picking_form.move_ids_without_package.new() as move:
+            move.product_id = self.product2
+            move.product_uom_qty = 3
+
+        delivery = picking_form.save()
+        delivery.action_confirm()
+        delivery.action_assign()
+
+        url = self._get_client_action_url(delivery.id)
+        self.start_tour(url, 'test_split_line_reservation', login='admin', timeout=180)
+        productlot_mls = delivery.move_ids.filtered(lambda m: m.product_id.id == self.productlot1.id).move_line_ids
+        product1_mls = delivery.move_ids.filtered(lambda m: m.product_id.id == self.product1.id).move_line_ids
+        product2_mls = delivery.move_ids.filtered(lambda m: m.product_id.id == self.product2.id).move_line_ids
+
+        # Checks the move lines' quantities.
+        self.assertEqual([ml.lot_id.name for ml in productlot_mls], ['LOT01', 'LOT02', 'LOT02', 'LOT03'])
+        self.assertRecordValues(productlot_mls, [
+            {'reserved_uom_qty': 1, 'qty_done': 1, 'location_id': self.stock_location.id},  # LOT01
+            {'reserved_uom_qty': 1, 'qty_done': 1, 'location_id': self.stock_location.id},  # LOT02
+            {'reserved_uom_qty': 2, 'qty_done': 2, 'location_id': self.shelf1.id},  # LOT02
+            {'reserved_uom_qty': 1, 'qty_done': 1, 'location_id': self.shelf2.id},  # LOT03
+        ])
+        self.assertRecordValues(product1_mls, [
+            {'reserved_uom_qty': 2, 'qty_done': 2, 'location_id': self.stock_location.id},
+            # Only 1 quantity was available for reservation in shelf1
+            {'reserved_uom_qty': 1, 'qty_done': 2, 'location_id': self.shelf1.id},
+        ])
+        self.assertRecordValues(product2_mls, [
+            {'reserved_uom_qty': 2, 'qty_done': 2, 'location_id': self.stock_location.id},
+            # No qty to reserve in shelf1.
+            {'reserved_uom_qty': 0, 'qty_done': 1, 'location_id': self.shelf1.id},
+        ])
+
     def test_gs1_reserved_delivery(self):
         """ Process a delivery by scanning multiple quantity multiple times.
         """

@@ -80,15 +80,7 @@ patch(BarcodePickingModel.prototype, 'stock_barcode_mrp_subcontracting', {
             'action_show_subcontract_details',
             [[line.move_id]]
         );
-        const options = {
-            on_no_action: () => {
-                this.trigger('notification', {
-                    message: _t('Nothing to show'),
-                    type: 'danger',
-                });
-            }
-        };
-        return {action, options};
+        return action;
     },
 
     _getCommands() {

@@ -101,49 +101,10 @@ function assertLineIsHighlighted ($line, expected, options) {
     helper.assert($line.hasClass(CSSClass), expected, message);
 }
 
-/**
- * Checks the line is highlighted in green.
- *
- * @param {jQueryElement} $line
- * @param {boolean} expected define if the line must be highlighted or not
- */
-function assertLineIsHighlightedGreen ($line, expected) {
-    helper.assertLineIsHighlighted($line, expected, {
-        class: '_green',
-        message: 'line should be highlighted in green',
-    });
-}
-
-/**
- * Checks the line is highlighted in red.
- *
- * @param {jQueryElement} $line
- * @param {boolean} expected define if the line must be highlighted or not
- */
-function assertLineIsHighlightedRed ($line, expected) {
-    assertLineIsHighlighted($line, expected, {
-        class: '_red',
-        message: 'line should be highlighted in red',
-    });
-}
-
-function assertLocationHighlight (expected) {
-    var $locationElem = $('.o_barcode_summary_location_src');
-    // helper.assert($locationElem.hasClass('o_strong'), expected, 'Location source is not bold');
-    helper.assert(
-        $locationElem.hasClass('o_barcode_summary_location_highlight'),
-        expected,
-        'Location source is not highlighted'
-    );
-}
-
 return Object.assign({}, helper, {
     assertLineBelongTo: assertLineBelongTo,
     assertLinesBelongTo: assertLinesBelongTo,
     assertLineIsHighlighted: assertLineIsHighlighted,
-    assertLineIsHighlightedGreen: assertLineIsHighlightedGreen,
-    assertLineIsHighlightedRed: assertLineIsHighlightedRed,
-    assertLocationHighlight: assertLocationHighlight,
     getLines: getLines,
 });
 

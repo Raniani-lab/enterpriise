@@ -4,10 +4,6 @@ const { Component } = owl;
 
 
 export default class OptionLine extends Component {
-    setup() {
-        this._isSelected = false;
-    }
-
     get isSelected() {
         if (this.env.model.needPickingType) {
             return this.env.model.selectedPickingTypeId === this.props.line.id;

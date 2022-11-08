@@ -900,11 +900,6 @@ export default class BarcodeModel extends EventBus {
                 result.match = true;
             }
         }
-        const quantPackage = recordByData.get('stock.quant.package');
-        if (this.groups.group_tracking_lot && quantPackage) {
-            result.package = quantPackage;
-            result.match = true;
-        }
 
         if (!result.match && this.packageTypes.length) {
             // If no match, check if the barcode begins with a package type's barcode.

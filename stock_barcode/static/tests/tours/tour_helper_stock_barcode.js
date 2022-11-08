@@ -238,22 +238,6 @@ function assertKanbanRecordsCount(expected) {
     assert(kanbanRecords.length, expected, 'Wrong number of cards');
 }
 
-function pressShift() {
-    document.querySelector('.o_barcode_client_action').dispatchEvent(
-        new window.KeyboardEvent(
-            'keydown', { bubbles: true, key: 'Shift' },
-        )
-    );
-}
-
-function releaseShift() {
-    document.querySelector('.o_barcode_client_action').dispatchEvent(
-        new window.KeyboardEvent(
-            'keyup', { bubbles: true, key: 'Shift' },
-        )
-    );
-}
-
 return {
     assert: assert,
     assertButtonIsVisible: assertButtonIsVisible,
@@ -282,8 +266,6 @@ return {
     fail: fail,
     getLine: getLine,
     getSubline,
-    pressShift: pressShift,
-    releaseShift: releaseShift,
     triggerKeydown: triggerKeydown,
 };
 

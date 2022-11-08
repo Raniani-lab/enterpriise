@@ -62,7 +62,6 @@ class MainComponent extends Component {
         onMounted(() => {
             bus.on('barcode_scanned', this, this._onBarcodeScanned);
             bus.on('edit-line', this, this._onEditLine);
-            bus.on('exit', this, this.exit);
             bus.on('open-package', this, this._onOpenPackage);
             bus.on('refresh', this, this._onRefreshState);
             bus.on('warning', this, this._onWarning);
@@ -71,7 +70,6 @@ class MainComponent extends Component {
         onWillUnmount(() => {
             bus.off('barcode_scanned', this, this._onBarcodeScanned);
             bus.off('edit-line', this, this._onEditLine);
-            bus.off('exit', this, this.exit);
             bus.off('open-package', this, this._onOpenPackage);
             bus.off('refresh', this, this._onRefreshState);
             bus.off('warning', this, this._onWarning);

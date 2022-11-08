@@ -83,7 +83,7 @@
                 <t t-call="stock_barcode.LineSourceLocation"/>
                 <!-- Hides product's name if it's a subline, as it is already on the parent line. -->
                 <t t-if="!props.subline" t-call="stock_barcode.LineTitle"/>
-                <div t-if="isTracked and requireLotNumber" name="lot">
+                <div t-if="isTracked" name="lot">
                     <i class="fa fa-fw fa-barcode" t-attf-class="{{nextExpected === 'lot' ? 'o_next_expected' : ''}}"/>
                     <span class="o_line_lot_name" t-esc="lotName"/>
                 </div>

@@ -77,10 +77,6 @@ export default class LineComponent extends Component {
         return this.props.line;
     }
 
-    get requireLotNumber() {
-        return true;
-    }
-
     get sourceLocationPath() {
         return this._getLocationPath(this.env.model._defaultLocation(), this.line.location_id);
     }

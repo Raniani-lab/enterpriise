@@ -7,7 +7,8 @@
         <field name="inherit_id" ref="l10n_be_hr_payroll.res_config_settings_view_form"/>
         <field name="arch" type="xml">
             <xpath expr="//div[@id='l10n_be_hr_payroll']" position="inside">
-                <div class="col-lg-6 col-12 o_setting_box" id="withholding_tax_exemption_accounts">
+                <div class="col-lg-6 col-12 o_setting_box" groups="account.group_account_user"
+                    id="withholding_tax_exemption_accounts">
                     <div class="o_setting_left_pane"/>
                     <div class="o_setting_right_pane">
                         <span class="o_form_label">Withholding Taxes Exemption</span>

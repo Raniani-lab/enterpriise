@@ -10,6 +10,7 @@ import { FileUploadProgressKanbanRecord } from "@web/core/file_upload/file_uploa
 import { DocumentsKanbanRecord } from "./documents_kanban_record";
 import { DocumentsActionHelper } from "../helper/documents_action_helper";
 import { DocumentsAttachmentViewer } from "../helper/documents_attachment_viewer";
+import { useHotkey } from "@web/core/hotkeys/hotkey_hook";
 
 const { useRef } = owl;
 
@@ -19,6 +20,14 @@ export class DocumentsKanbanRenderer extends KanbanRenderer {
         this.root = useRef("root");
         const { uploads } = useService("file_upload");
         this.documentUploads = uploads;
+
+        const handler = () => {
+            const allSelected = this.props.list.selection.length === this.props.list.records.length;
+            this.props.list.records.forEach((record) => {
+                record.toggleSelection(!allSelected);
+            })
+        };
+        useHotkey("control+a", handler);
     }
 
     /**

@@ -40,12 +40,6 @@ export class FormEditorCompiler extends formView.Compiler {
         };
         this.avatars = [];
 
-        let buttonBox = xml.querySelector("div.oe_button_box");
-        const buttonHook = createElement("ButtonHook", { add_buttonbox: !buttonBox });
-        if (buttonBox) {
-            buttonBox.prepend(buttonHook);
-        }
-
         const compiled = super.compile(key, params);
 
         const sheetBg = compiled.querySelector(".o_form_sheet_bg");
@@ -71,13 +65,15 @@ export class FormEditorCompiler extends formView.Compiler {
             parent.removeAttribute("t-if");
         }
 
+        let buttonBox = compiled.querySelector("ButtonBox");
+        const buttonHook = createElement("ButtonHook", { add_buttonbox: !buttonBox });
         if (!buttonBox) {
-            buttonBox = createElement("div", { class: "oe_button_box" });
-            buttonBox.prepend(buttonHook);
-            const compiledButtonBox = this.compileButtonBox(buttonBox, {});
+            buttonBox = createElement("ButtonBox");
+            buttonBox.prepend(createElement("t", { "t-set-slot": `slot` }));
             const el = compiled.querySelector(".o_form_sheet") || compiled;
-            el.prepend(compiledButtonBox);
+            el.prepend(buttonBox);
         }
+        buttonBox.querySelector("t[t-set-slot]").prepend(buttonHook);
 
         const fieldStatus = compiled.querySelector(`Field[type="'statusbar'"]`); // change selector at some point
         if (!fieldStatus) {

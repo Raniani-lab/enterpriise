@@ -5,21 +5,25 @@ import { StreamPostCommentsInstagram } from './stream_post_comments';
 
 import { patch } from '@web/core/utils/patch';
 
+const { useEffect } = owl;
+
 patch(StreamPostKanbanRecord.prototype, 'social_instagram.StreamPostKanbanRecord', {
 
-    /**
-     * FIXME: this is temporary, waiting for these implemention details to be removed from the arch.
-     *
-     * @override
-     */
-    get renderingContext() {
-        return {
-            ...this._super(),
-            _onInstagramCommentsClick: () => this._onInstagramCommentsClick(),
-        };
+    setup() {
+        this._super(...arguments);
+        useEffect((commentEl) => {
+            if (commentEl) {
+                const onInstagramCommentsClick = this._onInstagramCommentsClick.bind(this);
+                commentEl.addEventListener('click', onInstagramCommentsClick);
+                return () => {
+                    commentEl.removeEventListener('click', onInstagramCommentsClick);
+                };
+            }
+        }, () => [this.rootRef.el.querySelector('.o_social_instagram_comments')]);
     },
 
-    _onInstagramCommentsClick() {
+    _onInstagramCommentsClick(ev) {
+        ev.stopPropagation();
         const postId = this.record.id.raw_value;
         this.rpc('/social_instagram/get_comments', {
             stream_post_id: postId,

@@ -5,21 +5,25 @@ import { StreamPostCommentsLinkedin } from './stream_post_comments';
 
 import { patch } from '@web/core/utils/patch';
 
+const { useEffect } = owl;
+
 patch(StreamPostKanbanRecord.prototype, 'social_linkedin.StreamPostKanbanRecord', {
 
-    /**
-     * FIXME: this is temporary, waiting for these implemention details to be removed from the arch.
-     *
-     * @override
-     */
-    get renderingContext() {
-        return {
-            ...this._super(),
-            _onLinkedInCommentsClick: () => this._onLinkedInCommentsClick(),
-        };
+    setup() {
+        this._super(...arguments);
+        useEffect((commentEl) => {
+            if (commentEl) {
+                const onLinkedInCommentsClick = this._onLinkedInCommentsClick.bind(this);
+                commentEl.addEventListener('click', onLinkedInCommentsClick);
+                return () => {
+                    commentEl.removeEventListener('click', onLinkedInCommentsClick);
+                };
+            }
+        }, () => [this.rootRef.el.querySelector('.o_social_linkedin_comments')]);
     },
 
-    _onLinkedInCommentsClick() {
+    _onLinkedInCommentsClick(ev) {
+        ev.stopPropagation();
         const postId = this.record.id.raw_value;
         this.rpc('/social_linkedin/get_comments', {
             stream_post_id: postId,

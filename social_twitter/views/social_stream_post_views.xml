@@ -64,14 +64,12 @@
             <xpath expr="//div[hasclass('o_social_stream_post_message')]" position="inside">
                 <div class="o_social_stream_post_twitter_stats px-2 d-flex justify-content-around" t-if="record.media_type.raw_value === 'twitter'">
                     <div class="d-flex justify-content-around">
-                        <div t-attf-class="o_social_twitter_likes o_social_subtle_btn ps-2 pe-3 #{record.twitter_user_likes.raw_value ? 'o_social_twitter_user_likes' : ''}"
-                             t-on-click.prevent="_onTwitterTweetLike">
+                        <div t-attf-class="o_social_twitter_likes o_social_subtle_btn ps-2 pe-3 #{record.twitter_user_likes.raw_value ? 'o_social_twitter_user_likes' : ''}">
                             <i class="fa fa-heart me-1" title="Likes"/>
                             <field name="twitter_likes_count" t-if="record.twitter_likes_count.value !== '0'" class="fw-bold"/>
                         </div>
 
-                        <div class="o_social_twitter_comments o_social_comments o_social_subtle_btn px-4"
-                            t-on-click.prevent="_onTwitterCommentsClick">
+                        <div class="o_social_twitter_comments o_social_comments o_social_subtle_btn px-4">
                             <i class="fa fa-comments me-1" title="Comments"/>
                         </div>
                     </div>
@@ -90,14 +88,12 @@
                                 </t>
                             </a>
                             <div class="dropdown-menu kanban_ignore_dropdown" role="menu">
-                                <a class="dropdown-item o_social_twitter_retweet" href="#" role="button"
-                                   t-on-click.prevent="_onTwitterRetweet">
+                                <a class="dropdown-item o_social_twitter_retweet" href="#" role="button">
                                     <i class="fa fa-retweet me-1" title="Retweet a tweet"/>
                                     <span t-if="record.twitter_can_retweet.raw_value">Retweet</span>
                                     <span t-else="">Undo Retweet</span>
                                 </a>
-                                <a class="dropdown-item o_social_twitter_quote" href="#" role="button"
-                                   t-on-click.prevent="_onTwitterQuote">
+                                <a class="dropdown-item o_social_twitter_quote" href="#" role="button">
                                     <i class="fa fa-pencil me-1" title="Quote a tweet"/>
                                     <span>Quote Tweet</span>
                                 </a>

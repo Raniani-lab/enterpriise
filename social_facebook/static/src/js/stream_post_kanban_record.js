@@ -5,22 +5,34 @@ import { StreamPostCommentsFacebook } from './stream_post_comments';
 
 import { patch } from '@web/core/utils/patch';
 
+const { useEffect } = owl;
+
 patch(StreamPostKanbanRecord.prototype, 'social_facebook.StreamPostKanbanRecord', {
 
-    /**
-     * FIXME: this is temporary, waiting for these implemention details to be removed from the arch.
-     *
-     * @override
-     */
-    get renderingContext() {
-        return {
-            ...this._super(),
-            _onFacebookCommentsClick: () => this._onFacebookCommentsClick(),
-            _onFacebookPostLike: () => this._onFacebookPostLike(),
-        };
+    setup() {
+        this._super(...arguments);
+        useEffect((commentEl) => {
+            if (commentEl) {
+                const onFacebookCommentsClick = this._onFacebookCommentsClick.bind(this);
+                commentEl.addEventListener('click', onFacebookCommentsClick);
+                return () => {
+                    commentEl.removeEventListener('click', onFacebookCommentsClick);
+                };
+            }
+        }, () => [this.rootRef.el.querySelector('.o_social_facebook_comments')]);
+        useEffect((likeEl) => {
+            if (likeEl) {
+                const onFacebookPostLike = this._onFacebookPostLike.bind(this);
+                likeEl.addEventListener('click', onFacebookPostLike);
+                return () => {
+                    likeEl.removeEventListener('click', onFacebookPostLike);
+                };
+            }
+        }, () => [this.rootRef.el.querySelector('.o_social_facebook_likes')]);
     },
 
-    _onFacebookCommentsClick() {
+    _onFacebookCommentsClick(ev) {
+        ev.stopPropagation();
         const postId = this.record.id.raw_value;
         this.rpc('/social_facebook/get_comments', {
             stream_post_id: postId,

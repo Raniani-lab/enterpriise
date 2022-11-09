@@ -1,6 +1,5 @@
 /** @odoo-module **/
 
-import { ImagesCarouselDialog } from './images_carousel_dialog';
 import { SocialPostFormatterMixin } from './social_post_formatter_mixin';
 
 import { formatInteger } from '@web/views/fields/formatters';
@@ -32,20 +31,6 @@ export class StreamPostKanbanRecord extends KanbanRecord {
             return;
         }
         this.rootRef.el.querySelector('.o_social_comments').click();
-    }
-
-    /**
-     * Shows a bootstrap carousel starting at the clicked image's index
-     *
-     * @param {integer} index - index of the default image to be displayed
-     * @param {array} images - array of all the images to display
-     */
-    _onClickMoreImages(index, images) {
-        this.dialog.add(ImagesCarouselDialog, {
-            title: this.env._t("Post Images"),
-            activeIndex: index,
-            images: images
-        })
     }
 
     //---------------------------------------

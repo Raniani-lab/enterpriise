@@ -781,7 +781,7 @@ QUnit.module('documents_kanban_tests.js', {
         assert.expect(8);
 
         const views = {
-            'documents.document,false,kanban': 
+            'documents.document,false,kanban':
                 `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                         <div>
                             <field name="name"/>
@@ -836,7 +836,7 @@ QUnit.module('documents_kanban_tests.js', {
         var def = testUtils.makeTestPromise();
 
         const views = {
-            'documents.document,false,kanban': 
+            'documents.document,false,kanban':
                 `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                         <div>
                             <field name="name"/>
@@ -1459,7 +1459,7 @@ QUnit.module('documents_kanban_tests.js', {
         await click(target.querySelector('.o_search_panel_category_value:nth-of-type(2) header'));
         await click(target.querySelector('.o_kanban_record'));
         await click(target.querySelector('.o_kanban_record:nth-of-type(2) .o_record_selector'));
-        
+
         const input = target.querySelector('.o_inspector_tags input');
 
         assert.notOk(input === document.activeElement,
@@ -2102,7 +2102,7 @@ QUnit.module('documents_kanban_tests.js', {
             "should display the activity Edit button");
         assert.containsOnce(target, '.o_ActivityView_cancelButton',
             "should display the activity Cancel button");
-        
+
         await click(find(target, '.o_kanban_record', 'blip'));
 
         assert.containsOnce(target, '.o_document_chatter_container .o_Chatter',
@@ -2645,7 +2645,7 @@ QUnit.module('documents_kanban_tests.js', {
         patchWithCleanup(browser, {
             setTimeout: (fn) => fn(),
         });
-        
+
 
         await createDocumentsView({
             type: "kanban",
@@ -2685,7 +2685,7 @@ QUnit.module('documents_kanban_tests.js', {
 
     QUnit.test('documents Kanban color widget', async function (assert) {
         assert.expect(4);
-        
+
         await createDocumentsView({
             type: "kanban",
             resModel: 'documents.document',
@@ -3069,7 +3069,7 @@ QUnit.module('documents_kanban_tests.js', {
         mockedXHRs[0].upload.dispatchEvent(progressEvent);
 
         await nextTick();
-        
+
         assert.strictEqual(target.querySelector('.o_file_upload_progress_text_left').textContent, "Uploading... (50%)",
             "the current upload progress should be at 50%");
 
@@ -3578,6 +3578,64 @@ QUnit.module('documents_kanban_tests.js', {
         assert.containsOnce(target, ".o_search_panel_category_value:nth(1) .active");
 
         assert.verifySteps(["storage get 343"]);
+    });
+
+    QUnit.test('documents kanban: unselect all by clicking outside of the records', async function (assert) {
+        assert.expect(2);
+
+        await createDocumentsView({
+            type: "kanban",
+            resModel: 'documents.document',
+            arch: `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                    <div>
+                        <i class="fa fa-circle-thin o_record_selector"/>
+                        <field name="name"/>
+                    </div>
+                </t></templates></kanban>`,
+        });
+
+        const firstRecord = target.querySelector('.o_kanban_record');
+        await triggerEvent(firstRecord, null, 'keydown', {
+            key: "Enter",
+        });
+        const secondRecord = target.querySelectorAll('.o_kanban_record')[1];
+        await triggerEvent(secondRecord, null, 'keydown', {
+            key: "Enter",
+            shiftKey: true,
+        });
+        assert.containsN(target, ".o_record_selected", 2);
+        await click(target, '.o_kanban_renderer')
+        assert.containsN(target, ".o_record_selected", 0);
+    });
+
+    QUnit.test('documents list: unselect all by clicking outside of the records', async function (assert) {
+        assert.expect(2);
+
+        await createDocumentsView({
+            type: 'list',
+            resModel: 'documents.document',
+            arch: `
+            <tree js_class="documents_list">
+                <field name="type" invisible="1"/>
+                <field name="name"/>
+                <field name="partner_id"/>
+                <field name="owner_id"/>
+                <field name="type"/>
+            </tree>`,
+        });
+
+        const firstRecord = target.querySelector('.o_data_row');
+        await triggerEvent(firstRecord, null, 'keydown', {
+            key: "Enter",
+        });
+        const secondRecord = target.querySelectorAll('.o_data_row')[1];
+        await triggerEvent(secondRecord, null, 'keydown', {
+            key: "Enter",
+            shiftKey: true,
+        });
+        assert.containsN(target, ".o_data_row_selected", 2);
+        await click(target, '.o_list_renderer')
+        assert.containsN(target, ".o_data_row_selected", 0);
     });
 });
 });

@@ -11,7 +11,7 @@ import { CheckBox } from "@web/core/checkbox/checkbox";
 import { DocumentsActionHelper } from "../helper/documents_action_helper";
 import { DocumentsAttachmentViewer } from "../helper/documents_attachment_viewer";
 
-const { useEffect, useRef } = owl;
+const { useRef } = owl;
 
 export class DocumentsListRenderer extends ListRenderer {
     setup() {
@@ -19,36 +19,39 @@ export class DocumentsListRenderer extends ListRenderer {
         this.root = useRef("root");
         const { uploads } = useService("file_upload");
         this.documentUploads = uploads;
+    }
 
-        useEffect(
-            (el) => {
-                if (!el) {
-                    return;
-                }
-                const handler = (ev) => {
-                    if (ev.key !== "Enter" && ev.key !== " ") {
-                        return;
-                    }
-                    const row = ev.target.closest(".o_data_row");
-                    const record = row && this.props.list.records.find((rec) => rec.id === row.dataset.id);
-                    if (!record) {
-                        return;
-                    }
-                    const options = {};
-                    if (ev.key === " ") {
-                        options.isKeepSelection = true;
-                    }
-                    ev.stopPropagation();
-                    ev.preventDefault();
-                    record.onRecordClick(ev, options);
-                };
-                el.addEventListener("keydown", handler);
-                return () => {
-                    el.removeEventListener("keydown", handler);
-                };
-            },
-            () => [this.root.el]
-        );
+    /**
+     * Called when a keydown event is triggered.
+     */
+    onGlobalKeydown(ev) {
+        if (ev.key !== "Enter" && ev.key !== " ") {
+            return;
+        }
+        const row = ev.target.closest(".o_data_row");
+        const record = row && this.props.list.records.find((rec) => rec.id === row.dataset.id);
+        if (!record) {
+            return;
+        }
+        const options = {};
+        if (ev.key === " ") {
+            options.isKeepSelection = true;
+        }
+        ev.stopPropagation();
+        ev.preventDefault();
+        record.onRecordClick(ev, options);
+    }
+
+    /**
+     * Called when a click event is triggered.
+     */
+    onGlobalClick(ev) {
+        // We have to check that we are indeed clicking in the list view as on mobile,
+        // the inspector renders above the renderer but it still triggers this event.
+        if (ev.target.closest(".o_data_row") || !ev.target.closest(".o_list_renderer")) {
+            return;
+        }
+        this.props.list.selection.forEach((el) => el.toggleSelection(false));
     }
 
     get hasSelectors() {

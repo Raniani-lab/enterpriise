@@ -22,6 +22,17 @@ export class DocumentsKanbanRenderer extends KanbanRenderer {
     }
 
     /**
+     * Called when clicking in the kanban renderer.
+     */
+    onGlobalClick(ev) {
+        // Only when clicking in empty space
+        if (ev.target.closest(".o_kanban_record:not(.o_kanban_ghost)")) {
+            return;
+        }
+        this.props.list.selection.forEach(el => el.toggleSelection(false));
+    }
+
+    /**
      * Focus next card with proper support for up and down arrows.
      *
      * @override

@@ -222,7 +222,7 @@ var AbstractEditComponent = Abstract.extend(WidgetAdapterMixin, StandaloneFieldM
         if (typeof value === "string") {
             try {
                 value = py.extract(value);
-            } catch (_e) {
+            } catch {
                 return {
                     chain: [],
                     rest: value,

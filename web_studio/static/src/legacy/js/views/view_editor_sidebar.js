@@ -1241,7 +1241,7 @@ export const ViewEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
             try {
                 // the value might have been stringified
                 optionValue = JSON.parse(optionValue);
-            } catch (_e) {}
+            } catch {}
 
             newOptions[optionName] = optionValue;
         }

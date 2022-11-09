@@ -36,7 +36,7 @@ export class ArticleBehavior extends AbstractBehavior {
                     res_id: parseInt(this.props.article_id)
                 }
             });
-        } catch (_) {
+        } catch {
             this.dialogService.add(AlertDialog, {
                 title: _t('Error'),
                 body: _t("This article was deleted or you don't have the rights to access it."),

@@ -30,7 +30,7 @@ export const documentsPdfThumbnailService = {
                 let libs;
                 try {
                     libs = await getBundle('documents.pdf_js_assets');
-                } catch (_error) {
+                } catch {
                     libs = await getBundle('web.pdf_js_lib');
                 } finally {
                     await loadBundle(libs);
@@ -38,7 +38,7 @@ export const documentsPdfThumbnailService = {
                 // Force usage of worker to avoid hanging the tab.
                 initialWorkerSrc = window.pdfjsLib.GlobalWorkerOptions.workerSrc;
                 window.pdfjsLib.GlobalWorkerOptions.workerSrc = 'web/static/lib/pdfjs/build/pdf.worker.js';
-            } catch (_error) {
+            } catch {
                 enabled = false;
                 return;
             }

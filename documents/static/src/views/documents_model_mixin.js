@@ -135,7 +135,7 @@ export const DocumentsDataPointMixin = (component) => class extends component {
             this.invalidateCache();
             await Promise.all(this.selection.map((rec) => rec.load()));
             this.model.notify();
-        } catch (_) {
+        } catch {
             if (record.getChanges()) {
                 record.discard();
             }

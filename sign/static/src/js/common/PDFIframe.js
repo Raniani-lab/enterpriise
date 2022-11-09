@@ -347,7 +347,7 @@ export const PDFIframe = Widget.extend(
             // if an error occurs it means the iframe has been detach and will be reinitialized anyway (so the interval must stop)
             self.refreshSignItems();
             self.refresh_timer = setTimeout(refresh_interval, 2000);
-          } catch (_e) {}
+          } catch {}
         }
       });
     },

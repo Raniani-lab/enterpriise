@@ -91,7 +91,7 @@ odoo.define('web_grid.components', function (require) {
             try {
                 value = this._parse(ev.target.value);
                 this.state.error = false;
-            } catch (_) {
+            } catch {
                 this.state.error = ev.target.value;
             } finally {
                 this.props.onCellUpdated({

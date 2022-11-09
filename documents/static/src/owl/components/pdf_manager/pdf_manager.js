@@ -352,7 +352,7 @@ export class PdfManager extends Component {
         let libs;
         try {
             libs = await getBundle('documents.pdf_js_assets');
-        } catch (_error) {
+        } catch {
             libs = await getBundle('web.pdf_js_lib');
         } finally {
             await loadBundle(libs);

@@ -345,7 +345,7 @@ var ManualModel = BasicModel.extend({
             try {
                 amount = field_utils.parse.float(data.amount);
             }
-            catch (_err) {
+            catch {
                 amount = NaN;
             }
             // Amount can't be greater than line.amount and can not be negative and must be a number

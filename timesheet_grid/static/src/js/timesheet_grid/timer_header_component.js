@@ -171,7 +171,7 @@ odoo.define('timesheet_grid.TimerHeaderComponent', function (require) {
                     this.state.time = value * 3600;
                     this.state.manualTimeInput = false;
                 }
-            } catch (_) {
+            } catch {
                 this.state.errorManualTimeInput = true;
             }
         }
@@ -183,7 +183,7 @@ odoo.define('timesheet_grid.TimerHeaderComponent', function (require) {
             try {
                 const value = fieldUtils.parse['float_time'](ev.target.value);
                 this.state.errorManualTimeInput = (value < 0);
-            } catch (_) {
+            } catch {
                 this.state.errorManualTimeInput = true;
             }
             this.manualTimerAmount = ev.target.value;

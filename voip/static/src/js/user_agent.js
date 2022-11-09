@@ -380,7 +380,7 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             }
             try {
                 await this.voip.userAgent.__sipJsUserAgent.start();
-            } catch (_error) {
+            } catch {
                 this.voip.triggerError(_t("Failed to start the user agent. The URL of the websocket server may be wrong. Please have an administrator verify the websocket server URL in the General Settings."));
                 return;
             }

@@ -48,7 +48,7 @@ export class TabletImageIoTField extends TabletImageField {
                     });
                 }
                 return data;
-            } catch (_err) {
+            } catch {
                 this.dialog.add(IoTConnectionErrorDialog, { href: this.props.record.data[this.props.ip_field] });
             }
         }

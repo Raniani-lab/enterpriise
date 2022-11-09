@@ -23,7 +23,7 @@ export class IoTBoxDownloadLogs extends Component {
             } else {
                 this.doWarnFail(this.ip_url);
             }
-        } catch (_) {
+        } catch {
             this.doWarnFail(this.ip_url);
         }
     }

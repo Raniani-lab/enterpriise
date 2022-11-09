@@ -303,7 +303,7 @@ odoo.define('web_grid.GridRenderer', function (require) {
             let value = ev.target.value;
             try {
                 value = this._parse(value);
-            } catch (_) {
+            } catch {
                 hasError = true;
             }
             const path = this.state.currentPath;

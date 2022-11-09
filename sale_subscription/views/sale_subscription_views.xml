@@ -259,7 +259,7 @@
                 <field name="next_invoice_date"/>
                 <field name="renew_state"/>
                 <field name="is_upselling"/>
-                 <field name="subscription_management"/>
+                <field name="subscription_management"/>
                 <progressbar field="activity_state" colors='{"planned": "success", "today": "warning", "overdue": "danger"}' help="This bar allows to filter the opportunities based on scheduled activities."/>
                 <templates>
                     <t t-name="kanban-box">
@@ -309,7 +309,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="clearfix"></div>
+                                <div class="clearfix"></div>
                         </div>
                     </t>
                 </templates>

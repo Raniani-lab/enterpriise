@@ -3,11 +3,21 @@
 import datetime
 
 from odoo.addons.sale.tests.common import TestSaleCommon
-from odoo.tests import tagged
 from odoo import Command
 
 
 class TestSubscriptionCommon(TestSaleCommon):
+
+    def setUp(self):
+
+        super(TestSubscriptionCommon, self).setUp()
+
+        SO = type(self.env['sale.order'])
+
+        def _subscription_launch_cron_single(self, batch_size):
+            self.env['sale.order']._create_recurring_invoice(batch_size=batch_size)
+
+        self.patch(SO, '_subscription_launch_cron_parallel', _subscription_launch_cron_single)
 
     @classmethod
     def setUpClass(cls, chart_template_ref=None):

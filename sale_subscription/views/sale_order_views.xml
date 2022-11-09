@@ -15,17 +15,17 @@
                 <field name="has_recurring_line" invisible="1"/>
             </xpath>
             <button id="create_invoice" position="attributes">
-                <attribute name="attrs">{'invisible': ['|', ('is_subscription', '=', True), ('invoice_status', '!=', 'to invoice')]}</attribute>
+                <attribute name="attrs">{'invisible': ['|', '&amp;', ('is_subscription', '=', True), ('state', '!=', 'sale'), ('invoice_status', '!=', 'to invoice')]}</attribute>
+            </button>
+            <button id="create_invoice" position="after">
+                <button id="create_invoice_sub" name="%(sale.action_view_sale_advance_payment_inv)d" string="Create Invoice"
+                    type="action" class="btn-secondary" data-hotkey="q"
+                    attrs="{'invisible': ['|', '|', ('is_subscription', '=', False), ('state', '!=', 'sale'), ('invoice_status', '=', 'to invoice')]}"/>
             </button>
             <button id="create_invoice_percentage" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', ('is_subscription', '=', True), '|',('invoice_status', '!=', 'no'), ('state', '!=', 'sale')]}</attribute>
             </button>
-            <button id="create_invoice" position="after">
-                <field name="show_rec_invoice_button" invisible="1"/>
-                <button name="action_invoice_subscription" string="Create Invoice"
-                        id="create_recurring_invoice_primary" type="object" class="btn-primary" data-hotkey="q"
-                        attrs="{'invisible': ['|', ('show_rec_invoice_button', '=', False), ('invoice_status', '=', 'no')]}"
-                />
+            <button name="action_draft" position="after">
                 <button string="Upsell" name="prepare_upsell_order" type="object"
                         attrs="{'invisible': [
                         '|',
@@ -42,10 +42,6 @@
                         ('stage_category', '!=', 'progress'),
                         ('state', '!=', 'sale'),
                         ]}"/>
-                <button name="action_invoice_subscription" string="Create Invoice"
-                        id="create_recurring_invoice" type="object" data-hotkey="q"
-                        attrs="{'invisible': ['|', ('show_rec_invoice_button', '=', False),  ('invoice_status', '=', 'to invoice')]}"
-                />
             </button>
             <button name="action_cancel" position="attributes">
                 <attribute name="attrs">

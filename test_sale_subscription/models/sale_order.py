@@ -24,7 +24,7 @@ class SaleOrder(models.Model):
 
     # Mocking for '_process_invoices_to_send'
     # Otherwise the whole sending mail process will be triggered and we don't want it in the post_init hook
-    def _mock_process_invoices_to_send(self, account_moves, auto_commit):
+    def _mock_process_invoices_to_send(self, account_moves):
         account_moves.is_move_sent = True
 
     def _test_demo_create_invoices(self, automatic=False):
@@ -35,7 +35,7 @@ class SaleOrder(models.Model):
     def _test_demo_generate_subscriptions(self):
         # Mocking for '_process_invoices_to_send'
         # Otherwise the whole sending mail process will be triggered and we don't want it in the post_init hook
-        def _mock_process_invoices_to_send(account_moves, auto_commit):
+        def _mock_process_invoices_to_send(account_moves):
             account_moves.is_move_sent = True
 
         with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._process_invoices_to_send',

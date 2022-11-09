@@ -162,7 +162,6 @@ class TestSubscriptionDashboard(HttpCase):
         self.subscription._create_recurring_invoice()
         self.subscription._get_invoiced()
         invoice = self.subscription.invoice_ids
-        invoice._post()
 
         self._check_mrr(start_date, end_date, 50)
 

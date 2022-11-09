@@ -7,7 +7,7 @@ from psycopg2.extensions import TransactionRollbackError
 from ast import literal_eval
 from collections import defaultdict
 
-from odoo import fields, models, _, api, Command, SUPERUSER_ID
+from odoo import fields, models, _, api, Command, SUPERUSER_ID, modules
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_is_zero
 from odoo.osv import expression
@@ -780,13 +780,6 @@ class SaleOrder(models.Model):
         if last_token:
             self.payment_token_id = last_token
 
-    def action_invoice_subscription(self):
-        account_move = self._create_recurring_invoice()
-        if account_move:
-            return self.action_view_invoice()
-        else:
-            raise UserError(self._nothing_to_invoice_error_message())
-
     @api.model
     def _get_associated_so_action(self):
         return {
@@ -1041,7 +1034,7 @@ class SaleOrder(models.Model):
 
     @api.model
     def _cron_recurring_create_invoice(self):
-        return self._create_recurring_invoice(automatic=True)
+        return self._create_recurring_invoice()
 
     def _get_invoiceable_lines(self, final=False):
         date_from = fields.Date.today()
@@ -1212,64 +1205,70 @@ class SaleOrder(models.Model):
             search_domain = expression.AND([search_domain, extra_domain])
         return search_domain
 
-    def _create_recurring_invoice(self, automatic=False, batch_size=30):
-        automatic = bool(automatic)
-        auto_commit = automatic and not bool(config['test_enable'] or config['test_file'])
-        Mail = self.env['mail.mail']
-        today = fields.Date.today()
-        if len(self) > 0:
-            all_subscriptions = self.filtered(lambda so: so.is_subscription and so.subscription_management != 'upsell' and not so.payment_exception)
-            need_cron_trigger = False
-        else:
-            search_domain = self._recurring_invoice_domain()
-            all_subscriptions = self.search(search_domain, limit=batch_size + 1)
-            need_cron_trigger = len(all_subscriptions) > batch_size
-            if need_cron_trigger:
-                all_subscriptions = all_subscriptions[:batch_size]
-        if not all_subscriptions:
-            return self.env['account.move']
-        # don't spam sale with assigned emails.
-        all_subscriptions = all_subscriptions.with_context(mail_auto_subscribe_no_notify=True)
-        auto_close_subscription = all_subscriptions.filtered_domain([('end_date', '!=', False)])
-        all_invoiceable_lines = all_subscriptions.with_context(recurring_automatic=automatic)._get_invoiceable_lines(final=False)
-
-        auto_close_subscription._subscription_auto_close()
-        if automatic:
-            all_subscriptions.write({'is_invoice_cron': True})
-        lines_to_reset_qty = self.env['sale.order.line'] # qty_delivered is set to 0 after invoicing for some categories of products (timesheets etc)
-        account_moves = self.env['account.move']
-        # Set quantity to invoice before the invoice creation. If something goes wrong, the line will appear as "to invoice"
-        # It prevent to use the _compute method and compare the today date and the next_invoice_date in the compute.
-        # That would be bad for perfs
-        all_invoiceable_lines._reset_subscription_qty_to_invoice()
+    def _subscription_commit_cursor(self, auto_commit):
         if auto_commit:
             self.env.cr.commit()
+
+    def _subscription_rollback_cursor(self, auto_commit):
+        if auto_commit:
+            self.env.cr.rollback()
+
+    # The following function is used so that it can be overwritten in test files
+    def _subscription_launch_cron_parallel(self, batch_size):
+        self.env.ref('sale_subscription.account_analytic_cron_for_invoice')._trigger()
+
+    def _create_recurring_invoice(self, automatic=False, batch_size=30):
+        today = fields.Date.today()
+        auto_commit = config['test_enable'] and modules.module.current_test
+
+        all_subscriptions = self or self.search(self._recurring_invoice_domain(), limit=batch_size + 1)
+        need_cron_trigger = not self and len(all_subscriptions) > batch_size
+        if need_cron_trigger:
+            all_subscriptions = all_subscriptions[:batch_size]
+        if not all_subscriptions:
+            return self.env['account.move']
+
+        # We mark current batch as having been seen by the cron
+        all_subscriptions.write({'is_invoice_cron': True})
+
+        # Don't spam sale with assigned emails.
+        all_subscriptions = all_subscriptions.with_context(mail_auto_subscribe_no_notify=True)
+
+        # Close ending subscriptions
+        auto_close_subscription = all_subscriptions.filtered_domain([('end_date', '!=', False)])
+        closed_contract = auto_close_subscription._subscription_auto_close()
+        all_subscriptions -= closed_contract
+
+        if not all_subscriptions:
+            return self.env['account.move']
+
+        lines_to_reset_qty = self.env['sale.order.line']
+        account_moves = self.env['account.move']
+        all_invoiceable_lines = all_subscriptions.with_context(recurring_automatic=True)._get_invoiceable_lines()
+        # Set quantity to invoice before the invoice creation. If something goes wrong, the line will appear as "to invoice"
+        # It prevent to use the _compute method and compare the today date and the next_invoice_date in the compute which would be bad for perfs
+        all_invoiceable_lines._reset_subscription_qty_to_invoice()
+        self._subscription_commit_cursor(auto_commit)
         for subscription in all_subscriptions:
+            subscription = subscription[0]  # Trick to not prefetch other subscriptions, as the cache is currently invalidated at each iteration
+
+            # We check that the subscription should not be processed or that it has not already been set to "in exception" by previous cron failure
             # We only invoice contract in sale state. Locked contracts are invoiced in advance. They are frozen.
-            if not (subscription.state == 'sale' and subscription.stage_category == 'progress'):
+
+            if (not subscription.state == 'sale' and subscription.stage_category == "progress") or subscription.payment_exception:
                 continue
             try:
-                subscription = subscription[0] # Trick to not prefetch other subscriptions, as the cache is currently invalidated at each iteration
-                # in rare occurrences (due to external issues not related with Odoo), we may have
-                # our crons running on multiple workers thus doing work in parallel
-                # to avoid processing a subscription that might already be processed
-                # by a different worker, we check that it has not already been set to "in exception"
-                if subscription.payment_exception:
-                    continue
-                if auto_commit:
-                    self.env.cr.commit() # To avoid a rollback in case something is wrong, we create the invoices one by one
+                self._subscription_commit_cursor(auto_commit)  # To avoid a rollback in case something is wrong, we create the invoices one by one
                 draft_invoices = subscription.invoice_ids.filtered(lambda am: am.state == 'draft')
-                if not subscription.payment_token_id and draft_invoices:
-                    if not automatic:
-                        raise UserError(_("There is already a draft invoice for subscription %s.", subscription.name))
+                if subscription.payment_token_id and draft_invoices:
+                    draft_invoices.button_cancel()
+                elif draft_invoices:
                     # Skip subscription if no payment_token, and it has a draft invoice
                     continue
-                if subscription.payment_token_id:
-                    draft_invoices.button_cancel()
                 invoiceable_lines = all_invoiceable_lines.filtered(lambda l: l.order_id.id == subscription.id)
                 invoice_is_free, is_exception = subscription._invoice_is_considered_free(invoiceable_lines)
                 if not invoiceable_lines or invoice_is_free:
-                    if is_exception and automatic:
+                    if is_exception:
                         # Mix between recurring and non-recurring lines. We let the contract in exception, it should be
                         # handled manually
                         msg_body = _(
@@ -1279,64 +1278,49 @@ class SaleOrder(models.Model):
                         subscription.message_post(body=msg_body)
                         subscription.payment_exception = True
                     # We still update the next_invoice_date if it is due
-                    elif not automatic or subscription.next_invoice_date <= today:
+                    elif subscription.next_invoice_date <= today:
                         subscription._update_next_invoice_date()
                         if invoice_is_free:
                             for line in invoiceable_lines:
                                 line.qty_invoiced = line.product_uom_qty
                             subscription._subscription_post_success_free_renewal()
-                    if auto_commit:
-                        self.env.cr.commit()
+                    self._commit_cursor()
                     continue
+
                 try:
-                    invoice = subscription.with_context(recurring_automatic=automatic)._create_invoices()
+                    invoice = subscription.with_context(recurring_automatic=True)._create_invoices(final=True)
                     lines_to_reset_qty |= invoiceable_lines
                 except Exception as e:
-                    if auto_commit:
-                        self.env.cr.rollback()
-                    elif isinstance(e, TransactionRollbackError) or not automatic:
-                        # the transaction is broken we should raise the exception
+                    # We only raise the error in test, if the transaction is broken we should raise the exception
+                    if not auto_commit and isinstance(e, TransactionRollbackError):
                         raise
                     # we suppose that the payment is run only once a day
+                    self._subscription_rollback_cursor(auto_commit)
                     email_context = subscription._get_subscription_mail_payment_context()
                     error_message = _("Error during renewal of contract %s (Payment not recorded)", subscription.name)
                     _logger.exception(error_message)
-                    mail = Mail.sudo().create({'body_html': error_message, 'subject': error_message, 'email_to': email_context['responsible_email'], 'auto_delete': True})
+                    mail = self.env['mail.mail'].sudo().create({'body_html': error_message, 'subject': error_message, 'email_to': email_context['responsible_email'], 'auto_delete': True})
                     mail.send()
                     continue
-                if auto_commit:
-                    self.env.cr.commit()
+                self._subscription_commit_cursor(auto_commit)
                 # Handle automatic payment or invoice posting
-                if automatic:
-                    existing_invoices = subscription._handle_automatic_invoices(auto_commit, invoice)
-                    account_moves |= existing_invoices
-                else:
-                    account_moves |= invoice
+                existing_invoices = subscription._handle_automatic_invoices(invoice, auto_commit)
+                account_moves |= existing_invoices
                 subscription.with_context(mail_notrack=True).write({'payment_exception': False})
-            except Exception as error:
+            except Exception:
                 _logger.exception("Error during renewal of contract %s", subscription.client_order_ref or subscription.name)
-                if auto_commit:
-                    self.env.cr.rollback()
-                if not automatic:
-                    raise error
+                self._subscription_rollback_cursor(auto_commit)
             else:
-                if auto_commit:
-                    self.env.cr.commit()
+                self._subscription_commit_cursor(auto_commit)
         lines_to_reset_qty._reset_subscription_quantity_post_invoice()
-        all_subscriptions._process_invoices_to_send(account_moves, auto_commit)
+        all_subscriptions._process_invoices_to_send(account_moves)
         # There is still some subscriptions to process. Then, make sure the CRON will be triggered again asap.
         if need_cron_trigger:
-            if config['test_enable'] or config['test_file']:
-                # Test environnement: we launch the next iteration in the same thread
-                self.env['sale.order']._create_recurring_invoice(automatic, batch_size)
-            else:
-                self.env.ref('sale_subscription.account_analytic_cron_for_invoice')._trigger()
-
-        if automatic and not need_cron_trigger:
-            cron_subs = self.search([('is_invoice_cron', '=', True)])
-            cron_subs.write({'is_invoice_cron': False})
+            self._subscription_launch_cron_parallel(batch_size)
 
         if not need_cron_trigger:
+            cron_subs = self.search([('is_invoice_cron', '=', True)])
+            cron_subs.write({'is_invoice_cron': False})
             failing_subscriptions = self.search([('is_batch', '=', True)])
             failing_subscriptions.write({'is_batch': False})
 
@@ -1364,8 +1348,9 @@ class SaleOrder(models.Model):
         current_date = fields.Date.context_today(self)
         close_contract_ids = self.filtered(lambda contract: contract.end_date and contract.end_date <= current_date)
         close_contract_ids.set_close()
+        return close_contract_ids
 
-    def _handle_automatic_invoices(self, auto_commit, invoices):
+    def _handle_automatic_invoices(self, invoices, auto_commit):
         """ This method handle the subscription with or without payment token """
         Mail = self.env['mail.mail']
         automatic_values = self._get_automatic_subscription_values()
@@ -1390,31 +1375,24 @@ class SaleOrder(models.Model):
                             order.with_context(mail_notrack=True).write(automatic_values)
                             invoice.unlink()
                             existing_invoices -= invoice
-                            if auto_commit:
-                                self.env.cr.commit()
+                            self._subscription_commit_cursor(auto_commit)
                             continue
                         transaction = order._do_payment(payment_token, invoice)
                         payment_callback_done = transaction and transaction.sudo().callback_is_done
                         # commit change as soon as we try the payment, so we have a trace in the payment_transaction table
-                        if auto_commit:
-                            self.env.cr.commit()
+                        self._subscription_commit_cursor(auto_commit)
                     # if transaction is a success, post a message
                     if transaction and transaction.state == 'done':
                         order.with_context(mail_notrack=True).write({'payment_exception': False})
                         self._subscription_post_success_payment(invoice, transaction)
-                        if auto_commit:
-                            self.env.cr.commit()
+                        self._subscription_commit_cursor(auto_commit)
                     # if no transaction or failure, log error, rollback and remove invoice
                     if transaction and transaction.state != 'done':
-                        if auto_commit:
-                            # prevent rollback during tests
-                            self.env.cr.rollback()
+                        self._subscription_rollback_cursor(auto_commit)
                         order._handle_subscription_payment_failure(invoice, transaction, email_context)
                         existing_invoices -= invoice  # It will be unlinked in the call above
                 except Exception:
-                    if auto_commit:
-                        # prevent rollback during tests
-                        self.env.cr.rollback()
+                    self._subscription_rollback_cursor(auto_commit)
                     # we suppose that the payment is run only once a day
                     last_transaction = self.env['payment.transaction'].search(['|',
                         ('reference', 'like', order.client_order_ref),
@@ -1431,7 +1409,6 @@ class SaleOrder(models.Model):
                         existing_invoices -= invoice
                         if not payment_callback_done:
                             invoice.unlink()
-
 
         return existing_invoices
 
@@ -1530,13 +1507,13 @@ class SaleOrder(models.Model):
         return template.with_context(email_context).send_mail(invoice.id)
 
     @api.model
-    def _process_invoices_to_send(self, account_moves, auto_commit):
+    def _process_invoices_to_send(self, account_moves):
         for invoice in account_moves:
             if invoice._is_ready_to_be_sent():
                 subscription = invoice.line_ids.subscription_id
-                subscription.validate_and_send_invoice(auto_commit, invoice)
+                subscription.validate_and_send_invoice(invoice)
 
-    def validate_and_send_invoice(self, auto_commit, invoice):
+    def validate_and_send_invoice(self, invoice):
         self.ensure_one()
         email_context = {**self.env.context.copy(), **{
             'total_amount': invoice.amount_total,
@@ -1549,7 +1526,7 @@ class SaleOrder(models.Model):
         _logger.debug("Sending Invoice Mail to %s for subscription %s", self.partner_id.email, self.id)
         # ARJ TODO master: take the invoice template in the settings
         invoice.with_context(email_context).message_post_with_template(
-                self.sale_order_template_id.invoice_mail_template_id.id, auto_commit=auto_commit)
+                self.sale_order_template_id.invoice_mail_template_id.id, auto_commit=not (config['test_enable'] and modules.module.current_test))
         invoice.is_move_sent = True
 
     def _send_subscription_rating_mail(self, force_send=False):

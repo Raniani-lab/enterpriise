@@ -314,7 +314,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
         })
         with freeze_time("2021-01-03"):
             self.subscription.action_confirm()
-            self.subscription._create_recurring_invoice()
+            self.subscription._create_invoices()
             self.subscription.order_line.invoice_lines.move_id._post()
             self.assertEqual(self.subscription.next_invoice_date, datetime.date(2021, 2, 3), 'the next invoice date should be updated')
             self.assertEqual(self.subscription.invoice_count, 1)

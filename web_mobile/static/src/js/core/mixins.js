@@ -64,6 +64,14 @@ const UpdateDeviceAccountControllerMixin = {
     },
 };
 
+async function updateAccountOnMobileDevice() {
+    const updated = session.updateAccountOnMobileDevice();
+    // Crapy workaround for unupdatable Odoo Mobile App iOS (Thanks Apple :@)
+    if (!isIosApp()){
+        await updated;
+    }
+}
+
 /**
  * Trigger the update of the user's account details on the mobile app as soon as
  * the session is correctly initialized.
@@ -73,6 +81,7 @@ session.is_bound.then(() => session.updateAccountOnMobileDevice());
 return {
     BackButtonEventMixin: BackButtonEventMixin,
     UpdateDeviceAccountControllerMixin,
+    updateAccountOnMobileDevice,
 };
 
 });

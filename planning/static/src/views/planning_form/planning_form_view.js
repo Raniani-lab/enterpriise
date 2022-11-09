@@ -7,40 +7,31 @@ import { FormViewDialog } from "@web/views/view_dialogs/form_view_dialog";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { escape } from "@web/core/utils/strings";
-import { Record, RelationalModel } from "@web/views/basic_relational_model";
 
 const { markup, onMounted } = owl;
 
+export class PlanningFormController extends FormController {
+    setup() {
+        super.setup();
+        this.action = useService("action");
+        this.notification = useService("notification");
+        this.orm = useService("orm");
+        onMounted(() => {
+            this.initialTemplateCreation = this.model.root.data.template_creation;
+        });
+    }
 
-class PlanningFormRecord extends Record {
-    async save() {
-        const dirtyFields = this.dirtyFields.map((f) => f.name);
-        const isSaved = await super.save(...arguments);
-        if (isSaved && dirtyFields.includes("repeat") && this.data["repeat"]) {
-            const message = this.model.env._t("The recurring shifts have successfully been created.");
-            this.model.notificationService.add(
+    async onRecordSaved(record) {
+        const dirtyFields = record.dirtyFields.map((f) => f.name);
+        if (dirtyFields.includes("repeat") && record.data["repeat"]) {
+            const message = this.env._t("The recurring shifts have successfully been created.");
+            this.notification.add(
                 markup(
                     `<i class="fa fa-fw fa-check"></i><span class="ms-1">${escape(message)}</span>`
                 ),
                 { type: "success" }
             );
         }
-        return isSaved;
-    }
-}
-
-class PlanningFormModel extends RelationalModel {}
-PlanningFormModel.Record = PlanningFormRecord;
-
-export class PlanningFormController extends FormController {
-
-    setup() {
-        super.setup();
-        this.notification = useService("notification");
-        this.orm = useService("orm");
-        onMounted(() => {
-            this.initialTemplateCreation = this.model.root.data.template_creation;
-        });
     }
 
     async beforeExecuteActionButton(clickParams) {
@@ -110,7 +101,6 @@ export class PlanningFormController extends FormController {
 export const planningFormView = {
     ...formView,
     Controller: PlanningFormController,
-    Model: PlanningFormModel,
 };
 
 registry.category("views").add("planning_form", planningFormView);

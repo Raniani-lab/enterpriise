@@ -1,11 +1,13 @@
 /** @odoo-module **/
 
 import { patch } from "@web/core/utils/patch";
-import { UpdateDeviceAccountControllerMixin } from "web_mobile.mixins";
-import { EmployeeProfileRecord } from "@hr/views/profile_form_view";
+import { updateAccountOnMobileDevice } from "web_mobile.mixins";
+import { EmployeeProfileController } from "@hr/views/profile_form_view";
 
-patch(
-    EmployeeProfileRecord.prototype,
-    "employee_profile_include",
-    UpdateDeviceAccountControllerMixin
-);
+patch(EmployeeProfileController.prototype, "employee_profile_include", {
+    async onRecordSaved(record) {
+        const _super = this._super;
+        await updateAccountOnMobileDevice();
+        return await _super(...arguments);
+    },
+});

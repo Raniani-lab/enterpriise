@@ -1,84 +1,76 @@
 /** @odoo-module **/
 
-import { registry } from "@web/core/registry";
-import { formView } from "@web/views/form/form_view";
 import { WarningDialog } from "@web/core/errors/error_dialogs";
+import { registry } from "@web/core/registry";
+import { useService } from "@web/core/utils/hooks";
+import { formView } from "@web/views/form/form_view";
 import { DeviceController } from "../device_controller";
-import { Record, RelationalModel } from "@web/views/basic_relational_model";
 
-class IoTDeviceRecord extends Record {
-    get iotDevice() {
+class IoTDeviceController extends formView.Controller {
+    setup() {
+        this.iotLongpollingService = useService("iot_longpolling");
+        this.dialogService = useService("dialog");
+    }
+
+    getIotDevice({ iot_ip, identifier }) {
         if (!this._iotDevice) {
-            this._iotDevice = new DeviceController(this.model.iotLongpollingService, {
-                iot_ip: this.data.iot_ip,
-                identifier: this.data.identifier,
+            this._iotDevice = new DeviceController(this.iotLongpollingService, {
+                iot_ip,
+                identifier,
             });
         }
         return this._iotDevice;
     }
-    /**
-     * @override
-     */
-    async save() {
-        if (["keyboard", "scanner"].includes(this.data.type)) {
-            const data = await this.updateKeyboardLayout();
+
+    async onWillSaveRecord(record) {
+        if (["keyboard", "scanner"].includes(record.data.type)) {
+            const data = await this.updateKeyboardLayout(record.data);
             if (data.result !== true) {
-                this.model.dialogService.add(WarningDialog, {
+                this.dialogService.add(WarningDialog, {
                     title: this.model.env._t("Connection to device failed"),
                     message: this.model.env._t("Check if the device is still connected"),
                 });
                 // Original logic doesn't call super when reaching this branch.
-                return;
+                return false;
             }
-        } else if (this.data.type === "display") {
-            await this.updateDisplayUrl();
+        } else if (record.data.type === "display") {
+            await this.updateDisplayUrl(record.data);
         }
-        return await super.save(...arguments);
     }
     /**
      * Send an action to the device to update the keyboard layout
      */
-    async updateKeyboardLayout() {
-        const keyboard_layout = this.data.keyboard_layout;
-        const is_scanner = this.data.is_scanner;
+    async updateKeyboardLayout(data) {
+        const { keyboard_layout, is_scanner } = data;
         // IMPROVEMENT: Perhaps combine the call to update_is_scanner and update_layout in just one remote call to the iotbox.
-        this.iotDevice.action({ action: "update_is_scanner", is_scanner });
+        this.getIotDevice(data).action({ action: "update_is_scanner", is_scanner });
         if (keyboard_layout) {
             const [keyboard] = await this.model.orm.read(
                 "iot.keyboard.layout",
                 [keyboard_layout[0]],
                 ["layout", "variant"]
             );
-            return this.iotDevice.action({
+            return this.getIotDevice(data).action({
                 action: "update_layout",
                 layout: keyboard.layout,
                 variant: keyboard.variant,
             });
         } else {
-            return this.iotDevice.action({ action: "update_layout" });
+            return this.getIotDevice(data).action({ action: "update_layout" });
         }
     }
     /**
      * Send an action to the device to update the screen url
      */
-    updateDisplayUrl() {
-        const display_url = this.data.display_url;
-        return this.iotDevice.action({ action: "update_url", url: display_url });
+    updateDisplayUrl(data) {
+        const { display_url } = data;
+        return this.getIotDevice(data).action({ action: "update_url", url: display_url });
     }
 }
-
-class IoTDeviceModel extends RelationalModel {
-    setup(params, services) {
-        this.iotLongpollingService = services.iot_longpolling;
-        super.setup(...arguments);
-    }
-}
-IoTDeviceModel.Record = IoTDeviceRecord;
-IoTDeviceModel.services = [...RelationalModel.services, "iot_longpolling"];
 
 export const iotDeviceFormView = {
     ...formView,
-    Model: IoTDeviceModel,
+    Controller: IoTDeviceController,
 };
 
 registry.category("views").add("iot_device_form", iotDeviceFormView);

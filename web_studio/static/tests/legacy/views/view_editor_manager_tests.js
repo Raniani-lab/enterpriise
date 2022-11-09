@@ -11,7 +11,7 @@ var concurrency = require('web.concurrency');
 var fieldRegistry = require('web.field_registry');
 var fieldRegistryOwl = require('web.field_registry_owl');
 var framework = require('web.framework');
-var ListRenderer = require('web.ListRenderer');
+const { ListRenderer } = require("@web/views/list/list_renderer");
 var testUtils = require('web.test_utils');
 var { session } = require('@web/session');
 
@@ -141,7 +141,6 @@ QUnit.module('ViewEditorManager', {
             "the View tab should now be active");
         assert.hasClass(vem.$('.o_web_studio_sidebar').find('.o_web_studio_properties'),'disabled',
             "the Properties tab should now be disabled");
-
     });
 
     QUnit.test('search existing fields into sidebar', async function (assert) {
@@ -188,7 +187,6 @@ QUnit.module('ViewEditorManager', {
             '.o_web_studio_field_type_container.o_web_studio_existing_fields div.o_web_studio_component');
 
         odoo.debug = odooCurrentDebugValue;
-
     });
 
     QUnit.test('empty list editor', async function (assert) {
@@ -205,34 +203,40 @@ QUnit.module('ViewEditorManager', {
             "there should be a list editor");
         assert.containsOnce(vem, '.o_web_studio_list_view_editor table thead th.o_web_studio_hook',
             "there should be one hook");
-        assert.containsNone(vem, '.o_web_studio_list_view_editor [data-node-id]',
+        assert.containsNone(vem, '.o_web_studio_list_view_editor [data-studio-xpath]',
             "there should be no node");
         var nbFields = _.size(this.data.coucou.fields);
         assert.strictEqual(vem.$('.o_web_studio_sidebar .o_web_studio_existing_fields').children().length, nbFields,
             "all fields should be available");
-
     });
 
     QUnit.test('list editor', async function (assert) {
-        assert.expect(3);
+        assert.expect(12);
 
         var vem = await studioTestUtils.createViewEditorManager({
             model: 'coucou',
             arch: "<tree><field name='display_name'/></tree>",
         });
 
-        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-node-id]',
+        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-studio-xpath]',
             "there should be one node");
         assert.containsN(vem, 'table thead th.o_web_studio_hook', 2,
             "there should be two hooks (before & after the field)");
         var nbFields = _.size(this.data.coucou.fields) - 1; // - display_name
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('.o_web_studio_existing_fields').children().length, nbFields,
             "fields that are not already in the view should be available");
-
+        assert.containsN(target, "thead th", 3);
+        assert.containsN(target, "tbody tr", 4);
+        assert.containsN(target, "tbody td", 4);
+        target.querySelectorAll("tbody tr td").forEach(el => {
+            assert.strictEqual(el.getAttribute("colspan"), "3");
+        })
+        assert.containsN(target, "tbody td", 4);
+        assert.containsN(target, "tfoot td", 3);
     });
 
     QUnit.test('disable optional field dropdown icon', async function (assert) {
-        assert.expect(2);
+        assert.expect(3);
 
         var vem = await studioTestUtils.createViewEditorManager({
             model: 'coucou',
@@ -243,7 +247,8 @@ QUnit.module('ViewEditorManager', {
             'there should be optional field dropdown icon');
         assert.hasClass(vem.$('i.o_optional_columns_dropdown_toggle'), 'text-muted',
             'optional field dropdown icon must be muted');
-
+        await click(target.querySelector("i.o_optional_columns_dropdown_toggle"));
+        assert.containsNone(target, ".o-dropdown--menu");
     });
 
     QUnit.test('optional field in list editor', async function (assert) {
@@ -254,12 +259,11 @@ QUnit.module('ViewEditorManager', {
             model: 'coucou',
         });
 
-        await testUtils.dom.click(vem.$('.o_web_studio_view_renderer .ui-draggable'));
+        await testUtils.dom.click(vem.$('.o_web_studio_view_renderer [data-studio-xpath]'));
         assert.containsOnce(
             vem,
             '.o_web_studio_sidebar_optional_select',
             "there should be an optional field");
-
     });
 
     QUnit.test('new field should come with show as default value of optional', async function (assert) {
@@ -279,7 +283,6 @@ QUnit.module('ViewEditorManager', {
         });
 
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'), $('.o_web_studio_hook'));
-
     });
 
     QUnit.test('new field before a button_group', async function (assert) {
@@ -320,7 +323,6 @@ QUnit.module('ViewEditorManager', {
 
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'),
             $('.o_web_studio_hook')[0]);
-
     });
 
     QUnit.test('new field after a button_group', async function (assert) {
@@ -361,7 +363,36 @@ QUnit.module('ViewEditorManager', {
 
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'),
             $('.o_web_studio_hook')[2]);
+    });
 
+    QUnit.test("prevent click on button", async (assert) => {
+        serverData.models["coucou"].records = [{
+            id: 1, display_name: "some name"
+        }]
+        registry.category("services").add("action", {
+            start() {
+                return {
+                    doAction() {
+                        assert.step("doAction")
+                    },
+                    doActionButton() {
+                        assert.step("doActionButton")
+                    },
+                    loadState() {}
+                }
+            }
+        });
+        const arch = `<tree>
+            <field name='display_name'/>
+            <button name="action_1" type="object"/>
+        </tree>`;
+        await studioTestUtils.createViewEditorManager({
+            model: 'coucou',
+            serverData,
+            arch
+        });
+        await click(target.querySelector(".o_data_cell button"));
+        assert.verifySteps([]);
     });
 
     QUnit.test('invisible field in list editor', async function (assert) {
@@ -380,7 +411,6 @@ QUnit.module('ViewEditorManager', {
         assert.containsOnce(vem, '#invisible');
 
         assert.ok(vem.$el[0].querySelector('#invisible').checked);
-
     });
 
     QUnit.test('invisible toggle field in list editor', async function (assert) {
@@ -411,7 +441,6 @@ QUnit.module('ViewEditorManager', {
                         "column_invisible": true
                     }
                 },
-                "children": []
             },
             "new_attrs": {
                 "invisible": "",
@@ -436,7 +465,6 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click(vem.$('#invisible'));
 
         assert.notOk(vem.$el[0].querySelector('#invisible').checked);
-
     });
 
     QUnit.test('widgets with and without description property in sidebar in debug and non-debug mode', async function (assert) {
@@ -444,19 +472,25 @@ QUnit.module('ViewEditorManager', {
 
         const originalOdooDebug = odoo.debug;
         odoo.debug = false;
-        const FieldChar = fieldRegistry.get('char');
+        const LegacyFieldChar = fieldRegistry.get('char');
         // add widget in fieldRegistry with description and without desciption
-        fieldRegistry.add('widgetWithDescription', FieldChar.extend({
+        fieldRegistry.add('widgetWithDescription', LegacyFieldChar.extend({
             description: "Test Widget",
         }));
-        fieldRegistry.add('widgetWithoutDescription', FieldChar.extend({}));
+        fieldRegistry.add('widgetWithoutDescription', LegacyFieldChar.extend({}));
+
+        // FIXME: The sidebar should search through the new registry too
+        const wowlFieldRegistry = registry.category("fields");
+        const CharField = wowlFieldRegistry.get("char");
+        wowlFieldRegistry.add("widgetWithDescription", CharField);
+        wowlFieldRegistry.add("widgetWithoutDescription", CharField);
 
         const vem = await studioTestUtils.createViewEditorManager({
             model: 'coucou',
             arch: "<tree><field name='display_name'/></tree>",
         });
 
-        await testUtils.dom.click(vem.$('thead th[data-node-id=1]'));
+        await testUtils.dom.click(vem.$('thead th[data-studio-xpath]')[0]);
 
         assert.containsOnce(vem, '#widget option[value="widgetWithDescription"]',
             "widget with description should be there");
@@ -464,7 +498,7 @@ QUnit.module('ViewEditorManager', {
             "widget without description should not there in non debug mode");
 
         odoo.debug = true;
-        await testUtils.dom.click(vem.$('thead th[data-node-id=1]'));
+        await testUtils.dom.click(vem.$('thead th[data-studio-xpath]')[0]);
         assert.containsOnce(vem, '#widget option[value="widgetWithDescription"]',
             "widget with description should be there");
         assert.containsOnce(vem, '#widget option[value="widgetWithoutDescription"]',
@@ -502,7 +536,6 @@ QUnit.module('ViewEditorManager', {
         assert.ok(
             vem.$('th.o_web_studio_hook')[0].offsetWidth,
             "studio hooks should be visible in editable 'bottom' listview");
-
     });
 
     QUnit.test('sortby and orderby field in sidebar', async function (assert) {
@@ -569,7 +602,6 @@ QUnit.module('ViewEditorManager', {
 
         await testUtils.fields.editSelect(vem.$('select#sort_field'), '');
         assert.hasClass(vem.$('#sort_order_div'), 'd-none', 'Orderby field must be invisible.');
-
     });
 
     QUnit.test('widget dropdown in list editor sidebar', async function (assert) {
@@ -587,14 +619,14 @@ QUnit.module('ViewEditorManager', {
         });
 
         // select first column and check widget options
-        await testUtils.dom.click(vem.$('thead th[data-node-id=1]'));
+        await testUtils.dom.click(vem.$('thead th[data-studio-xpath="/tree[1]/field[1]"]'));
         assert.strictEqual(
             vem.$('#widget option:selected').text().trim(),
             "Text",
             "Widget name should be Text");
 
         // select second column and check widget options
-        await testUtils.dom.click(vem.$('thead th[data-node-id=2]'));
+        await testUtils.dom.click(vem.$('thead th[data-studio-xpath="/tree[1]/field[2]"]'));
         assert.strictEqual(
             vem.$('#widget option:selected').text().trim(),
             "Priority",
@@ -607,13 +639,13 @@ QUnit.module('ViewEditorManager', {
         // check the widgets in debug mode
         odoo.debug = true;
 
-        await testUtils.dom.click(vem.$('thead th[data-node-id=1]'));
+        await testUtils.dom.click(vem.$('thead th[data-studio-xpath="/tree[1]/field[1]"]'));
         assert.strictEqual(
             vem.$('#widget option:selected').text().trim(),
             "Text (char)",
             "Widget name should be Text (char)");
 
-        await testUtils.dom.click(vem.$('thead th[data-node-id=2]'));
+        await testUtils.dom.click(vem.$('thead th[data-studio-xpath="/tree[1]/field[2]"]'));
         assert.strictEqual(
             vem.$('#widget option:selected').text().trim(),
             "Priority (priority)",
@@ -637,13 +669,17 @@ QUnit.module('ViewEditorManager', {
         const FieldChar = fieldRegistry.get('char');
         // add widget in fieldRegistry without desciption
         fieldRegistry.add('widgetWithoutDescription', FieldChar.extend({}));
+        // FIXME: The sidebar should search through the new registry too
+        const wowlFieldRegistry = registry.category("fields");
+        const CharField = wowlFieldRegistry.get("char");
+        wowlFieldRegistry.add("widgetWithoutDescription", CharField);
 
         const vem = await studioTestUtils.createViewEditorManager({
             model: 'coucou',
             arch: "<tree><field name='display_name' widget='widgetWithoutDescription'/></tree>",
         });
 
-        await testUtils.dom.click(vem.$('thead th[data-node-id=1]'));
+        await testUtils.dom.click(vem.$('thead th[data-studio-xpath]'));
         assert.containsOnce(vem, '#widget option[value="widgetWithoutDescription"]', "widget without description should be there");
         assert.strictEqual(vem.$('#widget option:selected').text().trim(), "widgetWithoutDescription", "Widget should have technical name i.e. widgetWithoutDescription as it does not have description");
         delete fieldRegistry.map.widgetWithoutDescription;
@@ -689,7 +725,7 @@ QUnit.module('ViewEditorManager', {
         await legacyExtraNextTick();
 
         // add value to "toughness" selection field
-        await testUtils.dom.click($(target).find('th[data-node-id]'));
+        await testUtils.dom.click($(target).find('th[data-studio-xpath]'));
         await testUtils.dom.click($(target).find('.o_web_studio_edit_selection_values'));
         $('.modal .o_web_studio_selection_new_value input').val('Hardest');
         await testUtils.dom.click($('.modal .o_web_studio_selection_new_value button.o_web_studio_add_selection_value'));
@@ -752,7 +788,6 @@ QUnit.module('ViewEditorManager', {
             "should have right message");
 
         await testUtils.dom.click($('.modal:eq(1) button:contains(Ok)'));
-
     });
 
     QUnit.test('invisible list editor', async function(assert) {
@@ -763,7 +798,7 @@ QUnit.module('ViewEditorManager', {
             arch: "<tree><field name='display_name' invisible='1'/></tree>",
         });
 
-        assert.containsNone(vem, '.o_web_studio_list_view_editor [data-node-id]',
+        assert.containsNone(vem, '.o_web_studio_list_view_editor [data-studio-xpath]',
             "there should be no node");
         assert.containsOnce(vem, 'table thead th.o_web_studio_hook',
             "there should be one hook");
@@ -772,11 +807,10 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('.o_web_studio_view'));
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#show_invisible'));
 
-        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-node-id]',
+        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-studio-xpath]',
             "there should be one node (the invisible one)");
         assert.containsN(vem, 'table thead th.o_web_studio_hook', 2,
             "there should be two hooks (before & after the field)");
-
     });
 
     QUnit.test('list editor with header and invisible element', async function(assert){
@@ -800,8 +834,7 @@ QUnit.module('ViewEditorManager', {
 
         assert.isVisible(vem.$("td.my_super_name_class"), "The name field should still be visible");
         assert.isVisible(vem.$("td.my_super_description_class"), "The description field should be visible");
-
-    })
+    });
 
     QUnit.test('list editor with invisible element checkbox', async function(assert){
         assert.expect(2)
@@ -831,16 +864,15 @@ QUnit.module('ViewEditorManager', {
             arch: "<tree><control><create string='Add a line'/></control></tree>",
         });
 
-        assert.containsNone(vem, '.o_web_studio_list_view_editor [data-node-id]',
+        assert.containsNone(vem, '.o_web_studio_list_view_editor [data-studio-xpath]',
             "there should be no node");
 
         // click on show invisible
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('.o_web_studio_view'));
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#show_invisible'));
 
-        assert.containsNone(vem, '.o_web_studio_list_view_editor [data-node-id]',
+        assert.containsNone(vem, '.o_web_studio_list_view_editor [data-studio-xpath]',
             "there should be no nodes (the control is filtered)");
-
     });
 
     QUnit.test('list editor invisible to visible on field', async function (assert) {
@@ -877,10 +909,9 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#show_invisible'));
 
         // select the second column
-        await testUtils.dom.click(vem.$('thead th[data-node-id=2]'));
+        await testUtils.dom.click(vem.$('thead th[data-studio-xpath="/tree[1]/field[2]"]'));
         // disable invisible
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#invisible'));
-
     });
 
     QUnit.test('list editor invisible to visible on field readonly', async function (assert) {
@@ -908,10 +939,9 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#show_invisible'));
 
         // select the second column
-        await testUtils.dom.click(vem.$('thead th[data-node-id=2]'));
+        await testUtils.dom.click(vem.$('thead th[data-studio-xpath="/tree[1]/field[2]"]'));
         // disable invisible
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar').find('input#invisible'));
-
     });
 
     QUnit.test('list editor field', async function (assert) {
@@ -923,9 +953,9 @@ QUnit.module('ViewEditorManager', {
         });
 
         // click on the field
-        await testUtils.dom.click(vem.$('.o_web_studio_list_view_editor [data-node-id]'));
+        await testUtils.dom.click(vem.$('.o_web_studio_list_view_editor [data-studio-xpath]'));
 
-        assert.hasClass(vem.$('.o_web_studio_list_view_editor [data-node-id]'),'o_web_studio_clicked',
+        assert.hasClass(vem.$('.o_web_studio_list_view_editor [data-studio-xpath]'),'o-web-studio-editor--element-clicked',
             "the column should have the clicked style");
 
         assert.hasClass(vem.$('.o_web_studio_sidebar').find('.o_web_studio_properties'),'active',
@@ -936,7 +966,6 @@ QUnit.module('ViewEditorManager', {
             "the label in sidebar should be Display Name");
         assert.strictEqual(vem.$('.o_web_studio_sidebar').find('select[name="widget"]').val(), "char",
             "the widget in sidebar should be set by default");
-
     });
 
     QUnit.test('add group to field', async function (assert) {
@@ -950,7 +979,6 @@ QUnit.module('ViewEditorManager', {
                     assert.deepEqual(args.operations[0], {
                         node: {
                             attrs: {name: 'display_name', modifiers: {}},
-                            children: [],
                             tag: 'field',
                         },
                         new_attrs: {groups: pyEnv['res.groups'].search([['name', '=', 'Internal User']])},
@@ -982,7 +1010,7 @@ QUnit.module('ViewEditorManager', {
         });
 
         // click on the field
-        await testUtils.dom.click(vem.$('.o_web_studio_list_view_editor [data-node-id]'));
+        await testUtils.dom.click(vem.$('.o_web_studio_list_view_editor [data-studio-xpath]'));
 
         await testUtils.fields.many2one.clickOpenDropdown('groups');
         await testUtils.fields.many2one.clickHighlightedItem('groups');
@@ -1005,34 +1033,41 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(vem.$('.o_data_cell').text(), "xpadxpod",
             "the records should be ordered");
 
-        // Drag and drop the second line in first position
-        await testUtils.dom.dragAndDrop(
-            vem.$('.ui-sortable-handle').eq(1),
-            vem.$('tbody tr').first(),
-            {position: 'top'}
-        );
+        await dragAndDrop("tbody tr:nth-child(2) .o_handle_cell", "tbody tr:nth-child(1)");
+
         assert.strictEqual(vem.$('.o_data_cell').text(), "xpadxpod",
             "the records should not have been moved (sortable should be disabled in Studio)");
-
     });
 
     QUnit.test('List grouped should not be grouped', async function (assert) {
-        assert.expect(1);
+        assert.expect(2);
 
-        pyEnv['coucou'].create([
-            { display_name: 'Red Right Hand', priority: '1', croissant: 3 },
-            { display_name: 'Hell Broke Luce', priority: '1', croissant: 5 },
-        ]);
+        serverData.models['coucou'].records = [
+            {id:1, display_name: 'Red Right Hand', priority: '1', croissant: 3 },
+            {id:2, display_name: 'Hell Broke Luce', priority: '1', croissant: 5 },
+        ];
 
-        var vem = await studioTestUtils.createViewEditorManager({
-            model: 'coucou',
-            arch: "<tree><field name='croissant' sum='Total Croissant'/></tree>",
-            groupBy: ['priority'],
-        });
+        serverData.views = {
+            "coucou,false,list": `<tree><field name='croissant' sum='Total Croissant'/></tree>`,
+            "coucou,false,search": `<search><filter string="Priority" name="priority" domain="[]" context="{'group_by':'priority'}"/></search>`,
+        }
+        const webClient = await createEnterpriseWebClient({ serverData })
 
-        assert.containsNone(vem, '.o_web_studio_list_view_editor .o_list_table_grouped',
+        await doAction(webClient, {
+            type: "ir.actions.act_window",
+            res_model: "coucou",
+            views: [[false, "list"]],
+            context: { search_default_priority: "1" },
+            xml_id: "somexmlid",
+        })
+
+        assert.containsOnce(target, '.o_list_view .o_list_table_grouped',
+            "The list should be grouped");
+
+        await openStudio(target);
+
+        assert.containsNone(target, '.o_web_studio_list_view_editor .o_list_table_grouped',
             "The list should not be grouped");
-
     });
 
     QUnit.test('move a field in list', async function (assert) {
@@ -1085,12 +1120,11 @@ QUnit.module('ViewEditorManager', {
             "the columns should be in the correct order");
 
         // move the m2o at index 0
-        await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_list_view_editor th:contains(M2O)'),
-            vem.$('th.o_web_studio_hook:first'));
+        await dragAndDrop(target.querySelector('.o_web_studio_list_view_editor th[data-studio-xpath="/tree[1]/field[3]"]'),
+            target.querySelector('th.o_web_studio_hook'));
 
         assert.strictEqual(vem.$('.o_web_studio_list_view_editor th').text(), "M2ODisplay NameA char",
             "the moved field should be the first column");
-
     });
 
     QUnit.test('list editor field with aggregate function', async function (assert) {
@@ -1130,13 +1164,13 @@ QUnit.module('ViewEditorManager', {
         });
 
 
-        await testUtils.dom.click(vem.$('thead th[data-node-id=1]')); // select the first column
+        await testUtils.dom.click(vem.$('thead th[data-studio-xpath]')[0]); // select the first column
 
         // selecting column other than float, integer or monetary should not show aggregate selection
         assert.containsNone(vem, '.o_web_studio_sidebar select[name="aggregate"]',
             "should not have aggregate selection for character type column");
 
-        await testUtils.dom.click(vem.$('thead th[data-node-id=2]')); // select the second column
+        await testUtils.dom.click(vem.$('thead th[data-studio-xpath="/tree[1]/field[2]"]')); // select the second column
         assert.containsOnce(vem, '.o_web_studio_sidebar select[name="aggregate"]',
             "should have aggregate selection for integer type column");
 
@@ -1144,20 +1178,19 @@ QUnit.module('ViewEditorManager', {
         await testUtils.fields.editAndTrigger(vem.$('.o_web_studio_sidebar').find('select[name="aggregate"]'), 'sum', ['change']);
         assert.strictEqual(vem.$('tfoot tr td.o_list_number').text(), "8",
             "total should be '8'");
-        assert.strictEqual(vem.$('tfoot tr td.o_list_number').attr('title'), "Sum of Croissant",
+        assert.strictEqual(vem.$('tfoot tr td.o_list_number').data('tooltip'), "Sum of Croissant",
             "title should be 'Sum of Croissant'");
 
         // select 'avg' aggregate function
         await testUtils.fields.editAndTrigger(vem.$('.o_web_studio_sidebar').find('select[name="aggregate"]'), 'avg', ['change']);
         assert.strictEqual(vem.$('tfoot tr td.o_list_number').text(), "4",
             "total should be '4'");
-        assert.strictEqual(vem.$('tfoot tr td.o_list_number').attr('title'), "Average of Croissant",
+        assert.strictEqual(vem.$('tfoot tr td.o_list_number').data('tooltip'), "Average of Croissant",
             "title should be 'Avg of Croissant'");
 
         // select '' aggregate function
         await testUtils.fields.editAndTrigger(vem.$('.o_web_studio_sidebar').find('select[name="aggregate"]'), '', ['change']);
         assert.strictEqual(vem.$('tfoot tr td.o_list_number').text(), "", "Total should be ''");
-
     });
 
     QUnit.module('Form');
@@ -4310,34 +4343,30 @@ QUnit.module('ViewEditorManager', {
                 "should have raised an error");
         });
 
-
-        // make the rendering crashes only the first time (the operation will
-        // be undone and we will re-render with the old arch the second time)
-        var oldRenderView = ListRenderer.prototype._renderView;
-        var firstExecution = true;
-        ListRenderer.prototype._renderView = function () {
-            if (firstExecution) {
-                firstExecution = false;
-                throw "Error during rendering";
-            } else {
-                return oldRenderView.apply(this, arguments);
+        let isFirstExecution = true;
+        patchWithCleanup(ListRenderer.prototype, {
+            setup() {
+                this._super();
+                owl.onWillRender(() => {
+                    if (isFirstExecution) {
+                        isFirstExecution = false;
+                        throw new Error("Error during rendering");
+                    }
+                })
             }
-        };
+        })
 
         // delete a field to generate a view edition
-        await testUtils.dom.click(vem.$('.o_web_studio_list_view_editor [data-node-id]'));
+        await testUtils.dom.click(vem.$('.o_web_studio_list_view_editor [data-studio-xpath]'));
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_remove'));
         await testUtils.dom.click($('.modal .btn-primary'));
 
         assert.strictEqual($('.o_web_studio_view_renderer').length, 1,
             "there should only be one renderer");
-        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-node-id]',
+        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-studio-xpath]',
             "the view should be back as normal with 1 field");
         assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_view',
             "the sidebar should have reset to its default mode");
-
-        ListRenderer.prototype._renderView = oldRenderView;
-
     });
 
     QUnit.test('error in view edition: undo', async function (assert) {
@@ -4365,15 +4394,15 @@ QUnit.module('ViewEditorManager', {
                 "should have raised an error");
         });
 
-        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-node-id]',
+        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-studio-xpath]',
             "there should be one field in the view");
 
         // delete a field to generate a view edition
-        await testUtils.dom.click(vem.$('.o_web_studio_list_view_editor [data-node-id]'));
+        await testUtils.dom.click(vem.$('.o_web_studio_list_view_editor [data-studio-xpath]'));
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_remove'));
         await testUtils.dom.click($('.modal-dialog .btn-primary'));
 
-        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-node-id]',
+        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-studio-xpath]',
             "the view should be back as normal with 1 field");
         assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_view',
             "the sidebar should have reset to its default mode");
@@ -4456,7 +4485,7 @@ QUnit.module('ViewEditorManager', {
 
 
         // add a monetary field
-        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-node-id]',
+        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-studio-xpath]',
             "there should be one node");
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_monetary'), $('.o_web_studio_hook'));
         assert.strictEqual(nbEdit, 1, "the view should have been updated");
@@ -4795,11 +4824,11 @@ QUnit.module('ViewEditorManager', {
             },
         });
 
-        assert.containsN(vem, '.o_web_studio_list_view_editor [data-node-id]', 2,
+        assert.containsN(vem, '.o_web_studio_list_view_editor [data-studio-xpath]', 2,
             "there should be two nodes");
 
 
-        await testUtils.dom.click(vem.$('.o_web_studio_list_view_editor [data-node-id]:first'));
+        await testUtils.dom.click(vem.$('.o_web_studio_list_view_editor [data-studio-xpath]:first'));
 
         assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field',
             "the sidebar should display the field properties");
@@ -4808,7 +4837,7 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_remove'));
         await testUtils.dom.click($('.modal .btn-primary'));
 
-        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-node-id]',
+        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-studio-xpath]',
             "there should be one node");
         assert.containsNone(vem, '.o_web_studio_sidebar_content.o_display_field',
             "the sidebar should have switched mode");
@@ -5420,7 +5449,7 @@ QUnit.module('ViewEditorManager', {
         });
 
 
-        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-node-id]',
+        assert.containsOnce(vem, '.o_web_studio_list_view_editor [data-studio-xpath]',
             "there should be one node");
         // add a priority field
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_priority'), $('.o_web_studio_hook'));
@@ -5467,27 +5496,27 @@ QUnit.module('ViewEditorManager', {
             }
         });
 
-        assert.strictEqual(vem.$('thead th[data-node-id]').length, 1, "there should be one field");
+        assert.strictEqual(vem.$('thead th[data-studio-xpath]').length, 1, "there should be one field");
 
         // create a new field before existing one
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'), vem.$('.o_web_studio_hook:first'));
         await testUtils.nextTick();
-        assert.strictEqual(vem.$('thead th[data-node-id]').length, 2, "there should be two fields");
+        assert.strictEqual(vem.$('thead th[data-studio-xpath]').length, 2, "there should be two fields");
 
         // rename the field
         await testUtils.fields.editAndTrigger(vem.$('.o_web_studio_sidebar input[name="name"]'), 'new', ['change']);
 
         assert.verifySteps([
-            '/web/dataset/search_read',
+            "/web/dataset/call_kw/coucou/web_search_read",
             'block UI',
             '/web_studio/edit_view',
-            '/web/dataset/search_read',
+            "/web/dataset/call_kw/coucou/web_search_read",
             'unblock UI',
             '/web_studio/get_default_value',
             'block UI',
             '/web_studio/rename_field',
             '/web_studio/edit_view',
-            '/web/dataset/search_read',
+            "/web/dataset/call_kw/coucou/web_search_read",
             '/web_studio/get_default_value',
             'unblock UI',
         ]);
@@ -5529,12 +5558,12 @@ QUnit.module('ViewEditorManager', {
             }
         });
 
-        assert.strictEqual(vem.$('thead th[data-node-id]').length, 1, "there should be one field");
+        assert.strictEqual(vem.$('thead th[data-studio-xpath]').length, 1, "there should be one field");
 
         // create a new field before existing one
         await testUtils.dom.dragAndDrop(vem.$('.o_web_studio_new_fields .o_web_studio_field_char'), vem.$('.o_web_studio_hook:first'));
         await testUtils.nextTick();
-        assert.strictEqual(vem.$('thead th[data-node-id]').length, 2, "there should be two fields");
+        assert.strictEqual(vem.$('thead th[data-studio-xpath]').length, 2, "there should be two fields");
 
         assert.verifySteps([
             'block UI',
@@ -5546,166 +5575,6 @@ QUnit.module('ViewEditorManager', {
         framework.blockUI = blockUI;
         framework.unblockUI = unblockUI;
     });
-
-    // kanbanSkip('Find tag in simple view', async function (assert) {
-    //     assert.expect(2);
-    //     const arch = `
-    //         <form>
-    //             <field name='display_name'/>
-    //         </form>
-    //     `
-    //     const vem = await studioTestUtils.createViewEditorManager({
-    //         model: 'coucou',
-    //         arch: arch,
-    //     });
-    //     let node = vem.editor.findNode(vem.view.arch, {tag: 'field'});
-    //     assert.equal(node.tag, 'field', "It shoudl have found the node");
-    //     node = vem.editor.findNode(vem.view.arch, {tag: 'field', attrs: {class: 'not-in-dom'}});
-    //     assert.notOk(node, "It should not have found anything")
-    // });
-
-    // kanbanSkip('Find with other class', async function (assert) {
-    //     assert.expect(1);
-    //     const arch = `
-    //         <form>
-    //             <field class="my-class other-class" name='display_name'/>
-    //         </form>
-    //     `
-    //     const vem = await studioTestUtils.createViewEditorManager({
-    //         model: 'coucou',
-    //         arch: arch,
-    //     });
-    //     let node = vem.editor.findNode(vem.view.arch, {tag: 'field', class: 'my-class'});
-    //     assert.equal(node.tag, 'field', "It shoudl have found the node");
-    // });
-
-    // kanbanSkip('Find tag and attr in simple view', async function (assert) {
-    //     assert.expect(3);
-    //     const arch = `
-    //         <form>
-    //             <field class='my-class' name='display_name'/>
-    //         </form>
-    //     `
-    //     const vem = await studioTestUtils.createViewEditorManager({
-    //         model: 'coucou',
-    //         arch: arch,
-    //     });
-    //     let node = vem.editor.findNode(vem.view.arch, {tag: 'field', class: 'my-class'});
-    //     assert.equal(node.tag, 'field', "It should have found the node");
-    //     assert.equal(node.attrs.class, 'my-class', "It should have found the node");
-    //     node = vem.editor.findNode(vem.view.arch, {tag: 'field', class: 'other-class'});
-    //     assert.notOk(node, "It should not have found anything")
-    // });
-
-    // kanbanSkip('Find first tag', async function (assert) {
-    //     assert.expect(1);
-    //     const arch = `
-    //         <form>
-    //             <field class='my-class' name='display_name'/>
-    //         </form>
-    //     `
-    //     const vem = await studioTestUtils.createViewEditorManager({
-    //         model: 'coucou',
-    //         arch: arch,
-    //     });
-    //     const node = vem.editor.findNode(vem.view.arch, {tag: 'form'});
-    //     assert.equal(node.tag, 'form', "It should have found the node");
-    // });
-
-    // kanbanSkip('Find first neigbours', async function (assert) {
-    //     assert.expect(2);
-    //     const arch = `
-    //         <form>
-    //             <field name='display_name' class="first"/>
-    //             <field name='start' class="second"/>
-    //         </form>
-    //     `
-    //     const vem = await studioTestUtils.createViewEditorManager({
-    //         model: 'coucou',
-    //         arch: arch,
-    //     });
-    //     const node = vem.editor.findNode(vem.view.arch, {tag: 'field'});
-    //     assert.equal(node.tag, 'field', "It should have found the node");
-    //     assert.equal(node.attrs.class, 'first', "It should have found the first node");
-    // });
-
-    // kanbanSkip('Find nested node', async function (assert) {
-    //     assert.expect(2);
-    //     const arch = `
-    //         <form>
-    //             <group>
-    //                 <group>
-    //                     <field name='display_name' class="nested"/>
-    //                 </group>
-    //             </group>
-    //             <group>
-    //                 <field name='start' class="not-nested"/>
-    //             </group>
-    //         </form>
-    //     `
-    //     const vem = await studioTestUtils.createViewEditorManager({
-    //         model: 'coucou',
-    //         arch: arch,
-    //     });
-    //     const node = vem.editor.findNode(vem.view.arch, {tag: 'field'});
-    //     assert.equal(node.tag, 'field', "It should have found the node");
-    //     assert.equal(node.attrs.class, 'not-nested', "It should have found the first node");
-    // });
-
-    // kanbanSkip('Find invisble', async function (assert) {
-    //     assert.expect(2);
-    //     const arch = `
-    //         <form>
-    //             <field name='display_name' invisible="0"/>
-    //             <field name='start' invisible="1"/>
-    //         </form>
-    //     `
-    //     const vem = await studioTestUtils.createViewEditorManager({
-    //         model: 'coucou',
-    //         arch: arch,
-    //     });
-    //     const node = vem.editor.findNode(vem.view.arch, {tag: 'field', invisible: "1"});
-    //     assert.equal(node.tag, 'field', "It should have found the node");
-    //     assert.equal(node.attrs.name, 'start', "It should have found the invisible node");
-    // });
-
-    // kanbanSkip('Find node with attr only', async function (assert) {
-    //     assert.expect(1);
-    //     const arch = `
-    //         <form>
-    //             <field name='display_name'/>
-    //         </form>
-    //     `
-    //     const vem = await studioTestUtils.createViewEditorManager({
-    //         model: 'coucou',
-    //         arch: arch,
-    //     });
-    //     const node = vem.editor.findNode(vem.view.arch, {name: 'display_name'});
-    //     assert.equal(node.tag, 'field', "It should have found the node");
-    // });
-
-    // kanbanSkip('Find node with multiple attrs', async function (assert) {
-    //     assert.expect(2);
-    //     const arch = `
-    //         <form>
-    //             <field name='display_name' class="my-class"/>
-    //         </form>
-    //     `
-    //     const vem = await studioTestUtils.createViewEditorManager({
-    //         model: 'coucou',
-    //         arch: arch,
-    //     });
-    //     let node = vem.editor.findNode(vem.view.arch, {
-    //         class: "not-my-class",
-    //         name: 'display_name',
-    //     });
-    //     assert.notOk(node, "It should not have matched the node")
-    //     node = vem.editor.findNode(vem.view.arch, {
-    //         class: "my-class",
-    //         name: 'display_name',
-    //     });
-    //     assert.equal(node.tag, 'field', "It should have matched the node");
-    // });
 
     QUnit.test("Sidebar should display all field's widgets", async function (assert) {
         assert.expect(5);
@@ -6125,17 +5994,17 @@ QUnit.module('ViewEditorManager', {
 
         await testUtils.dom.click($($(target).find('.o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many')[0]));
         await legacyExtraNextTick();
-        assert.containsOnce(target, '.o_web_studio_view_renderer thead tr [data-node-id]',
+        assert.containsOnce(target, '.o_web_studio_view_renderer thead tr [data-studio-xpath]',
             "there should be 1 nodes in the x2m editor.");
 
         await testUtils.dom.dragAndDrop($(target).find('.o_web_studio_existing_fields .o_web_studio_field_many2one')[0], $('.o_web_studio_hook'));
         await testUtils.nextTick();
 
-        assert.containsN(target, '.o_web_studio_view_renderer thead tr [data-node-id]', 2,
+        assert.containsN(target, '.o_web_studio_view_renderer thead tr [data-studio-xpath]', 2,
             "there should be 2 nodes after the drag and drop.");
 
         // click on a field in the x2m list view
-        await testUtils.dom.click($(target).find('.o_web_studio_view_renderer [data-node-id]:first'));
+        await testUtils.dom.click($(target).find('.o_web_studio_view_renderer [data-studio-xpath]:first'));
         await legacyExtraNextTick();
         assert.verifySteps(['product'], "the model should be the x2m relation");
 
@@ -6514,7 +6383,7 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click($(target).find('.o_web_studio_sidebar').find('input#show_invisible'));
 
         // select the first column
-        await testUtils.dom.click($(target).find('thead th[data-node-id=1]'));
+        await testUtils.dom.click($(target).find('thead th[data-studio-xpath]'));
         // enable readonly
         await testUtils.dom.click($(target).find('.o_web_studio_sidebar').find('input#readonly'));
     });

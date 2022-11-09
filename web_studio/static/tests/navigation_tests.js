@@ -281,6 +281,8 @@ QUnit.module("Studio", (hooks) => {
                 ".o_web_studio_views .o_web_studio_view_type[data-type=list] .o_web_studio_thumbnail"
             )
         );
+        await legacyExtraNextTick();
+
         assert.containsOnce(target, ".o_web_studio_client_action .o_web_studio_list_view_editor");
 
         await leaveStudio(target);
@@ -348,7 +350,7 @@ QUnit.module("Studio", (hooks) => {
                 "/web_studio/activity_allowed",
                 "/web_studio/get_studio_view_arch",
                 "/web/dataset/call_kw/pony/get_views",
-                "/web/dataset/search_read",
+                "/web/dataset/call_kw/pony/web_search_read",
             ],
             "should have opened the navigated action in Studio"
         );
@@ -359,7 +361,7 @@ QUnit.module("Studio", (hooks) => {
             "the list view should be opened"
         );
         assert.strictEqual(
-            $(target).find(".o_legacy_list_view .o_data_cell").text(),
+            $(target).find(".o_list_view .o_data_cell").text(),
             "Twilight SparkleApplejackFluttershy",
             "the list of ponies should be correctly displayed"
         );
@@ -519,6 +521,7 @@ QUnit.module("Studio", (hooks) => {
             );
 
             await openStudio(target);
+            await legacyExtraNextTick();
 
             assert.containsNone(
                 target,

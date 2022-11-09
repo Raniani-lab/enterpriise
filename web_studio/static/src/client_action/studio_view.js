@@ -2,7 +2,7 @@
 
 import { WithSearch } from "@web/search/with_search/with_search";
 
-import { Component, xml, useSubEnv } from "@odoo/owl";
+import { Component, xml, useSubEnv, onError } from "@odoo/owl";
 
 const HEIGHT = "height: 100%;";
 
@@ -19,6 +19,10 @@ export class StudioView extends Component {
             searchViewFields: this.props.searchViewFields,
             irFilters: this.props.searchViewIrFilters,
         };
+
+        onError((error) => {
+            this.props.onError(error);
+        });
 
         useSubEnv({
             config: { ...this.env.config },

@@ -1,6 +1,11 @@
 /** @odoo-module **/
 
-import { click, getFixture, patchWithCleanup } from "@web/../tests/helpers/utils";
+import {
+    click,
+    getFixture,
+    patchWithCleanup,
+    legacyExtraNextTick,
+} from "@web/../tests/helpers/utils";
 import { doAction, getActionManagerServerData } from "@web/../tests/webclient/helpers";
 import { patch, unpatch } from "@web/core/utils/patch";
 import { session } from "@web/session";
@@ -60,6 +65,7 @@ QUnit.module("Studio", (hooks) => {
         assert.containsOnce(target, ".o_optional_columns_dropdown .dropdown-item-studio");
 
         await click(target.querySelector(".o_optional_columns_dropdown .dropdown-item-studio"));
+        await legacyExtraNextTick();
         assert.containsNone(target, ".modal-studio");
         assert.containsOnce(
             target,
@@ -80,6 +86,7 @@ QUnit.module("Studio", (hooks) => {
         assert.containsOnce(target, ".o_optional_columns_dropdown .dropdown-item-studio");
 
         await click(target.querySelector(".o_optional_columns_dropdown .dropdown-item-studio"));
+        await legacyExtraNextTick();
         assert.containsNone(target, ".modal-studio");
         assert.containsOnce(
             target,
@@ -91,6 +98,7 @@ QUnit.module("Studio", (hooks) => {
         const webClient = await createEnterpriseWebClient({ serverData });
         await doAction(webClient, 3);
         await click(target.querySelector(".o_web_studio_navbar_item a"));
+        await legacyExtraNextTick();
         const automationsLink = [...target.querySelectorAll(".o_web_studio_menu_item a")].find(
             (link) => link.textContent === "Automations"
         );

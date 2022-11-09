@@ -10,6 +10,20 @@ function isVisible(el) {
     return style.display !== "none";
 }
 
+function addDefaultWidgetsOptionsValues(fieldsInfo) {
+    for (const viewInfo of Object.values(fieldsInfo)) {
+        const _fieldsInfo = Object.values(viewInfo).filter((f) => f.widget in OPTIONS_BY_WIDGET);
+        for (const fieldInfo of _fieldsInfo) {
+            const missingOptions = OPTIONS_BY_WIDGET[fieldInfo.widget].filter(
+                ({ name }) => !(name in fieldInfo.options)
+            );
+            for (const option of missingOptions) {
+                fieldInfo.options[option.name] = option.default;
+            }
+        }
+    }
+}
+
 class BasicEditorWrapper extends ComponentWrapper {
     setup() {
         super.setup();
@@ -21,19 +35,8 @@ class BasicEditorWrapper extends ComponentWrapper {
             this.env.config.type,
             this.env
         );
-        for (const viewInfo of Object.values(fieldsInfo)) {
-            const _fieldsInfo = Object.values(viewInfo).filter(
-                (f) => f.widget in OPTIONS_BY_WIDGET
-            );
-            for (const fieldInfo of _fieldsInfo) {
-                const missingOptions = OPTIONS_BY_WIDGET[fieldInfo.widget].filter(
-                    ({ name }) => !(name in fieldInfo.options)
-                );
-                for (const option of missingOptions) {
-                    fieldInfo.options[option.name] = option.default;
-                }
-            }
-        }
+        addDefaultWidgetsOptionsValues(fieldsInfo);
+
         this.state = {
             fieldsInfo,
             getFieldNames: () => {
@@ -79,10 +82,9 @@ class BasicEditorWrapper extends ComponentWrapper {
     }
     unselectedElements() {
         this.lastClickedXpath = null;
-        const clickedEl = this.el.querySelector(".o-web-studio-editor--element-clicked");
-        if (clickedEl) {
-            clickedEl.classList.remove("o-web-studio-editor--element-clicked");
-        }
+        this.el.querySelectorAll(".o-web-studio-editor--element-clicked").forEach((el) => {
+            el.classList.remove("o-web-studio-editor--element-clicked");
+        });
     }
     handleDrop() {}
     highlightNearestHook($helper, position) {
@@ -99,3 +101,50 @@ class BasicEditorWrapper extends ComponentWrapper {
 }
 registry.category("wowl_editors_wrappers").add("form", BasicEditorWrapper);
 registry.category("wowl_editors_wrappers").add("kanban", BasicEditorWrapper);
+
+class ListEditorWrapper extends BasicEditorWrapper {
+    setup() {
+        super.setup();
+        const { columns } = this.props.controllerProps.archInfo;
+
+        const colFieldInfo = {};
+        for (const col of columns) {
+            if (col.type === "field") {
+                colFieldInfo[col.name] = col;
+            }
+        }
+
+        const listFieldsInfo = this.state.fieldsInfo["list"];
+        for (const fName of Object.keys(listFieldsInfo)) {
+            const fInfo = { ...listFieldsInfo[fName] };
+            const { rawAttrs } = colFieldInfo[fName] || {};
+            listFieldsInfo[fName] = {
+                ...(rawAttrs || {}),
+                ...fInfo,
+                ...colFieldInfo[fName],
+            };
+        }
+    }
+
+    setLocalState(state = {}) {
+        this.lastClickedXpath = state.lastClickedXpath || null;
+        if (!this.el) {
+            return;
+        }
+
+        const lastClickedXpath = this.lastClickedXpath;
+        this.unselectedElements();
+
+        if (lastClickedXpath) {
+            const el = this.el.querySelector(
+                `th[data-studio-xpath="${lastClickedXpath}"], button[data-studio-xpath="${lastClickedXpath}"]`
+            );
+            if (el && isVisible(el)) {
+                el.click();
+                return;
+            }
+            this.props.resetSidebar();
+        }
+    }
+}
+registry.category("wowl_editors_wrappers").add("list", ListEditorWrapper);

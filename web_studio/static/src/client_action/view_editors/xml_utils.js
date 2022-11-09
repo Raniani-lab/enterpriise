@@ -26,10 +26,15 @@ export function computeXpath(node, upperBoundSelector = "form") {
     return xpath;
 }
 
+export const nodeStudioXpathSymbol = Symbol("nodeStudioXpath");
 function xmlNodeToLegacyNode(xpath, node) {
     const attrs = {};
 
     for (const att of node.getAttributeNames()) {
+        if (att === "studioXpath") {
+            attrs[nodeStudioXpathSymbol] = node.getAttribute(att);
+            continue;
+        }
         attrs[att] = node.getAttribute(att);
     }
 
@@ -39,8 +44,8 @@ function xmlNodeToLegacyNode(xpath, node) {
         attrs.modifiers = {};
     }
 
-    if (!attrs.studioXpath) {
-        attrs.studioXpath = xpath;
+    if (!attrs[nodeStudioXpathSymbol]) {
+        attrs[nodeStudioXpathSymbol] = xpath;
     } else if (attrs.studioXpath !== xpath) {
         // WOWL to remove
         throw new Error("You rascal!");

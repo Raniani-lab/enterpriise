@@ -1,4 +1,4 @@
-.o_web_studio_list_view_editor.o_legacy_list_view .o_list_table.table {
+.o_list_view .o_web_studio_list_view_editor .o_list_table.table {
     // Define transparent borders to prevent flickering on hover
     border-collapse: separate;
     th, td {
@@ -10,22 +10,22 @@
     }
 
     // Default columns
-    th.o_web_studio_hovered {
+    th.o-web-studio--col-hovered {
         color: black;
         border-left: 1px dashed $o-brand-primary;
         border-right: 1px dashed $o-brand-primary;
     }
-    tr.o_data_row td.o_web_studio_hovered:not(.o_web_studio_hook) {
+    tr.o_data_row td.o-web-studio--col-hovered:not(.o_web_studio_hook) {
         border-left: 1px dashed $o-brand-primary;
         border-right: 1px dashed $o-brand-primary;
     }
 
-    th.o_web_studio_clicked {
+    th.o-web-studio-editor--element-clicked {
         background-color: white;
         border-left: 1px solid black;
         border-right: 1px solid black;
     }
-    tr.o_data_row td.o_web_studio_clicked:not(.o_web_studio_hook) {
+    tr.o_data_row td.o-web-studio-editor--element-clicked:not(.o_web_studio_hook) {
         border-left: 1px solid black;
         border-right: 1px solid black;
     }

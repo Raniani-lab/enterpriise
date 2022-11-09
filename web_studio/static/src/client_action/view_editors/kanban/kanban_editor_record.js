@@ -14,6 +14,7 @@ import {
     hookPositionTolerance,
     getHooks,
 } from "@web_studio/client_action/view_editors/utils";
+import { nodeStudioXpathSymbol } from "@web_studio/client_action/view_editors/xml_utils";
 import { closest, touching } from "@web/core/utils/ui";
 import { useService } from "@web/core/utils/hooks";
 import { AlertDialog, ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
@@ -153,7 +154,7 @@ class _KanbanEditorRecord extends KanbanRecord {
                     new_attrs: { name: field },
                     node: {
                         attrs: {
-                            studioXpath: xpath,
+                            [nodeStudioXpathSymbol]: xpath,
                         },
                     },
                     position: "inside",

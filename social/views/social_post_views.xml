@@ -61,8 +61,7 @@
                             <div t-attf-class="o_social_stream_post_message_body flex-grow-1 py-2 px-3 #{has_attachments ? 'o_social_stream_post_with_attachments' : 'border-bottom'}">
                                 <div name="o_social_stream_post_message_text"
                                      t-attf-class="o_social_stream_post_message_text overflow-hidden #{has_attachments ? 'mb-2' : ''}">
-                                    <div t-if="formatPost" t-out="formatPost(record.message.value)"/>
-                                    <div t-else="" t-out="record.message.value"/>
+                                    <field name="message" widget="social_post_formatter"/>
                                 </div>
 
                                 <div t-if="has_attachments"

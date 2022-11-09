@@ -1,21 +1,13 @@
 /** @odoo-module **/
 
-import { KanbanRecord } from "@web/views/kanban/kanban_record";
 import { KanbanRenderer } from "@web/views/kanban/kanban_renderer";
 import { kanbanView } from "@web/views/kanban/kanban_view";
 import { registry } from "@web/core/registry";
 import { useService } from '@web/core/utils/hooks';
 
 import { ImagesCarouselDialog } from './images_carousel_dialog';
-import { SocialPostFormatterMixin } from "./social_post_formatter_mixin";
 
-const { markup, useEffect, useRef } = owl;
-
-export class PostKanbanRecord extends KanbanRecord {
-    formatPost (message) {
-        return markup(SocialPostFormatterMixin._formatPost(message));
-    }
-}
+const { useEffect, useRef } = owl;
 
 export class PostKanbanRenderer extends KanbanRenderer {
     setup() {
@@ -58,12 +50,6 @@ export class PostKanbanRenderer extends KanbanRenderer {
         })
     }
 }
-
-PostKanbanRenderer.components = {
-    ...KanbanRenderer.components,
-    KanbanRecord: PostKanbanRecord,
-};
-
 
 export const PostKanbanView = {
     ...kanbanView,

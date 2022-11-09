@@ -1,13 +1,8 @@
 /** @odoo-module **/
 
-import { SocialPostFormatterMixin } from './social_post_formatter_mixin';
-
 import { formatInteger } from '@web/views/fields/formatters';
 import { KanbanRecord } from '@web/views/kanban/kanban_record';
-import { patch } from '@web/core/utils/patch';
 import { useService } from '@web/core/utils/hooks';
-
-const { markup } = owl;
 
 export const CANCEL_GLOBAL_CLICK = ["a", ".o_social_subtle_btn", "img"].join(",");
 const DEFAULT_COMMENT_COUNT = 20;
@@ -61,10 +56,6 @@ export class StreamPostKanbanRecord extends KanbanRecord {
         return formatInteger(value);
     }
 
-    formatPost(value) {
-        return markup(this._formatPost(value));
-    }
-
     //---------
     // Getters
     //---------
@@ -87,4 +78,3 @@ export class StreamPostKanbanRecord extends KanbanRecord {
         }
     }
 }
-patch(StreamPostKanbanRecord.prototype, 'social_post_formatter_mixin', SocialPostFormatterMixin);

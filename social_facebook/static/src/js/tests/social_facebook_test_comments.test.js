@@ -79,10 +79,7 @@ return '<kanban class="o_social_stream_post_kanban"' +
 '				class="o_social_stream_post_message_body px-2 pb-2 mb-2 border-bottom}">' +
 '' +
 '				<div class="o_social_stream_post_message_text overflow-hidden mb-2">' +
-'                   <t t-if="record.message.raw_value">' +
-'		    			<div t-if="formatPost" t-out="formatPost(record.message.value)"/>' +
-'                       <div t-else="" t-out="record.message.value"/>' +
-'                   </t>' +
+'					<field name="message" widget="social_post_formatter"/>' +
 '				</div>' +
 '			</div>' +
 '           <div class="o_social_stream_post_facebook_stats px-2 d-flex justify-content-around"' +

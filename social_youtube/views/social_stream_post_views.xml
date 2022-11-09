@@ -36,7 +36,7 @@
                             class="w-100 py-2 o_social_youtube_thumbnail"/>
                     </a>
                     <div class="px-2">
-                        <field name="message"/>
+                        <span t-out="record.message.value"/>
                     </div>
                 </div>
 

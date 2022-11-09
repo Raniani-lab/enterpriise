@@ -1284,7 +1284,6 @@ class SaleOrder(models.Model):
                             for line in invoiceable_lines:
                                 line.qty_invoiced = line.product_uom_qty
                             subscription._subscription_post_success_free_renewal()
-                    self._commit_cursor()
                     continue
 
                 try:
@@ -1310,8 +1309,7 @@ class SaleOrder(models.Model):
             except Exception:
                 _logger.exception("Error during renewal of contract %s", subscription.client_order_ref or subscription.name)
                 self._subscription_rollback_cursor(auto_commit)
-            else:
-                self._subscription_commit_cursor(auto_commit)
+        self._subscription_commit_cursor(auto_commit)
         lines_to_reset_qty._reset_subscription_quantity_post_invoice()
         all_subscriptions._process_invoices_to_send(account_moves)
         # There is still some subscriptions to process. Then, make sure the CRON will be triggered again asap.

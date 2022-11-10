@@ -186,3 +186,8 @@ class ProductProduct(models.Model):
         rented_serial_during_period = all_lines.mapped('unavailable_lot_ids')
 
         return max_qty_rented + qty_always_in_rent_during_period, rented_serial_during_period
+
+    def action_view_rentals(self):
+        result = super().action_view_rentals()
+        result['context'].update({'sale_stock_renting_show_total_qty': 1})
+        return result

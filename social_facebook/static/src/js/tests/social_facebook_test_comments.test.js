@@ -88,7 +88,7 @@ return '<kanban class="o_social_stream_post_kanban"' +
 '            		t-on-click.stop="_onFacebookPostLike">' +
 '            		<t t-if="record.facebook_likes_count.raw_value !== 0">' +
 '            			<i class="fa fa-thumbs-up me-1" title="Likes"/>' +
-'            			<b class="o_social_kanban_likes_count" t-esc="_insertThousandSeparator(record.facebook_likes_count.raw_value)"/>' +
+'            			<field name="facebook_likes_count" class="fw-bold"/>' +
 '            		</t>' +
 '            	</div>' +
 '            	<div class="o_social_facebook_comments o_social_comments o_social_subtle_btn px-3"' +

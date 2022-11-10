@@ -4,6 +4,7 @@ from odoo import models, fields, api, _
 from odoo.exceptions import AccessError, UserError
 from odoo.osv import expression
 from odoo.tools import image_process
+from odoo.tools.misc import clean_context
 import base64
 from ast import literal_eval
 from dateutil.relativedelta import relativedelta
@@ -413,7 +414,8 @@ class Document(models.Model):
                 attachment.write(attachment_dict)
             elif attachment_dict:
                 attachment_dict.setdefault('name', vals.get('name', 'unnamed'))
-                attachment = self.env['ir.attachment'].create(attachment_dict)
+                # default_res_model and default_res_id will cause unique constraints to trigger.
+                attachment = self.env['ir.attachment'].with_context(clean_context(self.env.context)).create(attachment_dict)
                 vals['attachment_id'] = attachment.id
             attachments.append(attachment)
 

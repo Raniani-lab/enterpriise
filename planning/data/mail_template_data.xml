@@ -41,10 +41,6 @@
                             <th style="padding: 5px;text-align: left;">Project</th>
                             <td style="padding: 5px;" t-out="object.sudo().project_id.name or ''">Gathering</td>
                         </tr>
-                        <tr t-if="hasattr(object, 'task_id') and object.task_id">
-                            <th style="padding: 5px;text-align: left;">Task</th>
-                            <td style="padding: 5px;" t-out="object.sudo().task_id.name or ''">Chef</td>
-                        </tr>
                         <tr t-if="hasattr(object, 'name') and object.name">
                             <th style="padding: 5px;text-align: left;">Note</th>
                             <td style="padding: 5px;" t-out="object.name or ''">/</td>

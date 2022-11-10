@@ -18,6 +18,7 @@ class TestKnowledgeEditorCommands(HttpCase):
         # remove existing articles to ease tour management
         cls.env['knowledge.article'].search([]).unlink()
         cls.env['knowledge.article'].create({
+            'is_article_visible_by_everyone': True,
             'name': 'EditorCommandsArticle',
             'body': Markup('<p><br></p>')
         })

@@ -4,6 +4,7 @@
         <record id="knowledge_article_hr_faq" model="knowledge.article" forcecreate="False">
             <field name="name">HR FAQ</field>
             <field name="icon" eval="False"/>
+            <field name="is_article_visible_by_everyone" eval="True"/>
             <field name="body" type="html">
                 <h1>
                     <span style="font-weight: bolder;">
@@ -136,6 +137,7 @@
         <record id="knowledge_article_sales_and_marketing" model="knowledge.article" forcecreate="False">
             <field name="name">Sales &amp; Marketing</field>
             <field name="icon" eval="False"/>
+            <field name="is_article_visible_by_everyone" eval="True"/>
             <field name="body" type="html">
                 <h1>
                     <span style="font-weight: bolder;">
@@ -171,6 +173,7 @@
         <record id="knowledge_article_sales_playbook" model="knowledge.article" forcecreate="False">
             <field name="name">Sales Playbook</field>
             <field name="icon" eval="False"/>
+            <field name="is_article_visible_by_everyone" eval="True"/>
             <field name="body" type="html">
                 <h1>Sales Playbook</h1>
                 <hr />
@@ -363,6 +366,7 @@
         <record id="knowledge_article_brand_assets" model="knowledge.article" forcecreate="False">
             <field name="name">Brand Assets</field>
             <field name="icon" eval="False"/>
+            <field name="is_article_visible_by_everyone" eval="True"/>
             <field name="body" type="html">
                 <h1>Brand Assets</h1>
                 <hr />

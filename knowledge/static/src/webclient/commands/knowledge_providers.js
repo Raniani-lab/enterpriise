@@ -29,57 +29,58 @@ commandSetupRegistry.add("?", {
 });
 
 const commandProviderRegistry = registry.category("command_provider");
-commandProviderRegistry.add("knowledge", {
-    debounceDelay: 200,
-    namespace: "?",
-    async provide(env, options) {
+
+const fn = (hidden) => {
+    return async function provide(env, options) {
         const articlesData = await Component.env.services.rpc({
             model: "knowledge.article",
             method: "get_user_sorted_articles",
             args: [[]],
             kwargs: {
                 search_query: options.searchValue,
+                hidden_mode: hidden,
             }
         });
-
-        if (articlesData.length === 0) {
-            // check if user has enough rights to create a new article
-            const canCreate = await Component.env.services.rpc({
-                model: "knowledge.article",
-                method: "check_access_rights",
-                kwargs: {
-                    operation: "create",
-                    raise_exception: false,
-                },
-            });
-            // only display the "create article" command when there are at least 3 character
-            if (canCreate && options.searchValue.length > 2) {
-                return [{
-                    Component: Knowledge404Command,
-                    async action() {
-                        const articleId = await Component.env.services.rpc({
-                            model: 'knowledge.article',
-                            method: 'article_create',
-                            args: [options.searchValue],
-                            kwargs: {
-                                is_private: true
-                            },
-                        });
-
-                        env.services.action.doAction('knowledge.ir_actions_server_knowledge_home_page', {
-                            additionalContext: {
-                                res_id: articleId,
-                            }
-                        });
+        if (!hidden){
+            if (articlesData.length === 0) {
+                // check if user has enough rights to create a new article
+                const canCreate = await Component.env.services.rpc({
+                    model: "knowledge.article",
+                    method: "check_access_rights",
+                    kwargs: {
+                        operation: "create",
+                        raise_exception: false,
                     },
-                    name: sprintf(_lt('No Article found. Create "%s"'), options.searchValue),
-                    props: {
-                        articleName: options.searchValue,
-                    },
-                }];
-            }
-            else {
-                return [];
+                });
+                // only display the "create article" command when there are at least 3 character
+                if (canCreate && options.searchValue.length > 2) {
+                    return [{
+                        Component: Knowledge404Command,
+                        async action() {
+                            const articleId = await Component.env.services.rpc({
+                                model: 'knowledge.article',
+                                method: 'article_create',
+                                args: [options.searchValue],
+                                kwargs: {
+                                    is_private: true
+                                },
+                            });
+
+                            env.services.action.doAction('knowledge.ir_actions_server_knowledge_home_page', {
+                                additionalContext: {
+                                    res_id: articleId,
+                                }
+                            });
+                        },
+                        name: sprintf(_lt('No Article found. Create "%s"'), options.searchValue),
+                        props: {
+                            articleName: options.searchValue,
+                        },
+                    }];
+                }
+                else {
+                    return [];
+                }
             }
         }
         const knowledgeMainMenuId = env.services.menu.getAll().find(
@@ -106,22 +107,41 @@ commandProviderRegistry.add("knowledge", {
                 icon_string: article.icon || '📄',
             },
         }));
+        if(!hidden){
         // add the "advanced search" command
-        result.push({
-            Component: KnowledgeExtraCommand,
-            action() {
-                env.services.action.doAction('knowledge.knowledge_article_action', {
-                    additionalContext: {
-                        search_default_name: options.searchValue,
-                    },
-                });
-            },
-            category: "knowledge_extra",
-            name: _lt("Advanced Search"),
-            props: {
-                hotkey: "alt+B",
-            },
-        });
+            result.push({
+                Component: KnowledgeExtraCommand,
+                action() {
+                    env.services.action.doAction('knowledge.knowledge_article_action', {
+                        additionalContext: {
+                            search_default_name: options.searchValue,
+                        },
+                    });
+                },
+                category: "knowledge_extra",
+                name: _lt("Advanced Search"),
+                props: {
+                    hotkey: "alt+B",
+                },
+            });
+        }
         return result;
-    },
+    };
+};
+
+commandProviderRegistry.add("knowledge", {
+    debounceDelay: 200,
+    namespace: "?",
+    provide: fn(false),
+});
+
+commandSetupRegistry.add("$", {
+    debounceDelay: 200,
+    emptyMessage: _lt("No hidden articles found"),
+    placeholder: _lt("Search a hidden article to join"),
+});
+commandProviderRegistry.add("knowledge_members_only_articles", {
+    debounceDelay: 200,
+    namespace: "$",
+    provide: fn(true),
 });

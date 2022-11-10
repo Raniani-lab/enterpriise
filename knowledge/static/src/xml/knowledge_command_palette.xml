@@ -47,4 +47,11 @@
         </div>
     </t>
 
+    <t t-inherit="web.CommandPalette" t-inherit-mode="extension" owl="1">
+        <xpath expr="//div[hasclass('o_command_palette_search')]/input" position="after">
+            <a t-if="this.state.namespace === '$'" role="button" class="btn btn-dark disabled py-0 rounded-pill">
+                Hidden
+            </a>
+        </xpath>
+    </t>
 </templates>

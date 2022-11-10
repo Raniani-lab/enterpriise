@@ -12,7 +12,7 @@ class KnowledgeInvite(models.TransientModel):
     have_share_partners = fields.Boolean(compute='_compute_have_share_partners')
     partner_ids = fields.Many2many('res.partner', string='Recipients', required=True)
     permission = fields.Selection([
-        ('write', 'Can write'),
+        ('write', 'Can edit'),
         ('read', 'Can read'),
         ('none', 'No access')
     ], required=True, default='write')

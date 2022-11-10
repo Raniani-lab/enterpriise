@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.knowledge.tests.common import KnowledgeCommonWData
+from odoo.addons.knowledge.tests.common import KnowledgeCommonWData, KnowledgeArticlePermissionsCase
 from odoo.tests.common import tagged, users, warmup
 from odoo.tools import mute_logger
 
@@ -117,6 +117,45 @@ class KnowledgePerformanceCase(KnowledgeCommonWData):
     @warmup
     def test_article_move_to(self):
         before_id = self.workspace_children[0].id
-        with self.assertQueryCount(employee=24):  # knowledge: 23
+        with self.assertQueryCount(employee=29):  # knowledge: 28
             writable_article = self.workspace_children[1].with_env(self.env)
             writable_article.move_to(parent_id=writable_article.parent_id.id, before_article_id=before_id)
+
+
+@tagged('knowledge_performance', 'post_install', '-at_install')
+class KnowledgePerformancePermissionCase(KnowledgeArticlePermissionsCase):
+
+    @users('employee')
+    @warmup
+    def test_user_has_parent_path_access(self):
+        """We are testing the performance to access the field user_has_parent_path_access in different situations.
+        The arborescence tested here is the one contained inside Readable Root.
+        """
+        self.assertFalse(self.article_read_contents_children.user_has_access)
+
+        self.article_read_contents_children.sudo()._add_members(self.env.user.partner_id, 'read')
+        self.assertTrue(self.article_read_contents_children.with_user(self.env.user).user_has_access)
+
+        # Testing the number of queries depending on the number of ancestors => parent_path
+        # Conclusion: No evolution with a higher number of ancestors
+        # article_headers[1] => ('TTRPG')
+        with self.assertQueryCount(employee=2):
+            self.article_headers[1].with_user(self.env.user).user_has_access_parent_path
+
+        # article_read_contents_children => (Child of 'Secret')
+        with self.assertQueryCount(employee=2):
+            self.article_read_contents_children.with_user(self.env.user).user_has_access_parent_path
+        # article_read_desync => (Child of 'Mansion of Terror')
+        with self.assertQueryCount(employee=5):
+            self.article_read_desync[0].with_user(self.env.user).user_has_access_parent_path
+
+        # Testing evolution in query number depending on the number of tested records
+        # Conclusion: Proportional evolution
+        # article_read_contents[0] => ('OpenCthulhu')
+        with self.assertQueryCount(employee=3):
+            self.article_read_contents[0].with_user(self.env.user).user_has_access_parent_path
+
+        # article_read_contents[1:3] => ('Open Paranoïa'), ('Proprietary RPGs')
+        with self.assertQueryCount(employee=4):
+            for article in self.article_read_contents[1:3]:
+                article.with_user(self.env.user).user_has_access_parent_path

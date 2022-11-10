@@ -327,6 +327,17 @@ export class PermissionPanel extends Component {
         }
         return true;
     }
+
+    async _onChangeVisibility (event) {
+        const $input = $(event.target);
+        const articleId = this.props.article_id;
+        await this.orm.call(
+            'knowledge.article',
+            'set_is_article_visible_by_everyone',
+            [articleId, $input.val() === 'everyone']
+        );
+        this.openArticle(articleId);
+    }
 }
 
 PermissionPanel.template = 'knowledge.PermissionPanel';

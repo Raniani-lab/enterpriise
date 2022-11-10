@@ -17,7 +17,7 @@ class ArticleMember(models.Model):
         'res.partner', 'Partner',
         index=True, ondelete='cascade', required=True)
     permission = fields.Selection(
-        [('write', 'Can write'),
+        [('write', 'Can edit'),
          ('read', 'Can read'),
          ('none', 'No access')],
         required=True, default='read')

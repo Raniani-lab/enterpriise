@@ -66,6 +66,8 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                     const isFavoriteSection = section.classList.contains('o_favorite_container');
                     if (button.classList.contains('o_section_create')) {
                         this.createArticle(section.dataset.section);
+                    } else if (button.classList.contains('o_knowledge_join_article_members')) {
+                        this.env.services.command.openMainPalette({searchValue: '$'});
                     } else if (button.classList.contains('o_article_create')) {
                         const parentId = parseInt(button.closest('.o_article').dataset.articleId);
                         this.createArticle(undefined, parentId);

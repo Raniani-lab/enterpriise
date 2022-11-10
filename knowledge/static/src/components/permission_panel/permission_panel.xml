@@ -18,15 +18,6 @@
                 <button t-if="props.user_permission === 'write' || state.user_is_admin"
                     class="btn btn-link" t-on-click="event => this._onRestore(event)" type="button">Restore</button>
             </div>
-            <div t-if="props.user_permission === 'write'" class="o_knowledge_share_panel_invite d-flex align-items-center px-3 py-1">
-                <div class="o_knowledge_share_panel_icon rounded-circle d-flex flex-shrink-0 justify-content-center align-items-center bg-light">
-                    <i class="fa fa-user-plus fs-3" title="Invite People"/>
-                </div>
-                <button t-on-click="_onInviteMembersClick" class="btn input-group o_cursor_pointer d-flex flex-grow-1 min-w-0 p-0 ms-3">
-                    <div class="form-control text-start text-truncate">Add people or email addresses...</div>
-                    <button class="btn btn-primary">Invite</button>
-                </button>
-            </div>
             <div class="d-flex align-items-center px-3 py-1">
                 <div class="flex-shrink-0">
                     <div class="o_knowledge_share_panel_icon rounded-circle d-flex justify-content-center align-items-center bg-light">
@@ -34,7 +25,7 @@
                     </div>
                 </div>
                 <div class="flex-grow-1 min-w-0 px-3">
-                    <div class="text-truncate">Internal Members</div>
+                    <div class="text-truncate">Default Access Rights</div>
                     <div t-if="state.based_on" class="text-truncate text-muted">
                         Based on
                         <a href="#" t-if="state.based_on_id" t-on-click="event => this._onOpen(event, state.based_on_id)" t-out="state.based_on"/>
@@ -52,6 +43,39 @@
                         </t>
                     </select>
                 </div>
+            </div>
+            <!-- Visibility options only for workspace root articles -->
+            <div t-if="!state.parent_id and state.internal_permission !== 'none'" class="d-flex align-items-center px-3 py-1">
+                <div class="flex-shrink-0">
+                    <div class="o_knowledge_share_panel_icon rounded-circle d-flex justify-content-center align-items-center bg-light">
+                        <i class="fa fa-eye fs-3"/>
+                    </div>
+                </div>
+                <div class="flex-grow-1 px-3">Visibility</div>
+                <div class="flex-shrink-0 bg-white">
+                    <select class="o_permission form-select rounded"
+                        t-att-value="state.is_article_visible_by_everyone ? 'join': 'everyone'"
+                        t-on-change="_onChangeVisibility"
+                        t-att-disabled="state.user_is_admin || props.user_permission === 'write' ? undefined : 'disabled'"
+                        aria-label="Visibility">
+                        <option t-att-value="'join'" t-att-selected="!state.is_article_visible_by_everyone ? 'selected' : undefined">
+                            Members
+                        </option>
+                        <option t-att-value="'everyone'" t-att-selected="state.is_article_visible_by_everyone ? 'selected' : undefined">
+                            Everyone
+                        </option>
+                    </select>
+                </div>
+            </div>
+            <div class="dropdown-divider"/>
+            <div t-if="props.user_permission === 'write'" class="o_knowledge_share_panel_invite d-flex align-items-center px-3 py-1">
+                <div class="o_knowledge_share_panel_icon rounded-circle d-flex flex-shrink-0 justify-content-center align-items-center bg-light">
+                    <i class="fa fa-user-plus fs-3" title="Invite People"/>
+                </div>
+                <button t-on-click="_onInviteMembersClick" class="btn input-group o_cursor_pointer d-flex flex-grow-1 min-w-0 p-0 ms-3">
+                    <div class="form-control text-start text-truncate">Add people or email addresses...</div>
+                    <button class="btn btn-primary">Invite</button>
+                </button>
             </div>
             <t t-foreach="state.members" t-as="member" t-key="member_index">
                 <div t-attf-class="d-flex align-items-center px-3 py-1 {{ this.isLoggedUser(member) ? 'active' : '' }}">

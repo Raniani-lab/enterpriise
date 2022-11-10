@@ -47,6 +47,7 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
             'name': 'Article 3',
             'internal_permission': 'write',
             'parent_id': False,
+            'is_article_visible_by_everyone': True,
         })
         self.start_tour('/web', 'knowledge_main_flow_tour', login='admin', step_delay=100)
 
@@ -75,7 +76,7 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
         self.assertEqual(children_workspace_articles[1], child_article_1)
 
         # workspace article should have one partner invited on it
-        invited_member = workspace_article.article_member_ids
+        invited_member = workspace_article.article_member_ids.filtered(lambda member: member.partner_id != workspace_article.create_uid.partner_id)
         self.assertEqual(len(invited_member), 1)
         invited_partner = invited_member.partner_id
         self.assertEqual(len(invited_partner), 1)
@@ -129,7 +130,8 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
             'article_member_ids': [(0, 0, {
                 'partner_id': self.env.ref('base.user_admin').id,
                 'permission': 'write',
-            })]
+            })],
+            'is_article_visible_by_everyone': True,
         }, {
             'name': 'Readonly Article 2',
             'internal_permission': False,
@@ -139,7 +141,8 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
             }), (0, 0, {
                 'partner_id': self.env.ref('base.user_demo').id,
                 'permission': 'read',
-            })]
+            })],
+            'is_article_visible_by_everyone': True,
         }])
 
         self.start_tour('/knowledge/article/%s' % articles[0].id, 'knowledge_readonly_favorite_tour', login='demo', step_delay=100)
@@ -156,9 +159,11 @@ class TestKnowledgeUI(TestKnowledgeUICommon):
         parent_article = self.env['knowledge.article'].create([{
             'name': 'ParentArticle',
             'sequence': 1,
+            'is_article_visible_by_everyone': True,
         }, {
             'name': 'InheritPropertiesArticle',
             'sequence': 2,
+            'is_article_visible_by_everyone': True,
         }])[0]
         self.env['knowledge.article'].create({
             'name': 'ChildArticle',

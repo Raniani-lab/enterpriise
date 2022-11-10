@@ -30,7 +30,8 @@ class TestHelpdeskKnowledgeCrossModuleFeatures(HttpCase):
                     </div>
                 </div>
                 <p><br></p>
-            """)
+            """),
+            'is_article_visible_by_everyone': True,
         })
         cls.env['ir.attachment'].create({
             'datas': base64.b64encode(b'Content'),

@@ -48,12 +48,12 @@ class Article(models.Model):
     article_url = fields.Char('Article URL', compute='_compute_article_url', readonly=True)
     # Access rules and members + implied category
     internal_permission = fields.Selection(
-        [('write', 'Can write'), ('read', 'Can read'), ('none', 'No access')],
+        [('write', 'Can edit'), ('read', 'Can read'), ('none', 'Restricted')],
         string='Internal Permission', required=False,
         help="Default permission for all internal users. "
              "(External users can still have access to this article if they are added to its members)")
     inherited_permission = fields.Selection(
-        [('write', 'Can write'), ('read', 'Can read'), ('none', 'No access')],
+        [('write', 'Can edit'), ('read', 'Can read'), ('none', 'Restricted')],
         string='Inherited Permission',
         compute="_compute_inherited_permission", compute_sudo=True,
         store=True, recursive=True)
@@ -67,11 +67,15 @@ class Article(models.Model):
     user_has_access = fields.Boolean(
         string='Has Access',
         compute="_compute_user_has_access", search="_search_user_has_access")
+    user_has_access_parent_path = fields.Boolean(
+        string='Can the user join ?', compute='_compute_user_has_access_parent_path', recursive=True,
+        help="Has the user access to each parent from current article until its root ?",
+    )
     user_has_write_access = fields.Boolean(
         string='Has Write Access',
         compute="_compute_user_has_write_access", search="_search_user_has_write_access")
     user_can_read = fields.Boolean(string='Can Read', compute='_compute_user_can_read')  # ACL-like
-    user_can_write = fields.Boolean(string='Can Write', compute='_compute_user_can_write')  # ACL-like
+    user_can_write = fields.Boolean(string='Can Edit', compute='_compute_user_can_write')  # ACL-like
     user_permission = fields.Selection(
         [('write', 'write'), ('read', 'read'), ('none', 'none')],
         string='User permission',
@@ -130,6 +134,15 @@ class Article(models.Model):
     favorite_count = fields.Integer(
         string="#Is Favorite",
         compute="_compute_favorite_count", store=True, copy=False, default=0)
+    # Visibility
+    is_article_visible_by_everyone = fields.Boolean(
+        string="Can everyone see the Article ?", compute="_compute_is_article_visible_by_everyone",
+        readonly=False, recursive=True, store=True,
+    )
+    is_article_visible = fields.Boolean(
+        string='Can the user see the article ?', compute='_compute_is_article_visible',
+        search='_search_is_article_visible', recursive=True
+    )
     # Trash management
     to_delete = fields.Boolean(string="Trashed", tracking=100,
         help="""When sent to trash, articles are flagged to be deleted
@@ -369,6 +382,17 @@ class Article(models.Model):
                 ('id', 'in', articles_with_no_member_access)]
 
     @api.depends_context('uid')
+    @api.depends('user_has_access', 'parent_id.user_has_access_parent_path')
+    def _compute_user_has_access_parent_path(self):
+        roots = self.filtered(lambda article: not article.parent_id)
+        for article in roots:
+            article.user_has_access_parent_path = article.user_has_access
+        children = self - roots
+        for article in children:
+            ancestors = self.env['knowledge.article'].browse(article._get_ancestor_ids())
+            article.user_has_access_parent_path = not any(not ancestor.user_has_access for ancestor in ancestors)
+
+    @api.depends_context('uid')
     @api.depends('user_permission')
     def _compute_user_has_write_access(self):
         """ Compute if the current user has write access to the article based on
@@ -521,6 +545,66 @@ class Article(models.Model):
             [('user_id', '=', self.env.uid)]
         ))]
 
+    @api.depends('is_article_visible_by_everyone', 'article_member_ids', 'root_article_id.article_member_ids')
+    @api.depends_context('uid')
+    def _compute_is_article_visible(self):
+        """Compute if the user can see a specific article.
+        The user can see it in two cases: when the article can be seen by everyone
+        and when he is a member of the said article if it is visible only by its members.
+        """
+        visible_articles = self.filtered(lambda article: article.is_article_visible_by_everyone)
+        visible_articles.is_article_visible = True
+        if visible_articles == self:
+            return
+
+        member_only_articles = self - visible_articles
+        results = self.env['knowledge.article.member'].read_group(
+            domain=[('partner_id', '=', self.env.user.partner_id.id), ('permission', '!=', 'none')],
+            fields=['partner_id', 'article_id'],
+            groupby=['partner_id', 'article_id'],
+            lazy=False
+        )
+
+        pids_by_article = dict.fromkeys([group['article_id'][0] for group in results], [])
+        current_pid = self.env.user.partner_id.id
+        for group in results:
+            pids_by_article[group['article_id'][0]].append(group['partner_id'][0])
+
+        for article in member_only_articles:
+            article.is_article_visible = current_pid in (
+                pids_by_article.get(article.id, []) + pids_by_article.get(article.root_article_id.id, [])
+            )
+
+    def _search_is_article_visible(self, operator, value):
+        if operator not in ('=', '!='):
+            raise NotImplementedError(_("Unsupported search operation"))
+        members_from_partner = self.env['knowledge.article.member']._search(
+            [('partner_id', '=', self.env.user.partner_id.id)]
+        )
+        if (value and operator == '=') or (not value and operator == '!='):
+            return [
+                    '|',
+                        ('is_article_visible_by_everyone', '=', True),
+                        '|',
+                            ('article_member_ids', 'in', members_from_partner),
+                            ('root_article_id.article_member_ids', 'in', members_from_partner)
+            ]
+
+        return [
+                '&',
+                    ('is_article_visible_by_everyone', '=', False),
+                    '&',
+                        ('article_member_ids', 'not in', members_from_partner),
+                        ('root_article_id.article_member_ids', 'not in', members_from_partner)
+        ]
+
+    @api.depends('root_article_id.is_article_visible_by_everyone')
+    def _compute_is_article_visible_by_everyone(self):
+        root_articles = self.filtered(lambda article: not article.parent_id)
+        for article in (self - root_articles):
+            article.is_article_visible_by_everyone = article.root_article_id.is_article_visible_by_everyone
+        root_articles.is_article_visible_by_everyone = False # Forces initialization of the field if not already set.
+
     @api.depends('to_delete', 'write_date')
     def _compute_deletion_date(self):
         trashed_articles = self.filtered(lambda article: article.to_delete)
@@ -655,12 +739,24 @@ class Article(models.Model):
                              'parent_id': False,  # just be sure we don't grant privileges
                 })
 
-            # allow private articles creation if given values are considered as safe
+            # We need to check if the article creation needs to be done with sudo permissions and that
+            # it is authorized.
+            # This is authorized if :
+            #   * The user is not the superuser
+            #   * We do not try to create any favorite records or children articles in the same call
+            #   * We do not try to create a child article
+            #   * We want to create a single member that is the user creating the article
+
+            # The reason why we would want to add the creator as a member for all articles is that
+            # with the new visibility logic, when a user creates a new article in the workspace it is
+            # set to only be visible to members.
+            # This means that in order for him to see the article he just created, we add him to the
+            # members, which needs sudo access.
+
             check_for_sudo = not self.env.su and \
                              not self.env.user._is_system() and \
                              not any(fname in vals for fname in ['favorite_ids', 'child_ids']) and \
-                             not parent_id and internal_permission == 'none' and \
-                             member_ids and len(member_ids) == 1
+                             not parent_id and member_ids and len(member_ids) == 1
             if check_for_sudo:
                 self_member = member_ids[0][0] == Command.CREATE and \
                               member_ids[0][2].get('partner_id') == self.env.user.partner_id.id
@@ -1038,6 +1134,21 @@ class Article(models.Model):
             article.sudo().write(write_values)
         return res
 
+    def action_join(self):
+        self.ensure_one()
+        current_user = self.env.user
+        if current_user.share or not self.user_has_access or not self.user_has_access_parent_path:
+            raise AccessError(
+                _("You need to have access to this article in order to join its members.") if not self.parent_id else
+                _("You need to have access to this article's root in order to join its members.")
+            )
+        if self.parent_id:
+            self.root_article_id.sudo()._add_members(current_user.partner_id, self.root_article_id.internal_permission)
+            return self.action_home_page()
+        else:
+            self.sudo()._add_members(current_user.partner_id, self.internal_permission)
+            return False
+
     # ------------------------------------------------------------
     # SEQUENCE / ORDERING
     # ------------------------------------------------------------
@@ -1192,6 +1303,17 @@ class Article(models.Model):
         else:
             # child do not have to setup an internal permission as it is inherited
             values['internal_permission'] = 'none' if is_private else 'write'
+            # For private articles, we need to set a member because the internal_permission is set to
+            # 'none' which restricts the access to only members of the article.
+
+            # For workspace articles, we need to add a member because the visibility of a brand new root
+            # article is always set to 'Members', meaning that only the members are able to see it at all times in
+            # their tree.
+            # And we need the creator to be able to see it in order for him to easily edit it later.
+            values['article_member_ids'] = [(0, 0, {
+                'partner_id': self.env.user.partner_id.id,
+                'permission': 'write',
+            })]
 
         if is_private:
             if parent and parent.category != "private":
@@ -1199,15 +1321,10 @@ class Article(models.Model):
                     _("Cannot create an article under article %(parent_name)s which is a non-private parent",
                       parent_name=parent.display_name)
                 )
-            if not parent:
-                values['article_member_ids'] = [(0, 0, {
-                    'partner_id': self.env.user.partner_id.id,
-                    'permission': 'write'
-                })]
 
         return self.create(values)
 
-    def get_user_sorted_articles(self, search_query, limit=40):
+    def get_user_sorted_articles(self, search_query, limit=40, hidden_mode=False):
         """ Called when using the Command palette to search for articles matching the search_query.
         As the article should be sorted also in function of the current user's favorite sequence, a search_read rpc
         won't be enough to returns the articles in the correct order.
@@ -1217,17 +1334,29 @@ class Article(models.Model):
             - root.name = query & is_user_favorite - by Favorite sequence
             - root.name = query & Favorite count
         and returned result mimic a search_read result structure.
+
+        The parameter hidden_mode separates the search into 2 modes: visible and hidden.
+        When hidden_mode is True, we search for articles that are hidden, hence that have
+        is_article_visible at False.
+        When hidden_mode is False, we search for articles that are visible, hence that have
+        is_article_visible at True.
+
+        This means that we need to add in the search_domain the leaf ('is_article_visible', '!=', hidden_mode)
+        since the value of is_article_visible is the opposite of hidden_mode.
         """
         search_query = search_query.casefold()
         search_domain = [
             "&",
-                ('user_has_access', '=', True), # Admins won't see other's private articles.
-                "|", ("name", "ilike", search_query), ("root_article_id.name", "ilike", search_query)
+                ("is_article_visible", "!=", hidden_mode),
+                "&",
+                    ("user_has_access", "=", True), # Admins won't see other's private articles.
+                    "|", ("name", "ilike", search_query), ("root_article_id.name", "ilike", search_query),
         ]
 
         matching_articles = self.search(search_domain)
         sorted_articles = matching_articles.sorted(
             key=lambda a: (search_query in a.name.casefold() if a.name else False,
+                           not a.parent_id if hidden_mode else False,
                            a.is_user_favorite,
                            -1 * a.user_favorite_sequence,
                            a.favorite_count,
@@ -1384,6 +1513,18 @@ class Article(models.Model):
             member.article_id.sudo().with_context(knowledge_member_skip_writable_check=True).write({
                 'article_member_ids': [(1, member.id, {'permission': permission})]
             })
+
+    def set_is_article_visible_by_everyone(self, is_article_visible_by_everyone):
+        """Set the visibility of an article to the provided value.
+        If the new value is False, we need to check if the user is a member of the article.
+        If that's not the case then we add it as a member of the article with the same permission as the
+        article.
+        This ensures that the user can see the article when modifying its visibility."""
+        self.ensure_one()
+        self.write({'is_article_visible_by_everyone': is_article_visible_by_everyone})
+
+        if (not is_article_visible_by_everyone) and not self.env.user.partner_id in self.article_member_ids.partner_id:
+            self._add_members(self.env.user.partner_id, self.internal_permission)
 
     def _remove_member(self, member):
         """ Removes a member from the article. If the member was based on a

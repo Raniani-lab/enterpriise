@@ -107,6 +107,7 @@ class KnowledgeController(http.Controller):
         existing_ids = self._article_ids_exists(unfolded_articles_ids | unfolded_favorite_articles_ids)
         unfolded_articles_ids = unfolded_articles_ids & existing_ids
         unfolded_favorite_articles_ids = unfolded_favorite_articles_ids & existing_ids
+        descendant_ids = []
 
         if active_article_id:
             # determine the hierarchy to unfold based on parent_path and as sudo
@@ -114,6 +115,7 @@ class KnowledgeController(http.Controller):
             # this will not leak anything as it's just a set of IDS
             # displayed articles ACLs are correctly checked here below
             active_article = request.env['knowledge.article'].sudo().browse(active_article_id)
+            descendant_ids = active_article._get_descendants().ids
             unfolded_articles_ids |= active_article._get_ancestor_ids()
 
         # fetch root article_ids as sudo, ACLs will be checked on next global call fetching 'all_visible_articles'
@@ -133,12 +135,15 @@ class KnowledgeController(http.Controller):
         all_visible_articles = request.env['knowledge.article']
         all_visible_articles_ids = unfolded_articles_ids | unfolded_favorite_articles_ids | set(root_article_ids)
         visible_favorite_article_ids = favorites_sudo.article_id.ids
+        force_visibility_ids = visible_favorite_article_ids + descendant_ids + [active_article_id]
         all_visible_article_domains = expression.OR([
             [
                 ('id', 'child_of', all_visible_articles_ids),
                 ('is_article_item', '=', False),
+                # This filter is not necessary for the frontend users
+                ('is_article_visible', '=', True) if not request.env.user.share else expression.TRUE_LEAF,
             ],
-            [('id', 'in', visible_favorite_article_ids)],
+            [('id', 'in', force_visibility_ids)],
         ])
         if all_visible_articles_ids:
             all_visible_articles = request.env['knowledge.article'].search(
@@ -156,7 +161,8 @@ class KnowledgeController(http.Controller):
             "active_article_id": active_article_id,
             "all_visible_articles": all_visible_articles,
             "user_write_access_by_article": user_write_access_by_article,
-            "workspace_articles": root_articles.filtered(lambda article: article.category == 'workspace'),
+            "workspace_articles": root_articles.filtered(lambda article:
+                article.category == 'workspace' and (article.id not in visible_favorite_article_ids or article.is_article_visible)),
             "shared_articles": root_articles.filtered(lambda article: article.category == 'shared'),
             "private_articles": root_articles.filtered(
                 lambda article: article.category == "private" and article.user_has_write_access),
@@ -342,8 +348,10 @@ class KnowledgeController(http.Controller):
         inherited_permission_parent_sudo = article.inherited_permission_parent_id.sudo()
 
         return {
-            'internal_permission_options': internal_permission_field.get_description(request.env).get('selection', []),
+            'internal_permission_options': sorted(internal_permission_field.get_description(request.env).get('selection', []),
+                                                  key=lambda x: x[0] == article.inherited_permission, reverse=True),
             'internal_permission': article.inherited_permission,
+            'is_article_visible_by_everyone': article.is_article_visible_by_everyone,
             'category': article.category,
             'parent_permission': parent_article_sudo.inherited_permission,
             'based_on': inherited_permission_parent_sudo.display_name,

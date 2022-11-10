@@ -31,6 +31,8 @@
                 <field name="last_edition_date" invisible="1"/>
                 <field name="create_date" invisible="1"/>
                 <field name="create_uid" invisible="1"/>
+                <field name="is_article_visible_by_everyone" invisible="1"/>
+                <field name="is_article_visible" invisible="1"/>
                 <div class="o_knowledge_form_view d-sm-flex h-100" t-ref="root" t-att-style="sidebarSize ? `--knowledge-article-sidebar-size: ${sidebarSize}px` : ''">
                     <aside class="o_knowledge_aside d-print-none flex-shrink-0 p-0 bg-view">
                         <div class="d-flex flex-column h-100">
@@ -65,21 +67,30 @@
                         <div class="d-flex flex-column h-100">
                             <!-- Article header -->
                             <widget name="knowledge_topbar"/>
+                            <!-- Invisible Article Warning Banner-->
+                            <div class="alert alert-info text-center mb-0" role="alert"
+                                 attrs="{'invisible': ['|', ('is_article_visible_by_everyone', '=', True), ('is_article_visible', '=', True)]}">
+                                <field name="user_has_access_parent_path" invisible="1"/>
+                                This article is only displayed to its members.
+                                <a attrs="{'invisible': [('user_has_access_parent_path', '!=', True)]}" role="button" type="object" name="action_join" class="text-decoration-underline oe_link alert-link">
+                                    Join
+                                </a>
+                            </div>
                             <!-- Archived Article Warning Banner-->
                             <div class="alert alert-warning text-center mb-0" role="alert"
                                  attrs="{'invisible': ['|', ('active', '=', True), ('to_delete', '=', True)]}">
                                 This article is archived.
-                                <button class="oe_link alert-link" type="object" name="action_unarchive"
-                                attrs="{'invisible': [('user_can_write', '=', False)]}" >Unarchive</button>
+                                <a role="button" class="text-decoration-underline oe_link alert-link" type="object" name="action_unarchive"
+                                attrs="{'invisible': [('user_can_write', '=', False)]}" >Unarchive</a>
                             </div>
                             <!-- Trashed Article Warning Banner-->
-                            <div class="alert alert-warning text-center mb-0 py-1" role="alert" attrs="{'invisible': [('to_delete', '=', False)]}">
-                                This Article is in Trash and will be deleted on the <field name="deletion_date"/>.
-                                <button type="object" name="action_unarchive_article"
-                                        class="oe_link alert-link"
+                            <div class="alert alert-warning text-center mb-0" role="alert" attrs="{'invisible': [('to_delete', '=', False)]}">
+                                This Article is in Trash and will be deleted on the <field class="mb-0" name="deletion_date"/>.
+                                <a role="button" type="object" name="action_unarchive_article"
+                                        class="text-decoration-underline oe_link alert-link"
                                         attrs="{'invisible': [('user_can_write', '=', False)]}" >
                                     Restore
-                                </button>
+                                </a>
                             </div>
                             <div class="flex-grow-1 position-relative">
                                 <div class="o_scroll_view o_knowledge_main_view">

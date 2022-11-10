@@ -496,8 +496,9 @@ export default class BarcodeModel extends EventBus {
     // Private
     // --------------------------------------------------------------------------
 
-    _canOverrideTrackingNumber(line) {
-        return false;
+    _canOverrideTrackingNumber(line, newLotName) {
+        const lineLotName = line.lot_name || line.lot_id?.name;
+        return !newLotName || !lineLotName || newLotName === lineLotName;
     }
 
     _checkBarcode(barcodeData) {
@@ -1285,7 +1286,7 @@ export default class BarcodeModel extends EventBus {
             if (quantPackage && (!line.package_id || line.package_id.id !== quantPackage.id)) {
                 continue; // Not the expected package.
             }
-            if (dataLotName && lineLotName && dataLotName !== lineLotName && !this._canOverrideTrackingNumber(line)) {
+            if (!this._canOverrideTrackingNumber(line, dataLotName)) {
                 continue; // Not the same lot.
             }
             if (line.product_id.tracking === 'serial') {

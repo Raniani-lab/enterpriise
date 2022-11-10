@@ -180,8 +180,8 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
         this.notification(_t("The batch picking has been cancelled"));
     }
 
-    _canOverrideTrackingNumber(line) {
-        return this.getQtyDone(line) === 0;
+    _canOverrideTrackingNumber(line, newLotName) {
+        return super._canOverrideTrackingNumber(...arguments) || this.getQtyDone(line) === 0;
     }
 
     _createLinesState() {

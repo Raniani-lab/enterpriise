@@ -26,7 +26,7 @@
                 <img alt="Avatar" class="o_dial_phonecall_avatar mb-2 bg-100 border rounded-circle" width="80" t-attf-src="data:image/jpg;base64,{{ widget.imageSmall }}"/>
             </span>
             <span t-else="" class="o_dial_phonecall_clip d-inline-block">
-                <img alt="Avatar" class="o_dial_phonecall_avatar mb-2 bg-100 border rounded-circle" width="80" src="/base/static/img/avatar.png"/>
+                <img alt="Avatar" class="o_dial_phonecall_avatar mb-2 bg-100 border rounded-circle" width="80" src="/base/static/img/avatar_grey.png"/>
             </span>
             <div>
                 <div class="o_dial_phonecall_partner_name">

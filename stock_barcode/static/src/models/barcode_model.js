@@ -1351,6 +1351,9 @@ export default class BarcodeModel extends EventBus {
             if (dataLotName && lineLotName && dataLotName !== lineLotName && !this._canOverrideTrackingNumber(line)) {
                 continue; // Not the same lot.
             }
+            if (dataLotName && line.id && !line.lot_id && !line.picking_id) {
+                continue; // Matches an existing quant without lot_id but this field can't be updated
+            }
             if (line.product_id.tracking === 'serial') {
                 if (this.getQtyDone(line) >= 1 && lineLotName) {
                     continue; // Line tracked by serial numbers with quantity & SN.

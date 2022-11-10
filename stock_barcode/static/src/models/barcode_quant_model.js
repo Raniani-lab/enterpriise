@@ -283,6 +283,8 @@ export default class BarcodeQuantModel extends BarcodeModel {
         if (product.tracking !== 'none') {
             if (params.fieldsParams.lot_name) { // Search for a quant with the exact same lot.
                 domain.push(['lot_id.name', '=', params.fieldsParams.lot_name]);
+            } else if (params.fieldsParams.lot_id) { // Search for a quant with the exact same lot.
+                domain.push(['lot_id', '=', params.fieldsParams.lot_id.id]);
             } else { // Search for a quant with no lot.
                 domain.push(['lot_id', '=', false]);
             }

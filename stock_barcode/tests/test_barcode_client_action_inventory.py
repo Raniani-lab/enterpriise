@@ -136,6 +136,51 @@ class TestInventoryAdjustmentBarcodeClientAction(TestBarcodeClientAction):
         url = f"/web#action={action_id.id}"
         self.start_tour(url, "test_inventory_adjustment_tracked_product_multilocation", login="admin", timeout=180)
 
+    def test_inventory_adjustment_tracked_product_permissive_quants(self):
+        """Make an inventory adjustment for a product tracked by lot having quants without lot.
+           The following actions are made in the barcode app:
+            - Scan productlot1
+            - Scan lot1 twice
+            - Set productlot1 quantity without lot to available
+            - Validate
+        """
+        self.clean_access_rights()
+
+        lot1 = self.env["stock.lot"].create({
+            'name': 'lot1',
+            'product_id': self.productlot1.id,
+            'company_id': self.env.company.id
+        })
+        self.env["stock.quant"].create({
+            'product_id': self.productlot1.id,
+            'inventory_quantity': 5,
+            'lot_id': None,
+            'location_id': self.stock_location.id,
+        })
+        self.env["stock.quant"].create({
+            'product_id': self.productlot1.id,
+            'inventory_quantity': 1,
+            'lot_id': lot1.id,
+            'location_id': self.stock_location.id,
+        })
+
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+
+        self.start_tour(url, 'test_inventory_adjustment_tracked_product_permissive_quants', login='admin', timeout=180)
+
+        inventory_moves = self.env['stock.move'].search([('product_id', '=', self.productlot1.id),
+                                                         ('is_inventory', '=', True)])
+        self.assertEqual(len(inventory_moves), 2)
+        self.assertEqual(inventory_moves.mapped('state'), ['done', 'done'])
+        self.assertEqual(inventory_moves.mapped('product_id'), self.productlot1)
+
+        self.assertEqual(len(inventory_moves.move_line_ids), 2)
+        move_line_1, move_line_2 = inventory_moves.move_line_ids
+        self.assertEqual(move_line_1.qty_done, 0)
+        self.assertEqual(move_line_2.lot_id.name, 'lot1')
+        self.assertEqual(move_line_2.qty_done, 2)
+
     def test_inventory_create_quant(self):
         """ Creates a quant and checks it will not be deleted until the inventory was validated.
         """

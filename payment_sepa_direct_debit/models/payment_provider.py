@@ -35,7 +35,7 @@ class PaymentProvider(models.Model):
         self.filtered(lambda p: p.code == 'sepa_direct_debit').update({
             'show_credentials_page': False,
             'show_allow_tokenization': False,
-            'show_payment_icon_ids': False,
+            'show_payment_method_ids': False,
             'show_done_msg': False,
             'show_cancel_msg': False,
         })

@@ -10,9 +10,10 @@ class QualityCheck(models.Model):
     def add_check_in_chain(self, activity=False):
         self.ensure_one()
         super().add_check_in_chain(activity=activity)
-        if not self.workorder_id.production_id.bom_id:
+        if not self.workorder_id.production_id.bom_id or not self.user_has_groups('mrp.group_mrp_user'):
             return
-        eco = self.env['mrp.eco'].search([
+        # Need to sudo all ECOs calls as we want to make this available to all MRP basic users.
+        eco = self.env['mrp.eco'].sudo().search([
             ('bom_id', '=', self.workorder_id.production_id.bom_id.id),
             ('state', 'in', ('confirmed', 'progress')),
         ], limit=1)
@@ -20,11 +21,11 @@ class QualityCheck(models.Model):
             name = self.workorder_id.name + "/" + self.workorder_id.production_id.name
             eco_type = self.env.ref('mrp_workorder_plm.ecotype_workorder', raise_if_not_found=False)
             if not eco_type:
-                eco_type = self.env['mrp.eco.type'].search([], limit=1)
-            stage = self.env['mrp.eco.stage'].search([
+                eco_type = self.env['mrp.eco.type'].sudo().search([], limit=1)
+            stage = self.env['mrp.eco.stage'].sudo().search([
                 ('type_ids', 'in', eco_type.ids)
             ], limit=1)
-            eco = self.env['mrp.eco'].create({
+            eco = self.env['mrp.eco'].sudo().create({
                 'name': name,
                 'product_tmpl_id': self.product_id.product_tmpl_id.id,
                 'bom_id': self.workorder_id.production_id.bom_id.id,
@@ -47,5 +48,6 @@ class QualityCheck(models.Model):
             'note': self.note,
             'worksheet_document': self.worksheet_document,
         }
-        point = self.env['quality.point'].create(quality_point_data)
+        # Would need 'quality.group_quality_manager' otherwise, but we want this to be available for MRP basic users.
+        point = self.env['quality.point'].sudo().create(quality_point_data)
         self.point_id = point

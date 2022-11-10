@@ -114,6 +114,8 @@ class BankRecWidget(models.Model):
     form_flag = fields.Char()
     form_name = fields.Char()
     form_date = fields.Date()
+    form_ref = fields.Char()
+    form_notes = fields.Html()
     form_account_id = fields.Many2one(
         comodel_name='account.account',
         domain="[('account_type', '!=', 'asset_cash'), '|', ('company_id', '=', company_id), ('deprecated', '=', False)]",
@@ -895,6 +897,22 @@ class BankRecWidget(models.Model):
             self._lines_widget_recompute_exchange_diff()
             self._lines_widget_add_auto_balance_line()
 
+    @api.onchange('form_ref')
+    def _onchange_form_ref(self):
+        line = self._lines_widget_get_line_in_edit_form()
+        if line and line.flag == 'liquidity':
+            self.st_line_id.move_id.ref = self.form_ref
+            self._action_reset_wizard()
+            self._action_focus_liquidity_line()
+
+    @api.onchange('form_notes')
+    def _onchange_form_notes(self):
+        line = self._lines_widget_get_line_in_edit_form()
+        if line and line.flag == 'liquidity':
+            self.st_line_id.move_id.narration = self.form_notes
+            self._action_reset_wizard()
+            self._action_focus_liquidity_line()
+
     # -------------------------------------------------------------------------
     # ORM METHODS
     # -------------------------------------------------------------------------
@@ -1489,6 +1507,8 @@ class BankRecWidget(models.Model):
         self.form_tax_ids = [Command.set(line.tax_ids.ids)]
         self.form_amount_currency = balance_sign * line.amount_currency
         self.form_balance = balance_sign * line.balance
+        self.form_ref = self.st_line_id.ref
+        self.form_notes = self.st_line_id.narration
         if field_clicked:
             self.next_action_todo = {'type': 'focus', 'field': field_clicked[0]}
 

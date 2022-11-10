@@ -460,6 +460,9 @@
                                     <field name="form_name"
                                            string="Label"
                                            attrs="{'invisible': [('form_index', '=', False)], 'readonly': [('form_flag', '=', 'exchange_diff')], 'required': [('form_flag', '=', 'liquidity')]}"/>
+                                    <field name="form_ref"
+                                           string="Reference"
+                                           attrs="{'invisible': ['|', ('form_flag', '!=', 'liquidity'), ('form_index', '=', False)]}"/>
 
                                     <label for="form_amount_currency"
                                            string="Amount in Currency"
@@ -500,6 +503,11 @@
                                            attrs="{'invisible': ['|', ('form_extra_text', '=', False), ('form_index', '=', False)]}"
                                            widget="bank_rec_html"/>
                                 </group>
+                            </group>
+                            <group>
+                                <field name="form_notes"
+                                       string="Notes"
+                                       attrs="{'invisible': ['|', ('form_flag', '!=', 'liquidity'), ('form_index', '=', False)]}"/>
                             </group>
                         </page>
                         <page name="discuss_tab" string="Discuss">

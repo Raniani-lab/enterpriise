@@ -193,7 +193,7 @@ class BankRecWidget(models.Model):
                 return
 
             # Protected fields by the orm like create_date should be excluded.
-            protected_fields = set(models.MAGIC_COLUMNS + [self.CONCURRENCY_CHECK_FIELD])
+            protected_fields = set(models.MAGIC_COLUMNS)
 
             if wizard.lines_widget and wizard.lines_widget['lines']:
                 # Create the `bank.rec.widget.line` from existing data in `lines_widget`.
@@ -342,7 +342,7 @@ class BankRecWidget(models.Model):
         self._check_lines_widget_consistency()
 
         # Protected fields by the orm like create_date should be excluded.
-        protected_fields = set(models.MAGIC_COLUMNS + [self.CONCURRENCY_CHECK_FIELD])
+        protected_fields = set(models.MAGIC_COLUMNS)
 
         for wizard in self:
             lines = wizard.line_ids

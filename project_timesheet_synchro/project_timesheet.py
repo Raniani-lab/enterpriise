@@ -49,7 +49,7 @@ class account_analytic_line(models.Model):
             "project_id.id",
             "date",
             "unit_amount",
-            "__last_update",
+            "write_date",
             #"sheet_id/state", removed in saas-17
             "project_id/id",
         ]

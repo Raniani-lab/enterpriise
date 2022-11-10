@@ -13,7 +13,7 @@ class ProposeChange(models.TransientModel):
         res = super().default_get(fields_list=fields_list)
         if 'step_id' in fields_list:
             wo = self.env['quality.check'].browse(res.get('step_id')).workorder_id
-            eco = self.env['mrp.eco'].search([
+            eco = self.env['mrp.eco'].sudo().search([
                 ('bom_id', '=', wo.production_id.bom_id.id),
                 ('state', 'in', ('confirmed', 'progress')),
             ])
@@ -23,7 +23,7 @@ class ProposeChange(models.TransientModel):
 
     def _get_eco(self):
         self.ensure_one()
-        eco = self.env['mrp.eco'].search([
+        eco = self.env['mrp.eco'].sudo().search([
             ('bom_id', '=', self.workorder_id.production_id.bom_id.id),
             ('state', 'in', ('confirmed', 'progress')),
         ], limit=1)
@@ -31,12 +31,12 @@ class ProposeChange(models.TransientModel):
         if not eco:
             name = self.workorder_id.name + "/"
             name += self.workorder_id.production_id.name
-            eco = self.env['mrp.eco'].create({
+            eco = self.env['mrp.eco'].sudo().create({
                 'name': name,
                 'product_tmpl_id': self.workorder_id.product_id.product_tmpl_id.id,
                 'bom_id': self.workorder_id.production_id.bom_id.id,
                 'type_id': type_id.id,
-                'stage_id': self.env['mrp.eco.stage'].search([
+                'stage_id': self.env['mrp.eco.stage'].sudo().search([
                     ('type_ids', 'in', type_id.ids),
                 ], limit=1).id
             })

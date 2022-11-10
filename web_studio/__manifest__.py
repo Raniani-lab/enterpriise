@@ -94,6 +94,7 @@ Note: Only the admin user is allowed to make those customizations.
             'web_studio/static/src/legacy/js/views/view_components.js',
             'web_studio/static/src/legacy/js/views/view_editor_manager.js',
             'web_studio/static/src/legacy/js/views/view_editor_sidebar.js',
+            'web_studio/static/src/legacy/js/views/sidebar_safe_fields.js',
             'web_studio/static/src/legacy/js/views/renderers/search_renderer.js',
             'web_studio/static/src/legacy/js/views/renderers/list_renderer_lazy.js',
             'web_studio/static/src/legacy/js/views/view_editors/**/*.js',

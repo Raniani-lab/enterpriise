@@ -20,12 +20,6 @@ const GROUPBY_COMBINATIONS = [
     "project_id,department_id",
     "project_id,resource_id",
     "project_id,role_id",
-    "project_id,task_id,resource_id",
-    "project_id,task_id,role_id",
-    "task_id",
-    "task_id,department_id",
-    "task_id,resource_id",
-    "task_id,role_id",
 ];
 
 const PlanningGanttModel = GanttModel.extend({

@@ -21,7 +21,7 @@ class Employee(models.Model):
         compute='_compute_timesheet_manager', store=True, readonly=False,
         domain=_get_timesheet_manager_id_domain,
         help='Select the user responsible for approving "Timesheet" of this employee.\n'
-             'If empty, the approval is done by an Administrator or Team Approver (determined in settings/users).')
+             'If empty, the approval is done by a Timesheets > Administrator or a Timesheets > User: all timesheets (as determined in the users settings).')
 
     last_validated_timesheet_date = fields.Date(groups="hr_timesheet.group_timesheet_manager")
 

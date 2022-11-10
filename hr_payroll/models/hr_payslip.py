@@ -6,7 +6,7 @@ import logging
 import random
 
 from collections import defaultdict
-from datetime import date, datetime
+from datetime import date, datetime, time
 from dateutil.relativedelta import relativedelta
 
 from odoo import api, Command, fields, models, _
@@ -762,9 +762,24 @@ class HrPayslip(models.Model):
         generate_to = max(min(fields.Date.to_date(p.date_to), current_month_end) for p in self)
         self.mapped('contract_id')._generate_work_entries(generate_from, generate_to)
 
+        work_entries = self.env['hr.work.entry'].search([
+            ('date_stop', '<=', generate_to),
+            ('date_start', '>=', generate_from),
+            ('contract_id', 'in', self.contract_id.ids),
+        ])
+
         for slip in valid_slips:
             if not slip.struct_id.use_worked_day_lines:
                 continue
+
+            # convert slip.date_to to a datetime with max time to compare correctly in filtered_domain.
+            date_to = datetime.combine(slip.date_to, time.max)
+            payslip_work_entries = work_entries.filtered_domain([
+                ('contract_id', '=', slip.contract_id.id),
+                ('date_stop', '<=', date_to),
+                ('date_start', '>=', slip.date_from),
+            ])
+            payslip_work_entries._check_undefined_slots(slip.date_from, slip.date_to)
             # YTI Note: We can't use a batched create here as the payslip may not exist
             slip.update({'worked_days_line_ids': slip._get_new_worked_days_lines()})
 

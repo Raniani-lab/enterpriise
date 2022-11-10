@@ -466,10 +466,6 @@ class BankRecWidget(models.Model):
                 # Views.
                 'search_view_ref': 'account_accountant.view_account_move_line_search_bank_rec_widget',
                 'tree_view_ref': 'account_accountant.view_account_move_line_list_bank_rec_widget',
-
-                # Custom order by.
-                'bank_rec_widget_st_line_amount': st_line.amount_currency if st_line.foreign_currency_id else st_line.amount,
-                'bank_rec_widget_st_line_currency_id': wizard.transaction_currency_id.id,
             }
 
             if wizard.partner_id:

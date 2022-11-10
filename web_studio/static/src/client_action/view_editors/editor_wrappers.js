@@ -37,6 +37,10 @@ class BasicEditorWrapper extends ComponentWrapper {
         );
         addDefaultWidgetsOptionsValues(fieldsInfo);
 
+        for (const fInfo of Object.values(fieldsInfo[this.env.config.type])) {
+            fInfo.FieldComponent = fInfo.__WOWL_FIELD_DESCR__.FieldComponent;
+        }
+
         this.state = {
             fieldsInfo,
             getFieldNames: () => {

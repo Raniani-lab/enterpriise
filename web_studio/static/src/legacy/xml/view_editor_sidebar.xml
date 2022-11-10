@@ -659,18 +659,8 @@
                 <label for="widget">Widget</label>
                 <select id="widget" name="widget" data-type="attributes">
                     <option t-foreach="widget.state.field.field_widgets" t-as="w" t-key="w_index" t-att-selected="widget.widgetKey ===  w[0] ? 'selected' : undefined" t-att-value="w[0]">
-                        <t
-                            t-set="desc"
-                            t-value="widget.getFieldInfo(w[1], 'description')"/>
-                        <t t-if="widget.debug">
-                            <t
-                                t-set="desc"
-                                t-value="desc and desc + ' ('+w[0]+')' or w[0]"/>
-                        </t>
-                        <t t-if="widget.widgetKey === w[0] and !desc">
-                            <t t-set="desc" t-value="widget.widgetKey"/>
-                        </t>
-                        <t t-esc="desc"/>
+                        <!-- "name (technical_key)" or "(technical_key)"-->
+                        <t t-esc="w[1] ? w[1] + ' ('+w[0]+')' : '('+w[0]+')'"/>
                     </option>
                 </select>
             </div>

@@ -5,11 +5,9 @@ const { start, startServer } = require('@mail/../tests/helpers/test_utils');
 const { ROUTES_TO_IGNORE } = require('@mail/../tests/helpers/webclient_setup');
 const { ImageField } = require("@web/views/fields/image/image_field");
 
-var AbstractFieldOwl = require('web.AbstractFieldOwl');
 var ace = require('web_editor.ace');
 var concurrency = require('web.concurrency');
 var fieldRegistry = require('web.field_registry');
-var fieldRegistryOwl = require('web.field_registry_owl');
 var framework = require('web.framework');
 const { ListRenderer } = require("@web/views/list/list_renderer");
 var testUtils = require('web.test_utils');
@@ -30,8 +28,14 @@ const LegacyMockServer = require('web.MockServer');
 const { MapRenderer } = require("@web_map/map_view/map_renderer");
 
 const { registry } = require("@web/core/registry");
+const { SIDEBAR_SAFE_FIELDS } = require("@web_studio/legacy/js/views/sidebar_safe_fields");
 
-const { xml } = require("@odoo/owl");
+function setFieldAvailableInSidebar(key) {
+    const sideBarPushedIndex = SIDEBAR_SAFE_FIELDS.push(key) - 1;
+    registerCleanup(() => {
+        SIDEBAR_SAFE_FIELDS.splice(sideBarPushedIndex, 1);
+    });
+}
 
 function getCurrentMockServer() {
     return LegacyMockServer.currentMockServer;
@@ -467,23 +471,29 @@ QUnit.module('ViewEditorManager', {
         assert.notOk(vem.$el[0].querySelector('#invisible').checked);
     });
 
-    QUnit.test('widgets with and without description property in sidebar in debug and non-debug mode', async function (assert) {
-        assert.expect(4);
-
+    QUnit.test("field widgets correctly displayed and whitelisted in the sidebar", async function (assert) {
         const originalOdooDebug = odoo.debug;
         odoo.debug = false;
-        const LegacyFieldChar = fieldRegistry.get('char');
-        // add widget in fieldRegistry with description and without desciption
-        fieldRegistry.add('widgetWithDescription', LegacyFieldChar.extend({
-            description: "Test Widget",
-        }));
-        fieldRegistry.add('widgetWithoutDescription', LegacyFieldChar.extend({}));
 
-        // FIXME: The sidebar should search through the new registry too
         const wowlFieldRegistry = registry.category("fields");
         const CharField = wowlFieldRegistry.get("char");
-        wowlFieldRegistry.add("widgetWithDescription", CharField);
-        wowlFieldRegistry.add("widgetWithoutDescription", CharField);
+        // Clean registry to avoid having noise from all the other widgets
+        wowlFieldRegistry.getEntries().forEach(([key]) => {
+            wowlFieldRegistry.remove(key);
+        })
+
+        class SafeWidget extends CharField {}
+        SafeWidget.displayName = "Test Widget";
+        wowlFieldRegistry.add("safeWidget", SafeWidget);
+        setFieldAvailableInSidebar("safeWidget");
+
+        class safeWidgetNoDisplayName extends CharField {}
+        safeWidgetNoDisplayName.displayName = null;
+        wowlFieldRegistry.add("safeWidgetNoDisplayName", safeWidgetNoDisplayName);
+        setFieldAvailableInSidebar("safeWidgetNoDisplayName");
+
+        class UnsafeWidget extends CharField {}
+        wowlFieldRegistry.add("unsafeWidget", UnsafeWidget);
 
         const vem = await studioTestUtils.createViewEditorManager({
             model: 'coucou',
@@ -491,22 +501,20 @@ QUnit.module('ViewEditorManager', {
         });
 
         await testUtils.dom.click(vem.$('thead th[data-studio-xpath]')[0]);
-
-        assert.containsOnce(vem, '#widget option[value="widgetWithDescription"]',
-            "widget with description should be there");
-        assert.containsNone(vem, '#widget option[value="widgetWithoutDescription"]',
-            "widget without description should not there in non debug mode");
+        assert.deepEqual(
+            Array.from(target.querySelectorAll("#widget option[value]")).map(el => [el.value, el.textContent.trim()]),
+            [["safeWidget", "Test Widget (safeWidget)"], ["safeWidgetNoDisplayName", "(safeWidgetNoDisplayName)"]]
+        );
 
         odoo.debug = true;
         await testUtils.dom.click(vem.$('thead th[data-studio-xpath]')[0]);
-        assert.containsOnce(vem, '#widget option[value="widgetWithDescription"]',
-            "widget with description should be there");
-        assert.containsOnce(vem, '#widget option[value="widgetWithoutDescription"]',
-            "widget without description should be there in debug mode");
-
+        assert.deepEqual(
+            Array.from(target.querySelectorAll("#widget option[value]")).map(el => [el.value, el.textContent.trim()]),
+            [["safeWidget", "Test Widget (safeWidget)"],
+             ["unsafeWidget", "Text (unsafeWidget)"],
+             ["safeWidgetNoDisplayName", "(safeWidgetNoDisplayName)"]]
+        );
         odoo.debug = originalOdooDebug;
-        delete fieldRegistry.map.widgetWithDescription;
-        delete fieldRegistry.map.widgetWithoutDescription;
     });
 
     QUnit.test('visible studio hooks in listview', async function (assert) {
@@ -604,75 +612,16 @@ QUnit.module('ViewEditorManager', {
         assert.hasClass(vem.$('#sort_order_div'), 'd-none', 'Orderby field must be invisible.');
     });
 
-    QUnit.test('widget dropdown in list editor sidebar', async function (assert) {
-        assert.expect(7);
-
-        const originalOdooDebug = odoo.debug;
-        odoo.debug = false;
-
-        const vem = await studioTestUtils.createViewEditorManager({
-            model: 'coucou',
-            arch: `<tree>
-                    <field name='display_name'/>
-                    <field name='priority' widget='priority'/>
-                </tree>`,
-        });
-
-        // select first column and check widget options
-        await testUtils.dom.click(vem.$('thead th[data-studio-xpath="/tree[1]/field[1]"]'));
-        assert.strictEqual(
-            vem.$('#widget option:selected').text().trim(),
-            "Text",
-            "Widget name should be Text");
-
-        // select second column and check widget options
-        await testUtils.dom.click(vem.$('thead th[data-studio-xpath="/tree[1]/field[2]"]'));
-        assert.strictEqual(
-            vem.$('#widget option:selected').text().trim(),
-            "Priority",
-            "Widget name should be Priority");
-        assert.containsNone(
-            vem,
-            '#widget option[value="label_selection"]',
-            "label_selection widget should not be there");
-
-        // check the widgets in debug mode
-        odoo.debug = true;
-
-        await testUtils.dom.click(vem.$('thead th[data-studio-xpath="/tree[1]/field[1]"]'));
-        assert.strictEqual(
-            vem.$('#widget option:selected').text().trim(),
-            "Text (char)",
-            "Widget name should be Text (char)");
-
-        await testUtils.dom.click(vem.$('thead th[data-studio-xpath="/tree[1]/field[2]"]'));
-        assert.strictEqual(
-            vem.$('#widget option:selected').text().trim(),
-            "Priority (priority)",
-            "Widget name should be Priority (priority)");
-        assert.containsOnce(
-            vem,
-            '#widget option[value="label_selection"]',
-            "label_selection widget should be there");
-        assert.strictEqual(
-            vem.$('#widget option[value="label_selection"]').text().trim(),
-            "label_selection",
-            "Widget should have technical name i.e. label_selection as it does not have description");
-
-        odoo.debug = originalOdooDebug;
-    });
-
-    QUnit.test('widget without description property in sidebar should be shown a technical name of widget when selected in normal mode', async function (assert) {
+    QUnit.test('already selected unsafe widget without description property should be shown in sidebar with its technical name', async function (assert) {
         assert.expect(2);
 
-        odoo.debug = false;
-        const FieldChar = fieldRegistry.get('char');
-        // add widget in fieldRegistry without desciption
-        fieldRegistry.add('widgetWithoutDescription', FieldChar.extend({}));
-        // FIXME: The sidebar should search through the new registry too
+        patchWithCleanup(odoo, { debug: false });
+
         const wowlFieldRegistry = registry.category("fields");
         const CharField = wowlFieldRegistry.get("char");
-        wowlFieldRegistry.add("widgetWithoutDescription", CharField);
+        class widgetWithoutDescription extends CharField {}
+        widgetWithoutDescription.displayName = null;
+        wowlFieldRegistry.add("widgetWithoutDescription", widgetWithoutDescription);
 
         const vem = await studioTestUtils.createViewEditorManager({
             model: 'coucou',
@@ -681,8 +630,29 @@ QUnit.module('ViewEditorManager', {
 
         await testUtils.dom.click(vem.$('thead th[data-studio-xpath]'));
         assert.containsOnce(vem, '#widget option[value="widgetWithoutDescription"]', "widget without description should be there");
-        assert.strictEqual(vem.$('#widget option:selected').text().trim(), "widgetWithoutDescription", "Widget should have technical name i.e. widgetWithoutDescription as it does not have description");
-        delete fieldRegistry.map.widgetWithoutDescription;
+        assert.strictEqual(vem.$('#widget option:selected').text().trim(), "(widgetWithoutDescription)", "Widget should have technical name i.e. widgetWithoutDescription as it does not have description");
+    });
+
+    QUnit.test('already selected widget wihtout supportingTypes should be shown in sidebar with its technical name', async function (assert) {
+        assert.expect(2);
+
+        patchWithCleanup(odoo, { debug: false });
+
+        const wowlFieldRegistry = registry.category("fields");
+        const CharField = wowlFieldRegistry.get("char");
+        class widgetWithoutTypes extends CharField {}
+        widgetWithoutTypes.supportedTypes = null;
+        widgetWithoutTypes.displayName = null;
+        wowlFieldRegistry.add("widgetWithoutTypes", widgetWithoutTypes);
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            model: 'coucou',
+            arch: "<tree><field name='display_name' widget='widgetWithoutTypes'/></tree>",
+        });
+
+        await testUtils.dom.click(vem.$('thead th[data-studio-xpath]'));
+        assert.containsOnce(vem, '#widget option[value="widgetWithoutTypes"]', "widget without description should be there");
+        assert.strictEqual(vem.$('#widget option:selected').text().trim(), "(widgetWithoutTypes)", "Widget should have technical name i.e. widgetWithoutDescription as it does not have description");
     });
 
     QUnit.test('editing selection field of list of form view', async function(assert) {
@@ -1296,8 +1266,8 @@ QUnit.module('ViewEditorManager', {
 
         assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_field',
             "the sidebar should now display the field properties");
-        assert.containsNone(vem, '.o_web_studio_sidebar select[name="widget"] option[value="selection"]',
-            "the widget in selection should not be supported in m2o");
+        assert.containsOnce(vem, '.o_web_studio_sidebar select[name="widget"] option[value="selection"]',
+            "the widget in selection should be supported in m2o");
         assert.hasClass(vem.$('.o_web_studio_form_view_editor .o-web-studio-editor--element-clickable'),'o-web-studio-editor--element-clicked',
             "the column should have the clicked style");
     });
@@ -5536,7 +5506,7 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test("Sidebar should display all field's widgets", async function (assert) {
-        assert.expect(5);
+        assert.expect(10);
 
         const arch = `
             <form><sheet>
@@ -5556,48 +5526,20 @@ QUnit.module('ViewEditorManager', {
             .options).map(x => x.label);
 
         const charWidgetNames = [
-            "Copy to Clipboard",
-            "Email",
-            "Phone",
-            "Text",
-            "URL"
+            "Badge (badge)",
+            "Copy Text to Clipboard (CopyClipboardChar)",
+            "Copy URL to Clipboard (CopyClipboardURL)",
+            "Email (email)",
+            "Image (image_url)",
+            "Phone (phone)",
+            "Reference (reference)",
+            "Text (char)",
+            "Text (char_emojis)",
+            "URL (url)",
         ];
         for (const name of charWidgetNames) {
             assert.ok(displayedWidgetNames.includes(name));
         }
-
-    });
-
-    QUnit.test("Sidebar should display component field's widgets", async function (assert) {
-        assert.expect(1);
-
-        class CompField extends AbstractFieldOwl {}
-        CompField.template = xml`<div></div>`;
-        CompField.description = 'Component Field';
-        CompField.supportedFieldTypes = ['char'];
-
-        fieldRegistryOwl.add('comp_field', CompField);
-
-        const arch = `
-            <form><sheet>
-                <group>
-                    <field name="display_name"/>
-                </group>
-            </sheet></form>`;
-        const vem = await studioTestUtils.createViewEditorManager({
-            model: 'coucou',
-            arch: arch,
-        });
-
-        await testUtils.dom.click(vem.$('.o_field_widget'));
-
-        const displayedWidgetNames = Array
-            .from(document.getElementById('widget')
-            .options).map(x => x.label);
-
-        assert.ok(displayedWidgetNames.includes(CompField.description));
-
-        delete fieldRegistryOwl.map.comp_field;
 
     });
 

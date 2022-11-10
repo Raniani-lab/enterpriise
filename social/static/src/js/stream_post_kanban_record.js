@@ -1,6 +1,5 @@
 /** @odoo-module **/
 
-import { formatInteger } from '@web/views/fields/formatters';
 import { KanbanRecord } from '@web/views/kanban/kanban_record';
 import { useService } from '@web/core/utils/hooks';
 
@@ -47,13 +46,6 @@ export class StreamPostKanbanRecord extends KanbanRecord {
             [userLikeField]: !userLikes,
             [likesCountField]: likesCount,
         });
-    }
-
-    /**
-     * @deprecated will be removed in v16.1
-     */
-    _insertThousandSeparator(value) {
-        return formatInteger(value);
     }
 
     //---------

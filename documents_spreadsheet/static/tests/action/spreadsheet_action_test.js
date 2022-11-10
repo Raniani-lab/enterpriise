@@ -237,5 +237,34 @@ QUnit.module(
             await nextTick();
             assert.strictEqual(document.activeElement.className, "o-grid o-two-columns");
         });
+
+        QUnit.test("create spreadsheet action uses action context", async function (assert) {
+            await prepareWebClientForSpreadsheet();
+            const webClient = await createWebClient({
+                serverData: { models: getBasicData() },
+                mockRPC: async function (route, args) {
+                    if (args.method === "create" && args.model === "documents.document") {
+                        assert.step("create_sheet");
+                        assert.equal(args.kwargs.context.default_res_model, "test.model");
+                        assert.equal(args.kwargs.context.default_res_id, 42);
+                    }
+                },
+            });
+            await doAction(webClient, {
+                type: "ir.actions.client",
+                tag: "action_open_spreadsheet",
+                params: {
+                    alwaysCreate: true,
+                    createFromTemplateId: null,
+                    createInFolderId: 1,
+                },
+            }, {
+                additionalContext: {
+                    default_res_model: "test.model",
+                    default_res_id: 42,
+                }
+            });
+            assert.verifySteps(["create_sheet"]);
+        });
     }
 );

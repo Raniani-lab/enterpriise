@@ -63,9 +63,9 @@ class HelpdeskTeam(models.Model):
     member_ids = fields.Many2many('res.users', string='Team Members', domain=lambda self: self._default_domain_member_ids(),
         default=lambda self: self.env.user, required=True)
     privacy_visibility = fields.Selection([
-        ('invited_internal', 'Invited internal users'),
-        ('internal', 'All internal users'),
-        ('portal', 'Invited portal users and all internal users')],
+        ('invited_internal', 'Invited internal users (private)'),
+        ('internal', 'All internal users (company)'),
+        ('portal', 'Invited portal users and all internal users (public)')],
         string='Visibility', required=True,
         default='portal',
         help="People to whom this helpdesk team and its tickets will be visible.\n\n"
@@ -310,9 +310,9 @@ class HelpdeskTeam(models.Model):
     def _compute_access_instruction_message(self):
         for team in self:
             if team.privacy_visibility == 'portal':
-                team.access_instruction_message = _('Grant portal users access to your helpdesk team or tickets by adding them as followers.')
+                team.access_instruction_message = _('Grant portal users access to your helpdesk team or tickets by adding them as followers. Customers automatically get access to their tickets in their portal.')
             elif team.privacy_visibility == 'invited_internal':
-                team.access_instruction_message = _('Grant employees access to your helpdesk team or tickets by adding them as followers.')
+                team.access_instruction_message = _('Grant employees access to your helpdesk team or tickets by adding them as followers. Employees automatically get access to the tickets they are assigned to.')
             else:
                 team.access_instruction_message = ''
 

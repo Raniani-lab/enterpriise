@@ -79,18 +79,18 @@
                     <field name="company_id" invisible="1"/>
                     <field name="description" placeholder="Describe your team to your colleagues and customers..."/>
                     <field name="company_id" groups="base.group_multi_company" required="1" nolabel="1" context="{'create': False}"/>
-                    <h2>Assignment &amp; Visibility</h2>
+                    <h2>Visibility &amp; Assignment </h2>
                     <div class="row mt16 o_settings_container" id="productivity">
-                        <setting help="Users to whom this team will be visible">
-                            <field name="privacy_visibility" class="mt16 o_light_label" widget="radio"/>
+                        <setting help="People to whom this team and its tickets will be visible">
+                            <field name="privacy_visibility" class="mt16 o_light_label w-100" widget="radio"/>
                             <div>
-                                <span colspan="2" class="text-muted" attrs="{'invisible':[('access_instruction_message', '=', '')]}">
-                                    <i class="fa fa-lightbulb-o"/>&amp;nbsp;<field class="align-top d-inline" name="access_instruction_message" nolabel="1"/>
+                                <span class="text-muted o_row ps-1" attrs="{'invisible':[('access_instruction_message', '=', '')]}">
+                                    <i class="fa fa-lightbulb-o"/>&amp;nbsp;<field class="align-top d-inline ms-2" name="access_instruction_message" nolabel="1"/>
                                 </span>
                             </div>
                             <div>
-                                <span colspan="2" class="text-muted" attrs="{'invisible':[('privacy_visibility_warning', '=', '')]}">
-                                    <i class="fa fa-warning"/>&amp;nbsp;<field class="align-top d-inline" name="privacy_visibility_warning" nolabel="1"/>
+                                <span class="text-muted o_row ps-1" attrs="{'invisible':[('privacy_visibility_warning', '=', '')]}">
+                                    <i class="fa fa-warning"/>&amp;nbsp;<field class="align-top d-inline ms-2" name="privacy_visibility_warning" nolabel="1"/>
                                 </span>
                             </div>
                         </setting>
@@ -108,10 +108,11 @@
                             <setting help="Automate the assignment of new tickets to the right people, and make sure all tickets are being handled">
                                 <field name="auto_assignment"/>
                                 <div attrs="{'invisible': [('auto_assignment', '=', False)]}" class="mt16">
-                                    <field name="assign_method" class="o_light_label" widget="radio"/>
-                                    <div>
+                                    <field name="assign_method" class="o_light_label w-100" widget="radio"/>
+                                    <div class="o_row mt16">
+                                        <label for="member_ids"/>
                                         <field name="member_ids" widget="many2many_avatar_user" attrs="{'required': [('auto_assignment', '=', True)]}"
-                                        class="mt16" placeholder="Add team members..." options="{'no_quick_create': True}"/>
+                                        class="ms-2" options="{'no_quick_create': True}"/>
                                     </div>
                                 </div>
                             </setting>
@@ -131,16 +132,24 @@
                                 <strong>Alias </strong><field name="alias_id" class="oe_read_only oe_inline" required="False"/>
                                 </p>
                                 <field name="has_external_mail_server" invisible="1"/>
-                                <p class="text-muted" attrs="{'invisible': ['|', ('alias_domain', '!=', False), ('has_external_mail_server', '!=', False)]}">
-                                    <i class="fa fa-lightbulb-o" role='img'/> Enable the <i>Custom Email Servers</i> feature in the <i>General Settings</i> and indicate an <i>alias domain</i>
+                                <p class="text-muted o_row ps-1" attrs="{'invisible': ['|', ('alias_domain', '!=', False), ('has_external_mail_server', '!=', False)]}">
+                                    <i class="fa fa-lightbulb-o" role='img'/><span class="ms-2">Enable the Custom Email Servers feature in the General Settings and indicate an alias domain</span>
                                 </p>
                                 <p attrs="{'invisible': [('alias_domain', '!=', False)]}">
                                     <button name="%(base_setup.action_general_configuration)d" type="action" string="Configure a custom domain" icon="fa-arrow-right" class="btn-link"/>
                                 </p>
                             </div>
                         </setting>
-                        <setting help="Get in touch with your website visitors">
+                        <setting help="Get in touch with your website visitors. Create and search tickets from your conversations. Answer in an instant by using canned responses.">
                             <field name="use_website_helpdesk_livechat"/>
+                            <div class="text-muted o_row ps-1 mt16" attrs="{'invisible':[('use_website_helpdesk_livechat', '=', False)]}">
+                                <i class="fa fa-lightbulb-o"/>
+                                <span class="ms-2">
+                                    Type <b>/helpdesk</b> to create tickets<br/>
+                                    Type <b>/helpdesk_search</b> to find tickets<br/>
+                                    Type <b>:shortcut</b> to insert canned responses in your messages
+                                </span>
+                            </div>
                             <div id="im_livechat" attrs="{'invisible': [('use_website_helpdesk_livechat','=',False)]}">
                                 <div class="text-warning mb4 mt16">
                                     Save this page and refresh to activate the feature.

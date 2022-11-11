@@ -29,6 +29,7 @@ Features:
     ],
     'auto_install': True,
     'license': 'OEEL-1',
+    'post_init_hook': '_create_livechat_channel',
     'assets': {
         'web.assets_backend': [
             'website_helpdesk_livechat/static/src/**/*',

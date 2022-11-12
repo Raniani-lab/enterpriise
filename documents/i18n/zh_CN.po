@@ -7,6 +7,7 @@
 # Martin Trigaux, 2022
 # Emily Jia <eji@odoo.com>, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
+# digitalliuzg8888, 2022
 # Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
@@ -170,6 +171,8 @@ msgid ""
 "<i class=\"fa fa-lock oe_inline\" title=\"Locked\" attrs=\"{'invisible': "
 "[('lock_uid', '=', False)]}\"/>"
 msgstr ""
+"&amp;nbsp;\n"
+"                            <i class=\"fa fa-lock oe_inline\" title=\"Locked\" attrs=\"{'invisible': [('lock_uid', '=', False)]}\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -554,7 +557,7 @@ msgstr "活动类型"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_type_icon
 msgid "Activity Type Icon"
-msgstr "活动类型图表"
+msgstr "活动类型图标"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_type_id
@@ -1066,7 +1069,7 @@ msgstr "显示名称"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "Do you really want to unlink this record?"
-msgstr ""
+msgstr "是否确实要取消链接此记录？"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_document
@@ -2235,7 +2238,7 @@ msgstr "发送给法律部"
 #. module: documents
 #: model:mail.template,description:documents.mail_template_document_request
 msgid "Sent to partner when requesting a document from them"
-msgstr ""
+msgstr "在向合作伙伴索取文档时发送给他们"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
@@ -2515,7 +2518,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "The share url has been copied to your clipboard."
-msgstr ""
+msgstr "共享 URL 已复制到剪贴板。"
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_share_share_unique
@@ -2560,7 +2563,7 @@ msgstr "缩略图"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail_status
 msgid "Thumbnail Status"
-msgstr ""
+msgstr "缩略图状态"
 
 #. module: documents
 #. openerp-web
@@ -2652,6 +2655,8 @@ msgid ""
 "Upload <span class=\"fw-normal\">a file or</span> drag <span class=\"fw-"
 "normal\">it here.</span>"
 msgstr ""
+"上传<span class=\"fw-normal\">文件或</span><span class=\"fw-"
+"normal\">将其拖到此处。</span>"
 
 #. module: documents
 #. openerp-web
@@ -2738,7 +2743,7 @@ msgstr "周"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
 msgid "What do you want to do with the files in the workspace?"
-msgstr ""
+msgstr "您希望如何处理工作区中的文件？"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.workflow_rule_action
@@ -2808,14 +2813,14 @@ msgstr "不能创建递归文件夹。"
 #: code:addons/documents/models/document.py:0
 #, python-format
 msgid "You don't have the right to move documents to that workspace."
-msgstr ""
+msgstr "您无权将文档移动到该工作区。"
 
 #. module: documents
 #. openerp-web
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "You don't have the rights to move documents to that workspace"
-msgstr ""
+msgstr "您无权将文档移动到该工作区"
 
 #. module: documents
 #. openerp-web
@@ -2871,7 +2876,7 @@ msgstr "下载"
 #: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
 #, python-format
 msgid "dropdown-item"
-msgstr ""
+msgstr "下拉项"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -2915,7 +2920,7 @@ msgstr "e.g. https://www.youtube.com/watch?v=CP96yVnXNrY"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "fa fa-folder text-odoo"
-msgstr ""
+msgstr "FA-文件夹文本-奥杜"
 
 #. module: documents
 #. openerp-web

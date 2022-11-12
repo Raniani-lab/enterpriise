@@ -291,7 +291,7 @@ msgstr "La vista de la actividad no está disponible en este modelo"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Add"
-msgstr "Agregar"
+msgstr "Añadir"
 
 #. module: web_studio
 #. openerp-web
@@ -368,7 +368,7 @@ msgstr "Añadir en el menú de impresión"
 #: code:addons/web_studio/static/src/legacy/xml/new_field_dialog.xml:0
 #, python-format
 msgid "Add new value"
-msgstr "Agregar nuevo valor"
+msgstr "Añadir nuevo valor"
 
 #. module: web_studio
 #. openerp-web
@@ -924,7 +924,7 @@ msgstr "Cohorte"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Collapse First Level"
-msgstr "Contraer el primer nivel"
+msgstr "Combinar primer nivel"
 
 #. module: web_studio
 #. openerp-web
@@ -1363,14 +1363,14 @@ msgstr "Modo de visualización predeterminado"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Default Group by"
-msgstr "Grupo predeterminado por"
+msgstr "Automáticamente agrupar por"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Default Scale"
-msgstr "Escala predeterminada"
+msgstr "Medida predeterminada"
 
 #. module: web_studio
 #. openerp-web
@@ -1410,7 +1410,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Delay Field"
-msgstr "Retrasar campo"
+msgstr "Campo de retraso"
 
 #. module: web_studio
 #: code:addons/web_studio/models/ir_ui_view.py:0
@@ -1496,7 +1496,7 @@ msgstr "Nombre en pantalla"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Display Total row"
-msgstr "Mostrar fila total"
+msgstr "Mostrar fila con el total"
 
 #. module: web_studio
 #. openerp-web
@@ -1892,7 +1892,7 @@ msgstr "Primer estado"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "First dimension"
-msgstr "Primera dimensión"
+msgstr "Primer atributo"
 
 #. module: web_studio
 #. openerp-web
@@ -1920,7 +1920,7 @@ msgstr "Formulario"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Forward"
-msgstr "Adelante"
+msgstr "Avanzar"
 
 #. module: web_studio
 #. openerp-web
@@ -3104,7 +3104,7 @@ msgstr "Desplazamiento a la derecha"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Quarter Hour"
-msgstr "Un cuarto de hora"
+msgstr "Cuarto de hora"
 
 #. module: web_studio
 #. openerp-web
@@ -3408,14 +3408,14 @@ msgstr "Guardar."
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Search"
-msgstr "Búsqueda"
+msgstr "Buscar"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Search..."
-msgstr "Buscar…"
+msgstr "Búsqueda…"
 
 #. module: web_studio
 #. openerp-web
@@ -3429,7 +3429,7 @@ msgstr "Segundo estado"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Second dimension"
-msgstr "Segunda dimensión"
+msgstr "Segundo atributo"
 
 #. module: web_studio
 #. openerp-web
@@ -3619,7 +3619,7 @@ msgstr "Ordenar por"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Sorting"
-msgstr "Ordenado"
+msgstr "Orden"
 
 #. module: web_studio
 #. openerp-web

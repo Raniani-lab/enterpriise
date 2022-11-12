@@ -1289,7 +1289,7 @@ msgstr "加入链接"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Join with Odoo Discuss"
-msgstr "通过Odoo内部沟通加入"
+msgstr "使用Odoo讨论加入"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__country_ids
@@ -1680,7 +1680,7 @@ msgstr "定期"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__redirect_url
 msgid "Redirect URL"
-msgstr "重定向网址"
+msgstr "重定向URL"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__reminder_ids

@@ -4,11 +4,11 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # Emily Jia <eji@odoo.com>, 2022
 # 稀饭~~ <wangwhai@qq.com>, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
 # digitalliuzg8888, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: digitalliuzg8888, 2022\n"
+"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -30,7 +30,9 @@ msgstr ""
 msgid ""
 "\n"
 "%s to %s"
-msgstr "%s - 由 %s"
+msgstr ""
+"\n"
+"%s to %s"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order.py:0
@@ -51,7 +53,7 @@ msgstr "% 高兴"
 #: code:addons/sale_subscription/models/sale_order_line.py:0
 #, python-format
 msgid "%(product)s - %(duration)d %(unit)s"
-msgstr "%（产品）s - %（持续时间）d %（单位）s"
+msgstr "%(product)s - %(duration)d %(unit)s"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -1187,7 +1189,8 @@ msgid ""
 "Automatic payment succeeded. Payment reference: %(ref)s. Amount: %(amount)s."
 " Contract set to: In Progress, Next Invoice: %(inv)s. Email sent to "
 "customer."
-msgstr "自动付款成功。付款参考： %（参考）s. 金额： %（金额）s.合同设置为：进行中，下一张发票：%（inv）s。发送给客户的电子邮件。"
+msgstr ""
+"自动付款成功。付款参考： %(ref)s. 金额： %(amount)s.合同设置为：进行中，下一张发票：%(inv)s。发送给客户的电子邮件。"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__payment_exception
@@ -2251,7 +2254,7 @@ msgstr "管理付款方式需要根据客户订单登录。"
 msgid ""
 "Manual payment succeeded. Payment reference: %s; Amount: %(amount)s. Invoice"
 " %(invoice)s"
-msgstr "人工付款成功。付款参考：%s;金额：%（金额）s。发票百分比（发票）"
+msgstr "人工付款成功。付款参考：%s;金额：%(amount)s。发票%(invoice)s"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__action__set_to_renew
@@ -2361,7 +2364,7 @@ msgstr "无"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_sales_order_filter_subscription
 msgid "Not Recurring"
-msgstr "定期"
+msgstr "非周期性"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -2707,7 +2710,7 @@ msgstr "经常性价格"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__recurring_rule_type
 msgid "Recurring Rule Type"
-msgstr "重复规则类型"
+msgstr "周期规则类型"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order_line.py:0
@@ -2727,7 +2730,7 @@ msgstr "参照："
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 #, python-format
 msgid "Renew"
-msgstr "更新"
+msgstr "续订"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__renew_state
@@ -2753,12 +2756,12 @@ msgstr "续订报价"
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__renew_state__renewed
 msgid "Renewed"
-msgstr "更新"
+msgstr "续订"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__renew_state__renewing
 msgid "Renewing"
-msgstr "更新"
+msgstr "续订"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_report
@@ -2928,7 +2931,7 @@ msgstr "选择新建的模板每次销售此产品模板都将生成新的订阅
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__user_closable
 msgid "Self closable"
-msgstr "可自闭"
+msgstr "可自行关闭"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_pending

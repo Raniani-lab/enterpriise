@@ -370,7 +370,7 @@ msgstr "修改锁定日期"
 msgid ""
 "Check & validate the bill. If no vendor has been found, add one before "
 "validating."
-msgstr "核对并验证账单。如果没有找到供应商，请在有验证前添加一个 "
+msgstr "核对和验证账单。如果没有找到供应商，请在有验证前添加一个 "
 
 #. module: account_accountant
 #. openerp-web
@@ -1394,7 +1394,7 @@ msgstr "调节"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__reconcile_model_id
 msgid "Reconcile Model"
-msgstr "协调模型"
+msgstr "调节模型"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__reconciled
@@ -1440,12 +1440,12 @@ msgstr "保存"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_form_bank_rec_widget
 msgid "Save & Close"
-msgstr "保存并关闭"
+msgstr "保存和关闭"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_form_bank_rec_widget
 msgid "Save & New"
-msgstr "保存并新建"
+msgstr "保存和新建"
 
 #. module: account_accountant
 #. openerp-web

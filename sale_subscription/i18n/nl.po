@@ -2816,7 +2816,7 @@ msgstr "Offerte voor verlenging"
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__renew_state__renewed
 msgid "Renewed"
-msgstr "Verlengt"
+msgstr "Verlengd"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__renew_state__renewing
@@ -4043,7 +4043,7 @@ msgid ""
 "You will find here the subscriptions to be renewed (end date is close or "
 "passed)"
 msgstr ""
-"Je vind hier de te verkengen abonnementen (einddatum is gesloten of "
+"Je vindt hier de te verlengen abonnementen (einddatum is gesloten of "
 "gepasseerd)"
 
 #. module: sale_subscription

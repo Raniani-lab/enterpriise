@@ -7,6 +7,8 @@
 # 黎伟杰 <674416404@qq.com>, 2022
 # Martin Trigaux, 2022
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022
+# digitalliuzg8888, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -14,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022\n"
+"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -796,7 +798,7 @@ msgstr "公司"
 msgid ""
 "Company linked to the material resource. Leave empty for the resource to be "
 "available in every company."
-msgstr ""
+msgstr "公司与物资资源挂钩。为每个公司都可用的资源留空。"
 
 #. module: planning
 #: model:ir.model,name:planning.model_res_config_settings
@@ -922,7 +924,7 @@ msgid ""
 "Define the roles your resources perform (e.g. Chef, Bartender, Waiter...). "
 "Create open shifts for the roles you need to complete a mission. Then, "
 "assign those open shifts to the resources that are available."
-msgstr ""
+msgstr "定义你的资源所扮演的角色(如厨师、调酒师、服务员等)。为完成任务所需的角色创建开放轮班。然后，将那些开放的轮班分配给可用的资源。"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -1050,13 +1052,13 @@ msgstr "Eli Lambert (服务生)"
 #. module: planning
 #: model:mail.template,description:planning.email_template_slot_single
 msgid "Email sent automatically when publishing a shift"
-msgstr ""
+msgstr "发布轮班时自动发送电子邮件"
 
 #. module: planning
 #: model:mail.template,description:planning.email_template_planning_planning
 msgid ""
 "Email sent automatically when publishing the schedule of your employees"
-msgstr ""
+msgstr "当发布您的员工的时间表时，自动发送电子邮件"
 
 #. module: planning
 #: model:ir.model,name:planning.model_hr_employee
@@ -1412,6 +1414,9 @@ msgid ""
 "Modifications made to a shift only impact the current shift and not the other ones that are part of the recurrence. The same goes when deleting a recurrent shift. Disable this option to stop the recurrence.\n"
 "To avoid polluting your database and performance issues, shifts are only created for the next 6 months. They are then gradually created as time passes by in order to always get shifts 6 months ahead. This value can be modified from the settings of Planning, in debug mode."
 msgstr ""
+"对移位的修改只影响当前移位，而不影响作为递归的一部分的其他移位。删除循环移位时也是如此。禁用此选项可停止重复。\n"
+"为了避免污染数据库和性能问题，只在未来6个月创建轮班。然后，随着时间的推移，他们逐渐创建，以便总是提前6个月得到轮班。该值可以在调试模式下从计划的设置中修改。\n"
+" "
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__publication_warning
@@ -1649,12 +1654,12 @@ msgstr "计划:"
 #. module: planning
 #: model:mail.template,name:planning.email_template_planning_planning
 msgid "Planning: New Schedule"
-msgstr ""
+msgstr "计划:新计划"
 
 #. module: planning
 #: model:mail.template,name:planning.email_template_slot_single
 msgid "Planning: New Shift"
-msgstr ""
+msgstr "计划:新变更"
 
 #. module: planning
 #: model:ir.actions.server,name:planning.ir_cron_forecast_schedule_ir_actions_server
@@ -1827,6 +1832,8 @@ msgid ""
 "Role that will be selected by default when creating a shift for this employee.\n"
 "This role will also have precedence over the other roles of the employee when planning orders."
 msgstr ""
+"为该员工创建轮班时默认选择的角色。\n"
+"在计划订单时，该角色也将优先于员工的其他角色。"
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_roles
@@ -1844,6 +1851,10 @@ msgid ""
 "Additionally, the employee will only be assigned orders for these roles (with the default planning role having precedence over the other ones).\n"
 "Leave empty for the employee to be assigned shifts regardless of the role."
 msgstr ""
+"员工可以扮演的角色。当为该员工创建轮班时，只会显示这些角色的轮班模板。\n"
+"类似地，当时间表发布时，只有这些角色可用的开放轮班才会发送给员工。\n"
+"此外，将只为这些角色分配订单(默认的规划角色优先于其他角色)。\n"
+"空着，以便员工被分配轮班，不管角色是什么。"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt

@@ -272,7 +272,7 @@ msgstr "שם"
 #: code:addons/documents_spreadsheet/static/src/spreadsheet_template/spreadsheet_template_dialog.js:0
 #, python-format
 msgid "New Spreadsheet"
-msgstr ""
+msgstr "גליון אלקטרוני חדש"
 
 #. module: documents_spreadsheet
 #. openerp-web
@@ -284,7 +284,7 @@ msgstr ""
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.spreadsheet_template_view_tree
 msgid "New spreadsheet"
-msgstr ""
+msgstr "גליון אלקטרוני חדש"
 
 #. module: documents_spreadsheet
 #. openerp-web
@@ -292,14 +292,14 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/spreadsheet_selector_dialog/document_selector_panel.js:0
 #, python-format
 msgid "New spreadsheet created in Documents"
-msgstr ""
+msgstr "גליון אלקטרוני חדש שנוצר במסמכים"
 
 #. module: documents_spreadsheet
 #. openerp-web
 #: code:addons/documents_spreadsheet/static/src/bundle/actions/spreadsheet_template/spreadsheet_template_action.js:0
 #, python-format
 msgid "New spreadsheet template created"
-msgstr ""
+msgstr " תבנית גליון אלקטרוני חדשה נוצרה"
 
 #. module: documents_spreadsheet
 #: model:ir.actions.act_window,name:documents_spreadsheet.spreadsheet_revision_action
@@ -324,7 +324,7 @@ msgstr "רצף"
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.document_view_search_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.spreadsheet_revision_view_search
 msgid "Spreadsheet"
-msgstr ""
+msgstr "גליון אלקטרוני"
 
 #. module: documents_spreadsheet
 #: model:ir.model,name:documents_spreadsheet.model_spreadsheet_contributor

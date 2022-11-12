@@ -15,7 +15,7 @@
 # Сергей Шебанин <sergey@shebanin.ru>, 2022
 # Collex100, 2022
 # Martin Trigaux, 2022
-# Валерий Хохлов, 2022
+# valmasone, 2022
 # Alena Vlasova, 2022
 # 
 msgid ""
@@ -466,7 +466,7 @@ msgstr ""
 #: model:ir.model.fields,help:documents.field_documents_folder__parent_folder_id
 #: model:ir.model.fields,help:documents.field_documents_folder_deletion_wizard__parent_folder_id
 msgid "A workspace will inherit the tags of its parent workspace"
-msgstr ""
+msgstr "Рабочая область унаследует теги своей основной рабочей области"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form

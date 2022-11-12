@@ -1337,12 +1337,12 @@ msgstr "Urenstaat Eenheid Tijd"
 #: model:ir.cron,cron_name:timesheet_grid.timesheet_reminder_user
 #: model:ir.cron,name:timesheet_grid.timesheet_reminder_user
 msgid "Timesheet: Employees Email Reminder"
-msgstr "Urenstaat: Werknemer e-mail herinnering"
+msgstr "Urenstaat: Werknemer e-mailherinnering"
 
 #. module: timesheet_grid
 #: model:mail.template,name:timesheet_grid.mail_template_timesheet_reminder_user
 msgid "Timesheet: Employees Reminder"
-msgstr "Urenstaat: Herinnering werknemers"
+msgstr "Urenstaat: Werknemersherinnering"
 
 #. module: timesheet_grid
 #: model:mail.template,name:timesheet_grid.mail_template_timesheet_reminder_manager

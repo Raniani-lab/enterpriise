@@ -193,7 +193,7 @@ msgstr "国家"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Countries & Currencies"
-msgstr "国家与货币"
+msgstr "国家和货币"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_res_country

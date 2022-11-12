@@ -474,12 +474,12 @@ msgstr "مؤسسة محاسبية "
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report
 msgid "Accounting Report"
-msgstr ""
+msgstr "تقرير المحاسبة "
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_line
 msgid "Accounting Report Line"
-msgstr ""
+msgstr "بند التقرير المحاسبي "
 
 #. module: account_reports
 #: model:ir.actions.act_window,name:account_reports.action_account_report_tree

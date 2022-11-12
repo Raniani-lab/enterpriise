@@ -9,6 +9,7 @@
 # 深圳 JM <3440895@qq.com>, 2022
 # Martin Trigaux, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
+# digitalliuzg8888, 2022
 # Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
@@ -472,6 +473,15 @@ msgid ""
 "            (<span style=\"font-style: italic;\">per team, topic, project, ...</span>)\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            文件夹 —\n"
+"        </span>\n"
+"        <span style=\"font-size: 14px;\">\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">嵌套其他文章</font>\n"
+"            </span>\n"
+"            在它下面重新组合它们\n"
+"            （<span style=\"font-style: italic;\">每个团队、主题、项目等</span>）        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -570,6 +580,19 @@ msgid ""
 "        to share it with everyone.\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">一个好的工作流程是编写草稿\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">私人</font>\n"
+"        </span>\n"
+"        完成后，将其从\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">私人</font>\n"
+"        </span>\n"
+"        自\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">工作</font>\n"
+"        </span>\n"
+"        与大家分享。    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -590,6 +613,19 @@ msgid ""
 "        it.\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">再一次，移动一个\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">品</font>\n"
+"        </span>\n"
+"        从\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">部分</font>\n"
+"        </span>\n"
+"        对另一个，只是\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">拖放</font>\n"
+"        </span>\n"
+"        它。    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -653,6 +689,15 @@ msgid ""
 "        them\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">更改方式\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">文章</font>\n"
+"        </span>\n"
+"        井井有条，您可以简单地\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">拖放</font>\n"
+"        </span>\n"
+"        他们    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -676,6 +721,20 @@ msgid ""
 "        \"<span style=\"font-weight: bolder;\">?</span>\".\n"
 "    </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">想去\n"
+"        <span style=\"font-style: italic;\">甚至</span>\n"
+"        更快？    </span>\n"
+"    <br/>\n"
+"    <span style=\"font-size: 14px;\">访问\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">文章</font>\n"
+"        </span>\n"
+"        通过打开\n"
+"        <span style=\"font-weight: bolder;\">\n"
+"            <font class=\"text-o-color-2\">命令面板</font>\n"
+"        </span>\n"
+"        （Ctrl + k/⌘ + k），然后通过开始查询来搜索文章\n"
+"        \"<span style=\"font-weight: bolder;\">?</span>\".    </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -820,7 +879,7 @@ msgstr "活动状态"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_type_icon
 msgid "Activity Type Icon"
-msgstr "活动类型图表"
+msgstr "活动类型图标"
 
 #. module: knowledge
 #. openerp-web
@@ -1350,7 +1409,7 @@ msgstr "显示名称"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Diving in"
-msgstr ""
+msgstr "潜入"
 
 #. module: knowledge
 #. openerp-web
@@ -1401,7 +1460,7 @@ msgstr "错误"
 msgid ""
 "Error: The given action is not an act_window. This action can not be used to"
 " create an embedded view or a view link"
-msgstr ""
+msgstr "错误：给定的操作不是act_window。此操作不能用于创建嵌入视图或视图链接"
 
 #. module: knowledge
 #. openerp-web
@@ -1503,7 +1562,7 @@ msgstr "有文章项目子级？"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__has_article_children
 msgid "Has normal article children?"
-msgstr ""
+msgstr "有正常的文章孩子吗？"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__have_share_partners
@@ -1587,7 +1646,7 @@ msgstr "继承的权限"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__inherited_permission_parent_id
 msgid "Inherited Permission Parent Article"
-msgstr ""
+msgstr "继承权限父文章"
 
 #. module: knowledge
 #. openerp-web
@@ -1928,7 +1987,7 @@ msgstr "导航基础知识"
 #: code:addons/knowledge/static/src/xml/knowledge_editor.xml:0
 #, python-format
 msgid "Nest articles under this one to generate a structure"
-msgstr ""
+msgstr "在此下嵌套文章以生成结构"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_calendar_event_id
@@ -2378,13 +2437,13 @@ msgstr "所选成员不存在或已被删除。"
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__sequence
 msgid ""
 "The sequence is computed only among the articles that have the same parent."
-msgstr ""
+msgstr "序列仅在具有相同父级的项目中计算。"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__root_article_id
 msgid ""
 "The subject is the title of the highest parent in the article hierarchy."
-msgstr ""
+msgstr "主题是文章层次结构中最高父级的标题。"
 
 #. module: knowledge
 #. openerp-web
@@ -2582,7 +2641,7 @@ msgid ""
 "                parameter can be used to modify the number of days. \n"
 "                (default is 30)"
 msgstr ""
-"当发送到回收站时，文章被标记为要删除\n"
+"当发送到循环站时，文章被标记为要删除\n"
 "                在最后编辑后的几天后。 knowledge_article_trash_limit_days配置\n"
 "                参数可用于修改天数。\n"
 "                （默认值为30）"
@@ -2714,7 +2773,7 @@ msgstr "您必须是%(article_name)s的编辑才能恢复它。"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "and the following child article(s) have"
-msgstr ""
+msgstr "和以下子文章有"
 
 #. module: knowledge
 #. openerp-web

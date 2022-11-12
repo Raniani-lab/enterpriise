@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Raymond Yu <cl_yu@hotmail.com>, 2022
 # Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
@@ -1950,7 +1951,7 @@ msgstr "做得好！ 要添加更多字段，返回“添加”页卡。"
 #: model:mail.activity.type,name:web_studio.mail_activity_data_approve
 #, python-format
 msgid "Grant Approval"
-msgstr ""
+msgstr "授予批准"
 
 #. module: web_studio
 #. openerp-web
@@ -3663,7 +3664,7 @@ msgstr "Studio审批条目"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_approval_request
 msgid "Studio Approval Request"
-msgstr ""
+msgstr "工作室批准申请"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_approval_rule
@@ -3822,7 +3823,7 @@ msgstr "审批规则只适用于符合以下条件的记录."
 msgid ""
 "The description will be shown to users to understand why they must ask for "
 "approval."
-msgstr ""
+msgstr "描述将被显示给用户，以了解为什么他们必须请求批准。"
 
 #. module: web_studio
 #. openerp-web
@@ -4032,7 +4033,7 @@ msgstr "这条规则限制了该用户对该动作的单一批准。"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "This user will be assigned a next activity when approval is requested."
-msgstr ""
+msgstr "当请求批准时，此用户将被分配下一个活动。"
 
 #. module: web_studio
 #. openerp-web
@@ -4264,7 +4265,7 @@ msgstr "该规则是否能被当前用户批准"
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_model__abstract
 msgid "Whether this model is abstract"
-msgstr ""
+msgstr "这个模型是否抽象"
 
 #. module: web_studio
 #. openerp-web
@@ -4383,7 +4384,7 @@ msgstr "你就是喜欢打碎东西，不是吗？"
 #: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
 #, python-format
 msgid "You must have at least one option set"
-msgstr ""
+msgstr "您必须至少有一个选项集。"
 
 #. module: web_studio
 #. openerp-web

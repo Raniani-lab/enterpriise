@@ -568,7 +568,7 @@ msgstr "安排的日期"
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_normal_form_view_mps
 #: model_terms:ir.ui.view,arch_db:mrp_mps.product_template_only_form_view_mps
 msgid "Schedules"
-msgstr "计划"
+msgstr "排程"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__sequence
@@ -692,7 +692,7 @@ msgstr "时间范围"
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__replenish_qty
 #, python-format
 msgid "To Replenish"
-msgstr "待补给"
+msgstr "待补充"
 
 #. module: mrp_mps
 #: model:ir.model.fields,help:mrp_mps.field_mrp_production_schedule__min_to_replenish_qty

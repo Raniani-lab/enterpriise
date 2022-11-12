@@ -3,7 +3,6 @@
 # 	* account_followup
 # 
 # Translators:
-# keecome <7017511@qq.com>, 2022
 # Martin Trigaux, 2022
 # Emily Jia <eji@odoo.com>, 2022
 # 稀饭~~ <wangwhai@qq.com>, 2022
@@ -584,12 +583,12 @@ msgstr "跟进"
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "Follow-up %s - %s"
-msgstr "后续  %s - %s"
+msgstr "跟进  %s - %s"
 
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__res_partner__type__followup
 msgid "Follow-up Address"
-msgstr "催款地址"
+msgstr "跟进地址"
 
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_followup_followup_line
@@ -952,7 +951,7 @@ msgstr "发送"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Send & Print"
-msgstr "发送与打印"
+msgstr "发送和打印"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__send_email

@@ -16,13 +16,13 @@
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
 # CristianCruzParra, 2022
 # Arnau Ros, 2022
-# jabelchi, 2022
+# Josep Anton Belchi, 2022
 # Quim - eccit <quim@eccit.com>, 2022
 # marcescu, 2022
 # Marc Tormo i Bochaca <mtbochaca@gmail.com>, 2022
 # Martin Trigaux, 2022
-# Óscar Fonseca <tecnico@extreme-micro.com>, 2022
 # Cristian Cruz, 2022
+# Óscar Fonseca <tecnico@extreme-micro.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -30,7 +30,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Cristian Cruz, 2022\n"
+"Last-Translator: Óscar Fonseca <tecnico@extreme-micro.com>, 2022\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -195,6 +195,63 @@ msgid ""
 "</div>\n"
 "        "
 msgstr ""
+"<div>\n"
+"    <t t-set=\"access_token\" t-value=\"object._rating_get_access_token()\"/>\n"
+"    <t t-set=\"partner\" t-value=\"object._rating_get_partner()\"/>\n"
+"    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" style=\"width:100%; margin:0;\">\n"
+"    <tbody>\n"
+"        <tr><td valign=\"top\" style=\"font-size: 14px;\">\n"
+"            <t t-if=\"partner.name\">\n"
+"                Hola <t t-out=\"partner.name or ''\">Brandon Freeman</t>,<br/>\n"
+"            </t>\n"
+"            <t t-else=\"\">\n"
+"                Hola,<br/>\n"
+"            </t>\n"
+"            Ens importa molt la teva opinió. Si us plau, califica els nostres serveis relacionats amb el part d'assistència \"<strong t-out=\"object.name or ''\">Table legs are unbalanced</strong>\"\n"
+"            <t t-if=\"object._rating_get_operator().name\">\n"
+"                assignat a <strong t-out=\"object._rating_get_operator().name or ''\">Mitchell Admin</strong>.<br/>\n"
+"            </t>\n"
+"            <t t-else=\"\">\n"
+"                .<br/>\n"
+"            </t>\n"
+"        </td></tr>\n"
+"        <tr><td style=\"text-align: center;\">\n"
+"            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" summary=\"o_mail_notification\" style=\"width:100%; margin: 32px 0px 32px 0px;\">\n"
+"                <tr><td style=\"font-size: 14px;\">\n"
+"                    <strong>Indica'ns com et sents respecte el nostre servei.</strong><br/>\n"
+"                    <span style=\"text-color: #888888\">(fes clic en un d'aquests emoticones)</span>\n"
+"                </td></tr>\n"
+"                <tr><td style=\"font-size: 14px;\">\n"
+"                    <table style=\"width:100%;text-align:center;margin-top:2rem;\">\n"
+"                        <tr>\n"
+"                            <td>\n"
+"                                <a t-attf-href=\"/rate/{{ access_token }}/5\">\n"
+"                                    <img alt=\"Satisfied\" src=\"/rating/static/src/img/rating_5.png\" title=\"Satisfied\"/>\n"
+"                                </a>\n"
+"                            </td>\n"
+"                            <td>\n"
+"                                <a t-attf-href=\"/rate/{{ access_token }}/3\">\n"
+"                                    <img alt=\"Okay\" src=\"/rating/static/src/img/rating_3.png\" title=\"Okay\"/>\n"
+"                                </a>\n"
+"                            </td>\n"
+"                            <td>\n"
+"                                <a t-attf-href=\"/rate/{{ access_token }}/1\">\n"
+"                                    <img alt=\"Dissatisfied\" src=\"/rating/static/src/img/rating_1.png\" title=\"Dissatisfied\"/>\n"
+"                                </a>\n"
+"                            </td>\n"
+"                        </tr>\n"
+"                    </table>\n"
+"                </td></tr>\n"
+"            </table>\n"
+"        </td></tr>\n"
+"        <tr><td valign=\"top\" style=\"font-size: 14px;\">\n"
+"            Agraïm els teus comentaris. Ens ajuden a continuar millorant.\n"
+"            <br/><br/><span style=\"margin: 0px 0px 0px 0px; font-size: 12px; opacity: 0.5; color: #454748;\">Aquesta enquesta ha sigut enviada perquè el seu part s'ha mogut a l'etapa <b t-out=\"object.stage_id.name or ''\">En curs</b></span>\n"
+"        </td></tr>\n"
+"    </tbody>\n"
+"    </table>\n"
+"</div>\n"
+"        "
 
 #. module: helpdesk
 #: model:mail.template,body_html:helpdesk.solved_ticket_request_email_template

@@ -25,7 +25,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid " + Add a tag"
-msgstr " + Voeg een tag toe"
+msgstr " + Voeg een label toe"
 
 #. module: documents
 #. openerp-web
@@ -184,7 +184,7 @@ msgid ""
 "[('tag_ids', '=', [])]}\" title=\"Tags\"/>"
 msgstr ""
 "<i class=\"fa fa-tag o_documents_tag_color ms-2\" attrs=\"{'invisible': "
-"[('tag_ids', '=', [])]}\" title=\"Tags\"/>"
+"[('tag_ids', '=', [])]}\" title=\"Labels\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page

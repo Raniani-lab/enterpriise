@@ -5,8 +5,9 @@
 # Translators:
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022
 # Martin Trigaux, 2022
-# Raymond Yu <cl_yu@hotmail.com>, 2022
 # 徐 文郁, 2022
+# digitalliuzg8888, 2022
+# Raymond Yu <cl_yu@hotmail.com>, 2022
 # Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
@@ -169,7 +170,7 @@ msgstr "添加额外产品？"
 #: model:ir.model.fields.selection,name:stock_barcode.selection__stock_picking_type__restrict_put_in_pack__mandatory
 #: model:ir.model.fields.selection,name:stock_barcode.selection__stock_picking_type__restrict_scan_dest_location__mandatory
 msgid "After each product"
-msgstr "每个产品后"
+msgstr "在每个产品后"
 
 #. module: stock_barcode
 #: model:ir.model.fields.selection,name:stock_barcode.selection__stock_picking_type__restrict_put_in_pack__optional
@@ -192,14 +193,14 @@ msgstr "分配"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__barcode_validation_full
 msgid "Allow full picking validation"
-msgstr "允许所有调拨验证"
+msgstr "允许完整拣货验证"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_picking_type__barcode_validation_full
 msgid ""
 "Allow to validate a picking even if nothing was scanned yet (and so, do an "
 "immediate transfert)"
-msgstr "允许验证调拨单，即使尚未扫描任何内容（并且，立即进行库存调拨）"
+msgstr "允许验证拣货单，即使尚未扫描任何内容（并且，立即进行库存调拨）"
 
 #. module: stock_barcode
 #. openerp-web
@@ -242,7 +243,7 @@ msgstr "条码"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_view_picking_type_form
 msgid "Barcode App"
-msgstr "条码扫描Aapp"
+msgstr "条码应用"
 
 #. module: stock_barcode
 #: model:ir.actions.client,name:stock_barcode.stock_barcode_inventory_client_action
@@ -427,7 +428,7 @@ msgid ""
 "Do you want to permanently remove this message ?\n"
 "                    It won't appear anymore, so make sure you don't need the barcodes sheet or you have a copy."
 msgstr ""
-"是否要永久删除此消息？\n"
+"是否要永久移除此消息？\n"
 "它将不再出现，所以请确保您不需要条形码表或您有一份副本。"
 
 #. module: stock_barcode
@@ -435,7 +436,7 @@ msgstr ""
 msgid ""
 "Does the picker have to put in a package the scanned products? If yes, at "
 "which rate?"
-msgstr "拣货员是否必须将扫描的产品放入包装中?如果是，以什么速度?"
+msgstr "拣货员是否必须将扫描的产品放入包裹中？如果是，以什么速度？"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_picking_type__restrict_scan_dest_location
@@ -496,7 +497,7 @@ msgstr "强制扫描产品?"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__restrict_scan_source_location
 msgid "Force Source Location scan?"
-msgstr "必须扫描源位置?"
+msgstr "强制扫描来源位置?"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_picking_type__barcode_validation_after_dest_location
@@ -530,7 +531,7 @@ msgid ""
 "If the source location must be scanned for each product, the destination "
 "location must be either scanned after each line too, either not scanned at "
 "all."
-msgstr "如果必须扫描每个产品的源位置，则必须在每行之后扫描目标位置，或者都不扫描。"
+msgstr "如果必须扫描每个产品的来源位置，则必须在每行之后扫描目标位置，或者都不扫描。"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban
@@ -592,7 +593,7 @@ msgstr "离开它"
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_picking_type__restrict_scan_product
 msgid "Line's product must be scanned before the line can be edited"
-msgstr "在编辑产品行之前，必须扫描产品"
+msgstr "在编辑产品行之前，必须扫描行内产品"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
@@ -671,7 +672,7 @@ msgstr "没有找到对应的条码%(barcode)s的分拣单或者产品"
 #: code:addons/stock_barcode/models/stock_picking.py:0
 #, python-format
 msgid "No product or package found for barcode %s"
-msgstr "该条码没有产品或者包裹匹配%s"
+msgstr "没有找到条码%s的产品或者包裹"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_res_config_settings__barcode_nomenclature_id
@@ -683,7 +684,7 @@ msgstr "命名规则"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Not the expected scan"
-msgstr "未知的扫描内容"
+msgstr "不是预计的扫描"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.picking_view_kanban_inherit_barcode
@@ -715,7 +716,7 @@ msgstr "可选的扫描"
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "Owner"
-msgstr "所有者"
+msgstr "货主"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
@@ -979,7 +980,7 @@ msgstr "扫描一个产品"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product before scanning a tracking number"
-msgstr "在扫描追溯码之前扫描产品"
+msgstr "在扫描追踪号码之前扫描产品"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1048,42 +1049,42 @@ msgstr "扫描产品，包裹号或者目的位置"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a serial number"
-msgstr "扫描序列号"
+msgstr "扫描序列号码"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a serial number or a package"
-msgstr "扫描序列号或者包裹号"
+msgstr "扫描序列号码或者包裹号"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a serial number or a package then the destination location"
-msgstr "扫描序列号或者包裹号，然后扫描目的位置"
+msgstr "扫描序列号码或者包裹号，然后扫描目的位置"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a serial number then the destination location"
-msgstr "扫描序列号，然后扫描目的位置"
+msgstr "扫描序列号码，然后扫描目的位置"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/kanban/stock_barcode_kanban_renderer.xml:0
 #, python-format
 msgid "Scan a transfer or a product to filter your records"
-msgstr "通过扫描调拨单号或者产品过滤记录"
+msgstr "通过扫描调拨单号或者产品筛选记录"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/kanban/stock_barcode_kanban_renderer.xml:0
 #, python-format
 msgid "Scan a transfer, a product or a package to filter your records"
-msgstr "通过扫描调拨单号，产品或者包裹号过滤记录"
+msgstr "通过扫描调拨单号，产品或者包裹号筛选记录"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1097,7 +1098,7 @@ msgstr "扫描"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan another serial number"
-msgstr "扫描其他的序列号"
+msgstr "扫描其他的序列号码"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1105,7 +1106,7 @@ msgstr "扫描其他的序列号"
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan lot numbers for product %s to change their quantity"
-msgstr "扫描产品批号 %s 以更改其数量"
+msgstr "扫描产品批次号%s以更改其数量"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1156,7 +1157,7 @@ msgstr "扫描更多产品或者扫描目标位置"
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan serial numbers for product %s to change their quantity"
-msgstr "扫描批次号用于改变产品%s 的数量"
+msgstr "扫描产品序列号码%s以更改其数量"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1291,7 +1292,7 @@ msgstr "点击即扫描"
 msgid ""
 "Technical field used to compute whether the \"Final Validation\" group "
 "should be displayed, solving combined groups/invisible complexity."
-msgstr ""
+msgstr "计算是否显示“最终确认”组的技术领域，解决组合组/不可见复杂性。"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1536,6 +1537,8 @@ msgid ""
 "o_digipad_button btn d-flex justify-content-center align-items-center border"
 " w-100 py-2"
 msgstr ""
+"o_digipad_button btn d-flex justify-content-center align-items-center border"
+" w-100 py-2"
 
 #. module: stock_barcode
 #. openerp-web

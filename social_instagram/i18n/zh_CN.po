@@ -39,12 +39,12 @@ msgstr "<i class=\"fa fa-heart me-1\" title=\"Likes\"/>"
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.instagram_preview
 msgid "<span class=\"fw-bold pe-1\">My_instagram_page</span>"
-msgstr ""
+msgstr "<span class=\"fw-bold pe-1\">My_instagram_page</span>"
 
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.instagram_preview
 msgid "<span class=\"mt-1 fw-bold\">My Instagram Page</span>"
-msgstr ""
+msgstr "<span class=\"mt-1 fw-bold\">我的Instagram页面</span>"
 
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.instagram_preview
@@ -174,7 +174,7 @@ msgstr "Instagram评论"
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.res_config_settings_view_form
 msgid "Instagram Developer Account"
-msgstr ""
+msgstr "Instagram开发者账户"
 
 #. module: social_instagram
 #: model:ir.model.fields,field_description:social_instagram.field_social_account__instagram_facebook_account_id

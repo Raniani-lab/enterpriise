@@ -1013,7 +1013,7 @@ msgstr "过去"
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__invert_sign
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_group__invert_sign
 msgid "Invert Balance Sign"
-msgstr "反转平衡符号"
+msgstr "反转余额符号"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_is_follower

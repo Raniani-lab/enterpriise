@@ -5,8 +5,8 @@
 # Translators:
 # Martin Trigaux, 2022
 # 稀饭~~ <wangwhai@qq.com>, 2022
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:50+0000\n"
-"Last-Translator: Raymond Yu <cl_yu@hotmail.com>, 2022\n"
+"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,7 +32,7 @@ msgstr "该频道是私有的，只有被邀请的人才可以参与。"
 #: code:addons/website_helpdesk_livechat/models/chatbot_script_step.py:0
 #, python-format
 msgid "%(name)s's Ticket"
-msgstr "%(name)s的服务单"
+msgstr "%(name)s的工单"
 
 #. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
@@ -44,8 +44,8 @@ msgid ""
 "                    "
 msgstr ""
 "<br><br>\n"
-"                    您可以通过输入<b>/helpdesk<i>服务单标题</i></b>来创建一张新服务单。<br>\n"
-"                    您可以通过输入<b>/helpdesk_search<i>关键词</i></b>或<b><i>服务单号码</i></b><br>来搜索服务单。"
+"                    您可以通过输入<b>/helpdesk<i>工单标题</i></b>来创建一张新工单。<br>\n"
+"                    您可以通过输入<b>/helpdesk_search<i>关键词</i></b>或<b><i>工单号码</i></b><br>来搜索工单。"
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_done
@@ -88,13 +88,13 @@ msgstr "创建工单"
 #: code:addons/website_helpdesk_livechat/static/src/models/messaging_initializer.js:0
 #, python-format
 msgid "Create a new helpdesk ticket"
-msgstr "创建新的帮助中心工单"
+msgstr "创建新的服务台工单"
 
 #. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid "Created a new ticket: %s"
-msgstr "创建新服务单：%s"
+msgstr "创建新工单：%s"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_mail_channel
@@ -109,7 +109,7 @@ msgstr "首先，您的问题的性质是什么？"
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,field_description:website_helpdesk_livechat.field_chatbot_script__ticket_count
 msgid "Generated Ticket Count"
-msgstr "生成的服务单数量"
+msgstr "生成的工单数量"
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_administrative_customer_ref_yes
@@ -175,14 +175,14 @@ msgid ""
 "format:<br> <b>/helpdesk_search <i>keyword</i></b> or <b>/helpdesk_search "
 "<i>ticket number</i></b>"
 msgstr ""
-"未找到<b>%s</b>的服务单。<br>确认您正在使用正确格式：<br><b>/helpdesk_seach<i>关键字</i></b>或<b>/helpdesk_search<i>服务单号码</i></b>。"
+"未找到<b>%s</b>的工单。<br>确认您正在使用正确格式：<br><b>/helpdesk_seach<i>关键字</i></b>或<b>/helpdesk_search<i>工单号码</i></b>。"
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_ticket
 msgid ""
 "OK, I just created a ticket for you. You should receive an email "
 "confirmation very soon."
-msgstr "好的，我刚刚为您创建了一个服务单。你应该很快收到一封确认电子邮件。"
+msgstr "好的，我刚刚为您创建了一个工单。你应该很快收到一封确认电子邮件。"
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_technical_serial
@@ -199,7 +199,7 @@ msgstr "请在下面写您的客户参考号码。"
 #: code:addons/website_helpdesk_livechat/static/src/models/messaging_initializer.js:0
 #, python-format
 msgid "Search for a helpdesk ticket"
-msgstr "搜索帮助中心工单"
+msgstr "搜索服务台工单"
 
 #. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
@@ -285,5 +285,4 @@ msgstr "您在频道 <b>#%s</b>"
 msgid ""
 "You can search tickets by typing <b>/helpdesk_search <i>keyword</i></b> or "
 "<i><b>ticket number</b></i><br>"
-msgstr ""
-"您可以通过输入<b>/helpdesk_search<i>关键字</i></b>或者<i><b>服务单号码</b></i><br> 搜索服务单"
+msgstr "您可以通过输入<b>/helpdesk_search<i>关键字</i></b>或者<i><b>工单号码</b></i><br> 搜索工单"

@@ -7,8 +7,8 @@
 # 山西清水欧度(QQ:54773801) <54773801@qq.com>, 2022
 # Martin Trigaux, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # digitalliuzg8888, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: digitalliuzg8888, 2022\n"
+"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -359,7 +359,7 @@ msgstr "活动状态"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_type_icon
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__activity_type_icon
 msgid "Activity Type Icon"
-msgstr "活动类型图表"
+msgstr "活动类型图标"
 
 #. module: hr_payroll
 #. openerp-web
@@ -690,7 +690,7 @@ msgstr "类别"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_contract_search_inherit
 msgid "Change of Occupation"
-msgstr "改变职业"
+msgstr "职业变更"
 
 #. module: hr_payroll
 #. openerp-web
@@ -948,7 +948,7 @@ msgstr "合同"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__contract_domain_ids
 msgid "Contract Domain"
-msgstr "合约域名"
+msgstr "合同域名"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_structure_type_view_search
@@ -1794,7 +1794,7 @@ msgstr "合同索引"
 #: model:ir.actions.act_window,name:hr_payroll.action_hr_payroll_index
 #: model:ir.actions.server,name:hr_payroll.action_index_contracts
 msgid "Index contract(s)"
-msgstr "索引合约（多分）"
+msgstr "索引合同（多分）"
 
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_payroll_index
@@ -3943,7 +3943,7 @@ msgstr "工作天数"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
 msgid "Worked Days & Inputs"
-msgstr "工作天数及输入"
+msgstr "工作天数和输入"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_lines_wizard__worked_days_line_ids

@@ -58,7 +58,7 @@ msgstr "将项目任务转换为工单"
 #. module: helpdesk_timesheet
 #: model:ir.model,name:helpdesk_timesheet.model_helpdesk_ticket_create_timesheet
 msgid "Create Timesheet from ticket"
-msgstr "从工单中创建时间表"
+msgstr "从工单中创建工时表"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_create_timesheet__create_uid
@@ -116,7 +116,7 @@ msgstr "显示名称"
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_account_analytic_line__display_task
 msgid "Display Task"
-msgstr ""
+msgstr "显示任务"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__display_timer
@@ -151,7 +151,7 @@ msgstr "停止计时"
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__display_timesheet_timer
 msgid "Display Timesheet Time"
-msgstr "显示时间表时间"
+msgstr "显示工时表时间"
 
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_timesheet
@@ -186,7 +186,7 @@ msgstr "帮助中心团队"
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_account_analytic_line__helpdesk_ticket_id
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_timesheets_analysis_report__helpdesk_ticket_id
 msgid "Helpdesk Ticket"
-msgstr "帮助中心工单"
+msgstr "服务台工单"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__total_hours_spent
@@ -280,7 +280,7 @@ msgstr "项目"
 msgid ""
 "Project to which the timesheets of this helpdesk team's tickets will be "
 "linked."
-msgstr "此技术支持团队的工单的时间表将链接到的项目。"
+msgstr "此技术支持团队的工单的工时表将链接到的项目。"
 
 #. module: helpdesk_timesheet
 #: model_terms:ir.actions.act_window,help:helpdesk_timesheet.act_hr_timesheet_line_helpdesk
@@ -362,7 +362,7 @@ msgstr "我们要为其创建一个销售订单的工单"
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.report_timesheet_ticket
 msgid "Ticket:"
-msgstr ""
+msgstr "工单："
 
 #. module: helpdesk_timesheet
 #: code:addons/helpdesk_timesheet/models/project.py:0
@@ -384,6 +384,8 @@ msgid ""
 "Time spent on this ticket. By default, your timesheets will be linked to the sales order item of your ticket.\n"
 "Remove the sales order item to make your timesheet entries non billable."
 msgstr ""
+"在此工单上花费的时间。默认情况下，您的工时表将与您的工单上的销售订单项目相联系。\n"
+"移除销售订单项目，使您的工时表条目不计费。"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__timer_pause
@@ -408,7 +410,7 @@ msgstr "工时表编码单元"
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__use_helpdesk_timesheet
 msgid "Timesheet activated on Team"
-msgstr "已在“团队”上启用时间表"
+msgstr "已在“团队”上启用工时表"
 
 #. module: helpdesk_timesheet
 #: model:ir.actions.act_window,name:helpdesk_timesheet.act_hr_timesheet_line_helpdesk
@@ -418,7 +420,7 @@ msgstr "已在“团队”上启用时间表"
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.report_timesheet_ticket
 msgid "Timesheets"
-msgstr "工时单"
+msgstr "工时表"
 
 #. module: helpdesk_timesheet
 #: model:ir.model,name:helpdesk_timesheet.model_timesheets_analysis_report
@@ -428,7 +430,7 @@ msgstr "工时表分析报告"
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_team__total_timesheet_time
 msgid "Total Timesheet Time"
-msgstr "总时间表时长"
+msgstr "总工时表时长"
 
 #. module: helpdesk_timesheet
 #: model_terms:ir.actions.act_window,help:helpdesk_timesheet.act_hr_timesheet_line_helpdesk
@@ -452,7 +454,7 @@ msgstr "VIP支持"
 #, python-format
 msgid ""
 "You cannot link a timesheet entry to a task and a ticket at the same time."
-msgstr ""
+msgstr "您不能将一个工时表条目同时链接一个任务和一个工单。"
 
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.report_timesheet_ticket

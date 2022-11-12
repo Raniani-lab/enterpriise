@@ -391,7 +391,7 @@ msgstr "Zending %s geannuleerd"
 #. module: delivery_sendcloud
 #: model:ir.model.fields.selection,name:delivery_sendcloud.selection__delivery_carrier__sendcloud_shipping_rules__ship
 msgid "Shipping"
-msgstr "Afleveradres"
+msgstr "Verzenden"
 
 #. module: delivery_sendcloud
 #: model:ir.model.fields,field_description:delivery_sendcloud.field_sendcloud_shipping_product__carrier

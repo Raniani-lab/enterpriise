@@ -234,7 +234,7 @@ msgstr "产品"
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_analysis_report__role_product_ids
 msgid "Role Product"
-msgstr ""
+msgstr "角色产品"
 
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_sale_order
@@ -358,7 +358,7 @@ msgstr "查看规划"
 #: code:addons/sale_planning/static/src/views/hooks.js:0
 #, python-format
 msgid "View Shifts"
-msgstr ""
+msgstr "查看班次"
 
 #. module: sale_planning
 #: model:planning.role,name:sale_planning.planning_role_planner

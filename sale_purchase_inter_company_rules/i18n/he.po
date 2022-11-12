@@ -144,7 +144,7 @@ msgstr ""
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_sale_order__auto_purchase_order_id
 msgid "Source Purchase Order"
-msgstr ""
+msgstr "מקור הזמנת רכש"
 
 #. module: sale_purchase_inter_company_rules
 #: model:ir.model.fields,field_description:sale_purchase_inter_company_rules.field_purchase_order__auto_sale_order_id

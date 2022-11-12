@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # Jolien De Paepe, 2022
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:47+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Jolien De Paepe, 2022\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1108,14 +1108,14 @@ msgstr "Soort test"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_tree
 msgid "Testing % Within Lot"
-msgstr "Testpercentage binnen lot"
+msgstr "Test % binnen partij/serienummer"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__testing_percentage_within_lot
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__testing_percentage_within_lot
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__testing_percentage_within_lot
 msgid "Testing Percentage Within Lot"
-msgstr "Testpercentage binnen lot"
+msgstr "Testpercentage binnen partij/serienummer"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_alert__title

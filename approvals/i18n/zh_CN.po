@@ -69,7 +69,7 @@ msgstr "活动状态"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__activity_type_icon
 msgid "Activity Type Icon"
-msgstr "活动类型图表"
+msgstr "活动类型图标"
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_category__has_product

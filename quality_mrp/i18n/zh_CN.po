@@ -48,7 +48,7 @@ msgstr "<strong>制造订单 : </strong>"
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__quality_alert_ids
 msgid "Alerts"
-msgstr "提醒"
+msgstr "警报"
 
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__check_ids

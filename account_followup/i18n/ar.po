@@ -3,8 +3,8 @@
 # 	* account_followup
 # 
 # Translators:
-# Malaz Abuidris <msea@odoo.com>, 2022
 # Martin Trigaux, 2022
+# Malaz Abuidris <msea@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2022\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -47,6 +47,11 @@ msgid ""
 "- Private: Private addresses are only visible by authorized users and contain sensitive data (employee home addresses, ...).\n"
 "- Other: Other address for the company (e.g. subsidiary, ...)"
 msgstr ""
+"- جهة الاتصال: استخدمها لتنظيم بيانات التواصل الخاصة بالموظفين لشركة معينة (مثال: المدري التنفيذي، المدير المالي، ...).\n"
+"- عنوان الفاتورة: العنوان المفضل لكافة الفواتير. يتم تحديده افتراضياً عندما تقوم بفوترة طلب ينتمي لهذه الشركة.\n"
+"- عنوان التوصيل: العنوان المفضل لكافة عمليات التوصيل. يتم تحديده افتراضياً عندما تقوم بتوصيل طلب ينتمي لهذه الشركة.\n"
+"- خاص: تكون العناوين الخاصة مرئية فقط من قِبَل المستخدمين المصرح لهم، وتحتوي على بيانات حساسة (عناوين منازل الموظفين، ...).\n"
+"- آخر: عنوان آخر لهذه الشركة (مثال: شركة تابعة، ...)"
 
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line1

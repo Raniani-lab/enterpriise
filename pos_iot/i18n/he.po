@@ -58,7 +58,7 @@ msgstr "סכום כולל:"
 #. module: pos_iot
 #: model_terms:ir.ui.view,arch_db:pos_iot.pos_iot_config_view_form
 msgid "Barcode Scanners/Card Readers"
-msgstr ""
+msgstr "סורק ברקודים / קורא כרטיסים"
 
 #. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_config__iface_print_via_proxy

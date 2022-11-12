@@ -623,7 +623,7 @@ msgstr "Opgeslagen"
 #: code:addons/spreadsheet_edition/static/src/bundle/actions/control_panel/spreadsheet_control_panel.xml:0
 #, python-format
 msgid "Saving"
-msgstr "Besparing"
+msgstr "Opslaan"
 
 #. module: spreadsheet_edition
 #. openerp-web

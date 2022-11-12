@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
+# digitalliuzg8888, 2022
 # Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
@@ -1413,7 +1414,7 @@ msgstr "测试"
 msgid ""
 "The saved filter targets different model and is incompatible with this "
 "campaign."
-msgstr ""
+msgstr "保存的过滤器针对不同的模型，与此活动不兼容。"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_activity.py:0
@@ -1482,7 +1483,7 @@ msgstr "触发器类型"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__utm_campaign_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__utm_campaign_id
 msgid "UTM Campaign"
-msgstr "UTM活动"
+msgstr "UTM营销"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_utm_source
@@ -1586,6 +1587,8 @@ msgid ""
 "You cannot delete these UTM Campaigns as they are linked to the following marketing campaigns in Marketing Automation:\n"
 "%(campaign_names)s"
 msgstr ""
+"您不能删除这些UTM营销，因为它们与以下营销自动化中的营销营销相链接:\n"
+"%(campaign_names)s"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/utm_source.py:0
@@ -1594,6 +1597,8 @@ msgid ""
 "You cannot delete these UTM Sources as they are linked to the following marketing activities in Marketing Automation:\n"
 "%(activities_names)s"
 msgstr ""
+"您不能删除这些UTM源，因为它们与以下营销自动化中的营销活动链接:\n"
+"%(activities_names)s"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_campaign.py:0
@@ -1619,9 +1624,9 @@ msgstr "例如，电子商务提议"
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "e.g. eCommerce Offers Plan"
-msgstr ""
+msgstr "例如，电子商务提供的计划"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
 msgid "to generate a Test Participant"
-msgstr ""
+msgstr "生成一个测试参与者"

@@ -20,8 +20,8 @@
 # דודי מלכה <Dudimalka6@gmail.com>, 2022
 # ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022
 # Netta Waizer, 2022
-# NoaFarkash, 2022
 # Roy Sayag, 2022
+# NoaFarkash, 2022
 # 
 msgid ""
 msgstr ""
@@ -29,7 +29,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Roy Sayag, 2022\n"
+"Last-Translator: NoaFarkash, 2022\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,6 +44,8 @@ msgid ""
 "\n"
 "%s to %s"
 msgstr ""
+"\n"
+"%s ל %s"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order.py:0
@@ -251,7 +253,7 @@ msgstr "<i class=\"fa fa-print\"/> הדפס"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "<i class=\"fa fa-refresh\"/> Renew"
-msgstr ""
+msgstr "<i class=\"fa fa-refresh\"/>לחדש"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -264,11 +266,13 @@ msgid ""
 "<span attrs=\"{'invisible': ['|', ('recurrence_id', '=', False), "
 "('subscription_management', '=', 'upsell')]}\">until</span>"
 msgstr ""
+"<span attrs=\"{'invisible': ['|', ('recurrence_id', '=', False), "
+"('subscription_management', '=', 'upsell')]}\">עד</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 msgid "<span class=\"align-middle\">for this subscription.</span>"
-msgstr ""
+msgstr "<span class=\"align-middle\">למנוי זה.</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
@@ -276,6 +280,8 @@ msgid ""
 "<span class=\"badge rounded-pill text-bg-danger\"><i class=\"fa fa-fw fa-"
 "remove\"/> Closed</span>"
 msgstr ""
+"<span class=\"badge rounded-pill text-bg-danger\"><i class=\"fa fa-fw fa-"
+"remove\"/>סגור</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
@@ -283,6 +289,8 @@ msgid ""
 "<span class=\"badge rounded-pill text-bg-success\"><i class=\"fa fa-fw fa-"
 "check\"/> In Progress</span>"
 msgstr ""
+"<span class=\"badge rounded-pill text-bg-success\"><i class=\"fa fa-fw fa-"
+"check\"/>בתהליך</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
@@ -290,6 +298,8 @@ msgid ""
 "<span class=\"badge rounded-pill text-bg-warning\"><i class=\"fa fa-fw fa-"
 "refresh\"/> To Renew</span>"
 msgstr ""
+"<span class=\"badge rounded-pill text-bg-warning\"><i class=\"fa fa-fw fa-"
+"refresh\"/>לחדש</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -297,6 +307,8 @@ msgid ""
 "<span groups=\"account.group_show_line_subtotals_tax_excluded\">Amount</span>\n"
 "                                                    <span groups=\"account.group_show_line_subtotals_tax_included\">Total Price</span>"
 msgstr ""
+"<span groups=\"account.group_show_line_subtotals_tax_excluded\">סכום</span>\n"
+"<span groups=\"account.group_show_line_subtotals_tax_included\">סה\"כ מחיר</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -642,7 +654,7 @@ msgstr "מוצר שמוגדר כמנוי אינו יכול להיות מוגדר
 #: code:addons/sale_subscription/models/product.py:0
 #, python-format
 msgid "A 'Subscription Product' cannot be a 'Storable Product' !"
-msgstr ""
+msgstr "מוצר מסוג מנוי אינו יכול להיות מוצר מנוהל מלאי!"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__website_published
@@ -660,7 +672,7 @@ msgstr ""
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "A renewal quotation %s has been created"
-msgstr ""
+msgstr "הצעת מחיר לחידוש %s נוצרה"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__action
@@ -748,7 +760,7 @@ msgstr "סכום כולל:"
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "An upsell quotation %s has been created"
-msgstr ""
+msgstr "הצעת מחיר לUpsell %s נוצרה"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_account_analytic_account
@@ -771,12 +783,12 @@ msgstr "בארכיון"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__archived_product_count
 msgid "Archived Product"
-msgstr ""
+msgstr "מוצר בארכיון"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__archived_product_ids
 msgid "Archived Products"
-msgstr ""
+msgstr "מוצרים בארכיון"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_user
@@ -1054,7 +1066,7 @@ msgstr "אשר"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Confirmed and not yet started"
-msgstr ""
+msgstr "אושר ולא התחיל עדיין"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_res_partner
@@ -1350,7 +1362,7 @@ msgstr "מזהה חיצוני"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Failed Payments"
-msgstr ""
+msgstr "תשלומים נכשלו"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__on_change_field_ids
@@ -1632,7 +1644,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__is_batch
 msgid "Is a Batch"
-msgstr ""
+msgstr "הוא אצווה"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__is_invoice_cron
@@ -1935,12 +1947,12 @@ msgstr "החדש ביותר"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_tree
 msgid "Next Invoice"
-msgstr ""
+msgstr "חשבונית הבאה"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Next Invoice Date"
-msgstr ""
+msgstr "תאריך החשבונית הבאה"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
@@ -1961,7 +1973,7 @@ msgstr "הזמנות לא חוזרות"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Not Started Yet"
-msgstr ""
+msgstr "לא התחיל עדיין"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_note
@@ -2200,7 +2212,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__subscription_template_ids
 msgid "Quotation templates"
-msgstr ""
+msgstr "תבניות הצעת מחיר"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_ids
@@ -2284,7 +2296,7 @@ msgstr "חזרה"
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_periods
 msgid "Recurrence periods"
-msgstr ""
+msgstr "תקופות חוזרות"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__is_subscription
@@ -2322,7 +2334,7 @@ msgstr "מזהה:"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 #, python-format
 msgid "Renew"
-msgstr ""
+msgstr "לחדש"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__renew_state
@@ -2338,22 +2350,22 @@ msgstr "חידוש"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_payment_transaction__renewal_allowed
 msgid "Renewal Allowed"
-msgstr ""
+msgstr "חידוש מותר"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__subscription_management__renewal_so
 msgid "Renewal Quote"
-msgstr ""
+msgstr "הצעת מחיר לחידוש"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__renew_state__renewed
 msgid "Renewed"
-msgstr ""
+msgstr "מחודש"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__renew_state__renewing
 msgid "Renewing"
-msgstr ""
+msgstr "מתחדש"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_report
@@ -2783,7 +2795,7 @@ msgstr "ניהול מנויים"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_primary_form_view
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "Subscription Plan"
-msgstr ""
+msgstr "תוכנית מנוי"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_product_product__recurring_invoice
@@ -3047,7 +3059,7 @@ msgstr "הכתובת URL המלאה לגישה לפעולת שרת דרך האת
 #. module: sale_subscription
 #: model:ir.model.constraint,message:sale_subscription.constraint_sale_order_check_start_date_lower_next_invoice_date
 msgid "The next invoice date of a sale order should be after its start date."
-msgstr ""
+msgstr "תאריך החשבונית הבאה בהזמנה צריך להיות אחרי תאריך התחלת ההזמנה."
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__next_invoice_date
@@ -3060,7 +3072,7 @@ msgstr "החשבונית הבאה תיווצר בתאריך זה ואז תואר
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "The renewal %s has been canceled."
-msgstr ""
+msgstr "החידוש %s בוטל."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -3072,12 +3084,12 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__start_date
 msgid "The start date indicate when the subscription periods begin."
-msgstr ""
+msgstr "תאריך ההתחלה מציין מתי מתחילות תקופות המנוי."
 
 #. module: sale_subscription
 #: model:sale.order.close.reason,name:sale_subscription.close_reason_renew
 msgid "The subscription was renewed with a new plan."
-msgstr ""
+msgstr "המנוי חודש עם תכנית מנוי חדשה."
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/sale_order_line.py:0
@@ -3101,7 +3113,7 @@ msgstr ""
 #: code:addons/sale_subscription/controllers/portal.py:0
 #, python-format
 msgid "This Subscription is already running. There is no need to renew it."
-msgstr ""
+msgstr "המנוי כבר התחיל. אין צורך לחדש אותו."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
@@ -3120,12 +3132,12 @@ msgstr "שלב זה מקופל בתצוגת הקנבן כאשר אין רשומ�
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "This subscription is renewed in %s with a change of plan."
-msgstr ""
+msgstr "מנוי זה מתחדש ב %s עם שינוי תכנית."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
 msgid "This subscription is the renewal of subscription"
-msgstr ""
+msgstr "מנוי זה הוא חידוש המנוי"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
@@ -3194,7 +3206,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Trigger Now"
-msgstr ""
+msgstr "הפעל עכשיו"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__trigger_condition
@@ -3512,7 +3524,7 @@ msgstr "התוכנית שלך"
 #: code:addons/sale_subscription/controllers/portal.py:0
 #, python-format
 msgid "Your subscription has been renewed until %s."
-msgstr ""
+msgstr "המנוי חודש עד %s."
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription

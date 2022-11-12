@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # 	* sign
 # 
+# Translators:
+# Óttar Ingólfsson, 2022
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
+"Last-Translator: Óttar Ingólfsson, 2022\n"
 "Language-Team: Icelandic (https://www.transifex.com/odoo/teams/41243/is/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -155,7 +159,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_terms_conditions_setting_banner
 msgid "<i class=\"fa fa-arrow-right me-1\"/>Back to settings"
-msgstr ""
+msgstr "<i class=\"fa fa-arrow-right me-1\"/>Til baka í stillingar"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form

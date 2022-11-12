@@ -99,7 +99,7 @@ msgstr "帮助中心团队"
 #. module: helpdesk_sale_timesheet
 #: model:ir.model,name:helpdesk_sale_timesheet.model_helpdesk_ticket
 msgid "Helpdesk Ticket"
-msgstr "帮助中心工单"
+msgstr "服务台工单"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.portal_helpdesk_ticket_timesheet
@@ -136,7 +136,7 @@ msgstr "项目"
 msgid ""
 "Project to which the timesheets of this helpdesk team's tickets will be "
 "linked."
-msgstr "此技术支持团队的工单的时间表将链接到的项目。"
+msgstr "此技术支持团队的工单的工时表将链接到的项目。"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_ticket__project_sale_order_id
@@ -223,7 +223,7 @@ msgstr ""
 "销售订单项目，将添加在此工单上花费的时间，以便向您的客户开具发票。\n"
 "默认情况下，将选择具有剩余时间的最后一个预付费销售订单项目。\n"
 "删除销售订单项，以使此工单不可计费。\n"
-"您还可以单独更改或删除每个时间表条目的销售订单项。"
+"您还可以单独更改或删除每个工时表条目的销售订单项。"
 
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_helpdesk_sla__sale_line_ids
@@ -243,7 +243,7 @@ msgstr "花费 "
 #. module: helpdesk_sale_timesheet
 #: model:ir.model.fields,field_description:helpdesk_sale_timesheet.field_sale_order__ticket_count
 msgid "Ticket Count"
-msgstr "票数"
+msgstr "工单数"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.sale_order_form_inherit_helpdesk_sale
@@ -258,7 +258,7 @@ msgstr "加班工单"
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet
 msgid "Timesheets"
-msgstr "工时单"
+msgstr "工时表"
 
 #. module: helpdesk_sale_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_sale_timesheet.tickets_followup_timesheet

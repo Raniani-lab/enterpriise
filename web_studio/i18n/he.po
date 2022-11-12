@@ -3751,7 +3751,7 @@ msgstr "סכום"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks_registry.js:0
 #, python-format
 msgid "Table"
-msgstr "שולחן"
+msgstr "טבלה"
 
 #. module: web_studio
 #. openerp-web

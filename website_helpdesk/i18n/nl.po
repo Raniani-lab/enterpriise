@@ -135,7 +135,7 @@ msgstr "Op datum"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_tag
 msgid "By Tags"
-msgstr "Op tags"
+msgstr "Op labels"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_type

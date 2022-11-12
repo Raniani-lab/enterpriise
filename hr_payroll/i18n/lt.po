@@ -20,6 +20,7 @@
 # Linas Versada <linaskrisiukenas@gmail.com>, 2022
 # Martin Trigaux, 2022
 # digitouch UAB <digitouchagencyeur@gmail.com>, 2022
+# Donatas <donatasvaliulis16@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -27,7 +28,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: digitouch UAB <digitouchagencyeur@gmail.com>, 2022\n"
+"Last-Translator: Donatas <donatasvaliulis16@gmail.com>, 2022\n"
 "Language-Team: Lithuanian (https://www.transifex.com/odoo/teams/41243/lt/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -216,17 +217,17 @@ msgstr ""
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Basic Salary</strong>"
-msgstr ""
+msgstr "<strong>Bazinis atlyginimas</strong>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Computed on </strong>"
-msgstr ""
+msgstr "<strong>Apskaičiuota</strong>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Contract Start Date</strong>"
-msgstr ""
+msgstr "<strong>Sutarties pradžios data</strong>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
@@ -241,27 +242,27 @@ msgstr "<strong>Paskyrimas</strong>"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Employee</strong>"
-msgstr ""
+msgstr "<strong>Darbuotojas</strong>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Identification</strong>"
-msgstr ""
+msgstr "<strong>Asmens kodas</strong>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Marital Status</strong>"
-msgstr ""
+msgstr "<strong>Šeimyninė padėtis</strong>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Pay Period</strong>"
-msgstr ""
+msgstr "<strong>Mokėjimo laikotarpis</strong>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Person in charge</strong>"
-msgstr ""
+msgstr "<strong>Vaikai/globotiniai</strong>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.contribution_register
@@ -276,7 +277,7 @@ msgstr "<strong>Suma</strong>"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "<strong>Working Schedule</strong>"
-msgstr ""
+msgstr "<strong>Darbo grafikas</strong>"
 
 #. module: hr_payroll
 #: model:mail.template,body_html:hr_payroll.mail_template_new_payslip
@@ -2001,7 +2002,7 @@ msgstr "Atliktas mokėjimo užsakymas ?"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "Made by Odoo with ❤️"
-msgstr ""
+msgstr "Pagaminta Odoo su ❤️"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__message_main_attachment_id
@@ -3416,6 +3417,7 @@ msgid ""
 "The net amount will be recovered from the first positive remuneration "
 "established after this."
 msgstr ""
+"Grynoji suma bus susigrąžinta iš pirmojo teigiamo atlygio, nustatyto po to."
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_payslip.py:0
@@ -3484,6 +3486,7 @@ msgstr ""
 #, python-format
 msgid "This payslip is not validated. This is not a legal document."
 msgstr ""
+"Šis atlyginimo lapelis nėra patvirtintas. Tai nėra teisinis dokumentas."
 
 #. module: hr_payroll
 #: model_terms:ir.actions.act_window,help:hr_payroll.payroll_report_action
@@ -3537,7 +3540,7 @@ msgstr "Apmokėjimui"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "To pay on"
-msgstr ""
+msgstr "Sumokėti į"
 
 #. module: hr_payroll
 #: model_terms:ir.actions.act_window,help:hr_payroll.action_contribution_registers

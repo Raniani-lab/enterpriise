@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # keecome <7017511@qq.com>, 2022
+# Raymond Yu <cl_yu@hotmail.com>, 2022
 # Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
@@ -88,7 +89,7 @@ msgstr "活动状态"
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_type_icon
 msgid "Activity Type Icon"
-msgstr "活动类型图表"
+msgstr "活动类型图标"
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget_lines__practical_amount
@@ -630,4 +631,4 @@ msgstr "您必须在预算项目上至少输入预算状况或分析账户。"
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "e.g. Budget 2023: Optimistic"
-msgstr ""
+msgstr "例如：2023预算：乐观"

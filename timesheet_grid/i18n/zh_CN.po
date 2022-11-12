@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
+# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Raymond Yu <cl_yu@hotmail.com>, 2022\n"
+"Last-Translator: Jeffery CHEN <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -295,7 +296,7 @@ msgstr ""
 "        <td align=\"center\" style=\"min-width: 590px;\">\n"
 "            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
 "                <tr><td valign=\"middle\">\n"
-"                    <span style=\"font-size: 10px;\">您的考勤表</span><br/>\n"
+"                    <span style=\"font-size: 10px;\">您的工时表</span><br/>\n"
 "                    <span style=\"font-size: 20px; font-weight: bold;\" t-out=\"object.name or ''\">Abigail Peterson</span>\n"
 "                </td><td valign=\"middle\" align=\"right\">\n"
 "                    <img t-attf-src=\"/logo.png?company={{ object.company_id.id }}\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" t-att-alt=\"object.company_id.name\"/>\n"
@@ -315,7 +316,7 @@ msgstr ""
 "                        你好，<t t-out=\"object.name or ''\">Abigail Peterson</t>。<br/><br/>\n"
 "                        这是一个友好的提醒，请批准您的团队在以下期间的工时表。<t t-out=\"ctx.get('date_start') or ''\">05/05/2021</t>-<t t-out=\"ctx.get('date_stop') or ''\">06/05/2021</t>.<br/>\n"
 "                        <div t-if=\"ctx.get('action_url')\" style=\"margin: 16px 0px 16px 0px;\">\n"
-"                            <a t-att-href=\"ctx.get('action_url')\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;\">验证考勤表</a>\n"
+"                            <a t-att-href=\"ctx.get('action_url')\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size: 13px;\">验证工时表</a>\n"
 "                        </div>\n"
 "                        <br/> 谢谢你。<br/>\n"
 "                        <t t-if=\"user.signature\">\n"
@@ -467,7 +468,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_project_task_create_timesheet
 msgid "Create Timesheet from task"
-msgstr "从任务创建时间表"
+msgstr "从任务创建工时表"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__create_uid
@@ -648,7 +649,7 @@ msgstr "停止计时"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__display_timesheet_timer
 msgid "Display Timesheet Time"
-msgstr "显示考勤表时间"
+msgstr "显示工时表时间"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -943,7 +944,7 @@ msgstr "周/月结束后的天数，之后将向仍有工时表需要编码的�
 msgid ""
 "Only a Timesheets Approver or Manager is allowed to modify a validated "
 "entry."
-msgstr "只有考勤表审批人或经理可以修改已验证的条目。"
+msgstr "只有工时表审批人或经理可以修改已验证的条目。"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
@@ -997,7 +998,7 @@ msgstr "记录工时表的提醒"
 #. module: timesheet_grid
 #: model:mail.template,subject:timesheet_grid.mail_template_timesheet_reminder_manager
 msgid "Reminder to validate your team's timesheets"
-msgstr "提醒你验证你的团队的考勤表"
+msgstr "提醒你验证你的团队的工时表"
 
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.invalidate_timesheet_action
@@ -1071,13 +1072,13 @@ msgid ""
 "Select the user responsible for approving \"Timesheet\" of this employee.\n"
 "If empty, the approval is done by an Administrator or Team Approver (determined in settings/users)."
 msgstr ""
-"选择负责审批该员工 \"时间表 \"的用户。\n"
+"选择负责审批该员工 \"工时表 \"的用户。\n"
 "如果为空，则由管理员或团队审批人（在设置/用户中确定）进行审批。"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_account_analytic_line__is_timesheet
 msgid "Set if this analytic line represents a line of timesheet."
-msgstr "如果解析线代表考勤表轴的话。"
+msgstr "如果解析线代表工时表轴的话。"
 
 #. module: timesheet_grid
 #: model:mail.template,description:timesheet_grid.mail_template_timesheet_reminder_user
@@ -1184,7 +1185,7 @@ msgstr "工时表条目已成功创建。"
 #. module: timesheet_grid
 #: model:ir.model.constraint,message:timesheet_grid.constraint_project_task_create_timesheet_time_positive
 msgid "The timesheet's time must be positive"
-msgstr "时间表的时间必须为正数"
+msgstr "工时表的时间必须为正数"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/wizard/timesheet_merge_wizard.py:0
@@ -1196,13 +1197,13 @@ msgstr "工时表已成功被合并。"
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid "The timesheets have successfully been reset to draft."
-msgstr "考勤表已成功重置为草稿。"
+msgstr "工时表已成功重置为草稿。"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid "The timesheets have successfully been validated."
-msgstr "考勤表已成功验证。"
+msgstr "工时表已成功验证。"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
@@ -1257,7 +1258,7 @@ msgstr "工时表"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.view_employee_tree_inherit_timesheet
 msgid "Timesheet Approver"
-msgstr "考勤表审批人"
+msgstr "工时表审批人"
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_timesheet_grid_mixin
@@ -1267,42 +1268,42 @@ msgstr "工时表网格混合"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__duration_unit_amount
 msgid "Timesheet Init Amount"
-msgstr "考勤表初始金额"
+msgstr "工时表初始金额"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__is_timesheet
 #: model:ir.model.fields,field_description:timesheet_grid.field_timesheets_analysis_report__is_timesheet
 msgid "Timesheet Line"
-msgstr "计工单明细"
+msgstr "工时表明细"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__unit_amount_validate
 msgid "Timesheet Unit Time"
-msgstr "考勤表单位时间"
+msgstr "工时表单位时间"
 
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_reminder_user_ir_actions_server
 #: model:ir.cron,cron_name:timesheet_grid.timesheet_reminder_user
 #: model:ir.cron,name:timesheet_grid.timesheet_reminder_user
 msgid "Timesheet: Employees Email Reminder"
-msgstr "考勤表：员工EMail提醒"
+msgstr "工时表：员工EMail提醒"
 
 #. module: timesheet_grid
 #: model:mail.template,name:timesheet_grid.mail_template_timesheet_reminder_user
 msgid "Timesheet: Employees Reminder"
-msgstr "考勤表:雇员提醒"
+msgstr "工时表:雇员提醒"
 
 #. module: timesheet_grid
 #: model:mail.template,name:timesheet_grid.mail_template_timesheet_reminder_manager
 msgid "Timesheet: Manager Reminder"
-msgstr "考勤表:经理提醒"
+msgstr "工时表:经理提醒"
 
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_reminder_manager_ir_actions_server
 #: model:ir.cron,cron_name:timesheet_grid.timesheet_reminder_manager
 #: model:ir.cron,name:timesheet_grid.timesheet_reminder_manager
 msgid "Timesheet: Managers Email Reminder"
-msgstr "考勤表：管理员EMail提醒"
+msgstr "工时表：管理员EMail提醒"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__timesheet_ids
@@ -1311,7 +1312,7 @@ msgstr "考勤表：管理员EMail提醒"
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_project
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid_by_task_readonly
 msgid "Timesheets"
-msgstr "工时单"
+msgstr "工时表"
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_timesheets_analysis_report
@@ -1345,7 +1346,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:timesheet_grid.action_timesheet_previous_week
 #: model:ir.actions.act_window,name:timesheet_grid.timesheet_grid_to_validate_action
 msgid "Timesheets to Validate"
-msgstr "待审批的计工单"
+msgstr "待审批的工时表"
 
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate
@@ -1392,7 +1393,7 @@ msgstr "用户定时器"
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_hr_employee_public__timesheet_manager_id
 msgid "User responsible of timesheet validation. Should be Timesheet Manager."
-msgstr "考勤表验证的用户主管。应为考勤表管理员。"
+msgstr "工时表验证的用户主管。应为工时表管理员。"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -1433,12 +1434,12 @@ msgstr "验证所有工时表服务器操作"
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_grid_week_action_server
 msgid "Validation Timesheet Week_view Server Action"
-msgstr "验证考勤表周_查看服务器动作"
+msgstr "验证工时表周_查看服务器动作"
 
 #. module: timesheet_grid
 #: model:ir.actions.server,name:timesheet_grid.timesheet_grid_month_action_server
 msgid "Validation Timesheet month_view Server Action"
-msgstr "验证 考勤表 month_view 服务器动作"
+msgstr "验证 工时表 month_view 服务器动作"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_grid
@@ -1460,7 +1461,7 @@ msgstr "当前用户是否可以验证/重置来起草记录。"
 msgid ""
 "You can only reset to draft the timesheets of employees of whom you are the "
 "manager or the timesheet approver."
-msgstr "你只能重新设置起草你是经理或考勤表审批人的员工的考勤表。"
+msgstr "你只能重新设置起草你是经理或工时表审批人的员工的工时表。"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
@@ -1469,13 +1470,13 @@ msgstr "你只能重新设置起草你是经理或考勤表审批人的员工的
 msgid ""
 "You can only validate the timesheets of employees of whom you are the "
 "manager or the timesheet approver."
-msgstr "你只能验证你是经理或考勤表审批人的员工的考勤表。"
+msgstr "你只能验证你是经理或工时表审批人的员工的工时表。"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid "You cannot access timesheets that are not yours."
-msgstr "您不能访问不属于您的考勤表。"
+msgstr "您不能访问不属于您的工时表。"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
@@ -1483,7 +1484,7 @@ msgstr "您不能访问不属于您的考勤表。"
 msgid ""
 "You cannot delete a validated entry. Please, contact your manager or your "
 "timesheet approver."
-msgstr "你不能删除一个已验证的条目。请联系您的经理或您的考勤表审批人。"
+msgstr "你不能删除一个已验证的条目。请联系您的经理或您的工时表审批人。"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/project.py:0
@@ -1501,7 +1502,7 @@ msgstr "你不能在一个以天为单位编码的公司中启动项目的计时
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid "You cannot use the timer on validated timesheets."
-msgstr "你不能在有效的考勤表上使用计时器。"
+msgstr "你不能在有效的工时表上使用计时器。"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
@@ -1509,7 +1510,7 @@ msgstr "你不能在有效的考勤表上使用计时器。"
 msgid ""
 "You cannot validate the timesheets from employees that are not part of your "
 "team or there are no timesheets to validate."
-msgstr "你不能验证不属于你的团队的员工的考勤表，或者没有考勤表可以验证。"
+msgstr "你不能验证不属于你的团队的员工的工时表，或者没有工时表可以验证。"
 
 #. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__res_company__timesheet_mail_employee_interval__months

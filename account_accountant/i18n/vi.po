@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Nancy Momoland <thanhnguyen.icsc@gmail.com>, 2022\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -233,7 +234,7 @@ msgstr "Thêm từ khóa mới"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
 msgid "All Users Lock Date"
-msgstr ""
+msgstr "Ngày khóa tất cả người dùng"
 
 #. module: account_accountant
 #. openerp-web
@@ -298,7 +299,7 @@ msgstr "Tài khoản phân tích"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__analytic_distribution_stored_char
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_distribution_stored_char
 msgid "Analytic Distribution Stored Char"
-msgstr ""
+msgstr "Biểu đồ phân phối phân tích được lưu trữ"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__use_anglo_saxon
@@ -875,7 +876,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__invalid
 msgid "Invalid"
-msgstr ""
+msgstr "Không hợp lệ"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -1124,7 +1125,7 @@ msgstr ""
 #: code:addons/account_accountant/models/account_payment.py:0
 #, python-format
 msgid "Matched Transactions"
-msgstr ""
+msgstr "Giao dịch phù hợp"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__matching_rules_allow_auto_reconcile
@@ -1611,7 +1612,7 @@ msgstr "Tax Repartition Line"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__tax_lock_date
 msgid "Tax Return Lock Date"
-msgstr ""
+msgstr "Ngày khóa tờ khai thuế"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_tag_ids

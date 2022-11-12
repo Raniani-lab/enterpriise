@@ -78,7 +78,7 @@ msgstr "活动状态"
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_type_icon
 #: model:ir.model.fields,field_description:quality.field_quality_check__activity_type_icon
 msgid "Activity Type Icon"
-msgstr "活动类型图表"
+msgstr "活动类型图标"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_check__additional_note

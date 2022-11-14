@@ -12,6 +12,7 @@
     'license': 'OEEL-1',
     'assets': {
         'mrp_subcontracting.webclient': [
+            ('remove', 'web_studio/static/src/home_menu/home_menu.js'),
             ('remove', 'web_studio/static/src/legacy/studio_legacy_service.js'),
             ('remove', 'web_studio/static/src/studio_service.js'),
             ('remove', 'web_studio/static/src/views/list/list_renderer.js'),

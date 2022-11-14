@@ -2,7 +2,7 @@
 
 import { loadJS } from "@web/core/assets";
 import { useService } from "@web/core/utils/hooks";
-import { getColor } from "@web/views/graph/colors";
+import { getColor } from "@web/core/colors/colors";
 
 const { Component, onWillUnmount, useEffect, useRef, useState, onWillStart } = owl;
 

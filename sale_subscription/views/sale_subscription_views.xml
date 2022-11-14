@@ -550,8 +550,8 @@
                                    attrs="{'invisible': [('action', '!=', 'set_stage')],
                                            'required': [('action', '=', 'set_stage')]}"/>
                             <field name="template_id"
-                                   attrs="{'invisible': [('action', '!=', 'email')],
-                                           'required': [('action', '=', 'email')]}"/>
+                                   attrs="{'invisible': [('action', '!=', 'mail_post')],
+                                           'required': [('action', '=', 'mail_post')]}"/>
                             <field name="sms_template_id"
                                    context="{'default_model_id': model_id}"
                                    attrs="{'invisible': [('action', '!=', 'sms')],

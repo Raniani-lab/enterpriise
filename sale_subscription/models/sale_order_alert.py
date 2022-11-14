@@ -29,7 +29,7 @@ class SaleOrderAlert(models.Model):
         ('next_activity', 'Create next activity'),
         ('set_stage', 'Set a stage on the subscription'),
         ('set_to_renew', 'Mark as To Renew'),
-        ('email', 'Send an email to the customer'),
+        ('mail_post', 'Send an email to the customer'),
         ('sms', 'Send an SMS Text Message to the customer'),
         ('set_health_value', 'Set Contract Health value')
     ], string='Action', required=True, default=None)
@@ -161,9 +161,9 @@ class SaleOrderAlert(models.Model):
                         'value': action_value})
                     ]}
                 )
-            elif vals.get('action') in ('email', 'sms'):
-                action = 'mail_post' if vals['action'] == 'email' else 'sms'
-                super(SaleOrderAlert, alert).write({'state': action})
+
+            elif vals.get('action') in ('mail_post', 'sms'):
+                super(SaleOrderAlert, alert).write({'state': vals['action']})
             elif vals.get('action') == 'next_activity' or vals.get('activity_user_ids') or vals.get('activity_user'):
                 alert._set_activity_action()
 

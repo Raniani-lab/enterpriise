@@ -97,3 +97,53 @@ tour.register(
         }
     ]
 );
+
+tour.register(
+    "web_studio_enter_x2many_edition_and_add_field",
+    {
+        test: true,
+        sequence: 260
+    },
+    [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']"
+        },
+        {
+            trigger: ".o_form_view .o_form_editable"
+        },
+        {
+            trigger: ".o_web_studio_navbar_item a"
+        },
+        {
+            trigger: ".o_web_studio_form_view_editor .o_field_widget[name='user_ids']",
+        },
+        {
+            extra_trigger: ".o-web-studio-edit-x2manys-buttons",
+            trigger: ".o_web_studio_editX2Many[data-type='form']"
+        },
+        {
+            extra_trigger: ".o_web_studio_breadcrumb .breadcrumb-item:contains('Subview Form')",
+            trigger: ".o_web_studio_sidebar .o_web_studio_existing_fields_header"
+        },
+        {
+            extra_trigger: ".o_web_studio_existing_fields_section:not(.d-none)",
+            trigger: ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component[title='User log entries']",
+            run() {
+                $(".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component[title='User log entries']")[0].scrollIntoView();
+            }
+        },
+        {
+            trigger: ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component[title='User log entries']",
+            run: "drag_and_drop (.o_web_studio_form_view_editor .o_web_studio_hook:eq(1))",
+        },
+        {
+            trigger: ".o_web_studio_form_view_editor .o_field_widget[name='log_ids']",
+            run() {
+                const countFields = document.querySelectorAll(".o_web_studio_form_view_editor .o_field_widget").length;
+                if (!countFields === 2) {
+                    throw new Error("There should be 2 fields in the form view")
+                }
+            }
+        }
+    ]
+);

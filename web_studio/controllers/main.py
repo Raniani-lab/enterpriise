@@ -1529,9 +1529,8 @@ Are you sure you want to remove the selection values of those records?""") % len
                 'expr': expr,
                 'position': position
             })
-        inline_view = request.env[model].get_view(view_type=subview_type)
-        view_arch = inline_view['arch']
-        xml_node = self._inline_view_filter_nodes(etree.fromstring(view_arch))
+        view_arch, _ = request.env[model]._get_view(view_type=subview_type)
+        xml_node = self._inline_view_filter_nodes(view_arch)
         xpath_node.insert(0, xml_node)
         studio_view.arch_db = etree.tostring(arch, encoding='utf-8', pretty_print=True)
         return studio_view.arch_db

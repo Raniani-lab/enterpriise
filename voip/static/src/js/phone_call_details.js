@@ -3,8 +3,10 @@ odoo.define('voip.PhoneCallDetails', function (require) {
 
 const config = require('web.config');
 const core = require('web.core');
+const { SelectInputDeviceDialog } = require("@voip/js/audio_input_device");
 const session = require('web.session');
 const Widget = require('web.Widget');
+const { isMobileOS } = require("@web/core/browser/feature_detection");
 
 const { Component } = owl;
 
@@ -27,6 +29,7 @@ const PhoneCallDetails = Widget.extend({
         'click .o_dial_email': '_onClickEmail',
         'click .o_dial_log': '_onClickLog',
         'click .o_dial_mute_button': '_onClickMuteButton',
+        'click .o_dial_headphones_button': '_onClickHeadphonesButton',
         'click .o_dial_reschedule_activity': '_onClickRescheduleActivity',
         'click .o_dial_to_partner': '_onClickToPartner',
         'click .o_dial_to_record': '_onClickToRecord',
@@ -51,6 +54,7 @@ const PhoneCallDetails = Widget.extend({
         this.imageSmall = phoneCall.imageSmall;
         this.messaging = parent.messaging;
         this.minutes = phoneCall.minutes;
+        this.isMobileDevice = isMobileOS();
         this.mobileNumber = phoneCall.mobileNumber;
         this.name = phoneCall.name;
         this.partnerId = phoneCall.partnerId;
@@ -59,6 +63,7 @@ const PhoneCallDetails = Widget.extend({
         this.seconds = phoneCall.seconds;
         this.state = phoneCall.state;
 
+        this.currentInputDeviceId = undefined;
         this._$closeDetails = undefined;
         this._$muteButton = undefined;
         this._$muteIcon = undefined;
@@ -67,6 +72,7 @@ const PhoneCallDetails = Widget.extend({
         this._$phoneCallInCall = undefined;
         this._$phoneCallInfo = undefined;
         this._$phoneCallReceivingCall = undefined;
+        this._selectInputDeviceDialog = undefined;
         this._activityResModel = phoneCall.activityResModel;
         this._isMuted = false;
     },
@@ -88,6 +94,7 @@ const PhoneCallDetails = Widget.extend({
 
         this._$muteButton.attr('disabled', 'disabled');
         this.$('.o_dial_transfer_button').attr('disabled', 'disabled');
+        this.$('.o_dial_keypad_button').attr('disabled', 'disabled');
 
         this._onInputNumberDebounced = _.debounce(this._onInputNumber.bind(this), 350);
 
@@ -124,6 +131,7 @@ const PhoneCallDetails = Widget.extend({
     activateInCallButtons() {
         this.$('.o_dial_transfer_button').removeAttr('disabled');
         this.$('.o_dial_mute_button').removeAttr('disabled');
+        this.$('.o_dial_keypad_button').removeAttr('disabled');
     },
     /**
      * Changes the display to show the in call layout.
@@ -137,6 +145,9 @@ const PhoneCallDetails = Widget.extend({
         this._$phoneCallInCall.hide();
         this._$phoneCallReceivingCall.removeClass('d-flex');
         this.$el.removeClass('in_call');
+        if (this._selectInputDeviceDialog) {
+            this._selectInputDeviceDialog.close();
+        }
     },
     /**
      * Changes the display to show the Receiving layout.
@@ -341,6 +352,19 @@ const PhoneCallDetails = Widget.extend({
             this._$muteIcon.removeClass('fa-microphone-slash');
             this._isMuted = false;
         }
+    },
+    /**
+     * @param {MouseEvent} ev
+     * @returns {Promise<void>}
+     * @private
+     */
+    async _onClickHeadphonesButton(ev) {
+        ev.preventDefault();
+        const onChooseDeviceCallback = deviceId => {
+            this.currentInputDeviceId = deviceId;
+            this.messaging.voip.userAgent.legacyUserAgent.switchInputStream(deviceId);
+        };
+        this._selectInputDeviceDialog = new SelectInputDeviceDialog(this, this.currentInputDeviceId, onChooseDeviceCallback).open();
     },
     /**
      * @private

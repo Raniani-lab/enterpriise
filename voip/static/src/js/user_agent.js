@@ -1,6 +1,7 @@
 odoo.define('voip.UserAgent', function (require) {
 "use strict";
 
+const { browser } = require("@web/core/browser/browser");
 const Class = require('web.Class');
 const core = require('web.core');
 const { escape, sprintf } = require('@web/core/utils/strings');
@@ -190,6 +191,31 @@ const UserAgent = Class.extend(mixins.EventDispatcherMixin, ServicesMixin, {
             return;
         }
         this._setMute(false);
+    },
+    /**
+     * @param {string} deviceId
+     * @returns {Promise<void>}
+     */
+    async switchInputStream(deviceId) {
+        if (this.voip.mode === 'demo' ||
+            this._callState !== CALL_STATE.ONGOING_CALL ||
+            !this._sipSession ||
+            !deviceId) {
+            return;
+        }
+        const stream = await browser.navigator.mediaDevices.getUserMedia({
+            audio: {
+                deviceId: {
+                    exact: deviceId,
+                },
+            },
+        });
+        const peerConnection = this._sipSession.sessionDescriptionHandler.peerConnection;
+        for (const sender of peerConnection.getSenders()) {
+            if (sender.track) {
+                await sender.replaceTrack(stream.getAudioTracks()[0]);
+            }
+        }
     },
 
     //--------------------------------------------------------------------------

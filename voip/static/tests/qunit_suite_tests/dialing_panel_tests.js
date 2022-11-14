@@ -1,7 +1,8 @@
 /** @odoo-module **/
 
 import { start } from '@mail/../tests/helpers/test_utils';
-
+import { browser } from "@web/core/browser/browser";
+import { patchWithCleanup } from '@web/../tests/helpers/utils';
 import DialingPanel from 'voip.DialingPanel';
 import UserAgent from 'voip.UserAgent';
 
@@ -596,5 +597,76 @@ QUnit.test('DialingPanel is closable with the BackButton in the mobile app', asy
     testUtils.mock.unpatch(mobile.methods);
 });
 
+QUnit.test("Switch Input mode [mobile devices]", async function(assert) {
+    assert.expect(4);
+
+    const self = this;
+    // simulate a mobile device environment
+    patchWithCleanup(browser, {
+        navigator: {
+            ...browser.navigator,
+            userAgent: "Chrome/0.0.0 (Linux; Android 13; Odoo TestSuite)",
+            mediaDevices: {
+                enumerateDevices() {
+                    return Promise.resolve([{
+                        "deviceId": "default",
+                        "kind": "audioinput",
+                    }, {
+                        "deviceId": "headset-earpiece-audio-input",
+                        "kind": "audioinput",
+                    }, {
+                        "deviceId": "default-video-input",
+                        "kind": "videoinput",
+                    }, {
+                        "deviceId": "default",
+                        "kind": "audiooutput",
+                    }]);
+                },
+            },
+        },
+    });
+
+    await createDialingPanel({
+        async mockRPC(route, args) {
+            if (args.method === 'get_pbx_config') {
+                return { mode: 'demo' };
+            }
+            if (args.model === 'voip.phonecall') {
+                switch (args.method) {
+                    case 'get_next_activities_list':
+                        return self.phoneCallDetailsData.filter(phoneCallDetailData =>
+                            ['done', 'cancel'].indexOf(phoneCallDetailData.state) === -1);
+                    case 'init_call':
+                        return [];
+                }
+            }
+        },
+    });
+
+    // select first call with autocall
+    await testUtils.dom.click(document.querySelector('.o_dial_call_button'));
+
+    // start call
+    await testUtils.dom.click(document.querySelector('.o_dial_call_button'));
+    this.onaccepted();
+
+    // needed to the switch disabled / enabled button
+    await testUtils.dom.click(document.querySelector(".o_dial_headphones_button"));
+    assert.isVisible(document.querySelector(".o_select_input_devices"), ".o_select_input_devices should have been shown");
+    assert.strictEqual(document.querySelectorAll(".o_select_input_devices input[name='o_select_input_devices']").length, 2,
+        ".o_select_input_devices should have 2 input devices (audio)");
+    assert.strictEqual(document.querySelector(".o_select_input_devices input[name='o_select_input_devices']:checked").value,
+    "default", "The default value should be checked");
+
+    // switch to headset-earpiece-audio-input
+    await testUtils.dom.click(document.querySelector(".o_select_input_devices input[name='o_select_input_devices'][value='headset-earpiece-audio-input']"));
+    await testUtils.dom.click(document.querySelector(".modal-footer .btn-primary"));
+
+    // the headset-earpiece-audio-input should be selected inside the dialog
+    await testUtils.dom.click(document.querySelector(".o_dial_headphones_button"));
+    assert.strictEqual(document.querySelector(".o_select_input_devices input[name='o_select_input_devices']:checked").value,
+        "headset-earpiece-audio-input", "The headset-earpiece-audio-input value should be checked");
+    await testUtils.dom.click(document.querySelector(".modal-footer .btn-secondary"));
+});
 });
 });

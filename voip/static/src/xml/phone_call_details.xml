@@ -8,6 +8,7 @@
         @param {integer} widget.activityResId
         @param {string} widget.date
         @param {string} widget.imageSmall
+        @param {boolean} widget.isMobileDevice
         @param {integer} widget.minutes
         @param {boolean} widget.mobileNumber
         @param {string} widget.name
@@ -112,9 +113,14 @@
                             <i class="fa fa-fw fa-lg fa-arrows-h"/>
                         </button>
                     </div>
-                    <div class="_dial_keypad_button_small text-center">
+                    <div class="o_dial_keypad_button_small text-center">
                         <button aria-label="Mute" class="o_dial_keypad_button o_dial_mute_button btn btn-light p-3 border rounded-circle" title="Mute">
                             <i class="fa fa-fw fa-lg fa-microphone"/>
+                        </button>
+                    </div>
+                    <div t-if="widget.isMobileDevice" class="o_dial_keypad_button_small text-center">
+                        <button aria-label="Headphones" class="o_dial_keypad_button o_dial_headphones_button btn btn-light p-3 border rounded-circle" title="Headphones">
+                            <i class="fa fa-fw fa-lg fa-headphones"/>
                         </button>
                     </div>
                 </div>
@@ -136,6 +142,19 @@
         <t t-elif="status === 'in_call'">
             <small class="text-success">In call for: <t t-out="duration"/> </small>
         </t>
+    </t>
+
+    <t t-name="voip.SelectInputDevices">
+        <div class="o_select_input_devices">
+            <t t-foreach="widget.devices" t-as="device">
+                <div class="form-check">
+                    <input class="form-check-input" type="radio" name="o_select_input_devices"
+                           t-att-checked="widget.currentInputDeviceId === device.deviceId ? 'checked' : undefined"
+                           t-att-id="device.label" t-att-value="device.deviceId" />
+                    <label class="form-check-label" t-att-for="device.label"><t t-esc="device.label"/></label>
+                </div>
+            </t>
+        </div>
     </t>
 
     <t t-name="voip.PhoneCallTransfer">

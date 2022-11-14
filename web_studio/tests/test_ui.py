@@ -3,6 +3,7 @@
 
 import odoo.tests
 from odoo import Command
+from lxml import etree
 
 
 @odoo.tests.tagged('post_install', '-at_install')
@@ -36,6 +37,23 @@ class TestUi(odoo.tests.HttpCase):
         })
         self.env.company.background_image = attachment.datas
         self.start_tour("/web?debug=tests", 'web_studio_custom_background_tour', login="admin")
+
+
+def _get_studio_view(view):
+    domain = [('inherit_id', '=', view.id), ('name', '=', "Odoo Studio: %s customization" % (view.name))]
+    return view.search(domain, order='priority desc, name desc, id desc', limit=1)
+
+def _transform_arch_for_assert(arch_string):
+    parser = etree.XMLParser(remove_blank_text=True)
+    arch_string = etree.fromstring(arch_string, parser=parser)
+    return etree.tostring(arch_string, pretty_print=True, encoding='unicode')
+
+def assertViewArchEqual(test, original, expected):
+    if original:
+        original = _transform_arch_for_assert(original)
+    if expected:
+        expected = _transform_arch_for_assert(expected)
+    test.assertEqual(original, expected)
 
 
 @odoo.tests.tagged('post_install', '-at_install')
@@ -92,3 +110,60 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
 
         self.start_tour("/web?debug=tests", 'web_studio_test_edit_with_xml_editor', login="admin", timeout=200)
         self.assertEqual(studioView.arch, "<data/>")
+
+    def test_enter_x2many_edition_and_add_field(self):
+        doesNotHaveGroup = self.env["res.groups"].create({
+            "name": "studio does not have"
+        })
+        doesNotHaveGroupXmlId = self.env["ir.model.data"].create({
+            "name": "studio_test_doesnothavegroup",
+            "model": "res.groups",
+            "module": "web_studio",
+            "res_id": doesNotHaveGroup.id,
+        })
+
+        userView = self.env["ir.ui.view"].create({
+            "name": "simple user",
+            "model": "res.users",
+            "type": "form",
+            "arch": '''
+                <form>
+                    <t t-groups="{doesnothavegroup}" >
+                        <div class="condition_group" />
+                    </t>
+                    <group>
+                        <field name="name" />
+                    </group>
+                </form>
+            '''.format(doesnothavegroup=doesNotHaveGroupXmlId.complete_name)
+        })
+
+        userViewXmlId = self.env["ir.model.data"].create({
+            "name": "studio_test_user_view",
+            "model": "ir.ui.view",
+            "module": "web_studio",
+            "res_id": userView.id,
+        })
+
+        self.testView.arch = '''<form><field name="user_ids" context="{'form_view_ref': '%s'}" /></form>''' % userViewXmlId.complete_name
+        studioView = _get_studio_view(self.testView)
+        self.assertFalse(studioView.exists())
+
+        self.start_tour("/web?debug=tests", 'web_studio_enter_x2many_edition_and_add_field', login="admin", timeout=200)
+        studioView = _get_studio_view(self.testView)
+
+        assertViewArchEqual(self, studioView.arch, """
+            <data>
+               <xpath expr="//field[@name='user_ids']" position="inside">
+                 <form>
+                   <t t-groups="{doesnothavegroup}" >
+                     <div class="condition_group" />
+                   </t>
+                   <group>
+                     <field name="name"/>
+                     <field name="log_ids"/>
+                   </group>
+                 </form>
+               </xpath>
+             </data>
+            """.format(doesnothavegroup=doesNotHaveGroupXmlId.complete_name))

@@ -238,8 +238,14 @@
                             type="object"
                             name="action_open_recon_st_line"
                             string="Match"
-                            attrs="{'invisible':[('id', '=', False)]}">
-
+                            attrs="{'invisible':['|', ('id', '=', False), ('is_reconciled', '=', True)]}">
+                    </button>
+                    <button class="btn btn-sm btn-secondary"
+                            title="View"
+                            type="object"
+                            name="action_open_recon_st_line"
+                            string="View"
+                            attrs="{'invisible':['|', ('id', '=', False), ('is_reconciled', '=', False)]}">
                     </button>
                 </tree>
             </field>

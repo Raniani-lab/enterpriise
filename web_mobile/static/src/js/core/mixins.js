@@ -51,13 +51,16 @@ const UpdateDeviceAccountControllerMixin = {
      * @override
      */
     async save() {
-        const changedFields = await this._super(...arguments);
+        const isSaved = await this._super(...arguments);
+        if (!isSaved) {
+            return false;
+        }
         const updated = session.updateAccountOnMobileDevice();
         // Crapy workaround for unupdatable Odoo Mobile App iOS (Thanks Apple :@)
         if (!isIosApp()){
             await updated;
         }
-        return changedFields;
+        return true;
     },
 };
 

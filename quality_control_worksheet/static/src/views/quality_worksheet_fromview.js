@@ -22,9 +22,9 @@ class WorksheetValidationController extends FormController {
 
 class WorksheetValidationRecord extends Record {
     async save() {
-        const res = await super.save(...arguments);
+        const isSaved = await super.save(...arguments);
         // after studio exit, although the mode is readonly, the save button is visible
-        if (this.mode != "readonly") {
+        if (isSaved && this.mode != "readonly") {
             const action = await this.model.ormService.call(
                 "quality.check",
                 "action_worksheet_check",
@@ -33,7 +33,7 @@ class WorksheetValidationRecord extends Record {
             );
             this.model.actionService.doAction(action);
         }
-        return res;
+        return isSaved;
     }
 }
 

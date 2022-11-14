@@ -145,8 +145,8 @@
                                 <field name="processed" />
                                 <field name="rejected" />
                                 <templates>
-                                    <div t-name="kanban-box" t-if="!record.parent_id.raw_value || props.displayChildren">
-                                        <div class="o_ma_body">
+                                    <div t-name="kanban-box">
+                                        <div class="o_ma_body position-relative" t-att-data-record-id="record.id.raw_value">
                                             <div class="o_ma_timeline text-center">
                                                 <t t-if="record.trigger_type.raw_value == 'mail_open'">
                                                     <div class="o_ma_text_processed">
@@ -302,22 +302,6 @@
                                                             title="Bounced" role="img" aria-label="Bounced" />
                                                     </div>
                                                 </div>
-                                            </div>
-                                            <t t-set="children" t-value="props.record.data.children"/>
-                                            <div class="o_hierarchy_children" t-if="children and children.length !== 0">
-                                                <t t-foreach="children" t-as="record" t-key="record.data.id">
-                                                    <HierarchyKanbanRecord
-                                                        displayChildren="true"
-                                                        archInfo="props.archInfo"
-                                                        canResequence="props.canResequence"
-                                                        forceGlobalClick="props.forceGlobalClick"
-                                                        list="props.list"
-                                                        openRecord="props.openRecord"
-                                                        is_readonly="props.readonly"
-                                                        record="record"
-                                                        templates="props.templates"
-                                                    />
-                                                </t>
                                             </div>
                                         </div>
                                     </div>

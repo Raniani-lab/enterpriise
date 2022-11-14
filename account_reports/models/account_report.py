@@ -3554,8 +3554,8 @@ class AccountReport(models.Model):
                         # No need to keep checking columns after this
                         break
 
-            # Apply colspans
-            for line in lines:
+            # Apply colspans on the lines unless a colspan has already been added manually.
+            for line in filter(lambda x: not x.get('colspan'), lines):
                 new_columns = []
                 # See Note 1
                 key = f"{line.get('level')}_{'child' if 'parent_id' in line else 'root'}"

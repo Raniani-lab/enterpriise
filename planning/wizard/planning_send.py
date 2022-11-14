@@ -13,7 +13,7 @@ class PlanningSend(models.TransientModel):
     def default_get(self, default_fields):
         res = super().default_get(default_fields)
         if 'slot_ids' in res and 'employee_ids' in default_fields:
-            res['employee_ids'] = self.env['planning.slot'].browse(res['slot_ids'][0][2]).filtered_domain(self._get_slot_domain()).employee_id.ids
+            res['employee_ids'] = self.env['planning.slot'].browse(res['slot_ids'][0][2]).employee_id.sudo().sorted('name').ids
         return res
 
     start_datetime = fields.Datetime("Period", required=True)
@@ -28,21 +28,18 @@ class PlanningSend(models.TransientModel):
                                     compute="_compute_employees_no_email", inverse="_inverse_employees_no_email")
 
     def _get_slot_domain(self):
-        return []
+        self.ensure_one()
+        return [('start_datetime', '>=', self.start_datetime), ('end_datetime', '<=', self.end_datetime)]
 
     @api.depends('start_datetime', 'end_datetime')
     def _compute_slots_data(self):
-        slot_domain = self._get_slot_domain()
         for wiz in self:
-            domain = expression.AND([[('start_datetime', '>=', wiz.start_datetime), ('end_datetime', '<=', wiz.end_datetime)], slot_domain])
-            wiz.slot_ids = self.env['planning.slot'].with_user(self.env.user).search(domain)
+            wiz.slot_ids = self.env['planning.slot'].with_user(self.env.user).search(self._get_slot_domain(), order='employee_id')
             wiz.employee_ids = wiz.slot_ids.filtered(lambda s: s.resource_type == 'user').mapped('employee_id')
 
     def _inverse_employee_ids(self):
-        slot_domain = self._get_slot_domain()
         for wiz in self:
-            domain = expression.AND([[('start_datetime', '>=', wiz.start_datetime), ('end_datetime', '<=', wiz.end_datetime)], slot_domain])
-            wiz.slot_ids = self.env['planning.slot'].with_user(self.env.user).search(domain)
+            wiz.slot_ids = self.env['planning.slot'].with_user(self.env.user).search(self._get_slot_domain())
 
     @api.depends('employee_ids')
     def _compute_employees_no_email(self):

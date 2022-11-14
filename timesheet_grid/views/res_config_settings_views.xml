@@ -26,9 +26,6 @@
                         </div>
                     </div>
                 </setting>
-                <setting id="prevent_old_timesheets_encoding_setting" title="After a certain date, users will not be able to create, modify, or delete their timesheets. However, managers will still be able to do so." company_dependent="1" help="Block encoding of timesheets after a certain date">
-                    <field name="prevent_old_timesheets_encoding"/>
-                </setting>
             </xpath>
             <xpath expr="//setting[@id='reminder_user_allow']" position="inside">
                 <div class="mt16" id="user_mail_alias_domain" attrs="{'invisible': [('reminder_user_allow', '=', False)]}">

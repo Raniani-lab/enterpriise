@@ -8,7 +8,6 @@ from odoo import api, fields, models
 class ResConfigSettings(models.TransientModel):
     _inherit = 'res.config.settings'
 
-    prevent_old_timesheets_encoding = fields.Boolean(related="company_id.prevent_old_timesheets_encoding", readonly=False)
     reminder_user_allow = fields.Boolean("Employee Reminder", related='company_id.timesheet_mail_employee_allow', readonly=False)
     reminder_user_delay = fields.Integer("Days to Remind User", related='company_id.timesheet_mail_employee_delay', readonly=False,
         help="Numbers of days after the end of the week/month after which an automatic email reminder will be sent to timesheet users that still have timesheets to encode (according to their working hours).")
@@ -22,9 +21,3 @@ class ResConfigSettings(models.TransientModel):
         related='company_id.timesheet_mail_interval', readonly=False)
     timesheet_min_duration = fields.Integer('Minimal Duration', default=15, config_parameter='timesheet_grid.timesheet_min_duration')
     timesheet_rounding = fields.Integer('Round up', default=15, config_parameter='timesheet_grid.timesheet_rounding')
-
-    def set_values(self):
-        super().set_values()
-        if self.prevent_old_timesheets_encoding:
-            employee_ids = self.env['hr.employee'].sudo()._search([('company_id', '=', self.company_id.id)])
-            self.env['account.analytic.line']._search_last_validated_timesheet_date(list(employee_ids))

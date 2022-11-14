@@ -450,8 +450,7 @@ class AnalyticLine(models.Model):
         analytic_lines._stop_all_users_timer()
 
         analytic_lines.sudo().write({'validated': True})
-        analytic_lines.filtered(lambda t: t.employee_id.sudo().company_id.prevent_old_timesheets_encoding) \
-                      ._update_last_validated_timesheet_date()
+        analytic_lines._update_last_validated_timesheet_date()
         if self.env.context.get('use_notification', True):
             notification['params'].update({
                 'title': _("The timesheets have successfully been validated."),
@@ -484,12 +483,7 @@ class AnalyticLine(models.Model):
             return notification
 
         analytic_lines.sudo().write({'validated': False})
-        employee_ids = set()
-        for analytic_line in analytic_lines:
-            employee = analytic_line.employee_id
-            if employee.sudo().company_id.prevent_old_timesheets_encoding and employee not in employee_ids:
-                employee_ids.add(employee.id)
-        self.env['account.analytic.line']._search_last_validated_timesheet_date(list(employee_ids))
+        self.env['account.analytic.line']._search_last_validated_timesheet_date(analytic_lines.employee_id.ids)
         if self.env.context.get('use_notification', True):
             notification['params'].update({
                 'title': _("The timesheets have successfully been reset to draft."),
@@ -517,7 +511,7 @@ class AnalyticLine(models.Model):
                 last_validated_timesheet_date = employee.sudo().last_validated_timesheet_date
                 # When an user having this group tries to modify the timesheets of another user in his own team, we shouldn't raise any validation error
                 if not is_timesheet_approver or employee not in employees:
-                    if line.is_timesheet and company.prevent_old_timesheets_encoding and last_validated_timesheet_date:
+                    if line.is_timesheet and last_validated_timesheet_date:
                         if action == "modify" and fields.Date.to_date(str(vals['date'])) <= last_validated_timesheet_date:
                             show_access_error = True
                         elif line.date <= last_validated_timesheet_date:

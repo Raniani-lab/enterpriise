@@ -12,8 +12,6 @@ _logger = logging.getLogger(__name__)
 class Company(models.Model):
     _inherit = 'res.company'
 
-    prevent_old_timesheets_encoding = fields.Boolean(string="Lock Dates")
-
     # reminder for employees
     timesheet_mail_employee_allow = fields.Boolean("Employee Reminder", default=True)
     timesheet_mail_employee_delay = fields.Integer("Employee Reminder Days", default=1)

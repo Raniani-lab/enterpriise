@@ -296,7 +296,6 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
             delete a timesheet with date <= last_validated_timesheet_date
         """
         self.assertFalse(self.empl_employee3.last_validated_timesheet_date)
-        self.assertFalse(self.empl_employee3.company_id.prevent_old_timesheets_encoding)
         timesheet = self.env['account.analytic.line'].with_user(self.user_employee3).create({
             'name': 'timesheet',
             'project_id': self.project_customer.id,
@@ -306,13 +305,7 @@ class TestAccessRightsTimesheetGrid(TestCommonTimesheet):
             'employee_id': self.empl_employee3.id,
         })
         timesheet.with_user(self.user_approver).action_validate_timesheet()
-        self.assertFalse(self.empl_employee3.last_validated_timesheet_date)
 
-        # Set the settings accordingly
-        timesheet_settings = self.env["res.config.settings"].create({
-            'prevent_old_timesheets_encoding': True,
-        })
-        timesheet_settings.execute()
         self.assertEqual(self.empl_employee3.last_validated_timesheet_date, timesheet.date)
         timesheet.with_user(self.user_approver).action_invalidate_timesheet()
         self.assertFalse(self.empl_employee3.last_validated_timesheet_date)

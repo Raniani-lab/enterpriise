@@ -57,15 +57,16 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
         with self.assertRaises(AccessError):
             self.timesheet2.with_user(self.user_employee).unlink()
 
-        # Employee can still create new timesheet before the validated date
-        last_month = datetime.now() - relativedelta(months=1)
-        self.env['account.analytic.line'].with_user(self.user_employee).create({
-            'name': "my timesheet 3",
-            'project_id': self.project_customer.id,
-            'task_id': self.task2.id,
-            'date': last_month,
-            'unit_amount': 2.5,
-        })
+        # Employee can not create new timesheet before last validation date
+        with self.assertRaises(AccessError):
+            last_month = datetime.now() - relativedelta(months=1)
+            self.env['account.analytic.line'].with_user(self.user_employee).create({
+                'name': "my timesheet 3",
+                'project_id': self.project_customer.id,
+                'task_id': self.task2.id,
+                'date': last_month,
+                'unit_amount': 2.5,
+            })
 
         # Employee can still create timesheet after validated date
         next_month = datetime.now() + relativedelta(months=1)

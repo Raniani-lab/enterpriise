@@ -75,11 +75,10 @@ class GermanTaxReportTest(AccountSalesReportCommon):
                     <Jahr>2019</Jahr>
                     <Zeitraum>11</Zeitraum>
                     <Steuernummer>4151081508156</Steuernummer>
-                    <Kz09>0.00</Kz09>
-                    <Kz81>28</Kz81>
-                    <Kz89>14</Kz89>
-                    <Kz61>-14</Kz61>
-                    <Kz83>0.00</Kz83>
+                    <Kz81>150</Kz81>
+                    <Kz89>75</Kz89>
+                    <Kz61>14,25</Kz61>
+                    <Kz83>0,00</Kz83>
                 </Umsatzsteuervoranmeldung>
             </Steuerfall>
         </Anmeldungssteuern>

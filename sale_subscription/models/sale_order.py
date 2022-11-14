@@ -1316,7 +1316,7 @@ class SaleOrder(models.Model):
         today = fields.Date.today()
         next_month = today + relativedelta(months=1)
         # set to pending if date is in less than a month
-        domain_pending = [('is_subscription', '=', True), ('end_date', '<', next_month), ('stage_category', '=', 'progress')]
+        domain_pending = [('is_subscription', '=', True), ('end_date', '<', next_month), ('stage_category', '=', 'progress'), ('state', '=', 'sale')]
         subscriptions_pending = self.search(domain_pending)
         subscriptions_pending.set_to_renew()
         # set to close if date is passed or if locked sale order is passed

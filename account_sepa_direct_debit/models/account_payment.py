@@ -12,6 +12,7 @@ from odoo.exceptions import UserError
 from odoo.tools.float_utils import float_repr
 from odoo.tools.xml_utils import create_xml_node, create_xml_node_chain
 from odoo.tools.misc import remove_accents
+from odoo.addons.account_batch_payment.models.sepa_mapping import _replace_characters_SEPA
 
 from lxml import etree
 
@@ -65,7 +66,7 @@ class AccountPayment(models.Model):
             communication = communication[1:]
         if communication.endswith('/'):
             communication = communication[:-1]
-        communication = re.sub('[^-A-Za-z0-9/?:().,\'+ ]', '', remove_accents(communication))
+        communication = re.sub('[^-A-Za-z0-9/?:().,\'&<>+ ]', '', _replace_characters_SEPA(communication))
         return communication
 
     def generate_xml(self, company_id, required_collection_date, askBatchBooking):

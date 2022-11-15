@@ -675,9 +675,9 @@ class SaleOrder(models.Model):
         """
         for so in self:
             # We check the subscription direct invoice and not the one related to the whole SO
-            if len(so.subscription_id.order_line.invoice_lines) == 0:
+            if so.subscription_id.start_date == so.subscription_id.next_invoice_date:
                 raise ValidationError(_("You can not upsell a subscription that has not been invoiced yet. "
-                                        "Please, update directly the %s contract or invoice it first.", so.name))
+                                        "Please, update directly the %s contract or invoice it first.", so.subscription_id.name))
         existing_line_ids = self.subscription_id.order_line
         dummy, update_values = self.update_existing_subscriptions()
         updated_line_ids = self.env['sale.order.line'].browse({val[1] for val in update_values})

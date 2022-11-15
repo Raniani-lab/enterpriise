@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+<data auto_sequence="1">
     <record id="account_financial_report_l10n_pcg_cdr" model="account.report">
         <field name="name">Profit and Loss (SYSCOHADA)</field>
         <field name="root_report_id" ref="account_reports.profit_and_loss"/>
@@ -541,6 +542,8 @@
             </record>
         </field>
     </record>
+</data>
+<data>
     <record id="action_account_report_sypnl" model="ir.actions.client">
         <field name="name">Profit and Loss</field>
         <field name="tag">account_report</field>
@@ -549,4 +552,5 @@
     <record id="account_financial_report_line_03_1_6_syscohada_bilan_passif" model="account.report.line">
         <field name="action_id" ref="action_account_report_sypnl"/>
     </record>
+</data>
 </odoo>

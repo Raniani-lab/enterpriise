@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<odoo>
+<odoo auto_sequence="1">
     <record id="balance_sheet_l10n_de" model="account.report">
         <field name="name">Balance Sheet</field>
         <field name="root_report_id" ref="account_reports.balance_sheet"/>

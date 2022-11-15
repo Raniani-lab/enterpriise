@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
-    <data>
+    <data auto_sequence="1">
         <record id="check_register_report" model="account.report">
             <field name="name">Check Register</field>
             <field name="filter_journals" eval="True"/>
@@ -43,6 +43,7 @@
                 </record>
             </field>
         </record>
+    </data>
 
         <record id="check_register_action" model="ir.actions.client">
             <field name="name">Check Register</field>
@@ -56,5 +57,4 @@
                   sequence="100"
                   groups="account.group_account_readonly"
                   action="l10n_us_reports.check_register_action"/>
-    </data>
 </odoo>

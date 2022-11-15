@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+<data auto_sequence="1">
     <record id="l10n_bg_pl" model="account.report">
         <field name="name">Profit and loss</field>
         <field name="root_report_id" ref="account_reports.profit_and_loss"/>
@@ -510,7 +511,8 @@
             </record>
         </field>
     </record>
-
+</data>
+<data>
     <record id="action_account_report_bg_pl" model="ir.actions.client">
         <field name="name">Profit and loss</field>
         <field name="tag">account_report</field>
@@ -520,4 +522,5 @@
     <record id="l10n_bg_bs_liabilities_a_6" model="account.report.line">
         <field name="action_id" ref="action_account_report_bg_pl"/>
     </record>
+</data>
 </odoo>

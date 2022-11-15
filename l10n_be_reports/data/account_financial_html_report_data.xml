@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
+<data auto_sequence="1">
     <record id="account_financial_report_be_balancesheet0" model="account.report">
         <field name="name">Bilan</field>
         <field name="root_report_id" ref="account_reports.balance_sheet"/>
@@ -529,6 +530,8 @@
             </record>
         </field>
     </record>
+</data>
+<data auto_sequence="1">
     <record id="account_financial_report_be_profitandloss0" model="account.report">
         <field name="name">Profit and Loss</field>
         <field name="root_report_id" ref="account_reports.profit_and_loss"/>
@@ -1404,6 +1407,8 @@
             </record>
         </field>
     </record>
+</data>
+<data>
     <record id="action_account_report_bepnl" model="ir.actions.client">
         <!--Kept as a separate action to force opening of the Belgian P&L, whatever the previous options.-->
         <field name="name">Profit and Loss</field>
@@ -1416,4 +1421,5 @@
     <record model="ir.ui.menu" id="account_reports.menu_action_account_report_sales">
         <field name="active" eval="True"/>
     </record>
+</data>
 </odoo>

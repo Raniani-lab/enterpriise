@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <menuitem id="l10n_syscohada.account_reports_syscohada_statements_menu" name="Syscohada" parent="account.menu_finance_reports" sequence="0" groups="account.group_account_readonly"/>
+
+<data  auto_sequence="1">
     <record id="account_financial_report_syscohada_bilan" model="account.report">
         <field name="name">Balance Sheet (SYSCOHADA)</field>
         <field name="root_report_id" ref="account_reports.balance_sheet"/>
@@ -786,4 +788,5 @@
             </record>
         </field>
     </record>
+</data>
 </odoo>

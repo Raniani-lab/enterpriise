@@ -117,8 +117,9 @@ class MrpWorkorder(models.Model):
         for index, interval in enumerate(intervals):
             if interval[0] <= date_stop:
                 date_stop = max(date_stop, interval[1])
-                if index != len(intervals) - 1:
-                    continue
-            duration += timer.loss_id._convert_to_duration(date_start, date_stop, timer.workcenter_id)
-            date_start, date_stop, timer = interval
+            else:
+                duration += timer.loss_id._convert_to_duration(date_start, date_stop, timer.workcenter_id)
+                date_start, date_stop, timer = interval
+            if index == len(intervals) - 1:
+                duration += timer.loss_id._convert_to_duration(date_start, date_stop, timer.workcenter_id)
         return duration

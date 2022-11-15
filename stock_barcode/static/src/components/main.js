@@ -54,7 +54,6 @@ class MainComponent extends Component {
             this.env.model.setData(barcodeData);
             this.state.displayNote = Boolean(this.env.model.record.note);
             this.env.model.on('process-action', this, this._onDoAction);
-            this.env.model.on('notification', this, this._onNotification);
             this.env.model.on('refresh', this, this._onRefreshState);
             this.env.model.on('update', this, () => this.render(true));
             this.env.model.on('do-action', this, args => bus.trigger('do-action', args));
@@ -314,12 +313,6 @@ class MainComponent extends Component {
                 on_close: this._onRefreshState.bind(this),
             },
         });
-    }
-
-    _onNotification(notifParams) {
-        const { message } = notifParams;
-        delete notifParams.message;
-        this.env.services.notification.add(message, notifParams);
     }
 
     onOpenPackage(packageId) {

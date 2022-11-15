@@ -25,8 +25,7 @@ patch(MainComponent.prototype, 'stock_barcode_quality_control', {
                 },
             });
         } else {
-            const message = this.env._t("All the quality checks have been done");
-            this._onNotification({ message });
+            this.notification.add(this.env._t("All the quality checks have been done"));
         }
     },
 });

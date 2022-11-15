@@ -6,11 +6,11 @@ import { _t } from 'web.core';
 
 
 patch(BarcodePickingModel.prototype, 'stock_barcode_mrp_subcontracting', {
-    
+
     showSubcontractingDetails(line) {
         return line.is_subcontract_stock_barcode && !['done', 'cancel'].includes(line.state) && this.getQtyDone(line);
     },
-    
+
     getPickingToRecordComponents() {
         const displayValues = ["hide", "facultative", "mandatory"];
         let picking = this.record;
@@ -39,7 +39,7 @@ patch(BarcodePickingModel.prototype, 'stock_barcode_mrp_subcontracting', {
         const moveId = line && line.move_id || false;
         return this._getActionRecordComponents(moveId).then(
             res => this.trigger('do-action', res),
-            error => this.trigger('notification', error)
+            error => this.notification.add(error)
         );
     },
 

@@ -258,7 +258,7 @@ class JournalReportCustomHandler(models.AbstractModel):
                 ])
             elif journal_type == 'bank':
                 columns.extend([
-                    {'name': _('Balance'), 'class': 'text-right'},
+                    {'name': _('Balance'), 'class': 'number'},
                     {'name': ''} if not has_multicurrency else {'name': _('Amount In Currency'), 'class': 'text-right number'},
                 ])
             else:
@@ -570,7 +570,7 @@ class JournalReportCustomHandler(models.AbstractModel):
                     {
                         'name': report.format_value(current_balance, figure_type='monetary'),
                         'no_format': current_balance,
-                        'class': 'font-italic text-right',
+                        'class': 'number',
                     },
                     {'name': ''},
                 ]

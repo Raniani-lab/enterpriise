@@ -583,7 +583,7 @@ class AccountMove(models.Model):
         if not partner_name:
             return 0
 
-        partner = self.env["res.partner"].search([("name", "=", partner_name), *self._domain_company()], limit=1)
+        partner = self.env["res.partner"].search([("name", "=", partner_name), *self._domain_company()], order='supplier_rank desc', limit=1)
         if partner:
             return partner.id if partner.id != self.company_id.partner_id.id else 0
 

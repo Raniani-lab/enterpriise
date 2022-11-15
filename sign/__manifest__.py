@@ -43,9 +43,6 @@ Let your customers follow the signature process easily.
     'installable': True,
     'license': 'OEEL-1',
     'assets': {
-        'mail.assets_messaging': [
-            'sign/static/src/models/*.js',
-        ],
         'sign.assets_pdf_iframe': [
             'web/static/src/libs/fontawesome/css/font-awesome.css',
             'web/static/lib/jquery.ui/jquery-ui.css',
@@ -84,6 +81,7 @@ Let your customers follow the signature process easily.
             'sign/static/src/scss/sign_backend.scss',
             'sign/static/src/xml/*.xml',
             'sign/static/src/components/**/*',
+            'sign/static/src/activity/**',
             'sign/static/src/views/**/*',
         ],
         'web.assets_frontend': [
@@ -97,7 +95,8 @@ Let your customers follow the signature process easily.
             'sign/static/tests/tours/**/*',
         ],
         'web.qunit_suite_tests': [
-            'sign/static/tests/document_backend_tests.js',
+            'sign/static/tests/**/*',
+            ('remove', 'sign/static/tests/tours/**/*'),
         ],
     }
 }

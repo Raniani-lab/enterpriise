@@ -10,7 +10,7 @@ import { x2ManyCommands } from "@web/core/orm_service";
 import { useBus, useService } from "@web/core/utils/hooks";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { FileUploader } from "@web/views/fields/file_handler";
-import { ChatterContainer } from "@mail/components/chatter_container/chatter_container";
+import { Chatter } from "@mail/web/chatter";
 import { DocumentsInspectorField } from "./documents_inspector_field";
 import { download } from "@web/core/network/download";
 import { onNewPdfThumbnail } from "../helper/documents_pdf_thumbnail_service";
@@ -108,10 +108,6 @@ export class DocumentsInspector extends Component {
             this.updateAttachmentHistory(nextProps);
         });
 
-        // Chatter
-        const chatterCloseHandler = () => {
-            this.state.showChatter = this.isMobile;
-        };
         const chatterReloadHandler = async () => {
             const record = this.props.selection[0];
             if (!record) {
@@ -125,14 +121,12 @@ export class DocumentsInspector extends Component {
                 if (!el) {
                     return;
                 }
-                el.addEventListener("o-close-chatter", chatterCloseHandler);
                 el.addEventListener("reload", chatterReloadHandler);
                 return () => {
-                    el.removeEventListener("o-close-chatter", chatterCloseHandler);
                     el.removeEventListener("reload", chatterReloadHandler);
                 };
             },
-            () => [this.chatterContainer.el && this.chatterContainer.el.querySelector(".o_Chatter")]
+            () => [this.chatterContainer.el && this.chatterContainer.el.querySelector(".o-mail-Chatter")]
         );
 
         // Pdf thumbnails
@@ -583,7 +577,7 @@ export class DocumentsInspector extends Component {
 
 DocumentsInspector.components = {
     AutoComplete,
-    ChatterContainer,
+    Chatter,
     DocumentsInspectorField,
     FileUploader,
 };

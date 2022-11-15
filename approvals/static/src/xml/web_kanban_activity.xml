@@ -39,7 +39,7 @@
                 </li>
             </t>
             <t t-else="">
-                <t t-call="mail.activities-list-group-item"/>
+                <t t-call="mail.ActivitiesListGroupItem"/>
             </t>
         </t>
     </t>

@@ -18,11 +18,11 @@ Contains advanced features for CRM such as new views
     'auto_install': ['crm'],
     'license': 'OEEL-1',
     'assets': {
-        'mail.assets_messaging': [
-            'crm_enterprise/static/src/models/*.js',
+        'web.assets_backend': [
+            'crm_enterprise/static/src/**/*',
         ],
         'web.qunit_suite_tests': [
-            'crm_enterprise/static/tests/*.js',
+            'crm_enterprise/static/tests/**/*',
         ],
     }
 }

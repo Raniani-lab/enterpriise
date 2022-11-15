@@ -7,14 +7,10 @@ import {
 } from "@web/../tests/helpers/utils";
 import { patch, unpatch } from "@web/core/utils/patch";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
-import { registry } from "@web/core/registry";
 import { TableOfContentBehavior } from "@knowledge/components/behaviors/table_of_content_behavior/table_of_content_behavior";
-import { makeFakeMessagingServiceForKnowledge } from "@knowledge/../tests/mock_services";
 import {
     onMounted,
 } from "@odoo/owl";
-
-const serviceRegistry = registry.category("services");
 
 /**
  * Insert a Table Of Content (TOC) in the target node. This will guarantee that
@@ -130,7 +126,6 @@ QUnit.module("Knowledge Table of Content", (hooks) => {
             '</sheet>' +
         '</form>';
         setupViewRegistries();
-        serviceRegistry.add('messaging', makeFakeMessagingServiceForKnowledge());
     });
     QUnit.test("Check Table of Content is correctly built", async function (assert) {
         assert.expect(24);

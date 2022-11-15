@@ -22,6 +22,8 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
     setup() {
         super.setup();
 
+        /** @type {import("@mail/core/thread_service").ThreadService} */
+        this.threadService = useService("mail.thread");
         this.dialog = useService("dialog");
         this.orm = useService("orm");
 
@@ -135,7 +137,7 @@ export class InvoiceExtractFormRenderer extends AccountMoveFormRenderer {
      * It also determines which boxes should be visible according to the current active field.
      */
     renderInvoiceExtract(attachment) {
-        const thread = this.env.services.messaging.modelManager.messaging.models['Thread'].insert({
+        const thread = this.threadService.insert({
             id: this.props.record.resId,
             model: this.props.record.resModel,
         });

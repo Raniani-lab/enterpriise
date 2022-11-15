@@ -1,6 +1,6 @@
 /* @odoo-module */
 
-import { Avatar } from "@mail/components/avatar/avatar";
+import { Avatar } from "@mail/web/fields/avatar/avatar";
 import { useEffect, useRef } from "@odoo/owl";
 
 export class PlanningEmployeeAvatar extends Avatar {

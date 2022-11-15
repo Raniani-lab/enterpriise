@@ -4,7 +4,6 @@ import { useBus, useService } from "@web/core/utils/hooks";
 import { escape, sprintf } from "@web/core/utils/strings";
 import { memoize } from "@web/core/utils/functions";
 import { useSetupView } from "@web/views/view_hook";
-import { insert } from "@mail/model";
 import { PdfManager } from "@documents/owl/components/pdf_manager/pdf_manager";
 import { x2ManyCommands } from "@web/core/orm_service";
 import { ShareFormViewDialog } from "@documents/views/helper/share_form_view_dialog";
@@ -16,7 +15,9 @@ const { EventBus, onWillStart, markup, reactive, useComponent, useEnv, useRef, u
  */
 
 // Small hack, memoize uses the first argument as cache key, but we need the orm which will not be the same.
-const loadMaxUploadSize = memoize((_null, orm) => orm.call("documents.document", "get_document_max_upload_limit"));
+const loadMaxUploadSize = memoize((_null, orm) =>
+    orm.call("documents.document", "get_document_max_upload_limit")
+);
 
 /**
  * To be executed before calling super.setup in view controllers.
@@ -108,7 +109,9 @@ export function useDocumentView(helpers) {
                 additionalContext: {
                     default_partner_id: props.context.default_partner_id || false,
                     default_folder_id: env.searchModel.getSelectedFolderId(),
-                    default_tag_ids: [x2ManyCommands.replaceWith(env.searchModel.getSelectedTagIds())],
+                    default_tag_ids: [
+                        x2ManyCommands.replaceWith(env.searchModel.getSelectedTagIds()),
+                    ],
                 },
                 fullscreen: env.isSmall,
                 onClose: async () => {
@@ -123,7 +126,9 @@ export function useDocumentView(helpers) {
                 additionalContext: {
                     default_partner_id: props.context.default_partner_id || false,
                     default_folder_id: env.searchModel.getSelectedFolderId(),
-                    default_tag_ids: [x2ManyCommands.replaceWith(env.searchModel.getSelectedTagIds())],
+                    default_tag_ids: [
+                        x2ManyCommands.replaceWith(env.searchModel.getSelectedTagIds()),
+                    ],
                     default_res_id: props.context.default_res_id || false,
                     default_res_model: props.context.default_res_model || false,
                 },
@@ -159,12 +164,17 @@ export function useDocumentView(helpers) {
                         // Copy the share link to the clipboard
                         navigator.clipboard.writeText(record.data.full_url);
                         // Show a notification to the user about the copy to clipboard
-                        notification.add(env._t("The share url has been copied to your clipboard."), {
-                            type: "success",
-                        });
+                        notification.add(
+                            env._t("The share url has been copied to your clipboard."),
+                            {
+                                type: "success",
+                            }
+                        );
                         close();
                     },
-                    onDiscard: () => {close();},
+                    onDiscard: () => {
+                        close();
+                    },
                 },
                 {
                     onClose: async () => {
@@ -181,24 +191,34 @@ export function useDocumentView(helpers) {
 /**
  * Hook to setup the file previewer
  */
-function useDocumentsViewFilePreviewer({ getSelectedDocumentsElements, isRecordPreviewable = () => true }) {
+function useDocumentsViewFilePreviewer({
+    getSelectedDocumentsElements,
+    isRecordPreviewable = () => true,
+}) {
     const component = useComponent();
     const env = useEnv();
     const bus = env.documentsView.bus;
+    /** @type {import("@documents/core/document_service").DocumentService} */
+    const documentService = useService("document.document");
 
     env.documentsView.previewStore = reactive({
         inspectedDocuments: [],
         attachmentViewer: null,
     });
 
-    const onOpenDocumentsPreview = async ({ documents, mainDocument, isPdfSplit, rules, hasPdfSplit }) => {
-        const messaging = await env.services.messaging.get();
+    const onOpenDocumentsPreview = async ({
+        documents,
+        mainDocument,
+        isPdfSplit,
+        rules,
+        hasPdfSplit,
+    }) => {
         const openPdfSplitter = (documents) => {
             let newDocumentIds = [];
             component.dialogService.add(
                 PdfManager,
                 {
-                    documents: documents.map((doc) => doc.data),
+                    documents: documents,
                     rules: rules.map((rule) => rule.data),
                     onProcessDocuments: ({ documentIds, ruleId, exit }) => {
                         if (documentIds && documentIds.length) {
@@ -235,24 +255,37 @@ function useDocumentsViewFilePreviewer({ getSelectedDocumentsElements, isRecordP
             openPdfSplitter(documents);
             return;
         }
-        const documentsRecords = ((documents.length === 1 && component.model.root.records) || documents).filter(isRecordPreviewable).map((rec) => {
-            return messaging.models["Document"].insert({
-                id: rec.resId,
-                attachmentId: rec.data.attachment_id && rec.data.attachment_id[0],
-                name: rec.data.name,
-                mimetype: rec.data.mimetype,
-                url: rec.data.url,
-                displayName: rec.data.display_name,
-                record: rec,
+        const documentsRecords = (
+            (documents.length === 1 && component.model.root.records) ||
+            documents
+        )
+            .filter(isRecordPreviewable)
+            .map((rec) => {
+                return documentService.insert({
+                    id: rec.resId,
+                    attachment: {
+                        id: rec.data.attachment_id[0],
+                        name: rec.data.attachment_id[1],
+                        mimetype: rec.data.mimetype,
+                        url: rec.data.url,
+                        displayName: rec.data.display_name,
+                    },
+                    name: rec.data.name,
+                    mimetype: rec.data.mimetype,
+                    url: rec.data.url,
+                    displayName: rec.data.display_name,
+                    record: rec,
+                });
             });
-        });
         // If there is a scrollbar we don't want it whenever the previewer is opened
         if (component.root.el) {
             component.root.el.querySelector(".o_documents_view").classList.add("overflow-hidden");
         }
-        const selectedDocument = documentsRecords.find((rec) => rec.id === (mainDocument || documents[0]).resId);
-        const documentList = messaging.models["DocumentList"].insert({
-            documents: documentsRecords,
+        const selectedDocument = documentsRecords.find(
+            (rec) => rec.id === (mainDocument || documents[0]).resId
+        );
+        documentService.documentList = {
+            documents: documentsRecords || [],
             initialRecordSelectionLength: documents.length,
             pdfManagerOpenCallback: (documents) => {
                 openPdfSplitter(documents);
@@ -271,7 +304,9 @@ function useDocumentsViewFilePreviewer({ getSelectedDocumentsElements, isRecordP
                     elements[0].focus();
                 }
                 if (component.root.el) {
-                    component.root.el.querySelector(".o_documents_view").classList.remove("overflow-hidden");
+                    component.root.el
+                        .querySelector(".o_documents_view")
+                        .classList.remove("overflow-hidden");
                 }
                 component.render(true);
             },
@@ -281,28 +316,27 @@ function useDocumentsViewFilePreviewer({ getSelectedDocumentsElements, isRecordP
                 }
                 record.toggleSelection(true);
             },
-        });
-        documentList.update({
-            attachmentViewer: insert({ hasPdfSplit: hasPdfSplit || true }),
-            selectedDocument: selectedDocument,
-        });
+            hasPdfSplit,
+            selectedDocument,
+        };
+
         for (const rec of component.model.root.selection) {
             rec.selected = false;
         }
         selectedDocument.record.toggleSelection(true);
-        component.env.documentsView.previewStore.documentList = documentList;
+        component.env.documentsView.previewStore.documentList = documentService.documentList;
+        const index = documentsRecords.indexOf(selectedDocument);
+        component.env.documentsView.previewStore.attachments = documentsRecords.map(
+            (doc) => doc.attachment
+        );
+        component.env.documentsView.previewStore.startIndex = index;
+        component.env.documentsView.previewStore.close = () => {
+            component.env.documentsView.previewStore.attachments = undefined;
+        };
     };
 
     useBus(bus, "documents-open-preview", async (ev) => {
         component.onOpenDocumentsPreview(ev.detail);
-    });
-    useBus(bus, "documents-close-preview", () => {
-        if (
-            component.env.documentsView.previewStore.documentList &&
-            component.env.documentsView.previewStore.documentList.exists()
-        ) {
-            component.env.documentsView.previewStore.documentList.delete();
-        }
     });
 
     return {
@@ -357,7 +391,11 @@ function useDocumentsViewFileUpload() {
             xhr.status === 200
                 ? JSON.parse(xhr.response)
                 : {
-                      error: sprintf(env._t("status code: %s, message: %s"), xhr.status, xhr.response),
+                      error: sprintf(
+                          env._t("status code: %s, message: %s"),
+                          xhr.status,
+                          xhr.response
+                      ),
                   };
         if (result.error) {
             handleUploadError(result);
@@ -382,7 +420,10 @@ function useDocumentsViewFileUpload() {
     });
 
     const uploadFiles = async ({ files, folderId, recordId, context, tagIds }) => {
-        if (component.maxUploadSize && [...files].some((file) => file.size > component.maxUploadSize)) {
+        if (
+            component.maxUploadSize &&
+            [...files].some((file) => file.size > component.maxUploadSize)
+        ) {
             return notification.add(env._t("File is too large."), {
                 type: "danger",
             });
@@ -445,11 +486,18 @@ export function useTriggerRule() {
     const action = useService("action");
     return {
         triggerRule: async (documentIds, ruleId, preventReload = false) => {
-            const result = await orm.call("documents.workflow.rule", "apply_actions", [[ruleId], documentIds]);
+            const result = await orm.call("documents.workflow.rule", "apply_actions", [
+                [ruleId],
+                documentIds,
+            ]);
             if (result && typeof result === "object") {
                 if (result.hasOwnProperty("warning")) {
                     notification.add(
-                        markup(`<ul>${result["warning"]["documents"].map((d) => `<li>${escape(d)}</li>`).join("")}</ul>`),
+                        markup(
+                            `<ul>${result["warning"]["documents"]
+                                .map((d) => `<li>${escape(d)}</li>`)
+                                .join("")}</ul>`
+                        ),
                         {
                             title: result["warning"]["title"],
                             type: "danger",

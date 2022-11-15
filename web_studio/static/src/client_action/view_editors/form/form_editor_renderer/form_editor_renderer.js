@@ -79,18 +79,14 @@ export class FormEditorRenderer extends formView.Renderer {
                 rootEl.classList.add("o_web_studio_form_view_editor");
                 if (showInvisible) {
                     rootEl
-                        .querySelectorAll(
-                            ":not(.o_FormRenderer_chatterContainer) .o_invisible_modifier"
-                        )
+                        .querySelectorAll(":not(.o-mail-Form-chatter) .o_invisible_modifier")
                         .forEach((el) => {
                             el.classList.add("o_web_studio_show_invisible");
                             el.classList.remove("o_invisible_modifier");
                         });
                 } else {
                     rootEl
-                        .querySelectorAll(
-                            ":not(.o_FormRenderer_chatterContainer) .o_web_studio_show_invisible"
-                        )
+                        .querySelectorAll(":not(.o-mail-Form-chatter) .o_web_studio_show_invisible")
                         .forEach((el) => {
                             el.classList.remove("o_web_studio_show_invisible");
                             el.classList.add("o_invisible_modifier");
@@ -206,7 +202,7 @@ FormEditorRenderer.components = {
     Field: FieldStudio,
     Widget: WidgetStudio,
     ViewButton: ViewButtonStudio,
-    ChatterContainer,
+    Chatter: ChatterContainer,
     ChatterContainerHook,
     InnerGroup,
     OuterGroup,

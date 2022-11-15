@@ -1,7 +1,6 @@
-/** @odoo-module **/
+/* @odoo-module **/
 
-import "@mail/components/attachment_viewer/attachment_viewer";
-import { getMessagingComponent } from "@mail/utils/messaging_component";
+import { AttachmentViewer } from "@mail/attachments/attachment_viewer";
 
 const { Component, useEffect, useRef, useState } = owl;
 
@@ -71,11 +70,11 @@ export class DocumentsAttachmentViewer extends Component {
 
     onIframeKeydown(ev) {
         if (ev.key === "Escape") {
-            this.previewState.documentList.delete();
+            this.previewState.documentList = undefined;
         }
     }
 }
 DocumentsAttachmentViewer.components = {
-    AttachmentViewer: getMessagingComponent("AttachmentViewer"),
+    AttachmentViewer,
 };
 DocumentsAttachmentViewer.template = "documents.DocumentsAttachmentViewer";

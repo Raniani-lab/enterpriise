@@ -6,42 +6,6 @@ import { utils } from '@web/../tests/helpers/mock_env';
 
 const { prepareRegistriesWithCleanup } = utils;
 
-export function makeFakeMessagingServiceForKnowledge() {
-    return {
-        start() {
-            return {
-                async get() {
-                    return {
-                        knowledge: {
-                            randomEmojis: [{codepoints: "🥸"}, {codepoints: "🗿"}],
-                            update() {},
-                        },
-                        messagingBus: {
-                            addEventListener() {},
-                            removeEventListener() {},
-                            trigger() {},
-                        },
-                        openChat() {},
-                        rpc() {},
-                        emojiRegistry: {
-                            allEmojis: [{codepoints: "🥸"}, {codepoints: "🗿"}],
-                            isLoaded: true,
-                            isLoading: false,
-                            loadEmojiData: () => {},
-                        },
-                    };
-                },
-                modelManager: {
-                    startListening() {},
-                    stopListening() {},
-                    removeListener() {},
-                    messagingCreatedPromise: new Promise(() => {}),
-                },
-            };
-        }
-    };
-}
-
 function makeFakeKnowledgeCommandsService() {
     return {
         start() {

@@ -32,7 +32,7 @@ registry.category("web_tour.tours").add('knowledge_pick_emoji_tour', {
     trigger: '.o_knowledge_body .o_article_emoji',
     run: 'click',
 }, {
-    trigger: '.o_EmojiView[data-codepoints="😃"]',
+    trigger: '.o-mail-Emoji[data-codepoints="😃"]',
     run: 'click',
 }, {
     // check that the emoji has been properly changed in the article body

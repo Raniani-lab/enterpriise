@@ -71,7 +71,7 @@
                 resId="resId"
                 onSave="() => this._onRefreshState({ lineId: this._editedLineParams &amp;&amp; this._editedLineParams.currentId })"
                 onDiscard="() => this.toggleBarcodeLines()"/>
-            <ChatterContainer threadModel="resModel" threadId="resId"/>
+            <Chatter threadModel="resModel" threadId="resId"/>
         </div>
         <div t-elif="state.view === 'actionsView'" class="o_barcode_settings d-flex flex-grow-1 flex-column">
             <t t-foreach="env.model.printButtons" t-as="button" t-key="button.class">

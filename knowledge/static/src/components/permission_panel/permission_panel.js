@@ -21,6 +21,8 @@ export class PermissionPanel extends Component {
         this.dialog = useService('dialog');
         this.orm = useService('orm');
         this.rpc = useService('rpc');
+        /** @type {import("@mail/core/thread_service").ThreadService} */
+        this.threadService = useService("mail.thread");
 
         this.state = useState({
             loading: true,
@@ -275,10 +277,7 @@ export class PermissionPanel extends Component {
             const userId = userIds && userIds.length === 1 ? userIds[0] : false;
 
             if (userId) {
-                const messaging = await this.env.services.messaging.get();
-                messaging.openChat({
-                    userId: userId
-                });
+                this.threadService.openChat({ userId });
             }
         }
     }

@@ -18,7 +18,7 @@ registry.category("web_tour.tours").add('knowledge_template_paste_elements_tour'
     trigger: '.o_kanban_edit',
     run: 'click'
 }, {
-    trigger: '.o_ChatterTopbar_button[title="Search Knowledge Articles"]',
+    trigger: 'button[title="Search Knowledge Articles"]',
     run: 'click',
     width: 500
 }, {

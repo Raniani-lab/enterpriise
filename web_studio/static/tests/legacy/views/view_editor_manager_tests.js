@@ -1564,17 +1564,17 @@ QUnit.module('ViewEditorManager', {
             },
         });
 
-        assert.containsOnce(vem, '.o_web_studio_form_view_editor .o_FormRenderer_chatterContainer',
+        assert.containsOnce(vem, '.o_web_studio_form_view_editor .o-mail-Form-chatter',
             "there should be a chatter node");
 
         // click on the chatter
-        await testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o_FormRenderer_chatterContainer .o_web_studio_overlay'));
+        await testUtils.dom.click(vem.$('.o_web_studio_form_view_editor .o-mail-Form-chatter .o_web_studio_overlay'));
 
         assert.hasClass(vem.$('.o_web_studio_sidebar .o_web_studio_properties'),'active',
             "the Properties tab should now be active");
         assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_chatter',
             "the sidebar should now display the chatter properties");
-        assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_FormRenderer_chatterContainer'),'o-web-studio-editor--element-clicked',
+        assert.hasClass(vem.$('.o_web_studio_form_view_editor .o-mail-Form-chatter'),'o-web-studio-editor--element-clicked',
             "the chatter should have the clicked style");
         assert.strictEqual(vem.$('.o_web_studio_sidebar input[name="email_alias"]').val(), "coucou",
             "the email alias in sidebar should be fetched");
@@ -5871,7 +5871,10 @@ QUnit.module('ViewEditorManager', {
                 };
             }
         });
-        const webClient = await createEnterpriseWebClient({ serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
+        const { webClient } = await start({
+            serverData,
+            mockRPC,
+        });
         await doAction(webClient, "studio.coucou_action");
         await openStudio(target);
 

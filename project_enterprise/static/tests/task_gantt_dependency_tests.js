@@ -49,7 +49,7 @@ QUnit.module("Views > GanttView", (hooks) => {
 
         target = getFixture();
 
-        serviceRegistry.add("messaging", { start() {} });
+        serviceRegistry.add("mail.thread", { start() {} });
 
         ganttViewParams.serverData = {
             models: {

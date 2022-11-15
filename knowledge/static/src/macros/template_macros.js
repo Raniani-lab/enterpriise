@@ -13,7 +13,7 @@ export class SendAsMessageMacro extends AbstractMacro {
         action.steps.push({
             trigger: function() {
                 this.validatePage();
-                const el = this.getFirstVisibleElement('.o_ChatterTopbar_buttonSendMessage');
+                const el = this.getFirstVisibleElement('.o-mail-Chatter-sendMessage');
                 if (el) {
                     if (el.classList.contains('o-active')) {
                         return el;
@@ -29,7 +29,7 @@ export class SendAsMessageMacro extends AbstractMacro {
         }, {
             trigger: function() {
                 this.validatePage();
-                return this.getFirstVisibleElement('.o_ComposerView_buttonFullComposer');
+                return this.getFirstVisibleElement('.o-mail-Composer button[title="Full composer"]');
             }.bind(this),
             action: 'click',
         }, {

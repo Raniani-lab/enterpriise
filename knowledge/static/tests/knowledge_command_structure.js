@@ -3,12 +3,8 @@
 import { ArticlesStructureBehavior } from "@knowledge/components/behaviors/articles_structure_behavior/articles_structure_behavior";
 import { click, getFixture, makeDeferred, nextTick } from "@web/../tests/helpers/utils";
 import { patch, unpatch } from "@web/core/utils/patch";
-import { makeFakeMessagingServiceForKnowledge } from "@knowledge/../tests/mock_services";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
-import { registry } from "@web/core/registry";
 import { onMounted } from "@odoo/owl";
-
-const serviceRegistry = registry.category("services");
 
 const articlesStructureSearch = {
     records: [
@@ -94,7 +90,6 @@ QUnit.module("Knowledge - Articles Structure Command", (hooks) => {
             '</sheet>' +
         '</form>';
         setupViewRegistries();
-        serviceRegistry.add('messaging', makeFakeMessagingServiceForKnowledge());
     });
     QUnit.test('Check Articles Structure is correctly built', async function (assert) {
         assert.expect(3);

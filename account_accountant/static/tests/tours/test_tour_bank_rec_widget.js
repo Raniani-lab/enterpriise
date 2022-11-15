@@ -42,7 +42,7 @@ registry.category("web_tour.tours").add('account_accountant_bank_rec_widget',
         {
             content: "The 'discuss_tab' should be active and the chatter loaded",
             extra_trigger: "a.active[name='discuss_tab']",
-            trigger: "div.bank_rec_widget_form_discuss_anchor div.o_ChatterContainer",
+            trigger: "div.bank_rec_widget_form_discuss_anchor div.o-mail-Chatter",
             run: function() {},
         },
         // Check 'manual_operations_tab'.

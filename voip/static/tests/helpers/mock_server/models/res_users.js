@@ -1,4 +1,4 @@
-/** @odoo-module **/
+/* @odoo-module */
 
 import "@mail/../tests/helpers/mock_server/models/res_users"; // ensure mail overrides are applied first
 
@@ -11,12 +11,14 @@ patch(MockServer.prototype, "voip/models/res_users", {
      * @returns {Object}
      */
     _mockResUsers_InitMessaging(...args) {
+        const getConfig = (key) =>
+            this.getRecords("ir.config_parameter", [["key", "=", key]])[0].value;
         return {
             ...this._super(...args),
             voipConfig: {
-                mode: this.getRecords("ir.config_parameter", [["key", "=", "voip.mode"]])[0].value,
-                pbxAddress: this.getRecords("ir.config_parameter", [["key", "=", "voip.pbx_ip"]])[0].value,
-                webSocketUrl: this.getRecords("ir.config_parameter", [["key", "=", "voip.wsServer"]])[0].value,
+                mode: getConfig("voip.mode"),
+                pbxAddress: getConfig("voip.pbx_ip"),
+                webSocketUrl: getConfig("voip.wsServer"),
             },
         };
     },

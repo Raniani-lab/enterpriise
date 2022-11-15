@@ -35,13 +35,13 @@ registry.category("web_tour.tours").add('knowledge_template_command_tour', {
     trigger: '.btn-chatter',
     run: 'click',
 }, {
-    trigger: '.o_MessageListView',
+    trigger: '.o-mail-Thread',
     run: () => {},
 }, { // open the follower list of the article
-    trigger: '.o_FollowerListMenuView_buttonFollowers',
+    trigger: '.o-mail-Followers-button',
     run: 'click',
 }, { // open the contact record of the follower
-    trigger: '.o_FollowerView_details:contains(HelloWorldPartner)',
+    trigger: '.o-mail-Follower-details:contains(HelloWorldPartner)',
     run: 'click',
 }, { // search an article to open it from the contact record
     trigger: 'button[title="Search Knowledge Articles"]',

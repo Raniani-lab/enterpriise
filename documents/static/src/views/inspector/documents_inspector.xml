@@ -25,7 +25,7 @@
         </div>
         <div t-if="state.showChatter and props.selection.length === 1" class="o_document_chatter_container">
             <div class="o_documents_chatter_placeholder" t-ref="chatterContainer">
-                <ChatterContainer hasActivities="records[0].resModel === 'documents.document'" hasFollowers="true" hasTopbarCloseButton="!isMobile" threadId="records[0].resId" threadModel="records[0].resModel"/>
+                <Chatter close="isMobile ? undefined : () => state.showChatter = false" hasActivities="records[0].resModel === 'documents.document'" threadId="records[0].resId" threadModel="records[0].resModel" compactHeight="true" />
             </div>
         </div>
     </t>

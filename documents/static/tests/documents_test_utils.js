@@ -2,8 +2,21 @@
 
 import { makeView } from "@web/../tests/views/helpers";
 import { start } from "@mail/../tests/helpers/test_utils";
+import { setupManager } from "@mail/../tests/helpers/webclient_setup";
+import { documentService } from "../src/core/document_service";
+import { patch } from "@web/core/utils/patch";
 
-function getEnrichedSearchArch(searchArch='<search></search>') {
+patch(setupManager, "documents", {
+    setupServices(...args) {
+        const services = this._super(...args);
+        return {
+            "document.document": documentService,
+            ...services,
+        };
+    },
+});
+
+export function getEnrichedSearchArch(searchArch='<search></search>') {
     var searchPanelArch = `
         <searchpanel class="o_documents_search_panel">
             <field name="folder_id" string="Workspace" enable_counters="1"/>

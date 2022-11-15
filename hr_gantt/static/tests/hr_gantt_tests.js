@@ -94,7 +94,7 @@ QUnit.module("Views", (hooks) => {
             views: [[false, "gantt"]],
             context: { group_by: [] },
         });
-        assert.containsNone(target, ".o_mail_avatar");
+        assert.containsNone(target, ".o-mail-Avatar");
     });
 
     QUnit.test("hr gantt view grouped by employee only", async (assert) => {
@@ -104,7 +104,7 @@ QUnit.module("Views", (hooks) => {
             views: [[false, "gantt"]],
             context: { group_by: ["employee_id"] },
         });
-        assert.containsN(target, ".o_gantt_row_title .o_mail_avatar", 3);
+        assert.containsN(target, ".o_gantt_row_title .o-mail-Avatar", 3);
     });
 
     QUnit.test("hr gantt view grouped by employee > foo", async (assert) => {
@@ -116,7 +116,7 @@ QUnit.module("Views", (hooks) => {
         });
         assert.containsN(
             target,
-            ".o_gantt_row_header.o_gantt_group .o_gantt_row_title .o_mail_avatar",
+            ".o_gantt_row_header.o_gantt_group .o_gantt_row_title .o-mail-Avatar",
             3
         );
     });
@@ -130,7 +130,7 @@ QUnit.module("Views", (hooks) => {
         });
         assert.containsN(
             target,
-            ".o_gantt_row_header:not(.o_gantt_group) .o_gantt_row_title .o_mail_avatar",
+            ".o_gantt_row_header:not(.o_gantt_group) .o_gantt_row_title .o-mail-Avatar",
             4
         );
     });

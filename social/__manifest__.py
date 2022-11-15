@@ -52,7 +52,6 @@
             'social/static/src/js/stream_post_kanban_view.js',
             'social/static/src/js/tours/social.js',
             'social/static/src/scss/social.scss',
-            'social/static/src/models/**/*',
             'social/static/src/xml/**/*',
         ],
     },

@@ -14,7 +14,7 @@
     }
 
     .o_dial_window_title {
-        height: $o-mail-chat-window-header-height-mobile;
+        height: 46px;
         background-color: var(--voip__windowTitle-bg, #{$o-brand-odoo});
         color: #FFFFFF;
     }
@@ -32,7 +32,7 @@
         }
 
         .o_dial_window_title {
-            height: $o-mail-chat-window-header-height;
+            height: 36px;
         }
     }
 

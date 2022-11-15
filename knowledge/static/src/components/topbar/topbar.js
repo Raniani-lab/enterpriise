@@ -3,6 +3,7 @@ import { formatDateTime } from '@web/core/l10n/dates';
 import { registry } from '@web/core/registry';
 import { standardWidgetProps } from '@web/views/widgets/standard_widget_props';
 import { useService } from '@web/core/utils/hooks';
+import { useOpenChat } from "@mail/web/open_chat_hook";
 
 
 import { Component, onPatched, useEffect, useRef, useState } from '@odoo/owl';
@@ -30,6 +31,8 @@ class KnowledgeTopbar extends Component {
             displayPropertyPanel: !this.props.record.data.article_properties_is_empty,
             displaySharePanel: false,
         });
+
+        this.openChat = useOpenChat('res.users');
 
         onPatched(() => {
             // Create the first property when clicking on "Add Properties"
@@ -213,10 +216,7 @@ class KnowledgeTopbar extends Component {
         event.preventDefault();
         event.stopPropagation();
         if (userId) {
-            const messaging = await this.env.messagingService.get();
-            await messaging.openChat({
-                userId: userId
-            });
+            await this.openChat(userId);
         }
     }
 

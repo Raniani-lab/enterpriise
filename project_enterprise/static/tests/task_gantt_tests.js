@@ -28,7 +28,7 @@ QUnit.module("Views > TaskGanttView", {
 
         target = getFixture();
 
-        serviceRegistry.add("messaging", { start() {} });
+        serviceRegistry.add("mail.thread", { start() {} });
 
         ganttViewParams.serverData = {
             models: {
@@ -116,7 +116,7 @@ QUnit.test(
             ["Undefined Stuff", "Bruce Willis"],
             "'Undefined Stuff' should be the first group"
         );
-        assert.containsNone(target, ".o_gantt_row_headers .o_mail_avatar");
+        assert.containsNone(target, ".o_gantt_row_headers .o-mail-Avatar");
     }
 );
 
@@ -143,7 +143,7 @@ QUnit.test("user_ids grouped: specific empty group added, even if no records", a
         ["Unassigned Tasks", "Jane Doe", "John Doe"],
         "'Unassigned Tasks' should be the first group, even if no record exist without user_ids"
     );
-    assert.containsN(target, ".o_gantt_row_headers .o_mail_avatar", 2);
+    assert.containsN(target, ".o_gantt_row_headers .o-mail-Avatar", 2);
 });
 
 QUnit.test("[user_ids, ...] grouped", async (assert) => {

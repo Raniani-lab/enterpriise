@@ -58,6 +58,9 @@ export class AbstractSpreadsheetAction extends Component {
         if (!this.props.state) {
             await Promise.all([this._setupPreProcessingCallbacks(), loadSpreadsheetDependencies()]);
         }
+        if (owl.status(this) === "destroyed") {
+            return;
+        }
         const [record] = await Promise.all([this._fetchData(), loadSpreadsheetDependencies()]);
         this._initializeWith(record);
     }

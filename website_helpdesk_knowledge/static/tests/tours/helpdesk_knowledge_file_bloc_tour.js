@@ -37,7 +37,7 @@ registry.category("web_tour.tours").add('helpdesk_pick_file_as_attachment_from_k
     trigger: '.o_knowledge_behavior_type_file .o_knowledge_toolbar_button_text:contains("Use as Attachment")',
     run: 'click',
 }, { // check that the file is added to the attachments
-    trigger: '.o_AttachmentBoxView .o_AttachmentCard:contains("Onboarding")',
+    trigger: '.o-mail-Chatter .o-mail-AttachmentCard:contains("Onboarding")',
 }]});
 
 registry.category("web_tour.tours").add('helpdesk_pick_file_as_message_attachment_from_knowledge', {
@@ -59,8 +59,8 @@ registry.category("web_tour.tours").add('helpdesk_pick_file_as_message_attachmen
     trigger: '.o_knowledge_behavior_type_file .o_knowledge_toolbar_button_text:contains("Send as Message")',
     run: 'click',
 }, { // wait for the file to be uploaded
-    trigger: '.o_Chatter_composer .o_AttachmentCard i.fa-check',
+    trigger: '.o-mail-Composer .o-mail-AttachmentCard i.fa-check',
     run: () => {},
 }, { // check that the file is added to the attachment of the message
-    trigger: '.o_Chatter_composer .o_AttachmentList .o_AttachmentCard:contains("Onboarding")',
+    trigger: '.o-mail-Chatter .o-mail-Composer .o-mail-AttachmentCard:contains("Onboarding")',
 }]});

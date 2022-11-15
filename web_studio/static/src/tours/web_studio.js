@@ -157,7 +157,7 @@ registry.category("web_tour.tours").add("web_studio_new_app_tour", {
             auto: true,
         },
         {
-            trigger: ".o_web_studio_form_view_editor .o_Chatter",
+            trigger: ".o_web_studio_form_view_editor .o-mail-Chatter",
             content: _t("Click to edit messaging features on your model."),
             position: "top",
             timeout: 15000, // this can take some time on 'slow' builds (coverage, etc.)

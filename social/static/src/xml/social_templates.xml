@@ -129,8 +129,7 @@
                                 </t>
                             </FileUploader>
                         </div>
-                        <div class="o_social_emoji_dropdown o_social_subtle_btn px-3 py-1"
-                             t-on-click.prevent="_showEmojiPicker">
+                        <div class="o_social_emoji_dropdown o_social_subtle_btn px-3 py-1" t-ref="emoji-picker">
                             <i class="fa fa-smile-o"/>
                         </div>
                     </div>

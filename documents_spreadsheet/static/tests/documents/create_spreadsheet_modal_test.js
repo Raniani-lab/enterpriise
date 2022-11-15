@@ -1,8 +1,9 @@
 /** @odoo-module */
 
-import { createDocumentsView } from "@documents/../tests/documents_test_utils";
+import { documentService } from "@documents/core/document_service";
+import { getEnrichedSearchArch } from "@documents/../tests/documents_test_utils";
 
-import { startServer } from "@mail/../tests/helpers/test_utils";
+import { start, startServer } from "@mail/../tests/helpers/test_utils";
 
 import {
     editInput,
@@ -18,6 +19,7 @@ import { setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from "@web/core/registry";
 import { fileUploadService } from "@web/core/file_upload/file_upload_service";
 import { DocumentsKanbanRenderer } from "@documents/views/kanban/documents_kanban_renderer";
+import { makeFakeSpreadsheetService } from "@spreadsheet_edition/../tests/utils/collaborative_helpers";
 
 const serviceRegistry = registry.category("services");
 
@@ -79,18 +81,24 @@ async function initTestEnvWithKanban(args = {}) {
     data.models["spreadsheet.template"].records = data.models[
         "spreadsheet.template"
     ].records.concat(args.additionalTemplates || []);
-
-    return await createDocumentsView({
-        type: "kanban",
-        resModel: "documents.document",
-        serverData: data,
-        arch: /*xml*/ `
+    Object.assign(data.views, {
+        "documents.document,false,kanban": `
             <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                 <div><field name="name"/></div>
             </t></templates></kanban>
         `,
-        mockRPC: args.mockRPC || (() => {}),
+        "documents.document,false,search": getEnrichedSearchArch(),
     });
+    const res = await start({
+        mockRPC: args.mockRPC || (() => {}),
+        serverData: data,
+    });
+    const { openView } = res;
+    await openView({
+        res_model: "documents.document",
+        views: [[false, "kanban"]],
+    });
+    return res;
 }
 
 /**
@@ -123,6 +131,7 @@ QUnit.module(
         beforeEach() {
             setupViewRegistries();
             target = getFixture();
+            serviceRegistry.add("document.document", documentService);
             serviceRegistry.add("file_upload", fileUploadService);
             serviceRegistry.add("documents_pdf_thumbnail", {
                 start() {
@@ -158,13 +167,14 @@ QUnit.module(
         });
 
         QUnit.test("Create spreadsheet from list view opens a modal", async function (assert) {
-            await createDocumentsView({
-                type: "list",
-                resModel: "documents.document",
-                serverData: await getDocumentBasicData({
-                    "spreadsheet.template,false,search": `<search><field name="name"/></search>`,
-                }),
-                arch: `<tree js_class="documents_list"></tree>`,
+            const serverData = await getDocumentBasicData({
+                "documents.document,false,list": `<tree js_class="documents_list"></tree>`,
+                "documents.document,false,search": getEnrichedSearchArch(),
+            });
+            const { openView } = await start({ serverData });
+            await openView({
+                res_model: "documents.document",
+                views: [[false, "list"]],
             });
             await click(target, ".o_documents_kanban_spreadsheet");
             assert.ok(
@@ -250,7 +260,7 @@ QUnit.module(
                 assert.step("redirect");
                 assert.equal(action.tag, "action_open_spreadsheet");
             };
-            const kanban = await initTestEnvWithBlankSpreadsheet({
+            const { env } = await initTestEnvWithBlankSpreadsheet({
                 mockRPC: async function (route, args) {
                     if (
                         args.model === "documents.document" &&
@@ -261,7 +271,7 @@ QUnit.module(
                     }
                 },
             });
-            mockActionService(kanban.env, mockDoAction);
+            mockActionService(env, mockDoAction);
 
             // ### With confirm button
             await click(target, ".o_documents_kanban_spreadsheet");
@@ -278,21 +288,17 @@ QUnit.module(
             await triggerEvent(dialog.querySelectorAll(".o-template-image")[0], null, "dblclick");
             assert.verifySteps(["action_open_new_spreadsheet", "redirect"]);
         });
-
         QUnit.test("Context is transmitted when creating spreadsheet", async function (assert) {
-            await createDocumentsView({
-                type: "kanban",
-                resModel: "documents.document",
-                serverData: await getDocumentBasicData(),
-                arch: /*xml*/ `
-                    <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
-                        <div><field name="name"/></div>
-                    </t></templates></kanban>
+            const serverData = await getDocumentBasicData({
+                "documents.document,false,kanban": `
+                <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                <div><field name="name"/></div>
+                </t></templates></kanban>
                 `,
-                context: {
-                    default_res_model: "test.model",
-                    default_res_id: 42,
-                },
+                "documents.document,false,search": getEnrichedSearchArch(),
+            });
+            serviceRegistry.add("spreadsheet_collaborative", makeFakeSpreadsheetService());
+            const { openView } = await start({
                 mockRPC: async function (route, args) {
                     if (args.method === "action_open_new_spreadsheet") {
                         assert.step("action_open_new_spreadsheet");
@@ -300,6 +306,15 @@ QUnit.module(
                         assert.strictEqual(args.kwargs.context.default_res_model, "test.model");
                     }
                 },
+                serverData,
+            });
+            await openView({
+                context: {
+                    default_res_model: "test.model",
+                    default_res_id: 42,
+                },
+                res_model: "documents.document",
+                views: [[false, "kanban"]],
             });
 
             await click(target, ".o_documents_kanban_spreadsheet");
@@ -315,7 +330,7 @@ QUnit.module(
                 assert.step("redirect");
                 assert.equal(action.tag, "an_action");
             };
-            const kanban = await initTestEnvWithKanban({
+            const { env } = await initTestEnvWithKanban({
                 additionalTemplates: TEST_TEMPLATES,
                 mockRPC: async function (route, args) {
                     if (
@@ -332,7 +347,7 @@ QUnit.module(
                     }
                 },
             });
-            mockActionService(kanban.env, mockDoAction);
+            mockActionService(env, mockDoAction);
 
             // ### With confirm button
             await click(target, ".o_documents_kanban_spreadsheet");

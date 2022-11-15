@@ -1,28 +1,23 @@
 /** @odoo-module **/
 
-import { FileUploader } from '@web/views/fields/file_handler';
-import { useAutofocus, useService } from '@web/core/utils/hooks';
+import { FileUploader } from "@web/views/fields/file_handler";
+import { useAutofocus } from "@web/core/utils/hooks";
+import { useEmojiPicker } from "@mail/emoji_picker/emoji_picker";
 
-const { Component, onMounted, onWillUnmount, useState } = owl;
+const { Component, useState } = owl;
 
 export class StreamPostCommentsReply extends Component {
-
     setup() {
         super.setup();
-        this.messagingService = useService('messaging');
         this.state = useState({
             disabled: false,
             attachmentSrc: false,
         });
         this.inputRef = useAutofocus();
-
-        this.messagingService.get().then(messaging => this.messaging = messaging);
         this._onAddEmoji = this._onAddEmoji.bind(this);
-        onMounted(() => {
-            this.messaging.messagingBus.addEventListener(`social_add_emoji_to_${this.inputRef.el.dataset.id}`, this._onAddEmoji);
-        });
-        onWillUnmount(() => {
-            this.messaging.messagingBus.removeEventListener(`social_add_emoji_to_${this.inputRef.el.dataset.id}`, this._onAddEmoji);
+        useEmojiPicker("emoji-picker", {
+            onSelect: (str) => this._onAddEmoji(str),
+            onClose: () => this.state.autofocus++,
         });
     }
 
@@ -33,27 +28,16 @@ export class StreamPostCommentsReply extends Component {
      * @private
      */
     _onAddComment(event) {
-        if (event.key !== 'Enter' || event.ctrlKey || event.shiftKey) {
+        if (event.key !== "Enter" || event.ctrlKey || event.shiftKey) {
             return;
         }
         event.preventDefault();
-        let textarea = event.currentTarget;
-
-        if (textarea.value.trim() === '') {
+        const textarea = event.currentTarget;
+        if (textarea.value.trim() === "") {
             return;
         }
-
         this.state.disabled = true;
-
         this._addComment(textarea);
-    }
-
-    _showEmojiPicker(event) {
-        this.messaging.social.update({
-            textareaId: this.inputRef.el.dataset.id,
-            emojiPickerPopoverAnchorRef: { el: event.target.closest('.o_social_emoji_dropdown') },
-            emojiPickerPopoverView: {},
-        });
     }
 
     //---------
@@ -61,27 +45,31 @@ export class StreamPostCommentsReply extends Component {
     //---------
 
     _addComment(textarea) {
-        if (this.props.preventAddComment(textarea, this.isCommentReply ? this.comment.id : undefined)) {
+        if (
+            this.props.preventAddComment(
+                textarea,
+                this.isCommentReply ? this.comment.id : undefined
+            )
+        ) {
             return;
         }
-
-        let formData = new FormData(textarea.closest('.o_social_write_reply').querySelector('form'));
-
+        const formData = new FormData(
+            textarea.closest(".o_social_write_reply").querySelector("form")
+        );
         const xhr = new window.XMLHttpRequest();
-        xhr.open('POST', this.addCommentEndpoint);
-        formData.append('csrf_token', odoo.csrf_token);
-        formData.append('stream_post_id', this.originalPost.id.raw_value);
+        xhr.open("POST", this.addCommentEndpoint);
+        formData.append("csrf_token", odoo.csrf_token);
+        formData.append("stream_post_id", this.originalPost.id.raw_value);
         if (this.isCommentEdit) {
-            formData.append('is_edit', this.isCommentEdit);
+            formData.append("is_edit", this.isCommentEdit);
         }
         if (this.isCommentEdit || this.isCommentReply) {
-            formData.append('comment_id', this.comment.id);
+            formData.append("comment_id", this.comment.id);
         }
-        let existingAttachmentId = textarea.dataset.existingAttachmentId;
+        const existingAttachmentId = textarea.dataset.existingAttachmentId;
         if (existingAttachmentId) {
-            formData.append('existing_attachment_id', this.props.attachmentSrc);
+            formData.append("existing_attachment_id", this.props.attachmentSrc);
         }
-
         xhr.send(formData);
         xhr.onload = () => {
             const comment = JSON.parse(xhr.response);
@@ -89,29 +77,28 @@ export class StreamPostCommentsReply extends Component {
                 this.props.onAddComment(comment);
             }
             this.state.attachmentSrc = false;
-            this.inputRef.el.value = '';
+            this.inputRef.el.value = "";
             this.state.disabled = false;
             if (this.isCommentEdit) {
                 this.props.toggleEditMode();
             }
-        }
+        };
     }
 
     /**
      * This method adds the emoji just after the user selection. After it's inserted it
      * gives back the focus to the textarea just after the added emoji.
      *
-     * @param { CustomEvent } event
+     * @param {string} str: emoji
      * @private
      */
-    _onAddEmoji(event) {
+    _onAddEmoji(str) {
         const input = this.inputRef.el;
         const selectionStart = input.selectionStart;
-        const emoji = event.detail.emoji.codepoints;
-
-        input.value = input.value.slice(0, selectionStart) + emoji + input.value.slice(selectionStart);
+        input.value =
+            input.value.slice(0, selectionStart) + str + input.value.slice(selectionStart);
         input.focus();
-        input.setSelectionRange(selectionStart + emoji.length, selectionStart + emoji.length);
+        input.setSelectionRange(selectionStart + str.length, selectionStart + str.length);
     }
 
     //------------------------
@@ -124,7 +111,7 @@ export class StreamPostCommentsReply extends Component {
      * @param {MouseEvent} event
      */
     _onAddImage(event) {
-        event.currentTarget.closest('.o_social_write_reply').querySelector('.o_input_file').click();
+        event.currentTarget.closest(".o_social_write_reply").querySelector(".o_input_file").click();
     }
 
     /**
@@ -137,8 +124,8 @@ export class StreamPostCommentsReply extends Component {
      * @param {String} file.data
      * @param {String} file.type
      */
-    _onImageChange({data, type}) {
-        this.state.attachmentSrc = 'data:' + type + ';base64,' + data;
+    _onImageChange({ data, type }) {
+        this.state.attachmentSrc = "data:" + type + ";base64," + data;
     }
 
     /**
@@ -165,7 +152,7 @@ export class StreamPostCommentsReply extends Component {
     }
 
     get authorPictureSrc() {
-        return '';
+        return "";
     }
 
     get addCommentEndpoint() {
@@ -187,9 +174,8 @@ export class StreamPostCommentsReply extends Component {
     get canAddImage() {
         return true;
     }
-
 }
-StreamPostCommentsReply.template = 'social.StreamPostCommentsReply';
+StreamPostCommentsReply.template = "social.StreamPostCommentsReply";
 StreamPostCommentsReply.components = { FileUploader };
 StreamPostCommentsReply.defaultProps = {
     isCommentReply: false,

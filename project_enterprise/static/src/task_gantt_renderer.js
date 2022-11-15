@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { Avatar } from "@mail/components/avatar/avatar";
+import { Avatar } from "@mail/web/fields/avatar/avatar";
 import { markup, useEffect } from "@odoo/owl";
 import { localization } from "@web/core/l10n/localization";
 import { useService } from "@web/core/utils/hooks";

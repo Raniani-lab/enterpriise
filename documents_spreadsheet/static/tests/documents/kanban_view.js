@@ -1,8 +1,12 @@
 /** @odoo-module */
 
 import { dom } from "web.test_utils";
-import { createDocumentsView } from "@documents/../tests/documents_test_utils";
-import { startServer } from "@mail/../tests/helpers/test_utils";
+import { documentService } from "@documents/core/document_service";
+import { getEnrichedSearchArch } from "@documents/../tests/documents_test_utils";
+
+import { mockActionService } from "@documents_spreadsheet/../tests/spreadsheet_test_utils";
+
+import { start, startServer } from "@mail/../tests/helpers/test_utils";
 import {
     click,
     getFixture,
@@ -30,6 +34,7 @@ QUnit.module(
         beforeEach() {
             setupViewRegistries();
             target = getFixture();
+            serviceRegistry.add("document.document", documentService);
             serviceRegistry.add("file_upload", fileUploadService);
             serviceRegistry.add("documents_pdf_thumbnail", {
                 start() {
@@ -85,18 +90,26 @@ QUnit.module(
                 assert.ok(options.data.zip_name);
                 assert.ok(options.data.files);
             });
-            await createDocumentsView({
-                type: "kanban",
-                resModel: "documents.document",
-                arch: `
-              <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
-                  <div>
-                      <i class="fa fa-circle-thin o_record_selector"/>
-                      <field name="name"/>
-                      <field name="handler"/>
-                  </div>
-              </t></templates></kanban>`,
-                serverData: { models: pyEnv.getData(), views: {} },
+            const serverData = {
+                views: {
+                    "documents.document,false,kanban": `
+                        <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                            <div>
+                                <i class="fa fa-circle-thin o_record_selector"/>
+                                <field name="name"/>
+                                <field name="handler"/>
+                            </div>
+                        </t></templates></kanban>
+                    `,
+                    "documents.document,false,search": getEnrichedSearchArch(),
+                },
+            };
+            const { openView } = await start({
+                serverData,
+            });
+            await openView({
+                res_model: "documents.document",
+                views: [[false, "kanban"]],
             });
 
             await click(target, ".o_kanban_record:nth-of-type(1) .o_record_selector");
@@ -134,19 +147,26 @@ QUnit.module(
                     handler: "spreadsheet",
                 },
             ]);
-            await createDocumentsView({
-                type: "kanban",
-                resModel: "documents.document",
-                arch: `
-              <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
-                  <div>
-                      <i class="fa fa-circle-thin o_record_selector"/>
-                      <field name="name"/>
-                      <field name="handler"/>
-                  </div>
-              </t></templates></kanban>
-          `,
-                serverData: { models: pyEnv.getData(), views: {} },
+            const serverData = {
+                views: {
+                    "documents.document,false,kanban": `
+                        <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                            <div>
+                                <i class="fa fa-circle-thin o_record_selector"/>
+                                <field name="name"/>
+                                <field name="handler"/>
+                            </div>
+                        </t></templates></kanban>
+                    `,
+                    "documents.document,false,search": getEnrichedSearchArch(),
+                },
+            };
+            const { openView } = await start({
+                serverData,
+            });
+            await openView({
+                res_model: "documents.document",
+                views: [[false, "kanban"]],
             });
             await click(target, ".o_kanban_record:nth-of-type(1) .o_record_selector");
             assert.containsOnce(target, ".o_documents_inspector_preview .o_document_preview");
@@ -190,18 +210,6 @@ QUnit.module(
             "open xlsx converts to o-spreadsheet, clone it and opens the spreadsheet",
             async function (assert) {
                 const spreadsheetCopyId = 99;
-                const fakeActionService = {
-                    name: "action",
-                    start() {
-                        return {
-                            doAction(action) {
-                                assert.step(action.tag, "it should open the spreadsheet");
-                                assert.deepEqual(action.params.spreadsheet_id, spreadsheetCopyId);
-                            },
-                        };
-                    },
-                };
-                serviceRegistry.add("action", fakeActionService, { force: true });
                 const pyEnv = await startServer();
                 const spreadsheetId = pyEnv["documents.document"].create([
                     {
@@ -210,9 +218,26 @@ QUnit.module(
                         thumbnail_status: "present",
                     },
                 ]);
-                await createDocumentsView({
-                    type: "kanban",
-                    resModel: "documents.document",
+                const serverData = {
+                    views: {
+                        "documents.document,false,kanban": `
+                            <kanban js_class="documents_kanban">
+                                <templates>
+                                    <t t-name="kanban-box">
+                                        <div>
+                                            <div name="document_preview" class="o_kanban_image_wrapper">a thumbnail</div>
+                                            <i class="fa fa-circle-thin o_record_selector"/>
+                                            <field name="name"/>
+                                            <field name="handler"/>
+                                        </div>
+                                    </t>
+                                </templates>
+                            </kanban>
+                        `,
+                        "documents.document,false,search": getEnrichedSearchArch(),
+                    },
+                };
+                const { env, openView } = await start({
                     mockRPC: async (route, args) => {
                         if (args.method === "clone_xlsx_into_spreadsheet") {
                             assert.step("spreadsheet_cloned", "it should clone the spreadsheet");
@@ -221,21 +246,15 @@ QUnit.module(
                             return spreadsheetCopyId;
                         }
                     },
-                    arch: /*xml*/ `
-                        <kanban js_class="documents_kanban">
-                            <templates>
-                                <t t-name="kanban-box">
-                                    <div>
-                                        <div name="document_preview" class="o_kanban_image_wrapper">a thumbnail</div>
-                                        <i class="fa fa-circle-thin o_record_selector"/>
-                                        <field name="name"/>
-                                        <field name="handler"/>
-                                    </div>
-                                </t>
-                            </templates>
-                        </kanban>
-                    `,
-                    serverData: { models: pyEnv.getData(), views: {} },
+                    serverData,
+                });
+                await openView({
+                    res_model: "documents.document",
+                    views: [[false, "kanban"]],
+                });
+                mockActionService(env, (action) => {
+                    assert.step(action.tag, "it should open the spreadsheet");
+                    assert.deepEqual(action.params.spreadsheet_id, spreadsheetCopyId);
                 });
                 const fixture = getFixture();
                 await click(fixture, ".oe_kanban_previewer");

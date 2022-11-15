@@ -1,17 +1,10 @@
 /** @odoo-module */
 
-import { formView } from "@web/views/form/form_view";
+import { Chatter } from "@mail/web/chatter";
 
 import { Component } from "@odoo/owl";
 
-const components = formView.Controller.components;
-
-export class ChatterContainer extends components.ChatterContainer {
-    _insertFromProps(props) {
-        props = { ...props };
-        delete props.studioXpath;
-        return super._insertFromProps(props);
-    }
+export class ChatterContainer extends Chatter {
     onClick(ev) {
         this.env.config.onNodeClicked({
             xpath: this.props.studioXpath,
@@ -20,10 +13,7 @@ export class ChatterContainer extends components.ChatterContainer {
     }
 }
 ChatterContainer.template = "web_studio.ChatterContainer";
-ChatterContainer.props = {
-    ...ChatterContainer.props,
-    studioXpath: String,
-};
+ChatterContainer.props = [...Chatter.props, "studioXpath?"];
 
 export class ChatterContainerHook extends Component {
     onClick() {
@@ -34,7 +24,7 @@ export class ChatterContainerHook extends Component {
     }
 }
 ChatterContainerHook.template = "web_studio.ChatterContainerHook";
-ChatterContainerHook.components = { ChatterContainer: components.ChatterContainer };
+ChatterContainerHook.components = { Chatter };
 ChatterContainerHook.props = {
     chatterData: Object,
     threadModel: String,

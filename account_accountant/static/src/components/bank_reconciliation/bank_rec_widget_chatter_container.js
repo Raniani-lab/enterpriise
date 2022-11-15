@@ -2,7 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
-import { ChatterContainer } from '@mail/components/chatter_container/chatter_container';
+import { Chatter } from "@mail/web/chatter";
 
 const { Component } = owl;
 
@@ -15,9 +15,12 @@ class FormChatterContainer extends Component {}
 FormChatterContainer.template = "account_accountant.FormChatterContainer";
 FormChatterContainer.props = {
     ...standardWidgetProps,
-    m2oField: { type: String }
+    m2oField: { type: String },
 };
-FormChatterContainer.components = { ChatterContainer }
+FormChatterContainer.extractProps = ({ attrs }) => ({
+    m2oField: attrs.m2oField,
+});
+FormChatterContainer.components = { Chatter };
 
 export const formChatterContainer = {
     component: FormChatterContainer,

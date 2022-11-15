@@ -39,11 +39,11 @@
             }
         }
 
-        .o_FormRenderer_chatterContainer {
+        .o-mail-Form-chatter {
             max-width: 100%;
         }
 
-        .o_Chatter {
+        .o-mail-Chatter {
             width: 100%;
             overflow: unset;
             flex: 1000 0 auto;
@@ -58,14 +58,14 @@
             flex-flow: column nowrap;
             padding: 16px;
         }
-        .o_form_sheet, .o_ChatterContainer {
+        .o_form_sheet, .o-mail-Chatter {
             max-width: 100%;
         }
         .o_form_sheet > .o_group {
             margin-left: -$-web-studio-form-edition-gap;
             margin-right: -$-web-studio-form-edition-gap;
         }
-        .o_ChatterContainer {
+        .o-mail-Chatter {
             position: relative;
             .o_web_studio_overlay {
                 @include o-position-absolute(0, 0, 0, 0);

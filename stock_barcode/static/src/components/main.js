@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import { ChatterContainer } from '@mail/components/chatter_container/chatter_container';
+import { Chatter } from "@mail/web/chatter";
 
 import BarcodePickingModel from '@stock_barcode/models/barcode_picking_model';
 import BarcodeQuantModel from '@stock_barcode/models/barcode_quant_model';
@@ -345,11 +345,11 @@ class MainComponent extends Component {
 MainComponent.props = ["action", "actionId?", "className?", "globalState?", "resId?"];
 MainComponent.template = 'stock_barcode.MainComponent';
 MainComponent.components = {
+    Chatter,
     View,
     GroupedLineComponent,
     LineComponent,
     PackageLineComponent,
-    ChatterContainer,
 };
 
 registry.category("actions").add("stock_barcode_client_action", MainComponent);

@@ -60,7 +60,7 @@ export class FormEditorCompiler extends formView.Compiler {
             const el = compiled.querySelector(".o_form_sheet") || compiled;
             el.after(chatterContainerHook);
         } else {
-            const parent = compiled.querySelector(".o_FormRenderer_chatterContainer");
+            const parent = compiled.querySelector(".o-mail-Form-chatter");
             parent.removeAttribute("t-attf-class"); // avoid class o-aside
             parent.removeAttribute("t-if");
         }
@@ -200,8 +200,7 @@ export class FormEditorCompiler extends formView.Compiler {
 
             if (node.classList.contains("oe_chatter")) {
                 this.addChatter = false;
-                // compiled is not ChatterContainer!
-                const chatterNode = compiled.querySelector("ChatterContainer");
+                const chatterNode = compiled.querySelector("Chatter");
                 const xpath = node.getAttribute("studioXpath");
                 chatterNode.setAttribute("studioXpath", `"${xpath}"`);
                 compiled.classList.add("o-web-studio-editor--element-clickable");

@@ -58,14 +58,13 @@ export class DocumentsListRenderer extends ListRenderer {
         return this.props.allowSelectors;
     }
 
-
     getDocumentsInspectorProps() {
         return {
             selection: this.props.list.selection,
             count: this.props.list.model.useSampleModel ? 0 : this.props.list.count,
             fileSize: this.props.list.fileSize,
             archInfo: this.props.archInfo,
-            withFilePreview: !this.env.documentsView.previewStore.documentList || !this.env.documentsView.previewStore.documentList.exists(),
+            withFilePreview: !this.env.documentsView.previewStore.documentList,
         };
     }
 }

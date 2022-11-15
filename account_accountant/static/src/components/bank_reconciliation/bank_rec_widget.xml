@@ -343,7 +343,7 @@
     </t>
 
     <t t-name="account_accountant.FormChatterContainer" owl="1">
-        <ChatterContainer
+        <Chatter
             threadModel="this.props.record.fields[this.props.m2oField].relation"
             threadId="this.props.record.data[this.props.m2oField][0]"/>
     </t>

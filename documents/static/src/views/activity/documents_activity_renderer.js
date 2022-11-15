@@ -21,7 +21,7 @@ export class DocumentsActivityRenderer extends ActivityRenderer {
             count: 0,
             fileSize: 0,
             archInfo: this.props.archInfo,
-            withFilePreview: !this.env.documentsView.previewStore.documentList || !this.env.documentsView.previewStore.documentList.exists(),
+            withFilePreview: !this.env.documentsView.previewStore.documentList,
         };
     }
 }

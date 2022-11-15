@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <!--
-        @param {voip.PhoneCallDetails} widget
+        @param {import("@voip/legacy/phone_call_details").PhoneCallDetails} widget
         @param {integer} widget.activityId
         @param {string} widget.activityModelName
         @param {integer} widget.activityResId

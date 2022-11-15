@@ -2,7 +2,7 @@
 <templates xml:space="preserve">
 
     <!--
-        @param {voip.PhoneCall} widget
+        @param {import("@voip/legacy/phone_call").PhoneCall} widget
         @param {string} widget.date
         @param {integer} widget.id
         @param {string} widget.imageSmall

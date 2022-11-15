@@ -29,26 +29,11 @@ Allows to make call from next activities or with click-to-dial.
     'application': True,
     'license': 'OEEL-1',
     'assets': {
-        'mail.assets_messaging': [
-            'voip/static/src/models/*.js',
-        ],
         'web.assets_backend': [
             'voip/static/lib/sip.js',
-            'voip/static/src/js/dialing_panel.js',
-            'voip/static/src/js/phone_call.js',
-            'voip/static/src/js/phone_call_activities_tab.js',
-            'voip/static/src/js/phone_call_contacts_tab.js',
-            'voip/static/src/js/phone_call_details.js',
-            'voip/static/src/js/phone_call_recent_tab.js',
-            'voip/static/src/js/phone_call_tab.js',
-            'voip/static/src/js/dialing_panel_container.js',
-            'voip/static/src/js/legacy_compatibility.js',
-            'voip/static/src/js/audio_input_device.js',
-            'voip/static/src/js/user_agent.js',
-            'voip/static/src/scss/voip.scss',
-            'voip/static/src/voip_service.js',
-            'voip/static/src/components/*/*',
-            'voip/static/src/xml/*.xml',
+            'voip/static/src/**/*',
+            ('remove', 'voip/static/src/**/*.dark.scss'),
+            ('remove', 'voip/static/src/main.js'),
         ],
         'web.assets_backend_prod_only': [
             'voip/static/src/main.js',
@@ -57,10 +42,11 @@ Allows to make call from next activities or with click-to-dial.
             'voip/static/tests/helpers/**/*.js',
         ],
          "web.dark_mode_assets_backend": [
-            'voip/static/src/scss/voip.dark.scss',
+            'voip/static/src/**/*.dark.scss',
         ],
         'web.qunit_suite_tests': [
-            'voip/static/tests/qunit_suite_tests/**/*.js',
+            'voip/static/tests/**/*',
+            ('remove', 'voip/static/tests/helpers/**/*.js'),
         ],
     }
 }

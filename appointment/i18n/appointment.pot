@@ -371,7 +371,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
 #, python-format
-msgid "Add a specific appointment."
+msgid "Add a specific appointment"
 msgstr ""
 
 #. module: appointment
@@ -1592,7 +1592,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
 #, python-format
-msgid "Schedule an appointment."
+msgid "Schedule an appointment"
 msgstr ""
 
 #. module: appointment

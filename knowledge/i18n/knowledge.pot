@@ -678,14 +678,14 @@ msgstr ""
 #. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
-msgid "Add a table of content."
+msgid "Add a table of content"
 msgstr ""
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
-msgid "Add a template section."
+msgid "Add a template section"
 msgstr ""
 
 #. module: knowledge
@@ -1246,7 +1246,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
-msgid "Embed a file."
+msgid "Embed a file"
 msgstr ""
 
 #. module: knowledge
@@ -1650,7 +1650,7 @@ msgstr ""
 #. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
-msgid "Link an article."
+msgid "Link an article"
 msgstr ""
 
 #. module: knowledge
@@ -2122,14 +2122,14 @@ msgstr ""
 #. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
-msgid "Show all nested articles."
+msgid "Show all nested articles"
 msgstr ""
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
-msgid "Show the first level of nested articles."
+msgid "Show the first level of nested articles"
 msgstr ""
 
 #. module: knowledge

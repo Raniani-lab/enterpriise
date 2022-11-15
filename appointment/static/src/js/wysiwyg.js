@@ -20,7 +20,7 @@ Wysiwyg.include({
                 category: _t('Navigation'),
                 name: _t('Appointment'),
                 priority: 10,
-                description: _t('Add a specific appointment.'),
+                description: _t('Add a specific appointment'),
                 fontawesome: 'fa-calendar',
                 callback: async () => {
                     Component.env.services.dialog.add(AppointmentFormViewDialog, {
@@ -44,7 +44,7 @@ Wysiwyg.include({
                 category: _t('Navigation'),
                 name: _t('Calendar'),
                 priority: 10,
-                description: _t('Schedule an appointment.'),
+                description: _t('Schedule an appointment'),
                 fontawesome: 'fa-calendar',
                 callback: () => {
                     const link = `<a href="${window.location.origin}/appointment">Our Appointment Types</a>`;

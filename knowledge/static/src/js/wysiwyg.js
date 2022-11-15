@@ -72,7 +72,7 @@ Wysiwyg.include({
             category: _t('Media'),
             name: _t('Article'),
             priority: 10,
-            description: _t('Link an article.'),
+            description: _t('Link an article'),
             fontawesome: 'fa-file',
             callback: () => {
                 this._insertArticleLink();
@@ -84,7 +84,7 @@ Wysiwyg.include({
                 category: _t('Knowledge'),
                 name: _t('File'),
                 priority: 20,
-                description: _t('Embed a file.'),
+                description: _t('Embed a file'),
                 fontawesome: 'fa-file',
                 callback: () => {
                     this.openMediaDialog({
@@ -99,7 +99,7 @@ Wysiwyg.include({
                 category: _t('Knowledge'),
                 name: _t('Template'),
                 priority: 10,
-                description: _t('Add a template section.'),
+                description: _t('Add a template section'),
                 fontawesome: 'fa-pencil-square',
                 callback: () => {
                     this._insertTemplate();
@@ -108,7 +108,7 @@ Wysiwyg.include({
                 category: _t('Knowledge'),
                 name: _t('Table Of Content'),
                 priority: 30,
-                description: _t('Add a table of content.'),
+                description: _t('Add a table of content'),
                 fontawesome: 'fa-bookmark',
                 callback: () => {
                     this._insertTableOfContent();
@@ -155,7 +155,7 @@ Wysiwyg.include({
                 category: _t('Knowledge'),
                 name: _t('Index'),
                 priority: 40,
-                description: _t('Show the first level of nested articles.'),
+                description: _t('Show the first level of nested articles'),
                 fontawesome: 'fa-list',
                 callback: () => {
                     this._insertArticlesStructure(true);
@@ -164,7 +164,7 @@ Wysiwyg.include({
                 category: _t('Knowledge'),
                 name: _t('Outline'),
                 priority: 40,
-                description: _t('Show all nested articles.'),
+                description: _t('Show all nested articles'),
                 fontawesome: 'fa-list',
                 callback: () => {
                     this._insertArticlesStructure(false);

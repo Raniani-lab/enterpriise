@@ -4491,7 +4491,8 @@ class AccountReportLine(models.Model):
         keys_and_names_in_sequence = {}  # Order of this dict will matter
 
         if groupby_model:
-            for record in self.env[groupby_model].browse(list(key for key in group_lines_by_keys if key is not None)).sorted():
+            browsed_groupby_keys = self.env[groupby_model].browse(list(key for key in group_lines_by_keys if key is not None))
+            for record in browsed_groupby_keys.with_context(active_test=False).sorted():
                 keys_and_names_in_sequence[record.id] = record.display_name
 
             if None in group_lines_by_keys:

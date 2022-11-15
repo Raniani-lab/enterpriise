@@ -112,67 +112,7 @@ export default class BarcodeModel extends EventBus {
     }
 
     get barcodeInfo() {
-        // Takes the parent line if the current line is part of a group.
-        let line = this._getParentLine(this.selectedLine) || this.selectedLine;
-        if (!line && this.lastScanned.packageId) {
-            const lines = this._moveEntirePackage() ? this.packageLines : this.pageLines;
-            line = lines.find(l => l.package_id && l.package_id.id === this.lastScanned.packageId);
-        }
-
-        if (line) { // Message depends of the selected line's state.
-            const { tracking } = line.product_id;
-            const trackingNumber = (line.lot_id && line.lot_id.name) || line.lot_name;
-            if (this._lineIsNotComplete(line)) {
-                if (tracking === 'none') {
-                    this.messageType = 'scan_product';
-                } else {
-                    this.messageType = tracking === 'lot' ? 'scan_lot' : 'scan_serial';
-                }
-            } else if (tracking !== 'none' && !trackingNumber) {
-                // Line's quantity is fulfilled but still waiting a tracking number.
-                this.messageType = tracking === 'lot' ? 'scan_lot' : 'scan_serial';
-            } else { // Line's quantity is fulfilled.
-                this.messageType = this._getLocationMessage();
-            }
-        } else { // Message depends of the operation.
-            this.messageType = this.groups.group_stock_multi_locations ?
-                this._getDefaultMessageType() :
-                'scan_product';
-        }
-
-        const barcodeInformations = { class: this.messageType, warning: false };
-        switch (this.messageType) {
-            case 'scan_product':
-                barcodeInformations.message = _t("Scan a product");
-                barcodeInformations.icon = 'tags';
-                break;
-            case 'scan_src':
-                barcodeInformations.message = _t("Scan the source location, or scan a product");
-                barcodeInformations.icon = 'sign-out';
-                break;
-            case 'scan_product_or_src':
-                barcodeInformations.message = _t("Scan more products, or scan a new source location");
-                break;
-            case 'scan_product_or_dest':
-                barcodeInformations.message = _t("Scan more products, or scan the destination location");
-                barcodeInformations.icon = 'sign-in';
-                break;
-            case 'scan_lot':
-                barcodeInformations.message = sprintf(
-                    _t("Scan lot numbers for product %s to change their quantity"),
-                    line.product_id.display_name
-                );
-                barcodeInformations.icon = 'barcode';
-                break;
-            case 'scan_serial':
-                barcodeInformations.message = sprintf(
-                    _t("Scan serial numbers for product %s to change their quantity"),
-                    line.product_id.display_name
-                );
-                barcodeInformations.icon = 'barcode';
-                break;
-        }
-        return barcodeInformations;
+        throw new Error('Not Implemented');
     }
 
     get canCreateNewLot() {
@@ -637,26 +577,10 @@ export default class BarcodeModel extends EventBus {
         };
     }
 
-    _getDefaultMessageType() {
-        return this.groups.group_stock_multi_locations ? 'scan_src' : 'scan_product';
-    }
-
     _getLineIndex() {
         const sortIndex = String(this.currentSortIndex).padStart(4, '0');
         this.currentSortIndex++;
         return sortIndex;
-    }
-
-    /**
-     * Depending of the config, says if the user can scan a location or a product only.
-     *
-     * @returns {string}
-     */
-    _getLocationMessage() {
-        if (this.groups.group_stock_multi_locations) {
-            return 'scan_product_or_src';
-        }
-        return 'scan_product';
     }
 
     _getModelRecord() {
@@ -1172,6 +1096,7 @@ export default class BarcodeModel extends EventBus {
         barcodeData.stopped = true;
         // Unselects the line.
         this.selectedLineVirtualId = false;
+        this.lastScanned.packageId = false;
     }
 
     async _processPackage(barcodeData) {

@@ -49,67 +49,73 @@ export default class BarcodeQuantModel extends BarcodeModel {
         // Takes the parent line if the current line is part of a group.
         let line = this._getParentLine(this.selectedLine) || this.selectedLine;
         if (!line && this.lastScanned.packageId) {
-            const lines = this._moveEntirePackage() ? this.packageLines : this.pageLines;
-            line = lines.find(l => l.package_id && l.package_id.id === this.lastScanned.packageId);
+            line = this.pageLines.find(l => l.package_id && l.package_id.id === this.lastScanned.packageId);
         }
+        // Defines some messages who can appear in multiple cases.
+        const messages = {
+            scanProduct: {
+                class: 'scan_product',
+                message: _t("Scan a product"),
+                icon: 'tags',
+            },
+            scanLot: {
+                class: 'scan_lot',
+                message: sprintf(
+                    _t("Scan lot numbers for product %s to change their quantity"),
+                    line ? line.product_id.display_name : ""
+                ),
+                icon: 'barcode',
+            },
+            scanSerial: {
+                class: 'scan_serial',
+                message: sprintf(
+                    _t("Scan serial numbers for product %s to change their quantity"),
+                    line ? line.product_id.display_name : ""
+                ),
+                icon: 'barcode',
+            },
+        };
 
         if (line) { // Message depends of the selected line's state.
             const { tracking } = line.product_id;
             const trackingNumber = (line.lot_id && line.lot_id.name) || line.lot_name;
             if (this._lineIsNotComplete(line)) {
-                if (tracking === 'none') {
-                    this.messageType = 'scan_product';
-                } else {
-                    this.messageType = tracking === 'lot' ? 'scan_lot' : 'scan_serial';
+                if (tracking !== 'none') {
+                    return tracking === 'lot' ? messages.scanLot : messages.scanSerial;
                 }
+                return messages.scanProduct;
             } else if (tracking !== 'none' && !trackingNumber) {
                 // Line's quantity is fulfilled but still waiting a tracking number.
-                this.messageType = tracking === 'lot' ? 'scan_lot' : 'scan_serial';
+                return tracking === 'lot' ? messages.scanLot : messages.scanSerial;
             } else { // Line's quantity is fulfilled.
-                this.messageType = this.groups.group_stock_multi_locations && line.location_id.id === this.location.id ?
-                    "scan_product_or_src" :
-                    "scan_product";
+                if (this.groups.group_stock_multi_locations && line.location_id.id === this.location.id) {
+                    return {
+                        class: 'scan_product_or_src',
+                        message: sprintf(
+                            _t("Scan more products in %s or scan another location"),
+                            this.location.display_name),
+                    };
+                }
+                return messages.scanProduct;
             }
-        } else { // Message depends if multilocation is enabled.
-            this.messageType = this.groups.group_stock_multi_locations && !this.lastScanned.sourceLocation ?
-                'scan_src' :
-                'scan_product';
         }
-
-        const barcodeInformations = { class: this.messageType, warning: false, icon: 'barcode' };
-        switch (this.messageType) {
-            case 'scan_product':
-                barcodeInformations.message = this.groups.group_stock_multi_locations ?
-                    sprintf(_t("Scan a product in %s or scan another location"), this.location.display_name) :
-                    _t("Scan a product");
-                break;
-            case 'scan_src':
-                barcodeInformations.message = _t("Scan a location");
-                barcodeInformations.icon = 'sign-out';
-                break;
-            case 'scan_product_or_src':
-                barcodeInformations.message = sprintf(
-                    _t("Scan more products in %s or scan another location"),
-                    this.location.display_name);
-                break;
-            case 'scan_product_or_dest':
-                barcodeInformations.message = _t("Scan more products, or scan the destination location");
-                barcodeInformations.icon = 'sign-in';
-                break;
-            case 'scan_lot':
-                barcodeInformations.message = sprintf(
-                    _t("Scan lot numbers for product %s to change their quantity"),
-                    line.product_id.display_name
-                );
-                break;
-            case 'scan_serial':
-                barcodeInformations.message = sprintf(
-                    _t("Scan serial numbers for product %s to change their quantity"),
-                    line.product_id.display_name
-                );
-                break;
+        // No line selected, returns default message (depends if multilocation is enabled).
+        if (this.groups.group_stock_multi_locations) {
+            if (!this.lastScanned.sourceLocation) {
+                return {
+                    class: 'scan_src',
+                    message: _t("Scan a location"),
+                    icon: 'sign-out',
+                };
+            }
+            return {
+                class: 'scan_product_or_src',
+                message: sprintf(
+                    _t("Scan a product in %s or scan another location"),
+                    this.location.display_name),
+            };
         }
-        return barcodeInformations;
+        return messages.scanProduct;
     }
 
     get displayByUnitButton () {

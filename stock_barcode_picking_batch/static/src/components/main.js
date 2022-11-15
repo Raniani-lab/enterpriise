@@ -16,10 +16,6 @@ patch(MainComponent.prototype, 'stock_barcode_picking_batch', {
         this.env.model.confirmSelection();
     },
 
-    get displayHeaderInfoAsColumn() {
-        return this._super() || this.isConfiguring || !this.env.model.canBeProcessed;
-    },
-
     async exit(ev) {
         if (this.state.view === 'barcodeLines' && this.env.model.canBeProcessed &&
             this.env.model.needPickings && !this.env.model.needPickingType && this.env.model.pickingTypes) {

@@ -312,7 +312,7 @@ tour.register('test_gs1_inventory_package', {test: true}, [
         run: 'scan LOC-01-01-00',
     },
     {
-        trigger: '.o_scan_product:contains("WH/Stock/Section 1")',
+        trigger: '.o_scan_product_or_src:contains("WH/Stock/Section 1")',
         run: 'scan 00987654123487568456',
     },
     {
@@ -333,7 +333,7 @@ tour.register('test_gs1_inventory_package', {test: true}, [
         run: 'scan LOC-01-02-00',
     },
     {
-        trigger: '.o_scan_product:contains("WH/Stock/Section 2")',
+        trigger: '.o_scan_product_or_src:contains("WH/Stock/Section 2")',
         run: 'scan 00487325612456785124',
     },
     {

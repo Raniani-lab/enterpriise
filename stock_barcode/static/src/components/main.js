@@ -81,16 +81,8 @@ class MainComponent extends Component {
     // Public
     //--------------------------------------------------------------------------
 
-    get displayHeaderInfoAsColumn() {
-        return this.env.model.isDone || this.env.model.isCancelled;
-    }
-
     get highlightValidateButton() {
         return this.env.model.highlightValidateButton;
-    }
-
-    get info() {
-        return this.env.model.barcodeInfo;
     }
 
     get isTransfer() {

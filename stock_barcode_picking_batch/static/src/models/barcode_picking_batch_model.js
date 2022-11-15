@@ -50,43 +50,36 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
     }
 
     get barcodeInfo() {
+        const barcodeInfo = {};
         if ((this.needPickings || this.needPickingType) && !this._allowedPickings.length) {
             // Special case: the batch need to be configured but there is no pickings available.
-            return {
-                class: 'picking_batch_not_possible',
-                message: _t("No ready transfers found"),
-                warning: true,
-            };
+            barcodeInfo.class = "picking_batch_not_possible";
+            barcodeInfo.message = _t("No ready transfers found");
+            barcodeInfo.warning = true;
         } else if (this.needPickingType) {
-            return {
-                class: 'picking_batch_select_type',
-                message: _t("Select an operation type for batch transfer"),
-            };
+            barcodeInfo.class = "picking_batch_select_type";
+            barcodeInfo.message = _t("Select an operation type for batch transfer");
         } else if (this.needPickings) {
-            return {
-                class: 'picking_batch_select_transfers',
-                message: _t("Select transfers for batch transfer"),
-            };
+            barcodeInfo.class = "picking_batch_select_transfers";
+            barcodeInfo.message = _t("Select transfers for batch transfer");
         } else if (this.isDone) {
-            return {
-                class: 'picking_already_done',
-                message: _t("This batch transfer is already done"),
-                warning: true,
-            };
+            barcodeInfo.class = "picking_already_done";
+            barcodeInfo.message = _t("This batch transfer is already done");
+            barcodeInfo.warning = true;
         } else if (this.isCancelled) {
-            return {
-                class: 'picking_already_cancelled',
-                message: _t("This batch transfer is cancelled"),
-                warning: true,
-            };
+            barcodeInfo.class = "picking_already_cancelled";
+            barcodeInfo.message = _t("This batch transfer is cancelled");
+            barcodeInfo.warning = true;
         } else if (this.record.state === 'draft') {
-            return {
-                class: 'picking_batch_draft',
-                message:  _t("This batch transfer is still draft, it must be confirmed before being processed"),
-                warning: true,
-            };
+            barcodeInfo.class = "picking_batch_draft";
+            barcodeInfo.message =  _t("This batch transfer is still draft, it must be confirmed before being processed");
+            barcodeInfo.warning = true;
         }
-        return super.barcodeInfo;
+        if (barcodeInfo.message) {
+            barcodeInfo.icon = barcodeInfo.warning ? "exclamation-triangle" : "hand-pointer-o";
+            barcodeInfo.warning = true;
+        }
+        return barcodeInfo.message ? barcodeInfo : super.barcodeInfo;
     }
 
     get canBeProcessed() {

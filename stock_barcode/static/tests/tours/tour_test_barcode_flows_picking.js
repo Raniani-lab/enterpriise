@@ -1613,7 +1613,7 @@ tour.register('test_bypass_source_scan', {test: true}, [
     },
 
     {
-        trigger: '.o_scan_message.o_scan_product_or_src',
+        trigger: '.o_scan_message.o_scan_product',
         run: 'scan LOC-01-02-00',
     },
 

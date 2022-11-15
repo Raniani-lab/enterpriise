@@ -32,17 +32,14 @@
                     <button type="button" class="btn-close float-end" title="Close" aria-label="Close" t-on-click="() => this.state.displayNote = false"/>
                     <t t-esc="env.model.record.note"/>
                 </div>
-                <div class="o_barcode_lines_header row alert m-0 px-1 "
-                    t-attf-class="{{displayHeaderInfoAsColumn ? 'flex-column justify-content-center align-items-center' : 'justify-content-between'}}">
-                    <div t-if="info.warning" class="o_barcode_pic position-relative text-center mt-2 mb-1">
-                        <i class="fa fa-5x fa-exclamation-triangle"/>
+                <div class="o_barcode_lines_header row alert m-0 px-1 flex-column">
+                    <t t-set="info" t-value="env.model.barcodeInfo"/>
+                    <div t-if="info.warning" class="o_barcode_pic position-relative text-center my-2">
+                        <i t-attf-class="fa fa-5x fa-{{info.icon}}"/>
                     </div>
                     <div name="barcode_messages" class="d-flex align-items-center justify-content-center w-100">
-                        <span t-if="info.icon" class="fa fa-3x me-3" t-attf-class="fa-{{info.icon}}"/>
-                        <span class="o_scan_message" t-attf-class="o_{{info.class}}">
-                            <span t-if="info.warning" name="warning" class="fa fa-exclamation-triangle me-1"/>
-                            <span t-out="info.message"/>
-                        </span>
+                        <span t-if="!info.warning &amp;&amp; info.icon" class="fa fa-3x me-3" t-attf-class="fa-{{info.icon}}"/>
+                        <span class="o_scan_message" t-attf-class="o_{{info.class}}" t-out="info.message"/>
                     </div>
                 </div>
             </t>

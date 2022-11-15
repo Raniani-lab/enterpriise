@@ -152,10 +152,10 @@ export default class BarcodePickingModel extends BarcodeModel {
                 message: this.isDone ?
                     _t("This picking is already done") :
                     _t("This picking is cancelled"),
+                icon: "exclamation-triangle",
                 warning: true,
             };
         }
-        let barcodeInfo = super.barcodeInfo;
         // Takes the parent line if the current line is part of a group.
         const line = this._getParentLine(this.selectedLine) || this.selectedLine;
         // Defines some messages who can appear in multiple cases.
@@ -199,6 +199,21 @@ export default class BarcodePickingModel extends BarcodeModel {
                 icon: 'check-square',
             },
         };
+        let barcodeInfo = {
+            message: _t("Scan a product"),
+            class: "scan_product",
+            icon: "tags",
+        };
+        if ((line || this.lastScanned.packageId) && this.groups.group_stock_multi_locations) {
+            if (this.record.picking_type_code === "outgoing" && this.displaySourceLocation) {
+                barcodeInfo = {
+                    message: _t("Scan more products, or scan a new source location"),
+                    class: "scan_product_or_src",
+                };
+            } else if (this.config.restrict_scan_dest_location != "no") {
+                barcodeInfo = infos.scanProductOrDestLoc;
+            }
+        }
 
         if (!line && this._moveEntirePackage()) { // About package lines.
             const packageLine = this.selectedPackageLine;
@@ -226,7 +241,7 @@ export default class BarcodePickingModel extends BarcodeModel {
                 barcodeInfo.class = 'scan_product_or_package';
             }
         }
-        if (this.messageType === "scan_product" && !line &&
+        if (barcodeInfo.class === "scan_product" && !(line || this.lastScanned.packageId) &&
             this.config.restrict_scan_source_location && this.lastScanned.sourceLocation) {
             barcodeInfo.message = sprintf(
                 _lt("Scan a product from %s"),
@@ -301,7 +316,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         }
 
         if (this.pageIsDone) {
-            Object.assign(barcodeInfo, infos.pressValidateBtn);
+            barcodeInfo = infos.pressValidateBtn;
         }
 
         // About destination location.
@@ -326,6 +341,7 @@ export default class BarcodePickingModel extends BarcodeModel {
                         infos.scanProductOrDestLoc;
                 }
             } else {
+                barcodeInfo = infos.scanProductOrDestLoc;
                 if (product.tracking == 'serial') {
                     barcodeInfo.message = lineWaitingPackage ?
                         _t("Scan a serial number or a package then the destination location") :
@@ -810,17 +826,6 @@ export default class BarcodePickingModel extends BarcodeModel {
         return 'scan_product';
     }
 
-    _getLocationMessage() {
-        if (this.groups.group_stock_multi_locations) {
-            if (this.record.picking_type_code === 'outgoing') {
-                return 'scan_product_or_src';
-            } else if (this.config.restrict_scan_dest_location != 'no') {
-                return 'scan_product_or_dest';
-            }
-        }
-        return 'scan_product';
-    }
-
     _getModelRecord() {
         const record = this.cache.getRecord(this.resModel, this.resId);
         if (record.picking_type_id && record.state !== "cancel") {
@@ -1186,7 +1191,7 @@ export default class BarcodePickingModel extends BarcodeModel {
     async _processGs1Data(data) {
         const result = await super._processGs1Data(...arguments);
         const { rule } = data;
-        if (result.location && (rule.type === 'location_dest' || this.messageType === 'scan_product_or_dest')) {
+        if (result.location && (rule.type === 'location_dest' || this.barcodeInfo.class === 'scan_product_or_dest')) {
             result.destLocation = result.location;
             result.location = undefined;
         }

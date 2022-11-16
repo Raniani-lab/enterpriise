@@ -153,7 +153,7 @@ class TestEcoVouchers(TransactionCase):
         april_payslip.action_payslip_done()
 
         wizard = self.env['l10n.be.eco.vouchers.wizard'].create({
-            'reference_year': 2021,
+            'reference_year': '2021',
         })
         employee_line = wizard.line_ids.filtered(lambda l: l.employee_id == employee)
         self.assertAlmostEqual(employee_line.amount, 215.48)

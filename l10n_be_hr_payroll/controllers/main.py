@@ -31,25 +31,26 @@ class L10nBeHrPayrollEcoVoucherController(http.Controller):
         style_highlight = workbook.add_format({'bold': True, 'pattern': 1, 'bg_color': '#E0E0E0', 'align': 'center'})
         style_normal = workbook.add_format({'align': 'center'})
         row = 0
+        reference_year = wizard.reference_year
 
         headers = [
-            "Numéro de registre national (p.ex. 790227 183 12)",
-            "Salarié nom (p.ex. dupont)",
-            "Salarié prénom (p.ex. max)",
-            "Votre numéro interne du salarié  (p.ex. 152d97)",
-            "Nombre de chèques [a] (p.ex. 18)",
-            "Valeur faciale du chèque [b] (p.ex. 5.5)",
-            "Total [a] x [b] (p.ex. 99)",
+            "Numéro de registre national",
+            "Salarié nom",
+            "Salarié prénom",
+            "Numéro interne du salarié",
+            "Nombre de chèques [a]",
+            "Valeur faciale du chèque [b]",
+            "Total [a] x [b]",
             "Date de naissance du salarié (dd/mm/yyyy)",
             "Sexe du salarié (m/f)",
             "Langue du salarié (nl/fr/en)",
-            "Centre de coûts (p.ex. cc1. maximum 10 caractères)",
-            "Votre numéro d'entreprise  (p.ex. be 0834013324)",
-            "Adresse de livraison rue (p.ex. av. des volontaires)",
-            "Adresse de livraison numéro (p.ex. 19)",
-            "Adresse de livraison boite (p.ex. a1)",
-            "Adresse de livraison code postal (p.ex. 1160)",
-            "Adresse de livraison ville (p.ex. auderghem)",
+            "Centre de coûts (maximum 10 caractères)",
+            "Numéro d'entreprise",
+            "Adresse de livraison rue",
+            "Adresse de livraison numéro",
+            "Adresse de livraison boite",
+            "Adresse de livraison code postal",
+            "Adresse de livraison ville",
         ]
 
         rows = []
@@ -101,7 +102,7 @@ class L10nBeHrPayrollEcoVoucherController(http.Controller):
             xlsx_data,
             headers=[
                 ('Content-Type', 'application/vnd.openxmlformats-officedocument.spreadsheetml.sheet'),
-                ('Content-Disposition', 'attachment; filename=orderfile.xlsx')],
+                ('Content-Disposition', f'attachment; filename=Eco_vouchers_{reference_year}.xlsx')],
         )
         return response
 

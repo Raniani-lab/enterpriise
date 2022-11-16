@@ -26,6 +26,7 @@ class Payslip(models.Model):
     l10n_be_max_seizable_amount = fields.Float(compute='_compute_l10n_be_max_seizable_amount')
     l10n_be_max_seizable_warning = fields.Char(compute='_compute_l10n_be_max_seizable_amount')
     l10n_be_is_december = fields.Boolean(compute='_compute_l10n_be_is_december')
+    l10n_be_has_eco_vouchers = fields.Boolean(compute='_compute_l10n_be_has_eco_vouchers', search='_search_l10n_be_has_eco_vouchers')
 
     @api.depends('employee_id', 'contract_id', 'struct_id', 'date_from', 'date_to')
     def _compute_input_line_ids(self):
@@ -153,6 +154,29 @@ class Payslip(models.Model):
     def _compute_l10n_be_is_double_pay(self):
         for payslip in self:
             payslip.l10n_be_is_double_pay = payslip.struct_id.code == "CP200DOUBLE"
+
+    @api.depends('input_line_ids')
+    def _compute_l10n_be_has_eco_vouchers(self):
+        for slip in self:
+            slip.l10n_be_has_eco_vouchers = any(input_line.code == 'ECOVOUCHERS' for input_line in slip.input_line_ids)
+
+    def _search_l10n_be_has_eco_vouchers(self, operator, value):
+        if operator not in ['=', '!='] or not isinstance(value, bool):
+            raise UserError(_('Operation not supported'))
+        if operator != '=':
+            value = not value
+        self._cr.execute("""
+            SELECT id
+            FROM hr_payslip payslip
+            WHERE EXISTS
+                (SELECT 1
+                 FROM   hr_payslip_input hpi
+                 JOIN   hr_payslip_input_type hpit
+                 ON     hpi.input_type_id = hpit.id AND hpit.code = 'ECOVOUCHERS'
+                 WHERE  hpi.payslip_id = payslip.id
+                 LIMIT  1)
+        """)
+        return [('id', 'in' if value else 'not in', [r[0] for r in self._cr.fetchall()])]
 
     @api.depends('struct_id')
     def _compute_contract_domain_ids(self):

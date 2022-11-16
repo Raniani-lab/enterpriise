@@ -227,7 +227,7 @@ QUnit.module(
         });
 
         QUnit.test("Grid has still the focus after a dialog", async function (assert) {
-            assert.expect(1);
+            assert.expect(2);
 
             const { model, env } = await createSpreadsheet();
             selectCell(model, "F4");
@@ -235,7 +235,11 @@ QUnit.module(
             await nextTick();
             await dom.click(document.body.querySelector(".modal-footer .btn-primary"));
             await nextTick();
-            assert.strictEqual(document.activeElement.className, "o-grid o-two-columns");
+            assert.strictEqual(document.activeElement.tagName, "INPUT");
+            assert.strictEqual(
+                document.activeElement.parentElement.className,
+                "o-grid o-two-columns"
+            );
         });
 
         QUnit.test("create spreadsheet action uses action context", async function (assert) {

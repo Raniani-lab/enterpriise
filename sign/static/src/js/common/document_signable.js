@@ -75,8 +75,25 @@ const SignNameAndSignature = NameAndSignature.extend({
     this.$frameButton = this.$('.o_web_frame_button');
     this.$frameDiv = this.$('.o_sign_frame');
     this.$frameButton.prop('checked', this.activeFrame);
-    this.$frameDiv.toggleClass('active', this.activeFrame);
+    this.toggleFrameDiv();
     return res;
+  },
+
+  /**
+   * Toggles the active class in the frame div depending on the following rules:
+   * If sign mode is draw, hide the div. Otherwise, respect the activeFrame checkbox value
+   */
+  toggleFrameDiv() {
+    this.$frameDiv.toggleClass('active', this.signMode !== 'draw' ? this.activeFrame : false);
+  },
+
+  /**
+   * Calls toggleFrameDiv on every mode change to calculate if the frame div should be shown or not in the new mode
+   * @override
+   */
+  setMode: async function () {
+    this._super.apply(this, arguments);
+    this.toggleFrameDiv();
   },
 
   /**
@@ -121,14 +138,14 @@ const SignNameAndSignature = NameAndSignature.extend({
     this.signatureChanged = true;
     this.activeFrame = !this.activeFrame;
     this.$frameButton.prop('checked', this.activeFrame);
-    this.$frameDiv.toggleClass('active', this.activeFrame);
+    this.toggleFrameDiv();
   },
 
   _updateFrame: function () {
     if (this.activeFrame && !this.frameChanged) {
       this.signatureChanged = true;
       this.frameChanged = true;
-      return html2canvas(this.$frameDiv[0],
+      return html2canvas(this.$frameDiv.toggleClass('active', this.activeFrame)[0],
         {
           'backgroundColor': null,
           'width': this.$signatureField.width(),

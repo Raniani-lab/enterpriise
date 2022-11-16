@@ -25,13 +25,15 @@ class WorksheetValidationRecord extends Record {
         const isSaved = await super.save(...arguments);
         // after studio exit, although the mode is readonly, the save button is visible
         if (isSaved && this.mode != "readonly") {
-            const action = await this.model.ormService.call(
+            const action = await this.model.orm.call(
                 "quality.check",
                 "action_worksheet_check",
                 [this.data.x_quality_check_id[0]],
                 { context: this.context }
             );
-            this.model.actionService.doAction(action);
+            if (action) {
+                this.model.actionService.doAction(action);
+            }
         }
         return isSaved;
     }

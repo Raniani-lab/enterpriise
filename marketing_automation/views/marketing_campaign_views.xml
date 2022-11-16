@@ -205,18 +205,16 @@
                                                             <a type="delete" role="button" class="btn btn-link btn-sm" href="#">Delete</a>
                                                         </div>
                                                         <span role="img" title="Graph" aria-label="Graph"
-                                                             t-att-class="!state.activeTab || state.activeTab == 'graph' ? 'active' : ''"
-                                                             t-on-click="(ev) => this.onMarketingActivityTabClick(ev, 'graph')">
+                                                             class="o_ma_activity_tab active" data-tab-type="graph">
                                                             <i class="fa fa-pie-chart" />
                                                         </span>
                                                         <span title="Filter" role="img" aria-label="Filter"
-                                                             t-att-class="state.activeTab == 'filter' ? 'active' : ''"
-                                                             t-on-click="(ev) => this.onMarketingActivityTabClick(ev, 'filter')">
+                                                             class="o_ma_activity_tab" data-tab-type="filter">
                                                             <i class="fa fa-filter" />
                                                         </span>
                                                     </div>
                                                 </div>
-                                                <div class="o_pane o_pane_graph" t-if="!state.activeTab or state.activeTab == 'graph'">
+                                                <div class="o_pane o_pane_graph">
                                                     <div class="pb-3 row mt16">
                                                         <div class="col-lg-9 col-9 o_ma_graph mb10">
                                                             <t t-if="record.statistics_graph_data.value">
@@ -261,7 +259,7 @@
                                                         </div>
                                                     </div>
                                                 </div>
-                                                <div class="o_pane o_pane_filter" t-if="state.activeTab == 'filter'">
+                                                <div class="o_pane o_pane_filter d-none">
                                                     <field name="domain" widget="domain" options="{'model': 'model_name'}" readonly="1"/>
                                                 </div>
                                                 <div t-if="!read_only_mode" class="o_ma_child_activity text-center">

@@ -9,7 +9,7 @@ import { X2ManyField } from "@web/views/fields/x2many/x2many_field";
 import { KanbanRecord } from "@web/views/kanban/kanban_record";
 import { KanbanRenderer } from "@web/views/kanban/kanban_renderer";
 
-const { onWillRender, useEffect, useRef, useState, useSubEnv } = owl;
+const { onWillRender, useEffect, useRef, useSubEnv } = owl;
 const fieldRegistry = registry.category("fields");
 
 
@@ -23,7 +23,35 @@ export class HierarchyKanbanRecord extends KanbanRecord {
             this.props.readonly = this.props.is_readonly;
         }
 
-        this.state = useState({activeTab: 'graph'});
+        this.activeTab = 'graph';
+        useEffect(
+            () => {
+                const activityTabs = this.rootRef.el.querySelectorAll('.o_ma_activity_tab');
+                const onMarketingActivityTabClick = this.onMarketingActivityTabClick.bind(this);
+                activityTabs.forEach((el) => {
+                    el.addEventListener("click", onMarketingActivityTabClick);
+                });
+
+                return () => {
+                    activityTabs.forEach((el) => {
+                        el.removeEventListener("click", onMarketingActivityTabClick);
+                    });
+                };
+            },
+            () => []
+        );
+
+        useEffect(
+            this.applyTabPanelVisibility.bind(this),
+            () => [this.rootRef.el]
+        );
+
+        useEffect(
+            () => {
+                this.applyTabPanelVisibility();
+            },
+            () => [this.rootRef.el]
+        );
     }
 
     /**
@@ -78,11 +106,42 @@ export class HierarchyKanbanRecord extends KanbanRecord {
      * Allows to switch between the 'graph' and 'filter' tabs of the activity kanban card.
      *
      * @param {MouseEvent} ev
-     * @param {String} view the view to enable ('graph' or 'filter')
      */
-    onMarketingActivityTabClick(ev, view) {
+    onMarketingActivityTabClick(ev) {
         ev.stopPropagation();
-        this.state.activeTab = view;
+
+        this.activeTab = ev.currentTarget.dataset.tabType;
+        this.applyTabPanelVisibility();
+        this.props.record.model.notify();  // force chart re-render
+    }
+
+    applyTabPanelVisibility() {
+        const graphTab = this.rootRef.el.querySelector('.o_pane_graph');
+        const filterTab = this.rootRef.el.querySelector('.o_pane_filter');
+
+        if (!graphTab || !filterTab) {
+            return;
+        }
+
+        this.rootRef.el.querySelectorAll('.o_ma_activity_tab').forEach(
+            el => el.classList.remove('active')
+        );
+
+        if (this.activeTab === 'graph') {
+            graphTab.classList.remove('d-none');
+            filterTab.classList.add('d-none');
+            const graphTabButton = this.rootRef.el.querySelector('[data-tab-type="graph"]');
+            if (graphTabButton) {
+                graphTabButton.classList.add('active');
+            }
+        } else if (this.activeTab === 'filter') {
+            graphTab.classList.add('d-none');
+            filterTab.classList.remove('d-none');
+            const filterTabButton = this.rootRef.el.querySelector('[data-tab-type="filter"]');
+            if (filterTabButton) {
+                filterTabButton.classList.add('active');
+            }
+        }
     }
 }
 

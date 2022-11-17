@@ -114,6 +114,7 @@ class AmazonAccount(models.Model):
         comodel_name='res.company',
         default=lambda self: self.env.company,
         required=True,
+        readonly=True,
     )
     location_id = fields.Many2one(
         string="Stock Location",

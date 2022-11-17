@@ -1025,7 +1025,7 @@
         <field name="act_window_id" ref="helpdesk_ticket_action_7days_analysis"/>
     </record>
 
-    <!-- action for halpdask team -->
+    <!-- action for helpdesk team -->
     <record id="helpdesk_ticket_action_team" model="ir.actions.act_window">
         <field name="name">Tickets</field>
         <field name="res_model">helpdesk.ticket</field>

@@ -710,7 +710,7 @@ class HelpdeskTeam(models.Model):
         action.update(
             domain=expression.AND([
                 action_params['domain'],
-                [('sla_fail', "!=", True), ('team_id', 'in', self.ids)],
+                [('team_id', 'in', self.ids)],
             ]),
             context={
                 **action_params['context'],

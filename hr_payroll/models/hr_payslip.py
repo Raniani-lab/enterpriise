@@ -1104,6 +1104,7 @@ class HrPayslip(models.Model):
         # Retrieve employees with both draft and running contracts
         ambiguous_domain = [
             ('company_id', 'in', self.env.companies.ids),
+            ('employee_id', '!=', False),
             '|',
                 '&',
                     ('state', '=', 'draft'),

@@ -27,6 +27,12 @@ class SaleOrder(models.Model):
     def _get_default_starred_user_ids(self):
         return [(4, self.env.uid)]
 
+    ###################
+    # Recurring order #
+    ###################
+    is_subscription = fields.Boolean("Recurring", compute='_compute_is_subscription', store=True, index=True)
+    recurrence_id = fields.Many2one('sale.temporal.recurrence', compute='_compute_recurrence_id',
+                                     string='Recurrence', ondelete='restrict', readonly=False, store=True)
     subscription_management = fields.Selection(
         string='Subscription Management',
         selection=[
@@ -38,19 +44,15 @@ class SaleOrder(models.Model):
         help="Creation: The Sales Order created the subscription\n"
              "Upsell: The Sales Order added lines to the subscription\n"
              "Renewal: The Sales Order replaced the subscription's content with its own")
-    is_subscription = fields.Boolean("Recurring", compute='_compute_is_subscription', store=True, index=True)
+
+    subscription_id = fields.Many2one('sale.order', string='Parent Contract', ondelete='restrict', copy=False)
+    origin_order_id = fields.Many2one('sale.order', string='First contract', ondelete='restrict', store=True, copy=False,
+                                      compute='_compute_origin_order_id')
+    subscription_child_ids = fields.One2many('sale.order', 'subscription_id')
+
     stage_id = fields.Many2one('sale.order.stage', string='Stage', index=True, default=lambda s: s._get_default_stage_id(),
                                copy=False, group_expand='_read_group_stage_ids', tracking=True)
-    end_date = fields.Date(string='End Date', tracking=True,
-                           help="If set in advance, the subscription will be set to renew 1 month before the date and will be closed on the date set in this field.")
-    archived_product_ids = fields.Many2many('product.product', string='Archived Products', compute='_compute_archived')
-    archived_product_count = fields.Integer("Archived Product", compute='_compute_archived')
-    next_invoice_date = fields.Date(
-        string='Date of Next Invoice',
-        compute='_compute_next_invoice_date',
-        store=True, copy=False,
-        readonly=False,
-        help="The next invoice will be created on this date then the period will be extended.")
+    stage_category = fields.Selection(related='stage_id.category', store=True)
     start_date = fields.Date(string='Start Date',
                              compute='_compute_start_date',
                              readonly=False,
@@ -58,48 +60,73 @@ class SaleOrder(models.Model):
                              tracking=True,
                              help="The start date indicate when the subscription periods begin.")
     last_invoice_date = fields.Date(string='Last invoice date', compute='_compute_last_invoice_date')
-    recurring_live = fields.Boolean(string='Alive', compute='_compute_recurring_live', store=True, tracking=True)
-    recurring_monthly = fields.Monetary(compute='_compute_recurring_monthly', string="Monthly Recurring Revenue",
-                                        store=True, tracking=True)
+    next_invoice_date = fields.Date(
+        string='Date of Next Invoice',
+        compute='_compute_next_invoice_date',
+        store=True, copy=False,
+        readonly=False,
+        tracking=True,
+        help="The next invoice will be created on this date then the period will be extended.")
+    end_date = fields.Date(string='End Date', tracking=True,
+                           help="If set in advance, the subscription will be set to renew 1 month before the date and will be closed on the date set in this field.")
     close_reason_id = fields.Many2one("sale.order.close.reason", string="Close Reason", copy=False, tracking=True)
-    order_log_ids = fields.One2many('sale.order.log', 'order_id', string='Subscription Logs', readonly=True)
-    team_user_id = fields.Many2one('res.users', string="Team Leader", related="team_id.user_id", readonly=False)
-    country_id = fields.Many2one('res.country', related='partner_id.country_id', store=True, compute_sudo=True) # TODO master: move to sale module
-    industry_id = fields.Many2one('res.partner.industry', related='partner_id.industry_id', store=True) # TODO master: move to module
-    commercial_partner_id = fields.Many2one('res.partner', related='partner_id.commercial_partner_id')
+
+    #############
+    # Invoicing #
+    #############
     payment_token_id = fields.Many2one('payment.token', 'Payment Token', check_company=True, help='If not set, the automatic payment will fail.',
                                        domain="[('partner_id', 'child_of', commercial_partner_id), ('company_id', '=', company_id)]")
-    starred_user_ids = fields.Many2many('res.users', 'sale_order_starred_user_rel', 'order_id', 'user_id',
-                                        default=lambda s: s._get_default_starred_user_ids(), string='Members')
-    starred = fields.Boolean(compute='_compute_starred', inverse='_inverse_starred', string='Show Subscription on dashboard',
-                             help="Whether this subscription should be displayed on the dashboard or not")
+    is_batch = fields.Boolean(default=False, copy=False) # technical, batch of invoice processed at the same time
+    is_invoice_cron = fields.Boolean(string='Is a Subscription invoiced in cron', default=False, copy=False)
+    payment_exception = fields.Boolean("Contract in exception",
+                                       help="Automatic payment with token failed. The payment provider configuration and token should be checked")
+    to_renew = fields.Boolean(string='To Renew', default=False, copy=False)
+
+    ###################
+    # KPI / reporting #
+    ###################
     kpi_1month_mrr_delta = fields.Float('KPI 1 Month MRR Delta')
     kpi_1month_mrr_percentage = fields.Float('KPI 1 Month MRR Percentage')
     kpi_3months_mrr_delta = fields.Float('KPI 3 months MRR Delta')
     kpi_3months_mrr_percentage = fields.Float('KPI 3 Months MRR Percentage')
+
+    team_user_id = fields.Many2one('res.users', string="Team Leader", related="team_id.user_id", readonly=False)
+    country_id = fields.Many2one('res.country', related='partner_id.country_id', store=True,
+                                 compute_sudo=True)  # TODO master: move to sale module
+    industry_id = fields.Many2one('res.partner.industry', related='partner_id.industry_id',
+                                  store=True)  # TODO master: move to module
+    commercial_partner_id = fields.Many2one('res.partner', related='partner_id.commercial_partner_id')
+
+    recurring_live = fields.Boolean(string='Alive', compute='_compute_recurring_live', store=True, tracking=True)
+    recurring_monthly = fields.Monetary(compute='_compute_recurring_monthly', string="Monthly Recurring Revenue",
+                                        store=True, tracking=True)
+    order_log_ids = fields.One2many('sale.order.log', 'order_id', string='Subscription Logs', readonly=True)
     percentage_satisfaction = fields.Integer(
         compute="_compute_percentage_satisfaction",
         string="% Happy", store=True, compute_sudo=True, default=-1,
         help="Calculate the ratio between the number of the best ('great') ratings and the total number of ratings")
-    health = fields.Selection([('normal', 'Neutral'), ('done', 'Good'), ('bad', 'Bad')], string="Health", copy=False, default='normal', help="Show the health status")
-    stage_category = fields.Selection(related='stage_id.category', store=True)
-    to_renew = fields.Boolean(string='To Renew', default=False, copy=False)
-    recurrence_id = fields.Many2one('sale.temporal.recurrence', compute='_compute_recurrence_id',
-                                               string='Recurrence', ondelete='restrict', readonly=False, store=True)
-    is_batch = fields.Boolean(string='Is a Batch', default=False, copy=False)
-    is_invoice_cron = fields.Boolean(string='Is a Subscription invoiced in cron', default=False, copy=False)
-    subscription_id = fields.Many2one('sale.order', string='Parent Contract', ondelete='restrict', copy=False)
-    origin_order_id = fields.Many2one('sale.order', string='First contract', ondelete='restrict', store=True, copy=False, compute='_compute_origin_order_id')
-    subscription_child_ids = fields.One2many('sale.order', 'subscription_id')
-    history_count = fields.Integer(compute='_compute_history_count')
-    payment_exception = fields.Boolean("Contract in exception",
-                                       help="Automatic payment with token failed. The payment provider configuration and token should be checked")
-    show_rec_invoice_button = fields.Boolean(compute='_compute_show_rec_invoice_button')
-    is_upselling = fields.Boolean(compute='_compute_is_upselling')
+    health = fields.Selection([('normal', 'Neutral'), ('done', 'Good'), ('bad', 'Bad')], string="Health", copy=False,
+                              default='normal', help="Show the health status")
+
+    ###########
+    # UI / UX #
+    ###########
     recurring_details = fields.Html(compute='_compute_recurring_details')
+    is_upselling = fields.Boolean(compute='_compute_is_upselling')
     renew_state = fields.Selection(
         [('renewing', 'Renewing'), ('renewed', 'Renewed')], compute='_compute_renew_state')
+
+    archived_product_ids = fields.Many2many('product.product', string='Archived Products', compute='_compute_archived')
+    archived_product_count = fields.Integer("Archived Product", compute='_compute_archived')
+    history_count = fields.Integer(compute='_compute_history_count')
+    show_rec_invoice_button = fields.Boolean(compute='_compute_show_rec_invoice_button')
     has_recurring_line = fields.Boolean(compute='_compute_has_recurring_line')
+
+    starred_user_ids = fields.Many2many('res.users', 'sale_order_starred_user_rel', 'order_id', 'user_id',
+                                        default=lambda s: s._get_default_starred_user_ids(), string='Members')
+    starred = fields.Boolean(compute='_compute_starred', inverse='_inverse_starred',
+                             string='Show Subscription on dashboard',
+                             help="Whether this subscription should be displayed on the dashboard or not")
 
     _sql_constraints = [
         ('sale_subscription_stage_coherence',
@@ -1181,7 +1208,7 @@ class SaleOrder(models.Model):
         auto_close_subscription = all_subscriptions.filtered_domain([('end_date', '!=', False)])
         all_invoiceable_lines = all_subscriptions.with_context(recurring_automatic=automatic)._get_invoiceable_lines(final=False)
 
-        auto_close_subscription._subscription_auto_close_and_renew()
+        auto_close_subscription._subscription_auto_close()
         if automatic:
             all_subscriptions.write({'is_invoice_cron': True})
         lines_to_reset_qty = self.env['sale.order.line'] # qty_delivered is set to 0 after invoicing for some categories of products (timesheets etc)
@@ -1305,7 +1332,7 @@ class SaleOrder(models.Model):
         invoices = super()._create_invoices(grouped=grouped, final=final, date=date)
         return invoices
 
-    def _subscription_auto_close_and_renew(self):
+    def _subscription_auto_close(self):
         """ Handle contracts that need to be automatically closed/set to renews.
         This method is only called during a cron
         """

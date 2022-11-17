@@ -375,22 +375,23 @@ class QualityCheck(models.Model):
         # Loop on the quants to get the locations. If there is not enough
         # quantity into stock, we take the move location. Anyway, no
         # reservation is made, so it is still possible to change it afterwards.
+        move_uom = self.move_id.product_uom
         shared_vals = {
             'move_id': self.move_id.id,
             'product_id': self.move_id.product_id.id,
             'location_dest_id': location_dest_id.id,
             'reserved_uom_qty': 0,
-            'product_uom_id': self.move_id.product_uom.id,
+            'product_uom_id': move_uom.id,
             'lot_id': self.lot_id.id,
             'company_id': self.move_id.company_id.id,
         }
         for quant in quants:
             vals = shared_vals.copy()
             quantity = quant.quantity - quant.reserved_quantity
-            quantity = self.product_id.uom_id._compute_quantity(quantity, self.product_uom_id, rounding_method='HALF-UP')
+            quantity = self.product_id.uom_id._compute_quantity(quantity, move_uom, rounding_method='HALF-UP')
             rounding = quant.product_uom_id.rounding
             if (float_compare(quant.quantity, 0, precision_rounding=rounding) <= 0 or
-                    float_compare(quantity, 0, precision_rounding=self.product_uom_id.rounding) <= 0):
+                    float_compare(quantity, 0, precision_rounding=move_uom.rounding) <= 0):
                 continue
             vals.update({
                 'location_id': quant.location_id.id,

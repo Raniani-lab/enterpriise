@@ -1075,6 +1075,15 @@ class SaleOrder(models.Model):
         subscription_values.update(self._update_subscription_payment_failure_values())
         self.write(subscription_values)
 
+    def _invoice_is_considered_free(self, invoiceable_lines):
+        """
+        In some case, we want to skip the invoice generation for free subscription.
+        By default, we only consider it free if the amount is 0 but we could use other criterion
+        :return: bool
+        """
+        self.ensure_one()
+        return float_is_zero(sum(invoiceable_lines.mapped('price_subtotal')), precision_rounding=self.currency_id.rounding)
+
     @api.model
     def _get_automatic_subscription_values(self):
         return {'to_renew': True}
@@ -1143,7 +1152,7 @@ class SaleOrder(models.Model):
                 if auto_commit:
                     self.env.cr.commit() # To avoid a rollback in case something is wrong, we create the invoices one by one
                 invoiceable_lines = all_invoiceable_lines.filtered(lambda l: l.order_id.id == subscription.id)
-                invoice_is_free = float_is_zero(sum(invoiceable_lines.mapped('price_subtotal')), precision_rounding=subscription.currency_id.rounding)
+                invoice_is_free = subscription._invoice_is_considered_free(invoiceable_lines)
                 if not invoiceable_lines or invoice_is_free:
                     # We still update the next_invoice_date if it is due
                     if not automatic or subscription.next_invoice_date < today:

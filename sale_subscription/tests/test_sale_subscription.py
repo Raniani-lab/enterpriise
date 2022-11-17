@@ -1926,3 +1926,33 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertFalse(copy_so.subscription_id)
         self.assertEqual(renewal_so.origin_order_id.id, alternative_so.origin_order_id.id)
         self.assertEqual(renewal_so.subscription_id.id, alternative_so.subscription_id.id)
+
+    def test_subscription_management(self):
+        # test default value for subcription_management
+        sub_1 = self.env['sale.order'].create({
+            'partner_id': self.partner.id,
+            'recurrence_id': self.recurrence_month.id,
+            'order_line': [
+                (0, 0, {
+                    'name': self.product.name,
+                    'product_id': self.product.id,
+                    'product_uom_qty': 3.0,
+                    'product_uom': self.product.uom_id.id,
+                    'price_unit': 12,
+                })],
+        })
+        self.assertEqual(sub_1.subscription_management, 'create')
+        sub_2 = self.env['sale.order'].create({
+            'partner_id': self.partner.id,
+        })
+        self.assertFalse(sub_2.subscription_management, )
+        sub_2.recurrence_id = self.recurrence_month.id
+        sub_2.order_line = [
+            (0, 0, {
+                'name': self.product.name,
+                'product_id': self.product.id,
+                'product_uom_qty': 3.0,
+                'product_uom': self.product.uom_id.id,
+                'price_unit': 12,
+            })]
+        self.assertEqual(sub_2.subscription_management, 'create')

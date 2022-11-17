@@ -562,6 +562,9 @@ class SaleOrder(models.Model):
         subscriptions_to_confirm = self.env['sale.order']
         subscriptions_to_cancel = self.env['sale.order']
         for subscription in subscriptions:
+            if not subscription.subscription_management:
+                # vals.get('subscription_management', 'create') of {'subscription_management': False} returns False
+                subscription.subscription_management = vals.get('subscription_management') or 'create'
             diff_partner = subscription.partner_id.id != old_partners[subscription.id]
             diff_in_progress = (subscription.stage_category == "progress") != old_in_progress[subscription.id]
             if diff_partner or diff_in_progress:

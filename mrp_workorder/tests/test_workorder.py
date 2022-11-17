@@ -1534,3 +1534,45 @@ class TestWorkOrder(common.TestMrpCommon):
         self.assertEqual(len(wo.check_ids), 1, "their should be 1 quality check")
         qc_form = Form(wo.current_quality_check_id, view='mrp_workorder.quality_check_view_form_tablet')
         self.assertEqual(qc_form.component_id, self.product_3, 'operation must contain related consumption material')
+
+    def test_operations_with_test_type_register_consumed_materials02(self):
+        """
+        The reservation method of Manufacturing is manual. There is a bom with
+        one component and one operation. The operation is used to register the
+        consumed quantity of the component. The user processes a MO with that
+        BoM and skip the reservation step.
+        """
+        warehouse = self.env['stock.warehouse'].search([('company_id', '=', self.env.company.id)], limit=1)
+        finished = self.bom_4.product_id
+        compo = self.bom_4.bom_line_ids.product_id
+
+        compo.type = 'product'
+        self.env['stock.quant']._update_available_quantity(finished, warehouse.lot_stock_id, 1.0)
+        self.env['stock.quant']._update_available_quantity(compo, warehouse.lot_stock_id, 1.0)
+
+        warehouse.manu_type_id.reservation_method = 'manual'
+
+        # the component is consumed in the operation
+        with Form(self.bom_4) as bom_form:
+            with bom_form.bom_line_ids.edit(0) as bom_line:
+                bom_line.operation_id = self.bom_4.operation_ids
+
+        mo_form = Form(self.env['mrp.production'])
+        mo_form.bom_id = self.bom_4
+        mo = mo_form.save()
+        mo.action_confirm()
+
+        wo = mo.workorder_ids
+        wo.button_start()
+        with Form(wo, view='mrp_workorder.mrp_workorder_view_form_tablet') as wo_form:
+            wo_form.qty_producing = 1
+        wo.current_quality_check_id.qty_done = 0.8
+        wo.current_quality_check_id._next()
+        wo.do_finish()
+        mo.button_mark_done()
+
+        self.assertEqual(mo.state, 'done')
+        self.assertRecordValues((mo.move_raw_ids + mo.move_finished_ids).move_line_ids, [
+            {'product_id': compo.id, 'state': 'done', 'qty_done': 0.8},
+            {'product_id': finished.id, 'state': 'done', 'qty_done': 1.0},
+        ])

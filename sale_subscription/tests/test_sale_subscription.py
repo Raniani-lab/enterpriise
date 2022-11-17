@@ -1892,3 +1892,33 @@ class TestSubscription(TestSubscriptionCommon):
             self.subscription.action_done()
             self.env['sale.order']._cron_recurring_create_invoice()
             self.assertEqual(self.subscription.invoice_count, 1)
+
+    def test_subscription_management(self):
+        # test default value for subcription_management
+        sub_1 = self.env['sale.order'].create({
+            'partner_id': self.partner.id,
+            'recurrence_id': self.recurrence_month.id,
+            'order_line': [
+                (0, 0, {
+                    'name': self.product.name,
+                    'product_id': self.product.id,
+                    'product_uom_qty': 3.0,
+                    'product_uom': self.product.uom_id.id,
+                    'price_unit': 12,
+                })],
+        })
+        self.assertEqual(sub_1.subscription_management, 'create')
+        sub_2 = self.env['sale.order'].create({
+            'partner_id': self.partner.id,
+        })
+        self.assertFalse(sub_2.subscription_management,)
+        sub_2.recurrence_id = self.recurrence_month.id
+        sub_2.order_line = [
+            (0, 0, {
+                'name': self.product.name,
+                'product_id': self.product.id,
+                'product_uom_qty': 3.0,
+                'product_uom': self.product.uom_id.id,
+                'price_unit': 12,
+            })]
+        self.assertEqual(sub_2.subscription_management, 'create')

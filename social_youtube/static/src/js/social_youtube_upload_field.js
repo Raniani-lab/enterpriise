@@ -38,7 +38,7 @@ const _t = core._t;
  * readonly input containing the uploaded file name.
  *
  */
-class YoutubeUploadField extends CharField {
+export class YoutubeUploadField extends CharField {
     setup() {
         super.setup();
         this.fileInputRef = useRef('fileInput');

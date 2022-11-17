@@ -37,6 +37,6 @@ cellMenuRegistry.add("pivot_properties", {
     },
     isVisible: (env) => {
         const cell = env.model.getters.getActiveCell();
-        return cell && cell.isFormula() && cell.content.match(pivotFormulaRegex);
+        return cell && cell.isFormula && cell.content.match(pivotFormulaRegex);
     },
 });

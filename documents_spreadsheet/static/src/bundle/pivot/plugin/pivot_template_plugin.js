@@ -68,7 +68,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
          */
         _convertFormulas(cells, convertFunction, ...args) {
             cells.forEach((cell) => {
-                if (cell.isFormula()) {
+                if (cell.isFormula) {
                     const { col, row, sheetId } = this.getters.getCellPosition(cell.id);
                     const ast = convertFunction(parse(cell.content), ...args);
                     if (ast) {
@@ -102,7 +102,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
                 .map((sheetId) =>
                     Object.values(this.getters.getCells(sheetId)).filter(
                         (cell) =>
-                            cell.isFormula() &&
+                            cell.isFormula &&
                             regex.test(this.getters.getFormulaCellContent(sheetId, cell))
                     )
                 )
@@ -309,7 +309,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
                     const cellIds = Object.values(this.getters.getRowCells(sheetId, rowIndex));
                     const [valid, invalid] = cellIds
                         .map((id) => this.getters.getCellById(id))
-                        .filter((cell) => cell.isFormula() && /^\s*=.*PIVOT/.test(cell.content))
+                        .filter((cell) => cell.isFormula && /^\s*=.*PIVOT/.test(cell.content))
                         .reduce(
                             ([valid, invalid], cell) => {
                                 const isInvalid = /^\s*=.*PIVOT(\.HEADER)?.*#IDNOTFOUND/.test(

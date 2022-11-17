@@ -21,10 +21,10 @@ AutofillTooltip.template = "spreadsheet_edition.AutofillTooltip";
 
 autofillRulesRegistry
     .add("autofill_pivot", {
-        condition: (cell) => cell && cell.isFormula() && cell.content.match(/=\s*ODOO\.PIVOT/),
+        condition: (cell) => cell && cell.isFormula && cell.content.match(/=\s*ODOO\.PIVOT/),
         generateRule: (cell, cells) => {
             const increment = cells.filter(
-                (cell) => cell && cell.isFormula() && cell.content.match(/=\s*ODOO\.PIVOT/)
+                (cell) => cell && cell.isFormula && cell.content.match(/=\s*ODOO\.PIVOT/)
             ).length;
             return { type: "PIVOT_UPDATER", increment, current: 0 };
         },
@@ -32,7 +32,7 @@ autofillRulesRegistry
     })
     .add("autofill_pivot_position", {
         condition: (cell) =>
-            cell && cell.isFormula() && cell.content.match(/=.*ODOO\.PIVOT.*ODOO\.PIVOT\.POSITION/),
+            cell && cell.isFormula && cell.content.match(/=.*ODOO\.PIVOT.*ODOO\.PIVOT\.POSITION/),
         generateRule: () => ({ type: "PIVOT_POSITION_UPDATER", current: 0 }),
         sequence: 1,
     });
@@ -106,8 +106,9 @@ autofillModifiersRegistry
         apply: (rule, data, getters, direction) => {
             const formulaString = data.cell.content;
             const pivotId = formulaString.match(/ODOO\.PIVOT\.POSITION\(\s*"(\w+)"\s*,/)[1];
-            if (!getters.isExistingPivot(pivotId))
+            if (!getters.isExistingPivot(pivotId)) {
                 return { cellData: { ...data.cell, content: formulaString } };
+            }
             const pivotDefinition = getters.getPivotDefinition(pivotId);
             const fields = [UP, DOWN].includes(direction)
                 ? pivotDefinition.rowGroupBys

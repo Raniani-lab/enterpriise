@@ -29,7 +29,6 @@ sidePanelRegistry.add("RELATION_FILTER_SIDE_PANEL", {
     Body: RelationFilterEditorSidePanel,
 });
 
-
 sidePanelRegistry.add("GLOBAL_FILTERS_SIDE_PANEL", {
     title: _t("Filters"),
     Body: GlobalFiltersSidePanel,
@@ -46,12 +45,16 @@ cellMenuRegistry.add("use_global_filter", {
     name: _lt("Set as filter"),
     sequence: 175,
     action(env) {
-        const cell = env.model.getters.getActiveCell();
+        const sheetId = env.model.getters.getActiveSheetId();
+        const { col, row } = env.model.getters.getPosition();
+        const cell = env.model.getters.getCell(sheetId, col, row);
         const filters = env.model.getters.getFiltersMatchingPivot(cell.content);
         env.model.dispatch("SET_MANY_GLOBAL_FILTER_VALUE", { filters });
     },
     isVisible: (env) => {
-        const cell = env.model.getters.getActiveCell();
+        const sheetId = env.model.getters.getActiveSheetId();
+        const { col, row } = env.model.getters.getPosition();
+        const cell = env.model.getters.getCell(sheetId, col, row);
         if (!cell) {
             return false;
         }

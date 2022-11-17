@@ -5,7 +5,7 @@ import { insertList } from "@spreadsheet_edition/bundle/list/list_init_callback"
 import { InsertListSpreadsheetMenu } from "@spreadsheet_edition/assets/list_view/insert_list_spreadsheet_menu_owl";
 import { selectCell, setCellContent } from "@spreadsheet/../tests/utils/commands";
 import { getBasicData, getBasicServerData } from "@spreadsheet/../tests/utils/data";
-import { getCell, getCellFormula } from "@spreadsheet/../tests/utils/getters";
+import { getCellFormula, getEvaluatedCell } from "@spreadsheet/../tests/utils/getters";
 import { click, getFixture, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
 import { toggleFavoriteMenu } from "@web/../tests/search/helpers";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
@@ -279,7 +279,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
             "B2",
             getCellFormula(model, "B2").replace(`ODOO.LIST(1`, `ODOO.LIST("5)`)
         ); //Invalid id
-        assert.ok(getCell(model, "B2").evaluated.error.message);
+        assert.ok(getEvaluatedCell(model, "B2").error.message);
         assert.notOk(root.isVisible(env));
     });
 
@@ -328,9 +328,9 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
                 orderBy: [{ name: "foo", asc: true }],
                 linesNumber: 4,
             });
-            assert.ok(getCell(model, "A2").evaluated.value <= getCell(model, "A3").evaluated.value);
-            assert.ok(getCell(model, "A3").evaluated.value <= getCell(model, "A4").evaluated.value);
-            assert.ok(getCell(model, "A4").evaluated.value <= getCell(model, "A5").evaluated.value);
+            assert.ok(getEvaluatedCell(model, "A2").value <= getEvaluatedCell(model, "A3").value);
+            assert.ok(getEvaluatedCell(model, "A3").value <= getEvaluatedCell(model, "A4").value);
+            assert.ok(getEvaluatedCell(model, "A4").value <= getEvaluatedCell(model, "A5").value);
         }
     );
 
@@ -344,9 +344,9 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
                 orderBy: [{ name: "foo", asc: false }],
                 linesNumber: 4,
             });
-            assert.ok(getCell(model, "A2").evaluated.value >= getCell(model, "A3").evaluated.value);
-            assert.ok(getCell(model, "A3").evaluated.value >= getCell(model, "A4").evaluated.value);
-            assert.ok(getCell(model, "A4").evaluated.value >= getCell(model, "A5").evaluated.value);
+            assert.ok(getEvaluatedCell(model, "A2").value >= getEvaluatedCell(model, "A3").value);
+            assert.ok(getEvaluatedCell(model, "A3").value >= getEvaluatedCell(model, "A4").value);
+            assert.ok(getEvaluatedCell(model, "A4").value >= getEvaluatedCell(model, "A5").value);
         }
     );
 

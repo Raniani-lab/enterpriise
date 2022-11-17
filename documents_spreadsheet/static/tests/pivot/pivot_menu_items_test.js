@@ -8,7 +8,11 @@ import {
     getBasicPivotArch,
     getBasicServerData,
 } from "@spreadsheet/../tests/utils/data";
-import { getCell, getCellFormula, getCellValue } from "@spreadsheet/../tests/utils/getters";
+import {
+    getCellFormula,
+    getCellValue,
+    getEvaluatedCell,
+} from "@spreadsheet/../tests/utils/getters";
 import {
     addGlobalFilter,
     selectCell,
@@ -179,20 +183,24 @@ QUnit.module(
                         <field name="probability" type="measure"/>
                     </pivot>`,
             });
-            await addGlobalFilter(model, {
-                filter: {
-                    id: "42",
-                    type: "relation",
-                    label: "Filter",
-                },
-            },{
-                pivot: {
-                    1: {
-                        chain: "product_id",
-                        type: "many2one",
+            await addGlobalFilter(
+                model,
+                {
+                    filter: {
+                        id: "42",
+                        type: "relation",
+                        label: "Filter",
                     },
                 },
-            });
+                {
+                    pivot: {
+                        1: {
+                            chain: "product_id",
+                            type: "many2one",
+                        },
+                    },
+                }
+            );
             await nextTick();
             await setGlobalFilterValue(model, {
                 id: "42",
@@ -370,7 +378,7 @@ QUnit.module(
                     "B4",
                     getCellFormula(model, "B4").replace(`ODOO.PIVOT(1`, `ODOO.PIVOT("5)`)
                 ); //Invalid id
-                assert.ok(getCell(model, "B4").evaluated.error.message);
+                assert.ok(getEvaluatedCell(model, "B4").error.message);
                 assert.notOk(root.isVisible(env));
             }
         );

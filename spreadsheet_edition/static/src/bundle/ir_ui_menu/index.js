@@ -1,11 +1,17 @@
 /** @odoo-module */
 
 import { _lt } from "@web/core/l10n/translation";
-import spreadsheet, { initCallbackRegistry } from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
-import { buildIrMenuIdLink, buildViewLink, buildIrMenuXmlLink } from "@spreadsheet/ir_ui_menu/odoo_menu_link_cell"
+import spreadsheet, {
+    initCallbackRegistry,
+} from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
+import {
+    buildIrMenuIdLink,
+    buildViewLink,
+    buildIrMenuXmlLink,
+} from "@spreadsheet/ir_ui_menu/odoo_menu_link_cell";
 import { IrMenuSelectorDialog } from "@spreadsheet_edition/assets/components/ir_menu_selector/ir_menu_selector";
 
-const { markdownLink } = spreadsheet.helpers;
+const { markdownLink } = spreadsheet.links;
 const { linkMenuRegistry } = spreadsheet.registries;
 
 /**
@@ -14,7 +20,7 @@ const { linkMenuRegistry } = spreadsheet.registries;
  * @param {import("@spreadsheet/ir_ui_menu/odoo_menu_link_cell").ViewLinkDescription} actionToLink
  * @returns Function to call
  */
- function insertLink(actionToLink) {
+function insertLink(actionToLink) {
     return (model) => {
         if (!this.isEmptySpreadsheet) {
             const sheetId = model.uuidGenerator.uuidv4();
@@ -48,13 +54,8 @@ linkMenuRegistry.add("odooMenu", {
                     const menu = env.services.menu.getMenu(menuId);
                     const xmlId = menu && menu.xmlid;
                     const url = xmlId ? buildIrMenuXmlLink(xmlId) : buildIrMenuIdLink(menuId);
-                    const name = menu.name;
-                    const link = { url, label: name };
-                    resolve({
-                        link,
-                        isUrlEditable: false,
-                        urlRepresentation: name,
-                    });
+                    const label = menu.name;
+                    resolve(markdownLink(label, url));
                 },
             });
         });

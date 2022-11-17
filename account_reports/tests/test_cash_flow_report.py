@@ -207,6 +207,84 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash and cash equivalents, closing balance',                        600.0],
         ], options)
 
+    def test_cash_flow_comparison(self):
+        self.report.filter_period_comparison = True
+        self.report.default_opening_date_filter = 'this_year'
+
+        options = self._generate_options(self.report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2016-12-31'))
+        options = self._update_comparison_filter(options, self.report, comparison_type='previous_period', number_period=1)
+        options['filter_period_comparison'] = True
+
+        # Current period
+        invoice_current_period = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': '2016-01-08',
+            'journal_id': self.bank_journal.id,
+            'line_ids': [
+                (0, 0, {'debit': 230.0,  'credit': 0.0,    'account_id': self.account_receivable_1.id}),
+                (0, 0, {'debit': 0.0,    'credit': 230.0,  'account_id': self.account_no_tag.id}),
+            ],
+        })
+        invoice_current_period.action_post()
+
+        payment_current_period = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': '2016-01-16',
+            'journal_id': self.bank_journal.id,
+            'line_ids': [
+                (0, 0, {'debit': 0.0,   'credit': 230.0, 'account_id': self.account_receivable_1.id}),
+                (0, 0, {'debit': 230.0, 'credit': 0.0,   'account_id': self.account_bank.id}),
+            ],
+        })
+        payment_current_period.action_post()
+
+        self._reconcile_on((invoice_current_period + payment_current_period).line_ids, self.account_receivable_1)
+
+        # Past period
+        invoice_past_period = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': '2015-01-08',
+            'journal_id': self.bank_journal.id,
+            'line_ids': [
+                (0, 0, {'debit': 100.0,  'credit': 0.0,    'account_id': self.account_receivable_1.id}),
+                (0, 0, {'debit': 0.0,    'credit': 100.0,  'account_id': self.account_no_tag.id}),
+            ],
+        })
+        invoice_past_period.action_post()
+
+        payment_past_period = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': '2015-01-16',
+            'journal_id': self.bank_journal.id,
+            'line_ids': [
+                (0, 0, {'debit': 0.0,   'credit': 100.0, 'account_id': self.account_receivable_1.id}),
+                (0, 0, {'debit': 100.0, 'credit': 0.0,   'account_id': self.account_bank.id}),
+            ],
+        })
+        payment_past_period.action_post()
+
+        self._reconcile_on((invoice_past_period + payment_past_period).line_ids, self.account_receivable_1)
+
+        self.assertLinesValues(self.report._get_lines(options), [0, 1, 2], [
+            ['Cash and cash equivalents, beginning of period',            100.0,         ''],
+            ['Net increase in cash and cash equivalents',                 230.0,      100.0],
+            ['Cash flows from operating activities',                         '',         ''],
+            ['Advance Payments received from customers',                     '',         ''],
+            ['Cash received from operating activities',                      '',         ''],
+            ['Advance payments made to suppliers',                           '',         ''],
+            ['Cash paid for operating activities',                           '',         ''],
+            ['Cash flows from investing & extraordinary activities',         '',         ''],
+            ['Cash in',                                                      '',         ''],
+            ['Cash out',                                                     '',         ''],
+            ['Cash flows from financing activities',                         '',         ''],
+            ['Cash in',                                                      '',         ''],
+            ['Cash out',                                                     '',         ''],
+            ['Cash flows from unclassified activities',                   230.0,      100.0],
+            ['Cash in',                                                   230.0,      100.0],
+            ['Cash out',                                                     '',         ''],
+            ['Cash and cash equivalents, closing balance',                330.0,      100.0],
+        ], options)
+
     def test_cash_flow_column_groups(self):
         self.report.filter_period_comparison = True
         options = self._generate_options(self.report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2016-01-31'))

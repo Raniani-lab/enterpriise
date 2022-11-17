@@ -14,6 +14,7 @@
                     widget="badge"/>
                 <field name="subscription_management"/>
                 <field name="date_order"/>
+                <field name="first_contract_date"/>
                 <field name="partner_id"/>
                 <field name="user_id"/>
                 <field name="amount_total" sum="Total Tax Included" widget="monetary"/>
@@ -118,6 +119,7 @@
                 <filter name="bad" string="Bad Health" domain="[('health', '=', 'bad')]"/>
                 <separator/>
                 <filter name="filter_order_date" date="date_order"/>
+                <filter name="filter_first_contract_date" date="first_contract_date"/>
                 <filter name="filter_recurring_next_date" date="next_invoice_date"/>
                 <separator/>
                 <filter invisible="1" string="Late Activities" name="activities_overdue"
@@ -135,6 +137,7 @@
                     <filter string="Customer" name="customer" domain="[]" context="{'group_by':'partner_id'}"/>
                     <filter string="Template" name="template" domain="[]" context="{'group_by':'sale_order_template_id'}"/>
                     <filter string="Stage" name="stage" domain="[]" context="{'group_by':'stage_id'}"/>
+                    <filter string="First Contract Date" name="first_contract_month" domain="[]" context="{'group_by' : 'first_contract_date'}"/>
                     <filter string="End Date" name="end_month" domain="[]" context="{'group_by' : 'end_date'}" />
                     <filter string="Next Invoice Date" name="next_invoice_date" domain="[]" context="{'group_by' : 'next_invoice_date'}" />
                     <filter string="Recurrence" name="recurrence" domain="[]" context="{'group_by' : 'recurrence_id'}" />

@@ -13,6 +13,7 @@ class SaleSubscriptionReport(models.Model):
     name = fields.Char()
     date_order = fields.Date('Order Date', readonly=True)
     end_date = fields.Date('End Date', readonly=True)
+    first_contract_date = fields.Date(string='First contract date', readonly=True)
     product_id = fields.Many2one('product.product', 'Product', readonly=True)
     product_uom = fields.Many2one('uom.uom', 'Unit of Measure', readonly=True)
     recurring_monthly = fields.Float('Monthly Recurring Revenue', readonly=True)
@@ -90,6 +91,7 @@ class SaleSubscriptionReport(models.Model):
                     SUM(l.product_uom_qty) as quantity,
                     sub.date_order as date_order,
                     sub.end_date as end_date,
+                    sub.first_contract_date as first_contract_date,
                     sub.partner_id as partner_id,
                     sub.user_id as user_id,
                     sub.team_id,
@@ -182,7 +184,8 @@ class SaleSubscriptionReport(models.Model):
                     sub.state,
                     sub.next_invoice_date,
                     sub.recurrence_id,
-                    sub.origin_order_id
+                    sub.origin_order_id,
+                    sub.first_contract_date
         """
         return group_by_str
 

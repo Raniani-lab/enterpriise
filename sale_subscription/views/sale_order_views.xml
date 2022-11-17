@@ -98,6 +98,7 @@
                 <field name="is_upselling"  invisible="1"/>
                 <field name="renew_state"  invisible="1"/>
                 <field name="subscription_management" invisible="1"/>
+                <field name="origin_order_id" invisible="1"/>
 
                 <div name="subscription_pill" class="badge rounded-pill bg-info text-white float-end fs-6"
                      attrs="{'invisible': [
@@ -183,6 +184,7 @@
                                                  ('stage_category', 'in', ['progress', 'paused'])]}"/>
                 <field name="start_date" groups="sales_team.group_sale_manager"
                        attrs="{'readonly': [('subscription_management', 'in', ['upsell', 'renew'])]}"/>
+                <field name="first_contract_date" attrs="{'invisible': [('origin_order_id', '=', False)]}"/>
                 <field name="to_renew" attrs="{'invisible': [('is_subscription', '=', False)]}"/>
             </group>
             <group name="sale_info" position='inside'>

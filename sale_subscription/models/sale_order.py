@@ -69,6 +69,10 @@ class SaleOrder(models.Model):
         help="The next invoice will be created on this date then the period will be extended.")
     end_date = fields.Date(string='End Date', tracking=True,
                            help="If set in advance, the subscription will be set to renew 1 month before the date and will be closed on the date set in this field.")
+    first_contract_date = fields.Date(
+        compute='_compute_first_contract_date',
+        store=True,
+        help="The first contract date is the start date of the first contract of the sequence. It is common across a subscription and its renewals.")
     close_reason_id = fields.Many2one("sale.order.close.reason", string="Close Reason", copy=False, tracking=True)
 
     #############
@@ -265,6 +269,17 @@ class SaleOrder(models.Model):
                 so.start_date = False
             elif not so.start_date:
                 so.start_date = fields.Date.today()
+
+    @api.depends('origin_order_id.start_date', 'subscription_management', 'is_subscription', 'start_date')
+    def _compute_first_contract_date(self):
+        for so in self:
+            if not so.is_subscription:
+                continue
+            elif so.subscription_management in ['renew', 'upsell']:
+                so.first_contract_date = so.origin_order_id.start_date
+            else:
+                # First contract of the sequence
+                so.first_contract_date = so.start_date
 
     @api.depends('subscription_child_ids', 'origin_order_id')
     def _get_invoiced(self):

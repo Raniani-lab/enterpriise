@@ -34,7 +34,7 @@
                         t-esc="env.model.IsNotSet(line) ? '?' : qtyDone"/>
                 <span t-if="qtyDemand" t-esc="'/ ' + qtyDemand"/>
             </span>
-            <span t-if="props.displayUOM" t-esc="line.product_uom_id.name"/>
+            <span t-if="props.displayUOM" class="o_line_uom" t-esc="line.product_uom_id.name"/>
         </div>
     </t>
 

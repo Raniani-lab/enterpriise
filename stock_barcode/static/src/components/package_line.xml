@@ -6,11 +6,11 @@
         t-attf-class="{{componentClasses}}" t-att-data-package="line.package_id.name">
         <div class="o_barcode_line_details flex-grow-1 flex-column flex-nowrap">
             <t t-call="stock_barcode.LineSourceLocation"/>
-            <div>
+            <div name="package">
                 <i class="fa fa-fw fa-archive"/>
-                <t t-esc="line.package_id.name"/>
+                <t class="package" t-esc="line.package_id.name"/>
                 <i class="fa fa-long-arrow-right mx-1"/>
-                <t t-esc="line.result_package_id.name"/>
+                <t class="result-package" t-esc="line.result_package_id.name"/>
             </div>
             <t t-call="stock_barcode.LineQuantity"/>
             <t t-call="stock_barcode.LineOwner"/>

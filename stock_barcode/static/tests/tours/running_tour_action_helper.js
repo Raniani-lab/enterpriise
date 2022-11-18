@@ -27,9 +27,9 @@ StepUtils.include({
             in_modal: true,
         };
     },
-    validateBarcodeForm() {
+    validateBarcodeOperation(trigger=".o_barcode_client_action") {
         return [{
-            trigger: '.o_barcode_client_action',
+            trigger,
             run: 'scan O-BTN.validate'
         }, {
             trigger: '.o_notification.border-success',

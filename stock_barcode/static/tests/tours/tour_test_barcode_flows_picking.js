@@ -98,10 +98,10 @@ tour.register('test_internal_picking_from_scratch', {test: true}, [
         extra_trigger: '.o_barcode_line .o_line_destination_location:contains("Section 3")',
         run: function() {
             helper.assertLinesCount(2);
-            const $lineProduct1 = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($lineProduct1, false);
-            const $lineProduct2 = helper.getLine({barcode: 'product2'});
-            helper.assertLineIsHighlighted($lineProduct2, true);
+            const lineProduct1 = helper.getLine({barcode: 'product1'});
+            helper.assertLineIsHighlighted(lineProduct1, false);
+            const lineProduct2 = helper.getLine({barcode: 'product2'});
+            helper.assertLineIsHighlighted(lineProduct2, true);
         },
     },
 
@@ -205,13 +205,12 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
-            const [line1, line2, line3] = document.querySelectorAll('.o_barcode_line');
-            helper.assertLineIsHighlighted($(line1), false);
-            helper.assertLineLocations(line1, '.../Section 1', '.../Section 2');
-            helper.assertLineIsHighlighted($(line2), false);
-            helper.assertLineLocations(line2, '.../Section 1', '.../Section 2');
-            helper.assertLineIsHighlighted($(line3), false);
-            helper.assertLineLocations(line3, '.../Section 3', '.../Section 4');
+            helper.assertLineIsHighlighted(0, false);
+            helper.assertLineLocations(0, '.../Section 1', '.../Section 2');
+            helper.assertLineIsHighlighted(1, false);
+            helper.assertLineLocations(1, '.../Section 1', '.../Section 2');
+            helper.assertLineIsHighlighted(2, false);
+            helper.assertLineLocations(2, '.../Section 3', '.../Section 4');
         }
     },
 
@@ -246,8 +245,8 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
-            const lineproduct1 = document.querySelector('.o_barcode_line.o_selected');
-            helper.assertLineIsHighlighted($(lineproduct1), true);
+            const lineproduct1 = helper.getLine({ selected: true });
+            helper.assertLineIsHighlighted(lineproduct1, true);
             helper.assertLineLocations(lineproduct1, '.../Section 3', '.../Section 2');
         }
     },
@@ -265,9 +264,9 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
-            var $lineproduct1 = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($lineproduct1, false);
-            helper.assertLineLocations($lineproduct1[0], '.../Section 3', '.../Section 2');
+            const lineproduct1 = helper.getLine({barcode: 'product1'});
+            helper.assertLineIsHighlighted(lineproduct1, false);
+            helper.assertLineLocations(lineproduct1, '.../Section 3', '.../Section 2');
         }
     },
 
@@ -279,10 +278,9 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
         run: function() {
             helper.assertLinesCount(3);
             helper.assertScanMessage('scan_product');
-            const [line1, line2, line3] = document.querySelectorAll('.o_barcode_line');
-            helper.assertLineIsHighlighted($(line1), false);
-            helper.assertLineIsHighlighted($(line2), false);
-            helper.assertLineIsHighlighted($(line3), false);
+            helper.assertLineIsHighlighted(0, false);
+            helper.assertLineIsHighlighted(1, false);
+            helper.assertLineIsHighlighted(2, false);
         }
     },
 
@@ -296,12 +294,11 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
-            const [line1, line2, line3, line4] = document.querySelectorAll('.o_barcode_line');
-            helper.assertLineIsHighlighted($(line1), false);
-            helper.assertLineIsHighlighted($(line2), false);
-            helper.assertLineIsHighlighted($(line3), false);
-            helper.assertLineIsHighlighted($(line4), true);
-            helper.assertLineLocations(line4, '.../Section 1', 'WH/Stock');
+            helper.assertLineIsHighlighted(0, false);
+            helper.assertLineIsHighlighted(1, false);
+            helper.assertLineIsHighlighted(2, false);
+            helper.assertLineIsHighlighted(3, true);
+            helper.assertLineLocations(3, '.../Section 1', 'WH/Stock');
         }
     },
     { trigger: '.o_barcode_client_action', run: 'scan LOC-01-02-00' },
@@ -315,11 +312,10 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             helper.assertLinesCount(4);
             helper.assertScanMessage('scan_dest');
             helper.assertValidateIsHighlighted(false);
-            const [line1, line2, line3, line4] = document.querySelectorAll('.o_barcode_line');
-            helper.assertLineIsHighlighted($(line1), false);
-            helper.assertLineIsHighlighted($(line2), true);
-            helper.assertLineIsHighlighted($(line3), false);
-            helper.assertLineIsHighlighted($(line4), false);
+            helper.assertLineIsHighlighted(0, false);
+            helper.assertLineIsHighlighted(1, true);
+            helper.assertLineIsHighlighted(2, false);
+            helper.assertLineIsHighlighted(3, false);
         }
     },
     { trigger: '.o_barcode_client_action', run: 'scan LOC-01-02-00' },
@@ -333,11 +329,10 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             helper.assertLinesCount(4);
             helper.assertScanMessage('scan_dest');
             helper.assertValidateIsHighlighted(false);
-            const [line1, line2, line3, line4] = document.querySelectorAll('.o_barcode_line');
-            helper.assertLineIsHighlighted($(line1), false);
-            helper.assertLineIsHighlighted($(line2), false);
-            helper.assertLineIsHighlighted($(line3), true);
-            helper.assertLineIsHighlighted($(line4), false);
+            helper.assertLineIsHighlighted(0, false);
+            helper.assertLineIsHighlighted(1, false);
+            helper.assertLineIsHighlighted(2, true);
+            helper.assertLineIsHighlighted(3, false);
         }
     },
     { trigger: '.o_scan_message.o_scan_dest', run: 'scan shelf4' },
@@ -351,23 +346,21 @@ tour.register('test_internal_picking_reserved_1', {test: true}, [
             helper.assertValidateIsHighlighted(true);
             helper.assertValidateEnabled(true);
 
-            const [line1, line2, line3, line4] = document.querySelectorAll('.o_barcode_line');
+            helper.assertLineIsHighlighted(0, false);
+            helper.assertLineQty(0, '1 / 1');
+            helper.assertLineLocations(0, '.../Section 3', '.../Section 2');
 
-            helper.assertLineIsHighlighted($(line1), false);
-            helper.assertLineQuantityOnReservedQty(0, '1 / 1');
-            helper.assertLineLocations(line1, '.../Section 3', '.../Section 2');
+            helper.assertLineIsHighlighted(1, false);
+            helper.assertLineQty(1, '1 / 1');
+            helper.assertLineLocations(1, '.../Section 1', '.../Section 2');
 
-            helper.assertLineIsHighlighted($(line2), false);
-            helper.assertLineQuantityOnReservedQty(1, '1 / 1');
-            helper.assertLineLocations(line2, '.../Section 1', '.../Section 2');
+            helper.assertLineIsHighlighted(2, false);
+            helper.assertLineQty(2, '1 / 1');
+            helper.assertLineLocations(2, '.../Section 3', '.../Section 4');
 
-            helper.assertLineIsHighlighted($(line3), false);
-            helper.assertLineQuantityOnReservedQty(2, '1 / 1');
-            helper.assertLineLocations(line3, '.../Section 3', '.../Section 4');
-
-            helper.assertLineIsHighlighted($(line4), false);
-            helper.assertLineQuantityOnReservedQty(3, '1');
-            helper.assertLineLocations(line4, '.../Section 1', '.../Section 2');
+            helper.assertLineIsHighlighted(3, false);
+            helper.assertLineQty(3, '1');
+            helper.assertLineLocations(3, '.../Section 1', '.../Section 2');
         }
     },
 ]);
@@ -519,12 +512,11 @@ tour.register('test_delivery_lot_with_package', {test: true}, [
             helper.assertLinesCount(1);
             helper.assertSublinesCount(2);
             helper.assertScanMessage('scan_serial');
-            const $line1 = helper.getSubline(':eq(0)');
-            const $line2 = helper.getSubline(':eq(1)');
-            helper.assert($line1.find('.o_line_lot_name').text(), 'sn1');
-            helper.assert($line1.find('.fa-archive').parent().text().includes("pack_sn_1"), true);
-            helper.assert($line2.find('.o_line_lot_name').text(), 'sn2');
-            helper.assert($line2.find('.fa-archive').parent().text().includes("pack_sn_1"), true);
+            const [ line1, line2 ] = helper.getSublines();
+            helper.assert(line1.querySelector('.o_line_lot_name').innerText, 'sn1');
+            helper.assert(line1.querySelector('.fa-archive').parentElement.innerText.includes("pack_sn_1"), true);
+            helper.assert(line2.querySelector('.o_line_lot_name').innerText, 'sn2');
+            helper.assert(line2.querySelector('.fa-archive').parentElement.innerText.includes("pack_sn_1"), true);
         }
     },
 
@@ -547,7 +539,7 @@ tour.register('test_delivery_lot_with_package', {test: true}, [
             helper.assertLinesCount(1);
             helper.assertSublinesCount(4);
             helper.assertScanMessage('scan_validate');
-            const [line1, line2, line3, line4] = document.querySelectorAll('.o_sublines .o_barcode_line');
+            const [ line1, line2, line3, line4 ] = helper.getSublines();
             helper.assert(line1.querySelector('.o_line_lot_name').innerText, "sn1");
             helper.assert(line1.querySelector('.o_line_owner'), null);
             helper.assert(line1.querySelector('.result-package').innerText, "pack_sn_1");
@@ -582,7 +574,7 @@ tour.register('test_delivery_lot_with_package', {test: true}, [
     {
         trigger: '.o_discard',
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 ]);
 
 tour.register('test_delivery_reserved_1', {test: true}, [
@@ -700,11 +692,8 @@ tour.register('test_delivery_reserved_2', {test: true}, [
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(true);
             helper.assertValidateEnabled(true);
-            var $lines = helper.getLine({barcode: 'product1'});
-            for (var i = 0; i < $lines.length; i++) {
-                helper.assertLineQty($($lines[i]), "2");
-            }
-
+            const lines = helper.getLines({ barcode: 'product1' });
+            [0, 1].map(i => helper.assertLineQty(lines[i], "2 / 2"));
         }
     },
 
@@ -746,9 +735,8 @@ tour.register('test_delivery_reserved_3', {test: true}, [
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(true);
             helper.assertValidateEnabled(true);
-            var $line = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, "1");
+            helper.assertLineIsHighlighted(0, true);
+            helper.assertLineQty(0, "1 / 1");
         }
     },
 ]);
@@ -766,12 +754,12 @@ tour.register('test_delivery_using_buttons', {test: true}, [
                 $('.o_line_button[name=incrementButton]').length, 3,
                 "3 buttons must be present in the view (one by line)"
             );
-            helper.assertLineQuantityOnReservedQty(0, '0 / 2');
-            helper.assertLineQuantityOnReservedQty(1, '0 / 3');
-            helper.assertLineQuantityOnReservedQty(2, '0 / 4');
-            helper.assertButtonIsVisible($('.o_barcode_line').eq(0), 'add_quantity');
-            helper.assertButtonIsVisible($('.o_barcode_line').eq(1), 'add_quantity');
-            helper.assertButtonIsVisible($('.o_barcode_line').eq(2), 'add_quantity');
+            helper.assertLineQty(0, "0 / 2");
+            helper.assertLineQty(1, "0 / 3");
+            helper.assertLineQty(2, "0 / 4");
+            helper.assertButtonShouldBeVisible(0, "add_quantity");
+            helper.assertButtonShouldBeVisible(1, "add_quantity");
+            helper.assertButtonShouldBeVisible(2, "add_quantity");
         }
     },
 
@@ -782,12 +770,11 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     {
         trigger: '.o_barcode_lines',
         run: function() {
-            const $line = $('.o_barcode_line:first-child');
-            helper.assert($line.find('.o_add_quantity').length, 1);
-            helper.assertLineQuantityOnReservedQty(0, '1 / 2');
-            helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), true);
-            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:last-child'), false);
+            helper.assertButtonShouldBeVisible(0, "add_quantity");
+            helper.assertLineQty(0, '1 / 2');
+            helper.assertLineIsHighlighted(0, true);
+            helper.assertLineIsHighlighted(1, false);
+            helper.assertLineIsHighlighted(2, false);
         }
     },
     // Press +1 button again, now its buttons must be hidden.
@@ -797,10 +784,10 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     {
         trigger: '.o_barcode_line:first-child.o_selected.o_line_completed',
         run: function() {
-            helper.assert($('.o_barcode_line:eq(0) .o_add_quantity').length, 0);
-            helper.assertLineQuantityOnReservedQty(0, '2 / 2');
-            helper.assert($('.o_barcode_line:eq(1) .o_add_quantity').length, 1);
-            helper.assertLineQuantityOnReservedQty(1, '0 / 3');
+            helper.assertButtonShouldBeVisible(0, "add_quantity", false);
+            helper.assertLineQty(0, '2 / 2');
+            helper.assertButtonShouldBeVisible(1, "add_quantity");
+            helper.assertLineQty(1, '0 / 3');
         }
     },
     // Press the add remaining quantity button.
@@ -810,10 +797,10 @@ tour.register('test_delivery_using_buttons', {test: true}, [
         trigger: '.o_barcode_line:nth-child(2).o_selected.o_line_completed',
         run: function() {
             helper.assertLineButtonsAreVisible(1, false, '[name=incrementButton]');
-            helper.assertLineQuantityOnReservedQty(1, '3 / 3');
-            helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), true);
-            helper.assertLineIsHighlighted($('.o_barcode_line:last-child'), false);
+            helper.assertLineQty(1, '3 / 3');
+            helper.assertLineIsHighlighted(0, false);
+            helper.assertLineIsHighlighted(1, true);
+            helper.assertLineIsHighlighted(2, false);
         }
     },
 
@@ -821,8 +808,8 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     {
         trigger: '.o_barcode_client_action',
         run: function() {
-            helper.assertButtonIsVisible($('.o_barcode_line').eq(2), 'add_quantity');
-            helper.assertLineQuantityOnReservedQty(2, '0 / 4');
+            helper.assertButtonShouldBeVisible(2, 'add_quantity');
+            helper.assertLineQty(2, '0 / 4');
         }
     },
     // Scan product3 one time, then checks the quantities.
@@ -833,11 +820,11 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     {
         trigger: '.o_barcode_line:last-child.o_selected .qty-done:contains("1")',
         run: function() {
-            helper.assertButtonIsVisible($('.o_barcode_line').eq(2), 'add_quantity');
-            helper.assertLineQuantityOnReservedQty(2, '1 / 4');
-            helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(3)'), true); // Can't use 'last-child' because the tip is place at the same DOM level just behind this line...
+            helper.assertButtonShouldBeVisible(2, 'add_quantity');
+            helper.assertLineQty(2, '1 / 4');
+            helper.assertLineIsHighlighted(0, false);
+            helper.assertLineIsHighlighted(1, false);
+            helper.assertLineIsHighlighted(2, true);
         }
     },
     // Goes on the form view and press digipad +1 button.
@@ -847,8 +834,8 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     {
         trigger: '.o_barcode_lines',
         run: function() {
-            helper.assertButtonIsVisible($('.o_barcode_line').eq(0), 'add_quantity');
-            helper.assertLineQuantityOnReservedQty(0, '2 / 4');
+            helper.assertButtonShouldBeVisible(0, 'add_quantity');
+            helper.assertLineQty(0, '2 / 4');
         }
     },
     // Press the add remaining quantity button, then the button must be hidden.
@@ -857,7 +844,7 @@ tour.register('test_delivery_using_buttons', {test: true}, [
         trigger: '.o_barcode_line:first-child .qty-done:contains("4")',
         run: function() {
             helper.assertLineButtonsAreVisible(0, false, '[name=incrementButton]');
-            helper.assertLineQuantityOnReservedQty(0, '4 / 4');
+            helper.assertLineQty(0, '4 / 4');
             helper.assertValidateIsHighlighted(true);
         }
     },
@@ -872,14 +859,13 @@ tour.register('test_delivery_using_buttons', {test: true}, [
         trigger: '.o_barcode_line:nth-child(2).o_selected',
         run: function() {
             helper.assertLinesCount(4);
-            helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), true);
-            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(3)'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:last-child'), false);
-            const $line = $('.o_barcode_line:nth-child(2)');
-            helper.assertLineQty($line, '1');
+            helper.assertLineIsHighlighted(0, false);
+            helper.assertLineIsHighlighted(1, true);
+            helper.assertLineIsHighlighted(2, false);
+            helper.assertLineIsHighlighted(3, false);
+            helper.assertLineQty(1, '1');
             // +1 button must be present on new line.
-            helper.assertButtonIsVisible($line, 'add_quantity');
+            helper.assertButtonShouldBeVisible(1, 'add_quantity');
         }
     },
     // Press +1 button of the new line.
@@ -889,14 +875,13 @@ tour.register('test_delivery_using_buttons', {test: true}, [
     {
         trigger: '.o_barcode_line:nth-child(2) .qty-done:contains("2")',
         run: function() {
-            helper.assertLineIsHighlighted($('.o_barcode_line:first-child'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(2)'), true);
-            helper.assertLineIsHighlighted($('.o_barcode_line:nth-child(3)'), false);
-            helper.assertLineIsHighlighted($('.o_barcode_line:last-child'), false);
-            const $line = $('.o_barcode_line:nth-child(2)');
-            helper.assertLineQty($line, '2');
+            helper.assertLineIsHighlighted(0, false);
+            helper.assertLineIsHighlighted(1, true);
+            helper.assertLineIsHighlighted(2, false);
+            helper.assertLineIsHighlighted(3, false);
+            helper.assertLineQty(1, '2');
             // +1 button must still be present.
-            helper.assertButtonIsVisible($line, 'add_quantity');
+            helper.assertButtonShouldBeVisible(1, 'add_quantity');
         }
     },
 
@@ -956,7 +941,7 @@ tour.register('test_receipt_from_scratch_with_lots_1', {test: true}, [
         trigger: '.o_line_lot_name:contains("lot2")',
         run: 'scan LOC-01-01-00'
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 ]);
 
 tour.register('test_receipt_from_scratch_with_lots_2', {test: true}, [
@@ -1018,7 +1003,7 @@ tour.register('test_receipt_from_scratch_with_lots_2', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: 'scan LOC-01-01-00'
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 ]);
 
 tour.register('test_receipt_from_scratch_with_lots_3', {test: true}, [
@@ -1027,9 +1012,9 @@ tour.register('test_receipt_from_scratch_with_lots_3', {test: true}, [
         trigger: '.o_barcode_line',
         run: function() {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, "1");
+            const line = helper.getLine({barcode: 'product1'});
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, "1");
         }
     },
 
@@ -1047,12 +1032,12 @@ tour.register('test_receipt_from_scratch_with_lots_3', {test: true}, [
         trigger: '.o_barcode_line:nth-child(2)',
         run: function() {
             helper.assertLinesCount(2);
-            const $line1 = helper.getLine({barcode: 'product1'});
-            const $line2 = helper.getLine({barcode: 'productlot1'});
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineQty($line1, "2");
-            helper.assertLineIsHighlighted($line2, true);
-            helper.assertLineQty($line2, "0");
+            const line1 = helper.getLine({ barcode: 'product1' });
+            const line2 = helper.getLine({ barcode: 'productlot1' });
+            helper.assertLineIsHighlighted(line1, false);
+            helper.assertLineQty(line1, "2");
+            helper.assertLineIsHighlighted(line2, true);
+            helper.assertLineQty(line2, "0");
         }
     },
 
@@ -1070,15 +1055,15 @@ tour.register('test_receipt_from_scratch_with_lots_3', {test: true}, [
         trigger: '.o_selected .qty-done:contains(2)',
         run: function() {
             helper.assertLinesCount(2);
-            const $line1 = helper.getLine({barcode: 'product1'});
-            const $line2 = helper.getLine({barcode: 'productlot1'});
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineQty($line1, "2");
-            helper.assertLineIsHighlighted($line2, true);
-            helper.assertLineQty($line2, "2");
+            const line1 = helper.getLine({ barcode: 'product1' });
+            const line2 = helper.getLine({ barcode: 'productlot1' });
+            helper.assertLineIsHighlighted(line1, false);
+            helper.assertLineQty(line1, "2");
+            helper.assertLineIsHighlighted(line2, true);
+            helper.assertLineQty(line2, "2");
         }
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 ]);
 
 tour.register('test_receipt_from_scratch_with_lots_4', {test: true}, [
@@ -1183,7 +1168,7 @@ tour.register('test_receipt_with_sn_1', {test: true}, [
         run: 'scan sn1',
     },
     tour.stepUtils.confirmAddingUnreservedProduct(),
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 ]);
 
 tour.register('test_delivery_from_scratch_with_sn_1', {test: true}, [
@@ -1413,7 +1398,7 @@ tour.register('test_receipt_reserved_lots_multiloc_1', {test: true}, [
         trigger: '.o_barcode_line.o_selected:contains("lot2") .qty-done:contains("2")',
         run: 'scan LOC-01-01-00',
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 ]);
 
 tour.register('test_receipt_duplicate_serial_number', {test: true}, [
@@ -1533,7 +1518,7 @@ tour.register('test_delivery_duplicate_serial_number', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: 'scan sn2',
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 
     {
         trigger: '.o_stock_barcode_main_menu',
@@ -1631,7 +1616,7 @@ tour.register('test_bypass_source_scan', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: 'scan serial1',
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 ]);
 
 tour.register('test_picking_type_mandatory_scan_settings_pick_int_1', {test: true}, [
@@ -2167,7 +2152,7 @@ tour.register('test_picking_type_mandatory_scan_complete_flux_pick', {test: true
     {
         trigger: '.o_barcode_line.o_selected .o_sublines',
         run: function() {
-            const [ lot001Line, lot002Line ] = document.querySelectorAll('.o_sublines .o_barcode_line');
+            const [ lot001Line, lot002Line ] = helper.getSublines();
             helper.assert(lot001Line.querySelector('.btn.o_add_quantity').disabled, true,
                 "Lot number not scanned yet, so line's buttons are disabled.");
             helper.assert(lot002Line.querySelector('.btn.o_add_quantity').disabled, true,
@@ -2181,7 +2166,7 @@ tour.register('test_picking_type_mandatory_scan_complete_flux_pick', {test: true
     {
         trigger: '.o_barcode_line.o_selected .qty-done:contains(1)',
         run: function() {
-            const [ lot001Line, lot002Line ] = document.querySelectorAll('.o_sublines .o_barcode_line');
+            const [ lot001Line, lot002Line ] = helper.getSublines();
             helper.assert(lot001Line.querySelector('.btn.o_add_quantity').disabled, false,
                 "lot-001 was scanned, its line's buttons should be enable");
             helper.assert(lot002Line.querySelector('.btn.o_add_quantity').disabled, true,
@@ -2195,8 +2180,8 @@ tour.register('test_picking_type_mandatory_scan_complete_flux_pick', {test: true
     {
         trigger: '.o_barcode_line.o_selected.o_line_completed',
         run: function() {
-            const lot001Line = document.querySelector('.o_sublines .o_barcode_line.o_line_completed');
-            const lot002Line = document.querySelector('.o_sublines .o_barcode_line:not(.o_line_completed)');
+            const lot001Line = helper.getSubline({ completed: true});
+            const lot002Line = helper.getSubline({ completed: false});
             helper.assert(Boolean(lot001Line.querySelector('.btn.o_add_quantity')), false,
                 "The two lot-001 were scanned, the button to add the quantity should be hidden.");
             helper.assert(lot002Line.querySelector('.btn.o_add_quantity').disabled, true);
@@ -2365,7 +2350,7 @@ tour.register('test_pack_multiple_scan', {test: true}, [
         trigger: '.o_barcode_line:nth-child(2)',
         run: 'scan O-BTN.pack',
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 
     {
         trigger: '.o_stock_barcode_main_menu',
@@ -2397,13 +2382,13 @@ tour.register('test_pack_multiple_scan', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: function () {
             helper.assertErrorMessage('This package is already scanned.');
-            var $line1 = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($line1, true);
-            var $line2 = helper.getLine({barcode: 'product2'});
-            helper.assertLineIsHighlighted($line2, true);
+            const line1 = helper.getLine({ barcode: "product1" });
+            helper.assertLineIsHighlighted(line1, true);
+            const line2 = helper.getLine({ barcode: "product2" });
+            helper.assertLineIsHighlighted(line2, true);
         },
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 
     {
         trigger: '.o_stock_barcode_main_menu',
@@ -2450,7 +2435,7 @@ tour.register('test_pack_common_content_scan', {test: true}, [
             helper.assertLinesCount(5);
         },
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 
     {
         trigger: '.o_stock_barcode_main_menu',
@@ -2483,10 +2468,7 @@ tour.register('test_pack_multiple_location', {test: true}, [
 
     {
         trigger: '.o_package_content',
-        run: function() {
-            const $line = $('.o_barcode_lines .o_barcode_line');
-            helper.assertLineQty($line, '1');
-        },
+        run: () => helper.assertLineQty(0, "1")
     },
 
     { // Scan a second time the same package => Should raise a warning.
@@ -2495,10 +2477,7 @@ tour.register('test_pack_multiple_location', {test: true}, [
     },
     { // A notification is shown and the package's qty. should be unchanged.
         trigger: '.o_notification.border-danger',
-        run: function() {
-            const $line = $('.o_barcode_lines .o_barcode_line');
-            helper.assertLineQty($line, '1');
-        },
+        run: () => helper.assertLineQty(0, "1")
     },
 
     { trigger: '.o_package_content' },
@@ -2515,14 +2494,7 @@ tour.register('test_pack_multiple_location', {test: true}, [
         run: 'scan LOC-01-02-00',
     },
 
-    {
-        trigger: '.o_scan_message.o_scan_validate',
-        run: 'scan O-BTN.validate',
-    },
-
-    {
-        trigger: '.o_notification.border-success'
-    },
+    ...tour.stepUtils.validateBarcodeOperation(".o_scan_message.o_scan_validate"),
 
     {
         trigger: '.o_stock_barcode_main_menu',
@@ -2617,15 +2589,7 @@ tour.register('test_put_in_pack_from_multiple_pages', {test: true}, [
         run: 'scan O-BTN.pack',
     },
 
-    {
-        trigger: '.o_barcode_line:contains("PACK")',
-        run: 'scan O-BTN.validate',
-    },
-
-    {
-        trigger: '.o_notification.border-success'
-    },
-
+    ...tour.stepUtils.validateBarcodeOperation('.o_barcode_line:contains("PACK")'),
 ]);
 
 tour.register('test_reload_flow', {test: true}, [
@@ -2690,7 +2654,7 @@ tour.register('test_reload_flow', {test: true}, [
     {
         trigger: '.o_barcode_line:nth-child(1) .o_line_destination_location:contains(".../Section 1")',
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 ]);
 
 tour.register('test_highlight_packs', {test: true}, [
@@ -2702,8 +2666,7 @@ tour.register('test_highlight_packs', {test: true}, [
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
-            var $line = $('.o_barcode_line');
-            helper.assertLineIsHighlighted($line, false);
+            helper.assertLineIsHighlighted(0, false);
 
         },
     },
@@ -2725,8 +2688,8 @@ tour.register('test_highlight_packs', {test: true}, [
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
-            var $line = $('.o_barcode_line[data-package="PACK002"]');
-            helper.assertLineIsHighlighted($line, true);
+            const packageLine = document.querySelector('.o_barcode_line[data-package="PACK002"]');
+            helper.assertLineIsHighlighted(packageLine, true);
         },
     },
 
@@ -2751,8 +2714,9 @@ tour.register('test_put_in_pack_from_different_location', {test: true}, [
     {
         trigger: '.o_barcode_line:contains("PACK")',
         run: function() {
-            const $line = helper.getLine({barcode: 'product2'});
-            helper.assert($line.find('.fa-archive').length, 1, "Expected a 'fa-archive' icon for assigned pack");
+            const lines = helper.getLines();
+            helper.assert(lines[0].querySelector('.result-package').innerText, "PACK0000001");
+            helper.assert(lines[1].querySelector('.result-package').innerText, "PACK0000001");
         },
     },
     // Scans dest. location.
@@ -2760,7 +2724,7 @@ tour.register('test_put_in_pack_from_different_location', {test: true}, [
         trigger: '.o_scan_message.o_scan_product_or_dest',
         run: 'scan LOC-01-02-00',
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 ]);
 
 tour.register('test_put_in_pack_before_dest', {test: true}, [
@@ -2823,7 +2787,7 @@ tour.register('test_put_in_pack_before_dest', {test: true}, [
     {
         trigger: '.btn-primary',
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 ]);
 
 tour.register('test_put_in_pack_scan_package', {test: true}, [
@@ -2849,8 +2813,8 @@ tour.register('test_put_in_pack_scan_package', {test: true}, [
     {
         trigger: '.o_barcode_line:contains("product1"):contains("PACK0000001")',
         run: function() {
-            const $line1 = $('.o_barcode_line:contains("product1")');
-            const product1_package = $line1.find('div[name="package"]').text().trim();
+            const line1 = helper.getLine({ barcode: "product1", selected: true });
+            const product1_package = line1.querySelector('div[name="package"]').innerText;
             helper.assert(product1_package, 'PACK0000001');
         }
     },
@@ -2867,10 +2831,10 @@ tour.register('test_put_in_pack_scan_package', {test: true}, [
     {
         trigger: '.o_barcode_line:contains("product2"):contains("PACK0000001")',
         run: function() {
-            const $line1 = $('.o_barcode_line:contains("product1")');
-            const $line2 = $('.o_barcode_line:contains("product2")');
-            const product1_package = $line1.find('div[name="package"]').text().trim();
-            const product2_package = $line2.find('div[name="package"]').text().trim();
+            const line1 = helper.getLine({ barcode: "product1", completed: true });
+            const line2 = helper.getLine({ barcode: "product2", selected: true });
+            const product1_package = line1.querySelector('div[name="package"]').innerText;
+            const product2_package = line2.querySelector('div[name="package"]').innerText;
             helper.assert(product1_package, 'PACK0000001');
             helper.assert(product2_package, 'PACK0000001');
         }
@@ -2886,18 +2850,18 @@ tour.register('test_put_in_pack_scan_package', {test: true}, [
         run: 'scan product1',
     },
     {
-        trigger: '.o_barcode_line[data-barcode="product1"] .qty-done:contains("1")',
+        trigger: '.o_barcode_line:nth-child(2).o_selected.o_line_completed',
         run: 'scan PACK0000001',
     },
     {
-        trigger: '.o_barcode_line:contains("product1"):contains("PACK0000001")',
+        trigger: '.o_barcode_line.o_selected:contains("PACK0000001")',
         run: function() {
-            const $line1 = $('.o_barcode_line:contains("product1")');
-            const product1_package = $line1.find('div[name="package"]').text().trim();
+            const line1 = helper.getLine({ barcode: "product1", selected: true });
+            const product1_package = line1.querySelector('div[name="package"]').innerText;
             helper.assert(product1_package, 'PACK0000001');
         }
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 ]);
 
 tour.register('test_put_in_pack_new_lines', {test: true}, [
@@ -2943,7 +2907,7 @@ tour.register('test_picking_owner_scan_package', {test: true}, [
     {
         trigger: '.o_barcode_client_action:contains("Azure Interior")',
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 ]);
 
 tour.register('test_receipt_delete_button', {test: true}, [
@@ -3019,14 +2983,11 @@ tour.register('test_show_entire_package', {test: true}, [
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
-            const $line = $('.o_barcode_line');
-            helper.assertLineIsHighlighted($line, false);
-            helper.assert(
-                $line.find('.o_line_button.o_package_content').length, 1,
-                "Line for package level => the button to inspect package content should be visible"
-            );
-            helper.assert($line.find('.o_barcode_line_details > div:contains(package)').text(), "package001package001");
-            helper.assert($line.find('div[name=quantity]').text(), '0/ 1');
+            const line = helper.getLine();
+            helper.assertLineIsHighlighted(line, false);
+            helper.assertButtonShouldBeVisible(line, "package_content");
+            helper.assert(line.querySelector('[name="package"]').innerText, "package001package001");
+            helper.assertLineQty(line, "0 / 1");
         },
     },
     { trigger: '.o_line_button.o_package_content' },
@@ -3047,14 +3008,11 @@ tour.register('test_show_entire_package', {test: true}, [
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(true);
             helper.assertValidateEnabled(true);
-            const $line = $('.o_barcode_line');
-            helper.assertLineIsHighlighted($line, false);
-            helper.assert(
-                $line.find('.o_line_button.o_package_content').length, 1,
-                "Line for package level => the button to inspect package content should be visible"
-            );
-            helper.assert($line.find('.o_barcode_line_details > div:contains(package)').text(), "package001package001");
-            helper.assert($line.find('div[name=quantity]').text(), '1/ 1');
+            const line = helper.getLine();
+            helper.assertLineIsHighlighted(line, false);
+            helper.assertButtonShouldBeVisible(line, "package_content");
+            helper.assert(line.querySelector('[name="package"]').innerText, "package001package001");
+            helper.assertLineQty(line, "1 / 1");
         },
     },
     { trigger: 'button.o_exit' },
@@ -3069,14 +3027,11 @@ tour.register('test_show_entire_package', {test: true}, [
             helper.assertValidateVisible(true);
             helper.assertValidateIsHighlighted(false);
             helper.assertValidateEnabled(true);
-            const $line = $('.o_barcode_line');
-            helper.assertLineIsHighlighted($line, false);
-            helper.assert(
-                $line.find('.o_line_button.o_package_content').length, 0,
-                "Line for move with package => should have no button to inspect package content"
-            );
-            helper.assert($line.find('.o_barcode_line_details > div:contains(package)').text(), "package002");
-            helper.assertLineQuantityOnReservedQty(0, '0 / 2');
+            const line = helper.getLine();
+            helper.assertLineIsHighlighted(line, false);
+            helper.assertButtonShouldBeVisible(line, "package_content", false);
+            helper.assert(line.querySelector('[name="package"]').innerText, "package002");
+            helper.assertLineQty(0, '0 / 2');
         },
     },
 ]);

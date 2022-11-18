@@ -16,9 +16,9 @@ tour.register('test_gs1_inventory_gtin_8', {test: true}, [
         trigger: '.o_barcode_client_action:contains("PRO_GTIN_8")',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: '82655853'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '1');
+            const line = helper.getLine({ barcode: "82655853" });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, "1");
         }
     },
     {
@@ -29,18 +29,12 @@ tour.register('test_gs1_inventory_gtin_8', {test: true}, [
         trigger: '.o_barcode_line:contains("78")',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: '82655853'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '78');
+            const line = helper.getLine({ barcode: "82655853" });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, "78");
         }
     },
-    {
-        trigger: '.o_barcode_line .qty-done:contains("78")',
-        run: 'scan O-BTN.validate',
-    },
-    {
-        trigger: '.o_notification.border-success',
-    },
+    ...tour.stepUtils.validateBarcodeOperation('.o_barcode_line .qty-done:contains("78")'),
 ]);
 
 tour.register('test_gs1_inventory_product_units', {test: true}, [
@@ -61,12 +55,12 @@ tour.register('test_gs1_inventory_product_units', {test: true}, [
         trigger: '.o_barcode_line:contains("102")',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: '82655853'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '102');
+            const line = helper.getLine({ barcode: "82655853" });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, "102");
         }
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 ]);
 
 tour.register('test_gs1_inventory_lot_serial', {test: true}, [
@@ -85,10 +79,10 @@ tour.register('test_gs1_inventory_lot_serial', {test: true}, [
         trigger: '.o_barcode_line:contains("AAA")',
         run: function () {
             helper.assertLinesCount(1);
-            const line = document.querySelector('.o_barcode_line.o_selected');
-            helper.assert(line.querySelector('.product-label').textContent, 'PRO_GTIN_12_lot');
+            const line = helper.getLine({ selected: true });
+            helper.assertLineProduct(line, "PRO_GTIN_12_lot");
             helper.assert(line.querySelector('.o_line_lot_name').textContent, 'LOT-AAA');
-            helper.assert(line.querySelector('.qty-done').textContent, '5');
+            helper.assertLineQty(line, "5");
         }
     },
     // Scans product + lot, and then scans the quantity after the line's creation.
@@ -104,12 +98,12 @@ tour.register('test_gs1_inventory_lot_serial', {test: true}, [
         run: function () {
             helper.assertLinesCount(1);
             helper.assertSublinesCount(2);
-            const parentLine = document.querySelector('.o_barcode_line.o_selected');
-            const subline = document.querySelector('.o_sublines .o_barcode_line.o_selected');
-            helper.assert(parentLine.querySelector('.product-label').textContent, 'PRO_GTIN_12_lot');
-            helper.assert(parentLine.querySelector('.qty-done').textContent, '6');
+            const parentLine = helper.getLine({ selected: true });
+            const subline = helper.getSubline({ selected: true });
+            helper.assertLineProduct(parentLine, "PRO_GTIN_12_lot");
+            helper.assertLineQty(parentLine, "6");
             helper.assert(subline.querySelector('.o_line_lot_name').textContent, 'LOT-AAB');
-            helper.assert(subline.querySelector('.qty-done').textContent, '1');
+            helper.assertLineQty(subline, "1");
         }
     },
     {
@@ -121,12 +115,12 @@ tour.register('test_gs1_inventory_lot_serial', {test: true}, [
         run: function () {
             helper.assertLinesCount(1);
             helper.assertSublinesCount(2);
-            const parentLine = document.querySelector('.o_barcode_line.o_selected');
-            const subline = document.querySelector('.o_sublines .o_barcode_line.o_selected');
-            helper.assert(parentLine.querySelector('.product-label').textContent, 'PRO_GTIN_12_lot');
-            helper.assert(parentLine.querySelector('.qty-done').textContent, '15');
+            const parentLine = helper.getLine({ selected: true });
+            const subline = helper.getSubline({ selected: true });
+            helper.assertLineProduct(parentLine, "PRO_GTIN_12_lot");
+            helper.assertLineQty(parentLine, "15");
             helper.assert(subline.querySelector('.o_line_lot_name').textContent, 'LOT-AAB');
-            helper.assert(subline.querySelector('.qty-done').textContent, '10');
+            helper.assertLineQty(subline, "10");
         }
     },
     // Scans a second time a quantity (should increment the current line).
@@ -139,12 +133,12 @@ tour.register('test_gs1_inventory_lot_serial', {test: true}, [
         run: function () {
             helper.assertLinesCount(1);
             helper.assertSublinesCount(2);
-            const parentLine = document.querySelector('.o_barcode_line.o_selected');
-            const subline = document.querySelector('.o_sublines .o_barcode_line.o_selected');
-            helper.assert(parentLine.querySelector('.product-label').textContent, 'PRO_GTIN_12_lot');
-            helper.assert(parentLine.querySelector('.qty-done').textContent, '20');
+            const parentLine = helper.getLine({ selected: true });
+            const subline = helper.getSubline({ selected: true });
+            helper.assertLineProduct(parentLine, "PRO_GTIN_12_lot");
+            helper.assertLineQty(parentLine, "20");
             helper.assert(subline.querySelector('.o_line_lot_name').textContent, 'LOT-AAB');
-            helper.assert(subline.querySelector('.qty-done').textContent, '15');
+            helper.assertLineQty(subline, "15");
         }
     },
     // Scans a lot + quantity (should get back the product from the previous
@@ -158,12 +152,12 @@ tour.register('test_gs1_inventory_lot_serial', {test: true}, [
         run: function () {
             helper.assertLinesCount(1);
             helper.assertSublinesCount(3);
-            const parentLine = document.querySelector('.o_barcode_line.o_selected');
-            const subline = document.querySelector('.o_sublines .o_barcode_line.o_selected');
-            helper.assert(parentLine.querySelector('.product-label').textContent, 'PRO_GTIN_12_lot');
-            helper.assert(parentLine.querySelector('.qty-done').textContent, '40');
+            const parentLine = helper.getLine({ selected: true });
+            const subline = helper.getSubline({ selected: true });
+            helper.assertLineProduct(parentLine, "PRO_GTIN_12_lot");
+            helper.assertLineQty(parentLine, "40");
             helper.assert(subline.querySelector('.o_line_lot_name').textContent, 'LOT-AAC');
-            helper.assert(subline.querySelector('.qty-done').textContent, '20');
+            helper.assertLineQty(subline, "20");
         }
     },
     // Scans lot + quantity but with a lot already scanned, so it should
@@ -177,12 +171,12 @@ tour.register('test_gs1_inventory_lot_serial', {test: true}, [
         run: function () {
             helper.assertLinesCount(1);
             helper.assertSublinesCount(3);
-            const parentLine = document.querySelector('.o_barcode_line.o_selected');
-            const subline = document.querySelector('.o_sublines .o_barcode_line.o_selected');
-            helper.assert(parentLine.querySelector('.product-label').textContent, 'PRO_GTIN_12_lot');
-            helper.assert(parentLine.querySelector('.qty-done').textContent, '45');
+            const parentLine = helper.getLine({ selected: true });
+            const subline = helper.getSubline({ selected: true });
+            helper.assertLineProduct(parentLine, "PRO_GTIN_12_lot");
+            helper.assertLineQty(parentLine, "45");
             helper.assert(subline.querySelector('.o_line_lot_name').textContent, 'LOT-AAA');
-            helper.assert(subline.querySelector('.qty-done').textContent, '10');
+            helper.assertLineQty(subline, "10");
         }
     },
 
@@ -200,10 +194,10 @@ tour.register('test_gs1_inventory_lot_serial', {test: true}, [
         run: function () {
             helper.assertLinesCount(2);
             helper.assertSublinesCount(0);
-            const line = document.querySelector('.o_barcode_line.o_selected');
-            helper.assert(line.querySelector('.product-label').textContent, 'PRO_GTIN_14_serial');
+            const line = helper.getLine({ selected: true });
+            helper.assertLineProduct(line, "PRO_GTIN_14_serial");
             helper.assert(line.querySelector('.o_line_lot_name').textContent, 'Serial1');
-            helper.assert(line.querySelector('.qty-done').textContent, '1');
+            helper.assertLineQty(line, "1");
         }
     },
     // The following scanned barcode should be decomposed like that:
@@ -239,9 +233,9 @@ tour.register('test_gs1_inventory_lot_serial', {test: true}, [
             helper.assertSublinesCount(3);
             const parentLine = document.querySelector('.o_barcode_line.o_selected');
             const subline = document.querySelector('.o_sublines .o_barcode_line.o_selected');
-            helper.assert(parentLine.querySelector('.qty-done').textContent, '3');
+            helper.assertLineQty(parentLine, "3");
             helper.assert(subline.querySelector('.o_line_lot_name').textContent, 'Serial3');
-            helper.assert(subline.querySelector('.qty-done').textContent, '1');
+            helper.assertLineQty(subline, "1");
         }
     },
     // Tries to scan multiple quantities for product tracked by SN but without
@@ -257,9 +251,9 @@ tour.register('test_gs1_inventory_lot_serial', {test: true}, [
             helper.assertSublinesCount(4);
             const parentLine = document.querySelector('.o_barcode_line.o_selected');
             const subline = document.querySelector('.o_sublines .o_barcode_line.o_selected');
-            helper.assert(parentLine.querySelector('.qty-done').textContent, '23');
+            helper.assertLineQty(parentLine, "23");
             helper.assert(subline.querySelector('.o_line_lot_name').textContent, '');
-            helper.assert(subline.querySelector('.qty-done').textContent, '20');
+            helper.assertLineQty(subline, "20");
         }
     },
     // Scans a serial number, it should not write it on the previous line (as
@@ -275,9 +269,9 @@ tour.register('test_gs1_inventory_lot_serial', {test: true}, [
             helper.assertSublinesCount(5);
             const parentLine = document.querySelector('.o_barcode_line.o_selected');
             const subline = document.querySelector('.o_sublines .o_barcode_line.o_selected');
-            helper.assert(parentLine.querySelector('.qty-done').textContent, '24');
+            helper.assertLineQty(parentLine, "24");
             helper.assert(subline.querySelector('.o_line_lot_name').textContent, 'Serial4');
-            helper.assert(subline.querySelector('.qty-done').textContent, '1');
+            helper.assertLineQty(subline, "1");
         }
     },
     {
@@ -319,11 +313,11 @@ tour.register('test_gs1_inventory_package', {test: true}, [
         trigger: '.o_barcode_line',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: 'product1'});
-            const product1_package = $line.find('div[name="package"]').text().trim();
+            const line = helper.getLine({ barcode: "product1" });
+            const product1_package = line.querySelector('div[name="package"]').innerText;
             helper.assert(product1_package, '987654123487568456');
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQuantityOnReservedQty(0, '8 / 8');
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, "8 / 8");
         },
     },
 
@@ -340,11 +334,11 @@ tour.register('test_gs1_inventory_package', {test: true}, [
         trigger: '.o_barcode_line[data-barcode="product2"]',
         run: function () {
             helper.assertLinesCount(2);
-            const $line = helper.getLine({barcode: 'product2'});
-            const product2_package = $line.find('div[name="package"]').text().trim();
+            const line = helper.getLine({ barcode: "product2" });
+            const product2_package = line.querySelector('div[name="package"]').innerText;
             helper.assert(product2_package, '487325612456785124');
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQuantityOnReservedQty(1, '6 / 6');
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, "6 / 6");
         },
     },
     // Tries to scan the same package => Should raise a warning.
@@ -369,16 +363,16 @@ tour.register('test_gs1_inventory_package', {test: true}, [
         trigger: '.o_barcode_line:contains(122333444455555670)',
         run: function () {
             helper.assertLinesCount(3);
-            const $line1 = helper.getLine({barcode: 'product2'});
-            const line1_package = $line1.find('div[name="package"]').text().trim();
-            helper.assertLineIsHighlighted($line1, false);
+            const line1 = helper.getLine({ barcode: "product2" });
+            const line1_package = line1.querySelector('div[name="package"]').innerText;
+            helper.assertLineIsHighlighted(line1, false);
             helper.assert(line1_package, '487325612456785124');
-            helper.assertLineQuantityOnReservedQty(1, '6 / 6');
-            const $line2 = helper.getLine({barcode: '82655853'});
-            const line2_package = $line2.find('div[name="package"]').text().trim();
-            helper.assertLineIsHighlighted($line2, true);
+            helper.assertLineQty(line1, "6 / 6");
+            const line2 = helper.getLine({ barcode: "82655853" });
+            const line2_package = line2.querySelector('div[name="package"]').innerText;
+            helper.assertLineIsHighlighted(line2, true);
             helper.assert(line2_package, '122333444455555670');
-            helper.assertLineQty($line2, '4');
+            helper.assertLineQty(line2, "4");
         },
     },
 
@@ -402,9 +396,9 @@ tour.register('test_gs1_package_receipt', {test: true}, [
         trigger: '.o_barcode_line',
         run: function () {
             helper.assertLinesCount(1);
-            const $line1 = helper.getLine({barcode: '82655853'});
-            helper.assertLineIsHighlighted($line1, true);
-            helper.assertLineQty($line1, '4');
+            const line1 = helper.getLine({ barcode: "82655853" });
+            helper.assertLineIsHighlighted(line1, true);
+            helper.assertLineQty(line1, "4");
         }
     },
     // Scans a package => As it doesn't exist in the DB, should put in pack the
@@ -414,10 +408,10 @@ tour.register('test_gs1_package_receipt', {test: true}, [
         trigger: '.o_barcode_line:contains(546879213579461324)',
         run: function () {
             helper.assertLinesCount(1);
-            const $line1 = helper.getLine({barcode: '82655853'});
-            helper.assertLineIsHighlighted($line1, true);
-            helper.assertLineQty($line1, '4');
-            const product1_package = $line1.find('[name="package"]').text().trim();
+            const line1 = helper.getLine({ barcode: "82655853" });
+            helper.assertLineIsHighlighted(line1, true);
+            helper.assertLineQty(line1, "4");
+            const product1_package = line1.querySelector('[name="package"]').innerText;
             helper.assert(product1_package, '546879213579461324');
         }
     },
@@ -427,14 +421,14 @@ tour.register('test_gs1_package_receipt', {test: true}, [
         trigger: '.o_barcode_line:nth-child(2)',
         run: function () {
             helper.assertLinesCount(2);
-            const $line1 = helper.getLine({barcode: '82655853'});
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineQty($line1, '4');
-            const product1_package = $line1.find('[name="package"]').text().trim();
+            const line1 = helper.getLine({ barcode: "82655853" });
+            helper.assertLineIsHighlighted(line1, false);
+            helper.assertLineQty(line1, "4");
+            const product1_package = line1.querySelector('[name="package"]').innerText;
             helper.assert(product1_package, '546879213579461324');
-            const $line2 = helper.getLine({barcode: '584687955629'});
-            helper.assertLineIsHighlighted($line2, true);
-            helper.assertLineQty($line2, '8');
+            const line2 = helper.getLine({ barcode: "584687955629" });
+            helper.assertLineIsHighlighted(line2, true);
+            helper.assertLineQty(line2, "8");
         }
     },
     // Scans again the same package. Now it already exists but should be assigned anyway.
@@ -443,15 +437,15 @@ tour.register('test_gs1_package_receipt', {test: true}, [
         trigger: '.o_barcode_line[data-barcode="584687955629"]:contains(546879213579461324)',
         run: function () {
             helper.assertLinesCount(2);
-            const $line1 = helper.getLine({barcode: '82655853'});
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineQty($line1, '4');
-            const product1_package = $line1.find('[name="package"]').text().trim();
+            const line1 = helper.getLine({ barcode: "82655853" });
+            helper.assertLineIsHighlighted(line1, false);
+            helper.assertLineQty(line1, "4");
+            const product1_package = line1.querySelector('[name="package"]').innerText;
             helper.assert(product1_package, '546879213579461324');
-            const $line2 = helper.getLine({barcode: '584687955629'});
-            helper.assertLineIsHighlighted($line2, true);
-            helper.assertLineQty($line2, '8');
-            const product2_package = $line2.find('[name="package"]').text().trim();
+            const line2 = helper.getLine({ barcode: "584687955629" });
+            helper.assertLineIsHighlighted(line2, true);
+            helper.assertLineQty(line2, "8");
+            const product2_package = line2.querySelector('[name="package"]').innerText;
             helper.assert(product2_package, '546879213579461324');
         }
     },
@@ -463,15 +457,15 @@ tour.register('test_gs1_package_receipt', {test: true}, [
         trigger: '.o_barcode_line[data-barcode="584687955629"]:contains("(Wooden Chest)")',
         run: function () {
             helper.assertLinesCount(2);
-            const $line1 = helper.getLine({barcode: '82655853'});
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineQty($line1, '4');
-            const product1_package = $line1.find('[name="package"]').text().trim();
+            const line1 = helper.getLine({ barcode: "82655853" });
+            helper.assertLineIsHighlighted(line1, false);
+            helper.assertLineQty(line1, "4");
+            const product1_package = line1.querySelector('[name="package"]').innerText;
             helper.assert(product1_package, '546879213579461324 (Wooden Chest)');
-            const $line2 = helper.getLine({barcode: '584687955629'});
-            helper.assertLineIsHighlighted($line2, true);
-            helper.assertLineQty($line2, '8');
-            const product2_package = $line2.find('[name="package"]').text().trim();
+            const line2 = helper.getLine({ barcode: "584687955629" });
+            helper.assertLineIsHighlighted(line2, true);
+            helper.assertLineQty(line2, "8");
+            const product2_package = line2.querySelector('[name="package"]').innerText;
             helper.assert(product2_package, '546879213579461324 (Wooden Chest)');
         }
     },
@@ -482,8 +476,8 @@ tour.register('test_gs1_package_receipt', {test: true}, [
         trigger: '.o_barcode_line.o_selected:contains("PRO_GTIN_8")',
         run: function () {
             helper.assertLinesCount(3);
-            const line = document.querySelector('.o_barcode_line.o_selected');
-            helper.assertLineQty($(line), '6');
+            const line = helper.getLine({ selected: true });
+            helper.assertLineQty(line, "6");
         }
     },
     // Scans a package with a type => put in pack the selected line in this package with the type.
@@ -492,8 +486,8 @@ tour.register('test_gs1_package_receipt', {test: true}, [
         trigger: '.o_barcode_line.o_selected:contains("130406658041178543")',
         run: function () {
             helper.assertLinesCount(3);
-            const line = document.querySelector('.o_barcode_line.o_selected');
-            helper.assertLineQty($(line), '6');
+            const line = helper.getLine({ selected: true });
+            helper.assertLineQty(line, "6");
             const linePackage = line.querySelector('[name="package"]').innerText;
             helper.assert(linePackage, '130406658041178543 (Iron Chest)');
         }
@@ -504,8 +498,8 @@ tour.register('test_gs1_package_receipt', {test: true}, [
         trigger: '.o_barcode_line.o_selected[data-barcode="584687955629"]',
         run: function () {
             helper.assertLinesCount(4);
-            const line = document.querySelector('.o_barcode_line.o_selected');
-            helper.assertLineQty($(line), '12');
+            const line = helper.getLine({ selected: true });
+            helper.assertLineQty(line, "12");
         }
     },
     { trigger: '.o_barcode_client_action', run: 'scan 91WOODC' },
@@ -513,8 +507,8 @@ tour.register('test_gs1_package_receipt', {test: true}, [
         trigger: '.o_barcode_line.o_selected[data-barcode="584687955629"] [name="package"]',
         run: function () {
             helper.assertLinesCount(4);
-            const line = document.querySelector('.o_barcode_line.o_selected');
-            helper.assertLineQty($(line), '12');
+            const line = helper.getLine({ selected: true });
+            helper.assertLineQty(line, "12");
             const linePackage = line.querySelector('[name="package"]').innerText;
             helper.assert(linePackage, 'PACK0000123 (Wooden Chest)');
         }
@@ -525,13 +519,13 @@ tour.register('test_gs1_package_receipt', {test: true}, [
         trigger: '.o_selected[data-barcode="584687955629"] [name="package"]:contains("Iron Chest")',
         run: function () {
             helper.assertLinesCount(4);
-            const line = document.querySelector('.o_barcode_line.o_selected');
-            helper.assertLineQty($(line), '12');
+            const line = helper.getLine({ selected: true });
+            helper.assertLineQty(line, "12");
             const linePackage = line.querySelector('[name="package"]').innerText;
             helper.assert(linePackage, 'PACK0000123 (Iron Chest)');
         }
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 ]);
 
 tour.register('test_gs1_package_delivery', {test: true}, [
@@ -549,23 +543,19 @@ tour.register('test_gs1_package_delivery', {test: true}, [
         trigger: '.o_barcode_line:nth-child(2)',
         run: function () {
             helper.assertLinesCount(2);
-            const $line1 = helper.getLine({barcode: '82655853'});
-            const product1_package = $line1.find('.package').text();
-            const product1_result_package = $line1.find('.result-package').text();
-            helper.assertLineIsHighlighted($line1, true);
-            helper.assertLineQty($line1, '4');
-            helper.assert(product1_package, '546879213579461324');
-            helper.assert(product1_result_package, '546879213579461324');
-            const $line2 = helper.getLine({barcode: '584687955629'});
-            const product2_package = $line2.find('.package').text();
-            const product2_result_package = $line2.find('.result-package').text();
-            helper.assertLineIsHighlighted($line2, true);
-            helper.assertLineQty($line2, '8');
-            helper.assert(product2_package, '546879213579461324');
-            helper.assert(product2_result_package, '546879213579461324');
+            const line1 = helper.getLine({ barcode: "82655853" });
+            helper.assertLineIsHighlighted(line1, true);
+            helper.assertLineQty(line1, "4");
+            helper.assert(line1.querySelector('.package').innerText, '546879213579461324');
+            helper.assert(line1.querySelector('.result-package').innerText, '546879213579461324');
+            const line2 = helper.getLine({ barcode: "584687955629" });
+            helper.assertLineIsHighlighted(line2, true);
+            helper.assertLineQty(line2, "8");
+            helper.assert(line2.querySelector('.package').innerText, '546879213579461324');
+            helper.assert(line2.querySelector('.result-package').innerText, '546879213579461324');
         }
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 ]);
 
 tour.register('test_gs1_reserved_delivery', {test:true}, [
@@ -573,9 +563,9 @@ tour.register('test_gs1_reserved_delivery', {test:true}, [
         trigger: '.o_barcode_client_action',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: '11011019'});
-            helper.assertLineIsHighlighted($line, false);
-            helper.assertLineQty($line, '0');
+            const line = helper.getLine({ barcode: "11011019" });
+            helper.assertLineIsHighlighted(line, false);
+            helper.assertLineQty(line, "0 / 10");
             helper.assertValidateIsHighlighted(false);
         }
     },
@@ -588,9 +578,9 @@ tour.register('test_gs1_reserved_delivery', {test:true}, [
         trigger: '.o_barcode_line .qty-done:contains(6)',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: '11011019'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '6');
+            const line = helper.getLine({ barcode: "11011019" });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, "6 / 10");
             helper.assertValidateIsHighlighted(false);
         }
     },
@@ -603,20 +593,16 @@ tour.register('test_gs1_reserved_delivery', {test:true}, [
         trigger: '.o_barcode_line  .qty-done:contains(10)',
         run: function () {
             helper.assertLinesCount(2);
-            const [line1, line2] = document.querySelectorAll('.o_barcode_line');
-            helper.assertLineIsHighlighted($(line1), false);
-            helper.assertLineIsHighlighted($(line2), true);
-            helper.assertLineQty($(line1), '10');
-            helper.assertLineQty($(line2), '4');
+            const [line1, line2] = helper.getLines();
+            helper.assertLineIsHighlighted(line1, false);
+            helper.assertLineIsHighlighted(line2, true);
+            helper.assertLineQty(line1, "10 / 10");
+            helper.assertLineQty(line2, "4");
             helper.assertValidateIsHighlighted(true);
         }
     },
     // Validates the transfer.
-    {
-        trigger: '.o_validate_page.btn-success',
-        run: 'scan O-BTN.validate',
-    },
-    { trigger: '.o_notification.border-success' },
+    ...tour.stepUtils.validateBarcodeOperation(".o_validate_page.btn-success"),
 ]);
 
 tour.register('test_gs1_receipt_conflicting_barcodes_1', {test: true}, [
@@ -624,9 +610,9 @@ tour.register('test_gs1_receipt_conflicting_barcodes_1', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: '11011019'});
-            helper.assertLineIsHighlighted($line, false);
-            helper.assertLineQty($line, '0');
+            const line = helper.getLine({ barcode: "11011019"});
+            helper.assertLineIsHighlighted(line, false);
+            helper.assertLineQty(line, "0 / 1");
             helper.assertValidateIsHighlighted(false);
         }
     },
@@ -638,17 +624,13 @@ tour.register('test_gs1_receipt_conflicting_barcodes_1', {test: true}, [
         trigger: '.o_barcode_line.o_selected',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: '11011019'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '1');
+            const line = helper.getLine({ barcode: "11011019"});
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, "1 / 1");
             helper.assertValidateIsHighlighted(true);
         }
     },
-    {
-        trigger: '.o_validate_page.btn-success',
-        run: 'scan O-BTN.validate',
-    },
-    { trigger: '.o_notification.border-success' },
+    ...tour.stepUtils.validateBarcodeOperation(".o_validate_page.btn-success"),
 ]);
 
 tour.register('test_gs1_receipt_conflicting_barcodes_2', {test: true}, [
@@ -656,9 +638,9 @@ tour.register('test_gs1_receipt_conflicting_barcodes_2', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: '000011011019'});
-            helper.assertLineIsHighlighted($line, false);
-            helper.assertLineQty($line, '0');
+            const line = helper.getLine({ barcode: "000011011019" });
+            helper.assertLineIsHighlighted(line, false);
+            helper.assertLineQty(line, "0 / 1");
             helper.assertValidateIsHighlighted(false);
         }
     },
@@ -670,17 +652,13 @@ tour.register('test_gs1_receipt_conflicting_barcodes_2', {test: true}, [
         trigger: '.o_barcode_line.o_selected',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: '000011011019'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '1');
+            const line = helper.getLine({ barcode: "000011011019" });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, "1 / 1");
             helper.assertValidateIsHighlighted(true);
         }
     },
-    {
-        trigger: '.o_validate_page.btn-success',
-        run: 'scan O-BTN.validate',
-    },
-    { trigger: '.o_notification.border-success' },
+    ...tour.stepUtils.validateBarcodeOperation(".o_validate_page.btn-success"),
 ]);
 
 tour.register('test_gs1_receipt_conflicting_barcodes_3', {test: true}, [
@@ -688,14 +666,14 @@ tour.register('test_gs1_receipt_conflicting_barcodes_3', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: function () {
             helper.assertLinesCount(2);
-            const $line1 = helper.getLine({barcode: '11011019'});
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineQty($line1, '0');
-            helper.assert($line1.find('.product-label').text(), 'PRO_GTIN_8');
-            const $line2 = helper.getLine({barcode: '000011011019'});
-            helper.assertLineIsHighlighted($line2, false);
-            helper.assertLineQty($line2, '0');
-            helper.assert($line2.find('.product-label').text(), 'PRO_GTIN_12');
+            const line1 = helper.getLine({ barcode: "11011019" });
+            helper.assertLineIsHighlighted(line1, false);
+            helper.assertLineQty(line1, "0 / 1");
+            helper.assertLineProduct(line1, "PRO_GTIN_8");
+            const line2 = helper.getLine({ barcode: "000011011019" });
+            helper.assertLineIsHighlighted(line2, false);
+            helper.assertLineQty(line2, "0 / 1");
+            helper.assertLineProduct(line2, "PRO_GTIN_12");
             helper.assertValidateIsHighlighted(false);
         }
     },
@@ -708,14 +686,14 @@ tour.register('test_gs1_receipt_conflicting_barcodes_3', {test: true}, [
         trigger: '.o_barcode_line.o_selected',
         run: function () {
             helper.assertLinesCount(2);
-            const $line1 = helper.getLine({barcode: '11011019'});
-            helper.assertLineIsHighlighted($line1, true);
-            helper.assertLineQty($line1, '1');
-            helper.assert($line1.find('.product-label').text(), 'PRO_GTIN_8');
-            const $line2 = helper.getLine({barcode: '000011011019'});
-            helper.assertLineIsHighlighted($line2, false);
-            helper.assertLineQty($line2, '0');
-            helper.assert($line2.find('.product-label').text(), 'PRO_GTIN_12');
+            const line1 = helper.getLine({ barcode: "11011019" });
+            helper.assertLineIsHighlighted(line1, true);
+            helper.assertLineQty(line1, "1 / 1");
+            helper.assertLineProduct(line1, "PRO_GTIN_8");
+            const line2 = helper.getLine({ barcode: "000011011019" });
+            helper.assertLineIsHighlighted(line2, false);
+            helper.assertLineQty(line2, "0 / 1");
+            helper.assertLineProduct(line2, "PRO_GTIN_12");
             helper.assertValidateIsHighlighted(false);
         }
     },
@@ -728,16 +706,16 @@ tour.register('test_gs1_receipt_conflicting_barcodes_3', {test: true}, [
         trigger: '.o_barcode_line:nth-child(3)',
         run: function () {
             helper.assertLinesCount(3);
-            const [lineGTIN12, lineGTIN8_1, lineGTIN8_2] = document.querySelectorAll('.o_barcode_line');
-            helper.assertLineIsHighlighted($(lineGTIN12), false);
-            helper.assertLineQty($(lineGTIN12), '0');
-            helper.assert(lineGTIN12.querySelector('.product-label').innerText, 'PRO_GTIN_12');
-            helper.assertLineIsHighlighted($(lineGTIN8_1), false);
-            helper.assertLineQty($(lineGTIN8_1), '1');
-            helper.assert(lineGTIN8_1.querySelector('.product-label').innerText, 'PRO_GTIN_8');
-            helper.assertLineIsHighlighted($(lineGTIN8_2), true);
-            helper.assertLineQty($(lineGTIN8_2), '1');
-            helper.assert(lineGTIN8_2.querySelector('.product-label').innerText, 'PRO_GTIN_8');
+            const [lineGTIN12, lineGTIN8_1, lineGTIN8_2] = helper.getLines();
+            helper.assertLineIsHighlighted(lineGTIN12, false);
+            helper.assertLineQty(lineGTIN12, "0 / 1");
+            helper.assertLineProduct(lineGTIN12, 'PRO_GTIN_12');
+            helper.assertLineIsHighlighted(lineGTIN8_1, false);
+            helper.assertLineQty(lineGTIN8_1, "1 / 1");
+            helper.assertLineProduct(lineGTIN8_1, 'PRO_GTIN_8');
+            helper.assertLineIsHighlighted(lineGTIN8_2, true);
+            helper.assertLineQty(lineGTIN8_2, "1");
+            helper.assertLineProduct(lineGTIN8_2, 'PRO_GTIN_8');
             helper.assertValidateIsHighlighted(false);
         }
     },
@@ -750,27 +728,21 @@ tour.register('test_gs1_receipt_conflicting_barcodes_3', {test: true}, [
         trigger: '.o_validate_page.btn-success',
         run: function () {
             helper.assertLinesCount(3);
-            const $lines = helper.getLine({barcode: '11011019'});
-            const $line1 = $($lines[0]);
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineQty($line1, '1');
-            helper.assert($line1.find('.product-label').text(), 'PRO_GTIN_8');
-            const $line2 = $($lines[1]);
-            helper.assertLineIsHighlighted($line2, false);
-            helper.assertLineQty($line2, '1');
-            helper.assert($line2.find('.product-label').text(), 'PRO_GTIN_8');
-            const $line3 = helper.getLine({barcode: '000011011019'});
-            helper.assertLineIsHighlighted($line3, true);
-            helper.assertLineQty($line3, '1');
-            helper.assert($line3.find('.product-label').text(), 'PRO_GTIN_12');
+            const [line1, line2] = helper.getLines({ barcode: "11011019" });
+            helper.assertLineIsHighlighted(line1, false);
+            helper.assertLineQty(line1, "1 / 1");
+            helper.assertLineProduct(line1, "PRO_GTIN_8");
+            helper.assertLineIsHighlighted(line2, false);
+            helper.assertLineQty(line2, "1");
+            helper.assertLineProduct(line2, "PRO_GTIN_8");
+            const line3 = helper.getLine({ barcode: "000011011019" });
+            helper.assertLineIsHighlighted(line3, true);
+            helper.assertLineQty(line3, "1 / 1");
+            helper.assertLineProduct(line3, "PRO_GTIN_12");
             helper.assertValidateIsHighlighted(true);
         }
     },
-    {
-        trigger: '.o_validate_page.btn-success',
-        run: 'scan O-BTN.validate',
-    },
-    { trigger: '.o_notification.border-success' },
+    ...tour.stepUtils.validateBarcodeOperation(".o_validate_page.btn-success"),
 ]);
 
 tour.register('test_gs1_receipt_lot_serial', {test: true}, [
@@ -778,9 +750,8 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
         trigger: '.o_barcode_client_action',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: '76543210'});
-            helper.assertLineIsHighlighted($line, false);
-            helper.assertLineQty($line, '0');
+            helper.assertLineIsHighlighted(0, false);
+            helper.assertLineQty(0, "0 / 40");
         }
     },
     // The following scanned barcode should be decomposed like that:
@@ -809,9 +780,8 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
         trigger: '.o_barcode_line:contains("b1-b001")',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: '76543210'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '8');
+            helper.assertLineIsHighlighted(0, true);
+            helper.assertLineQty(0, "8 / 40");
         }
     },
     // Same barcode but for another lot and for only 4 qty. (will be scanned two times).
@@ -825,14 +795,14 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
         run: function () {
             helper.assertLinesCount(1);
             helper.assertSublinesCount(2);
-            const $parentLine = helper.getLine({barcode: '76543210'});
-            const $line1 = helper.getSubline(':contains("b1-b001")');
-            const $line2 = helper.getSubline(':contains("b1-b002")');
-            helper.assertLineQty($parentLine, '12');
-            helper.assertLineQty($line1, '8');
-            helper.assertLineQty($line2, '4');
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineIsHighlighted($line2, true);
+            const parentLine = helper.getLine({ barcode: '76543210' });
+            const [line1, line2] = helper.getSublines();
+            helper.assertLinesTrackingNumbers([line1, line2], ["b1-b001", "b1-b002"]);
+            helper.assertLineQty(parentLine, "12 / 40");
+            helper.assertLineQty(line1, "8 / 40");
+            helper.assertLineQty(line2, "4");
+            helper.assertLineIsHighlighted(line1, false);
+            helper.assertLineIsHighlighted(line2, true);
         }
     },
     {
@@ -843,12 +813,12 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
         trigger: '.o_sublines .o_barcode_line.o_selected .qty-done:contains("8")',
         run: function () {
             helper.assertSublinesCount(2);
-            const $line1 = helper.getSubline(':contains("b1-b001")');
-            const $line2 = helper.getSubline(':contains("b1-b002")');
-            helper.assertLineQty($line1, '8');
-            helper.assertLineQty($line2, '8');
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineIsHighlighted($line2, true);
+            const [line1, line2] = helper.getSublines();
+            helper.assertLinesTrackingNumbers([line1, line2], ["b1-b001", "b1-b002"]);
+            helper.assertLineQty(line1, "8 / 40");
+            helper.assertLineQty(line2, "8");
+            helper.assertLineIsHighlighted(line1, false);
+            helper.assertLineIsHighlighted(line2, true);
         }
     },
     // Scans a non-GS1 lot barcode to be sure it's compatible.
@@ -860,15 +830,14 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
         trigger: '.o_barcode_line:contains("b1-b003")',
         run: function () {
             helper.assertSublinesCount(3);
-            const $line1 = helper.getSubline(':contains("b1-b001")');
-            const $line2 = helper.getSubline(':contains("b1-b002")');
-            const $line3 = helper.getSubline(':contains("b1-b003")');
-            helper.assertLineQty($line1, '8');
-            helper.assertLineQty($line2, '8');
-            helper.assertLineQty($line3, '1');
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineIsHighlighted($line2, false);
-            helper.assertLineIsHighlighted($line3, true);
+            const sublines = helper.getSublines();
+            helper.assertLinesTrackingNumbers(sublines, ["b1-b001", "b1-b002", "b1-b003"]);
+            helper.assertLineQty(sublines[0], "8 / 40");
+            helper.assertLineQty(sublines[1], "8");
+            helper.assertLineQty(sublines[2], "1");
+            helper.assertLineIsHighlighted(sublines[0], false);
+            helper.assertLineIsHighlighted(sublines[1], false);
+            helper.assertLineIsHighlighted(sublines[2], true);
         }
     },
     // Scan two more time the previous barcode...
@@ -885,15 +854,14 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
         run: function () {
             helper.assertLinesCount(1);
             helper.assertSublinesCount(3);
-            const $line1 = helper.getSubline(':contains("b1-b001")');
-            const $line2 = helper.getSubline(':contains("b1-b002")');
-            const $line3 = helper.getSubline(':contains("b1-b003")');
-            helper.assertLineQty($line1, '8');
-            helper.assertLineQty($line2, '8');
-            helper.assertLineQty($line3, '3');
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineIsHighlighted($line2, false);
-            helper.assertLineIsHighlighted($line3, true);
+            const sublines = helper.getSublines();
+            helper.assertLinesTrackingNumbers(sublines, ["b1-b001", "b1-b002", "b1-b003"]);
+            helper.assertLineQty(sublines[0], "8 / 40");
+            helper.assertLineQty(sublines[1], "8");
+            helper.assertLineQty(sublines[2], "3");
+            helper.assertLineIsHighlighted(sublines[0], false);
+            helper.assertLineIsHighlighted(sublines[1], false);
+            helper.assertLineIsHighlighted(sublines[2], true);
         }
     },
     // ... then scan a GS1 barcode to add 5 more qty., without lot reference,
@@ -906,15 +874,14 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
         trigger: '.o_sublines .o_barcode_line.o_selected:contains("8")',
         run: function () {
             helper.assertSublinesCount(3);
-            const $line1 = helper.getSubline(':contains("b1-b001")');
-            const $line2 = helper.getSubline(':contains("b1-b002")');
-            const $line3 = helper.getSubline(':contains("b1-b003")');
-            helper.assertLineQty($line1, '8');
-            helper.assertLineQty($line2, '8');
-            helper.assertLineQty($line3, '8');
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineIsHighlighted($line2, false);
-            helper.assertLineIsHighlighted($line3, true);
+            const sublines = helper.getSublines();
+            helper.assertLinesTrackingNumbers(sublines, ["b1-b001", "b1-b002", "b1-b003"]);
+            helper.assertLineQty(sublines[0], "8 / 40");
+            helper.assertLineQty(sublines[1], "8");
+            helper.assertLineQty(sublines[2], "8");
+            helper.assertLineIsHighlighted(sublines[0], false);
+            helper.assertLineIsHighlighted(sublines[1], false);
+            helper.assertLineIsHighlighted(sublines[2], true);
         }
     },
     // Adds a line with the "Add Product" button, then scans the lot/qty.
@@ -934,18 +901,17 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
         run: function () {
             helper.assertLinesCount(1);
             helper.assertSublinesCount(4);
-            const $line1 = helper.getSubline(':contains("b1-b001")');
-            const $line2 = helper.getSubline(':contains("b1-b002")');
-            const $line3 = helper.getSubline(':contains("b1-b003")');
-            const $line4 = helper.getSubline('.o_selected');
-            helper.assertLineQty($line1, '8');
-            helper.assertLineQty($line2, '8');
-            helper.assertLineQty($line3, '8');
-            helper.assertLineQty($line4, '0');
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineIsHighlighted($line2, false);
-            helper.assertLineIsHighlighted($line3, false);
-            helper.assertLineIsHighlighted($line4, true);
+            const sublines = helper.getSublines({ selected: false });
+            helper.assertLinesTrackingNumbers(sublines, ["b1-b001", "b1-b002", "b1-b003"]);
+            const line4 = helper.getSubline({ selected: true });
+            helper.assertLineQty(sublines[0], "8 / 40");
+            helper.assertLineQty(sublines[1], "8");
+            helper.assertLineQty(sublines[2], "8");
+            helper.assertLineQty(line4, "0");
+            helper.assertLineIsHighlighted(sublines[0], false);
+            helper.assertLineIsHighlighted(sublines[1], false);
+            helper.assertLineIsHighlighted(sublines[2], false);
+            helper.assertLineIsHighlighted(line4, true);
         }
     },
     // The following scanned barcode should be decomposed like that:
@@ -960,18 +926,16 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
         trigger: '.o_sublines .o_barcode_line:contains("b1-b004") .qty-done:contains("4")',
         run: function () {
             helper.assertSublinesCount(4);
-            const $line1 = helper.getSubline(':contains("b1-b001")');
-            const $line2 = helper.getSubline(':contains("b1-b002")');
-            const $line3 = helper.getSubline(':contains("b1-b003")');
-            const $line4 = helper.getSubline(':contains("b1-b004")');
-            helper.assertLineQty($line1, '8');
-            helper.assertLineQty($line2, '8');
-            helper.assertLineQty($line3, '8');
-            helper.assertLineQty($line4, '4');
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineIsHighlighted($line2, false);
-            helper.assertLineIsHighlighted($line3, false);
-            helper.assertLineIsHighlighted($line4, true);
+            const sublines = helper.getSublines();
+            helper.assertLinesTrackingNumbers(sublines, ["b1-b001", "b1-b002", "b1-b003", "b1-b004"]);
+            helper.assertLineQty(sublines[0], "8 / 40");
+            helper.assertLineQty(sublines[1], "8");
+            helper.assertLineQty(sublines[2], "8");
+            helper.assertLineQty(sublines[3], "4");
+            helper.assertLineIsHighlighted(sublines[0], false);
+            helper.assertLineIsHighlighted(sublines[1], false);
+            helper.assertLineIsHighlighted(sublines[2], false);
+            helper.assertLineIsHighlighted(sublines[3], true);
         }
     },
     // Scans only a lot => should create a new line with 1 qty.
@@ -984,21 +948,18 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
         run: function () {
             helper.assertLinesCount(1);
             helper.assertSublinesCount(5);
-            const $line1 = helper.getSubline(':contains("b1-b001")');
-            const $line2 = helper.getSubline(':contains("b1-b002")');
-            const $line3 = helper.getSubline(':contains("b1-b003")');
-            const $line4 = helper.getSubline(':contains("b1-b004")');
-            const $line5 = helper.getSubline(':contains("b1-b005")');
-            helper.assertLineQty($line1, '8');
-            helper.assertLineQty($line2, '8');
-            helper.assertLineQty($line3, '8');
-            helper.assertLineQty($line4, '4');
-            helper.assertLineQty($line5, '1');
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineIsHighlighted($line2, false);
-            helper.assertLineIsHighlighted($line3, false);
-            helper.assertLineIsHighlighted($line4, false);
-            helper.assertLineIsHighlighted($line5, true);
+            const sublines = helper.getSublines();
+            helper.assertLinesTrackingNumbers(sublines, ["b1-b001", "b1-b002", "b1-b003", "b1-b004", "b1-b005"]);
+            helper.assertLineQty(sublines[0], "8 / 40");
+            helper.assertLineQty(sublines[1], "8");
+            helper.assertLineQty(sublines[2], "8");
+            helper.assertLineQty(sublines[3], "4");
+            helper.assertLineQty(sublines[4], "1");
+            helper.assertLineIsHighlighted(sublines[0], false);
+            helper.assertLineIsHighlighted(sublines[1], false);
+            helper.assertLineIsHighlighted(sublines[2], false);
+            helper.assertLineIsHighlighted(sublines[3], false);
+            helper.assertLineIsHighlighted(sublines[4], true);
         }
     },
     // Now scans the quantity.
@@ -1010,21 +971,18 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
         trigger: '.o_sublines .o_barcode_line:contains("b1-b005") .qty-done:contains("8")',
         run: function () {
             helper.assertSublinesCount(5);
-            const $line1 = helper.getSubline(':contains("b1-b001")');
-            const $line2 = helper.getSubline(':contains("b1-b002")');
-            const $line3 = helper.getSubline(':contains("b1-b003")');
-            const $line4 = helper.getSubline(':contains("b1-b004")');
-            const $line5 = helper.getSubline(':contains("b1-b005")');
-            helper.assertLineQty($line1, '8');
-            helper.assertLineQty($line2, '8');
-            helper.assertLineQty($line3, '8');
-            helper.assertLineQty($line4, '4');
-            helper.assertLineQty($line5, '8');
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineIsHighlighted($line2, false);
-            helper.assertLineIsHighlighted($line3, false);
-            helper.assertLineIsHighlighted($line4, false);
-            helper.assertLineIsHighlighted($line5, true);
+            const sublines = helper.getSublines();
+            helper.assertLinesTrackingNumbers(sublines, ["b1-b001", "b1-b002", "b1-b003", "b1-b004", "b1-b005"]);
+            helper.assertLineQty(sublines[0], "8 / 40");
+            helper.assertLineQty(sublines[1], "8");
+            helper.assertLineQty(sublines[2], "8");
+            helper.assertLineQty(sublines[3], "4");
+            helper.assertLineQty(sublines[4], "8");
+            helper.assertLineIsHighlighted(sublines[0], false);
+            helper.assertLineIsHighlighted(sublines[1], false);
+            helper.assertLineIsHighlighted(sublines[2], false);
+            helper.assertLineIsHighlighted(sublines[3], false);
+            helper.assertLineIsHighlighted(sublines[4], true);
         }
     },
     // Scans a lot already in the view with additional qty. => Should select the
@@ -1037,28 +995,21 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
         trigger: '.o_sublines .o_barcode_line.o_selected:contains("b1-b004")',
         run: function () {
             helper.assertSublinesCount(5);
-            const $line1 = helper.getSubline(':contains("b1-b001")');
-            const $line2 = helper.getSubline(':contains("b1-b002")');
-            const $line3 = helper.getSubline(':contains("b1-b003")');
-            const $line4 = helper.getSubline(':contains("b1-b004")');
-            const $line5 = helper.getSubline(':contains("b1-b005")');
-            helper.assertLineQty($line1, '8');
-            helper.assertLineQty($line2, '8');
-            helper.assertLineQty($line3, '8');
-            helper.assertLineQty($line4, '8');
-            helper.assertLineQty($line5, '8');
-            helper.assertLineIsHighlighted($line1, false);
-            helper.assertLineIsHighlighted($line2, false);
-            helper.assertLineIsHighlighted($line3, false);
-            helper.assertLineIsHighlighted($line4, true);
-            helper.assertLineIsHighlighted($line5, false);
+            const sublines = helper.getSublines();
+            helper.assertLinesTrackingNumbers(sublines, ["b1-b001", "b1-b002", "b1-b003", "b1-b004", "b1-b005"]);
+            helper.assertLineQty(sublines[0], "8 / 40");
+            helper.assertLineQty(sublines[1], "8");
+            helper.assertLineQty(sublines[2], "8");
+            helper.assertLineQty(sublines[3], "8");
+            helper.assertLineQty(sublines[4], "8");
+            helper.assertLineIsHighlighted(sublines[0], false);
+            helper.assertLineIsHighlighted(sublines[1], false);
+            helper.assertLineIsHighlighted(sublines[2], false);
+            helper.assertLineIsHighlighted(sublines[3], true);
+            helper.assertLineIsHighlighted(sublines[4], false);
         }
     },
-    {
-        trigger: '.o_validate_page',
-        run: 'scan O-BTN.validate',
-    },
-    { trigger: '.o_notification.border-success' }
+    ...tour.stepUtils.validateBarcodeOperation(".o_validate_page"),
 ]);
 
 tour.register('test_gs1_receipt_quantity_with_uom', {test: true}, [
@@ -1091,10 +1042,9 @@ tour.register('test_gs1_receipt_quantity_with_uom', {test: true}, [
         trigger: '.o_barcode_line',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: '15264329'});
-            const $lineQty = $line.find('.fa-cube').parent();
-            helper.assertLineIsHighlighted($line, true);
-            helper.assert($lineQty.text().trim(), '4Units');
+            const line = helper.getLine({ barcode: "15264329" });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, "4 Units");
         }
     },
     // Scans 5 kg for the "Product by Units" => Wrong UoM category, should display an error (instead of updating the existing line)
@@ -1106,10 +1056,9 @@ tour.register('test_gs1_receipt_quantity_with_uom', {test: true}, [
         trigger: '.o_notification.border-danger',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: '15264329'});
-            const $lineQty = $line.find('.fa-cube').parent();
-            helper.assertLineIsHighlighted($line, true);
-            helper.assert($lineQty.text().trim(), '4Units');
+            const line = helper.getLine({ barcode: "15264329" });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, "4 Units");
             const errorMessageTitle = document.querySelector('.o_notification_title');
             helper.assert(errorMessageTitle.innerText, 'Wrong Unit of Measure');
         }
@@ -1125,10 +1074,9 @@ tour.register('test_gs1_receipt_quantity_with_uom', {test: true}, [
         trigger: '.o_barcode_line:contains("Product by kg")',
         run: function () {
             helper.assertLinesCount(2);
-            const $line = helper.getLine({barcode: '15264879'});
-            const $lineQty = $line.find('.fa-cube').parent();
-            helper.assertLineIsHighlighted($line, true);
-            helper.assert($lineQty.text().trim(), '5kg');
+            const line = helper.getLine({ barcode: "15264879" });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, "5 kg");
         }
     },
     // Scans 6 units for the "Product by kg" => Wrong UoM category, shoud display an error.
@@ -1140,10 +1088,9 @@ tour.register('test_gs1_receipt_quantity_with_uom', {test: true}, [
         trigger: '.o_notification.border-danger',
         run: function () {
             helper.assertLinesCount(2);
-            const $line = helper.getLine({barcode: '15264879'});
-            const $lineQty = $line.find('.fa-cube').parent();
-            helper.assertLineIsHighlighted($line, true);
-            helper.assert($lineQty.text().trim(), '5kg');
+            const line = helper.getLine({ barcode: "15264879" });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, "5 kg");
             const errorMessageTitle = document.querySelector('.o_notification_title');
             helper.assert(errorMessageTitle.innerText, 'Wrong Unit of Measure');
         }
@@ -1159,10 +1106,9 @@ tour.register('test_gs1_receipt_quantity_with_uom', {test: true}, [
         trigger: '.o_barcode_line:contains("Product by g")',
         run: function () {
             helper.assertLinesCount(3);
-            const $line = helper.getLine({barcode: '15264893'});
-            const $lineQty = $line.find('.fa-cube').parent();
-            helper.assertLineIsHighlighted($line, true);
-            helper.assert($lineQty.text().trim(), '1250g');
+            const line = helper.getLine({ barcode: "15264893" });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, "1250 g");
         }
     },
     // Clicks on the edit button to trigger a save.
@@ -1192,10 +1138,9 @@ tour.register('test_gs1_receipt_packaging', {test: true}, [
         trigger: '.o_barcode_line',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: '1113'});
-            const $lineQty = $line.find('.fa-cube').parent();
-            helper.assertLineIsHighlighted($line, true);
-            helper.assert($lineQty.text().trim(), '6');
+            const line = helper.getLine({ barcode: "1113" });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, "6");
         }
     },
     // Scans 4 packaging
@@ -1207,10 +1152,8 @@ tour.register('test_gs1_receipt_packaging', {test: true}, [
         trigger: '.o_barcode_line [name=quantity]:contains("30")',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: '1113'});
-            const $lineQty = $line.find('.fa-cube').parent();
-            helper.assertLineIsHighlighted($line, true);
-            helper.assert($lineQty.text().trim(), '30');
+            helper.assertLineIsHighlighted(0, true);
+            helper.assertLineQty(0, "30");
         }
     },
     // Clicks on the edit button to trigger a save.

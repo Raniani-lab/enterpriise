@@ -46,7 +46,7 @@ tour.register('test_receipt_classic_subcontracted_product', {test: true}, [
         trigger: '.o_barcode_line',
         run: 'scan LOC-01-02-00',
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 
 ]);
 
@@ -97,7 +97,7 @@ tour.register('test_receipt_tracked_subcontracted_product', {test: true}, [
         content: _t('Record production'),
         position: "bottom",
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 ]);
 
 tour.register('test_receipt_flexible_subcontracted_product', {test: true}, [
@@ -123,7 +123,7 @@ tour.register('test_receipt_flexible_subcontracted_product', {test: true}, [
         content: _t('Record production'),
         position: "bottom",
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 ]);
 
 });

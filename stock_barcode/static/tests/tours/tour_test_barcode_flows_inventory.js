@@ -27,9 +27,9 @@ tour.register('test_inventory_adjustment', {test: true}, [
         trigger: '.o_barcode_line',
         run: function () {
             // Checks the product code and name are on separate lines.
-            const $line = helper.getLine({barcode: 'product1'});
-            helper.assert($line.find('.o_barcode_line_details > .o_barcode_line_title > .o_barcode_product_ref').length, 1);
-            helper.assert($line.find('.o_barcode_line_details .product-label').length, 1);
+            const line = helper.getLine({ barcode: 'product1' });
+            helper.assert(line.querySelectorAll('.o_barcode_line_details > .o_barcode_line_title > .o_barcode_product_ref').length, 1);
+            helper.assert(line.querySelectorAll('.o_barcode_line_details .product-label').length, 1);
         }
     },
 
@@ -57,9 +57,9 @@ tour.register('test_inventory_adjustment', {test: true}, [
         trigger: '.o_barcode_line',
         run: function () {
             // Checks the product code and name are on separate lines.
-            const $line = helper.getLine({barcode: 'product1'});
-            helper.assert($line.find('.o_barcode_line_details > .o_barcode_line_title > .o_barcode_product_ref').length, 1);
-            helper.assert($line.find('.o_barcode_line_details .product-label').length, 1);
+            const line = helper.getLine({ barcode: 'product1' });
+            helper.assert(line.querySelectorAll('.o_barcode_line_details > .o_barcode_line_title > .o_barcode_product_ref').length, 1);
+            helper.assert(line.querySelectorAll('.o_barcode_line_details .product-label').length, 1);
         }
     },
 
@@ -224,12 +224,12 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
         trigger: '.o_notification.border-danger',
         run: function () {
             // Check that other lines is correct
-            let $line = helper.getLine({barcode: 'productserial1'});
-            helper.assertLineQty($line, "1");
-            helper.assert($line.find('.o_line_lot_name').text().trim(), 'serial1');
-            $line = helper.getLine({barcode: 'productlot1'});
-            helper.assertLineQty($line, "2");
-            helper.assert($line.find('.o_line_lot_name').text().trim(), 'lot1');
+            let line = helper.getLine({ barcode: 'productserial1' });
+            helper.assertLineQty(line, "1");
+            helper.assert(line.querySelector('.o_line_lot_name').innerText.trim(), 'serial1');
+            line = helper.getLine({ barcode: 'productlot1' });
+            helper.assertLineQty(line, "2");
+            helper.assert(line.querySelector('.o_line_lot_name').innerText.trim(), 'lot1');
             helper.assertErrorMessage('The scanned serial number is already used.');
         },
     },
@@ -312,7 +312,7 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
             helper.assertSublinesCount(3);
         }
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 
     {
         trigger: '.o_stock_barcode_main_menu',
@@ -327,11 +327,10 @@ tour.register('test_inventory_adjustment_tracked_product_multilocation', {test: 
     {
         trigger: '.o_barcode_line',
         run: function() {
-            const [line1, line2] = helper.getLine({barcode: 'productlot1'});
-            helper.assertLineSourceLocation(line1, "WH/Stock/Section 1");
-            helper.assertLineQuantityOnReservedQty(0, "3 / 3");
-            helper.assertLineSourceLocation(line2, "WH/Stock/Section 2");
-            helper.assertLineQuantityOnReservedQty(1, "0 / 5");
+            helper.assertLineSourceLocation(0, "WH/Stock/Section 1");
+            helper.assertLineQty(0, "3 / 3");
+            helper.assertLineSourceLocation(1, "WH/Stock/Section 2");
+            helper.assertLineQty(1, "0 / 5");
         }
     },
     // Scans Section 1 then scans productlot1.
@@ -343,11 +342,10 @@ tour.register('test_inventory_adjustment_tracked_product_multilocation', {test: 
     {
         trigger: '.o_barcode_line:first-child.o_selected',
         run: function() {
-            const [line1, line2] = helper.getLine({barcode: 'productlot1'});
-            helper.assertLineSourceLocation(line1, "WH/Stock/Section 1");
-            helper.assertLineQuantityOnReservedQty(0, "4 / 3");
-            helper.assertLineSourceLocation(line2, "WH/Stock/Section 2");
-            helper.assertLineQuantityOnReservedQty(1, "0 / 5");
+            helper.assertLineSourceLocation(0, "WH/Stock/Section 1");
+            helper.assertLineQty(0, "4 / 3");
+            helper.assertLineSourceLocation(1, "WH/Stock/Section 2");
+            helper.assertLineQty(1, "0 / 5");
         }
     },
 ]);
@@ -367,11 +365,11 @@ tour.register('test_inventory_create_quant', {test: true}, [
         trigger: '.o_barcode_client_action .o_barcode_line',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '1');
-            helper.assertButtonIsVisible($line, 'add_quantity');
-            helper.assertButtonIsVisible($line, 'remove_unit');
+            const line = helper.getLine({ barcode: "product1" });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, "1");
+            helper.assertButtonShouldBeVisible(line, "add_quantity");
+            helper.assertButtonShouldBeVisible(line, "remove_unit");
         }
     },
 
@@ -392,8 +390,8 @@ tour.register('test_inventory_create_quant', {test: true}, [
         trigger: '.o_barcode_client_action .o_barcode_line',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: 'product1'});
-            helper.assertLineQty($line, '0');
+            const line = helper.getLine({ barcode: "product1" });
+            helper.assertLineQty(line, "0");
         }
     },
 ]);
@@ -419,7 +417,7 @@ tour.register('test_inventory_nomenclature', {test: true}, [
     {
         trigger: '.product-label:contains("product_weight")'
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
     {
         trigger: '.o_stock_barcode_main_menu',
         run: function () {
@@ -482,7 +480,7 @@ tour.register('test_inventory_owner_scan_package', {test: true}, [
     {
         trigger: '.o_barcode_client_action:contains("Azure Interior")',
     },
-    ...tour.stepUtils.validateBarcodeForm(),
+    ...tour.stepUtils.validateBarcodeOperation(),
 ]);
 
 tour.register('test_inventory_using_buttons', {test: true}, [
@@ -494,11 +492,11 @@ tour.register('test_inventory_using_buttons', {test: true}, [
         trigger: '.o_barcode_client_action .o_barcode_line',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '1');
-            helper.assertButtonIsVisible($line, 'add_quantity');
-            helper.assertButtonIsVisible($line, 'remove_unit');
+            const line = helper.getLine({ barcode: "product1" });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, "1");
+            helper.assertButtonShouldBeVisible(line, "add_quantity");
+            helper.assertButtonShouldBeVisible(line, "remove_unit");
         }
     },
     // Clicks on -1 button: must have 0 quantity, -1 still visible but disabled.
@@ -507,11 +505,11 @@ tour.register('test_inventory_using_buttons', {test: true}, [
         trigger: '.o_barcode_line:contains("0")',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '0');
-            helper.assertButtonIsVisible($line, 'add_quantity');
-            helper.assertButtonIsVisible($line, 'remove_unit');
+            const line = helper.getLine({ barcode: 'product1' });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, '0');
+            helper.assertButtonShouldBeVisible(line, 'add_quantity');
+            helper.assertButtonShouldBeVisible(line, 'remove_unit');
             const decrementButton = document.querySelector('.o_line_button.o_remove_unit');
             helper.assert(decrementButton.hasAttribute('disabled'), true);
         }
@@ -522,12 +520,12 @@ tour.register('test_inventory_using_buttons', {test: true}, [
         trigger: '.o_barcode_line .qty-done:contains("1")',
         run: function () {
             helper.assertLinesCount(1);
-            const $line = helper.getLine({barcode: 'product1'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '1');
-            helper.assertButtonIsVisible($line, 'add_quantity');
-            helper.assertButtonIsVisible($line, 'remove_unit');
-            const decrementButton = document.querySelector('.o_line_button.o_remove_unit');
+            const line = helper.getLine({ barcode: 'product1' });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, '1');
+            helper.assertButtonShouldBeVisible(line, 'add_quantity');
+            helper.assertButtonShouldBeVisible(line, 'remove_unit');
+            const decrementButton = line.querySelector('.o_line_button.o_remove_unit');
             helper.assert(decrementButton.hasAttribute('disabled'), false);
         }
     },
@@ -539,12 +537,12 @@ tour.register('test_inventory_using_buttons', {test: true}, [
         trigger: '.o_barcode_client_action .o_barcode_line:nth-child(2)',
         run: function () {
             helper.assertLinesCount(2);
-            const $line = helper.getLine({barcode: 'productserial1'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '0');
-            helper.assertButtonIsNotVisible($line, 'add_quantity');
-            helper.assertButtonIsNotVisible($line, 'remove_unit');
-            const setButton = document.querySelector('.o_selected .o_line_button.o_set > .fa-check');
+            const line = helper.getLine({ barcode: 'productserial1', selected: true });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, '0');
+            helper.assertButtonShouldBeVisible(line, 'add_quantity', false);
+            helper.assertButtonShouldBeVisible(line, 'remove_unit', false);
+            const setButton = line.querySelector('.o_line_button.o_set > .fa-check');
             helper.assert(Boolean(setButton), true);
         }
     },
@@ -554,12 +552,12 @@ tour.register('test_inventory_using_buttons', {test: true}, [
         trigger: '.o_barcode_line:contains("BNG-118")',
         run: function () {
             helper.assertLinesCount(2);
-            const $line = helper.getLine({barcode: 'productserial1'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '1');
-            helper.assertButtonIsNotVisible($line, 'add_quantity');
-            helper.assertButtonIsNotVisible($line, 'remove_unit');
-            const setButton = document.querySelector('.o_selected .o_line_button.o_set.o_difference');
+            const line = helper.getLine({ barcode: 'productserial1', selected: true });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, '1');
+            helper.assertButtonShouldBeVisible(line, 'add_quantity', false);
+            helper.assertButtonShouldBeVisible(line, 'remove_unit', false);
+            const setButton = line.querySelector('.o_line_button.o_set.o_difference');
             helper.assert(Boolean(setButton), true);
         }
     },
@@ -569,11 +567,11 @@ tour.register('test_inventory_using_buttons', {test: true}, [
         trigger: '.o_barcode_line.o_selected .fa-check',
         run: function () {
             helper.assertLinesCount(2);
-            const $line = helper.getLine({barcode: 'productserial1'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '0');
-            helper.assertButtonIsNotVisible($line, 'add_quantity');
-            helper.assertButtonIsNotVisible($line, 'remove_unit');
+            const line = helper.getLine({ barcode: 'productserial1' });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, '0');
+            helper.assertButtonShouldBeVisible(line, 'add_quantity', false);
+            helper.assertButtonShouldBeVisible(line, 'remove_unit', false);
             const goodQuantitySetButton = document.querySelector('.o_selected .o_line_button.o_set > .fa-check');
             helper.assert(Boolean(goodQuantitySetButton), true);
             const differenceSetButton = document.querySelector('.o_selected .o_line_button.o_set.o_difference');
@@ -586,16 +584,16 @@ tour.register('test_inventory_using_buttons', {test: true}, [
         trigger: '.o_barcode_line:contains("productserial1"):contains("?")',
         run: function () {
             helper.assertLinesCount(2);
-            const $line = helper.getLine({barcode: 'productserial1'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '?');
-            helper.assertButtonIsNotVisible($line, 'add_quantity');
-            helper.assertButtonIsNotVisible($line, 'remove_unit');
-            const goodQuantitySetButton = document.querySelector('.o_selected .o_line_button.o_set > .fa-check');
+            const line = helper.getLine({ barcode: 'productserial1', selected: true });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, '?');
+            helper.assertButtonShouldBeVisible(line, 'add_quantity', false);
+            helper.assertButtonShouldBeVisible(line, 'remove_unit', false);
+            const goodQuantitySetButton = line.querySelector('.o_line_button.o_set > .fa-check');
             helper.assert(Boolean(goodQuantitySetButton), false);
-            const differenceSetButton = document.querySelector('.o_selected .o_line_button.o_set.o_difference');
+            const differenceSetButton = line.querySelector('.o_line_button.o_set.o_difference');
             helper.assert(Boolean(differenceSetButton), false);
-            const emptySetButton = document.querySelector('.o_selected .o_line_button.o_set');
+            const emptySetButton = line.querySelector('.o_line_button.o_set');
             helper.assert(Boolean(emptySetButton), true);
         }
     },
@@ -606,12 +604,12 @@ tour.register('test_inventory_using_buttons', {test: true}, [
         trigger: '.o_barcode_client_action .o_barcode_line:nth-child(3)',
         run: function () {
             helper.assertLinesCount(3);
-            const $line = helper.getLine({barcode: 'productlot1'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '0');
-            helper.assertButtonIsVisible($line, 'add_quantity');
-            helper.assertButtonIsVisible($line, 'remove_unit');
-            const decrementButton = document.querySelector('.o_line_button.o_remove_unit');
+            const line = helper.getLine({ barcode: 'productlot1' });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, '0');
+            helper.assertButtonShouldBeVisible(line, 'add_quantity');
+            helper.assertButtonShouldBeVisible(line, 'remove_unit');
+            const decrementButton = line.querySelector('.o_line_button.o_remove_unit');
             helper.assert(decrementButton.hasAttribute('disabled'), true);
         }
     },
@@ -621,12 +619,12 @@ tour.register('test_inventory_using_buttons', {test: true}, [
         trigger: '.o_barcode_line:contains("toto-42")',
         run: function () {
             helper.assertLinesCount(3);
-            const $line = helper.getLine({barcode: 'productlot1'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '1');
-            helper.assertButtonIsVisible($line, 'add_quantity');
-            helper.assertButtonIsVisible($line, 'remove_unit');
-            const decrementButton = document.querySelector('.o_line_button.o_remove_unit');
+            const line = helper.getLine({ barcode: 'productlot1' });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, '1');
+            helper.assertButtonShouldBeVisible(line, 'add_quantity');
+            helper.assertButtonShouldBeVisible(line, 'remove_unit');
+            const decrementButton = line.querySelector('.o_line_button.o_remove_unit');
             helper.assert(decrementButton.hasAttribute('disabled'), false);
         }
     },
@@ -636,12 +634,12 @@ tour.register('test_inventory_using_buttons', {test: true}, [
         trigger: '.o_barcode_line:contains("productlot1") .qty-done:contains("0")',
         run: function () {
             helper.assertLinesCount(3);
-            const $line = helper.getLine({barcode: 'productlot1'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '0');
-            helper.assertButtonIsVisible($line, 'add_quantity');
-            helper.assertButtonIsVisible($line, 'remove_unit');
-            const decrementButton = document.querySelector('.o_line_button.o_remove_unit');
+            const line = helper.getLine({ barcode: 'productlot1' });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, '0');
+            helper.assertButtonShouldBeVisible(line, 'add_quantity');
+            helper.assertButtonShouldBeVisible(line, 'remove_unit');
+            const decrementButton = line.querySelector('.o_line_button.o_remove_unit');
             helper.assert(decrementButton.hasAttribute('disabled'), true);
         }
     },
@@ -651,12 +649,12 @@ tour.register('test_inventory_using_buttons', {test: true}, [
         trigger: '.o_barcode_line:contains("productlot1") .qty-done:contains(1)',
         run: function () {
             helper.assertLinesCount(3);
-            const $line = helper.getLine({barcode: 'productlot1'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQty($line, '1');
-            helper.assertButtonIsVisible($line, 'add_quantity');
-            helper.assertButtonIsVisible($line, 'remove_unit');
-            const decrementButton = document.querySelector('.o_line_button.o_remove_unit');
+            const line = helper.getLine({ barcode: 'productlot1' });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, '1');
+            helper.assertButtonShouldBeVisible(line, 'add_quantity');
+            helper.assertButtonShouldBeVisible(line, 'remove_unit');
+            const decrementButton = line.querySelector('.o_line_button.o_remove_unit');
             helper.assert(decrementButton.hasAttribute('disabled'), false);
         }
     },
@@ -667,12 +665,12 @@ tour.register('test_inventory_using_buttons', {test: true}, [
         trigger: '.o_barcode_line:contains("product2")',
         run: function () {
             helper.assertLinesCount(4);
-            const $line = helper.getLine({barcode: 'product2'});
-            helper.assertLineIsHighlighted($line, true);
-            helper.assertLineQuantityOnReservedQty(3, '1 / 10');
-            helper.assertButtonIsVisible($line, 'add_quantity');
-            helper.assertButtonIsVisible($line, 'remove_unit');
-            const setButton = document.querySelector('.o_selected .o_line_button.o_set.o_difference');
+            const line = helper.getLine({ barcode: 'product2', selected: true });
+            helper.assertLineIsHighlighted(line, true);
+            helper.assertLineQty(line, '1 / 10');
+            helper.assertButtonShouldBeVisible(line, 'add_quantity');
+            helper.assertButtonShouldBeVisible(line, 'remove_unit');
+            const setButton = line.querySelector('.o_line_button.o_set.o_difference');
             helper.assert(Boolean(setButton), true);
         }
     },

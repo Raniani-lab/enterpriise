@@ -1240,6 +1240,9 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             'product_uom_qty': 1,
             'picking_id': internal_picking.id,
         })
+        # Resets package sequence to be sure we'll have the attended packages name.
+        seq = self.env['ir.sequence'].search([('code', '=', 'stock.quant.package')])
+        seq.number_next_actual = 1
 
         url = self._get_client_action_url(internal_picking.id)
         internal_picking.action_confirm()

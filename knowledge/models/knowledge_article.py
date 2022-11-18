@@ -2134,12 +2134,9 @@ class Article(models.Model):
         except ValueError:
             limit_days = self.DEFAULT_ARTICLE_TRASH_LIMIT_DAYS
         title = _("No Article in Trash")
-        description = _("""
-            Deleted articles are stored in Trash an extra
-            <b>%(threshold)s</b> days
-            before being permanently removed for your database""",
-            threshold=limit_days
-        )
+        description = Markup(
+            _("""Deleted articles are stored in Trash an extra <b>%(threshold)s</b> days
+                 before being permanently removed for your database""")) % {"threshold": limit_days}
 
         return super().get_empty_list_help(
             f'<p class="o_view_nocontent_smiling_face">{title}</p><p>{description}</p>'

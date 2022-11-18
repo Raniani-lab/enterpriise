@@ -1,9 +1,12 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from markupsafe import Markup
+
 from odoo.addons.iap.tools import iap_tools
 from odoo import api, fields, models, _
 from odoo.exceptions import AccessError, UserError
+from odoo.tools import is_html_empty
 
 import logging
 import time
@@ -356,15 +359,14 @@ class HrExpense(models.Model):
         }
 
     @api.model
-    def get_empty_list_help(self, help):
-        expenses = self.search_count(
-            [
+    def get_empty_list_help(self, help_message):
+        if self.env.user.has_group('hr_expense.group_hr_expense_manager'):
+            expenses = self.search_count([
                 ('employee_id', 'in', self.env.user.employee_ids.ids),
                 ('state', 'in', ['draft', 'reported', 'approved', 'done', 'refused'])
             ])
-        if self.env.user.has_group('hr_expense.group_hr_expense_manager') and (not isinstance(help, str) or "o_view_nocontent_empty_folder" not in help):
-            action_id = self.env.ref('hr_expense_extract.action_expense_sample_receipt').id
-            html_to_return = """
+            if is_html_empty(help_message):
+                help_message = Markup(_("""
 <p class="o_view_nocontent_expense_receipt">
     <h2 class="d-none d-md-block">
         Drag and drop files to create expenses
@@ -384,15 +386,19 @@ class HrExpense(models.Model):
     <a href="https://play.google.com/store/apps/details?id=com.odoo.mobile" target="_blank" class="o_expense_mobile_app">
         <img alt="Google Play Store" class="img img-fluid h-100 o_expense_google_store" src="/hr_expense/static/img/play_store.png"/>
     </a>
-</p>"""
-            if not expenses:
-                html_to_return += """
-%(mail_alias)s
-<p>
-    <a type="action" name="%(action_id)s" class="btn btn-primary text-white">Try Sample Receipt</a>
-</p>""" % {'action_id': action_id, 'mail_alias': self._get_empty_list_mail_alias()}
-            return html_to_return
-        return super().get_empty_list_help(help)
+</p>"""))
+            # add hint for extract if not already present and user might now have already used it
+            extract_txt = _("Try Sample Receipt")
+            if not expenses and extract_txt not in help_message:
+                action_id = self.env.ref('hr_expense_extract.action_expense_sample_receipt').id
+                help_message += Markup(
+                    """<p><a type="action" name="%(action_id)s" class="btn btn-primary text-white">%(extract_txt)s</a></p>"""
+                ) % {
+                    'action_id': action_id,
+                    'extract_txt': extract_txt,
+                }
+
+        return super().get_empty_list_help(help_message)
 
 
 class HrExpenseSheet(models.Model):

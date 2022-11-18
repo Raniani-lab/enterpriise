@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import models, Command
+from odoo import _, models, Command
 
 
 class QualityCheck(models.Model):
@@ -37,7 +37,7 @@ class QualityCheck(models.Model):
         # get the operation in the eco's new bom similar to the current one
         operation = eco.new_bom_id.operation_ids.filtered(lambda o: o._get_comparison_values() == self.workorder_id.operation_id._get_comparison_values())
         quality_point_data = {
-            'title': 'New step from manufacturing feedback',
+            'title': _("New Step Suggestion: %s", self.title),
             'operation_id': operation.id,
             'product_ids': self.product_id.ids,
             'team_id': self.team_id.id,

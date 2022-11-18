@@ -99,3 +99,9 @@ msgstr ""
 #: model:mrp.eco.stage,name:mrp_workorder_plm.ecostage_validated
 msgid "Validated"
 msgstr ""
+
+#. module: mrp_workorder_plm
+#: code:addons/mrp_workorder/models/mrp_workorder.py:0
+#, python-format
+msgid "New Step Suggestion: %s"
+msgstr ""

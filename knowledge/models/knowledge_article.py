@@ -2126,7 +2126,7 @@ class Article(models.Model):
         # Meant to target knowledge_article_action_trashed action only.
         # -> Use the specific context key of that action to target it.
         if not "search_default_filter_trashed" in self.env.context:
-            return help_message
+            return super().get_empty_list_help(help_message)
         get_param = self.env['ir.config_parameter'].sudo().get_param
         limit_days = get_param('knowledge.knowledge_article_trash_limit_days')
         try:
@@ -2141,6 +2141,6 @@ class Article(models.Model):
             threshold=limit_days
         )
 
-        return '''<p class="o_view_nocontent_smiling_face">%s</p><p>%s</p>''' % (
-            title, description
+        return super().get_empty_list_help(
+            f'<p class="o_view_nocontent_smiling_face">{title}</p><p>{description}</p>'
         )

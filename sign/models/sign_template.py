@@ -99,10 +99,10 @@ class SignTemplate(models.Model):
             template.is_sharing = template.id in sign_template_sharing_ids
 
     @api.model
-    def get_empty_list_help(self, help):
+    def get_empty_list_help(self, help_message):
         if not self.env.ref('sign.template_sign_tour', raise_if_not_found=False):
             return '<p class="o_view_nocontent_smiling_face">%s</p>' % _('Upload a PDF')
-        return super().get_empty_list_help(help)
+        return super().get_empty_list_help(help_message)
 
     @api.model_create_multi
     def create(self, vals_list):

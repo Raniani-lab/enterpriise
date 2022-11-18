@@ -1278,7 +1278,7 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
         for (const { name, value } of rootArchXmlNode.attributes) {
             attrs[name] = value;
         }
-        if (attrs.sample && nextViewType !== "list") {
+        if (attrs.sample && !["list", "kanban"].includes(nextViewType)) {
             controllerProps.useSampleModel = Boolean(evaluateExpr(attrs.sample));
         }
 

@@ -42,6 +42,10 @@ export class KanbanEditorRenderer extends kanbanView.Renderer {
         return false;
     }
 
+    get showNoContentHelper() {
+        return false;
+    }
+
     getGroupsOrRecords() {
         const { list } = this.props;
         const groupsOrRec = super.getGroupsOrRecords(...arguments);

@@ -28,7 +28,9 @@ class SaleOrderTemplate(models.Model):
     color = fields.Integer()
     auto_close_limit = fields.Integer(
         string="Automatic Closing", default=15,
-        help="If the chosen payment method has failed to renew the subscription after this time, "
+        help="Unpaid subscription after the due date majored by this number of days will be automatically closed by "
+             "the subscriptions expiration scheduled action. \n"
+             "If the chosen payment method has failed to renew the subscription after this time, "
              "the subscription is automatically closed.")
 
     # ARJ TODO master: use a setting or a config parameter

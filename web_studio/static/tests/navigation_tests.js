@@ -528,6 +528,47 @@ QUnit.module("Studio", (hooks) => {
         }
     );
 
+    QUnit.test("kanban in studio should always ignore sample data", async function (assert) {
+        serverData.models.pony.fields.m2o = {
+            string: "m2o",
+            relation: "partner",
+            type: "many2one",
+        };
+
+        serverData.actions[8].views = [[false, "kanban"]];
+        serverData.models.pony.records = [];
+        serverData.views["pony,false,kanban"] = `
+                <kanban sample="1" default_group_by="m2o">
+                    <t t-name="kanban-box">
+                        <field name="name"/>
+                        <field name="m2o" />
+                    </t>
+                </kanban>`;
+
+        await createEnterpriseWebClient({
+            serverData,
+        });
+        // open app Ponies (act window action)
+        await click(target.querySelector(".o_app[data-menu-xmlid=app_2]"));
+        await legacyExtraNextTick();
+
+        assert.ok(
+            [...target.querySelectorAll(".o_kanban_view .o_kanban_examples_ghost")].length > 0,
+            "there should be some sample data in the kanban view"
+        );
+
+        await openStudio(target);
+        await legacyExtraNextTick();
+
+        assert.containsOnce(
+            target,
+            ".o_web_studio_kanban_view_editor .o_kanban_group .o_kanban_record:not(.o_kanban_ghost):not(.o_kanban_demo)",
+            "the kanban view should not contain any sample data"
+        );
+
+        assert.containsNone(target, "o_web_studio_kanban_view_editor .o_view_nocontent");
+    });
+
     QUnit.test("entering a kanban keeps the user's domain", async (assert) => {
         serverData.views["pony,false,kanban"] = `
             <kanban>

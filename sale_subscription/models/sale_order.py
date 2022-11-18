@@ -11,7 +11,7 @@ from odoo import fields, models, _, api, Command, SUPERUSER_ID
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools.float_utils import float_is_zero
 from odoo.osv import expression
-from odoo.tools import config
+from odoo.tools import config, split_every
 from odoo.tools.date_utils import get_timedelta
 
 _logger = logging.getLogger(__name__)
@@ -821,7 +821,7 @@ class SaleOrder(models.Model):
             next_closed_stage = stages_closed.filtered(lambda s: s.sequence > order.stage_id.sequence)[:1]
             if not next_closed_stage:
                 next_closed_stage = stages_closed.filtered(lambda s: s.id == max(stages_closed.ids))
-            order.write({'stage_id': next_closed_stage.id, 'to_renew': False})
+            order.update({'stage_id': next_closed_stage.id, 'to_renew': False})
 
     def set_close(self):
         today = fields.Date.context_today(self)
@@ -1352,7 +1352,96 @@ class SaleOrder(models.Model):
 
         return existing_invoices
 
+    def _get_expired_subscriptions(self):
+        # We don't use CURRENT_DATE to allow using freeze_time in tests.
+        today = fields.Datetime.today()
+        self.env.cr.execute(
+            """
+                SELECT (so.next_invoice_date + INTERVAL '1 day' * COALESCE(sot.auto_close_limit,15)) AS "payment_limit",
+                           so.next_invoice_date,
+                           so.id AS so_id
+                  FROM sale_order so
+             LEFT JOIN sale_order_template sot ON sot.id=so.sale_order_template_id
+                 WHERE so.is_subscription
+                   AND so.state IN ('sale', 'done')
+                   AND so.stage_category ='progress'
+                AND (so.next_invoice_date + INTERVAL '1 day' * COALESCE(sot.auto_close_limit,15))< %s
+            """, [today.strftime('%Y-%m-%d')]
+        )
+        return self.env.cr.dictfetchall()
+
+    def _get_unpaid_subscriptions(self):
+        # We don't use CURRENT_DATE to allow using freeze_time in tests.
+        today = fields.Datetime.today()
+        self.env.cr.execute(
+            """
+                WITH payment_limit_query AS (
+                      SELECT (aml2.dm + INTERVAL '1 day' * COALESCE(sot.auto_close_limit,15) ) AS "payment_limit",
+                              aml2.dm AS date_maturity,
+                              str.unit AS unit,
+                              str.duration AS duration,
+                              CASE
+                                WHEN str.unit='week' THEN INTERVAL '1 day' * 7 * str.duration
+                                WHEN str.unit='month' THEN INTERVAL '1 day' * 30 * str.duration
+                                WHEN str.unit='year' THEN INTERVAL '1 day' * 365 * str.duration
+                              END AS conversion,
+                              str.duration || ' ' || str.unit AS recurrence,
+                              am.payment_state AS payment_state,
+                              am.id AS am_id,
+                              so.id AS so_id,
+                              so.next_invoice_date AS next_invoice_date
+                        FROM sale_order so
+                        JOIN sale_order_line sol ON sol.order_id = so.id
+                        JOIN account_move_line aml ON aml.subscription_id = so.id
+                        JOIN account_move am ON am.id = aml.move_id
+                        JOIN sale_temporal_recurrence str ON str.id=so.recurrence_id
+                        JOIN sale_order_line_invoice_rel rel ON rel.invoice_line_id=aml.id
+                   LEFT JOIN sale_order_template sot ON sot.id = so.sale_order_template_id
+           LEFT JOIN LATERAL ( SELECT MAX(date_maturity) AS dm FROM account_move_line aml WHERE aml.move_id = am.id) AS aml2 ON TRUE
+                      WHERE so.is_subscription
+                        AND so.state IN ('sale', 'done')
+                        AND so.stage_category ='progress'
+                        AND am.payment_state = 'not_paid'
+                        AND am.move_type = 'out_invoice'
+                        AND am.state = 'posted'
+                        AND rel.order_line_id=sol.id
+                   GROUP BY so_id,am_id,sot.auto_close_limit,payment_state,aml2.dm,str.unit,str.duration
+               )
+              SELECT payment_limit::DATE,
+                     date_maturity,
+                     recurrence,
+                     next_invoice_date - plq.conversion AS last_invoice_date,
+                     payment_state,
+                     am_id,so_id,
+                     next_invoice_date
+                FROM
+                    payment_limit_query plq
+                    WHERE payment_limit < %s and payment_limit >= (next_invoice_date - plq.conversion)::DATE
+            """, [today.strftime('%Y-%m-%d')]
+        )
+        return self.env.cr.dictfetchall()
+
+    def _handle_unpaid_subscriptions(self):
+        unpaid_result = self._get_unpaid_subscriptions()
+        closable_ids = []
+        for res in unpaid_result:
+            sale_order = self.env['sale.order'].browse(res['so_id'])
+            account_move = self.env['account.move'].browse(res['am_id'])
+            sale_order.message_post(body=_("The last invoice (%s) of this subscription is unpaid after the due date.",
+                                            account_move._get_html_link()),
+                                    partner_ids=sale_order.team_user_id.partner_id.ids,
+                                    message_type='email')
+            closable_ids.append(sale_order.id)
+        return closable_ids
+
     def cron_subscription_expiration(self):
+        # TODO MASTER: private
+        # Flush models according to following SQL requests
+        self.env['sale.order'].flush_model(
+            fnames=['order_line', 'sale_order_template_id', 'state', 'stage_category', 'next_invoice_date'])
+        self.env['account.move'].flush_model(fnames=['payment_state', 'line_ids'])
+        self.env['account.move.line'].flush_model(fnames=['move_id', 'sale_line_ids'])
+        self.env['sale.order.template'].flush_model(fnames=['auto_close_limit'])
         today = fields.Date.today()
         next_month = today + relativedelta(months=1)
         # set to pending if date is in less than a month
@@ -1365,10 +1454,18 @@ class SaleOrder(models.Model):
             ('end_date', '<', today),
             ('state', 'in', ['sale', 'done']),
             '|',
-            ('stage_category', '=', 'progress'),
+            ('stage_category', 'in', ['progress', 'paused']),
             ('to_renew', '=', True)]
         subscriptions_close = self.search(domain_close)
-        subscriptions_close.set_close()
+        unpaid_ids = self._handle_unpaid_subscriptions()
+        expired_result = self._get_expired_subscriptions()
+        expired_ids = [r['so_id'] for r in expired_result]
+        subscriptions_close |= self.env['sale.order'].browse(unpaid_ids) | self.env['sale.order'].browse(expired_ids)
+        auto_commit = not bool(config['test_enable'] or config['test_file'])
+        for batched_to_close in split_every(30, subscriptions_close.ids, self.env['sale.order'].browse):
+            batched_to_close.set_close()
+            if auto_commit:
+                self.env.cr.commit()
         return dict(pending=subscriptions_pending.ids, closed=subscriptions_close.ids)
 
     def _get_subscription_delta(self, date):

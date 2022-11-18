@@ -3,6 +3,7 @@ import datetime
 from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 from markupsafe import Markup
+from unittest.mock import patch
 
 from odoo.addons.sale_subscription.tests.common_sale_subscription import TestSubscriptionCommon
 from odoo.tests import Form, tagged
@@ -329,6 +330,13 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(self.subscription.end_date, datetime.date(2022, 1, 17), 'The end date of the subscription should be updated according to the template')
             self.assertFalse(self.subscription.to_renew)
             self.assertEqual(self.subscription.next_invoice_date, datetime.date(2021, 12, 18))
+            self.env['account.payment.register'] \
+                .with_context(active_model='account.move', active_ids=self.subscription.invoice_ids.ids) \
+                .create({
+                'currency_id': self.subscription.currency_id.id,
+                'amount': self.subscription.amount_total,
+            })._create_payments()
+        self.assertEqual(self.subscription.invoice_ids.payment_state, 'in_payment')
 
         with freeze_time("2021-12-18"):
             self.env['sale.order'].cron_subscription_expiration()
@@ -1007,8 +1015,9 @@ class TestSubscription(TestSubscriptionCommon):
         # Then we renew it with a MRR of 42
         # After a few months the MRR of the renewal is 63
         # We also create and renew a free subscription
-
-        with freeze_time("2021-01-01"):
+        SaleOrder = self.env["sale.order"]
+        with freeze_time("2021-01-01"), patch.object(type(SaleOrder), '_get_unpaid_subscriptions', lambda x: []):
+            self.subscription_tmpl.auto_close_limit = 5000 # don't close automatically contract if unpaid invoices
             # so creation with mail tracking
             context_mail = {'tracking_disable': False}
             sub = self.env['sale.order'].with_context(context_mail).create({
@@ -1095,7 +1104,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(renewal_so.recurring_monthly, 63, "MRR of renewal should not be computed before start_date of the lines")
             self.flush_tracking()
             # renew is still not ongoing;  Total MRR is 21 coming from the original sub
-            self.env['sale.order'].cron_subscription_expiration()
+            self.env['sale.order'].sudo().cron_subscription_expiration()
             self.assertEqual(sub.recurring_monthly, 21)
             self.assertEqual(renewal_so.recurring_monthly, 63)
             self.env['sale.order']._cron_recurring_create_invoice()
@@ -1132,7 +1141,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(renewal_so.recurring_monthly, 63)
             self.flush_tracking()
 
-        with freeze_time("2021-07-01"):
+        with freeze_time("2021-07-01"), patch.object(type(SaleOrder), '_get_unpaid_subscriptions', lambda x: []):
             # Total MRR is 42 coming from renew
             self.subscription._cron_update_kpi()
             self.env['sale.order']._cron_recurring_create_invoice()
@@ -1142,18 +1151,18 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(renewal_so.recurring_monthly, 63)
             self.flush_tracking()
 
-        with freeze_time("2021-08-03"):
+        with freeze_time("2021-08-03"), patch.object(type(SaleOrder), '_get_unpaid_subscriptions', lambda x: []):
             # We switch the cron the X of august to make sure the day of the cron does not affect the numbers
             renewal_so.end_date = datetime.date(2032, 1, 1)
             self.flush_tracking()
             # Total MRR is 80 coming from renewed sub
             self.env['sale.order']._cron_recurring_create_invoice()
-            self.env['sale.order'].cron_subscription_expiration()
+            self.env['sale.order'].sudo().cron_subscription_expiration()
             self.assertEqual(sub.recurring_monthly, 0)
             self.assertEqual(renewal_so.recurring_monthly, 63)
             self.assertEqual(sub.stage_category, "closed")
             self.flush_tracking()
-        with freeze_time("2021-09-01"):
+        with freeze_time("2021-09-01"), patch.object(type(SaleOrder), '_get_unpaid_subscriptions', lambda x: []):
             renewal_so.order_line.product_uom_qty = 4
             # We update the MRR of the renewed
             self.env['sale.order']._cron_recurring_create_invoice()
@@ -1784,7 +1793,6 @@ class TestSubscription(TestSubscriptionCommon):
         refund_move = self.env['account.move'].browse(res['res_id'])
         self.assertEqual(inv.reversal_move_id, refund_move, "The initial move should be reversed")
         self.assertEqual(subscription.order_line.qty_invoiced, 0, "The products should be not be invoiced")
-
 
     def test_discount_parent_line(self):
         with freeze_time("2022-01-01"):

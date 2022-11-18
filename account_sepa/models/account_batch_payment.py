@@ -11,12 +11,12 @@ from datetime import datetime
 
 # deprecated, will be removed in master
 def check_valid_SEPA_str(string):
-    if re.search('[^-A-Za-z0-9/?:().,\'+ ]', string) is not None:
+    if re.search('[^-A-Za-z0-9/?:().,\'&<>+ ]', string) is not None:
         raise ValidationError(_("The text used in SEPA files can only contain the following characters :\n\n"
             "a b c d e f g h i j k l m n o p q r s t u v w x y z\n"
             "A B C D E F G H I J K L M N O P Q R S T U V W X Y Z\n"
             "0 1 2 3 4 5 6 7 8 9\n"
-            "/ - ? : ( ) . , ' + (space)"))
+            "/ - ? : ( ) . , ' + & < > (space)"))
 
 # deprecated, will be removed in master
 def _check_sepa_str_validity(*strings):

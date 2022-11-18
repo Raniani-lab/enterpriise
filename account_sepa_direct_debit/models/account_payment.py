@@ -66,7 +66,7 @@ class AccountPayment(models.Model):
             communication = communication[1:]
         if communication.endswith('/'):
             communication = communication[:-1]
-        communication = re.sub('[^-A-Za-z0-9/?:().,\'&<>+ ]', '', _replace_characters_SEPA(communication))
+        communication = _replace_characters_SEPA(communication)
         return communication
 
     def generate_xml(self, company_id, required_collection_date, askBatchBooking):

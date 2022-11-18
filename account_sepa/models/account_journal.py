@@ -31,7 +31,7 @@ def sanitize_communication(communication):
         communication = communication[1:]
     if communication.endswith('/'):
         communication = communication[:-1]
-    communication = re.sub('[^-A-Za-z0-9/?:().,\'&<>+ ]', '', _replace_characters_SEPA(communication))
+    communication = _replace_characters_SEPA(communication)
     return communication
 
 class AccountJournal(models.Model):

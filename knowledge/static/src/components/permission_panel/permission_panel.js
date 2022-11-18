@@ -163,7 +163,7 @@ class PermissionPanel extends Component {
             this.loadPanel();
         };
         const loseAccessMessage = _t('Are you sure you want to set your permission to "none"? If you do, you will no longer have access to the article.');
-        const message = willLoseAccess ? loseAccessMessage : willLoseWrite ? loseWriteMessage : loseAccessMessage;
+        const message = willLoseAccess ? loseAccessMessage : willLoseWrite ? loseWriteMessage : restrictMessage ;
         const title = willLoseAccess ? _t('Leave Article') : _t('Change Permission');
         this._showConfirmDialog(message, title, confirm, discard);
     }

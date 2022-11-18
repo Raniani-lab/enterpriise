@@ -5,7 +5,6 @@ from datetime import datetime
 
 from odoo import _, api, fields, models
 from odoo.exceptions import AccessError, ValidationError
-from odoo.addons.payment import utils as payment_utils
 
 _logger = logging.getLogger(__name__)
 
@@ -98,6 +97,13 @@ class PaymentProvider(models.Model):
         }
 
     #=== BUSINESS METHODS ===#
+
+    def _get_supported_currencies(self):
+        """ Override of `payment` to return EUR as the only supported currency. """
+        supported_currencies = super()._get_supported_currencies()
+        if self.code == 'sepa_direct_debit':
+            supported_currencies = supported_currencies.filtered(lambda c: c.name == 'EUR')
+        return supported_currencies
 
     def _is_tokenization_required(self, **kwargs):
         """ Override of payment to hide the "Save my payment details" input in checkout forms.

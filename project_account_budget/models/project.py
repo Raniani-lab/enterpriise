@@ -47,10 +47,9 @@ class Project(models.Model):
             ]),
             'context': {'create': False, 'edit': False},
             "name": _("Budget Items"),
-            'view_mode': 'tree,form',
+            'view_mode': 'tree',
             'views': [
-                [self.env.ref('project_account_budget.crossovered_budget_lines_view_tree_inherit').id, 'tree'],
-                [False, 'form']
+                [self.env.ref('project_account_budget.crossovered_budget_lines_view_tree_inherit').id, 'tree']
             ]
         }
 

@@ -260,7 +260,7 @@ msgstr ""
 #: model:account.report.expression,report_line_name:l10n_ch_reports.account_financial_report_line_ch_290_b_balance
 #: model:account.report.expression,report_line_name:l10n_ch_reports.account_financial_report_line_ch_290_b_domain
 #: model:account.report.line,name:l10n_ch_reports.account_financial_report_line_ch_290_b
-msgid "Previous years' profit or loss"
+msgid "Previous years' unallocated profit or loss"
 msgstr ""
 
 #. module: l10n_ch_reports

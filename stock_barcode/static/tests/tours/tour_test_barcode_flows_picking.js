@@ -652,7 +652,7 @@ tour.register('test_delivery_reserved_2', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_client_action',
+        trigger: '.o_barcode_line.o_selected.o_line_completed',
         run: 'scan product2'
     },
     tour.stepUtils.confirmAddingUnreservedProduct(),
@@ -674,12 +674,12 @@ tour.register('test_delivery_reserved_2', {test: true}, [
     },
 
     {
-        trigger: '.o_barcode_line:not(.o_line_completed)',
+        trigger: '.o_barcode_line.o_selected:not(.o_line_completed)',
         run: 'scan product1'
     },
 
     {
-        trigger: '.o_barcode_line.o_line_completed',
+        trigger: '.o_barcode_line.o_selected.o_line_completed',
         run: function() {
             helper.assertLinesCount(3);
             helper.assertScanMessage('scan_validate');

@@ -311,11 +311,8 @@ class AccountMove(models.Model):
         elif code == 'ROO':
             return timezone('America/Cancun')
         # Pacific area
-        elif code in ('BCS', 'CHH', 'SIN', 'NAY'):
-            return timezone('America/Chihuahua')
-        # Sonora
-        elif code == 'SON':
-            return timezone('America/Hermosillo')
+        elif code in ('SON', 'BCS', 'SIN', 'NAY'):
+            return timezone('America/Mazatlan')
         # By default, takes the central area timezone
         return timezone('America/Mexico_City')
 

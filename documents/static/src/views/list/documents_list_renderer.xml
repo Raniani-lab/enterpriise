@@ -21,14 +21,14 @@
     </t>
 
     <t t-name="documents.DocumentsListRenderer.RecordRow" t-inherit="web.ListRenderer.RecordRow" t-inherit-mode="primary" owl="1">
-        <tr class="o_data_row" position="attributes">
+        <xpath expr="//tr[hasclass('o_data_row')]" position="attributes">
             <attribute name="draggable">true</attribute>
             <attribute name="t-on-dragstart.stop">(ev) => record.onDragStart(ev)</attribute>
             <attribute name="t-on-click.stop.prevent.synthetic">(ev) => record.onRecordClick(ev)</attribute>
-        </tr>
-        <td class="o_list_record_selector" position="attributes">
+        </xpath>
+        <xpath expr="//td[hasclass('o_list_record_selector')]" position="attributes">
             <attribute name="t-on-click.stop">(ev) => record.onRecordClick(ev)</attribute>
-        </td>
+        </xpath>
         <CheckBox position="replace">
             <DocumentsListRendererCheckBox disabled="!!props.list.editedRecord or props.list.model.useSampleModel" value="record.selected" onChange.bind="(ev) => record.onRecordClick(ev, {isKeepSelection: true})"/>
         </CheckBox>

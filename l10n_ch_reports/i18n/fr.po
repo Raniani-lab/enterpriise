@@ -269,8 +269,8 @@ msgstr "Participations"
 #: model:account.report.expression,report_line_name:l10n_ch_reports.account_financial_report_line_ch_290_b_balance
 #: model:account.report.expression,report_line_name:l10n_ch_reports.account_financial_report_line_ch_290_b_domain
 #: model:account.report.line,name:l10n_ch_reports.account_financial_report_line_ch_290_b
-msgid "Previous years' profit or loss"
-msgstr "Bénéfice / Perte des années précédentes"
+msgid "Previous years' unallocated profit or loss"
+msgstr "Résultat non alloué des exercices précédents"
 
 #. module: l10n_ch_reports
 #: model:account.report,name:l10n_ch_reports.account_financial_report_l10n_ch_cdr

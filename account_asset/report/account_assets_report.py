@@ -227,16 +227,21 @@ class AssetReportCustomHandler(models.AbstractModel):
 
             # Format the data
             columns_by_expr_label = {
-                options['columns'][0]['expression_label']: al['asset_acquisition_date'] and format_date(self.env, al['asset_acquisition_date']) or '',  # Characteristics
-                options['columns'][1]['expression_label']: al['asset_date'] and format_date(self.env, al['asset_date']) or '',
-                options['columns'][2]['expression_label']: (al['asset_method'] == 'linear' and _('Linear')) or (al['asset_method'] == 'degressive' and _('Declining')) or _('Dec. then Straight'),
-                options['columns'][3]['expression_label']: asset_depreciation_rate}
-            for idx, val in enumerate([
-                asset_opening, asset_add, asset_minus, asset_closing,
-                depreciation_opening, depreciation_add, depreciation_minus, depreciation_closing,
-                asset_closing - depreciation_closing,
-            ], start=4):
-                columns_by_expr_label.update({options['columns'][idx]['expression_label']: val})
+                "acquisition_date": al["asset_acquisition_date"] and format_date(self.env, al["asset_acquisition_date"]) or "",  # Characteristics
+                "first_depreciation": al["asset_date"] and format_date(self.env, al["asset_date"]) or "",
+                "method": (al["asset_method"] == "linear" and _("Linear")) or (al["asset_method"] == "degressive" and _("Declining")) or _("Dec. then Straight"),
+                "duration_rate": asset_depreciation_rate,
+                "assets_date_from": asset_opening,
+                "assets_plus": asset_add,
+                "assets_minus": asset_minus,
+                "assets_date_to": asset_closing,
+                "depre_date_from": depreciation_opening,
+                "depre_plus": depreciation_add,
+                "depre_minus": depreciation_minus,
+                "depre_date_to": depreciation_closing,
+                "balance": asset_closing - depreciation_closing,
+            }
+
             lines.append((al['account_id'], al['asset_id'], columns_by_expr_label))
         return lines
 

@@ -6,7 +6,7 @@ def _replace_characters_SEPA(string):
     See https://www.europeanpaymentscouncil.eu/document-library/guidance-documents/sepa-requirements-extended-character-set-unicode-subset-best
     """
     string_array = [character for character in string]
-    for match in re.finditer('[^-A-Za-z0-9/?:().,\'+ ]', string):
+    for match in re.finditer('[^-A-Za-z0-9/?:().,\'&<>+ ]', string):
         match_index = match.start()
         string_array[match_index] = sepa_mapping.get(string_array[match_index], '')
     return ''.join(string_array)

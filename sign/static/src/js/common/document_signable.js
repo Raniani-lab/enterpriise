@@ -44,8 +44,8 @@ const SignNameAndSignature = NameAndSignature.extend({
 
     this.requestID = requestID;
     this.accessToken = accessToken;
-    this.defaultSignature = options.defaultSignature || "";
-    this.signatureChanged = !options.defaultSignature;
+    this.openInDrawMode = options.openInDrawMode;
+    this.signatureChanged = !options.openInDrawMode;
     this.fonts = signatureFonts;
     this.hash = hash;
     this.signLabel = _t('Signed with Odoo Sign');
@@ -53,8 +53,7 @@ const SignNameAndSignature = NameAndSignature.extend({
     this.frame = options.defaultFrame;
     this.frameChanged = false;
 
-    // if defaultSignature exists, we don't want to have mode set to auto
-    if (this.defaultSignature) {
+    if (this.openInDrawMode) {
       this.signMode = 'draw';
     }
   },
@@ -96,29 +95,6 @@ const SignNameAndSignature = NameAndSignature.extend({
     this.toggleFrameDiv();
   },
 
-  /**
-   * Sets the existing signature.
-   *
-   * @override
-   */
-  resetSignature: function () {
-    const self = this;
-    return this._super.apply(this, arguments).then(function () {
-      if (
-        self.defaultSignature &&
-        self.defaultSignature !== self.emptySignature
-      ) {
-        const settings = self.$signatureField.jSignature("getSettings");
-        const decorColor = settings["decor-color"];
-        self.$signatureField.jSignature("updateSetting", "decor-color", null);
-        self.$signatureField.jSignature("reset");
-        self.$signatureField.jSignature("importData", self.defaultSignature);
-        settings["decor-color"] = decorColor;
-
-        return self._waitForSignatureNotEmpty();
-      }
-    });
-  },
   //----------------------------------------------------------------------
   // Handlers
   //----------------------------------------------------------------------
@@ -164,7 +140,7 @@ const SignNameAndSignature = NameAndSignature.extend({
     return this.activeFrame ? this.frame : false;
   },
   /**
-   * If a user clicks on draw, we overwrite the signature in the server.
+   * If a user clicks on clear, we overwrite the signature in the server.
    *
    * @override
    * @see NameAndSignature._onClickSignDrawClear()
@@ -198,18 +174,7 @@ const SignNameAndSignature = NameAndSignature.extend({
       this.signatureChanged = true;
     }
     return this._super.apply(this, arguments);
-  },
-  /**
-   * If a user clicks on draw, we overwrite the signature in the server.
-   *
-   * @override
-   * @see NameAndSignature._onClickSignDrawButton()
-   * @private
-   */
-  _onClickSignDrawButton: function () {
-    this.signatureChanged = true;
-    return this._super.apply(this, arguments);
-  },
+  }
 });
 
 // The goal of this override is to make the dialog re-enable the validate button
@@ -301,15 +266,12 @@ const SignatureDialog = SignInfoDialog.extend({
    * @override
    */
   start: function () {
-    const self = this;
     this.$primaryButton = this.$footer.find(".btn-primary");
     this.$secondaryButton = this.$footer.find(".btn-secondary");
-    this.opened().then(function () {
-      self
-        .$(".o_web_sign_name_and_signature")
-        .replaceWith(self.nameAndSignature.$el);
+    this.opened().then(() => {
+      this.$(".o_web_sign_name_and_signature").replaceWith(this.nameAndSignature.$el);
       // initialize the signature area
-      self.nameAndSignature.resetSignature();
+      this.nameAndSignature.resetSignature();
     });
     return this._super.apply(this, arguments);
   },
@@ -1453,7 +1415,7 @@ export const SignableDocument = Document.extend({
           defaultName: this.getParent().signerName || "",
           fontColor: "DarkBlue",
           signatureType: type.item_type,
-          defaultSignature: type.auto_value,
+          openInDrawMode: Boolean(type.auto_value),
           defaultFrame: type.frame_value,
           displaySignatureRatio:
             parseFloat($signatureItem.css("width")) /

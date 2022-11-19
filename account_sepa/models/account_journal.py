@@ -461,7 +461,7 @@ class AccountJournal(models.Model):
         iban = partner_bank.sanitized_acc_number
         if (
             partner_bank.acc_type != 'iban'
-            or (partner_bank.sanitized_acc_number or '')[:2] != 'CH'
+            or (partner_bank.sanitized_acc_number or '')[:2] not in ('CH', 'LI')
             or partner_bank.company_id.id not in (False, company.id)
             or len(iban) < 9
         ):

@@ -109,7 +109,7 @@ msgstr "首先，您的问题的性质是什么？"
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,field_description:website_helpdesk_livechat.field_chatbot_script__ticket_count
 msgid "Generated Ticket Count"
-msgstr "生成的工单数量"
+msgstr "生成的工单计数"
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_administrative_customer_ref_yes

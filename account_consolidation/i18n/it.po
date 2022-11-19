@@ -116,12 +116,14 @@ msgstr "/ Tasso finale: 1"
 msgid ""
 "<i class=\"fa fa-caret-down\" role=\"img\" aria-label=\"Unfolded\" "
 "title=\"Unfolded\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-caret-down\" role=\"img\" aria-label=\"Espanso\" title=\"Espanso\"/>"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.line_template_consolidation_report
 msgid "<i class=\"fa fa-caret-right\" role=\"img\" aria-label=\"Folded\" title=\"Folded\"/>"
 msgstr ""
+"<i class=\"fa fa-caret-right\" role=\"img\" aria-label=\"Minimizzato\" "
+"title=\"Minimizzato\"/>"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_kanban

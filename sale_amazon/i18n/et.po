@@ -14,6 +14,7 @@
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Rivo Zängov <eraser@eraser.ee>, 2022
 # Andre Roomet <andreroomet@gmail.com>, 2022
+# Leaanika Randmets, 2022
 # 
 msgid ""
 msgstr ""
@@ -21,7 +22,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:47+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Andre Roomet <andreroomet@gmail.com>, 2022\n"
+"Last-Translator: Leaanika Randmets, 2022\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -84,7 +85,7 @@ msgstr "Konto nimi"
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__active
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_search
 msgid "Active"
-msgstr "Tegev"
+msgstr "Aktiivne"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
@@ -428,6 +429,7 @@ msgstr "ID"
 msgid ""
 "If made inactive, this account will no longer be synchronized with Amazon."
 msgstr ""
+"Kui see muudetakse passiivseks, ei sünkroonita seda kontot enam Amazoniga"
 
 #. module: sale_amazon
 #: code:addons/sale_amazon/models/amazon_account.py:0
@@ -453,7 +455,7 @@ msgstr "Mitteaktiivne"
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_stock_location
 msgid "Inventory Locations"
-msgstr "Inventuuri asukohad"
+msgstr "Ladude asukohad"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__is_follow_up_displayed

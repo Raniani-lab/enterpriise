@@ -9,7 +9,6 @@
 # Martin Trigaux, 2022
 # Collex100, 2022
 # Ekaterina <nawsikaya@bk.ru>, 2022
-# Ivan Kropotkin <yelizariev@itpp.dev>, 2022
 # Alena Vlasova, 2022
 # 
 msgid ""
@@ -58,7 +57,7 @@ msgstr "Купить подписку"
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "CV is being Digitized"
-msgstr ""
+msgstr "Текст CV извлечен"
 
 #. module: hr_recruitment_extract
 #: model:ir.model,name:hr_recruitment_extract.model_res_company
@@ -68,7 +67,7 @@ msgstr "Компании"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__done
 msgid "Completed flow"
-msgstr "завершен процесс"
+msgstr "Завершен процесс"
 
 #. module: hr_recruitment_extract
 #: model:ir.model,name:hr_recruitment_extract.model_res_config_settings
@@ -78,17 +77,17 @@ msgstr "Конфигурационные настройки"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__res_company__recruitment_extract_show_ocr_option_selection__auto_send
 msgid "Digitize automatically"
-msgstr ""
+msgstr "Автоматически разпознавать текст"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__res_company__recruitment_extract_show_ocr_option_selection__manual_send
 msgid "Digitize on demand only"
-msgstr ""
+msgstr "Распознавать текст только по запросу"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__res_company__recruitment_extract_show_ocr_option_selection__no_send
 msgid "Do not digitize"
-msgstr ""
+msgstr "Не распознавать текст"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_error_message
@@ -98,96 +97,96 @@ msgstr "Сообщение об ошибке"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_can_show_resend_button
 msgid "Extract Can Show Resend Button"
-msgstr ""
+msgstr "Извлечение может показывать кнопку повторной отправки"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_can_show_send_button
 msgid "Extract Can Show Send Button"
-msgstr ""
+msgstr " Извлечение может показывать кнопку отправки"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_state
 msgid "Extract State"
-msgstr ""
+msgstr "Статус извлечения"
 
 #. module: hr_recruitment_extract
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Generated Applicant"
-msgstr ""
+msgstr "Сгенерированный соискатель"
 
 #. module: hr_recruitment_extract
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Generated Applicants"
-msgstr ""
+msgstr "Сгенерированные соискатели"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__is_first_stage
 msgid "Is First Stage"
-msgstr ""
+msgstr "Первый этап"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__no_extract_requested
 msgid "No extract requested"
-msgstr "Нет запроса на удаление"
+msgstr "Нет запроса на извлечение"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__not_enough_credit
 msgid "Not enough credit"
-msgstr "недостаточно кредитов"
+msgstr "Недостаточно прав"
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_ocr_parse_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_ocr_parse
 #: model:ir.cron,name:hr_recruitment_extract.ir_cron_ocr_parse
 msgid "Recruitment OCR: Parse CV"
-msgstr ""
+msgstr "Найм OCR: Анализ резюме"
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_update_ocr_status_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_update_ocr_status
 #: model:ir.cron,name:hr_recruitment_extract.ir_cron_update_ocr_status
 msgid "Recruitment OCR: Update All Status"
-msgstr ""
+msgstr "Найм OCR: Обновить все этапы"
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_cron_ocr_validate_ir_actions_server
 #: model:ir.cron,cron_name:hr_recruitment_extract.ir_cron_ocr_validate
 #: model:ir.cron,name:hr_recruitment_extract.ir_cron_ocr_validate
 msgid "Recruitment OCR: Validate CV"
-msgstr ""
+msgstr "Найм OCR: Проверить CV"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_config_settings__recruitment_extract_show_ocr_option_selection
 msgid "Recruitment processing option"
-msgstr ""
+msgstr "Вариант процесса найма"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_remote_id
 msgid "Request ID to IAP-OCR"
-msgstr ""
+msgstr "Запросить ID в IAP-OCR"
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "Resend For Digitalization"
-msgstr ""
+msgstr "Переслать на распознавание текста"
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "Resend For Digitization"
-msgstr ""
+msgstr "Переслать для распознавания"
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_actions_server_digitize_cv
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "Send For Digitization"
-msgstr ""
+msgstr "Отправить для распознавания текста"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_company__recruitment_extract_show_ocr_option_selection
 msgid "Send mode on applicant attachments"
-msgstr ""
+msgstr "Режим отправки вложений соискателя"
 
 #. module: hr_recruitment_extract
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
@@ -206,7 +205,7 @@ msgstr "Сервер недоступен. Пожалуйста, повтори�
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__state_processed
 msgid "State Processed"
-msgstr ""
+msgstr "Статус в обработке"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_status_code
@@ -219,6 +218,8 @@ msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
 "between 5 and 10 seconds."
 msgstr ""
+"Извлечение данных еще не закончено. Извлечение данных обычно занимает от 5 "
+"до 10 секунд."
 
 #. module: hr_recruitment_extract
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
@@ -232,11 +233,13 @@ msgid ""
 "The file has been sent and is being processed. It usually takes between 5 "
 "and 10 seconds."
 msgstr ""
+"Файл отправлен и находится в процессе обработки. Обычно это занимает от 5 до"
+" 10 секунд."
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__to_validate
 msgid "To validate"
-msgstr "проверить"
+msgstr "Проверить"
 
 #. module: hr_recruitment_extract
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
@@ -247,35 +250,37 @@ msgstr "Неподдерживаемый формат изображения"
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "Update status"
-msgstr "обновить статус"
+msgstr "Обновить статус"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__waiting_extraction
 msgid "Waiting extraction"
-msgstr "ожидания изъятия"
+msgstr "Ожидания извлечения"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__extract_not_ready
 msgid "Waiting extraction, but not ready"
-msgstr ""
+msgstr "Ожидание извлечения, но не готовность"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__waiting_upload
 msgid "Waiting upload"
-msgstr ""
+msgstr "Ожидание загрузки"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__waiting_validation
 msgid "Waiting validation"
-msgstr "ожидание подтверждения"
+msgstr "Ожидание подтверждения"
 
 #. module: hr_recruitment_extract
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "You cannot send a CV for an applicant who's not in first stage!"
 msgstr ""
+"Вы не можете отправить резюме для соискателя, который не находится на первом"
+" этапе!"
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "You don't have enough credit to extract data from your CV."
-msgstr ""
+msgstr "У вас недостаточно полномочий для извлечения данных из резюме."

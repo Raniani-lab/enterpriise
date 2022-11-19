@@ -295,6 +295,12 @@ msgid ""
 "SEPA Credit Transfer: Pay in the SEPA zone by submitting a SEPA Credit Transfer file to your bank. Module account_sepa is necessary.\n"
 "SEPA Direct Debit: Get paid in the SEPA zone thanks to a mandate your partner will have granted to you. Module account_sepa is necessary.\n"
 msgstr ""
+"يدوي: ادفع أو تقاضى المال بأي وسيلة دفع خارج أودو.\n"
+"مزودو الدفع: لكل مزود دفع طريقته الخاصة. تمكّن من طلب معاملة على/إلى بطاقة، بفضل رمز الدفع الذي يتم حفظه من قِبَل الشريك عند الشراء أو الاشتراك عبر الإنترنت.\n"
+"شيك: تمكن من دفع الفواتير عن طريق الشيكات وقم بطباعتها من أودو.\n"
+"إيداع مجمّع: قم بتحصيل شيكات متعددة للعملاء دفعة واحدة وقم بتسليم إيداع مجمّع إلى مصرفك. يُعد تطبيق account_batch_payment ضرورياً.\n"
+"تحويل الرصيد في SEPA: تمكن من الدفع في منطقة SEPA عن طريق تسليم ملف تحويل الرصيد في SEPA لمصرفك. يُعد تطبيق account_sepa ضرورياً.\n"
+"الخصم المباشر في SEPA: تقاضى المال في منطقة SEPA بفضل التوكيل الذي سوف يمنحك إياه شريكك. يُعد تطبيق account_sepa ضرورياً.\n"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__expense_sample_register__partial_mode__paid

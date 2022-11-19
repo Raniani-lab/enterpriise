@@ -920,7 +920,7 @@ msgstr "负责人"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "SMS"
-msgstr "短信"
+msgstr "短信息"
 
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__account_followup_followup_line__activity_default_responsible_type__salesperson
@@ -961,7 +961,7 @@ msgstr "发送EMail"
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__send_sms
 msgid "Send SMS Message"
-msgstr "发送短信"
+msgstr "发送短信息"
 
 #. module: account_followup
 #: model:ir.actions.act_window,name:account_followup.manual_reminder_action
@@ -971,23 +971,23 @@ msgstr "发送和打印"
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__sms
 msgid "Sms"
-msgstr "短信"
+msgstr "短信息"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__sms_body
 msgid "Sms Body"
-msgstr "短信正文"
+msgstr "短信息正文"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Sms Content"
-msgstr "短信内容"
+msgstr "短信息内容"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__sms_template_id
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__sms_template_id
 msgid "Sms Template"
-msgstr "短信模板"
+msgstr "短信息模板"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__subject
@@ -1103,7 +1103,7 @@ msgstr "您正在尝试发送电子邮件，但没有后续联系人设置了任
 msgid ""
 "You are trying to send an SMS, but no follow-up contact has any mobile/phone"
 " number set"
-msgstr "您正在尝试发送短信，但没有后续联系人设置任何手机/电话号码"
+msgstr "您正在尝试发送短信息，但没有后续联系人设置任何手机/电话号码"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form

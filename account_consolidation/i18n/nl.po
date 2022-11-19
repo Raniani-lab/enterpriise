@@ -735,7 +735,7 @@ msgstr "Aanmaken"
 #. module: account_consolidation
 #: model:ir.actions.act_window,name:account_consolidation.consolidation_period_action_onboarding
 msgid "Create First Period"
-msgstr "Maak eerste period"
+msgstr "Maak eerste periode aan"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.create_period_step

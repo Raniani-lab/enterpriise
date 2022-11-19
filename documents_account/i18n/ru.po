@@ -9,7 +9,7 @@
 # ILMIR <karamov@it-projects.info>, 2022
 # Martin Trigaux, 2022
 # Ivan Kropotkin <yelizariev@itpp.dev>, 2022
-# Валерий Хохлов, 2022
+# valmasone, 2022
 # Alena Vlasova, 2022
 # 
 msgid ""
@@ -77,6 +77,8 @@ msgstr ""
 msgid ""
 "As this PDF contains multiple documents, let's split and process in bulk."
 msgstr ""
+"Поскольку этот PDF файл содержит несколько документов, давайте разделим их и"
+" обработаем в массовом порядке."
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_ir_attachment
@@ -98,14 +100,14 @@ msgstr "Проверьте их "
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
 msgid "Click on a card to <b>select the document</b>."
-msgstr ""
+msgstr "Нажмите на карточку, чтобы <b>выбрать документ</b>."
 
 #. module: documents_account
 #. openerp-web
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
 msgid "Click on a thumbnail to <b>preview the document</b>."
-msgstr ""
+msgstr "Нажмите на миниатюру для <b>предварительного просмотра документа</b>."
 
 #. module: documents_account
 #. openerp-web
@@ -115,6 +117,8 @@ msgid ""
 "Click on the <b>page separator</b>: we don't want to split these two pages "
 "as they belong to the same document."
 msgstr ""
+"Нажмите на <b>разделитель страниц</b>: мы не хотим разделять эти две "
+"страницы, поскольку они принадлежат одному документу."
 
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_res_company
@@ -265,6 +269,8 @@ msgid ""
 "Let's process documents in your Inbox.<br/><i>Tip: Use Tags to filter "
 "documents and structure your process.</i>"
 msgstr ""
+"Давайте обрабатывать документы в папке \"Входящие\". <br/><i>Совет: "
+"Используйте теги для фильтрации документов и структурирования процесса.</i>"
 
 #. module: documents_account
 #. openerp-web
@@ -278,7 +284,7 @@ msgstr ""
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
 msgid "Let's process this document, coming from our scanner."
-msgstr ""
+msgstr "Давайте обработаем этот документ, полученный со сканера."
 
 #. module: documents_account
 #. openerp-web
@@ -288,6 +294,8 @@ msgid ""
 "Let's tag this mail as legal<br/> <i>Tips: actions can be tailored to your "
 "process, according to the workspace.</i>"
 msgstr ""
+"Давайте поставим тег для юридических писем <br/> <i>Советы: действия могут "
+"быть адаптированы к вашему процессу, в соответствии с рабочей областью.</i>"
 
 #. module: documents_account
 #: model:mail.activity.type,name:documents_account.mail_documents_activity_data_md
@@ -306,7 +314,7 @@ msgstr ""
 #: code:addons/documents_account/static/src/js/tour.js:0
 #, python-format
 msgid "Send this letter to the legal department, by assigning the right tags."
-msgstr ""
+msgstr "Отправьте это письмо в юридический отдел, задав правильные теги."
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_account_reports_export_wizard__tag_ids

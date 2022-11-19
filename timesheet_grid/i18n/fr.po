@@ -5,9 +5,9 @@
 # Translators:
 # Martin Trigaux, 2022
 # Malika Berardi, 2022
-# Alexandra Jubert, 2022
 # Cécile Collart <cco@odoo.com>, 2022
 # Jolien De Paepe, 2022
+# Alexandra Jubert, 2022
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Jolien De Paepe, 2022\n"
+"Last-Translator: Alexandra Jubert, 2022\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1172,7 +1172,7 @@ msgid ""
 "description to automatically log your activity.</i>"
 msgstr ""
 "Arrêtez le <b>minuteur</b> lorsque vous avez terminé. <i>Astuce : appuyez "
-"sur <b>[Enter]</b> dans la description pour enregistrer votre activité "
+"sur <b>[Entrer]</b> dans la description pour enregistrer votre activité "
 "automatiqument.</i>"
 
 #. module: timesheet_grid
@@ -1647,14 +1647,14 @@ msgstr "modifié(e)"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "or a"
-msgstr "ou un"
+msgstr "ou une"
 
 #. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "press"
-msgstr "appuyez"
+msgstr "appuyez sur"
 
 #. module: timesheet_grid
 #. openerp-web

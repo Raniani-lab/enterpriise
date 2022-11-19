@@ -581,6 +581,8 @@ msgid ""
 "Difference between the number of %s allocated to the project and the number "
 "of %s recorded."
 msgstr ""
+"Diferencia entre el número de %s asignadas al proyecto y el número de %s "
+"registradas."
 
 #. module: timesheet_grid
 #. openerp-web
@@ -590,6 +592,8 @@ msgid ""
 "Difference between the number of %s allocated to the task and the number of "
 "%s recorded."
 msgstr ""
+"Diferencia entre el número de %s asignadas a la tarea y el número de %s "
+"registradas."
 
 #. module: timesheet_grid
 #. openerp-web
@@ -618,7 +622,7 @@ msgstr ""
 #: code:addons/timesheet_grid/static/src/js/widgets/timesheets_m2o_widget.js:0
 #, python-format
 msgid "Difference between the time allocated and the time recorded."
-msgstr ""
+msgstr "Diferencia entre el tiempo asignado y el tiempo registrado."
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
@@ -677,6 +681,8 @@ msgstr "Botón de tiempo en hojas de horas"
 msgid ""
 "Download our web/mobile apps to track your time from anywhere, even offline."
 msgstr ""
+"Descargue nuestras aplicaciones web/móviles para registrar su tiempo desde "
+"cualquier lugar, incluso cuando no esté en línea."
 
 #. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__account_analytic_line__validated_status__draft
@@ -803,7 +809,7 @@ msgstr "Última actualización el"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee__last_validated_timesheet_date
 msgid "Last Validated Timesheet Date"
-msgstr ""
+msgstr "Fecha de la última hoja de horas que se validó"
 
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate_previous_week
@@ -820,13 +826,17 @@ msgid ""
 "can also directly add 15 minutes to this project by hitting the <b>shift + "
 "[A] keys</b>.</i>"
 msgstr ""
+"De clic en la <b>tecla [a]</b> para iniciar el <b>temporizador</b> para este"
+" proyecto. <i>Con esas teclas, puede cambiar de un proyecto a otro con "
+"facilidad. Consejo: si da clic a las <b>teclas shift + [A]</b> puede agregar"
+" 15 minutos a este proyecto directamente.</i>"
 
 #. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
 msgid "Launch the <b>timer</b> to start a new activity."
-msgstr "Inicie el <b>temporizador</b> para iniciar una nueva actividad. "
+msgstr "Inicie el <b>temporizador</b> para empezar una nueva actividad. "
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__prevent_old_timesheets_encoding
@@ -859,7 +869,7 @@ msgstr "Fusionar"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_merge_wizard_view_form
 msgid "Merge Timesheet"
-msgstr ""
+msgstr "Mezclar hojas de hora"
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
@@ -867,7 +877,7 @@ msgstr ""
 #: model:ir.model,name:timesheet_grid.model_hr_timesheet_merge_wizard
 #, python-format
 msgid "Merge Timesheets"
-msgstr ""
+msgstr "Mezclar hojas de horas"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__timesheet_min_duration
@@ -937,7 +947,7 @@ msgstr "No hay actividades para validar."
 #. module: timesheet_grid
 #: model_terms:ir.actions.act_window,help:timesheet_grid.timesheet_grid_to_validate_action
 msgid "No timesheets to validate"
-msgstr ""
+msgstr "No hay hojas de hora por validar"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_manager_delay
@@ -946,6 +956,9 @@ msgid ""
 "email reminder will be sent to timesheet managers that still have timesheets"
 " to validate."
 msgstr ""
+"Número de días después del final de la semana/del mes después de los que se "
+"enviará un recordatorio por correo electrónico a los gerentes de las hojas "
+"de hora que todavía tienen hojas de horas por validar."
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_res_config_settings__reminder_user_delay
@@ -954,6 +967,9 @@ msgid ""
 "email reminder will be sent to timesheet users that still have timesheets to"
 " encode (according to their working hours)."
 msgstr ""
+"Número de días después del final de la semana/del mes después de los que se "
+"enviará un recordatorio por correo electrónico a los usuarios que todavía "
+"tienen hojas de horas por registrar (según sus horas de trabajo)."
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
@@ -1107,6 +1123,8 @@ msgid ""
 "Set reminders in settings to notify employees who didn't record their "
 "timesheet"
 msgstr ""
+"Configurar un recordatorio en los ajustes para notificar a los empleados que"
+" no han registrado sus hojas de horas"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -1154,6 +1172,9 @@ msgid ""
 "Stop the <b>timer</b> when you are done. <i>Tip: hit <b>[Enter]</b> in the "
 "description to automatically log your activity.</i>"
 msgstr ""
+"Pare el <b>temporizador</b> cuando termine. <i>Consejo: presione "
+"<b>[Enter]</b> desde la descripción para registrar su actividad "
+"automáticamente.</i>"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
@@ -1164,7 +1185,7 @@ msgstr "Detener temporizador"
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "Suspicious Durations"
-msgstr ""
+msgstr "Duraciones sospechosas"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -1198,13 +1219,18 @@ msgid ""
 "00:30 (assuming you have a round up of 15 min). We recommend having the same"
 " value for the minimal duration and for the round up."
 msgstr ""
+"La duración de las hojas de horas registradas a través del temporizador se "
+"redondeará a este número. Por ejemplo, si para su temporizador en 00:16:56, "
+"la duración del registro de la hoja de hora automáticamente se redondeará a "
+"00:30 (asumiendo que su redondeo es de 15 minutos). Le recomendamos tener el"
+" mismo valor para la duración mínima y para el redondeo."
 
 #. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_controller_mixin.js:0
 #, python-format
 msgid "The timesheet entry has successfully been created."
-msgstr ""
+msgstr "Se creó este registro para la hoja de horas exitosamente."
 
 #. module: timesheet_grid
 #: model:ir.model.constraint,message:timesheet_grid.constraint_project_task_create_timesheet_time_positive
@@ -1215,7 +1241,7 @@ msgstr "El tiempo de la hoja de horas debe ser positivo"
 #: code:addons/timesheet_grid/wizard/timesheet_merge_wizard.py:0
 #, python-format
 msgid "The timesheets have successfully been merged."
-msgstr ""
+msgstr "La hojas de hora se mezclaron exitosamente."
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
@@ -1233,7 +1259,7 @@ msgstr "Las hojas de horas se validaron exitosamente"
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid "There are no timesheets to merge."
-msgstr ""
+msgstr "No hay hojas de hora para mezclar."
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/analytic.py:0
@@ -1242,6 +1268,7 @@ msgid ""
 "There are no timesheets to reset to draft or they have already been "
 "invoiced."
 msgstr ""
+"No hay hojas de horas que restablecer a borradores o ya se facturaron."
 
 #. module: timesheet_grid
 #: code:addons/timesheet_grid/models/task.py:0
@@ -1289,7 +1316,7 @@ msgstr "Persona que aprueba las hojas de horas"
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_timesheet_grid_mixin
 msgid "Timesheet Grid mixin"
-msgstr ""
+msgstr "Mixin de tabla de hojas de horas"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__duration_unit_amount
@@ -1354,6 +1381,8 @@ msgid ""
 "Timesheets before the %s (included) have been validated, and can no longer "
 "be %s."
 msgstr ""
+"Las hojas de horas antes del %s (incluido) se validaron y ya no pueden ser "
+"%s."
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
@@ -1365,6 +1394,12 @@ msgid ""
 "of 15 min). We recommend having the same value for the minimal duration and "
 "for the round up."
 msgstr ""
+"Las hojas de hora que se registraron a través del temporizador y que no "
+"alcancen la duración mínima se redondearán al valor definido. Por ejemplo, "
+"si para el temporizador en 00:04:36, la duración del registro de las hojas "
+"de hora automáticamente se redondeará a 00:15 (asumiendo que la duración "
+"mínima es de 15 minutos). Le recomendamos tener el mismo valor para la "
+"duración mínima y para el redondeo."
 
 #. module: timesheet_grid
 #: model:ir.actions.act_window,name:timesheet_grid.action_timesheet_previous_month
@@ -1581,7 +1616,7 @@ msgstr "eliminado"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "letter shortcut"
-msgstr ""
+msgstr "atajo de letra"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -1599,14 +1634,14 @@ msgstr "minutos"
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid "modified"
-msgstr ""
+msgstr "modificado"
 
 #. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "or a"
-msgstr ""
+msgstr "o un"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -1620,11 +1655,11 @@ msgstr "presione"
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "press Shift + a letter shortcut"
-msgstr ""
+msgstr "presione shift + una letra de atajo"
 
 #. module: timesheet_grid
 #. openerp-web
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "to add"
-msgstr ""
+msgstr "para agregar"

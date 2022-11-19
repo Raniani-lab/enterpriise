@@ -245,7 +245,7 @@ msgstr "Odoo Studio"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Odoo Support"
-msgstr "Odoo support"
+msgstr "Odoo Ondersteuning"
 
 #. module: web_enterprise
 #. openerp-web

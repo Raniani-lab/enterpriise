@@ -1428,12 +1428,12 @@ msgstr "شريط التمرير "
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__slider_max
 msgid "Slider Max"
-msgstr ""
+msgstr "الحد الأقصى لشريط التمرير "
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__slider_min
 msgid "Slider Min"
-msgstr ""
+msgstr "الحد الأدنى لشريط التمرير "
 
 #. module: hr_contract_salary
 #. openerp-web
@@ -1522,7 +1522,7 @@ msgstr "الموظف غير مرتبط بمستخدم موجود بالفعل. �
 #, python-format
 msgid ""
 "The minimum value for the slider should be inferior to the maximum value."
-msgstr ""
+msgstr "يجب أن تكون القيمة الدنيا لشريط التمرير أقل من القيمة القصوى "
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract__signatures_count

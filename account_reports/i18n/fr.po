@@ -84,12 +84,16 @@ msgid ""
 "'Open General Ledger' caret option is only available form report lines "
 "targetting accounts."
 msgstr ""
+"L'option de caret 'Ouvrir le grand livre' est seulement disponible pour les "
+"lignes de rapport ciblant les comptes."
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "'external' engine does not support groupby, limit nor offset."
 msgstr ""
+"le moteur 'externe' ne prend pas en charge les options grouper, limiter ou "
+"décaler."
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
@@ -395,6 +399,9 @@ msgid ""
 "whole unit; to change that, tick the \"aggregate\" option of \"tax unit\" "
 "menu.</span>"
 msgstr ""
+"<span>Cette entreprise fait partie d'une unité fiscale. Actuellement, vous "
+"ne visualisez pas l'ensemble de l'unité ; pour changer cela, cochez l'option"
+" \"agréger\" du menu \"unité fiscale\".</span>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_main_template
@@ -459,12 +466,12 @@ msgstr "Code du compte"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_display_representative_field
 msgid "Account Display Representative Field"
-msgstr ""
+msgstr "Champ représentatif de l'affichage du compte"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_custom_handler
 msgid "Account Report Custom Handler"
-msgstr ""
+msgstr "Gestionnaire personnalisé de rapport de comptes"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_footnote
@@ -475,7 +482,7 @@ msgstr "Rapport de compte Footnote"
 #: model:ir.model.fields,field_description:account_reports.field_res_partner__account_represented_company_ids
 #: model:ir.model.fields,field_description:account_reports.field_res_users__account_represented_company_ids
 msgid "Account Represented Company"
-msgstr ""
+msgstr "Compte de l'entreprise représentée"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_revaluation_journal_id
@@ -601,7 +608,7 @@ msgstr "Avancé"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_aged_partner_balance_report_handler
 msgid "Aged Partner Balance Custom Handler"
-msgstr ""
+msgstr "Gestionnaire personnalisé de la balance âgée des tiers"
 
 #. module: account_reports
 #: model:account.report,name:account_reports.aged_payable_report
@@ -864,7 +871,7 @@ msgstr "Rapport de réconciliations bancaires"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_bank_reconciliation_report_handler
 msgid "Bank Reconciliation Report Custom Handler"
-msgstr ""
+msgstr "Gestionnaire personnalisé de rapport de rapprochement bancaire"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_bank_view0
@@ -890,6 +897,8 @@ msgstr "Montant de base"
 msgid ""
 "Can't open partner reconciliation for line id %s ; model should res.partner."
 msgstr ""
+"Impossible d'ouvrir la réconciliation du partenaire pour la ligne %s ; le "
+"modèle doit res.partner."
 
 #. module: account_reports
 #. openerp-web
@@ -950,7 +959,7 @@ msgstr "Espèces"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_cash_flow_report_handler
 msgid "Cash Flow Report Custom Handler"
-msgstr ""
+msgstr "Gestionnaire personnalité de rapport de flux de trésorerie"
 
 #. module: account_reports
 #: model:account.report,name:account_reports.cash_flow_report
@@ -1052,7 +1061,7 @@ msgstr "Changer la date de paiement prévue"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Closing Entry"
-msgstr "écriture de clôture"
+msgstr "Écriture de clôture"
 
 #. module: account_reports
 #: model:account.report.expression,report_line_name:account_reports.account_financial_report_executivesummary_closing_bank_balance0_balance
@@ -1089,6 +1098,8 @@ msgid ""
 "Company %s already belongs to a tax unit in %s. A company can at most be "
 "part of one tax unit per country."
 msgstr ""
+"L'entreprise %s fait déjà partie d'une unité fiscale en %s. Une entreprise "
+"peut au maximum faire partie d'une unité fiscale par pays."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -1140,6 +1151,7 @@ msgstr "Coût des ventes"
 #, python-format
 msgid "Could not expand term %s while evaluating formula %s"
 msgstr ""
+"Impossible de développer le terme %s lors de l'évaluation de la formule %s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -1346,7 +1358,7 @@ msgstr "Différence"
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard_format__display_name
 #: model:ir.model.fields,field_description:account_reports.field_account_tax_unit__display_name
 msgid "Display Name"
-msgstr "Nom affiché"
+msgstr "Afficher le nom"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard__doc_name
@@ -1385,7 +1397,7 @@ msgstr "Relevé intra-communautaire"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_ec_sales_report_handler
 msgid "EC Sales Report Custom Handler"
-msgstr ""
+msgstr "Gestionnaire personnalisé de relevé intra-communautaire"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_equity0
@@ -1399,6 +1411,9 @@ msgid ""
 "Editing a manual report line is not allowed in multivat setup when "
 "displaying data from all fiscal positions."
 msgstr ""
+"La modification d'une ligne de rapport manuel n'est pas autorisée dans une "
+"configuration à taux de TVA multiples lorsque les données de toutes les "
+"positions fiscales sont affichées."
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -1457,12 +1472,12 @@ msgstr "Exclure"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_account__exclude_provision_currency_ids
 msgid "Exclude Provision Currency"
-msgstr ""
+msgstr "Exclure les provisions pour la devise"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template
 msgid "Exclude from adjustment/provisions entries"
-msgstr ""
+msgstr "Exclure des écritures d'ajugement/provisions"
 
 #. module: account_reports
 #: model:account.report.expression,report_line_name:account_reports.multicurrency_revaluation_excluded_adjustment
@@ -1514,6 +1529,9 @@ msgid ""
 " you had the customer on the phone and want to remember the date he promised"
 " he would pay)"
 msgstr ""
+"La date prévue du paiement indiquée manuellement suite à la déclaration du "
+"client (par ex. si vous avez eu le client au téléphone et vous voulez vous "
+"rappeler de la date à laquelle il a promis de payer)"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__expense_provision_account_id
@@ -1523,13 +1541,13 @@ msgstr "Compte de Charge"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_revaluation_expense_provision_account_id
 msgid "Expense Provision Account"
-msgstr ""
+msgstr "Compte de provision pour charges"
 
 #. module: account_reports
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
 #, python-format
 msgid "Expense Provision for %s"
-msgstr "Charge de la provision pour %s"
+msgstr "Provision pour charges de %s"
 
 #. module: account_reports
 #: model:account.report.expression,report_line_name:account_reports.account_financial_report_executivesummary_expenses0_balance
@@ -1596,11 +1614,13 @@ msgid ""
 "Field 'Custom Handler Model' can only reference records inheriting from "
 "[%s]."
 msgstr ""
+"Le champ 'Modèle de gestionnaire personnalisé' peut seulement faire "
+"référence à des enregistrements héritant de [%s]."
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__filter_analytic_groupby
 msgid "Filter Analytic Groupby"
-msgstr ""
+msgstr "Filtre groupby analytique"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -1682,22 +1702,24 @@ msgstr "Documents générés"
 #. module: account_reports
 #: model:account.report,name:account_reports.generic_ec_sales_report
 msgid "Generic EC Sales List"
-msgstr ""
+msgstr "Relevé intra-communautaire générique"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler
 msgid "Generic Tax Report Custom Handler"
-msgstr ""
+msgstr "Gestionnaire personnalisé du rapport de taxes générique"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler_account_tax
 msgid "Generic Tax Report Custom Handler (Account -> Tax)"
 msgstr ""
+"Gestionnaire personnalisé du rapport de taxes générique (Compte -> Taxe)"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler_tax_account
 msgid "Generic Tax Report Custom Handler (Tax -> Account)"
 msgstr ""
+"Gestionnaire personnalisé du rapport de taxes générique (Taxe -> Compte)"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_sales_report.py:0
@@ -1868,7 +1890,7 @@ msgstr "Inclure les paiements non réconciliés des extraits bancaire "
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "Including Unreconciled Bank Statement Receipts"
-msgstr ""
+msgstr "Inclure les relevés bancaires non réconciliés"
 
 #. module: account_reports
 #: model:account.report.expression,report_line_name:account_reports.account_financial_report_executivesummary_income0_balance
@@ -2116,7 +2138,7 @@ msgstr "Société principale"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__main_table_header_template
 msgid "Main Table Header Template"
-msgstr ""
+msgstr "Modèle d'en-tête de tableau principal"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__main_template
@@ -2128,6 +2150,8 @@ msgstr "Modèle principal"
 msgid ""
 "Main company of this unit; the one actually reporting and paying the taxes."
 msgstr ""
+"Entreprise principale de cette unité ; celle qui déclare et paie "
+"effectivement les taxes."
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_multicurrency_revaluation_report.py:0
@@ -2196,6 +2220,8 @@ msgid ""
 "Multiple draft tax closing entries exist for fiscal position %s after %s. There should be at most one. \n"
 " %s"
 msgstr ""
+"Il existe plusieurs projets d'écritures de clôture fiscale pour la position fiscale %s après %s. Il doit y en avoir une au plus. \n"
+" %s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/res_company.py:0
@@ -2204,6 +2230,8 @@ msgid ""
 "Multiple draft tax closing entries exist for your domestic region after %s. There should be at most one. \n"
 " %s"
 msgstr ""
+"Il existe plusieurs projets d'écritures de clôture fiscale pour votre région après %s. Il doit y en avoir une au plus. \n"
+" %s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_general_ledger.py:0
@@ -2416,7 +2444,7 @@ msgstr "Livre des tiers"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_partner_ledger_report_handler
 msgid "Partner Ledger Custom Handler"
-msgstr ""
+msgstr "Gestionnaire personnalisé du grand livre des partenaires"
 
 #. module: account_reports
 #: model:ir.ui.menu,name:account_reports.account_reports_partners_reports_menu
@@ -2487,6 +2515,7 @@ msgstr "Plans"
 #, python-format
 msgid "Please specify the accounts necessary for the Tax Closing Entry."
 msgstr ""
+"Veuillez préciser les comptes nécessaires à l'écriture de clôture fiscale."
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_fixed_assets_view0
@@ -2584,7 +2613,7 @@ msgstr "Proposition d'inscription au journal de clôture fiscale."
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
 #, python-format
 msgid "Provision for %(for_cur)s (1 %(comp_cur)s = %(rate)s %(for_cur)s)"
-msgstr ""
+msgstr "Provision pour %(for_cur)s (1 %(comp_cur)s = %(rate)s %(for_cur)s)"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -2722,7 +2751,7 @@ msgstr "Recherche de comptes"
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "Search line"
-msgstr ""
+msgstr "Rechercher une ligne"
 
 #. module: account_reports
 #. openerp-web
@@ -2752,7 +2781,7 @@ msgstr "Prévisions d'encaissement à court terme"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__show_warning_move_id
 msgid "Show Warning Move"
-msgstr ""
+msgstr "Afficher avertissement mouvement"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
@@ -2840,7 +2869,7 @@ msgstr "Montant de la taxe"
 #: model:ir.model.fields,field_description:account_reports.field_account_move__tax_closing_end_date
 #: model:ir.model.fields,field_description:account_reports.field_account_payment__tax_closing_end_date
 msgid "Tax Closing End Date"
-msgstr ""
+msgstr "Date finale de la clôture fiscale"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_general_ledger.py:0
@@ -2863,13 +2892,13 @@ msgstr "N° TVA"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Tax Paid Adjustment"
-msgstr ""
+msgstr "Ajustement de l'impôt payé"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Tax Received Adjustment"
-msgstr ""
+msgstr "Ajustement de l'impôt perçu"
 
 #. module: account_reports
 #: model:ir.actions.client,name:account_reports.action_account_report_gt
@@ -2953,7 +2982,7 @@ msgstr "Texte"
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
 #, python-format
 msgid "The Book balance in Odoo dated today"
-msgstr ""
+msgstr "Le bilan des livres dans Odoo à la date d'aujourd'hui"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -3090,7 +3119,7 @@ msgstr "Total %s"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Trade Partners"
-msgstr ""
+msgstr "Partenaires commerciaux"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
@@ -3132,7 +3161,7 @@ msgstr "Balance générale"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_trial_balance_report_handler
 msgid "Trial Balance Custom Handler"
-msgstr "Traitement personnalisé de la balance générale"
+msgstr "Gestionnaire personnalisé de la balance générale"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_sales_report.py:0
@@ -3157,18 +3186,22 @@ msgid ""
 "Trying to expand a group for a line which was not generated by a report "
 "line: %s"
 msgstr ""
+"Vous tentez de développer un groupe pour une ligne qui n'a pas été générée "
+"par une ligne de rapport : %s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Trying to expand a line without an expansion function."
-msgstr ""
+msgstr "Vous tentez de développer une ligne sans une fonction d'extension."
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Trying to expand groupby results on lines without a groupby value."
 msgstr ""
+"Vous tentez de développer les résultats du groupby sur des lignes sans "
+"valeur groupby."
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_journal_report.py:0
@@ -3178,6 +3211,8 @@ msgid ""
 "Trying to use the journal line expand function on a line that is not linked "
 "to a journal."
 msgstr ""
+"Vous tentez d'utiliser la fonction de développement de la ligne de journal "
+"sur une ligne qui n'est pas associée à un journal."
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_unaffected_earnings0
@@ -3326,13 +3361,13 @@ msgstr "Avec les projets d' entrées"
 #: code:addons/account_reports/models/account_general_ledger.py:0
 #, python-format
 msgid "Wrong ID for general ledger line to expand: %s"
-msgstr ""
+msgstr "Mauvais ID pour la ligne de grand livre à développer : %s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_partner_ledger.py:0
 #, python-format
 msgid "Wrong ID for partner ledger line to expand: %s"
-msgstr ""
+msgstr "Mauvais ID pour la ligne de grand livre partenaire à développer : %s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -3444,7 +3479,7 @@ msgstr "Écritures non-comptabilisées"
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "were carried over to this line from previous period."
-msgstr ""
+msgstr "ont été reportés sur cette ligne de la période précédente."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template
@@ -3456,14 +3491,14 @@ msgstr "qui ne résulte pas d'un relevé bancaire ni de paiements."
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "will be carried over to"
-msgstr ""
+msgstr "seront reportés sur"
 
 #. module: account_reports
 #. openerp-web
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "will be carried over to this line in the next period."
-msgstr ""
+msgstr "seront reportés sur cette ligne lors de la période suivante."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template

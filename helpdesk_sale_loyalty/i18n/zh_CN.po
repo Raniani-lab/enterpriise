@@ -63,7 +63,7 @@ msgstr "优惠券"
 #. module: helpdesk_sale_loyalty
 #: model:ir.model.fields,field_description:helpdesk_sale_loyalty.field_helpdesk_ticket__coupons_count
 msgid "Coupons count"
-msgstr "优惠券数量"
+msgstr "优惠券计数"
 
 #. module: helpdesk_sale_loyalty
 #: model:ir.model.fields,field_description:helpdesk_sale_loyalty.field_helpdesk_sale_coupon_generate__create_uid

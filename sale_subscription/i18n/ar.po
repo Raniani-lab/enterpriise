@@ -1963,8 +1963,8 @@ msgid ""
 "Model for record creation / update. Set this field only to specify a "
 "different model than the base model."
 msgstr ""
-"الكائن المستخدم في إنشاء أو تحديث السجل. اختر قيمة لهذا الحقل فقط إذا كنت "
-"تريد كائنًا مختلفًا عن الكائن الأساسي."
+"النموذج المستخدم في إنشاء أو تحديث السجل. اختر قيمة لهذا الحقل فقط إذا كنت "
+"تريد نموذجاً مختلفاً عن النموذج الأساسي. "
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__model_id

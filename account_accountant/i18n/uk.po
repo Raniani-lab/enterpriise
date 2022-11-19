@@ -44,12 +44,12 @@ msgstr "-> Узгодити"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "/&gt;"
-msgstr ""
+msgstr "/&gt;"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_form_inherit
 msgid "1 Bank Transaction"
-msgstr ""
+msgstr "1 банківська транзакція"
 
 #. module: account_accountant
 #: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_0
@@ -79,7 +79,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 msgid "<i class=\"fa fa-check\"/> Matched"
-msgstr ""
+msgstr "<i class=\"fa fa-check\"/> Співставлено"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
@@ -109,16 +109,19 @@ msgid ""
 "('form_single_currency_mode', '=', True), ('form_index', '=', "
 "False)]}\">in</span>"
 msgstr ""
+"<span class=\"ml4 mr4\" attrs=\"{'invisible': ['|', "
+"('form_single_currency_mode', '=', True), ('form_index', '=', "
+"False)]}\">в</span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "<span class=\"ml4 mr4\">-</span>"
-msgstr ""
+msgstr "<span class=\"ml4 mr4\">-</span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "<span class=\"ml4 mr4\">in</span>"
-msgstr ""
+msgstr "<span class=\"ml4 mr4\">в</span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -127,6 +130,9 @@ msgid ""
 "('form_single_currency_mode', '=', True), ('form_force_negative_sign', '=', "
 "False), ('form_index', '=', False)]}\">-</span>"
 msgstr ""
+"<span class=\"o_form_label\" attrs=\"{'invisible': ['|', '|', "
+"('form_single_currency_mode', '=', True), ('form_force_negative_sign', '=', "
+"False), ('form_index', '=', False)]}\">-</span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -135,6 +141,9 @@ msgid ""
 "('form_force_negative_sign', '=', False), ('form_index', '=', "
 "False)]}\">-</span>"
 msgstr ""
+"<span class=\"o_form_label\" attrs=\"{'invisible': ['|', "
+"('form_force_negative_sign', '=', False), ('form_index', '=', "
+"False)]}\">-</span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -185,7 +194,7 @@ msgstr "Рахунок"
 #: model:ir.actions.act_window,name:account_accountant.action_account_group_tree
 #: model:ir.ui.menu,name:account_accountant.menu_account_group
 msgid "Account Groups"
-msgstr "Групи рахуків"
+msgstr "Групи рахунків"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__module_account_predictive_bills
@@ -224,7 +233,7 @@ msgstr "Дати закриття бухобліку"
 #: model:ir.actions.act_window,name:account_accountant.action_bank_statement_line_form_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_form_bank_rec_widget
 msgid "Add a Transaction"
-msgstr ""
+msgstr "Додати транзакцію"
 
 #. module: account_accountant
 #: model_terms:ir.actions.act_window,help:account_accountant.account_tag_action
@@ -253,7 +262,7 @@ msgstr "Дозволити визначати звітні періоди біл
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__amls_widget
 msgid "Amls Widget"
-msgstr ""
+msgstr "Віджет Amls"
 
 #. module: account_accountant
 #. openerp-web
@@ -297,7 +306,7 @@ msgstr "Аналітичний рахунок"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__analytic_distribution_stored_char
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_distribution_stored_char
 msgid "Analytic Distribution Stored Char"
-msgstr ""
+msgstr "Збережений символ аналітичного розподілу"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__use_anglo_saxon
@@ -465,7 +474,7 @@ msgstr "Створіть модель узгодження"
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_bank_statement_form_bank_rec_widget
 msgid "Create Statement"
-msgstr ""
+msgstr "Створити виписку"
 
 #. module: account_accountant
 #. openerp-web
@@ -496,7 +505,7 @@ msgid ""
 "hand, use our sample bill.</i>"
 msgstr ""
 "Створіть ваш перший рахунок постачальника.<br/><br/><i>Порада: Якщо у вас "
-"нема навіть одно в наявності, використовуйте наш приклад рахунку.</i>"
+"нічого немає в наявності, використовуйте наш приклад рахунку.</i>"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__create_uid
@@ -516,12 +525,12 @@ msgstr "Створено"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__credit
 #, python-format
 msgid "Credit"
-msgstr "Credit"
+msgstr "Кредит"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_bank_statement_line__cron_last_check
 msgid "Cron Last Check"
-msgstr ""
+msgstr "Остання перевірка крону"
 
 #. module: account_accountant
 #. openerp-web
@@ -554,12 +563,12 @@ msgstr "Дебет"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 msgid "Define fiscal years of more or less than one year"
-msgstr "Визначіть звітний період більше або менше одного року"
+msgstr "Визначте звітний період більше або менше одного року"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Deposits"
-msgstr ""
+msgstr "Депозити"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_digest_digest
@@ -587,12 +596,12 @@ msgstr "Назва для відображення"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__display_stroked_amount_currency
 msgid "Display Stroked Amount Currency"
-msgstr ""
+msgstr "Показати грошову одиницю обведеної суми"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__display_stroked_balance
 msgid "Display Stroked Balance"
-msgstr ""
+msgstr "Відобразити обведений баланс"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/digest.py:0
@@ -685,107 +694,107 @@ msgstr "Позначка"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__force_price_included_taxes
 msgid "Force Price Included Taxes"
-msgstr ""
+msgstr "Запустити ціну включно з податками"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_account_id
 msgid "Form Account"
-msgstr ""
+msgstr "Рахунок форми"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_amount_currency
 msgid "Form Amount Currency"
-msgstr ""
+msgstr "Валюта суми форми"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_balance
 msgid "Form Balance"
-msgstr ""
+msgstr "Баланс форми"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_currency_id
 msgid "Form Currency"
-msgstr ""
+msgstr "Валюта форми"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_date
 msgid "Form Date"
-msgstr ""
+msgstr "Дата форми"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_extra_text
 msgid "Form Extra Text"
-msgstr ""
+msgstr "Додатковий текст форми"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_flag
 msgid "Form Flag"
-msgstr ""
+msgstr "Позначка форми"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_force_negative_sign
 msgid "Form Force Negative Sign"
-msgstr ""
+msgstr "Запуск формою негативного знаку"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_index
 msgid "Form Index"
-msgstr ""
+msgstr "Індекс форми"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_name
 msgid "Form Name"
-msgstr ""
+msgstr "Назва форми"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_id
 msgid "Form Partner"
-msgstr ""
+msgstr "Партнер форми"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_currency_id
 msgid "Form Partner Currency"
-msgstr ""
+msgstr "Валюта партнера форми"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_payable_account_id
 msgid "Form Partner Payable Account"
-msgstr ""
+msgstr "Рахунок кредитора партнера форми"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_payable_amount
 msgid "Form Partner Payable Amount"
-msgstr ""
+msgstr "Сума кредитора партнера форми"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_receivable_account_id
 msgid "Form Partner Receivable Account"
-msgstr ""
+msgstr "Рахунок дебітора партнера форми"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_receivable_amount
 msgid "Form Partner Receivable Amount"
-msgstr ""
+msgstr "Сума дебітора партнера форми"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_single_currency_mode
 msgid "Form Single Currency Mode"
-msgstr ""
+msgstr "Режим єдиної валюти форми"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_suggest_amount_currency
 msgid "Form Suggest Amount Currency"
-msgstr ""
+msgstr "Форма пропонує валюту суми"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_suggest_balance
 msgid "Form Suggest Balance"
-msgstr ""
+msgstr "Форма пропонує баланс"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_tax_ids
 msgid "Form Tax"
-msgstr ""
+msgstr "Податок форми"
 
 #. module: account_accountant
 #: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_0
@@ -840,7 +849,7 @@ msgstr "Чудово! Давайте продовжувати."
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__group_tax_id
 msgid "Group Tax"
-msgstr ""
+msgstr "Група податку"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__id
@@ -874,17 +883,17 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__index
 msgid "Index"
-msgstr ""
+msgstr "Індекс"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__invalid
 msgid "Invalid"
-msgstr ""
+msgstr "Недійсний"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Invalid statements"
-msgstr ""
+msgstr "Недійсні виписки"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_bank_rec_widget__state
@@ -1062,7 +1071,7 @@ msgstr "Рядок lines_widget"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__lines_widget
 msgid "Lines Widget"
-msgstr ""
+msgstr "Віджет рядків"
 
 #. module: account_accountant
 #. openerp-web
@@ -1110,7 +1119,7 @@ msgstr "Об'єднати"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Match Existing Entries"
-msgstr ""
+msgstr "Співставити існуючі записи"
 
 #. module: account_accountant
 #. openerp-web
@@ -1124,13 +1133,13 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Matched"
-msgstr ""
+msgstr "Співставлено"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/account_payment.py:0
 #, python-format
 msgid "Matched Transactions"
-msgstr ""
+msgstr "Співставлені транзакції"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__matching_rules_allow_auto_reconcile

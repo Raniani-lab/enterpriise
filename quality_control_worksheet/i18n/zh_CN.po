@@ -141,7 +141,7 @@ msgstr "完成的工作表"
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_check__worksheet_count
 msgid "Worksheet Count"
-msgstr "工作表数量"
+msgstr "工作表计数"
 
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_worksheet_template

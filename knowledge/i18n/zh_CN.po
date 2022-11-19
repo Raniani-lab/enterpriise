@@ -1155,7 +1155,7 @@ msgstr "作为管理员，您可以随时修改这篇文章及其成员。"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_attachment_count
 msgid "Attachment Count"
-msgstr "附件数量"
+msgstr "附件计数"
 
 #. module: knowledge
 #. openerp-web
@@ -2242,7 +2242,7 @@ msgstr "根文章必须具有内部权限。"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr "短信发送错误"
+msgstr "短信息发送错误"
 
 #. module: knowledge
 #: model:ir.ui.menu,name:knowledge.knowledge_menu_article

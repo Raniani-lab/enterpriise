@@ -105,14 +105,14 @@ msgstr "Fermé"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed count"
-msgstr "Compte fermé"
+msgstr "Nombre fermé"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed revenue"
-msgstr ""
+msgstr "Recettes clôturées"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -188,14 +188,14 @@ msgstr "Date de fermeture prévue"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected count"
-msgstr "Compte attendu"
+msgstr "Nombre attendu"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Expected revenue"
-msgstr "Revenu attendu"
+msgstr "Recettes attendues"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -303,7 +303,7 @@ msgstr "Période précédente"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Revenue"
-msgstr "Revenu"
+msgstr "Recettes"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -555,7 +555,7 @@ msgstr "depuis la période précédente"
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "to campaign"
-msgstr ""
+msgstr "à faire campagne"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web

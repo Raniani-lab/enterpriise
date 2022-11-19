@@ -1321,10 +1321,10 @@ msgid ""
 "Post as Message: log on document\n"
 "Post as Note: mass SMS with archives"
 msgstr ""
-"选择短信发送的方法。\n"
-"短信：群发短信\n"
+"选择短信息发送的方法。\n"
+"短信息：群发短信息\n"
 "作为消息发布：登录文件\n"
-"发布为备注：群发短信与归档"
+"发布为备注：群发短信息与归档"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_alert__mail_post_method
@@ -1859,7 +1859,7 @@ msgstr "历史"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__history_count
 msgid "History Count"
-msgstr "历史驾驶员数量"
+msgstr "历史驾驶员计数"
 
 #. module: sale_subscription
 #: code:addons/sale_subscription/models/product_pricing.py:0
@@ -2803,7 +2803,7 @@ msgstr "运行订阅"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__sms_template_id
 msgid "SMS Template"
-msgstr "短信模板"
+msgstr "短信息模板"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
@@ -2946,12 +2946,12 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_act_window_sms_composer_multi
 #: model:ir.actions.act_window,name:sale_subscription.sale_subscription_act_window_sms_composer_single
 msgid "Send an SMS Text Message"
-msgstr "发送SMS短信"
+msgstr "发送SMS短信息"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__action__sms
 msgid "Send an SMS Text Message to the customer"
-msgstr "向客户发送一条SMS短信"
+msgstr "向客户发送一条SMS短信息"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__action__email
@@ -3177,7 +3177,7 @@ msgstr "订阅关闭原因向导"
 #: model:ir.model.fields,field_description:sale_subscription.field_account_analytic_account__subscription_count
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__subscription_count
 msgid "Subscription Count"
-msgstr "订阅个数"
+msgstr "订阅计数"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__order_log_ids
@@ -3272,7 +3272,7 @@ msgstr "订阅:默认的电子邮件提醒"
 #. module: sale_subscription
 #: model:sms.template,name:sale_subscription.sms_template_data_default_alert
 msgid "Subscription: Default SMS Alert"
-msgstr "订阅:默认短信提示"
+msgstr "订阅:默认短信息提示"
 
 #. module: sale_subscription
 #: model:mail.template,name:sale_subscription.email_payment_close

@@ -2560,7 +2560,7 @@ msgstr "الوصول للكائن"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model_data
 msgid "Model Data"
-msgstr "بيانات الكائن"
+msgstr "بيانات النموذج "
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__model
@@ -2581,7 +2581,7 @@ msgstr "التطبيق "
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_base_module_uninstall
 msgid "Module Uninstall"
-msgstr "إزالة الموديول"
+msgstr "إلغاء تثبيث التطبيق "
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module

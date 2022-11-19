@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Jeana Jiang, 2022
-# keecome <7017511@qq.com>, 2022
 # liulixia <liu.lixia@elico-corp.com>, 2022
 # Martin Trigaux, 2022
 # YIMIN XUAN, 2022
@@ -334,7 +333,7 @@ msgstr "分析会计"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution_stored_char
 msgid "Analytic Distribution Stored Char"
-msgstr "分析分布存储字符"
+msgstr "分析分配存储字符"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -531,7 +530,7 @@ msgstr "处于草稿或打开状态的资产"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_attachment_count
 msgid "Attachment Count"
-msgstr "附件数量"
+msgstr "附件计数"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
@@ -1744,7 +1743,7 @@ msgstr "运行中"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr "短信发送错误"
+msgstr "短信息发送错误"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0

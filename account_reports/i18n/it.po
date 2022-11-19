@@ -163,8 +163,8 @@ msgid ""
 "<i class=\"fa fa-caret-right invisible\" role=\"img\" aria-"
 "label=\"Unfolded\" title=\"Unfolded\"/>"
 msgstr ""
-"<i class=\"fa fa-caret-right invisible\" role=\"img\" aria-"
-"label=\"Deminimizzato\" title=\"Deminimizzato\"/>"
+"<i class=\"fa fa-caret-right invisible\" role=\"img\" aria-label=\"Espanso\""
+" title=\"Espanso\"/>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -3147,18 +3147,18 @@ msgstr "Utili non assegnati"
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Unfold"
-msgstr "Deminimizza"
+msgstr "Espandi"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Unfold All"
-msgstr "Deminimizza tutto"
+msgstr "Espandi tutto"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template
 msgid "Unfolded"
-msgstr "Deminimizzato"
+msgstr "Espanso"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0

@@ -599,7 +599,7 @@ msgstr "YouTube评论数量"
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_stream_post__youtube_comments_count
 msgid "YouTube Comments Count"
-msgstr "YouTube评论数量"
+msgstr "YouTube评论计数"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.res_config_settings_view_form
@@ -732,7 +732,7 @@ msgstr "您的视频缺少一个正确的标题或描述。"
 msgid ""
 "Your videos metadata including title and view counts (but never the video "
 "itself)"
-msgstr "您的视频元数据，包括标题和观看次数（但不包括视频本身）"
+msgstr "您的视频元数据，包括标题和观看计数（但不包括视频本身）"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_post_view_form

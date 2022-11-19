@@ -3103,7 +3103,7 @@ msgstr "Atlyginimo taisyklės"
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "Salary Slip"
-msgstr ""
+msgstr "Algalapis"
 
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_payroll_structure

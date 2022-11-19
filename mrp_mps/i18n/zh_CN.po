@@ -62,7 +62,7 @@ msgstr "实际需求 %s %s (%s - %s)"
 #: code:addons/mrp_mps/static/src/search/group_menu.xml:0
 #, python-format
 msgid "Actual Demand Y-1"
-msgstr "实际需求量Y-1"
+msgstr "实际需求Y-1"
 
 #. module: mrp_mps
 #. openerp-web

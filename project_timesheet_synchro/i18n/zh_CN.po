@@ -82,7 +82,7 @@ msgstr "确定要删除这项活动？"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Are you sure that you want to reset the app?"
-msgstr "确定要移除此过滤器吗？"
+msgstr "确定要移除此筛选吗？"
 
 #. module: project_timesheet_synchro
 #. openerp-web

@@ -12,7 +12,6 @@
 # david danilov, 2022
 # Netta Waizer, 2022
 # Jonathan Spier, 2022
-# NoaFarkash, 2022
 # Amit Spilman <amit@laylinetech.com>, 2022
 # yoav sc <yoav19991@gmail.com>, 2022
 # Sagi Ahiel, 2022
@@ -21,6 +20,7 @@
 # Martin Trigaux, 2022
 # Moshe Flam <pashute@gmail.com>, 2022
 # ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022
+# NoaFarkash, 2022
 # 
 msgid ""
 msgstr ""
@@ -28,7 +28,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022\n"
+"Last-Translator: NoaFarkash, 2022\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1088,7 +1088,7 @@ msgstr "הגדר הגדרות"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Configure your TAX accounts - %s"
-msgstr ""
+msgstr "הגדר את חשבונות המס של - %s"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -1952,7 +1952,7 @@ msgstr ""
 #: model:ir.actions.client,name:account_reports.action_account_report_ja
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_ja
 msgid "Journal Report"
-msgstr ""
+msgstr "דו\"ח יומן"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_journal_report_handler
@@ -2443,7 +2443,7 @@ msgstr "תוכניות"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Please specify the accounts necessary for the Tax Closing Entry."
-msgstr ""
+msgstr "נא לציין את החשבונות הדרושים עבור פקודת יומן סוגרת מע\"מ."
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_fixed_assets_view0
@@ -2793,7 +2793,7 @@ msgstr "סכום המס"
 #: model:ir.model.fields,field_description:account_reports.field_account_move__tax_closing_end_date
 #: model:ir.model.fields,field_description:account_reports.field_account_payment__tax_closing_end_date
 msgid "Tax Closing End Date"
-msgstr "תאריך סיום סגירת המס"
+msgstr "תאריך נעילת תקופת דיווח למע\"מ"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_general_ledger.py:0
@@ -3400,7 +3400,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_general_ledger_report
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_partner_ledger_report
 msgid "⇒ Journal Items"
-msgstr ""
+msgstr "⇒ תנועות יומן"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template

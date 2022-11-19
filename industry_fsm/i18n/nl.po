@@ -1291,7 +1291,7 @@ msgstr "Takenanalyse"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Tasks Soon in Overtime"
-msgstr "Taken binnenkort in overwerk"
+msgstr "Taken bijna met tijdsoverschrijding"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm

@@ -703,7 +703,7 @@ msgstr "分析计划："
 msgid ""
 "Analytic filters will include analytic items without accounting "
 "correspondence"
-msgstr "分析过滤器将包括没有会计对应关系的分析项目"
+msgstr "分析筛选将包括没有会计对应关系的分析项目"
 
 #. module: account_reports
 #. openerp-web

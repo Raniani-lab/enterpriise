@@ -126,7 +126,7 @@ msgstr "(t-if=\""
 msgid ""
 "<div><p>The <strong>%s</strong> property is only applied to records matching"
 " this filter.</p></div>"
-msgstr "<div><p>此 <strong>%s</strong> 属性仅适用于匹配此过滤器的记录.</p></div>"
+msgstr "<div><p>此 <strong>%s</strong> 属性仅适用于匹配此筛选的记录.</p></div>"
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/main.py:0
@@ -1695,7 +1695,7 @@ msgstr "启用工艺"
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Enable SMS"
-msgstr "启用短信"
+msgstr "启用短信息"
 
 #. module: web_studio
 #: code:addons/web_studio/models/ir_model.py:0

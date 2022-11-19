@@ -53,7 +53,7 @@ msgstr "#{day['today_cls'] and 'Today' or ''}"
 #: code:addons/appointment/models/appointment_type.py:0
 #, python-format
 msgid "%s - Let's meet"
-msgstr ""
+msgstr "%s - فلنلتقِ "
 
 #. module: appointment
 #: code:addons/appointment/controllers/appointment.py:0

@@ -1780,7 +1780,7 @@ msgstr "المُعرف"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 msgid "Impact On Grid"
-msgstr ""
+msgstr "التأثير على الشبكة "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
@@ -2649,7 +2649,7 @@ msgstr "عكس: %s"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_report_search
 msgid "Root Report"
-msgstr ""
+msgstr "تقرير الجذر "
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_horizontal_group__rule_ids

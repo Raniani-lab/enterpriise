@@ -479,7 +479,7 @@ msgstr "Révision parente"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.xml:0
 #, python-format
 msgid "Period offset"
-msgstr ""
+msgstr "Période de décalage"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -821,14 +821,14 @@ msgstr "jamais"
 #. module: spreadsheet_edition
 #: model:ir.model.constraint,message:spreadsheet_edition.constraint_spreadsheet_revision_parent_revision_unique
 msgid "o-spreadsheet revision refused due to concurrency"
-msgstr ""
+msgstr "révision o-spreadsheet refusée en raison de la simultanéité"
 
 #. module: spreadsheet_edition
 #. openerp-web
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "pivot"
-msgstr ""
+msgstr "tableau croisé dynamique"
 
 #. module: spreadsheet_edition
 #. openerp-web

@@ -45,7 +45,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__payslip_count
 #: model_terms:ir.ui.view,arch_db:hr_payroll.payroll_report_view_dashboard
 msgid "# Payslips"
-msgstr ""
+msgstr "Кол-во платежек"
 
 #. module: hr_payroll
 #: code:addons/hr_payroll/models/hr_salary_rule.py:0

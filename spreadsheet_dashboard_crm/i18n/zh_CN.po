@@ -106,7 +106,7 @@ msgstr "已关闭"
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Closed count"
-msgstr "已关闭数量"
+msgstr "已关闭计数"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web

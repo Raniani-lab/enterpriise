@@ -326,7 +326,7 @@ msgstr ""
 msgid ""
 "A SMS will be sent to the following phone number. Please update it if it's "
 "not relevant."
-msgstr "短信将发送到以下电话号码。如果有误，请更新。"
+msgstr "短信息将发送到以下电话号码。如果有误，请更新。"
 
 #. module: sign
 #: code:addons/sign/models/sign_request.py:0
@@ -560,7 +560,7 @@ msgstr "附件"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_attachment_count
 msgid "Attachment Count"
-msgstr "附件数量"
+msgstr "附件计数"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__attachment_ids
@@ -972,7 +972,7 @@ msgstr "删除签名项目"
 msgid ""
 "Deliver one-time codes by SMS to identify signatories when signing a "
 "document."
-msgstr "通过短信发送一次性代码，以便在签署文档时识别签名者。"
+msgstr "通过短信息发送一次性代码，以便在签署文档时识别签名者。"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
@@ -1209,7 +1209,7 @@ msgstr "启用签名先后次序"
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "Enter the code received through SMS to complete your signature"
-msgstr "输入通过短信收到的代码以完成签字"
+msgstr "输入通过短信息收到的代码以完成签字"
 
 #. module: sign
 #. openerp-web
@@ -1573,7 +1573,7 @@ msgstr "如果您愿意，您可以在购买更多的操作积分后再次申请
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__in_progress_count
 msgid "In Progress Count"
-msgstr "进行中的数量"
+msgstr "进行中的计数"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_kanban
@@ -2251,7 +2251,7 @@ msgstr "公众用户"
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Re-send SMS"
-msgstr "重新发送短信"
+msgstr "重新发送短信息"
 
 #. module: sign
 #. openerp-web
@@ -2415,19 +2415,19 @@ msgstr "顺时针方向旋转"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr "短信发送错误"
+msgstr "短信息发送错误"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "SMS Sent"
-msgstr "短信已发送"
+msgstr "短信息已发送"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__sms_token
 msgid "SMS Token"
-msgstr "短信令牌"
+msgstr "短信息令牌"
 
 #. module: sign
 #: model:sign.template.tag,name:sign.sign_template_tag_3
@@ -2520,7 +2520,7 @@ msgstr "发送"
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "Send SMS"
-msgstr "发送短信"
+msgstr "发送短信息"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__signer_id
@@ -2908,7 +2908,7 @@ msgstr "已签署"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__signed_count
 msgid "Signed Count"
-msgstr "已签署数量"
+msgstr "已签署计数"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
@@ -3512,12 +3512,12 @@ msgstr "UTC"
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Unable to send the SMS, please contact the sender of the document."
-msgstr "无法发送短信，请联系发件人的文档。"
+msgstr "无法发送短信息，请联系发件人的文档。"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_role__auth_method__sms
 msgid "Unique Code via SMS"
-msgstr "通过短信的唯一代码"
+msgstr "通过短信息的唯一代码"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__action__update

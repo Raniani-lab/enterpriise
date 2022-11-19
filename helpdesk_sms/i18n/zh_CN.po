@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Raymond Yu <cl_yu@hotmail.com>, 2022
 # Jeffery CHEN <jeffery9@gmail.com>, 2022
 # 
 msgid ""
@@ -34,7 +33,7 @@ msgstr "服务台工单"
 #. module: helpdesk_sms
 #: model:ir.model.fields,field_description:helpdesk_sms.field_helpdesk_stage__sms_template_id
 msgid "SMS Template"
-msgstr "短信模板"
+msgstr "短信息模板"
 
 #. module: helpdesk_sms
 #: model:ir.model.fields,help:helpdesk_sms.field_helpdesk_stage__sms_template_id
@@ -45,4 +44,4 @@ msgstr "工单到达这个阶段时短信息自动发送给客户。"
 #. module: helpdesk_sms
 #: model:ir.actions.act_window,name:helpdesk_sms.action_helpdesk_ticket_mass_mail_sms
 msgid "Send SMS Text Message"
-msgstr "发送文本短信"
+msgstr "发送文本短信息"

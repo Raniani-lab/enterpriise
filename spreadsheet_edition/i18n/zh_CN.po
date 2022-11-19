@@ -260,7 +260,7 @@ msgstr "文件"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/index.js:0
 #, python-format
 msgid "Filter properties"
-msgstr "过滤器属性"
+msgstr "筛选属性"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -438,7 +438,7 @@ msgstr "新建"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/filter_editor_side_panel.js:0
 #, python-format
 msgid "New %s filter"
-msgstr "新的%s过滤器"
+msgstr "新的%s筛选"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -682,7 +682,7 @@ msgstr "选择要插入的记录数量"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/index.js:0
 #, python-format
 msgid "Set as filter"
-msgstr "设置为过滤器"
+msgstr "设置为筛选"
 
 #. module: spreadsheet_edition
 #. openerp-web

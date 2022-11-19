@@ -44,7 +44,7 @@ msgstr "退款通知"
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_helpdesk_ticket__invoices_count
 msgid "Credit Notes Count"
-msgstr "退款通知笔数"
+msgstr "退款通知计数"
 
 #. module: helpdesk_account
 #: model:ir.model,name:helpdesk_account.model_helpdesk_ticket

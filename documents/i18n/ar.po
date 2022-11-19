@@ -61,6 +61,10 @@ msgid ""
 "your documents in bulk with the split tool: launch user defined actions, "
 "request a signature, convert to vendor bills with AI, etc."
 msgstr ""
+". سوف تظهر الملفات الممسوحة تلقائياً في مساحة عملك. بعد ذلك، قم بمعالجة "
+"مستنداتك دفعة واحدة باستخدام أداة التقسيم: أطلق الإجراءات التي يحددها "
+"المستخدم، واطلب توقيعاً، وقم بتحويل فواتير الموردين باستخدام الذكاء "
+"الاصطناعي، وما إلى ذلك. "
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2017
@@ -665,6 +669,8 @@ msgid ""
 "An easy way to process incoming mails is to configure your scanner to send "
 "PDFs to"
 msgstr ""
+"طريقة سهلة لمعالجة البريد الوارد هي تهيئة الماسح الضوئي لإرسال ملفات PDF إلى"
+" "
 
 #. module: documents
 #: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0

@@ -129,7 +129,7 @@ msgstr "允许更改生产数量"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_quality_point_test_type__allow_registration
 msgid "Allow Registration"
-msgstr "允许注册"
+msgstr "允许登记"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.view_routing_steps_search
@@ -758,7 +758,7 @@ msgstr "质量警报"
 #. module: mrp_workorder
 #: model:ir.model.fields,field_description:mrp_workorder.field_mrp_workorder__quality_alert_count
 msgid "Quality Alert Count"
-msgstr "质量警报次数"
+msgstr "质量警报计数"
 
 #. module: mrp_workorder
 #: model:ir.model,name:mrp_workorder.model_quality_check

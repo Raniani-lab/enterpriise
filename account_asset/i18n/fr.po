@@ -353,7 +353,7 @@ msgstr "Un actif a été créé pour ce mouvement:"
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "An asset will be created for the value increase of the asset. <br/>"
-msgstr ""
+msgstr "Un actif sera créé pour l'augmentation de valeur de l'actif. <br/>"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution
@@ -427,7 +427,7 @@ msgstr "Nom d'affichage de l'identifiant de l'actif"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_lifetime_days
 msgid "Asset Lifetime Days"
-msgstr ""
+msgstr "Durée de vie de l'actif"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__asset_model
@@ -438,7 +438,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Asset Model"
-msgstr "Modèle d'actifs"
+msgstr "Modèle d'actif"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -465,7 +465,7 @@ msgstr "Options des immobilisations"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_paused_days
 msgid "Asset Paused Days"
-msgstr ""
+msgstr "Jours en pause de l'actif"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset_report_handler
@@ -503,7 +503,7 @@ msgstr "Immobilisation créée"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset disposed. %s"
-msgstr ""
+msgstr "Actif cédé. %s"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -531,7 +531,7 @@ msgstr "Actif(s)"
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
 msgid "Asset/Revenue Recognition"
-msgstr "Reconnaissance des immobilisations/revenus"
+msgstr "Comptabilisation des actifs/revenus"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_asset_form
@@ -1589,7 +1589,7 @@ msgstr "Nombre de mois dans une période"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Number of Recognitions"
-msgstr "Nombre de reconnaissances"
+msgstr "Nombre de comptabilisations"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__gross_increase_count
@@ -1681,7 +1681,7 @@ msgstr "Achat : Immobilisation"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Recognition Values"
-msgstr "Valeurs de Reconnaissance"
+msgstr "Valeurs de comptabilisation"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__asset_ids
@@ -1768,7 +1768,7 @@ msgstr "Nom de revenu"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Revenue Recognition"
-msgstr "Reconnaissance des revenus"
+msgstr "Comptabilisation des revenus"
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:0
@@ -1799,7 +1799,7 @@ msgstr "Promo"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__sale
 msgid "Sale: Revenue Recognition"
-msgstr "Ventes : reconnaissance de revenu"
+msgstr "Ventes : Comptabilisation des revenus"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -2122,7 +2122,7 @@ msgstr "date jusqu'à"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "depreciable)"
-msgstr ""
+msgstr "amortissable)"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form

@@ -5,6 +5,7 @@
 # Translators:
 # Friederike Fasterling-Nesselbosch, 2022
 # Martin Trigaux, 2022
+# Felix Schubert <felix.schubert@go-erp.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Felix Schubert <felix.schubert@go-erp.com>, 2022\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,6 +28,8 @@ msgid ""
 "%(display_name_html)s with an open amount of %(open_amount)s will be fully "
 "reconciled by the transaction."
 msgstr ""
+"%(display_name_html)s über einen offenen Betrag von %(open_amount)s wird mit"
+" der Transaktion vollständig beglichen."
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
@@ -35,6 +38,8 @@ msgid ""
 "%(display_name_html)s with an open amount of %(open_amount)s will be reduced"
 " by %(amount)s."
 msgstr ""
+"%(display_name_html)s über einen offenen Betrag von%(open_amount)s wird um "
+"%(amount)s reduziert."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_form
@@ -44,7 +49,7 @@ msgstr "-> Abstimmen"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "/&gt;"
-msgstr ""
+msgstr "/&gt;"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_move_form_inherit
@@ -54,7 +59,7 @@ msgstr "1 Banktransaktion"
 #. module: account_accountant
 #: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_0
 msgid "<b class=\"tip_title\">Tip: Bulk update journal items</b>"
-msgstr "<b class=\"tip_title\">Tipp: Bulk-Update von Journaleinträgen</b>"
+msgstr "<b class=\"tip_title\">Tipp: Massen-Update von Journaleinträgen</b>"
 
 #. module: account_accountant
 #: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_1
@@ -62,8 +67,8 @@ msgid ""
 "<b class=\"tip_title\">Tip: Find an Accountant or register your Accounting "
 "Firm</b>"
 msgstr ""
-"<b class=\"tip_title\">Tipp: Finden Sie einen Buchhalter oder registrieren "
-"Sie Ihre Wirtschaftsüberprüfungsgesellschaft</b>"
+"<b class=\"tip_title\">Tipp: Finden Sie einen Buchhalter oder hinterlegen "
+"Sie Ihren Steuerberater/Wirtschaftsprüfer </b>"
 
 #. module: account_accountant
 #. openerp-web
@@ -159,8 +164,8 @@ msgstr "<span class=\"tip_button_text\">Einen Buchhalter finden</span>"
 #: model_terms:digest.tip,tip_description:account_accountant.digest_tip_account_accountant_1
 msgid "<span class=\"tip_button_text\">Register your Accounting Firm</span>"
 msgstr ""
-"<span class=\"tip_button_text\">Registrieren Sie Ihre "
-"Buchhaltungsfirma</span>"
+"<span class=\"tip_button_text\">Hinterlegen sie ihren "
+"Steuerberater/Wirtschaftsprüfer</span>"
 
 #. module: account_accountant
 #. openerp-web
@@ -538,7 +543,7 @@ msgstr "Haben"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_bank_statement_line__cron_last_check
 msgid "Cron Last Check"
-msgstr ""
+msgstr "Letzte Überprüfung durch eine geplante Aktion"
 
 #. module: account_accountant
 #. openerp-web
@@ -578,7 +583,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Deposits"
-msgstr ""
+msgstr "Anzahlungen"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_digest_digest

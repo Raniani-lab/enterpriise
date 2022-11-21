@@ -119,6 +119,23 @@ class _KanbanEditorRecord extends KanbanRecord {
 
     onGlobalClick() {}
 
+    onGlobalClickCapture(ev) {
+        const target = ev.target;
+        if (target.closest(".o-web-studio-editor--element-clickable")) {
+            return;
+        }
+        const editorAddFeaturesClasses = [
+            "o_web_studio_add_kanban_tags",
+            "o_web_studio_add_dropdown",
+            "o_web_studio_add_priority",
+            "o_web_studio_add_kanban_image",
+        ];
+        if (editorAddFeaturesClasses.some((c) => target.classList.contains(c))) {
+            return;
+        }
+        ev.stopPropagation();
+    }
+
     isFieldValueEmpty(value) {
         if (value === null) {
             return true;
@@ -224,7 +241,7 @@ _KanbanEditorRecord.components = {
     StudioHook,
     ViewButton: ViewButtonStudio,
 };
-_KanbanEditorRecord.template = "web_studio.SafeKanbanRecord";
+_KanbanEditorRecord.template = "web_studio.SafeKanbanRecordEditor";
 
 export class KanbanEditorRecord extends Component {
     get KanbanRecord() {

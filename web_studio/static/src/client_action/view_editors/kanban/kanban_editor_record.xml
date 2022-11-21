@@ -10,6 +10,12 @@
   </xpath>
 </t>
 
+<t t-name="web_studio.SafeKanbanRecordEditor" t-inherit="web_studio.SafeKanbanRecord" >
+  <xpath expr="./div" position="attributes">
+    <attribute name="t-on-click.capture">onGlobalClickCapture</attribute>
+  </xpath>
+</t>
+
 <t t-name="web_studio.KanbanEditorRecord.Dropdown" t-inherit="web.Dropdown">
   <xpath expr="./div" position="attributes">
     <attribute name="t-on-click">(ev) => env.config.onNodeClicked({target: this.rootRef.el, xpath: props.studioXpath})</attribute>

@@ -2586,6 +2586,38 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(target.querySelector(".o_kanban_record").textContent, "Preview is not available");
     });
 
+    QUnit.test("click on anything other than what was intended doesn't do anything", async (assert) => {
+        const handler = (ev) => {
+            assert.step("error");
+            ev.preventDefault();
+        };
+        window.addEventListener("error", handler);
+        registerCleanup(() => window.removeEventListener("error", handler));
+
+        const arch = `
+            <kanban>
+                <templates>
+                    <t t-name='kanban-box'>
+                        <div class='oe_kanban_card'>
+                            <div class="myLittleHandler" t-on-click="unexistingHandler">SomeText</div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>`;
+
+        await studioTestUtils.createViewEditorManager({
+            serverData,
+            model: 'coucou',
+            arch,
+            viewID: 1,
+        });
+
+        assert.containsOnce(target, ".myLittleHandler");
+        await click(target, ".myLittleHandler");
+        assert.verifySteps([]);
+        assert.containsOnce(target, ".myLittleHandler");
+    });
+
     QUnit.test("disable global click", async (assert) => {
         registry.category("services").add("action", {
             start() {

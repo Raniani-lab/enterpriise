@@ -128,6 +128,14 @@ export default AbstractController.extend({
 
     /**
      * @override
+     */
+    async start() {
+        await this._super(...arguments);
+        this.el.classList.toggle("o_action_delegate_scroll", config.device.isMobile);
+    },
+
+    /**
+     * @override
      * @param {jQuery} [$node] to which the buttons will be appended
      */
     renderButtons($node) {

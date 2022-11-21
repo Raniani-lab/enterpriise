@@ -4,10 +4,9 @@ import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { getBasicData } from "@spreadsheet/../tests/utils/data";
 import { prepareWebClientForSpreadsheet } from "../utils/webclient_helpers";
-import { getFixture, nextTick } from "@web/../tests/helpers/utils";
+import { getFixture, nextTick, click } from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { selectCell } from "@spreadsheet/../tests/utils/commands";
-import { dom } from "web.test_utils";
 
 const { createEmptyWorkbookData } = spreadsheet.helpers;
 
@@ -233,7 +232,7 @@ QUnit.module(
             selectCell(model, "F4");
             env.raiseError("Notification");
             await nextTick();
-            await dom.click(document.body.querySelector(".modal-footer .btn-primary"));
+            await click(document, ".modal-footer .btn-primary");
             await nextTick();
             assert.strictEqual(document.activeElement.tagName, "INPUT");
             assert.strictEqual(
@@ -254,20 +253,24 @@ QUnit.module(
                     }
                 },
             });
-            await doAction(webClient, {
-                type: "ir.actions.client",
-                tag: "action_open_spreadsheet",
-                params: {
-                    alwaysCreate: true,
-                    createFromTemplateId: null,
-                    createInFolderId: 1,
+            await doAction(
+                webClient,
+                {
+                    type: "ir.actions.client",
+                    tag: "action_open_spreadsheet",
+                    params: {
+                        alwaysCreate: true,
+                        createFromTemplateId: null,
+                        createInFolderId: 1,
+                    },
                 },
-            }, {
-                additionalContext: {
-                    default_res_model: "test.model",
-                    default_res_id: 42,
+                {
+                    additionalContext: {
+                        default_res_model: "test.model",
+                        default_res_id: 42,
+                    },
                 }
-            });
+            );
             assert.verifySteps(["create_sheet"]);
         });
     }

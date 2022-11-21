@@ -14,9 +14,9 @@ import "./operational_transform";
 import { insertPivot } from "./pivot_init_callback";
 import { pivotFormulaRegex } from "@spreadsheet/pivot/pivot_helpers";
 
-const { uiPluginRegistry, sidePanelRegistry, cellMenuRegistry } = spreadsheet.registries;
+const { featurePluginRegistry, sidePanelRegistry, cellMenuRegistry } = spreadsheet.registries;
 
-uiPluginRegistry.add("odooPivotAutofillPlugin", PivotAutofillPlugin);
+featurePluginRegistry.add("odooPivotAutofillPlugin", PivotAutofillPlugin);
 
 sidePanelRegistry.add("PIVOT_PROPERTIES_PANEL", {
     title: () => _t("Pivot properties"),

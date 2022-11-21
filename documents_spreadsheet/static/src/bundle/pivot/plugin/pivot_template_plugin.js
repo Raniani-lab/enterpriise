@@ -9,7 +9,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
     ];
     const { pivotFormulaRegex } = require("@spreadsheet/pivot/pivot_helpers");
     const { parse, astToFormula } = spreadsheet;
-    const { uiPluginRegistry } = spreadsheet.registries;
+    const { featurePluginRegistry } = spreadsheet.registries;
 
     /**
      * @typedef {Object} Range
@@ -338,7 +338,7 @@ odoo.define("documents_spreadsheet.PivotTemplatePlugin", function (require) {
 
     PivotTemplatePlugin.getters = [];
 
-    uiPluginRegistry.add("PivotTemplate", PivotTemplatePlugin);
+    featurePluginRegistry.add("PivotTemplate", PivotTemplatePlugin);
 
     return PivotTemplatePlugin;
 });

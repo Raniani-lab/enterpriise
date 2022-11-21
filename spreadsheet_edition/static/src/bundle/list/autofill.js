@@ -5,11 +5,6 @@ import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 
 const { autofillModifiersRegistry, autofillRulesRegistry } = spreadsheet.registries;
 
-const UP = 0;
-const DOWN = 1;
-const LEFT = 2;
-const RIGHT = 3;
-
 //--------------------------------------------------------------------------
 // Autofill Rules
 //--------------------------------------------------------------------------
@@ -35,19 +30,19 @@ autofillModifiersRegistry.add("LIST_UPDATER", {
         let isColumn;
         let steps;
         switch (direction) {
-            case UP:
+            case "up":
                 isColumn = false;
                 steps = -rule.current;
                 break;
-            case DOWN:
+            case "down":
                 isColumn = false;
                 steps = rule.current;
                 break;
-            case LEFT:
+            case "left":
                 isColumn = true;
                 steps = -rule.current;
                 break;
-            case RIGHT:
+            case "right":
                 isColumn = true;
                 steps = rule.current;
         }

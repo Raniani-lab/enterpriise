@@ -14,9 +14,9 @@ import ListAutofillPlugin from "./plugins/list_autofill_plugin";
 
 import { insertList } from "./list_init_callback";
 
-const { uiPluginRegistry, sidePanelRegistry, cellMenuRegistry } = spreadsheet.registries;
+const { featurePluginRegistry, sidePanelRegistry, cellMenuRegistry } = spreadsheet.registries;
 
-uiPluginRegistry.add("odooListAutofillPlugin", ListAutofillPlugin);
+featurePluginRegistry.add("odooListAutofillPlugin", ListAutofillPlugin);
 
 sidePanelRegistry.add("LIST_PROPERTIES_PANEL", {
     title: () => _t("List properties"),

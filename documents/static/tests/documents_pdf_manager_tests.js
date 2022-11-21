@@ -144,5 +144,36 @@ QUnit.module('documents_pdf_manager_tests.js', {
         assert.containsNone(target.querySelectorAll('.o_documents_pdf_page_frame')[2], '.o_pdf_name_display',
             "The third page shouldn't have a name plate");
     });
+
+    QUnit.test('Pdf Manager: select/unselect all pages', async function (assert) {
+        assert.expect(5);
+
+        await mount(PdfManager, target, { env, props: {
+            documents: [
+                { id: 1, name: 'yop', mimetype: 'application/pdf', available_rule_ids: [1, 2] },
+            ],
+            rules: [],
+            onProcessDocuments: () => {},
+            close: () => {},
+        }});
+        await nextTick();
+
+        assert.containsN(target, '.o_pdf_page_selected', 6,
+            "There should be 6 pages selected");
+        await click(target.querySelector('.o_documents_pdf_manager_top_bar'));
+        assert.containsN(target, '.o_pdf_page_selected', 6,
+            "There should be 6 pages selected");
+        await click(target.querySelector('.o_documents_pdf_page_viewer'));
+        assert.containsN(target, '.o_pdf_page_selected', 0,
+            "There should be no page selected");
+        document.dispatchEvent(new KeyboardEvent('keydown', {key: 'A', shiftKey: true}));
+        await nextTick();
+        assert.containsN(target, '.o_pdf_page_selected', 6,
+            "There should be 6 pages selected");
+        document.dispatchEvent(new KeyboardEvent('keydown', {key: 'A', shiftKey: true}));
+        await nextTick();
+        assert.containsN(target, '.o_pdf_page_selected', 0,
+            "There should be no page selected");
+    });
 });
 });

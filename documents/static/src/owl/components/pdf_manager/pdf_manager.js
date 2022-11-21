@@ -67,7 +67,7 @@ export class PdfManager extends Component {
         onWillStart(async () => {
             await this._loadAssets();
         });
-    
+
         onMounted(() => {
             document.addEventListener('keydown', this._onGlobalKeydown);
             document.addEventListener('keyup', this._onGlobalCaptureKeyup, true);
@@ -83,7 +83,7 @@ export class PdfManager extends Component {
                 });
             }
         });
-    
+
         onWillUnmount(() => {
             document.removeEventListener('keydown', this._onGlobalKeydown);
             document.removeEventListener('keyup', this._onGlobalCaptureKeyup);
@@ -114,6 +114,10 @@ export class PdfManager extends Component {
 
     get isDebugMode() {
         return Boolean(odoo.debug);
+    }
+
+    get allSelected() {
+        return !Object.values(this.state.pages).some(page => !page.isSelected);
     }
 
     //----------------------------------------------------------------------
@@ -637,11 +641,26 @@ export class PdfManager extends Component {
             this.state.pages[pageId].isSelected = selectionSet.has(pageId);
         }
     }
+
+    /**
+     * @private
+     * @param {MouseEvent} ev
+     */
+    _onGlobalClick(ev) {
+        if(ev.target.closest(".o_documents_pdf_page_frame") || ev.target.closest(".o_documents_pdf_manager_top_bar")) {
+            return;
+        }
+        for (const page of Object.values(this.state.pages)) {
+            page.isSelected = false;
+        }
+    }
+
     /**
      * @private
      * @param {MouseEvent} ev
      */
     _onClickManager(ev) {
+        this._onGlobalClick(ev);
         if (isEventHandled(ev, 'PdfManager.toggleDropdown')) {
             return;
         }
@@ -758,9 +777,10 @@ export class PdfManager extends Component {
         }
         if (ev.key === 'Escape') {
             this.props.close();
-        } else if (ev.key === 'A') {
-            for (const pageId in this.state.pages) {
-                this.state.pages[pageId].isSelected = true;
+        } else if (ev.key === 'A' && ev.shiftKey) {
+            const allSelectedSetter = !this.allSelected;
+            for (const page of Object.values(this.state.pages)) {
+                page.isSelected = allSelectedSetter;
             }
         } else if (ev.code === 'ShiftLeft') {
             this.state.lShiftKeyDown = true;

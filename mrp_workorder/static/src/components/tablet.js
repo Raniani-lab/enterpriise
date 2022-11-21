@@ -238,9 +238,9 @@ class Tablet extends Component {
         this.popup[popupId].isShown = false;
     }
 
-    async onCloseRerender(message) {
-        if (message) {
-            this.notification.add(this.env._t(message), {type: 'success'});
+    async onCloseRerender(params) {
+        if (params && params.message) {
+            this.notification.add(this.env._t(params.message), {type: 'success'});
         }
         await this.getState();
         this.render();

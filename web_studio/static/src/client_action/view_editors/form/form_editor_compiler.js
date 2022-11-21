@@ -66,14 +66,19 @@ export class FormEditorCompiler extends formView.Compiler {
         }
 
         let buttonBox = compiled.querySelector("ButtonBox");
-        const buttonHook = createElement("ButtonHook", { add_buttonbox: !buttonBox });
+
+        const buttonHook = createElement(
+            "t",
+            [createElement("ButtonHook", { add_buttonbox: !buttonBox })],
+            { "t-set-slot": `slot_button_hook` }
+        );
+
         if (!buttonBox) {
             buttonBox = createElement("ButtonBox");
-            buttonBox.prepend(createElement("t", { "t-set-slot": `slot` }));
             const el = compiled.querySelector(".o_form_sheet") || compiled;
             el.prepend(buttonBox);
         }
-        buttonBox.querySelector("t[t-set-slot]").prepend(buttonHook);
+        buttonBox.insertAdjacentElement("afterbegin", buttonHook);
 
         const fieldStatus = compiled.querySelector(`Field[type="'statusbar'"]`); // change selector at some point
         if (!fieldStatus) {

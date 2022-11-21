@@ -36,6 +36,7 @@ class TestRecruitmentExtractProcess(TestHrCommon):
                 'name': {'selected_value': {'content': 'Johnny Doe'}, 'words': []},
                 'email': {'selected_value': {'content': 'john@doe.com'}, 'words': []},
                 'phone': {'selected_value': {'content': '+32488888888'}, 'words': []},
+                'mobile': {'selected_value': {'content': '+32499999999'}, 'words': []},
             }],
             'document_id': 1234567,
         }
@@ -65,6 +66,7 @@ class TestRecruitmentExtractProcess(TestHrCommon):
         self.assertTrue(self.applicant.state_processed)
         self.assertFalse(self.applicant.partner_name)
         self.assertFalse(self.applicant.email_from)
+        self.assertFalse(self.applicant.partner_phone)
         self.assertFalse(self.applicant.partner_mobile)
 
         with self._mock_iap_extract(extract_response):
@@ -72,7 +74,8 @@ class TestRecruitmentExtractProcess(TestHrCommon):
 
         self.assertEqual(self.applicant.partner_name, extract_response['results'][0]['name']['selected_value']['content'])
         self.assertEqual(self.applicant.email_from, extract_response['results'][0]['email']['selected_value']['content'])
-        self.assertEqual(self.applicant.partner_mobile, extract_response['results'][0]['phone']['selected_value']['content'])
+        self.assertEqual(self.applicant.partner_phone, extract_response['results'][0]['phone']['selected_value']['content'])
+        self.assertEqual(self.applicant.partner_mobile, extract_response['results'][0]['mobile']['selected_value']['content'])
 
     def test_manual_send_for_digitization(self):
         # test the `manual_send` mode for digitization
@@ -102,7 +105,8 @@ class TestRecruitmentExtractProcess(TestHrCommon):
 
         self.assertEqual(self.applicant.partner_name, extract_response['results'][0]['name']['selected_value']['content'])
         self.assertEqual(self.applicant.email_from, extract_response['results'][0]['email']['selected_value']['content'])
-        self.assertEqual(self.applicant.partner_mobile, extract_response['results'][0]['phone']['selected_value']['content'])
+        self.assertEqual(self.applicant.partner_phone, extract_response['results'][0]['phone']['selected_value']['content'])
+        self.assertEqual(self.applicant.partner_mobile, extract_response['results'][0]['mobile']['selected_value']['content'])
 
     def test_no_send_for_digitization(self):
         # test that the `no_send` mode for digitization prevents the users from sending
@@ -155,4 +159,5 @@ class TestRecruitmentExtractProcess(TestHrCommon):
         self.assertEqual(self.applicant.extract_state, 'done')
         self.assertEqual(self.applicant.get_validation('email')['content'], self.applicant.email_from)
         self.assertEqual(self.applicant.get_validation('phone')['content'], self.applicant.partner_phone)
+        self.assertEqual(self.applicant.get_validation('mobile')['content'], self.applicant.partner_mobile)
         self.assertEqual(self.applicant.get_validation('name')['content'], self.applicant.name)

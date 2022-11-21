@@ -120,6 +120,8 @@ class HrApplicant(models.Model):
             text_to_send["content"] = self.email_from
         elif field == "phone":
             text_to_send["content"] = self.partner_phone
+        elif field == "mobile":
+            text_to_send["content"] = self.partner_mobile
         elif field == "name":
             text_to_send["content"] = self.name
         return text_to_send
@@ -131,6 +133,7 @@ class HrApplicant(models.Model):
             record.extract_remote_id: {
                 'email': record.get_validation('email'),
                 'phone': record.get_validation('phone'),
+                'mobile': record.get_validation('mobile'),
                 'name': record.get_validation('name'),
             } for record in app_to_validate
         }
@@ -216,11 +219,13 @@ class HrApplicant(models.Model):
             name_ocr = ocr_results['name']['selected_value']['content'] if 'name' in ocr_results else ""
             email_from_ocr = ocr_results['email']['selected_value']['content'] if 'email' in ocr_results else ""
             phone_ocr = ocr_results['phone']['selected_value']['content'] if 'phone' in ocr_results else ""
+            mobile_ocr = ocr_results['mobile']['selected_value']['content'] if 'mobile' in ocr_results else ""
 
             self.name = _("%s's Application", name_ocr)
             self.partner_name = name_ocr
             self.email_from = email_from_ocr
-            self.partner_mobile = phone_ocr
+            self.partner_phone = phone_ocr
+            self.partner_mobile = mobile_ocr
 
         elif result['status_code'] == NOT_READY:
             self.extract_state = 'extract_not_ready'

@@ -25,10 +25,12 @@ patch(SpreadsheetComponent.prototype, "documents_spreadsheet.SpreadsheetComponen
      */
     async _saveAsTemplate() {
         const model = new Model(this.model.exportData(), {
-            evalContext: { env: this.env },
-            dataSources: this.model.config.dataSources,
+            external: {
+                env: this.env,
+                dataSources: this.model.config.external.dataSources,
+            },
         });
-        await model.config.dataSources.waitForAllLoaded();
+        await model.config.external.dataSources.waitForAllLoaded();
         const proms = [];
         for (const pivotId of model.getters.getPivotIds()) {
             proms.push(model.getters.getPivotDataSource(pivotId).prepareForTemplateGeneration());

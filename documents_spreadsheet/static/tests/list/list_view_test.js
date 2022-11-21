@@ -208,7 +208,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
             ...webClient.env,
             model,
             services: {
-                ...model.config.evalContext.env.services,
+                ...model.config.external.env.services,
                 action: {
                     doAction: (params) => {
                         assert.step(params.res_model);
@@ -244,7 +244,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
             const env = {
                 ...webClient.env,
                 model,
-                services: model.config.evalContext.env.services,
+                services: model.config.external.env.services,
             };
             setCellContent(model, "A1", "test");
             setCellContent(model, "A2", `=ODOO.LIST("1","1","foo")`);
@@ -289,7 +289,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
         const { model, env } = await createSpreadsheetFromListView();
         // opening from a pivot cell
         const sheetId = model.getters.getActiveSheetId();
-        const listA3 = model.getters.getListIdFromPosition(sheetId, 0, 2);
+        const listA3 = model.getters.getListIdFromPosition({ sheetId, col: 0, row: 2 });
         model.dispatch("SELECT_ODOO_LIST", { listId: listA3 });
         env.openSidePanel("LIST_PROPERTIES_PANEL", {
             listId: listA3,

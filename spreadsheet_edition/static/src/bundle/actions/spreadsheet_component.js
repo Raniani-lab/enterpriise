@@ -62,7 +62,7 @@ export default class SpreadsheetComponent extends LegacyComponent {
         this.model = new Model(
             migrate(this.props.data),
             {
-                evalContext: { env: this.env, orm: this.orm },
+                external: { env: this.env, orm: this.orm, dataSources },
                 transportService: this.props.transportService,
                 client: {
                     id: uuidGenerator.uuidv4(),
@@ -71,7 +71,6 @@ export default class SpreadsheetComponent extends LegacyComponent {
                 },
                 mode: this.props.isReadonly ? "readonly" : "normal",
                 snapshotRequested: this.props.snapshotRequested,
-                dataSources,
             },
             this.props.stateUpdateMessages
         );

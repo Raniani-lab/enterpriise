@@ -26,7 +26,6 @@ export function makeFakeSpreadsheetService() {
     };
 }
 
-
 export function joinSession(spreadsheetChannel, client) {
     spreadsheetChannel.broadcast({
         type: "CLIENT_JOINED",
@@ -61,20 +60,26 @@ export async function setupCollaborativeEnv(serverData) {
     const network = new MockSpreadsheetCollaborativeChannel();
     const model = new Model();
     const alice = new Model(model.exportData(), {
-        dataSources: new DataSources(env.services.orm),
-        evalContext: { env },
+        external: {
+            env,
+            dataSources: new DataSources(env.services.orm),
+        },
         transportService: network,
         client: { id: "alice", name: "Alice" },
     });
     const bob = new Model(model.exportData(), {
-        dataSources: new DataSources(env.services.orm),
-        evalContext: { env },
+        external: {
+            dataSources: new DataSources(env.services.orm),
+            env,
+        },
         transportService: network,
         client: { id: "bob", name: "Bob" },
     });
     const charlie = new Model(model.exportData(), {
-        dataSources: new DataSources(env.services.orm),
-        evalContext: { env },
+        external: {
+            dataSources: new DataSources(env.services.orm),
+            env,
+        },
         transportService: network,
         client: { id: "charlie", name: "Charlie" },
     });

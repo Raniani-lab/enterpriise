@@ -4,7 +4,7 @@ import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { nextTick } from "@web/../tests/helpers/utils";
 import { dom } from "web.test_utils";
 import { getBasicData } from "@spreadsheet/../tests/utils/data";
-import { getCellFormula } from "@spreadsheet/../tests/utils/getters";
+import { getCell, getCellFormula } from "@spreadsheet/../tests/utils/getters";
 import { selectCell } from "@spreadsheet/../tests/utils/commands";
 import { createSpreadsheetFromPivotView } from "../../utils/pivot_helpers";
 import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
@@ -19,14 +19,13 @@ QUnit.module("documents_spreadsheet > Pivot missing values", {}, function () {
 
         const { model, env } = await createSpreadsheetFromPivotView();
         selectCell(model, "D8");
-        const sheetId = model.getters.getActiveSheetId();
         await doMenuAction(topbarMenuRegistry, insertPivotCellPath, env);
         await nextTick();
         assert.containsOnce(document.body, ".o_pivot_table_dialog");
         await dom.click(document.body.querySelectorAll(".o_pivot_table_dialog tr th")[1]);
         assert.equal(getCellFormula(model, "D8"), getCellFormula(model, "B1"));
         model.dispatch("REQUEST_UNDO");
-        assert.equal(model.getters.getCell(sheetId, 3, 7), undefined);
+        assert.equal(getCell(model, "D8"), undefined);
         model.dispatch("REQUEST_REDO");
         assert.equal(getCellFormula(model, "D8"), getCellFormula(model, "B1"));
     });

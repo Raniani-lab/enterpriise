@@ -104,7 +104,7 @@ QUnit.test("Add two lists concurrently", async (assert) => {
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) =>
-            Object.values(user.config.dataSources._dataSources).filter(
+            Object.values(user.config.external.dataSources._dataSources).filter(
                 (ds) => ds instanceof ListDataSource
             ).length,
         2

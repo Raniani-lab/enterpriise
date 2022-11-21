@@ -35,14 +35,12 @@ export const INSERT_PIVOT_CELL_CHILDREN = (env) =>
             sequence: index,
             action: async (env) => {
                 env.model.dispatch("REFRESH_PIVOT", { id: pivotId });
-                const sheetId = env.model.getters.getActiveSheetId();
+                let { sheetId, col, row } = env.model.getters.getActivePosition();
                 await env.model.getters.getAsyncPivotDataSource(pivotId);
                 // make sure all cells are evaluated
                 for (const sheetId of env.model.getters.getSheetIds()) {
                     env.model.getters.getEvaluatedCells(sheetId);
                 }
-                let { col, row } = env.model.getters.getPosition();
-                ({ col, row } = env.model.getters.getMainCellPosition(sheetId, col, row));
                 const insertPivotValueCallback = (formula) => {
                     env.model.dispatch("UPDATE_CELL", {
                         sheetId,

@@ -9,6 +9,7 @@ import {
     getBasicServerData,
 } from "@spreadsheet/../tests/utils/data";
 import {
+    getCell,
     getCellFormula,
     getCellValue,
     getEvaluatedCell,
@@ -217,7 +218,6 @@ QUnit.module(
 
         QUnit.test("undo pivot reinsert", async function (assert) {
             const { model, env } = await createSpreadsheetWithPivot();
-            const sheetId = model.getters.getActiveSheetId();
             selectCell(model, "D8");
             await doMenuAction(topbarMenuRegistry, reinsertPivotPath, env);
             assert.equal(
@@ -226,10 +226,7 @@ QUnit.module(
                 "It should contain a pivot formula"
             );
             model.dispatch("REQUEST_UNDO");
-            assert.notOk(
-                model.getters.getCell(sheetId, 4, 9),
-                "It should have removed the re-inserted pivot"
-            );
+            assert.notOk(getCell(model, "E10"), "It should have removed the re-inserted pivot");
         });
 
         QUnit.test("reinsert pivot with anchor on merge but not top left", async function (assert) {
@@ -246,7 +243,7 @@ QUnit.module(
             });
             selectCell(model, "A2"); // A1 and A2 are merged; select A2
             const { col, row } = toCartesian("A2");
-            assert.ok(model.getters.isInMerge(sheetId, col, row));
+            assert.ok(model.getters.isInMerge({ sheetId, col, row }));
             await doMenuAction(topbarMenuRegistry, reinsertPivotPath, env);
             assert.equal(
                 getCellFormula(model, "B2"),
@@ -320,7 +317,7 @@ QUnit.module(
                     ...webClient.env,
                     model,
                     services: {
-                        ...model.config.evalContext.env.services,
+                        ...model.config.external.env.services,
                         action: {
                             doAction: (params) => {
                                 assert.step(params.res_model);

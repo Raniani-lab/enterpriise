@@ -29,9 +29,8 @@ cellMenuRegistry.add("pivot_properties", {
     name: _lt("See pivot properties"),
     sequence: 170,
     action(env) {
-        const { col, row } = env.model.getters.getPosition();
-        const sheetId = env.model.getters.getActiveSheetId();
-        const pivotId = env.model.getters.getPivotIdFromPosition(sheetId, col, row);
+        const position = env.model.getters.getActivePosition();
+        const pivotId = env.model.getters.getPivotIdFromPosition(position);
         env.model.dispatch("SELECT_PIVOT", { pivotId });
         env.openSidePanel("PIVOT_PROPERTIES_PANEL", {});
     },

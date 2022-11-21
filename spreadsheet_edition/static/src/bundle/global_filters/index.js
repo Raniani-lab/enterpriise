@@ -45,16 +45,14 @@ cellMenuRegistry.add("use_global_filter", {
     name: _lt("Set as filter"),
     sequence: 175,
     action(env) {
-        const sheetId = env.model.getters.getActiveSheetId();
-        const { col, row } = env.model.getters.getPosition();
-        const cell = env.model.getters.getCell(sheetId, col, row);
+        const position = env.model.getters.getActivePosition();
+        const cell = env.model.getters.getCell(position);
         const filters = env.model.getters.getFiltersMatchingPivot(cell.content);
         env.model.dispatch("SET_MANY_GLOBAL_FILTER_VALUE", { filters });
     },
     isVisible: (env) => {
-        const sheetId = env.model.getters.getActiveSheetId();
-        const { col, row } = env.model.getters.getPosition();
-        const cell = env.model.getters.getCell(sheetId, col, row);
+        const position = env.model.getters.getActivePosition();
+        const cell = env.model.getters.getCell(position);
         if (!cell) {
             return false;
         }

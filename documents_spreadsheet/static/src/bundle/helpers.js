@@ -20,9 +20,9 @@ export async function getDataFromTemplate(env, orm, templateId) {
     data = base64ToJson(data);
 
     const model = new Model(migrate(data), {
-        dataSources: new DataSources(orm),
+        external: { dataSources: new DataSources(orm) },
     });
-    await model.config.dataSources.waitForAllLoaded();
+    await model.config.external.dataSources.waitForAllLoaded();
     const proms = [];
     for (const pivotId of model.getters.getPivotIds()) {
         proms.push(model.getters.getPivotDataSource(pivotId).prepareForTemplateGeneration());

@@ -43,7 +43,7 @@ QUnit.module(
             });
             // opening from a pivot cell
             const sheetId = model.getters.getActiveSheetId();
-            const pivotA3 = model.getters.getPivotIdFromPosition(sheetId, 0, 2);
+            const pivotA3 = model.getters.getPivotIdFromPosition({ sheetId, col: 0, row: 2 });
             await model.getters.getAsyncPivotDataSource(pivotA3);
             model.dispatch("SELECT_PIVOT", { pivotId: pivotA3 });
             env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
@@ -78,7 +78,7 @@ QUnit.module(
             assert.equal(dimensions.children[2].innerText, "Foo");
 
             // opening from a non pivot cell
-            const pivotA1 = model.getters.getPivotIdFromPosition(sheetId, 0, 0);
+            const pivotA1 = model.getters.getPivotIdFromPosition({ sheetId, col: 0, row: 0 });
             model.dispatch("SELECT_PIVOT", { pivotId: pivotA1 });
             env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
                 pivot: pivotA1,
@@ -98,7 +98,7 @@ QUnit.module(
             });
             // opening from a pivot cell
             const sheetId = model.getters.getActiveSheetId();
-            const pivotA3 = model.getters.getPivotIdFromPosition(sheetId, 0, 2);
+            const pivotA3 = model.getters.getPivotIdFromPosition({ sheetId, col: 0, row: 2 });
             model.dispatch("SELECT_PIVOT", { pivotId: pivotA3 });
             env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
                 pivot: pivotA3,
@@ -122,7 +122,7 @@ QUnit.module(
             });
             // opening from a pivot cell
             const sheetId = model.getters.getActiveSheetId();
-            const pivotA3 = model.getters.getPivotIdFromPosition(sheetId, 0, 2);
+            const pivotA3 = model.getters.getPivotIdFromPosition({ sheetId, col: 0, row: 2 });
             model.dispatch("SELECT_PIVOT", { pivotId: pivotA3 });
             env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
                 pivot: pivotA3,
@@ -145,7 +145,7 @@ QUnit.module(
             });
             // opening from a pivot cell
             const sheetId = model.getters.getActiveSheetId();
-            const pivotA3 = model.getters.getPivotIdFromPosition(sheetId, 0, 2);
+            const pivotA3 = model.getters.getPivotIdFromPosition({ sheetId, col: 0, row: 2 });
             model.dispatch("SELECT_PIVOT", { pivotId: pivotA3 });
             env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
                 pivot: pivotA3,
@@ -222,7 +222,7 @@ QUnit.module(
                     tag_ids: [],
                 });
                 const sheetId = model.getters.getActiveSheetId();
-                const pivotA3 = model.getters.getPivotIdFromPosition(sheetId, 0, 2);
+                const pivotA3 = model.getters.getPivotIdFromPosition({ sheetId, col: 0, row: 2 });
                 model.dispatch("SELECT_PIVOT", { pivotId: pivotA3 });
                 env.openSidePanel("PIVOT_PROPERTIES_PANEL", {});
                 await nextTick();
@@ -263,7 +263,7 @@ QUnit.module(
             const { model, env } = await createSpreadsheetFromPivotView();
             // opening from a pivot cell
             const sheetId = model.getters.getActiveSheetId();
-            const pivotA3 = model.getters.getPivotIdFromPosition(sheetId, 0, 2);
+            const pivotA3 = model.getters.getPivotIdFromPosition({ sheetId, col: 0, row: 2 });
             model.dispatch("SELECT_PIVOT", { pivotId: pivotA3 });
             env.openSidePanel("PIVOT_PROPERTIES_PANEL", {
                 pivot: pivotA3,

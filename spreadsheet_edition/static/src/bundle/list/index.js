@@ -29,15 +29,13 @@ cellMenuRegistry.add("listing_properties", {
     name: _lt("See list properties"),
     sequence: 190,
     action(env) {
-        const { col, row } = env.model.getters.getPosition();
-        const sheetId = env.model.getters.getActiveSheetId();
-        const listId = env.model.getters.getListIdFromPosition(sheetId, col, row);
+        const position = env.model.getters.getActivePosition();
+        const listId = env.model.getters.getListIdFromPosition(position);
         env.model.dispatch("SELECT_ODOO_LIST", { listId });
         env.openSidePanel("LIST_PROPERTIES_PANEL", {});
     },
     isVisible: (env) => {
-        const { col, row } = env.model.getters.getPosition();
-        const sheetId = env.model.getters.getActiveSheetId();
-        return env.model.getters.getListIdFromPosition(sheetId, col, row) !== undefined;
+        const position = env.model.getters.getActivePosition();
+        return env.model.getters.getListIdFromPosition(position) !== undefined;
     },
 });

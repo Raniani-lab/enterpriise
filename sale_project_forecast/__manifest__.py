@@ -18,6 +18,7 @@
         'views/planning_report_views.xml',
         'views/planning_slot_views.xml',
         'views/planning_templates.xml',
+        'views/product_template_views.xml',
     ],
     'auto_install': True,
     'license': 'OEEL-1',

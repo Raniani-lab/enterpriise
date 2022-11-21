@@ -1647,3 +1647,53 @@ class TestWorkOrder(common.TestMrpCommon):
         self.assertEqual(mo03.move_finished_ids.lot_ids, lot01)
         self.assertEqual(mo03.move_finished_ids.state, 'done')
         self.assertEqual(mo03.move_finished_ids.quantity_done, 1)
+
+    def test_backorder_with_reserved_qty_in_sublocation(self):
+        """
+        Let's produce a MO based on a BoM with a storable component C and a
+        workorder. There are some C available in a sublocation SL. The user
+        reserves the needed quantities, then processes a part of the MO and
+        creates a backorder. On the backorder, the production should be
+        pre-completed: the qty_producing should be set and the consumed quantity
+        of C should come from SL
+        """
+        location = self.location_1.child_ids[0]
+        compo = self.bom_4.bom_line_ids.product_id
+        compo.type = 'product'
+
+        self.env['stock.quant']._update_available_quantity(compo, location, 3)
+
+        mo_form = Form(self.env['mrp.production'])
+        mo_form.bom_id = self.bom_4
+        mo_form.product_qty = 3
+        mo = mo_form.save()
+        mo.action_confirm()
+        mo.action_assign()
+
+        self.assertEqual(mo.move_raw_ids.move_line_ids.reserved_uom_qty, 3)
+        self.assertEqual(mo.move_raw_ids.move_line_ids.location_id, location)
+
+        with Form(mo) as mo_form:
+            mo_form.qty_producing = 1
+
+        action = mo.button_mark_done()
+        backorder_form = Form(self.env[action['res_model']].with_context(**action['context']))
+        backorder_form.save().action_backorder()
+        backorder = mo.procurement_group_id.mrp_production_ids[1]
+
+        self.assertEqual(mo.move_raw_ids.move_line_ids.qty_done, 1)
+        self.assertEqual(mo.move_raw_ids.move_line_ids.location_id, location)
+        self.assertEqual(backorder.move_raw_ids.move_line_ids.reserved_uom_qty, 2)
+        self.assertEqual(backorder.move_raw_ids.move_line_ids.location_id, location)
+
+        with Form(backorder) as bo_form:
+            bo_form.qty_producing = 2
+        self.assertEqual(backorder.move_raw_ids.move_line_ids.qty_done, 2)
+        self.assertEqual(backorder.move_raw_ids.move_line_ids.location_id, location)
+
+        backorder.button_mark_done()
+
+        self.assertEqual(backorder.state, 'done')
+        self.assertEqual(backorder.move_raw_ids.state, 'done')
+        self.assertEqual(backorder.move_raw_ids.move_line_ids.qty_done, 2)
+        self.assertEqual(backorder.move_raw_ids.move_line_ids.location_id, location)

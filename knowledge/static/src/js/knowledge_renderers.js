@@ -247,14 +247,18 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                 // toggle on/off the classes that highlight the selected article
                 document.querySelectorAll(`[data-article-id="${this.resId}"] > div`).forEach((previousArticle) => {
                     previousArticle.classList.remove('o_article_active', 'fw-bold', 'text-900');
-                    previousArticle.querySelector('.o_article_emoji').classList
-                        .remove('o_article_emoji_active', 'text-900');
+                    const emoji = previousArticle.querySelector('.o_article_emoji');
+                    if (emoji) {
+                        emoji.classList.remove('o_article_emoji_active', 'text-900');
+                    }
                 });
 
                 document.querySelectorAll(`[data-article-id="${resId}"] > div`).forEach((currentArticle) => {
                     currentArticle.classList.add('o_article_active', 'fw-bold', 'text-900');
-                    currentArticle.querySelector('.o_article_emoji').classList
-                        .add('o_article_emoji_active', 'text-900');
+                    const emoji = currentArticle.querySelector('.o_article_emoji');
+                    if (emoji) {
+                        emoji.classList.add('o_article_emoji_active', 'text-900');
+                    }
                 });
 
                 // Force save if changes have been made before loading the new record

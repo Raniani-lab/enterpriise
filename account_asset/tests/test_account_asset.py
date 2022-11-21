@@ -1887,3 +1887,89 @@ class TestAccountAsset(TestAccountReportsCommon):
         ]
         options = self._generate_options(report, fields.Date.today() + relativedelta(months=-7, day=1), fields.Date.today())
         self.assertLinesValues(report._get_lines(options)[2:3], [0, 5, 6, 7, 8, 9, 10, 11, 12, 13], expected_values_closed_asset)
+
+    def test_depreciation_schedule_hierarchy(self):
+        # Remove previously existing assets.
+        assets = self.env['account.asset'].search([
+            ('company_id', '=', self.env.company.id),
+            ('state', '!=', 'model'),
+        ])
+        assets.state = 'draft'
+        assets.mapped('depreciation_move_ids').state = 'draft'
+        assets.unlink()
+
+        # Create the account groups.
+        self.env['account.group'].create([
+            {'name': 'Group 1', 'code_prefix_start': '1', 'code_prefix_end': '1'},
+            {'name': 'Group 11', 'code_prefix_start': '11', 'code_prefix_end': '11'},
+            {'name': 'Group 12', 'code_prefix_start': '12', 'code_prefix_end': '12'},
+        ])
+
+        # Create the accounts.
+        account_a, account_a1, account_b = self.env['account.account'].create([
+            {'code': '1100', 'name': 'Account A', 'account_type': 'asset_non_current'},
+            {'code': '1110', 'name': 'Account A1', 'account_type': 'asset_non_current'},
+            {'code': '1200', 'name': 'Account B', 'account_type': 'asset_non_current'},
+        ])
+
+        # Create and validate the assets, and post the depreciation entries.
+        self.env['account.asset'].create([
+            {
+                'account_asset_id': account_id,
+                'account_depreciation_id': account_id,
+                'account_depreciation_expense_id': self.company_data['default_account_expense'].id,
+                'journal_id': self.company_data['default_journal_misc'].id,
+                'asset_type': 'purchase',
+                'name': name,
+                'acquisition_date': fields.Date.from_string('2020-07-01'),
+                'original_value': original_value,
+                'method': 'linear',
+            }
+            for account_id, name, original_value in [
+                (account_a.id, 'ZenBook', 1250),
+                (account_a.id, 'ThinkBook', 1500),
+                (account_a1.id, 'XPS', 1750),
+                (account_b.id, 'MacBook', 2000),
+            ]
+        ]).validate()
+        self.env['account.move']._autopost_draft_entries()
+
+        # Configure the depreciation schedule report.
+        report = self.env.ref('account_asset.assets_report')
+        options = self._generate_options(report, '2022-01-01', '2022-12-31')
+        options['hierarchy'] = True
+        self.env.company.totals_below_sections = True
+
+        # Generate and compare actual VS expected values.
+        lines = [
+            {
+                'name': line['name'],
+                'level': line['level'],
+                'book_value': line['columns'][-1]['name']
+            }
+            for line in report._get_lines(options)
+        ]
+
+        expected_values = [
+            # pylint: disable=C0326
+            {'name': '1 Group 1',                   'level': 1,     'book_value': '$\xa05,200.00'},
+            {'name': '11 Group 11',                 'level': 2,     'book_value': '$\xa03,600.00'},
+            {'name': '1100 Account A',              'level': 3,     'book_value': '$\xa02,200.00'},
+            {'name': 'ZenBook',                     'level': 4,     'book_value': '$\xa01,000.00'},
+            {'name': 'ThinkBook',                   'level': 4,     'book_value': '$\xa01,200.00'},
+            {'name': 'Total 1100 Account A',        'level': 4,     'book_value': '$\xa02,200.00'},
+            {'name': '1110 Account A1',             'level': 3,     'book_value': '$\xa01,400.00'},
+            {'name': 'XPS',                         'level': 4,     'book_value': '$\xa01,400.00'},
+            {'name': 'Total 1110 Account A1',       'level': 4,     'book_value': '$\xa01,400.00'},
+            {'name': 'Total 11 Group 11',           'level': 3,     'book_value': '$\xa03,600.00'},
+            {'name': '12 Group 12',                 'level': 2,     'book_value': '$\xa01,600.00'},
+            {'name': '1200 Account B',              'level': 3,     'book_value': '$\xa01,600.00'},
+            {'name': 'MacBook',                     'level': 4,     'book_value': '$\xa01,600.00'},
+            {'name': 'Total 1200 Account B',        'level': 4,     'book_value': '$\xa01,600.00'},
+            {'name': 'Total 12 Group 12',           'level': 3,     'book_value': '$\xa01,600.00'},
+            {'name': 'Total 1 Group 1',             'level': 2,     'book_value': '$\xa05,200.00'},
+            {'name': 'Total',                       'level': 1,     'book_value': '$\xa05,200.00'},
+        ]
+
+        self.assertEqual(len(lines), len(expected_values))
+        self.assertEqual(lines, expected_values)

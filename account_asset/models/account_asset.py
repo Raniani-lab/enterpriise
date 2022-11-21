@@ -145,7 +145,10 @@ class AccountAsset(models.Model):
     @api.depends('company_id')
     def _compute_journal_id(self):
         for asset in self:
-            asset.journal_id = self.env['account.journal'].search([('type', '=', 'general'), ('company_id', '=', asset.company_id.id)], limit=1)
+            if asset.journal_id and asset.journal_id.company_id == asset.company_id:
+                asset.journal_id = asset.journal_id
+            else:
+                asset.journal_id = self.env['account.journal'].search([('type', '=', 'general'), ('company_id', '=', asset.company_id.id)], limit=1)
 
     @api.depends('salvage_value', 'original_value')
     def _compute_total_depreciable_value(self):

@@ -360,7 +360,7 @@
     .o_account_reports_domain_line_2 {
         margin-left: 30px;
     }
-    @for $i from 3 through 13 {
+    @for $i from 3 through 19 {
         .o_account_reports_domain_line_#{$i} {
             margin-left: ($i * 10px) + 10;
         }

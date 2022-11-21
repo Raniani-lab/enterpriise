@@ -34,43 +34,9 @@
                 <field name="create_uid" invisible="1"/>
                 <field name="is_article_visible_by_everyone" invisible="1"/>
                 <field name="is_article_visible" invisible="1"/>
-                <div class="o_knowledge_form_view d-flex h-100 border-top" t-ref="root" t-att-style="sidebarSize ? `--knowledge-article-sidebar-size: ${sidebarSize}px` : ''">
-                    <aside class="o_knowledge_aside d-print-none flex-shrink-0 p-0 bg-view">
-                        <div class="d-flex flex-column h-100">
-                            <!-- Search bar -->
-                            <div class="d-flex align-items-center gap-2 px-sm-3 px-3 ps-2 py-3">
-                                <a role="button" class="o_knowledge_burger_icon d-sm-none btn btn-light px-2 py-1">
-                                    <i class="fa fa-lg fa-bars" title="Toggle aside menu"/>
-                                </a>
-                                <a class="fa fa-2x fa-home d-inline-block me-2" href="/knowledge/home" groups="base.group_portal"
-                                    title="Home"/>
-                                <div id="knowledge_search_bar" data-hotkey="f"
-                                    class="d-flex align-items-center flex-grow-1 border bg-light rounded cursor-pointer">
-                                    <div class="flex-grow-1 px-2 py-1">Search an article...</div>
-                                    <i class="oi oi-search pe-2" title="search"/>
-                                </div>
-                            </div>
-                            <!-- File explorer -->
-                            <div class="flex-grow-1 position-relative">
-                                <div class="o_scroll_view d-flex flex-column">
-                                    <div class="o_knowledge_tree user-select-none mx-3" t-ref="tree">
-                                        <div class="p-5 text-center">
-                                            <i class="fa fa-circle-o-notch fa-2x fa-spin" title="loader" role="img"/>
-                                        </div>
-                                    </div>
-                                    <div class="o_section o_knowledge_management_tools mt-auto" groups="base.group_user">
-                                        <a href="#" role="button" class="o_knowledge_load_template_btn btn btn-light w-100 fw-normal text-black text-start text-truncate">
-                                            <i class="fa fa-fw fs-6 fa-image me-1"/>
-                                            <span>Browse Templates</span>
-                                        </a>
-                                        <button class="btn btn-light w-100 fw-normal text-black text-start text-truncate" type="action" name="%(knowledge_article_action_trashed)d">
-                                            <i class="fa fa-fw fs-6 fa-trash me-1"/>
-                                            <span>Open the Trash</span>
-                                        </button>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                <div class="o_knowledge_form_view d-flex h-100 border-top">
+                    <aside class="o_knowledge_aside d-print-none user-select-none bg-view">
+                        <widget name="knowledge_sidebar" />
                     </aside>
                     <div class="o_knowledge_main flex-grow-1 position-relative min-w-0">
                         <div class="d-flex flex-column h-100">
@@ -109,17 +75,15 @@
                                                 <!-- Article body -->
                                                 <div class="o_knowledge_body d-flex flex-column"
                                                      attrs="{'invisible': [('id', '=', False)]}">
+                                                     <!-- Full Width handling -->
+                                                     <span class="o_knowledge_article_view_form_dynamic_width d-none"
+                                                           attrs="{'invisible': [('full_width', '=', True)]}"/>
                                                     <!-- Article Cover -->
                                                     <field name="cover_image_url" invisible="1" />
                                                     <field name="cover_image_position" invisible="1" />
-                                                    <widget name="knowledge_cover"/>
-                                                    <!-- Full Width handling -->
-                                                    <span class="o_knowledge_article_view_form_dynamic_width d-none"
-                                                          attrs="{'invisible': [('full_width', '=', True)]}"/>
-
+                                                    <widget name="knowledge_cover" attrs="{'invisible': [('cover_image_id', '=', False)]}"/>
                                                     <!-- Article Icon -->
-                                                    <field name="icon" widget="knowledge_icon" attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)]}" class="o_knowledge_icon" />
-                                                    <field name="category" invisible="1"/>
+                                                    <field name="icon" widget="knowledge_icon" attrs="{'readonly': ['|', '|', ('is_locked', '=', True), ('user_can_write', '=', False), ('active', '=', False)], 'invisible': [('icon', '=', False)]}" class="o_knowledge_icon o_large mt-n3 mb-n4"/>
                                                     <!-- Article body -->
                                                     <div class="o_knowledge_editor mt-3">
                                                         <field name="body" widget="knowledge_article_html_field" class="o_field_html" no_label="1" groups="base.group_user"
@@ -155,10 +119,6 @@
                                     </div>
                                 </div>
                             </div>
-                        </div>
-                        <div class="o_knowledge_article_form_resizer d-print-none d-none d-sm-block px-1 opacity-75 opacity-100-hover"
-                             t-on-pointerdown.prevent="ev => this.resizeSidebar(this.root.el, true)">
-                            <span class="bg-300 ps-1"/>
                         </div>
                     </div>
                     <div class="o_knowledge_backdrop cursor-pointer"/>

@@ -127,8 +127,7 @@ class KnowledgeController(http.Controller):
     # ------------------------
 
     def _prepare_articles_tree_html_values(self, active_article_id, unfolded_articles_ids=False, unfolded_favorite_articles_ids=False):
-        """ Prepares all the info needed to render the article tree view side panel
-        and returns the rendered given template with those values.
+        """ Prepares all the info needed to render the article tree view side panel in portal
 
         :param int active_article_id: used to highlight the given article_id in the template;
         :param unfolded_articles_ids: List of IDs used to display the children
@@ -138,91 +137,41 @@ class KnowledgeController(http.Controller):
         :param unfolded_favorite_articles_ids: same as ``unfolded_articles_ids``
           but specific for 'Favorites' tree.
         """
-        unfolded_articles_ids = set(unfolded_articles_ids or [])
-        unfolded_favorite_articles_ids = set(unfolded_favorite_articles_ids or [])
-        existing_ids = self._article_ids_exists(unfolded_articles_ids | unfolded_favorite_articles_ids)
-        unfolded_articles_ids = unfolded_articles_ids & existing_ids
-        unfolded_favorite_articles_ids = unfolded_favorite_articles_ids & existing_ids
-        descendant_ids = []
-
-        active_article_ancestor_ids = []
-        if active_article_id:
-            # determine the hierarchy to unfold based on parent_path and as sudo
-            # this helps avoiding to actually fetch ancestors
-            # this will not leak anything as it's just a set of IDS
-            # displayed articles ACLs are correctly checked here below
-            active_article = request.env['knowledge.article'].sudo().browse(active_article_id)
-            descendant_ids = active_article._get_descendants().ids
-            active_article_ancestor_ids = active_article._get_ancestor_ids()
-            unfolded_articles_ids |= active_article_ancestor_ids
-
-        # fetch root article_ids as sudo, ACLs will be checked on next global call fetching 'all_visible_articles'
-        # this helps avoiding 2 queries done for ACLs (and redundant with the global fetch)
-        root_article_ids = request.env["knowledge.article"].sudo().search([("parent_id", "=", False)]).ids
+        root_articles_ids = request.env['knowledge.article'].sudo().search(
+            [("parent_id", "=", False)]
+        ).ids
 
         favorites_sudo = request.env['knowledge.article.favorite'].sudo()
         if not request.env.user._is_public():
-            favorites_sudo = request.env['knowledge.article.favorite'].sudo().search([
-                ("user_id", "=", request.env.user.id), ('is_article_active', '=', True)
-            ])
-
-        # Fetch all visible articles at once instead of going down the hierarchy in the template
-        # using successive 'child_ids' field calls.
-        # This allows to benefit from batch computation (ACLs, computes, ...).
-        # We filter within the template based on the "parent_id" field to get the article children.
-        all_visible_articles = request.env['knowledge.article']
-        all_visible_articles_ids = unfolded_articles_ids | unfolded_favorite_articles_ids | set(root_article_ids)
-        visible_favorite_article_ids = favorites_sudo.article_id.ids
-        force_visibility_ids = visible_favorite_article_ids + descendant_ids + [active_article_id]
-        all_visible_article_domains = expression.OR([
-            [
-                ('id', 'child_of', all_visible_articles_ids),
-                ('is_article_item', '=', False),
-                # This filter is not necessary for the frontend users
-                ('is_article_visible', '=', True) if not request.env.user.share else expression.TRUE_LEAF,
-            ],
-            [('id', 'in', force_visibility_ids)],
-        ])
-        if all_visible_articles_ids:
-            all_visible_articles = request.env['knowledge.article'].search(
-                all_visible_article_domains,
-                order='sequence, id',
+            favorites_sudo = favorites_sudo.search(
+                [("user_id", "=", request.uid), ('is_article_active', '=', True)]
             )
+            # Add favorite articles, which are root articles in the favorite tree
+            root_articles_ids += favorites_sudo.article_id.ids
+
+        active_article_ancestor_ids = []
+        unfolded_ids = (unfolded_articles_ids or []) + (unfolded_favorite_articles_ids or [])
+
+        # Add active article and its parents in list of unfolded articles
+        active_article = request.env['knowledge.article'].sudo().browse(active_article_id)
+        if active_article and active_article.parent_id:
+            active_article_ancestor_ids = active_article._get_ancestor_ids()
+            unfolded_ids += active_article_ancestor_ids
+
+        all_visible_articles = request.env['knowledge.article'].get_visible_articles(root_articles_ids, unfolded_ids)
         root_articles = all_visible_articles.filtered(lambda article: not article.parent_id)
 
-        user_write_access_by_article = {
-            article.id: article.user_can_write
-            for article in all_visible_articles
-        }
-
-        values = {
+        return {
             "active_article_id": active_article_id,
             "active_article_ancestor_ids": active_article_ancestor_ids,
             "articles_displayed_limit": self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
             "articles_displayed_offset": 0,
             "all_visible_articles": all_visible_articles,
-            "user_write_access_by_article": user_write_access_by_article,
-            "workspace_articles": root_articles.filtered(lambda article:
-                article.category == 'workspace' and (article.id not in visible_favorite_article_ids or article.is_article_visible)),
-            "shared_articles": root_articles.filtered(lambda article: article.category == 'shared'),
-            "private_articles": root_articles.filtered(
-                lambda article: article.category == "private" and article.user_has_write_access),
-            "unfolded_articles_ids": unfolded_articles_ids,
+            "root_articles": root_articles,
+            "unfolded_articles_ids": unfolded_ids,
             "unfolded_favorite_articles_ids": unfolded_favorite_articles_ids,
-            'readonly_mode': request.env.user._is_public(),
             "favorites_sudo": favorites_sudo,
         }
-
-        return values
-
-    @http.route('/knowledge/tree_panel', type='json', auth='user')
-    def get_tree_panel_all(self, active_article_id=False, unfolded_articles_ids=False, unfolded_favorite_articles_ids=False):
-        template_values = self._prepare_articles_tree_html_values(
-            active_article_id,
-            unfolded_articles_ids=unfolded_articles_ids,
-            unfolded_favorite_articles_ids=unfolded_favorite_articles_ids,
-        )
-        return request.env['ir.qweb']._render('knowledge.knowledge_article_tree', template_values)
 
     @http.route('/knowledge/tree_panel/portal', type='json', auth='public')
     def get_tree_panel_portal(self, active_article_id=False, unfolded_articles_ids=False, unfolded_favorite_articles_ids=False):
@@ -257,7 +206,7 @@ class KnowledgeController(http.Controller):
         values = {
             "search_tree": True, # Display the flatenned tree instead of the basic tree with sections
             "active_article_id": active_article_id,
-            'readonly_mode': request.env.user._is_public(),
+            "articles_displayed_limit": self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
             'articles': all_visible_articles,
         }
 
@@ -276,12 +225,7 @@ class KnowledgeController(http.Controller):
             'articles': articles,
             "articles_displayed_limit": self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
             "articles_displayed_offset": 0,
-            'readonly_mode': request.env.user._is_public(),  # used to bypass access check (to speed up loading)
-            "user_write_access_by_article": {
-                article.id: article.user_can_write
-                for article in articles
-            },
-            "has_parent": True
+            "has_parent": True,
         })
 
     @http.route('/knowledge/tree_panel/favorites', type='json', auth='user')
@@ -308,19 +252,14 @@ class KnowledgeController(http.Controller):
             "all_visible_articles": all_visible_articles,
             "articles_displayed_limit": self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
             "unfolded_favorite_articles_ids": unfolded_favorite_articles_ids,
-            "readonly_mode": request.env.user._is_public(),  # used to bypass access check (to speed up loading)
-            "user_write_access_by_article": {
-                article.id: article.user_can_write
-                for article in all_visible_articles
-            },
         })
 
     @http.route('/knowledge/tree_panel/load_more', type='json', auth='user')
-    def tree_panel_load_more(self, category, limit, offset, active_article_id=False, parent_id=False):
+    def tree_panel_load_more(self, limit, offset, active_article_id=False, parent_id=False, **kwargs):
         """" Route called when loading more articles in a particular sub-tree.
 
-        Fetching is done based either on a parent, either a category when no parent is given
-        (in which case we retrieve the root articles of that category).
+        Fetching is done based either on a parent, either on root articles when no parent is
+        given.
         "limit" and "offset" allow controlling the returned result size.
 
         In addition, if we receive an 'active_article_id', it is forcefully displayed even if not
@@ -333,14 +272,9 @@ class KnowledgeController(http.Controller):
         if parent_id:
             parent_id = int(parent_id)
             articles_domain = [('parent_id', '=', parent_id)]
-        elif category:
-            # need to know in which category we are and filter accordingly
-            articles_domain = [
-                ('parent_id', '=', False),
-                ('category', '=', category),
-            ]
         else:
-            raise werkzeug.exceptions.BadRequest()
+            # root articles
+            articles_domain = self._get_load_more_roots_domain(**kwargs)
 
         offset = int(offset)
         limit = int(limit)
@@ -386,19 +320,19 @@ class KnowledgeController(http.Controller):
             "active_article_id": active_article_id,
             "active_article_ancestor_ids": active_article_ancestor_ids,
             "articles": articles,
-            "articles_category": category,
             "articles_count": articles_left_count,
             "articles_displayed_limit": self._KNOWLEDGE_TREE_ARTICLES_LIMIT,
             "articles_displayed_offset": offset,
             "has_parent": bool(parent_id),
             "force_show_active_article": force_show_active_article,
-            "readonly_mode": not request.env.user.has_group('base.group_user'),  # used to bypass access check (to speed up loading)
             "unfolded_articles_ids": unfolded_articles_ids,
-            "user_write_access_by_article": {
-                article.id: article.user_can_write
-                for article in articles
-            },
         })
+
+    def _get_load_more_roots_domain(self, **kwargs):
+        """Only one section when website is not installed, so the only
+        condition is that the articles are root articles.
+        """
+        return [('parent_id', '=', False)]
 
     @staticmethod
     def _article_ids_exists(articles_ids):
@@ -499,9 +433,8 @@ class KnowledgeController(http.Controller):
     def article_set_member_permission(self, article_id, permission, member_id=False, inherited_member_id=False):
         """ Sets the permission of the given member for the given article.
 
-        The returned result can also include a `reload_tree` entry that tells the
-        caller that the aside block listing all articles should be reloaded. This
-        happens when the article moves from one section to another.
+        The returned result can also include a `new_category` entry that tells the
+        caller that the article changed category.
 
         **Note**: The user needs "write" permission to change the permission of a user.
 
@@ -527,7 +460,7 @@ class KnowledgeController(http.Controller):
             return {'error': _("You cannot change the permission of this member.")}
 
         if article.category != previous_category:
-            return {'reload_tree': True}
+            return {'new_category': True}
 
         return {}
 
@@ -535,9 +468,8 @@ class KnowledgeController(http.Controller):
     def article_remove_member(self, article_id, member_id=False, inherited_member_id=False):
         """ Removes the given member from the given article.
 
-        The returned result can also include a `reload_tree` entry that tells the
-        caller that the aside block listing all articles should be reloaded. This
-        happens when the article moves from one section to another.
+        The returned result can also include a `new_category` entry that tells the
+        caller that the article changed category.
 
         **Note**: The user needs "write" permission to remove another member from
         the list. The user can always remove themselves from the list.
@@ -567,8 +499,9 @@ class KnowledgeController(http.Controller):
             # As a result, user won't see the article anymore and the home page
             # should be fully reloaded to open the first 'available' article.
             return {'reload_all': True}
-        elif article.category != previous_category:
-            return {'reload_tree': True}
+
+        if article.category != previous_category:
+            return {'new_category': True}
 
         return {}
 
@@ -576,9 +509,8 @@ class KnowledgeController(http.Controller):
     def article_set_internal_permission(self, article_id, permission):
         """ Sets the internal permission of the given article.
 
-        The returned result can also include a `reload_tree` entry that tells the
-        caller that the aside block listing all articles should be reloaded. This
-        happens when the article moves from one section to another.
+        The returned result can also include a `new_category` entry that tells the
+        caller that the article changed category.
 
         **Note**: The user needs "write" permission to update the internal permission
         of the article.
@@ -599,5 +531,6 @@ class KnowledgeController(http.Controller):
             return {'error': _("You cannot change the internal permission of this article.")}
 
         if article.category != previous_category:
-            return {'reload_tree': True}
+            return {'new_category': True}
+
         return {}

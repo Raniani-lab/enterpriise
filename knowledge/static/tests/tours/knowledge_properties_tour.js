@@ -2,7 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { stepUtils } from "@web_tour/tour_service/tour_utils";
-import { moveArticle } from './knowledge_main_flow_tour';
+import { dragAndDropArticle } from './knowledge_tour_utils';
 
 registry.category("web_tour.tours").add('knowledge_properties_tour', {
     test: true,
@@ -45,7 +45,7 @@ registry.category("web_tour.tours").add('knowledge_properties_tour', {
 }, { // wait InheritPropertiesArticle loading and move InheritPropertiesArticle under ParentArticle
     trigger: '.breadcrumb .active:contains("InheritPropertiesArticle")',
     run: () => {
-        moveArticle(
+        dragAndDropArticle(
             $('.o_article_handle:contains("InheritPropertiesArticle")'),
             $('.o_article_handle:contains("ChildArticle")'),
         );

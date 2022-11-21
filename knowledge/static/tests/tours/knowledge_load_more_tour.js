@@ -1,7 +1,6 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
-import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
 /**
  * Returns the jQuery selector to find the nth element in the specified depth.
@@ -48,9 +47,6 @@ const findArticleNodeNyName = (name) => {
  * Etc. until everything is displayed.
  */
 const LOAD_MORE_SIMPLE_STEPS = [{
-    // open Knowledge App
-    trigger: '.o_app[data-menu-xmlid="knowledge.knowledge_menu_root"]',
-}, {
     // check first article is displayed
     trigger: getNthArticleSelector(1, 0),
     run: () => {},
@@ -60,21 +56,21 @@ const LOAD_MORE_SIMPLE_STEPS = [{
     run: () => {},
 }, {
     // check that the 51th article is NOT displayed, a bit tricky
-    trigger: 'section[data-section="workspace"]',
+    trigger: 'ul.o_tree_workspace',
     run: () => {
         const article51 = findArticleNodeNyName("Root Article 50");
         if (!article51) {
-            document.querySelector('section[data-section="workspace"]').classList.add(
+            document.querySelector('ul.o_tree_workspace').classList.add(
                 'knowledge_load_more_tour_step_root_51_success');
         }
     }
 }, {
     // check our previous step succeeded
-    trigger: 'section[data-section="workspace"].knowledge_load_more_tour_step_root_51_success',
+    trigger: 'ul.o_tree_workspace.knowledge_load_more_tour_step_root_51_success',
     run: () => {},
 }, {
     // click to load more articles
-    trigger: 'section[data-section="workspace"] > ul .o_knowledge_article_load_more',
+    trigger: 'ul.o_tree_workspace .o_knowledge_article_load_more',
 }, {
     // check 51th article is displayed
     trigger: getNthArticleSelector(51, 0),
@@ -85,36 +81,36 @@ const LOAD_MORE_SIMPLE_STEPS = [{
     run: () => {},
 }, {
     // check that the 101th article is NOT displayed, a bit tricky
-    trigger: 'section[data-section="workspace"]',
+    trigger: 'ul.o_tree_workspace',
     run: () => {
         const article101 = findArticleNodeNyName("Root Article 100");
         if (!article101) {
-            document.querySelector('section[data-section="workspace"]').classList.add(
+            document.querySelector('ul.o_tree_workspace').classList.add(
                 'knowledge_load_more_tour_step_root_101_success');
         }
     }
 }, {
     // check our previous step succeeded
-    trigger: 'section[data-section="workspace"].knowledge_load_more_tour_step_root_101_success',
+    trigger: 'ul.o_tree_workspace.knowledge_load_more_tour_step_root_101_success',
     run: () => {},
 }, {
     // check that there is only a single "load more" button
-    trigger: 'section[data-section="workspace"]',
+    trigger: 'ul.o_tree_workspace',
     run: () => {
         const loadMoreButtons = document.querySelectorAll(
-            'section[data-section="workspace"] > ul .o_knowledge_article_load_more');
+            'ul.o_tree_workspace .o_knowledge_article_load_more');
         if (loadMoreButtons.length === 1) {
-            document.querySelector('section[data-section="workspace"]').classList.add(
+            document.querySelector('ul.o_tree_workspace').classList.add(
                 'knowledge_load_more_tour_step_single_button_success');
         }
     }
 }, {
     // check our previous step succeeded
-    trigger: 'section[data-section="workspace"].knowledge_load_more_tour_step_single_button_success',
+    trigger: 'ul.o_tree_workspace.knowledge_load_more_tour_step_single_button_success',
     run: () => {},
 }, {
     // click to load more articles
-    trigger: 'section[data-section="workspace"] > ul .o_knowledge_article_load_more',
+    trigger: 'ul.o_tree_workspace .o_knowledge_article_load_more',
 }, {
     // check 101th article is displayed
     trigger: getNthArticleSelector(101, 0),
@@ -125,25 +121,25 @@ const LOAD_MORE_SIMPLE_STEPS = [{
     run: () => {},
 }, {
     // click to load more articles
-    trigger: 'section[data-section="workspace"] > ul .o_knowledge_article_load_more',
+    trigger: 'ul.o_tree_workspace .o_knowledge_article_load_more',
 }, {
     // check 153th article is displayed (last article of this sub-tree)
     trigger: getNthArticleSelector(153, 0),
     run: () => {},
 }, {
     // check that we hide "load more" as we loaded everything in that sub-tree
-    trigger: 'section[data-section="workspace"]',
+    trigger: 'ul.o_tree_workspace',
     run: () => {
         const loadMoreButtons = document.querySelectorAll(
-            'section[data-section="workspace"] > ul .o_knowledge_article_load_more');
+            'ul.o_tree_workspace .o_knowledge_article_load_more');
         if (loadMoreButtons.length === 0) {
-            document.querySelector('section[data-section="workspace"]').classList.add(
+            document.querySelector('ul.o_tree_workspace').classList.add(
                 'knowledge_load_more_tour_step_no_button_success');
         }
     }
 }, {
     // check our previous step succeeded
-    trigger: 'section[data-section="workspace"].knowledge_load_more_tour_step_no_button_success',
+    trigger: 'ul.o_tree_workspace.knowledge_load_more_tour_step_no_button_success',
     run: () => {},
 }];
 
@@ -166,19 +162,10 @@ const LOAD_MORE_SIMPLE_STEPS = [{
  * sub-tree.
  */
 const LOAD_MORE_ADVANCED_STEPS = [{
-    trigger: 'a[data-menu-xmlid="knowledge.knowledge_menu_article"]',
-}, {
-    trigger: 'input.o_searchview_input',
+    trigger: 'input.knowledge_search_bar',
     run: 'text Grand-Child Article 218',
 }, {
-    trigger: 'input.o_searchview_input',
-    run: () => {
-        document.querySelector('input.o_searchview_input')
-            .dispatchEvent(new KeyboardEvent('keydown', {key: 'Enter', which: 13, bubbles: true}));
-    },
-}, {
-    trigger: 'tr.o_data_row td[name="display_name"]',
-    run: 'click',
+    trigger: 'ul.o_search_tree .o_article a',
 }, {
     // check first article is displayed
     trigger: getNthArticleSelector(1, 0),
@@ -281,9 +268,7 @@ const LOAD_MORE_ADVANCED_STEPS = [{
 
 registry.category("web_tour.tours").add('knowledge_load_more_tour', {
     test: true,
-    url: '/web',
     steps: [
-        stepUtils.showAppsMenuItem(),
         ...LOAD_MORE_SIMPLE_STEPS,
         ...LOAD_MORE_ADVANCED_STEPS,
     ]

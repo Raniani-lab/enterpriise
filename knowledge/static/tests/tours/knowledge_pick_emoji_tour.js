@@ -44,6 +44,6 @@ registry.category("web_tour.tours").add('knowledge_pick_emoji_tour', {
     run: () => {},
 }, {
     // check that the emoji has been properly changed in the aside block
-    trigger: '.o_knowledge_aside .o_article_emoji_active:contains(😃)',
+    trigger: '.o_knowledge_aside .o_article_emoji:contains(😃)',
     run: () => {}
 }]});

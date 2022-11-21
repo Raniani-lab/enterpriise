@@ -2,8 +2,8 @@
 <templates xml:space="preserve">
     <t t-name="knowledge.MoveArticleDialog" owl="1">
         <Dialog size="size" title="title">
-            <t t-if="props.articleName">
-                Move "<span t-out="props.articleName" class="fw-bold"/>" under:
+            <t t-if="props.record.data.display_name">
+                Move "<span t-out="props.record.data.display_name" class="fw-bold"/>" under:
             </t>
             <t t-else="">
                 Move the untitled article under:

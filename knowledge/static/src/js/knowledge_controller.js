@@ -60,11 +60,6 @@ export class KnowledgeArticleFormController extends FormController {
             }
         }
         this.model.root.update({name});
-        // Update name in the sidebar (TODO: remove when sidebar component)
-        const selector = `.o_article[data-article-id="${this.model.root.resId}"] > .o_article_handle > div > .o_article_name`;
-        this.root.el.querySelectorAll(selector).forEach(articleName => {
-            articleName.textContent = name || this.env._t("Untitled");
-        });
     }
 
     /**

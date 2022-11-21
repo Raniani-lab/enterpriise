@@ -48,7 +48,7 @@ export class PermissionPanel extends Component {
     loadData () {
         return this.rpc("/knowledge/get_article_permission_panel_data",
             {
-                article_id: this.props.article_id
+                article_id: this.props.record.resId
             }
         );
     }
@@ -68,30 +68,16 @@ export class PermissionPanel extends Component {
         return member.partner_id === session.partner_id;
     }
 
-    /**
-     * Opens the article with the given id
-     * @param {integer} id
-     */
-    openArticle (id) {
-        this.actionService.doAction('knowledge.ir_actions_server_knowledge_home_page', {
-            stackPosition: 'replaceCurrentAction',
-            additionalContext: {
-                res_id: id
-            }
-        });
-    }
-
     _onInviteMembersClick () {
+        this.env._saveIfDirty();
         this.actionService.doAction('knowledge.knowledge_invite_action_from_article', {
-            additionalContext: {active_id: this.props.article_id},
+            additionalContext: {active_id: this.props.record.resId},
             onClose: async () => {
-                const prevCategory = this.state.category;
                 // Update panel content
                 await this.loadPanel();
-                if (this.state.category !== prevCategory) {
-                    // Update sidebar to show article in correct category
-                    this.props.renderTree(this.props.article_id, '/knowledge/tree_panel');
-                }
+                // Reload record
+                this.env.model.load();
+                
             }
         });
     }
@@ -113,7 +99,7 @@ export class PermissionPanel extends Component {
         const confirm = async () => {
             const res = await this.rpc('/knowledge/article/set_internal_permission',
                 {
-                    article_id: this.props.article_id,
+                    article_id: this.props.record.resId,
                     permission: newPermission,
                 }
             );
@@ -157,13 +143,13 @@ export class PermissionPanel extends Component {
         const confirm = async () => {
             const res = await this.rpc('/knowledge/article/set_member_permission',
                 {
-                    article_id: this.props.article_id,
+                    article_id: this.props.record.resId,
                     permission: newPermission,
                     member_id: member.based_on ? false : member.id,
                     inherited_member_id: member.based_on ? member.id: false,
                 }
             );
-            const reloadArticleId = willLoseWrite && !willLoseAccess ? this.props.article_id : false;
+            const reloadArticleId = willLoseWrite && !willLoseAccess ? this.props.record.resId : false;
             if (this._onChangedPermission(res, willLoseAccess || willLoseWrite, reloadArticleId)) {
                 this.loadPanel();
             }
@@ -173,7 +159,7 @@ export class PermissionPanel extends Component {
             await confirm();
             if (willGainWrite) {
                 // Reload article when admin gives himself write access
-                this.openArticle(this.props.article_id);
+                this.env.model.load();
             }
             return;
         }
@@ -187,15 +173,6 @@ export class PermissionPanel extends Component {
         const title = willLoseAccess ? _t('Leave Article') : _t('Change Permission');
         const confirmLabel = willLoseAccess ? _t('Lose Access') : _t('Restrict own access');
         this._showConfirmDialog(message, title, { confirmLabel, confirm, cancel: discard } );
-    }
-
-    /**
-     * @param {Event} event
-     * @param {integer} id - article id
-     */
-    _onOpen (event, id) {
-        event.preventDefault();
-        this.openArticle(id);
     }
 
     /**
@@ -213,7 +190,7 @@ export class PermissionPanel extends Component {
         const confirm = async () => {
             const res = await this.rpc('/knowledge/article/remove_member',
                 {
-                    article_id: this.props.article_id,
+                    article_id: this.props.record.resId,
                     member_id: member.based_on ? false : member.id,
                     inherited_member_id: member.based_on ? member.id: false,
                 }
@@ -253,7 +230,7 @@ export class PermissionPanel extends Component {
      * @param {Event} event
      */
     _onRestore (event) {
-        const articleId = this.props.article_id;
+        const articleId = this.props.record.resId;
         const confirm = async () => {
             const res = await this.orm.call(
                 'knowledge.article',
@@ -321,41 +298,44 @@ export class PermissionPanel extends Component {
     * @param {Dict} result
     * @param {Boolean} lostAccess
     */
-    _onChangedPermission (result, reloadAll, reloadArticleId) {
+    async _onChangedPermission (result, reloadAll, reloadArticleId) {
         if (result.error) {
             this.dialog.add(AlertDialog, {
                 title: _t("Error"),
                 body: result.error,
             });
         } else if (reloadAll && reloadArticleId) {  // Lose write access
-            this.openArticle(reloadArticleId);
+            if (this.props.record.isDirty) {
+                await this.props.record.save({noReload: true});
+            }
+            await this.env.model.load();
             return false;
         } else if (reloadAll) {  // Lose access -> Hard Reload
             window.location.replace('/knowledge/home');
-        } else if (result.reload_tree) {
-            this.props.renderTree(this.props.article_id, '/knowledge/tree_panel');
+        } else if (result.new_category) {
+            if (this.props.record.isDirty) {
+                await this.props.record.save();
+            }
+            await this.env.model.load();
         }
         return true;
     }
 
     async _onChangeVisibility (event) {
         const $input = $(event.target);
-        const articleId = this.props.article_id;
+        const articleId = this.props.record.resId;
         await this.orm.call(
             'knowledge.article',
             'set_is_article_visible_by_everyone',
             [articleId, $input.val() === 'everyone']
         );
-        this.openArticle(articleId);
+        await this.props.record.load();
     }
 }
 
 PermissionPanel.template = 'knowledge.PermissionPanel';
-PermissionPanel.props = [
-    'article_id',
-    'user_permission',
-    'record',
-    'renderTree', // ADSC: remove when tree component
-];
+PermissionPanel.props = {
+    record: Object,
+};
 
 export default PermissionPanel;

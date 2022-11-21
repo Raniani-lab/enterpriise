@@ -12,10 +12,10 @@
                     <i class="fa fa-shield fa-2x"/>
                 </div>
                 <div class="px-3">Access Restricted. May not be shared with everyone from
-                    <a href="#" t-if="state.parent_id" t-on-click="event => this._onOpen(event, state.parent_id)" t-out="state.parent_name"/>
+                    <a href="#" t-if="state.parent_id" t-on-click.prevent="() => env.openArticle(state.parent_id)" t-out="state.parent_name"/>
                     <span t-else="" t-out="state.parent_name"/>
                 </div>
-                <button t-if="(props.user_permission === 'write' and isInternalUser) || state.user_is_admin"
+                <button t-if="(props.record.data.user_permission === 'write' and isInternalUser) || state.user_is_admin"
                     class="btn btn-link" t-on-click="event => this._onRestore(event)" type="button">Restore</button>
             </div>
             <div class="d-flex align-items-center px-3 py-1" t-if="isInternalUser">
@@ -28,7 +28,7 @@
                     <div class="text-truncate">Default Access Rights</div>
                     <div t-if="state.based_on" class="text-truncate text-muted">
                         Based on
-                        <a href="#" t-if="state.based_on_id" t-on-click="event => this._onOpen(event, state.based_on_id)" t-out="state.based_on"/>
+                        <a href="#" t-if="state.based_on_id" t-on-click.prevent="() => env.openArticle(state.based_on_id)" t-out="state.based_on"/>
                         <span t-else="" t-out="state.based_on"/>
                     </div>
                 </div>
@@ -36,7 +36,7 @@
                     <select class="o_permission form-select rounded"
                         t-att-value="state.internal_permission"
                         t-on-change="_onChangeInternalPermission"
-                        t-att-disabled="state.user_is_admin || props.user_permission === 'write' ? undefined : 'disabled'"
+                        t-att-disabled="state.user_is_admin || props.record.data.user_permission === 'write' ? undefined : 'disabled'"
                         aria-label="Internal Permission">
                         <t t-foreach="this.getInternalPermissionOptions()" t-as="option" t-key="option_index">
                             <option t-att-value="option[0]" t-out="option[1]" t-att-selected="option[0] === state.internal_permission ? 'selected' : undefined"/>
@@ -56,7 +56,7 @@
                     <select class="o_permission form-select rounded"
                         t-att-value="state.is_article_visible_by_everyone ? 'join': 'everyone'"
                         t-on-change="_onChangeVisibility"
-                        t-att-disabled="state.user_is_admin || props.user_permission === 'write' ? undefined : 'disabled'"
+                        t-att-disabled="state.user_is_admin || props.record.data.user_permission === 'write' ? undefined : 'disabled'"
                         aria-label="Visibility">
                         <option t-att-value="'join'" t-att-selected="!state.is_article_visible_by_everyone ? 'selected' : undefined">
                             Members
@@ -68,7 +68,7 @@
                 </div>
             </div>
             <div class="dropdown-divider" t-if="isInternalUser"/>
-            <div t-if="props.user_permission === 'write' and isInternalUser" class="o_knowledge_share_panel_invite d-flex align-items-center px-3 py-1">
+            <div t-if="props.record.data.user_permission === 'write' and isInternalUser" class="o_knowledge_share_panel_invite d-flex align-items-center px-3 py-1">
                 <div class="o_knowledge_share_panel_icon rounded-circle d-flex flex-shrink-0 justify-content-center align-items-center bg-light">
                     <i class="fa fa-user-plus fs-3" title="Invite People"/>
                 </div>
@@ -99,21 +99,21 @@
                         </div>
                         <div t-if="member.based_on" class="text-truncate text-muted">
                             Based on
-                            <a href="#" t-if="member.based_on_id" t-on-click="event => this._onOpen(event, member.based_on_id)" t-out="member.based_on"/>
+                            <a href="#" t-if="member.based_on_id" t-on-click.prevent="() => env.openArticle(member.based_on_id)" t-out="member.based_on"/>
                             <span t-else="" t-out="member.based_on"/>
                         </div>
                     </div>
                     <div class="flex-shrink-0">
                         <div class="input-group">
                             <div t-if="!(member.based_on and member.permission === 'none')
-                                        and (state.user_is_admin || props.user_permission === 'write' || this.isLoggedUser(member))"
+                                        and (state.user_is_admin || props.record.data.user_permission === 'write' || this.isLoggedUser(member))"
                                  class="d-flex align-items-center me-2 fs-4">
                                 <!-- Special cases if self member -->
                                 <i t-if="isInternalUser and this.isLoggedUser(member) and ((state.category === 'shared' and !member.is_unique_writer) || state.category !== 'shared')"
                                    class="fa fa-w fa-sign-out o_delete text-danger" title="Leave Article"
                                    t-on-click="event => this._onRemoveMember(event, member)" type="button">
                                 </i>
-                                <i t-elif="this.isLoggedUser(member) and props.user_permission === 'read' and state.category === 'workspace' and !state.user_is_admin"
+                                <i t-elif="this.isLoggedUser(member) and props.record.data.user_permission === 'read' and state.category === 'workspace' and !state.user_is_admin"
                                    class="fa fa-w fa-sign-out o_delete" disabled="True" type="button"
                                    title="As a reader, you can't leave a Workspace article" >
                                 </i>
@@ -135,7 +135,7 @@
                                 t-att-value="member.permission"
                                 t-on-change="event => this._onChangeMemberPermission(event, member)"
                                 t-att-disabled="member.is_unique_writer
-                                    || (props.user_permission !== 'write' and !state.user_is_admin) || !isInternalUser ? 'disabled' : undefined"
+                                    || (props.record.data.user_permission !== 'write' and !state.user_is_admin) || !isInternalUser ? 'disabled' : undefined"
                                 aria-label="User Permission">
                                 <t t-foreach="this.state.members_options" t-as="option" t-key="option_index">
                                     <option t-att-value="option[0]" t-out="option[1]" t-att-selected="option[0] === member.permission ? 'selected' : undefined"/>

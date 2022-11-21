@@ -18,29 +18,21 @@ $knowledge-bg--active: #1ba1e4;
 $knowledge-bg--hover: $gray-300;
 
 .o_knowledge_form_view {
-    --knowledge-article-sidebar-size: 300px;
 
     background-color: var(--knowledge-view-bg, $o-white);
     .o_knowledge_aside {
-        width: clamp(200px, var(--knowledge-article-sidebar-size), 576px);;
-        transition: width 0.15s linear;
+        .o_article:not(.o_article_has_children) {
+            .o_article_caret {
+                // Make caret invisible if article has no child
+                visibility: hidden;
+            }
+        }
         ul {
             list-style: none;
             padding: 0;
         }
-        li {
-            position: relative;
-            &.o_article_has_children,
-            &.mjs-nestedSortable-branch {
-                > div > .o_article_caret {
-                    // Make caret visible when dragging an article under a childless article.
-                    visibility: visible !important;
-                }
-            }
-        }
-
-        li > ul > li, li > ul > a.o_knowledge_article_load_more {
-            &:not(.ui-sortable-helper) {
+        li > ul > li, li > ul > a.o_knowledge_article_load_more{
+            &:not(.o_dragged) {
                 margin-left: 1.28571429em * 0.5; // Workaround to get half .fa-fw icon's width.
                 padding-left: 0.8em;
 
@@ -55,8 +47,7 @@ $knowledge-bg--hover: $gray-300;
                     height: 100%;
                 }
             }
-            &.o_article_has_children:before,
-            &.mjs-nestedSortable-branch:before {
+            &.o_article_has_children:before {
                 @include o-position-absolute($top: 1em, $left: 0);
                 width: .6em;
                 height: 1px;
@@ -87,17 +78,8 @@ $knowledge-bg--hover: $gray-300;
     // = Resizer
     // --------------------------------------------------------------------------
     .o_knowledge_article_form_resizer {
-        // Use '$spacers' measures to match surrounding elements padding
-        $-resizer-spacing: map-get($spacers, 1);
-        $-resizer-line-width: map-get($spacers, 1);
-
-        @include o-position-absolute(0, auto, 0, $-resizer-spacing * -1);
         cursor: col-resize;
         touch-action: none;
-
-        span {
-            @include o-position-absolute(0, auto, 0, $-resizer-spacing + ($-resizer-line-width * -0.5));
-        }
     }
     
     // = Cover

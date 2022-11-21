@@ -2,13 +2,12 @@
 'use strict';
 
 import { fetchValidHeadings } from './tools/knowledge_tools.js';
-import KnowledgeTreePanelMixin from './tools/tree_panel_mixin.js';
 import publicWidget from 'web.public.widget';
 import session from 'web.session';
 import { qweb as QWeb } from 'web.core';
-import { debounce } from "@web/core/utils/timing";
+import { debounce, throttleForAnimation } from "@web/core/utils/timing";
 
-publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTreePanelMixin, {
+publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend({
     selector: '.o_knowledge_form_view',
     events: {
         'keyup .knowledge_search_bar': '_searchArticles',
@@ -25,6 +24,9 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
         return this._super.apply(this, arguments).then(() => {
             this.$id = this.$el.data('article-id');
             this.resId = this.$id;  // necessary for the 'KnowledgeTreePanelMixin' extension
+            this.storageKey = "knowledge.unfolded.ids";
+            this.unfoldedArticlesIds = localStorage.getItem(this.storageKey)?.split(";").map(Number) || [];
+            
             this._renderTree(this.$id, '/knowledge/tree_panel/portal');
             this._setResizeListener();
             // Debounce the search articles method to reduce the number of rpcs
@@ -46,13 +48,43 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
         });
     },
 
+    _loadMoreArticles: async function (ev) {
+        ev.preventDefault();
+
+        let addedArticles;
+        const rpcParams = {
+            active_article_id: this.resId || false,
+            parent_id: ev.target.dataset['parentId'] || false,
+            limit: ev.target.dataset['limit'],
+            offset: ev.target.dataset['offset'] || 0,
+            public_section: ev.target.dataset['publicSection']
+        };
+
+        addedArticles = await this._rpc({
+            route: '/knowledge/tree_panel/load_more',
+            params: rpcParams,
+        });
+
+        const listRoot = ev.target.closest('ul');
+        // remove existing "Load more" link
+        ev.target.remove();
+        // remove the 'forced' displayed active article
+        const forcedDisplayedActiveArticle = listRoot.querySelector(
+            '.o_knowledge_article_force_show_active_article');
+        if (forcedDisplayedActiveArticle) {
+            forcedDisplayedActiveArticle.remove();
+        }
+        // insert the returned template
+        listRoot.insertAdjacentHTML('beforeend', addedArticles);
+    },
+
     /**
      * @param {Event} event
      */
     _searchArticles: async function (ev) {
         ev.preventDefault();
         const searchTerm = this.$('.knowledge_search_bar').val();
-        if (!searchTerm){
+        if (!searchTerm) {
             // Renders the basic user article tree (with only its cached articles unfolded)
             await this._renderTree(this.$id, '/knowledge/tree_panel/portal');
             return;
@@ -80,29 +112,26 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
      * the resizer to free some resources.
      */
     _setResizeListener: function () {
+        const onPointerMove = throttleForAnimation(event => {
+            event.preventDefault();
+            this.el.style.setProperty('--knowledge-article-sidebar-size', `${event.pageX}px`);
+        }, 100);
+        const onPointerUp = () => {
+            this.el.removeEventListener('pointermove', onPointerMove);
+            document.body.style.cursor = "auto";
+            document.body.style.userSelect = "auto";
+        };
+        const resizeSidebar = () => {
+            // Add style to root element because resizing has a transition delay,
+            // meaning that the cursor is not always on top of the resizer.
+            document.body.style.cursor = "col-resize";
+            document.body.style.userSelect = "none";
+            this.el.addEventListener('pointermove', onPointerMove);
+            this.el.addEventListener('pointerup', onPointerUp, {once: true});
+        };
         this.el.querySelector('.o_knowledge_article_form_resizer span').addEventListener(
-            'pointerdown', () => this.resizeSidebar(this.el)
+            'pointerdown', resizeSidebar
         );
-    },
-
-    /**
-     * Helper function to traverse the dom hierarchy of the aside tree menu.
-     * The function will call the given callback function with the article item
-     * beeing visited (i.e: a JQuery dom element). The provided callback function
-     * should return a boolean indicating whether the algorithm should explore
-     * the children of the current article item.
-     * @param {jQuery} $tree
-     * @param {Function} callback
-     */
-    _traverse: function ($tree, callback) {
-        const stack = $tree.children('li').toArray();
-        while (stack.length > 0) {
-            const $li = $(stack.shift());
-            if (callback($li)) {
-                const $ul = $li.children('ul');
-                stack.unshift(...$ul.children('li').toArray());
-            }
-        }
     },
 
     /**
@@ -117,18 +146,16 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
      */
     _renderTree: async function (active_article_id, route) {
         const container = this.el.querySelector('.o_knowledge_tree');
-        let unfoldedArticlesIds = localStorage.getItem('knowledge.unfolded.ids');
-        unfoldedArticlesIds = unfoldedArticlesIds ? unfoldedArticlesIds.split(";").map(Number) : [];
         const params = new URLSearchParams(document.location.search);
         if (Boolean(params.get('auto_unfold'))) {
-            unfoldedArticlesIds.push(active_article_id);
+            this.unfoldedArticlesIds.push(active_article_id);
         }
         try {
             const htmlTree = await this._rpc({
                 route: route,
                 params: {
                     active_article_id: active_article_id,
-                    unfolded_articles_ids: unfoldedArticlesIds,
+                    unfolded_articles_ids: this.unfoldedArticlesIds,
                 }
             });
             container.innerHTML = htmlTree;
@@ -144,6 +171,57 @@ publicWidget.registry.KnowledgeWidget = publicWidget.Widget.extend(KnowledgeTree
                 parent_id: parentId
             }
         });
+    },
+
+    /**
+     * Callback function called when the user clicks on the carret of an article
+     * The function will load the children of the article and append them to the
+     * dom. Then, the id of the unfolded article will be added to the cache.
+     * (see: `_renderTree`).
+     * @param {Event} event
+     */
+     _onFold: async function (event) {
+        event.stopPropagation();
+        const $button = $(event.currentTarget);
+        this._fold($button);
+     },
+    _fold: async function ($button) {
+        const $icon = $button.find('i');
+        const $li = $button.closest('li');
+        const articleId = $li.data('articleId');
+        const $ul = $li.find('> ul');
+
+        if ($icon.hasClass('fa-caret-down')) {
+            $ul.hide();
+            if (this.unfoldedArticlesIds.indexOf(articleId) !== -1) {
+                this.unfoldedArticlesIds.splice(this.unfoldedArticlesIds.indexOf(articleId), 1);
+            }
+            $icon.removeClass('fa-caret-down');
+            $icon.addClass('fa-caret-right');
+        } else {
+            if ($ul.length) {
+                // Show hidden children
+                $ul.show();
+            } else {
+                let children;
+                try {
+                    children = await this._fetchChildrenArticles($li.data('articleId'));
+                } catch (error) {
+                    // Article is not accessible anymore, remove it from the sidebar
+                    $li.remove();
+                    throw error;
+                }
+                const $newUl = $('<ul/>').append(children);
+                $li.append($newUl);
+            }
+            if (this.unfoldedArticlesIds.indexOf(articleId) === -1) {
+                this.unfoldedArticlesIds.push(articleId);
+            }
+            $icon.removeClass('fa-caret-right');
+            $icon.addClass('fa-caret-down');  
+        }
+        localStorage.setItem(this.storageKey, this.unfoldedArticlesIds.join(";"),
+        );
     },
 
     /**

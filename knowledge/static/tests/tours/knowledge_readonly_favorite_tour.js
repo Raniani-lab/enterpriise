@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { moveArticle } from './knowledge_main_flow_tour.js';
+import { dragAndDropArticle } from '@knowledge/../tests/tours/knowledge_tour_utils';
 import { registry } from "@web/core/registry";
 
 // Checks that one can add an readonly article to its favorites
@@ -14,7 +14,7 @@ registry.category("web_tour.tours").add('knowledge_readonly_favorite_tour', {
     extra_trigger: '.o_article_active:contains("Readonly Article 1")',
 }, {
     // Check that the article has been added to the favorites
-    trigger: 'section.o_favorite_container:contains("Readonly Article 1")',
+    trigger: 'section[data-section="favorites"]:contains("Readonly Article 1")',
     extra_trigger: 'a.o_knowledge_toggle_favorite:has(.fa-star)',
     run: () => {},
 }, {
@@ -28,14 +28,14 @@ registry.category("web_tour.tours").add('knowledge_readonly_favorite_tour', {
 }, {
     // Check that the article has been added to the favorites under the other
     // one and try to resquence the favorite articles
-    trigger: 'section.o_favorite_container li:last:contains("Readonly Article 2")',
-    run: () => moveArticle(
-        $('section.o_favorite_container li:last .o_article_handle'),
-        $('section.o_favorite_container li:first .o_article_handle')
+    trigger: 'section[data-section="favorites"] li:last:contains("Readonly Article 2")',
+    run: () => dragAndDropArticle(
+        $('section[data-section="favorites"] li:last .o_article_handle'),
+        $('section[data-section="favorites"] li:first .o_article_handle')
     ),
 }, {
     // Check that articles have been reordered correctly
-    trigger: 'section.o_favorite_container li:last:contains("Readonly Article 1")',
-    extra_trigger: 'section.o_favorite_container li:first:contains("Readonly Article 2")',
+    trigger: 'section[data-section="favorites"] li:last:contains("Readonly Article 1")',
+    extra_trigger: 'section[data-section="favorites"] li:first:contains("Readonly Article 2")',
     run: () => {},
 }]});

@@ -4857,6 +4857,33 @@ QUnit.module('ViewEditorManager', {
 
     });
 
+    QUnit.test('new button in buttonbox with first element invisible', async function (assert) {
+        serverData.models["coucou"].records[0] = {
+            display_name: "someName",
+            id: 99,
+        };
+
+        const arch = `
+            <form>
+                <sheet>
+                    <div class="oe_button_box" name="button_box">
+                        <button name="someName" class="someClass" type="object"
+                            modifiers="{&quot;invisible&quot;: [[&quot;display_name&quot;, &quot;=&quot;, &quot;someName&quot;]]}" />
+                    </div>
+                    <field name='display_name'/>
+                </sheet>
+            </form>`;
+        await studioTestUtils.createViewEditorManager({
+            model: 'coucou',
+            arch: arch,
+            res_id: 99,
+            serverData,
+        });
+
+        assert.containsOnce(target, ".oe_button_box .o_web_studio_button_hook");
+        assert.containsNone(target, "button.someClass");
+    });
+
     QUnit.test('element removal', async function (assert) {
         assert.expect(10);
 

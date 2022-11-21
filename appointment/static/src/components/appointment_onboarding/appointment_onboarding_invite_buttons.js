@@ -1,11 +1,13 @@
 /** @odoo-module **/
 
 import { browser } from "@web/core/browser/browser";
-import { FormRenderer } from "@web/views/form/form_renderer";
+import { registry } from '@web/core/registry';
+import { standardWidgetProps } from "@web/views/widgets/standard_widget_props";
 import { useService } from "@web/core/utils/hooks";
 
+const { Component } = owl;
 
-export class AppointmentOnboardingLinkFormRenderer extends FormRenderer {
+export class AppointmentOnboardingInviteButtons extends Component {
     setup() {
         super.setup();
         this.notification = useService("notification");
@@ -56,3 +58,9 @@ export class AppointmentOnboardingLinkFormRenderer extends FormRenderer {
         );
     }
 }
+AppointmentOnboardingInviteButtons.props = {
+    ...standardWidgetProps,
+};
+AppointmentOnboardingInviteButtons.template = 'appointment.AppointmentOnboardingInviteButtons';
+
+registry.category("view_widgets").add("appointment_onboarding_invite_buttons", AppointmentOnboardingInviteButtons);

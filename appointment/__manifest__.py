@@ -58,9 +58,8 @@
         'web.assets_backend': [
             'appointment/static/src/scss/appointment_type_views.scss',
             'appointment/static/src/scss/web_calendar.scss',
-            'appointment/static/src/js/appointment_invite_form_renderer.js',
-            'appointment/static/src/js/appointment_invite_form_views.js',
             'appointment/static/src/views/**/*',
+            'appointment/static/src/components/**/*',
         ],
         'web_studio.studio_assets': [
             'appointment/static/src/scss/legacy_appointment_type_views.scss',

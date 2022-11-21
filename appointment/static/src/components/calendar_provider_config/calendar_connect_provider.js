@@ -1,10 +1,10 @@
 /** @odoo-module **/
 
 import { patch } from '@web/core/utils/patch';
-import { CalendarProviderConfigFormRenderer } from "@calendar/views/calendar_provider_config_form_renderer";
+import { CalendarConnectProvider } from "@calendar/components/calendar_provider_config/calendar_connect_provider";
 
 
-patch(CalendarProviderConfigFormRenderer.prototype, 'calendar_provider_config_appointment_onboarding', {
+patch(CalendarConnectProvider.prototype, 'calendar_connect_provider_appointment_onboarding', {
     /**
      * Sets onboarding step state as completed.
      *

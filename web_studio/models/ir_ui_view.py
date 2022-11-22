@@ -20,6 +20,14 @@ CONTAINER_TYPES = (
 )
 
 
+class Model(models.AbstractModel):
+    _inherit = 'base'
+
+    @api.model
+    def _get_view_cache_key(self, *args, **kwargs):
+        key = super()._get_view_cache_key(*args, **kwargs)
+        return key + (self._context.get("studio"),)
+
 
 class View(models.Model):
     _name = 'ir.ui.view'
@@ -38,6 +46,16 @@ class View(models.Model):
         'web.external_layout_bold',
         'web.external_layout_standard',
     ]
+
+    def _get_x2many_missing_view_archs(self, field, field_node, node_info):
+        missing = super()._get_x2many_missing_view_archs(field, field_node, node_info)
+        if not missing or not self._context.get("studio"):
+            return missing
+
+        for arch, _ in missing:
+            arch.set("studio_subview_inlined", "1")
+
+        return missing
 
     def _postprocess_access_rights(self, tree):
         # apply_group only returns the view groups ids.

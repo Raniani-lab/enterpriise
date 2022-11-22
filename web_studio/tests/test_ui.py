@@ -167,3 +167,40 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
                </xpath>
              </data>
             """.format(doesnothavegroup=doesNotHaveGroupXmlId.complete_name))
+
+    def test_enter_x2many_auto_inlined_subview(self):
+        userView = self.env["ir.ui.view"].create({
+            "name": "simple user",
+            "model": "res.users",
+            "type": "tree",
+            "arch": '''
+                <tree>
+                    <field name="display_name" />
+                </tree>
+            '''
+        })
+
+        userViewXmlId = self.env["ir.model.data"].create({
+            "name": "studio_test_user_view",
+            "model": "ir.ui.view",
+            "module": "web_studio",
+            "res_id": userView.id,
+        })
+
+        self.testView.arch = '''<form><field name="user_ids" context="{'tree_view_ref': '%s'}" /></form>''' % userViewXmlId.complete_name
+        studioView = _get_studio_view(self.testView)
+        self.assertFalse(studioView.exists())
+
+        self.start_tour("/web?debug=tests", 'web_studio_enter_x2many_auto_inlined_subview', login="admin", timeout=200)
+        studioView = _get_studio_view(self.testView)
+
+        assertViewArchEqual(self, studioView.arch, """
+            <data>
+               <xpath expr="//field[@name='user_ids']" position="inside">
+                 <tree>
+                   <field name="display_name" />
+                   <field name="log_ids" optional="show" />
+                 </tree>
+               </xpath>
+             </data>
+            """)

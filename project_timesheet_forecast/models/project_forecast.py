@@ -188,6 +188,7 @@ class Forecast(models.Model):
                     continue
                 if slot.start_datetime.date() <= day_date <= slot.end_datetime.date():
                     vals_list.append(slot.sudo()._prepare_slot_analytic_line(day_date, work_hours_count))
+                    timesheet_count_per_dates[day_date] = 1
 
         if not vals_list:
             return self._get_notification_action("warning", _("There are no timesheets to generate or you don't have the right."))

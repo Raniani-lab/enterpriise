@@ -574,7 +574,7 @@ tour.register('test_delivery_lot_with_package', {test: true}, [
 tour.register('test_delivery_reserved_1', {test: true}, [
     // test that picking note properly pops up + close it
     { trigger: '.alert:contains("A Test Note")' },
-    { trigger: '.close' },
+    { trigger: '.alert button.btn-close' },
     // Opens and close the line's form view to be sure the note is still hidden.
     { trigger: '.o_add_line' },
     { trigger: '.o_discard' },

@@ -55,7 +55,6 @@ class HrApplicant(models.Model):
     extract_status_code = fields.Integer("Status code", copy=False)
     extract_error_message = fields.Text("Error message", compute='_compute_error_message')
     extract_remote_id = fields.Integer("Request ID to IAP-OCR", default="-1", copy=False, readonly=True)
-    extract_can_show_resend_button = fields.Boolean(compute='_compute_show_resend_button')
     extract_can_show_send_button = fields.Boolean(compute='_compute_show_send_button')
     # We want to see the records that are just processed by OCR at the top of the list
     state_processed = fields.Boolean(compute='_compute_state_processed', store=True)
@@ -89,12 +88,11 @@ class HrApplicant(models.Model):
             else:
                 applicant.extract_error_message = False
 
-    def _can_show_send_button(self, resend=False):
+    def _can_show_send_button(self):
         self.ensure_one()
         if (not self.env.company.recruitment_extract_show_ocr_option_selection or self.env.company.recruitment_extract_show_ocr_option_selection == 'no_send') \
                 or not self.message_main_attachment_id \
-                or (resend and self.extract_state not in ['error_status', 'not_enough_credit']) \
-                or (not resend and self.extract_state not in ['no_extract_requested']) \
+                or self.extract_state not in ['no_extract_requested'] \
                 or not self.is_first_stage:
             return False
         return True
@@ -103,11 +101,6 @@ class HrApplicant(models.Model):
     def _compute_show_send_button(self):
         for applicant in self:
             applicant.extract_can_show_send_button = applicant._can_show_send_button()
-
-    @api.depends('stage_id', 'extract_state', 'message_main_attachment_id')
-    def _compute_show_resend_button(self):
-        for applicant in self:
-            applicant.extract_can_show_resend_button = applicant._can_show_send_button(resend=True)
 
     @api.depends('extract_state')
     def _compute_state_processed(self):

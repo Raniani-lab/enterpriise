@@ -60,29 +60,16 @@ class HrExpense(models.Model):
             else:
                 record.extract_error_message = ''
 
-    def _compute_can_show_send_resend(self, record):
-        can_show = True
-        if not self.env.company.expense_extract_show_ocr_option_selection or self.env.company.expense_extract_show_ocr_option_selection == 'no_send':
-            can_show = False
-        if record.state != 'draft':
-            can_show = False
-        if record.message_main_attachment_id is None or len(record.message_main_attachment_id) == 0:
-            can_show = False
-        return can_show
-
-    @api.depends('state', 'extract_state', 'message_main_attachment_id')
-    def _compute_show_resend_button(self):
-        for record in self:
-            record.extract_can_show_resend_button = self._compute_can_show_send_resend(record)
-            if record.extract_state not in ['error_status', 'not_enough_credit']:
-                record.extract_can_show_resend_button = False
-
     @api.depends('state', 'extract_state', 'message_main_attachment_id')
     def _compute_show_send_button(self):
+        send_option = self.env.company.expense_extract_show_ocr_option_selection
         for record in self:
-            record.extract_can_show_send_button = self._compute_can_show_send_resend(record)
-            if record.extract_state not in ['no_extract_requested']:
-                record.extract_can_show_send_button = False
+            record.extract_can_show_send_button = (
+                send_option and send_option != 'no_send'
+                and record.extract_state == 'no_extract_requested'
+                and record.message_main_attachment_id
+                and record.state == 'draft'
+            )
 
     @api.depends('extract_state')
     def _compute_state_processed(self):
@@ -103,7 +90,6 @@ class HrExpense(models.Model):
     extract_error_message = fields.Text("Error message", compute=_compute_error_message)
     extract_remote_id = fields.Integer("Id of the request to IAP-OCR", default="-1", copy=False, readonly=True)
     extract_word_ids = fields.One2many("hr.expense.extract.words", inverse_name="expense_id", copy=False)
-    extract_can_show_resend_button = fields.Boolean("Can show the ocr resend button", compute=_compute_show_resend_button)
     extract_can_show_send_button = fields.Boolean("Can show the ocr send button", compute=_compute_show_send_button)
     # We want to see the records that are just processed by OCR at the top of the list
     state_processed = fields.Boolean(string='Status regarding OCR status', compute=_compute_state_processed, store=True)

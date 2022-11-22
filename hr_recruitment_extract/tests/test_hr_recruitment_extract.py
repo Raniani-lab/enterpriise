@@ -81,21 +81,18 @@ class TestRecruitmentExtractProcess(TestHrCommon):
 
         self.assertEqual(self.applicant.extract_state, 'no_extract_requested')
         self.assertFalse(self.applicant.extract_can_show_send_button)
-        self.assertFalse(self.applicant.extract_can_show_resend_button)
 
         with self._mock_iap_extract(extract_response):
             self.applicant.message_post(attachment_ids=[self.attachment.id])
 
         self.assertEqual(self.applicant.extract_state, 'no_extract_requested')
         self.assertTrue(self.applicant.extract_can_show_send_button)
-        self.assertFalse(self.applicant.extract_can_show_resend_button)
 
         with self._mock_iap_extract(extract_response):
             self.applicant.action_send_for_digitization()
 
         # upon success, no button shall be provided
         self.assertFalse(self.applicant.extract_can_show_send_button)
-        self.assertFalse(self.applicant.extract_can_show_resend_button)
 
         with self._mock_iap_extract(extract_response):
             self.applicant.check_all_status()
@@ -114,7 +111,6 @@ class TestRecruitmentExtractProcess(TestHrCommon):
 
         self.assertEqual(self.applicant.extract_state, 'no_extract_requested')
         self.assertFalse(self.applicant.extract_can_show_send_button)
-        self.assertFalse(self.applicant.extract_can_show_resend_button)
 
     def test_show_resend_button_when_not_enough_credits(self):
         # test that upon not enough credit error, the retry button is provided
@@ -124,7 +120,6 @@ class TestRecruitmentExtractProcess(TestHrCommon):
             self.applicant.message_post(attachment_ids=[self.attachment.id])
 
         self.assertFalse(self.applicant.extract_can_show_send_button)
-        self.assertTrue(self.applicant.extract_can_show_resend_button)
 
     def test_status_not_ready(self):
         # test the NOT_READY ocr status effects
@@ -136,7 +131,6 @@ class TestRecruitmentExtractProcess(TestHrCommon):
 
         self.assertEqual(self.applicant.extract_state, 'extract_not_ready')
         self.assertFalse(self.applicant.extract_can_show_send_button)
-        self.assertFalse(self.applicant.extract_can_show_resend_button)
 
     def test_applicant_validation(self):
         # test that when the applicant is hired, the validation is sent to the server

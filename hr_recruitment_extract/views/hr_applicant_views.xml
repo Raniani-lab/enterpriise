@@ -11,7 +11,6 @@
             </xpath>
             <xpath expr="//header" position='after'>
                 <field name="extract_state" invisible="1"/>
-                <field name="extract_can_show_resend_button" invisible="1"/>
                 <field name="extract_can_show_send_button" invisible="1"/>
                 <field name="is_first_stage" invisible="1"/>
                 <div role="status" class="alert alert-danger mb8 text-center"

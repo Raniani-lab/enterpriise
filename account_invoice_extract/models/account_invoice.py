@@ -79,27 +79,15 @@ class AccountMove(models.Model):
             else:
                 record.extract_error_message = ''
 
-    def _compute_can_show_send_resend(self):
-        self.ensure_one()
-        return (
-            self.state == 'draft'
-            and self.message_main_attachment_id
-            and not self._check_digitalization_mode(self.company_id, self.move_type, 'no_send')
-        )
-
-    @api.depends('state', 'extract_state', 'message_main_attachment_id')
-    def _compute_show_resend_button(self):
-        for record in self:
-            record.extract_can_show_resend_button = record._compute_can_show_send_resend()
-            if record.extract_state not in ['error_status', 'not_enough_credit']:
-                record.extract_can_show_resend_button = False
-
     @api.depends('state', 'extract_state', 'message_main_attachment_id')
     def _compute_show_send_button(self):
         for record in self:
-            record.extract_can_show_send_button = record._compute_can_show_send_resend()
-            if record.extract_state not in ['no_extract_requested']:
-                record.extract_can_show_send_button = False
+            record.extract_can_show_send_button = (
+                record.state == 'draft'
+                and record.message_main_attachment_id
+                and record.extract_state == 'no_extract_requested'
+                and not record._check_digitalization_mode(record.company_id, record.move_type, 'no_send')
+            )
 
     @api.depends(
         'state',
@@ -135,7 +123,6 @@ class AccountMove(models.Model):
     extract_word_ids = fields.One2many("account.invoice_extract.words", inverse_name="invoice_id", copy=False)
     extract_attachment_id = fields.Many2one('ir.attachment', readonly=True, ondelete='set null', copy=False)
 
-    extract_can_show_resend_button = fields.Boolean("Can show the ocr resend button", compute=_compute_show_resend_button)
     extract_can_show_send_button = fields.Boolean("Can show the ocr send button", compute=_compute_show_send_button)
     extract_can_show_banners = fields.Boolean("Can show the ocr banners", compute=_compute_show_banners)
 

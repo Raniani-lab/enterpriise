@@ -54,7 +54,6 @@ class AccountMove(models.Model):
     def _compute_show_banners(self):
         for record in self:
             record.extract_can_show_banners = (
-                record.is_invoice() and
                 record.state == 'draft' and
                 (
                     (record.is_purchase_document() and record.company_id.extract_in_invoice_digitalization_mode != 'no_send') or
@@ -101,20 +100,20 @@ class AccountMove(models.Model):
 
     def _needs_auto_extract(self):
         """ Returns `True` if the document should be automatically sent to the extraction server"""
-        return (
-            self.extract_state == "no_extract_requested"
-            and
-            (
-                self._check_digitalization_mode(self.company_id, self.move_type, 'auto_send')
-                and
-                (
-                    self.is_purchase_document()
-                    # In the case of OUT invoices, it is only automatically sent for extraction if it comes from
-                    # the email alias. This is indicated by the presence of the key 'from_alias' in the context
-                    or self._context.get('from_alias')
-                )
-            )
-        )
+        self.ensure_one()
+        if (
+            self.extract_state != "no_extract_requested" or
+            not self._check_digitalization_mode(self.company_id, self.move_type, 'auto_send')
+        ):
+            return False
+
+        # Auto extract if comes from email alias, unless attachment is not pdf and pdf filter is set on journal
+        if self._context.get('from_alias'):
+            return not self.journal_id.alias_auto_extract_pdfs_only \
+                or self.message_main_attachment_id.mimetype.endswith('pdf')
+
+        # If not from email alias, only auto extract for purchase moves
+        return self.is_purchase_document()
 
     def _ocr_create_document_from_attachment(self, attachment, journal=None):
         invoice = self.env['account.move'].create({})

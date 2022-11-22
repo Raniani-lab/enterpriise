@@ -3,6 +3,7 @@
 
 import base64
 import json
+import textwrap
 
 from odoo import fields
 
@@ -10,6 +11,8 @@ from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.addons.iap_extract.models.extract_mixin import SUCCESS, NOT_READY, ERROR_INTERNAL
 from odoo.addons.iap_extract.tests.test_extract_mixin import TestExtractMixin
 from odoo.tests import tagged
+from odoo.modules.module import get_module_resource
+from odoo.tools import file_open
 
 
 @tagged('post_install', '-at_install')
@@ -25,6 +28,21 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
         config = cls.env['res.config.settings'].create({})
         config.show_line_subtotals_tax_selection = "tax_included"
         config.execute()
+
+        cls.journal_with_alias = cls.env['account.journal'].search(
+            [('company_id', '=', cls.env.user.company_id.id), ('type', '=', 'sale')],
+            limit=1,
+        )
+        journal_alias = cls.env['mail.alias'].create({
+            'alias_name': 'test-bill',
+            'alias_model_id': cls.env.ref('account.model_account_move').id,
+            'alias_defaults': json.dumps({
+                'move_type': 'out_invoice',
+                'company_id': cls.env.user.company_id.id,
+                'journal_id': cls.journal_with_alias.id,
+            }),
+        })
+        cls.journal_with_alias.write({'alias_id': journal_alias.id})
 
     def get_default_extract_response(self):
         return {
@@ -73,6 +91,31 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
             }],
             'status_code': SUCCESS,
         }
+
+    def _get_email_for_journal_alias(self, attachment=b'My attachment', attach_content_type='application/octet-stream', message_id='some_msg_id'):
+        attachment = base64.b64encode(attachment).decode()
+        alias = self.journal_with_alias.alias_id
+        return textwrap.dedent(f'''\
+            MIME-Version: 1.0
+            Date: Fri, 26 Nov 2021 16:27:45 +0100
+            Message-ID: {message_id}
+            Subject: Incoming bill
+            From:  Someone <someone@some.company.com>
+            To: {alias.alias_name}@{alias.alias_domain}
+            Content-Type: multipart/alternative; boundary="000000000000a47519057e029630"
+
+            --000000000000a47519057e029630
+            Content-Type: text/plain; charset=\"UTF-8\"
+
+
+            --000000000000a47519057e029630
+            Content-Type: {attach_content_type}
+            Content-Transfer-Encoding: base64
+
+            {attachment}
+
+            --000000000000a47519057e029630--
+        ''')
 
     def test_no_merge_check_ocr_status(self):
         # test check_ocr_status without lines merging
@@ -549,38 +592,31 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
     def test_automatic_sending_customer_invoice_email_alias(self):
         # test that a customer invoice is automatically sent to the OCR server when sent via email alias and the option is enabled
         self.env.company.extract_out_invoice_digitalization_mode = 'auto_send'
-        journal = self.env['account.journal'].search([('company_id', '=', self.env.user.company_id.id), ('type', '=', 'sale')], limit=1)
-        journal_alias = self.env['mail.alias'].create({
-            'alias_name': 'test-bill',
-            'alias_model_id': self.env.ref('account.model_account_move').id,
-            'alias_defaults': json.dumps({
-                'move_type': 'out_invoice',
-                'company_id': self.env.user.company_id.id,
-                'journal_id': journal.id,
-            }),
-        })
-        journal.write({'alias_id': journal_alias.id})
-
-        mail = 'MIME-Version: 1.0\n'\
-               'Date: Fri, 26 Nov 2021 16:27:45 +0100\n'\
-               'Message-ID: blablabla\n'\
-               'Subject: Incoming bill\n'\
-               'From:  Someone <someone@some.company.com>\n'\
-               'To: {alias_name}@{alias_domain}\n'\
-               'Content-Type: multipart/alternative; boundary="000000000000a47519057e029630"\n'\
-               '\n'\
-               '--000000000000a47519057e029630\n'\
-               'Content-Type: text/plain; charset=\"UTF-8\"\n'\
-               '\n'\
-               '\n'\
-               '--000000000000a47519057e029630\n'\
-               'Content-type: application/octet-stream\n'\
-               'Content-transfer-encoding: base64\n'\
-               '\n'\
-               '{attachment}\n'\
-               '\n'\
-               '--000000000000a47519057e029630--\n'.format(alias_name=journal.alias_id.alias_name, alias_domain=journal.alias_id.alias_domain, attachment=base64.b64encode(b'My attachment'))
+        mail = self._get_email_for_journal_alias()
         with self._mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+            invoice = self.env['account.move'].browse(self.env['mail.thread'].message_process('account.move', mail))
+        self.assertEqual(invoice.extract_state, 'waiting_extraction')
+
+    def test_automatic_sending_customer_invoice_email_alias_pdf_filter(self):
+        # test that alias_auto_extract_pdfs_only option successfully prevent non pdf attachments to be sent to OCR
+        self.env.company.extract_out_invoice_digitalization_mode = 'auto_send'
+        self.journal_with_alias.alias_auto_extract_pdfs_only = True
+
+        # attachment is not pdf -> do not extract
+        mail = self._get_email_for_journal_alias(message_id='message_1')
+        with self._mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+            invoice = self.env['account.move'].browse(self.env['mail.thread'].message_process('account.move', mail))
+        self.assertEqual(invoice.extract_state, 'no_extract_requested')
+
+        # attachment is pdf -> extract
+        with file_open(get_module_resource('base', 'tests', 'minimal.pdf'), 'rb') as file:
+            pdf_bytes = file.read()
+        mail = self._get_email_for_journal_alias(
+            attachment=pdf_bytes,
+            attach_content_type='application/pdf',
+            message_id='message_2'
+        )
+        with self._mock_iap_extract({'status_code': SUCCESS, 'document_id': 2}, {}):
             invoice = self.env['account.move'].browse(self.env['mail.thread'].message_process('account.move', mail))
         self.assertEqual(invoice.extract_state, 'waiting_extraction')
 

@@ -14,6 +14,7 @@
         'data/res_config_settings_views.xml',
         'data/crons.xml',
         'views/account_move_views.xml',
+        'views/account_journal_views.xml',
     ],
     'auto_install': True,
     'license': 'OEEL-1',

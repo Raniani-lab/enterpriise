@@ -1244,6 +1244,7 @@ class SaleOrder(models.Model):
             if not order.payment_token_id:
                 invoice.action_post()
             else:
+                payment_callback_done = False
                 try:
                     payment_token = order.payment_token_id
                     transaction = None
@@ -1259,6 +1260,7 @@ class SaleOrder(models.Model):
                                 self.env.cr.commit()
                             continue
                         transaction = order._do_payment(payment_token, invoice)
+                        payment_callback_done = transaction and transaction.sudo().callback_is_done
                         # commit change as soon as we try the payment, so we have a trace in the payment_transaction table
                         if auto_commit:
                             self.env.cr.commit()
@@ -1293,7 +1295,8 @@ class SaleOrder(models.Model):
                     mail.send()
                     if invoice.state == 'draft':
                         existing_invoices -= invoice
-                        invoice.unlink()
+                        if not payment_callback_done:
+                            invoice.unlink()
 
 
         return existing_invoices

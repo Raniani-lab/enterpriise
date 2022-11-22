@@ -236,12 +236,76 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
                                  'client_order_ref': 'Customer REF XXXXXXX'
         })
         self.subscription.action_confirm()
-        with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._do_payment', wraps=self._mock_subscription_do_payment),\
+
+        with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._do_payment', side_effect=Exception("Oops, network error")),\
+             self.mock_mail_gateway():
+            self.subscription._create_recurring_invoice(automatic=True)
+
+        invoice = self.subscription.order_line.invoice_lines.move_id
+        self.assertFalse(invoice, "The draft invoice should be deleted when something goes wrong in _handle_automatic_invoices")
+        self.assertEqual(
+            self.subscription.next_invoice_date, self.subscription.start_date,
+            "We should not have updated the next invoice date, as the invoice was unlinked",
+        )
+
+    @mute_logger('odoo.addons.sale_subscription.models.sale_order')
+    def test_bad_payment_exception_post_success(self):
+        self.subscription.write({'payment_token_id': self.payment_method.id,
+                                 'client_order_ref': 'Customer REF XXXXXXX'
+        })
+        self.subscription.action_confirm()
+
+        def _mock_subscription_do_payment_and_commit(payment_method, invoice):
+            tx = self._mock_subscription_do_payment(payment_method, invoice)
+            # once the payment request succeed, we're going to call the transaction
+            # callback method, so do it manually here
+            order = tx.env["sale.order"].browse(self.subscription.id)
+            order.reconcile_pending_transaction(tx)
+            tx.sudo().callback_is_done = True
+            tx.env.cr.flush()  # simulate commit after sucessfull `_do_payment()`
+            return tx
+
+        with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._do_payment', wraps=_mock_subscription_do_payment_and_commit),\
              patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._subscription_post_success_payment', side_effect=Exception("Kaput")),\
              self.mock_mail_gateway():
             self.subscription._create_recurring_invoice(automatic=True)
+
+        invoice = self.subscription.order_line.invoice_lines.move_id
+        self.assertTrue(
+            invoice and invoice.state == "draft",
+            "The draft invoice has to be kept as we committed after the payment succeeded "
+            "(the next invoice date has already been updated)."
+        )
+        expected_next_invoice_date = self.subscription.start_date + self.subscription.recurrence_id.get_recurrence_timedelta()
+        self.assertEqual(
+            self.subscription.next_invoice_date, expected_next_invoice_date,
+            "The next invoice date should have been updated, as the draft invoice was kept after the payment succeeded",
+        )
+
+    @mute_logger('odoo.addons.sale_subscription.models.sale_order')
+    def test_bad_payment_rejected(self):
+        self.subscription.write({'payment_token_id': self.payment_method.id,
+                                 'client_order_ref': 'Customer REF XXXXXXX'
+        })
+        self.subscription.action_confirm()
+
+        def _mock_subscription_do_payment_rejected(payment_method, invoice):
+            tx = self._mock_subscription_do_payment(payment_method, invoice)
+            tx.state = "pending"
+            tx._set_error("Payment declined")
+            tx.env.cr.flush()  # simulate commit after sucessfull `_do_payment()`
+            return tx
+
+        with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._do_payment', wraps=_mock_subscription_do_payment_rejected),\
+             self.mock_mail_gateway():
+            self.subscription._create_recurring_invoice(automatic=True)
+
         invoice = self.subscription.order_line.invoice_lines.move_id
         self.assertFalse(invoice, "The draft invoice should be deleted when something goes wrong in _handle_automatic_invoices")
+        self.assertEqual(
+            self.subscription.next_invoice_date, self.subscription.start_date,
+            "We should not have updated the next invoice date, as the invoice was unlinked",
+        )
 
     def test_manual_invoice_with_token(self):
         self.subscription.write({'payment_token_id': self.payment_method.id,

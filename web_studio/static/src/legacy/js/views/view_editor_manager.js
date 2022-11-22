@@ -107,7 +107,7 @@ function getSubArch(mainArch, xpathToField, viewType, throwIfNotFound=true) {
 
     const nodes = getNodesFromXpath(xpathToArch, parseStringToXml(mainArch));
     const hasSingleArch = nodes.length === 1;
-    if (hasSingleArch) {
+    if (hasSingleArch && !nodes[0].getAttribute("studio_subview_inlined")) {
         return serializeXmlToString(nodes[0]);
     }
     if (throwIfNotFound) {

@@ -242,6 +242,10 @@
             color: $gray-400 !important;
         }
     }
+    .dropdown-menu.o_knowledge_more_options_panel,
+    .dropdown-menu.o_knowledge_share_panel {
+        max-width: 100vw;
+    }
 
     .o_knowledge_properties {
         min-width: 250px;

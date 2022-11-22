@@ -251,11 +251,21 @@ class AccountEdiFormat(models.Model):
             ticket = response_tree.find('.//{*}ticket').text
             return {'number': ticket}
         if response_tree.find('.//{*}getStatusCdrResponse') is not None:
-            cdr_b64 = response_tree.find('.//{*}content').text
-            cdr = self._l10n_pe_edi_unzip_edi_document(base64.b64decode(cdr_b64))
             code = response_tree.find('.//{*}statusCode').text
             message = response_tree.find('.//{*}statusMessage').text
-            return {'code': code, 'message': message, 'cdr': cdr}
+            if response_tree.find('.//{*}content') is not None:
+                cdr_b64 = response_tree.find('.//{*}content').text
+                cdr = self._l10n_pe_edi_unzip_edi_document(base64.b64decode(cdr_b64))
+                return {'code': code, 'message': message, 'cdr': cdr}
+            else:
+                error_messages_map = self._l10n_pe_edi_get_cdr_error_messages()
+                error_message = '%s<br/><br/><b>%s</b><br/>%s|%s' % (
+                    error_messages_map.get(code, _("We got an error response from the OSE. ")),
+                    _('Original message:'),
+                    html_escape(code),
+                    html_escape(message),
+                )
+                return {'error': error_message, 'code': code, 'message': message}
         return {}
 
     _l10n_pe_edi_decode_cdr = _l10n_pe_edi_decode_soap_response

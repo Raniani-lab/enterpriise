@@ -17,6 +17,7 @@ import {
     makeDeferred,
     nextTick,
     patchWithCleanup,
+    patchTimeZone,
     destroy,
     findChildren,
 } from "@web/../tests/helpers/utils";
@@ -45,6 +46,7 @@ QUnit.module("Views", (hooks) => {
             "project.task": {
                 fields: {
                     display_name: { string: "name", type: "char" },
+                    scheduled_date: { string: "Schedule date", type: "datetime"},
                     sequence: { string: "sequence", type: "integer" },
                     partner_id: {
                         string: "partner",
@@ -68,6 +70,13 @@ QUnit.module("Views", (hooks) => {
                 oneRecord: {
                     records: [{ id: 1, display_name: "Foo", partner_id: [1] }],
                     length: 1,
+                },
+
+                oneRecordFieldDateTime: {
+                    records: [
+                        { id: 1, display_name: "Foo", scheduled_date: "2022-02-07 21:09:31", partner_id: [1] }
+                    ],
+                    length: 1
                 },
 
                 twoRecords: {
@@ -1663,6 +1672,39 @@ QUnit.module("Views", (hooks) => {
             3,
             "The popup should contain 2 buttons and one divider"
         );
+    });
+
+    QUnit.test('Content of the marker popup with date time', async function (assert) {
+        assert.expect(1);
+        serverData.views = {
+            "project.task,false,form": "<form/>",
+        };    
+
+        patchTimeZone(120); // UTC+2
+        patchWithCleanup(session, {map_box_token: MAP_BOX_TOKEN});
+
+        await makeView({
+            config: { views: [[false, "form"]] },
+            serverData,
+            type: "map",
+            resModel: "project.task",
+            arch: `<map res_partner="partner_id" routing="true" hide_name="true" hide_address="true">
+                    <field name="scheduled_date" string="Date"/>
+                </map>`,
+            async mockRPC(route) {
+                switch (route) {
+                    case "/web/dataset/call_kw/project.task/web_search_read":
+                        return serverData.models["project.task"].oneRecordFieldDateTime;
+                    case "/web/dataset/call_kw/res.partner/search_read":
+                        return serverData.models["res.partner"].twoRecordsAddressCoordinates;
+                }
+            },
+        });
+
+        await click(target, "div.leaflet-marker-icon");
+
+        assert.strictEqual(target.querySelector("tbody tr .o-map-renderer--popup-table-content-value").textContent, "2022-02-07 23:09:31",
+            'The time  "2022-02-07 21:09:31" should be in the local timezone');
     });
 
     /**

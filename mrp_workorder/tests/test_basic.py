@@ -2220,7 +2220,6 @@ class TestRoutingAndKits(TransactionCase):
             move.name = mo.name
             move.product_id = add_product
             move.product_uom = add_product.uom_id
-            move.location_id = mo.location_src_id
             move.location_dest_id = mo.production_location_id
             move.product_uom_qty = 2
             move.operation_id = mo.bom_id.operation_ids[0]
@@ -2257,7 +2256,6 @@ class TestRoutingAndKits(TransactionCase):
             move.name = mo.name
             move.product_id = add_product
             move.product_uom = add_product.uom_id
-            move.location_id = mo.location_src_id
             move.location_dest_id = mo.production_location_id
             move.product_uom_qty = 2
             move.operation_id = mo.bom_id.operation_ids[0]

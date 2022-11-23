@@ -1740,6 +1740,28 @@ class AccountReport(models.Model):
         for dummy, left_dynamic_line in dynamic_lines:
             lines.append(left_dynamic_line)
 
+        # Manage growth comparison
+        if self._display_growth_comparison(options):
+            for line in lines:
+                first_value, second_value = line['columns'][0]['no_format'], line['columns'][1]['no_format']
+
+                if not first_value and not second_value:  # For layout lines and such, with no values
+                    line['growth_comparison_data'] = {'name': '', 'class': ''}
+                else:
+                    green_on_positive = True
+                    model, line_id = self._get_model_info_from_id(line['id'])
+
+                    if model == 'account.report.line' and line_id:
+                        report_line = self.env['account.report.line'].browse(line_id)
+                        compared_expression = report_line.expression_ids.filtered(
+                            lambda expr: expr.label == line['columns'][0]['expression_label']
+                        )
+                        green_on_positive = compared_expression.green_on_positive
+
+                    line['growth_comparison_data'] = self._compute_growth_comparison_column(
+                        options, first_value, second_value, green_on_positive=green_on_positive
+                    )
+
         # Manage hide_if_zero lines:
         # - If they have column values: hide them if all those values are 0 (or empty)
         # - If they don't: hide them if all their children's column values are 0 (or empty)
@@ -1908,17 +1930,6 @@ class AccountReport(models.Model):
             sorted_expressions_detail = sorted(expressions_detail.items(), key=lambda x: x[0])
 
             rslt['debug_popup_data'] = json.dumps({'expressions_detail': sorted_expressions_detail})
-
-        # Growth comparison column.
-        if self._display_growth_comparison(options):
-            compared_expression = line.expression_ids.filtered(lambda expr: expr.label == rslt['columns'][0]['expression_label'])
-            first_value = columns[0]['no_format']
-            second_value = columns[1]['no_format']
-            if not first_value and not second_value:  # For layout lines and such, with no values
-                rslt['growth_comparison_data'] = {'name': '', 'class': ''}
-            else:
-                rslt['growth_comparison_data'] = self._compute_growth_comparison_column(
-                    options, first_value, second_value, green_on_positive=compared_expression.green_on_positive)
 
         return rslt
 

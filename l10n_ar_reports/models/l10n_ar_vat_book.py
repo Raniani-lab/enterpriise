@@ -90,7 +90,11 @@ class ArgentinianReportCustomHandler(models.AbstractModel):
             'purchase': _('Purchases'),
             'all': _('All'),
         }
-        options['ar_vat_book_tax_type_selected'] = previous_options.get('ar_vat_book_tax_type_selected', 'all')
+        if options.get('_running_export_test'):
+            # Exporting the file is not allowed for 'all'. When executing the export tests, we hence always select 'sales', to avoid raising.
+            options['ar_vat_book_tax_type_selected'] = 'sale'
+        else:
+            options['ar_vat_book_tax_type_selected'] = previous_options.get('ar_vat_book_tax_type_selected', 'all')
 
         tax_types = self._vat_book_get_selected_tax_types(options)
 

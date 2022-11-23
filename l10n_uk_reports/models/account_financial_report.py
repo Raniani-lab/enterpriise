@@ -20,7 +20,7 @@ class BritishGenericTaxReportCustomHandler(models.AbstractModel):
 
     def send_hmrc(self, options):
         # do the login if there is no token for the current user yet.
-        if not self.env.user.l10n_uk_hmrc_vat_token:
+        if not self.env.user.l10n_uk_hmrc_vat_token and not options.get('_running_export_test'):
             return self.env['hmrc.service']._login()
 
         # Show wizard when sending to HMRC

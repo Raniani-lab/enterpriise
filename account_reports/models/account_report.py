@@ -1326,6 +1326,9 @@ class AccountReport(models.Model):
         # Create default options.
         options = {'unfolded_lines': (previous_options or {}).get('unfolded_lines', [])}
 
+        if (previous_options or {}).get('_running_export_test'):
+            options['_running_export_test'] = True
+
         for initializer in self._get_options_initializers_in_sequence():
             initializer(options, previous_options=previous_options)
 

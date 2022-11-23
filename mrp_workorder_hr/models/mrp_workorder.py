@@ -21,7 +21,7 @@ class MrpWorkorder(models.Model):
                 wo_ids_without_employees.add(wo.id)
                 continue
             wo_ids_with_employees.add(wo.id)
-            now = fields.Datetime.now()
+            now = fields.datetime.now()
             wo.duration = self._intervals_duration([(t.date_start, t.date_end or now, t) for t in wo.time_ids])
         self.env['mrp.workorder'].browse(wo_ids_with_employees)._create_or_update_analytic_entry()
         return super(MrpWorkorder, self.env['mrp.workorder'].browse(wo_ids_without_employees))._compute_duration()
@@ -123,3 +123,10 @@ class MrpWorkorder(models.Model):
             if index == len(intervals) - 1:
                 duration += timer.loss_id._convert_to_duration(date_start, date_stop, timer.workcenter_id)
         return duration
+
+    def get_working_duration(self):
+        self.ensure_one()
+        if self.workcenter_id.allow_employee:
+            now = datetime.now()
+            return self._intervals_duration([(t.date_start, now, t) for t in self.time_ids if not t.date_end])
+        return super().get_working_duration()

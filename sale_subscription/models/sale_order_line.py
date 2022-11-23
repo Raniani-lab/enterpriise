@@ -52,9 +52,10 @@ class SaleOrderLine(models.Model):
                 continue
             # Subscriptions and upsells
             to_invoice_check = line.order_id.next_invoice_date and line.state in ('sale', 'done') and line.order_id.next_invoice_date >= today
+            currency_id = line.order_id.currency_id or self.env.company.currency_id
             if line.order_id.end_date:
                 to_invoice_check = to_invoice_check and line.order_id.end_date > today
-            if to_invoice_check and line.order_id.start_date and line.order_id.start_date > today or float_is_zero(line.price_subtotal, precision_rounding=line.order_id.currency_id.rounding):
+            if to_invoice_check and line.order_id.start_date and line.order_id.start_date > today or currency_id.is_zero(line.price_subtotal):
                 line.invoice_status = 'no'
 
     @api.depends('order_id.subscription_management', 'order_id.start_date', 'order_id.next_invoice_date')

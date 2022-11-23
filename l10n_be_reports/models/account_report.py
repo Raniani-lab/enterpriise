@@ -181,7 +181,7 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
         grids_list = []
         currency_id = self.env.company.currency_id
 
-        options = report._get_options({'no_format': True, 'date_from': date_from, 'date_to': date_to, 'filter_unfold_all': True})
+        options = report._get_options({'no_format': True, 'date': {'date_from': date_from, 'date_to': date_to}, 'filter_unfold_all': True})
         lines = report._get_lines(options)
 
         # Create a mapping between report line ids and actual grid names
@@ -231,15 +231,16 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
                 'code': code,
                 'amount': '%.2f' % amount,
             }
-            rslt += Markup("""<ns2:Amount GridNumber="%(code)s">%(amount)s</ns2:Amount>""") % grid_amount_data
+            rslt += Markup("""
+            <ns2:Amount GridNumber="%(code)s">%(amount)s</ns2:Amount>""") % grid_amount_data
 
         rslt += Markup("""
-                    </ns2:Data>
-                    <ns2:ClientListingNihil>%(client_nihil)s</ns2:ClientListingNihil>
-                    <ns2:Ask Restitution="%(ask_restitution)s" Payment="%(ask_payment)s"/>
-                    <ns2:Comment>%(comments)s</ns2:Comment>
-                </ns2:VATDeclaration>
-            </ns2:VATConsignment>
+        </ns2:Data>
+        <ns2:ClientListingNihil>%(client_nihil)s</ns2:ClientListingNihil>
+        <ns2:Ask Restitution="%(ask_restitution)s" Payment="%(ask_payment)s"/>
+        <ns2:Comment>%(comments)s</ns2:Comment>
+    </ns2:VATDeclaration>
+</ns2:VATConsignment>
         """) % file_data
 
         return {

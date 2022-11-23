@@ -557,7 +557,7 @@
         <div class="dropdown-menu o_filter_menu" role="menu">
             <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="report.filter_show_draft" title="Include unposted entries" data-filter="all_entries" groups="account.group_account_readonly">Include Unposted Entries</a>
             <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="report.filter_analytic_groupby" title="Analytic filters will include analytic items without accounting correspondence" data-filter="include_analytic_without_aml" groups="account.group_account_readonly">Include Analytic Simulations</a>
-            <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="report.filter_hierarchy != 'never'" title="Hierarchy" data-filter="hierarchy">Hierarchy and Subtotals</a>
+            <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="options['display_hierarchy_filter']" title="Hierarchy" data-filter="hierarchy">Hierarchy and Subtotals</a>
             <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="report.filter_unreconciled" title="Unreconciled" data-filter="unreconciled">Only Show Unreconciled Entries</a>
             <a role="menuitem" class="dropdown-item js_account_report_bool_filter" t-if="report.filter_unfold_all" title="Unfold" data-filter="unfold_all">Unfold All</a>
         </div>

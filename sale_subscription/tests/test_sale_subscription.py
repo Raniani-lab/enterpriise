@@ -1956,3 +1956,175 @@ class TestSubscription(TestSubscriptionCommon):
                 'price_unit': 12,
             })]
         self.assertEqual(sub_2.subscription_management, 'create')
+
+    def test_free_subscription(self):
+        with freeze_time("2023-01-01"):
+            pricelist = self.env['product.pricelist'].create({
+                'name': 'Pricelist A',
+            })
+            # We don't want to create invoice when the sum of recurring line is 0
+            nr_product = self.env['product.template'].create({
+                'name': 'Non recurring product',
+                'type': 'service',
+                'uom_id': self.product.uom_id.id,
+                'list_price': 25,
+                'invoice_policy': 'order',
+            })
+            # nr_product.taxes_id = False # we avoid using taxes in this example
+            self.pricing_year.unlink()
+            self.pricing_month.price = 25
+            self.product2.list_price = -25.0
+            # total = 0 & recurring amount = 0
+            sub_0_0 = self.env['sale.order'].create({
+                'partner_id': self.partner.id,
+                'recurrence_id': self.recurrence_month.id,
+                'pricelist_id': pricelist.id,
+                'order_line': [
+                    (0, 0, {
+                        'name': self.product.name,
+                        'product_id': self.product.id,
+                        'product_uom_qty': 2.0,
+                        'product_uom': self.product.uom_id.id,
+                    }),
+                    (0, 0, {
+                        'name': self.product.name,
+                        'product_id': self.product2.id,
+                        'product_uom_qty': 2.0,
+                        'product_uom': self.product.uom_id.id,
+                        'price_unit': -25,
+                    })
+                ],
+            })
+            # total = 0 & recurring amount > 0
+            sub_0_1 = self.env['sale.order'].create({
+                'partner_id': self.partner.id,
+                'recurrence_id': self.recurrence_month.id,
+                'pricelist_id': pricelist.id,
+                'order_line': [
+                    (0, 0, {
+                        'name': self.product.name,
+                        'product_id': self.product.id,
+                        'product_uom_qty': 2.0,
+                        'product_uom': self.product.uom_id.id,
+                    }),
+                    (0, 0, {
+                        'name': nr_product.name,
+                        'product_id': nr_product.product_variant_id.id,
+                        'product_uom_qty': 2.0,
+                        'product_uom': nr_product.uom_id.id,
+                        'price_unit': -25,
+                    })
+                ],
+            })
+            # total > 0 & recurring amount = 0
+            sub_1_0 = self.env['sale.order'].create({
+                'partner_id': self.partner.id,
+                'recurrence_id': self.recurrence_month.id,
+                'pricelist_id': pricelist.id,
+                'order_line': [
+                    (0, 0, {
+                        'name': self.product.name,
+                        'product_id': self.product.id,
+                        'product_uom_qty': 2.0,
+                        'product_uom': self.product.uom_id.id,
+                    }),
+                    (0, 0, {
+                        'name': self.product.name,
+                        'product_id': self.product2.id,
+                        'product_uom_qty': 2.0,
+                        'product_uom': self.product2.uom_id.id,
+                    }),
+                    (0, 0, {
+                        'name': nr_product.name,
+                        'product_id': nr_product.product_variant_id.id,
+                        'product_uom_qty': 2.0,
+                        'product_uom': nr_product.uom_id.id,
+                    }),
+                ],
+            })
+
+            sub_negative_recurring = self.env['sale.order'].create({
+                'partner_id': self.partner.id,
+                'recurrence_id': self.recurrence_month.id,
+                'pricelist_id': pricelist.id,
+                'order_line': [
+                    (0, 0, {
+                        'name': self.product.name,
+                        'product_id': self.product.id,
+                        'product_uom_qty': 2.0,
+                        'product_uom': self.product.uom_id.id,
+                        'price_unit': -30
+                    }),
+                    (0, 0, {
+                        'name': self.product.name,
+                        'product_id': self.product2.id,
+                        'product_uom_qty': 2.0,
+                        'product_uom': self.product2.uom_id.id,
+                        'price_unit': -10
+                    }),
+                ],
+            })
+
+            # negative_nonrecurring_sub
+            negative_nonrecurring_sub = self.env['sale.order'].create({
+                'partner_id': self.partner.id,
+                'recurrence_id': self.recurrence_month.id,
+                'pricelist_id': pricelist.id,
+                'order_line': [
+                    (0, 0, {
+                        'name': self.product.name,
+                        'product_id': self.product.id,
+                        'product_uom_qty': 2.0,
+                        'product_uom': self.product.uom_id.id,
+                        'price_unit': -30
+                    }),
+                    (0, 0, {
+                        'name': self.product.name,
+                        'product_id': self.product2.id,
+                        'product_uom_qty': 2.0,
+                        'product_uom': self.product2.uom_id.id,
+                        'price_unit': -10
+                    }),
+                    (0, 0, {
+                        'name': nr_product.name,
+                        'product_id': nr_product.product_variant_id.id,
+                        'product_uom_qty': 2.0,
+                        'product_uom': nr_product.uom_id.id,
+                    }),
+                ],
+            })
+
+            (sub_0_0 | sub_0_1 | sub_1_0 | sub_negative_recurring | negative_nonrecurring_sub).order_line.tax_id = False
+            (sub_0_0 | sub_0_1 | sub_1_0 | sub_negative_recurring | negative_nonrecurring_sub).action_confirm()
+
+            invoice_0_0 = sub_0_0._create_recurring_invoice(automatic=True)
+            self.assertTrue(sub_0_0.currency_id.is_zero(sub_0_0.amount_total))
+            self.assertFalse(invoice_0_0, "Free contract with recurring products should not create invoice")
+            self.assertEqual(sub_0_0.order_line.mapped('invoice_status'), ['no', 'no'], 'No invoice needed')
+
+            self.assertTrue(sub_0_1.currency_id.is_zero(sub_0_1.amount_total))
+            self.assertTrue(sub_0_1.order_line.filtered(lambda l: l.temporal_type == 'subscription').price_subtotal > 0)
+            invoice_0_1 = sub_0_1._create_recurring_invoice(automatic=True)
+            self.assertEqual(invoice_0_1.amount_total, 0, "Total is 0 but an invoice should be created.")
+            self.assertEqual(sub_0_1.order_line.mapped('invoice_status'), ['invoiced', 'invoiced'], 'No invoice needed')
+
+            self.assertTrue(sub_1_0.amount_total > 0)
+            invoice_1_0 = sub_1_0._create_recurring_invoice(automatic=True)
+            self.assertEqual(invoice_1_0.amount_total, 50, "Total is 0 and an invoice should be created.")
+            self.assertEqual(sub_1_0.order_line.mapped('invoice_status'), ['no', 'no', 'invoiced'], 'No invoice needed')
+            self.assertFalse(all(invoice_1_0.invoice_line_ids.sale_line_ids.product_id.mapped('recurring_invoice')),
+                             "The recurring line should be invoiced")
+        with freeze_time("2023-01-02"):
+            # Negative subscription will be invoiced by cron the next day
+            negative_invoice = sub_negative_recurring._create_recurring_invoice(automatic=True)
+            self.assertEqual(sub_negative_recurring.amount_total, -80)
+            self.assertFalse(negative_invoice, "Free contract with recurring products should not create invoice")
+            self.assertEqual(sub_negative_recurring.order_line.mapped('invoice_status'), ['no', 'no'], 'No invoice needed')
+
+            with mute_logger('odoo.addons.sale_subscription.models.sale_order'):
+                # Don't display UserError when we try to validate the negative invoice
+                negative_non_recurring_inv = negative_nonrecurring_sub._create_recurring_invoice(automatic=True)
+            self.assertEqual(negative_nonrecurring_sub.amount_total, -30)
+            self.assertFalse(negative_non_recurring_inv, "negative contract with non recurring products should not create invoice")
+            self.assertEqual(sub_negative_recurring.order_line.mapped('invoice_status'), ['no', 'no'],
+                             'No invoice needed')

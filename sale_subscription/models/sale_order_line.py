@@ -7,7 +7,6 @@ from collections import defaultdict
 from odoo import fields, models, api, _, Command
 from odoo.tools.date_utils import get_timedelta
 from odoo.tools import format_date
-from odoo.tools.float_utils import float_is_zero
 from odoo.exceptions import ValidationError
 
 INTERVAL_FACTOR = {
@@ -48,14 +47,19 @@ class SaleOrderLine(models.Model):
         super(SaleOrderLine, self)._compute_invoice_status()
         today = fields.Date.today()
         for line in self:
+            currency_id = line.order_id.currency_id or self.env.company.currency_id
             if not line.order_id.is_subscription or line.temporal_type != 'subscription':
                 continue
             # Subscriptions and upsells
+            recurring_free = currency_id.compare_amounts(line.order_id.recurring_monthly, 0) < 1
+            if recurring_free:
+                # free subscription lines are never to invoice whatever the dates
+                line.invoice_status = 'no'
+                continue
             to_invoice_check = line.order_id.next_invoice_date and line.state in ('sale', 'done') and line.order_id.next_invoice_date >= today
-            currency_id = line.order_id.currency_id or self.env.company.currency_id
             if line.order_id.end_date:
                 to_invoice_check = to_invoice_check and line.order_id.end_date > today
-            if to_invoice_check and line.order_id.start_date and line.order_id.start_date > today or currency_id.is_zero(line.price_subtotal):
+            if to_invoice_check and line.order_id.start_date and line.order_id.start_date > today or (currency_id.is_zero(line.price_subtotal)):
                 line.invoice_status = 'no'
 
     @api.depends('order_id.subscription_management', 'order_id.start_date', 'order_id.next_invoice_date')

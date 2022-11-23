@@ -1082,7 +1082,13 @@ class SaleOrder(models.Model):
         :return: bool
         """
         self.ensure_one()
-        return float_is_zero(sum(invoiceable_lines.mapped('price_subtotal')), precision_rounding=self.currency_id.rounding)
+        total_recurring = 0.0
+        for line in invoiceable_lines:
+            if line.temporal_type != 'subscription':
+                # Non-recurring line should be invoiced even if the total amount is 0.
+                return False
+            total_recurring += line.price_subtotal
+        return float_is_zero(total_recurring, precision_rounding=self.currency_id.rounding)
 
     @api.model
     def _get_automatic_subscription_values(self):
@@ -1158,6 +1164,8 @@ class SaleOrder(models.Model):
                     if not automatic or subscription.next_invoice_date < today:
                         subscription._update_next_invoice_date()
                         if invoice_is_free:
+                            for line in invoiceable_lines:
+                                line.qty_invoiced = line.product_uom_qty
                             subscription._subscription_post_success_free_renewal()
                     if auto_commit:
                         self.env.cr.commit()
@@ -1349,7 +1357,7 @@ class SaleOrder(models.Model):
         if any(self.mapped('is_subscription')):
             error_message += _(
                 "\n- You should wait for the current subscription period to pass. New quantities to invoice will be ready "
-                "at the end of the current period."
+                "at the end of the current period. \n  Negative recurring lines are considered free."
             )
         return error_message
 

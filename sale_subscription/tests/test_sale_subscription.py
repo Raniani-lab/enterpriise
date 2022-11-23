@@ -122,6 +122,12 @@ class TestSubscription(TestSubscriptionCommon):
         temp._onchange_sale_order_template_id()
         self.assertEqual(temp.note, Markup('<p>This is the template description</p>'), 'Override the subscription note')
 
+    def test_template_without_selected_partner(self):
+        """ Create a subscription by choosing a template before the customer """
+        with Form(self.env['sale.order']) as subscription:
+            subscription.sale_order_template_id = self.subscription_tmpl
+            subscription.partner_id = self.partner # mandatory to have no error
+
     def test_invoincing_with_section(self):
         """ Test invoicing when order has section/note."""
         context_no_mail = {'no_reset_password': True, 'mail_create_nosubscribe': True, 'mail_create_nolog': True, }

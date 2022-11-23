@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="ISO-8859-1" ?>
-<EnvioDTE xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns="http://www.sii.cl/SiiDte" xsi:schemaLocation="http://www.sii.cl/SiiDte EnvioDTE_v10.xsd" version="1.0">
+<EnvioDTE xmlns="http://www.sii.cl/SiiDte" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sii.cl/SiiDte EnvioDTE_v10.xsd" version="1.0">
     <SetDTE ID="SetDoc">
         <Caratula version="1.0">
             <RutEmisor>76201224-3</RutEmisor>
@@ -7,7 +7,7 @@
             <RutReceptor>60803000-K</RutReceptor>
             <FchResol>2019-10-20</FchResol>
             <NroResol>0</NroResol>
-            <TmstFirmaEnv>2019-10-24T20:00:00</TmstFirmaEnv>
+            <TmstFirmaEnv>2022-11-24T12:45:37</TmstFirmaEnv>
             <SubTotDTE>
                 <TpoDTE>33</TpoDTE>
                 <NroDTE>1</NroDTE>
@@ -19,9 +19,9 @@
                 <IdDoc>
                     <TipoDTE>33</TipoDTE>
                     <Folio>1</Folio>
-                    <FchEmis>2019-10-23</FchEmis>
+                    <FchEmis>2022-11-24</FchEmis>
                     <FmaPago>2</FmaPago>
-                    <FchVenc>2019-10-23</FchVenc>
+                    <FchVenc>2022-11-24</FchVenc>
                 </IdDoc>
                 <Emisor>
                     <RUTEmisor>76201224-3</RUTEmisor>
@@ -41,57 +41,67 @@
                     <Contacto>+562 0000 0000</Contacto>
                     <CorreoRecep>partner@sii.cl</CorreoRecep>
                     <DirRecep>Puerto Test 102</DirRecep>
-            <CmnaRecep>Pudahuel</CmnaRecep>
+                    <CmnaRecep>Pudahuel</CmnaRecep>
                 </Receptor>
                 <Totales>
-                    <MntNeto>397492</MntNeto>
+                    <MntNeto>218765</MntNeto>
                     <TasaIVA>19.00</TasaIVA>
-            <IVA>75523</IVA>
-                    <MntTotal>473015</MntTotal>
+                    <IVA>41565</IVA>
+                    <MntTotal>260330</MntTotal>
                 </Totales>
+                <OtraMoneda>
+                    <TpoMoneda>DOLAR USA</TpoMoneda>
+                    <TpoCambio>935.29</TpoCambio>
+                    <MntNetoOtrMnda>233.90</MntNetoOtrMnda>
+                    <IVAOtrMnda>44.44</IVAOtrMnda>
+                    <MntTotOtrMnda>278.34</MntTotOtrMnda>
+                </OtraMoneda>
             </Encabezado>
             <Detalle>
                 <NroLinDet>1</NroLinDet>
                 <NmbItem>product_a</NmbItem>
                 <DscItem>Tapa Ranurada UL FM 300 6&quot;</DscItem>
-                <QtyItem>200.000000</QtyItem>
+                <QtyItem>2.000000</QtyItem>
                 <UnmdItem>U</UnmdItem>
-                <PrcItem>4.999468</PrcItem>
-                <DescuentoPct>5.99</DescuentoPct>
-                <DescuentoMonto>60</DescuentoMonto>
-                <MontoItem>940</MontoItem>
+                <PrcItem>115461.666667</PrcItem>
+                <OtrMnda>
+                    <PrcOtrMon>123.45</PrcOtrMon>
+                    <Moneda>USD</Moneda>
+                    <FctConv>935.2909</FctConv>
+                    <DctoOtrMnda>24.69</DctoOtrMnda>
+                    <MontoItemOtrMnda>222.21</MontoItemOtrMnda>
+                </OtrMnda>
+                <DescuentoPct>10.00</DescuentoPct>
+                <DescuentoMonto>23092</DescuentoMonto>
+                <MontoItem>207831</MontoItem>
             </Detalle>
             <Detalle>
                 <NroLinDet>2</NroLinDet>
                 <NmbItem>product_a</NmbItem>
                 <DscItem>Copla Flexible 1NS 6"</DscItem>
-                <QtyItem>300.000000</QtyItem>
+                <QtyItem>1.000000</QtyItem>
                 <UnmdItem>U</UnmdItem>
-                <PrcItem>800.000000</PrcItem>
-                <DescuentoPct>9.77</DescuentoPct>
-                <DescuentoMonto>23448</DescuentoMonto>
-                <MontoItem>216552</MontoItem>
-            </Detalle>
-            <Detalle>
-                <NroLinDet>3</NroLinDet>
-                <NmbItem>product_a</NmbItem>
-                <DscItem>Desk Combination</DscItem>
-                <QtyItem>5.000000</QtyItem>
-                <UnmdItem>U</UnmdItem>
-                <PrcItem>40000.000000</PrcItem>
-                <DescuentoPct>10.00</DescuentoPct>
-                <DescuentoMonto>20000</DescuentoMonto>
-                <MontoItem>180000</MontoItem>
+                <PrcItem>11509.473684</PrcItem>
+                <OtrMnda>
+                    <PrcOtrMon>12.31</PrcOtrMon>
+                    <Moneda>USD</Moneda>
+                    <FctConv>935.3293</FctConv>
+                    <DctoOtrMnda>0.62</DctoOtrMnda>
+                    <MontoItemOtrMnda>11.69</MontoItemOtrMnda>
+                </OtrMnda>
+                <DescuentoPct>5.00</DescuentoPct>
+                <DescuentoMonto>575</DescuentoMonto>
+                <MontoItem>10934</MontoItem>
             </Detalle>
             <TED version="1.0">
             <DD>
                 <RE>76201224-3</RE>
                 <TD>33</TD>
                 <F>1</F>
-                <FE>2019-10-23</FE>
+                <FE>2022-11-24</FE>
                 <RR>76086428-5</RR>
                 <RSR>Partner SII</RSR>
-                <MNT>473015</MNT>
+                <MNT>260330</MNT>
                 <IT1>product_a</IT1>
                 <CAF version="1.0">
                     <DA>
@@ -111,10 +121,10 @@
                     </DA>
                     <FRMA algoritmo="SHA1withRSA">UqQWYVsAzPzpaCNwGH67LuqE7sdjAJtX8s2vbI5PyB1s4ZCy+E237uZEt5BzMtUTvJdBTaFlx5jaXAV2pn2hkg==</FRMA>
                 </CAF>
-                <TSTED>2019-10-24T20:00:00</TSTED>
+                <TSTED>2022-11-24T12:45:37</TSTED>
             </DD>
-                <FRMT algoritmo="SHA1withRSA">Deg1CIdwI8tLXPVfn5/VdaA3zn/xqQsNQWK9S7rnughFVGqWr9ZOIdxbUwaISHleuunhuGCUY4H5fzGOPkfMIQ==</FRMT>
-            </TED><TmstFirma>2019-10-24T20:00:00</TmstFirma>
+                <FRMT algoritmo="SHA1withRSA">___ignore___</FRMT>
+            </TED><TmstFirma>2022-11-24T12:45:37</TmstFirma>
             </Documento>
         <Signature xmlns="http://www.w3.org/2000/09/xmldsig#"><SignedInfo xmlns="http://www.w3.org/2000/09/xmldsig#"><CanonicalizationMethod Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/><SignatureMethod Algorithm="http://www.w3.org/2000/09/xmldsig#rsa-sha1"/><Reference URI="#F1T33"><Transforms><Transform Algorithm="http://www.w3.org/TR/2001/REC-xml-c14n-20010315"/></Transforms><DigestMethod Algorithm="http://www.w3.org/2000/09/xmldsig#sha1"/><DigestValue>___ignore___</DigestValue></Reference></SignedInfo><SignatureValue>___ignore___</SignatureValue><KeyInfo><KeyValue><RSAKeyValue><Modulus>z9febWH4bX4RyTuvflZzqd2sxdye2IxC8OHwFlLfNOjcb3+APvvIwP50Eo1jyU8p3+4ylSEOaawBdwj/QOWIdZ9mhbfnZvXD8aQx2Qwt63s9rNtSnlHi/2X4Qfgn777dfgr3AddxCbtM4H5qChginhyPzJeND7dRtgCQU88HABJW3LDQDWrjt6aAGMIHqM2giZVKugz9SMP73R0KrdChRAgx1Z3Qo5K/RB6fsYGvGZDV7pcMGCSNFSTK+7lKeadI+Wupbf8K3UBAFXgwEd0XEpN+ZJvmoRD5Gv6VKbw88sKyQvG1gijmWW5a2vomuJBXhgT02FkL0wgzupsc4kT5q9s51ZIADXiq5G4s5iVaxiqHZKUvLKTCAXEBtyypgOgQ7C9z/9NIKutNW+tXciYZ+ngPHIWwtRmUhv2Kf4I3sjqLfRswMDnbmApw1DXzgJZT6qM/JCIl8SV40wnZ4f/SIQFXbpkP0s9UMY0YC2m0bUrXKfij7ALuZsf2S19tDoEOG49YXXsVoz+LKsO0XLL2XmcTPAxPvgeEGI9eSBczkpGcHBpQAFKZ8vpDkRInyaN9hBLeyTWWebRYZqJU1RgNA1GGbLEfm1e/d1Tza2re8ovrL3DgW1z7FHZuvMlAtoQuqu8E5eMak2u9eMxM6AoOOxIJ4+ALcCrB0FumIwUvgIU=</Modulus><Exponent>AQAB</Exponent></RSAKeyValue></KeyValue><X509Data><X509Certificate>
 MIIF1jCCA74CCQCRWYi6uLtDIDANBgkqhkiG9w0BAQsFADCBrDELMAkGA1UEBhMC

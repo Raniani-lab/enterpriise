@@ -118,6 +118,17 @@ class TestUi(odoo.tests.HttpCase):
                 'template_id': template.id,
                 'width': 0.150,
                 'height': 0.015,
+            }, {
+                'type_id': self.env.ref('sign.sign_item_type_text').id,
+                'name': 'employee_id.children',
+                'required': True,
+                'responsible_id': self.env.ref('sign.sign_item_role_employee').id,
+                'page': 2,
+                'posX': 0.665,
+                'posY': 0.694,
+                'template_id': template.id,
+                'width': 0.150,
+                'height': 0.015,
             }
         ])
 
@@ -231,6 +242,13 @@ class TestUi(odoo.tests.HttpCase):
         new_employee_id = new_contract_id.employee_id
         self.assertTrue(new_employee_id, 'An employee has been created')
         self.assertFalse(new_employee_id.active, 'Employee is not yet active')
+
+        # asserts that '0' values automatically filled are actually being saved
+        children_count = self.env['sign.request.item.value'].search([
+            ('sign_item_id.name', '=', "employee_id.children"),
+            ('sign_request_id', '=', new_contract_id.sign_request_ids.id)
+        ], limit=1)
+        self.assertEqual(children_count.value, '0')
 
         model_corsa = self.env.ref("fleet.model_corsa")
         vehicle = self.env['fleet.vehicle'].search([('company_id', '=', company_id.id), ('model_id', '=', model_corsa.id)])

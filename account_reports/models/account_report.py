@@ -494,7 +494,7 @@ class AccountReport(models.Model):
             else:
                 options_filter = default_filter
 
-        elif previous_mode == options_mode:
+        elif (previous_mode is None or previous_mode == options_mode) and previous_date:
             # Same date mode.
 
             if previous_filter == 'custom':
@@ -528,11 +528,6 @@ class AccountReport(models.Model):
                 company_fiscalyear_dates = self.env.company.compute_fiscalyear_dates(fields.Date.context_today(self))
                 date_from = company_fiscalyear_dates['date_from']
                 date_to = company_fiscalyear_dates['date_to']
-            elif options_filter == 'custom':
-                custom_date_from = self.filter_date.get('date_from')
-                custom_date_to = self.filter_date.get('date_to')
-                date_to = fields.Date.from_string(custom_date_to or custom_date_from)
-                date_from = fields.Date.from_string(custom_date_from) if custom_date_from else date_utils.get_month(date_to)[0]
 
         options['date'] = self._get_dates_period(
             date_from,

@@ -238,11 +238,14 @@ var ManualModel = BasicModel.extend({
         return this.lines[handle];
     },
     _loadReconciliationModel: function (company_ids) {
+        var self = this;
         return this._rpc({
                 model: 'account.reconciliation.widget',
                 method: 'get_reconcile_modelds_for_manual_reconciliation',
                 args: [company_ids],
-            })
+            }).then(function (reconcileModels) {
+                self.reconcileModels = reconcileModels;
+            });
     },
     _loadTaxes: function(){
         var self = this;

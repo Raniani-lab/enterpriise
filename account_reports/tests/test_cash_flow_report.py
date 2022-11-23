@@ -64,6 +64,60 @@ class TestCashFlowReport(TestAccountReportsCommon):
     def _reconcile_on(self, lines, account):
         lines.filtered(lambda line: line.account_id == account and not line.reconciled).reconcile()
 
+    def test_growth_comparison(self):
+        """ Enables period comparison and tests the growth comparison column; in order to ensure this feature works on reports with dynamic lines.
+        """
+        self.report.filter_period_comparison = True
+        options = self._generate_options(self.report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2016-12-31'))
+        options = self._update_comparison_filter(options, self.report, 'previous_period', 1)
+
+        move_1 = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': '2015-01-01',
+            'journal_id': self.misc_journal.id,
+            'line_ids': [
+                (0, 0, {'debit': 100.0,     'credit': 0.0,     'account_id': self.account_bank.id}),
+                (0, 0, {'debit': 100.0,     'credit': 0.0,     'account_id': self.account_cash.id}),
+                (0, 0, {'debit':   0.0,     'credit': 200.0,   'account_id': self.account_no_tag.id}),
+            ],
+        })
+        move_1.action_post()
+
+        move_2 = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': '2016-01-01',
+            'journal_id': self.misc_journal.id,
+            'line_ids': [
+                (0, 0, {'debit': 1000.0,     'credit': 0.0,     'account_id': self.account_bank.id}),
+                (0, 0, {'debit': 1000.0,     'credit': 0.0,     'account_id': self.account_cash.id}),
+                (0, 0, {'debit':   0.0,      'credit': 2000.0,  'account_id': self.account_no_tag.id}),
+            ],
+        })
+        move_2.action_post()
+
+        self.assertGrowthComparisonValues(
+            self.report._get_lines(options),
+            [
+                ('Cash and cash equivalents, beginning of period',         'n/a',    'number'),
+                ('Net increase in cash and cash equivalents',              '900.0%', 'number color-green'),
+                ('Cash flows from operating activities',                   '',       ''),
+                ('Advance Payments received from customers',               '',       ''),
+                ('Cash received from operating activities',                '',       ''),
+                ('Advance payments made to suppliers',                     '',       ''),
+                ('Cash paid for operating activities',                     '',       ''),
+                ('Cash flows from investing & extraordinary activities',   '',       ''),
+                ('Cash in',                                                '',       ''),
+                ('Cash out',                                               '',       ''),
+                ('Cash flows from financing activities',                   '',       ''),
+                ('Cash in',                                                '',       ''),
+                ('Cash out',                                               '',       ''),
+                ('Cash flows from unclassified activities',                '900.0%', 'number color-green'),
+                ('Cash in',                                                '900.0%', 'number color-green'),
+                ('Cash out',                                               '',       ''),
+                ('Cash and cash equivalents, closing balance',             '1000.0%', 'number color-green'),
+            ]
+        )
+
     def test_cash_flow_journals(self):
         options = self._generate_options(self.report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2017-01-01'))
 

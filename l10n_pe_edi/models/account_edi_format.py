@@ -865,12 +865,12 @@ class AccountEdiFormat(models.Model):
             res.append(_("VAT number is missing on company %s") % move.company_id.display_name)
         if not move.commercial_partner_id.vat:
             res.append(_("VAT number is missing on partner %s") % move.commercial_partner_id.display_name)
-        lines = move.invoice_line_ids.filtered(lambda line: not line.display_type)
+        lines = move.invoice_line_ids.filtered(lambda line: line.display_type not in ('line_note', 'line_section'))
         for line in lines:
             taxes = line.tax_ids
             if len(taxes) > 1 and len(taxes.filtered(lambda t: t.tax_group_id.l10n_pe_edi_code == 'IGV')) > 1:
                 res.append(_("You can't have more than one IGV tax per line to generate a legal invoice in Peru"))
-        if any(not line.tax_ids for line in move.invoice_line_ids if not line.display_type):
+        if any(not line.tax_ids for line in move.invoice_line_ids if line.display_type not in ('line_note', 'line_section')):
             res.append(_("Taxes need to be assigned on all invoice lines"))
 
         return res

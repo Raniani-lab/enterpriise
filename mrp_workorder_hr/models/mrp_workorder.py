@@ -1,7 +1,9 @@
 # -*- coding: utf-8 -*-
+from collections import defaultdict
 from datetime import datetime
 
 from odoo import Command, models, fields, api
+from odoo.addons.resource.models.resource import Intervals
 from odoo.http import request
 
 
@@ -19,8 +21,14 @@ class MrpWorkorder(models.Model):
             if not wo.workcenter_id.allow_employee:
                 wo_ids_without_employees.add(wo.id)
                 continue
-            now = fields.datetime.now()
-            wo.duration = self._intervals_duration([(t.date_start, t.date_end or now, t) for t in wo.time_ids])
+            now = datetime.now()
+            loss_type_times = defaultdict(lambda: self.env['mrp.workcenter.productivity'])
+            for time in wo.time_ids:
+                loss_type_times[time.loss_id.loss_type] |= time
+            duration = 0
+            for dummy, times in loss_type_times.items():
+                duration += self._intervals_duration([(t.date_start, t.date_end or now, t) for t in times])
+            wo.duration = duration
         return super(MrpWorkorder, self.env['mrp.workorder'].browse(wo_ids_without_employees))._compute_duration()
 
     @api.depends('employee_ids')
@@ -109,16 +117,8 @@ class MrpWorkorder(models.Model):
         if not intervals:
             return 0.0
         duration = 0
-        intervals.sort(key=lambda i: i[0])
-        date_start, date_stop, timer = intervals[0]
-        for index, interval in enumerate(intervals):
-            if interval[0] <= date_stop:
-                date_stop = max(date_stop, interval[1])
-            else:
-                duration += timer.loss_id._convert_to_duration(date_start, date_stop, timer.workcenter_id)
-                date_start, date_stop, timer = interval
-            if index == len(intervals) - 1:
-                duration += timer.loss_id._convert_to_duration(date_start, date_stop, timer.workcenter_id)
+        for date_start, date_stop, timer in Intervals(intervals):
+            duration += timer.loss_id._convert_to_duration(date_start, date_stop, timer.workcenter_id)
         return duration
 
     def get_working_duration(self):

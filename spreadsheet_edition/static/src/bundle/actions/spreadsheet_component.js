@@ -69,7 +69,7 @@ export default class SpreadsheetComponent extends LegacyComponent {
                 client: {
                     id: uuidGenerator.uuidv4(),
                     name: user.name,
-                    userId: user.uid,
+                    userId: user.userId,
                 },
                 mode: this.props.isReadonly ? "readonly" : "normal",
                 snapshotRequested: this.props.snapshotRequested,

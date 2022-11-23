@@ -796,16 +796,16 @@ msgstr ""
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
-msgid "Are you sure you want to remove you own \"Write\" access ?"
+msgid ""
+"Are you sure you want to remove your member? By leaving an article, you may "
+"lose access to it."
 msgstr ""
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
-msgid ""
-"Are you sure you want to remove your member? By leaving an article, you may "
-"lose access to it."
+msgid "Are you sure you want to remove your own \"Write\" access ?"
 msgstr ""
 
 #. module: knowledge

@@ -10,7 +10,7 @@ const { Component, onWillStart, useState } = owl;
 const permissionLevel = {'none': 0, 'read': 1, 'write': 2}
 const restrictMessage = _lt("Are you sure you want to restrict this role and restrict access ? "
 + "This article will no longer inherit access settings from the parent page.");
-const loseWriteMessage = _lt('Are you sure you want to remove you own "Write" access ?');
+const loseWriteMessage = _lt('Are you sure you want to remove your own "Write" access ?');
 
 class PermissionPanel extends Component {
     /**

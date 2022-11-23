@@ -382,6 +382,11 @@
         // ====  "Regular" row - When it's an opened group's children
         &.open .o_gantt_row_sidebar {
             font-weight: normal;
+            background-color: inherit;
+            
+            .o_gantt_text_hoverable.o_gantt_group_none {
+                background-color: inherit;
+            }
         }
 
         // ====  "Regular" row - "Hover" State

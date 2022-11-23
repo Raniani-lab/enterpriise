@@ -19,9 +19,8 @@ class AccountMove(models.Model):
             if self.line_ids.filtered(lambda x: x.tax_group_id.id in [
                     self.env.ref(f'account.{cid}_tax_group_ila').id, self.env.ref(f'account.{cid}_tax_group_retenciones').id]):
                 raise UserError(_('Receipts with withholding taxes are not allowed'))
-            if any(self.invoice_line_ids.mapped('tax_ids.price_include')):
-                raise UserError(_('Tax included in price is not supported for boletas. '
-                                  'Please change the tax to not included in price.'))
+            if self.company_id.currency_id != self.currency_id:
+                raise UserError(_('It is not allowed to create receipts in a different currency than CLP'))
         super()._l10n_cl_edi_post_validation()
 
     def _l10n_cl_edi_validate_boletas(self):

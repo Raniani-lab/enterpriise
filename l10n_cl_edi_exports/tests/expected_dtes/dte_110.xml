@@ -67,9 +67,9 @@
                 </Totales>
                 <OtraMoneda>
                     <TpoMoneda>PESO CL</TpoMoneda>
-                    <TpoCambio>0.0013</TpoCambio>
-                    <MntExeOtrMnda>7721153.8462</MntExeOtrMnda>
-                    <MntTotOtrMnda>7721153.8462</MntTotOtrMnda>
+                    <TpoCambio>769.23</TpoCambio>
+                    <MntExeOtrMnda>7721154</MntExeOtrMnda>
+                    <MntTotOtrMnda>7721154</MntTotOtrMnda>
                 </OtraMoneda>
             </Encabezado>
             <Detalle>
@@ -81,10 +81,10 @@
                 <UnmdItem>U</UnmdItem>
                 <PrcItem>5018.750000</PrcItem>
                 <OtrMnda>
-                    <PrcOtrMon>3860576.9231</PrcOtrMon>
+                    <PrcOtrMon>3860577</PrcOtrMon>
                     <Moneda>CLP</Moneda>
-                    <FctConv>0.0013</FctConv>
-                    <MontoItemOtrMnda>7721153.8462</MontoItemOtrMnda>
+                    <FctConv>769.2308</FctConv>
+                    <MontoItemOtrMnda>7721154</MontoItemOtrMnda>
                 </OtrMnda>
                 <MontoItem>10037.50</MontoItem>
             </Detalle>

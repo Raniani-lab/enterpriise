@@ -69,7 +69,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
             # 1) payment failed, we want to avoid trigger it twice: (double cost) --> payment_exception
             # 2) batch: we need to avoid taking subscription two time. flag remains until the end of the last trigger
             failing_subs.order_line.qty_to_invoice = 1
-            self.env['sale.order']._create_recurring_invoice(automatic=True, batch_size=3)
+            self.env['sale.order']._create_recurring_invoice(batch_size=3)
             self.assertFalse(self.mock_send_success_count)
             failing_result = [not res for res in failing_subs.mapped('payment_exception')]
             self.assertTrue(all(failing_result), "The subscription are not flagged anymore")
@@ -225,7 +225,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
         })
         self.subscription.action_confirm()
         with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._do_payment', side_effect=Exception("Bad Token")), self.mock_mail_gateway():
-            self.subscription._create_recurring_invoice(automatic=True)
+            self.subscription._create_recurring_invoice()
         found_mail = self._find_mail_mail_wemail('accountman@test.com', 'sent', author=self.env.user.partner_id)
         mail_body = "Error during renewal of contract [%s] Customer REF XXXXXXX (Payment not recorded)" % self.subscription.id
         self.assertEqual(found_mail.body_html, mail_body)
@@ -239,7 +239,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
 
         with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._do_payment', side_effect=Exception("Oops, network error")),\
              self.mock_mail_gateway():
-            self.subscription._create_recurring_invoice(automatic=True)
+            self.subscription._create_recurring_invoice()
 
         invoice = self.subscription.order_line.invoice_lines.move_id
         self.assertFalse(invoice, "The draft invoice should be deleted when something goes wrong in _handle_automatic_invoices")
@@ -268,7 +268,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
         with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._do_payment', wraps=_mock_subscription_do_payment_and_commit),\
              patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._subscription_post_success_payment', side_effect=Exception("Kaput")),\
              self.mock_mail_gateway():
-            self.subscription._create_recurring_invoice(automatic=True)
+            self.subscription._create_recurring_invoice()
 
         invoice = self.subscription.order_line.invoice_lines.move_id
         self.assertTrue(
@@ -299,7 +299,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
 
         with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._do_payment', wraps=_mock_subscription_do_payment_rejected),\
              self.mock_mail_gateway():
-            self.subscription._create_recurring_invoice(automatic=True)
+            self.subscription._create_recurring_invoice()
 
         invoice = self.subscription.order_line.invoice_lines.move_id
         self.assertFalse(invoice, "The draft invoice should be deleted when something goes wrong in _handle_automatic_invoices")

@@ -21,7 +21,7 @@ class TestSaleSubscriptionAvalara(TestSaleSubscriptionAvalaraCommon, TestAccount
         self.subscription.action_confirm()
 
         with self._capture_request({'lines': [], 'summary': []}) as capture:
-            invoices = self.subscription.with_context(auto_commit=False)._create_recurring_invoice(automatic=True)
+            invoices = self.subscription.with_context(auto_commit=False)._create_recurring_invoice()
 
         self.assertEqual(
             capture.val and capture.val['json']['referenceCode'],

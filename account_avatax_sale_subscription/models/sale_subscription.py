@@ -4,8 +4,8 @@ from odoo import models
 class SaleSubscription(models.Model):
     _inherit = "sale.order"
 
-    def _create_recurring_invoice(self, automatic=False, batch_size=30):
-        invoices = super()._create_recurring_invoice(automatic, batch_size)
+    def _create_recurring_invoice(self, batch_size=30):
+        invoices = super()._create_recurring_invoice(batch_size)
         # Already compute taxes for unvalidated documents as they can already be paid
         invoices.filtered(lambda m: m.state == 'draft').button_update_avatax()
         return invoices

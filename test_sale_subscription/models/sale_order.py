@@ -28,7 +28,7 @@ class SaleOrder(models.Model):
         account_moves.is_move_sent = True
 
     def _test_demo_create_invoices(self, automatic=False):
-        self._create_recurring_invoice(automatic=automatic)
+        self._create_recurring_invoice()
         self.invoice_ids.filtered(lambda inv: inv.state == 'draft')._post(False)
 
     @api.model

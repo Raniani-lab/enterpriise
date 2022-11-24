@@ -282,7 +282,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual("2021-01-03", sub.start_date.strftime("%Y-%m-%d"))
             self.assertEqual("2021-01-03", sub.next_invoice_date.strftime("%Y-%m-%d"))
 
-            sub._create_recurring_invoice(automatic=True)
+            sub._create_recurring_invoice()
             # Next invoice date should not be bumped up because it is the first period
             self.assertEqual("2021-02-03", sub.next_invoice_date.strftime("%Y-%m-%d"))
 
@@ -291,7 +291,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(sub.invoice_ids.invoice_line_ids.date, datetime.date(2021, 1, 3))
         with freeze_time("2021-02-03"):
             # February
-            sub._create_recurring_invoice(automatic=True)
+            sub._create_recurring_invoice()
             self.assertEqual("2021-02-03", sub.last_invoice_date.strftime("%Y-%m-%d"))
             self.assertEqual("2021-03-03", sub.next_invoice_date.strftime("%Y-%m-%d"))
             inv = sub.invoice_ids.sorted('date')[-1]
@@ -300,7 +300,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(inv.invoice_line_ids.date, datetime.date(2021, 2, 3))
         with freeze_time("2021-03-03"):
             # March
-            sub._create_recurring_invoice(automatic=True)
+            sub._create_recurring_invoice()
             self.assertEqual("2021-03-03", sub.last_invoice_date.strftime("%Y-%m-%d"))
             self.assertEqual("2021-04-03", sub.next_invoice_date.strftime("%Y-%m-%d"))
             inv = sub.invoice_ids.sorted('date')[-1]
@@ -329,7 +329,7 @@ class TestSubscription(TestSubscriptionCommon):
                                                 'price_unit': 42})
 
             self.subscription.action_confirm()
-            self.subscription._create_recurring_invoice(automatic=True)
+            self.subscription._create_recurring_invoice()
             self.assertEqual(self.subscription.end_date, datetime.date(2022, 1, 17), 'The end date of the subscription should be updated according to the template')
             self.assertFalse(self.subscription.to_renew)
             self.assertEqual(self.subscription.next_invoice_date, datetime.date(2021, 12, 18))
@@ -354,10 +354,10 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertTrue(renewal_so.is_subscription)
 
         with freeze_time("2024-11-17"):
-            invoice = self.subscription._create_recurring_invoice(automatic=True)
+            invoice = self.subscription._create_recurring_invoice()
             self.assertFalse(invoice, "Locked contract should not generate invoices")
         with freeze_time("2024-11-19"):
-            self.subscription._create_recurring_invoice(automatic=True)
+            self.subscription._create_recurring_invoice()
             renew_close_reason_id = self.env.ref('sale_subscription.close_reason_renew').id
             self.assertEqual(self.subscription.stage_category, 'closed')
             self.assertEqual(self.subscription.close_reason_id.id, renew_close_reason_id)
@@ -420,7 +420,7 @@ class TestSubscription(TestSubscriptionCommon):
             upsell_so.action_confirm()
             # We make sure that two confirmation won't add twice the same quantities
             upsell_so.action_confirm()
-            self.env['sale.order']._cron_recurring_create_invoice()
+            self.subscription._create_recurring_invoice()
             self.subscription.invoice_ids.filtered(lambda am: am.state == 'draft')._post()
             discounts = [round(v, 2) for v in upsell_so.order_line.sorted('discount').mapped('discount')]
             self.assertEqual(discounts, [0.0, 45.16, 45.16, 45.16, 45.16], 'Prorated prices should be applied')
@@ -445,7 +445,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.env['sale.order']._cron_recurring_create_invoice()
             self.subscription.invoice_ids.filtered(lambda am: am.state == 'draft')._post()
         with freeze_time("2021-06-01"):
-            self.env['sale.order']._cron_recurring_create_invoice()
+            self.subscription._create_recurring_invoice()
             self.subscription.invoice_ids.filtered(lambda am: am.state == 'draft')._post()
         with freeze_time("2021-07-01"):
             self.env['sale.order']._cron_recurring_create_invoice()
@@ -493,7 +493,7 @@ class TestSubscription(TestSubscriptionCommon):
             })
 
             self.subscription.action_confirm()
-            self.subscription._create_recurring_invoice(automatic=True)
+            self.subscription._create_recurring_invoice()
 
         with freeze_time("2021-01-20"):
             action = self.subscription.prepare_upsell_order()
@@ -662,7 +662,7 @@ class TestSubscription(TestSubscriptionCommon):
                 'price_unit': 42})
 
             self.subscription.action_confirm()
-            self.subscription._create_recurring_invoice(automatic=True)
+            self.subscription._create_recurring_invoice()
             today = fields.Date.today()
             self.assertEqual(self.subscription.start_date, today, "start date should be set to today")
             self.assertEqual(self.subscription.next_invoice_date, datetime.date(2022, 2, 1))
@@ -907,7 +907,7 @@ class TestSubscription(TestSubscriptionCommon):
                                               'product_uom_qty': 1,
                                               })]
             sub.action_confirm()
-            sub._create_recurring_invoice(automatic=True)
+            sub._create_recurring_invoice()
             self.assertFalse(sub.order_line.qty_delivered)
             # We only invoice what we deliver
             self.assertFalse(sub.order_line.qty_to_invoice)
@@ -918,7 +918,8 @@ class TestSubscription(TestSubscriptionCommon):
             # Deliver some product
             sub.order_line.qty_delivered = 1
             self.assertEqual(sub.order_line.qty_to_invoice, 1)
-            sub._create_recurring_invoice(automatic=False)
+            sub._create_recurring_invoice()
+            sub.invoice_ids.filtered(lambda am: am.state == 'draft')._post()
             self.assertTrue(sub.invoice_count, "We should have invoiced")
             self.assertEqual(sub.next_invoice_date, datetime.date(2021, 3, 3))
 
@@ -932,7 +933,7 @@ class TestSubscription(TestSubscriptionCommon):
         with freeze_time("2021-04-03"):
             # February
             sub.order_line.qty_delivered = 1
-            sub._create_recurring_invoice(automatic=True)
+            sub._create_recurring_invoice()
             self.assertEqual(sub.order_line.qty_delivered, 1)
             inv = sub.invoice_ids.sorted('date')[-1]
             self.assertEqual(inv.invoice_line_ids.quantity, 1)
@@ -940,7 +941,8 @@ class TestSubscription(TestSubscriptionCommon):
         with freeze_time("2021-05-03"):
             # March
             sub.order_line.qty_delivered = 2
-            inv = sub._create_recurring_invoice(automatic=True)
+            sub._create_recurring_invoice()
+            inv = sub.invoice_ids.sorted('date')[-1]
             self.assertEqual(inv.invoice_line_ids.quantity, 2)
             self.assertEqual(sub.order_line.product_uom_qty, 1)
 
@@ -991,7 +993,7 @@ class TestSubscription(TestSubscriptionCommon):
 
         with freeze_time("2021-05-01"):
             # Automatic invoicing, only one line generated
-            sub._create_recurring_invoice(automatic=True)
+            sub._create_recurring_invoice()
             inv = sub.invoice_ids.sorted('date')[-1]
             invoice_start_periods = inv.invoice_line_ids.mapped('subscription_start_date')
             invoice_end_periods = inv.invoice_line_ids.mapped('subscription_end_date')
@@ -1373,7 +1375,7 @@ class TestSubscription(TestSubscriptionCommon):
                          "Invoice address should have been set manually on the subscription.")
         self.assertEqual(self.partner_a_shipping, self.subscription.partner_shipping_id,
                          "Delivery address should have been set manually on the subscription.")
-        invoice = self.subscription._create_recurring_invoice(automatic=True)
+        invoice = self.subscription._create_recurring_invoice()
         self.assertEqual(self.partner_a_invoice, invoice.partner_id,
                          "On the invoice, invoice address should be the same as on the subscription.")
         self.assertEqual(self.partner_a_shipping, invoice.partner_shipping_id,
@@ -1676,7 +1678,7 @@ class TestSubscription(TestSubscriptionCommon):
                 ]
             })
             self.subscription.action_confirm()
-            self.subscription._create_recurring_invoice(automatic=True)
+            self.subscription._create_recurring_invoice()
 
         with freeze_time("2022-01-20"):
             action = self.subscription.prepare_upsell_order()
@@ -1782,7 +1784,7 @@ class TestSubscription(TestSubscriptionCommon):
                 })],
         })
         subscription.action_confirm()
-        subscription._create_recurring_invoice(automatic=True)
+        subscription._create_recurring_invoice()
         self.assertEqual(subscription.order_line.qty_invoiced, 3, "The 3 products should be invoiced")
         subscription._get_invoiced()
         inv = subscription.invoice_ids

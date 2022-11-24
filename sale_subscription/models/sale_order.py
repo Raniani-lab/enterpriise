@@ -1217,7 +1217,7 @@ class SaleOrder(models.Model):
     def _subscription_launch_cron_parallel(self, batch_size):
         self.env.ref('sale_subscription.account_analytic_cron_for_invoice')._trigger()
 
-    def _create_recurring_invoice(self, automatic=False, batch_size=30):
+    def _create_recurring_invoice(self, batch_size=30):
         today = fields.Date.today()
         auto_commit = config['test_enable'] and modules.module.current_test
 

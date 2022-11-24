@@ -27,7 +27,7 @@ class RentalSchedule(models.Model):
         return f"""COALESCE(lot_info.name, NULLIF(t.name->>'{lang}', ''), t.name->>'en_US') as product_name"""
 
     def _id(self):
-        return """CONCAT(lot_info.lot_id, pdg.max_id, sol.id) as id"""
+        return """CAST(CONCAT(lot_info.lot_id, pdg.max_id, sol.id) AS INTEGER) as id"""
 
     def _quantity(self):
         return """
@@ -117,12 +117,16 @@ class RentalSchedule(models.Model):
                         ON res.stock_lot_id=lot.id
                         OR pickedup.stock_lot_id=lot.id
                 ),
-                sol_id_max (id) AS
-                    (SELECT MAX(id) FROM sale_order_line),
-                lot_id_max (id) AS
-                    (SELECT MAX(id) FROM stock_lot),
-                padding (max_id) AS
-                    (SELECT CASE when lot_id_max > sol_id_max then lot_id_max ELSE sol_id_max END as max_id from lot_id_max, sol_id_max)
+                padding(max_id) AS (
+                    SELECT
+                        MAX(id) as max
+                    FROM
+                        (
+                            SELECT max(id) as id from stock_lot
+                            UNION
+                            SELECT max(id) as id from sale_order_line
+                        ) AS whatever
+                )
         """
 
     def _select(self):

@@ -165,6 +165,10 @@ export class FormEditorCompiler extends formView.Compiler {
             }
         }
 
+        if (nodeType === 1 && node.getAttribute('studio_no_fetch')) {
+            return;
+        }
+
         const compiled = super.compileNode(node, params, true); // always evalInvisible
 
         if (nodeType === 1) {

@@ -1280,7 +1280,10 @@ class SaleOrder(models.Model):
                         # prevent rollback during tests
                         self.env.cr.rollback()
                     # we suppose that the payment is run only once a day
-                    last_transaction = self.env['payment.transaction'].search([('reference', 'like', self.client_order_ref or self.name)], limit=1)
+                    last_transaction = self.env['payment.transaction'].search(['|',
+                        ('reference', 'like', order.client_order_ref),
+                        ('reference', 'like', order.name)
+                    ], limit=1)
                     error_message = "Error during renewal of contract [%s] %s (%s)" \
                                     % (order.id, order.client_order_ref or order.name, 'Payment recorded: %s' % last_transaction.reference
                                        if last_transaction and last_transaction.state == 'done' else 'Payment not recorded')

@@ -1973,3 +1973,38 @@ class TestAccountAsset(TestAccountReportsCommon):
 
         self.assertEqual(len(lines), len(expected_values))
         self.assertEqual(lines, expected_values)
+
+    def test_asset_analytic_on_lines(self):
+        self.env.user.groups_id += self.env.ref('analytic.group_analytic_accounting')
+        analytic_plan = self.env['account.analytic.plan'].create({
+            'name': "Default Plan",
+        })
+        analytic_account = self.env['account.analytic.account'].create({
+            'name': "Test Account",
+            'plan_id': analytic_plan.id,
+        })
+        CEO_car = self.env['account.asset'].with_context(asset_type='purchase').create({
+            'salvage_value': 2000.0,
+            'state': 'open',
+            'method_period': '12',
+            'method_number': 5,
+            'name': "CEO's Car",
+            'original_value': 12000.0,
+            'model_id': self.account_asset_model_fixedassets.id,
+        })
+        CEO_car._onchange_model_id()
+        CEO_car.method_number = 5
+        CEO_car.analytic_distribution = {analytic_account.id: 100}
+
+        # In order to test the process of Account Asset, I perform a action to confirm Account Asset.
+        CEO_car.validate()
+
+        for move in CEO_car.depreciation_move_ids:
+            self.assertRecordValues(move.line_ids, [
+                {
+                    'analytic_distribution': {str(analytic_account.id): 100},
+                },
+                {
+                    'analytic_distribution': {str(analytic_account.id): 100},
+                },
+            ])

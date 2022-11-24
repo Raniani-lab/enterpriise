@@ -572,6 +572,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
         # Validate and check the statement line.
         wizard.button_validate(async_action=False)
+        self.assertRecordValues(st_line, [{'partner_id': self.partner_a.id}])
         liquidity_line, _suspense_line, other_line = st_line._seek_for_lines()
         account = self.partner_a.property_account_receivable_id
         self.assertRecordValues(liquidity_line + other_line, [

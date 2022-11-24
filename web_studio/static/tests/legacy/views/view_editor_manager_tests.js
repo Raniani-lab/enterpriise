@@ -6046,6 +6046,79 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click($(target).find('.o_web_studio_sidebar .o_web_studio_parameters'));
     });
 
+    QUnit.test('edit one2many list view with widget fieldDependencies and some records', async function (assert) {
+        serverData.models.product.fields.is_dep = { type: "char", string: "Dependency from fields_get" };
+        serverData.models.coucou.records[0] = {
+            id: 1,
+            display_name: "coucou1",
+            product_ids: [1],
+        }
+        serverData.models.product.records[0] = {
+            id: 1,
+            is_dep: "the meters",
+            display_name: "people say",
+        };
+
+        const CharField = registry.category("fields").get("char");
+        class CharWithDependencies extends CharField {
+            setup() {
+                super.setup();
+                const record = this.props.record;
+                owl.onMounted(() => {
+                    assert.step(`widget Dependency: ${JSON.stringify(record.fields.is_dep)} : ${record.data.is_dep}`)
+                })
+            }
+        }
+        CharWithDependencies.fieldDependencies = {
+            is_dep: { type: "char"},
+        }
+        registry.category("fields").add("list.withDependencies", CharWithDependencies);
+
+        const LegacyFieldChar = fieldRegistry.get('char');
+        fieldRegistry.add('withDependencies', LegacyFieldChar.extend({
+            description: "Test Widget",
+        }));
+
+        const action = serverData.actions["studio.coucou_action"];
+        action.res_id = 1;
+        action.views = [[1, "form"]];
+        action.res_model = "coucou";
+        serverData.views["coucou,1,form"] = /*xml */`<form>
+            <sheet>
+                <field name='display_name'/>
+                <field name='product_ids'>
+                    <tree><field name='display_name' widget="withDependencies"/></tree>
+                </field>
+            </sheet>
+        </form>`;
+        const mockRPC = (route, args) => {
+            if (args.method === "fields_get") {
+                assert.step("fields_get");
+            }
+        }
+        const webClient = await createEnterpriseWebClient({ serverData, mockRPC, legacyParams: {withLegacyMockServer: true}});
+        await doAction(webClient, "studio.coucou_action");
+        assert.verifySteps([
+            `widget Dependency: {"type":"char"} : the meters`,
+        ])
+        await openStudio(target);
+        assert.verifySteps([
+            `widget Dependency: {"type":"char"} : the meters`,
+        ])
+
+        assert.containsOnce(target, ".o_web_studio_form_view_editor");
+        await click(target.querySelector(".o_field_one2many"));
+        await click(target.querySelector(".o_field_one2many .o_web_studio_editX2Many"));
+        await legacyExtraNextTick();
+        assert.verifySteps([
+            "fields_get",
+            `widget Dependency: {"type":"char","string":"Dependency from fields_get"} : the meters`,
+        ])
+        assert.containsOnce(target, ".o_web_studio_list_view_editor");
+
+        delete fieldRegistry.map.withDependencies;
+    });
+
     QUnit.test('edit one2many list view with tree_view_ref context key', async function (assert) {
         assert.expect(6);
 

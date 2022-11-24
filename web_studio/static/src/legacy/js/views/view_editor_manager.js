@@ -1086,7 +1086,8 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
         const resModel = x2ManyInfo ? x2ManyInfo.resModel : viewParams.action.res_model;
         const fullXpath = x2ManyInfo ? getX2MFullXpath(x2ManyFullPath) : "";
 
-        let { arch: mainArch, custom_view_id } = this.viewDescriptions.views[mainViewType];
+        let viewDescriptions = this.viewDescriptions;
+        let { arch: mainArch, custom_view_id } = viewDescriptions.views[mainViewType];
 
         let archToEdit;
         if (x2ManyInfo) {
@@ -1098,7 +1099,7 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
         const shouldUpdateLegacyArchState = x2ManyInfo && !!archToEdit;
         if (x2ManyInfo && !archToEdit) {
             const { viewType, fieldName, resModel, fieldContext } = x2ManyInfo;
-            const viewId = this.viewDescriptions.views[mainViewType].id;
+            const viewId = viewDescriptions.views[mainViewType].id;
             const subViewRef = fieldContext[`${nextViewType === "list" ? "tree" : nextViewType}_view_ref`] || null;;
             const xpathToCurrentSubView = getX2MFullXpath(x2ManyFullPath.slice(0, -1));
             const studioArch = await wowlCreateInlineView(this.wowlEnv, { subViewType: viewType, viewId, fullXpath: xpathToCurrentSubView, subViewRef, resModel, fieldName })
@@ -1115,14 +1116,15 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
                 { context, resModel: mainResModel, views: _views },
                 { actionId, loadActionMenus, loadIrFilters }
             );
-            const viewDescriptions = await this._updateLegacyArchState(relatedModels, views);
+
+            viewDescriptions = await this._updateLegacyArchState(relatedModels, views);
             ({ arch: mainArch, custom_view_id } = viewDescriptions.views[mainViewType]);
 
             archToEdit = getSubArch(mainArch, fullXpath, nextViewType);
         }
 
-        if (shouldUpdateLegacyArchState) {
-            await this._updateLegacyArchState(this.viewDescriptions.relatedModels, this.viewDescriptions.views);
+        if (shouldUpdateLegacyArchState) { 
+            viewDescriptions = await this._updateLegacyArchState(viewDescriptions.relatedModels, viewDescriptions.views);
         }
 
         // Get the editor, it should honor the View Interface
@@ -1151,13 +1153,13 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
             resIds = this.resIds;
         }
 
-        const fields = x2ManyInfo ? this.viewDescriptions.relatedModels[x2ManyInfo.resModel] : this.viewDescriptions.fields;
+        const fields = x2ManyInfo ? viewDescriptions.relatedModels[x2ManyInfo.resModel] : viewDescriptions.fields;
 
         let controllerProps = {
             info: {},
             arch: archToEdit,
             fields,
-            relatedModels: this.viewDescriptions.relatedModels,
+            relatedModels: viewDescriptions.relatedModels,
             resModel,
             useSampleModel: false,
             searchMenuTypes: [],
@@ -2116,7 +2118,12 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
 
         if (this.isEditingX2m) {
             this.fields_view = this._getX2mFieldsView(this.fields_view);
-            this.fields = await this._getProcessedX2mFields();
+            const fieldsGetResult = await this.wowlEnv.services.orm.call(this.x2mModel, "fields_get");
+            // relatedModel only contains field descriptions that are present in the view.
+            // Merge them with the fields_get's result to have an exhaustive list of all fields for the model
+            const subFields = this.viewDescriptions.relatedModels[this.x2mModel];
+            this.viewDescriptions.relatedModels[this.x2mModel] = { ...subFields, ...fieldsGetResult };
+            this.fields = this._processFields(fieldsGetResult);
         }
         return this.viewDescriptions;
     },

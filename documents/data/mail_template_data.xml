@@ -23,7 +23,7 @@
                                                 <span style="font-size: 20px; font-weight: bold;" t-out="object.name or ''">Inbox Financial</span>
                                             </t>
                                         </span><br/>
-                                    </td><td valign="middle" align="right">
+                                    </td><td valign="middle" align="right" t-if="not object.create_uid.company_id.uses_default_logo">
                                         <img t-attf-src="/logo.png?company={{ object.create_uid.company_id.id }}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" t-att-alt="object.create_uid.company_id.name"/>
                                     </td></tr>
                                     <tr><td colspan="2" style="text-align:center;">

@@ -21,7 +21,7 @@
                     <span style="font-size: 10px;">Your SEPA Direct Debit Transaction</span><br/>
                     <span style="font-size: 20px; font-weight: bold;" t-out="object.reference or ''"></span>
                 </td></tr>
-                <tr><td valign="middle" align="right">
+                <tr><td valign="middle" align="right" t-if="not company.uses_default_logo">
                     <img t-attf-src="/logo.png?company={{ company.id }}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" t-att-alt="company.name"/>
                 </td></tr>
                 <tr><td colspan="2" style="text-align:center;">
@@ -119,7 +119,7 @@
                     <span style="font-size: 10px;">Your SEPA Direct Debit Manddate</span><br/>
                     <span style="font-size: 20px; font-weight: bold;" t-out="object.partner_bank_id.acc_number or ''">BE15001559627230</span>
                 </td></tr>
-                <tr><td valign="middle" align="right">
+                <tr><td valign="middle" align="right" t-if="not company.uses_default_logo">
                     <img t-attf-src="/logo.png?company={{ company.id }}" style="padding: 0px; margin: 0px; height: auto; width: 80px;" t-att-alt="company.name"/>
                 </td></tr>
                 <tr><td colspan="2" style="text-align:center;">

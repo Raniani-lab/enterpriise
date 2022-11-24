@@ -1007,7 +1007,7 @@ class AccountAsset(models.Model):
                 'name': asset.name,
                 'account_id': account.id,
                 'balance': -amount,
-                'analytic_distribution': analytic_distribution if asset.asset_type == 'sale' else {},
+                'analytic_distribution': analytic_distribution,
                 'currency_id': asset.currency_id.id,
                 'amount_currency': -asset.company_id.currency_id._convert(
                     from_amount=amount,

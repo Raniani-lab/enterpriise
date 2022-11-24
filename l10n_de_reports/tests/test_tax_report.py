@@ -28,8 +28,8 @@ class GermanTaxReportTest(AccountSalesReportCommon):
 
     @freeze_time('2019-12-31')
     def test_generate_xml(self):
-        first_tax = self.env['account.tax'].search([('name', '=', '19% Umsatzsteuer'), ('company_id', '=', self.company_data['company'].id)], limit=1)
-        second_tax = self.env['account.tax'].search([('name', '=', 'Innergem. Erwerb 19%USt/19%VSt'), ('company_id', '=', self.company_data['company'].id)], limit=1)
+        first_tax = self.env['account.tax'].search([('name', '=', '19% sales tax'), ('company_id', '=', self.company_data['company'].id)], limit=1)
+        second_tax = self.env['account.tax'].search([('name', '=', 'Intragem. Acquisition 19%USt/19%VSt'), ('company_id', '=', self.company_data['company'].id)], limit=1)
 
         # Create and post a move with two move lines to get some data in the report
         move = self.env['account.move'].create({

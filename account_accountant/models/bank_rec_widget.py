@@ -1566,7 +1566,7 @@ class BankRecWidget(models.Model):
         self.ensure_one()
         assert self.state == 'valid'
 
-        partners = (self.line_ids.filtered(lambda x: x.flag not in ('liquidity', 'auto_balance'))).partner_id
+        partners = (self.line_ids.filtered(lambda x: x.flag != 'liquidity')).partner_id
         partner_id_to_set = partners.id if len(partners) == 1 else None
 
         # Prepare the lines to be created.

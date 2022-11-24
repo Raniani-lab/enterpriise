@@ -1686,7 +1686,7 @@ QUnit.module('ViewEditorManager', {
     });
 
     QUnit.test('correctly display hook in form sheet', async function (assert) {
-        assert.expect(4);
+        assert.expect(11);
 
         var vem = await studioTestUtils.createViewEditorManager({
             model: 'coucou',
@@ -1707,15 +1707,53 @@ QUnit.module('ViewEditorManager', {
                 "</form>",
         });
 
+        const sheetHooksValues = [{
+            xpath: "/form[1]/sheet[1]",
+            position: "inside",
+            type: "insideSheet",
+        }, {
+            xpath: "/form[1]/sheet[1]/group[1]",
+            position: "after",
+            type: "afterGroup",
+        }, {
+            xpath: "/form[1]/sheet[1]/group[2]",
+            position: "after",
+            type: "afterGroup",
+        }];
+
+        target.querySelectorAll(".o_form_sheet > div.o_web_studio_hook").forEach(hook => {
+            const control = sheetHooksValues.shift();
+            assert.deepEqual(control, { ...hook.dataset });
+        });
+
         assert.containsN(vem, '.o_web_studio_form_view_editor .o_form_sheet > div.o_web_studio_hook', 3,
             "there should be three hooks as children of the sheet");
+
+        const innerGroupsHooksValues = [{
+            xpath: "/form[1]/sheet[1]/group[1]/group[1]",
+            position: "inside",
+        }, {
+            xpath: "/form[1]/sheet[1]/group[1]/group[2]",
+            position: "inside",
+        }, {
+            xpath: "/form[1]/sheet[1]/group[2]/group[1]",
+            position: "inside",
+        }, {
+            xpath: "/form[1]/sheet[1]/group[2]/group[2]",
+            position: "inside",
+        }];
+
+        target.querySelectorAll(".o_form_sheet .o_inner_group > div.o_web_studio_hook").forEach(hook => {
+            const control = innerGroupsHooksValues.shift();
+            assert.deepEqual(control, { ...hook.dataset });
+        });
+
         assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_form_sheet > div:eq(1)'),'o_web_studio_hook',
             "second div should be a hook");
         assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_form_sheet > div:eq(3)'),'o_web_studio_hook',
             "fourth div should be a hook");
         assert.hasClass(vem.$('.o_web_studio_form_view_editor .o_form_sheet > div:eq(5)'),'o_web_studio_hook',
             "last div should be a hook");
-
     });
 
     QUnit.test('correctly display hook below group title', async function (assert) {
@@ -1830,6 +1868,60 @@ QUnit.module('ViewEditorManager', {
             'When the page contains multiple groups with content and an empty group, last child is still a studio hook.'
         );
 
+    });
+
+    QUnit.test("notebook page hooks", async (assert) => {
+        await studioTestUtils.createViewEditorManager({
+            model: 'coucou',
+            arch: `<form>
+                    <sheet>
+                        <notebook>
+                            <page string="field"><field name="display_name" /></page>
+                            <page string="outer">
+                                <group><group></group></group>
+                            </page>
+                            <page string='foo'>
+                                <group>
+                                    <field name='m2o'/>
+                                </group>
+                                <group>
+                                    <field name='id'/>
+                                </group>
+                                <group></group>
+                            </page>
+                        </notebook>
+                    </sheet>
+                </form>`,
+        });
+
+        assert.containsOnce(target, ".o_notebook .tab-pane.active > .o_web_studio_hook");
+        assert.deepEqual({
+            ...target.querySelector(".o_notebook .tab-pane.active > .o_web_studio_hook").dataset
+        }, {
+            "position": "inside",
+            "type": "page",
+            "xpath": "/form[1]/sheet[1]/notebook[1]/page[1]"
+        });
+
+        await click(target.querySelectorAll(".o_notebook .nav-item a")[1]);
+        assert.containsOnce(target, ".o_notebook .tab-pane.active > .o_web_studio_hook");
+        assert.deepEqual({
+            ...target.querySelector(".o_notebook .tab-pane.active > .o_web_studio_hook").dataset
+        }, {
+            "position": "after",
+            "type": "afterGroup",
+            "xpath": "/form[1]/sheet[1]/notebook[1]/page[2]/group[1]"
+        });
+
+        await click(target.querySelectorAll(".o_notebook .nav-item a")[2]);
+        assert.containsOnce(target, ".o_notebook .tab-pane.active > .o_web_studio_hook");
+        assert.deepEqual({
+            ...target.querySelector(".o_notebook .tab-pane.active > .o_web_studio_hook").dataset
+        }, {
+            "position": "inside",
+            "type": "page",
+            "xpath": "/form[1]/sheet[1]/notebook[1]/page[3]"
+        });
     });
 
     QUnit.test('notebook edition', async function (assert) {

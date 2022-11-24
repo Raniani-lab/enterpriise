@@ -115,10 +115,11 @@
                                 </a>
                             </div>
                         </div>
-                        <div t-attf-class="o_appointment_info_main #{'col-12' if month_first_available is False else 'col-lg-8'}">
+                        <div t-attf-class="o_appointment_info_main #{'col-12' if month_first_available is False or not appointment_type.active else 'col-lg-8'}">
                             <div class="row px-0">
                                 <form id="slots_form" class="form o_appointment_appointment_info_form" autocomplete="off">
                                     <input type="hidden" name="csrf_token" t-att-value="request.csrf_token()"/>
+                                    <input type="hidden" name="active" t-att-value="appointment_type.active"/>
                                     <input type="hidden" name="appointment_type_id" t-att-value="appointment_type.id"/>
                                     <input type="hidden" name="invite_token" t-att-value="invite_token"/>
                                     <input type="hidden" name="filter_appointment_type_ids" t-att-value="filter_appointment_type_ids"/>
@@ -128,9 +129,9 @@
                                 </form>
                             </div>
                             <div t-field="appointment_type.message_intro" placeholder="Add an intro message here..."
-                                 t-attf-class="o_appointment_intro text-muted #{'pt-1 mb-4' if not is_html_empty(appointment_type.message_intro) else 'd-none'}"/>
+                                 t-attf-class="o_appointment_intro text-muted #{'d-none' if not appointment_type.active else ''} #{'pt-1 mb-4' if not is_html_empty(appointment_type.message_intro) else 'd-none'}"/>
                             <t t-call="appointment.appointment_calendar"/>
-                            <div t-attf-class="o_appointment_timezone_selection #{'d-none' if month_first_available is False else ''}">
+                            <div t-attf-class="o_appointment_timezone_selection #{'d-none' if month_first_available is False or not appointment_type.active else ''}">
                                 <div class="d-flex float-start mb-2">
                                     <label for="timezone" class="col-form-label text-muted me-1">Timezone: </label>
                                     <form autocomplete="off">
@@ -143,7 +144,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div t-attf-class="col-lg-4 mb-2 o_appointment_details_column o_not_editable #{'d-none' if month_first_available is False else ''}">
+                        <div t-attf-class="col-lg-4 mb-2 o_appointment_details_column o_not_editable #{'d-none' if month_first_available is False or not appointment_type.active else ''}">
                             <div t-if="appointment_type.category == 'website'">
                                 <div class="d-flex fs-6 lh-lg text-muted w-100 ps-0 mb-1">
                                     <i class="fa fa-map-marker o_appointment_fa_width text-center fs-5 me-2 mt-1"/>
@@ -184,14 +185,14 @@
     </template>
 
     <template id="appointment_calendar" name="Online Appointment">
-        <div class="o_appointment_slots_loading d-flex align-items-center pb-5 mt-md-n5">
+        <div t-if="appointment_type.active" class="o_appointment_slots_loading d-flex align-items-center pb-5 mt-md-n5">
             <i class="fa fa-3x fa-spin fa-spinner mx-auto text-o-color-2"/>
         </div>
         <div id="slots_availabilities" class="mb-3 d-none">
             <span t-if="month_first_available is False" class="col-lg-12">
                 <i class="mx-auto h3 fa fa-spinner fa-spin"/>
             </span>
-            <div id="calendar" t-attf-class="px-0 #{'d-none' if month_first_available is False else ''}">
+            <div id="calendar" t-attf-class="px-0 #{'d-none' if month_first_available is False or not appointment_type.active else ''}">
                 <t t-set="displayed_month_id" t-value="month_kept_from_update if month_kept_from_update is not False else month_first_available"/>
                 <div t-foreach="slots" t-as="month" t-attf-id="month-#{month['id']}" t-attf-class="o_appointment_month #{'d-none' if month['id'] != displayed_month_id else ''}">
                     <div id="calendarHeader" class="d-inline-flex align-items-baseline container-fluid">

@@ -575,6 +575,9 @@ class AppointmentType(models.Model):
           ]
         """
         self.ensure_one()
+
+        if not self.active:
+            return []
         if not reference_date:
             reference_date = datetime.utcnow()
 

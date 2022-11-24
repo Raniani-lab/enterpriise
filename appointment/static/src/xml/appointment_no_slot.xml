@@ -3,7 +3,12 @@
     <t t-name="Appointment.appointment_info_no_slot">
         <div class="col-md-8 col-lg-6 mx-auto">
             <div class="px-2 pt-3 pb-5 text-center o_appointment_no_slot_overall_helper_txt">
-                <t t-if="staffUserName">
+                <t t-if="!active">
+                    <p>
+                        Sorry, it is no longer possible to schedule an appointment.
+                    </p>
+                </t>
+                <t t-elif="staffUserName">
                     <p>
                         Sorry, <span t-out="staffUserName"/> has no availability for an appointment.
                     </p>

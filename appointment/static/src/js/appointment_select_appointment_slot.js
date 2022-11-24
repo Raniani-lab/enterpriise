@@ -82,7 +82,9 @@ publicWidget.registry.appointmentSlotSelect = publicWidget.Widget.extend({
             this.$('.o_appointment_info_main').removeClass('col-lg-8').addClass('col-12');
             const staffUserName = this.$("#slots_form select[name='staff_user_id'] :selected").text();
             const hideSelectDropdown = !!this.$("input[name='hide_select_dropdown']").val();
+            const active = this.$("input[name='active']").val();
             this.$('.o_appointment_no_slot_overall_helper').empty().append(qweb.render('Appointment.appointment_info_no_slot', {
+                active: active,
                 appointmentsCount: this.$slotsList.data('appointmentsCount'),
                 staffUserName: hideSelectDropdown ? staffUserName : false,
             }));

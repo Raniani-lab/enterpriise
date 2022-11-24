@@ -83,6 +83,7 @@ class WebsiteAppointment(AppointmentController):
         # random appointment types since it is a selection screen. Moreover, the selection should not have already
         # been made before in order to avoid loops. Finally, in order to choose, one needs at least 2 possible users.
         if not kwargs.get('skip_operator_selection') and \
+                appointment_type.active and \
                 appointment_type.assign_method == 'chosen' and \
                 appointment_type.avatars_display == 'show' and \
                 not page_values['user_selected'] and \

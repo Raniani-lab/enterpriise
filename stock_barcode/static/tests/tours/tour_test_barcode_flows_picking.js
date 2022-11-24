@@ -197,6 +197,7 @@ tour.register('test_internal_picking_from_scratch', {test: true}, [
 ]);
 
 tour.register('test_internal_picking_from_scratch_with_package', { test: true }, [
+    // Creates a first internal transfert (Section 1 -> Section 2).
     { trigger: '.o_stock_barcode_main_menu', run: 'scan WH-INTERNAL' },
     // Scans product1 and put it in P00001, then do the same for product2.
     { trigger: '.o_barcode_client_action', run: 'scan product1' },
@@ -212,6 +213,27 @@ tour.register('test_internal_picking_from_scratch_with_package', { test: true },
         trigger: '.o_barcode_line[data-barcode="product2"] .o_line_destination_location',
         run: 'scan O-BTN.validate',
     },
+    { trigger: '.o_notification.border-success' },
+    { trigger: '.o_notification button.o_notification_close' },
+
+    // Creates a second internal transfert (WH/Stock -> WH/Stock).
+    { trigger: '.o_stock_barcode_main_menu', run: 'scan WH-INTERNAL' },
+    { trigger: '.o_barcode_client_action', run: () => helper.assertLinesCount(0) },
+    // Scans a package with some quants and checks lines was created for its content.
+    { trigger: '.o_barcode_client_action', run: 'scan P00002' },
+    {
+        trigger: '.o_barcode_line + .o_barcode_line',
+        run: () => {
+            helper.assertLinesCount(2);
+            const $line1 = helper.getLine({ barcode: 'product1' });
+            const $line2 = helper.getLine({ barcode: 'product2' });
+            helper.assertLineQty($line1, "1");
+            helper.assertLineQty($line2, "2");
+        },
+    },
+    // Scans the destination location and validate the transfert.
+    { trigger: '.o_barcode_line.o_selected + .o_barcode_line.o_selected', run: 'scan LOC-01-02-00' },
+    { trigger: '.o_barcode_line:not(.o_selected)', run: 'scan O-BTN.validate' },
     { trigger: '.o_notification.border-success' },
 ]);
 

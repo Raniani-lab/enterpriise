@@ -57,8 +57,6 @@ This module modifies the web addon to provide Enterprise design and responsivene
             # for more info, see: https://github.com/odoo/enterprise/pull/30169#pullrequestreview-1064657223
             ('prepend', 'web_enterprise/static/src/legacy/js/views/list/list_renderer_mobile.js'),
 
-            'web_enterprise/static/src/legacy/js/apps.js',
-
             'web_enterprise/static/src/core/**/*',
             'web_enterprise/static/src/webclient/**/*.js',
             'web_enterprise/static/src/webclient/**/*.xml',

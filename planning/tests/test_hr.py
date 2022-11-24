@@ -99,13 +99,11 @@ class TestPlanningHr(TestCommonPlanning):
 
         #change on employee.resource_id.role_ids
         self.employee_joseph.resource_id.role_ids = roles
-        dummy = self.employee_joseph.planning_role_ids # use to trigger the compute of planning_role_ids
         self.assertEqual(self.employee_joseph.resource_id.role_ids, roles, "Joseph should have role a, b and c as roles")
         self.assertEqual(self.employee_joseph.default_planning_role_id, role_a, "Joseph should have role a as default role")
         self.assertEqual(self.employee_joseph.planning_role_ids, roles, "Joseph should have role a, b and c as resource_id.role_ids")
 
         self.employee_joseph.resource_id.role_ids = False
-        dummy = self.employee_joseph.planning_role_ids  # use to trigger the compute of planning_role_ids
         self.assertFalse(self.employee_joseph.resource_id.role_ids, "Joseph should have role a, b and c as roles")
         self.assertFalse(self.employee_joseph.default_planning_role_id, "Joseph should have role a as default role")
         self.assertFalse(self.employee_joseph.planning_role_ids, "Joseph should have role a, b and c as resource_id.role_ids")

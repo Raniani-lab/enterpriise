@@ -24,8 +24,8 @@ patch(PlanningGanttModel.prototype, "sale_planning_gantt_model", {
         const { focusDate, startDate, stopDate, scale } = this.metaData;
         Object.assign(context, {
             focus_date: serializeDateTime(focusDate),
-            start_date: serializeDateTime(startDate),
-            stop_date: serializeDateTime(stopDate),
+            default_start_datetime: serializeDateTime(startDate),
+            default_end_datetime: serializeDateTime(stopDate),
             scale: scale.id,
         });
     },

@@ -13,13 +13,36 @@ class ResourceResource(models.Model):
     color = fields.Integer(default=_default_color)
     avatar_128 = fields.Image(compute='_compute_avatar_128')
     role_ids = fields.Many2many('planning.role', 'resource_resource_planning_role_rel',
-                                'resource_resource_id', 'planning_role_id', 'Roles')
+                                'resource_resource_id', 'planning_role_id', 'Roles',
+                                compute='_compute_role_ids', store=True, readonly=False)
+    default_role_id = fields.Many2one('planning.role', string="Default Role",
+        compute='_compute_default_role_id', groups='hr.group_hr_user', store=True, readonly=False,
+        help="Role that will be selected by default when creating a shift for this resource.\n"
+             "This role will also have precedence over the other roles of the resource when planning shifts.")
 
     @api.depends('employee_id')
     def _compute_avatar_128(self):
         for resource in self:
             employees = resource.with_context(active_test=False).employee_id
             resource.avatar_128 = employees[0].avatar_128 if employees else False
+
+    @api.depends('role_ids')
+    def _compute_default_role_id(self):
+        self.env.remove_to_compute(self._fields['role_ids'], self)
+        for resource in self:
+            if resource.default_role_id not in resource.role_ids:
+                resource.default_role_id = resource.role_ids[:1]
+
+    @api.depends('default_role_id')
+    def _compute_role_ids(self):
+        self.env.remove_to_compute(self._fields['default_role_id'], self)
+        resources_wo_default_role_ids = []
+        for resource in self:
+            if resource.default_role_id:
+                resource.role_ids |= resource.default_role_id
+            else:
+                resources_wo_default_role_ids.append(resource.id)
+        self.browse(resources_wo_default_role_ids)._compute_default_role_id()
 
     def get_formview_id(self, access_uid=None):
         if self.env.context.get('from_planning'):

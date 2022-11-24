@@ -1,7 +1,7 @@
 /* @odoo-module */
 
 import { GanttController } from "@web_gantt/gantt_controller";
-import { usePlanningActions } from "../planning_hooks";
+import { usePlanningControllerActions } from "../planning_hooks";
 
 const { DateTime } = luxon;
 
@@ -11,7 +11,7 @@ export class PlanningGanttController extends GanttController {
      */
     setup() {
         super.setup();
-        const { copyPrevious, publish } = usePlanningActions({
+        this.planningControllerActions = usePlanningControllerActions({
             getAdditionalContext: () => this.model.getAdditionalContext(),
             getDomain: () => this.model.getDomain(),
             getRecords: () => {
@@ -22,10 +22,9 @@ export class PlanningGanttController extends GanttController {
             },
             getResModel: () => this.model.metaData.resModel,
             getStartDate: () => this.model.metaData.startDate,
+            toggleHighlightPlannedFilter: (highlightPlannedIds) => this.env.searchModel.toggleHighlightPlannedFilter(highlightPlannedIds),
             reload: () => this.model.fetchData(),
         });
-        this.onClickCopyPrevious = copyPrevious;
-        this.onClickPublish = publish;
     }
 
     /**

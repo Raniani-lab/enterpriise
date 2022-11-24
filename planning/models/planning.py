@@ -7,7 +7,8 @@ import logging
 import pytz
 import uuid
 from math import modf
-from random import randint
+from random import randint, shuffle
+import itertools
 
 from odoo import api, fields, models, _
 from odoo.addons.resource.models.utils import Intervals, sum_intervals, string_to_datetime
@@ -192,7 +193,7 @@ class Planning(models.Model):
     def _compute_role_id(self):
         for slot in self:
             if not slot.role_id:
-                slot.role_id = slot.employee_id.default_planning_role_id or (slot.resource_id.resource_type == 'material' and slot.resource_id.role_ids[:1])
+                slot.role_id = slot.resource_id.default_role_id
 
             if slot.template_id:
                 slot.previous_template_id = slot.template_id
@@ -943,6 +944,256 @@ class Planning(models.Model):
         if self.is_past:
             raise UserError(_("You cannot cancel a request to switch that is in the past."))
         return self.sudo().write({'request_to_switch': False})
+
+    def auto_plan_id(self):
+        """ Used in the form view to auto plan a single shift.
+        """
+        if not self.with_context(planning_slot_id=self.id).auto_plan_ids([('id', '=', self.id)]):
+            return self._get_notification_action("danger", _("There are no resources available for this open shift."))
+
+    @api.model
+    def auto_plan_ids(self, view_domain):
+        # We need to make sure we have a specified either one shift in particular or a period to look into.
+        assert self._context.get('planning_slot_id') or (
+            self._context.get('default_start_datetime') and self._context.get('default_end_datetime')
+        ), "`default_start_datetime` and `default_end_datetime` attributes should be in the context"
+
+        # Our goal is to assign empty shifts in this period. So first, let's get them all!
+        open_shifts, min_start, max_end = self._read_group(
+            expression.AND([
+                view_domain,
+                [('resource_id', '=', False)],
+            ]),
+            [],
+            ['id:recordset', 'start_datetime:min', 'end_datetime:min'],
+        )[0]
+        if not open_shifts:
+            return []
+        user_tz = pytz.timezone(self.env.user.tz or 'UTC')
+        min_start = min_start.astimezone(user_tz)
+        max_end = max_end.astimezone(user_tz)
+
+        # Get all resources that have the role set on those shifts as default role or in their roles.
+        Resource = self.env['resource.resource']
+        # open_shifts.role_id.ids wouldn't include False, yet we need this information
+        open_shift_role_ids = [shift.role_id.id for shift in open_shifts]
+        resources = Resource.search([
+            ('calendar_id', '!=', False),
+            '|',
+                ('default_role_id', 'in', open_shift_role_ids),
+                ('role_ids', 'in', open_shift_role_ids),
+        ])
+        # And make two dictionnaries out of it (default roles and roles). We will prioritize default roles.
+        resource_ids_per_role_id = defaultdict(list)
+        resource_ids_per_default_role_id = defaultdict(list)
+        for resource in resources:
+            resource_ids_per_default_role_id[resource.default_role_id.id].append(resource.id)
+            for role in resource.role_ids:
+                if role == resource.default_role_id:
+                    continue
+                resource_ids_per_role_id[role.id].append(resource.id)
+        # Get the schedule of each resource in the period.
+        schedule_intervals_per_resource_id, dummy = resources._get_valid_work_intervals(min_start, max_end)
+
+        # Now let's get the assigned shifts and count the worked hours per day for each resource
+        min_start = min_start.astimezone(pytz.utc).replace(tzinfo=None) + relativedelta(hour=0, minute=0, second=0, microsecond=0)
+        max_end = max_end.astimezone(pytz.utc).replace(tzinfo=None) + relativedelta(days=1, hour=0, minute=0, second=0, microsecond=0)
+        PlanningShift = self.env['planning.slot']
+        same_days_shifts = PlanningShift.search_read([
+            ('resource_id', 'in', resources.ids),
+            ('end_datetime', '>', min_start),
+            ('start_datetime', '<', max_end),
+        ], ['start_datetime', 'end_datetime', 'resource_id', 'allocated_hours'], load=False)
+        timeline_and_worked_hours_per_resource_id = self._shift_records_to_timeline_per_resource_id(same_days_shifts)
+
+        # Create an "empty timeline" with midnight for each day in the period
+        delta_days = (max_end - min_start).days
+        empty_timeline = [
+            ((min_start + relativedelta(days=i + 1)).astimezone(user_tz).replace(tzinfo=None), 0)
+            for i in range(delta_days)
+        ]
+
+        def find_resource(shift):
+            shift_intervals = Intervals([(
+                shift.start_datetime.astimezone(user_tz),
+                shift.end_datetime.astimezone(user_tz),
+                PlanningShift,
+            )])
+            for resources_dict in [resource_ids_per_default_role_id, resource_ids_per_role_id]:
+                resource_ids = resources_dict[shift.role_id.id]
+                shuffle(resource_ids)
+                for resource in Resource.browse(resource_ids):
+                    split_shift_intervals = shift_intervals & schedule_intervals_per_resource_id[resource.id]
+                    # If the shift is out of resource's schedule, skip it.
+                    if not split_shift_intervals:
+                        continue
+                    rate = shift.allocated_hours * 3600 / sum(map(lambda x: (x[1] - x[0]).total_seconds(), split_shift_intervals))
+                    # Try to add the shift to the timeline.
+                    timeline = self._get_new_timeline_if_fits_in(
+                        split_shift_intervals,
+                        rate,
+                        resource.calendar_id.hours_per_day if resource.calendar_id else resource.company_id.resource_calendar_id.hours_per_day,
+                        timeline_and_worked_hours_per_resource_id[resource.id].copy(),
+                        empty_timeline,
+                    )
+                    # If we got a new timeline (not False), it means the shift fits for the resource
+                    # (no overload, no "occupation rate" > 100%).
+                    # If it fits, assign the shift to the resource and update the timeline.
+                    if timeline:
+                        shift.resource_id = resource
+                        timeline_and_worked_hours_per_resource_id[resource.id] = timeline
+                        return True
+            return False
+
+        return open_shifts.filtered(find_resource).ids
+
+# A. Represent the resoures shifts and the open shift on a timeline
+#   Legend
+#   ┏━━ : open shift                    ┌─────────────────── 2023/01/02 ────────────────┬─────────────────── 2023/01/03 ────────────────┐
+#   ┌── : resource's shifts             0 ───────────── 8 ~~~~~~~~~~~~~ 16 ──────────── 0 ───────────── 8 ~~~~~~~~~~~~~ 16 ──────────── 0
+#   ~~~ : resource's schedule           ├───────────────┼───────────────┼───────────────┼───────────────┼───────────────┼───────────────┤
+
+# a/ Allocated Hours (ah) :                             ┏━━ 3h ━┓                                               ┌────── 8h ─────┐
+#                                                       ┡━━━━━━━┹────────────────────── 7h ─────────────────────┴───────┬───────┘
+#                                                       └───────────────────────────────────────────────────────────────┘
+
+# b/ Rates [ah / (end - start)] :                       ┏━━ 75% ┓                                               ┌───── 100% ────┐
+#                                                       ┡━━━━━━━┹───────────────────── 25% ─────────────────────┴───────┬───────┘
+#                                                       └───────────────────────────────────────────────────────────────┘
+
+# c/ Increments Timeline :                             ┌↑75%
+#   Visual :                                           └↑25%    ↓75%                                            ↑100%   ↓25%    ↓100%
+#   Array :                                             ┗━━━━━━━┹───────────────────────────────────────────────┴───────┴───────┘
+# [
+#    (dt(2023, 1, 2,  8, 0), +1.00),
+#    (dt(2023, 1, 2, 12, 0), -0.75),
+#    (dt(2023, 1, 3, 12, 0), +1.00),
+#    (dt(2023, 1, 3, 16, 0), -0.25),
+#    (dt(2023, 1, 3, 20, 0), -1.00),
+# ]
+
+# d/ Values Timeline :
+#   Visual :                                            |100%   |25%                                            |125%   |100%   |0%
+#   Array :                                             ┗━━━━━━━┹───────────────────────────────────────────────┴───────┴───────┘
+# [
+#    (dt(2023, 1, 2,  8, 0),  1.00),
+#    (dt(2023, 1, 2, 12, 0),  0.25),
+#    (dt(2023, 1, 3, 12, 0),  1.25),
+#    (dt(2023, 1, 3, 16, 0),  1.00),
+#    (dt(2023, 1, 3, 20, 0),  0.00),
+# ]
+
+# B. Try to assign each open shift to a resource
+
+# 1) Check that the shift fits in the resource's schedule
+#   We just get the schedule intervals of the resource, convert the shift to intervals, and check the difference.
+
+# 2) Check that the resource would not be overloaded this day
+#   Delimit days with ghost events at 0:00. Then compute the total time worked per day and compare it to the resource's max load.
+#   We do so considering that every resource have the same time zone (the user's one).
+
+# 3) ...and that it would not conflict with the resource's other shifts (sum of rates > 100%)
+#   Visual :                            |0%             |100%   |25%                    |25%                    |125%   |100%   |0%     |0%
+#   Array :                             └────── A ──────┗━━ B ━━┹────────── C ──────────┴───────────────────────┴───────┴───────┴───────┘
+# [                                     ^                                               ^                                               ^
+#    (dt(2023, 1, 2,  0, 0),  0.00), <
+#    (dt(2023, 1, 2,  8, 0),  1.25),                         2) Worked Hours on 2023/01/02
+#    (dt(2023, 1, 2, 12, 0),  0.25),                            = 8h * 0% (A) + 4h * 125% (B) + 12h * 25% (C)
+#    (dt(2023, 1, 3,  0, 0),  0.25), <                          = 0h          + 5h            + 3h
+#    (dt(2023, 1, 3, 12, 0),  1.00),                            = 8h => OK
+#    (dt(2023, 1, 3, 16, 0),  0.75),
+#    (dt(2023, 1, 3, 20, 0),  0.00),                         3) rate(B) = 100% => OK
+#    (dt(2023, 1, 4,  0, 0),  0.00), <
+# ]
+
+    @api.model
+    def _shift_records_to_timeline_per_resource_id(self, records):
+        timeline_and_worked_hours_per_resource_id = defaultdict(list)
+        for record in records:
+            rate = record['allocated_hours'] * 3600 / (
+                fields.Datetime.from_string(record['end_datetime']) - fields.Datetime.from_string(record['start_datetime'])
+            ).total_seconds()
+            timeline_and_worked_hours_per_resource_id[record['resource_id']].extend([
+                (record['start_datetime'], rate), (record['end_datetime'], -rate)
+            ])
+        for resource_id, timeline in timeline_and_worked_hours_per_resource_id.items():
+            timeline_and_worked_hours_per_resource_id[resource_id] = self._increments_to_values(timeline)
+        return timeline_and_worked_hours_per_resource_id
+
+    @api.model
+    def _get_new_timeline_if_fits_in(self, split_shift_intervals, rate, resource_hours_per_day, timeline, empty_timeline):
+        if rate > 1:
+            return False
+        add_midnights = True
+        for split_shift_start, split_shift_end, _ in split_shift_intervals:
+            start = split_shift_start.astimezone(pytz.utc).replace(tzinfo=None)
+            end = split_shift_end.astimezone(pytz.utc).replace(tzinfo=None)
+            increments = self._values_to_increments(timeline) + [(start, rate), (end, -rate)]
+            if add_midnights:
+                # Add ghost events at 0:00 to delimit days. This condition prevents from adding ghost events on each iteration.
+                increments += empty_timeline
+                add_midnights = False
+            timeline = self._increments_to_values(increments, check=(start, end, resource_hours_per_day))
+            if not timeline:
+                return False
+        return timeline
+
+    @api.model
+    def _increments_to_values(self, increments, check=False):
+        """ Transform a timeline of increments into a timeline of values by accumulating the increments.
+            If check is a tuple (start, end, resource_hours_per_day), the timeline is checked to ensure
+            that the resource would not be overloaded this day or have an "occupation rate" > 100% between start and end.
+
+            :param increments: List of tuples (instant, increment).
+            :param check: False or a tuple (start, end, resource_hours_per_day).
+            :return: List of tuples (instant, value) if check is False or the timeline is valid, else False.
+        """
+        if not increments:
+            return []
+        if check:
+            start, end, resource_hours_per_day = check
+
+        values = []
+        # Sum and sort increments by instant.
+        increments = [
+            (group[0], sum(increment[1] for increment in group[1]))
+            for group in itertools.groupby(increments, key=lambda increment: increment[0])
+        ]
+        increments.sort(key=lambda x: x[0])
+
+        def get_instant_plus_days(instant, days):
+            return instant + relativedelta(days=days, hour=0, minute=0, second=0, microsecond=0)
+
+        hours_per_day = defaultdict(float)
+        last_instant, last_value = increments[0][0], 0.0
+        for increment in increments:
+            # Check if the resource is overloaded this day.
+            hours_per_day[last_instant.date()] += last_value * (increment[0] - last_instant).total_seconds() / 3600
+            if check and hours_per_day[last_instant.date()] > resource_hours_per_day and (
+                get_instant_plus_days(start, 0) <= last_instant < get_instant_plus_days(end, 1)
+            ):
+                return False
+            last_value += increment[1]
+            last_instant = increment[0]
+            # Check if the occupation rate exceeds 100%.
+            if check and last_value > 1 and start <= last_instant <= end:
+                return False
+            values.append((last_instant, last_value))
+        return values
+
+    @api.model
+    def _values_to_increments(self, values):
+        """ Transform a timeline of values into a timeline of increments by subtracting the values.
+
+            :param values: List of tuples (instant, value).
+            :return: List of tuples (instant, increment).
+        """
+        increments = []
+        last_value = 0
+        for value in values:
+            increments.append((value[0], value[1] - last_value))
+            last_value = value[1]
+        return increments
 
     # ----------------------------------------------------
     # Gantt - Calendar view

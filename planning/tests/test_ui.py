@@ -4,20 +4,11 @@
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
 
-from odoo.tests import HttpCase, new_test_user, tagged
+from odoo.tests import new_test_user, tagged
+from .test_ui_common import TestUiCommon
 
 @tagged('-at_install', 'post_install')
-class TestUi(HttpCase):
-    @classmethod
-    def setUpClass(cls):
-        super().setUpClass()
-        cls.employee_thibault = cls.env['hr.employee'].create({
-            'name': 'Thibault',
-            'work_email': 'thibault@a.be',
-            'tz': 'UTC',
-            'employee_type': 'freelance',
-            'resource_calendar_id': False,
-        })
+class TestUi(TestUiCommon):
 
     def test_01_ui(self):
         self.start_tour("/", 'planning_test_tour', login='admin')

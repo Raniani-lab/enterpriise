@@ -12,86 +12,165 @@ import { escape } from "@web/core/utils/strings";
  * @param {() => any} params.getRecords
  * @param {() => any} params.getResModel
  * @param {() => luxon.DateTime} params.getStartDate
+ * @param {() => any} params.toggleHighlightPlannedFilter
  * @param {() => Promise<any>} params.reload
  */
-export function usePlanningActions({
-    getAdditionalContext,
-    getDomain,
-    getRecords,
-    getResModel,
-    getStartDate,
-    reload,
+export class PlanningControllerActions {
+    constructor({
+        getAdditionalContext,
+        getDomain,
+        getRecords,
+        getResModel,
+        getStartDate,
+        toggleHighlightPlannedFilter,
+        reload,
+    }) {
+        this.getAdditionalContext = getAdditionalContext;
+        this.getDomain = getDomain;
+        this.getRecords = getRecords;
+        this.getResModel = getResModel;
+        this.getStartDate = getStartDate;
+        this.toggleHighlightPlannedFilter = toggleHighlightPlannedFilter;
+        this.reload = reload;
+        this.actionService = useService("action");
+        this.env = useEnv();
+        this.notifications = useService("notification");
+        this.orm = useService("orm");
+    }
+
+    async copyPrevious() {
+        const resModel = this.getResModel();
+        const startDate = serializeDateTime(this.getStartDate());
+        const domain = this.getDomain();
+        const result = await this.orm.call(resModel, "action_copy_previous_week", [
+            startDate,
+            domain,
+        ]);
+        if (result) {
+            const notificationRemove = this.notifications.add(
+                markup(
+                    `<i class="fa fa-fw fa-check"></i><span class="ms-1">${escape(this.env._t(
+                        "The shifts from the previous week have successfully been copied."
+                    ))}</span>`
+                ),
+                {
+                    type: "success",
+                    sticky: true,
+                    buttons: [{
+                        name: 'Undo',
+                        icon: 'fa-undo',
+                        onClick: async () => {
+                            await this.orm.call(
+                                resModel,
+                                'action_rollback_copy_previous_week',
+                                result,
+                            );
+                            await this.reload();
+                            this.notifications.add(
+                                markup(
+                                    `<i class="fa fa-fw fa-check"></i><span class="ms-1">${escape(this.env._t(
+                                        "The shifts that had been copied from the previous week have successfully been removed."
+                                    ))}</span>`
+                                ),
+                                { type: 'success' },
+                            );
+                            notificationRemove();
+                        },
+                    }],
+                }
+            );
+            return this.reload();
+        } else {
+            this.notifications.add(
+                this.env._t(
+                    "There are no shifts planned for the previous week, or they have already been copied."
+                ),
+                { type: "danger" }
+            );
+        }
+    }
+
+    async publish() {
+        const records = this.getRecords();
+        if (!records?.length) {
+            return this.notifications.add(
+                this.env._t(
+                    "The shifts have already been published, or there are no shifts to publish."
+                ),
+                { type: "danger" }
+            );
+        }
+        return this.actionService.doAction("planning.planning_send_action", {
+            additionalContext: this.getAdditionalContext(),
+            onClose: this.reload,
+        });
+    }
+
+    async autoPlan() {
+        const additionalContext = this.getAdditionalContext();
+        const highlightPlannedIds = await this.orm.call(
+            this.getResModel(),
+            "auto_plan_ids",
+            [this.getDomain()],
+            {
+                context: additionalContext,
+            }
+        );
+        if (!highlightPlannedIds.length) {
+            this.notifications.add(
+                this.autoPlanFailureNotification(),
+                { type: "danger" }
+            );
+        } else {
+            this.notifications.add(
+                this.autoPlanSuccessNotification(),
+                { type: "success" }
+            );
+            this.toggleHighlightPlannedFilter(highlightPlannedIds);
+        }
+    }
+
+    autoPlanSuccessNotification() {
+        return this.env._t("The open shifts have been successfully assigned.");
+    }
+
+    autoPlanFailureNotification() {
+        return this.env._t(
+            "All open shifts have already been assigned, or there are no resources available to take them at this time."
+        );
+    }
+}
+
+export function usePlanningControllerActions() {
+   return new PlanningControllerActions(...arguments);
+}
+
+export function usePlanningModelActions({
+    getHighlightPlannedIds,
+    getContext,
 }) {
-    const actionService = useService("action");
-    const env = useEnv();
-    const notifications = useService("notification");
     const orm = useService("orm");
     return {
-        async copyPrevious() {
-            const resModel = getResModel();
-            const startDate = serializeDateTime(getStartDate());
-            const domain = getDomain();
-            const result = await orm.call(resModel, "action_copy_previous_week", [
-                startDate,
-                domain,
-            ]);
-            if (result) {
-                const notificationRemove = notifications.add(
-                    markup(
-                        `<i class="fa fa-fw fa-check"></i><span class="ms-1">${escape(env._t(
-                            "The shifts from the previous week have successfully been copied."
-                        ))}</span>`
-                    ),
-                    {
-                        type: "success",
-                        sticky: true,
-                        buttons: [{
-                            name: 'Undo',
-                            icon: 'fa-undo',
-                            onClick: async () => {
-                                await orm.call(
-                                    resModel,
-                                    'action_rollback_copy_previous_week',
-                                    result,
-                                );
-                                await reload();
-                                notifications.add(
-                                    markup(
-                                        `<i class="fa fa-fw fa-check"></i><span class="ms-1">${escape(env._t(
-                                            "The shifts that had been copied from the previous week have successfully been removed."
-                                        ))}</span>`
-                                    ),
-                                    { type: 'success' },
-                                );
-                                notificationRemove();
-                            },
-                        }],
-                    }
-                );
-                return reload();
-            } else {
-                notifications.add(
-                    env._t(
-                        "There are no shifts planned for the previous week, or they have already been copied."
-                    ),
-                    { type: "danger" }
-                );
+        async getHighlightIds() {
+            const context = getContext();
+            if (!context.highlight_conflicting && !context.highlight_planned) {
+                return;
             }
-        },
-        async publish() {
-            const records = getRecords();
-            if (!records?.length) {
-                return notifications.add(
-                    env._t(
-                        "The shifts have already been published, or there are no shifts to publish."
-                    ),
-                    { type: "danger" }
+
+            if (context.highlight_conflicting) {
+                const highlightConflictingIds = await orm.search(
+                    "planning.slot",
+                    [["overlap_slot_count", ">", 0]],
                 );
+
+                if (context.highlight_planned) {
+                    return Array.from(
+                        new Set([...highlightConflictingIds, ...getHighlightPlannedIds()])
+                    );
+                }
+                return highlightConflictingIds;
             }
-            return actionService.doAction("planning.planning_send_action", {
-                additionalContext: getAdditionalContext(),
-                onClose: reload,
-            });
+            return getHighlightPlannedIds() || [];
         },
     };
 }

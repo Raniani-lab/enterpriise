@@ -3,6 +3,7 @@
 import { deserializeDateTime, serializeDateTime } from "@web/core/l10n/dates";
 import { formatPercentage } from "@web/views/fields/formatters";
 import { GanttModel, computeRange } from "@web_gantt/gantt_model";
+import { usePlanningModelActions } from "../planning_hooks";
 
 const GROUPBY_COMBINATIONS = [
     "role_id",
@@ -32,6 +33,10 @@ export class PlanningGanttModel extends GanttModel {
     setup(_, services) {
         super.setup(...arguments);
         this.router = services.router;
+        this.getHighlightIds = usePlanningModelActions({
+            getHighlightPlannedIds: () => this.env.searchModel.highlightPlannedIds,
+            getContext: () => this.env.searchModel._context,
+        }).getHighlightIds;
     }
 
     /**
@@ -133,6 +138,17 @@ export class PlanningGanttModel extends GanttModel {
      */
     _allowedEmptyGroups(groupedBy) {
         return GROUPBY_COMBINATIONS.includes(groupedBy.join(","));
+    }
+
+    /**
+     * @override
+     */
+    async _fetchData() {
+        const [ highlightIds, ] = await Promise.all([
+            this.getHighlightIds(),
+            super._fetchData(...arguments),
+        ])
+        this.highlightIds = highlightIds;
     }
 
     /**

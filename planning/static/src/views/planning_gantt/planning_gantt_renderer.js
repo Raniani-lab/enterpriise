@@ -46,6 +46,11 @@ export class PlanningGanttRenderer extends GanttRenderer {
     enrichPill() {
         const pill = super.enrichPill(...arguments);
         const { record } = pill;
+
+        const model = this.props.model;
+        if (model.highlightIds && !model.highlightIds.includes(record.id)) {
+            pill.className += " opacity-25";
+        }
         pill.allocatedHours = {};
         const percentage = record.allocated_percentage ? record.allocated_percentage / 100 : 0;
         if (percentage === 0) {

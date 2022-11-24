@@ -352,12 +352,12 @@ class PlanningSlot(models.Model):
             :param slot_vals_list_per_resource: a dict with the vals list that will be passed to the create method - sorted per key:resource_id
         """
         self.ensure_one()
-        assert self.env.context.get('stop_date')
+        assert self.env.context.get('default_end_datetime')
         if isinstance(vals['start_datetime'], str):
             start_dt = pytz.utc.localize(datetime.strptime(vals['start_datetime'], DEFAULT_SERVER_DATETIME_FORMAT))
         else:
             start_dt = pytz.utc.localize(vals['start_datetime'])
-        end_dt = pytz.utc.localize(datetime.strptime(self.env.context['stop_date'], DEFAULT_SERVER_DATETIME_FORMAT))
+        end_dt = pytz.utc.localize(datetime.strptime(self.env.context['default_end_datetime'], DEFAULT_SERVER_DATETIME_FORMAT))
         # retrieve the resource and its calendar validity intervals
         resource_calendar_validity_intervals, resource = self._get_slot_calendar_and_resource(vals, start_dt, end_dt)
         attendance_intervals = Intervals()
@@ -516,8 +516,11 @@ class PlanningSlot(models.Model):
         }
 
     @api.model
-    def action_plan_sale_order(self, view_domain):
-        assert self.env.context.get('start_date') and self.env.context.get('stop_date'), "`start_date` and `stop_date` attributes should be in the context"
+    def auto_plan_ids(self, view_domain):
+        res = super(PlanningSlot, self).auto_plan_ids(view_domain)
+        if self._context.get('planning_slot_id'):
+            # It means we are looking to assign one shift in particular to an available resource, which we do in planning.
+            return res
         new_view_domain = []
         for clause in view_domain:
             if isinstance(clause, str) or clause[0] not in ['start_datetime', 'end_datetime']:
@@ -530,8 +533,8 @@ class PlanningSlot(models.Model):
         if self.env.context.get('planning_gantt_active_sale_order_id'):
             domain = expression.AND([domain, [('sale_order_id', '=', self.env.context.get('planning_gantt_active_sale_order_id'))]])
         slots_to_assign = self._get_ordered_slots_to_assign(domain)
-        start_datetime = max(datetime.strptime(self.env.context.get('start_date'), DEFAULT_SERVER_DATETIME_FORMAT), fields.Datetime.now().replace(hour=0, minute=0, second=0))
-        employee_per_sol = self._get_employee_per_sol_within_period(slots_to_assign, start_datetime, self.env.context.get('stop_date'))
+        start_datetime = max(datetime.strptime(self.env.context.get('default_start_datetime'), DEFAULT_SERVER_DATETIME_FORMAT), fields.Datetime.now().replace(hour=0, minute=0, second=0))
+        employee_per_sol = self._get_employee_per_sol_within_period(slots_to_assign, start_datetime, self.env.context.get('default_end_datetime'))
         PlanningShift = self.env['planning.slot']
         slots_assigned = PlanningShift
         employee_ids_to_exclude = []
@@ -552,13 +555,13 @@ class PlanningSlot(models.Model):
                     'end_datetime': start_datetime + timedelta(days=1),
                     'resource_id': employee.resource_id.id
                 }
-                # With the context keys, the maximal date to assign the slot will be self.env.context.get('stop_date')
+                # With the context keys, the maximal date to assign the slot will be self.env.context.get('default_end_datetime')
                 slot_assigned = slot.assign_slot(vals)
                 if not slot_assigned:
                     # if no slot was generated (it uses the write method), then the employee_id is excluded from the employees assignable on this slot.
                     employee_ids_to_exclude.append(employee_id)
             slots_assigned += slot_assigned
-        return slots_assigned.ids
+        return res + slots_assigned.ids
 
     # -------------------------------------------
     # Copy slots

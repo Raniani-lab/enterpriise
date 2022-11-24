@@ -86,14 +86,14 @@ class TestSalePlanning(TestCommonSalePlanning):
         so = so_form.save()
         so.action_confirm()
         Slot = self.env['planning.slot'].with_context(
-            start_date='2021-07-25 00:00:00',
-            stop_date='2021-07-31 23:59:59',
+            default_start_datetime='2021-07-25 00:00:00',
+            default_end_datetime='2021-07-31 23:59:59',
             scale='week',
             focus_date='2021-07-31 00:00:00',
             planning_gantt_active_sale_order_id=so.id,
         )
         with freeze_time('2021-07-26'):
-            Slot.action_plan_sale_order(view_domain=[('start_datetime', '=', '2021-07-25 00:00:00'), ('end_datetime', '=', '2021-07-31 23:59:59')])
+            Slot.auto_plan_ids(view_domain=[('start_datetime', '=', '2021-07-25 00:00:00'), ('end_datetime', '=', '2021-07-31 23:59:59')])
         self.assertFalse(so.order_line.planning_slot_ids.filtered('start_datetime'), 'There should be no employee corresponding to criterias.')
 
     def test_planning_plan_order_default_role(self):
@@ -106,14 +106,14 @@ class TestSalePlanning(TestCommonSalePlanning):
         so.action_confirm()
         self.employee_wout.write({'default_planning_role_id': self.planning_role_junior.id})
         Slot = self.env['planning.slot'].with_context(
-            start_date='2021-07-25 00:00:00',
-            stop_date='2021-07-31 23:59:59',
+            default_start_datetime='2021-07-25 00:00:00',
+            default_end_datetime='2021-07-31 23:59:59',
             scale='week',
             focus_date='2021-07-31 00:00:00',
             planning_gantt_active_sale_order_id=so.id,
         )
         with freeze_time('2021-07-26'):
-            Slot.action_plan_sale_order(view_domain=[('start_datetime', '=', '2021-07-25 00:00:00'), ('end_datetime', '=', '2021-07-31 23:59:59')])
+            Slot.auto_plan_ids(view_domain=[('start_datetime', '=', '2021-07-25 00:00:00'), ('end_datetime', '=', '2021-07-31 23:59:59')])
         slot = so.order_line.planning_slot_ids.filtered('start_datetime')
         self.assertEqual(slot.employee_id, self.employee_wout, 'Planning should be assigned to the employee with sol\'s product role as default role')
 
@@ -127,14 +127,14 @@ class TestSalePlanning(TestCommonSalePlanning):
         so.action_confirm()
         self.employee_wout.write({'planning_role_ids': [(4, self.planning_role_junior.id)]})
         Slot = self.env['planning.slot'].with_context(
-            start_date='2021-07-25 00:00:00',
-            stop_date='2021-07-31 23:59:59',
+            default_start_datetime='2021-07-25 00:00:00',
+            default_end_datetime='2021-07-31 23:59:59',
             scale='week',
             focus_date='2021-07-31 00:00:00',
             planning_gantt_active_sale_order_id=so.id,
         )
         with freeze_time('2021-07-26'):
-            Slot.action_plan_sale_order(view_domain=[('start_datetime', '=', '2021-07-25 00:00:00'), ('end_datetime', '=', '2021-07-31 23:59:59')])
+            Slot.auto_plan_ids(view_domain=[('start_datetime', '=', '2021-07-25 00:00:00'), ('end_datetime', '=', '2021-07-31 23:59:59')])
         slot = so.order_line.planning_slot_ids.filtered('start_datetime')
         self.assertEqual(slot.employee_id, self.employee_wout, 'Planning should be assigned to the employee with one of its role equal to sol\'s product role')
 
@@ -147,22 +147,22 @@ class TestSalePlanning(TestCommonSalePlanning):
         so = so_form.save()
         so.action_confirm()
         Slot = self.env['planning.slot'].with_context(
-            start_date='2021-07-25 00:00:00',
-            stop_date='2021-07-31 23:59:59',
+            default_start_datetime='2021-07-25 00:00:00',
+            default_end_datetime='2021-07-31 23:59:59',
             scale='week',
             focus_date='2021-07-31 00:00:00',
             planning_gantt_active_sale_order_id=so.id,
         )
         self.employee_wout.write({'default_planning_role_id': self.planning_role_junior})
         with freeze_time('2021-07-26'):
-            Slot.action_plan_sale_order(view_domain=[('start_datetime', '=', '2021-07-25 00:00:00'), ('end_datetime', '=', '2021-07-31 23:59:59')])
+            Slot.auto_plan_ids(view_domain=[('start_datetime', '=', '2021-07-25 00:00:00'), ('end_datetime', '=', '2021-07-31 23:59:59')])
         self.employee_wout.write({'default_planning_role_id': False, 'planning_role_ids': [(5, 0, 0)]})
         self.employee_joseph.write({'default_planning_role_id': self.planning_role_junior.id})
         with freeze_time('2021-07-26'):
             Slot.with_context(
-                start_date='2021-08-01 00:00:00',
-                stop_date='2021-08-07 23:59:59'
-            ).action_plan_sale_order(view_domain=[('start_datetime', '=', '2021-08-01 00:00:00'), ('end_datetime', '=', '2021-08-07 23:59:59')])
+                default_start_datetime='2021-08-01 00:00:00',
+                default_end_datetime='2021-08-07 23:59:59'
+            ).auto_plan_ids(view_domain=[('start_datetime', '=', '2021-08-01 00:00:00'), ('end_datetime', '=', '2021-08-07 23:59:59')])
         slots = so.order_line.planning_slot_ids.filtered('start_datetime')
         self.assertEqual(len(slots), 2, 'It should exists two slots')
         for slot in slots:
@@ -171,9 +171,9 @@ class TestSalePlanning(TestCommonSalePlanning):
         # Ensure no one is assigned once again since employee_wout is already planned this week
         with freeze_time('2021-07-26'):
             Slot.with_context(
-                start_date='2021-08-01 00:00:00',
-                stop_date='2021-08-07 23:59:59'
-            ).action_plan_sale_order(view_domain=[('start_datetime', '=', '2021-08-01 00:00:00'), ('end_datetime', '=', '2021-08-07 23:59:59')])
+                default_start_datetime='2021-08-01 00:00:00',
+                default_end_datetime='2021-08-07 23:59:59'
+            ).auto_plan_ids(view_domain=[('start_datetime', '=', '2021-08-01 00:00:00'), ('end_datetime', '=', '2021-08-07 23:59:59')])
         slots = so.order_line.planning_slot_ids.filtered('start_datetime')
         self.assertEqual(len(slots), 2, 'It should exists two slots')
         for slot in slots:
@@ -189,8 +189,8 @@ class TestSalePlanning(TestCommonSalePlanning):
         so.action_confirm()
         slot = so.order_line.planning_slot_ids
         slot.with_context(
-            start_date='2021-07-25 00:00:00',
-            stop_date='2021-07-31 23:59:59',
+            default_start_datetime='2021-07-25 00:00:00',
+            default_end_datetime='2021-07-31 23:59:59',
             scale='week',
             focus_date='2021-07-29 00:00:00',
             planning_gantt_active_sale_order_id=so.id,
@@ -211,8 +211,8 @@ class TestSalePlanning(TestCommonSalePlanning):
         self.assertEqual(18.0, slot.allocated_hours, 'There should exists a slot with the right remaining hours to allocate.')
 
         slot.with_context(
-            start_date='2021-08-01 00:00:00',
-            stop_date='2021-08-07 23:59:59',
+            default_start_datetime='2021-08-01 00:00:00',
+            default_end_datetime='2021-08-07 23:59:59',
             scale='week',
             focus_date='2021-08-02 00:00:00',
             planning_gantt_active_sale_order_id=so.id,

@@ -5,7 +5,7 @@
         <field name="name">planning.slot.tree</field>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <tree string="Shift List" multi_edit="1" sample="1" editable="top">
+            <tree string="Shift List" multi_edit="1" sample="1" editable="top" js_class="planning_tree">
                 <header>
                     <button name="action_planning_publish_and_send" class="btn btn-secondary mx-1"
                         string="Publish &amp; Send" type="object" groups="planning.group_planning_manager" invisible="context.get('search_default_my_shifts')"/>
@@ -52,6 +52,8 @@
                     <button string="Reset to Draft" type="object" name="action_unpublish"
                         class="btn btn-secondary" close="1" groups="planning.group_planning_manager"
                         attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" data-hotkey="q"/>
+                    <button string="Auto Plan" type="object" name="auto_plan_id" class="btn btn-secondary"
+                        groups="planning.group_planning_manager" attrs="{'invisible': [('resource_id', '!=', False)]}" data-hotkey="p" invisible="context.get('search_default_my_shifts')"/>
                     <field name="state" widget="statusbar" groups="planning.group_planning_manager" invisible="context.get('search_default_my_shifts')"/>
                 </header>
                 <field name="is_past" invisible="1"/>
@@ -146,7 +148,7 @@
         <field name="name">planning.slot.kanban</field>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <kanban class="o_kanban_dashboard" group_create="false" sample="1">
+            <kanban class="o_kanban_dashboard" group_create="false" sample="1" js_class="planning_kanban">
                 <field name="name"/>
                 <field name="employee_id"/>
                 <field name="resource_id"/>
@@ -251,6 +253,8 @@
                         attrs="{'invisible': ['|', ('state', '=', 'published'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="q" invisible="context.get('search_default_my_shifts')"/>
                     <button string="Send" type="object" name="action_send" class="btn btn-secondary" close="1"
                         attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" groups="planning.group_planning_manager" data-hotkey="s" invisible="context.get('search_default_my_shifts')"/>
+                    <button string="Auto Plan" type="object" name="auto_plan_id" class="btn btn-secondary"
+                        groups="planning.group_planning_manager" attrs="{'invisible': [('resource_id', '!=', False)]}" data-hotkey="p" invisible="context.get('search_default_my_shifts')"/>
                     <button string="Reset to Draft" type="object" name="action_unpublish" class="btn btn-secondary" close="1"
                         groups="planning.group_planning_manager" attrs="{'invisible': ['|', ('state', '=', 'draft'), ('resource_type', '=', 'material')]}" data-hotkey="q" invisible="context.get('search_default_my_shifts')"/>
 
@@ -292,7 +296,8 @@
                 <separator/>
                 <filter string="My Roles" name="my_role" domain="[('role_id.resource_ids.user_id','=', uid)]" groups="planning.group_planning_user"/>
                 <separator/>
-                <filter name="conflict_shifts" string="Shifts in Conflict" domain="[('overlap_slot_count', '>', 0)]" groups="planning.group_planning_user"/>
+                <filter name="shift_planned" invisible="1" string="Shifts Planned" groups="planning.group_planning_user" context="{'highlight_planned': 1}"/>
+                <filter name="conflict_shifts" string="Shifts in Conflict" groups="planning.group_planning_user" context="{'highlight_conflicting': 1}"/>
                 <separator/>
                 <filter string="Human" name="human" domain="[('resource_type','=', 'user')]" groups="planning.group_planning_user"/>
                 <filter string="Material" name="material" domain="[('resource_type','=', 'material')]" groups="planning.group_planning_user"/>
@@ -366,7 +371,7 @@
         <field name="name">planning.slot.pivot</field>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <pivot string="Planning" sample="1">
+            <pivot string="Planning" sample="1" js_class="planning_pivot">
                 <field name="start_datetime" interval="week" type="row"/>
                 <field name="resource_id" type="col"/>
                 <field name="allocated_hours" type="measure" widget="float_time"/>
@@ -378,7 +383,7 @@
         <field name="name">planning.slot.graph</field>
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
-            <graph string="Planning" sample="1">
+            <graph string="Planning" sample="1" js_class="planning_graph">
                 <field name="start_datetime" interval="week"/>
                 <field name="resource_id"/>
                 <field name="allocated_hours" type="measure"/>

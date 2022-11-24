@@ -5,7 +5,7 @@ import uuid
 from pytz import utc, timezone
 
 from datetime import datetime, time, timedelta
-from odoo import fields, models, _, api, Command
+from odoo import fields, models, _, api
 
 _logger = logging.getLogger(__name__)
 
@@ -16,12 +16,11 @@ class Employee(models.Model):
     def _default_employee_token(self):
         return str(uuid.uuid4())
 
-    default_planning_role_id = fields.Many2one('planning.role', string="Default Planning Role",
-        compute='_compute_default_planning_role_id', groups='hr.group_hr_user', store=True, readonly=False,
+    default_planning_role_id = fields.Many2one(related='resource_id.default_role_id', readonly=False, groups='hr.group_hr_user',
         help="Role that will be selected by default when creating a shift for this employee.\n"
              "This role will also have precedence over the other roles of the employee when planning orders.")
     planning_role_ids = fields.Many2many(related='resource_id.role_ids', readonly=False, groups='hr.group_hr_user',
-         help="Roles that the employee can fill in. When creating a shift for this employee, only the shift templates for these roles will be displayed.\n"
+        help="Roles that the employee can fill in. When creating a shift for this employee, only the shift templates for these roles will be displayed.\n"
              "Similarly, only the open shifts available for these roles will be sent to the employee when the schedule is published.\n"
              "Additionally, the employee will only be assigned orders for these roles (with the default planning role having precedence over the other ones).\n"
              "Leave empty for the employee to be assigned shifts regardless of the role.")
@@ -75,45 +74,12 @@ class Employee(models.Model):
 
     @api.onchange('default_planning_role_id')
     def _onchange_default_planning_role_id(self):
-        # Although not recommended the onchange is necessary here as the field is a related and the bellow logic
-        # is only needed when editing in order to improve UX.
-        for employee in self:
-            employee.planning_role_ids |= employee.default_planning_role_id
+        self.planning_role_ids |= self.default_planning_role_id
 
-    @api.depends('planning_role_ids')
-    def _compute_default_planning_role_id(self):
-        for employee in self:
-            if employee.planning_role_ids and employee.default_planning_role_id.id not in employee.planning_role_ids.ids:
-                # _origin is required to have it work during onchange calls.
-                employee.default_planning_role_id = employee.planning_role_ids._origin[0]
-            elif not employee.planning_role_ids:
-                employee.default_planning_role_id = False
-
-    def write(self, vals):
-        # The following lines had to be written as `planning_role_ids` is a related field that has to depend on
-        # `default_planning_role_id`. In order to do so an onchange has been added in order to improve the user
-        # experience, but unfortunately does not trigger computation on write. That's why we need to handle it
-        # here too.
-        default_planning_role_id = vals.get('default_planning_role_id', False)
-        default_planning_role = False
-        if default_planning_role_id:
-            if isinstance(default_planning_role_id, int):
-                default_planning_role = self.env['planning.role'].browse(default_planning_role_id)
-            elif isinstance(default_planning_role_id, models.BaseModel):
-                default_planning_role = default_planning_role_id
-        if default_planning_role:
-            if 'planning_role_ids' in vals and vals['planning_role_ids']:
-                # `planning_role_ids` is either a list of commands, a list of ids, or a recordset
-                if isinstance(vals['planning_role_ids'], list):
-                    if len(vals['planning_role_ids'][0]) == 3:
-                        vals['planning_role_ids'].append(Command.link(default_planning_role.id))
-                    else:
-                        vals['planning_role_ids'].append(default_planning_role.id)
-                else:
-                    vals['planning_role_ids'] |= default_planning_role
-            else:
-                vals['planning_role_ids'] = [Command.link(default_planning_role.id)]
-        return super().write(vals)
+    @api.onchange('planning_role_ids')
+    def _onchange_planning_role_ids(self):
+        if self.default_planning_role_id.id not in self.planning_role_ids.ids:
+            self.default_planning_role_id = self.planning_role_ids[:1]
 
     def action_archive(self):
         res = super().action_archive()

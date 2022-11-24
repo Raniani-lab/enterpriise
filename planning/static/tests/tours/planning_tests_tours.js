@@ -113,6 +113,16 @@ registry.category("web_tour.tours").add('planning_test_tour', {
     content: "Check naming format of resource and role when grouped",
     auto: true,
     run: function () {}
+}, {
+    trigger: ".o_gantt_button_auto_plan",
+    content: "Click on Auto Plan button to assign open shifts to employees",
+    run: 'click',
+}, {
+    id: "planning_check_format_step",
+    trigger: ".o_gantt_pill.opacity-25",
+    content: "Check that the filter is applied",
+    auto: true,
+    run: function () {},
 }]});
 
 registry.category("web_tour.tours").add('planning_shift_switching_backend', {

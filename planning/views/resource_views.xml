@@ -72,7 +72,8 @@
                 <field name="color" widget="color_picker" optional="hide"/>
             </xpath>
             <xpath expr="//field[@name='name']" position="after">
-                <field name="role_ids" widget="many2many_tags"/>
+                <field name="role_ids" widget="many2many_tags" optional="show"/>
+                <field name="default_role_id" optional="show"/>
             </xpath>
             <xpath expr="//field[@name='name']" position="attributes">
                 <attribute name="placeholder">e.g. Crane</attribute>
@@ -99,6 +100,10 @@
         <field name="mode">primary</field>
         <field name="priority">50</field>
         <field name="arch" type="xml">
+            <xpath expr="//field[@name='name']" position="after">
+                <field name="default_role_id"/>
+                <field name="role_ids"/>
+            </xpath>
             <xpath expr="//field[@name='user_id']" position="replace"/>
             <xpath expr="//field[@name='resource_type']" position="replace"/>
             <xpath expr="//field[@name='company_id']" position="after">

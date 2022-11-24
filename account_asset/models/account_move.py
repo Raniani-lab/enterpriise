@@ -113,7 +113,7 @@ class AccountMove(models.Model):
 
         # look for any asset to create, in case we just posted a bill on an account
         # configured to automatically create assets
-        posted._auto_create_asset()
+        posted.sudo()._auto_create_asset()
         # check if we are reversing a move and delete assets of original move if it's the case
         posted._delete_reversed_entry_assets()
 

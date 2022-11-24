@@ -442,3 +442,48 @@ class TestEditView(TestStudioController):
             </field>
         </form>"""
         self.assertViewArchEqual(base_view.get_combined_arch(), expected_arch)
+
+    def test_edit_attribute_studio_groups_tree_column_invisible(self):
+        for view_type, arch, expected_modifiers in [
+            ('tree', """
+                <tree>
+                    <field name="name" groups="base.group_no_one"/>
+                </tree>
+            """, {'column_invisible': True}),
+            ('tree', """
+                <tree>
+                    <header>
+                        <button name="name" groups="base.group_no_one"/>
+                    </header>
+                </tree>
+            """, {'invisible': True}),
+            ('form', """
+                <form>
+                    <field name="child_ids">
+                        <tree>
+                            <field name="name" groups="base.group_no_one"/>
+                        </tree>
+                    </field>
+                </form>
+            """, {'column_invisible': True}),
+            ('tree', """
+                <tree>
+                    <field name="child_ids">
+                        <form>
+                            <field name="name" groups="base.group_no_one"/>
+                        </form>
+                    </field>
+                </tree>
+            """, {'invisible': True}),
+        ]:
+            view = self.env['ir.ui.view'].create({
+                'name': 'foo',
+                'type': view_type,
+                'model': 'res.partner',
+                'arch': arch,
+            })
+            arch = self.env['res.partner'].with_context(studio=True).get_view(view.id)['arch']
+            tree = etree.fromstring(arch)
+            modifiers = json.loads(tree.xpath('//*[@name="name"]')[0].get('modifiers'))
+            for modifier, value in expected_modifiers.items():
+                self.assertEqual(modifiers.get(modifier), value)

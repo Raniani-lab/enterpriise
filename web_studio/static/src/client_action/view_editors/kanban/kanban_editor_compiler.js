@@ -119,7 +119,7 @@ export class KanbanEditorCompiler extends KanbanCompiler {
 
     compileNode(node, params) {
         const nodeType = node.nodeType;
-        if (nodeType === 1 && isComponentNode(node)) {
+        if (nodeType === 1 && (isComponentNode(node) || node.getAttribute('studio_no_fetch'))) {
             return;
         }
 

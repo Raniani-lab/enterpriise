@@ -13,6 +13,7 @@ from odoo.tools.float_utils import float_is_zero
 from odoo.osv import expression
 from odoo.tools import config, format_amount, split_every
 from odoo.tools.date_utils import get_timedelta
+from odoo.tools.misc import format_date
 
 _logger = logging.getLogger(__name__)
 
@@ -774,6 +775,9 @@ class SaleOrder(models.Model):
         for renew in self:
             # When parent subscription reaches his end_date, it will be closed with a close_reason_renew so it won't be considered as a simple churn.
             parent = renew.subscription_id
+            if renew.start_date < parent.next_invoice_date:
+                raise ValidationError(_("You cannot validate a renewal quotation starting before the next invoice date "
+                                        "of the parent contract. Please update the start date after the %s.", format_date(self.env, parent.next_invoice_date)))
             other_renew_so_ids = parent.subscription_child_ids.filtered(
                 lambda so: so.subscription_management == 'renew' and so.state in ['draft', 'sent'] and so.stage_category == 'draft') - renew
             if other_renew_so_ids:

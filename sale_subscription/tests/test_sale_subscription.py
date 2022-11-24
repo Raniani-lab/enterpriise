@@ -350,6 +350,13 @@ class TestSubscription(TestSubscriptionCommon):
             # check produt_uom_qty
             self.assertEqual(renewal_so.sale_order_template_id.id, self.subscription.sale_order_template_id.id,
                              'sale_subscription: renewal so should have the same template')
+
+            renewal_start_date = renewal_so.start_date
+            with self.assertRaises(ValidationError):
+                # try to start the renewal before the parent next invoice date
+                renewal_so.start_date = self.subscription.next_invoice_date - relativedelta(days=1)
+                renewal_so.action_confirm()
+            renewal_so.start_date = renewal_start_date
             renewal_so.action_confirm()
             self.assertFalse(self.subscription.to_renew, 'sale_subscription: confirm the renewal order should remove the to_renew flag of parent')
             self.assertEqual(self.subscription.recurring_monthly, 189, '189 = 1 + 20 + 168')

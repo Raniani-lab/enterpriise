@@ -38,7 +38,7 @@ class MrpWorkcenterProductivity(models.Model):
         for time in self:
             if time.employee_id:
                 time.employee_cost = time.employee_id.hourly_cost
-            time.total_cost = time.employee_cost * time.duration
+            time.total_cost = time.employee_cost * time.duration / 60
 
     def _check_open_time_ids(self):
         self.env['mrp.productivity.time']._read_group([

@@ -145,13 +145,14 @@ export class FormEditorCompiler extends formView.Compiler {
             if (parentElement && parentElement.tagName === "page") {
                 const xpath = computeXpath(node.parentElement);
                 currentSlot.setAttribute("studioXpath", `"${xpath}"`);
-                if (!node.parentElement.querySelector(":scope > group")) {
-                    const hookProps = {
+                // If the page has an OuterGroup as last child, don't add a page studioHook
+                if (!parentElement.querySelector(":scope > group:last-child > group")) {
+                    const pageHookProps = {
                         position: "'inside'",
                         type: "'page'",
                         xpath: `"${xpath}"`,
                     };
-                    currentSlot.setAttribute("studioHookProps", objectToString(hookProps));
+                    currentSlot.setAttribute("studioHookProps", objectToString(pageHookProps));
                 }
             } else {
                 const xpath = node.getAttribute("studioXpath");

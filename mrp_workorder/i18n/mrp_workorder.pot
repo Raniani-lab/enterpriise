@@ -18,7 +18,7 @@ msgstr ""
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
-msgid "<b>%s suggests to delete this instruction</b>"
+msgid "%(user_name)s suggests to delete this instruction"
 msgstr ""
 
 #. module: mrp_workorder
@@ -32,13 +32,25 @@ msgstr ""
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
-msgid "<b>New Instruction suggested by %s</b><br/>%s<br/><b>Reason: %s</b>"
+msgid "New Instruction suggested by %(user_name)s"
+msgstr ""
+
+#. module: mrp_workorder
+#: code:addons/mrp_workorder/wizard/propose_change.py:0
+#, python-format
+msgid "Reason:"
 msgstr ""
 
 #. module: mrp_workorder
 #: code:addons/mrp_workorder/models/quality.py:0
 #, python-format
-msgid "<b>New Step suggested by %s</b><br/><b>Reason:</b>%s"
+msgid "New Step suggested by %(user_name)s"
+msgstr ""
+
+#. module: mrp_workorder
+#: code:addons/mrp_workorder/models/quality.py:0
+#, python-format
+msgid "Instruction:"
 msgstr ""
 
 #. module: mrp_workorder

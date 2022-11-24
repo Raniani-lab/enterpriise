@@ -5,7 +5,7 @@ from markupsafe import Markup
 from odoo import SUPERUSER_ID, api, fields, models, _
 from odoo.exceptions import UserError
 from odoo.fields import Command
-from odoo.tools import float_compare, float_round
+from odoo.tools import float_compare, float_round, is_html_empty
 
 
 class TestType(models.Model):
@@ -338,10 +338,11 @@ class QualityCheck(models.Model):
         else:
             self.workorder_id.current_quality_check_id = self
         if self.workorder_id.production_id.bom_id and activity:
-            body = Markup(_("<b>New Step suggested by %s</b><br/>"
-                 "<b>Reason:</b>"
-                 "%s", self.env.user.name, self.additional_note
-            ))
+            tl_text = _("New Step suggested by %(user_name)s", user_name=self.env.user.name)
+            body = Markup("<b>%s</b>") % tl_text
+            if self.note and not is_html_empty(self.note):
+                tl_text = _("Instruction:")
+                body += Markup("<br/><b>%s</b>%s") % (tl_text, self.note)
             self.env['mail.activity'].sudo().create({
                 'res_model_id': self.env.ref('mrp.model_mrp_bom').id,
                 'res_id': self.workorder_id.production_id.bom_id.id,

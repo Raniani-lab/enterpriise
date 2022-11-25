@@ -220,6 +220,9 @@ class StockPicking(models.Model):
                 pack_domain = ['|', ('move_line_ids.package_id', '=', package_id), ('move_line_ids.result_package_id', '=', package_id)]
                 picking_nums = self.search_count(base_domain + pack_domain)
                 additional_context['search_default_move_line_ids'] = barcode
+        if not barcode_type and not picking_nums:  # Nothing found yet, try to find picking by name.
+            picking_nums = self.search_count(base_domain + [('name', '=', barcode)])
+            additional_context['search_default_name'] = barcode
 
         if not picking_nums:
             if barcode_type:

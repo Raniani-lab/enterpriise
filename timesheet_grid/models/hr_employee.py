@@ -99,7 +99,7 @@ class Employee(models.Model):
 
         uom = str(self.env.company.timesheet_encode_uom_id.name).lower()
 
-        employees = self.env['hr.employee'].search([
+        employees = self.env['hr.employee'].with_context(active_test=False).search([
             ('id', 'in', [data['id'] for data in employees_grid_data]),
             ('company_id', 'in', self.env.companies.ids),
         ])

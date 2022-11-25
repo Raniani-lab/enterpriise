@@ -1613,7 +1613,6 @@ class TestWorkOrder(common.TestMrpCommon):
 
         unbuild_form = Form(self.env['mrp.unbuild'])
         unbuild_form.mo_id = mo01
-        unbuild_form.lot_id = lot01
         unbuild_form.save().action_unbuild()
 
         mo_form = Form(self.env['mrp.production'])

@@ -7,7 +7,14 @@ from odoo.exceptions import UserError
 class Pricelist(models.Model):
     _inherit = "product.pricelist"
 
-    product_pricing_ids = fields.One2many('product.pricing', 'pricelist_id', string="Recurring Price Rules")
+    product_pricing_ids = fields.One2many(
+        'product.pricing',
+        'pricelist_id',
+        string="Recurring Price Rules",
+        domain=[
+            '|', ('product_template_id', '=', None), ('product_template_id.active', '=', True),
+        ],
+    )
 
     @api.constrains('product_pricing_ids')
     def _check_pricing_product_temporal(self):

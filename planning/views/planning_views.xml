@@ -205,7 +205,7 @@
                                         <field name="employee_id" widget="many2one_avatar_employee"/>
                                     </t>
                                     <t t-if="record.resource_type.value == 'Material'">
-                                        <field name="resource_id" widget="many2one_avatar_resource" options="{'hide_label': True}"/>
+                                        <field name="resource_id" widget="many2one_avatar_resource"/>
                                     </t>
                                 </div>
                             </div>

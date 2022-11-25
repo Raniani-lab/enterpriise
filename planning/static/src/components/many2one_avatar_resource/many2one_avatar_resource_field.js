@@ -17,3 +17,14 @@ export const many2OneAvatarResourceField = {
 };
 
 registry.category("fields").add("many2one_avatar_resource", many2OneAvatarResourceField);
+
+export class KanbanMany2OneAvatarResourceField extends Many2OneAvatarResourceField {
+    static template = "planning.KanbanMany2OneAvatarResourceField";
+}
+
+export const kanbanMany2OneAvatarResourceField = {
+    ...many2OneAvatarResourceField,
+    component: KanbanMany2OneAvatarResourceField,
+};
+
+registry.category("fields").add("kanban.many2one_avatar_resource", kanbanMany2OneAvatarResourceField);

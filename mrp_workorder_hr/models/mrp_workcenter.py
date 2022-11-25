@@ -33,7 +33,7 @@ class MrpWorkcenterProductivity(models.Model):
     total_cost = fields.Float('Cost', compute='_compute_cost', compute_sudo=True)
     currency_id = fields.Many2one(related='company_id.currency_id')
 
-    @api.depends('employee_id', 'duration')
+    @api.depends('duration')
     def _compute_cost(self):
         for time in self:
             if time.employee_id:

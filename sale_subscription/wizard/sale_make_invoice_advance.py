@@ -28,7 +28,6 @@ class SaleAdvancePaymentInv(models.TransientModel):
             invoices = super(SaleAdvancePaymentInv, self)._create_invoices(sale_orders)
 
             if subscriptions:
-                subscription_invoiceable_lines._reset_subscription_quantity_post_invoice()
                 subscriptions._process_invoices_to_send(invoices)
 
             return invoices

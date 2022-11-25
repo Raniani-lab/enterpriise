@@ -1282,9 +1282,19 @@ class SaleOrder(models.Model):
             if last_invoice_date:
                 order.next_invoice_date = last_invoice_date + get_timedelta(order.recurrence_id.duration, order.recurrence_id.unit)
 
-    def _update_subscription_payment_failure_values(self,):
+    def _update_subscription_payment_failure_values(self):
         # allow to override the subscription values in case of payment failure
         return {}
+
+    def _post_invoice_hook(self):
+        # This method allow a hook after invoicing
+        if self:
+            sub = self.filtered('is_subscription')
+        else:
+            sub = self.search([('is_invoice_cron', '=', True)])
+        if sub:
+            sub.order_line._reset_subscription_quantity_post_invoice()
+            sub.update({'is_invoice_cron': False})
 
     def _handle_subscription_payment_failure(self, invoice, transaction, email_context):
         self.ensure_one()
@@ -1456,22 +1466,19 @@ class SaleOrder(models.Model):
                     continue
                 self._subscription_commit_cursor(auto_commit)
                 # Handle automatic payment or invoice posting
-                existing_invoices = subscription._handle_automatic_invoices(invoice, auto_commit)
+                existing_invoices = subscription.with_context(recurring_automatic=True)._handle_automatic_invoices(invoice, auto_commit)
                 account_moves |= existing_invoices
                 subscription.with_context(mail_notrack=True).write({'payment_exception': False})
             except Exception:
                 _logger.exception("Error during renewal of contract %s", subscription.client_order_ref or subscription.name)
                 self._subscription_rollback_cursor(auto_commit)
         self._subscription_commit_cursor(auto_commit)
-        lines_to_reset_qty._reset_subscription_quantity_post_invoice()
         all_subscriptions._process_invoices_to_send(account_moves)
         # There is still some subscriptions to process. Then, make sure the CRON will be triggered again asap.
         if need_cron_trigger:
             self._subscription_launch_cron_parallel(batch_size)
-
-        if not need_cron_trigger:
-            cron_subs = self.search([('is_invoice_cron', '=', True)])
-            cron_subs.write({'is_invoice_cron': False})
+        else:
+            self.env['sale.order']._post_invoice_hook()
             failing_subscriptions = self.search([('is_batch', '=', True)])
             failing_subscriptions.write({'is_batch': False})
 

@@ -2570,10 +2570,22 @@ class TestSubscription(TestSubscriptionCommon):
         sub = self.subscription
         end_date = datetime.date(2022, 6, 20)
         sub.end_date = end_date
-        sub.action_confirm()
         with freeze_time(end_date):
+            sub.action_confirm()
             sub._create_recurring_invoice()
         self.assertEqual(sub.close_reason_id.id, self.env.ref('sale_subscription.close_reason_end_of_contract').id)
+
+    def test_sale_subscription_post_invoice(self):
+        """ Test that the post invoice hook is correctly called
+        """
+        def patched_reset(self):
+            self.name = "Called"
+
+        with patch('odoo.addons.sale_subscription.models.sale_order_line.SaleOrderLine._reset_subscription_quantity_post_invoice', patched_reset), freeze_time("2021-01-01"):
+            sub = self.subscription
+            sub.action_confirm()
+            self.env['sale.order']._cron_recurring_create_invoice()
+            self.assertEqual(sub.order_line.mapped('name'), ['Called']*2)
 
     def test_close_reason_automatic_renewal_failed(self):
         sub = self.subscription

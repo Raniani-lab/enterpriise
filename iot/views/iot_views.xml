@@ -94,7 +94,10 @@
         <field name="name">iot.box.view.list</field>
         <field name="model">iot.box</field>
         <field name="arch" type="xml">
-            <tree create="false" js_class="box_list_view">
+            <tree create="false">
+                <header>
+                    <button name="%(iot.action_add_iot_box)d" type="action" string="Connect" class="btn-primary o_list_button_save" display="always"/>
+                </header>
                 <field name="name"/>
                 <field name="identifier"/>
             </tree>

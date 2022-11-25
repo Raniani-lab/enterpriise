@@ -1,12 +1,21 @@
 /** @odoo-module **/
 
-import { patch } from "@web/core/utils/patch";
-import { PayslipListController } from "@hr_payroll/js/payslip_list";
-import { useTimeOffToDefer } from '@hr_payroll_holidays/views/hooks';
+import { TimeOffToDeferWarning, useTimeOffToDefer } from "@hr_payroll_holidays/views/hooks";
+import { registry } from "@web/core/registry";
+import { ListRenderer } from "@web/views/list/list_renderer";
+import { listView } from "@web/views/list/list_view";
 
-patch(PayslipListController.prototype, 'hr_payroll_holidays_payslip_holidays_list_controller', {
+class PayslipListRenderer extends ListRenderer {
     setup() {
-        this._super.apply(this, arguments);
-        useTimeOffToDefer('.o_list_renderer', "first-child");
+        super.setup();
+        this.timeOff = useTimeOffToDefer();
     }
-});
+}
+PayslipListRenderer.template = "hr_payroll_holidays.PayslipListRenderer";
+PayslipListRenderer.components = { ...ListRenderer.components, TimeOffToDeferWarning };
+const PayslipListView = {
+    ...listView,
+    Renderer: PayslipListRenderer,
+};
+
+registry.category("views").add("hr_payroll_payslip_tree", PayslipListView);

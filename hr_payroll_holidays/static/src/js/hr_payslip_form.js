@@ -1,19 +1,20 @@
 /** @odoo-module **/
 
-import { registry } from '@web/core/registry';
-import { formView } from '@web/views/form/form_view';
+import { TimeOffToDeferWarning, useTimeOffToDefer } from "@hr_payroll_holidays/views/hooks";
+import { registry } from "@web/core/registry";
 import { FormController } from "@web/views/form/form_controller";
-import { useTimeOffToDefer } from '@hr_payroll_holidays/views/hooks';
+import { formView } from "@web/views/form/form_view";
 
 export class PayslipFormController extends FormController {
     setup() {
         super.setup();
-        useTimeOffToDefer('.o_form_sheet_bg', "first-child");
+        this.timeOff = useTimeOffToDefer();
     }
 }
+PayslipFormController.template = "hr_payroll_holidays.PayslipFormController";
+PayslipFormController.components = { ...PayslipFormController.components, TimeOffToDeferWarning };
 
-
-registry.category('views').add('hr_payslip_form', {
+registry.category("views").add("hr_payslip_form", {
     ...formView,
-    Controller: PayslipFormController
+    Controller: PayslipFormController,
 });

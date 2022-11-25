@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { useService } from "@web/core/utils/hooks";
-const { Component, useState, useEffect, useEnv, onWillStart, mount, xml, useRef } = owl;
+const { Component, onWillStart, xml } = owl;
 
 export class TimeOffToDeferWarning extends Component {
     setup() {
@@ -21,27 +21,12 @@ TimeOffToDeferWarning.template = xml`
     </div>
 `;
 
-export function useTimeOffToDefer(selector, position) {
+export function useTimeOffToDefer() {
     const orm = useService("orm");
-    const rootRef = useRef("root");
-    const env = useEnv();
-    const state = useState({
-        hasTimeOffToDefer: false
-    });
+    const timeOff = {};
     onWillStart(async () => {
-        const result = await orm.search('hr.leave', [["payslip_state", "=", "blocked"]]);
-        state.hasTimeOffToDefer = result.length !== 0;
+        const result = await orm.search("hr.leave", [["payslip_state", "=", "blocked"]]);
+        timeOff.hasTimeOffToDefer = result.length !== 0;
     });
-    useEffect((el) => {
-        if (!el) {
-          return;
-        }
-        const attachElement = el.querySelector(selector);
-        mount(TimeOffToDeferWarning, attachElement, {
-            position,
-            env
-        });
-      },
-      () => [state.hasTimeOffToDefer && rootRef.el]
-    )
+    return timeOff;
 }

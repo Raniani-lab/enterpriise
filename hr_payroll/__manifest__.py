@@ -57,7 +57,6 @@
         'web.assets_backend': [
             'hr_payroll/static/src/**/*.js',
             'hr_payroll/static/src/**/*.scss',
-            'hr_payroll/static/src/xml/**/*',
             'hr_payroll/static/src/**/*.xml',
         ],
         'web.assets_tests': [

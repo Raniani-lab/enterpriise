@@ -90,8 +90,10 @@
         <field name="model">hr.contract</field>
         <field name="inherit_id" ref="hr_contract.hr_contract_view_tree"/>
         <field name="arch" type="xml">
-            <xpath expr="//tree" position="attributes">
-                <attribute name="js_class">hr_contract_tree</attribute>
+            <xpath expr="//tree" position="inside">
+                <header>
+                   <button name="%(hr_payroll.action_hr_payroll_index)d" type="action" string="Index Contracts" groups="hr_contract.group_hr_contract_manager" display="always"/>
+                </header>
             </xpath>
         </field>
     </record>

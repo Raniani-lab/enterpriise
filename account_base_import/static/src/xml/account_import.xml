@@ -2,14 +2,6 @@
 
 <templates>
 
-    <t t-name="account_base_import.AccountListView.buttons" t-inherit="web.ListView.Buttons" owl="1">
-        <xpath expr="//button[hasclass('o_list_button_add')]" position="after">
-            <button type="button" class="btn btn-secondary" t-on-click="() => this._importAccountAction()">
-                Import
-            </button>
-        </xpath>
-    </t>
-
     <t t-name="account_base_import.accountImportTemplate" owl="1">
         <ControlPanel display="{
             'top-right': false,

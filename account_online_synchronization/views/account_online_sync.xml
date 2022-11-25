@@ -87,7 +87,10 @@
             <field name="name">account.online.link.tree</field>
             <field name="model">account.online.link</field>
             <field name="arch" type="xml">
-                <tree decoration-danger="state != 'connected'" create="false" js_class="online_sync_tree">
+                <tree decoration-danger="state != 'connected'" create="false">
+                    <header>
+                        <button name="%(account.action_new_bank_setting)d" type="action" string="Add A Bank Account" class="btn btn-primary" display="always"/>
+                    </header>
                     <field name="name" readonly="1"/>
                     <field name="state"/>
                     <field name="last_refresh" readonly="1"/>

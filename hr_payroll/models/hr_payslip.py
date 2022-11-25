@@ -1036,6 +1036,7 @@ class HrPayslip(models.Model):
             })
 
         # Retrieves last batches (this month, or last month)
+        batch_limit_date = fields.Date.today() - relativedelta(months=1, day=1)
         batch_group_read = self.env['hr.payslip.run'].with_context(lang='en_US')._read_group(
             [('date_start', '>=', fields.Date.today() - relativedelta(months=1, day=1))],
             fields=['date_start'],
@@ -1044,7 +1045,10 @@ class HrPayslip(models.Model):
         # Keep only the last month
         batch_group_read = batch_group_read[:1]
         if batch_group_read:
-            min_date = datetime.strptime(batch_group_read[-1]['date_start:month'], '%B %Y')
+            if batch_group_read[-1]['__range'].get('date_start:month'):
+                min_date = datetime.strptime(batch_group_read[-1]['__range']['date_start:month']['from'], '%Y-%m-%d')
+            else:
+                min_date = batch_limit_date
             last_batches = self.env['hr.payslip.run'].search([('date_start', '>=', min_date)])
         else:
             last_batches = self.env['hr.payslip.run']
@@ -1495,7 +1499,10 @@ class HrPayslip(models.Model):
             # Keep only the last 3 months
             batch_group_read = batch_group_read[:3]
             if batch_group_read:
-                min_date = datetime.strptime(batch_group_read[-1]['date_start:month'], '%B %Y')
+                if batch_group_read[-1]['__range'].get('date_start:month'):
+                    min_date = datetime.strptime(batch_group_read[-1]['__range']['date_start:month']['from'], '%Y-%m-%d')
+                else:
+                    min_date = fields.Date.today() - relativedelta(months=1, day=1)
                 batches_read_result = self.env['hr.payslip.run'].search_read(
                     [('date_start', '>=', min_date)],
                     fields=self._get_dashboard_batch_fields())

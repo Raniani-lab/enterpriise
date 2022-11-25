@@ -14,23 +14,23 @@ class AccountChartTemplate(models.Model):
         Override to configure payroll accounting data as well as accounting data.
         """
         res = super()._load(company)
-        if self == self.env.ref('l10n_ke.l10nke_chart_template'):
-            self._configure_payroll_account_kenya(company)
+        if self == self.env.ref('l10n_lt.account_chart_template_lithuania'):
+            self._configure_payroll_account_lithuania(company)
         return res
 
     def _load_payroll_accounts(self):
-        if self == self.env.ref('l10n_ke.l10nke_chart_template'):
-            ke_companies = self.env['res.company'].search([
-                ('partner_id.country_id.code', '=', 'KE'),
-                ('chart_template_id', '=', self.env.ref('l10n_ke.l10nke_chart_template').id)])
-            self._configure_payroll_account_kenya(ke_companies)
+        if self == self.env.ref('l10n_lt.account_chart_template_lithuania'):
+            lt_companies = self.env['res.company'].search([
+                ('partner_id.country_id.code', '=', 'LT'),
+                ('chart_template_id', '=', self.env.ref('l10n_lt.account_chart_template_lithuania').id)])
+            self._configure_payroll_account_lithuania(lt_companies)
         super()._load_payroll_accounts()
 
-    def _configure_payroll_account_kenya(self, companies):
+    def _configure_payroll_account_lithuania(self, companies):
         accounts_codes = [
             # YTI TODO: Configure accounts
         ]
-        ke_structures = self.env['hr.payroll.structure'].search([('country_id.code', '=', "KE")])
+        lt_structures = self.env['hr.payroll.structure'].search([('country_id.code', '=', "LT")])
         for company in companies:
             self = self.with_company(company)
 
@@ -58,11 +58,11 @@ class AccountChartTemplate(models.Model):
             self.env['ir.property']._set_multi(
                 "journal_id",
                 "hr.payroll.structure",
-                {structure.id: journal.id for structure in ke_structures},
+                {structure.id: journal.id for structure in lt_structures},
             )
 
             # ================================================ #
-            #          KEN Employee Payroll Structure          #
+            #          LI Employee Payroll Structure          #
             # ================================================ #
 
             # TODO: Setup Accounts

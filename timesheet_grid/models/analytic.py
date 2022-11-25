@@ -536,7 +536,7 @@ class AnalyticLine(models.Model):
         # Check if the user has the correct access to create timesheets
         if not (self.user_has_groups('hr_timesheet.group_hr_timesheet_approver') or self.env.su) and any(line.is_timesheet and line.user_id.id != self.env.user.id for line in analytic_lines):
             raise AccessError(_("You cannot access timesheets that are not yours."))
-        self.check_if_allowed()
+        analytic_lines.check_if_allowed()
         return analytic_lines
 
     def write(self, vals):

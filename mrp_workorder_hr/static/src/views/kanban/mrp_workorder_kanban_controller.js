@@ -5,6 +5,7 @@ import { PinPopup } from '@mrp_workorder_hr/components/pin_popup';
 import { useBus, useService } from "@web/core/utils/hooks";
 import { patch } from "@web/core/utils/patch";
 import {MrpWorkorderKanbanController} from '@mrp_workorder/views/kanban/mrp_workorder_kanban_controller';
+import { AvatarList } from "@mrp_workorder_hr/components/avatar_list";
 
 const {onWillStart, useState, onMounted} = owl;
 
@@ -12,6 +13,7 @@ MrpWorkorderKanbanController.components = {
     ...MrpWorkorderKanbanController.components,
     SelectionPopup,
     PinPopup,
+    AvatarList
 }
 
 patch(MrpWorkorderKanbanController.prototype, 'mrp_workorder_hr', {
@@ -32,10 +34,7 @@ patch(MrpWorkorderKanbanController.prototype, 'mrp_workorder_hr', {
         useBus(this.barcode.bus, 'barcode_scanned', (event) => this._onBarcodeScanned(event.detail.barcode));
         this.workcenterId = this.props.context.default_workcenter_id;
         this.workcenter = false;
-        this.employee = useState({
-            name: false || this.props.context.employee_name,
-            id: 0 || this.props.context.employee_id,
-        });
+        this.employees_connected = useState({logged:[]});
         onWillStart(async () => {
             await this.onWillStart();
         });
@@ -45,9 +44,8 @@ patch(MrpWorkorderKanbanController.prototype, 'mrp_workorder_hr', {
     },
 
     async onWillStart() {
-        if (!this.workcenterId) {
-            return;
-        }
+        if (!this.workcenterId) return;
+
         const workcenter = await this.orm.read(
             "mrp.workcenter", [this.workcenterId], ['allow_employee', 'employee_ids']
         );
@@ -63,6 +61,12 @@ patch(MrpWorkorderKanbanController.prototype, 'mrp_workorder_hr', {
         this.employees = await this.orm.searchRead(
              "hr.employee", employees_domain, fieldsToRead,
         );
+        const ids = await this.orm.call("hr.employee", "get_employees_connected",[null])
+
+        ids.forEach((id)=>{
+            let emp = this.employees.find(e => e.id === id);
+            if(emp)this.employees_connected.logged.push({name:emp.name, id:emp.id});
+        })
     },
 
     onMount() {
@@ -81,7 +85,7 @@ patch(MrpWorkorderKanbanController.prototype, 'mrp_workorder_hr', {
             id: employee.id,
             item: employee,
             label: employee.name,
-            isSelected: employee === this.employee.id,
+            isSelected: this.employees_connected.logged.find(e=>e.id===employee)?true:false
         }));
         this.popup.SelectionPopup = {
             data: { title: this.env._t('Select Employee'), list: employeeList },
@@ -91,7 +95,8 @@ patch(MrpWorkorderKanbanController.prototype, 'mrp_workorder_hr', {
 
     async selectEmployee(employeeId, pin) {
         const employee = this.employees.find(e => e.id === employeeId);
-        const employee_function = this.employee.name && this.employee.id === employeeId ? 'logout' : 'login';
+        const employee_connected = this.employees_connected.logged.find(e=> e.name && e.id===employee.id)
+        const employee_function = employee_connected ? "logout" : "login";
         const pinValid = await this.orm.call(
             "hr.employee", employee_function, [employeeId, pin],
         );
@@ -106,21 +111,22 @@ patch(MrpWorkorderKanbanController.prototype, 'mrp_workorder_hr', {
 
         if (employee_function === 'login') {
             this.notification.add(this.env._t('Logged in!'), {type: 'success'});
-            this.employee = {
-                name: employee.name,
-                id: employee.id,
-            };
+            if (!this.employees_connected.logged.find(e => e.id === employee.id))
+                this.employees_connected.logged.push({name: employee.name, id: employee.id})
             if (this.context.openRecord) {
-                this.openRecord(...this.context.openRecord);
-
+                await this.openRecord(...this.context.openRecord);
             }
         } else {
-            this.employee = {
-                name: false,
-                id: 0,
-            };
+            //remove the employee from the list
+            this.notification.add(this.env._t('Logged out!'), {type: 'success'});
+            this.employees_connected.logged = this.employees_connected.logged.filter(function(value,index,arr){
+                return value.id != employee.id
+            })
         }
-        this.render(true);
+        this.closePopup('SelectionPopup')
+        //refresh the page when logged to update
+        await this.model.root.load();
+        this.model.notify();
     },
 
     closePopup(popupName) {
@@ -144,13 +150,19 @@ patch(MrpWorkorderKanbanController.prototype, 'mrp_workorder_hr', {
     },
 
     async openRecord(record, mode) {
-        if (this.employees && !this.employee.name) {
+        const superOpenRecord = this._super
+        const id = await this.orm.call("hr.employee", "get_session_owner",[null]);
+        if (id.length==0) {
             this.context.openRecord = [record, mode];
             this.openEmployeeSelection();
             return;
         }
         delete this.context.openRecord;
-        Object.assign(this.context, {employee_id: this.employee.id});
-        this._super(...arguments);
+        Object.assign(this.context, {employees_connected: id});
+
+        // TODO : Cleanup that mess
+        // Why is the this._super undefined after the asynchronous function?
+
+        superOpenRecord(...arguments);
     },
 });

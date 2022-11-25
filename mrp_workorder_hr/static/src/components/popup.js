@@ -18,7 +18,6 @@ export class SelectionPopup extends Component {
 
     async selectItem(id) {
         await this.props.onSelectEmployee(id);
-        this.props.onClosePopup('SelectionPopup');
     }
 }
 SelectionPopup.props = {

@@ -11,3 +11,5 @@ export const MrpWorkorderKanbanView = {
 };
 
 registry.category("views").add('tablet_kanban_view', MrpWorkorderKanbanView);
+registry.category("views").add('test_marm',MrpWorkorderKanbanView)
+// TODO : we need to add the view here

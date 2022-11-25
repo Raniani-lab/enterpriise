@@ -5,7 +5,7 @@
             <h3 class="title" t-esc="title"/>
             <div class="selection scrollable-y">
                 <t t-foreach="list" t-as="item" t-key="item.id">
-                    <div class="selection-item" t-att-class="{ 'selected': item.isSelected }" t-on-click="() => this.selectItem(item.id)">
+                    <div class="selection-item" t-if="!item.isSelected" t-att-class="{ 'selected': item.isSelected }" t-on-click="() => this.selectItem(item.id)">
                         <t t-esc="item.label" />
                     </div>
                 </t>

@@ -18,7 +18,7 @@
                         </div>
                         <div class="text-end">
 
-                            <button t-if="line.ongoing" class="btn btn-danger text-uppercase" t-on-click="() => this.stopEmployee(line.employee_id)" style="line-height:20px;">Stop</button>
+                            <button t-if="line.ongoing" class="btn btn-danger text-uppercase" t-on-click="() => this.stopEmployee(line.employee_id)" style="line-height:20px;">Pause</button>
                             <button t-if="!line.ongoing" class="btn btn-warning text-uppercase" t-on-click="() => this.startEmployee(line.employee_id)" style="line-height:20px;">Continue</button>
                         </div>
                     </div>

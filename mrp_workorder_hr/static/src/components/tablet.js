@@ -6,8 +6,11 @@ import { SelectionPopup } from '@mrp_workorder_hr/components/popup';
 import { WorkingEmployeePopup } from '@mrp_workorder_hr/components/working_employee_popup';
 import { patch } from 'web.utils';
 import { PinPopup } from '@mrp_workorder_hr/components/pin_popup';
+import { AvatarList } from "@mrp_workorder_hr/components/avatar_list";
 
-const { onMounted } = owl;
+const { onMounted, useState } = owl;
+
+Tablet.components.AvatarList = AvatarList;
 
 patch(Tablet.prototype, 'mrp_workorder_hr', {
     setup() {
@@ -26,14 +29,14 @@ patch(Tablet.prototype, 'mrp_workorder_hr', {
             data: {},
         };
         this.state.tabletEmployeeIds = [];
-        this.employee = this.props.action.context.employee_id;
+        this.employees_connected = useState({logged:[]});
         this.actionRedirect = false;
         useBus(this.workorderBus, "popupEmployeeManagement", this.popupEmployeeManagement);
         onMounted(() => this.checkEmployeeLogged());
     },
 
     checkEmployeeLogged() {
-        if (this.data.employee_list.length && !this.data.employee && !this.employee) {
+        if (this.data.employee_list.length && !this.data.employee && this.employees_connected.logged.length==0) {
             this.popupAddEmployee();
         }
     },
@@ -86,6 +89,7 @@ patch(Tablet.prototype, 'mrp_workorder_hr', {
         );
         await this.getState();
         this.render();
+        this.popup["SelectionPopup"].isShown = false;
     },
 
     async stopEmployee(employeeId, pin) {
@@ -112,8 +116,8 @@ patch(Tablet.prototype, 'mrp_workorder_hr', {
 
     get isBlocked() {
         let isBlocked = this._super();
-        if (this.data.employee_list.length !== 0 && ! this.data.employee_id) {
-            isBlocked = true;
+        if (this.employees_connected.length !== 0) {
+            isBlocked = false;
         }
         return isBlocked;
     },
@@ -140,12 +144,15 @@ patch(Tablet.prototype, 'mrp_workorder_hr', {
 
     async _onWillStart() {
         const superMethod = this._super;
-        const employeeId = this.props.action.context.employee_id;
-        if (employeeId) {
-            await this.startEmployee(employeeId);
+        this.employees_connected.logged = await this.orm.call("hr.employee", "get_employees_connected",[null])
+        if (this.employees_connected.logged) {
+            await this.employees_connected.logged.forEach(async (emp)=>{
+                if(emp && emp.id) await this.startEmployee(emp.id);
+            })
+            
         }
         await superMethod();
-        if (employeeId) {
+        if (this.employees_connected.logged) {
             await this.getState();
         }
     },

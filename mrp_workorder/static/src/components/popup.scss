@@ -16,8 +16,8 @@ $wo-border-separation: $border-width solid $border-color;
     .popup {
         z-index: 1200;
         top: 5%;
-        left: 25%;
-        width: 50%;
+        left: 20%;
+        width: 60%;
         position: fixed;
         background: $o-gray-100;
 
@@ -101,10 +101,11 @@ $wo-border-separation: $border-width solid $border-color;
 
         &.popup-selection .selection {
             overflow-y: auto;
-            max-height: 273px;
+            max-height: 40vh;
             font-size: 16px;
             width: auto;
             line-height: 50px;
+
 
             &-item {
                 background: rgb(230,230,230);

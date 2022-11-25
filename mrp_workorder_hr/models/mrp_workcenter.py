@@ -26,6 +26,23 @@ class MrpWorkcenter(models.Model):
         employee_ids = self.employee_ids or self.env['hr.employee'].search([])
         return employee_ids.sudo().filtered(lambda e: e.barcode == barcode)[:1].id
 
+    @api.depends('time_ids', 'time_ids.date_end', 'time_ids.loss_type')
+    def _compute_working_state(self):
+        for workcenter in self:
+            time_log = self.env['mrp.workcenter.productivity'].search([
+                ('workcenter_id', '=', workcenter.id),
+                ('date_end', '=', False),
+            ], limit=1)
+            if not time_log:
+                # the workcenter is not being used
+                workcenter.working_state = 'normal'
+            elif time_log.loss_type in ('productive', 'performance'):
+                # the productivity line has a `loss_type` that means the workcenter is being used
+                workcenter.working_state = 'done'
+            else:
+                # the workcenter is blocked
+                workcenter.working_state = 'blocked'
+
 
 class MrpWorkcenterProductivity(models.Model):
     _inherit = "mrp.workcenter.productivity"

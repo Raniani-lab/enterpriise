@@ -55,7 +55,7 @@ tour.register('rental_order_with_sale_product_matrix_tour', {
         $('.o_matrix_input').slice(8, 16).val(4);
     } // set the qty to 4 for half of the matrix products.
 }, {
-    trigger: 'span:contains("Confirm")',
+    trigger: 'button:contains("Confirm")',
 },
     ...tour.stepUtils.saveForm({ extra_trigger: '.o_field_cell.o_data_cell.o_list_number:contains("26")' }),
 ]);

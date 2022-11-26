@@ -1053,6 +1053,13 @@ msgid ""
 msgstr ""
 
 #. module: timesheet_grid
+#. odoo-python
+#: code:addons/timesheet_grid/wizard/timesheet_merge_wizard.py:0
+#, python-format
+msgid "The timesheets must have the same encoding unit"
+msgstr ""
+
+#. module: timesheet_grid
 #: code:addons/timesheet_grid/models/task.py:0
 #, python-format
 msgid ""

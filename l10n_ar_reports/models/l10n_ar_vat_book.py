@@ -176,7 +176,7 @@ class ArgentinianReportCustomHandler(models.AbstractModel):
         It contains the files that we upload to AFIP for Purchase VAT Book """
         tax_type = self._vat_book_get_selected_tax_types(options)
         if len(tax_type) > 1:
-            raise UserError("Only one tax type should be selected.")
+            raise UserError(_("Only one tax type should be selected."))
         tax_type = tax_type[0]
 
         # Build file name

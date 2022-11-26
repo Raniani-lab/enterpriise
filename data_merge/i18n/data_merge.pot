@@ -234,6 +234,13 @@ msgid "Delete"
 msgstr ""
 
 #. module: data_merge
+#. odoo-python
+#: code:addons/data_merge/models/data_merge_model.py:0
+#, python-format
+msgid "Deduplication is forbidden on the model: %s"
+msgstr ""
+
+#. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__differences
 msgid "Differences"
 msgstr ""
@@ -480,6 +487,13 @@ msgid "Model"
 msgstr ""
 
 #. module: data_merge
+#. odoo-python
+#: code:addons/data_merge/models/data_merge_model.py:0
+#, python-format
+msgid "Missing required PostgreSQL extension: unaccent"
+msgstr ""
+
+#. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__res_model_name
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__res_model_name
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__res_model_name
@@ -523,6 +537,14 @@ msgstr ""
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__notify_user_ids
 msgid "Notify Users"
+msgstr ""
+
+#. module: data_merge
+#. odoo-python
+#: code:addons/data_merge/models/data_merge_record.py:0
+#: code:addons/data_merge/models/data_merge_record.py:0
+#, python-format
+msgid "Query Failed."
 msgstr ""
 
 #. module: data_merge
@@ -574,6 +596,13 @@ msgid "Select a model to configure deduplication rules"
 msgstr ""
 
 #. module: data_merge
+#. odoo-python
+#: code:addons/data_merge/models/data_merge_record.py:0
+#, python-format
+msgid "Records must be of the same model"
+msgstr ""
+
+#. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_rule__sequence
 msgid "Sequence"
 msgstr ""
@@ -607,6 +636,13 @@ msgstr ""
 #. module: data_merge
 #: model:ir.model.constraint,message:data_merge.constraint_data_merge_model_check_notif_freq
 msgid "The notification frequency should be greater than 0"
+msgstr ""
+
+#. module: data_merge
+#. odoo-python
+#: code:addons/data_merge/models/data_merge_record.py:0
+#, python-format
+msgid "The referenced record does not exist"
 msgstr ""
 
 #. module: data_merge

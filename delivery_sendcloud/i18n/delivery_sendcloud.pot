@@ -416,6 +416,13 @@ msgid "The %s address needs to have the street, city, zip, and country"
 msgstr ""
 
 #. module: delivery_sendcloud
+#. odoo-python
+#: code:addons/delivery_sendcloud/models/sendcloud_service.py:0
+#, python-format
+msgid "Something went wrong, parcel not returned from Sendcloud"
+msgstr ""
+
+#. module: delivery_sendcloud
 #: code:addons/delivery_sendcloud/models/sendcloud_service.py:0
 #, python-format
 msgid ""
@@ -464,6 +471,15 @@ msgstr ""
 #: code:addons/delivery_sendcloud/models/delivery_carrier.py:0
 #, python-format
 msgid "You must have a shipping product configured!"
+msgstr ""
+
+#. module: delivery_sendcloud
+#. odoo-python
+#: code:addons/delivery_sendcloud/models/delivery_carrier.py:0
+#, python-format
+msgid ""
+"There are no shipping products available, please activate carriers in your "
+"account"
 msgstr ""
 
 #. module: delivery_sendcloud

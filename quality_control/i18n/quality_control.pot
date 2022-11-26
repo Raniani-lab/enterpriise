@@ -1164,6 +1164,13 @@ msgid "You still need to do the quality checks!"
 msgstr ""
 
 #. module: quality_control
+#. odoo-python
+#: code:addons/quality_control/wizard/quality_check_wizard.py:0
+#, python-format
+msgid "You must provide a picture before validating"
+msgstr ""
+
+#. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
 msgid "e.g. The QA Masters"
 msgstr ""

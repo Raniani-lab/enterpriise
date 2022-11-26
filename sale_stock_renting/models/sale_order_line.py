@@ -257,7 +257,7 @@ class RentalOrderLine(models.Model):
         for line in self.filtered('is_rental'):
             moves = line.move_ids.filtered(lambda m: m.state != 'cancel')
             if moves and moves.mapped('product_id') != line.product_id:
-                raise ValidationError("You cannot change the product of lines linked to stock moves.")
+                raise ValidationError(_("You cannot change the product of lines linked to stock moves."))
 
     def _action_launch_stock_rule(self, previous_product_uom_qty=False):
         """Disable stock moves for rental order lines.

@@ -215,7 +215,7 @@ class DataMergeRecord(models.Model):
         model_name = set(self.mapped('res_model_name')) or {}
 
         if len(model_name) != 1:
-            raise ValidationError('Records must be of the same model')
+            raise ValidationError(_('Records must be of the same model'))
 
         model = model_name.pop()
         ids = self.mapped('res_id')
@@ -342,7 +342,7 @@ class DataMergeRecord(models.Model):
                             else:
                                 _logger.warning('Query %s failed', query)
                         except psycopg2.Error:
-                            raise ValidationError('Query Failed.')
+                            raise ValidationError(_('Query Failed.'))
 
         self._merge_additional_models(destination, source_ids)
         fields_to_recompute = [f.name for f in destination._fields.values() if f.compute and f.store]
@@ -400,7 +400,7 @@ class DataMergeRecord(models.Model):
                     else:
                         _logger.warning('Query %s failed', query)
                 except psycopg2.Error:
-                    raise ValidationError('Query Failed.')
+                    raise ValidationError(_('Query Failed.'))
 
     #############
     ### Override
@@ -414,7 +414,7 @@ class DataMergeRecord(models.Model):
             record = self.env[group.res_model_name].browse(vals['res_id'])
 
             if not record.exists():
-                raise ValidationError('The referenced record does not exist')
+                raise ValidationError(_('The referenced record does not exist'))
         return super().create(vals_list)
 
 

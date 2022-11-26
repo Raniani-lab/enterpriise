@@ -101,7 +101,7 @@ class SendCloud:
         res = self._send_request('parcels', 'post', data, params={'errors': 'verbose-carrier'})
         res_parcels = res.get('parcels')
         if not res_parcels:
-            raise UserError('Something went wrong, parcel not returned from Sendcloud')
+            raise UserError(_('Something went wrong, parcel not returned from Sendcloud'))
         return res_parcels
 
     def track_shipment(self, parcel_id):

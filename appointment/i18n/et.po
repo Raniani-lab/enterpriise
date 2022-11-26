@@ -16,6 +16,8 @@
 # Martin Trigaux, 2022
 # Algo Kärp <algokarp@gmail.com>, 2022
 # Triine Aavik <triine@avalah.ee>, 2022
+# Patrick-Jordan Kiudorv, 2022
+# Jana Jaakson, 2022
 # 
 msgid ""
 msgstr ""
@@ -23,7 +25,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Triine Aavik <triine@avalah.ee>, 2022\n"
+"Last-Translator: Jana Jaakson, 2022\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -45,13 +47,13 @@ msgstr "# Kohtumised"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__appointment_count_report
 msgid "# Appointments in the last 30 days"
-msgstr ""
+msgstr "# Viimase 30 päeva kohtumised"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__suggested_staff_user_count
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__staff_user_count
 msgid "# Staff Users"
-msgstr ""
+msgstr "# Personali Kasutajad"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_calendar
@@ -78,7 +80,7 @@ msgstr "(ajavöönd:"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "+3212345678"
-msgstr ""
+msgstr "+3212345678"
 
 #. module: appointment
 #: code:addons/appointment/controllers/calendar.py:0
@@ -354,6 +356,7 @@ msgstr "<strong>Teie kohtumine on edukalt broneeritud!</strong>"
 msgid ""
 "A list of slots information is needed to create a custom appointment type"
 msgstr ""
+"Vahemike informatsiooni list on vajalik, et luua kohandatud kohtumise tüüp"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_calendar_event__access_token
@@ -374,22 +377,22 @@ msgstr "Tegev"
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Add a function here..."
-msgstr ""
+msgstr "Lisa funktsioon siin..."
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
 msgid "Add an intro message here..."
-msgstr ""
+msgstr "Lisa sissejuhatuse kiri..."
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Add to Google Agenda"
-msgstr ""
+msgstr "Lisa Google Agenda'sse"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Add to iCal/Outlook"
-msgstr ""
+msgstr "Lisa iCal/Outlook'i"
 
 #. module: appointment
 #: model:res.groups,name:appointment.group_appointment_manager
@@ -423,24 +426,25 @@ msgstr "Luba tühistamine"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__country_ids
 msgid "Allowed Countries"
-msgstr ""
+msgstr "Lubatud riigid"
 
 #. module: appointment
 #: model:ir.model.constraint,message:appointment.constraint_appointment_answer_input_value_check
 msgid "An answer input must either have a text value or a predefined answer."
 msgstr ""
+"Vastuse sisendil peab olema teksti väärtus või eeldefineeritud vastus."
 
 #. module: appointment
 #: code:addons/appointment/controllers/calendar_view.py:0
 #, python-format
 msgid "An appointment type is needed to get the link."
-msgstr ""
+msgstr "Kohtumise tüüp on vajalik, et saada link."
 
 #. module: appointment
 #: code:addons/appointment/models/appointment_slot.py:0
 #, python-format
 msgid "An unique type slot should have a start and end datetime"
-msgstr ""
+msgstr "Unikaalsel vahemiku tüübil peab olema alguse ning lõpu kuupäev/aeg"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer__name
@@ -455,12 +459,12 @@ msgstr "Vastus"
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_tree
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "Answer Breakdown"
-msgstr ""
+msgstr "Vastuse Jaotus"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_form
 msgid "Answer Input"
-msgstr ""
+msgstr "Vastuse Sisend"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -473,12 +477,12 @@ msgstr "Vastused"
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__category__anytime
 #, python-format
 msgid "Any Time"
-msgstr ""
+msgstr "Iga Aeg"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_invite__staff_users_choice__all_assigned_users
 msgid "Any User"
-msgstr ""
+msgstr "Iga Kasutaja"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
@@ -490,19 +494,19 @@ msgstr "Kohtumine"
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_answer_input
 msgid "Appointment Answer Inputs"
-msgstr ""
+msgstr "Kohtumise Vastuse Sisend"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_calendar_event__appointment_answer_input_ids
 msgid "Appointment Answers"
-msgstr ""
+msgstr "Kohtumise vastused"
 
 #. module: appointment
 #: model:mail.message.subtype,description:appointment.mt_calendar_event_booked
 #: model:mail.message.subtype,name:appointment.mt_appointment_type_booked
 #: model:mail.message.subtype,name:appointment.mt_calendar_event_booked
 msgid "Appointment Booked"
-msgstr ""
+msgstr "Kohtumine broneeritud"
 
 #. module: appointment
 #: model:mail.template,subject:appointment.appointment_booked_mail_template
@@ -514,7 +518,7 @@ msgstr ""
 #: model:mail.message.subtype,name:appointment.mt_appointment_type_canceled
 #: model:mail.message.subtype,name:appointment.mt_calendar_event_canceled
 msgid "Appointment Canceled"
-msgstr ""
+msgstr "Kohtumine tühistatud"
 
 #. module: appointment
 #: model:mail.template,subject:appointment.appointment_canceled_mail_template
@@ -524,64 +528,64 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__appointment_duration_formatted
 msgid "Appointment Duration Formatted "
-msgstr ""
+msgstr "Kohtumise kestus vormindatud"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__appointment_duration_formatted
 msgid "Appointment Duration formatted in words"
-msgstr ""
+msgstr "Kohtumise kestus vormindatud sõnades"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_calendar_event__appointment_invite_id
 msgid "Appointment Invitation"
-msgstr ""
+msgstr "Kohtumise kutse"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_search
 msgid "Appointment Invitation Links"
-msgstr ""
+msgstr "Kohtumise kutse lingid"
 
 #. module: appointment
 #: model:ir.actions.act_window,name:appointment.appointment_type_action_custom_and_anytime
 #: model:ir.ui.menu,name:appointment.menu_appointment_type_custom_and_anytime
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_tree_invitation
 msgid "Appointment Invitations"
-msgstr ""
+msgstr "Kohtumise kutsed"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_invite
 msgid "Appointment Invite"
-msgstr ""
+msgstr "Kohtumise kutse"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__meeting_ids
 msgid "Appointment Meetings"
-msgstr ""
+msgstr "Kohtumise koosolekud"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_appointments
 msgid "Appointment Name"
-msgstr ""
+msgstr "Kohtumise nimi"
 
 #. module: appointment
 #: model:onboarding.onboarding,name:appointment.appointment_onboarding_panel
 msgid "Appointment Onboarding"
-msgstr ""
+msgstr "Kohtumise liitumisprotsess"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_answer
 msgid "Appointment Question Answers"
-msgstr ""
+msgstr "Kohtumise küsimuste vastused"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_question
 msgid "Appointment Questions"
-msgstr ""
+msgstr "Kohtumise küsimused"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__name
 msgid "Appointment Title"
-msgstr ""
+msgstr "Kohtumise pealkiri"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_type
@@ -600,7 +604,7 @@ msgstr "Kohtumise tüüp"
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__appointment_type_ids
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_search
 msgid "Appointment Types"
-msgstr ""
+msgstr "Kohtumise tüübid"
 
 #. module: appointment
 #: code:addons/appointment/models/calendar_event.py:0
@@ -611,12 +615,12 @@ msgstr ""
 #. module: appointment
 #: model:mail.template,name:appointment.appointment_booked_mail_template
 msgid "Appointment: Appointment Booked"
-msgstr ""
+msgstr "Kohtumine: Kohtumine broneeritud"
 
 #. module: appointment
 #: model:mail.template,name:appointment.appointment_canceled_mail_template
 msgid "Appointment: Appointment Canceled"
-msgstr ""
+msgstr "Kohtumine: Kohtumine tühistatud"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -631,7 +635,7 @@ msgstr "Kohtumised"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_appointments
 msgid "Appointments by"
-msgstr ""
+msgstr "Kohtumised"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -642,7 +646,7 @@ msgstr "Arhiveeritud"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__staff_users_choice
 msgid "Assign to"
-msgstr ""
+msgstr "Kellele määratud"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__assign_method
@@ -685,17 +689,17 @@ msgstr "Saadaval vastused"
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__base_book_url
 #: model:ir.model.fields,field_description:appointment.field_appointment_onboarding_link__base_book_url
 msgid "Base Link URL"
-msgstr ""
+msgstr "Baaslink URL"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__calendar_event_ids
 msgid "Booked Appointments"
-msgstr ""
+msgstr "Broneeritud kohtumised"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_partner_ids
 msgid "CC to"
-msgstr ""
+msgstr "CC"
 
 #. module: appointment
 #: model:ir.ui.menu,name:appointment.calendar_appointment_type_menu_action
@@ -727,7 +731,7 @@ msgstr "Tühistage enne (tundi)"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Cancel/Reschedule"
-msgstr ""
+msgstr "Tühista/planeeri uuesti"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__category
@@ -749,7 +753,7 @@ msgstr "Kliendi poolt valitud"
 #: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Click in your calendar to pick meeting time proposals."
-msgstr ""
+msgstr "Kliki oma kalendris, et valida kohtumise aja ettepanekuid."
 
 #. module: appointment
 #: model:onboarding.onboarding.step,button_text:appointment.appointment_onboarding_create_appointment_type_step
@@ -760,7 +764,7 @@ msgstr "Seadista"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "Confirm Appointment"
-msgstr ""
+msgstr "Kinnita kohtumine"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_confirmation
@@ -781,12 +785,12 @@ msgstr "Ühenda"
 #: code:addons/appointment/models/onboarding_onboarding_step.py:0
 #, python-format
 msgid "Connect your Calendar"
-msgstr ""
+msgstr "Ühenda oma Kalender"
 
 #. module: appointment
 #: model:onboarding.onboarding.step,title:appointment.appointment_onboarding_configure_calendar_provider_step
 msgid "Connect your calendar"
-msgstr ""
+msgstr "Ühenda oma kalender"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_res_partner
@@ -800,6 +804,8 @@ msgid ""
 "canceled,                                                  regardless of "
 "whether they attend or not"
 msgstr ""
+"Kontaktid, keda peab teavitama kui uus kohtumine on broneeritud või "
+"tühistatud olenemata sellest, kas osalevad või mitte"
 
 #. module: appointment
 #. openerp-web
@@ -812,13 +818,13 @@ msgstr "Kopeeritud !"
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_onboarding_link_view_form
 msgid "Copy Link &amp; Close"
-msgstr ""
+msgstr "Kopeeri link &amp; Sulge"
 
 #. module: appointment
 #: code:addons/appointment/models/onboarding_onboarding_step.py:0
 #, python-format
 msgid "Create your first Appointment"
-msgstr ""
+msgstr "Loo esimene kohtumine"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer__create_uid
@@ -888,12 +894,12 @@ msgstr ""
 #. module: appointment
 #: model:appointment.type,name:appointment.appointment_type_2
 msgid "Dental Care"
-msgstr ""
+msgstr "Hambaravi"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Details:"
-msgstr ""
+msgstr "Detailid:"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_slot__allday
@@ -901,6 +907,8 @@ msgid ""
 "Determine if the slot englobe the whole day, mainly used for unique slot "
 "type"
 msgstr ""
+"Määra kindlaks, kas vahemik ümbritseb kogu päeva, peamiselt kasutatakse "
+"unikaalse vahemiku tüübi korral"
 
 #. module: appointment
 #. openerp-web
@@ -946,12 +954,12 @@ msgstr "E-post: %s"
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_slot__end_datetime
 msgid "End datetime for unique slot type management"
-msgstr ""
+msgstr "Lõpu kuupäev/aeg unikaalse vahemiku tüübi haldamiseks"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__end_hour
 msgid "Ending Hour"
-msgstr ""
+msgstr "Lõputund"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_calendar_alarm
@@ -966,12 +974,12 @@ msgstr "Iga"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "Extra Message on Confirmation"
-msgstr ""
+msgstr "Lisasõnum kinnitusel"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_confirmation
 msgid "Extra information provided once the appointment is booked."
-msgstr ""
+msgstr "Lisainformatsioon, mis lisandub kui kohtumine on broneeritud."
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_follower_ids
@@ -1000,14 +1008,14 @@ msgstr ""
 #: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Get Share Link"
-msgstr ""
+msgstr "Link jagamiseks"
 
 #. module: appointment
 #: code:addons/appointment/models/onboarding_onboarding_step.py:0
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_onboarding_link_view_form
 #, python-format
 msgid "Get Your Link"
-msgstr ""
+msgstr "Hangi link"
 
 #. module: appointment
 #: model_terms:appointment.type,message_intro:appointment.appointment_type_1
@@ -1021,7 +1029,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_onboarding_link
 msgid "Get a link to an appointment type during the onboarding"
-msgstr ""
+msgstr "Hangi link kohtumise tüübi jaoks liitumisprotsessi ajal"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_invite__suggested_staff_user_ids
@@ -1029,16 +1037,18 @@ msgid ""
 "Get the users linked to the appointment type selected to apply a domain on "
 "the users that can be selected"
 msgstr ""
+"Hangi kasutajad, kes on seotud valitud kohtumise tüübiga, et määrata domeen "
+"kasutajale, keda saab valida"
 
 #. module: appointment
 #: model:onboarding.onboarding.step,title:appointment.appointment_onboarding_preview_invite_step
 msgid "Get your link"
-msgstr ""
+msgstr "Hangi link"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Google Agenda"
-msgstr ""
+msgstr "Google Agenda"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_search
@@ -1049,17 +1059,19 @@ msgstr "Grupeeri"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "On sõnum"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "How to Join:"
-msgstr ""
+msgstr "Kuidas liituda:"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__assign_method
 msgid "How users will be assigned to meetings customers book on your website."
 msgstr ""
+"Kuidas on kasutajad määratud kohtumistele, mis on klientide poolt veebilehel"
+" broneeritud."
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer__id
@@ -1089,18 +1101,20 @@ msgid ""
 "If empty, all users are considered to be available.\n"
 "If set, only the selected users will be taken into account for this slot."
 msgstr ""
+"Kui tühi, on kõik kasutajad on kättesaadavad.\n"
+"Kui määratud, võetakse arvesse ainult valitud kasutajad sellele vahemikule."
 
 #. module: appointment
 #. openerp-web
 #: code:addons/appointment/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Insert Appointment Link"
-msgstr ""
+msgstr "Lisa kohtumise link"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form_insert_link
 msgid "Insert link"
-msgstr ""
+msgstr "Lisa link"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_intro
@@ -1112,7 +1126,7 @@ msgstr "Tutvustav sõnum"
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__appointment_invite_ids
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_tree
 msgid "Invitation Links"
-msgstr ""
+msgstr "Kutse lingid"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_is_follower
@@ -1130,21 +1144,23 @@ msgid ""
 "It's too late to cancel online, please contact the attendees another way if "
 "you really can't make it."
 msgstr ""
+"Kahjuks on liiga hilja tühistada veebilehe vahendusel, palun võtke "
+"osalejatega ühendust teisel moel kui te ei jõua õigeks ajaks."
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 msgid "John Smith"
-msgstr ""
+msgstr "John Smith"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Join at"
-msgstr ""
+msgstr "Liituge"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Join with Odoo Discuss"
-msgstr ""
+msgstr "Liituge Odoo Sõnumid vahendusel"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__country_ids
@@ -1158,7 +1174,7 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "Keep it empty if the meeting takes place online"
-msgstr ""
+msgstr "Jäta tühjaks kui kohtumine toimub veebi vahendusel"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer____last_update
@@ -1198,32 +1214,32 @@ msgstr "Viimati uuendatud"
 #: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Link Copied in your clipboard !"
-msgstr ""
+msgstr "Link kopeeritud lõikelauale !"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form
 msgid "Link Generator"
-msgstr ""
+msgstr "Lingi generaator"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__book_url
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form
 msgid "Link URL"
-msgstr ""
+msgstr "Lingi URL"
 
 #. module: appointment
 #. openerp-web
 #: code:addons/appointment/static/src/js/appointment_invite_form_renderer.js:0
 #, python-format
 msgid "Link copied to clipboard!"
-msgstr ""
+msgstr "Link kopeeritud lõikelauale!"
 
 #. module: appointment
 #. openerp-web
 #: code:addons/appointment/static/src/views/appointment_onboarding_link_form_renderer.js:0
 #, python-format
 msgid "Link copied to clipboard."
-msgstr ""
+msgstr "Link kopeeritud lõikelauale."
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__location_id
@@ -1233,12 +1249,12 @@ msgstr "Asukoht"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__location
 msgid "Location formatted"
-msgstr ""
+msgstr "Asukoht vormindatud"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__location
 msgid "Location formatted for one line uses"
-msgstr ""
+msgstr "Asukoht vormindatud ühe rea kasutamiseks"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
@@ -1248,7 +1264,7 @@ msgstr "Asukoht:"
 #. module: appointment
 #: model:onboarding.onboarding.step,done_text:appointment.appointment_onboarding_create_appointment_type_step
 msgid "Looks great! - Click to review"
-msgstr ""
+msgstr "Suurepärane! - Kliki, et üle vaadata"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_main_attachment_id
@@ -1302,12 +1318,12 @@ msgstr "MItmerealine tekst"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_search
 msgid "My Appointments"
-msgstr ""
+msgstr "Minu Kohtumised"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_search
 msgid "My Links"
-msgstr ""
+msgstr "Minu Lingid"
 
 #. module: appointment
 #: code:addons/appointment/controllers/portal.py:0
@@ -1318,37 +1334,37 @@ msgstr "Nimi"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_calendar_alarm__default_for_new_appointment_type
 msgid "New Appointments Default"
-msgstr ""
+msgstr "Uued Kohtumised Vaikimisi"
 
 #. module: appointment
 #: model_terms:ir.actions.act_window,help:appointment.appointment_type_action
 msgid "No Appointment Configured"
-msgstr ""
+msgstr "Pole Kohtumist Seadistatud"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__avatars_display__hide
 msgid "No Picture"
-msgstr ""
+msgstr "Pilt Puudub"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__appointment_type_info_msg
 msgid "No User Assigned Message"
-msgstr ""
+msgstr "Pole Kasutajale Määratud Sõnumid"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
 msgid "No appointment found."
-msgstr ""
+msgstr "Kohtumist ei leitud."
 
 #. module: appointment
 #: model_terms:ir.actions.act_window,help:appointment.appointment_invite_action
 msgid "No appointment invitation link has been created !"
-msgstr ""
+msgstr "Kohtumise kutse link pole loodud !"
 
 #. module: appointment
 #: model_terms:ir.actions.act_window,help:appointment.appointment_type_action_custom_and_anytime
 msgid "No custom appointment type has been created !"
-msgstr ""
+msgstr "Kohandatud kutsumise tüüp pole loodud !"
 
 #. module: appointment
 #: model_terms:ir.actions.act_window,help:appointment.calendar_event_action_report
@@ -1365,7 +1381,7 @@ msgstr "Pole"
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_calendar_event__alarm_ids
 msgid "Notifications sent to all attendees to remind of the meeting."
-msgstr ""
+msgstr "Kõikidele osalejatele saadetud teavitused kohtumise meeldetuletuseks."
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_needaction_counter
@@ -1390,12 +1406,12 @@ msgstr "Kohaletoimetamise veateatega sõnumite arv"
 #. module: appointment
 #: model:ir.model,name:appointment.model_onboarding_onboarding
 msgid "Onboarding"
-msgstr ""
+msgstr "Onboarding"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_onboarding_onboarding_step
 msgid "Onboarding Step"
-msgstr ""
+msgstr "Onboarding Samm"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__slot_type__unique
@@ -1433,6 +1449,7 @@ msgstr "Online kohtumised"
 msgid ""
 "Only letters, numbers, underscores and dashes are allowed in your links."
 msgstr ""
+"Ainult tähemärgid, numbrid, alakriipsud ning kaldkriipsud lubatud linkides."
 
 #. module: appointment
 #: code:addons/appointment/models/appointment_invite.py:0
@@ -1447,6 +1464,7 @@ msgstr ""
 #, python-format
 msgid "Only one anytime appointment type is allowed for a specific user."
 msgstr ""
+"Ainult üks igalajal kohtumise tüüp on lubatud konkreetsele kasutajale."
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -1458,12 +1476,12 @@ msgstr "Seaded"
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Our first availability is"
-msgstr ""
+msgstr "Esimene saadavus on"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Outlook"
-msgstr ""
+msgstr "Outlook"
 
 #. module: appointment
 #: code:addons/appointment/controllers/portal.py:0
@@ -1484,7 +1502,7 @@ msgstr "Palun valige teine kuupäev."
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__suggested_staff_user_ids
 msgid "Possible users"
-msgstr ""
+msgstr "Võimalikud kasutajad"
 
 #. module: appointment
 #: model:onboarding.onboarding.step,button_text:appointment.appointment_onboarding_preview_invite_step
@@ -1532,12 +1550,12 @@ msgstr "Juhuvalik"
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__slot_type__recurring
 msgid "Recurring"
-msgstr ""
+msgstr "Korduv"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__redirect_url
 msgid "Redirect URL"
-msgstr ""
+msgstr "Ümber suunatud URL"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__reminder_ids
@@ -1564,7 +1582,7 @@ msgstr "Vastutaja"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__restrict_to_user_ids
 msgid "Restrict to Users"
-msgstr ""
+msgstr "Piira kasutajatele"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
@@ -1611,7 +1629,7 @@ msgstr "Ärge planeerige peale (päeva)"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "Scheduling"
-msgstr ""
+msgstr "Planeerimine"
 
 #. module: appointment
 #: code:addons/appointment/controllers/portal.py:0
@@ -1629,45 +1647,45 @@ msgstr "Otsi kirjeldusest"
 #: code:addons/appointment/controllers/portal.py:0
 #, python-format
 msgid "Search in Name"
-msgstr ""
+msgstr "Otsi Nimi"
 
 #. module: appointment
 #: code:addons/appointment/controllers/portal.py:0
 #, python-format
 msgid "Search in Responsible"
-msgstr ""
+msgstr "Otsi Vastutav"
 
 #. module: appointment
 #. openerp-web
 #: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Select Dates"
-msgstr ""
+msgstr "Vali Kuupäevad"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer_input__value_answer_id
 msgid "Selected Answer"
-msgstr ""
+msgstr "Valitud Vastus"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__appointment_type_count
 msgid "Selected Appointments Count"
-msgstr ""
+msgstr "Valitud Kohtumiste Loendus"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_search
 msgid "Selection Questions"
-msgstr ""
+msgstr "Valiku Küsimused"
 
 #. module: appointment
 #: model:mail.template,description:appointment.appointment_canceled_mail_template
 msgid "Sent to all attendees when an appointment is cancelled"
-msgstr ""
+msgstr "Saadetud kõikidele osalejatele kui kohtumine on tühistatud"
 
 #. module: appointment
 #: model:mail.template,description:appointment.appointment_booked_mail_template
 msgid "Sent to people who book an appointment online"
-msgstr ""
+msgstr "Saadetud inimestele, kes broneerivad kohtumise veebi vahendusel"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer__sequence
@@ -1679,7 +1697,7 @@ msgstr "Järjestus"
 #. module: appointment
 #: model:onboarding.onboarding.step,title:appointment.appointment_onboarding_create_appointment_type_step
 msgid "Set your availabilities"
-msgstr ""
+msgstr "Määra saadavused"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -1695,7 +1713,7 @@ msgstr "Jaga"
 #: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Share Availabilities"
-msgstr ""
+msgstr "Jaga saadavusi"
 
 #. module: appointment
 #: code:addons/appointment/models/appointment_type.py:0
@@ -1714,11 +1732,15 @@ msgstr "Jaga linke"
 msgid ""
 "Share calendar link allowing people to book meetings with you or a team."
 msgstr ""
+"Jaga kalendri linki, mis lubab inimestel sinu või sinu tiimiga broneerida "
+"kohtumisi."
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_onboarding_link_view_form
 msgid "Share this link to let people book meetings with you or your team."
 msgstr ""
+"Jaga seda linki, mis lubab inimstel sinu või sinu tiimiga broneerida "
+"kohtumisi."
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__short_code
@@ -1754,7 +1776,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__message_intro
 msgid "Small description of the appointment type."
-msgstr ""
+msgstr "Lühike kirjeldus kohtumise tüübi kohta."
 
 #. module: appointment
 #. openerp-web
@@ -1762,14 +1784,14 @@ msgstr ""
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Sorry,"
-msgstr ""
+msgstr "Vabandame,"
 
 #. module: appointment
 #. openerp-web
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Sorry, we have no availability for an appointment."
-msgstr ""
+msgstr "Vabandame, kuid kohtumise määramine pole saadaval."
 
 #. module: appointment
 #. openerp-web
@@ -1777,16 +1799,17 @@ msgstr ""
 #, python-format
 msgid "Sorry, we have no more slots available for this month."
 msgstr ""
+"Vabandame, kuid meil pole rohkem saadaval olevaid vahemike selleks kuuks."
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_invite__staff_users_choice__specific_users
 msgid "Specific Users"
-msgstr ""
+msgstr "Konkreetsed Kasutajad"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_slot__start_datetime
 msgid "Start datetime for unique slot type management"
-msgstr ""
+msgstr "Algus kuupäev/aeg unikaalse vahemiku tüübi haldamiseks"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__start_hour
@@ -1797,12 +1820,12 @@ msgstr "Alguskellaaeg"
 #: model:onboarding.onboarding.step,done_text:appointment.appointment_onboarding_configure_calendar_provider_step
 #: model:onboarding.onboarding.step,done_text:appointment.appointment_onboarding_preview_invite_step
 msgid "Step Completed! - Click to review"
-msgstr ""
+msgstr "Samm lõpetatud! - Kliki, et üle vaadata"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_question__answer_input_ids
 msgid "Submitted Answers"
-msgstr ""
+msgstr "Esitatud Vastused"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__7
@@ -1812,33 +1835,33 @@ msgstr "Pühapäev"
 #. module: appointment
 #: model:appointment.question,name:appointment.appointment_type_2_question_1
 msgid "Symptoms"
-msgstr ""
+msgstr "Sümptomid"
 
 #. module: appointment
 #: model:appointment.type,name:appointment.appointment_type_1
 msgid "Technical Demo"
-msgstr ""
+msgstr "Tehniline Demo"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer_input__value_text_box
 msgid "Text Answer"
-msgstr ""
+msgstr "Teksti vastus"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_search
 msgid "Text Questions"
-msgstr ""
+msgstr "Teksti Küsimused"
 
 #. module: appointment
 #: model:ir.model.constraint,message:appointment.constraint_appointment_invite_short_code_uniq
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form
 msgid "The URL is already taken, please pick another code."
-msgstr ""
+msgstr "See URL on juba kasutusel, palun valige teine kood."
 
 #. module: appointment
 #: model:ir.model.constraint,message:appointment.constraint_appointment_slot_check_start_and_end_hour
 msgid "The end time must be later than the start time."
-msgstr ""
+msgstr "Lõppaeg peab olema hilisem kui algusaeg."
 
 #. module: appointment
 #: code:addons/appointment/controllers/portal.py:0
@@ -1871,12 +1894,12 @@ msgstr ""
 #: code:addons/appointment/static/src/xml/appointment_no_slot.xml:0
 #, python-format
 msgid "Their first availability is"
-msgstr ""
+msgstr "Nende esimene saadavus on"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_appointments
 msgid "There is no appointment linked to your account."
-msgstr ""
+msgstr "Sinu kontoga pole lingitud ühtegi kohtumist."
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
@@ -1884,12 +1907,15 @@ msgid ""
 "This appointment type has no availabilities because it does not have any "
 "opening hours configured"
 msgstr ""
+"Sellel kohtumise tüübil puuduvad saadavused, sest lahtiolekuajad pole "
+"seadistatud"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
 msgid ""
 "This appointment type has no availabilities because it has no staff assigned"
 msgstr ""
+"Sellel kohtumise tüübil puuduvad saadavused, sest personal pole määratud"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
@@ -1897,6 +1923,8 @@ msgid ""
 "This appointment type has no availabilities because it has no staff assigned"
 " and does not have any opening hours configured"
 msgstr ""
+"Sellel kohtumise tüübil puuduvad saadavused, sest personal pole määratud "
+"ning lahtiolekuajad on seadistamata"
 
 #. module: appointment
 #: code:addons/appointment/models/appointment_type.py:0
@@ -1908,7 +1936,7 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_edit_in_backend
 msgid "This is a preview of the customer appointment form."
-msgstr ""
+msgstr "See on kliendi kohtumise vormi eelvaade."
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__avatars_display
@@ -1937,7 +1965,7 @@ msgstr "Kohtumise ajavöönd"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
 msgid "Timezone:"
-msgstr ""
+msgstr "Ajavöönd:"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__end_datetime
@@ -1948,7 +1976,7 @@ msgstr "Kuhu"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__access_token
 msgid "Token"
-msgstr ""
+msgstr "Token"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_kanban
@@ -1968,18 +1996,18 @@ msgstr "Teisipäev"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "Until (max)"
-msgstr ""
+msgstr "Kuni (max)"
 
 #. module: appointment
 #: code:addons/appointment/controllers/portal.py:0
 #, python-format
 msgid "Upcoming"
-msgstr ""
+msgstr "Tulemas"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_calendar_alarm__default_for_new_appointment_type
 msgid "Use as default for new Appointment Types"
-msgstr ""
+msgstr "Kasuta vaikimisi uue Kohtumise Tüüp loomisel"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_type__category
@@ -2103,7 +2131,7 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "e.g. \"Technical Demo\""
-msgstr ""
+msgstr "nt. \"Tehniline Demo\""
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form

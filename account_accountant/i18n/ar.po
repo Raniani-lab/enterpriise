@@ -340,7 +340,7 @@ msgstr "بند كشف الحساب البنكي"
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
+msgstr "أداة التسوية البنكية لبند كشف حساب واحد "
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
@@ -545,7 +545,7 @@ msgstr "التاريخ"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__debit
 #, python-format
 msgid "Debit"
-msgstr "المدين"
+msgstr "الخصم "
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form

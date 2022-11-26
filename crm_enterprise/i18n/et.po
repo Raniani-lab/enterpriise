@@ -6,11 +6,11 @@
 # Helen Sulaoja <helen@avalah.ee>, 2022
 # Rivo Zängov <eraser@eraser.ee>, 2022
 # Martin Trigaux, 2022
+# Algo Kärp <algokarp@gmail.com>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Oliver Ernest, 2022
 # Triine Aavik <triine@avalah.ee>, 2022
 # Piia Paurson <piia@avalah.ee>, 2022
-# Algo Kärp <algokarp@gmail.com>, 2022
 # Leaanika Randmets, 2022
 # 
 msgid ""
@@ -30,12 +30,12 @@ msgstr ""
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 msgid "# Days To Convert"
-msgstr ""
+msgstr "# Päevad teisendamiseks"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 msgid "#Days to Assign"
-msgstr ""
+msgstr "Müügivihjest müügivõimaluseni"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
@@ -138,7 +138,7 @@ msgstr "Levitamise vahend"
 #: model_terms:ir.actions.act_window,help:crm_enterprise.crm_lead_action_dashboard
 #: model_terms:ir.actions.act_window,help:crm_enterprise.crm_opportunity_action_dashboard
 msgid "No data found!"
-msgstr ""
+msgstr "Andmeid ei leitud!"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
@@ -162,7 +162,7 @@ msgstr "Müügitoru analüüs"
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 msgid "Prorated MRR"
-msgstr "Prognoositav igakuine tulu."
+msgstr "Prognoositav igakuine tulu"
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
@@ -178,12 +178,12 @@ msgstr "Müügimeeskonnad"
 #. module: crm_enterprise
 #: model_terms:ir.actions.act_window,help:crm_enterprise.crm_lead_action_dashboard
 msgid "This Dashboard allows you to see at a glance how well you are doing."
-msgstr ""
+msgstr "See töölaud võimaldab lihtsasti näha, kui hästi läheb."
 
 #. module: crm_enterprise
 #: model_terms:ir.actions.act_window,help:crm_enterprise.crm_opportunity_action_dashboard
 msgid "Use this menu to have an overview of your Pipeline."
-msgstr ""
+msgstr "Kasuta seda menüüd, et näha oma müügitoru ülevaadet."
 
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
@@ -205,4 +205,4 @@ msgstr "päev(a)"
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_graph
 msgid "leads"
-msgstr "Müügivihjed"
+msgstr "müügivihjed"

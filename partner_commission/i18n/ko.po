@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Linkup <link-up@naver.com>, 2022
 # JH CHOI <hwangtog@gmail.com>, 2022
+# Sarah Park, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:24+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: JH CHOI <hwangtog@gmail.com>, 2022\n"
+"Last-Translator: Sarah Park, 2022\n"
 "Language-Team: Korean (https://www.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -143,7 +143,7 @@ msgstr "작성일자"
 #. module: partner_commission
 #: model:ir.actions.act_window,name:partner_commission.action_view_customer_invoices
 msgid "Customer Invoices"
-msgstr "고객 청구서"
+msgstr "고객 인보이스"
 
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_res_partner_grade__default_commission_plan_id
@@ -186,7 +186,7 @@ msgstr ""
 #. module: partner_commission
 #: model:ir.model.fields,help:partner_commission.field_purchase_order__invoice_commission_count
 msgid "Invoices that have generated commissions included in this order"
-msgstr "이 주문에 수수료를 생성한 청구서"
+msgstr "본 주문 항목을 포함한 수수료 내역 인보이스"
 
 #. module: partner_commission
 #: model:ir.model,name:partner_commission.model_account_move
@@ -379,7 +379,7 @@ msgstr "순서"
 #: model:ir.model.fields,field_description:partner_commission.field_purchase_order__invoice_commission_count
 #: model_terms:ir.ui.view,arch_db:partner_commission.purchase_order_form_inherit_partner_commission
 msgid "Source Invoices"
-msgstr "원본 청구서"
+msgstr "원본 인보이스"
 
 #. module: partner_commission
 #: model:ir.model,name:partner_commission.model_sale_subscription_report

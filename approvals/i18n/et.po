@@ -9,10 +9,11 @@
 # Algo Kärp <algokarp@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
+# Triine Aavik <triine@avalah.ee>, 2022
 # Rivo Zängov <eraser@eraser.ee>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Piia Paurson <piia@avalah.ee>, 2022
-# Triine Aavik <triine@avalah.ee>, 2022
+# Jana Jaakson, 2022
 # Leaanika Randmets, 2022
 # 
 msgid ""
@@ -32,7 +33,7 @@ msgstr ""
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "<span class=\"fa fa-warning\" title=\"Invalid minimum approvals\"/>"
-msgstr ""
+msgstr "<span class=\"fa fa-warning\" title=\"Invalid minimum approvals\"/>"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
@@ -83,7 +84,7 @@ msgstr "Tegevustüübi ikoon"
 #: model:ir.model.fields,help:approvals.field_approval_category__has_product
 #: model:ir.model.fields,help:approvals.field_approval_request__has_product
 msgid "Additional products that should be specified on the request."
-msgstr ""
+msgstr "Täiendavad tooted, mis tuleks soovi korral täpsustada."
 
 #. module: approvals
 #: model:res.groups,name:approvals.group_approval_manager
@@ -122,7 +123,7 @@ msgstr "Täiendav viide, mis peaks taotlusel täpsustatud olema."
 #: code:addons/approvals/models/approval_category.py:0
 #, python-format
 msgid "An user may not be in the approver list multiple times."
-msgstr ""
+msgstr "Kasutaja ei pruugi mitu korda kinnitajate loendis olla."
 
 #. module: approvals
 #: model:mail.activity.type,name:approvals.mail_activity_data_approval
@@ -143,7 +144,7 @@ msgstr "Kinnitamise taotlus"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__name
 msgid "Approval Subject"
-msgstr ""
+msgstr "Kinnitamise teema"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__approval_type
@@ -156,7 +157,7 @@ msgstr "Kinnitamise tüüp"
 #. module: approvals
 #: model:ir.model,name:approvals.model_approval_category_approver
 msgid "Approval Type Approver"
-msgstr ""
+msgstr "Kinnitamise tüübi kinnitaja"
 
 #. module: approvals
 #: model:ir.ui.menu,name:approvals.approvals_menu_root
@@ -172,7 +173,7 @@ msgstr "Kinnitamise tüübid"
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_kanban
 msgid "Approvals Types Image"
-msgstr ""
+msgstr "Kinnitamise tüüpide pilt"
 
 #. module: approvals
 #: model:ir.actions.act_window,name:approvals.approval_request_action_to_review
@@ -215,11 +216,13 @@ msgstr "Kinnitaja"
 msgid ""
 "Approver Sequence can only be activated with at least 1 minimum approver."
 msgstr ""
+"Kinnitajajärjestuse saab aktiveerida ainult vähemalt ühe minimaalse "
+"kinnitaja olemasolul."
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__user_ids
 msgid "Approver Users"
-msgstr ""
+msgstr "Kinnitaja kasutajad"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
@@ -237,7 +240,7 @@ msgstr "Kinnitajad"
 #: model:ir.model.fields,field_description:approvals.field_approval_category__approver_sequence
 #: model:ir.model.fields,field_description:approvals.field_approval_request__approver_sequence
 msgid "Approvers Sequence?"
-msgstr ""
+msgstr "Kinnitajate järjekord?"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
@@ -259,7 +262,7 @@ msgstr "Manuste arv"
 #: model:ir.model.fields,field_description:approvals.field_approval_category__automated_sequence
 #: model:ir.model.fields,field_description:approvals.field_approval_request__automated_sequence
 msgid "Automated Sequence?"
-msgstr ""
+msgstr "Automatiseeritud järjekord?"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
@@ -269,7 +272,7 @@ msgstr "Tagasi mustandisse"
 #. module: approvals
 #: model:approval.category,name:approvals.approval_category_data_borrow_items
 msgid "Borrow Items"
-msgstr ""
+msgstr "Laene esemeid"
 
 #. module: approvals
 #: model:approval.category,name:approvals.approval_category_data_business_trip
@@ -279,7 +282,7 @@ msgstr "Ärireis"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__change_request_owner
 msgid "Can Change Request Owner"
-msgstr ""
+msgstr "Saab muuta taotluse omanikku"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__can_edit
@@ -308,7 +311,7 @@ msgstr "Kategooria"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__category_approver
 msgid "Category Approver"
-msgstr ""
+msgstr "Kategooria kinnitaja"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__sequence_code
@@ -444,7 +447,7 @@ msgstr "Rippmenüü"
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "E.g: Expenses Paris business trip"
-msgstr ""
+msgstr "Nt: Kulud ärireisil"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
@@ -459,12 +462,12 @@ msgstr "Töötaja juhataja"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__existing_request_user_ids
 msgid "Existing Request User"
-msgstr ""
+msgstr "Olemasolev päringu kasutaja"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category_approver__existing_user_ids
 msgid "Existing User"
-msgstr ""
+msgstr "Olemasolev kasutaja"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
@@ -500,60 +503,60 @@ msgstr "On ligipääs taotluseks"
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_amount
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_amount
 msgid "Has Amount"
-msgstr ""
+msgstr "On kogus"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_partner
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_partner
 msgid "Has Contact"
-msgstr ""
+msgstr "On kontakt"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_date
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_date
 msgid "Has Date"
-msgstr ""
+msgstr "On kuupäev"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_location
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_location
 msgid "Has Location"
-msgstr ""
+msgstr "On asukoht"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "On sõnum"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_payment_method
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_payment_method
 msgid "Has Payment"
-msgstr ""
+msgstr "On makse"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_period
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_period
 msgid "Has Period"
-msgstr ""
+msgstr "On periood"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_product
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_product
 msgid "Has Product"
-msgstr ""
+msgstr "On toode"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_quantity
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_quantity
 msgid "Has Quantity"
-msgstr ""
+msgstr "On kogus"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_reference
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_reference
 msgid "Has Reference"
-msgstr ""
+msgstr "On viide"
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_category__manager_approval
@@ -583,7 +586,7 @@ msgstr "Ikoon"
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr "Ikoon, mis näitab erandi tegevust"
+msgstr "Ikoon, mis näitab erandi tegevust."
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_request__message_needaction
@@ -640,7 +643,7 @@ msgstr "Jälgija"
 #. module: approvals
 #: model:ir.model.fields.selection,name:approvals.selection__approval_category__manager_approval__required
 msgid "Is Required Approver"
-msgstr ""
+msgstr "On kohustuslik kinnitaja"
 
 #. module: approvals
 #: model:approval.category,name:approvals.approval_category_data_job_referral_award
@@ -678,7 +681,7 @@ msgstr "Viimati uuendatud"
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action_all
 msgid "Let's go to the"
-msgstr ""
+msgstr "Lähme"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__location
@@ -718,7 +721,7 @@ msgstr "Sõnumid"
 #: model:ir.model.fields,field_description:approvals.field_approval_category__approval_minimum
 #: model:ir.model.fields,field_description:approvals.field_approval_request__approval_minimum
 msgid "Minimum Approval"
-msgstr ""
+msgstr "Minimaalne kinnitamine"
 
 #. module: approvals
 #: code:addons/approvals/models/approval_category.py:0
@@ -775,7 +778,7 @@ msgstr "Uued taotlused"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr ""
+msgstr "Järgmise tegevuse kohtumine"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__activity_date_deadline
@@ -849,7 +852,7 @@ msgstr "Kohaletoimetamise veateatega sõnumite arv"
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__request_to_validate_count
 msgid "Number of requests to validate"
-msgstr "Kinnitamata taotluste arv: "
+msgstr "Kinnitamata taotluste arv"
 
 #. module: approvals
 #: model:res.groups,name:approvals.group_approval_user
@@ -1031,7 +1034,7 @@ msgstr ""
 "Tegevuspõhised staatused\n"
 "Üle aja: Tähtaeg on juba möödas\n"
 "Täna: Tegevuse tähtaeg on täna\n"
-"Planeeritud: Tulevased tegevused"
+"Planeeritud: Tulevased tegevused."
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
@@ -1171,21 +1174,21 @@ msgstr ""
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
 msgid "e.g. Brussels"
-msgstr ""
+msgstr "nt. Brüssel"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "e.g. Procurement"
-msgstr ""
+msgstr "nt. Hanked"
 
 #. module: approvals
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action_all
 msgid "menu"
-msgstr ""
+msgstr "menüü"
 
 #. module: approvals
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action_all
 msgid "new request"
-msgstr ""
+msgstr "uus taotlus"

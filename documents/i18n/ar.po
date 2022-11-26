@@ -692,7 +692,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "An error occured while uploading."
-msgstr ""
+msgstr "حدث خطأ ما أثناء الرفع. "
 
 #. module: documents
 #. openerp-web
@@ -1216,7 +1216,7 @@ msgstr "النطاق"
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 #, python-format
 msgid "Download"
-msgstr "تحميل"
+msgstr "تنزيل "
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
@@ -1748,12 +1748,12 @@ msgstr "متنوعة"
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__model_id
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Model"
-msgstr "الكائن"
+msgstr "النموذج "
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__accessible_model_ids
 msgid "Models"
-msgstr "كائنات"
+msgstr "النماذج "
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_request_wizard__activity_date_deadline_range_type__months

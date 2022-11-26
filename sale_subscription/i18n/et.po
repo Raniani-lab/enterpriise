@@ -18,6 +18,8 @@
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Triine Aavik <triine@avalah.ee>, 2022
+# Patrick-Jordan Kiudorv, 2022
+# Leaanika Randmets, 2022
 # 
 msgid ""
 msgstr ""
@@ -25,7 +27,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Triine Aavik <triine@avalah.ee>, 2022\n"
+"Last-Translator: Leaanika Randmets, 2022\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1586,7 +1588,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__invoice_mail_template_id
 msgid "Invoice Email Template"
-msgstr ""
+msgstr "Arve e-kirja näidis"
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.email_payment_success
@@ -2293,7 +2295,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_sales_order_filter_subscription
 msgid "Recurring"
-msgstr ""
+msgstr "Korduv"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_total
@@ -2655,7 +2657,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_user_ids
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__activity_user__users
 msgid "Specific Users"
-msgstr ""
+msgstr "Konkreetsed Kasutajad"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__stage_id

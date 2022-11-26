@@ -3,7 +3,6 @@
 # 	* sign
 # 
 # Translators:
-# Oliver Ernest, 2022
 # Ants Peetsalu <ants@avalah.ee>, 2022
 # Andre Roomet <andreroomet@gmail.com>, 2022
 # Algo Kärp <algokarp@gmail.com>, 2022
@@ -16,6 +15,7 @@
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Rivo Zängov <eraser@eraser.ee>, 2022
 # Martin Trigaux, 2022
+# Leaanika Randmets, 2022
 # Jana Jaakson, 2022
 # 
 msgid ""
@@ -547,7 +547,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Attach a file"
-msgstr "Manusta fail"
+msgstr "Lisa fail"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__attachment_id
@@ -1081,7 +1081,7 @@ msgstr "Dokumendid"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
 msgid "Download"
-msgstr "Laadige alla"
+msgstr "Laadi alla"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
@@ -1110,7 +1110,7 @@ msgstr "Laadi alla algne dokument"
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Drag & Drop a field in the PDF"
-msgstr ""
+msgstr "Lohista väli PDFile"
 
 #. module: sign
 #. openerp-web
@@ -1300,7 +1300,7 @@ msgstr "Faili nimi"
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Filled by"
-msgstr ""
+msgstr "Täidetud"
 
 #. module: sign
 #. openerp-web
@@ -1437,7 +1437,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "On sõnum"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__has_sign_requests
@@ -1643,7 +1643,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_template____last_update
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag____last_update
 msgid "Last Modified on"
-msgstr "Viimati muudetud (millal)"
+msgstr "Viimati muudetud"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_duplicate_template_pdf__write_uid
@@ -1660,7 +1660,7 @@ msgstr "Viimati muudetud (millal)"
 #: model:ir.model.fields,field_description:sign.field_sign_template__write_uid
 #: model:ir.model.fields,field_description:sign.field_sign_template_tag__write_uid
 msgid "Last Updated by"
-msgstr "Viimati uuendatud (kelle poolt)"
+msgstr "Viimati uuendatud"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_duplicate_template_pdf__write_date
@@ -1787,7 +1787,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Mandatory field"
-msgstr "Nõutud väli"
+msgstr "Kohustuslik väli"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__message
@@ -1797,7 +1797,7 @@ msgstr "Sõnum"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_has_error
 msgid "Message Delivery error"
-msgstr "Sõnumi edastamise veateade"
+msgstr "Sõnumi saatmise veateade"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_send_request__message_cc
@@ -1934,7 +1934,7 @@ msgstr "Uusim"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr ""
+msgstr "Järgmine tegevus kalendris"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_date_deadline
@@ -2332,14 +2332,14 @@ msgstr "Nõutud"
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
 #, python-format
 msgid "Resend"
-msgstr ""
+msgstr "Saada uuesti"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/backend/sign_request.js:0
 #, python-format
 msgid "Resend the invitation"
-msgstr ""
+msgstr "Saada kutse uuesti"
 
 #. module: sign
 #. openerp-web
@@ -2487,12 +2487,12 @@ msgstr "Vali vastutaja"
 #: model:sign.item.type,name:sign.sign_item_type_selection
 #: model:sign.item.type,placeholder:sign.sign_item_type_selection
 msgid "Selection"
-msgstr "Valik"
+msgstr "Valikud"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item__option_ids
 msgid "Selection options"
-msgstr ""
+msgstr "Valikuvariandid"
 
 #. module: sign
 #. openerp-web
@@ -2523,7 +2523,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/backend/sign_request.js:0
 #, python-format
 msgid "Send the invitation"
-msgstr ""
+msgstr "Saada kutse"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_request__state__sent
@@ -2554,13 +2554,13 @@ msgstr "Jaga"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_share_view_form
 msgid "Share & Close"
-msgstr ""
+msgstr "Jaga ja sulge"
 
 #. module: sign
 #: code:addons/sign/models/sign_template.py:0
 #, python-format
 msgid "Share Document by Link"
-msgstr ""
+msgstr "Jaga dokumendi linki"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__share_link
@@ -2642,7 +2642,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_tree
 #, python-format
 msgid "Sign Now"
-msgstr ""
+msgstr "Allkirjasta"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__mail_sent_order
@@ -2876,14 +2876,14 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Signature:"
-msgstr ""
+msgstr "Allkiri"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.portal_my_home_menu_sign
 #: model_terms:ir.ui.view,arch_db:sign.portal_my_home_sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
 msgid "Signatures"
-msgstr ""
+msgstr "Allkirjad"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_send_request__set_sign_order
@@ -2913,7 +2913,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_completed
 msgid "Signed document"
-msgstr ""
+msgstr "Allkirjastatud dokument"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__signing_date
@@ -2927,18 +2927,18 @@ msgstr "Allkirjastamise aeg"
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Signed with Odoo Sign"
-msgstr ""
+msgstr "Allkirjastatud Odoo allkirjastamisega"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__partner_id
 msgid "Signer"
-msgstr ""
+msgstr "Allkirjastaja"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__request_item_ids
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__signer_ids
 msgid "Signers"
-msgstr "Allakirjutajad"
+msgstr "Allkirjastajad"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__signers_count
@@ -3023,7 +3023,7 @@ msgstr "Standard"
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "State"
-msgstr "Maakond"
+msgstr "Staatus"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__request_state
@@ -3055,7 +3055,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Stop Sharing"
-msgstr ""
+msgstr "Lõpeta jagamine"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__subject
@@ -3084,7 +3084,7 @@ msgstr "Sildid"
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Tags:"
-msgstr ""
+msgstr "Sildid:"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_item_type__auto_field
@@ -3446,7 +3446,7 @@ msgstr "Tehing"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
 msgid "Try Odoo Sign"
-msgstr ""
+msgstr "Proovige Odoo allkirjastamist"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action
@@ -3512,12 +3512,12 @@ msgstr "Uuenda"
 #: code:addons/sign/models/sign_template.py:0
 #, python-format
 msgid "Upload a PDF"
-msgstr ""
+msgstr "Laadi PDF"
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_action
 msgid "Upload a PDF file or use an existing template to begin."
-msgstr ""
+msgstr "Laadi PDF või kasuta olemasolevat malli alustamiseks."
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_template_action
@@ -3570,14 +3570,14 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Validate"
-msgstr "Kinnita"
+msgstr "Valideeri"
 
 #. module: sign
 #. openerp-web
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Validate & Send"
-msgstr "Kinnita ja saada"
+msgstr "Valideeri ja saada"
 
 #. module: sign
 #. openerp-web
@@ -3620,17 +3620,17 @@ msgstr "Kinnitada"
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 #, python-format
 msgid "View Document"
-msgstr ""
+msgstr "Kuva dokument"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_refused
 msgid "View document"
-msgstr ""
+msgstr "Kuva dokument"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_log__action__open
 msgid "View/Download"
-msgstr ""
+msgstr "Kuva/Laadi alla"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -3735,7 +3735,7 @@ msgstr ""
 #: code:addons/sign/controllers/main.py:0
 #, python-format
 msgid "Wrong password"
-msgstr ""
+msgstr "Vale parool"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
@@ -3855,7 +3855,7 @@ msgstr "Sinu nimi"
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Your signature has been saved."
-msgstr "Sinu allkiri on salvestatud."
+msgstr "Allkiri salvestatud"
 
 #. module: sign
 #. openerp-web

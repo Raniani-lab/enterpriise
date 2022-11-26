@@ -984,7 +984,7 @@ msgstr ""
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Write your message here..."
-msgstr ""
+msgstr "اكتب رسالتك هنا... "
 
 #. module: account_followup
 #: code:addons/account_followup/models/account_followup_report.py:0

@@ -681,7 +681,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Bordered"
-msgstr ""
+msgstr "Dengan Border"
 
 #. module: web_studio
 #. openerp-web
@@ -927,7 +927,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Columns"
-msgstr ""
+msgstr "Kolom"
 
 #. module: web_studio
 #. openerp-web
@@ -1375,7 +1375,7 @@ msgstr "Hapus"
 #: code:addons/web_studio/static/src/legacy/xml/edit_menu.xml:0
 #, python-format
 msgid "Delete Menu Item"
-msgstr ""
+msgstr "Delete Menu Item"
 
 #. module: web_studio
 #. openerp-web
@@ -1575,7 +1575,7 @@ msgstr "Menu Edit"
 #: code:addons/web_studio/static/src/legacy/xml/edit_menu.xml:0
 #, python-format
 msgid "Edit Menu Item"
-msgstr ""
+msgstr "Edit Item Menu"
 
 #. module: web_studio
 #. openerp-web
@@ -2218,7 +2218,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Inline"
-msgstr ""
+msgstr "Inline"
 
 #. module: web_studio
 #. openerp-web
@@ -2515,7 +2515,7 @@ msgstr "Akses Model"
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_model_data
 msgid "Model Data"
-msgstr ""
+msgstr "Model Data"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_entry__model
@@ -2849,7 +2849,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Optional"
-msgstr ""
+msgstr "Opsiona"
 
 #. module: web_studio
 #. openerp-web
@@ -2921,7 +2921,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Pie"
-msgstr ""
+msgstr "Pie"
 
 #. module: web_studio
 #. openerp-web
@@ -2942,7 +2942,7 @@ msgstr "Poros"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Placeholder"
-msgstr ""
+msgstr "Placeholder"
 
 #. module: web_studio
 #. openerp-web

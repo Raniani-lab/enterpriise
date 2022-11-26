@@ -133,7 +133,7 @@ msgstr ""
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__can_publish
 msgid "Can Publish"
-msgstr ""
+msgstr "Dapat Dipublikasikan"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.footer
@@ -186,7 +186,7 @@ msgstr "Tim Helpdesk"
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__is_published
 msgid "Is Published"
-msgstr ""
+msgstr "Dipublikasikan"
 
 #. module: website_helpdesk
 #: code:addons/website_helpdesk/controllers/main.py:0
@@ -212,7 +212,7 @@ msgstr "Tahun Lalu"
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.search_results
 #, python-format
 msgid "No results found. Please try another search."
-msgstr ""
+msgstr "Tidak ada hasil. Silakan coba pencarian lain."
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.knowledge_base

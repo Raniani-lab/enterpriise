@@ -13,6 +13,8 @@
 # Rivo Zängov <eraser@eraser.ee>, 2022
 # Andre Roomet <andreroomet@gmail.com>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
+# Leaanika Randmets, 2022
+# Jana Jaakson, 2022
 # 
 msgid ""
 msgstr ""
@@ -20,7 +22,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Eneli Õigus <enelioigus@gmail.com>, 2022\n"
+"Last-Translator: Jana Jaakson, 2022\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -62,7 +64,7 @@ msgstr "%s (koopia)"
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "%s has been sent to Trash"
-msgstr ""
+msgstr "%s on saadetud Prügikasti"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_mail_invite
@@ -687,14 +689,14 @@ msgstr "Tegevuse liigi sümbol"
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Add a table of content."
-msgstr ""
+msgstr "Lisa tabel või sisu"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Add a template section."
-msgstr ""
+msgstr "Lisa dokumendimalli sektsioon"
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_favorite_action
@@ -702,23 +704,25 @@ msgid ""
 "Add articles in your list of favorites by clicking on the <i class=\"fa fa-"
 "star-o\"></i> next to the article name."
 msgstr ""
+"Lisage artikleid oma lemmikute loendisse, klõpsates artikli nime kõrval "
+"oleval ikoonil <i class=\"fa fa-star-o\"></i>."
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/behaviors/table_of_content_behavior/table_of_content_behavior.xml:0
 #, python-format
 msgid "Add headings in this Article to create a Table of Content"
-msgstr ""
+msgstr "Sisukorra loomiseks lisage selle artikli jaoks pealkirjad"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_invite_view_form
 msgid "Add people or email addresses"
-msgstr ""
+msgstr "Lisa isik(ud) või e-maili aadress(id)"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "Add people or email addresses..."
-msgstr ""
+msgstr "Lisa isik(ud) või e-maili aadress(id)"
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_member_action
@@ -726,6 +730,8 @@ msgid ""
 "Adding members allows you to share Articles while granting specific access "
 "rights<br>(can write, can read, ...)."
 msgstr ""
+"Liikmete lisamine võimaldab teil artikleid jagada, andes samal ajal "
+"konkreetsed juurdepääsuõigused<br>(õigua kirjutada, lugeda, ...)."
 
 #. module: knowledge
 #. openerp-web
@@ -746,14 +752,14 @@ msgstr "Administraator"
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "Advanced Search"
-msgstr ""
+msgstr "Täpsem otsing"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Archive Article"
-msgstr ""
+msgstr "Arhiveeri artikkel"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search_items
@@ -1348,7 +1354,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "On sõnum"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_has_write_access
@@ -1788,7 +1794,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr ""
+msgstr "Järgmine tegevus kalendris"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_date_deadline
@@ -2154,7 +2160,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_behavior.xml:0
 #, python-format
 msgid "Something went wrong!"
-msgstr "Midagi läks valesti1"
+msgstr "Midagi läks valesti!"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__activity_state

@@ -10,6 +10,7 @@
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Leaanika Randmets, 2022
 # 
 msgid ""
 msgstr ""
@@ -17,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:47+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Leaanika Randmets, 2022\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,27 +45,27 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__days_10
 msgid "10 Days"
-msgstr ""
+msgstr "10 päeva"
 
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__days_3
 msgid "3 Days"
-msgstr ""
+msgstr "3 päeva"
 
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__days_30
 msgid "30 Days (only for fixed price)"
-msgstr ""
+msgstr "30 päeva(ainult fikseeritud hinnale)"
 
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__days_5
 msgid "5 Days"
-msgstr ""
+msgstr "5 päeva"
 
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_duration__days_7
 msgid "7 Days"
-msgstr ""
+msgstr "7 päeva"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -74,17 +75,17 @@ msgstr "Müügimeeskond"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Storage</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Ladu</span>"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">Synchronization</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Sünkroniseering</span>"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">eBay Account</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">eBay konto</span>"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -92,11 +93,13 @@ msgid ""
 "<span class=\"o_form_label\">eBay Marketplace Account Deletion/Closure "
 "Notifications</span>"
 msgstr ""
+"<span class=\"o_form_label\">eBay Marketplace konto kustutamise/sulgemise "
+"teated</span>"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "<span class=\"o_form_label\">eBay Options</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">eBay valikud</span>"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
@@ -106,7 +109,7 @@ msgstr "Aktiveeri teisi valuutasid"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Add other countries"
-msgstr ""
+msgstr "Lisa teisi riike"
 
 #. module: sale_ebay
 #: code:addons/sale_ebay/models/product.py:0
@@ -120,18 +123,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_best_offer
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_best_offer
 msgid "Allow Best Offer"
-msgstr ""
+msgstr "Luba parim pakkumine"
 
 #. module: sale_ebay
 #: model:ir.model.fields.selection,name:sale_ebay.selection__product_template__ebay_listing_type__chinese
 msgid "Auction"
-msgstr ""
+msgstr "Oksjon"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_buy_it_now_price
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_buy_it_now_price
 msgid "Buy It Now Price"
-msgstr ""
+msgstr "Osta kohe hind"
 
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.ebay_link_listing_view
@@ -148,12 +151,12 @@ msgstr "Kategooria"
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_category_2_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_category_2_id
 msgid "Category 2 (Optional)"
-msgstr ""
+msgstr "Kategooria 2 (valikuline)"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__category_id
 msgid "Category ID"
-msgstr ""
+msgstr "Kategooria ID"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__category_parent_id
@@ -163,7 +166,7 @@ msgstr ""
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__category_type
 msgid "Category Type"
-msgstr ""
+msgstr "Kategooria tüüp"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_item_condition__code
@@ -194,7 +197,7 @@ msgstr "Riigid"
 #. module: sale_ebay
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "Countries & Currencies"
-msgstr ""
+msgstr "Riigid ja valuutad"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_res_country
@@ -240,12 +243,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_ebay.field_product_product__ebay_template_id
 #: model:ir.model.fields,field_description:sale_ebay.field_product_template__ebay_template_id
 msgid "Description Template"
-msgstr ""
+msgstr "Kirjelduse mall"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_res_config_settings__ebay_dev_id
 msgid "Developer Key"
-msgstr ""
+msgstr "Developer Key"
 
 #. module: sale_ebay
 #: model:ir.model.fields,field_description:sale_ebay.field_ebay_category__display_name

@@ -36,30 +36,30 @@ msgstr "Tühista"
 #. module: crm_helpdesk
 #: model_terms:ir.ui.view,arch_db:crm_helpdesk.helpdesk_ticket_to_lead_view_form
 msgid "Convert"
-msgstr ""
+msgstr "Teisenda"
 
 #. module: crm_helpdesk
 #: model:ir.model,name:crm_helpdesk.model_helpdesk_ticket_to_lead
 #: model_terms:ir.ui.view,arch_db:crm_helpdesk.helpdesk_ticket_to_lead_view_form
 msgid "Convert Ticket to Lead"
-msgstr ""
+msgstr "Muuda pilet müügivihjeks"
 
 #. module: crm_helpdesk
 #: model:ir.actions.act_window,name:crm_helpdesk.helpdesk_ticket_to_lead_action
 msgid "Convert to Lead"
-msgstr ""
+msgstr "Muuda müügivihjeks"
 
 #. module: crm_helpdesk
 #: model:ir.actions.act_window,name:crm_helpdesk.crm_lead_convert2ticket_action
 #: model_terms:ir.ui.view,arch_db:crm_helpdesk.crm_lead_convert2ticket_view_form
 #: model_terms:ir.ui.view,arch_db:crm_helpdesk.crm_lead_view_form
 msgid "Convert to Ticket"
-msgstr ""
+msgstr "Muuda piletiks"
 
 #. module: crm_helpdesk
 #: model_terms:ir.ui.view,arch_db:crm_helpdesk.crm_lead_convert2ticket_view_form
 msgid "Create Ticket"
-msgstr ""
+msgstr "Loo pilet"
 
 #. module: crm_helpdesk
 #: model:ir.model.fields.selection,name:crm_helpdesk.selection__helpdesk_ticket_to_lead__action__create
@@ -134,18 +134,18 @@ msgstr "Müügivihje"
 #: code:addons/crm_helpdesk/wizard/crm_lead_convert2ticket.py:0
 #, python-format
 msgid "Lead Converted"
-msgstr ""
+msgstr "Müügivihjeks tehtud"
 
 #. module: crm_helpdesk
 #: model:ir.model,name:crm_helpdesk.model_crm_lead_convert2ticket
 msgid "Lead convert to Ticket"
-msgstr ""
+msgstr "Müügivihje piletiks"
 
 #. module: crm_helpdesk
 #: code:addons/crm_helpdesk/wizard/helpdesk_ticket_to_lead.py:0
 #, python-format
 msgid "Lead created"
-msgstr ""
+msgstr "Müügivihje loodud"
 
 #. module: crm_helpdesk
 #: model:ir.model.fields.selection,name:crm_helpdesk.selection__helpdesk_ticket_to_lead__action__exist
@@ -177,13 +177,13 @@ msgstr "Meeskond"
 #: code:addons/crm_helpdesk/wizard/helpdesk_ticket_to_lead.py:0
 #, python-format
 msgid "The archived ticket can not converted as lead."
-msgstr ""
+msgstr "Arhiveeritud piletit ei saa muuta müügivihjeks."
 
 #. module: crm_helpdesk
 #: code:addons/crm_helpdesk/wizard/helpdesk_ticket_to_lead.py:0
 #, python-format
 msgid "This lead has been created from ticket: %s"
-msgstr ""
+msgstr "See müügivihje on loodu piletist: %s"
 
 #. module: crm_helpdesk
 #: model:ir.model.fields,field_description:crm_helpdesk.field_helpdesk_ticket_to_lead__ticket_id
@@ -194,7 +194,7 @@ msgstr "Pilet"
 #: code:addons/crm_helpdesk/wizard/helpdesk_ticket_to_lead.py:0
 #, python-format
 msgid "Ticket Converted"
-msgstr ""
+msgstr "Pilet muudetud"
 
 #. module: crm_helpdesk
 #: model:ir.model.fields,field_description:crm_helpdesk.field_crm_lead_convert2ticket__ticket_type_id

@@ -83,7 +83,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "'external' engine does not support groupby, limit nor offset."
-msgstr ""
+msgstr "لا يدعم المحرك 'الخارجي' عمليات التجميع حسب، أو التقييد، أو الإزاحة. "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
@@ -106,22 +106,22 @@ msgstr "(بلا تجميع)"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
 msgid ", Grouped by month"
-msgstr ""
+msgstr "، مجمعة حسب الشهر "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
 msgid ", Sorted by date"
-msgstr ""
+msgstr "، تم فرزها حسب التاريخ "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template_journal_audit_report
 msgid ", Sorted by number"
-msgstr ""
+msgstr "، تم فرزها حسب الرقم "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "-> Check your tax report"
-msgstr ""
+msgstr "-> تفقد تقريرك الضريبي "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
@@ -132,25 +132,25 @@ msgstr "-> تحديث"
 #: model:account.report.column,name:account_reports.aged_payable_report_period1
 #: model:account.report.column,name:account_reports.aged_receivable_report_period1
 msgid "1-30"
-msgstr ""
+msgstr "1-30"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.aged_payable_report_period2
 #: model:account.report.column,name:account_reports.aged_receivable_report_period2
 msgid "31-60"
-msgstr ""
+msgstr "31-60"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.aged_payable_report_period3
 #: model:account.report.column,name:account_reports.aged_receivable_report_period3
 msgid "61-90"
-msgstr ""
+msgstr "61-90"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.aged_payable_report_period4
 #: model:account.report.column,name:account_reports.aged_receivable_report_period4
 msgid "91-120"
-msgstr ""
+msgstr "91-120"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -177,6 +177,8 @@ msgid ""
 "<span class=\"fa fa-book\"/>\n"
 "                Report:"
 msgstr ""
+"<span class=\"fa fa-book\"/>\n"
+"                التقرير:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_fiscal_position_choser
@@ -199,7 +201,9 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "<span class=\"fa fa-calendar\" title=\"Dates\" role=\"img\" aria-label=\"Dates\"/>"
-msgstr "<span class=\"fa fa-calendar\" title=\"Dates\" role=\"img\" aria-label=\"Dates\"/>"
+msgstr ""
+"<span class=\"fa fa-calendar\" title=\"التواريخ \" role=\"img\" aria-"
+"label=\"Dates\"/>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.aged_report_line_template
@@ -264,6 +268,8 @@ msgid ""
 "<span class=\"fa fa-filter\"/>\n"
 "                    Codes:"
 msgstr ""
+"<span class=\"fa fa-filter\"/>\n"
+"                    الأكواد:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_groupby_fields
@@ -280,6 +286,8 @@ msgid ""
 "<span class=\"fa fa-filter\"/>\n"
 "            Horizontal Group:"
 msgstr ""
+"<span class=\"fa fa-filter\"/>\n"
+"            مجموعة أفقية: "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -302,6 +310,8 @@ msgid ""
 "<span class=\"fa fa-home\"/>\n"
 "            Tax Unit:"
 msgstr ""
+"<span class=\"fa fa-home\"/>\n"
+"            وحدة الضريبة: "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -309,8 +319,8 @@ msgid ""
 "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
 "specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
-"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
-"specific.\" groups=\"base.group_multi_company\"/>"
+"<span class=\"fa fa-lg fa-building-o\" title=\"القيم المحددة هنا خاصة "
+"بالشركة. \" groups=\"base.group_multi_company\"/>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_search_template
@@ -359,6 +369,9 @@ msgid ""
 "<span>Intrastat taxes are applied on unexpected journal entries "
 "(international or between non intrastat countries).</span>"
 msgstr ""
+"<span>ضرائب نظام إحصاءات التجارة بين دول الاتحاد الأوروبي مطبقة على قيود "
+"يومية غير متوقعة (عالمياً أو بين دول لا تنتمي لنظام إحصاءات التجارة بين دول "
+"الاتحاد الأوروبي).</span>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_tax_report
@@ -392,17 +405,17 @@ msgstr "<span>هذا التقرير يعرض فقط بيانات الشركة ا
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 msgid "=&gt; Audit"
-msgstr ""
+msgstr "=&gt; تدقيق "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 msgid "=&gt; Journal Items"
-msgstr ""
+msgstr "=&gt; عناصر اليومية "
 
 #. module: account_reports
 #: model:ir.model.constraint,message:account_reports.constraint_account_report_horizontal_group_name_uniq
 msgid "A horizontal group with the same name already exists."
-msgstr ""
+msgstr "توجد مجموعة أفقية بنفس الاسم بالفعل. "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_tax.py:0
@@ -448,7 +461,7 @@ msgstr "حقل ممثل لعرض الحساب "
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_custom_handler
 msgid "Account Report Custom Handler"
-msgstr ""
+msgstr "المعالج المخصص لتقارير الحساب "
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_footnote
@@ -459,7 +472,7 @@ msgstr "تذييل تقرير الحساب"
 #: model:ir.model.fields,field_description:account_reports.field_res_partner__account_represented_company_ids
 #: model:ir.model.fields,field_description:account_reports.field_res_users__account_represented_company_ids
 msgid "Account Represented Company"
-msgstr ""
+msgstr "شركة ممثَّلة في الحساب "
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_revaluation_journal_id
@@ -499,7 +512,7 @@ msgstr "الحسابات"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_form
 msgid "Accounts Coverage Report"
-msgstr ""
+msgstr "تقرير تغطية الحسابات "
 
 #. module: account_reports
 #: model:account.report.expression,report_line_name:account_reports.multicurrency_revaluation_to_adjust_adjustment
@@ -508,13 +521,13 @@ msgstr ""
 #: model:account.report.expression,report_line_name:account_reports.multicurrency_revaluation_to_adjust_balance_operation
 #: model:account.report.line,name:account_reports.multicurrency_revaluation_to_adjust
 msgid "Accounts To Adjust"
-msgstr ""
+msgstr "الحسابات بانتظار التعديل "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Accounts coverage"
-msgstr ""
+msgstr "تغطية الحسابات "
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_mail_activity_type__category
@@ -562,13 +575,13 @@ msgstr "التعديلات"
 #: code:addons/account_reports/models/account_multicurrency_revaluation_report.py:0
 #, python-format
 msgid "Adjustment Entry"
-msgstr "تعديل القيد"
+msgstr "قيد التعديل "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_cash_flow_report.py:0
 #, python-format
 msgid "Advance Payments received from customers"
-msgstr "الإيرادات المدفوعة مقدمًا من العملاء"
+msgstr "المدفوعات المدفوعة مقدماً من قِبَل العملاء "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_cash_flow_report.py:0
@@ -584,7 +597,7 @@ msgstr "متقدم"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_aged_partner_balance_report_handler
 msgid "Aged Partner Balance Custom Handler"
-msgstr ""
+msgstr "المعالج المخصص لأعمار ديون الشريك "
 
 #. module: account_reports
 #: model:account.report,name:account_reports.aged_payable_report
@@ -670,7 +683,7 @@ msgstr ""
 #: model:account.report.column,name:account_reports.account_financial_report_ec_sales_amount
 #: model:account.report.column,name:account_reports.bank_reconciliation_report_amount
 msgid "Amount"
-msgstr "مبلغ"
+msgstr "المبلغ "
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.aged_payable_report_amount_currency
@@ -684,13 +697,13 @@ msgstr "عملة المبلغ"
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Amount In Currency"
-msgstr ""
+msgstr "المبلغ بالعملة "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Amount in currency: %s"
-msgstr ""
+msgstr "المبلغ بالعملة: %s "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -700,14 +713,14 @@ msgstr "الحسابات التحليلية:"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Analytic Plans:"
-msgstr ""
+msgstr "الخطط التحليلية: "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid ""
 "Analytic filters will include analytic items without accounting "
 "correspondence"
-msgstr ""
+msgstr "ستشمل عوامل التصفية التحليلية عناصراً تحليلية دون التطابق المحاسبي "
 
 #. module: account_reports
 #. openerp-web
@@ -791,17 +804,17 @@ msgstr "الميزانية العمومية"
 #. module: account_reports
 #: model:account.report.column,name:account_reports.multicurrency_revaluation_report_balance_current
 msgid "Balance at Current Rate"
-msgstr ""
+msgstr "الرصيد بسعر الصرف الحالي "
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.multicurrency_revaluation_report_balance_operation
 msgid "Balance at Operation Rate"
-msgstr ""
+msgstr "الرصيد بسعر العملية "
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.multicurrency_revaluation_report_balance_currency
 msgid "Balance in Foreign Currency"
-msgstr ""
+msgstr "الرصيد بالعملة الأجنبية "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
@@ -845,7 +858,7 @@ msgstr "تقرير التسوية البنكية"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_bank_reconciliation_report_handler
 msgid "Bank Reconciliation Report Custom Handler"
-msgstr ""
+msgstr "المعالج المخصص لتقارير تسوية البنك "
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_bank_view0
@@ -855,7 +868,7 @@ msgstr "الحسابات البنكية والنقدية "
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
+msgstr "أداة التسوية البنكية لبند كشف حساب واحد "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_general_ledger.py:0
@@ -870,6 +883,7 @@ msgstr "المبلغ الأساسي"
 msgid ""
 "Can't open partner reconciliation for line id %s ; model should res.partner."
 msgstr ""
+"تعذر فتح تسوية الشريك لمعرّف البند %s ؛ يجب أن يكون النموذج res.partner. "
 
 #. module: account_reports
 #. openerp-web
@@ -885,13 +899,13 @@ msgstr "إلغاء "
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Cannot audit tax from another model than account.tax."
-msgstr ""
+msgstr "لا يمكن تدقيق الضريبة من نموذج آخر غير account.tax. "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Cannot generate carryover values for all fiscal positions at once!"
-msgstr ""
+msgstr "لا يمكن إنشاء قيم الترحيل لكافة الأوضاع المالية في آن واحد! "
 
 #. module: account_reports
 #. openerp-web
@@ -904,19 +918,19 @@ msgstr "الترحيل"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Carryover adjustment for tax unit"
-msgstr ""
+msgstr "تعديل الترحيل لوحدة الضريبة "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Carryover can only be generated for a single column group."
-msgstr ""
+msgstr "يمكن إنشاء الترحيل فقط لمجموعة عمود واحدة. "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Carryover from %s to %s"
-msgstr ""
+msgstr "ترحيل من %s إلى %s "
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_executivesummary_cash0
@@ -926,7 +940,7 @@ msgstr "نقدي"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_cash_flow_report_handler
 msgid "Cash Flow Report Custom Handler"
-msgstr ""
+msgstr "المعالج المخصص لتقارير التدفق النقدي "
 
 #. module: account_reports
 #: model:account.report,name:account_reports.cash_flow_report
@@ -1091,12 +1105,12 @@ msgstr "تهيئة الإعدادات "
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Configure your TAX accounts - %s"
-msgstr "هيء حساباتك الضريبية - %s"
+msgstr "قم بتهيئة حساباتك الضريبية - %s "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 msgid "Configure your tax accounts"
-msgstr "هيء حساباتك الضريبية"
+msgstr "قم بتهيئة حساباتك الضريبية "
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_res_partner
@@ -1121,13 +1135,13 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Could not find template %s, used as %s of %s."
-msgstr ""
+msgstr "تعذر إيجاد القالب %s، المستخدم كـ %s لـ %s. "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Could not parse account_code formula from token '%s'"
-msgstr ""
+msgstr "تعذر تحليل صيغة account_code من الرمز '%s' "
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_tax_unit__country_id
@@ -1149,7 +1163,7 @@ msgstr "إنشاء قيد "
 #. module: account_reports
 #: model:ir.actions.server,name:account_reports.action_create_report_menu
 msgid "Create Menu Item"
-msgstr ""
+msgstr "إنشاء عنصر قائمة "
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__create_uid
@@ -1246,12 +1260,12 @@ msgstr "مُخصص"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__custom_handler_model_id
 msgid "Custom Handler Model"
-msgstr ""
+msgstr "نموذج للمعالج المخصص "
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__custom_handler_model_name
 msgid "Custom Handler Model Name"
-msgstr ""
+msgstr "اسم نموذج المعالج المخصص "
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.bank_reconciliation_report_date
@@ -1289,7 +1303,7 @@ msgstr "التاريخ:"
 #: model:account.report.column,name:account_reports.trial_balance_report_debit
 #, python-format
 msgid "Debit"
-msgstr "المدين"
+msgstr "الخصم "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_expression_form
@@ -1360,7 +1374,7 @@ msgstr "قائمة مبيعات EC"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_ec_sales_report_handler
 msgid "EC Sales Report Custom Handler"
-msgstr ""
+msgstr "المعالج المخصص لتقارير مبيعات العمولة الأوروبية "
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_equity0
@@ -1374,6 +1388,8 @@ msgid ""
 "Editing a manual report line is not allowed in multivat setup when "
 "displaying data from all fiscal positions."
 msgstr ""
+"لا يُسمح بتحرير تقرير يدوي في بيئة متعددة الضرائب عند عرض البيانات من كافة "
+"الأوضاع المالية. "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -1381,7 +1397,7 @@ msgstr ""
 msgid ""
 "Editing a manual report line is not allowed when multiple companies are "
 "selected."
-msgstr ""
+msgstr "لا يُسمح بتحرير تقرير يدوي عندما يتم تحديد عدة شركات. "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_trial_balance_report.py:0
@@ -1414,7 +1430,7 @@ msgstr "نهاية الربع الماضي"
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Ending Balance :"
-msgstr ""
+msgstr "الرصيد الختامي: "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -1430,12 +1446,12 @@ msgstr "استثناء"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_account__exclude_provision_currency_ids
 msgid "Exclude Provision Currency"
-msgstr ""
+msgstr "استثناء عملة الحكم "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template
 msgid "Exclude from adjustment/provisions entries"
-msgstr ""
+msgstr "الاستثناء من قيود التعديل/الأحكام "
 
 #. module: account_reports
 #: model:account.report.expression,report_line_name:account_reports.multicurrency_revaluation_excluded_adjustment
@@ -1444,7 +1460,7 @@ msgstr ""
 #: model:account.report.expression,report_line_name:account_reports.multicurrency_revaluation_excluded_balance_operation
 #: model:account.report.line,name:account_reports.multicurrency_revaluation_excluded
 msgid "Excluded Accounts"
-msgstr "استثناء الحسابات "
+msgstr "الحسابات المستثناة "
 
 #. module: account_reports
 #: model:account.report,name:account_reports.executive_summary
@@ -1486,6 +1502,9 @@ msgid ""
 " you had the customer on the phone and want to remember the date he promised"
 " he would pay)"
 msgstr ""
+"تاريخ الدفع المتوقع كما تم تعيينه يدويًا من خلال كشف حساب العميل (على سبيل "
+"المثال: إذا كان العميل معك هاتفيًا وأراد أن يتذكر التاريخ الذي وعد بأنه سوف "
+"يدفع فيه)"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__expense_provision_account_id
@@ -1495,7 +1514,7 @@ msgstr "حساب النفقات "
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_revaluation_expense_provision_account_id
 msgid "Expense Provision Account"
-msgstr ""
+msgstr "حساب أحكام النفقات "
 
 #. module: account_reports
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
@@ -1538,7 +1557,7 @@ msgstr "تصدير المُعالِج للتقارير المحاسبية "
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_expression_form
 msgid "Expression"
-msgstr ""
+msgstr "تعبير "
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_horizontal_group_rule__field_name
@@ -1549,7 +1568,7 @@ msgstr "حقل"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Field %s does not exist on account.move.line."
-msgstr ""
+msgstr "الحقل %s غير موجود في account.move.line. "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -1558,6 +1577,8 @@ msgid ""
 "Field %s of account.move.line is not stored, and hence cannot be used in a "
 "groupby expression"
 msgstr ""
+"الحقل %s لـ account.move.line غير مخزن، وبالتالي لا يمكن استخدامه في تعبير "
+"\"groupby\" "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -1566,6 +1587,8 @@ msgid ""
 "Field 'Custom Handler Model' can only reference records inheriting from "
 "[%s]."
 msgstr ""
+"الحقل 'نموذج المعالج المخصص' يمكنه فقط الإشارة إلى السجلات التي ترث من [%s]."
+" "
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__filter_analytic_groupby
@@ -1595,7 +1618,7 @@ msgstr "التذييل"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__footnotes_template
 msgid "Footnotes Template"
-msgstr ""
+msgstr "قالب الحواشي السفلية "
 
 #. module: account_reports
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
@@ -1621,12 +1644,12 @@ msgstr "من:"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard_format__fun_param
 msgid "Function Parameter"
-msgstr ""
+msgstr "معايير الوظيفة "
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard_format__fun_to_call
 msgid "Function to Call"
-msgstr ""
+msgstr "الوظيفة لاستدعائها "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -1641,7 +1664,7 @@ msgstr "دفتر الأستاذ العام"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_general_ledger_report_handler
 msgid "General Ledger Custom Handler"
-msgstr ""
+msgstr "المعالج المخصص لدفتر الأستاذ العام "
 
 #. module: account_reports
 #: code:addons/account_reports/wizard/report_export_wizard.py:0
@@ -1652,22 +1675,22 @@ msgstr "المستندات المنشأة "
 #. module: account_reports
 #: model:account.report,name:account_reports.generic_ec_sales_report
 msgid "Generic EC Sales List"
-msgstr ""
+msgstr "قائمة مبيعات EC عامة "
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler
 msgid "Generic Tax Report Custom Handler"
-msgstr ""
+msgstr "معالج مخصص للتقرير الضريبي العام "
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler_account_tax
 msgid "Generic Tax Report Custom Handler (Account -> Tax)"
-msgstr ""
+msgstr "معالج مخصص للتقرير الضريبي العام (الحساب -> الضريبة) "
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler_tax_account
 msgid "Generic Tax Report Custom Handler (Tax -> Account)"
-msgstr ""
+msgstr "معالج مخصص للتقرير الضريبي العام (الضريبة -> الحساب) "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_sales_report.py:0
@@ -1706,7 +1729,7 @@ msgstr "التجميع حسب "
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Group By Months"
-msgstr ""
+msgstr "التجميع حسب الشهور "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_horizontal_group_form
@@ -1716,7 +1739,7 @@ msgstr "اسم المجموعة"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Group by months"
-msgstr ""
+msgstr "التجميع حسب الشهور "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -1726,7 +1749,7 @@ msgstr "التجميع حسب: "
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Grouped by month"
-msgstr ""
+msgstr "التجميع حسب الشهر "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -1741,24 +1764,24 @@ msgstr "التسلسل الهرمي والمجاميع الفرعية"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_horizontal_group_rule__horizontal_group_id
 msgid "Horizontal Group"
-msgstr ""
+msgstr "المجموعة الأفقية "
 
 #. module: account_reports
 #: model:ir.actions.act_window,name:account_reports.action_account_report_horizontal_groups
 #: model:ir.model.fields,field_description:account_reports.field_account_report__horizontal_group_ids
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_horizontal_groups
 msgid "Horizontal Groups"
-msgstr ""
+msgstr "المجموعات الأفقية "
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_horizontal_group
 msgid "Horizontal group for reports"
-msgstr ""
+msgstr "المجموعة الأفقية للتقارير "
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_horizontal_group_rule
 msgid "Horizontal group rule for reports"
-msgstr ""
+msgstr "قاعدة المجموعة الأفقية للتقارير "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -1788,6 +1811,8 @@ msgid ""
 "Impacted Tax Grids\n"
 "                                        &amp;nbsp;"
 msgstr ""
+"شبكات الضرائب المتأثرة\n"
+"                                        &amp;nbsp;"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template
@@ -1797,12 +1822,12 @@ msgstr "تضمين "
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "Include Analytic Simulations"
-msgstr ""
+msgstr "تضمين عمليات المحاكاة التحليلية "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Include Payments"
-msgstr ""
+msgstr "تضمين المدفوعات "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -1813,7 +1838,7 @@ msgstr "تضمين القيود غير المُرحلة"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template
 msgid "Include in adjustment/provisions entries"
-msgstr ""
+msgstr "التضمين في قيود التعديل/الأحكام "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -1824,7 +1849,7 @@ msgstr "تضمين القيود غير المُرحلة"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "Including Analytic Simulations"
-msgstr ""
+msgstr "شاملة عمليات المحاكات التحليلية "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
@@ -1854,7 +1879,7 @@ msgstr "حساب الدخل"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__account_revaluation_income_provision_account_id
 msgid "Income Provision Account"
-msgstr ""
+msgstr "حساب أحكام الدخل "
 
 #. module: account_reports
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
@@ -1875,6 +1900,8 @@ msgid ""
 "Inconsistent data: more than one external value at the same date for a "
 "'most_recent' external line."
 msgstr ""
+"Inconsistent data: more than one external value at the same date for a "
+"'most_recent' external line."
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -1882,6 +1909,7 @@ msgstr ""
 msgid ""
 "Inconsistent report_id in options dictionary. Options says %s; report is %s."
 msgstr ""
+"Inconsistent report_id in options dictionary. Options says %s; report is %s."
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -1901,7 +1929,7 @@ msgstr "إدراج تذييل هنا "
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Invalid token '%s' in account_codes formula '%s'"
-msgstr ""
+msgstr "الرمز غير صالح '%s' في صيغة account_codes '%s' "
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.partner_ledger_report_journal_code
@@ -1928,7 +1956,7 @@ msgstr "قيد اليومية"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Journal Groups"
-msgstr "مجموعات الدفاتر اليومية"
+msgstr "مجموعات دفاتر اليومية "
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_move_line
@@ -1955,12 +1983,12 @@ msgstr "عناصر اليومية للتدقيق الضريبي"
 #: model:ir.actions.client,name:account_reports.action_account_report_ja
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_ja
 msgid "Journal Report"
-msgstr ""
+msgstr "تقرير اليومية "
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_journal_report_handler
 msgid "Journal Report Custom Handler"
-msgstr ""
+msgstr "المعالج المخصص لتقرير اليومية "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -2052,14 +2080,14 @@ msgstr "بند"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__line_template
 msgid "Line Template"
-msgstr ""
+msgstr "قالب البند "
 
 #. module: account_reports
 #. openerp-web
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "Line without formula"
-msgstr ""
+msgstr "البند دون الصيغة "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_form
@@ -2080,12 +2108,12 @@ msgstr "الشركة الرئيسية "
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__main_table_header_template
 msgid "Main Table Header Template"
-msgstr ""
+msgstr "قالب ترويسة الجدول الرئيسي "
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__main_template
 msgid "Main Template"
-msgstr ""
+msgstr "القالب الرئيسي "
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_tax_unit__main_company_id
@@ -2115,13 +2143,13 @@ msgstr "المدير"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Manual value"
-msgstr ""
+msgstr "القيمة اليدوية "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Manual values"
-msgstr ""
+msgstr "القيم اليدوية "
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.partner_ledger_report_matching_number
@@ -2137,17 +2165,17 @@ msgstr "أعضاء هذه الوحدة "
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Method '%s' must start with the '%s' prefix."
-msgstr ""
+msgstr "يجب أن تبدأ الطريقة '%s' بالبادئة '%s'. "
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_horizontal_group_rule__res_model_name
 msgid "Model"
-msgstr "الكائن"
+msgstr "النموذج "
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_multicurrency_revaluation_report_handler
 msgid "Multicurrency Revaluation Report Custom Handler"
-msgstr ""
+msgstr "المعالج المخصص لتقرير إعادة التقييم متعدد العملات "
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_multicurrency_revaluation_wizard
@@ -2188,7 +2216,7 @@ msgstr "الاسم"
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_reports_export_wizard__doc_name
 msgid "Name to give to the generated documents."
-msgstr "اسم لمنحه للمستندات المنشأة. "
+msgstr "الاسم لمنحه للمستندات المنشأة. "
 
 #. module: account_reports
 #: model:account.report.expression,report_line_name:account_reports.account_financial_report_executivesummary_profit0_balance
@@ -2238,13 +2266,13 @@ msgstr "لا حاجة لإجراء أي تعديل "
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
 #, python-format
 msgid "No provision needed was found."
-msgstr ""
+msgstr "لم يتم العثور على أي أحكام مطلوبة. "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Non Trade Partners"
-msgstr ""
+msgstr "الشركاء غير التجاريين. "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -2381,7 +2409,7 @@ msgstr "دفتر الأستاذ العام للشركاء"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_partner_ledger_report_handler
 msgid "Partner Ledger Custom Handler"
-msgstr ""
+msgstr "المعالج المخصص لدفتر الأستاذ العام الخاص بالشريك "
 
 #. module: account_reports
 #: model:ir.ui.menu,name:account_reports.account_reports_partners_reports_menu
@@ -2451,7 +2479,7 @@ msgstr "الخطط "
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Please specify the accounts necessary for the Tax Closing Entry."
-msgstr ""
+msgstr "يرجى تحديد الحسابات الضرورية للقيد الختامي للضريبة. "
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_fixed_assets_view0
@@ -2524,7 +2552,7 @@ msgstr "أرباح السنين الماضية غير المخصصة"
 msgid ""
 "Proceed with caution as there might be an existing adjustment for this "
 "period ("
-msgstr "الاستمرار بحذر لأنه قد تكون هناك تعديلات في هذه لهذه الفنرة ("
+msgstr "الاستمرار بحذر لأنه قد تكون هناك تعديلات لهذه الفترة ("
 
 #. module: account_reports
 #: model:account.report,name:account_reports.profit_and_loss
@@ -2612,12 +2640,12 @@ msgstr "اسم التقرير"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Report lines mentioning the account code"
-msgstr ""
+msgstr "بنود التقرير التي تحتوي على كود الحساب "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 msgid "Reporting"
-msgstr "التقارير"
+msgstr "إعداد التقارير "
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_horizontal_group__report_ids
@@ -2638,7 +2666,7 @@ msgstr "العائد على الاستثمار (صافي الربح / الأصو
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__reversal_date
 msgid "Reversal Date"
-msgstr "تاريخ الانعكاس"
+msgstr "تاريخ العكس "
 
 #. module: account_reports
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
@@ -2673,19 +2701,19 @@ msgstr "حفظ"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__search_template
 msgid "Search Template"
-msgstr ""
+msgstr "البحث عن قالب "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template_with_filter_input_accounts
 msgid "Search account"
-msgstr "ابحث في الحساب"
+msgstr "البحث في الحساب "
 
 #. module: account_reports
 #. openerp-web
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "Search line"
-msgstr ""
+msgstr "البحث عن بند "
 
 #. module: account_reports
 #. openerp-web
@@ -2720,32 +2748,32 @@ msgstr "إظهار حركة تحذير "
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Show payment lines"
-msgstr ""
+msgstr "إظهار بنود الدفع "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "Some controls failed."
-msgstr ""
+msgstr "لقد فشلت بعض عناصر التحكم.   "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Sort By Date"
-msgstr ""
+msgstr "فرز حسب التاريخ "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Sort by date"
-msgstr ""
+msgstr "فرز حسب التاريخ "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Sorted by date"
-msgstr ""
+msgstr "تم الفرز حسب التاريخ "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Sorted by number"
-msgstr ""
+msgstr "فرز حسب الرقم "
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_res_company__account_representative_id
@@ -2771,7 +2799,7 @@ msgstr "البدء من "
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Starting Balance :"
-msgstr ""
+msgstr "الرصيد الافتتاحي: "
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_manager__summary
@@ -2899,11 +2927,13 @@ msgid ""
 "Taxes Applied\n"
 "                            &amp;nbsp;"
 msgstr ""
+"الضرائب المطبقة\n"
+"                            &amp;nbsp;"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_ir_actions_account_report_download
 msgid "Technical model for accounting report downloads"
-msgstr "نموذج تقني لتحميلات التقارير المحاسبية "
+msgstr "نموذج تقني لتنزيلات التقارير المحاسبية "
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_footnote__text
@@ -2920,7 +2950,7 @@ msgstr "رصيد السجل في أودو بتاريخ اليوم "
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "The company's country does not match the report's country."
-msgstr ""
+msgstr "لا تطابق دولة الشركة دولة التقرير. "
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_tax_unit__country_id
@@ -2989,6 +3019,7 @@ msgid ""
 "This account exists in the Chart of Accounts but is not mentioned in any "
 "line of the report"
 msgstr ""
+"الحساب موجود في شجرة الحسابات ولكنه غير مذكور في أي بند من بنود التقرير "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -2997,12 +3028,14 @@ msgid ""
 "This account is reported in a line of the report but does not exist in the "
 "Chart of Accounts"
 msgstr ""
+"تم إعداد تقرير حول هذا الحساب في بند من التقرير ولكنه غير موجود في شجرة "
+"الحسابات "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "This account is reported in multiple lines of the report"
-msgstr ""
+msgstr "توجد عدة تقارير حول هذا الحساب في عدة بنود من التقرير "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -3043,7 +3076,7 @@ msgstr "الإجمالي %s"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Trade Partners"
-msgstr ""
+msgstr "شركاء تجاريون "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
@@ -3085,7 +3118,7 @@ msgstr "ميزان المراجعة"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_trial_balance_report_handler
 msgid "Trial Balance Custom Handler"
-msgstr ""
+msgstr "معالج مخصص لميزان المراجعة "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_sales_report.py:0
@@ -3099,7 +3132,7 @@ msgstr "مثلث الشكل "
 msgid ""
 "Trying to build account hierarchy from a model different from "
 "account.account: %s"
-msgstr ""
+msgstr "نحاول بناء تسلسل هرمي للحساب من نموذج غير account.account: %s "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -3107,19 +3140,19 @@ msgstr ""
 msgid ""
 "Trying to expand a group for a line which was not generated by a report "
 "line: %s"
-msgstr ""
+msgstr "نحاول تفصيل مجموعة لبند لم يتم إنشاؤه بواسطة بند تقرير: %s "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Trying to expand a line without an expansion function."
-msgstr ""
+msgstr "نحاول تفصيل بند دون استخدام خاصية التفصيل. "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Trying to expand groupby results on lines without a groupby value."
-msgstr ""
+msgstr "نحاول تفصيل نتائج خاصية groupby دون قيمة groupby. "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_journal_report.py:0
@@ -3128,7 +3161,7 @@ msgstr ""
 msgid ""
 "Trying to use the journal line expand function on a line that is not linked "
 "to a journal."
-msgstr ""
+msgstr "نحاول استخدام خاصية تفصيل بند اليومية في بند غير مرتبط بدفتر يومية. "
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_unaffected_earnings0
@@ -3177,7 +3210,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Unknown date scope: %s"
-msgstr ""
+msgstr "نطاق البيانات غير معروف: %s "
 
 #. module: account_reports
 #: model:account.report,name:account_reports.multicurrency_revaluation_report
@@ -3260,7 +3293,7 @@ msgstr "عند التحديد، سوف تظهر المجاميع الكلية و
 msgid ""
 "Whether or not we have to make provisions for the selected foreign "
 "currencies."
-msgstr "إذا ما كان علينا إنشاء أحكام للعملات الأجنبية المختارة أم لا. "
+msgstr "ما إذا كان علينا إنشاء أحكام للعملات الأجنبية المختارة أم لا. "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -3271,13 +3304,13 @@ msgstr "مع القيود بحالة المسودة "
 #: code:addons/account_reports/models/account_general_ledger.py:0
 #, python-format
 msgid "Wrong ID for general ledger line to expand: %s"
-msgstr ""
+msgstr "المعرّف غير صحيح لبند دفتر الأستاذ العام لتفصيله: %s "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_partner_ledger.py:0
 #, python-format
 msgid "Wrong ID for partner ledger line to expand: %s"
-msgstr ""
+msgstr "المعرّف غير صحيح لبند دفتر الأستاذ الخاص بالشريك لتفصيله: %s "
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -3307,7 +3340,7 @@ msgstr "أي"
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:account_reports.setup_financial_year_opening_form
 msgid "days after period"
-msgstr "الأيام بعد الفترة "
+msgstr "أيام بعد الفترة "
 
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__2_months
@@ -3322,14 +3355,14 @@ msgstr "كل 4 شهور "
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template
 msgid "having a starting balance different than the previous ending balance"
-msgstr ""
+msgstr "أن يكون الرصيد الافتتاحي مختلفاً عن الرصيد الختامي السابق "
 
 #. module: account_reports
 #. openerp-web
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "in the next period."
-msgstr ""
+msgstr "في الفترة القادمة. "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template
@@ -3387,7 +3420,7 @@ msgstr "قيود يومية غير مُرحلة"
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "were carried over to this line from previous period."
-msgstr ""
+msgstr "تم ترحيلها إلى هذا البند من الفترة السابقة. "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template
@@ -3399,14 +3432,14 @@ msgstr "والذي لا ينتج عن أي من كشف الحساب البنكي
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "will be carried over to"
-msgstr ""
+msgstr "سيتم ترحيلها إلى "
 
 #. module: account_reports
 #. openerp-web
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "will be carried over to this line in the next period."
-msgstr ""
+msgstr "سيتم ترحيلها إلى هذا البند في الفترة التالية. "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template
@@ -3418,7 +3451,7 @@ msgstr "-> دفتر الأستاذ العام "
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_general_ledger_report
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_partner_ledger_report
 msgid "⇒ Journal Items"
-msgstr ""
+msgstr "⇒ عناصر اليومية "
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template

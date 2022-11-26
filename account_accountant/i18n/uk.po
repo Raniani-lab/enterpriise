@@ -27,6 +27,8 @@ msgid ""
 "%(display_name_html)s with an open amount of %(open_amount)s will be fully "
 "reconciled by the transaction."
 msgstr ""
+"%(display_name_html)s з відкритою сумою %(open_amount)s буде повністю "
+"узгоджено транзакцією."
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
@@ -35,6 +37,8 @@ msgid ""
 "%(display_name_html)s with an open amount of %(open_amount)s will be reduced"
 " by %(amount)s."
 msgstr ""
+"%(display_name_html)s з відкритою сумою %(open_amount)s буде зменшено на "
+"%(amount)s."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_form
@@ -806,7 +810,7 @@ msgid ""
 msgstr ""
 "З будь-якого перегляду списку, оберіть кілька записів і список можна буде "
 "редагувати. Якщо ви оновите мобільний, обрані записи оновлюються усі одразу."
-" Використовуйте функцію для оновлення кілько записів у журналі із головної "
+" Використовуйте функцію для оновлення кількох записів у журналі із головної "
 "бухгалтерської книги або будь-якого перегляду журналу."
 
 #. module: account_accountant
@@ -902,6 +906,9 @@ msgid ""
 "Valid: The bank transaction can be validated.\n"
 "Reconciled: The bank transaction has already been processed. Nothing left to do."
 msgstr ""
+"Недійсна: Банківську транзакцію неможливо підтвердити, оскільки тимчасовий рахунок все ще задіяний.\n"
+"Дійсна: Банківську транзакцію можна підтвердити.\n"
+"Узгоджено: Банківську транзакцію повністю оброблено. Більше нічого робити."
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_company__invoicing_switch_threshold
@@ -1144,7 +1151,7 @@ msgstr "Співставлені транзакції"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__matching_rules_allow_auto_reconcile
 msgid "Matching Rules Allow Auto Reconcile"
-msgstr ""
+msgstr "Правила співставлення дозволяють автоматичне узгодження"
 
 #. module: account_accountant
 #. openerp-web
@@ -1201,7 +1208,7 @@ msgstr "Немає вкладених файлів."
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "No statement"
-msgstr ""
+msgstr "Немає виписок"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__tax_lock_date
@@ -1218,13 +1225,14 @@ msgid ""
 "No users, including Advisers, can edit accounts prior to and inclusive of "
 "this date. Use it for fiscal year locking for example."
 msgstr ""
-"Жоден користувач, включаючи радників, не може редагувати рахунки включно до "
-"цієї дати. Можете використовувати цю дату для фіксації річного балансу."
+"Жоден користувач, включаючи консультантів, не може редагувати рахунки "
+"включно до цієї дати. Можете використовувати цю дату для фіксації річного "
+"балансу."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Not Matched"
-msgstr ""
+msgstr "Немає співставлень"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -1256,20 +1264,20 @@ msgstr "Відкрита сума"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
 msgid "Open Amount in Currency"
-msgstr ""
+msgstr "Відкрита сума у валюті"
 
 #. module: account_accountant
 #. openerp-web
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Open balance"
-msgstr "Відкрити баланс"
+msgstr "Відкритий баланс"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Open balance: %s"
-msgstr ""
+msgstr "Відкритий баланс: %s"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
@@ -1308,7 +1316,7 @@ msgstr "Кредитор"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Payable:"
-msgstr ""
+msgstr "Кредитор:"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_payment_form_inherit_account_accountant
@@ -1348,7 +1356,7 @@ msgstr "Оберіть дату блокування"
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Please install the 'Accounting Reports' module."
-msgstr ""
+msgstr "Встановіть додаток 'Бухгалтерські звіти'."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1378,6 +1386,8 @@ msgid ""
 "Prevents Journal entries creation prior to the defined date. Except for "
 "Accountants users."
 msgstr ""
+"Запобігає створенню записів у журналі до визначеної дати. За винятком "
+"користувачів бухгалтерів."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__tax_lock_date
@@ -1406,7 +1416,7 @@ msgstr "Дебітор"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Receivable:"
-msgstr ""
+msgstr "Дебітор:"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
@@ -1416,7 +1426,7 @@ msgstr "Отримано"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__reco_models_widget
 msgid "Reco Models Widget"
-msgstr ""
+msgstr "Віджет Моделі Reco"
 
 #. module: account_accountant
 #. openerp-web
@@ -1433,7 +1443,7 @@ msgstr "Узгодження"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__reconcile_model_id
 msgid "Reconcile Model"
-msgstr ""
+msgstr "Модель узгодження"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__reconciled
@@ -1456,7 +1466,7 @@ msgstr "Запишіть вартість товарів, проданих у в
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Ref"
-msgstr "Зв’язок"
+msgstr "Реф."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -1491,7 +1501,7 @@ msgstr "Зберегти і створити новий"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Save and New"
-msgstr "Зберегти та Нове"
+msgstr "Зберегти та створити новий"
 
 #. module: account_accountant
 #. openerp-web
@@ -1503,7 +1513,7 @@ msgstr "Оберіть партнера"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__selected_aml_ids
 msgid "Selected Aml"
-msgstr ""
+msgstr "Вибрані Aml"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -1534,42 +1544,42 @@ msgstr "Деякі поля не визначені"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_id
 msgid "Source Aml"
-msgstr ""
+msgstr "Джерело Aml"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_move_id
 msgid "Source Aml Move"
-msgstr ""
+msgstr "Переміщення джерела Aml"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_aml_move_name
 msgid "Source Aml Move Name"
-msgstr ""
+msgstr "Назва переміщення джерела Aml"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_amount_currency
 msgid "Source Amount Currency"
-msgstr ""
+msgstr "Валюта суми джерела"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_balance
 msgid "Source Balance"
-msgstr ""
+msgstr "Баланс джерела"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_credit
 msgid "Source Credit"
-msgstr ""
+msgstr "Кредит джерела"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__source_debit
 msgid "Source Debit"
-msgstr ""
+msgstr "Дебет джерела"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__st_line_id
 msgid "St Line"
-msgstr ""
+msgstr "Рядок виписки"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_fiscal_year__date_from
@@ -1584,7 +1594,7 @@ msgstr "Початкова дата, включена у звітний пері
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__state
 msgid "State"
-msgstr "Область"
+msgstr "Статус"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
@@ -1610,7 +1620,7 @@ msgstr "Податок"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_base_amount_currency
 msgid "Tax Base Amount Currency"
-msgstr ""
+msgstr "Валюта суми податкової бази"
 
 #. module: account_accountant
 #. openerp-web
@@ -1637,7 +1647,7 @@ msgstr "Дата блокування податкової декларації"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_tag_ids
 msgid "Tax Tag"
-msgstr ""
+msgstr "Тег податку"
 
 #. module: account_accountant
 #. openerp-web
@@ -1675,6 +1685,8 @@ msgid ""
 "The invoice %(display_name_html)s with an open amount of %(open_amount)s "
 "will be entirely paid by the transaction."
 msgstr ""
+"Рахунок %(display_name_html)s з відкритою сумою  %(open_amount)s буде "
+"повністю оплачено транзакцією."
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
@@ -1683,6 +1695,8 @@ msgid ""
 "The invoice %(display_name_html)s with an open amount of %(open_amount)s "
 "will be reduced by %(amount)s."
 msgstr ""
+"Рахунок %(display_name_html)s з відкритою сумою %(open_amount)s буде "
+"зменшено на %(amount)s."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1715,6 +1729,8 @@ msgid ""
 "This bank transaction has been automatically validated using the "
 "reconciliation model '%s'."
 msgstr ""
+"Цю банківську транзакцію автоматично затверджено через модель узгодження "
+"'%s'."
 
 #. module: account_accountant
 #. openerp-web
@@ -1753,7 +1769,7 @@ msgstr "Перевірити"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 msgid "To check"
-msgstr ""
+msgstr "Перевірити"
 
 #. module: account_accountant
 #. openerp-web
@@ -1765,7 +1781,7 @@ msgstr "Щоби прискорити узгодження, визначте"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__todo_command
 msgid "Todo Command"
-msgstr ""
+msgstr "Команда зробити"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
@@ -1775,7 +1791,7 @@ msgstr "Операція"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__transaction_currency_id
 msgid "Transaction Currency"
-msgstr ""
+msgstr "Валюта транзакції"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/account_move.py:0
@@ -1788,13 +1804,13 @@ msgstr "Рахунки переміщення"
 #: model:ir.cron,cron_name:account_accountant.auto_reconcile_bank_statement_line
 #: model:ir.cron,name:account_accountant.auto_reconcile_bank_statement_line
 msgid "Try to reconcile automatically your statement lines"
-msgstr ""
+msgstr "Спробуйте автоматично узгодити ваші рядки виписки"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/res_company.py:0
 #, python-format
 msgid "Unreconciled statements lines"
-msgstr ""
+msgstr "Неузгоджені рядки виписки"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget__state__valid
@@ -1824,7 +1840,7 @@ msgstr "Перегляд"
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget.xml:0
 #, python-format
 msgid "View models"
-msgstr ""
+msgstr "Переглянути моделі"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__wizard_id
@@ -1835,7 +1851,7 @@ msgstr "Помічник"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__company_currency_id
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__company_currency_id
 msgid "Wizard Company Currency"
-msgstr ""
+msgstr "Помічник валюти компанії"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/reconciliation_widget.py:0
@@ -1867,6 +1883,8 @@ msgid ""
 "You can't have maximum one auto balance line at the same time in the bank "
 "reconciliation widget"
 msgstr ""
+"У віджеті узгодження банківської вписки не можна одночасно мати максимум "
+"один рядок автоматичного балансу"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
@@ -1875,6 +1893,8 @@ msgid ""
 "You can't have multiple liquidity journal item at the same time in the bank "
 "reconciliation widget"
 msgstr ""
+"Ви не можете мати кілька елементів журналу ліквідності одночасно у віджеті "
+"узгодження банківської виписки"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
@@ -1883,6 +1903,8 @@ msgid ""
 "You can't have multiple times the same journal item in the bank "
 "reconciliation widget"
 msgstr ""
+"Ви не можете мати кілька разів той самий елемент журналу у віджеті "
+"узгодження банківської виписки"
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/account_move.py:0
@@ -1898,14 +1920,14 @@ msgstr ""
 #: code:addons/account_accountant/wizard/account_change_lock_date.py:0
 #, python-format
 msgid "You cannot set a lock date in the future."
-msgstr ""
+msgstr "Ви не можете встановити дату блокування у майбутньому."
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid ""
 "You might want to %(btn_start)sfully reconcile%(btn_end)s the document."
-msgstr ""
+msgstr "Ви певно хочете %(btn_start)sповністю узгодити документ%(btn_end)s."
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
@@ -1913,13 +1935,15 @@ msgstr ""
 msgid ""
 "You might want to make a %(btn_start)spartial reconciliation%(btn_end)s "
 "instead."
-msgstr ""
+msgstr "Ви певно хочете %(btn_start)sнатомість узгодити%(btn_end)s частково."
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "You might want to record a %(btn_start)spartial payment%(btn_end)s."
 msgstr ""
+"Ви певно хочете записати %(btn_start)sчасткове узгодження "
+"платежу%(btn_end)s."
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
@@ -1927,6 +1951,8 @@ msgstr ""
 msgid ""
 "You might want to set the invoice as %(btn_start)sfully paid%(btn_end)s."
 msgstr ""
+"Ви певно хочете встановити рахунок як %(btn_start)sповністю "
+"узгоджений%(btn_end)s."
 
 #. module: account_accountant
 #. openerp-web
@@ -1938,7 +1964,7 @@ msgstr "Ви узгодили"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__aml
 msgid "aml"
-msgstr ""
+msgstr "aml"
 
 #. module: account_accountant
 #. openerp-web
@@ -1950,32 +1976,32 @@ msgstr "та підписані клієнти"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__auto_balance
 msgid "auto_balance"
-msgstr ""
+msgstr "auto_balance"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_reconcile_model_widget_wizard
 msgid "e.g. Bank Fees"
-msgstr "наприклад, банківська комісія"
+msgstr "напр., Банківська комісія"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__early_payment
 msgid "early_payment"
-msgstr ""
+msgstr "early_payment"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__liquidity
 msgid "liquidity"
-msgstr ""
+msgstr "liquidity"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__manual
 msgid "manual"
-msgstr ""
+msgstr "manual"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__new_aml
 msgid "new_aml"
-msgstr ""
+msgstr "new_aml"
 
 #. module: account_accountant
 #. openerp-web
@@ -2001,7 +2027,7 @@ msgstr "секунд на операцію."
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__tax_line
 msgid "tax_line"
-msgstr ""
+msgstr "tax_line"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view

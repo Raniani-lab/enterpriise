@@ -342,7 +342,7 @@ msgstr "رمز الاشتراك: "
 #: code:addons/web_enterprise/static/src/webclient/home_menu/home_menu.xml:0
 #, python-format
 msgid "TIP"
-msgstr ""
+msgstr "نصيحة "
 
 #. module: web_enterprise
 #. openerp-web

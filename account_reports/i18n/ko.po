@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Sarah Park, 2022
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Sarah Park, 2022\n"
 "Language-Team: Korean (https://www.transifex.com/odoo/teams/41243/ko/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -518,14 +519,14 @@ msgstr "활동"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_mail_activity_type
 msgid "Activity Type"
-msgstr "활동 유형"
+msgstr "업무 유형"
 
 #. module: account_reports
 #. openerp-web
 #: code:addons/account_reports/static/src/js/account_reports.js:0
 #, python-format
 msgid "Add a note"
-msgstr "노트 추가하기"
+msgstr "메모 추가"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__totals_below_sections
@@ -1392,7 +1393,7 @@ msgstr "전 분기 말"
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Ending Balance :"
-msgstr ""
+msgstr "기말 잔액 :"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -1926,7 +1927,7 @@ msgstr "분개 항목"
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Journal Items for Tax Audit"
-msgstr "세금 감사를 위한 분개 항목"
+msgstr "세무 감사용 분개 항목"
 
 #. module: account_reports
 #: model:account.report,name:account_reports.journal_report
@@ -2312,7 +2313,7 @@ msgstr "기타 소득"
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
 #, python-format
 msgid "Outstanding Payments/Receipts"
-msgstr ""
+msgstr "미처리 지급액/수납액"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -2703,12 +2704,12 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Sort By Date"
-msgstr ""
+msgstr "날짜 순 정렬"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Sort by date"
-msgstr ""
+msgstr "날짜 순 정렬"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
@@ -2742,7 +2743,7 @@ msgstr "다음에서 시작"
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Starting Balance :"
-msgstr ""
+msgstr "기초 잔액 :"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_manager__summary
@@ -2786,7 +2787,7 @@ msgstr "세금 신고"
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Tax Grids"
-msgstr "세금표"
+msgstr "세율표"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_tax_unit__vat
@@ -2824,7 +2825,7 @@ msgstr "세금 보고서 제어 오류"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.setup_financial_year_opening_form
 msgid "Tax Return"
-msgstr ""
+msgstr "세무 신고"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_tax_unit
@@ -3089,7 +3090,7 @@ msgstr ""
 msgid ""
 "Trying to use the journal line expand function on a line that is not linked "
 "to a journal."
-msgstr ""
+msgstr "분개장과 연계되지 않은 항목에서 분개 항목 확장 기능을 사용합니다."
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_unaffected_earnings0
@@ -3160,7 +3161,7 @@ msgstr "부가가치세 번호"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_company_form
 msgid "VAT Units"
-msgstr ""
+msgstr "VAT 단위"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_move.py:0
@@ -3268,7 +3269,7 @@ msgstr "전혀"
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:account_reports.setup_financial_year_opening_form
 msgid "days after period"
-msgstr "기간 이후 일"
+msgstr "일 이후 "
 
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__2_months

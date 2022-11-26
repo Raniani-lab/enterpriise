@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Abe Manyo, 2022
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:43+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Abe Manyo, 2022\n"
 "Language-Team: Indonesian (https://www.transifex.com/odoo/teams/41243/id/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -121,7 +122,7 @@ msgstr ""
 #. module: website_appointment
 #: model:ir.model.fields,field_description:website_appointment.field_appointment_type__can_publish
 msgid "Can Publish"
-msgstr ""
+msgstr "Dapat Dipublikasikan"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.snippet_options
@@ -148,7 +149,7 @@ msgstr "Kontak kami"
 #. module: website_appointment
 #: model:ir.model.fields,field_description:website_appointment.field_appointment_type__cover_properties
 msgid "Cover Properties"
-msgstr ""
+msgstr "Properti Sampul"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_progress_bar
@@ -165,7 +166,7 @@ msgstr ""
 #. module: website_appointment
 #: model:ir.model.fields,field_description:website_appointment.field_appointment_type__is_published
 msgid "Is Published"
-msgstr ""
+msgstr "Dipublikasikan"
 
 #. module: website_appointment
 #: model:ir.actions.act_window,name:website_appointment.appointment_type_action_add_simplified
@@ -213,7 +214,7 @@ msgstr "Terpublikasi"
 #. module: website_appointment
 #: model:ir.model.fields,field_description:website_appointment.field_appointment_type__is_seo_optimized
 msgid "SEO optimized"
-msgstr ""
+msgstr "Dioptimalkan SEO"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_select_operator

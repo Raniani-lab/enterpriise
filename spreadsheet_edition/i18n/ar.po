@@ -837,4 +837,4 @@ msgstr "سجلات القائمة. "
 #. module: spreadsheet_edition
 #: model:ir.model,name:spreadsheet_edition.model_ir_websocket
 msgid "websocket message handling"
-msgstr ""
+msgstr "التعامل مع رسائل websocket "

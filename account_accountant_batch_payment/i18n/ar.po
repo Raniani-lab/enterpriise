@@ -30,7 +30,7 @@ msgstr ""
 #. module: account_accountant_batch_payment
 #: model:ir.model,name:account_accountant_batch_payment.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
+msgstr "أداة التسوية البنكية لبند كشف حساب واحد "
 
 #. module: account_accountant_batch_payment
 #: code:addons/account_accountant_batch_payment/models/account_batch_payment.py:0

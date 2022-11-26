@@ -1241,7 +1241,7 @@ msgstr "Pengikut"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__is_published
 msgid "Is Published"
-msgstr ""
+msgstr "Dipublikasikan"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
@@ -1591,7 +1591,7 @@ msgstr "Masa lalu"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_question__placeholder
 msgid "Placeholder"
-msgstr ""
+msgstr "Placeholder"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info

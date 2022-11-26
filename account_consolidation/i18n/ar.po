@@ -1489,7 +1489,7 @@ msgstr "ميزان المراجعة"
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_consolidation_trial_balance_report_handler
 msgid "Trial Balance Custom Handler"
-msgstr ""
+msgstr "معالج مخصص لميزان المراجعة "
 
 #. module: account_consolidation
 #: code:addons/account_consolidation/models/consolidation_period.py:0

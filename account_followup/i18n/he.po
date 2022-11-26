@@ -459,7 +459,7 @@ msgstr "נושא האימייל"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Exclude from Follow-ups"
-msgstr ""
+msgstr "אל תכלול בדוחות מעקב"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__email_recipient_ids
@@ -588,7 +588,7 @@ msgstr "יש צורך בפעולה"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Invoice No."
-msgstr ""
+msgstr "מזהה חשבונית "
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_move_line__invoice_date

@@ -487,9 +487,19 @@ file_filter = hr_payroll_expense/i18n/<lang>.po
 source_file = hr_payroll_expense/i18n/hr_payroll_expense.pot
 source_lang = en
 
+[odoo-16.hr_payroll_fleet]
+file_filter = hr_payroll_fleet/i18n/<lang>.po
+source_file = hr_payroll_fleet/i18n/hr_payroll_fleet.pot
+source_lang = en
+
 [odoo-16.hr_payroll_holidays]
 file_filter = hr_payroll_holidays/i18n/<lang>.po
 source_file = hr_payroll_holidays/i18n/hr_payroll_holidays.pot
+source_lang = en
+
+[odoo-16.hr_payroll_planning]
+file_filter = hr_payroll_planning/i18n/<lang>.po
+source_file = hr_payroll_planning/i18n/hr_payroll_planning.pot
 source_lang = en
 
 [odoo-16.hr_recruitment_extract]

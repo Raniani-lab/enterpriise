@@ -1,7 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from datetime import datetime
+
+from odoo import api, fields, models, _
+from odoo.exceptions import UserError
 
 
 class L10nLuYearlyTaxReportManual(models.Model):
@@ -65,3 +68,40 @@ class L10nLuYearlyTaxReportManual(models.Model):
             record.report_section_181 = record.report_section_176 + record.report_section_180
             record.report_section_148 = record.report_section_131 + record.report_section_139 + record.report_section_147
             record.report_section_154 = record.report_section_148 + record.report_section_150 + record.report_section_151
+
+    def export_pdf(self):
+        self.ensure_one()
+        if self.env.company.account_fiscal_country_id.code != "LU":
+            raise UserError(_("The fiscal country of your active company is not Luxembourg. This export is not available for other countries."))
+
+        file_ref_data = {
+            'ecdf_prefix': self.env.company.ecdf_prefix,
+            'datetime': datetime.now().strftime('%Y%m%dT%H%M%S%f')[:-4]
+        }
+        filename = '{ecdf_prefix}X{datetime}'.format(**file_ref_data)
+        form_data = self._lu_get_declarations({})['declarations'][0]['declaration_singles']['forms'][0]
+        field_values = form_data['field_values']
+        appendix = form_data.get('tables')
+        user = self.env['res.users'].browse(self.env.uid)
+        render_values = {
+            'field_values': field_values,
+            'appendix': appendix[0] if appendix else None,
+            'year': form_data['year'],
+            'company_name': self.env.company.name,
+            'context_timestamp': lambda t: fields.Datetime.context_timestamp(self.with_context(tz=user.tz), t),
+            'company': self.env.company,
+        }
+        report, dummy = self.env["ir.actions.report"].sudo()._render_qweb_pdf(
+            self.env.ref('l10n_lu_reports_annual_vat_2023.action_report_l10n_lu_tax_report'),
+            data=render_values)
+
+        attachment = self.env['ir.attachment'].create({
+            'name': f'{filename}.pdf',
+            'raw': report,
+            'res_id': self.id,
+            'res_model': self._name,
+            'type': 'binary',
+            'mimetype': 'application/pdf',
+        })
+        if attachment:
+            self.message_post(attachment_ids=attachment.ids)

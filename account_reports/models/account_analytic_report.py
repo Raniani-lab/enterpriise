@@ -56,7 +56,7 @@ class AccountReport(models.AbstractModel):
         plans = self.env['account.analytic.plan'].browse(options.get('analytic_plans_groupby'))
         for plan in plans:
             account_list = []
-            accounts = self.env['account.analytic.account'].search([('root_plan_id', '=', plan.id)])
+            accounts = self.env['account.analytic.account'].search([('plan_id', 'child_of', plan.id)])
             for account in accounts:
                 account_list.append(account.id)
             analytic_headers.append({

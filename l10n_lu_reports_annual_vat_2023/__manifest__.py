@@ -11,8 +11,15 @@ Annual VAT report for Luxembourg - 2023 update
     'category': 'Accounting/Accounting',
     'depends': ['l10n_lu_reports'],
     'data': [
+        'report/l10n_lu_annual_report.xml',
+        'report/l10n_lu_annual_report_pdf_template.xml',
         'views/l10n_lu_yearly_tax_report_manual_views.xml',
     ],
+    'assets': {
+        'web.report_assets_common': [
+            'l10n_lu_reports_annual_vat_2023/static/src/scss/**/*',
+        ],
+    },
     'license': 'OEEL-1',
     'auto_install': True,
 }

@@ -1127,6 +1127,8 @@ class SaleOrder(models.Model):
         all_invoiceable_lines._reset_subscription_qty_to_invoice()
         if auto_commit:
             self.env.cr.commit()
+        if not automatic and 'draft' in set(all_subscriptions.order_line.invoice_lines.move_id.mapped('state')):
+            raise UserError('You cannot create another draft invoice. Please cancel it first and try again.')
         for subscription in all_subscriptions:
             # We only invoice contract in sale state. Locked contracts are invoiced in advance. They are frozen.
             if not (subscription.state == 'sale' and subscription.stage_category == 'progress'):

@@ -5,6 +5,7 @@ from . import models
 from . import report
 from . import controllers
 from . import wizard
+from . import populate
 
 
 def create_field_service_project(env):

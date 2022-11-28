@@ -316,3 +316,34 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
             self.subscription._create_recurring_invoice()
             self.assertEqual(self.subscription.next_invoice_date, datetime.date(2021, 2, 3), 'the next invoice date should be updated')
             self.assertEqual(self.subscription.invoice_count, 1)
+
+    def test_partial_payment(self):
+        subscription = self.subscription
+        subscription.action_confirm()
+
+        # /payment/pay will create a transaction, validate it and post-process-it
+        reference = "CONTRACT-%s-%s" % (subscription.id, datetime.datetime.now().strftime('%y%m%d_%H%M%S%f'))
+        values = {
+            'amount': subscription.amount_total / 2.,  # partial amount
+            'provider_id': self.provider.id,
+            'operation': 'offline',
+            'currency_id': subscription.currency_id.id,
+            'reference': reference,
+            'token_id': False,
+            'partner_id': subscription.partner_id.id,
+            'partner_country_id': subscription.partner_id.country_id.id,
+            'invoice_ids': [],
+            'sale_order_ids': [(6, 0, subscription.ids)],
+            'state': 'draft',
+        }
+        tx = self.env["payment.transaction"].create(values)
+        tx._set_done()
+        tx._finalize_post_processing()
+
+        self.assertEqual(tx.state, 'done')
+        self.assertFalse(tx.invoice_ids, "We should not have created an invoice")
+        self.assertFalse(subscription.invoice_ids, "We should not have created an invoice on the subscription")
+        self.assertEqual(
+            subscription.start_date, subscription.next_invoice_date,
+            "The subscription next invoice date should not have been updated"
+        )

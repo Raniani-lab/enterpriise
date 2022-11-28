@@ -41,9 +41,19 @@ class PaymentTransaction(models.Model):
 
         return self.filtered(_filter_invoiced_subscription)
 
+    def _get_partial_payment_subscription_transaction(self):
+        # filter transaction which are only a partial payment of subscription
+        tx_with_partial_payments = self.env["payment.transaction"]
+        for tx in self:
+            for order in tx.sale_order_ids.filtered(lambda so: so.state in ('sale', 'done') and so.is_subscription):
+                if order.currency_id.compare_amounts(tx.amount, order.amount_total) != 0:
+                    tx_with_partial_payments |= tx
+        return tx_with_partial_payments
+
     def _invoice_sale_orders(self):
         """ Override of payment to increase next_invoice_date when needed. """
         transaction_to_invoice = self - self._get_invoiced_subscription_transaction()
+        transaction_to_invoice -= self._get_partial_payment_subscription_transaction()
         # Update the next_invoice_date of SOL when the payment_mode is 'success_payment'
         # We have to do it here because when a client confirms and pay a SO from the portal with success_payment
         # The next_invoice_date won't be update by the reconcile_pending_transaction callback (do_payment is not called)

@@ -34,11 +34,16 @@ class TestTaxReport(TestAccountReportsCommon):
             'country_id': cls.fiscal_country.id,
         })
 
+        cls.foreign_country = cls.env['res.country'].create({
+            'name': "The Principality of Zeon",
+            'code': 'PZ',
+        })
+
         # Setup fiscal data
         cls.company_data['company'].write({
             'country_id': cls.fiscal_country.id,
             'account_fiscal_country_id': cls.fiscal_country.id,
-            'state_id': cls. country_state_1.id, # Not necessary at the moment; put there for consistency and robustness with possible future changes
+            'state_id': cls.country_state_1.id,  # Not necessary at the moment; put there for consistency and robustness with possible future changes
             'account_tax_periodicity': 'trimester',
         })
 
@@ -210,7 +215,7 @@ class TestTaxReport(TestAccountReportsCommon):
             [(10, cls.tax_account_1, False), (60, cls.tax_account_1, True), (-5, cls.tax_account_2, True)]
         )
 
-        # Create a fiscal_position to automatically map the default tax for partner b to our test tax
+        # Create a fiscal_position to automatically map the default tax for partner "Mare Cel" to our test tax
         cls.foreign_vat_fpos = cls.env['account.fiscal.position'].create({
             'name': "Test fpos",
             'auto_apply': True,
@@ -582,19 +587,15 @@ class TestTaxReport(TestAccountReportsCommon):
         foreing VAT fiscal position, this fiscal position should be selected by default in the
         report's options.
         """
-        new_country = self.env['res.country'].create({
-            'name': "The Principality of Zeon",
-            'code': 'PZ',
-        })
         new_tax_report = self.env['account.report'].create({
             'name': "",
-            'country_id': new_country.id,
+            'country_id': self.foreign_country.id,
             'root_report_id': self.env.ref("account.generic_tax_report").id,
             'column_ids': [Command.create({'name': 'balance', 'sequence': 1, 'expression_label': 'balance'})]
         })
         foreign_vat_fpos = self.env['account.fiscal.position'].create({
             'name': "Test fpos",
-            'country_id': new_country.id,
+            'country_id': self.foreign_country.id,
             'foreign_vat': '422211',
         })
         options = self._generate_options(new_tax_report, fields.Date.from_string('2021-01-01'), fields.Date.from_string('2021-03-31'))
@@ -1609,19 +1610,15 @@ class TestTaxReport(TestAccountReportsCommon):
         """ 'all' fiscal position option sometimes must be reset or enforced in order to keep
         the report consistent. We check those cases here.
         """
-        foreign_country = self.env['res.country'].create({
-            'name': "The Principality of Zeon",
-            'code': 'PZ',
-        })
         foreign_tax_report = self.env['account.report'].create({
             'name': "",
-            'country_id': foreign_country.id,
+            'country_id': self.foreign_country.id,
             'root_report_id': self.env.ref("account.generic_tax_report").id,
             'column_ids': [Command.create({'name': 'balance', 'sequence': 1, 'expression_label': 'balance'})],
         })
         foreign_vat_fpos = self.env['account.fiscal.position'].create({
             'name': "Test fpos",
-            'country_id': foreign_country.id,
+            'country_id': self.foreign_country.id,
             'foreign_vat': '422211',
         })
 
@@ -2174,3 +2171,114 @@ class TestTaxReport(TestAccountReportsCommon):
         # Calling the action_periodic_vat_entries method should return the existing tax closing entry.
         vat_closing_action = self.env['account.generic.tax.report.handler'].action_periodic_vat_entries(options)
         self.assertEqual(vat_closing_move.id, vat_closing_action['res_id'])
+
+    def setup_multi_vat_context(self):
+        """Setup 2 tax reports, taxes and partner to represent a multiVat context in which both taxes affect both tax report"""
+
+        def get_positive_tag(report_line):
+            return report_line.expression_ids._get_matching_tags().filtered(lambda x: not x.tax_negate)
+
+        self.env['account.fiscal.position'].create({
+            'name': "FP With foreign VAT number",
+            'country_id': self.foreign_country.id,
+            'foreign_vat': '422211',
+            'auto_apply': True,
+        })
+
+        local_tax_report, foreign_tax_report = self.env['account.report'].create([
+            {
+                'name': "The Local Tax Report",
+                'country_id': self.company_data['company'].account_fiscal_country_id.id,
+                'root_report_id': self.env.ref('account.generic_tax_report').id,
+                'column_ids': [Command.create({'name': 'balance', 'sequence': 1, 'expression_label': 'balance'})],
+            },
+            {
+                'name': "The Foreign Tax Report",
+                'country_id': self.foreign_country.id,
+                'root_report_id': self.env.ref('account.generic_tax_report').id,
+                'column_ids': [Command.create({'name': 'balance', 'sequence': 1, 'expression_label': 'balance', })],
+            },
+        ])
+        local_tax_report_base_line = self._create_tax_report_line("base_local", local_tax_report, sequence=1, code="base_local", tag_name="base_local")
+        local_tax_report_tax_line = self._create_tax_report_line("tax_local", local_tax_report, sequence=2, code="tax_local", tag_name="tax_local")
+        foreign_tax_report_base_line = self._create_tax_report_line("base_foreign", foreign_tax_report, sequence=1, code="base_foreign", tag_name="base_foreign")
+        foreign_tax_report_tax_line = self._create_tax_report_line("tax_foreign", foreign_tax_report, sequence=2, code="tax_foreign", tag_name="tax_foreign")
+
+        local_tax_affecting_foreign_tax_report = self.env['account.tax'].create({'name': "The local tax affecting the foreign report", 'amount': 20})
+        foreign_tax_affecting_local_tax_report = self.env['account.tax'].create({
+            'name': "The foreign tax affecting the local tax report",
+            'amount': 20,
+            'country_id': self.foreign_country.id,
+        })
+        for tax in (local_tax_affecting_foreign_tax_report, foreign_tax_affecting_local_tax_report):
+            base_line, tax_line = tax.invoice_repartition_line_ids
+            base_line.tag_ids = get_positive_tag(local_tax_report_base_line) + get_positive_tag(foreign_tax_report_base_line)
+            tax_line.tag_ids = get_positive_tag(local_tax_report_tax_line) + get_positive_tag(foreign_tax_report_tax_line)
+
+        local_partner = self.partner_a
+        foreign_partner = self.partner_a.copy()
+        foreign_partner.country_id = self.foreign_country
+
+        return {
+            'tax_report': (local_tax_report, foreign_tax_report,),
+            'taxes': (local_tax_affecting_foreign_tax_report, foreign_tax_affecting_local_tax_report,),
+            'partners': (local_partner, foreign_partner),
+        }
+
+    def test_local_tax_can_affect_foreign_tax_report(self):
+        setup_data = self.setup_multi_vat_context()
+        local_tax_report, foreign_tax_report = setup_data['tax_report']
+        local_tax_affecting_foreign_tax_report, _ = setup_data['taxes']
+        local_partner, _ = setup_data['partners']
+
+        invoice = self.init_invoice('out_invoice', partner=local_partner, invoice_date='2022-12-01', post=True, amounts=[100], taxes=local_tax_affecting_foreign_tax_report)
+        options = self._generate_options(local_tax_report, invoice.date, invoice.date)
+        self.assertLinesValues(
+            local_tax_report._get_lines(options),
+            #   Name                                        Balance
+            [   0,                                                1],
+            [
+                ("base_local",                                100.0),
+                ("tax_local",                                  20.0),
+            ],
+        )
+
+        options = self._generate_options(foreign_tax_report, invoice.date, invoice.date)
+        self.assertLinesValues(
+            foreign_tax_report._get_lines(options),
+            #   Name                                          Balance
+            [   0,                                                1],
+            [
+                ("base_foreign",                              100.0),
+                ("tax_foreign",                                20.0),
+            ],
+        )
+
+    def test_foreign_tax_can_affect_local_tax_report(self):
+        setup_data = self.setup_multi_vat_context()
+        local_tax_report, foreign_tax_report = setup_data['tax_report']
+        _, foreign_tax_affecting_local_tax_report = setup_data['taxes']
+        _, foreign_partner = setup_data['partners']
+
+        invoice = self.init_invoice('out_invoice', partner=foreign_partner, invoice_date='2022-12-01', post=True, amounts=[100], taxes=foreign_tax_affecting_local_tax_report)
+        options = self._generate_options(local_tax_report, invoice.date, invoice.date)
+        self.assertLinesValues(
+            local_tax_report._get_lines(options),
+            #   Name                                        Balance
+            [   0,                                                1],
+            [
+                ("base_local",                                100.0),
+                ("tax_local",                                  20.0),
+            ],
+        )
+
+        options = self._generate_options(foreign_tax_report, invoice.date, invoice.date)
+        self.assertLinesValues(
+            foreign_tax_report._get_lines(options),
+            #   Name                                          Balance
+            [   0,                                                1],
+            [
+                ("base_foreign",                              100.0),
+                ("tax_foreign",                                20.0),
+            ],
+        )

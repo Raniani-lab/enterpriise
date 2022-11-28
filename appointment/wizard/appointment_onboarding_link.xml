@@ -10,7 +10,7 @@
                 <field name="appointment_type_id" invisible="1"/>
                 <div>
                     <field name="base_book_url" class="me-1 oe_inline text-black" readonly="1" nolabel="1"/>
-                    <field name="short_code" class="w-25 oe_inline" required="1" nolabel="1"/>
+                    <field name="short_code" class="w-25 oe_inline o_input" required="1" nolabel="1"/>
                 </div>
                 <footer>
                     <a role="button" class="btn btn-primary" t-on-click="onSaveAndCopy">Copy Link &amp; Close</a>

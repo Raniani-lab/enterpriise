@@ -6,7 +6,7 @@
     'version': '1.0',
     'category': 'Human Resources/Recruitment',
     'summary': 'Extract data from CV scans to fill application forms automatically',
-    'depends': ['hr_recruitment', 'iap_mail', 'mail_enterprise'],
+    'depends': ['hr_recruitment', 'iap_extract', 'iap_mail', 'mail_enterprise'],
     'data': [
         'data/ir_cron_data.xml',
         'data/config_parameter_endpoint.xml',

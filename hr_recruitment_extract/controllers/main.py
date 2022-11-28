@@ -12,7 +12,7 @@ class HrRecruitmentExtractController(http.Controller):
         applicant_to_update = request.env['hr.applicant'].sudo().search([
             ('extract_remote_id', '=', extract_remote_id),
             ('extract_state', 'in', ['waiting_extraction', 'extract_not_ready']),
-            ('is_first_stage', '=', True)])
+            ('is_in_extractable_state', '=', True)])
         for applicant in applicant_to_update:
             applicant._check_ocr_status()
         return 'OK'

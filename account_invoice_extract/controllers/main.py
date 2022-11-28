@@ -12,5 +12,5 @@ class AccountInvoiceExtractController(http.Controller):
                                                                     ('extract_state', 'in', ['waiting_extraction', 'extract_not_ready']),
                                                                     ('state', '=', 'draft')])
         for move in move_to_update:
-            move._check_status()
+            move._check_ocr_status()
         return 'OK'

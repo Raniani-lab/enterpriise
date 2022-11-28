@@ -31,7 +31,7 @@
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['waiting_upload', 'waiting_extraction'])]}">
                     All fields will be automated by Artificial Intelligence, it might take 5 seconds.
-                    <button type="object" name="check_status" class="btn btn-link">
+                    <button type="object" name="check_ocr_status" class="btn btn-link">
                         <i class="fa fa-fw o_button_icon fa-arrow-right"/>
                         Refresh
                     </button>
@@ -42,7 +42,7 @@
                             ('state', 'not in', ['draft']),
                             ('extract_state', 'not in', ['extract_not_ready'])]}">
                     The data extraction is not finished yet. The extraction usually takes between 5 and 10 seconds.
-                    <button type="object" name="check_status" class="btn btn-link">
+                    <button type="object" name="check_ocr_status" class="btn btn-link">
                         <i class="fa fa-fw o_button_icon fa-arrow-right"/>
                         Refresh
                     </button>
@@ -82,10 +82,10 @@
         <field name="inherit_id" ref="hr_expense.hr_expense_view_expenses_analysis_tree"/>
         <field name="arch" type="xml">
             <xpath expr="//tree" position="attributes">
-                <attribute name="decoration-muted">state_processed</attribute>
+                <attribute name="decoration-muted">extract_state_processed</attribute>
             </xpath>
             <xpath expr="//tree" position="inside">
-                <field name="state_processed" invisible="1"/>
+                <field name="extract_state_processed" invisible="1"/>
             </xpath>
         </field>
     </record>

@@ -2,7 +2,7 @@
 
 from odoo import api, fields, models, _, _lt, Command
 from odoo.addons.iap.tools import iap_tools
-from odoo.exceptions import AccessError, UserError
+from odoo.exceptions import AccessError
 from odoo.tools import float_compare, mute_logger
 from odoo.tools.misc import clean_context
 from difflib import SequenceMatcher
@@ -15,40 +15,6 @@ _logger = logging.getLogger(__name__)
 PARTNER_AUTOCOMPLETE_ENDPOINT = 'https://partner-autocomplete.odoo.com'
 EXTRACT_ENDPOINT = 'https://iap-extract.odoo.com'
 CLIENT_OCR_VERSION = 120
-
-# list of result id that can be sent by iap-extract
-SUCCESS = 0
-NOT_READY = 1
-ERROR_INTERNAL = 2
-ERROR_NOT_ENOUGH_CREDIT = 3
-ERROR_DOCUMENT_NOT_FOUND = 4
-ERROR_NO_DOCUMENT_NAME = 5
-ERROR_UNSUPPORTED_IMAGE_FORMAT = 6
-ERROR_FILE_NAMES_NOT_MATCHING = 7
-ERROR_NO_CONNECTION = 8
-ERROR_SERVER_IN_MAINTENANCE = 9
-ERROR_PASSWORD_PROTECTED = 10
-ERROR_TOO_MANY_PAGES = 11
-ERROR_INVALID_ACCOUNT_TOKEN = 12
-ERROR_UNSUPPORTED_IMAGE_SIZE = 14
-ERROR_NO_PAGE_COUNT = 15
-ERROR_CONVERSION_PDF2IMAGE = 16
-
-ERROR_MESSAGES = {
-    ERROR_INTERNAL: _lt("An error occurred"),
-    ERROR_DOCUMENT_NOT_FOUND: _lt("The document could not be found"),
-    ERROR_NO_DOCUMENT_NAME: _lt("No document name provided"),
-    ERROR_UNSUPPORTED_IMAGE_FORMAT: _lt("Unsupported image format"),
-    ERROR_FILE_NAMES_NOT_MATCHING: _lt("You must send the same quantity of documents and file names"),
-    ERROR_NO_CONNECTION: _lt("Server not available. Please retry later"),
-    ERROR_SERVER_IN_MAINTENANCE: _lt("Server is currently under maintenance. Please retry later"),
-    ERROR_PASSWORD_PROTECTED: _lt("Your PDF file is protected by a password. The OCR can't extract data from it"),
-    ERROR_TOO_MANY_PAGES: _lt("Your invoice is too heavy to be processed by the OCR. Try to reduce the number of pages and avoid pages with too many text"),
-    ERROR_INVALID_ACCOUNT_TOKEN: _lt("The 'invoice_ocr' IAP account token is invalid. Please delete it to let Odoo generate a new one or fill it with a valid token."),
-    ERROR_UNSUPPORTED_IMAGE_SIZE: _lt("The document has been rejected because it is too small"),
-    ERROR_NO_PAGE_COUNT: _lt("Invalid PDF (Unable to get page count)"),
-    ERROR_CONVERSION_PDF2IMAGE: _lt("Invalid PDF (Conversion error)"),
-}
 
 
 class AccountInvoiceExtractionWords(models.Model):
@@ -70,25 +36,13 @@ class AccountInvoiceExtractionWords(models.Model):
 
 
 class AccountMove(models.Model):
-    _inherit = ['account.move']
+    _name = 'account.move'
+    _inherit = ['extract.mixin', 'account.move']
 
-    @api.depends('extract_status_code')
-    def _compute_error_message(self):
+    @api.depends('state')
+    def _compute_is_in_extractable_state(self):
         for record in self:
-            if record.extract_status_code not in (SUCCESS, NOT_READY):
-                record.extract_error_message = str(ERROR_MESSAGES.get(record.extract_status_code, ERROR_MESSAGES[ERROR_INTERNAL]))
-            else:
-                record.extract_error_message = ''
-
-    @api.depends('state', 'extract_state', 'message_main_attachment_id')
-    def _compute_show_send_button(self):
-        for record in self:
-            record.extract_can_show_send_button = (
-                record.state == 'draft'
-                and record.message_main_attachment_id
-                and record.extract_state == 'no_extract_requested'
-                and not record._check_digitalization_mode(record.company_id, record.move_type, 'no_send')
-            )
+            record.is_in_extractable_state = record.state == 'draft'
 
     @api.depends(
         'state',
@@ -108,23 +62,8 @@ class AccountMove(models.Model):
                 )
             )
 
-    extract_state = fields.Selection([('no_extract_requested', 'No extract requested'),
-                                      ('not_enough_credit', 'Not enough credit'),
-                                      ('error_status', 'An error occurred'),
-                                      ('waiting_upload', 'Waiting upload'),
-                                      ('waiting_extraction', 'Waiting extraction'),
-                                      ('extract_not_ready', 'waiting extraction, but it is not ready'),
-                                      ('waiting_validation', 'Waiting validation'),
-                                      ('to_validate', 'To validate'),
-                                      ('done', 'Completed flow')],
-                                     'Extract state', default='no_extract_requested', required=True, copy=False)
-    extract_status_code = fields.Integer("Status code", copy=False)
-    extract_error_message = fields.Text("Error message", compute=_compute_error_message)
-    extract_remote_id = fields.Integer("Id of the request to IAP-OCR", default="-1", copy=False, readonly=True)
     extract_word_ids = fields.One2many("account.invoice_extract.words", inverse_name="invoice_id", copy=False)
     extract_attachment_id = fields.Many2one('ir.attachment', readonly=True, ondelete='set null', copy=False)
-
-    extract_can_show_send_button = fields.Boolean("Can show the ocr send button", compute=_compute_show_send_button)
     extract_can_show_banners = fields.Boolean("Can show the ocr banners", compute=_compute_show_banners)
 
     extract_detected_layout = fields.Integer("Extract Detected Layout Id", readonly=True)
@@ -132,7 +71,7 @@ class AccountMove(models.Model):
 
     def action_reload_ai_data(self):
         try:
-            self._check_status(force_write=True)
+            self._check_ocr_status(force_write=True)
         except Exception as e:
             _logger.error("Error while reloading AI data on account.move %d: %s", self.id, e)
             raise AccessError(_lt("Couldn't reload AI data."))
@@ -141,10 +80,10 @@ class AccountMove(models.Model):
         return ['|', ('company_id', '=', False), ('company_id', '=', self.company_id.id)]
 
     @api.model
-    def _contact_iap_extract(self, local_endpoint, params):
+    def _contact_iap_extract(self, pathinfo, params):
         params['version'] = CLIENT_OCR_VERSION
         endpoint = self.env['ir.config_parameter'].sudo().get_param('account_invoice_extract_endpoint', EXTRACT_ENDPOINT)
-        return iap_tools.iap_jsonrpc(endpoint + local_endpoint, params=params)
+        return iap_tools.iap_jsonrpc(endpoint + '/api/extract/invoice/1/' + pathinfo, params=params)
 
     @api.model
     def _contact_iap_partner_autocomplete(self, local_endpoint, params):
@@ -194,6 +133,13 @@ class AccountMove(models.Model):
             res.append((20, self._ocr_create_document_from_attachment))
         return res
 
+    def _get_ocr_module_name(self):
+        return 'account_invoice_extract'
+
+    def _get_ocr_option_can_extract(self):
+        self.ensure_one()
+        return not self._check_digitalization_mode(self.company_id, self.move_type, 'no_send')
+
     def _get_update_invoice_from_attachment_decoders(self, invoice):
         # OVERRIDE
         res = super()._get_update_invoice_from_attachment_decoders(invoice)
@@ -201,19 +147,30 @@ class AccountMove(models.Model):
             res.append((20, self._ocr_update_invoice_from_attachment))
         return res
 
-    def action_manual_send_for_digitization(self):
-        for rec in self:
-            rec.env['iap.account']._send_iap_bus_notification(
-                service_name='invoice_ocr',
-                title=_lt("Bill is being Digitized"))
-        self.extract_state = 'waiting_upload'
-        self.env.ref('account_invoice_extract.ir_cron_ocr_parse')._trigger()
+    def _get_validation_domain(self):
+        base_domain = super()._get_validation_domain()
+        return base_domain + [('state', '=', 'posted')]
 
-    @api.model
-    def _cron_parse(self):
-        for rec in self.search([('extract_state', '=', 'waiting_upload')]):
-            rec.retry_ocr()
-            rec.env.cr.commit()
+    def _get_validation_fields(self):
+        return [
+            'total', 'subtotal', 'global_taxes', 'global_taxes_amount', 'date', 'due_date', 'invoice_id', 'partner',
+            'VAT_Number', 'currency', 'payment_ref', 'iban', 'SWIFT_code', 'merged_lines', 'invoice_lines',
+        ]
+
+    def _retry_ocr_success_callback(self):
+        super()._retry_ocr_success_callback()
+        attachments = self.message_main_attachment_id
+        self.extract_attachment_id = attachments
+
+    def _try_to_check_ocr_status(self):
+        """ Try to check the extract status of the invoice."""
+        self.ensure_one()
+        try:
+            with self.env.cr.savepoint():
+                self._check_ocr_status()
+            self.env.cr.commit()
+        except Exception as e:
+            _logger.error("Couldn't check status of account.move with id %d: %s", self.id, str(e))
 
     def get_user_infos(self):
         user_infos = {
@@ -227,77 +184,10 @@ class AccountMove(models.Model):
         return user_infos
 
     def retry_ocr(self):
-        """Retry to contact iap to submit the first attachment in the chatter"""
+        """ Call parent method retry_ocr only if self is an invoice. """
         self.ensure_one()
-        if self._check_digitalization_mode(self.company_id, self.move_type, 'no_send'):
-            return
-        attachments = self.message_main_attachment_id
-        if (
-                attachments.exists() and
-                self.is_invoice() and
-                self.extract_state in ['no_extract_requested', 'waiting_upload', 'not_enough_credit', 'error_status']
-        ):
-            account_token = self.env['iap.account'].get('invoice_ocr')
-            user_infos = self.get_user_infos()
-            #this line contact iap to create account if this is the first request. This allow iap to give free credits if the database is elligible
-            self.env['iap.account'].get_credits('invoice_ocr')
-            if not account_token.account_token:
-                self.extract_state = 'error_status'
-                self.extract_status_code = ERROR_INVALID_ACCOUNT_TOKEN
-                return
-            baseurl = self.get_base_url()
-            webhook_url = f"{baseurl}/account_invoice_extract/request_done"
-            params = {
-                'account_token': account_token.account_token,
-                'dbuuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
-                'documents': [x.datas.decode('utf-8') for x in attachments],
-                'user_infos': user_infos,
-                'webhook_url': webhook_url,
-            }
-            try:
-                result = self._contact_iap_extract('/api/extract/invoice/1/parse', params)
-                self.extract_status_code = result['status_code']
-                if result['status_code'] == SUCCESS:
-                    if self.env['ir.config_parameter'].sudo().get_param("account_invoice_extract.already_notified", True):
-                        self.env['ir.config_parameter'].sudo().set_param("account_invoice_extract.already_notified", False)
-                    self.extract_state = 'waiting_extraction'
-                    self.extract_remote_id = result['document_id']
-                    self.extract_attachment_id = attachments
-                elif result['status_code'] == ERROR_NOT_ENOUGH_CREDIT:
-                    self.send_no_credit_notification()
-                    self.extract_state = 'not_enough_credit'
-                else:
-                    self.extract_state = 'error_status'
-                    _logger.warning('There was an issue while doing the OCR operation on this file. Error: -1')
-
-            except AccessError:
-                self.extract_state = 'error_status'
-                self.extract_status_code = ERROR_NO_CONNECTION
-
-    def send_no_credit_notification(self):
-        """
-        Notify about the number of credit.
-        In order to avoid to spam people each hour, an ir.config_parameter is set
-        """
-        #If we don't find the config parameter, we consider it True, because we don't want to notify if no credits has been bought earlier.
-        already_notified = self.env['ir.config_parameter'].sudo().get_param("account_invoice_extract.already_notified", True)
-        if already_notified:
-            return
-        try:
-            mail_template = self.env.ref('account_invoice_extract.account_invoice_extract_no_credit')
-        except ValueError:
-            #if the mail template has not been created by an upgrade of the module
-            return
-        iap_account = self.env['iap.account'].search([('service_name', '=', "invoice_ocr")], limit=1)
-        if iap_account:
-            # Get the email address of the creators of the records
-            res = self.env['res.users'].search_read([('id', '=', 2)], ['email'])
-            if res:
-                email_values = {
-                    'email_to': res[0]['email']
-                }
-                mail_template.send_mail(iap_account.id, force_send=True, email_values=email_values)
-                self.env['ir.config_parameter'].sudo().set_param("account_invoice_extract.already_notified", True)
+        if self.is_invoice():
+            super().retry_ocr()
 
     def get_validation(self, field):
         """
@@ -357,6 +247,8 @@ class AccountMove(models.Model):
             text_to_send["content"] = self.partner_bank_id.acc_number if self.partner_bank_id else False
         elif field == "SWIFT_code":
             text_to_send["content"] = self.partner_bank_id.bank_bic if self.partner_bank_id else False
+        elif field == 'merged_lines':
+            return self.env.company.extract_single_line_per_tax
         elif field == "invoice_lines":
             text_to_send = {'lines': []}
             for il in self.invoice_line_ids:
@@ -382,42 +274,15 @@ class AccountMove(models.Model):
 
     @api.model
     def _cron_validate(self):
-        inv_to_validate = self.search([('extract_state', '=', 'to_validate'), ('state', '=', 'posted')])
-        documents = {
-            record.extract_remote_id: {
-                'total': record.get_validation('total'),
-                'subtotal': record.get_validation('subtotal'),
-                'global_taxes': record.get_validation('global_taxes'),
-                'global_taxes_amount': record.get_validation('global_taxes_amount'),
-                'date': record.get_validation('date'),
-                'due_date': record.get_validation('due_date'),
-                'invoice_id': record.get_validation('invoice_id'),
-                'partner': record.get_validation('partner'),
-                'VAT_Number': record.get_validation('VAT_Number'),
-                'currency': record.get_validation('currency'),
-                'payment_ref': record.get_validation('payment_ref'),
-                'iban': record.get_validation('iban'),
-                'SWIFT_code': record.get_validation('SWIFT_code'),
-                'merged_lines': self.env.company.extract_single_line_per_tax,
-                'invoice_lines': record.get_validation('invoice_lines')
-            } for record in inv_to_validate
-        }
-
-        if documents:
-            try:
-                self._contact_iap_extract('/api/extract/invoice/1/validate_batch', params={'documents': documents})
-            except AccessError:
-                pass
-
-        inv_to_validate.extract_state = 'done'
-        inv_to_validate.mapped('extract_word_ids').unlink()  # We don't need word data anymore, we can delete them
+        validated = super()._cron_validate()
+        validated.mapped('extract_word_ids').unlink()  # We don't need word data anymore, we can delete them
+        return validated
 
     def _post(self, soft=True):
         # OVERRIDE
         # On the validation of an invoice, send the different corrected fields to iap to improve the ocr algorithm.
         posted = super()._post(soft)
-        self.extract_state = 'to_validate'
-        self.env.ref('account_invoice_extract.ir_cron_ocr_validate')._trigger()
+        self.validate_ocr()
         return posted
 
     def get_boxes(self):
@@ -691,6 +556,9 @@ class AccountMove(models.Model):
             return self.company_id.currency_id
         return possible_currencies[:1]
 
+    def _get_iap_bus_notification_content(self):
+        return _lt("Bill is being Digitized")
+
     def _get_invoice_lines(self, ocr_results):
         """
         Get write values for invoice lines.
@@ -764,53 +632,11 @@ class AccountMove(models.Model):
 
         return invoice_lines_to_create
 
-    @api.model
-    def check_all_status(self):
-        for record in self.search([('state', '=', 'draft'), ('extract_state', 'in', ['waiting_extraction', 'extract_not_ready'])]):
-            try:
-                with self.env.cr.savepoint():
-                    record._check_status()
-                self.env.cr.commit()
-            except Exception as e:
-                _logger.error("Couldn't check status of account.move with id %d: %s", record.id, str(e))
-
-    def check_status(self):
-        """contact iap to get the actual status of the ocr requests"""
-        if any(rec.extract_state == 'waiting_upload' for rec in self):
-            _logger.info("Manual trigger of the parse cron")
-            try:
-                self.env.ref('account_invoice_extract.ir_cron_ocr_parse')._try_lock()
-                self.env.ref('account_invoice_extract.ir_cron_ocr_parse').sudo().method_direct_trigger()
-            except UserError:
-                _logger.warning("Lock acquiring failed, cron is already running")
-                return
-
-        records_to_update = self.filtered(lambda inv: inv.extract_state in ['waiting_extraction', 'extract_not_ready'] and inv.state == 'draft')
-
-        for record in records_to_update:
-            record._check_status()
-
-        limit = max(0, 20 - len(records_to_update))
-        if limit > 0:
-            records_to_preupdate = self.search([('extract_state', 'in', ['waiting_extraction', 'extract_not_ready']), ('id', 'not in', records_to_update.ids), ('state', '=', 'draft')], limit=limit)
-            for record in records_to_preupdate:
-                try:
-                    with self.env.cr.savepoint():
-                        record._check_status()
-                except Exception as e:
-                    _logger.error("Couldn't check status of account.move with id %d: %s", record.id, str(e))
-
-    def _check_status(self, force_write=False):
+    def _check_ocr_status(self, force_write=False):
         self.ensure_one()
         if self.state == 'draft':
-            params = {
-                'document_id': self.extract_remote_id
-            }
-            result = self._contact_iap_extract('/api/extract/invoice/1/get_result', params=params)
-            self.extract_status_code = result['status_code']
-            if result['status_code'] == SUCCESS:
-                self.extract_state = "waiting_validation"
-                ocr_results = result['results'][0]
+            ocr_results = super()._check_ocr_status()
+            if ocr_results is not None:
                 if 'full_text_annotation' in ocr_results:
                     self.message_main_attachment_id.index_content = ocr_results['full_text_annotation']
                 if 'detected_layout_id' in ocr_results:
@@ -845,10 +671,7 @@ class AccountMove(models.Model):
                                     "word_box_angle": word['coords'][4],
                                 }))
                             self.write({'extract_word_ids': data})
-            elif result['status_code'] == NOT_READY:
-                self.extract_state = 'extract_not_ready'
-            else:
-                self.extract_state = 'error_status'
+        return ocr_results
 
     def _save_form(self, ocr_results, force_write=False):
         date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
@@ -1008,10 +831,3 @@ class AccountMove(models.Model):
                 float_compare(abs(tax_amount_rounding_error), threshold, precision_digits=2) <= 0
             ):
                 self._check_total_amount(total_ocr)
-
-    def buy_credits(self):
-        url = self.env['iap.account'].get_credits_url(base_url='', service_name='invoice_ocr')
-        return {
-            'type': 'ir.actions.act_url',
-            'url': url,
-        }

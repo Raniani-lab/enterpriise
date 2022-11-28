@@ -1,28 +1,17 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from contextlib import contextmanager
-from unittest.mock import patch
-
-from odoo.addons.base.models.ir_cron import ir_cron
 from odoo.addons.hr.tests.common import TestHrCommon
-from odoo.addons.hr_recruitment_extract.models.hr_applicant import ERROR_NOT_ENOUGH_CREDIT, NOT_READY, SUCCESS
-from odoo.addons.iap.models.iap_account import IapAccount
-from odoo.addons.iap.tools import iap_tools
-from odoo.sql_db import Cursor
+from odoo.addons.iap_extract.models.extract_mixin import ERROR_NOT_ENOUGH_CREDIT, NOT_READY, SUCCESS
+from odoo.addons.iap_extract.tests.test_extract_mixin import TestExtractMixin
 
 
-class TestRecruitmentExtractProcess(TestHrCommon):
+class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
 
-        # Avoid passing on the iap.account's `get` method to avoid the cr.commit breaking the test transaction.
-        cls.env['iap.account'].create([{
-            'service_name': 'invoice_ocr',
-            'company_ids': [(6, 0, cls.env.user.company_id.ids)],
-        }])
         cls.applicant = cls.env['hr.applicant'].create({'name': 'John Doe'})
         cls.attachment = cls.env['ir.attachment'].create({
             'name': "an attachment",
@@ -41,19 +30,6 @@ class TestRecruitmentExtractProcess(TestHrCommon):
             'document_id': 1234567,
         }
 
-    @contextmanager
-    def _mock_iap_extract(self, extract_response):
-        def _trigger(self, *args, **kwargs):
-            # A call to _trigger will directly run the cron
-            self.method_direct_trigger()
-
-        # The module iap is committing the transaction when creating an IAP account, we mock it to avoid that
-        with patch.object(iap_tools, 'iap_jsonrpc', side_effect=lambda *args, **kwargs: extract_response), \
-                patch.object(IapAccount, 'get_credits', side_effect=lambda *args, **kwargs: 1), \
-                patch.object(Cursor, 'commit', side_effect=lambda *args, **kwargs: None), \
-                patch.object(ir_cron, '_trigger', side_effect=_trigger, autospec=True):
-            yield
-
     def test_auto_send_for_digitization(self):
         # test the `auto_send` mode for digitization does send the attachment upon upload
         self.env.company.recruitment_extract_show_ocr_option_selection = 'auto_send'
@@ -63,7 +39,7 @@ class TestRecruitmentExtractProcess(TestHrCommon):
             self.applicant.message_post(attachment_ids=[self.attachment.id])
 
         self.assertEqual(self.applicant.extract_state, 'waiting_extraction')
-        self.assertTrue(self.applicant.state_processed)
+        self.assertTrue(self.applicant.extract_state_processed)
         self.assertFalse(self.applicant.partner_name)
         self.assertFalse(self.applicant.email_from)
         self.assertFalse(self.applicant.partner_phone)

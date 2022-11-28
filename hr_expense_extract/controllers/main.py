@@ -13,5 +13,5 @@ class HrExpenseExtractController(http.Controller):
             ('extract_state', 'in', ['waiting_extraction', 'extract_not_ready']),
             ('state', '=', 'draft')])
         for expense in expense_to_update:
-            expense._check_status()
+            expense._check_ocr_status()
         return 'OK'

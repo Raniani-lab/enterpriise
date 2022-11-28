@@ -6,10 +6,9 @@
     'version': '1.0',
     'category': 'Accounting/Accounting',
     'summary': 'Extract data from invoice scans to fill them automatically',
-    'depends': ['account', 'iap_mail', 'mail_enterprise'],
+    'depends': ['account', 'iap_extract', 'iap_mail', 'mail_enterprise'],
     'data': [
         'security/ir.model.access.csv',
-        'data/mail_template_data.xml',
         'data/config_parameter_endpoint.xml',
         'data/extraction_status.xml',
         'data/res_config_settings_views.xml',

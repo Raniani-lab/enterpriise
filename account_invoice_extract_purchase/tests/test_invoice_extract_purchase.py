@@ -1,15 +1,15 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.addons.account_invoice_extract.models.account_invoice import SUCCESS
-from odoo.addons.account_invoice_extract.tests import common as account_invoice_extract_common
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
+from odoo.addons.iap_extract.models.extract_mixin import SUCCESS
+from odoo.addons.iap_extract.tests.test_extract_mixin import TestExtractMixin
 from odoo.tests import tagged
 from odoo.tests.common import Form
 
 
 @tagged('post_install', '-at_install')
-class TestInvoiceExtractPurchase(AccountTestInvoicingCommon, account_invoice_extract_common.MockIAP):
+class TestInvoiceExtractPurchase(AccountTestInvoicingCommon, TestExtractMixin):
     @classmethod
     def setUpClass(cls, chart_template_ref=None):
         super().setUpClass(chart_template_ref=chart_template_ref)
@@ -20,18 +20,6 @@ class TestInvoiceExtractPurchase(AccountTestInvoicingCommon, account_invoice_ext
         config = cls.env['res.config.settings'].create({})
         config.show_line_subtotals_tax_selection = "tax_included"
         config.execute()
-
-        # Avoid passing on the iap.account's `get` method to avoid the cr.commit breaking the test transaction.
-        cls.env['iap.account'].create([
-            {
-                'service_name': 'partner_autocomplete',
-                'company_ids': [(6, 0, cls.company_data['company'].ids)],
-            },
-            {
-                'service_name': 'invoice_ocr',
-                'company_ids': [(6, 0, cls.company_data['company'].ids)],
-            },
-        ])
 
         cls.vendor = cls.env['res.partner'].create({'name': 'Odoo', 'vat': 'BE0477472701'})
         cls.product1 = cls.env.ref('product.product_product_8')
@@ -111,8 +99,8 @@ class TestInvoiceExtractPurchase(AccountTestInvoicingCommon, account_invoice_ext
         extract_response = self.get_default_extract_response()
         extract_response['results'][0]['purchase_order']['selected_values'][0]['content'] = self.purchase_order.name
 
-        with self.mock_iap_extract(extract_response, {}):
-            invoice._check_status()
+        with self._mock_iap_extract(extract_response, {}):
+            invoice._check_ocr_status()
 
         self.assertTrue(invoice.id in self.purchase_order.invoice_ids.ids)
 
@@ -121,8 +109,8 @@ class TestInvoiceExtractPurchase(AccountTestInvoicingCommon, account_invoice_ext
         extract_response = self.get_default_extract_response()
         extract_response['results'][0]['supplier']['selected_value']['content'] = self.purchase_order.partner_id.name
 
-        with self.mock_iap_extract(extract_response, {}):
-            invoice._check_status()
+        with self._mock_iap_extract(extract_response, {}):
+            invoice._check_ocr_status()
 
         self.assertTrue(invoice.id in self.purchase_order.invoice_ids.ids)
 
@@ -135,8 +123,8 @@ class TestInvoiceExtractPurchase(AccountTestInvoicingCommon, account_invoice_ext
         extract_response['results'][0]['subtotal']['selected_value']['content'] = 200
         extract_response['results'][0]['invoice_lines'] = extract_response['results'][0]['invoice_lines'][:2]
 
-        with self.mock_iap_extract(extract_response, {}):
-            invoice._check_status()
+        with self._mock_iap_extract(extract_response, {}):
+            invoice._check_ocr_status()
 
         self.assertTrue(invoice.id in self.purchase_order.invoice_ids.ids)
         self.assertEqual(invoice.amount_total, 200)
@@ -150,8 +138,8 @@ class TestInvoiceExtractPurchase(AccountTestInvoicingCommon, account_invoice_ext
         extract_response['results'][0]['subtotal']['selected_value']['content'] = 150
         extract_response['results'][0]['invoice_lines'] = [extract_response['results'][0]['invoice_lines'][1]]
 
-        with self.mock_iap_extract(extract_response, {}):
-            invoice._check_status()
+        with self._mock_iap_extract(extract_response, {}):
+            invoice._check_ocr_status()
 
         self.assertTrue(invoice.id in self.purchase_order.invoice_ids.ids)
         # The PO should be used instead of the OCR result
@@ -161,7 +149,7 @@ class TestInvoiceExtractPurchase(AccountTestInvoicingCommon, account_invoice_ext
         invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         extract_response = self.get_default_extract_response()
 
-        with self.mock_iap_extract(extract_response, {}):
-            invoice._check_status()
+        with self._mock_iap_extract(extract_response, {}):
+            invoice._check_ocr_status()
 
         self.assertTrue(invoice.id not in self.purchase_order.invoice_ids.ids)

@@ -1,29 +1,17 @@
-from contextlib import contextmanager
-
-from unittest.mock import patch
-
-from odoo.addons.base.models.ir_cron import ir_cron
 from odoo.addons.hr_expense.tests.common import TestExpenseCommon
-from odoo.addons.hr_expense_extract.models.hr_expense import ERROR_NOT_ENOUGH_CREDIT, NOT_READY, SUCCESS
-from odoo.addons.iap.models.iap_account import IapAccount
-from odoo.addons.iap.tools import iap_tools
-from odoo.sql_db import Cursor
+from odoo.addons.iap_extract.models.extract_mixin import ERROR_NOT_ENOUGH_CREDIT, NOT_READY, SUCCESS
+from odoo.addons.iap_extract.tests.test_extract_mixin import TestExtractMixin
 from odoo.tests import tagged
 from odoo.tools import float_compare
 
 
 @tagged('post_install', '-at_install')
-class TestExpenseExtractProcess(TestExpenseCommon):
+class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
 
     @classmethod
     def setUpClass(cls):
         super().setUpClass()
 
-        # Avoid passing on the iap.account's `get` method to avoid the cr.commit breaking the test transaction.
-        cls.env['iap.account'].create([{
-            'service_name': 'invoice_ocr',
-            'company_ids': [(6, 0, cls.env.user.company_id.ids)],
-        }])
         # Set the standard price to 0 to take the price from extract
         cls.product_a.write({'standard_price': 0})
         cls.expense = cls.env['hr.expense'].create({
@@ -50,19 +38,6 @@ class TestExpenseExtractProcess(TestExpenseCommon):
             'document_id': 1234567,
         }
 
-    @contextmanager
-    def _mock_iap_extract(self, extract_response):
-        def _trigger(self, *args, **kwargs):
-            # A call to _trigger will directly run the cron
-            self.method_direct_trigger()
-
-        # The module iap is committing the transaction when creating an IAP account, we mock it to avoid that
-        with patch.object(iap_tools, 'iap_jsonrpc', side_effect=lambda *args, **kwargs: extract_response), \
-                patch.object(IapAccount, 'get_credits', side_effect=lambda *args, **kwargs: 1), \
-                patch.object(Cursor, 'commit', side_effect=lambda *args, **kwargs: None), \
-                patch.object(ir_cron, '_trigger', side_effect=_trigger, autospec=True):
-            yield
-
     def test_auto_send_for_digitization(self):
         # test that the uploaded attachment is sent to the extract server when `auto_send` is set
         self.env.company.expense_extract_show_ocr_option_selection = 'auto_send'
@@ -76,7 +51,7 @@ class TestExpenseExtractProcess(TestExpenseCommon):
             self.expense.message_post(attachment_ids=[self.attachment.id])
 
         self.assertEqual(self.expense.extract_state, 'waiting_extraction')
-        self.assertTrue(self.expense.state_processed)
+        self.assertTrue(self.expense.extract_state_processed)
         self.assertEqual(self.expense.predicted_category, 'miscellaneous')
         self.assertFalse(self.expense.total_amount)
         self.assertFalse(self.expense.reference)
@@ -155,7 +130,7 @@ class TestExpenseExtractProcess(TestExpenseCommon):
         status_response = {'status_code': NOT_READY}
 
         with self._mock_iap_extract(status_response):
-            self.expense._check_status()
+            self.expense._check_ocr_status()
 
         self.assertEqual(self.expense.extract_state, 'extract_not_ready')
         self.assertFalse(self.expense.extract_can_show_send_button)
@@ -167,7 +142,7 @@ class TestExpenseExtractProcess(TestExpenseCommon):
 
         with self._mock_iap_extract(extract_response):
             self.expense.message_post(attachment_ids=[self.attachment.id])
-            self.expense._check_status()
+            self.expense._check_ocr_status()
 
         self.assertEqual(self.expense.extract_state, 'waiting_validation')
 

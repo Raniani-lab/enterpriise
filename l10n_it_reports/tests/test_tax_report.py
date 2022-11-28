@@ -21,9 +21,9 @@ class TestItalianTaxReport(TestAccountReportsCommon):
             'country_id': cls.env.ref('base.it').id,
         })
 
-        cls.tax_4a = AccountTax.with_context(active_test=False).search([('description', '=', '4am'), ('company_id.id', '=', company.id)])
+        cls.tax_4a = cls.env.ref(f'l10n_it.{cls.env.company.id}_4am')
         cls.tax_4a.active = True
-        cls.tax_4v = AccountTax.with_context(active_test=False).search([('description', '=', '4v'), ('company_id.id', '=', company.id)])
+        cls.tax_4v = cls.env.ref(f'l10n_it.{cls.env.company.id}_4v')
         cls.tax_4v.tax_group_id.property_tax_payable_account_id = cls.company_data['default_account_payable']
         cls.tax_4v.active = True
 

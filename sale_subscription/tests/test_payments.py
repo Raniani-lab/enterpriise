@@ -276,10 +276,11 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
             "The draft invoice has to be kept as we committed after the payment succeeded "
             "(the next invoice date has already been updated)."
         )
+        self.subscription.order_line.invoice_lines.move_id._post()
         expected_next_invoice_date = self.subscription.start_date + self.subscription.recurrence_id.get_recurrence_timedelta()
         self.assertEqual(
             self.subscription.next_invoice_date, expected_next_invoice_date,
-            "The next invoice date should have been updated, as the draft invoice was kept after the payment succeeded",
+            "The next invoice date should have been updated, as the invoice was kept after the payment succeeded",
         )
 
     @mute_logger('odoo.addons.sale_subscription.models.sale_order')
@@ -314,6 +315,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
         with freeze_time("2021-01-03"):
             self.subscription.action_confirm()
             self.subscription._create_recurring_invoice()
+            self.subscription.order_line.invoice_lines.move_id._post()
             self.assertEqual(self.subscription.next_invoice_date, datetime.date(2021, 2, 3), 'the next invoice date should be updated')
             self.assertEqual(self.subscription.invoice_count, 1)
 

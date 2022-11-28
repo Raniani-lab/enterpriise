@@ -1973,7 +1973,7 @@ class AccountReport(models.Model):
                 'has_sublines': column_has_sublines,
                 'report_line_id': line.id,
                 'class': 'number' if isinstance(column_value, (int, float)) else '',
-                'is_zero': column_value is None or (figure_type in ('float', 'integer', 'monetary') and self.is_zero(column_value, **formatter_params)),
+                'is_zero': column_value is None or (figure_type in ('float', 'integer', 'monetary') and self.is_zero(column_value, figure_type=figure_type, **formatter_params)),
             }
 
             if info_popup_data:
@@ -3746,6 +3746,9 @@ class AccountReport(models.Model):
         if figure_type == 'monetary':
             currency = currency or self.env.company.currency_id
             digits = None
+        elif figure_type == 'integer':
+            currency = None
+            digits = 0
         elif figure_type in ('date', 'datetime'):
             return format_date(self.env, value)
         else:

@@ -1,6 +1,6 @@
 from contextlib import contextmanager
 
-from mock import patch
+from unittest.mock import patch
 
 from odoo.addons.base.models.ir_cron import ir_cron
 from odoo.addons.hr_expense.tests.common import TestExpenseCommon

@@ -436,7 +436,8 @@ class MrpProductionWorkcenterLine(models.Model):
             for wo in (self.production_id | backorder).workorder_ids:
                 if wo.state in ('done', 'cancel'):
                     continue
-                wo.current_quality_check_id.update(wo._defaults_from_move(wo.move_id))
+                if not wo.current_quality_check_id or not wo.current_quality_check_id.move_line_id:
+                    wo.current_quality_check_id.update(wo._defaults_from_move(wo.move_id))
                 if wo.move_id:
                     wo.current_quality_check_id._update_component_quantity()
             if not self.env.context.get('no_start_next'):

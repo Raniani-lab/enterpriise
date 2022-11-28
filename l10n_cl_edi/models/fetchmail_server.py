@@ -258,7 +258,7 @@ class FetchmailServer(models.Model):
                 with self.env['account.move'].with_context(
                         default_move_type=default_move_type, allowed_company_ids=[company_id],
                         account_predictive_bills_disable_prediction=True)._get_edi_creation() as invoice_form:
-                    msgs.append(error)
+                    msgs.append(str(error))
                     invoice_form.partner_id = partner
                     invoice_form.l10n_latam_document_type_id = document_type
                     invoice_form.l10n_latam_document_number = document_number

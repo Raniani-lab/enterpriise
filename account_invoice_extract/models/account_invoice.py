@@ -222,6 +222,7 @@ class AccountMove(models.Model):
     def _cron_parse(self):
         for rec in self.search([('extract_state', '=', 'waiting_upload')]):
             rec.retry_ocr()
+            rec.env.cr.commit()
 
     def get_user_infos(self):
         user_infos = {

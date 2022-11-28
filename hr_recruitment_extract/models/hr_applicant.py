@@ -263,6 +263,7 @@ class HrApplicant(models.Model):
     def _cron_parse(self):
         for rec in self.search([('extract_state', '=', 'waiting_upload')]):
             rec.retry_ocr()
+            rec.env.cr.commit()
 
     def retry_ocr(self):
         """Retry to contact iap to submit the first attachment in the chatter"""

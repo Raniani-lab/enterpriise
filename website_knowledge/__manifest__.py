@@ -13,7 +13,6 @@
         'views/knowledge_templates_frontend.xml',
     ],
     'installable': True,
-    'application': False,
     'auto_install': True,
     'license': 'OEEL-1',
     'assets': {

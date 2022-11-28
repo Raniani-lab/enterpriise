@@ -46,7 +46,6 @@ Prerequisites:
     encode in in the payroll Settings, with the .pem file and the related password, if any.
 
     """,
-    'auto_install': False,
     'data':[
         'security/ir.model.access.csv',
         'data/ir_cron_data.xml',

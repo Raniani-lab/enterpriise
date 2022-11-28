@@ -7,7 +7,6 @@
     'summary': 'Spreadsheet Dashboard edition',
     'description': 'Spreadsheet Dashboard edition',
     'depends': ['spreadsheet_dashboard', 'spreadsheet_edition'],
-    'demo': [],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

@@ -10,9 +10,7 @@
     'data': [
         "data/dashboards.xml",
     ],
-    'demo': [],
     'installable': True,
     'auto_install': ['account_accountant'],
     'license': 'OEEL-1',
-    'assets': {}
 }

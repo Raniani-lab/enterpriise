@@ -9,9 +9,7 @@
     'data': [
         "data/dashboards.xml",
     ],
-    'demo': [],
     'installable': True,
     'auto_install': ['mrp_account_enterprise'],
     'license': 'OEEL-1',
-    'assets': {}
 }

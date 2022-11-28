@@ -5,7 +5,6 @@
     'icon': '/l10n_hu/static/description/icon.png',
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
-    'author': 'Odoo S.A.',
     'description': """
         Accounting reports for Hungary
     """,

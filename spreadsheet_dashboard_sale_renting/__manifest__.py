@@ -9,9 +9,7 @@
     'data': [
         "data/dashboards.xml",
     ],
-    'demo': [],
     'installable': True,
     'auto_install': ['sale_renting'],
     'license': 'OEEL-1',
-    'assets': {}
 }

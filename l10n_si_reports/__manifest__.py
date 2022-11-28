@@ -5,7 +5,6 @@
     'icon': '/l10n_si/static/description/icon.png',
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
-    'author': 'Odoo S.A.',
     'description': """ Base module for Slovenian reports """,
     'depends': [
         'l10n_si',

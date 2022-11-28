@@ -10,7 +10,6 @@
 Keeps track of all appointments related to applicants.
 """,
     'depends': ['appointment', 'hr_recruitment'],
-    'application': False,
     'auto_install': True,
     'license': 'OEEL-1',
 }

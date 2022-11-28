@@ -14,6 +14,5 @@
         'voip_onsip',
         'website_helpdesk_livechat',
     ],
-    'application': False,
     'license': 'OEEL-1',
 }

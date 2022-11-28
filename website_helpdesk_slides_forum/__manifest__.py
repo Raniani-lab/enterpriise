@@ -4,7 +4,6 @@
 {
     'name': 'Website Slides Forum Helpdesk',
     'category': 'Services/Helpdesk',
-    'summary': '',
     'depends': [
         'website_helpdesk',
         'website_slides_forum',

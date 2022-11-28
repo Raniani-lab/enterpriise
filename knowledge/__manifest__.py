@@ -34,7 +34,6 @@
     ],
     'installable': True,
     'application': True,
-    'auto_install': False,
     'license': 'OEEL-1',
     'post_init_hook': '_init_private_article_per_user',
     'assets': {

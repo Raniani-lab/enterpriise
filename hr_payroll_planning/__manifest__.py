@@ -6,9 +6,7 @@
     'category': 'Human Resources/Employees',
     'sequence': 95,
     'summary': 'Manage extra hours for your hourly paid employees using planning',
-    'description': '',
     'installable': True,
-    'application': False,
     'auto_install': True,
     'depends': [
         'hr_work_entry_contract_planning',

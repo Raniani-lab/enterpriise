@@ -6,9 +6,7 @@
     'category': 'Human Resources/Employees',
     'sequence': 95,
     'summary': 'Create work entries from the employee\'s attendances',
-    'description': '',
     'installable': True,
-    'application': False,
     'auto_install': True,
     'post_init_hook': '_generate_attendances',
     'depends': [

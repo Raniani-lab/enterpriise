@@ -15,7 +15,6 @@ country and detailed information like pages browsed by the lead (through a link 
     'depends': ['appointment_crm', 'website_crm'],
     'data': [
     ],
-    'application': False,
     'auto_install': True,
     'license': 'OEEL-1',
 }

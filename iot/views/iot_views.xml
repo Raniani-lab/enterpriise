@@ -67,7 +67,10 @@
         <field name="name">iot.box.view.kanban</field>
         <field name="model">iot.box</field>
         <field name="arch" type="xml">
-            <kanban create="false" js_class="box_kanban_view">
+            <kanban create="false">
+                <header>
+                    <button name="%(iot.action_add_iot_box)d" type="action" string="Connect" class="btn-primary o-kanban-button-new"  display="always"/>
+                </header>
                 <field name="name"/>
                 <field name="identifier"/>
                 <templates>

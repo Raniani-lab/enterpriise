@@ -25,21 +25,15 @@
                         id="create_recurring_invoice_primary" type="object" class="btn-primary" data-hotkey="q"
                         attrs="{'invisible': ['|', ('show_rec_invoice_button', '=', False), ('invoice_count', '>', 0)]}"
                 />
-                <button name="action_invoice_subscription" string="Create Invoice"
-                        id="create_recurring_invoice" type="object" data-hotkey="q"
-                         attrs="{'invisible': ['|', ('show_rec_invoice_button', '=', False),  ('invoice_count', '=', 0)]}"
-                />
-            </button>
-            <button name="action_draft" position="after">
                 <button string="Upsell" name="prepare_upsell_order" type="object"
-                            attrs="{'invisible': [
-                            '|',
-                            '|',
-                            ('is_subscription', '=', False),
-                            ('stage_category', '!=', 'progress'),
-                            ('state', '!=', 'sale'),
-                            ]}" data-hotkey="z"/>
-                    <button string="Renew" name="prepare_renewal_order" type="object" data-hotkey="w"
+                        attrs="{'invisible': [
+                        '|',
+                        '|',
+                        ('is_subscription', '=', False),
+                        ('stage_category', '!=', 'progress'),
+                        ('state', '!=', 'sale'),
+                        ]}" data-hotkey="z"/>
+                <button string="Renew" name="prepare_renewal_order" type="object" data-hotkey="w"
                         attrs="{'invisible': [
                         '|',
                         '|',
@@ -47,7 +41,11 @@
                         ('stage_category', '!=', 'progress'),
                         ('state', '!=', 'sale'),
                         ]}"/>
-                </button>
+                <button name="action_invoice_subscription" string="Create Invoice"
+                        id="create_recurring_invoice" type="object" data-hotkey="q"
+                        attrs="{'invisible': ['|', ('show_rec_invoice_button', '=', False),  ('invoice_count', '=', 0)]}"
+                />
+            </button>
             <button name="action_cancel" position="attributes">
                 <attribute name="attrs">
                     {'invisible': [ '|',

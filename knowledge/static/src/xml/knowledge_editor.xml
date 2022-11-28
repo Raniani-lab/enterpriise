@@ -4,13 +4,6 @@
         <a t-att-href="href" t-att-data-behavior-props="data"
            class="btn btn-sm o_knowledge_behavior_anchor o_knowledge_behavior_type_article"/>
     </t>
-    <t t-name="knowledge.wysiwyg_article_link_modal">
-        <form class="container">
-            <div class="m-0">
-                <input class="form-control" type="hidden" placeholder="Choose an Article"/>
-            </div>
-        </form>
-    </t>
     <t t-name="knowledge.articles_structure_wrapper">
         <div t-attf-class="o_knowledge_behavior_anchor o_knowledge_behavior_type_articles_structure
             #{childrenOnly ? 'o_knowledge_articles_structure_children_only' : ''}"/>

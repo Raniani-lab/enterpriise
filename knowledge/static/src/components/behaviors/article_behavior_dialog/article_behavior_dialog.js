@@ -1,66 +1,44 @@
-/** @odoo-module **/
-"use strict";
+/** @odoo-module */
 
-import Dialog from 'web.Dialog';
-import { _t } from 'web.core';
+import { useService } from '@web/core/utils/hooks';
+import { useWowlService } from '@web/legacy/utils';
+import { Dialog } from '@web/core/dialog/dialog';
+import { onRendered, Component, onMounted, useRef, xml } from '@odoo/owl';
 
-const KnowledgeArticleLinkModal = Dialog.extend({
-    template: 'knowledge.wysiwyg_article_link_modal',
-    /**
-     * @override
-     * @param {Widget} parent
-     * @param {Object} options
-     */
-    init: function (parent, options) {
-        // Set default options:
-        options.title = options.title || _t('Link an Article');
-        options.buttons = options.buttons || [{
-            text: _t('Insert Link'),
-            classes: 'btn-primary',
-            click: this.save.bind(this)
-        }, {
-            text: _t('Cancel'),
-            close: true
-        }];
-        this._super(...arguments);
-    },
-
-    /**
-     * @override
-     * @returns {Promise}
-     */
-    start: function () {
-        return this._super.apply(this, arguments).then(() => {
+class ArticleLinkBehaviorDialog extends Component {
+    setup() {
+        this.orm = useService('orm');
+        this.input = useRef('input');
+        onMounted(() => {
             this.initSelect2();
             // see "focus" method of select2 lib for details about setTimeout
-            setTimeout(() => {
+            window.setTimeout(() => {
                 this.getInput().select2('open');
-                $('input.select2-input').focus();
+                document.querySelector('.o_knowledge_select2 .select2-focusser').focus(); // auto-focus
             }, 0);
         });
-    },
+    }
 
     /**
-     * Dirty hack to de-activate the "focustrap" from Bootstrap.
-     * Indeed, it prevents typing into our "select2" element.
-     * TODO knowledge: remove this and refactor in master to avoid using legacy modals.
-     *
-     */
-    on_attach_callback: function () {
-        const bootstrapModal = Modal.getInstance(this.$modal[0]);
-        if (bootstrapModal) {
-            bootstrapModal._focustrap.deactivate();
+    * @returns {JQuery}
+    */
+    getInput() {
+        return $(this.input.el);
+    }
+
+    _save() {
+        const $input = $(this.input.el);
+        if (!$input.select2('data')){
+            return;
         }
-    },
+        const articleId = $input.select2('data').id;
+        const displayName = $input.select2('data').display_name;
 
-    /**
-     * @returns {JQuery}
-     */
-    getInput: function () {
-        return this.$el.find('input');
-    },
+        this.props.save({articleId: articleId, displayName: displayName});
+        this.props.close();
+    }
 
-    initSelect2: function () {
+    initSelect2() {
         const $input = this.getInput();
         $input.select2({
             containerCssClass: 'o_knowledge_select2',
@@ -78,14 +56,15 @@ const KnowledgeArticleLinkModal = Dialog.extend({
                  */
                 transport: async params => {
                     const { term } = params.data;
-                    const results = await this._rpc({
-                        model: 'knowledge.article',
-                        method: 'search_read',
-                        kwargs: {
+                    const results = await this.orm.call(
+                        'knowledge.article',
+                        'search_read',
+                        [],
+                        {
                             fields: ['id', 'display_name', 'root_article_id'],
                             domain: [['name', '=ilike', `%${term}%`], ['user_has_access', "=", true]],
                         },
-                    });
+                    );
                     params.success({ results });
                 },
                 /**
@@ -128,15 +107,24 @@ const KnowledgeArticleLinkModal = Dialog.extend({
                 return markup.join('');
             },
         });
-    },
+    }
 
-    save: function () {
-        const $input = this.getInput();
-        const data = $input.select2('data');
-        this.trigger('save', data);
-    },
-});
+}
 
-export {
-    KnowledgeArticleLinkModal
+ArticleLinkBehaviorDialog.template = 'knowledge.wysiwyg_article_link_modal';
+ArticleLinkBehaviorDialog.components = { Dialog };
+ArticleLinkBehaviorDialog.props = {
+    close: Function,
+    save: Function
 };
+
+export class ArticleLinkBehaviorDialogWrapper extends Component {
+    setup(){
+        this.dialogService = useWowlService('dialog');
+        onRendered(() => {
+            this.dialogService.add(ArticleLinkBehaviorDialog, this.props);
+        });
+    }
+}
+ArticleLinkBehaviorDialogWrapper.template = xml``;
+ArticleLinkBehaviorDialogWrapper.props = {save: Function};

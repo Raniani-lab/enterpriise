@@ -3,9 +3,9 @@
 import { ComponentWrapper } from 'web.OwlCompatibility';
 import { qweb as QWeb, _t } from 'web.core';
 import Wysiwyg from 'web_editor.wysiwyg';
-import { KnowledgeArticleLinkModal } from './wysiwyg/knowledge_article_link.js';
 import { PromptEmbeddedViewNameDialogWrapper } from '../components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js';
 import { preserveCursor } from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
+import { ArticleLinkBehaviorDialogWrapper } from '../components/behaviors/article_behavior_dialog/article_behavior_dialog.js';
 
 Wysiwyg.include({
     /**
@@ -230,26 +230,19 @@ Wysiwyg.include({
      */
     _insertArticleLink: function () {
         const restoreSelection = preserveCursor(this.odooEditor.document);
-        const dialog = new KnowledgeArticleLinkModal(this, {});
-        dialog.on('save', this, article => {
-            if (article) {
-                const articleLinkBlock = $(QWeb.render('knowledge.wysiwyg_article_link', {
-                    href: '/knowledge/article/' + article.id,
-                    data: JSON.stringify({
-                        article_id: article.id,
-                        display_name: article.display_name,
-                    }),
-                }))[0];
-                dialog.close();
-                restoreSelection();
-                const [anchor] = this.odooEditor.execCommand('insert', articleLinkBlock);
-                this._notifyNewBehavior(anchor);
-            }
-        });
-        dialog.on('closed', this, () => {
+        const dialog = new ComponentWrapper(this, ArticleLinkBehaviorDialogWrapper, {save: article => {
+            const articleLinkBlock = $(QWeb.render('knowledge.wysiwyg_article_link', {
+                href: '/knowledge/article/' + article.articleId,
+                data: JSON.stringify({
+                    article_id: article.articleId,
+                    display_name: article.displayName,
+                })
+            }))[0];
             restoreSelection();
-        });
-        dialog.open();
+            const [anchor] = this.odooEditor.execCommand('insert', articleLinkBlock);
+            this._notifyNewBehavior(anchor);
+        }});
+        dialog.mount(document.body);
     },
     /**
      * Inserts a view in the editor

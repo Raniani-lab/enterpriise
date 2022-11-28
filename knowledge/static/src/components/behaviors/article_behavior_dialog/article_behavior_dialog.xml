@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="knowledge.wysiwyg_article_link_modal" owl="1">
+        <Dialog title="this.env._t('Link an Article')">
+            <div class="m-0">
+                <input t-ref="input" class="form-control" type="hidden" placeholder="Choose an Article"/>
+            </div>
+            <t t-set-slot="footer" owl="1">
+                <button class="btn btn-primary" t-on-click="this._save.bind(this)">
+                    Insert Link
+                </button>
+                <button class="btn btn-secondary" t-on-click="this.props.close.bind(this)">
+                    Cancel
+                </button>
+            </t>
+        </Dialog>
+    </t>
+</templates>

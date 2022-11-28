@@ -61,8 +61,8 @@ class Task(models.Model):
                     ml_vals['location_id'] = quant.location_id.id or fsm_sn_move.location_id.id
                 ml_to_create.append(ml_vals)
             all_fsm_sn_moves |= fsm_sn_moves
-            # set the quantity delivered of the sol to the quantity ordered. This will be done for the service sol and the products linked to the task
-            if so_line.task_id == self:
+            # set the quantity delivered of the sol to the quantity ordered for the product linked to the task
+            if so_line.task_id == self and not so_line.product_id.service_policy == 'delivered_timesheet':
                 so_line.qty_delivered = so_line.product_uom_qty
         self.env['stock.move.line'].create(ml_to_create)
 

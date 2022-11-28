@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details
+from datetime import datetime
 
 from odoo.fields import Command
 from odoo.tests import Form, common
@@ -547,6 +548,50 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         self.task.with_user(self.project_user).action_fsm_validate()
         self.assertEqual(self.task.sale_order_id.delivery_count, 3)
         self.assertEqual(self.task.sale_order_id.picking_ids.mapped('state'), ['done', 'done', 'done'], "Pickings should be set as done")
+
+    def test_fsm_delivered_timesheet(self):
+        """
+        If the fsm has a service_invoice = "delivered_timesheet",
+        once we validate the task, the qty_deliverd should be the
+        time we logged on the task, not the ordered qty of the so.
+        This test is in this module to test for regressions when
+        stock module is installed.
+        """
+        self.task.write({'partner_id': self.partner_1.id})
+        product = self.service_product_delivered.with_context({'fsm_task_id': self.task.id})
+        # prep the product
+        product.type = 'service'
+        product.service_policy = 'delivered_timesheet'
+        # create the sale order
+        self.task.with_user(self.project_user)._fsm_ensure_sale_order()
+        sale_order = self.task.sale_order_id
+        # sell 4 units of the fsm service
+        sale_order_line = self.env['sale.order.line'].create({
+            'product_id': product.id,
+            'order_id': sale_order.id,
+            'name': 'sales order line 0',
+            'product_uom_qty': 4,
+            'task_id': self.task.id,
+        })
+        # link the task to the already created sale_order_line,
+        # to prevent a new one to be created when we validate the task
+        self.task.sale_line_id = sale_order_line.id
+        sale_order.action_confirm()
+        # timesheet 2 units on the task of the sale order
+        timesheet = self.env['account.analytic.line'].create({
+            'name': 'Test Line',
+            'project_id': self.task.project_id.id,
+            'task_id': self.task.id,
+            'date': datetime.now(),
+            'unit_amount': 2,
+            'employee_id': self.employee_user2.id,
+        })
+        # validate the task
+        self.task.with_user(self.project_user).action_fsm_validate()
+        self.assertEqual(sale_order.order_line[0].qty_delivered, timesheet.unit_amount,
+                         "The delivered quantity should be the same as the timesheet amount")
+        self.assertEqual(sale_order.order_line[0].qty_to_invoice, timesheet.unit_amount,
+                         "The quantity to invoice should be the same as the timesheet amount")
 
     def test_child_location_dispatching_serial_number(self):
         """

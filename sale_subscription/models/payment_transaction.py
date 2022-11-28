@@ -24,6 +24,7 @@ class PaymentTransaction(models.Model):
             if tx.sale_order_ids.filtered(lambda so: so.state in ('sale', 'done') and so.is_subscription) and not tx.invoice_ids:
                 tx_to_invoice |= tx
         tx_to_invoice._invoice_sale_orders()
+        tx_to_invoice.invoice_ids.filtered(lambda inv: inv.state == 'draft')._post()
         tx_to_invoice._send_invoice()
         return res
 
@@ -58,5 +59,5 @@ class PaymentTransaction(models.Model):
         # We have to do it here because when a client confirms and pay a SO from the portal with success_payment
         # The next_invoice_date won't be update by the reconcile_pending_transaction callback (do_payment is not called)
         # Create invoice
-        res = super(PaymentTransaction, transaction_to_invoice.with_context(subscription_force_next_invoice_date=True))._invoice_sale_orders()
+        res = super(PaymentTransaction, transaction_to_invoice)._invoice_sale_orders()
         return res

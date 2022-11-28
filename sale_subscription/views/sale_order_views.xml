@@ -23,7 +23,7 @@
                 <field name="show_rec_invoice_button" invisible="1"/>
                 <button name="action_invoice_subscription" string="Create Invoice"
                         id="create_recurring_invoice_primary" type="object" class="btn-primary" data-hotkey="q"
-                        attrs="{'invisible': ['|', ('show_rec_invoice_button', '=', False), ('invoice_count', '>', 0)]}"
+                        attrs="{'invisible': ['|', ('show_rec_invoice_button', '=', False), ('invoice_status', '=', 'no')]}"
                 />
                 <button string="Upsell" name="prepare_upsell_order" type="object"
                         attrs="{'invisible': [
@@ -43,7 +43,7 @@
                         ]}"/>
                 <button name="action_invoice_subscription" string="Create Invoice"
                         id="create_recurring_invoice" type="object" data-hotkey="q"
-                        attrs="{'invisible': ['|', ('show_rec_invoice_button', '=', False),  ('invoice_count', '=', 0)]}"
+                        attrs="{'invisible': ['|', ('show_rec_invoice_button', '=', False),  ('invoice_status', '=', 'to invoice')]}"
                 />
             </button>
             <button name="action_cancel" position="attributes">
@@ -135,7 +135,7 @@
                     <span attrs="{'invisible': ['|', ('recurrence_id', '=', False), ('subscription_management', '=', 'upsell')]}">until</span>
                     <field name="end_date" attrs="{'invisible': ['|', ('recurrence_id', '=', False), ('subscription_management', '=', 'upsell')]}"/>
                 </div>
-                <field name="next_invoice_date"
+                <field name="next_invoice_date" readonly="1"
                        attrs="{
                         'invisible': ['|', ('stage_category', 'not in', ['progress', 'paused']) , ('recurrence_id', '=', False)],
                         'required': [('recurrence_id', '!=', False), ('state', 'in', ['sale', 'done'])],
@@ -157,7 +157,7 @@
             <xpath expr="//notebook/page[@name='optional_products']/field/tree/field[@name='name']" position='after'>
             </xpath>
             <group name="sales_person" position='inside'>
-                <field name="start_date"/>
+                <field name="start_date" attrs="{'readonly': [('subscription_management', 'in', ['upsell', 'renew'])]}"/>
                 <field name="to_renew" attrs="{'invisible': [('is_subscription', '=', False)]}"/>
             </group>
             <group name="sale_info" position='inside'>

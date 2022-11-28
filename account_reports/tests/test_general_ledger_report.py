@@ -419,3 +419,50 @@ class TestGeneralLedgerReport(TestAccountReportsCommon):
                 ('Total',                               2350.0,         1350.0,         1000.0),
             ],
         )
+
+    def test_general_ledger_communication(self):
+        invoice_1 = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': self.partner_a.id,
+            'invoice_date': '2010-01-01',
+            'payment_reference': 'payment_ref1',
+            'ref': 'ref1',
+            'invoice_line_ids': [(0, 0, {
+                'name': 'test1',
+                'tax_ids': [],
+                'quantity': 1,
+                'price_unit': 1,
+            })]
+        })
+        invoice_1.action_post()
+
+        invoice_2 = self.env['account.move'].create({
+            'move_type': 'out_invoice',
+            'partner_id': self.partner_a.id,
+            'invoice_date': '2010-01-01',
+            'payment_reference': 'payment_ref2',
+            'invoice_line_ids': [(0, 0, {
+                'name': 'test2',
+                'tax_ids': [],
+                'quantity': 1,
+                'price_unit': 2,
+            })]
+        })
+        invoice_2.action_post()
+
+        self.env.company.totals_below_sections = False
+        options = self._generate_options(self.report, '2010-01-01', '2010-01-01', default_options={'unfold_all': True})
+        self.assertLinesValues(
+            self.report._get_lines(options),
+            #   Name                                    Communication
+            [   0,                                      2],
+            [
+                ('121000 Account Receivable',           ''),
+                (invoice_1.name,                        'ref1 - payment_ref1'),
+                (invoice_2.name,                        'payment_ref2'),
+                ('400000 Product Sales',                ''),
+                (invoice_1.name,                        'ref1 - test1'),
+                (invoice_2.name,                        'test2'),
+                ('Total',                               ''),
+            ],
+        )

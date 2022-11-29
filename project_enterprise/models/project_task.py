@@ -136,14 +136,14 @@ class Task(models.Model):
         if overlap_mapping:
             for task in self:
                 if not task.id in overlap_mapping:
-                    task.planning_overlap = ''
+                    task.planning_overlap = False
                 else:
                     task.planning_overlap = ' '.join([
                         _('%s has %s tasks at the same time.', task_mapping[0], task_mapping[1])
                             for task_mapping in overlap_mapping[task.id]
                     ])
         else:
-            self.planning_overlap = ''
+            self.planning_overlap = False
 
     @api.model
     def _search_planning_overlap(self, operator, value):

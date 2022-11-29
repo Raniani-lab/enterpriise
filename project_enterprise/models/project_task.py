@@ -31,6 +31,7 @@ class Task(models.Model):
     # Task Dependencies fields
     display_warning_dependency_in_gantt = fields.Boolean(compute="_compute_display_warning_dependency_in_gantt")
     planning_overlap = fields.Html(compute='_compute_planning_overlap', search='_search_planning_overlap')
+    dependency_warning = fields.Html(compute='_compute_dependency_warning', search='_search_dependency_warning')
 
     # User names in popovers
     user_names = fields.Char(compute='_compute_user_names')
@@ -281,6 +282,58 @@ class Task(models.Model):
                 tasks_by_resource_calendar_dict[default_calendar] |= task
 
         return tasks_by_resource_calendar_dict
+
+    @api.depends('planned_date_begin', 'depend_on_ids.planned_date_end')
+    def _compute_dependency_warning(self):
+        if not self._origin:
+            self.dependency_warning = False
+            return
+
+        self.flush_model(['planned_date_begin', 'planned_date_end'])
+        query = """
+            SELECT t1.id,
+                   ARRAY_AGG(t2.name) as depends_on_names
+              FROM project_task t1
+              JOIN task_dependencies_rel d
+                ON d.task_id = t1.id
+              JOIN project_task t2
+                ON d.depends_on_id = t2.id
+             WHERE t1.id IN %s
+               AND t1.planned_date_begin IS NOT NULL
+               AND t2.planned_date_end IS NOT NULL
+               AND t2.planned_date_end > t1.planned_date_begin
+          GROUP BY t1.id
+	    """
+        self._cr.execute(query, (tuple(self.ids),))
+        depends_on_names_for_id = {
+            group['id']: group['depends_on_names']
+            for group in self._cr.dictfetchall()
+        }
+        for task in self:
+            depends_on_names = depends_on_names_for_id.get(task.id)
+            task.dependency_warning = depends_on_names and _(
+                'This task cannot be planned before Tasks %s, on which it depends.',
+                ', '.join(depends_on_names)
+            )
+
+    @api.model
+    def _search_dependency_warning(self, operator, value):
+        if operator not in ['=', '!='] or not isinstance(value, bool):
+            raise NotImplementedError(_('Operation not supported, you should always compare dependency_warning to True or False.'))
+
+        query = """
+            SELECT t1.id
+              FROM project_task t1
+              JOIN task_dependencies_rel d
+                ON d.task_id = t1.id
+              JOIN project_task t2
+                ON d.depends_on_id = t2.id
+             WHERE t1.planned_date_begin IS NOT NULL
+               AND t2.planned_date_end IS NOT NULL
+               AND t2.planned_date_end > t1.planned_date_begin
+        """
+        operator_new = "inselect" if ((operator == "=" and value) or (operator == "!=" and not value)) else "not inselect"
+        return [('id', operator_new, (query, ()))]
 
     def write(self, vals):
         compute_default_planned_dates = None

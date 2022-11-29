@@ -13,6 +13,11 @@
                         <field name="planning_overlap" widget="html"/>
                     </button>
                 </div>
+                <div role="alert"
+                    class="alert alert-warning p-3 text-center alert-overflow"
+                    attrs="{'invisible': [('dependency_warning', '=', False)]}">
+                        <field name="dependency_warning" widget="html"/>
+                </div>
             </xpath>
             <xpath expr="//field[@name='partner_phone']" position="after">
                 <label for="planned_date_begin" string="Planned Date" attrs="{'invisible': [('planned_date_begin', '=', False), ('planned_date_end', '=', False)]}"/>

@@ -132,9 +132,13 @@ class HelpdeskTicket(models.Model):
         return field_list
 
     def _sla_find_extra_domain(self):
+        self.ensure_one()
         domain = super()._sla_find_extra_domain()
-        return expression.OR([domain, [
-            '|', ('sale_line_ids', 'in', self.sale_line_id.ids), ('sale_line_ids', '=', False),
+        return expression.AND([domain, [
+            '|', '|', ('partner_ids', 'parent_of', self.partner_id.ids),
+                      '|', ('partner_ids', 'child_of', self.partner_id.ids),
+                           ('sale_line_ids', 'in', self.sale_line_id.ids),
+                 '&', ('partner_ids', '=', False), ('sale_line_ids', '=', False)
         ]])
 
     def action_view_so(self):

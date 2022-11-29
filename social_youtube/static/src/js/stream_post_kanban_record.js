@@ -7,6 +7,18 @@ import { patch } from '@web/core/utils/patch';
 
 patch(StreamPostKanbanRecord.prototype, 'social_youtube.StreamPostKanbanRecord', {
 
+    /**
+     * FIXME: this is temporary, waiting for these implemention details to be removed from the arch.
+     *
+     * @override
+     */
+    get renderingContext() {
+        return {
+            ...this._super(),
+            _onYoutubeCommentsClick: () => this._onYoutubeCommentsClick(),
+        };
+    },
+
     _onYoutubeCommentsClick() {
         const postId = this.record.id.raw_value;
         this.rpc('/social_youtube/get_comments', {

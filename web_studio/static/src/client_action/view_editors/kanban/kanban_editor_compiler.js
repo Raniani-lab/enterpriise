@@ -138,7 +138,7 @@ export class KanbanEditorCompiler extends KanbanCompiler {
                 if (node.classList.contains("oe_kanban_avatar")) {
                     compiled.setAttribute(
                         "t-on-click",
-                        `(ev) => env.config.onNodeClicked({
+                        `(ev) => this.env.config.onNodeClicked({
                             xpath: "${xpath}",
                             target: ev.target
                         })`
@@ -148,12 +148,12 @@ export class KanbanEditorCompiler extends KanbanCompiler {
                 if (node.tagName === "field" && !isComponentNode(compiled)) {
                     compiled.setAttribute(
                         "t-on-click",
-                        `(ev) => env.config.onNodeClicked({xpath: "${xpath}", target: ev.target})`
+                        `(ev) => this.env.config.onNodeClicked({xpath: "${xpath}", target: ev.target})`
                     );
                     compiled.classList.add("o-web-studio-editor--element-clickable");
 
                     const fieldName = node.getAttribute("name");
-                    const isEmptyExpr = `isFieldValueEmpty(record["${fieldName}"].value)`;
+                    const isEmptyExpr = `this.isFieldValueEmpty(record["${fieldName}"].value)`;
 
                     // Set empty class
                     const tattfClassEmpty = `{{ ${isEmptyExpr} ? "o_web_studio_widget_empty" : "" }}`;
@@ -169,7 +169,7 @@ export class KanbanEditorCompiler extends KanbanCompiler {
                     const tOut = compiled.getAttribute("t-out");
                     compiled.setAttribute(
                         "t-out",
-                        `${isEmptyExpr} ? props.record.activeFields["${fieldName}"].string : ${tOut}`
+                        `${isEmptyExpr} ? this.props.record.activeFields["${fieldName}"].string : ${tOut}`
                     );
                 }
                 if (node.tagName === "field" || node.tagName === "widget") {
@@ -219,7 +219,7 @@ export class KanbanEditorCompiler extends KanbanCompiler {
             {
                 class: "o_web_studio_add_dropdown o_dropdown_kanban dropdown",
                 style: "z-index: 1;",
-                "t-on-click": "onAddDropdown",
+                "t-on-click": "() => this.onAddDropdown()",
             }
         );
         if (parentElement.firstChild) {

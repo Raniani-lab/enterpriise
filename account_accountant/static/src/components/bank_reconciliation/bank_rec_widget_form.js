@@ -152,7 +152,7 @@ BankRecFormRenderer.components = {
 export class BankRecFormCompiler extends FormCompiler {
     compileNotebook(el, params) {
         const noteBook = super.compileNotebook(...arguments);
-        noteBook.setAttribute("onTabChange.bind", "notebookTabChanged");
+        noteBook.setAttribute("onTabChange.bind", "this.notebookTabChanged");
         noteBook.setAttribute("selectedLine", "this.currentLine");
         return noteBook;
     }

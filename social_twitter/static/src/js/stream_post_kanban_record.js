@@ -15,6 +15,21 @@ patch(StreamPostKanbanRecord.prototype, 'social_twitter.StreamPostKanbanRecord',
         this.notification = useService('notification');
     },
 
+    /**
+     * FIXME: this is temporary, waiting for these implemention details to be removed from the arch.
+     *
+     * @override
+     */
+    get renderingContext() {
+        return {
+            ...this._super(),
+            _onTwitterCommentsClick: () => this._onTwitterCommentsClick(),
+            _onTwitterTweetLike: () => this._onTwitterTweetLike(),
+            _onTwitterRetweet: (ev) => this._onTwitterRetweet(ev),
+            _onTwitterQuote: () => this._onTwitterQuote(),
+        };
+    },
+
     _onTwitterCommentsClick() {
         const postId = this.record.id.raw_value;
 

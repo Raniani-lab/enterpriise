@@ -54,7 +54,7 @@ export class FormEditorCompiler extends formView.Compiler {
 
         if (this.addChatter) {
             const chatterContainerHook = createElement("ChatterContainerHook", {
-                threadModel: `props.record.resModel`,
+                threadModel: `this.props.record.resModel`,
                 chatterData: objectToString(this.chatterData),
             });
             const el = compiled.querySelector(".o_form_sheet") || compiled;
@@ -96,7 +96,7 @@ export class FormEditorCompiler extends formView.Compiler {
                 !title.parentElement.querySelector(":scope > [isAvatar]")
             ) {
                 const avatarHook = createElement("AvatarHook", {
-                    fields: `props.record.fields`,
+                    fields: `this.props.record.fields`,
                 });
                 const h1 = title.querySelector(":scope > h1");
                 if (h1 && h1.classList.contains("d-flex") && h1.classList.contains("flex-row")) {

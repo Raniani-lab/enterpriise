@@ -25,6 +25,21 @@ export class HierarchyKanbanRecord extends KanbanRecord {
     }
 
     /**
+     * FIXME: this is done temporarily, waiting for these implemention details to be removed
+     * from the arch.
+     *
+     * @override
+     */
+    get renderingContext() {
+        return {
+            ...super.renderingContext,
+            props: this.props,
+            onMarketingActivityTabClick: (...args) => this.onMarketingActivityTabClick(...args),
+            addChildActivity: (...args) => this.addChildActivity(...args),
+        };
+    }
+
+    /**
      * Simply adds a confirmation prompt when deleting a marketing.activity record that has children
      * activities. Since the ORM will then perform a cascade deletion of children.
      */
@@ -151,7 +166,10 @@ export class HierarchyKanbanRenderer extends KanbanRenderer {
     }
 }
 
-HierarchyKanbanRenderer.components.KanbanRecord = HierarchyKanbanRecord;
+HierarchyKanbanRenderer.components = {
+    ...KanbanRenderer.components,
+    KanbanRecord: HierarchyKanbanRecord,
+};
 
 export class HierarchyKanban extends X2ManyField {
     /**

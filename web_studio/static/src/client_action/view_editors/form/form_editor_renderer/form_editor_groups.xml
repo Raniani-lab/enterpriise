@@ -25,7 +25,7 @@
   </xpath>
 
   <xpath expr="//t[@t-call='web.Form.InnerGroup.ItemComponent']" position="replace">
-      <InnerGroupItemComponent t-if="cell.studioIsVisible or env.config.studioShowInvisible" cell="cell" slots="props.slots"/>
+      <InnerGroupItemComponent t-if="cell.studioIsVisible or this.env.config.studioShowInvisible" cell="cell" slots="props.slots"/>
   </xpath>
 
   <xpath expr="//div[@t-foreach='getRows()']" position="after">

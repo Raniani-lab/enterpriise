@@ -7,6 +7,19 @@ import { patch } from '@web/core/utils/patch';
 
 patch(StreamPostKanbanRecord.prototype, 'social_facebook.StreamPostKanbanRecord', {
 
+    /**
+     * FIXME: this is temporary, waiting for these implemention details to be removed from the arch.
+     *
+     * @override
+     */
+    get renderingContext() {
+        return {
+            ...this._super(),
+            _onFacebookCommentsClick: () => this._onFacebookCommentsClick(),
+            _onFacebookPostLike: () => this._onFacebookPostLike(),
+        };
+    },
+
     _onFacebookCommentsClick() {
         const postId = this.record.id.raw_value;
         this.rpc('/social_facebook/get_comments', {

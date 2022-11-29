@@ -10,7 +10,7 @@ import PermissionPanel from '@knowledge/components/permission_panel/permission_p
 import { sprintf } from '@web/core/utils/strings';
 import { useService } from "@web/core/utils/hooks";
 
-const { onMounted, onPatched, useEffect, useRef, useState} = owl;
+const { onMounted, onPatched, useEffect, useRef, useState, xml } = owl;
 
 export class KnowledgeArticleFormRenderer extends FormRenderer {
 
@@ -145,6 +145,39 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     //--------------------------------------------------------------------------
     // Public
     //--------------------------------------------------------------------------
+
+    /**
+     * FIXME: the knowledge arch uses a lot of implementation details. It shouldn't. We here extend
+     * the rendering context to keep those details available, but the long term strategy must be
+     * to stop using them in the arch.
+     *
+     * @override
+     */
+    get renderingContext() {
+        return {
+            env: this.env,
+            props: this.props,
+            root: this.root,
+            state: this.state,
+            actionService: this.actionService,
+            addCover: (ev) => this.addCover(ev),
+            addIcon: () => this.addIcon(),
+            addProperties: (ev) => this.addProperties(ev),
+            copyArticleAsPrivate: () => this.copyArticleAsPrivate(),
+            createArticle: (category, targetParentId) => this.createArticle(category, targetParentId),
+            onChangeCoverClick: () => this.onChangeCoverClick(),
+            onMoveArticleClick: () => this.onMoveArticleClick(),
+            resizeSidebar: (el) => this.resizeSidebar(el),
+            toggleChatter: () => this.toggleChatter(),
+            toggleFavorite: (ev) => this.toggleFavorite(ev),
+            toggleProperties: () => this.toggleProperties(),
+            _onNameClick: (ev) => this._onNameClick(ev),
+            _rename: (name) => this._rename(name),
+            _renderTree: (activeArticleId, route) => this._renderTree(activeArticleId, route),
+            _resizeNameInput: (name) => this._resizeNameInput(name),
+            _showEmojiPicker: (ev) => this._showEmojiPicker(ev),
+        };
+    }
 
     /**
      * Adds a random cover using unsplash. If unsplash throws an error (service
@@ -863,6 +896,8 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
 }
 
 patch(KnowledgeArticleFormRenderer.prototype, "knowledge_article_form_renderer", KnowledgeTreePanelMixin);
+// FIXME: this should be removed, the rendering context of the form view should not be overridden
+KnowledgeArticleFormRenderer.template = xml`<t t-call="{{ templates.FormRenderer }}" t-call-context="renderingContext" />`;
 KnowledgeArticleFormRenderer.components = {
     ...FormRenderer.components,
     PermissionPanel,

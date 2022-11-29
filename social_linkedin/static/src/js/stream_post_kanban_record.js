@@ -7,6 +7,18 @@ import { patch } from '@web/core/utils/patch';
 
 patch(StreamPostKanbanRecord.prototype, 'social_linkedin.StreamPostKanbanRecord', {
 
+    /**
+     * FIXME: this is temporary, waiting for these implemention details to be removed from the arch.
+     *
+     * @override
+     */
+    get renderingContext() {
+        return {
+            ...this._super(),
+            _onLinkedInCommentsClick: () => this._onLinkedInCommentsClick(),
+        };
+    },
+
     _onLinkedInCommentsClick() {
         const postId = this.record.id.raw_value;
         this.rpc('/social_linkedin/get_comments', {

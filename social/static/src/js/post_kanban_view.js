@@ -16,6 +16,18 @@ export class PostKanbanRecord extends KanbanRecord {
     }
 
     /**
+     * FIXME: this is temporary, waiting for the use of formatPost to be removed from the arch.
+     *
+     * @override
+     */
+    get renderingContext() {
+        return {
+            ...super.renderingContext,
+            formatPost: (message) => this.formatPost(message),
+        };
+    }
+
+    /**
      * Shows a bootstrap carousel starting at the clicked image's index
      *
      * @param {integer} index - index of the default image to be displayed

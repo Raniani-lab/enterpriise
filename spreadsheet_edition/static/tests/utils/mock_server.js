@@ -8,7 +8,7 @@ export function mockJoinSpreadsheetSession(resModel) {
             throw new Error(`Spreadsheet ${id} does not exist`);
         }
         return {
-            raw: record.raw,
+            raw: JSON.parse(record.raw),
             name: record.name,
             is_favorited: record.is_favorited,
             revisions: [],

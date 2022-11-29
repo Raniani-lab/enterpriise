@@ -26,7 +26,7 @@ class SpreadsheetTestCommon(TransactionCase):
             self.env["documents.document"]
             .with_user(user or self.env.user)
             .create({
-                "raw": TEXT,
+                "raw": b"{}",
                 "folder_id": self.folder.id,
                 "handler": "spreadsheet",
                 "mimetype": "application/o-spreadsheet",

@@ -81,7 +81,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
      */
     _initializeWith(record) {
         this.state.isFavorited = record.is_favorited;
-        this.spreadsheetData = JSON.parse(record.raw);
+        this.spreadsheetData = record.raw;
         this.stateUpdateMessages = record.revisions;
         this.snapshotRequested = record.snapshot_requested;
         this.state.spreadsheetName = record.name;

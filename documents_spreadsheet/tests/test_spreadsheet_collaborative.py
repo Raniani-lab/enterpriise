@@ -6,7 +6,7 @@ import base64
 from freezegun import freeze_time
 from uuid import uuid4
 
-from .common import SpreadsheetTestCommon, TEXT
+from .common import SpreadsheetTestCommon
 from odoo.tests.common import new_test_user, tagged
 from odoo.exceptions import AccessError
 
@@ -74,7 +74,7 @@ class SpreadsheetCollaborative(SpreadsheetTestCommon):
     def test_join_spreadsheet_session(self):
         spreadsheet = self.create_spreadsheet()
         data = spreadsheet.join_spreadsheet_session()
-        self.assertEqual(data["raw"], TEXT)
+        self.assertEqual(data["raw"], {})
         self.assertEqual(data["revisions"], [], "It should not have past revisions")
 
     def test_join_active_spreadsheet_session(self):
@@ -84,7 +84,7 @@ class SpreadsheetCollaborative(SpreadsheetTestCommon):
         spreadsheet.dispatch_spreadsheet_message(commands)
         data = spreadsheet.join_spreadsheet_session()
         del commands["clientId"]
-        self.assertEqual(data["raw"], TEXT)
+        self.assertEqual(data["raw"], {})
         self.assertEqual(data["revisions"], [commands], "It should have past revisions")
 
     def test_snapshot_spreadsheet_save_data(self):
@@ -197,7 +197,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
         )
         cls.spreadsheet = cls.env["documents.document"].create(
             {
-                "raw": TEXT,
+                "raw": b"{}",
                 "folder_id": cls.folder.id,
                 "handler": "spreadsheet",
                 "mimetype": "application/o-spreadsheet",
@@ -345,7 +345,7 @@ class SpreadsheetORMAccess(SpreadsheetTestCommon):
         )
         # no one ever joined this spreadsheet
         result = spreadsheet.with_user(self.user).join_spreadsheet_session()
-        self.assertEqual(result["raw"], b"{}")
+        self.assertEqual(result["raw"], {})
 
     def test_join_snapshot_request(self):
         with freeze_time("2020-02-02 18:00"):

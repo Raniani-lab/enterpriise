@@ -4,7 +4,7 @@
     <!-- Page : default team -->
     <template id="team" name="Helpdesk Team">
         <t t-call="website.layout">
-            <t t-set="additional_title">Helpdesk Team</t>
+            <t t-set="additional_title">Submit a Ticket</t>
             <div id="wrap" class="container mt-4">
                 <div class="row mb16">
                     <div class="oe_structure w-100 mb-2" id="oe_structure_website_helpdesk_team_1"/>
@@ -49,7 +49,7 @@
             <div id="wrap" class="oe_structure oe_empty h-100">
                 <div class="container d-flex flex-column justify-content-center h-100">
                     <div class="oe_structure" id="oe_structure_website_helpdesk_thanks_you"/>
-                    <div class="row justify-content-center">
+                    <div class="row justify-content-center mb16">
                         <t t-if="request.session.get('form_builder_model_model', '') == 'helpdesk.ticket'">
                             <t t-set="ticket" t-value="request.website._website_form_last_record()"/>
                         </t>
@@ -59,7 +59,11 @@
                                 <span>Your Ticket Number is <a t-if="request.session.uid" t-attf-href="/helpdesk/ticket/#{ticket.id}">#<span t-field="ticket.id"/></a><t t-if="not request.session.get('uid')">#<span t-field="ticket.id"/></t>.</span>
                             </t>
                         </h1>
-                        <h1 class="text-center">Thank you for submitting your issue, our team will get right on it!</h1>
+                        <h1 class="text-center">Thank you for contacting us, our team will get right on it!</h1>
+                        <div class="text-center">
+                            <a class="btn btn-primary" t-if="request.session.uid" t-attf-href="/helpdesk/ticket/#{ticket.id}">View Ticket</a>
+                            <a class="btn btn-primary" href='/'>Go to the Homepage</a>
+                        </div>
                     </div>
                     <div class="oe_structure" id="oe_structure_website_helpdesk_thanks_you_bottom"/>
                 </div>
@@ -75,7 +79,6 @@
     </record>
 
     <template id="ticket_submit_form" name="Helpdesk: Submit a Ticket Form">
-        <t t-set="additional_title">Submit a Ticket</t>
         <div class="container">
             <h2 class="text-muted">
                 Submit a Ticket
@@ -153,7 +156,7 @@
                                 </div>
                                 <div class="mb-0 py-2 col-12 s_website_form_submit" data-name="Submit Button">
                                     <div style="width: 200px;" class="s_website_form_label"/>
-                                    <a href="#" role="button" class="btn btn-primary btn-lg s_website_form_send o_default_snippet_text">Submit</a>
+                                    <a href="#" role="button" class="btn btn-primary btn-lg s_website_form_send o_default_snippet_text">Submit Ticket</a>
                                     <span id="s_website_form_result"/>
                                 </div>
                             </div>

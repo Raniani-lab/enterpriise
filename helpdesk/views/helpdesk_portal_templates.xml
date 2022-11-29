@@ -73,7 +73,7 @@
                                     <span t-field="ticket.user_id"/>
                                 </td>
                                 <td t-if="groupby != 'stage'" class="text-end">
-                                    <span t-attf-class="badge rounded-pill #{'text-bg-info' if ticket.stage_id.fold else 'text-bg-light'}" t-esc="ticket.stage_id.name"/>
+                                    <span t-attf-class="badge rounded-pill #{'text-bg-info' if ticket.stage_id.fold else 'text-bg-light bg-200'}" t-esc="ticket.stage_id.name"/>
                                 </td>
                             </tr>
                         </t>
@@ -188,7 +188,7 @@
                                         </div>
                                         <div class="col-3 text-end">
                                             <small class="text-end">Stage:</small>
-                                            <span t-field="ticket.stage_id.name" class=" badge rounded-pill text-bg-info" title="Current stage of this ticket"/>
+                                            <span t-field="ticket.stage_id.name" t-attf-class="badge rounded-pill #{'text-bg-info' if ticket.stage_id.fold else 'text-bg-light bg-200'}" title="Current stage of this ticket"/>
                                         </div>
                                     </h5>
                                 </div>

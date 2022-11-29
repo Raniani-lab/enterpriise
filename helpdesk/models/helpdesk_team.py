@@ -461,15 +461,21 @@ class HelpdeskTeam(models.Model):
     def _check_rating_group(self):
         rating_teams = self.filtered('use_rating')
         user_has_use_rating_group = self.user_has_groups('helpdesk.group_use_rating')
+        rating_helpdesk_email_template = self.env.ref('helpdesk.rating_ticket_request_email_template')
 
         if rating_teams and not user_has_use_rating_group:
             self._get_helpdesk_user_group()\
                 .write({'implied_ids': [Command.link(self._get_helpdesk_use_rating_group().id)]})
+            if not rating_helpdesk_email_template.active:
+                rating_helpdesk_email_template.active = True
         elif self - rating_teams and user_has_use_rating_group and not self._check_rating_feature_enabled():
             use_rating_group = self._get_helpdesk_use_rating_group()
             self._get_helpdesk_user_group()\
                 .write({'implied_ids': [Command.unlink(use_rating_group.id)]})
             use_rating_group.write({'users': [Command.clear()]})
+            if rating_helpdesk_email_template.active:
+                rating_helpdesk_email_template.active = False
+            self.env['helpdesk.stage'].search([('template_id', '=', self.env.ref('helpdesk.rating_ticket_request_email_template').id)]).template_id = False
 
     def _check_auto_assignment_group(self):
         has_auto_assignment_group = self.user_has_groups('helpdesk.group_auto_assignment')

@@ -9,10 +9,10 @@
                 <field name="is_published" widget="website_redirect_button" attrs="{'invisible': [('use_website_helpdesk_form', '=', False)]}"/>
             </xpath>
             <xpath expr="//div[@id='website_form_channel']//setting" position="inside">
-                <label for="website_id" groups="website.group_multi_website" attrs="{'invisible': [('use_website_helpdesk_form', '=', False)]}"/>
+                <label for="website_id" class="me-2" groups="website.group_multi_website" attrs="{'invisible': [('use_website_helpdesk_form', '=', False)]}"/>
                 <field name="website_id" options="{'no_create': True}"
                         context="{'default_company_id': company_id}" groups="website.group_multi_website"
-                        attrs="{'invisible': [('use_website_helpdesk_form', '=', False)]}" />
+                        attrs="{'invisible': [('use_website_helpdesk_form', '=', False)], 'required': [('use_website_helpdesk_form', '=', True)]}"/>
             </xpath>
         </field>
     </record>

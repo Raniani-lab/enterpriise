@@ -50,3 +50,32 @@ class SpreadsheetTemplate(SpreadsheetTestCommon):
             template.with_user(self.spreadsheet_user).fetch_template_data()["isReadonly"],
             "Document User cannot edit other's templates"
         )
+
+    def test_action_create_spreadsheet(self):
+        template = self.env["spreadsheet.template"].create({
+            "data": TEXT,
+            "name": "Template name",
+        })
+        action = template.action_create_spreadsheet()
+        spreadsheet_id = action["params"]["spreadsheet_id"]
+        document = self.env["documents.document"].browse(spreadsheet_id)
+        self.assertTrue(document.exists())
+        self.assertEqual(document.handler, "spreadsheet")
+        self.assertEqual(document.mimetype, "application/o-spreadsheet")
+        self.assertEqual(document.name, "Template name")
+        self.assertEqual(document.datas, TEXT)
+        self.assertEqual(action["type"], "ir.actions.client")
+        self.assertEqual(action["tag"], "action_open_spreadsheet")
+        self.assertTrue(action["params"]["convert_from_template"])
+
+    def test_action_create_spreadsheet_in_folder(self):
+        template = self.env["spreadsheet.template"].create({
+            "data": TEXT,
+            "name": "Template name",
+        })
+        action = template.action_create_spreadsheet({
+            "folder_id": self.folder.id
+        })
+        spreadsheet_id = action["params"]["spreadsheet_id"]
+        document = self.env["documents.document"].browse(spreadsheet_id)
+        self.assertEqual(document.folder_id, self.folder)

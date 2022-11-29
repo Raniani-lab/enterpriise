@@ -5,7 +5,7 @@ import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
 import { click, mockDownload, nextTick } from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 
-const { createEmptyWorkbookData, getMenuChildren } = spreadsheet.helpers;
+const { getMenuChildren } = spreadsheet.helpers;
 const { topbarMenuRegistry } = spreadsheet.registries;
 
 QUnit.module("documents_spreadsheet > Topbar Menu Items", {}, function () {
@@ -16,25 +16,18 @@ QUnit.module("documents_spreadsheet > Topbar Menu Items", {}, function () {
             spreadsheetId: spreadsheet.id,
             serverData,
             mockRPC: async function (route, args) {
-                if (args.method === "create" && args.model === "documents.document") {
-                    assert.step("create");
-                    assert.deepEqual(
-                        JSON.parse(args.args[0].raw),
-                        createEmptyWorkbookData("Sheet1"),
-                        "It should be an empty spreadsheet"
-                    );
-                    assert.equal(
-                        args.args[0].name,
-                        "Untitled spreadsheet",
-                        "It should have the default name"
-                    );
+                if (
+                    args.method === "action_open_new_spreadsheet" &&
+                    args.model === "documents.document"
+                ) {
+                    assert.step("action_open_new_spreadsheet");
                 }
             },
         });
         const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
         const newSpreadsheet = file.children.find((item) => item.id === "new_sheet");
         newSpreadsheet.action(env);
-        assert.verifySteps(["create"]);
+        assert.verifySteps(["action_open_new_spreadsheet"]);
     });
 
     QUnit.test("Can download xlsx file", async function (assert) {
@@ -98,10 +91,10 @@ QUnit.module("documents_spreadsheet > Topbar Menu Items", {}, function () {
         });
         assert.verifySteps([]);
         const root = topbarMenuRegistry.getAll().find((item) => item.id === "format");
-        const numbers = getMenuChildren(root, env)
-            .find((item) => item.id === "format_number");
-        const customCurrencies = getMenuChildren(numbers, env)
-            .find((item) => item.id === "format_custom_currency");
+        const numbers = getMenuChildren(root, env).find((item) => item.id === "format_number");
+        const customCurrencies = getMenuChildren(numbers, env).find(
+            (item) => item.id === "format_custom_currency"
+        );
         await customCurrencies.action(env);
         await nextTick();
         await click(document.querySelector(".o-sidePanelClose"));

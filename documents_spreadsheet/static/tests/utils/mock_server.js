@@ -18,6 +18,22 @@ registry
         mockJoinSpreadsheetSession("documents.document")
     )
     .add("documents.document/dispatch_spreadsheet_message", () => false)
+    .add("documents.document/action_open_new_spreadsheet", function (route, args) {
+        const spreadsheetId = this.mockCreate("documents.document", {
+            name: "Untitled spreadsheet",
+            mimetype: "application/o-spreadsheet",
+            raw: "{}",
+            handler: "spreadsheet",
+        });
+        return {
+            type: "ir.actions.client",
+            tag: "action_open_spreadsheet",
+            params: {
+                spreadsheet_id: spreadsheetId,
+                is_new_spreadsheet: true,
+            },
+        };
+    })
     .add("spreadsheet.template/fetch_template_data", function (route, args) {
         const [id] = args.args;
         const record = this.models["spreadsheet.template"].records.find(

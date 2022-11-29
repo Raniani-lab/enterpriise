@@ -7,7 +7,7 @@ import { createSpreadsheetWithPivot } from "@spreadsheet/../tests/utils/pivot";
 import { setCellContent } from "@spreadsheet/../tests/utils/commands";
 import { getCellContent } from "@spreadsheet/../tests/utils/getters";
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
-import { getDataFromTemplate } from "@documents_spreadsheet/bundle/helpers";
+import { convertFromSpreadsheetTemplate } from "@documents_spreadsheet/bundle/helpers";
 
 const { Model } = spreadsheet;
 
@@ -446,15 +446,8 @@ QUnit.module("documents_spreadsheet > pivot_templates", {}, function () {
             });
             await model.getters.getPivotDataSource("1").prepareForTemplateGeneration();
             model.dispatch("CONVERT_PIVOT_TO_TEMPLATE");
-            const dataString = JSON.stringify(model.exportData());
-
             serverData.models.partner.records = [];
-            serverData.models["spreadsheet.template"].records.push({
-                id: 3,
-                name: "Template of parther",
-                data: btoa(dataString),
-            });
-            const data = await getDataFromTemplate(env, env.services.orm, 3);
+            const data = await convertFromSpreadsheetTemplate(env.services.orm, model.exportData());
             const cells = data.sheets[0].cells;
             assert.equal(cells.A4.content, "=ODOO.PIVOT.HEADER(1)");
             assert.equal(cells.B1.content, '=ODOO.PIVOT.HEADER(1,"foo",1)');

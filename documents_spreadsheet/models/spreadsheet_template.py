@@ -32,15 +32,23 @@ class SpreadsheetTemplate(models.Model):
             },
         }
 
-    def action_create_spreadsheet(self):
+    def action_create_spreadsheet(self, document_vals=None):
+        if document_vals is None:
+            document_vals = {}
         self.ensure_one()
+        spreadsheet = self.env["documents.document"].create({
+            "name": self.name,
+            "mimetype": "application/o-spreadsheet",
+            "handler": "spreadsheet",
+            "datas": self.data,
+            **document_vals,
+        })
         return {
             "type": "ir.actions.client",
             "tag": "action_open_spreadsheet",
             "params": {
-                "alwaysCreate": True,
-                "createFromTemplateId": self.id,
-                "createFromTemplateName": self.name,
+                "spreadsheet_id": spreadsheet.id,
+                "convert_from_template": True,
             },
         }
 

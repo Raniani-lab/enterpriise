@@ -9,12 +9,35 @@ from odoo.tools import mute_logger
 from odoo.tests import Form
 from odoo.tests.common import new_test_user
 
+from odoo.addons.spreadsheet.utils import empty_spreadsheet_data_base64
+
 
 class SpreadsheetDocuments(SpreadsheetTestCommon):
     @classmethod
     def setUpClass(cls):
         super(SpreadsheetDocuments, cls).setUpClass()
         cls.folder = cls.env["documents.folder"].create({"name": "Test folder"})
+
+    def test_action_open_new_spreadsheet(self):
+        action = self.env["documents.document"].action_open_new_spreadsheet()
+        spreadsheet_id = action["params"]["spreadsheet_id"]
+        document = self.env["documents.document"].browse(spreadsheet_id)
+        self.assertTrue(document.exists())
+        self.assertEqual(document.handler, "spreadsheet")
+        self.assertEqual(document.mimetype, "application/o-spreadsheet")
+        self.assertEqual(document.name, "Untitled spreadsheet")
+        self.assertEqual(document.datas, empty_spreadsheet_data_base64())
+        self.assertEqual(action["type"], "ir.actions.client")
+        self.assertEqual(action["tag"], "action_open_spreadsheet")
+        self.assertTrue(action["params"]["is_new_spreadsheet"])
+
+    def test_action_open_new_spreadsheet_in_folder(self):
+        action = self.env["documents.document"].action_open_new_spreadsheet({
+            "folder_id": self.folder.id
+        })
+        spreadsheet_id = action["params"]["spreadsheet_id"]
+        document = self.env["documents.document"].browse(spreadsheet_id)
+        self.assertEqual(document.folder_id, self.folder)
 
     def archive_existing_spreadsheet(self):
         """Existing spreadsheet in the database can influence some test results"""

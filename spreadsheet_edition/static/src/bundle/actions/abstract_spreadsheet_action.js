@@ -28,7 +28,7 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
             // the action is coming from wowl
             this.params = this.props.action.params;
         }
-        this.isEmptySpreadsheet = !(this.params.spreadsheet_id || this.params.active_id);
+        this.isEmptySpreadsheet = this.params.is_new_spreadsheet || false;
         this.resId =
             this.params.spreadsheet_id ||
             this.params.active_id || // backward compatibility. spreadsheet_id used to be active_id
@@ -37,7 +37,7 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
         this.actionService = useService("action");
         this.notifications = useService("notification");
         this.orm = useService("orm");
-        this.http = useService("http")
+        this.http = useService("http");
         useSetupAction({
             getLocalState: () => {
                 return {
@@ -57,20 +57,13 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
         // if we are returning to the spreadsheet via the breadcrumb, we don't want
         // to do all the "creation" options of the actions
         if (!this.props.state) {
-            [this.resId] = await Promise.all([
-                this._createAddSpreadsheetData(),
-                loadSpreadsheetDependencies(),
-            ]);
+            await Promise.all([this._setupPreProcessingCallbacks(), loadSpreadsheetDependencies()]);
         }
         const [record] = await Promise.all([this._fetchData(), loadSpreadsheetDependencies()]);
         this._initializeWith(record);
     }
 
-    async _createAddSpreadsheetData() {
-        let resId = this.resId;
-        if (this.params.alwaysCreate) {
-            resId = this._createSpreadsheetRecord();
-        }
+    async _setupPreProcessingCallbacks() {
         if (this.params.preProcessingAction) {
             const initCallbackGenerator = initCallbackRegistry
                 .get(this.params.preProcessingAction)
@@ -85,7 +78,6 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
                 this.params.preProcessingAsyncActionData
             );
         }
-        return resId;
     }
 
     onMounted() {
@@ -99,14 +91,6 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
      * @param {SpreadsheetRecord} record
      */
     _initializeWith(record) {
-        throw new Error("not implemented by children");
-    }
-
-    /**
-     * @protected
-     * @returns {Promise<number>}
-     */
-    async _createSpreadsheetRecord() {
         throw new Error("not implemented by children");
     }
 
@@ -131,19 +115,26 @@ export class AbstractSpreadsheetAction extends LegacyComponent {
     }
 
     /**
-     * Open a spreadsheet
-     * @private
+     * @protected
      */
-    _openSpreadsheet(spreadsheet_id) {
+    _notifyCreation() {
         this.notifications.add(this.notificationMessage, {
             type: "info",
             sticky: false,
         });
+    }
+
+    /**
+     * Open a spreadsheet
+     * @private
+     */
+    _openSpreadsheet(spreadsheetId) {
+        this._notifyCreation();
         this.actionService.doAction(
             {
                 type: "ir.actions.client",
                 tag: this.props.action.tag,
-                params: { spreadsheet_id },
+                params: { spreadsheet_id: spreadsheetId },
             },
             { clear_breadcrumbs: true }
         );

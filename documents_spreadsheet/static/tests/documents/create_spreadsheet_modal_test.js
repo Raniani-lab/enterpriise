@@ -64,7 +64,7 @@ async function getDocumentBasicData(views = {}) {
  * @typedef InitArgs
  * @property {Object} serverData
  * @property {Array} additionalTemplates
- * @property {Function} mockRPC label of the filter
+ * @property {Function} mockRPC
  */
 
 /**
@@ -93,7 +93,10 @@ async function initTestEnvWithKanban(args = {}) {
     });
 }
 
-async function initTestEnvWithBlankSpreadsheet() {
+/**
+ *  @param {InitArgs} args
+ */
+async function initTestEnvWithBlankSpreadsheet(params = {}) {
     const pyEnv = await startServer();
     const documentsFolderId1 = pyEnv["documents.folder"].create({ has_write_access: true });
     pyEnv["documents.document"].create({
@@ -109,7 +112,7 @@ async function initTestEnvWithBlankSpreadsheet() {
             "spreadsheet.template,false,search": `<search><field name="name"/></search>`,
         },
     };
-    return await initTestEnvWithKanban({ serverData });
+    return await initTestEnvWithKanban({ serverData, ...params });
 }
 
 let target;
@@ -237,14 +240,18 @@ QUnit.module(
             const mockDoAction = (action) => {
                 assert.step("redirect");
                 assert.equal(action.tag, "action_open_spreadsheet");
-                assert.deepEqual(action.params, {
-                    alwaysCreate: true,
-                    createFromTemplateId: null,
-                    createFromTemplateName: undefined,
-                    createInFolderId: 1,
-                });
             };
-            const kanban = await initTestEnvWithBlankSpreadsheet();
+            const kanban = await initTestEnvWithBlankSpreadsheet({
+                mockRPC: async function (route, args) {
+                    if (
+                        args.model === "documents.document" &&
+                        args.method === "action_open_new_spreadsheet"
+                    ) {
+                        assert.strictEqual(args.args[0].folder_id, 1);
+                        assert.step("action_open_new_spreadsheet");
+                    }
+                },
+            });
             mockActionService(kanban.env, mockDoAction);
 
             // ### With confirm button
@@ -253,28 +260,69 @@ QUnit.module(
             // select blank spreadsheet
             await triggerEvent(dialog.querySelectorAll(".o-template img")[0], null, "focus");
             await click(dialog.querySelector(".o-spreadsheet-create"));
-            assert.verifySteps(["redirect"]);
+            assert.verifySteps(["action_open_new_spreadsheet", "redirect"]);
 
             // ### With double click on image
             await click(target, ".o_documents_kanban_spreadsheet");
             dialog = document.querySelector(".o-spreadsheet-templates-dialog");
             await triggerEvent(dialog.querySelectorAll(".o-template img")[0], null, "focus");
             await triggerEvent(dialog.querySelectorAll(".o-template img")[0], null, "dblclick");
-            assert.verifySteps(["redirect"]);
+            assert.verifySteps(["action_open_new_spreadsheet", "redirect"]);
+        });
+
+        QUnit.test("Context is transmitted when creating spreadsheet", async function (assert) {
+            await createDocumentsView({
+                type: "kanban",
+                resModel: "documents.document",
+                serverData: await getDocumentBasicData(),
+                arch: /*xml*/ `
+                    <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                        <div><field name="name"/></div>
+                    </t></templates></kanban>
+                `,
+                context: {
+                    default_res_model: "test.model",
+                    default_res_id: 42,
+                },
+                mockRPC: async function (route, args) {
+                    if (args.method === "action_open_new_spreadsheet") {
+                        assert.step("action_open_new_spreadsheet");
+                        assert.strictEqual(args.kwargs.context.default_res_id, 42);
+                        assert.strictEqual(args.kwargs.context.default_res_model, "test.model");
+                    }
+                },
+            });
+
+            await click(target, ".o_documents_kanban_spreadsheet");
+            const dialog = document.querySelector(".o-spreadsheet-templates-dialog");
+            // select blank spreadsheet
+            await triggerEvent(dialog.querySelectorAll(".o-template img")[0], null, "focus");
+            await click(dialog, ".o-spreadsheet-create");
+            assert.verifySteps(["action_open_new_spreadsheet"]);
         });
 
         QUnit.test("Can create a spreadsheet from a template", async function (assert) {
             const mockDoAction = (action) => {
                 assert.step("redirect");
-                assert.equal(action.tag, "action_open_spreadsheet");
-                assert.deepEqual(action.params, {
-                    alwaysCreate: true,
-                    createFromTemplateId: 1,
-                    createFromTemplateName: "Template 1",
-                    createInFolderId: 1,
-                });
+                assert.equal(action.tag, "an_action");
             };
-            const kanban = await initTestEnvWithKanban({ additionalTemplates: TEST_TEMPLATES });
+            const kanban = await initTestEnvWithKanban({
+                additionalTemplates: TEST_TEMPLATES,
+                mockRPC: async function (route, args) {
+                    if (
+                        args.model === "spreadsheet.template" &&
+                        args.method === "action_create_spreadsheet"
+                    ) {
+                        assert.step("action_create_spreadsheet");
+                        assert.strictEqual(args.args[1].folder_id, 1);
+                        const action = {
+                            type: "ir.actions.client",
+                            tag: "an_action",
+                        };
+                        return action;
+                    }
+                },
+            });
             mockActionService(kanban.env, mockDoAction);
 
             // ### With confirm button
@@ -283,14 +331,14 @@ QUnit.module(
             // select blank spreadsheet
             await triggerEvent(dialog.querySelectorAll(".o-template img")[1], null, "focus");
             await click(dialog.querySelector(".o-spreadsheet-create"));
-            assert.verifySteps(["redirect"]);
+            assert.verifySteps(["action_create_spreadsheet", "redirect"]);
 
             // ### With double click on image
             await click(target, ".o_documents_kanban_spreadsheet");
             dialog = document.querySelector(".o-spreadsheet-templates-dialog");
             await triggerEvent(dialog.querySelectorAll(".o-template img")[1], null, "focus");
             await triggerEvent(dialog.querySelectorAll(".o-template img")[1], null, "dblclick");
-            assert.verifySteps(["redirect"]);
+            assert.verifySteps(["action_create_spreadsheet", "redirect"]);
         });
     }
 );

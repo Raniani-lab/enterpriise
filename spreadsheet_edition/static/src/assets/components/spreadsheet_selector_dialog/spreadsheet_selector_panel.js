@@ -1,8 +1,10 @@
 /** @odoo-module */
 
+import { _t } from "@web/core/l10n/translation";
 import { browser } from "@web/core/browser/browser";
 import { KeepLast } from "@web/core/utils/concurrency";
 import { useService } from "@web/core/utils/hooks";
+import { sprintf } from "@web/core/utils/strings";
 import { Pager } from "@web/core/pager/pager";
 
 const { Component, onWillStart, useState, onWillUnmount } = owl;
@@ -61,6 +63,14 @@ export class SpreadsheetSelectorPanel extends Component {
         throw new Error("Should be implemented by subclass.");
     }
 
+    async _getOpenSpreadsheetAction() {
+        throw new Error("Should be implemented by subclass.");
+    }
+
+    async _getCreateAndOpenSpreadsheetAction() {
+        throw new Error("Should be implemented by subclass.");
+    }
+
     onSearchInput(ev) {
         this.currentSearch = ev.target.value;
         this._debouncedFetchSpreadsheets();
@@ -98,10 +108,15 @@ export class SpreadsheetSelectorPanel extends Component {
         const spreadsheet =
             this.state.selectedSpreadsheetId &&
             this.state.spreadsheets.find((s) => s.id === this.state.selectedSpreadsheetId);
+        const notificationMessage = spreadsheet
+            ? sprintf(_t("New sheet inserted in '%s'"), spreadsheet.name)
+            : this.notificationMessage;
         this.props.onSpreadsheetSelected({
             spreadsheet,
-            notificationMessage: this.notificationMessage,
-            actionTag: this.actionTag,
+            notificationMessage,
+            getOpenSpreadsheetAction: spreadsheet
+                ? this._getOpenSpreadsheetAction.bind(this)
+                : this._getCreateAndOpenSpreadsheetAction.bind(this),
         });
     }
 }

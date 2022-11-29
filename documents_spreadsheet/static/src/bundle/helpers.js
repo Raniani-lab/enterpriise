@@ -3,22 +3,17 @@
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { DataSources } from "@spreadsheet/data_sources/data_sources";
 import { migrate } from "@spreadsheet/o_spreadsheet/migration";
-import { base64ToJson } from "@spreadsheet_edition/bundle/helpers";
 
 const Model = spreadsheet.Model;
 
 /**
- * Takes a template id as input, will convert the formulas
- * from relative to absolute in a way that they can be used to create a sheet.
+ * Convert PIVOT functions from relative to absolute.
  *
- * @param {Object} orm
- * @param {number} templateId
- * @returns {Promise<Object>} spreadsheetData
+ * @param {object} orm
+ * @param {object} data
+ * @returns {Promise<object>} spreadsheetData
  */
-export async function getDataFromTemplate(env, orm, templateId) {
-    let [{ data }] = await orm.read("spreadsheet.template", [templateId], ["data"]);
-    data = base64ToJson(data);
-
+export async function convertFromSpreadsheetTemplate(orm, data) {
     const model = new Model(migrate(data), {
         external: { dataSources: new DataSources(orm) },
     });

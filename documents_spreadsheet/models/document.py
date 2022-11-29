@@ -11,6 +11,9 @@ from odoo.osv import expression
 from odoo.tools import image_process
 from odoo.exceptions import UserError
 
+from odoo.addons.spreadsheet.utils import empty_spreadsheet_data_base64
+
+
 SUPPORTED_PATHS = (
     "[Content_Types].xml",
     "xl/sharedStrings.xml",
@@ -107,6 +110,26 @@ class Document(models.Model):
         for document in self:
             if document.handler == 'spreadsheet':
                 self.env['spreadsheet.contributor']._update(self.env.user, document)
+
+    @api.model
+    def action_open_new_spreadsheet(self, vals=None):
+        if vals is None:
+            vals = {}
+        spreadsheet = self.create({
+            "name": _("Untitled spreadsheet"),
+            "mimetype": "application/o-spreadsheet",
+            "datas": empty_spreadsheet_data_base64(),
+            "handler": "spreadsheet",
+            **vals,
+        })
+        return {
+            "type": "ir.actions.client",
+            "tag": "action_open_spreadsheet",
+            "params": {
+                "spreadsheet_id": spreadsheet.id,
+                "is_new_spreadsheet": True,
+            },
+        }
 
     @api.model
     def get_spreadsheets_to_display(self, domain, offset=0, limit=None):

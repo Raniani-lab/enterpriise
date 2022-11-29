@@ -544,9 +544,8 @@ QUnit.module("spreadsheet pivot view", {}, () => {
                 if (route.includes("get_spreadsheets_to_display")) {
                     return [{ id: 1, name: "My Spreadsheet" }];
                 }
-                if (args.method === "create" && args.model === "documents.document") {
-                    assert.step("create");
-                    return 1;
+                if (args.method === "action_open_new_spreadsheet") {
+                    assert.step("action_open_new_spreadsheet");
                 }
             },
         });
@@ -559,7 +558,7 @@ QUnit.module("spreadsheet pivot view", {}, () => {
         const target = getFixture();
         await click(target.querySelector(".o_pivot_add_spreadsheet"));
         await click(document.querySelector(".modal-content > .modal-footer > .btn-primary"));
-        assert.verifySteps(["create"]);
+        assert.verifySteps(["action_open_new_spreadsheet"]);
     });
 
     QUnit.test("Can save a pivot in existing spreadsheet", async (assert) => {

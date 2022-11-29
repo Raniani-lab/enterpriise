@@ -105,27 +105,35 @@ export class TemplateDialog extends Component {
             return;
         }
         this.state.isCreating = true;
-        const templateId = this.state.selectedTemplateId;
 
         this.notificationService.add(_t("New sheet saved in Documents"), {
             type: "info",
             sticky: false,
         });
 
-        const template = this.state.templates.find((template) => template.id === templateId);
-        this.actionService.doAction({
-            type: "ir.actions.client",
-            tag: "action_open_spreadsheet",
-            params: {
-                alwaysCreate: true,
-                createInFolderId: this.props.folderId,
-                createFromTemplateId: templateId,
-                createFromTemplateName: template && template.name,
-            },
-        }, {
+        this.actionService.doAction(await this._getOpenSpreadsheetAction(), {
             additionalContext: this.props.context,
         });
         this.data.close();
+    }
+
+    async _getOpenSpreadsheetAction() {
+        const context = this.props.context;
+        const templateId = this.state.selectedTemplateId;
+        if (templateId) {
+            return this.orm.call(
+                "spreadsheet.template",
+                "action_create_spreadsheet",
+                [templateId, { folder_id: this.props.folderId }],
+                { context }
+            );
+        }
+        return this.orm.call(
+            "documents.document",
+            "action_open_new_spreadsheet",
+            [{ folder_id: this.props.folderId }],
+            { context }
+        );
     }
 
     /**

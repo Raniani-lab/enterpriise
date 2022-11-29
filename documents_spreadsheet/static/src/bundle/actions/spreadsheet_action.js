@@ -1,5 +1,4 @@
 /** @odoo-module **/
-import { _t } from "@web/core/l10n/translation";
 import { registry } from "@web/core/registry";
 import { download } from "@web/core/network/download";
 import { useService } from "@web/core/utils/hooks";
@@ -8,14 +7,12 @@ import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadshee
 import { SpreadsheetName } from "@spreadsheet_edition/bundle/actions/control_panel/spreadsheet_name";
 
 import { UNTITLED_SPREADSHEET_NAME } from "@spreadsheet/helpers/constants";
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
-import { getDataFromTemplate } from "@documents_spreadsheet/bundle/helpers";
+import { convertFromSpreadsheetTemplate } from "@documents_spreadsheet/bundle/helpers";
 import { AbstractSpreadsheetAction } from "@spreadsheet_edition/bundle/actions/abstract_spreadsheet_action";
 import { DocumentsSpreadsheetControlPanel } from "../components/control_panel/spreadsheet_control_panel";
 import { RecordFileStore } from "@spreadsheet_edition/bundle/image/record_file_store";
 
 const { Component, useState } = owl;
-const { createEmptyWorkbookData } = spreadsheet.helpers;
 
 export class SpreadsheetAction extends AbstractSpreadsheetAction {
     setup() {
@@ -44,35 +41,16 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
         );
     }
 
-    /**
-     * @override
-     * @returns {Promise<number>}
-     */
-    async _createSpreadsheetRecord() {
-        const data = this.params.createFromTemplateId
-            ? await getDataFromTemplate(this.env, this.orm, this.params.createFromTemplateId)
-            : createEmptyWorkbookData(`${this.env._t("Sheet")}1`);
-        return this.orm.create(
-            "documents.document",
-            [
-                {
-                    name: this.params.createFromTemplateName || UNTITLED_SPREADSHEET_NAME,
-                    mimetype: "application/o-spreadsheet",
-                    handler: "spreadsheet",
-                    raw: JSON.stringify(data),
-                    folder_id: this.params.createInFolderId,
-                },
-            ],
-            {
-                context: this.props.action.context,
-            }
-        );
-    }
-
     async _fetchData() {
         const record = await this.orm.call("documents.document", "join_spreadsheet_session", [
             this.resId,
         ]);
+        if (this.params.convert_from_template) {
+            return {
+                ...record,
+                raw: await convertFromSpreadsheetTemplate(this.orm, record.raw),
+            };
+        }
         return record;
     }
 
@@ -148,14 +126,9 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
      * Create a new sheet and display it
      */
     async _onNewSpreadsheet() {
-        const data = {
-            name: UNTITLED_SPREADSHEET_NAME,
-            mimetype: "application/o-spreadsheet",
-            raw: JSON.stringify(createEmptyWorkbookData(`${_t("Sheet")}1`)),
-            handler: "spreadsheet",
-        };
-        const id = await this.orm.create("documents.document", [data]);
-        this._openSpreadsheet(id);
+        const action = await this.orm.call("documents.document", "action_open_new_spreadsheet");
+        this._notifyCreation();
+        this.actionService.doAction(action, { clear_breadcrumbs: true });
     }
 
     async _onSpreadsheetSaved({ data, thumbnail }) {

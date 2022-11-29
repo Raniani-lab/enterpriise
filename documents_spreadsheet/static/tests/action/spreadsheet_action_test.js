@@ -1,14 +1,11 @@
 /** @odoo-module */
 
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
-import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { getBasicData } from "@spreadsheet/../tests/utils/data";
 import { prepareWebClientForSpreadsheet } from "../utils/webclient_helpers";
 import { getFixture, nextTick, click } from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { selectCell } from "@spreadsheet/../tests/utils/commands";
-
-const { createEmptyWorkbookData } = spreadsheet.helpers;
 
 let target;
 
@@ -41,43 +38,6 @@ QUnit.module(
             });
             assert.containsOnce(target, ".o-spreadsheet", "It should have opened the spreadsheet");
             assert.verifySteps(["spreadsheet-loaded"]);
-        });
-
-        QUnit.test("open spreadsheet action with spreadsheet creation", async function (assert) {
-            await prepareWebClientForSpreadsheet();
-            const webClient = await createWebClient({
-                serverData: { models: getBasicData() },
-                mockRPC: async function (route, args) {
-                    if (args.method === "create" && args.model === "documents.document") {
-                        assert.step("create_sheet");
-                        assert.deepEqual(
-                            JSON.parse(args.args[0].raw),
-                            createEmptyWorkbookData("Sheet1"),
-                            "It should be an empty spreadsheet"
-                        );
-                        assert.equal(
-                            args.args[0].name,
-                            "Untitled spreadsheet",
-                            "It should have the default name"
-                        );
-                        assert.equal(
-                            args.args[0].folder_id,
-                            1,
-                            "It should be in the correct folder"
-                        );
-                    }
-                },
-            });
-            await doAction(webClient, {
-                type: "ir.actions.client",
-                tag: "action_open_spreadsheet",
-                params: {
-                    alwaysCreate: true,
-                    createFromTemplateId: null,
-                    createInFolderId: 1,
-                },
-            });
-            assert.verifySteps(["create_sheet"]);
         });
 
         QUnit.test("breadcrumb is rendered in control panel", async function (assert) {
@@ -239,39 +199,6 @@ QUnit.module(
                 document.activeElement.parentElement.className,
                 "o-grid o-two-columns"
             );
-        });
-
-        QUnit.test("create spreadsheet action uses action context", async function (assert) {
-            await prepareWebClientForSpreadsheet();
-            const webClient = await createWebClient({
-                serverData: { models: getBasicData() },
-                mockRPC: async function (route, args) {
-                    if (args.method === "create" && args.model === "documents.document") {
-                        assert.step("create_sheet");
-                        assert.equal(args.kwargs.context.default_res_model, "test.model");
-                        assert.equal(args.kwargs.context.default_res_id, 42);
-                    }
-                },
-            });
-            await doAction(
-                webClient,
-                {
-                    type: "ir.actions.client",
-                    tag: "action_open_spreadsheet",
-                    params: {
-                        alwaysCreate: true,
-                        createFromTemplateId: null,
-                        createInFolderId: 1,
-                    },
-                },
-                {
-                    additionalContext: {
-                        default_res_model: "test.model",
-                        default_res_id: 42,
-                    },
-                }
-            );
-            assert.verifySteps(["create_sheet"]);
         });
     }
 );

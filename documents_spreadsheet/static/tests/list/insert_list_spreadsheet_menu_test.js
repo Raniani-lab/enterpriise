@@ -27,8 +27,11 @@ QUnit.module(
 
             await spawnListViewForSpreadsheet({
                 mockRPC: async function (route, args) {
-                    if (args.method === "create" && args.model === "documents.document") {
-                        assert.step("create");
+                    if (
+                        args.method === "action_open_new_spreadsheet" &&
+                        args.model === "documents.document"
+                    ) {
+                        assert.step("action_open_new_spreadsheet");
                     }
                 },
             });
@@ -37,7 +40,7 @@ QUnit.module(
             await click(target.querySelector(".o_insert_list_spreadsheet_menu"));
             await click(target, ".modal button.btn-primary");
             await nextTick();
-            assert.verifySteps(["create"]);
+            assert.verifySteps(["action_open_new_spreadsheet"]);
         });
 
         QUnit.test("Can save a list in existing spreadsheet", async (assert) => {

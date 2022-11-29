@@ -8,7 +8,6 @@ import {
     click,
     getFixture,
     legacyExtraNextTick,
-    makeDeferred,
     nextTick,
     patchWithCleanup,
     triggerEvent,
@@ -205,11 +204,9 @@ QUnit.module(
         });
 
         QUnit.test("insert action in new spreadsheet", async function (assert) {
-            const def = makeDeferred();
             await openView("list", {
                 mockRPC: async function (route, args) {
-                    if (args.method === "create") {
-                        await def;
+                    if (args.method === "action_open_new_spreadsheet") {
                         assert.step("spreadsheet-created");
                     }
                 },
@@ -219,7 +216,6 @@ QUnit.module(
             await toggleFavoriteMenu(target);
             await click(target, ".o_insert_action_spreadsheet_menu");
             await click(target, ".modal-footer button.btn-primary");
-            def.resolve();
             await nextTick();
             assert.verifySteps(["spreadsheet-created"]);
             assert.containsOnce(target, ".o_spreadsheet_action");

@@ -38,10 +38,10 @@ export class SpreadsheetSelectorDialog extends Component {
         this.state = useState({
             threshold: this.props.threshold,
             name: this.props.name,
+            confirmationIsPending: false,
         });
         this.actionState = {
-            actionTag: undefined,
-            selectedSpreadsheet: false,
+            getOpenSpreadsheetAction: () => {},
             notificationMessage: "",
         };
         this.notification = useService("notification");
@@ -66,23 +66,32 @@ export class SpreadsheetSelectorDialog extends Component {
     /**
      * @param {number|false} id
      */
-    onSpreadsheetSelected({ spreadsheet, actionTag, notificationMessage }) {
+    onSpreadsheetSelected({ getOpenSpreadsheetAction, notificationMessage }) {
         this.actionState = {
-            selectedSpreadsheet: spreadsheet,
-            actionTag,
+            getOpenSpreadsheetAction,
             notificationMessage,
         };
     }
 
-    _confirm() {
+    async _confirm() {
+        if (this.state.confirmationIsPending) {
+            return;
+        }
+        this.state.confirmationIsPending = true;
+        const action = await this.actionState.getOpenSpreadsheetAction();
         const threshold = this.state.threshold ? parseInt(this.state.threshold, 10) : 0;
-        const isNewItem = this.actionState.selectedSpreadsheet === false;
-        const notificationMessage = isNewItem
-            ? this.actionState.notificationMessage
-            : sprintf(_t("New sheet inserted in '%s'"), this.actionState.selectedSpreadsheet.name);
-        // make sure we send a primitive string instead of a LazyTranslatedString
         const name = this.state.name.toString();
-        const actionOptions = {
+
+        this.notification.add(this.actionState.notificationMessage, { type: "info" });
+        this.actionService.doAction({
+            ...action,
+            params: this._addToPreprocessingAction(action.params, threshold, name),
+        });
+        this.props.close();
+    }
+
+    _addToPreprocessingAction(actionParams, threshold, name) {
+        return {
             ...this.props.actionOptions,
             preProcessingAsyncActionData: {
                 ...this.props.actionOptions.preProcessingAsyncActionData,
@@ -94,18 +103,8 @@ export class SpreadsheetSelectorDialog extends Component {
                 threshold,
                 name,
             },
-            alwaysCreate: isNewItem,
-            spreadsheet_id:
-                this.actionState.selectedSpreadsheet && this.actionState.selectedSpreadsheet.id,
+            ...actionParams,
         };
-
-        this.notification.add(notificationMessage, { type: "info" });
-        this.actionService.doAction({
-            type: "ir.actions.client",
-            tag: this.actionState.actionTag,
-            params: actionOptions,
-        });
-        this.props.close();
     }
 
     _cancel() {

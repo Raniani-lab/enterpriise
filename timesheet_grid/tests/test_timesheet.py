@@ -87,6 +87,21 @@ class TestTimesheetValidation(TestCommonTimesheet, MockEmail):
         # manager modify validated timesheet
         self.timesheet1.with_user(self.user_manager).write({'unit_amount': 5})
 
+    def test_timesheet_validation_stop_timer(self):
+        """ Check that the timers are stopped when validating the task even if the timer belongs to another user """
+        # Start timer with employee user
+        timesheet = self.timesheet1
+        start_unit_amount = timesheet.unit_amount
+        timesheet.with_user(self.user_employee).action_timer_start()
+        timer = self.env['timer.timer'].search([("user_id", "=", self.user_employee.id), ('res_model', '=', 'account.analytic.line')])
+        self.assertTrue(timer, 'A timer has to be running for the user employee')
+        # Validate timesheet with manager user
+        timesheet.with_user(self.user_manager).action_validate_timesheet()
+        # Check if old timer is stopped
+        self.assertFalse(timer.exists())
+        # Check if time spent is add to the validated timesheet
+        self.assertGreater(timesheet.unit_amount, start_unit_amount, 'The unit amount has to be greater than at the beginning')
+
     def _test_next_date(self, now, result, delay, interval):
 
         def _now(*args, **kwargs):

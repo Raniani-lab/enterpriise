@@ -6,7 +6,7 @@ import pytz
 
 from odoo import Command, fields, models, api, _
 from odoo.osv import expression
-
+from odoo.tools import get_lang
 
 class Task(models.Model):
     _inherit = "project.task"
@@ -257,6 +257,19 @@ class Task(models.Model):
             'context': {'form_view_initial_mode': 'edit', 'task_worksheet_comment': True},
             'views': [[self.env.ref('industry_fsm.fsm_form_view_comment').id, 'form']],
         }
+
+    def action_timer_start(self):
+        if not self.user_timer_id.timer_start and self.display_timesheet_timer:
+            super(Task, self).action_timer_start()
+            if self.is_fsm:
+                time = fields.Datetime.context_timestamp(self, self.timer_start)
+                self.message_post(
+                    body=_(
+                        'Timer started at: %(date)s %(time)s',
+                        date=time.strftime(get_lang(self.env).date_format),
+                        time=time.strftime(get_lang(self.env).time_format),
+                    ),
+                )
 
     def action_view_timesheets(self):
         kanban_view = self.env.ref('hr_timesheet.view_kanban_account_analytic_line')

@@ -32,31 +32,14 @@
                     </div>
                 </div>
             </xpath>
-            <div id="pos_payment_terminals_section" position="inside">
-                <div class="col-12 col-lg-6 o_setting_box" title="The transactions are processed by Ingenico. Set your Ingenico device on the related payment method.">
-                    <div class="o_setting_left_pane">
-                        <field name="ingenico_payment_terminal"/>
-                    </div>
-                    <div class="o_setting_right_pane">
-                        <label for="ingenico_payment_terminal" string="Ingenico (BENELUX)"/>
-                        <a href="https://www.odoo.com/documentation/master/applications/sales/point_of_sale/payment/ingenico.html" title="Documentation" class="o_doc_link" target="_blank"></a>
-                        <div class="text-muted">
-                            Accept payments with an Ingenico payment terminal
-                        </div>
-                    </div>
-                </div>
-                <div class="col-12 col-lg-6 o_setting_box" title="The transactions are processed by Worldline. Set your Worldline device on the related payment method.">
-                    <div class="o_setting_left_pane">
-                        <field name="worldline_payment_terminal"/>
-                    </div>
-                    <div class="o_setting_right_pane">
-                        <label for="worldline_payment_terminal" string="Worldline"/>
-                        <div class="text-muted">
-                            Accept payments with a Worldline payment terminal
-                        </div>
-                    </div>
-                </div>
-            </div>
+            <block id="pos_payment_terminals_section" position="inside">
+                <setting title="The transactions are processed by Ingenico. Set your Ingenico device on the related payment method." string="Ingenico (BENELUX)" documentation="/applications/sales/point_of_sale/payment/ingenico.html" help="Accept payments with an Ingenico payment terminal">
+                    <field name="ingenico_payment_terminal"/>
+                </setting>
+                <setting title="The transactions are processed by Worldline. Set your Worldline device on the related payment method." string="Worldline" help="Accept payments with a Worldline payment terminal">
+                    <field name="worldline_payment_terminal"/>
+                </setting>
+            </block>
         </field>
     </record>
 </odoo>

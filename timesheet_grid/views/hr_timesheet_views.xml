@@ -491,10 +491,10 @@
                     <field name="timer_start" invisible="1"/>
                     <field name="timer_pause" invisible="1"/>
                     <t t-if="record.display_timesheet_timer &amp;&amp; record.timer_pause.raw_value">
-                        <i class="fa fa-pause text-warning" title="Timer is Paused"></i>
+                        <i class="fa fa-pause text-warning" title="Timer is Paused" t-attf-class="{{ record.planned_date_end.raw_value ? 'ms-2' : '' }}"/>
                     </t>
                     <t t-elif="record.display_timesheet_timer &amp;&amp; record.timer_start.raw_value">
-                        <i class="fa fa-play text-success" title="Timer is Running"></i>
+                        <i class="fa fa-play text-success" title="Timer is Running" t-attf-class="{{ record.planned_date_end.raw_value ? 'ms-2' : '' }}"></i>
                     </t>
                 </xpath>
             </field>

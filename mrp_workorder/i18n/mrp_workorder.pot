@@ -27,8 +27,7 @@ msgstr ""
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
 msgid ""
-"<b>%s suggests to use this document as instruction</b><br/><img style='max-"
-"width: 75%%' class='img-fluid' src=%s/>"
+"%(user_name)s suggests to use this document as instruction"
 msgstr ""
 
 #. module: mrp_workorder
@@ -36,6 +35,12 @@ msgstr ""
 #: code:addons/mrp_workorder/wizard/propose_change.py:0
 #, python-format
 msgid "New Instruction suggested by %(user_name)s"
+msgstr ""
+
+#. module: mrp_workorder
+#: code:addons/mrp_workorder/wizard/propose_change.py:0
+#, python-format
+msgid "New Title suggested:"
 msgstr ""
 
 #. module: mrp_workorder

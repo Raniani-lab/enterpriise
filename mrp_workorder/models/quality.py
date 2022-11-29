@@ -348,7 +348,7 @@ class QualityCheck(models.Model):
                 'res_id': self.workorder_id.production_id.bom_id.id,
                 'user_id': self.workorder_id.product_id.responsible_id.id or SUPERUSER_ID,
                 'activity_type_id': self.env.ref('mail.mail_activity_data_todo').id,
-                'summary': _('BoM feedback %s (%s)', self.title, self.workorder_id.production_id.name),
+                'summary': _('BoM feedback %s (%s)', self.title or self.test_type, self.workorder_id.production_id.name),
                 'note': body,
             })
 

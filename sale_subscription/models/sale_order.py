@@ -88,8 +88,8 @@ class SaleOrder(models.Model):
                                                string='Recurrence', ondelete='restrict', readonly=False, store=True)
     is_batch = fields.Boolean(string='Is a Batch', default=False, copy=False)
     is_invoice_cron = fields.Boolean(string='Is a Subscription invoiced in cron', default=False, copy=False)
-    subscription_id = fields.Many2one('sale.order', string='Parent Contract', ondelete='restrict', copy=True)
-    origin_order_id = fields.Many2one('sale.order', string='First contract', ondelete='restrict', store=True, copy=True, compute='_compute_origin_order_id')
+    subscription_id = fields.Many2one('sale.order', string='Parent Contract', ondelete='restrict', copy=False)
+    origin_order_id = fields.Many2one('sale.order', string='First contract', ondelete='restrict', store=True, copy=False, compute='_compute_origin_order_id')
     subscription_child_ids = fields.One2many('sale.order', 'subscription_id')
     history_count = fields.Integer(compute='_compute_history_count')
     payment_exception = fields.Boolean("Contract in exception",
@@ -823,6 +823,17 @@ class SaleOrder(models.Model):
         lang = self.partner_id.lang or self.env.user.lang
         upsell_msg_body = self._get_order_digest(origin='upsell', lang=lang)
         action = self._prepare_renew_upsell_order('upsell', upsell_msg_body)
+        return action
+
+    def create_alternative(self):
+        self.ensure_one()
+        alternative_so = self.copy({
+            'origin_order_id': self.origin_order_id.id,
+            'subscription_id': self.subscription_id.id
+        })
+        action = alternative_so._get_associated_so_action()
+        action['views'] = [(self.env.ref('sale_subscription.sale_subscription_primary_form_view').id, 'form')]
+        action['res_id'] = alternative_so.id
         return action
 
     ####################

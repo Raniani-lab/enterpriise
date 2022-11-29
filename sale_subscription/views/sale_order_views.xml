@@ -57,6 +57,15 @@
                     }
                 </attribute>
             </button>
+            <button name="action_cancel" position="before">
+                <button string="Create Alternative" name="create_alternative" type="object"
+                    attrs="{'invisible': [
+                    '|',
+                    ('subscription_management', 'not in', ['upsell', 'renew']),
+                    ('state', 'not in', ['draft', 'sent']),
+                    ]}"
+                />
+            </button>
             <!--  Change the label of cancel button for subscription -->
             <button name="action_cancel" position="after">
                 <button name="%(sale_subscription.sale_subscription_close_reason_wizard_action)d" type="action"

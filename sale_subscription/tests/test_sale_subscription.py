@@ -1909,3 +1909,15 @@ class TestSubscription(TestSubscriptionCommon):
             self.subscription.action_done()
             self.env['sale.order']._cron_recurring_create_invoice()
             self.assertEqual(self.subscription.invoice_count, 1)
+
+    def test_create_alternative(self):
+        action = self.subscription.prepare_renewal_order()
+        renewal_so = self.env['sale.order'].browse(action['res_id'])
+        copy_so = renewal_so.copy()
+        alternative_action = renewal_so.create_alternative()
+        alternative_so = self.env['sale.order'].browse(alternative_action['res_id'])
+
+        self.assertFalse(copy_so.origin_order_id)
+        self.assertFalse(copy_so.subscription_id)
+        self.assertEqual(renewal_so.origin_order_id.id, alternative_so.origin_order_id.id)
+        self.assertEqual(renewal_so.subscription_id.id, alternative_so.subscription_id.id)

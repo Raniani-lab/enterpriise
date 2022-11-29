@@ -63,6 +63,12 @@ msgid "New"
 msgstr ""
 
 #. module: mrp_workorder_plm
+#: code:addons/mrp_workorder_plm/models/mrp_workorder.py:0
+#, python-format
+msgid "New Step Suggestion: %s"
+msgstr ""
+
+#. module: mrp_workorder_plm
 #: model:ir.model,name:mrp_workorder_plm.model_propose_change
 msgid "Propose a change in the production"
 msgstr ""
@@ -101,25 +107,8 @@ msgid "Validated"
 msgstr ""
 
 #. module: mrp_workorder_plm
-#: code:addons/mrp_workorder/models/mrp_workorder.py:0
-#, python-format
-msgid "New Step Suggestion: %s"
-msgstr ""
-
-#. module: mrp_workorder_plm
+#. odoo-python
 #: code:addons/mrp_workorder_plm/wizard/propose_change.py:0
 #, python-format
-msgid "Reason:"
-msgstr ""
-
-#. module: mrp_workorder_plm
-#: code:addons/mrp_workorder_plm/wizard/propose_change.py:0
-#, python-format
-msgid "New Instruction suggested by %(user_name)s"
-msgstr ""
-
-#. module: mrp_workorder_plm
-#: code:addons/mrp_workorder_plm/wizard/propose_change.py:0
-#, python-format
-msgid "%(user_name)s suggests to delete this instruction"
+msgid "BoM feedback for not found step: %s (%s)"
 msgstr ""

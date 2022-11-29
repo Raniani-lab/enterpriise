@@ -59,6 +59,6 @@ class Project(models.Model):
             'action_type': 'object',
             'action': 'action_open_project_tickets',
             'show': self.ticket_count > 0,
-            'sequence': 51,
+            'sequence': 25,
         })
         return buttons

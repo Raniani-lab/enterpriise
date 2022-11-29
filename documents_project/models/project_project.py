@@ -177,7 +177,7 @@ class ProjectProject(models.Model):
                     'active_id': self.id,
                 }),
                 'show': self.use_documents,
-                'sequence': 14,
+                'sequence': 20,
             })
         return buttons
 
@@ -195,7 +195,7 @@ class ProjectProject(models.Model):
                 ('res_model', '=', 'project.task'), ('res_id', 'in', self.task_ids.ids)
             ],
             'view_mode': 'kanban,tree,form',
-            'context': {'default_res_model': 'project.project', 'default_res_id': self.id, 'limit_folders_to_project': True},
+            'context': {'default_res_model': 'project.project', 'default_res_id': self.id, 'limit_folders_to_project': True, 'default_tag_ids': self.documents_tag_ids.ids},
         }
 
     def _get_document_tags(self):

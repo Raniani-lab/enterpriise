@@ -58,6 +58,6 @@ class Project(models.Model):
                 'action_type': 'object',
                 'action': 'action_open_project_assets',
                 'show': self.assets_count > 0,
-                'sequence': 54,
+                'sequence': 40,
             })
         return buttons

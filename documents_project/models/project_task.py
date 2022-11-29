@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+import ast
+
 from odoo import fields, models
 from odoo.osv import expression
 
@@ -61,3 +63,12 @@ class ProjectTask(models.Model):
             super()._get_attachments_search_domain(),
             [('document_ids', '=', False)],
         ])
+
+    def action_view_documents_project_task(self):
+        self.ensure_one()
+        action = self.env['ir.actions.act_window']._for_xml_id('documents_project.action_view_documents_project_task')
+        action['context'] = {
+            **ast.literal_eval(action['context'].replace('active_id', str(self.id))),
+            'default_tag_ids': self.project_id.documents_tag_ids.ids,
+        }
+        return action

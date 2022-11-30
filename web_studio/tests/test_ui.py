@@ -2,7 +2,8 @@
 # -*- coding: utf-8 -*-
 
 import odoo.tests
-from odoo import Command
+from odoo import Command, api
+from odoo.tools import mute_logger
 from lxml import etree
 
 
@@ -37,6 +38,19 @@ class TestUi(odoo.tests.HttpCase):
         })
         self.env.company.background_image = attachment.datas
         self.start_tour("/web?debug=tests", 'web_studio_custom_background_tour', login="admin")
+
+    def test_create_app_with_pipeline_and_user_assignment(self):
+        # Mute the logger for read_group, indeed, because of the field
+        # x_studio_sequence that is created during the tour, this method will
+        # trigger a warning
+        web_read_group = type(self.env["base"]).web_read_group
+        @mute_logger("odoo.models")
+        @api.model
+        def muted_web_read_group(self, *args, **kwargs):
+            return web_read_group(self, *args, **kwargs)
+
+        self.patch(type(self.env["base"]), "web_read_group", muted_web_read_group)
+        self.start_tour("/web?debug=tests", 'web_studio_create_app_with_pipeline_and_user_assignment', login="admin")
 
 
 def _get_studio_view(view):

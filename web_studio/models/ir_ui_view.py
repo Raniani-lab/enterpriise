@@ -419,8 +419,8 @@ class View(models.Model):
         bottom_right_div.append(E.field(name='x_studio_kanban_state', widget='state_selection'))
         if 'x_studio_user_id' in model._fields:
             pre_fields.append(E.field(name='x_studio_user_id', widget="many2one_avatar_user"))
-            unassigned_var = E.t({'t-set': 'unassigned'})
-            unassigned_var.append(E.t({'t-esc': "_t('Unassigned')"}))
+            unassigned_var = E.t({'t-set': 'unassigned', 't-translation': 'on'})
+            unassigned_var.text = "Unassigned"
             img = E.img({'t-att-src': "kanban_image('res.users', 'avatar_128', record.x_studio_user_id.raw_value)",
                          't-att-title': "record.x_studio_user_id.value || unassigned",
                          't-att-alt': "record.x_studio_user_id.value",

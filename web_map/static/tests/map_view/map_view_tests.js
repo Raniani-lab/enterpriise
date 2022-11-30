@@ -72,11 +72,12 @@ QUnit.module("Views", (hooks) => {
                     length: 1,
                 },
 
-                oneRecordFieldDateTime: {
+                twoRecordsFieldDateTime: {
                     records: [
-                        { id: 1, display_name: "Foo", scheduled_date: "2022-02-07 21:09:31", partner_id: [1] }
+                        { id: 1, display_name: "Foo", scheduled_date: false, partner_id: [1] },
+                        { id: 2, display_name: "Bar", scheduled_date: "2022-02-07 21:09:31", partner_id: [2] },
                     ],
-                    length: 1
+                    length: 2,
                 },
 
                 twoRecords: {
@@ -1675,13 +1676,14 @@ QUnit.module("Views", (hooks) => {
     });
 
     QUnit.test('Content of the marker popup with date time', async function (assert) {
-        assert.expect(1);
+        assert.expect(2);
         serverData.views = {
             "project.task,false,form": "<form/>",
         };    
 
         patchTimeZone(120); // UTC+2
         patchWithCleanup(session, {map_box_token: MAP_BOX_TOKEN});
+        serverData.models["res.partner"].twoRecordsAddressCoordinates[0].partner_latitude = 11.0;
 
         await makeView({
             config: { views: [[false, "form"]] },
@@ -1694,14 +1696,22 @@ QUnit.module("Views", (hooks) => {
             async mockRPC(route) {
                 switch (route) {
                     case "/web/dataset/call_kw/project.task/web_search_read":
-                        return serverData.models["project.task"].oneRecordFieldDateTime;
+                        return serverData.models["project.task"].twoRecordsFieldDateTime;
                     case "/web/dataset/call_kw/res.partner/search_read":
                         return serverData.models["res.partner"].twoRecordsAddressCoordinates;
                 }
             },
         });
 
-        await click(target, "div.leaflet-marker-icon");
+        await click(target, "div.leaflet-marker-icon:first-child");
+
+        assert.containsNone(
+            target,
+            "tbody tr .o-map-renderer--popup-table-content-value",
+            "It should not contains a value node because it's not scheduled"
+        );
+
+        await click(target, "div.leaflet-marker-icon:last-child");
 
         assert.strictEqual(target.querySelector("tbody tr .o-map-renderer--popup-table-content-value").textContent, "2022-02-07 23:09:31",
             'The time  "2022-02-07 21:09:31" should be in the local timezone');

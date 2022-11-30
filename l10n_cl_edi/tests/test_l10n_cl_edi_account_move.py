@@ -11,7 +11,7 @@ from .common import TestL10nClEdiCommon, _check_with_xsd_patch
 
 @tagged('post_install_l10n', 'post_install', '-at_install')
 @patch('odoo.tools.xml_utils._check_with_xsd', _check_with_xsd_patch)
-class TestL10nClDteTestL10nClDte(TestL10nClEdiCommon):
+class TestL10nClDte(TestL10nClEdiCommon):
     """
     Summary of the document types to test:
         - 33:
@@ -24,7 +24,7 @@ class TestL10nClDteTestL10nClDte(TestL10nClEdiCommon):
         - 56:
             - A  invoice with line discounts
         - 110:
-            - A invoice
+            - An exportation invoice for services
     """
 
     @freeze_time('2019-10-24T20:00:00', tz_offset=3)

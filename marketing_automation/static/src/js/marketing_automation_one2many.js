@@ -151,7 +151,10 @@ export class HierarchyKanbanRenderer extends KanbanRenderer {
     }
 }
 
-HierarchyKanbanRenderer.components.KanbanRecord = HierarchyKanbanRecord;
+HierarchyKanbanRenderer.components = {
+    ...KanbanRenderer.components,
+    KanbanRecord: HierarchyKanbanRecord
+};
 
 export class HierarchyKanban extends X2ManyField {
     /**

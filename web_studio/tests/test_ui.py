@@ -128,7 +128,7 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
             "type": "form",
             "arch": '''
                 <form>
-                    <t t-groups="{doesnothavegroup}" >
+                    <t groups="{doesnothavegroup}" >
                         <div class="condition_group" />
                     </t>
                     <group>
@@ -156,7 +156,7 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
             <data>
                <xpath expr="//field[@name='user_ids']" position="inside">
                  <form>
-                   <t t-groups="{doesnothavegroup}" >
+                   <t groups="{doesnothavegroup}" >
                      <div class="condition_group" />
                    </t>
                    <group>

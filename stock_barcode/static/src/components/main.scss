@@ -1,7 +1,5 @@
 .o_barcode_client_action {
     display: flex;
-    flex-direction: column;
-    height: 100%;
     background-color: $o-view-background-color;
     overflow: auto;
 
@@ -64,23 +62,14 @@
     // Lines Block
     // =====================================
     .o_barcode_lines {
-        clear: both;
-        flex: auto;
         overflow: auto;
         word-break: break-word;
         color: $gray-800;
-        margin-bottom: 60px;
-        @media (orientation: portrait) {
-            margin-bottom: 30px;
-        }
     }
 
     // Settings menu
     // =====================================
     .o_barcode_settings {
-        display: flex;
-        flex: auto;
-
         > button {
             flex: 1 0 auto;
             border-bottom: 1px solid $border-color;
@@ -95,20 +84,19 @@
     // next, put in pack, ...)
     // =====================================
     .o_barcode_control {
-        flex: 0 0 60px;
-        margin: 0 -1px;
         width: 100%;
+        box-shadow: 0 -3px 10px $gray-300;
         > .btn {
-            flex: 1;
-            width: 50%;
+            text-transform: uppercase;
+            flex-grow: 1;
+            border-width: 1px 0 0 0;
+            border-style: solid;
             @media (orientation: portrait) {
                 font-size: 0.8em;
             }
             @media (orientation: landscape) {
                 height: 60px;
             }
-            border-width: 1px 0 0 0;
-            border-style: solid;
             &.btn-secondary {
                 color: $gray-800;
                 border-color: $gray-400;
@@ -128,9 +116,6 @@
                 border-left-width: 1px;
                 border-left-color: $gray-400;
             }
-        }
-        &:first-of-type {
-            box-shadow: 0 -3px 10px $gray-300;
         }
     }
 

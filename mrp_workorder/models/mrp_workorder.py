@@ -524,6 +524,7 @@ class MrpProductionWorkcenterLine(models.Model):
             'quality.check': self.check_ids._get_fields_for_tablet(sorted_check_list),
             'operation': self.operation_id.read(self.operation_id._get_fields_for_tablet())[0] if self.operation_id else {},
             'working_state': self.workcenter_id.working_state,
+            'has_bom': bool(self.production_id.bom_id),
             'views': {
                 'workorder': self.env.ref('mrp_workorder.mrp_workorder_view_form_tablet').id,
                 'check': self.env.ref('mrp_workorder.quality_check_view_form_tablet').id,

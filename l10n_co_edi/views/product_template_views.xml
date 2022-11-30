@@ -7,7 +7,7 @@
             <field name="inherit_id" ref="account.product_template_form_view"/>
             <field name="arch" type="xml">
                 <page name="invoicing" position="inside">
-                    <group name="l10n_co_edi" string="Colombian Electronic Invoicing">
+                    <group name="l10n_co_edi" string="Colombian Electronic Invoicing" attrs="{'invisible': [('fiscal_country_codes', 'not ilike', 'CO')]}">
                         <field name="l10n_co_edi_brand"/>
                         <field name="l10n_co_edi_customs_code"/>
                     </group>

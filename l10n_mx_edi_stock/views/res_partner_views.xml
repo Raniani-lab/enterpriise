@@ -6,7 +6,7 @@
         <field name="inherit_id" ref="base.view_partner_form"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='vat']" position="after">
-                <field name="l10n_mx_edi_operator_licence"/>
+                <field name="l10n_mx_edi_operator_licence" attrs="{'invisible': [('fiscal_country_codes', 'not ilike', 'MX')]}"/>
             </xpath>
         </field>
     </record>

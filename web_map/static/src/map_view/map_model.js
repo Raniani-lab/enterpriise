@@ -169,8 +169,14 @@ export class MapModel extends Model {
         for(let record of results.records){
             // convert date fields from UTC to local timezone
             for(const field of datetimeFields){
-                const dateUTC = luxon.DateTime.fromFormat(record[field],"yyyy-MM-dd HH:mm:ss",{zone:"UTC"});
-                record[field] = formatDateTime(dateUTC,{format:'yyyy-MM-dd HH:mm:ss'}); 
+                if (record[field]) {
+                    const dateUTC = luxon.DateTime.fromFormat(
+                        record[field],
+                        "yyyy-MM-dd HH:mm:ss",
+                        { zone: "UTC" }
+                    );
+                    record[field] = formatDateTime(dateUTC, { format: "yyyy-MM-dd HH:mm:ss" });
+                }
             }
         }
 

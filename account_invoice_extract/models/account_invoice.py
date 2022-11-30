@@ -5,6 +5,7 @@ from odoo.addons.iap.tools import iap_tools
 from odoo.exceptions import AccessError, UserError
 from odoo.tools import float_compare, mute_logger
 from odoo.tools.misc import clean_context
+from difflib import SequenceMatcher
 import logging
 import re
 import json
@@ -125,6 +126,9 @@ class AccountMove(models.Model):
 
     extract_can_show_send_button = fields.Boolean("Can show the ocr send button", compute=_compute_show_send_button)
     extract_can_show_banners = fields.Boolean("Can show the ocr banners", compute=_compute_show_banners)
+
+    extract_detected_layout = fields.Integer("Extract Detected Layout Id", readonly=True)
+    extract_partner_name = fields.Char("Extract Detected Partner Name", readonly=True)
 
     def action_reload_ai_data(self):
         try:
@@ -467,6 +471,26 @@ class AccountMove(models.Model):
             return self.find_partner_id_with_name(word.word_text)
         return word.word_text
 
+    def find_partner_from_previous_extracts(self):
+        match_conditions = [
+            ('extract_detected_layout', '=', self.extract_detected_layout),
+            ('extract_partner_name', '=', self.extract_partner_name),
+        ]
+        for condition in match_conditions:
+            invoice_layout = self.search([
+                condition,
+                ('extract_state', '=', 'done'),
+                ('move_type', '=', self.move_type),
+                *self._domain_company(),
+            ], limit=1000, order='id desc')
+            if invoice_layout:
+                break
+
+        # Keep only if we have just one result
+        if len(invoice_layout.mapped('partner_id')) == 1:
+            return invoice_layout.partner_id
+        return None
+
     def find_partner_id_with_vat(self, vat_number_ocr):
         partner_vat = self.env["res.partner"].search([("vat", "=ilike", vat_number_ocr), *self._domain_company()], limit=1)
         if not partner_vat:
@@ -541,9 +565,10 @@ class AccountMove(models.Model):
         partners = {}
         for single_word in [word for word in re.findall(r"\w+", partner_name) if len(word) >= 3]:
             partners_matched = [partner for partner in partners_dict if single_word in partner.split()]
-            if len(partners_matched) == 1:
-                partner = partners_matched[0]
-                partners[partner] = partners[partner] + 1 if partner in partners else 1
+            for partner in partners_matched:
+                # Record only if the whole sequence is a very close match
+                if SequenceMatcher(None, partner.lower(), partner_name.lower()).ratio() > 0.8:
+                    partners[partner] = partners[partner] + 1 if partner in partners else 1
 
         if partners:
             sorted_partners = sorted(partners, key=partners.get, reverse=True)
@@ -553,26 +578,42 @@ class AccountMove(models.Model):
                     return partners_dict[partner]
         return 0
 
+    def find_partner_with_iban(self, iban_ocr, partner_name):
+        bank_accounts = self.env['res.partner.bank'].search([
+            ('acc_number', '=ilike', iban_ocr), *self._domain_company()
+        ])
+
+        bank_account_match_ratios = sorted([
+            (account, SequenceMatcher(None, partner_name.lower(), account.partner_id.name.lower()).ratio())
+            for account in bank_accounts
+        ], key=lambda x: x[1], reverse=True)
+
+        # Take the partner with the closest name match.
+        # The IBAN should be safe enough to avoid false positives, but better safe than sorry.
+        if bank_account_match_ratios and bank_account_match_ratios[0][1] > 0.3:
+            return bank_account_match_ratios[0][0].partner_id
+        return None
+
     def _get_partner(self, ocr_results):
-        supplier_ocr = ocr_results['supplier']['selected_value']['content'] if 'supplier' in ocr_results else ""
-        client_ocr = ocr_results['client']['selected_value']['content'] if 'client' in ocr_results else ""
         vat_number_ocr = ocr_results['VAT_Number']['selected_value']['content'] if 'VAT_Number' in ocr_results else ""
         iban_ocr = ocr_results['iban']['selected_value']['content'] if 'iban' in ocr_results else ""
 
-        # Try to find the partner with the VAT number
         if vat_number_ocr:
             partner_vat = self.find_partner_id_with_vat(vat_number_ocr)
             if partner_vat:
                 return partner_vat, False
 
-        # Try to find the partner with its IBAN
-        if self.is_purchase_document() and iban_ocr:
-            bank_account = self.env['res.partner.bank'].search([('acc_number', '=ilike', iban_ocr), *self._domain_company()])
-            if len(bank_account) == 1:
-                return bank_account.partner_id, False
+        if self.extract_detected_layout:
+            partner = self.find_partner_from_previous_extracts()
+            if partner:
+                return partner, False
 
-        # Try to find the partner by its name
-        partner_id = self.find_partner_id_with_name(client_ocr if self.is_sale_document() else supplier_ocr)
+        if self.is_purchase_document() and iban_ocr:
+            partner = self.find_partner_with_iban(iban_ocr, self.extract_partner_name)
+            if partner:
+                return partner, False
+
+        partner_id = self.find_partner_id_with_name(self.extract_partner_name)
         if partner_id != 0:
             return self.env["res.partner"].browse(partner_id), False
 
@@ -772,6 +813,8 @@ class AccountMove(models.Model):
                 ocr_results = result['results'][0]
                 if 'full_text_annotation' in ocr_results:
                     self.message_main_attachment_id.index_content = ocr_results['full_text_annotation']
+                if 'detected_layout_id' in ocr_results:
+                    self.extract_detected_layout = ocr_results['detected_layout_id']
 
                 self._save_form(ocr_results, force_write=force_write)
 
@@ -817,6 +860,10 @@ class AccountMove(models.Model):
         iban_ocr = ocr_results['iban']['selected_value']['content'] if 'iban' in ocr_results else ""
         SWIFT_code_ocr = json.loads(ocr_results['SWIFT_code']['selected_value']['content']) if 'SWIFT_code' in ocr_results else None
         qr_bill_ocr = ocr_results['qr-bill']['selected_value']['content'] if 'qr-bill' in ocr_results else None
+        supplier_ocr = ocr_results['supplier']['selected_value']['content'] if 'supplier' in ocr_results else ""
+        client_ocr = ocr_results['client']['selected_value']['content'] if 'client' in ocr_results else ""
+
+        self.extract_partner_name = client_ocr if self.is_sale_document() else supplier_ocr
 
         with self._get_edi_creation() as move_form:
             if not move_form.partner_id or force_write:

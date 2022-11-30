@@ -231,11 +231,11 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
 
         self.assertEqual(invoice.partner_id, existing_partner)
 
-    def test_partner_selection_from_iban(self):
-        # test that if a partner with the IBAN found already exists in database it is selected
+    def test_partner_selection_from_iban_and_good_name(self):
+        # test that if the IBAN found already exists in database and the name is close enough, it is selected
         invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
         existing_partner = self.env['res.partner'].create({
-            'name': 'Existing partner',
+            'name': 'test',
             'bank_ids': [(0, 0, {'acc_number': "BE01234567890123"})],
         })
         extract_response = self.get_default_extract_response()
@@ -244,6 +244,20 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
             invoice._check_status()
 
         self.assertEqual(invoice.partner_id, existing_partner)
+
+    def test_partner_selection_from_iban_and_bad_name(self):
+        # test that if the IBAN found already exists in database but the name is too different, it is not selected
+        invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
+        self.env['res.partner'].create({
+            'name': 'Existing partner',
+            'bank_ids': [(0, 0, {'acc_number': "BE01234567890123"})],
+        })
+        extract_response = self.get_default_extract_response()
+
+        with self.mock_iap_extract(extract_response, {}):
+            invoice._check_status()
+
+        self.assertFalse(invoice.partner_id)
 
     def test_partner_selection_from_name(self):
         # test that if a partner with a similar name already exists in database it is selected

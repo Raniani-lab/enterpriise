@@ -492,13 +492,14 @@ class AccountMove(models.Model):
             ('state', 'in', ('sent', 'cancelled')),
             ('move_id.l10n_mx_edi_sat_status', 'in', ('undefined', 'not_found', 'none')),
         ])
-        to_process.move_id.l10n_mx_edi_update_sat_status()
 
-        # Handle the case when the invoice has been cancelled manually government-side.
-        to_process\
-            .filtered(lambda doc: doc.state == 'sent' and doc.move_id.l10n_mx_edi_sat_status == 'cancelled')\
-            .move_id\
-            .button_cancel()
+        for doc in to_process:
+            doc.move_id.l10n_mx_edi_update_sat_status()
+            # Handle the case when the invoice has been cancelled manually government-side.
+            if doc.state == 'sent' and doc.move_id.l10n_mx_edi_sat_status == 'canceled':
+                doc.move_id.button_cancel()
+            # Commit to avoid complete rollback on TimeoutError
+            self._cr.commit()
 
     # -------------------------------------------------------------------------
     # BUSINESS METHODS

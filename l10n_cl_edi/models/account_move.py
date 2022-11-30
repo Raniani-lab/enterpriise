@@ -734,13 +734,17 @@ class AccountMove(models.Model):
         return self.env['l10n_latam.document.type'].search(
             [('code', '=', '61'), ('country_id.code', '=', "CL")], limit=1)
 
-    def _l10n_cl_get_comuna_recep(self):
+    def _l10n_cl_get_comuna_recep(self, recep=True):
         if self.partner_id._l10n_cl_is_foreign():
-            return self._format_length(
-                self.partner_id.state_id.name or self.commercial_partner_id.state_id.name or 'N-A', 20)
+            if recep:
+                return self._format_length(
+                    self.partner_id.state_id.name or self.commercial_partner_id.state_id.name or 'N-A', 20)
+            return self._format_length(self.partner_shipping_id.state_id.name or 'N-A', 20)
         if self.l10n_latam_document_type_id._is_doc_type_voucher():
             return 'N-A'
-        return self.partner_id.city or self.commercial_partner_id.city or False
+        if recep:
+            return self._format_length(self.partner_id.city or self.commercial_partner_id.city, 20) or False
+        return self._format_length(self.partner_shipping_id.city, 20) or False
 
     def _l10n_cl_get_set_dte_id(self, xml_content):
         set_dte = xml_content.find('.//ns0:SetDTE', namespaces={'ns0': 'http://www.sii.cl/SiiDte'})

@@ -24,7 +24,7 @@ class TestL10nClDte(TestL10nClEdiCommon):
         - 56:
             - A  invoice with line discounts
         - 110:
-            - A invoice
+            - An exportation invoice for services
     """
 
     @freeze_time('2019-10-24T20:00:00', tz_offset=3)

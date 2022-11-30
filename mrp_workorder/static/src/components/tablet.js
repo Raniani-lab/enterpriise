@@ -252,6 +252,7 @@ class Tablet extends Component {
             workcenterId: this.data['mrp.workorder'].workcenter_id,
             selectedStepId: this.state.selectedStepId,
             workorderId: this.workorderId,
+            has_bom: this.data['has_bom'],
         }, 'menu');
     }
 

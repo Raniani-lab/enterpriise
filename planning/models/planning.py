@@ -230,12 +230,7 @@ class Planning(models.Model):
             if not slot.resource_id and slot.allocation_type == 'planning' or slot.resource_id.flexible_hours:
                 slot.allocated_percentage = 100 * slot.allocated_hours / slot._calculate_slot_duration()
             else:
-                work_hours = slot._get_duration_over_period(
-                    pytz.utc.localize(slot.start_datetime),
-                    pytz.utc.localize(slot.end_datetime),
-                    resource_work_intervals, calendar_work_intervals,
-                    has_allocated_hours=False,
-                )
+                work_hours = slot._get_working_hours_over_period(start_utc, end_utc, resource_work_intervals, calendar_work_intervals)
                 slot.allocated_percentage = 100 * slot.allocated_hours / work_hours if work_hours else 100
 
     @api.depends(
@@ -1662,6 +1657,17 @@ class Planning(models.Model):
         new_slots_vals_list += to_merge
         return new_slots_vals_list
 
+    def _get_working_hours_over_period(self, start_utc, end_utc, work_intervals, calendar_intervals):
+        start = max(start_utc, pytz.utc.localize(self.start_datetime))
+        end = min(end_utc, pytz.utc.localize(self.end_datetime))
+        slot_interval = Intervals([(
+            start, end, self.env['resource.calendar.attendance']
+        )])
+        working_intervals = work_intervals[self.resource_id.id] \
+            if self.resource_id \
+            else calendar_intervals[self.company_id.resource_calendar_id.id]
+        return sum_intervals(slot_interval & working_intervals)
+
     def _get_duration_over_period(self, start_utc, stop_utc, work_intervals, calendar_intervals, has_allocated_hours=True):
         assert start_utc.tzinfo and stop_utc.tzinfo
         self.ensure_one()
@@ -1671,16 +1677,8 @@ class Planning(models.Model):
         # if the slot goes over the gantt period, compute the duration only within
         # the gantt period
         ratio = self.allocated_percentage / 100.0 or 1
-        start = max(start_utc, pytz.utc.localize(self.start_datetime))
-        end = min(stop_utc, pytz.utc.localize(self.end_datetime))
-        slot_interval = Intervals([(
-            start, end, self.env['resource.calendar.attendance']
-        )])
-        if self.resource_id:
-            working_intervals = work_intervals[self.resource_id.id]
-        else:
-            working_intervals = calendar_intervals[self.company_id.resource_calendar_id.id]
-        return sum_intervals(slot_interval & working_intervals) * ratio
+        working_hours = self._get_working_hours_over_period(start_utc, stop_utc, work_intervals, calendar_intervals)
+        return working_hours * ratio
 
     def _gantt_progress_bar_resource_id(self, res_ids, start, stop):
         start_naive, stop_naive = start.replace(tzinfo=None), stop.replace(tzinfo=None)

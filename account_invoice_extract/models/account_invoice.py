@@ -316,9 +316,17 @@ class AccountMove(models.Model):
         but if he entered the text of the field manually, we return only the text, as we
         don't know which box is the right one (if it exists)
         """
-        selected = self.env["account.invoice_extract.words"].search([("invoice_id", "=", self.id), ("field", "=", field), ("user_selected", "=", True)])
+        selected = self.env["account.invoice_extract.words"].search([
+            ("invoice_id", "=", self.id),
+            ("field", "=", field),
+            ("user_selected", "=", True),
+        ], limit=1)
         if not selected:
-            selected = self.env["account.invoice_extract.words"].search([("invoice_id", "=", self.id), ("field", "=", field), ("ocr_selected", "=", True)], limit=1)
+            selected = self.env["account.invoice_extract.words"].search([
+                ("invoice_id", "=", self.id),
+                ("field", "=", field),
+                ("ocr_selected", "=", True),
+            ], limit=1)
         return_box = {}
         if selected:
             return_box["box"] = [selected.word_text, selected.word_page, selected.word_box_midX,
@@ -436,59 +444,6 @@ class AccountMove(models.Model):
             "box_height": data.word_box_height,
             "box_angle": data.word_box_angle} for data in self.extract_word_ids]
 
-    def remove_user_selected_box(self, id):
-        """Set the selected box for a feature. The id of the box indicates the concerned feature.
-        The method returns the text that can be set in the view (possibly different of the text in the file)"""
-        self.ensure_one()
-        word = self.env["account.invoice_extract.words"].browse(int(id))
-        to_unselect = self.env["account.invoice_extract.words"].search([
-            ("invoice_id", "=", self.id),
-            ("field", "=", word.field),
-            '|',
-                ("user_selected", "=", True),
-                ("ocr_selected", "=", False),
-        ])
-        user_selected_found = False
-        for box in to_unselect:
-            if box.user_selected:
-                user_selected_found = True
-                box.user_selected = False
-        ocr_new_value = False
-        new_word = None
-        if user_selected_found:
-            ocr_new_value = True
-        for box in to_unselect:
-            if box.ocr_selected:
-                box.ocr_selected = ocr_new_value
-                if ocr_new_value:
-                    new_word = box
-        word.user_selected = False
-        if new_word is None:
-            if word.field in ["VAT_Number", "supplier", "currency"]:
-                return 0
-            return ""
-        if new_word.field == "VAT_Number":
-            partner_vat = self.find_partner_id_with_vat(new_word.word_text)
-            if partner_vat:
-                return partner_vat.id
-            return 0
-        if new_word.field == "supplier":
-            partner_names = self.env["res.partner"].search([("name", "ilike", new_word.word_text), *self._domain_company()])
-            if partner_names:
-                partner = min(partner_names, key=len)
-                return partner.id
-            else:
-                partners = {}
-                for single_word in new_word.word_text.split(" "):
-                    partner_names = self.env["res.partner"].search([("name", "ilike", single_word), *self._domain_company()], limit=30)
-                    for partner in partner_names:
-                        partners[partner.id] = partners[partner.id] + 1 if partner.id in partners else 1
-                if len(partners) > 0:
-                    key_max = max(partners.keys(), key=(lambda k: partners[k]))
-                    return key_max
-            return 0
-        return new_word.word_text
-
     def set_user_selected_box(self, id):
         """Set the selected box for a feature. The id of the box indicates the concerned feature.
         The method returns the text that can be set in the view (possibly different of the text in the file)"""
@@ -497,10 +452,7 @@ class AccountMove(models.Model):
         to_unselect = self.env["account.invoice_extract.words"].search([("invoice_id", "=", self.id), ("field", "=", word.field), ("user_selected", "=", True)])
         for box in to_unselect:
             box.user_selected = False
-        ocr_boxes = self.env["account.invoice_extract.words"].search([("invoice_id", "=", self.id), ("field", "=", word.field), ("ocr_selected", "=", True)])
-        for box in ocr_boxes:
-            if not box.ocr_selected:
-                box.ocr_selected = True
+
         word.user_selected = True
         if word.field == "currency":
             text = word.word_text
@@ -843,8 +795,14 @@ class AccountMove(models.Model):
                         if field in ocr_results:
                             value = ocr_results[field]
                             data = []
+
+                            # We need to make sure that only one word is selected.
+                            # Once this flag is set, the next words can't be set as selected.
+                            ocr_chosen_found = False
                             for word in value["words"]:
-                                ocr_chosen = value["selected_value"] == word
+                                ocr_chosen = value["selected_value"] == word and not ocr_chosen_found
+                                if ocr_chosen:
+                                    ocr_chosen_found = True
                                 data.append((0, 0, {
                                     "field": field,
                                     "ocr_selected": ocr_chosen,

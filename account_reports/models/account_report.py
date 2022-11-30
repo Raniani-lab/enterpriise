@@ -2173,7 +2173,7 @@ class AccountReport(models.Model):
                     }
 
         # Batch each engine that can be
-        column_group_expression_totals = forced_column_group_expression_totals or {}
+        column_group_expression_totals = dict(forced_column_group_expression_totals) if forced_column_group_expression_totals else {}
         batchable_engines = [
             selection_val[0]
             for selection_val in self.env['account.report.expression']._fields['engine'].selection
@@ -3263,7 +3263,7 @@ class AccountReport(models.Model):
 
         recomputed_expression_totals = self._compute_expression_totals_for_each_column_group(
             expressions_to_recompute, options, forced_all_column_groups_expression_totals=all_column_groups_expression_totals)
-        lines = self._get_lines(options, all_column_groups_expression_totals=all_column_groups_expression_totals)
+        lines = self._get_lines(options, all_column_groups_expression_totals=recomputed_expression_totals)
 
         return {
             'new_main_html': self.get_html(options, lines),

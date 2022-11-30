@@ -543,7 +543,7 @@ class Article(models.Model):
     # ------------------------------------------------------------
 
     @api.model
-    def search(self, args, offset=0, limit=None, order=None, count=False):
+    def search(self, domain, offset=0, limit=None, order=None, count=False):
         """ Override to support ordering on is_user_favorite.
 
         Ordering through web client calls search_read with an order parameter set.
@@ -568,12 +568,12 @@ class Article(models.Model):
         side effects. Search_count is not affected by this override.
         """
         if count or not order or 'is_user_favorite' not in order:
-            return super(Article, self).search(args, offset=offset, limit=limit, order=order, count=count)
+            return super(Article, self).search(domain, offset=offset, limit=limit, order=order, count=count)
         order_items = [order_item.strip().lower() for order_item in (order or self._order).split(',')]
         favorite_asc = any('is_user_favorite asc' in item for item in order_items)
 
         # Search articles that are favorite of the current user.
-        my_articles_domain = expression.AND([[('favorite_ids.user_id', 'in', [self.env.uid])], args])
+        my_articles_domain = expression.AND([[('favorite_ids.user_id', 'in', [self.env.uid])], domain])
         my_articles_order = ', '.join(item for item in order_items if 'is_user_favorite' not in item)
         articles_ids = super(Article, self).search(my_articles_domain, offset=0, limit=None, order=my_articles_order, count=count).ids
 
@@ -598,7 +598,7 @@ class Article(models.Model):
         article_order = ', '.join(item for item in order_items if 'is_user_favorite' not in item)
 
         other_article_res = super(Article, self).search(
-            expression.AND([[('id', 'not in', my_articles_ids_skip)], args]),
+            expression.AND([[('id', 'not in', my_articles_ids_skip)], domain]),
             offset=article_offset, limit=article_limit, order=article_order, count=count
         )
         if favorite_asc in order_items:

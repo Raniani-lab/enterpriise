@@ -1023,4 +1023,45 @@ tour.register('web_studio_custom_background_tour', {
     run: () => null,
 }]);
 
+tour.register("web_studio_create_app_with_pipeline_and_user_assignment", {
+    test: true,
+}, [{
+    // open studio
+    trigger: '.o_main_navbar .o_web_studio_navbar_item',
+}, {
+    trigger: '.o_web_studio_new_app',
+}, {
+    // the next steps are here to create a new app
+    trigger: '.o_web_studio_app_creator_next',
+}, {
+    trigger: '.o_web_studio_app_creator_name > input',
+    run: 'text ' + (createdAppString = randomString(6)),
+}, {
+    trigger: '.o_web_studio_app_creator_next.is_ready',
+}, {
+    trigger: '.o_web_studio_app_creator_menu > input',
+    run: 'text ' + (createdMenuString = randomString(6)),
+}, {
+    trigger: '.o_web_studio_app_creator_next.is_ready',
+}, {
+    trigger: "input#use_stages"
+}, {
+    trigger: "input#use_responsible"
+}, {
+    trigger: '.o_web_studio_model_configurator_next',
+}, {
+    trigger: ".o_web_studio_editor .o_menu_sections a:contains(Views)"
+}, {
+    trigger: ".o_web_studio_view_type[data-type='kanban'] .o_web_studio_thumbnail"
+}, {
+    extra_trigger: ".o_web_studio_kanban_view_editor",
+    trigger: "img.oe_kanban_avatar",
+    run() {
+        const avatarImg = document.querySelector("img.oe_kanban_avatar");
+        if (!avatarImg.getAttribute("title") === "Unassigned") {
+            throw new Error("The title of the new avatar should be set, even if there are no record");
+        }
+    }
+}]);
+
 });

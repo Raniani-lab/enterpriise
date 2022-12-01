@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 from odoo.http import request
 from odoo import _lt
 
-from .stat_types_batch import compute_nb_contracts_batch
+from .stat_types_batch import compute_nb_contracts_batch, compute_logo_churn_batch
 
 from datetime import datetime
 
@@ -436,7 +436,8 @@ STAT_TYPES = {
         'prior': 7,
         'type': 'last',
         'add_symbol': '%',
-        'compute': compute_logo_churn
+        'compute': compute_logo_churn,
+        'compute_batch': compute_logo_churn_batch
     },
     'revenue_churn': {
         'name': _lt('Revenue Churn'),

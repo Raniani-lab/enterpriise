@@ -223,7 +223,64 @@ def compute_net_revenue_batch(dates, filters):
                 -- New Subscription count as + net revenue
                 SELECT subscription_start_date AS date, subtotal AS value
                 FROM subscription
-                WHERE value > 0
+                UNION ALL
+                -- Interesting dates
+                SELECT date, 0 AS value 
+                FROM dates
+            ) a
+        ) b    
+        WHERE value = 0  
+        """
+
+    query_args.update({
+        'start_date': dates[0],
+        'end_date': dates[-1],
+    })
+
+    request.cr.execute(query, query_args)
+    return request.cr.dictfetchall()
+
+
+def compute_nrr_batch(dates, filters):
+    # TODO make currency convertion with the currency table thingy
+    dates_datapoints = get_dates_datapoints(dates)
+    join, where, query_args = make_filters_query(filters)
+
+    query = f"""
+        WITH 
+            currency_rate AS ({currency_rate_table(dates[-1])}),
+            dates(date) AS ({dates_datapoints}),
+            subscription AS (
+                SELECT 
+                    aml.subscription_id, 
+                    am.invoice_date,
+                    SUM(aml.price_subtotal) * COALESCE(cr.rate, 1) as subtotal
+    
+                FROM account_move_line aml
+                JOIN account_move am ON am.id = aml.move_id
+                LEFT JOIN currency_rate cr ON cr.currency_id = aml.currency_id
+                {join}
+    
+                WHERE   am.move_type IN ('out_invoice', 'out_refund')
+                AND     am.state NOT IN ('draft', 'cancel')
+                AND     aml.subscription_id IS NOT NULL
+                AND     aml.subscription_start_date IS NULL
+                AND     aml.display_type = 'product'
+                AND     aml.price_subtotal > 0      -- We only take the revenue (and null revenue are useless)
+                {where}
+    
+                GROUP BY aml.subscription_id, 
+                        am.invoice_date,
+                        cr.rate
+            )
+
+        SELECT date, running_value - LAG(running_value, 1, 0.0) OVER (ORDER BY date) AS value
+        FROM (
+            SELECT SUM (value) OVER (ORDER BY date, value DESC) AS running_value, date, value 
+            FROM (
+                -- New Subscription count as + net revenue
+                SELECT invoice_date AS date, subtotal AS value
+                FROM subscription
                 UNION ALL
                 -- Interesting dates
                 SELECT date, 0 AS value 

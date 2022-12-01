@@ -5,7 +5,9 @@
     'name': 'Serbia - Accounting Reports',
     'version': '1.0',
     'description': """
-        Accounting reports for Serbia
+        Accounting reports for Serbia.
+        This module is based on the official document "Pravilnik o kontnom okviru i sadržini računa u kontnom okviru za privredna društva, zadruge i preduzetnike ("Sl. glasnik RS", br. 89/2020)"
+        Source: https://www.paragraf.rs/propisi/pravilnik-o-kontnom-okviru-sadrzini-racuna-za-privredna-drustva-zadruge.html
     """,
     "author": "Modoolar, Odoo S.A.",
     'category': 'Accounting/Localizations/Reporting',

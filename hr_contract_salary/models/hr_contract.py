@@ -268,13 +268,12 @@ class HrContract(models.Model):
                 template_id = False
             path = '/salary_package/contract/' + str(self.id)
             ctx = {
+                'default_email_layout_xmlid': 'mail.mail_notification_light',
                 'default_model': 'hr.contract',
-                'default_res_id': self.ids[0],
-                'default_use_template': bool(template_id),
+                'default_res_ids': self.ids,
                 'default_template_id': template_id,
                 'default_composition_mode': 'comment',
                 'salary_package_url': self.get_base_url() + path,
-                'default_email_layout_xmlid': 'mail.mail_notification_light'
             }
             return {
                 'type': 'ir.actions.act_window',

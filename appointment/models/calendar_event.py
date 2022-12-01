@@ -83,7 +83,7 @@ class CalendarEvent(models.Model):
             booked_template = self.env.ref('appointment.appointment_booked_mail_template').sudo()
             res['appointment_type_id'] = (booked_template, {
                 **author,
-                'auto_delete_message': True,
+                'auto_delete_keep_log': False,
                 'subtype_id': self.env['ir.model.data']._xmlid_to_res_id('appointment.mt_calendar_event_booked'),
                 'email_layout_xmlid': 'mail.mail_notification_light'
             })
@@ -91,7 +91,7 @@ class CalendarEvent(models.Model):
             canceled_template = self.env.ref('appointment.appointment_canceled_mail_template').sudo()
             res['active'] = (canceled_template, {
                 **author,
-                'auto_delete_message': True,
+                'auto_delete_keep_log': False,
                 'subtype_id': self.env['ir.model.data']._xmlid_to_res_id('appointment.mt_calendar_event_canceled'),
                 'email_layout_xmlid': 'mail.mail_notification_light'
             })

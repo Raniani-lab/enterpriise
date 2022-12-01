@@ -1519,13 +1519,13 @@ class SaleOrder(models.Model):
             'code': self.client_order_ref or self.name,
             'currency': self.pricelist_id.currency_id.name,
             'date_end': self.end_date,
-            'mail_notify_force_send': False,
             'no_new_invoice': True}}
         _logger.debug("Sending Invoice Mail to %s for subscription %s", self.partner_id.email, self.id)
         # ARJ TODO master: take the invoice template in the settings
         if self.sale_order_template_id.invoice_mail_template_id:
             invoice.with_context(email_context).message_post_with_source(
                 self.sale_order_template_id.invoice_mail_template_id,
+                force_send=False,
                 subtype_xmlid='mail.mt_comment',
             )
         invoice.is_move_sent = True

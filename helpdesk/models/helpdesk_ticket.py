@@ -902,7 +902,7 @@ class HelpdeskTicket(models.Model):
         ticket = self[0]
         if 'stage_id' in changes and ticket.stage_id.template_id:
             res['stage_id'] = (ticket.stage_id.template_id, {
-                'auto_delete_message': True,
+                'auto_delete_keep_log': False,
                 'subtype_id': self.env['ir.model.data']._xmlid_to_res_id('mail.mt_note'),
                 'email_layout_xmlid': 'mail.mail_notification_light'
             }

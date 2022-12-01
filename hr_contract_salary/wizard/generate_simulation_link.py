@@ -124,28 +124,24 @@ class GenerateSimulationLink(models.TransientModel):
 
         if self.applicant_id:
             default_model = 'hr.applicant'
-            default_res_id = self.applicant_id.id
-            default_use_template = bool(template_applicant_id)
+            default_res_ids = self.applicant_id.ids
             default_template_id = template_applicant_id
         elif self.employee_contract_id:
             default_model = 'hr.contract'
-            default_res_id = self.employee_contract_id.id
-            default_use_template = bool(template_id)
+            default_res_ids = self.employee_contract_id.ids
             default_template_id = template_id
         else:
             default_model = 'hr.contract'
-            default_res_id = self.contract_id.id
-            default_use_template = bool(template_id)
+            default_res_ids = self.contract_id.ids
             default_template_id = template_id
 
         ctx = {
-            'default_model': default_model,
-            'default_res_id': default_res_id,
-            'default_use_template': default_use_template,
-            'default_template_id': default_template_id,
             'default_composition_mode': 'comment',
-            'salary_package_url': self.url,
             'default_email_layout_xmlid': "mail.mail_notification_light",
+            'default_model': default_model,
+            'default_res_ids': default_res_ids,
+            'default_template_id': default_template_id,
+            'salary_package_url': self.url,
             'partner_to': partner_to and partner_to.id or False,
             'email_to': email_to or False,
             'mail_post_autofollow': False,

@@ -29,6 +29,7 @@ def currency_normalisation(sql_result, sum_name):
         result += amount
     return result
 
+
 def _execute_sql_query(fields, tables, conditions, query_args, filters, groupby=None):
     """ Returns the result of the SQL query. """
     query, args = _build_sql_query(fields, tables, conditions, query_args, filters, groupby=groupby)

@@ -195,18 +195,19 @@ class RevenueKPIsDashboard(http.Controller):
         delta = end_date - start_date
 
         ticks = self._get_pruned_tick_values(range(delta.days + 1), points_limit)
+        dates = [start_date + timedelta(days=i) for i in ticks]
+        if 'compute_batch' in STAT_TYPES[stat_type]:
+            results = self.compute_stat_batch(stat_type, dates, filters)
+        else:
+            results = []
+            for date in dates:
+                value = self.compute_stat(stat_type, date, date, filters)
 
-        results = []
-        for i in ticks:
-            # METHOD NON-OPTIMIZED (could optimize it using SQL with generate_series)
-            date = start_date + timedelta(days=i)
-            value = self.compute_stat(stat_type, date, date, filters)
-
-            # format of results could be changed (we no longer use nvd3)
-            results.append({
-                '0': str(date).split(' ')[0],
-                '1': value,
-            })
+                # format of results could be changed (we no longer use nvd3)
+                results.append({
+                    '0': str(date).split(' ')[0],
+                    '1': value,
+                })
 
         return results
 
@@ -236,6 +237,12 @@ class RevenueKPIsDashboard(http.Controller):
         end_date = fields.Date.to_date(end_date)
 
         return STAT_TYPES[stat_type]['compute'](start_date, end_date, filters)
+
+    def compute_stat_batch(self, stat_type, dates, filters):
+        # We add a day at the beginning with similar timedelta to have similar sized buckets
+        dates = [dates[0] - (dates[1] - dates[0])] + dates
+        res = STAT_TYPES[stat_type]['compute_batch'](dates, filters)
+        return  [(str(line['date']), line['value']) for line in res][1:]
 
     def _get_pruned_tick_values(self, ticks, nb_desired_ticks):
         if nb_desired_ticks == 0:

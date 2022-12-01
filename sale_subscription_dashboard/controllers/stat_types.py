@@ -5,6 +5,8 @@ from dateutil.relativedelta import relativedelta
 from odoo.http import request
 from odoo import _lt
 
+from .stat_types_batch import compute_nb_contracts_batch
+
 from datetime import datetime
 
 
@@ -454,7 +456,8 @@ STAT_TYPES = {
         'prior': 9,
         'type': 'last',
         'add_symbol': '',
-        'compute': compute_nb_contracts
+        'compute': compute_nb_contracts,
+        'compute_batch': compute_nb_contracts_batch
     },
 }
 

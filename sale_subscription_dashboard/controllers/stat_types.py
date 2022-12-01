@@ -6,7 +6,7 @@ from odoo.http import request
 from odoo import _lt
 
 from .stat_types_batch import compute_nb_contracts_batch, compute_logo_churn_batch, compute_net_revenue_batch, \
-    compute_nrr_batch
+    compute_nrr_batch, compute_mrr_batch
 
 from datetime import datetime
 
@@ -377,7 +377,8 @@ STAT_TYPES = {
         'prior': 1,
         'type': 'last',
         'add_symbol': 'currency',
-        'compute': compute_mrr
+        'compute': compute_mrr,
+        'compute_batch': compute_mrr_batch
     },
     'net_revenue': {
         'name': _lt('Net Revenue'),

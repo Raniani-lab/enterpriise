@@ -8,7 +8,7 @@
 
         <record id="vendor_bill_rule_financial" model="documents.workflow.rule" forcecreate="0">
             <field name="sequence">10</field>
-            <field name="name">Create Bill</field>
+            <field name="name">Create Vendor Bill</field>
             <field name="remove_activities">True</field>
             <field name="create_model">account.move.in_invoice</field>
             <field name="domain_folder_id" ref="documents.documents_finance_folder"/>
@@ -38,13 +38,13 @@
         <!-- Create bill -->
 
         <record id="documents.documents_rule_internal_mark" model="documents.workflow.rule" forcecreate="0">
-            <field name="name">Create Bill</field>
+            <field name="name">Create Vendor Bill</field>
             <field name="remove_activities">True</field>
             <field name="create_model">account.move.in_invoice</field>
         </record>
         <!-- create vendor refund -->
 
-        <record id="credit_note_rule" model="documents.workflow.rule" forcecreate="0">
+        <record id="vendor_refund_rule" model="documents.workflow.rule" forcecreate="0">
             <field name="sequence">11</field>
             <field name="name">Create Vendor Refund</field>
             <field name="remove_activities">True</field>
@@ -52,15 +52,15 @@
             <field name="domain_folder_id" ref="documents.documents_finance_folder"/>
         </record>
 
-        <record id="documents_replace_inbox_credit_note" model="documents.workflow.action" forcecreate="0">
-            <field name="workflow_rule_id" ref="credit_note_rule"/>
+        <record id="documents_replace_inbox_vendor_refund" model="documents.workflow.action" forcecreate="0">
+            <field name="workflow_rule_id" ref="vendor_refund_rule"/>
             <field name="action">replace</field>
             <field name="facet_id" ref="documents.documents_finance_status"/>
             <field name="tag_id" ref="documents.documents_finance_status_validated"/>
         </record>
 
-        <record id="documents_replace_documents_credit_note" model="documents.workflow.action" forcecreate="0">
-            <field name="workflow_rule_id" ref="credit_note_rule"/>
+        <record id="documents_replace_documents_vendor_refund" model="documents.workflow.action" forcecreate="0">
+            <field name="workflow_rule_id" ref="vendor_refund_rule"/>
             <field name="action">replace</field>
             <field name="facet_id" ref="documents.documents_finance_documents"/>
             <field name="tag_id" ref="documents.documents_finance_documents_bill"/>
@@ -94,7 +94,7 @@
 
         <record id="credit_note_rule" model="documents.workflow.rule" forcecreate="0">
             <field name="sequence">11</field>
-            <field name="name">Create Credit Note</field>
+            <field name="name">Create Customer Credit Note</field>
             <field name="remove_activities">True</field>
             <field name="create_model">account.move.out_refund</field>
             <field name="domain_folder_id" ref="documents.documents_finance_folder"/>

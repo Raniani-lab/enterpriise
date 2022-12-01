@@ -177,7 +177,7 @@ class AccountMove(models.Model):
             )
         )
 
-    def _ocr_create_document_from_attachment(self, attachment):
+    def _ocr_create_document_from_attachment(self, attachment, journal=None):
         invoice = self.env['account.move'].create({})
         invoice.message_main_attachment_id = attachment
         invoice.action_manual_send_for_digitization()

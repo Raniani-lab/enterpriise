@@ -564,6 +564,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         unfoldedArticlesIds = unfoldedArticlesIds ? unfoldedArticlesIds.split(";").map(Number) : false;
         let unfoldedFavoriteArticlesIds = localStorage.getItem('knowledge.unfolded.favorite.ids');
         unfoldedFavoriteArticlesIds = unfoldedFavoriteArticlesIds ? unfoldedFavoriteArticlesIds.split(";").map(Number) : false;
+        // Force save article if it's dirty to keep up to date the article data before rendering the tree
+        if (this.props.record.isDirty) {
+            await this.props.record.save();
+        }
         try {
             const htmlTree = await this.rpc(route,
                 {

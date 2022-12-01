@@ -105,9 +105,12 @@ class AccountMoveLine(models.Model):
         '''
         self.ensure_one()
 
-        account_ids = self.env['account.analytic.account'].browse(
-            list(self.analytic_distribution.keys()) if self.analytic_distribution else None)
-        analytic_distribution = {self.analytic_distribution[account_id] for account_id in account_ids.filtered(lambda r: not r.company_id).ids}
+        account_ids = [int(account_id) for account_id in self.analytic_distribution or {}]
+        accounts = self.env['account.analytic.account'].browse(account_ids)
+        analytic_distribution = {
+            str(account_id): self.analytic_distribution[str(account_id)]
+            for account_id in accounts.filtered(lambda r: not r.company_id).ids
+        }
 
         vals = {
             'display_type': self.display_type,

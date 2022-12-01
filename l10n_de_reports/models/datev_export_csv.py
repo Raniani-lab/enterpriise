@@ -223,6 +223,9 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         Don't need to unlink as it will be done automatically by garbage collector
         of attachment cron
         """
+        if self.env.company.tax_calculation_rounding_method == 'round_globally':
+            raise UserError(_('The tax calculation method "Round Globally" is not supported with DATEV exports.\n'
+                              'Please change your configuration to "Round per Line".'))
         report = self.env['account.report'].browse(options['report_id'])
         with tempfile.NamedTemporaryFile(mode='w+b', delete=True) as buf:
             with zipfile.ZipFile(buf, mode="w", compression=zipfile.ZIP_DEFLATED, allowZip64=False) as zf:

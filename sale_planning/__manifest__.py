@@ -13,7 +13,8 @@
 
         Plan shifts and keep an eye on the hours consumed on your plannable products.
     """,
-    'depends': ['sale_management', 'planning'],
+    'depends': ['sale_management', 'sale_service', 'planning'],
+    'auto_install': ['sale_management', 'planning'],
     'data': [
         'security/ir.model.access.csv',
         'security/sale_planning_security.xml',
@@ -45,6 +46,5 @@
             'sale_planning/static/tests/*',
         ]
     },
-    'auto_install': True,
     'license': 'OEEL-1',
 }

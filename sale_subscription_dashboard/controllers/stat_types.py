@@ -5,7 +5,7 @@ from dateutil.relativedelta import relativedelta
 from odoo.http import request
 from odoo import _lt
 
-from .stat_types_batch import compute_nb_contracts_batch, compute_logo_churn_batch
+from .stat_types_batch import compute_nb_contracts_batch, compute_logo_churn_batch, compute_net_revenue_batch
 
 from datetime import datetime
 
@@ -386,7 +386,8 @@ STAT_TYPES = {
         'prior': 2,
         'type': 'sum',
         'add_symbol': 'currency',
-        'compute': compute_net_revenue
+        'compute': compute_net_revenue,
+        'compute_batch': compute_net_revenue_batch
     },
     'nrr': {
         'name': _lt('Non-Recurring Revenue'),

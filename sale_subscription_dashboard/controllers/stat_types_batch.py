@@ -5,6 +5,16 @@ from dateutil.relativedelta import relativedelta
 from odoo.http import request
 
 
+def currency_rate_table(date):
+    return f"""
+    SELECT DISTINCT ON (currency_id)
+        currency_id, rate
+    FROM res_currency_rate curr_rate
+    WHERE create_date < DATE '{date}'
+    ORDER BY currency_id, create_date DESC
+    """
+
+
 def get_dates_datapoints(dates):
     query = 'VALUES %s' % ','.join(f"(DATE '{date}')" for date in dates)
     return request.cr.mogrify(query).decode(request.env.cr.connection.encoding)
@@ -163,6 +173,65 @@ def compute_logo_churn_batch(dates, filters):
     WHERE   new_running.new_value = 0
     AND     new_running.exp_value = 0
     """
+
+    query_args.update({
+        'start_date': dates[0],
+        'end_date': dates[-1],
+    })
+
+    request.cr.execute(query, query_args)
+    return request.cr.dictfetchall()
+
+def compute_net_revenue_batch(dates, filters):
+    dates_datapoints = get_dates_datapoints(dates)
+    join, where, query_args = make_filters_query(filters)
+
+    query = f"""
+        WITH 
+            dates(date) AS ({dates_datapoints}),
+            currency_rate AS ({currency_rate_table(dates[-1])}),
+            subscription AS (
+                SELECT 
+                    aml.subscription_id, 
+                    aml.subscription_start_date, 
+                    aml.subscription_end_date,
+                    SUM(aml.price_subtotal) * COALESCE(cr.rate, 1) as subtotal                
+    
+                FROM account_move_line aml
+                JOIN account_move am ON am.id = aml.move_id
+                LEFT JOIN currency_rate cr ON cr.currency_id = aml.currency_id
+                {join}
+    
+                WHERE   am.move_type IN ('out_invoice', 'out_refund')
+                AND     am.state NOT IN ('draft', 'cancel')
+                AND     aml.subscription_id IS NOT NULL
+                AND NOT aml.subscription_start_date > %(end_date)s
+                AND NOT aml.subscription_end_date < %(start_date)s
+                AND     aml.price_subtotal > 0      -- We only take the revenue (and null revenue are useless)
+                {where}
+    
+                GROUP BY aml.subscription_id, 
+                        aml.subscription_start_date, 
+                        aml.subscription_end_date,
+                        cr.rate
+            )
+        
+        SELECT date, running_value - LAG(running_value, 1, 0.0) OVER (ORDER BY date) AS value
+        FROM (
+            SELECT SUM (value) OVER (ORDER BY date, value DESC) AS running_value, date, value 
+            FROM (
+                -- New Subscription count as + net revenue
+                SELECT subscription_start_date AS date, subtotal AS value
+                FROM subscription
+                WHERE value > 0
+                UNION ALL
+                -- Interesting dates
+                SELECT date, 0 AS value 
+                FROM dates
+            ) a
+        ) b    
+        WHERE value = 0  
+        """
 
     query_args.update({
         'start_date': dates[0],

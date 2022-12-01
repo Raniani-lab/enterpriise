@@ -47,7 +47,7 @@ odoo.define('account_accountant.tour', function (require) {
                 position: 'top',
             }, {
                 trigger: '.o_data_cell',
-                extra_trigger: 'tr:not(.o_sample_data_disabled)>td:has(div[name="payment_state"])',
+                extra_trigger: 'tr:not(.o_sample_data_disabled)>td:has(div[name="state"])',
                 content: _t('Let’s see how a bill looks like in form view.'),
                 position: 'bottom',
             }, {

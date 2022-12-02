@@ -45,3 +45,13 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             'file_content': "\n".join(re.split(r'\n\s*\n', content)).encode(),
             'file_type': 'xml',
         }
+
+
+class AccountGeneralLedger(models.AbstractModel):
+    _inherit = "account.report"
+
+    def _saft_get_account_type(self, account):
+        # OVERRIDE account_saft/models/account_general_ledger
+        if self.env.company.account_fiscal_country_id.code != 'NO':
+            return super()._saft_get_account_type(account)
+        return "GL"

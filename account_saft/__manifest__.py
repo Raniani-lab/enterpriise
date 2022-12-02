@@ -16,5 +16,10 @@ This is meant to be used with localization specific modules.
     'data': [
         'data/saft_report.xml',
     ],
+    'assets': {
+        'web.assets_backend': [
+            'account_saft/static/src/components/**/*',
+        ],
+    },
     'license': 'OEEL-1',
 }

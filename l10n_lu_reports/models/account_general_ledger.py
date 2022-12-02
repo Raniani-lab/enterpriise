@@ -24,7 +24,6 @@ class AccountGeneralLedger(models.AbstractModel):
                 'file_export_type': _('XML')
             })
 
-
     @api.model
     def _fill_l10n_lu_saft_report_invoices_values(self, options, values):
         res = {

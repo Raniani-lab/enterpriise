@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<templates>
+    <t t-name="account_saft.saft_warning_company_registry" owl="1">
+        Please define
+        <a type="action" t-on-click="(ev) => controller.reportAction(ev, 'action_fill_company_details', warningParams)">
+            `Company ID`
+        </a>
+        for your company.
+    </t>
+    <t t-name="account_saft.saft_warning_company_contact" owl="1">
+        Please define at least a
+        <a type="action" t-on-click="(ev) => controller.reportAction(ev, 'action_fill_company_details', warningParams)">
+            phone or mobile number
+        </a>
+        for your company.
+    </t>
+    <t t-name="account_saft.saft_warning_company_address" owl="1">
+        Please define at least a
+        <a type="action" t-on-click="(ev) => controller.reportAction(ev, 'action_fill_company_details', warningParams)">
+            city or ZIP code
+        </a>
+        for your company.
+    </t>
+</templates>

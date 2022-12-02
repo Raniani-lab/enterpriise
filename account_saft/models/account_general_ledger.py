@@ -7,6 +7,35 @@ from odoo import api, fields, models, release, _
 from odoo.exceptions import UserError
 
 
+class GeneralLedgerCustomHandler(models.AbstractModel):
+    _inherit = 'account.general.ledger.report.handler'
+
+    def _custom_line_postprocessor(self, report, options, lines, warnings=None):
+        lines = super()._custom_line_postprocessor(report, options, lines, warnings=warnings)
+        if warnings is not None:
+            company = self.env.company
+            if not company.company_registry:
+                warnings['account_saft.saft_warning_company_registry'] = {'alert_type': 'warning'}
+            if not (company.phone or company.mobile):
+                warnings['account_saft.saft_warning_company_contact'] = {'alert_type': 'warning'}
+            if not (company.zip or company.city):
+                warnings['account_saft.saft_warning_company_address'] = {'alert_type': 'warning'}
+        return lines
+
+    ####################################################
+    # ACTIONS
+    ####################################################
+
+    def action_fill_company_details(self, options, params):
+        return {
+            'type': 'ir.actions.act_window',
+            'name': _('Missing company details.'),
+            'res_model': 'res.company',
+            'views': [(False, 'form')],
+            'res_id': self.env.company.id,
+        }
+
+
 class AccountGeneralLedger(models.AbstractModel):
     _inherit = "account.report"
 
@@ -166,7 +195,6 @@ class AccountGeneralLedger(models.AbstractModel):
             tax_name = f"COALESCE(tax.name->>'{lang}', tax.name->>'en_US')"
         else:
             tax_name = 'tax.name'
-        tax_details_query, tax_details_params = self.env['account.move.line']._get_query_tax_details(tables, where_clause, where_params)
         self._cr.execute(f'''
             SELECT
                 tax_detail.base_line_id,
@@ -325,16 +353,10 @@ class AccountGeneralLedger(models.AbstractModel):
             date_obj = fields.Date.to_date(date_str)
             return date_obj.strftime(formatter)
 
-        company = self.env.company
-        if not company.company_registry:
-            raise UserError(_("Please define `Company Registry` for your company."))
-
-        if not (company.phone or company.mobile):
-            raise UserError(_("Please define a `Phone` or `Mobile` for your company."))
-
         if len(options["column_groups"]) > 1:
             raise UserError(_("SAFT is only compatible with one column group."))
 
+        company = self.env.company
         options["single_column_group"] = tuple(options["column_groups"].keys())[0]
 
         template_values = {

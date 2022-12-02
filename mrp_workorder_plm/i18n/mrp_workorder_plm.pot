@@ -105,3 +105,16 @@ msgstr ""
 #, python-format
 msgid "New Step Suggestion: %s"
 msgstr ""
+
+#. module: mrp_workorder_plm
+#: code:addons/mrp_workorder_plm/wizard/propose_change.py:0
+#, python-format
+msgid "Reason:"
+msgstr ""
+
+#. module: mrp_workorder_plm
+#: code:addons/mrp_workorder_plm/wizard/propose_change.py:0
+#, python-format
+msgid "New Instruction suggested by %(user_name)s"
+msgstr ""
+

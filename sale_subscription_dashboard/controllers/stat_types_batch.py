@@ -374,3 +374,9 @@ def compute_arr_batch(dates, filters):
     for mrr in mrrs:
         mrr['value'] *= 12
     return mrrs
+
+
+def compute_ltv_batch(dates, filters):
+    arpus = compute_arpu_batch(dates, filters)
+    logos = compute_logo_churn_batch(dates, filters)
+    return [{'date':arpu['date'], 'value':arpu['value']/logo['value'] if logo['value'] else 0} for arpu, logo in zip(arpus, logos)]

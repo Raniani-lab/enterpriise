@@ -27,6 +27,16 @@ function addDefaultWidgetsOptionsValues(fieldsInfo) {
 class BasicEditorWrapper extends ComponentWrapper {
     setup() {
         super.setup();
+        const handleError = this.app.handleError.bind(this.app);
+        this.app.handleError = (...args) => {
+            try {
+                handleError(...args);
+            } catch {
+                // An error when no sub-tree handleError is triggered
+                // It basically means that we let the error pass through
+                // and end up rejecting the different promises.
+            }
+        };
         const { archInfo, fields } = this.props.controllerProps;
         const { activeFields } = archInfo;
         const fieldsInfo = mapActiveFieldsToFieldsInfo(

@@ -7,6 +7,8 @@ import {
     nextTick,
     patchWithCleanup,
 } from "@web/../tests/helpers/utils";
+import { registerCleanup } from "@web/../tests/helpers/cleanup";
+
 import { toggleFilterMenu, toggleMenuItem } from "@web/../tests/search/helpers";
 import { companyService } from "@web/webclient/company_service";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
@@ -16,6 +18,8 @@ import { registry } from "@web/core/registry";
 import { session } from "@web/session";
 import { patch, unpatch } from "@web/core/utils/patch";
 import { StudioView } from "@web_studio/client_action/studio_view";
+import { StudioClientAction } from "@web_studio/client_action/studio_client_action";
+import { ListEditorRenderer } from "@web_studio/client_action/view_editors/list/list_editor_renderer";
 
 // -----------------------------------------------------------------------------
 // Tests
@@ -422,6 +426,94 @@ QUnit.module("Studio", (hooks) => {
 
         assert.containsOnce(target, ".o_kanban_view");
         assert.strictEqual(nbLoadAction, 2, "the action should have been loaded twice");
+    });
+
+    QUnit.test("user context is unpolluted when entering studio in error", async (assert) => {
+        patchWithCleanup(StudioClientAction.prototype, {
+            setup() {
+                throw new Error("Boom");
+            },
+        });
+        registry.category("services").add("error", { start() {} });
+
+        const handler = (ev) => {
+            assert.strictEqual(ev.reason.cause.message, "Boom");
+            assert.step("error");
+            ev.preventDefault();
+        };
+        window.addEventListener("unhandledrejection", handler);
+        registerCleanup(() => window.removeEventListener("unhandledrejection", handler));
+
+        const mockRPC = (route, args) => {
+            if (route === "/web/dataset/call_kw/partner/get_views") {
+                assert.step(`get_views, context studio: "${args.kwargs.context.studio}"`);
+            }
+        };
+        await createEnterpriseWebClient({
+            serverData,
+            mockRPC,
+        });
+        // open app Partners (act window action)
+        await click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
+        await legacyExtraNextTick();
+        assert.verifySteps([`get_views, context studio: "undefined"`]);
+
+        assert.containsOnce(target, ".o_kanban_view");
+
+        await openStudio(target);
+        assert.verifySteps(["error"]);
+
+        assert.containsNone(target, ".o_web_studio_kanban_view_editor");
+        assert.containsOnce(target, ".o_kanban_view");
+
+        await click(target.querySelector(".o_menu_sections a[data-menu-xmlid=menu_12]"));
+        assert.containsOnce(target, ".o_list_view");
+        assert.verifySteps([`get_views, context studio: "undefined"`]);
+    });
+
+    QUnit.test("error bubbles up if first rendering", async (assert) => {
+        const _console = window.console;
+        window.console = Object.assign(Object.create(_console), {
+            warn(msg) {
+                assert.step(msg);
+            },
+        });
+        registerCleanup(() => {
+            window.console = _console;
+        });
+
+        patchWithCleanup(ListEditorRenderer.prototype, {
+            setup() {
+                throw new Error("Boom");
+            },
+        });
+        registry.category("services").add("error", { start() {} });
+
+        const handler = (ev) => {
+            assert.strictEqual(ev.reason.cause.cause.message, "Boom");
+            assert.step("error");
+            ev.preventDefault();
+        };
+        window.addEventListener("unhandledrejection", handler);
+        registerCleanup(() => window.removeEventListener("unhandledrejection", handler));
+
+        await createEnterpriseWebClient({
+            serverData,
+        });
+        // open app Partners (act window action)
+        await click(target.querySelector(".o_app[data-menu-xmlid=app_1]"));
+        await nextTick();
+        await click(target.querySelector(".o_menu_sections [data-menu-xmlid=menu_12]"));
+        assert.containsOnce(target, ".o_list_view");
+
+        await openStudio(target);
+        assert.verifySteps([
+            "[Owl] Unhandled error. Destroying the root component", // (legacy) owl_compatibility-specific
+            "error",
+        ]);
+        // FIXME : due to https://github.com/odoo/owl/issues/1298,
+        // the visual result is not asserted here, ideally we'd want to be in the studio
+        // action, with a blank editor
     });
 
     QUnit.test("open same record when leaving form", async function (assert) {

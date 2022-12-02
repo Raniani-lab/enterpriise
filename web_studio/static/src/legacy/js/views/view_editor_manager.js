@@ -1240,6 +1240,13 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
             this._onViewChange({data});
         }
 
+        config.handleRenderingError = !this.wowlEditor || !this.wowlEditor.status === "mounted" ?
+            (error) => { throw error; } : // vem had not been mounted: re-throw the error as it is not the user's faults
+            (error) => {
+                this.trigger_up('studio_error', {error: 'view_rendering'});
+                this._undo(null, true);
+            }; // vem had been mounted: handle the error as its cause is a user's action
+
         controllerProps = getControllerProps ? getControllerProps(controllerProps, editor, config) : controllerProps;
 
         const Controller = editor.Controller;
@@ -1255,10 +1262,6 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
 
         const env = extendEnv(this.wowlEnv, { config });
         const studioViewProps = {
-            onError: () => {
-                this.trigger_up('studio_error', {error: 'view_rendering'});
-                this._undo(null, true);
-            },
             Controller,
             SearchModelClass,
             context: viewParams.context,

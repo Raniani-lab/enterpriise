@@ -831,10 +831,12 @@ class HrContractSalary(http.Controller):
             if contract.employee_id.user_id == request.env.user:
                 kw['employee'] = contract.employee_id
         kw['package_submit'] = True
-        new_contract, contract_diff = self.create_new_contract(contract, advantages, no_write=True, **kw)
+        new_contract = self.create_new_contract(contract, advantages, no_write=True, **kw)
 
         if isinstance(new_contract, dict) and new_contract.get('error'):
             return new_contract
+
+        new_contract, contract_diff = new_contract
 
         #write on new contract differences with current one
         current_contract = request.env['hr.contract'].sudo().search([

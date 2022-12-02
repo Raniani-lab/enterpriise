@@ -46,8 +46,8 @@ class ProjectProject(models.Model):
         document_count_per_project_id = {res['res_id']: res['res_id_count'] for res in project_document_read_group}
         document_count_per_task_id = Task.browse(task_ids)._get_task_document_data()
         for project in self:
-            task_ids = task_ids_per_project_id.get(self.id, [])
-            project.document_count = document_count_per_project_id.get(self.id, 0) \
+            task_ids = task_ids_per_project_id.get(project.id, [])
+            project.document_count = document_count_per_project_id.get(project.id, 0) \
                 + sum([
                     document_count
                     for task_id, document_count in document_count_per_task_id.items()

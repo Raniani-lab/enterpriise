@@ -201,11 +201,16 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
 
             GROUP BY {groupby_clause}
 
-            HAVING (
-                SUM(ROUND(account_move_line.balance * currency_table.rate, currency_table.precision))
-                - COALESCE(SUM(ROUND(part_debit.amount * currency_table.rate, currency_table.precision)), 0)
-                + COALESCE(SUM(ROUND(part_credit.amount * currency_table.rate, currency_table.precision)), 0)
-            ) != 0
+            HAVING
+                (
+                    SUM(ROUND(account_move_line.debit * currency_table.rate, currency_table.precision))
+                    - COALESCE(SUM(ROUND(part_debit.amount * currency_table.rate, currency_table.precision)), 0)
+                ) != 0
+                OR
+                (
+                    SUM(ROUND(account_move_line.credit * currency_table.rate, currency_table.precision))
+                    - COALESCE(SUM(ROUND(part_credit.amount * currency_table.rate, currency_table.precision)), 0)
+                ) != 0
             {tail_query}
         """
 

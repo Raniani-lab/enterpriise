@@ -64,8 +64,13 @@ class SafeKanbanRecord extends KanbanRecord {
             if (this.studioHasError) {
                 throw error;
             }
-            this.studioHasError = true;
-            this.render(true);
+
+            try {
+                this.env.config.handleRenderingError(error);
+            } catch {
+                this.studioHasError = true;
+                this.render(true);
+            }
         });
     }
 }
@@ -80,8 +85,13 @@ class _KanbanEditorRecord extends KanbanRecord {
             if (this.studioHasError) {
                 throw error;
             }
-            this.studioHasError = true;
-            this.render(true);
+
+            try {
+                this.env.config.handleRenderingError(error);
+            } catch {
+                this.studioHasError = true;
+                this.render(true);
+            }
         });
 
         useEffect(

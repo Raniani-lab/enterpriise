@@ -26,6 +26,7 @@ const { MockServer } = require("@web/../tests/helpers/mock_server");
 const LegacyMockServer = require('web.MockServer');
 
 const { MapRenderer } = require("@web_map/map_view/map_renderer");
+const { KanbanRecord } = require("@web/views/kanban/kanban_record");
 
 const { registry } = require("@web/core/registry");
 const { SIDEBAR_SAFE_FIELDS } = require("@web_studio/legacy/js/views/sidebar_safe_fields");
@@ -2579,6 +2580,63 @@ QUnit.module('ViewEditorManager', {
                 </kanban>`,
         });
 
+        assert.containsOnce(target, ".rendered");
+    });
+
+    QUnit.test('undo when edition of kanban results in error', async function (assert) {
+        let triggerError = false;
+
+        patchWithCleanup(KanbanRecord.prototype, {
+            setup() {
+                this._super();
+                if (triggerError) {
+                    owl.onWillRender(() => {
+                        throw new Error("Boom")
+                    });
+                }
+            }
+        });
+        const arch = `
+            <kanban>
+                <templates>
+                    <t t-name='kanban-box'>
+                        <div class='oe_kanban_card'>
+                            <div class="rendered" />
+                            <field name="display_name" />
+                        </div>
+                    </t>
+                </templates>
+            </kanban>`;
+        const vem = await studioTestUtils.createViewEditorManager({
+            serverData,
+            model: 'coucou',
+            arch,
+            mockRPC(route, args) {
+                if (route === '/web_studio/edit_view') {
+                    assert.step("edit_view");
+                    return getCurrentMockServer()._mockReturnView(arch, "coucou");
+                }
+            }
+        });
+
+        testUtils.mock.intercept(vem, 'studio_error', function (event) {
+            triggerError = false;
+            assert.step("view edition error");
+            assert.strictEqual(event.data.error, 'view_rendering',
+                "should have raised an error");
+        });
+
+        assert.containsOnce(target, ".rendered");
+        // trigger an editView
+        await click(target.querySelector(".o-web-studio-editor--element-clickable"));
+        triggerError = true;
+        await testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_remove'));
+        await click(target.querySelector(".modal footer button"));
+        assert.verifySteps([
+            "edit_view",
+            "view edition error",
+            "edit_view"
+        ]);
         assert.containsOnce(target, ".rendered");
     });
 

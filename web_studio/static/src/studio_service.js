@@ -133,6 +133,7 @@ export const studioService = {
                 throw new Error("mode is mandatory");
             }
 
+            const previousState = { ...state };
             const options = {};
             if (targetMode === MODES.EDITOR) {
                 let controllerState;
@@ -166,8 +167,15 @@ export const studioService = {
             }
             state.studioMode = targetMode;
             user.updateContext({ studio: 1 });
-            // LPE: we don't manage errors during do action.....
-            const res = await env.services.action.doAction("studio", options);
+
+            let res;
+            try {
+                res = await env.services.action.doAction("studio", options);
+            } catch (e) {
+                user.removeFromContext("studio");
+                Object.assign(state, previousState);
+                throw e;
+            }
             // force color_scheme light
             if (cookie.current.color_scheme === "dark") {
                 // ensure studio is fully loaded

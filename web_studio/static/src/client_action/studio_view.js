@@ -20,9 +20,7 @@ export class StudioView extends Component {
             irFilters: this.props.searchViewIrFilters,
         };
 
-        onError((error) => {
-            this.props.onError(error);
-        });
+        onError(this.env.config.handleRenderingError);
 
         useSubEnv({
             config: { ...this.env.config },

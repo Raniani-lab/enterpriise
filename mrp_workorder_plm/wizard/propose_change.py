@@ -3,7 +3,7 @@
 
 from markupsafe import Markup
 
-from odoo import models
+from odoo import _, models
 
 
 class ProposeChange(models.TransientModel):
@@ -49,6 +49,14 @@ class ProposeChange(models.TransientModel):
         # get the step on the new bom related to the one we want to update
         new_step = eco.new_bom_id.operation_ids.quality_point_ids.filtered(lambda p: p._get_comparison_values() == self.step_id.point_id._get_comparison_values())
         new_step.note = self.note
+        # Write reason in chatter
+        if new_step:
+            tl_text = _("New Instruction suggested by %(user_name)s", user_name=self._workorder_name())
+            body = Markup("<b>%s</b>") % tl_text
+            if self.comment:
+                tl_text = _("Reason:")
+                body += Markup("<br/><b>%s</b> %s") % (tl_text, self.comment)
+            new_step.message_post(body=body)
 
     def _do_remove_step(self):
         eco = self._get_eco()

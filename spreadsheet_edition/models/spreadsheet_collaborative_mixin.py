@@ -235,6 +235,10 @@ class SpreadsheetCollaborativeMixin(models.AbstractModel):
         # self.spreadsheet_revision_ids.unlink()
         self.sudo().spreadsheet_revision_ids.active = False
 
+    def _delete_collaborative_data(self):
+        self.spreadsheet_snapshot = False
+        self.with_context(active_test=False).spreadsheet_revision_ids.unlink()
+
     def unlink(self):
         """ Override unlink to delete spreadsheet revision. This cannot be
         cascaded, because link is done through (res_model, res_id). """

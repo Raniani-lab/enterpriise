@@ -244,5 +244,5 @@ class SpreadsheetCollaborativeMixin(models.AbstractModel):
         cascaded, because link is done through (res_model, res_id). """
         if not self:
             return True
-        self.sudo().spreadsheet_revision_ids.unlink()
+        self.sudo().with_context(active_test=False).spreadsheet_revision_ids.unlink()
         return super().unlink()

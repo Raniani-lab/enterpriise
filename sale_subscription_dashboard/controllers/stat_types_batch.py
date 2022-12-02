@@ -367,3 +367,10 @@ def compute_arpu_batch(dates, filters):
     mrrs = compute_mrr_batch(dates, filters)
     # TODO compute without other function call
     return [{'date':mrr['date'], 'value':mrr['value']/nb_contract['value'] if nb_contract['value'] else 0} for mrr, nb_contract in zip(mrrs, nb_contracts)]
+
+
+def compute_arr_batch(dates, filters):
+    mrrs = compute_mrr_batch(dates, filters)
+    for mrr in mrrs:
+        mrr['value'] *= 12
+    return mrrs

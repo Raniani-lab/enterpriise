@@ -6,7 +6,7 @@ from odoo.http import request
 from odoo import _lt
 
 from .stat_types_batch import compute_nb_contracts_batch, compute_logo_churn_batch, compute_net_revenue_batch, \
-    compute_nrr_batch, compute_mrr_batch, compute_arpu_batch
+    compute_nrr_batch, compute_mrr_batch, compute_arpu_batch, compute_arr_batch
 
 from datetime import datetime
 
@@ -421,7 +421,8 @@ STAT_TYPES = {
         'prior': 5,
         'type': 'last',
         'add_symbol': 'currency',
-        'compute': compute_arr
+        'compute': compute_arr,
+        'compute_batch': compute_arr_batch
     },
     'ltv': {
         'name': _lt('Lifetime Value'),

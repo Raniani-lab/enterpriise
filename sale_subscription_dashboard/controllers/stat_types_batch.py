@@ -359,3 +359,11 @@ def compute_mrr_batch(dates, filters):
 
     request.cr.execute(query, query_args)
     return request.cr.dictfetchall()
+
+
+def compute_arpu_batch(dates, filters):
+
+    nb_contracts = compute_nb_contracts_batch(dates, filters)
+    mrrs = compute_mrr_batch(dates, filters)
+    # TODO compute without other function call
+    return [{'date':mrr['date'], 'value':mrr['value']/nb_contract['value'] if nb_contract['value'] else 0} for mrr, nb_contract in zip(mrrs, nb_contracts)]

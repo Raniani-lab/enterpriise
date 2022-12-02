@@ -380,3 +380,91 @@ def compute_ltv_batch(dates, filters):
     arpus = compute_arpu_batch(dates, filters)
     logos = compute_logo_churn_batch(dates, filters)
     return [{'date':arpu['date'], 'value':arpu['value']/logo['value'] if logo['value'] else 0} for arpu, logo in zip(arpus, logos)]
+
+
+def compute_revenue_churn_batch(dates, filters):
+    """ revenue churn represent percentage of revenue that was present one month ago and that is still present now
+    """
+
+    dates_datapoints = get_dates_datapoints(dates)
+    churn_dates_datapoints = get_churn_dates_datapoints(dates)
+    join, where, query_args = make_filters_query(filters)
+
+    query = f"""
+            WITH 
+                currency_rate AS ({currency_rate_table(dates[-1])}),
+                dates(date) AS ({dates_datapoints}),
+                churn_dates(date_start, date_end) AS ({churn_dates_datapoints}),
+                subscription AS (
+                    SELECT 
+                        aml.subscription_id, 
+                        aml.subscription_start_date as start_date, 
+                        aml.subscription_end_date as end_date,
+                        SUM(aml.subscription_mrr) * COALESCE(cr.rate, 1) as subtotal
+
+                    FROM account_move_line aml
+                    JOIN account_move am ON am.id = aml.move_id
+                    LEFT JOIN currency_rate cr ON cr.currency_id = aml.currency_id
+                    {join}
+
+                    WHERE   am.move_type IN ('out_invoice', 'out_refund')
+                    AND     am.state NOT IN ('draft', 'cancel')
+                    AND     aml.subscription_id IS NOT NULL
+                    AND NOT aml.subscription_start_date > %(end_date)s
+                    AND NOT aml.subscription_end_date < %(start_date)s
+                    AND     aml.subscription_mrr != 0      -- We only take useful revenues (and null revenue are useless)
+                    {where}
+
+                    GROUP BY    
+                        aml.subscription_id, 
+                        aml.subscription_start_date, 
+                        aml.subscription_end_date,
+                        cr.rate
+                ),
+
+                running AS (
+                    SELECT 
+                        SUM (new_value) OVER (ORDER BY date, new_value DESC, exp_value) AS new_running_value,
+                        SUM (exp_value) OVER (ORDER BY date, new_value DESC, exp_value) AS exp_running_value,
+                        date, date_after, new_value, exp_value
+                    FROM (
+                        -- Interesting dates
+                        SELECT  date_start AS date, date_end AS date_after, 0 AS new_value, 0 AS exp_value 
+                        FROM    churn_dates
+                        UNION ALL
+                        SELECT  date, NULL AS date_after, 0 AS new_value, 0 AS exp_value
+                        FROM    dates
+                        WHERE   date NOT IN (SELECT date_start FROM churn_dates)
+                        UNION ALL
+                        -- Allow to count the subscription that have started before the date
+                        SELECT  start_date AS date, NULL AS date_after, subtotal AS new_value, 0 AS exp_value
+                        FROM    subscription
+                        WHERE   end_date - interval '1 months - 1 days' >= start_date -- Subscription that last less than a month are useless for this
+                        UNION ALL
+                        -- Allow to count the subscription that have started before the date
+                        SELECT  end_date AS date, NULL AS date_after, 0 AS new_value, subtotal AS exp_value
+                        FROM    subscription
+                        WHERE   end_date - interval '1 months - 1 days' >= start_date -- Subscription that last less than a month are useless for this
+                    ) temp
+                )
+
+            SELECT  old_running.date_after AS date,
+                CASE WHEN old_running.new_running_value = old_running.exp_running_value THEN 0
+                ELSE 100 - 100*(old_running.new_running_value - new_running.exp_running_value) / (old_running.new_running_value - old_running.exp_running_value) END
+                AS value
+            
+            FROM running AS old_running
+            LEFT JOIN running AS new_running ON old_running.date_after = new_running.date
+
+            -- We only want interesting date
+            WHERE   new_running.new_value = 0
+            AND     new_running.exp_value = 0
+    """
+
+    query_args.update({
+        'start_date': dates[0],
+        'end_date': dates[-1],
+    })
+
+    request.cr.execute(query, query_args)
+    return request.cr.dictfetchall()

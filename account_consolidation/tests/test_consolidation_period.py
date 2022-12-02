@@ -290,7 +290,7 @@ class TestConsolidationPeriodComposition(AccountConsolidationTestCase):
         # Child conso's
         ap = self._create_analysis_period(chart=self.chart)
 
-        usd_chart = self.env['consolidation.chart'].create({'name': 'USD chart', 'currency_id': 2})
+        usd_chart = self.env['consolidation.chart'].create({'name': 'USD chart', 'currency_id': self.env.ref('base.USD').id})
         usd_ap = self._create_analysis_period(chart=usd_chart)
         # Children accounts
         children_accounts = [
@@ -305,7 +305,7 @@ class TestConsolidationPeriodComposition(AccountConsolidationTestCase):
         other_account = self._create_consolidation_account('Child account 2', chart=self.chart, section=None)
 
         # Parent/Super conso
-        super_chart = self.env['consolidation.chart'].create({'name': 'Super chart', 'currency_id': 1})
+        super_chart = self.env['consolidation.chart'].create({'name': 'Super chart', 'currency_id': self.env.ref('base.EUR').id})
         super_ap = self._create_analysis_period(chart=super_chart)
 
         # Super account (in super conso)

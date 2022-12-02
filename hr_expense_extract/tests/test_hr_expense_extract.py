@@ -70,6 +70,7 @@ class TestExpenseExtractProcess(TestExpenseCommon):
 
         usd_currency = self.env.ref('base.USD')
         eur_currency = self.env.ref('base.EUR')
+        eur_currency.active = True
 
         with self._mock_iap_extract(extract_response):
             self.expense.message_post(attachment_ids=[self.attachment.id])
@@ -99,6 +100,7 @@ class TestExpenseExtractProcess(TestExpenseCommon):
         extract_response = self.get_default_extract_response()
 
         eur_currency = self.env.ref('base.EUR')
+        eur_currency.active = True
 
         self.assertEqual(self.expense.extract_state, 'no_extract_requested')
         self.assertFalse(self.expense.extract_can_show_send_button)

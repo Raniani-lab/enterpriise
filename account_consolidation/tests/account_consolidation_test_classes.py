@@ -10,12 +10,15 @@ class AccountConsolidationTestCase(common.TransactionCase):
         self.default_company = self.env.ref('base.main_company')
 
         # DEFAULT US COMPANY
-        self.us_company = self.env['res.company'].create({'name': 'Vincent Company', 'currency_id': 2})
+        self.us_company = self.env['res.company'].create({
+            'name': 'Vincent Company',
+            'currency_id': self.env.ref('base.USD').id,
+        })
 
         # DEFAULT CHART
         self.chart = self.env['consolidation.chart'].create({
             'name': 'Default chart',
-            'currency_id': 1,
+            'currency_id': self.env.ref('base.EUR').id,
             'company_ids': [(6, 0, (self.us_company.id, self.default_company.id))]
         })
 

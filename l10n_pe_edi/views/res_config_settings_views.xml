@@ -29,7 +29,7 @@
                                 <field name="l10n_pe_edi_provider_password" password="True"/>
                             </div>
                         </div>
-                    </div>
+                    </setting>
                     <setting attrs="{'invisible': [('l10n_pe_edi_provider', '=', 'iap')]}">
                         <field name="l10n_pe_edi_certificate_id" style="width: 100%"/>
                         <div class="text-muted">

@@ -3,9 +3,9 @@
 # 	* marketing_automation
 # 
 # Translators:
-# Slobodan Simić <slsimic@gmail.com>, 2022
 # Uros Kalajdzic <ukalajdzic@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -171,26 +171,26 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__trace_ids
 msgid "Actions"
-msgstr "Радње"
+msgstr "Radnje"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__active
 msgid "Active"
-msgstr "Активно"
+msgstr "Aktivno"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__marketing_activity_ids
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_tree_marketing_automation
 msgid "Activities"
-msgstr "Активности"
+msgstr "Aktivnosti"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__parent_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__activity_id
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Activity"
-msgstr "Активност"
+msgstr "Aktivnost"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__activity_domain
@@ -206,7 +206,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__activity_type
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__activity_type
 msgid "Activity Type"
-msgstr ""
+msgstr "Vrsta aktivnosti"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_activity__domain
@@ -259,7 +259,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
 msgid "Archived"
-msgstr ""
+msgstr "Arhivirano"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -324,7 +324,7 @@ msgstr "Kampanje"
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
 msgid "Cancel"
-msgstr "Откажи"
+msgstr "Otkaži"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
@@ -334,7 +334,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_trace__state__canceled
 msgid "Canceled"
-msgstr "Отказано"
+msgstr "Otkazano"
 
 #. module: marketing_automation
 #: model:ir.model.fields,help:marketing_automation.field_marketing_activity__validity_duration
@@ -368,7 +368,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__color
 msgid "Color Index"
-msgstr ""
+msgstr "Indeks boja"
 
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_participants_action_reporting
@@ -388,12 +388,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_search
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_search
 msgid "Completed"
-msgstr ""
+msgstr "Završeno"
 
 #. module: marketing_automation
 #: model:ir.ui.menu,name:marketing_automation.marketing_automation_menu_configuration
 msgid "Configuration"
-msgstr "Подешавање"
+msgstr "Podešavanje"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_test_view_form
@@ -433,7 +433,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__interval_type__days
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__validity_duration_type__days
 msgid "Days"
-msgstr "дана"
+msgstr "dana"
 
 #. module: marketing_automation
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_campaign_action
@@ -449,7 +449,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Delete"
-msgstr ""
+msgstr "Obriši"
 
 #. module: marketing_automation
 #. openerp-web
@@ -472,12 +472,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__display_name
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Naziv za prikaz"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__res_id
 msgid "Document ID"
-msgstr ""
+msgstr "ID dokumenta"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
@@ -497,7 +497,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Edit"
-msgstr ""
+msgstr "Uredi"
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__activity_type__email
@@ -516,7 +516,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_mail_compose_message
 msgid "Email composition wizard"
-msgstr ""
+msgstr "Čarobnjak sastavljana email-ova"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_activity.py:0
@@ -638,7 +638,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant____last_update
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Poslednja izmena dana"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__write_uid
@@ -647,7 +647,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__write_uid
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Poslednje izmenio/la"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__write_date
@@ -656,7 +656,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__write_date
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Poslednje ažuriranje dana"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__last_sync_date
@@ -701,7 +701,7 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_category__email
 msgid "Mail"
-msgstr ""
+msgstr "Mail"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
@@ -713,7 +713,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_activity_view_form
 msgid "Mail Template"
-msgstr ""
+msgstr "Mail šablon"
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_activity__trigger_type__mail_bounce
@@ -753,7 +753,7 @@ msgstr ""
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.mailing_mailing_view_form_marketing_activity
 msgid "Mailing"
-msgstr ""
+msgstr "Mailovi"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_mailing_trace
@@ -935,7 +935,7 @@ msgstr ""
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_participants_action_reporting
 #: model_terms:ir.actions.act_window,help:marketing_automation.marketing_trace_action
 msgid "No data yet!"
-msgstr ""
+msgstr "Još uvek nema podataka!"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
@@ -1044,7 +1044,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_tree
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_trace_view_form
 msgid "Participant"
-msgstr ""
+msgstr "Učesnik"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_tree
@@ -1189,7 +1189,7 @@ msgstr "Naziv resursa"
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__user_id
 msgid "Responsible"
-msgstr "Одговорно лице"
+msgstr "Odgovorno lice"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_participant_view_form
@@ -1213,12 +1213,12 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_trace__schedule_date
 msgid "Schedule Date"
-msgstr ""
+msgstr "Zakaži datum"
 
 #. module: marketing_automation
 #: model:ir.model.fields.selection,name:marketing_automation.selection__marketing_trace__state__scheduled
 msgid "Scheduled"
-msgstr ""
+msgstr "Zakazano"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_search
@@ -1248,17 +1248,17 @@ msgstr ""
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__interval_number
 msgid "Send after"
-msgstr ""
+msgstr "Šalji nakon"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__interval_standardized
 msgid "Send after (in hours)"
-msgstr ""
+msgstr "Pošajli nakon (u satima)"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form
 msgid "Sent"
-msgstr ""
+msgstr "Poslato"
 
 #. module: marketing_automation
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__server_action_id
@@ -1480,12 +1480,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_activity__utm_campaign_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign__utm_campaign_id
 msgid "UTM Campaign"
-msgstr ""
+msgstr "UTM kampanja"
 
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_utm_source
 msgid "UTM Source"
-msgstr ""
+msgstr "UTM izvor"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form

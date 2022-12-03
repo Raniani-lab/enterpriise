@@ -116,7 +116,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "Create Task : "
-msgstr ""
+msgstr "Loo ülesanne : "
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -124,7 +124,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Current activity"
-msgstr ""
+msgstr "Käesolev tegevus"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -249,7 +249,7 @@ msgstr "Minimaalne kestus"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Motivation Text"
-msgstr ""
+msgstr "Motiveeriv tekst"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -271,7 +271,7 @@ msgstr "Järgmine"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Next week"
-msgstr ""
+msgstr "Järgmine nädal"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -279,7 +279,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Next week unavailable"
-msgstr ""
+msgstr "Järgmine nädal pole saadaval"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -357,7 +357,7 @@ msgstr "Palun vali projekt"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Previous week"
-msgstr ""
+msgstr "Eelmine nädal"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -365,7 +365,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Previous week unavailable"
-msgstr ""
+msgstr "Eelmine nädal polnud saadaval"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -423,7 +423,7 @@ msgstr "Seaded"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Show password"
-msgstr ""
+msgstr "Näita salasõna"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -452,7 +452,7 @@ msgstr "Statistika"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Subtract"
-msgstr ""
+msgstr "Lahutage"
 
 #. module: project_timesheet_synchro
 #. openerp-web

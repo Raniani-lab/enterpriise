@@ -266,7 +266,7 @@ msgstr ""
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_published
 msgid "Visible on current website"
-msgstr ""
+msgstr "Terlihat pada website saat ini"
 
 #. module: website_helpdesk
 #: model:ir.model,name:website_helpdesk.model_website

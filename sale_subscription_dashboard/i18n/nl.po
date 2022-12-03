@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # Jolien De Paepe, 2022
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Jolien De Paepe, 2022\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -98,7 +98,7 @@ msgid ""
 "number of subscriptions"
 msgstr ""
 "Gemiddelde opbrengst van een abonnement, verkregen door de maandelijkse "
-"wederkerende omzet te delen door het aantal abonnementen."
+"herhalende omzet te delen door het aantal abonnementen."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -423,8 +423,8 @@ msgid ""
 "MRR for short; total subscription revenue per month (e.g. for an annual "
 "subscription of $ 1,200, the MRR is $ 100)"
 msgstr ""
-"Maandelijkse wederkerende omzet in het kort; totale abonnementsinkomsten per"
-" maand (bijv. voor een jaarabonnement van $ 1.200 is de MWO $ 100)"
+"Maandelijkse herhalende omzet in het kort; totale abonnementsinkomsten per "
+"maand (bijv. voor een jaarabonnement van $ 1.200 is de MWO $ 100)"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
@@ -438,7 +438,7 @@ msgstr "Maandelijkse herhalende omzet"
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Monthly Recurring Revenue :"
-msgstr "Maandelijkse wederkerende omzet :"
+msgstr "Maandelijkse herhalende omzet :"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -610,7 +610,7 @@ msgstr "Herhaling"
 #, python-format
 msgid "Reduction in total MRR over the period"
 msgstr ""
-"Afname van de totale maandelijkse wederkerende omzet gedurende de periode."
+"Afname van de totale maandelijkse herhalende omzet gedurende de periode."
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0

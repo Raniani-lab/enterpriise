@@ -495,12 +495,12 @@ msgstr "Aktif"
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_form
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Add a function here..."
-msgstr ""
+msgstr "Tambahkan function di sini..."
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
 msgid "Add an intro message here..."
-msgstr ""
+msgstr "Tambahkan Intro Anda di sini..."
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
@@ -527,7 +527,7 @@ msgstr "Semua"
 #: model:ir.actions.act_window,name:appointment.calendar_event_action_report
 #: model:ir.ui.menu,name:appointment.menu_schedule_report_online
 msgid "All Appointments"
-msgstr ""
+msgstr "Semua Appointment"
 
 #. module: appointment
 #: code:addons/appointment/models/appointment_type.py:0
@@ -606,7 +606,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated
 msgid "Appointment"
-msgstr ""
+msgstr "Appointment"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_appointment_answer_input
@@ -715,7 +715,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_tree
 #: model_terms:ir.ui.view,arch_db:appointment.calendar_event_view_search_inherit_appointment
 msgid "Appointment Type"
-msgstr ""
+msgstr "Jenis Appointment"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__appointment_type_ids
@@ -747,7 +747,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_home_appointment
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_home_menu_appointment
 msgid "Appointments"
-msgstr ""
+msgstr "Appointment"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_appointments
@@ -1455,7 +1455,7 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
 msgid "No appointment found."
-msgstr ""
+msgstr "Tidak ada appointment yang ditemukan."
 
 #. module: appointment
 #: model_terms:ir.actions.act_window,help:appointment.appointment_invite_action
@@ -1543,7 +1543,7 @@ msgstr ""
 #: model:ir.ui.menu,name:appointment.menu_schedule_report_all
 #: model_terms:ir.ui.view,arch_db:appointment.calendar_event_view_search_inherit_appointment
 msgid "Online Appointments"
-msgstr ""
+msgstr "Appointment Online"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form
@@ -1707,7 +1707,7 @@ msgstr "Jadwal"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointments_list_layout
 msgid "Schedule an Appointment"
-msgstr ""
+msgstr "Jadwalkan Appointment"
 
 #. module: appointment
 #: model_terms:ir.actions.act_window,help:appointment.calendar_event_action_report
@@ -2218,7 +2218,7 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "e.g. \"Technical Demo\""
-msgstr ""
+msgstr "misalnya \"Demo Teknis\""
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form

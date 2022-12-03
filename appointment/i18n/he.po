@@ -16,6 +16,7 @@
 # Lilach Gilliam <lilach.gilliam@gmail.com>, 2022
 # Roy Sayag, 2022
 # NoaFarkash, 2022
+# Ha Ketem <haketem@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -23,7 +24,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: NoaFarkash, 2022\n"
+"Last-Translator: Ha Ketem <haketem@gmail.com>, 2022\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -504,7 +505,7 @@ msgstr ""
 #: model:mail.message.subtype,name:appointment.mt_appointment_type_booked
 #: model:mail.message.subtype,name:appointment.mt_calendar_event_booked
 msgid "Appointment Booked"
-msgstr ""
+msgstr "פגישות שנקבעו"
 
 #. module: appointment
 #: model:mail.template,subject:appointment.appointment_booked_mail_template
@@ -516,7 +517,7 @@ msgstr ""
 #: model:mail.message.subtype,name:appointment.mt_appointment_type_canceled
 #: model:mail.message.subtype,name:appointment.mt_calendar_event_canceled
 msgid "Appointment Canceled"
-msgstr ""
+msgstr "פגישה בוטלה"
 
 #. module: appointment
 #: model:mail.template,subject:appointment.appointment_canceled_mail_template
@@ -563,7 +564,7 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_appointments
 msgid "Appointment Name"
-msgstr ""
+msgstr "שם הפגישה"
 
 #. module: appointment
 #: model:onboarding.onboarding,name:appointment.appointment_onboarding_panel
@@ -602,7 +603,7 @@ msgstr "סוג פגישה"
 #: model:ir.model.fields,field_description:appointment.field_appointment_invite__appointment_type_ids
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_search
 msgid "Appointment Types"
-msgstr ""
+msgstr "סוגי פגישות"
 
 #. module: appointment
 #: code:addons/appointment/models/calendar_event.py:0
@@ -633,7 +634,7 @@ msgstr "פגישות"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_appointments
 msgid "Appointments by"
-msgstr ""
+msgstr "פגישות מאת"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
@@ -858,7 +859,7 @@ msgstr "לקוח"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "Customer Preview"
-msgstr ""
+msgstr "צפיה מקדימה ללקוח"
 
 #. module: appointment
 #: code:addons/appointment/controllers/portal.py:0
@@ -943,7 +944,7 @@ msgstr "משך:"
 #: code:addons/appointment/controllers/appointment.py:0
 #, python-format
 msgid "Email: %s"
-msgstr ""
+msgstr "מייל: %s"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_appointment_slot__end_datetime
@@ -953,7 +954,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_slot__end_hour
 msgid "Ending Hour"
-msgstr ""
+msgstr "שעת סיום"
 
 #. module: appointment
 #: model:ir.model,name:appointment.model_calendar_alarm
@@ -1002,7 +1003,7 @@ msgstr "תצוגה קדמית"
 #: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Get Share Link"
-msgstr ""
+msgstr "קישור לשיתוף"
 
 #. module: appointment
 #: code:addons/appointment/models/onboarding_onboarding_step.py:0
@@ -1198,7 +1199,7 @@ msgstr "עדכון אחרון ב"
 #: code:addons/appointment/static/src/views/appointment_calendar/appointment_calendar_controller.xml:0
 #, python-format
 msgid "Link Copied in your clipboard !"
-msgstr ""
+msgstr "הקישור הועתק!"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form
@@ -1287,7 +1288,7 @@ msgstr "הודעות"
 #: code:addons/appointment/controllers/appointment.py:0
 #, python-format
 msgid "Mobile: %s"
-msgstr ""
+msgstr "נייד: %s"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__1
@@ -1302,7 +1303,7 @@ msgstr "טקסט מרובה שורות"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_search
 msgid "My Appointments"
-msgstr ""
+msgstr "הפגישות שלי"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_search
@@ -1629,7 +1630,7 @@ msgstr "חפש בתיאור"
 #: code:addons/appointment/controllers/portal.py:0
 #, python-format
 msgid "Search in Name"
-msgstr ""
+msgstr "חיפוש בשם"
 
 #. module: appointment
 #: code:addons/appointment/controllers/portal.py:0
@@ -1812,7 +1813,7 @@ msgstr "יום ראשון"
 #. module: appointment
 #: model:appointment.question,name:appointment.appointment_type_2_question_1
 msgid "Symptoms"
-msgstr ""
+msgstr "סימפטומים"
 
 #. module: appointment
 #: model:appointment.type,name:appointment.appointment_type_1
@@ -1876,7 +1877,7 @@ msgstr ""
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.portal_my_appointments
 msgid "There is no appointment linked to your account."
-msgstr ""
+msgstr "אין פגישות מקושרות לחשבונך."
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_info
@@ -1968,13 +1969,13 @@ msgstr "יום שלישי"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "Until (max)"
-msgstr ""
+msgstr "עד (מקסימום)"
 
 #. module: appointment
 #: code:addons/appointment/controllers/portal.py:0
 #, python-format
 msgid "Upcoming"
-msgstr ""
+msgstr "בקרוב"
 
 #. module: appointment
 #: model:ir.model.fields,help:appointment.field_calendar_alarm__default_for_new_appointment_type
@@ -2043,7 +2044,7 @@ msgstr "שעה:"
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.staff_user_select
 msgid "With"
-msgstr ""
+msgstr "עם"
 
 #. module: appointment
 #: model:onboarding.onboarding.step,description:appointment.appointment_onboarding_configure_calendar_provider_step

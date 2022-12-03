@@ -78,7 +78,7 @@ msgstr "URL lengkap untuk mengakses dokumen melalui situs web."
 #. module: website_knowledge
 #: model:ir.model.fields,field_description:website_knowledge.field_knowledge_article__website_published
 msgid "Visible on current website"
-msgstr ""
+msgstr "Terlihat pada website saat ini"
 
 #. module: website_knowledge
 #: model:ir.model.fields,field_description:website_knowledge.field_knowledge_article__website_url

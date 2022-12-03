@@ -1962,7 +1962,7 @@ msgstr "Penerima"
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #, python-format
 msgid "Refresh"
-msgstr ""
+msgstr "Refresh"
 
 #. module: knowledge
 #. openerp-web
@@ -2619,7 +2619,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__user_permission__none
 msgid "none"
-msgstr ""
+msgstr "none"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding

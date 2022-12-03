@@ -3,9 +3,9 @@
 # 	* account_auto_transfer
 # 
 # Translators:
-# Slobodan Simić <slsimic@gmail.com>, 2022
 # Uros Kalajdzic <ukalajdzic@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2021-07-12 07:57+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -165,7 +165,7 @@ msgstr "Kreirano"
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form
 msgid "Description"
-msgstr "Опис"
+msgstr "Opis"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line__account_id
@@ -196,7 +196,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__display_name
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Naziv za prikaz"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__frequency
@@ -222,30 +222,30 @@ msgstr "ID"
 #. module: account_auto_transfer
 #: model_terms:ir.ui.view,arch_db:account_auto_transfer.view_transfer_model_form
 msgid "Journal"
-msgstr "Извештај"
+msgstr "Izveštaj"
 
 #. module: account_auto_transfer
 #: model:ir.model,name:account_auto_transfer.model_account_move
 msgid "Journal Entry"
-msgstr "Sadrzaj dnevnika"
+msgstr "Sadržaj dnevnika"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model____last_update
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Poslednja izmena dana"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__write_uid
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Poslednje izmenio/la"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model__write_date
 #: model:ir.model.fields,field_description:account_auto_transfer.field_account_transfer_model_line__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Poslednje ažuriranje dana"
 
 #. module: account_auto_transfer
 #: model:ir.model.fields.selection,name:account_auto_transfer.selection__account_transfer_model__frequency__month

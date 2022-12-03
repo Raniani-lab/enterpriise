@@ -47,7 +47,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_count
 msgid "# Ratings"
-msgstr ""
+msgstr "# Hinnangud"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__sla_policy_count
@@ -442,7 +442,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.constraint,message:helpdesk.constraint_helpdesk_tag_name_uniq
 msgid "A tag with the same name already exists."
-msgstr ""
+msgstr "Sama nimega silt on juba olemas."
 
 #. module: helpdesk
 #: model:ir.model.constraint,message:helpdesk.constraint_helpdesk_ticket_type_name_uniq
@@ -457,7 +457,7 @@ msgstr "Meeskonna info"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__access_instruction_message
 msgid "Access Instruction Message"
-msgstr ""
+msgstr "Ligipääsujuhiste teade"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__access_warning
@@ -584,7 +584,7 @@ msgstr "Aliase tegevusvaldkond"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__display_alias_name
 msgid "Alias email"
-msgstr ""
+msgstr "Aliase e-mail"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__alias_model_id
@@ -615,7 +615,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_delete_wizard
 msgid "Archive Stages"
-msgstr ""
+msgstr "Arhiivi etapid"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_report_analysis_view_search
@@ -636,7 +636,7 @@ msgstr "Arhiveeritud"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_delete_confirmation_wizard
 msgid "Are you sure you want to continue?"
-msgstr ""
+msgstr "Kas olete kindel, et soovid jätkata?"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_delete_wizard
@@ -757,30 +757,30 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_avg
 #, python-format
 msgid "Average Rating"
-msgstr ""
+msgstr "Keskmine hinne"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_avg_percentage
 msgid "Average Rating (%)"
-msgstr ""
+msgstr "Keskmine hinne (%)"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Average Rating: Dissatisfied"
-msgstr ""
+msgstr "Keskmine hinnang: ei ole rahul"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Average Rating: Okay"
-msgstr ""
+msgstr "Keskine hinne: sobib"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_kanban
 msgid "Average Rating: Satisfied"
-msgstr ""
+msgstr "Keskmine hinne: on rahul"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -1300,7 +1300,7 @@ msgstr "Näidatav nimi"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_progress_data
 msgid "Dissatisfied"
-msgstr ""
+msgstr "Rahulolematu"
 
 #. module: helpdesk
 #: code:addons/helpdesk/models/digest.py:0
@@ -1380,7 +1380,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
 msgid "Emails sent to"
-msgstr ""
+msgstr "Emailid saadetud aadressile"
 
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0
@@ -1698,7 +1698,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 #, python-format
 msgid "High Priority"
-msgstr ""
+msgstr "Kõrge tähtsusega"
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_sla__priority__2
@@ -1920,7 +1920,7 @@ msgstr "Kanbani seisund"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__kanban_state_label
 msgid "Kanban State Label"
-msgstr ""
+msgstr "Kanban´i oleku silt"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__legend_done
@@ -2059,7 +2059,7 @@ msgstr "Online vestlus"
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_report_analysis_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 msgid "Low Priority"
-msgstr ""
+msgstr "Madala tähtsusega"
 
 #. module: helpdesk
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_sla__priority__0
@@ -2269,7 +2269,7 @@ msgstr "Järgmise tegevuse tüüp"
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 msgid "No Rating"
-msgstr ""
+msgstr "Hinnang puudub"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_sla_action
@@ -2280,7 +2280,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.mail_activity_type_action_config_helpdesk
 msgid "No activity types found. Let's create one!"
-msgstr ""
+msgstr "Tegevustüüpe ei leitud. Loome ühe!"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_sla_report_analysis_action
@@ -2302,12 +2302,12 @@ msgstr "Andmed puuduvad!"
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_stage_action
 msgid "No stages found. Let's create one!"
-msgstr ""
+msgstr "Ühtegi etappi ei leitud. Loome ühe!"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_tag_action
 msgid "No tags found. Let's create one!"
-msgstr ""
+msgstr "Silte ei leitud. Loome ühe!"
 
 #. module: helpdesk
 #: model_terms:ir.actions.act_window,help:helpdesk.helpdesk_team_dashboard_action_main
@@ -2411,7 +2411,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_progress_data
 msgid "Okay"
-msgstr ""
+msgstr "Korras"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__oldest_unanswered_customer_message_date
@@ -2533,7 +2533,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_team__rating_percentage_satisfaction
 msgid "Percentage of happy ratings"
-msgstr ""
+msgstr "Positiivse hinnangu protsent"
 
 #. module: helpdesk
 #. openerp-web
@@ -2629,7 +2629,7 @@ msgstr "Prioriteet"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__privacy_visibility_warning
 msgid "Privacy Visibility Warning"
-msgstr ""
+msgstr "Privaatsuse nähtavuse hoiatus"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__properties
@@ -2669,7 +2669,7 @@ msgstr "Hinnang (/5)"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_avg_text
 msgid "Rating Avg Text"
-msgstr ""
+msgstr "Keskmine teksti hinnang"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_last_feedback
@@ -2690,12 +2690,12 @@ msgstr "Hinnangu viimane väärtus"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_percentage_satisfaction
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_percentage_satisfaction
 msgid "Rating Satisfaction"
-msgstr ""
+msgstr "Rahulolu hinnang"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_last_text
 msgid "Rating Text"
-msgstr ""
+msgstr "Hindamistekst"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_count
@@ -2734,7 +2734,7 @@ msgstr "Jõudis"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_status__reached_datetime
 msgid "Reached Date"
-msgstr ""
+msgstr "Saabunud kuupäev"
 
 #. module: helpdesk
 #: code:addons/helpdesk/models/helpdesk.py:0
@@ -3036,7 +3036,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.team_rating_progress_data
 msgid "Satisfied"
-msgstr ""
+msgstr "Rahul"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -3141,6 +3141,8 @@ msgid ""
 "Set this template on a project's stage to automate email when tasks reach "
 "stages"
 msgstr ""
+"Määrake see mall projekti etapis, et automatiseerida meilisõnumid, kui "
+"ülesanded jõuavad etappidesse"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_kanban
@@ -3232,7 +3234,7 @@ msgstr "Etapid"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_stage_delete_wizard__stages_active
 msgid "Stages Active"
-msgstr ""
+msgstr "Aktiivsed etapid"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_stage_delete_wizard__stage_ids
@@ -3503,6 +3505,8 @@ msgid ""
 "Those represent the different categories of things you have to do (e.g. "
 "\"Call\" or \"Send email\")."
 msgstr ""
+"Need esindavad erinevaid tegevuste kategooriaid, mida peate tegema (nt "
+"\"Helista\" või \"Saada e-mail\")."
 
 #. module: helpdesk
 #. openerp-web
@@ -3947,12 +3951,12 @@ msgstr "Tööaeg"
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__ticket_assignation_hours
 msgid "Working Hours to Assign"
-msgstr ""
+msgstr "Tööaeg määrata"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__ticket_close_hours
 msgid "Working Hours to Close"
-msgstr ""
+msgstr "Töötundide arv sulgemiseni"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__sla_exceeded_hours

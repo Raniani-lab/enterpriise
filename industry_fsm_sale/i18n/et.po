@@ -13,6 +13,7 @@
 # Martin Aavastik <martin@avalah.ee>, 2022
 # Piia Paurson <piia@avalah.ee>, 2022
 # Martin Trigaux, 2022
+# Jana Jaakson, 2022
 # Leaanika Randmets, 2022
 # 
 msgid ""
@@ -537,6 +538,8 @@ msgid ""
 "Sales order item that will be selected by default on the tasks and timesheets of this project, except if the employee set on the timesheets is explicitely linked to another sales order item on the project.\n"
 "It can be modified on each task and timesheet entry individually if necessary."
 msgstr ""
+"Müügitellimuse artikkel, mis valitakse selle projekti tööülesannetes ja ajatabelites vaikimisi, välja arvatud juhul, kui ajatabelites määratud töötaja on otseselt seotud projekti mõne muu müügitellimuse artikliga.\n"
+"Seda saab vajadusel muuta iga ülesande ja ajatabeli kirje puhul eraldi."
 
 #. module: industry_fsm_sale
 #. openerp-web
@@ -574,7 +577,7 @@ msgstr "Ülesanne"
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_project_task_recurrence
 msgid "Task Recurrence"
-msgstr ""
+msgstr "Ülesande kordumine"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,help:industry_fsm_sale.field_sale_order__task_id

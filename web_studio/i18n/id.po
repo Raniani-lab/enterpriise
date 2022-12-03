@@ -674,7 +674,7 @@ msgstr "Diblokir"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Bold"
-msgstr ""
+msgstr "Bold"
 
 #. module: web_studio
 #. openerp-web
@@ -906,7 +906,7 @@ msgstr "Warna"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks_registry.js:0
 #, python-format
 msgid "Column"
-msgstr ""
+msgstr "Kolom"
 
 #. module: web_studio
 #. openerp-web
@@ -1338,7 +1338,7 @@ msgstr "Nilai Baku"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Default value"
-msgstr ""
+msgstr "Value Default"
 
 #. module: web_studio
 #. openerp-web
@@ -2239,7 +2239,7 @@ msgstr "Internal"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Interval"
-msgstr ""
+msgstr "Interval"
 
 #. module: web_studio
 #: code:addons/web_studio/models/ir_ui_view.py:0
@@ -2875,7 +2875,7 @@ msgstr "Lainnya"
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 msgid "PDF file"
-msgstr ""
+msgstr "File PDF"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_report_paperformat
@@ -3042,7 +3042,7 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_qweb
 msgid "Qweb"
-msgstr ""
+msgstr "Qweb"
 
 #. module: web_studio
 #. openerp-web
@@ -3601,7 +3601,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Striped"
-msgstr ""
+msgstr "Striped"
 
 #. module: web_studio
 #. openerp-web
@@ -3720,7 +3720,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Tabs"
-msgstr ""
+msgstr "Tab"
 
 #. module: web_studio
 #. openerp-web
@@ -4160,7 +4160,7 @@ msgstr "Tampilan"
 #: code:addons/web_studio/static/src/legacy/xml/report_editor_sidebar.xml:0
 #, python-format
 msgid "Visible for"
-msgstr ""
+msgstr "Terlihat untuk"
 
 #. module: web_studio
 #. openerp-web

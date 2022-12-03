@@ -20,6 +20,7 @@
 # ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022
 # Roy Sayag, 2022
 # NoaFarkash, 2022
+# Ha Ketem <haketem@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -27,7 +28,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: NoaFarkash, 2022\n"
+"Last-Translator: Ha Ketem <haketem@gmail.com>, 2022\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,7 +55,7 @@ msgstr "%s מסמכים"
 #: code:addons/documents/static/src/views/documents_model_mixin.js:0
 #, python-format
 msgid "%s Documents (%s locked)"
-msgstr ""
+msgstr "%s מסמכים(%s נעולים)"
 
 #. module: documents
 #. openerp-web
@@ -79,17 +80,17 @@ msgstr ""
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2017
 msgid "2021"
-msgstr ""
+msgstr "2021"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2018
 msgid "2022"
-msgstr ""
+msgstr "2022"
 
 #. module: documents
 #: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
 msgid "<b class=\"tip_title\">Tip: Become a paperless company</b>"
-msgstr ""
+msgstr "<b class=\"tip_title\">טיפ: הפכו לארגון נטול נייר</b>"
 
 #. module: documents
 #: code:addons/documents/controllers/main.py:0
@@ -168,7 +169,7 @@ msgstr "<i class=\"fa fa-download fa-fw\"/> הורד"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_kanban
 msgid "<i class=\"fa fa-globe\" title=\"Document url\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-globe\" title=\"Document url\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_single
@@ -486,7 +487,7 @@ msgstr "הוסף"
 #: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
 #, python-format
 msgid "Add File"
-msgstr ""
+msgstr "הוספת קובץ"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.action_url_form
@@ -508,7 +509,7 @@ msgstr "הוסף קישור "
 #: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
 #, python-format
 msgid "Add new file"
-msgstr ""
+msgstr "הוספת קובץ חדש"
 
 #. module: documents
 #: model:res.groups,name:documents.group_documents_manager
@@ -565,7 +566,7 @@ msgstr "מאפשר לך לנהל את המסמכים שלך."
 #: code:addons/documents/models/workflow.py:0
 #, python-format
 msgid "Already linked Documents"
-msgstr ""
+msgstr "קבצים כבר מקושרים"
 
 #. module: documents
 #: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
@@ -606,7 +607,7 @@ msgstr "ארכיון"
 #: code:addons/documents/static/src/owl/components/pdf_manager/pdf_manager.xml:0
 #, python-format
 msgid "Archive original file(s)"
-msgstr ""
+msgstr "שליחת קובץ/קבצים מקוריים לארכיון"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
@@ -627,12 +628,12 @@ msgstr "האם אתה בטוח שברצונך למחוק רשומה זו?"
 #, python-format
 msgid ""
 "As this PDF contains multiple documents, let's split and process in bulk."
-msgstr ""
+msgstr "בגלל שה-PDF מכין מספר מסמכים, בואו נחלק ואז נטפל בהם בבת-אחת."
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_afv
 msgid "Ask for Validation"
-msgstr ""
+msgstr "לבקש אימות"
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_marketing_assets

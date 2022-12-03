@@ -1322,7 +1322,7 @@ msgstr "Mulai"
 #: code:addons/hr_referral/static/src/views/dashboard.xml:0
 #, python-format
 msgid "Start Now"
-msgstr ""
+msgstr "Mulai Sekarang"
 
 #. module: hr_referral
 #: model_terms:ir.ui.view,arch_db:hr_referral.employee_referral_report_view_dashboard
@@ -1446,12 +1446,12 @@ msgstr "URL"
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_utm_campaign
 msgid "UTM Campaign"
-msgstr ""
+msgstr "Kampanye UTM"
 
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_utm_source
 msgid "UTM Source"
-msgstr ""
+msgstr "Sumber UTM"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_link_to_share__url

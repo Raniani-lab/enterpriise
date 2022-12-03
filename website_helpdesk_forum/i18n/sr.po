@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Uros Kalajdzic <ukalajdzic@gmail.com>, 2022
-# Slobodan Simić <slsimic@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:50+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +24,7 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.search_result
 msgid ", by"
-msgstr ""
+msgstr ", autora"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.knowledge_base_forum_card
@@ -76,7 +76,7 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_select_forum_wizard_view_form
 msgid "Cancel"
-msgstr "Откажи"
+msgstr "Otkaži"
 
 #. module: website_helpdesk_forum
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_select_forum_wizard_view_form
@@ -101,17 +101,17 @@ msgstr "Kreirano"
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_select_forum_wizard__description
 msgid "Description"
-msgstr "Опис"
+msgstr "Opis"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_select_forum_wizard__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Naziv za prikaz"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_select_forum_wizard__forum_id
 msgid "Forum"
-msgstr ""
+msgstr "Forum"
 
 #. module: website_helpdesk_forum
 #: model:ir.model,name:website_helpdesk_forum.model_forum_post
@@ -129,12 +129,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_forum.helpdesk_ticket_view_form_inherit_website_helpdesk_forum
 #, python-format
 msgid "Forum Posts"
-msgstr ""
+msgstr "Forum Postovi"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_team__website_forum_ids
 msgid "Forums"
-msgstr ""
+msgstr "Forumi"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket__use_website_helpdesk_forum
@@ -150,12 +150,12 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model:ir.model,name:website_helpdesk_forum.model_helpdesk_team
 msgid "Helpdesk Team"
-msgstr ""
+msgstr "Helpdesk ti"
 
 #. module: website_helpdesk_forum
 #: model:ir.model,name:website_helpdesk_forum.model_helpdesk_ticket
 msgid "Helpdesk Ticket"
-msgstr "Карта за помоћ"
+msgstr "Zahtev za pomoć"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_select_forum_wizard__id
@@ -172,17 +172,17 @@ msgstr ""
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_select_forum_wizard____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Poslednja izmena dana"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_select_forum_wizard__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Poslednje izmenio/la"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_select_forum_wizard__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Poslednje ažuriranje dana"
 
 #. module: website_helpdesk_forum
 #: code:addons/website_helpdesk_forum/models/helpdesk.py:0
@@ -226,7 +226,7 @@ msgstr "Oznake"
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_forum_post__ticket_id
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_select_forum_wizard__ticket_id
 msgid "Ticket"
-msgstr ""
+msgstr "Ulaznica"
 
 #. module: website_helpdesk_forum
 #: model:ir.model.fields,field_description:website_helpdesk_forum.field_helpdesk_ticket_select_forum_wizard__title

@@ -496,11 +496,6 @@ msgid "Asset unpaused. %s"
 msgstr ""
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Asset(s)"
-msgstr "Tài sản"
-
-#. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
 msgid "Asset/Revenue Recognition"
 msgstr "Ghi nhận tài sản/Doanh thu"
@@ -512,6 +507,7 @@ msgstr "Ghi nhận tài sản/Doanh thu"
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_ids
 #: model:ir.ui.menu,name:account_asset.menu_action_account_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_purchase_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Assets"
 msgstr "Tài sản"
 
@@ -785,6 +781,16 @@ msgid "Declining then Straight Line"
 msgstr "khấu hao giảm dần sau đó khấu hao đường thẳng"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
+msgid "Def. Expenses"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
+msgid "Def. Revenues"
+msgstr ""
+
+#. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__asset_type__expense
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__expense
@@ -830,11 +836,6 @@ msgstr "Tùy chọn chi phí trả trước"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Deferred Expense name"
 msgstr "Tên chi phí trả trước"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Deferred Expense(s)"
-msgstr "Chi phí trả trước"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_expense_form
@@ -893,11 +894,6 @@ msgstr "Tùy chọn doanh thu chưa thực hiện"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Deferred Revenue name"
 msgstr "Tên doanh thu trả trước"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Deferred Revenue(s)"
-msgstr "Doanh thu trả trước"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_revenue_form
@@ -1049,7 +1045,9 @@ msgid "Disposal Moves"
 msgstr "Bút toán tiêu huỷ"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Dispose"
 msgstr "Xử lý"
 
@@ -1464,11 +1462,6 @@ msgid "New salvage amount for the asset"
 msgstr "Số tiền còn lại mới cho tài sản"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_calendar_event_id
-msgid "Next Activity Calendar Event"
-msgstr "Sự kiện lịch hoạt động tiếp theo"
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr "Hạn chót cho hành động kế tiếp"
@@ -1610,7 +1603,9 @@ msgid "Parent"
 msgstr "Cha"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Pause"
 msgstr "Tạm dừng"
 
@@ -1640,6 +1635,12 @@ msgstr "Ngày tính tỉ lệ"
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__purchase
 msgid "Purchase: Asset"
 msgstr "Mua: Tài sản"
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid "Re-evaluate"
+msgstr ""
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1685,7 +1686,9 @@ msgid "Responsible User"
 msgstr "Người phụ trách"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Resume"
 msgstr "Tiếp tục"
 
@@ -1781,7 +1784,9 @@ msgid "Select Invoice Line"
 msgstr "Chọn dòng hóa đơn"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Sell"
 msgstr "Bán"
 
@@ -2026,6 +2031,14 @@ msgid ""
 msgstr ""
 "Bạn không thể tạo tài sản từ chi tiết bút toán nợ và có trên tài khoản hoặc "
 "không có tổng tiền"
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid ""
+"You cannot delete an asset linked to posted entries.\n"
+"You should either confirm the asset, then, sell or dispose of it, or cancel the linked journal entries."
+msgstr ""
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0

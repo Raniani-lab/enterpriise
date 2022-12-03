@@ -294,7 +294,7 @@ msgstr ""
 #. module: delivery_usps
 #: model:ir.model.fields.selection,name:delivery_usps.selection__delivery_carrier__usps_intl_non_delivery_option__redirect
 msgid "Redirect"
-msgstr ""
+msgstr "Redirect"
 
 #. module: delivery_usps
 #: model:ir.model.fields,field_description:delivery_usps.field_delivery_carrier__usps_redirect_partner_id

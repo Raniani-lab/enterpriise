@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Uros Kalajdzic <ukalajdzic@gmail.com>, 2022
-# Slobodan Simić <slsimic@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -118,7 +118,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Companies"
-msgstr "Предузећа"
+msgstr "Preduzeća"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -134,7 +134,7 @@ msgstr "Kompanija"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Current"
-msgstr ""
+msgstr "Trenutni"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -176,7 +176,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Date"
-msgstr "Датум"
+msgstr "Datum"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -219,7 +219,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Document"
-msgstr "Документ"
+msgstr "Dokument"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -341,7 +341,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Last Month"
-msgstr ""
+msgstr "Prošli mesec"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -630,7 +630,7 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #: model:ir.model,name:sale_subscription_dashboard.model_sale_order
 msgid "Sales Order"
-msgstr "Наруџбеница"
+msgstr "Porudžbenica"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -693,7 +693,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Subscription"
-msgstr "Претплата"
+msgstr "Pretplata"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -842,7 +842,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:0
 #, python-format
 msgid "Unknown error"
-msgstr ""
+msgstr "Nepoznata greška"
 
 #. module: sale_subscription_dashboard
 #. openerp-web

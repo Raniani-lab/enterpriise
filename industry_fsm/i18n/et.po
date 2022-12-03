@@ -14,6 +14,7 @@
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Triine Aavik <triine@avalah.ee>, 2022
 # Leaanika Randmets, 2022
+# Jana Jaakson, 2022
 # 
 msgid ""
 msgstr ""
@@ -21,7 +22,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Leaanika Randmets, 2022\n"
+"Last-Translator: Jana Jaakson, 2022\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -178,7 +179,7 @@ msgstr "Arhiveeritud"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Assignees"
-msgstr ""
+msgstr "Määratud isikud"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__date_assign
@@ -188,7 +189,7 @@ msgstr "Ülesande kuupäev"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__rating_avg
 msgid "Average Rating"
-msgstr ""
+msgstr "Keskmine hinne"
 
 #. module: industry_fsm
 #: model:project.task,legend_blocked:industry_fsm.planning_task_0
@@ -218,7 +219,7 @@ msgstr "Blokeeritud"
 #. module: industry_fsm
 #: model:project.task,legend_done:industry_fsm.planning_task_18
 msgid "Buzz or set as done"
-msgstr ""
+msgstr "Lükka edasi või märgi tehtuks"
 
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.project_task_menu_planning_by_project_fsm
@@ -250,12 +251,12 @@ msgstr "Lahendatud"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Closed Last 30 Days"
-msgstr ""
+msgstr "Viimased 30 päeva suletud"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Closed Last 7 Days"
-msgstr ""
+msgstr "Viimased 7 päeva suletud"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__is_closed
@@ -343,6 +344,8 @@ msgid ""
 "Create projects to organize your tasks and define a different workflow for "
 "each project."
 msgstr ""
+"Looge oma ülesannete korraldamiseks projekte ja määrake iga projekti jaoks "
+"erinev töövoog."
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_view_form_inherit
@@ -399,7 +402,7 @@ msgstr "Kulutatud päevad"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__delay_endings_days
 msgid "Days to Deadline"
-msgstr ""
+msgstr "Päevi tähtajani"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__date_deadline
@@ -475,7 +478,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Dissatisfied"
-msgstr ""
+msgstr "Rahulolematu"
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/models/project_task.py:0
@@ -557,7 +560,7 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,help:industry_fsm.field_report_project_task_user_fsm__is_closed
 msgid "Folded in Kanban stages are closing stages."
-msgstr ""
+msgstr "Kanbanis volditud etapid on lõpuetapid."
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -660,7 +663,7 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__milestone_reached
 msgid "Is Milestone Reached"
-msgstr ""
+msgstr "Kas vahe-eesmärgid on saavutatud"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__fsm_is_sent
@@ -730,7 +733,7 @@ msgstr ""
 #: code:addons/industry_fsm/static/src/js/tours/industry_fsm_tour.js:0
 #, python-format
 msgid "Let's create your first <b>task</b>."
-msgstr ""
+msgstr "Loome teie esimese <b>ülesande</b>."
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard__line_ids
@@ -766,7 +769,7 @@ msgstr "Eesmärk"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__milestone_deadline
 msgid "Milestone Deadline"
-msgstr ""
+msgstr "Vahe-eesmärkide tähtaeg"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_milestones
@@ -836,7 +839,7 @@ msgstr "Vajad funktsionaalset või tehnilist abi"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "No Rating"
-msgstr ""
+msgstr "Hinnang puudub"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_user_action_report_fsm
@@ -846,12 +849,12 @@ msgstr "Andmed puuduvad!"
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_project_action_only_fsm
 msgid "No projects found. Let's create one!"
-msgstr ""
+msgstr "Projekte ei leitud. Loome ühe!"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_type_action_fsm
 msgid "No stages found. Let's create one!"
-msgstr ""
+msgstr "Ühtegi etappi ei leitud. Loome ühe!"
 
 #. module: industry_fsm
 #: model_terms:ir.actions.act_window,help:industry_fsm.project_task_action_all_fsm
@@ -874,7 +877,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Okay"
-msgstr ""
+msgstr "Korras"
 
 #. module: industry_fsm
 #. openerp-web
@@ -904,7 +907,7 @@ msgstr "Varasem"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__personal_stage_type_ids
 msgid "Personal Stage"
-msgstr ""
+msgstr "Isiklik etapp"
 
 #. module: industry_fsm
 #: model:project.task.type,name:industry_fsm.planning_project_stage_1
@@ -975,12 +978,12 @@ msgstr "Hinnatud ülesanded"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__rating_last_text
 msgid "Rating Last Text"
-msgstr ""
+msgstr "Viimase teksti hinnang"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__rating_last_value
 msgid "Rating Value (/5)"
-msgstr ""
+msgstr "Hindamisväärtus (/5)"
 
 #. module: industry_fsm
 #: model:project.task,legend_done:industry_fsm.planning_task_0
@@ -1035,7 +1038,7 @@ msgstr "Aruandlus"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Satisfied"
-msgstr ""
+msgstr "Rahul"
 
 #. module: industry_fsm
 #. openerp-web
@@ -1081,6 +1084,8 @@ msgid ""
 "Set this template on a project's stage to automate email when tasks reach "
 "stages"
 msgstr ""
+"Määrake see mall projekti etapis, et automatiseerida meilisõnumid, kui "
+"ülesanded jõuavad etappidesse"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.res_config_settings_action_fsm
@@ -1173,7 +1178,7 @@ msgstr "Alamülesanded"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_tree
 msgid "Sum of Effective Hours"
-msgstr ""
+msgstr "Efektiivsete tundide summa"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__tag_ids
@@ -1191,7 +1196,7 @@ msgstr "Ülesanne"
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_project__allow_task_dependencies
 msgid "Task Dependencies"
-msgstr ""
+msgstr "Ülesande sõltuvused"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__fsm_done
@@ -1249,7 +1254,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Tasks in Conflict"
-msgstr ""
+msgstr "Ülesanded konfliktis"
 
 #. module: industry_fsm
 #: code:addons/industry_fsm/controllers/portal.py:0
@@ -1384,24 +1389,24 @@ msgstr ""
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__working_days_open
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_user_view_graph
 msgid "Working Days to Assign"
-msgstr ""
+msgstr "Määratavad tööpäevad"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__working_days_close
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_user_view_graph
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_user_view_pivot
 msgid "Working Days to Close"
-msgstr ""
+msgstr "Tööpäevade arv sulgemiseni"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__working_hours_open
 msgid "Working Hours to Assign"
-msgstr ""
+msgstr "Tööaeg määrata"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__working_hours_close
 msgid "Working Hours to Close"
-msgstr ""
+msgstr "Töötundide arv sulgemiseni"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.portal_my_task

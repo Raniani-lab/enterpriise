@@ -3278,7 +3278,7 @@ msgid ""
 "email to all participants, along with a traceability report."
 msgstr ""
 "Dat is alles, klaar!<br>Het document is ondertekend en een kopie is per "
-"e-mail naar alle deelnemers gestuurd, samen met een traceerbaarheidsrapport."
+"e-mail naar alle deelnemers gestuurd, samen met een traceability rapport."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request

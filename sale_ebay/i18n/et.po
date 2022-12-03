@@ -830,7 +830,7 @@ msgstr "Postiindeks"
 #: model_terms:ir.ui.view,arch_db:sale_ebay.product_template_sale_ebay_form_view
 #: model_terms:ir.ui.view,arch_db:sale_ebay.res_config_settings_view_form
 msgid "eBay"
-msgstr ""
+msgstr "eBay"
 
 #. module: sale_ebay
 #: model:ir.model,name:sale_ebay.model_ebay_category

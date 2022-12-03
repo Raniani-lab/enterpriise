@@ -29,7 +29,7 @@ msgstr ""
 #: code:addons/project_forecast/models/project.py:0
 #, python-format
 msgid "%s's Planning"
-msgstr ""
+msgstr "%s's Planeerimine"
 
 #. module: project_forecast
 #: model:ir.ui.menu,name:project_forecast.planning_menu_schedule_by_project
@@ -53,12 +53,12 @@ msgstr "Minu projektid"
 #: model_terms:ir.actions.act_window,help:project_forecast.project_forecast_action_from_project
 #: model_terms:ir.actions.act_window,help:project_forecast.project_forecast_action_schedule_by_employee
 msgid "No shifts found. Let's create one!"
-msgstr ""
+msgstr "Vahetusi ei leitud. Loome ühe!"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_view_form_inherit_project_forecast
 msgid "Plan your resources for this project"
-msgstr ""
+msgstr "Ressursside kavandamine projekti jaoks"
 
 #. module: project_forecast
 #: model_terms:ir.ui.view,arch_db:project_forecast.project_project_view_form_simplified_inherit_forecast
@@ -82,7 +82,7 @@ msgstr "Planeerimine"
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_planning_analysis_report
 msgid "Planning Analysis Report"
-msgstr ""
+msgstr "Planeerimise analüüsi aruanne"
 
 #. module: project_forecast
 #: model:ir.model,name:project_forecast.model_planning_slot
@@ -104,12 +104,12 @@ msgstr "Projektid"
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.planning_action_schedule_by_project
 msgid "Schedule by Project"
-msgstr ""
+msgstr "Ajakava projekti järgi"
 
 #. module: project_forecast
 #: model:ir.actions.act_window,name:project_forecast.project_forecast_action_schedule_by_employee
 msgid "Schedule by Resource"
-msgstr ""
+msgstr "Ajakava ressursside järgi"
 
 #. module: project_forecast
 #: model_terms:ir.actions.act_window,help:project_forecast.planning_action_schedule_by_project
@@ -118,6 +118,8 @@ msgid ""
 "Schedule your human and material resources across roles, projects and sales "
 "orders."
 msgstr ""
+"Planeerige oma inimressursid ja materiaalsed ressursid rollide, projektide "
+"ja müügitellimuste lõikes."
 
 #. module: project_forecast
 #: code:addons/project_forecast/controllers/main.py:0
@@ -133,14 +135,14 @@ msgstr "Vahetuse mall"
 #. module: project_forecast
 #: model:planning.role,name:project_forecast.planning_role_tester
 msgid "Tester"
-msgstr ""
+msgstr "Tester"
 
 #. module: project_forecast
 #: model:ir.model.fields,field_description:project_forecast.field_project_project__total_forecast_time
 msgid "Total Forecast Time"
-msgstr ""
+msgstr "Prognoosi aeg kokku"
 
 #. module: project_forecast
 #: model:ir.model.fields,help:project_forecast.field_project_project__total_forecast_time
 msgid "Total number of forecast hours in the project rounded to the unit."
-msgstr ""
+msgstr "Projekti prognoositud tundide arv ümardatuna."

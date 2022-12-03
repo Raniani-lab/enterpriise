@@ -524,11 +524,6 @@ msgid "Asset unpaused. %s"
 msgstr "Actif réactivé. %s"
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Asset(s)"
-msgstr "Actif(s)"
-
-#. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
 msgid "Asset/Revenue Recognition"
 msgstr "Comptabilisation des actifs/revenus"
@@ -540,6 +535,7 @@ msgstr "Comptabilisation des actifs/revenus"
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_ids
 #: model:ir.ui.menu,name:account_asset.menu_action_account_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_purchase_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Assets"
 msgstr "Immobilisations"
 
@@ -817,6 +813,16 @@ msgid "Declining then Straight Line"
 msgstr "Dégressif puis linéaire."
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
+msgid "Def. Expenses"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
+msgid "Def. Revenues"
+msgstr ""
+
+#. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__asset_type__expense
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__expense
@@ -862,11 +868,6 @@ msgstr "Options de dépenses reportées"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Deferred Expense name"
 msgstr "Nom de la charge constaté d'avance"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Deferred Expense(s)"
-msgstr "Dépense(s) reportée(s)"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_expense_form
@@ -925,11 +926,6 @@ msgstr "Options des produits à reporter."
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Deferred Revenue name"
 msgstr "Nom des revenus différés"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Deferred Revenue(s)"
-msgstr "Produit(s) constaté(s) d'avance"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_revenue_form
@@ -1081,7 +1077,9 @@ msgid "Disposal Moves"
 msgstr "Écritures d'élimination"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Dispose"
 msgstr "Céder"
 
@@ -1500,11 +1498,6 @@ msgid "New salvage amount for the asset"
 msgstr "Nouveau montant de sauvetage pour l'actif"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_calendar_event_id
-msgid "Next Activity Calendar Event"
-msgstr "Activité suivante de l'événement du calendrier"
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr "Date limite de l'Activité à Venir"
@@ -1646,7 +1639,9 @@ msgid "Parent"
 msgstr "Parent"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Pause"
 msgstr "Mettre en attente"
 
@@ -1676,6 +1671,12 @@ msgstr "Date de prorata"
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__purchase
 msgid "Purchase: Asset"
 msgstr "Achat : Immobilisation"
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid "Re-evaluate"
+msgstr ""
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1721,7 +1722,9 @@ msgid "Responsible User"
 msgstr "Utilisateur Responsable"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Resume"
 msgstr "Reprendre"
 
@@ -1818,7 +1821,9 @@ msgid "Select Invoice Line"
 msgstr "Sélectionner une ligne de facture"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Sell"
 msgstr "Vendez"
 
@@ -2079,6 +2084,14 @@ msgid ""
 msgstr ""
 "Vous ne pouvez pas créer un actif à partir de lignes contenant un crédit et "
 "un débit sur le compte ou avec un montant nul"
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid ""
+"You cannot delete an asset linked to posted entries.\n"
+"You should either confirm the asset, then, sell or dispose of it, or cancel the linked journal entries."
+msgstr ""
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0

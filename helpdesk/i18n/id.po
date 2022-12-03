@@ -3330,7 +3330,7 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_form
 msgid "Target"
-msgstr ""
+msgstr "Target"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_res_users__helpdesk_target_rating
@@ -3907,7 +3907,7 @@ msgstr ""
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__privacy_visibility
 msgid "Visibility"
-msgstr ""
+msgstr "Visibilitas"
 
 #. module: helpdesk
 #. openerp-web
@@ -4037,12 +4037,12 @@ msgstr ""
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "eLearning"
-msgstr ""
+msgstr "eLearning"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_form
 msgid "email"
-msgstr ""
+msgstr "email"
 
 #. module: helpdesk
 #: model_terms:digest.tip,tip_description:helpdesk.digest_tip_helpdesk_0

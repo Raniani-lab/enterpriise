@@ -6,9 +6,8 @@
 # eriiikgt, 2022
 # Eugeni Chafer <eugeni@chafer.cat>, 2022
 # Marc Tormo i Bochaca <mtbochaca@gmail.com>, 2022
-# Harcogourmet, 2022
 # Susanna Pujol, 2022
-# jabelchi, 2022
+# Josep Anton Belchi, 2022
 # AncesLatino2004, 2022
 # RGB Consulting <odoo@rgbconsulting.com>, 2022
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
@@ -507,11 +506,6 @@ msgid "Asset unpaused. %s"
 msgstr ""
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Asset(s)"
-msgstr "actiu(s)"
-
-#. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
 msgid "Asset/Revenue Recognition"
 msgstr "Reconeixement d'actius/ ingressos"
@@ -523,6 +517,7 @@ msgstr "Reconeixement d'actius/ ingressos"
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_ids
 #: model:ir.ui.menu,name:account_asset.menu_action_account_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_purchase_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Assets"
 msgstr "Actius"
 
@@ -796,6 +791,16 @@ msgid "Declining then Straight Line"
 msgstr "Descens després Línia recta"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
+msgid "Def. Expenses"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
+msgid "Def. Revenues"
+msgstr ""
+
+#. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__asset_type__expense
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__expense
@@ -841,11 +846,6 @@ msgstr "Opcions de despeses diferides"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Deferred Expense name"
 msgstr "Nom de la despesa ajornada"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Deferred Expense(s)"
-msgstr "Despesa ajornada(s)"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_expense_form
@@ -904,11 +904,6 @@ msgstr "Opcions d'ingressos diferits"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Deferred Revenue name"
 msgstr "Nom d'ingressos diferits"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Deferred Revenue(s)"
-msgstr "Ingressos ajornat(s)"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_revenue_form
@@ -1060,7 +1055,9 @@ msgid "Disposal Moves"
 msgstr "Moviments d'assentaments"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Dispose"
 msgstr "Disposar"
 
@@ -1478,11 +1475,6 @@ msgid "New salvage amount for the asset"
 msgstr "Nou import salvage per a l'actiu"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_calendar_event_id
-msgid "Next Activity Calendar Event"
-msgstr "Proper esdeveniment del calendari d'activitats"
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr "Data límit de la següent activitat"
@@ -1624,7 +1616,9 @@ msgid "Parent"
 msgstr "Pare"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Pause"
 msgstr "Atura"
 
@@ -1654,6 +1648,12 @@ msgstr "Data Prorata"
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__purchase
 msgid "Purchase: Asset"
 msgstr "Compra: Actiu"
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid "Re-evaluate"
+msgstr ""
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1699,7 +1699,9 @@ msgid "Responsible User"
 msgstr "Usuari responsable"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Resume"
 msgstr "Continua"
 
@@ -1796,7 +1798,9 @@ msgid "Select Invoice Line"
 msgstr "Seleccioneu Línia de factura"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Sell"
 msgstr "Vendre"
 
@@ -2044,6 +2048,14 @@ msgid ""
 msgstr ""
 "No podeu crear un actiu a partir de línies que continguin crèdit i dèbit al "
 "compte o amb un import nul"
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid ""
+"You cannot delete an asset linked to posted entries.\n"
+"You should either confirm the asset, then, sell or dispose of it, or cancel the linked journal entries."
+msgstr ""
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0

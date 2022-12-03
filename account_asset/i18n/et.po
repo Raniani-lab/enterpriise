@@ -15,7 +15,6 @@
 # Egon Raamat <egon@avalah.ee>, 2022
 # Rivo Zängov <eraser@eraser.ee>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
-# Leaanika Randmets, 2022
 # Jana Jaakson, 2022
 # 
 msgid ""
@@ -503,11 +502,6 @@ msgid "Asset unpaused. %s"
 msgstr ""
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Asset(s)"
-msgstr "Vara(d)"
-
-#. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
 msgid "Asset/Revenue Recognition"
 msgstr "Vara/tulu tuvastamine"
@@ -519,6 +513,7 @@ msgstr "Vara/tulu tuvastamine"
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_ids
 #: model:ir.ui.menu,name:account_asset.menu_action_account_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_purchase_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Assets"
 msgstr "Varad"
 
@@ -792,6 +787,16 @@ msgid "Declining then Straight Line"
 msgstr "Kahanev, seejärel lineaarne"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
+msgid "Def. Expenses"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
+msgid "Def. Revenues"
+msgstr ""
+
+#. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__asset_type__expense
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__expense
@@ -837,11 +842,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Deferred Expense name"
 msgstr "Viitkulu nimi"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Deferred Expense(s)"
-msgstr "Viitkulu(d)"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_expense_form
@@ -900,11 +900,6 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Deferred Revenue name"
 msgstr "Viittulu nimetus"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Deferred Revenue(s)"
-msgstr "Viittulu(d)"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_revenue_form
@@ -1056,7 +1051,9 @@ msgid "Disposal Moves"
 msgstr "Mahakandmise liikumised"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Dispose"
 msgstr "Mahakandmine"
 
@@ -1465,11 +1462,6 @@ msgid "New salvage amount for the asset"
 msgstr ""
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_calendar_event_id
-msgid "Next Activity Calendar Event"
-msgstr "Järgmine tegevus kalendris"
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr "Järgmise tegevuse kuupäev"
@@ -1611,7 +1603,9 @@ msgid "Parent"
 msgstr "Ülem"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Pause"
 msgstr "Pane pausile"
 
@@ -1641,6 +1635,12 @@ msgstr "Prorata kuupäev"
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__purchase
 msgid "Purchase: Asset"
 msgstr "Ost: Vara"
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid "Re-evaluate"
+msgstr ""
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1686,7 +1686,9 @@ msgid "Responsible User"
 msgstr "Vastutav kasutaja"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Resume"
 msgstr "Jätka"
 
@@ -1781,7 +1783,9 @@ msgid "Select Invoice Line"
 msgstr ""
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Sell"
 msgstr "Müü"
 
@@ -2020,6 +2024,14 @@ msgstr ""
 msgid ""
 "You cannot create an asset from lines containing credit and debit on the "
 "account or with a null amount"
+msgstr ""
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid ""
+"You cannot delete an asset linked to posted entries.\n"
+"You should either confirm the asset, then, sell or dispose of it, or cancel the linked journal entries."
 msgstr ""
 
 #. module: account_asset

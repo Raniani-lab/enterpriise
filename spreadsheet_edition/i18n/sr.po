@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Uros Kalajdzic <ukalajdzic@gmail.com>, 2022
-# Slobodan Simić <slsimic@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -24,7 +24,7 @@ msgstr ""
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__active
 msgid "Active"
-msgstr "Активно"
+msgstr "Aktivno"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -67,7 +67,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_list_side_panel.xml:0
 #, python-format
 msgid "Back"
-msgstr "Назад"
+msgstr "Nazad"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -91,7 +91,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Cancel"
-msgstr "Откажи"
+msgstr "Otkaži"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -122,7 +122,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/actions/spreadsheet.xml:0
 #, python-format
 msgid "Confirm"
-msgstr "Потврда"
+msgstr "Potvrdi"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__create_uid
@@ -153,7 +153,7 @@ msgstr "Upravljačke Table"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Date"
-msgstr "Датум"
+msgstr "Datum"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -182,7 +182,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_list_side_panel.xml:0
 #, python-format
 msgid "Delete"
-msgstr ""
+msgstr "Obriši"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -194,7 +194,7 @@ msgstr ""
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Naziv za prikaz"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -216,7 +216,7 @@ msgstr "Domen"
 #: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "Preuzmi"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -230,7 +230,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Edit"
-msgstr ""
+msgstr "Uredi"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -318,17 +318,17 @@ msgstr ""
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Poslednja izmena dana"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Poslednje izmenio/la"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Poslednje ažuriranje dana"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -416,7 +416,7 @@ msgstr "Model"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/filter_editor_side_panel.js:0
 #, python-format
 msgid "Month"
-msgstr "месец"
+msgstr "Mesec"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -451,7 +451,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.js:0
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "Sledeće"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -498,7 +498,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.js:0
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Prethodno"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -581,7 +581,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Remove"
-msgstr "Уклони"
+msgstr "Ukloni"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -602,7 +602,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/editable_name/editable_name.xml:0
 #, python-format
 msgid "Save"
-msgstr "Сачувај"
+msgstr "Sačuvaj"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -764,7 +764,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/filter_editor_side_panel.js:0
 #, python-format
 msgid "Year"
-msgstr "година"
+msgstr "Godina"
 
 #. module: spreadsheet_edition
 #. openerp-web

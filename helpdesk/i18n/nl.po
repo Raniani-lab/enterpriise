@@ -2856,7 +2856,7 @@ msgstr "Beoordeling laatste waarde"
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_percentage_satisfaction
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_percentage_satisfaction
 msgid "Rating Satisfaction"
-msgstr "Beoordelingstevredenheid"
+msgstr "Beoordeling"
 
 #. module: helpdesk
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_last_text

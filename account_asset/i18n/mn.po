@@ -34,7 +34,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid " (%s of %s)"
-msgstr ""
+msgstr " (%s of %s)"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -64,35 +64,37 @@ msgid ""
 "%s Future entries will be recomputed to depreciate the asset following the "
 "changes."
 msgstr ""
+"%s Хөрөнгийн ирээдүйн элэгдлийн бичилтүүд нь дараах өөрчлөлтийн дагуу дахин "
+"тооцоологдоно."
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "%s created from invoice: %s"
-msgstr ""
+msgstr "%s үүсгэгдсэн нэхэмжлэл нь: %s"
 
 #. module: account_asset
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "%s m"
-msgstr ""
+msgstr "%s с"
 
 #. module: account_asset
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "%s y"
-msgstr ""
+msgstr "%s ж"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "%s: Depreciation"
-msgstr ""
+msgstr "%s: Элэгдэл"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "(incl."
-msgstr ""
+msgstr "(багтсан."
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -110,7 +112,7 @@ msgstr "Энэхүү гүйлгээгээр урьдчилж тооцсон ор
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "A depreciation entry will be posted on and including the date %s."
-msgstr ""
+msgstr "Элэгдлийн бичилт нь %s огноонд багтаж батлагдана."
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:0
@@ -120,6 +122,8 @@ msgid ""
 "Future entries will be recomputed to depreciate the asset following the "
 "changes."
 msgstr ""
+"Элэгдлийн бичилт нь %s огноонд багтаж батлагдана. <br/> %s Ирээдүйд үүсэх "
+"элэгдлийн бичилтүүд нь дараах өөрчлөлтийн улмаас дахин тооцоологдоно."
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:0
@@ -128,6 +132,8 @@ msgid ""
 "A depreciation entry will be posted on and including the date %s.<br/> A "
 "disposal entry will be posted on the %s account <b>%s</b>."
 msgstr ""
+"Элэгдлийн бичилт нь %s огноогоор батлагдана.<br/> Данснаас хасах бичилт нь "
+"%s дансанд хөтлөгдөнө <b>%s</b>."
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:0
@@ -137,30 +143,35 @@ msgid ""
 "second entry will neutralize the original income and post the  outcome of "
 "this sale on account <b>%s</b>."
 msgstr ""
+"Элэгдлийн бичилт нь %s огноонд батлагдана.<br/> Хоёрдох бичилт нь орлогын "
+"жинхэнэ бичилтийг залруулж борлуулалтын зарлага хэлбэрээр бүртгэгдэнэ "
+"<b>%s</b>."
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "A document linked to %s has been deleted: %s"
-msgstr ""
+msgstr "%s-тэй холбоотой баримт устгагдсан байна: %s"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "A document linked to this move has been deleted: %s"
-msgstr ""
+msgstr "Энэ ажил гүйлгээнд холбогдсон баримт устгагдсан байна: %s"
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "A gross increase has been created: %s"
-msgstr ""
+msgstr "Өртөг нэмэгдүүлэлт хийгдлээ: %s"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "A non deductible tax value of %s was added to %s's initial value of %s"
 msgstr ""
+"%sбүхий хасагдахгүй татварын дүн нь %s-ын эхний үлдэгдэл %s-д нэмж "
+"тооцогдсон"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_account
@@ -299,7 +310,7 @@ msgstr "Ажилбарын төрлийн зураг"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 msgid "Add an internal note"
-msgstr ""
+msgstr "Дотоод тэмдэглэл нэмэх"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -339,6 +350,7 @@ msgstr "Энэхүү гүйлгээгээр үндсэн хөрөнгийн бү
 #, python-format
 msgid "An asset will be created for the value increase of the asset. <br/>"
 msgstr ""
+"Хөрөнгийн өртөгийг нэмэгдүүлвэл шинээр нэмэлт хөрөнгө бүртгэгдэнэ. <br/>"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution
@@ -348,7 +360,7 @@ msgstr "Шинжилгээ"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution_stored_char
 msgid "Analytic Distribution Stored Char"
-msgstr ""
+msgstr "Шинжилгээний хуваарилалт хадгалах Char"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -382,7 +394,7 @@ msgstr "Хөрөнгийн данс"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset Cancelled"
-msgstr ""
+msgstr "Хөрөнгө цуцлагдсан"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -393,11 +405,14 @@ msgid ""
 "%(dep_delta)s. This corresponds to %(move_count)s cancelled "
 "%(word)s:<br>%(entries)s"
 msgstr ""
+"Хөрөнгө цуцлагдсан <br> %(exp_acc)s данс нь  %(exp_delta)s дүнгээр "
+"кредитлэгдэж, %(dep_acc)s данс нь %(dep_delta)s дүнгээр дебетлэгдэнэ. "
+"Ингэснээр  %(move_count)s гүйлгээ цуцлагдсан %(word)s:<br>%(entries)s"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__account_asset_counterpart_id
 msgid "Asset Counterpart Account"
-msgstr ""
+msgstr "Хөрөнгийн харьсан данс"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_id_display_name
@@ -409,7 +424,7 @@ msgstr "Хөрөнгийн дэлгэрэнгүй нэр"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_lifetime_days
 msgid "Asset Lifetime Days"
-msgstr ""
+msgstr "Хөрөнгийн ашиглагдах хоногын тоо"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__asset_model
@@ -447,12 +462,12 @@ msgstr "Хөрөнгийн сонголтууд"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_paused_days
 msgid "Asset Paused Days"
-msgstr ""
+msgstr "Хөрөнгө царцаасан хоногын тоо"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset_report_handler
 msgid "Asset Report Custom Handler"
-msgstr ""
+msgstr "Хөрөнгийн тайлан боловсруулагч"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__asset_type
@@ -485,30 +500,25 @@ msgstr "Хөрөнгө бүртгэгдсэн"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset disposed. %s"
-msgstr ""
+msgstr "Хөрөнгө данснаас хасагдсан. %s"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset paused. %s"
-msgstr ""
+msgstr "Хөрөнгө царцсан. %s"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset sold. %s"
-msgstr ""
+msgstr "Хөрөнгө зарагдсан. %s"
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Asset unpaused. %s"
-msgstr ""
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Asset(s)"
-msgstr "Хөрөнгүүд"
+msgstr "Хөрөнгийг буцааж нээсэн. %s"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
@@ -522,6 +532,7 @@ msgstr "Хөрөнгө/Урьдчилсан орлого"
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_ids
 #: model:ir.ui.menu,name:account_asset.menu_action_account_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_purchase_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Assets"
 msgstr "Хөрөнгө"
 
@@ -568,7 +579,7 @@ msgstr "Автоматжуулалт"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__daily_computation
 msgid "Based on days per period"
-msgstr ""
+msgstr "Мөчлөг бүрийн хоногын тоонд суурилах"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -593,7 +604,7 @@ msgstr "Цуцлах"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Cancel Asset"
-msgstr ""
+msgstr "Хөрөнгийг цуцлах"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__cancelled
@@ -613,6 +624,10 @@ msgid ""
 "  * Declining: Calculated on basis of: Residual Value * Declining Factor\n"
 "  * Declining then Straight Line: Like Declining but with a minimum depreciation value equal to the straight line value."
 msgstr ""
+"Элэгдлийн бичилтүүдийг тооцоолж үүсгэх аргачлалыг сонгоно.\n"
+"  * Шулуун шугам: Тооцооллын суурь: Анхны өртөг / Хугацаа\n"
+"  * Давхар бууруулах: Тооцооллын суурь: Үлдэгдэл өртөг * Давхар бууруулах коэффицент\n"
+"  * Давхар бууруулаад шулуун шугам: Давхар бууруулах аргаар элэгдүүлж эхлэх бөгөөд нэг удаагийн элэгдлийн хэмжээ нь шулуун шугмын аргаар тооцсон дүнтэй тэнцсэн үеэс хойш шулуун шугамын аргаар үргэлжлүүлэх элэгдүүлнэ."
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__close
@@ -659,7 +674,7 @@ msgstr "Батлах"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__constant_periods
 msgid "Constant Periods"
-msgstr ""
+msgstr "Мөчлөг бүр ижил"
 
 #. module: account_asset
 #: model:ir.actions.server,name:account_asset.action_account_aml_to_asset
@@ -681,32 +696,32 @@ msgstr "Нооргоор үүсгэх"
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_asset_form
 msgid "Create new asset"
-msgstr ""
+msgstr "Шинэ хөрөнгө үүсгэх"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_asset_model_form
 msgid "Create new asset model"
-msgstr ""
+msgstr "Шинэ хөрөнгийн загвар үүсгэх"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_expense_form
 msgid "Create new deferred expense"
-msgstr ""
+msgstr "Шинэ урьдчилж тооцсон зардал бүртгэх"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_expense_model_form
 msgid "Create new deferred expense model"
-msgstr ""
+msgstr "Шинэ урьдчилж тооцсон зардлын загвар бүртгэх"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_revenue_form
 msgid "Create new deferred revenue"
-msgstr ""
+msgstr "Шинэ урьдчилж тооцсон орлого бүртгэх"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_revenue_model_form
 msgid "Create new deferred revenue model"
-msgstr ""
+msgstr "Шинэ урьдчилж тооцсон орлогын загвар бүртгэх"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__create_uid
@@ -769,7 +784,7 @@ msgstr "Огноо"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_depreciation_beginning_date
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_depreciation_beginning_date
 msgid "Date of the beginning of the depreciation"
-msgstr ""
+msgstr "Элэгдэж эхлэх огноо"
 
 #. module: account_asset
 #: code:addons/account_asset/report/account_assets_report.py:0
@@ -793,6 +808,16 @@ msgstr "Бууруулах коэффицент"
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method__degressive_then_linear
 msgid "Declining then Straight Line"
 msgstr "Шулуун шугмаар бууруулах"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
+msgid "Def. Expenses"
+msgstr "Хойшлуулсан зардал"
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
+msgid "Def. Revenues"
+msgstr "Хойшлуулсан орлого"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -840,11 +865,6 @@ msgstr "Урьдчилж тооцсон зардлын сонголтууд"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Deferred Expense name"
 msgstr "Хойшлуулсан зардлын нэр"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Deferred Expense(s)"
-msgstr "Хойшлуулсан зардал(ууд)"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_expense_form
@@ -903,11 +923,6 @@ msgstr "Урьдчилж тооцсон орлогын сонголтууд"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Deferred Revenue name"
 msgstr "Хойшлуулсан орлогын нэр"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Deferred Revenue(s)"
-msgstr "Хойшлуулсан орлого(ууд)"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_revenue_form
@@ -1004,13 +1019,13 @@ msgstr "Элэгдэх арга"
 #: model:ir.actions.client,name:account_asset.action_account_report_assets
 #: model:ir.ui.menu,name:account_asset.menu_action_account_report_assets
 msgid "Depreciation Schedule"
-msgstr "Элэгдлийн төлөвлөгөө"
+msgstr "Үндсэн хөрөнгийн тайлан"
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Depreciation board modified %s"
-msgstr ""
+msgstr "%s элэгдлийн самбар өөрчлөгдсөн"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
@@ -1059,7 +1074,9 @@ msgid "Disposal Moves"
 msgstr "Устгалын гүйлгээ"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Dispose"
 msgstr "Актлах"
 
@@ -1086,7 +1103,7 @@ msgstr "Үргэлжлэх хугацаа"
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_duration_rate
 msgid "Duration / Rate"
-msgstr ""
+msgstr "Хугацаа / Харьцаа"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
@@ -1198,7 +1215,7 @@ msgstr "Өртөг нэмэгдүүлэлт"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__account_asset_id
 msgid "Gross Increase Account"
-msgstr ""
+msgstr "Өртөг нэмэгдүүлэх данс"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__gross_increase_value
@@ -1208,7 +1225,7 @@ msgstr "Өртөг нэмэгдүүлэлтийн дүн"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.assets_search_template_extra_options
 msgid "Group By Account"
-msgstr ""
+msgstr "Дансаар бүлэглэх"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
@@ -1221,7 +1238,7 @@ msgstr "Бүлэглэх..."
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Мессежтэй"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__id
@@ -1273,7 +1290,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__informational_text
 msgid "Informational Text"
-msgstr ""
+msgstr "Мэдээллийн текст"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__invoice_line_ids
@@ -1365,7 +1382,7 @@ msgstr "Шугаман"
 #: model:ir.model.fields,field_description:account_asset.field_account_move__linked_asset_type
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__linked_asset_type
 msgid "Linked Asset Type"
-msgstr ""
+msgstr "Холбоотой хөрөнгийн төрөл"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__gain_or_loss__loss
@@ -1477,11 +1494,6 @@ msgid "New salvage amount for the asset"
 msgstr "Хөрөнгийн шинэ элэгдэхгүй үлдэх дүн"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_calendar_event_id
-msgid "Next Activity Calendar Event"
-msgstr ""
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr "Дараагийн ажилбарын эцсийн огноо"
@@ -1515,13 +1527,13 @@ msgstr "Үгүй"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__none
 msgid "No Prorata"
-msgstr ""
+msgstr "Тайлант жилийн эхнээс"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__non_deductible_tax_value
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__non_deductible_tax_value
 msgid "Non Deductible Tax Value"
-msgstr ""
+msgstr "Хасагдахгүй татварын дүн"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__salvage_value
@@ -1578,7 +1590,7 @@ msgstr "Хөрөнгийн өртөгийг нэмэгдүүлэхээр бүр�
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_number_days
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_number_days
 msgid "Number of days"
-msgstr ""
+msgstr "Хоногийн тоо"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__total_depreciation_entries_count
@@ -1623,14 +1635,16 @@ msgid "Parent"
 msgstr "Эцэг"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Pause"
 msgstr "Түр зогсоох"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__paused_prorata_date
 msgid "Paused Prorata Date"
-msgstr ""
+msgstr "Царцаасан огноо"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
@@ -1655,15 +1669,21 @@ msgid "Purchase: Asset"
 msgstr "Худалдан авалт: Хөрөнгө"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid "Re-evaluate"
+msgstr "Дахин үнэлгээ"
+
+#. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Recognition Values"
-msgstr ""
+msgstr "Хойшлуулсан тооцооны дүн"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__asset_ids
 msgid "Related Assets"
-msgstr ""
+msgstr "Холбоотой хөрөнгүүд"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1673,7 +1693,7 @@ msgstr "Холбогдох зардлууд"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__related_purchase_value
 msgid "Related Purchase Value"
-msgstr ""
+msgstr "Холбогдсон худалдан авалтын дүн"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
@@ -1698,7 +1718,9 @@ msgid "Responsible User"
 msgstr "Эд хариуцагч"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Resume"
 msgstr "Үргэлжлүүлэх"
 
@@ -1754,8 +1776,9 @@ msgid ""
 "Reverse the depreciation entries posted in the future in order to modify the"
 " depreciation"
 msgstr ""
-"Элэгдсэн дүнг өөрчлөхийн тулд ирээдүйн огноогоор элэгдлийн буцаалт бүхий "
-"гүйлгээ бүртгэж батална"
+"Элэгдлийн өөрчлөлт хийхийн тулд та эхлээд өнөөдрөс хойшхи огноогоор "
+"бүртгэгдсэн байгаа элэгдлийн бичилтүүдийг урвуу бичилт үүсгэж цэвэрлэх "
+"шаардлагатай"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__open
@@ -1781,7 +1804,7 @@ msgstr "Борлуулалт: Хүлээн зөвшөөрөгдсөн"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Save as Model"
-msgstr ""
+msgstr "Загвар болгож хадгалах"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -1795,7 +1818,9 @@ msgid "Select Invoice Line"
 msgstr "Нэхэмжлэлийн мөр сонгох"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Sell"
 msgstr "Зарах"
 
@@ -1872,6 +1897,8 @@ msgid ""
 "The amount you have entered (%s) does not match the Related Purchase's value"
 " (%s). Please make sure this is what you want."
 msgstr ""
+"Таны оруулсан дүн (%s) холбоотой худалдан авалтын дүнтэй таарахгүй байна "
+"(%s). Ийм зөрүүтэйгээр бүртгэлээ хийхийг зөвшөөрч байна уу."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__asset_id
@@ -1931,7 +1958,7 @@ msgstr "Нийт дүн"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__total_depreciable_value
 msgid "Total Depreciable Value"
-msgstr ""
+msgstr "Нийт элэгдвэл зохих дүн"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
@@ -1964,7 +1991,7 @@ msgstr "Бичлэг дээрх асуудал бүхий ажилбарын т�
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Value at Import"
-msgstr ""
+msgstr "Элэгдлийн эхний үлдэгдэл"
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:0
@@ -1983,7 +2010,7 @@ msgstr "Өртөг нэмэгдүүлэлт: %(asset)s"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Warning for the Original Value of %s"
-msgstr ""
+msgstr "%s-ын анхны өртөгийн анхааруулга"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__website_message_ids
@@ -2004,6 +2031,11 @@ msgid ""
 "You can manually close an asset when the depreciation is over.\n"
 "By cancelling an asset, all depreciation entries will be reversed"
 msgstr ""
+"Хөрөнгө бүртгэгдэх үед, төлөв нь 'Ноорог' байна.\n"
+"Улмаар хөрөнгийг батлавал, 'Явагдаж буй' төлөвт шилжих ба элэгдлийн бичилтүүд батлагдаж эхэлнэ.\n"
+"Хэрэв та хөрөнгийн ашиглалтыг түр зогсоохыг хүсвэл 'Царцаасан' төлөвт гараар шилжүүлэх боломжтой ба энэ үед хөрөнгийн элэгдэл нэмж үүсэхгүй.\n"
+"Хэрэв хөрөнгө нь бүрэн элэгдэж дууссан бол та тухайн хөрөнгийг хаах үйлдлийг гараар гүйцэтгэх боломжтой.\n"
+"Хэрэв хөрөнгийн цуцлавал элэгдэлтэй холбоотой бүх бичилтүүдэд харгалзан урвуу бичилт үүсч бүртгэгдэнэ."
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method_period__12
@@ -2018,6 +2050,8 @@ msgid ""
 "You can't post an entry related to a draft asset. Please post the asset "
 "before."
 msgstr ""
+"Та ноорог хөрөнгөтэй холбоотой байгаа ажил гүйлгээг батлах боломжтой. Эхлээд"
+" хөрөнгийг нь батлана уу."
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -2050,6 +2084,17 @@ msgstr ""
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
+msgid ""
+"You cannot delete an asset linked to posted entries.\n"
+"You should either confirm the asset, then, sell or dispose of it, or cancel the linked journal entries."
+msgstr ""
+"Та ямар нэг батлагдсан хөрөнгөтэй холбогдсон ажил гүйлгээг устгах боломжгүй."
+" Үүний оронд хөрөнгийг нь зарах эсвэл актлах үйлдэл хийх эсвэл холбогдсон "
+"ажил гүйлгээг цуцлах боломжтой."
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
 msgid "You cannot delete a document that is in %s state."
 msgstr "Та %s төлөвтэй баримтыг устгах боломжгүй."
 
@@ -2058,34 +2103,37 @@ msgstr "Та %s төлөвтэй баримтыг устгах боломжгү�
 #, python-format
 msgid "You cannot reset to draft an entry related to a posted asset"
 msgstr ""
+"Та батлагдсан хөрөнгөтэй холбоотой ажил гүйлгээг ноорог болгох боломжгүй"
 
 #. module: account_asset
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "You cannot resume at a date equal to or before the pause date"
 msgstr ""
+"Та хөрөнгийг царцаасан огнооноос өмнөх эсвэл ижил огноонд буцаан нээх "
+"боломжгүй"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_balance
 msgid "book_value"
-msgstr ""
+msgstr "үлдэгдэл дүн"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_date_from
 #: model:account.report.column,name:account_asset.assets_report_depre_date_from
 msgid "date from"
-msgstr ""
+msgstr "эхлэх огноо"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_assets_date_to
 #: model:account.report.column,name:account_asset.assets_report_depre_date_to
 msgid "date to"
-msgstr ""
+msgstr "дуусах огноо"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "depreciable)"
-msgstr ""
+msgstr "элэгдэх боломжит)"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
@@ -2106,10 +2154,10 @@ msgstr "ж. Laptop iBook"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "entries"
-msgstr ""
+msgstr "бичилтүүд"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "entry"
-msgstr ""
+msgstr "гүйлгээ"

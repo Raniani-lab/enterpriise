@@ -4,9 +4,9 @@
 # 
 # Translators:
 # Bojan Borovnjak <bojan.borovnjak@modoolar.com>, 2022
-# Slobodan Simić <slsimic@gmail.com>, 2022
 # Uros Kalajdzic <ukalajdzic@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -100,7 +100,7 @@ msgstr ""
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form
 msgid "Add"
-msgstr "Додај"
+msgstr "Dodaj"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
@@ -117,7 +117,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__analytic_account_id
 msgid "Analytic Account"
-msgstr "Рачун аналитике"
+msgstr "Račun analitike"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
@@ -153,7 +153,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_wizard_view_form
 msgid "Cancel"
-msgstr "Откажи"
+msgstr "Otkaži"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_order__rental_status__cancel
@@ -194,12 +194,12 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__color
 msgid "Color"
-msgstr ""
+msgstr "Boja"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_res_company
 msgid "Companies"
-msgstr "Предузећа"
+msgstr "Preduzeća"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__company_id
@@ -213,12 +213,12 @@ msgstr "Kompanija"
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Podešavanje konfiguracije"
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_rental_config
 msgid "Configuration"
-msgstr "Подешавање"
+msgstr "Podešavanje"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_rental_wizard
@@ -249,7 +249,7 @@ msgstr "Potvrđeno"
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_report_search_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Confirmed Orders"
-msgstr ""
+msgstr "Potvrđene porudžbine"
 
 #. module: sale_renting
 #: model:ir.actions.act_window,name:sale_renting.action_create_rental_order
@@ -316,7 +316,7 @@ msgstr "Kupac"
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__country_id
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Customer Country"
-msgstr ""
+msgstr "Zemlja klijenta"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__commercial_partner_id
@@ -358,7 +358,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_report_search_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Date"
-msgstr "Датум"
+msgstr "Datum"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form
@@ -368,7 +368,7 @@ msgstr "Datumi"
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_wizard__duration_unit__day
 msgid "Days"
-msgstr "дана"
+msgstr "dana"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_res_config_settings__extra_product
@@ -379,7 +379,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__description
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
 msgid "Description"
-msgstr "Опис"
+msgstr "Opis"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_res_config_settings__module_sale_renting_sign
@@ -393,7 +393,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__display_name
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Naziv za prikaz"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_report__state__draft
@@ -404,7 +404,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__duration
 msgid "Duration"
-msgstr "Трајање"
+msgstr "Trajanje"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form
@@ -431,7 +431,7 @@ msgstr ""
 #: code:addons/sale_renting/models/sale_order_line.py:0
 #, python-format
 msgid "Expected"
-msgstr ""
+msgstr "Očekivano"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
@@ -557,21 +557,21 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report____last_update
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Poslednja izmena dana"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__write_uid
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard_line__write_uid
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Poslednje izmenio/la"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__write_date
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard_line__write_date
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Poslednje ažuriranje dana"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_kanban
@@ -607,7 +607,7 @@ msgstr ""
 #: model:product.product,name:sale_renting.rental_product_2
 #: model:product.template,name:sale_renting.rental_product_2_product_template
 msgid "Meeting Room"
-msgstr ""
+msgstr "Soba za sastanke"
 
 #. module: sale_renting
 #: model:ir.model.constraint,message:sale_renting.constraint_res_company_min_extra_hour
@@ -639,7 +639,7 @@ msgstr ""
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.action_rental_report
 msgid "No data yet!"
-msgstr ""
+msgstr "Još uvek nema podataka!"
 
 #. module: sale_renting
 #: code:addons/sale_renting/wizard/rental_configurator.py:0
@@ -705,7 +705,7 @@ msgstr ""
 #: model:ir.ui.menu,name:sale_renting.rental_order_menu
 #: model:ir.ui.menu,name:sale_renting.rental_orders_all
 msgid "Orders"
-msgstr ""
+msgstr "Porudžbine"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
@@ -837,7 +837,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__product_tmpl_id
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__product_tmpl_id
 msgid "Product Template"
-msgstr "Шаблон производа"
+msgstr "Šablon proizvoda"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_product_product
@@ -884,7 +884,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__quantity
 msgid "Quantity"
-msgstr "Kolicina"
+msgstr "Količina"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_product_product__qty_in_rent
@@ -896,7 +896,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_order__rental_status__draft
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__rental_status__draft
 msgid "Quotation"
-msgstr "Najava"
+msgstr "Ponuda"
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_order__rental_status__sent
@@ -904,13 +904,13 @@ msgstr "Najava"
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__rental_status__sent
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__state__sent
 msgid "Quotation Sent"
-msgstr ""
+msgstr "Ponuda poslata"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_report_search_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Quotations"
-msgstr "Upiti"
+msgstr "Ponude"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_form_view
@@ -1075,12 +1075,12 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_report__state__sale
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_rental_schedule__state__sale
 msgid "Sales Order"
-msgstr "Наруџбеница"
+msgstr "Porudžbenica"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Линија наруџбенице"
+msgstr "Linija porudžbenice"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__team_id
@@ -1119,7 +1119,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.menu_rental_schedule
 msgid "Schedule"
-msgstr ""
+msgstr "Zakaži"
 
 #. module: sale_renting
 #: code:addons/sale_renting/models/product_product.py:0
@@ -1279,7 +1279,7 @@ msgstr "Jedinica"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__unit_price
 msgid "Unit Price"
-msgstr "Jedinična cijena"
+msgstr "Jedinična cena"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__uom_id
@@ -1294,7 +1294,7 @@ msgstr "Jedinica Mere"
 #: model:product.template,uom_name:sale_renting.rental_product_1_product_template
 #: model:product.template,uom_name:sale_renting.rental_product_2_product_template
 msgid "Units"
-msgstr ""
+msgstr "Kom"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_wizard_view_form
@@ -1337,7 +1337,7 @@ msgstr "Nedelje"
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__rental_wizard__duration_unit__year
 msgid "Years"
-msgstr ""
+msgstr "Godine"
 
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_product_template_action

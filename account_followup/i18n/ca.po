@@ -14,8 +14,9 @@
 # Martin Trigaux, 2022
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
 # Quim - eccit <quim@eccit.com>, 2022
-# jabelchi, 2022
+# Josep Anton Belchi, 2022
 # marcescu, 2022
+# Guspy12, 2022
 # 
 msgid ""
 msgstr ""
@@ -23,7 +24,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: marcescu, 2022\n"
+"Last-Translator: Guspy12, 2022\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -58,6 +59,11 @@ msgid ""
 "- Private: Private addresses are only visible by authorized users and contain sensitive data (employee home addresses, ...).\n"
 "- Other: Other address for the company (e.g. subsidiary, ...)"
 msgstr ""
+"- Contacte: utilitzeu-ho per organitzar les dades de contacte dels empleats d'una empresa determinada (per exemple, CEO, CFO, ...).\n"
+"- Adreça de factura: adreça preferida per a totes les factures. Seleccionat per defecte quan es factura una comanda que pertany a aquesta empresa.\n"
+"-Adreça de lliurament: Adreça preferida per a tots els lliuraments. Seleccionat per defecte quan entreu una comanda que pertany a aquesta empresa.\n"
+"-Privades: les adreces privades només són visibles pels usuaris autoritzats i contenen dades sensibles (adreces de casa dels empleats, ...).\n"
+"- Altres: una altra adreça de l'empresa (per exemple, filial, ...)"
 
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line1
@@ -615,7 +621,7 @@ msgstr "És Editor"
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__join_invoices
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__join_invoices
-msgid "Join Invoices"
+msgid "Attach Invoices"
 msgstr ""
 
 #. module: account_followup

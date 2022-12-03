@@ -13,6 +13,7 @@
 # Tomasz Leppich <t.leppich@gmail.com>, 2022
 # Piotr Szlązak <szlazakpiotr@gmail.com>, 2022
 # Piotr Strębski <strebski@gmail.com>, 2022
+# Łukasz Grzenkowicz <lukasz.grzenkowicz@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -20,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:42+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Piotr Strębski <strebski@gmail.com>, 2022\n"
+"Last-Translator: Łukasz Grzenkowicz <lukasz.grzenkowicz@gmail.com>, 2022\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -77,7 +78,7 @@ msgstr "historia zatrudnienia"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__cc_partner_ids
 msgid "Copy to"
-msgstr ""
+msgstr "Kopiuj do"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__create_uid
@@ -218,12 +219,12 @@ msgstr ""
 #. module: hr_contract_sign
 #: model:sign.template,redirect_url_text:hr_contract_sign.template_sign_termination
 msgid "Open Link"
-msgstr ""
+msgstr "Otwórz link"
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 msgid "Optional Message..."
-msgstr ""
+msgstr "Opcjonalna wiadomość"
 
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_plan_wizard
@@ -245,7 +246,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_history__sign_request_ids
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_employee__sign_request_ids
 msgid "Requested Signatures"
-msgstr ""
+msgstr "Prośby o podpis"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__responsible_id

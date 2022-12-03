@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # 	* social_instagram
 # 
+# Translators:
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -89,7 +93,7 @@ msgstr ""
 #. module: social_instagram
 #: model:ir.model,name:social_instagram.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Podešavanje konfiguracije"
 
 #. module: social_instagram
 #: code:addons/social_instagram/controllers/main.py:0
@@ -217,7 +221,7 @@ msgstr ""
 #: code:addons/social_instagram/static/src/xml/social_instagram_templates.xml:0
 #, python-format
 msgid "Likes"
-msgstr ""
+msgstr "Sviđanja"
 
 #. module: social_instagram
 #: model:ir.model.fields,field_description:social_instagram.field_social_media__media_type
@@ -265,7 +269,7 @@ msgstr ""
 #. module: social_instagram
 #: model:ir.model,name:social_instagram.model_social_post
 msgid "Social Post"
-msgstr ""
+msgstr "Objava na društvenoj mreži"
 
 #. module: social_instagram
 #: model:ir.model,name:social_instagram.model_social_post_template

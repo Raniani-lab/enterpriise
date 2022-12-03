@@ -6,6 +6,7 @@
 # Johannes Croe <jcr@odoo.com>, 2022
 # Friederike Fasterling-Nesselbosch, 2022
 # Martin Trigaux, 2022
+# Michael Hofer, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Michael Hofer, 2022\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -2344,7 +2345,7 @@ msgstr "Teilen"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__share_link_ids
 msgid "Share Links"
-msgstr "Links teilen"
+msgstr "Geteilte Links"
 
 #. module: documents
 #: code:addons/documents/controllers/main.py:0
@@ -2355,7 +2356,7 @@ msgstr "Link teilen"
 #. module: documents
 #: model:ir.actions.act_window,name:documents.share_action
 msgid "Share links"
-msgstr "Links teilen"
+msgstr "Geteilte Links"
 
 #. module: documents
 #: code:addons/documents/models/share.py:0

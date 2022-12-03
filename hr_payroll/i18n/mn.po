@@ -1669,7 +1669,7 @@ msgstr "Хагас өдөр"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__has_message
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Мессежтэй"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__has_negative_net_to_report

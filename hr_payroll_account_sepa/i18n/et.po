@@ -46,7 +46,7 @@ msgstr "Kinnita"
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_run_view_form
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_view_form
 msgid "Create Payment Report"
-msgstr ""
+msgstr "Loo maksearuanne"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip_run_sepa_wizard__create_uid
@@ -64,7 +64,7 @@ msgstr "Loomise kuupäev"
 #: model:ir.model.fields,help:hr_payroll_account_sepa.field_hr_payslip__sepa_export_date
 #: model:ir.model.fields,help:hr_payroll_account_sepa.field_hr_payslip_run__sepa_export_date
 msgid "Creation date of the payment file."
-msgstr ""
+msgstr "Maksefaili loomise kuupäev."
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip_run_sepa_wizard__display_name
@@ -81,12 +81,12 @@ msgstr "Töötaja"
 #: code:addons/hr_payroll_account_sepa/models/hr_payslip.py:0
 #, python-format
 msgid "Employees With Invalid Bank Accounts"
-msgstr ""
+msgstr "Vigase pangakonto numbriga töötajad"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,help:hr_payroll_account_sepa.field_hr_payslip__sepa_export
 msgid "Export file related to this payslip"
-msgstr ""
+msgstr "Selle palgalehega seotud eksportfail"
 
 #. module: hr_payroll_account_sepa
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_view_form
@@ -112,7 +112,7 @@ msgstr "Faili nimi"
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip_run_sepa_wizard__file_name
 msgid "File name"
-msgstr ""
+msgstr "Faili nimi"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip__sepa_export_date
@@ -144,6 +144,8 @@ msgid ""
 "Invalid bank account for the following employees:\n"
 "%s"
 msgstr ""
+"Järgmistel töötajatel on vigane pangakonto number:\n"
+"%s"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,field_description:hr_payroll_account_sepa.field_hr_payslip_run_sepa_wizard____last_update
@@ -166,7 +168,7 @@ msgstr "Viimati uuendatud"
 #. module: hr_payroll_account_sepa
 #: model:ir.model.fields,help:hr_payroll_account_sepa.field_hr_payslip__sepa_export_filename
 msgid "Name of the export file generated for this payslip"
-msgstr ""
+msgstr "Selle palgalehe jaoks loodud ekspordifaili nimi"
 
 #. module: hr_payroll_account_sepa
 #: model:ir.model,name:hr_payroll_account_sepa.model_hr_payslip
@@ -188,19 +190,19 @@ msgstr "SEPA fail"
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_run_sepa_view_form
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_sepa_view_form
 msgid "Select a bank journal."
-msgstr ""
+msgstr "Vali pangaandmik."
 
 #. module: hr_payroll_account_sepa
 #: code:addons/hr_payroll_account_sepa/models/hr_payslip.py:0
 #, python-format
 msgid "Some employees (%s) don't have a bank account."
-msgstr ""
+msgstr "Mõnel töötajal (%s) puudub pangakonto."
 
 #. module: hr_payroll_account_sepa
 #: code:addons/hr_payroll_account_sepa/models/hr_payslip.py:0
 #, python-format
 msgid "Some employees (%s) don't have a private address."
-msgstr ""
+msgstr "Mõnel töötajal on puudub (%s) aadress."
 
 #. module: hr_payroll_account_sepa
 #: code:addons/hr_payroll_account_sepa/models/hr_payslip.py:0

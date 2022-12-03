@@ -5,7 +5,7 @@
 # Translators:
 # Uros Kalajdzic <ukalajdzic@gmail.com>, 2022
 # Martin Trigaux, 2022
-# Slobodan Simić <slsimic@gmail.com>, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Slobodan Simić <slsimic@gmail.com>, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -44,12 +44,12 @@ msgstr ""
 #. module: account_winbooks_import
 #: model_terms:ir.ui.view,arch_db:account_winbooks_import.winbooks_import_form
 msgid "Cancel"
-msgstr "Откажи"
+msgstr "Otkaži"
 
 #. module: account_winbooks_import
 #: model:ir.model,name:account_winbooks_import.model_res_company
 msgid "Companies"
-msgstr "Предузећа"
+msgstr "Preduzeća"
 
 #. module: account_winbooks_import
 #: code:addons/account_winbooks_import/wizard/import_wizard.py:0
@@ -77,7 +77,7 @@ msgstr "Kreirano"
 #. module: account_winbooks_import
 #: model:ir.model.fields,field_description:account_winbooks_import.field_account_winbooks_import_wizard__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Naziv za prikaz"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields.selection,name:account_winbooks_import.selection__res_company__account_onboarding_winbooks_state__done
@@ -119,27 +119,27 @@ msgstr ""
 #. module: account_winbooks_import
 #: model:ir.model,name:account_winbooks_import.model_account_move_line
 msgid "Journal Item"
-msgstr "Ставка извештаја"
+msgstr "Stavka izveštaja"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields.selection,name:account_winbooks_import.selection__res_company__account_onboarding_winbooks_state__just_done
 msgid "Just done"
-msgstr ""
+msgstr "Upravo završeno"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields,field_description:account_winbooks_import.field_account_winbooks_import_wizard____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Poslednja izmena dana"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields,field_description:account_winbooks_import.field_account_winbooks_import_wizard__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Poslednje izmenio/la"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields,field_description:account_winbooks_import.field_account_winbooks_import_wizard__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Poslednje ažuriranje dana"
 
 #. module: account_winbooks_import
 #: model:ir.model.fields,help:account_winbooks_import.field_account_move_line__winbooks_matching_number
@@ -149,7 +149,7 @@ msgstr ""
 #. module: account_winbooks_import
 #: model:ir.model.fields.selection,name:account_winbooks_import.selection__res_company__account_onboarding_winbooks_state__not_done
 msgid "Not done"
-msgstr ""
+msgstr "Nije završeno"
 
 #. module: account_winbooks_import
 #: code:addons/account_winbooks_import/wizard/import_wizard.py:0

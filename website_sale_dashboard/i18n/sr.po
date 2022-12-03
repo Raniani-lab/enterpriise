@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Slobodan Simić <slsimic@gmail.com>, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:22+0000\n"
 "PO-Revision-Date: 2022-09-22 05:50+0000\n"
-"Last-Translator: Slobodan Simić <slsimic@gmail.com>, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -33,17 +33,17 @@ msgstr ""
 #. module: website_sale_dashboard
 #: model:ir.model.fields,field_description:website_sale_dashboard.field_sale_report__is_abandoned_cart
 msgid "Abandoned Cart"
-msgstr ""
+msgstr "Napuštena korpa"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_report_view_search_website_inherit
 msgid "Abandoned Carts"
-msgstr ""
+msgstr "Napuštene korpe"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.website_sale_onboarding_payment_provider_step
 msgid "Activate Stripe"
-msgstr ""
+msgstr "Aktiviraj Stripe"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
@@ -58,7 +58,7 @@ msgstr "Zatvoren"
 #. module: website_sale_dashboard
 #: model:ir.model,name:website_sale_dashboard.model_res_company
 msgid "Companies"
-msgstr "Предузећа"
+msgstr "Preduzeća"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
@@ -68,7 +68,7 @@ msgstr ""
 #. module: website_sale_dashboard
 #: model:ir.model,name:website_sale_dashboard.model_digest_digest
 msgid "Digest"
-msgstr ""
+msgstr "Pregled"
 
 #. module: website_sale_dashboard
 #: model:ir.model.fields.selection,name:website_sale_dashboard.selection__res_company__website_sale_dashboard_onboarding_state__done
@@ -91,17 +91,17 @@ msgstr ""
 #. module: website_sale_dashboard
 #: model:ir.model.fields.selection,name:website_sale_dashboard.selection__res_company__website_sale_dashboard_onboarding_state__just_done
 msgid "Just done"
-msgstr ""
+msgstr "Upravo završeno"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.actions.act_window,help:website_sale_dashboard.sale_dashboard
 msgid "No data yet!"
-msgstr ""
+msgstr "Još uvek nema podataka!"
 
 #. module: website_sale_dashboard
 #: model:ir.model.fields.selection,name:website_sale_dashboard.selection__res_company__website_sale_dashboard_onboarding_state__not_done
 msgid "Not done"
-msgstr ""
+msgstr "Nije završeno"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.website_sale_onboarding_payment_provider_step
@@ -116,7 +116,7 @@ msgstr ""
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
 msgid "Orders"
-msgstr ""
+msgstr "Porudžbine"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.view_online_sales_graph
@@ -127,7 +127,7 @@ msgstr "Analiza prodaje"
 #. module: website_sale_dashboard
 #: model:ir.model,name:website_sale_dashboard.model_sale_report
 msgid "Sales Analysis Report"
-msgstr ""
+msgstr "Izveštaj Analiza prodaje"
 
 #. module: website_sale_dashboard
 #: model:ir.model.fields,field_description:website_sale_dashboard.field_res_company__website_sale_dashboard_onboarding_state
@@ -152,7 +152,7 @@ msgstr ""
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_report_view_search_website_inherit
 msgid "Unpaid Orders"
-msgstr ""
+msgstr "Neplaćene porudžbine"
 
 #. module: website_sale_dashboard
 #: model_terms:ir.ui.view,arch_db:website_sale_dashboard.sale_dashboard_view
@@ -162,7 +162,7 @@ msgstr ""
 #. module: website_sale_dashboard
 #: model:ir.model,name:website_sale_dashboard.model_website
 msgid "Website"
-msgstr "Вебсајт"
+msgstr "Website"
 
 #. module: website_sale_dashboard
 #: model:ir.actions.act_window,name:website_sale_dashboard.sale_dashboard

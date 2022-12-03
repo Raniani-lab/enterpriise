@@ -618,6 +618,10 @@ msgid ""
 " all purposes when it is used on documents, including legally binding "
 "contracts."
 msgstr ""
+"Dengan mengeklik tombol Ambil dan Tandai, saya setuju bahwa tanda "
+"tangan/inisial tersebut akan menjadi representasi elektronik sah dari tanda "
+"tangan/inisial untuk semua keperluan saat digunakan pada dokumen, termasuk "
+"kontrak yang mengikat."
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__message_cc
@@ -3952,7 +3956,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el_pdf
 msgid "like"
-msgstr ""
+msgstr "seperti"
 
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_initial

@@ -507,11 +507,6 @@ msgid "Asset unpaused. %s"
 msgstr ""
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Asset(s)"
-msgstr "Anlage(n)"
-
-#. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
 msgid "Asset/Revenue Recognition"
 msgstr "Anlage-/Umsatzrealisierung"
@@ -523,6 +518,7 @@ msgstr "Anlage-/Umsatzrealisierung"
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_ids
 #: model:ir.ui.menu,name:account_asset.menu_action_account_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_purchase_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Assets"
 msgstr "Anlagevermögen"
 
@@ -796,6 +792,16 @@ msgid "Declining then Straight Line"
 msgstr "Degressiv, dann linear"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
+msgid "Def. Expenses"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
+msgid "Def. Revenues"
+msgstr ""
+
+#. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__asset_type__expense
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__expense
@@ -841,11 +847,6 @@ msgstr "Aktive Rechnungsabgrenzungs-Optionen"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Deferred Expense name"
 msgstr "Name des aktiven Rechnungsabgrenzungsmodells"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Deferred Expense(s)"
-msgstr "Aktive Rechnugsabgrenzung"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_expense_form
@@ -904,11 +905,6 @@ msgstr "Passive Rechnungsabgrenzungs-Optionen"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Deferred Revenue name"
 msgstr "Passive Rechnungsabgrenzungsbezeichnung"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Deferred Revenue(s)"
-msgstr "Passive Rechnungsabgrenzungen"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_revenue_form
@@ -1060,7 +1056,9 @@ msgid "Disposal Moves"
 msgstr "Ausbuchungen"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Dispose"
 msgstr "Ausbuchung"
 
@@ -1478,11 +1476,6 @@ msgid "New salvage amount for the asset"
 msgstr "Neuer Restwert der Anlage"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_calendar_event_id
-msgid "Next Activity Calendar Event"
-msgstr "Nächste Aktivität"
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr "Nächste Aktivitätsfrist"
@@ -1624,7 +1617,9 @@ msgid "Parent"
 msgstr "Übergeordnet"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Pause"
 msgstr "Pause"
 
@@ -1654,6 +1649,12 @@ msgstr "Prorata-Datum"
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__purchase
 msgid "Purchase: Asset"
 msgstr "Einkauf: Anlagevermögen"
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid "Re-evaluate"
+msgstr ""
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1699,7 +1700,9 @@ msgid "Responsible User"
 msgstr "Verantwortlicher Benutzer"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Resume"
 msgstr "Fortsetzen"
 
@@ -1796,7 +1799,9 @@ msgid "Select Invoice Line"
 msgstr "Rechnungszeile auswählen"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Sell"
 msgstr "Verkaufen"
 
@@ -2049,6 +2054,14 @@ msgid ""
 msgstr ""
 "Es ist nicht möglich, eine Anlage aus Buchungszeilen mit Haben und Soll auf "
 "dem Konto oder mit einem Nullbetrag anzulegen."
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid ""
+"You cannot delete an asset linked to posted entries.\n"
+"You should either confirm the asset, then, sell or dispose of it, or cancel the linked journal entries."
+msgstr ""
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0

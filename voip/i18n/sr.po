@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Uros Kalajdzic <ukalajdzic@gmail.com>, 2022
-# Slobodan Simić <slsimic@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:22+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -70,7 +70,7 @@ msgstr "Prihvati"
 #: model:ir.model,name:voip.model_mail_activity
 #, python-format
 msgid "Activity"
-msgstr "Активност"
+msgstr "Aktivnost"
 
 #. module: voip
 #. openerp-web
@@ -82,7 +82,7 @@ msgstr ""
 #. module: voip
 #: model:ir.actions.server,name:voip.action_add_to_call_queue
 msgid "Add to call queue"
-msgstr "Додај у ред за позивање"
+msgstr "Dodaj u red za pozivanje"
 
 #. module: voip
 #. openerp-web
@@ -114,7 +114,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Avatar"
-msgstr ""
+msgstr "Avatar"
 
 #. module: voip
 #. openerp-web
@@ -191,7 +191,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Cancel"
-msgstr "Откажи"
+msgstr "Otkaži"
 
 #. module: voip
 #. openerp-web
@@ -247,7 +247,7 @@ msgstr "Zatvori"
 #. module: voip
 #: model:ir.model,name:voip.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Podešavanje konfiguracije"
 
 #. module: voip
 #. openerp-web
@@ -261,14 +261,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__partner_id
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__partner_id
 msgid "Contact"
-msgstr "Контакт"
+msgstr "Kontakt"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Contacts"
-msgstr "Контакти"
+msgstr "Kontakti"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__create_uid
@@ -299,7 +299,7 @@ msgstr "Kupac"
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__call_date
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Date"
-msgstr "Датум"
+msgstr "Datum"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_config_settings__mode__demo
@@ -329,14 +329,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__display_name
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Naziv za prikaz"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Document"
-msgstr "Документ"
+msgstr "Dokument"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__no_reschedule
@@ -352,7 +352,7 @@ msgstr "Datum valute"
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__duration
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__duration
 msgid "Duration"
-msgstr "Трајање"
+msgstr "Trajanje"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_voip_phonecall__duration
@@ -365,7 +365,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Edit"
-msgstr ""
+msgstr "Uredi"
 
 #. module: voip
 #. openerp-web
@@ -548,7 +548,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard____last_update
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Poslednja izmena dana"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__last_seen_phone_call
@@ -559,13 +559,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__write_uid
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Poslednje izmenio/la"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__write_date
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Poslednje ažuriranje dana"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__activity_id
@@ -606,7 +606,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Mark as done"
-msgstr ""
+msgstr "Označi kao završeno"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__missed
@@ -677,7 +677,7 @@ msgstr "Ne Odrzivo"
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__note
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__note
 msgid "Note"
-msgstr "Белешка"
+msgstr "Beleška"
 
 #. module: voip
 #: model_terms:ir.actions.act_window,help:voip.voip_phonecall_view
@@ -852,7 +852,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__user_id
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Responsible"
-msgstr "Одговорно лице"
+msgstr "Odgovorno lice"
 
 #. module: voip
 #. openerp-web
@@ -903,7 +903,7 @@ msgstr "Pretrazi Telefonske pozive"
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Send mail"
-msgstr ""
+msgstr "Pošalji mail"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__sequence
@@ -1062,12 +1062,12 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Transfer"
-msgstr "Пренос"
+msgstr "Prenos"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Unassigned"
-msgstr ""
+msgstr "Nedodeljeno"
 
 #. module: voip
 #: model:ir.model,name:voip.model_res_users

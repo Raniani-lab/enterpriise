@@ -29,22 +29,22 @@ msgstr ""
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__count
 msgid "# Applicant"
-msgstr ""
+msgstr "# Kandidaat"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__hired
 msgid "# Hired"
-msgstr ""
+msgstr "# Tööle võetud"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__hiring_ratio
 msgid "# Hired Ratio"
-msgstr ""
+msgstr "# Hired Ratio"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__meetings_amount
 msgid "# Meetings"
-msgstr "Koosolekute arv"
+msgstr "# Koosolekute arv"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_source_view_dashboard
@@ -55,7 +55,7 @@ msgstr "# Palgalehed"
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__refused
 msgid "# Refused"
-msgstr ""
+msgstr "# Keeldunud"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_inherit_kanban_view
@@ -65,7 +65,7 @@ msgstr "Ülevaade"
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_stage_report__applicant_id
 msgid "Applicant"
-msgstr "kandideermisavaldus"
+msgstr "Kandidaat"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__name
@@ -73,7 +73,7 @@ msgstr "kandideermisavaldus"
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_view_search
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_stage_report_view_search
 msgid "Applicant Name"
-msgstr ""
+msgstr "Kandideerija nimi"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
@@ -91,12 +91,12 @@ msgstr "Ettevõte"
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__create_uid
 msgid "Creator"
-msgstr ""
+msgstr "Looja"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_stage_report__days_in_stage
 msgid "Days In Stage"
-msgstr ""
+msgstr "Päevade arv etapis"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__display_name
@@ -125,24 +125,24 @@ msgstr "Rühmitamine"
 #: model:ir.model.fields.selection,name:hr_recruitment_reports.selection__hr_recruitment_report__state__is_hired
 #: model:ir.model.fields.selection,name:hr_recruitment_reports.selection__hr_recruitment_stage_report__state__is_hired
 msgid "Hired"
-msgstr ""
+msgstr "Tööle võetud"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_source_view_dashboard
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
 msgid "Hired People"
-msgstr ""
+msgstr "Tööle võetud inimesed"
 
 #. module: hr_recruitment_reports
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #, python-format
 msgid "Hiring ratio"
-msgstr ""
+msgstr "Tööle võtmise protsent"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_team_view_dashboard
 msgid "Hiring ratio (%)"
-msgstr ""
+msgstr "Tööle võtmise protsent"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__id
@@ -172,7 +172,7 @@ msgstr "Ametikoht"
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_view_search
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_stage_report_view_search
 msgid "Last 365 Days Applicant"
-msgstr ""
+msgstr "Viimase 365 päeva jooksul kandideerinud "
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report____last_update
@@ -192,13 +192,13 @@ msgstr "Keskmine"
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_source_view_dashboard
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
 msgid "Process Duration"
-msgstr ""
+msgstr "Protsessi kestus"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_source_view_dashboard
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
 msgid "Process Duration in Days"
-msgstr ""
+msgstr "Protsessi kestus päevades"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__user_id
@@ -229,7 +229,7 @@ msgstr "Värbamismäär"
 #. module: hr_recruitment_reports
 #: model:ir.model,name:hr_recruitment_reports.model_hr_recruitment_stage_report
 msgid "Recruitment Stage Analysis"
-msgstr ""
+msgstr "Värbamisetappide analüüsid"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__refuse_reason_id
@@ -248,7 +248,7 @@ msgstr "Tagasi lükatud"
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_view_search
 msgid "Source"
-msgstr "Alusdokument"
+msgstr "Kandideerimisallikas"
 
 #. module: hr_recruitment_reports
 #: model:ir.actions.act_window,name:hr_recruitment_reports.recruitment_report_source_action
@@ -257,7 +257,7 @@ msgstr "Alusdokument"
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_team_view_graph
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_view_source_pivot
 msgid "Source Analysis"
-msgstr ""
+msgstr "Kandideerimisallikate analüüs"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields,field_description:hr_recruitment_reports.field_hr_recruitment_report__stage_id
@@ -283,7 +283,7 @@ msgstr "Maakond"
 #. module: hr_recruitment_reports
 #: model:ir.actions.act_window,name:hr_recruitment_reports.recruitment_report_team_action
 msgid "Team Performance"
-msgstr ""
+msgstr "Meeskonna tulemuslikkus"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
@@ -291,6 +291,8 @@ msgid ""
 "The % is based on the total of applicant that have been hired divided by the"
 " total of applicant."
 msgstr ""
+"Protsent põhineb tööle võetud kandidaatide arvu jagamisel kandidaatide "
+"koguarvuga."
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard
@@ -298,12 +300,14 @@ msgid ""
 "The process duration is based on the time between the applicant creation and"
 " the stage \"hired\" or \"refused\"."
 msgstr ""
+"Protsessi kestus põhineb ajal, mis kulub kandideerija süsteemi loomise ja "
+"\"tööle võetud\" või \"keeldumise\" faasi vahel."
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.actions.act_window,help:hr_recruitment_reports.recruitment_report_source_action
 #: model_terms:ir.actions.act_window,help:hr_recruitment_reports.recruitment_report_source_job_action
 msgid "This report performs analysis on your recruitment source."
-msgstr ""
+msgstr "See aruanne analüüsib teie värbamisallikaid."
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.actions.act_window,help:hr_recruitment_reports.recruitment_report_action
@@ -316,12 +320,12 @@ msgstr "Selles aruandes analüüsitakse teie värbamist."
 #. module: hr_recruitment_reports
 #: model_terms:ir.actions.act_window,help:hr_recruitment_reports.recruitment_report_team_action
 msgid "This report performs analysis on your teams' performance."
-msgstr ""
+msgstr "See aruanne analüüsib teie meeskondade sooritust."
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_inherit_kanban_view
 msgid "Time By Stages"
-msgstr ""
+msgstr "Aeg etappide kaupa"
 
 #. module: hr_recruitment_reports
 #: model:ir.actions.act_window,name:hr_recruitment_reports.recruitment_stage_report_action
@@ -336,30 +340,30 @@ msgstr ""
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #, python-format
 msgid "Total Hired"
-msgstr ""
+msgstr "Tööle võetute arv kokku"
 
 #. module: hr_recruitment_reports
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #, python-format
 msgid "Total Meetings"
-msgstr ""
+msgstr "Kohtumiste arv kokku"
 
 #. module: hr_recruitment_reports
 #: code:addons/hr_recruitment_reports/report/hr_recruitment_report.py:0
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_team_view_dashboard
 #, python-format
 msgid "Total applicants"
-msgstr ""
+msgstr "Kandideerijate arv kokku"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_team_view_dashboard
 msgid "Total hired"
-msgstr ""
+msgstr "Tööle võetute arv kokku"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_team_view_dashboard
 msgid "Total meetings"
-msgstr ""
+msgstr "Kohtumiste arv kokku"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_source_view_dashboard

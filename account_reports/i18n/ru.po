@@ -15,6 +15,7 @@
 # Irina Fedulova <istartlin@gmail.com>, 2022
 # Ivan Kropotkin <yelizariev@itpp.dev>, 2022
 # Martin Trigaux, 2022
+# valmasone, 2022
 # Сергей Шебанин <sergey@shebanin.ru>, 2022
 # 
 msgid ""
@@ -82,6 +83,14 @@ msgstr "&amp;nbsp;"
 msgid ""
 "'Open General Ledger' caret option is only available form report lines "
 "targetting accounts."
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid ""
+"'View Bank Statement' caret option is only available for report lines "
+"targeting bank statements."
 msgstr ""
 
 #. module: account_reports
@@ -284,8 +293,13 @@ msgstr "<span class=\"fa fa-filter\"/>Опции:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
-msgid "<span class=\"fa fa-folder-open\"/> Analytic"
-msgstr "<span class=\"fa fa-folder-open\"/> Аналитика"
+msgid "<span class=\"fa fa-folder-open\"/> Analytic Filter"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
+msgid "<span class=\"fa fa-folder-open\"/> Analytic Group By"
+msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_partner
@@ -636,7 +650,7 @@ msgstr "Все"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "All Journals"
-msgstr ""
+msgstr "Все журналы"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -686,6 +700,11 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Analytic Accounts:"
 msgstr "Аналитические счета:"
+
+#. module: account_reports
+#: model:ir.model.fields,field_description:account_reports.field_account_report__filter_analytic_groupby
+msgid "Analytic Group By"
+msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -796,7 +815,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_reports_journal_dashboard_kanban_view
 msgid "Balance in GL"
-msgstr ""
+msgstr "Сальдо"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
@@ -1375,7 +1394,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_trial_balance_report.py:0
 #, python-format
 msgid "End Balance"
-msgstr ""
+msgstr "Конечный баланс"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -1553,11 +1572,6 @@ msgstr ""
 msgid ""
 "Field 'Custom Handler Model' can only reference records inheriting from "
 "[%s]."
-msgstr ""
-
-#. module: account_reports
-#: model:ir.model.fields,field_description:account_reports.field_account_report__filter_analytic_groupby
-msgid "Filter Analytic Groupby"
 msgstr ""
 
 #. module: account_reports
@@ -2666,7 +2680,7 @@ msgstr "Поиск счета"
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "Search line"
-msgstr ""
+msgstr "Поиск строки"
 
 #. module: account_reports
 #. openerp-web
@@ -2928,6 +2942,13 @@ msgid "The main company of a tax unit has to be part of it."
 msgstr ""
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_journal_report.py:0
+#, python-format
+msgid ""
+"The selected report line does not target a Journal Entry or a Journal Item."
+msgstr ""
+
+#. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_res_company__account_tax_unit_ids
 msgid "The tax units this company belongs to."
 msgstr ""
@@ -2935,7 +2956,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "There are"
-msgstr "Там есть"
+msgstr "Есть"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template
@@ -3324,7 +3345,7 @@ msgstr "название модели отчета"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "prior or included in this period"
-msgstr ""
+msgstr "в текущем периоде или ранее"
 
 #. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__trimester

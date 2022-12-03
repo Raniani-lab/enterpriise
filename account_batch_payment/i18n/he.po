@@ -20,6 +20,7 @@
 # Moshe Flam <pashute@gmail.com>, 2022
 # Martin Trigaux, 2022
 # NoaFarkash, 2022
+# Ha Ketem <haketem@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -27,7 +28,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: NoaFarkash, 2022\n"
+"Last-Translator: Ha Ketem <haketem@gmail.com>, 2022\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -309,7 +310,7 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_error_wizard_line__error_wizard_id
 msgid "Error Wizard"
-msgstr ""
+msgstr "אשף שגיאות"
 
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.batch_error_wizard_line_tree
@@ -666,7 +667,7 @@ msgstr ""
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_error_wizard__show_remove_options
 msgid "Show Remove Options"
-msgstr ""
+msgstr "הצגת אפשרויות הסרה"
 
 #. module: account_batch_payment
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0

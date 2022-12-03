@@ -8,8 +8,8 @@
 # Egon Raamat <egon@avalah.ee>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Martin Trigaux, 2022
-# Triine Aavik <triine@avalah.ee>, 2022
 # Piia Paurson <piia@avalah.ee>, 2022
+# Triine Aavik <triine@avalah.ee>, 2022
 # Jana Jaakson, 2022
 # 
 msgid ""
@@ -31,7 +31,7 @@ msgstr ""
 #: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
 #, python-format
 msgid "<b>Congratulations</b>, you are now an expert of Expenses."
-msgstr ""
+msgstr "<b>Õnnitleme</b>, oled nüüd kulude ekspert"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__amount
@@ -53,7 +53,7 @@ msgstr "Manus"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__available_payment_method_line_ids
 msgid "Available Payment Method Line"
-msgstr ""
+msgstr "Maksemeetodi rida saadaval"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -100,7 +100,7 @@ msgstr "Ettevõte"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__done
 msgid "Completed flow"
-msgstr ""
+msgstr "Lõpetatud töövoog"
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_res_config_settings
@@ -134,12 +134,12 @@ msgstr "Valuuta"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__res_company__expense_extract_show_ocr_option_selection__auto_send
 msgid "Digitize automatically"
-msgstr ""
+msgstr "Tee automaatselt digitaalseks"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__res_company__expense_extract_show_ocr_option_selection__manual_send
 msgid "Digitize on demand only"
-msgstr ""
+msgstr "Tee digitaalseks ainult nõudmisel"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_receipt__display_name
@@ -151,7 +151,7 @@ msgstr "Kuva nimi"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__res_company__expense_extract_show_ocr_option_selection__no_send
 msgid "Do not digitize"
-msgstr ""
+msgstr "Ära tee digitaalseks"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_error_message
@@ -195,18 +195,18 @@ msgstr "Kuluaruanne"
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "Expense is being Digitized"
-msgstr ""
+msgstr "Kuluaruanne digitaliseeritakse"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_res_config_settings__expense_extract_show_ocr_option_selection
 msgid "Expense processing option"
-msgstr ""
+msgstr "Kuluaruande töötlemise võimalused"
 
 #. module: hr_expense_extract
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "Expenses sent"
-msgstr ""
+msgstr "Kuluaruanne saadetud"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_word_ids
@@ -227,17 +227,17 @@ msgstr ""
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "Generated Expense"
-msgstr ""
+msgstr "Loodud kuluaruanne"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__hide_partial
 msgid "Hide Partial"
-msgstr ""
+msgstr "Peida osaliselt"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__hide_payment_method_line
 msgid "Hide Payment Method Line"
-msgstr ""
+msgstr "Peida maksemeetodi rida"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_receipt__id
@@ -314,7 +314,7 @@ msgstr "Teavitused"
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "No document name provided"
-msgstr ""
+msgstr "Dokumendi nime pole esitatud"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__no_extract_requested
@@ -349,42 +349,42 @@ msgstr "Lisa makse"
 #. module: hr_expense_extract
 #: model:ir.actions.act_window,name:hr_expense_extract.action_expense_sample_register
 msgid "Register Sample Payment"
-msgstr ""
+msgstr "Registreeri näidismakse"
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_expense_sample_register
 msgid "Register Sample Payments"
-msgstr ""
+msgstr "Registreeri näidismaksed"
 
 #. module: hr_expense_extract
 #. openerp-web
 #: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
 #, python-format
 msgid "Report this expense to your manager for validation."
-msgstr ""
+msgstr "Esitage see kuluaruanne oma juhile kinnitamiseks."
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
 msgid "Resend For Digitization"
-msgstr ""
+msgstr "Saatke uuesti digitaliseerimiseks"
 
 #. module: hr_expense_extract
 #: code:addons/hr_expense_extract/wizard/expense_sample_receipt.py:0
 #, python-format
 msgid "Sample Employee"
-msgstr ""
+msgstr "Näidistöötaja"
 
 #. module: hr_expense_extract
 #: code:addons/hr_expense_extract/wizard/expense_sample_receipt.py:0
 #, python-format
 msgid "Sample Receipt: %s"
-msgstr ""
+msgstr "Näidiskviitung: %s"
 
 #. module: hr_expense_extract
 #: model:ir.actions.server,name:hr_expense_extract.hr_expense_parse_action_server
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
 msgid "Send For Digitization"
-msgstr ""
+msgstr "Saatke digitaliseerimiseks"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_res_company__expense_extract_show_ocr_option_selection
@@ -395,13 +395,13 @@ msgstr ""
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "Server is currently under maintenance. Please retry later"
-msgstr ""
+msgstr "Serveris käib hetkel hooldus. Palun proovige hiljem uuesti"
 
 #. module: hr_expense_extract
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "Server not available. Please retry later"
-msgstr ""
+msgstr "Server ei ole hetkel saadaval. Palun proovige hiljem uuesti"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_status_code
@@ -411,7 +411,7 @@ msgstr ""
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__state_processed
 msgid "Status regarding OCR status"
-msgstr ""
+msgstr "Seoses OCR staatuse olekuga"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -419,12 +419,14 @@ msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
 "between 5 and 10 seconds."
 msgstr ""
+"Andmete välja võtmine pole veel lõppenud. Välja võtmine kestab tavaliselt 5 "
+"- 10 sekundit."
 
 #. module: hr_expense_extract
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "The document could not be found"
-msgstr ""
+msgstr "Dokumenti ei leitud"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -432,6 +434,8 @@ msgid ""
 "The file has been sent and is being processed. It usually takes between 5 "
 "and 10 seconds."
 msgstr ""
+"Fail on saadetud ja seda töödeldakse. Tavaliselt kulub selleks 5–10 "
+"sekundit."
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__to_validate
@@ -442,12 +446,12 @@ msgstr "Kinnitada"
 #: model:ir.actions.act_window,name:hr_expense_extract.action_expense_sample_receipt
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.expense_sample_receipt_view_form
 msgid "Try Sample Receipt"
-msgstr ""
+msgstr "Proovi kulukviitungi näidist"
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_expense_sample_receipt
 msgid "Try Sample Receipts"
-msgstr ""
+msgstr "Proovi kulukviitungi näidiseid"
 
 #. module: hr_expense_extract
 #. openerp-web
@@ -460,7 +464,7 @@ msgstr ""
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "Unsupported image format"
-msgstr ""
+msgstr "Süsteem ei toeta pildivormingut"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -475,7 +479,7 @@ msgstr "Ootab väljavõtteid"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__waiting_upload
 msgid "Waiting upload"
-msgstr ""
+msgstr "Ootab üleslaadimist"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__waiting_validation
@@ -488,22 +492,23 @@ msgstr "Ootab kinnitamist"
 #, python-format
 msgid "Wasting time recording your receipts? Let’s try a better way."
 msgstr ""
+"Kulutate aega oma kulutšekkide salvestamisele? Proovime paremat võimalust."
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__word_page
 msgid "Word Page"
-msgstr ""
+msgstr "Wordi leht"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__word_text
 msgid "Word Text"
-msgstr ""
+msgstr "Wordi tekst"
 
 #. module: hr_expense_extract
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "You cannot send a expense that is not in draft state!"
-msgstr ""
+msgstr "Te ei saa saata kulutust, mis ei ole mustandi staatuses!"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -514,7 +519,7 @@ msgstr "Teil pole piisavalt punkte, et oma kulust andmeid eraldada."
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "You must send the same quantity of documents and file names"
-msgstr ""
+msgstr "Peate saatma sama koguse dokumente ja failinimesid"
 
 #. module: hr_expense_extract
 #. openerp-web
@@ -522,11 +527,9 @@ msgstr ""
 #: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
 #, python-format
 msgid "Your manager will have to approve (or refuse) your expense reports."
-msgstr ""
+msgstr "Teie juht peab kinnitama (või mitte kinnitama) teie kuluaruande."
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__extract_not_ready
 msgid "waiting extraction, but it is not ready"
-msgstr ""
-"\n"
-"ootab väljavõtteid, kuid see pole veel valmis"
+msgstr "ootab väljavõtet, kuid see pole veel valmis"

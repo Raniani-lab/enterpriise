@@ -670,7 +670,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "An error occured while uploading."
-msgstr ""
+msgstr "Error terjadi saat mengunggah."
 
 #. module: documents
 #. openerp-web
@@ -2593,7 +2593,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__note
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_form
 msgid "Tooltip"
-msgstr ""
+msgstr "Tooltip"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__is_editable_attachment

@@ -5,7 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Uros Kalajdzic <ukalajdzic@gmail.com>, 2022
-# Slobodan Simić <slsimic@gmail.com>, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:42+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Slobodan Simić <slsimic@gmail.com>, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -112,7 +112,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__active
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__active
 msgid "Active"
-msgstr "Активно"
+msgstr "Aktivno"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__activity_creation
@@ -127,7 +127,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__activity_type_id
 msgid "Activity Type"
-msgstr ""
+msgstr "Vrsta aktivnosti"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_form
@@ -137,7 +137,7 @@ msgstr "Novi red"
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_form
 msgid "Add a section"
-msgstr ""
+msgstr "Dodaj segment"
 
 #. module: hr_contract_salary
 #: code:addons/hr_contract_salary/models/hr_contract_salary_advantage.py:0
@@ -195,7 +195,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__applicant_id
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__applicant_id
 msgid "Applicant"
-msgstr ""
+msgstr "Kandidat/kinja"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__applies_on
@@ -218,7 +218,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_salary_resume_view_search
 msgid "Archived"
-msgstr ""
+msgstr "Arhivirano"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__activity_responsible_id
@@ -238,17 +238,17 @@ msgstr "Bankovni račun"
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_acc_number
 msgid "Bank account"
-msgstr "Банковни рачун"
+msgstr "Bankovni račun"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_birthdate
 msgid "Birthdate"
-msgstr "Датум рођења"
+msgstr "Datum rođenja"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.generate_simulation_link_view_form
 msgid "Cancel"
-msgstr "Откажи"
+msgstr "Otkaži"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__category_id
@@ -285,7 +285,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_city
 msgid "City"
-msgstr "Град"
+msgstr "Grad"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__code
@@ -295,7 +295,7 @@ msgstr "Kod"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_value__color
 msgid "Color"
-msgstr ""
+msgstr "Boja"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__company_id
@@ -305,7 +305,7 @@ msgstr "Kompanija"
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Podešavanje konfiguracije"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_salary_advantage_type
@@ -418,7 +418,7 @@ msgstr "Zemlje"
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_country
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__country_id
 msgid "Country"
-msgstr "Држава"
+msgstr "Zemlja"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_country_of_birth
@@ -471,7 +471,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__display_type__date
 msgid "Date"
-msgstr "Датум"
+msgstr "Datum"
 
 #. module: hr_contract_salary
 #: code:addons/hr_contract_salary/controllers/main.py:0
@@ -480,7 +480,7 @@ msgstr "Датум"
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package_advantages
 #, python-format
 msgid "Days"
-msgstr "дана"
+msgstr "dana"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_res_config_settings__access_token_validity
@@ -517,7 +517,7 @@ msgstr "Odeljenje"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__description
 msgid "Description"
-msgstr "Опис"
+msgstr "Opis"
 
 #. module: hr_contract_salary
 #. openerp-web
@@ -537,14 +537,14 @@ msgstr "Detalji"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__display_name
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume_category__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Naziv za prikaz"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__display_type
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage_value__display_type
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__display_type
 msgid "Display Type"
-msgstr "Врста приказа"
+msgstr "Vrsta prikaza"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__display_warning_message
@@ -559,7 +559,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__display_type__document
 msgid "Document"
-msgstr "Документ"
+msgstr "Dokument"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_sign_document_wizard__sign_template_ids
@@ -604,7 +604,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__employee_id
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__applies_on__employee
 msgid "Employee"
-msgstr "Запослени"
+msgstr "Zaposleni"
 
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract
@@ -616,7 +616,7 @@ msgstr "Ugovor Zapošljenog"
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #, python-format
 msgid "Employee Name"
-msgstr ""
+msgstr "Ime zaposlenog"
 
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_image_1920
@@ -716,7 +716,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage_value__color__green
 msgid "Green"
-msgstr ""
+msgstr "Zeleno"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_search
@@ -842,7 +842,7 @@ msgstr "Pozicija"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__job_title
 #, python-format
 msgid "Job Title"
-msgstr ""
+msgstr "Naziv pozicije"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__dropdown_selection__lang
@@ -860,7 +860,7 @@ msgstr "Jezici"
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume____last_update
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume_category____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Poslednja izmena dana"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__write_uid
@@ -873,7 +873,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__write_uid
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume_category__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Poslednje izmenio/la"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_generate_simulation_link__write_date
@@ -886,7 +886,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__write_date
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume_category__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Poslednje ažuriranje dana"
 
 #. module: hr_contract_salary
 #: model_terms:ir.actions.act_window,help:hr_contract_salary.action_hr_contract_templates
@@ -896,7 +896,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage_value__display_type__line
 msgid "Line"
-msgstr ""
+msgstr "Linija"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__position__left
@@ -1012,7 +1012,7 @@ msgstr ""
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #, python-format
 msgid "No"
-msgstr ""
+msgstr "Ne"
 
 #. module: hr_contract_salary
 #: code:addons/hr_contract_salary/controllers/main.py:0
@@ -1191,7 +1191,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__display_type__radio
 msgid "Radio"
-msgstr ""
+msgstr "Radio"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__display_type__radio
@@ -1214,7 +1214,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage_value__color__red
 msgid "Red"
-msgstr ""
+msgstr "Crveno"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__res_field_id
@@ -1321,7 +1321,7 @@ msgstr "Sekcija"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_applicant__access_token
 msgid "Security Token"
-msgstr ""
+msgstr "Sigurnosni token"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_personal_info__display_type__dropdown
@@ -1341,7 +1341,7 @@ msgstr "Pošalji"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__sign_copy_partner_id
 msgid "Send a copy to"
-msgstr ""
+msgstr "Pošalji kopiju"
 
 #. module: hr_contract_salary
 #: model:mail.template,description:hr_contract_salary.mail_template_send_offer_applicant
@@ -1397,7 +1397,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__display_type__slider
 msgid "Slider"
-msgstr ""
+msgstr "Slajder"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_advantage__slider_max
@@ -1440,7 +1440,7 @@ msgstr "Ulica"
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_street2
 msgid "Street 2"
-msgstr ""
+msgstr "Ulica 2"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_advantage_view_search
@@ -1561,7 +1561,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info__value_ids
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_personal_info_value__value
 msgid "Value"
-msgstr "Вредност"
+msgstr "Vrednost"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_salary_resume__value_type
@@ -1644,7 +1644,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:hr.contract.salary.personal.info,name:hr_contract_salary.hr_contract_salary_personal_info_zip
 msgid "Zip Code"
-msgstr ""
+msgstr "Poštanski broj/PAK"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.salary_package

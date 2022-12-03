@@ -187,7 +187,7 @@ msgstr ""
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_device__trigger_ids
 msgid "Trigger"
-msgstr ""
+msgstr "Pemicu"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_mrp_workcenter__trigger_ids

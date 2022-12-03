@@ -10,6 +10,7 @@
 # Algo Kärp <algokarp@gmail.com>, 2022
 # Piia Paurson <piia@avalah.ee>, 2022
 # Martin Trigaux, 2022
+# Leaanika Randmets, 2022
 # 
 msgid ""
 msgstr ""
@@ -17,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Leaanika Randmets, 2022\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -171,6 +172,8 @@ msgid ""
 "This Sale Order Item doesn't have a target value of planned hours. Planned "
 "hours :"
 msgstr ""
+"Sellel müügitellimuse artiklil ei ole planeeritud tundide sihtväärtust. "
+"Planeeritud tunnid:"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_subtask_effective_hours

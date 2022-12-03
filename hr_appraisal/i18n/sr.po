@@ -5,7 +5,7 @@
 # Translators:
 # Uros Kalajdzic <ukalajdzic@gmail.com>, 2022
 # Martin Trigaux, 2022
-# Slobodan Simić <slsimic@gmail.com>, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Slobodan Simić <slsimic@gmail.com>, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -37,7 +37,7 @@ msgstr ""
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "1 Meeting"
-msgstr ""
+msgstr "1 sastanak"
 
 #. module: hr_appraisal
 #: model:ir.model.fields.selection,name:hr_appraisal.selection__hr_appraisal_goal__progression__100
@@ -234,46 +234,46 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_needaction
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Potrebna akcija"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__active
 msgid "Active"
-msgstr "Активно"
+msgstr "Aktivno"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__activity_ids
 msgid "Activities"
-msgstr "Активности"
+msgstr "Aktivnosti"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_exception_decoration
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Dekoracija izuzeć́a aktivnosti"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_state
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Stanje aktivnosti"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_type_icon
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "Ikonica vrste aktivnosti"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.request_appraisal_view_form
 msgid "Add existing contacts..."
-msgstr ""
+msgstr "Dodaj postojeće kontakte..."
 
 #. module: hr_appraisal
 #: model:res.groups,name:hr_appraisal.group_hr_appraisal_manager
 msgid "Administrator"
-msgstr ""
+msgstr "Administrator"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_employee_view_form
@@ -440,7 +440,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Archived"
-msgstr ""
+msgstr "Arhivirano"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
@@ -462,12 +462,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_attachment_count
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Brojač priloga"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__author_id
 msgid "Author"
-msgstr "Аутор"
+msgstr "Autor"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_res_company__appraisal_plan
@@ -483,7 +483,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__avatar_1920
 msgid "Avatar"
-msgstr ""
+msgstr "Avatar"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__avatar_128
@@ -498,12 +498,12 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_calendar_event
 msgid "Calendar Event"
-msgstr "Догађај календара"
+msgstr "Događaj kalendar"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__can_edit_body
 msgid "Can Edit Body"
-msgstr ""
+msgstr "Može da uređuje \"telo\""
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__can_see_employee_publish
@@ -519,7 +519,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.request_appraisal_view_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Cancel"
-msgstr "Откажи"
+msgstr "Otkaži"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_departure_wizard__cancel_appraisal
@@ -540,17 +540,17 @@ msgstr "Otkazano"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_kanban
 msgid "Chat"
-msgstr ""
+msgstr "Chat"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__color
 msgid "Color"
-msgstr ""
+msgstr "Boja"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_res_company
 msgid "Companies"
-msgstr "Предузећа"
+msgstr "Preduzeća"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__company_id
@@ -561,17 +561,17 @@ msgstr "Kompanija"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.request_appraisal_view_form
 msgid "Compose Email"
-msgstr ""
+msgstr "Sastavi Email"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Podešavanje konfiguracije"
 
 #. module: hr_appraisal
 #: model:ir.ui.menu,name:hr_appraisal.menu_hr_appraisal_configuration
 msgid "Configuration"
-msgstr "Подешавање"
+msgstr "Podešavanje"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.res_config_settings_view_employee_form
@@ -581,7 +581,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Confirm"
-msgstr "Потврда"
+msgstr "Potvrdi"
 
 #. module: hr_appraisal
 #: model:ir.model.fields.selection,name:hr_appraisal.selection__hr_appraisal__state__pending
@@ -650,7 +650,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "Date"
-msgstr "Датум"
+msgstr "Datum"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__date_close
@@ -680,7 +680,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_goal_view_kanban
 msgid "Delete"
-msgstr ""
+msgstr "Obriši"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_department
@@ -699,7 +699,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__description
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_goal_view_form
 msgid "Description"
-msgstr "Опис"
+msgstr "Opis"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__display_name
@@ -708,7 +708,7 @@ msgstr "Опис"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__display_name
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Naziv za prikaz"
 
 #. module: hr_appraisal
 #: model:ir.model.fields.selection,name:hr_appraisal.selection__hr_appraisal__state__done
@@ -722,7 +722,7 @@ msgstr "Završeno"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_goal_view_kanban
 msgid "Dropdown menu"
-msgstr ""
+msgstr "Padajući meni"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_employee
@@ -733,7 +733,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_department_view_form
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
 msgid "Employee"
-msgstr "Запослени"
+msgstr "Zaposleni"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_appraisal
@@ -766,7 +766,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report__name
 msgid "Employee Name"
-msgstr ""
+msgstr "Ime zaposlenog"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__employee_user_id
@@ -831,19 +831,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_follower_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Pratioci"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_partner_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Pratioci (Partneri)"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__activity_type_icon
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
-msgstr ""
+msgstr "Font awesome ikonica npr. fa-tasks"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__email_from
@@ -853,7 +853,7 @@ msgstr "Od"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Future Activities"
-msgstr ""
+msgstr "Buduće aktivnosti"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_goal_view_form
@@ -896,7 +896,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__has_message
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Ima poruku"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__id
@@ -917,13 +917,13 @@ msgstr "Ikona"
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__activity_exception_icon
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr ""
+msgstr "Ikonica koja označava aktivnost izuzetka."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_needaction
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Ako je označeno, nove poruke zahtevaju vašu pažnju."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_has_error
@@ -931,7 +931,7 @@ msgstr ""
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__message_has_error
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Ako je označeno, neke poruke imaju grešku u isporuci."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__image_1920
@@ -941,7 +941,7 @@ msgstr "Slika"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__image_128
 msgid "Image 128"
-msgstr ""
+msgstr "Slika 128"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_appraisal_report_search
@@ -961,13 +961,13 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__is_mail_template_editor
 msgid "Is Editor"
-msgstr ""
+msgstr "Je Urednik"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_is_follower
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Je Pratilac"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__is_implicit_manager
@@ -1005,7 +1005,7 @@ msgstr ""
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Last Meeting"
-msgstr ""
+msgstr "Poslednji sastanak"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal____last_update
@@ -1014,7 +1014,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_report____last_update
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Poslednja izmena dana"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__write_uid
@@ -1022,7 +1022,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_note__write_uid
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Poslednje izmenio/la"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__write_date
@@ -1030,7 +1030,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_note__write_date
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Poslednje ažuriranje dana"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_goal_view_search
@@ -1041,18 +1041,18 @@ msgstr "Kasno"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Late Activities"
-msgstr ""
+msgstr "Zakasnele aktivnosti"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__template_id
 msgid "Mail Template"
-msgstr ""
+msgstr "Mail šablon"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_main_attachment_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Glavni prilog"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
@@ -1121,7 +1121,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_has_error
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Greška u isporuci poruke"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_ids
@@ -1133,7 +1133,7 @@ msgstr "Poruke"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__my_activity_date_deadline
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__my_activity_date_deadline
 msgid "My Activity Deadline"
-msgstr ""
+msgstr "Rok moje aktivnosti"
 
 #. module: hr_appraisal
 #: model:ir.actions.act_window,name:hr_appraisal.hr_appraisal_action_my
@@ -1163,25 +1163,25 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_calendar_event_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr ""
+msgstr "Sledeća aktivnost događaj u kalendaru"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_date_deadline
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Rok za sledeću aktivnosti"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_summary
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Pregled sledeće aktivnosti"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__activity_type_id
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Tip sledeće aktivnosti"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__next_appraisal_date
@@ -1193,43 +1193,43 @@ msgstr ""
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Next Meeting"
-msgstr ""
+msgstr "Naredni sastanak"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "No Meeting"
-msgstr ""
+msgstr "Nema sastanka"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Note"
-msgstr "Белешка"
+msgstr "Beleška"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_needaction_counter
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Broj akcija"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_has_error_counter
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "Broj grešaka"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_needaction_counter
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Broj poruka koje zahtevaju akciju"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__message_has_error_counter
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Broj poruka sa greškom u isporuci"
 
 #. module: hr_appraisal
 #: model:res.groups,name:hr_appraisal.group_hr_appraisal_user
@@ -1255,6 +1255,10 @@ msgid ""
 "a placeholder expression that provides the appropriate language, e.g. {{ "
 "object.partner_id.lang }}."
 msgstr ""
+"Opcioni jezik prevoda (ISO kod) za odabir prilikom slanja e-pošte. Ako nije "
+"podešeno, koristiće se engleska verzija. Ovo bi obično trebalo da bude izraz"
+" placeholder-a koji obezbeđuje odgovarajući jezik, npr. {{ "
+"object.partner_id.lang }}."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__parent_user_id
@@ -1294,7 +1298,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__progression
 msgid "Progress"
-msgstr ""
+msgstr "Napredak"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_employee_public
@@ -1304,7 +1308,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__recipient_ids
 msgid "Recipients"
-msgstr ""
+msgstr "Primaoci"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_employee__related_partner_id
@@ -1322,7 +1326,7 @@ msgstr ""
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__render_model
 msgid "Rendering Model"
-msgstr ""
+msgstr "Rendering Model"
 
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
@@ -1361,7 +1365,7 @@ msgstr "Odgovorni korisnik"
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__message_has_sms_error
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "Greška u dostavi SMS-a"
 
 #. module: hr_appraisal
 #: model_terms:ir.actions.act_window,help:hr_appraisal.open_view_hr_appraisal_tree
@@ -1386,7 +1390,7 @@ msgstr "Pošalji"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.view_hr_appraisal_form
 msgid "Send by email"
-msgstr ""
+msgstr "Pošalji email-om"
 
 #. module: hr_appraisal
 #: model:mail.template,description:hr_appraisal.mail_template_appraisal_confirm
@@ -1430,6 +1434,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Show all records which has next action date is before today"
 msgstr ""
+"Prikaži sve zapise koji imaju datum sledeće aktivnosti pre današnjeg datuma"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__state
@@ -1447,6 +1452,10 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
+"Status na osnovu aktivnosti\n"
+"Isteklo: Datum postavljen kao rok je već prošao\n"
+"Danas: Datum aktivnosti je danas\n"
+"Planirano: Buduće aktivnosti."
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/res_company.py:0
@@ -1462,7 +1471,7 @@ msgstr "Predmet"
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.request_appraisal_view_form
 msgid "Subject..."
-msgstr ""
+msgstr "Predmet..."
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
@@ -1562,19 +1571,19 @@ msgstr ""
 #. module: hr_appraisal
 #: model_terms:ir.ui.view,arch_db:hr_appraisal.hr_appraisal_search
 msgid "Today Activities"
-msgstr ""
+msgstr "Današnje aktivnosti"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__activity_exception_decoration
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "Zabeležen tip aktivnosti izuzeća."
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/wizard/request_appraisal.py:0
 #, python-format
 msgid "Unable to post message, please configure the sender's email address."
-msgstr ""
+msgstr "Nije moguće objaviti poruku, molimo podesite email adresu pošiljaoca."
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__uncomplete_goals_count
@@ -1587,7 +1596,7 @@ msgstr ""
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Unpublished"
-msgstr ""
+msgstr "Neobjavljeno"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_res_users
@@ -1609,13 +1618,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__website_message_ids
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Website poruke"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal__website_message_ids
 #: model:ir.model.fields,help:hr_appraisal.field_hr_appraisal_goal__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Istorija website komunikacije"
 
 #. module: hr_appraisal
 #: code:addons/hr_appraisal/models/res_company.py:0

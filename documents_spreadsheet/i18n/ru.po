@@ -38,6 +38,8 @@ msgstr "Документ \"%s\" сохранен как шаблон"
 msgid ""
 "#{ isSpreadsheet and 'Odoo Spreadsheets not available for download' or ''}"
 msgstr ""
+"#{ Электронная таблица и 'Odoo Spreadsheets не доступны для загрузики' или "
+"''}"
 
 #. module: documents_spreadsheet
 #: code:addons/documents_spreadsheet/models/spreadsheet_template.py:0
@@ -50,7 +52,7 @@ msgstr "%s (копия)"
 #: code:addons/documents_spreadsheet/static/src/bundle/components/spreadsheet_component.js:0
 #, python-format
 msgid "%s - Template"
-msgstr ""
+msgstr "%s - Образец"
 
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.res_config_settings_view_form_inherit_documents_spreadsheet
@@ -58,11 +60,13 @@ msgid ""
 "<strong>Spreadsheets</strong>\n"
 "                            <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\" role=\"img\"/>"
 msgstr ""
+"<strong>Электронные таблицы</strong>\n"
+"                            <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\" role=\"img\"/>"
 
 #. module: documents_spreadsheet
 #: model:ir.model.constraint,message:documents_spreadsheet.constraint_spreadsheet_contributor_spreadsheet_user_unique
 msgid "A combination of the spreadsheet and the user already exist"
-msgstr "Пара значений для электронной таблицы и юзера уже существуют"
+msgstr "Пара значений для электронной таблицы и пользователя уже существуют"
 
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.save_spreadsheet_template_view_form

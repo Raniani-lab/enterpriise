@@ -1514,7 +1514,7 @@ msgstr "UTM kampaania"
 #. module: marketing_automation
 #: model:ir.model,name:marketing_automation.model_utm_source
 msgid "UTM Source"
-msgstr ""
+msgstr "UTM allikas"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form

@@ -5,8 +5,8 @@
 # Translators:
 # Bojan Milovanovic <bojan.milovanovic@gmail.com>, 2022
 # Uros Kalajdzic <ukalajdzic@gmail.com>, 2022
-# Slobodan Simić <slsimic@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:22+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -74,7 +74,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_company_period_form
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_composition_form
 msgid "&amp;nbsp;"
-msgstr ""
+msgstr "&amp;nbsp;"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
@@ -185,7 +185,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__line_ids
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_group_form
 msgid "Account"
-msgstr "Рачун"
+msgstr "Račun"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_res_company__account_consolidation_currency_is_different
@@ -252,7 +252,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 msgid "Accounts"
-msgstr "Рачуни"
+msgstr "Računi"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_res_company__consolidation_color
@@ -262,12 +262,12 @@ msgstr ""
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Potrebna akcija"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
 msgid "Active"
-msgstr "Активно"
+msgstr "Aktivno"
 
 #. module: account_consolidation
 #. openerp-web
@@ -348,7 +348,7 @@ msgstr "Primenite"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Brojač priloga"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.line_template_consolidation_report
@@ -392,7 +392,7 @@ msgstr "Saldo"
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form_onboarding
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form_onboarding
 msgid "Cancel"
-msgstr "Откажи"
+msgstr "Otkaži"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__chart_id
@@ -455,20 +455,20 @@ msgstr "Kod"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_account_account__consolidation_color
 msgid "Color"
-msgstr ""
+msgstr "Boja"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__color
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__color
 msgid "Color Index"
-msgstr ""
+msgstr "Indeks boja"
 
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_res_company
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__company_ids
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_chart__company_ids
 msgid "Companies"
-msgstr "Предузећа"
+msgstr "Preduzeća"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__company_id
@@ -522,7 +522,7 @@ msgstr ""
 #. module: account_consolidation
 #: model:ir.ui.menu,name:account_consolidation.menu_consolidation_configuration
 msgid "Configuration"
-msgstr "Подешавање"
+msgstr "Podešavanje"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.cell_template_consolidation_report
@@ -804,7 +804,7 @@ msgstr ""
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_line_tree
 msgid "Date"
-msgstr "Датум"
+msgstr "Datum"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_step
@@ -820,7 +820,7 @@ msgstr ""
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal_line__note
 msgid "Description"
-msgstr "Опис"
+msgstr "Opis"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__display_dates
@@ -838,7 +838,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition__display_name
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_rate__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Naziv za prikaz"
 
 #. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_create_period_state__done
@@ -859,7 +859,7 @@ msgstr "Priprema"
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 #, python-format
 msgid "Edit"
-msgstr ""
+msgstr "Uredi"
 
 #. module: account_consolidation
 #: code:addons/account_consolidation/report/trial_balance.py:0
@@ -905,12 +905,12 @@ msgstr ""
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Pratioci"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Pratioci (Partneri)"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__full_name
@@ -944,7 +944,7 @@ msgstr "Grupe"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Ima poruku"
 
 #. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__consolidation_account__currency_mode__hist
@@ -985,13 +985,13 @@ msgstr "ID"
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Ako je označeno, nove poruke zahtevaju vašu pažnju."
 
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_has_error
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Ako je označeno, neke poruke imaju grešku u isporuci."
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
@@ -1013,25 +1013,25 @@ msgstr ""
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Je Pratilac"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal_line__journal_id
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_form
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_line_form
 msgid "Journal"
-msgstr "Извештај"
+msgstr "Izveštaj"
 
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_account_move_line
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_line_form
 msgid "Journal Item"
-msgstr "Ставка извештаја"
+msgstr "Stavka izveštaja"
 
 #. module: account_consolidation
 #: model:ir.actions.act_window,name:account_consolidation.view_account_move_line_filter
 msgid "Journal Items"
-msgstr "Sadrzaj Dnevnika"
+msgstr "Sadržaj Dnevnika"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_group__line_ids
@@ -1053,7 +1053,7 @@ msgstr "Dnevnici"
 #: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_setup_ccoa_state__just_done
 #: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_setup_consolidation_state__just_done
 msgid "Just done"
-msgstr ""
+msgstr "Upravo završeno"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account____last_update
@@ -1066,7 +1066,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition____last_update
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_rate____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Poslednja izmena dana"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__write_uid
@@ -1079,7 +1079,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition__write_uid
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_rate__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Poslednje izmenio/la"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__write_date
@@ -1092,12 +1092,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period_composition__write_date
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_rate__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Poslednje ažuriranje dana"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Glavni prilog"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_search
@@ -1123,7 +1123,7 @@ msgstr ""
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Greška u isporuci poruke"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_ids
@@ -1168,27 +1168,27 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_setup_ccoa_state__not_done
 #: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_setup_consolidation_state__not_done
 msgid "Not done"
-msgstr ""
+msgstr "Nije završeno"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Broj akcija"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "Broj grešaka"
 
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Broj poruka koje zahtevaju akciju"
 
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Broj poruka sa greškom u isporuci"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
@@ -1221,7 +1221,7 @@ msgstr ""
 #: code:addons/account_consolidation/report/trial_balance.py:0
 #, python-format
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_group__parent_id
@@ -1232,7 +1232,7 @@ msgstr "Roditelj"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_group__parent_path
 msgid "Parent Path"
-msgstr ""
+msgstr "Nadređena Putanja"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__period_id
@@ -1293,7 +1293,7 @@ msgstr ""
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "Greška u dostavi SMS-a"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_step
@@ -1527,12 +1527,12 @@ msgstr ""
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Website poruke"
 
 #. module: account_consolidation
 #: model:ir.model.fields,help:account_consolidation.field_consolidation_period__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Istorija website komunikacije"
 
 #. module: account_consolidation
 #: code:addons/account_consolidation/models/consolidation_journal.py:0

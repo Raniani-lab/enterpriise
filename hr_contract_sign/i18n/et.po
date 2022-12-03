@@ -30,13 +30,13 @@ msgstr ""
 #: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
 #, python-format
 msgid "%s and %s are the signatories."
-msgstr ""
+msgstr "%s ja %s on allkirjastanud."
 
 #. module: hr_contract_sign
 #: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
 #, python-format
 msgid "%s does not have a work email set."
-msgstr ""
+msgstr "%s töö e-mail ei ole veel seadistatud."
 
 #. module: hr_contract_sign
 #: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
@@ -70,12 +70,12 @@ msgstr "Leping"
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_contract_history
 msgid "Contract history"
-msgstr ""
+msgstr "Lepingu ajalugu"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__cc_partner_ids
 msgid "Copy to"
-msgstr ""
+msgstr "Kopeeri"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__create_uid
@@ -100,17 +100,17 @@ msgstr "Kuva nimi"
 #. module: hr_contract_sign
 #: model:ir.actions.act_window,name:hr_contract_sign.sign_contract_wizard_action
 msgid "Document Signature"
-msgstr ""
+msgstr "Dokumendi allkiri"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__sign_template_id
 msgid "Document to sign"
-msgstr ""
+msgstr "Dokument allkirjastamiseks"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__sign_template_ids
 msgid "Documents to sign"
-msgstr ""
+msgstr "Dokumendid allkirjastamiseks"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,help:hr_contract_sign.field_hr_contract_sign_document_wizard__sign_template_ids
@@ -119,6 +119,9 @@ msgid ""
 "        Documents with 1 responsible will only have to be signed by the employee while documents with 2 different responsible will have to be signed by both the employee and the responsible.\n"
 "        "
 msgstr ""
+"Dokumendid allkirjastamiseks. Valikus on dokumendid, millel on vähemalt 1 või 2 vastutajat.\n"
+"        Ühe vastutajaga dokumendi peab allkirjastama ainult töötaja, kahe erineva vastutajaga dokumendi peavad allkirjastama nii töötaja kui ka ettevõttepoolne vastutav isik.\n"
+"        "
 
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_employee
@@ -134,7 +137,7 @@ msgstr "Tööleping"
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__employee_role_id
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__employee_role_id
 msgid "Employee Role"
-msgstr ""
+msgstr "Töötaja roll"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,help:hr_contract_sign.field_hr_contract_sign_document_wizard__employee_role_id
@@ -143,6 +146,8 @@ msgid ""
 "Employee's role on the templates to sign. The same role must be present in "
 "all the templates"
 msgstr ""
+"Töötaja roll dokumendi allkirjastamisel. Sama roll peab olema määratud "
+"kõikidel dokumendimallidel."
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__employee_ids
@@ -157,7 +162,7 @@ msgstr "Vastutav personal"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__has_both_template
 msgid "Has Both Template"
-msgstr ""
+msgstr "Omab mõlemat malli"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__id
@@ -167,7 +172,7 @@ msgstr "ID"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__is_signature_request
 msgid "Is Signature Request"
-msgstr ""
+msgstr "Allkirjataotlus"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard____last_update
@@ -187,7 +192,7 @@ msgstr "Viimati uuendatud"
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 msgid "Mail Options"
-msgstr ""
+msgstr "E-maili valikud"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__message
@@ -200,28 +205,28 @@ msgstr "Sõnum"
 msgid ""
 "No appropriate template could be found, please make sure you configured them"
 " properly."
-msgstr ""
+msgstr "Sobivat malli ei leitud. Veenduge, et olete need õigesti seadistanud."
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 msgid "No template available"
-msgstr ""
+msgstr "Ühtegi malli pole saadaval"
 
 #. module: hr_contract_sign
 #: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
 #, python-format
 msgid "Only %s has to sign."
-msgstr ""
+msgstr "Ainult %s peab allkirjastama."
 
 #. module: hr_contract_sign
 #: model:sign.template,redirect_url_text:hr_contract_sign.template_sign_termination
 msgid "Open Link"
-msgstr ""
+msgstr "Ava link"
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 msgid "Optional Message..."
-msgstr ""
+msgstr "Valikuline sõnum"
 
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_plan_wizard
@@ -236,7 +241,7 @@ msgstr ""
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__possible_template_ids
 msgid "Possible Template"
-msgstr ""
+msgstr "Võimalik mall"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract__sign_request_ids
@@ -270,7 +275,7 @@ msgstr ""
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 msgid "Sign Request Options"
-msgstr ""
+msgstr "Allkirjataotluse valikud"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__sign_template_responsible_ids
@@ -291,13 +296,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 #, python-format
 msgid "Signature Request"
-msgstr ""
+msgstr "Allkirjataotlus"
 
 #. module: hr_contract_sign
 #: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
 #, python-format
 msgid "Signature Request - %s"
-msgstr ""
+msgstr "Allkirjataotlus - %s"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__subject
@@ -307,7 +312,7 @@ msgstr "Teema"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__template_warning
 msgid "Template Warning"
-msgstr ""
+msgstr "Malli hoiatus"
 
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_res_users
@@ -317,7 +322,7 @@ msgstr "Kasutaja"
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 msgid "Write email or search contact..."
-msgstr ""
+msgstr "Kirjuta e-mail või otsi kontakti..."
 
 #. module: hr_contract_sign
 #: code:addons/hr_contract_sign/models/hr_contract.py:0

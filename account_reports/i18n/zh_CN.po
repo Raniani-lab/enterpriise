@@ -79,6 +79,14 @@ msgstr "“打开总帐”插入符号选项仅适用于针对帐户的表单报
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
+msgid ""
+"'View Bank Statement' caret option is only available for report lines "
+"targeting bank statements."
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
 msgid "'external' engine does not support groupby, limit nor offset."
 msgstr "“外部”引擎不支持分组、限制或抵消。"
 
@@ -288,8 +296,13 @@ msgstr "<span class=\"fa fa-filter\"/> 选项:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
-msgid "<span class=\"fa fa-folder-open\"/> Analytic"
-msgstr "<span class=\"fa fa-folder-open\"/> 分析"
+msgid "<span class=\"fa fa-folder-open\"/> Analytic Filter"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
+msgid "<span class=\"fa fa-folder-open\"/> Analytic Group By"
+msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_partner
@@ -692,6 +705,11 @@ msgstr "货币金额： %s"
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Analytic Accounts:"
 msgstr "分析会计"
+
+#. module: account_reports
+#: model:ir.model.fields,field_description:account_reports.field_account_report__filter_analytic_groupby
+msgid "Analytic Group By"
+msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -1560,11 +1578,6 @@ msgid ""
 "Field 'Custom Handler Model' can only reference records inheriting from "
 "[%s]."
 msgstr "字段“自定义处理程序模型”只能引用从 [%s] 继承的记录。"
-
-#. module: account_reports
-#: model:ir.model.fields,field_description:account_reports.field_account_report__filter_analytic_groupby
-msgid "Filter Analytic Groupby"
-msgstr "筛选分析组通过"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -2944,6 +2957,13 @@ msgstr "为该组织提交报告时要使用的标识符。"
 #, python-format
 msgid "The main company of a tax unit has to be part of it."
 msgstr "一个税务组织的主要公司必须是它的一部分。"
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_journal_report.py:0
+#, python-format
+msgid ""
+"The selected report line does not target a Journal Entry or a Journal Item."
+msgstr ""
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_res_company__account_tax_unit_ids

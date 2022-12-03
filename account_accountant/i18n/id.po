@@ -1571,7 +1571,7 @@ msgstr "Baris Laporan"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
 msgid "Suggestions"
-msgstr ""
+msgstr "Saran"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_ids

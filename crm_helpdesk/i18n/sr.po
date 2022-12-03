@@ -3,9 +3,9 @@
 # 	* crm_helpdesk
 # 
 # Translators:
-# Slobodan Simić <slsimic@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Uros Kalajdzic <ukalajdzic@gmail.com>, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:47+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Uros Kalajdzic <ukalajdzic@gmail.com>, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +25,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:crm_helpdesk.crm_lead_convert2ticket_view_form
 #: model_terms:ir.ui.view,arch_db:crm_helpdesk.helpdesk_ticket_to_lead_view_form
 msgid "Cancel"
-msgstr "Откажи"
+msgstr "Otkaži"
 
 #. module: crm_helpdesk
 #: model_terms:ir.ui.view,arch_db:crm_helpdesk.helpdesk_ticket_to_lead_view_form
@@ -83,7 +83,7 @@ msgstr "Kupac"
 #: model:ir.model.fields,field_description:crm_helpdesk.field_crm_lead_convert2ticket__display_name
 #: model:ir.model.fields,field_description:crm_helpdesk.field_helpdesk_ticket_to_lead__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Naziv za prikaz"
 
 #. module: crm_helpdesk
 #: model:ir.model.fields.selection,name:crm_helpdesk.selection__helpdesk_ticket_to_lead__action__nothing
@@ -93,7 +93,7 @@ msgstr ""
 #. module: crm_helpdesk
 #: model:ir.model,name:crm_helpdesk.model_helpdesk_ticket
 msgid "Helpdesk Ticket"
-msgstr "Карта за помоћ"
+msgstr "Zahtev za pomoć"
 
 #. module: crm_helpdesk
 #: model:ir.model.fields,field_description:crm_helpdesk.field_crm_lead_convert2ticket__id
@@ -105,19 +105,19 @@ msgstr "ID"
 #: model:ir.model.fields,field_description:crm_helpdesk.field_crm_lead_convert2ticket____last_update
 #: model:ir.model.fields,field_description:crm_helpdesk.field_helpdesk_ticket_to_lead____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Poslednja izmena dana"
 
 #. module: crm_helpdesk
 #: model:ir.model.fields,field_description:crm_helpdesk.field_crm_lead_convert2ticket__write_uid
 #: model:ir.model.fields,field_description:crm_helpdesk.field_helpdesk_ticket_to_lead__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Poslednje izmenio/la"
 
 #. module: crm_helpdesk
 #: model:ir.model.fields,field_description:crm_helpdesk.field_crm_lead_convert2ticket__write_date
 #: model:ir.model.fields,field_description:crm_helpdesk.field_helpdesk_ticket_to_lead__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Poslednje ažuriranje dana"
 
 #. module: crm_helpdesk
 #: model:ir.model.fields,field_description:crm_helpdesk.field_crm_lead_convert2ticket__lead_id
@@ -182,7 +182,7 @@ msgstr ""
 #. module: crm_helpdesk
 #: model:ir.model.fields,field_description:crm_helpdesk.field_helpdesk_ticket_to_lead__ticket_id
 msgid "Ticket"
-msgstr ""
+msgstr "Ulaznica"
 
 #. module: crm_helpdesk
 #: code:addons/crm_helpdesk/wizard/helpdesk_ticket_to_lead.py:0
@@ -193,7 +193,7 @@ msgstr ""
 #. module: crm_helpdesk
 #: model:ir.model.fields,field_description:crm_helpdesk.field_crm_lead_convert2ticket__ticket_type_id
 msgid "Ticket Type"
-msgstr ""
+msgstr "Vrsta ulaznice"
 
 #. module: crm_helpdesk
 #: code:addons/crm_helpdesk/wizard/crm_lead_convert2ticket.py:0

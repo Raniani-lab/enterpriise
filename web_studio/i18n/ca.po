@@ -17,9 +17,10 @@
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
 # Quim - eccit <quim@eccit.com>, 2022
 # Martin Trigaux, 2022
-# jabelchi, 2022
+# Josep Anton Belchi, 2022
 # marcescu, 2022
 # Arnau Ros, 2022
+# Farouk Jabiri, 2022
 # 
 msgid ""
 msgstr ""
@@ -27,7 +28,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:22+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Arnau Ros, 2022\n"
+"Last-Translator: Farouk Jabiri, 2022\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -52,6 +53,18 @@ msgid ""
 "                </p>\n"
 "            "
 msgstr ""
+"\n"
+"                <p class=\"o_view_nocontent_smiling_face\">\n"
+"                    Aquesta és la seva nova acció.\n"
+"                </p>\n"
+"                <p>Per defecte, conté una llista i una vista de formulari i possiblement\n"
+"                   altres tipus de vista depenent de les opcions que hagi escollit pel seu model.\n"
+"                </p>\n"
+"                <p>\n"
+"                    Pots començar personalitzant aquestes pantalles fent clic a la icona de Studio a la\n"
+"                    cantonada superior dreta (també pots personalitzar aquest missatge d'ajuda aquí).\n"
+"                </p>\n"
+"            "
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/main.py:0
@@ -196,14 +209,14 @@ msgstr "Grups d'accés"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Access records from cell"
-msgstr ""
+msgstr "Accés als registres des de la cel·la"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Access records from graph"
-msgstr ""
+msgstr "Accés als registres des del gràfic"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_mail_activity_type__category
@@ -547,7 +560,7 @@ msgstr "Arxivant"
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_manager.js:0
 #, python-format
 msgid "Are you sure you want to remove the selection values?"
-msgstr ""
+msgstr "Esteu segur que voleu esborrar els valors de selecció?"
 
 #. module: web_studio
 #. openerp-web
@@ -571,6 +584,8 @@ msgid ""
 "Are you sure you want to restore the default view?\r\n"
 "All customization done with Studio on this view will be lost."
 msgstr ""
+"Esteu segur que voleu restaurar la vista per defecte?\r\n"
+"Totes les personalitzacions fetes amb Studio en aquesta vista es perdran."
 
 #. module: web_studio
 #. openerp-web
@@ -581,6 +596,8 @@ msgid ""
 "Are you sure you want to restore the default view?\r\n"
 "All customization done with studio on this view will be lost."
 msgstr ""
+"Esteu segur que voleu restaurar la vista per defecte?\r\n"
+"Totes les personalitzacions fetes amb studio en aquesta vista es perdran."
 
 #. module: web_studio
 #. openerp-web
@@ -602,28 +619,28 @@ msgstr "Ascendent"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Assign a responsible to each record"
-msgstr ""
+msgstr "Assigna un responsable a cada registre"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Assign dates and visualize records in a calendar"
-msgstr ""
+msgstr "Assignar dates i visualitzar registres en un calendari"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Attach a picture to a record"
-msgstr ""
+msgstr "Agregar una imatge a un registre"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Auto-complete with"
-msgstr ""
+msgstr "Autocompletar amb"
 
 #. module: web_studio
 #. openerp-web
@@ -663,7 +680,7 @@ msgstr "Mitjana"
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Awaiting approval"
-msgstr ""
+msgstr "En espera d'aprovació"
 
 #. module: web_studio
 #. openerp-web
@@ -885,7 +902,7 @@ msgstr "Fes clic aquí"
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "Click to edit messaging features on your model."
-msgstr ""
+msgstr "Fes clic per a editar les funcions de missatgeria en el teu model."
 
 #. module: web_studio
 #. openerp-web
@@ -893,7 +910,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Click to see all approval rules."
-msgstr ""
+msgstr "Fes clic per a veure totes les regles d'aprovació."
 
 #. module: web_studio
 #. openerp-web
@@ -1091,13 +1108,15 @@ msgstr "Context"
 msgid ""
 "Continue to configure some typical behaviors for your new type of object."
 msgstr ""
+"Continuï configurant alguns comportaments típics pel teu nou tipus "
+"d'objecte."
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/client_action/navbar/home_menu_customizer/home_menu_customizer.js:0
 #, python-format
 msgid "Could not change the background"
-msgstr ""
+msgstr "No s'ha pogut canviar el fons"
 
 #. module: web_studio
 #. openerp-web
@@ -1259,7 +1278,7 @@ msgstr "Vistes personalitzades:"
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.view_base_module_uninstall_studio
 msgid "Customization made with Studio will be permanently lost"
-msgstr ""
+msgstr "Les personalitzacions fetes amb Studio es perdran permanentment"
 
 #. module: web_studio
 #. openerp-web
@@ -1310,7 +1329,7 @@ msgstr "Data i Temps"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Date range & Gantt"
-msgstr ""
+msgstr "Rang de dates i Gantt"
 
 #. module: web_studio
 #. openerp-web
@@ -1394,6 +1413,8 @@ msgstr "Vista per defecte"
 #, python-format
 msgid "Define start/end dates and visualize records in a Gantt chart"
 msgstr ""
+"Defineixi les dates d'inici i final i visualitzi els registres en un "
+"diagrama de Gantt"
 
 #. module: web_studio
 #. openerp-web
@@ -1500,14 +1521,14 @@ msgstr "Indisponibilitat de la pantalla"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Display count"
-msgstr ""
+msgstr "Mostrar recompte"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "Display horizontally"
-msgstr ""
+msgstr "Mostrar horitzontalment"
 
 #. module: web_studio
 #. openerp-web
@@ -1560,7 +1581,7 @@ msgstr "Arrossega blocs de construcció aquí "
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Dropdown Menu"
-msgstr ""
+msgstr "Menú desplegable"
 
 #. module: web_studio
 #. openerp-web
@@ -1631,7 +1652,7 @@ msgstr "Editar valor"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Edit Values"
-msgstr ""
+msgstr "Editar valors"
 
 #. module: web_studio
 #. openerp-web
@@ -1690,7 +1711,7 @@ msgstr "Llista de missatges buida"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Enable Mass Editing"
-msgstr ""
+msgstr "Habilitar edició massiva"
 
 #. module: web_studio
 #. openerp-web
@@ -1961,7 +1982,7 @@ msgstr ""
 #: model:mail.activity.type,name:web_studio.mail_activity_data_approve
 #, python-format
 msgid "Grant Approval"
-msgstr ""
+msgstr "Concedir aprovació"
 
 #. module: web_studio
 #. openerp-web
@@ -2206,6 +2227,8 @@ msgstr "Icona"
 #: model:ir.model.fields,help:web_studio.field_studio_approval_rule__domain
 msgid "If set, the rule will only apply on records that match the domain."
 msgstr ""
+"Si aquesta opció està activada, la regla només aplicarà en els registres que"
+" coincideixin amb el domini."
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_studio_approval_rule__exclusive_user
@@ -2213,6 +2236,8 @@ msgid ""
 "If set, the user who approves this rule will not be able to approve other "
 "rules for the same record"
 msgstr ""
+"Si aquesta opció està activada, l'usuari que aprovi aquesta regla no podrà "
+"aprovar altres regles per al mateix registre"
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/main.py:0
@@ -2222,6 +2247,7 @@ msgid ""
 "If you don't want to create a new model, an existing model should be "
 "selected."
 msgstr ""
+"Si no desitja crear un nou model, ha de seleccionar un model existent."
 
 #. module: web_studio
 #. openerp-web
@@ -2266,6 +2292,8 @@ msgid ""
 "Indicates that this menu was created by Studio to hold configuration sub-"
 "menus"
 msgstr ""
+"Indica que aquest menú va ser creat per Studio per a mantenir la "
+"configuració dels submenús"
 
 #. module: web_studio
 #. openerp-web
@@ -2300,7 +2328,7 @@ msgstr "Interval"
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Invalid studio_approval %s in button"
-msgstr ""
+msgstr "studio_approval %s invàlid en el botó"
 
 #. module: web_studio
 #. openerp-web
@@ -2755,14 +2783,14 @@ msgstr "Nou Model"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "New record at the bottom"
-msgstr ""
+msgstr "Nou registre en la part inferior"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "New record on top"
-msgstr ""
+msgstr "Nou registre en la part superior"
 
 #. module: web_studio
 #. openerp-web
@@ -2798,6 +2826,8 @@ msgstr "No"
 #, python-format
 msgid "No approval found for this rule, record and user combination."
 msgstr ""
+"No s'ha trobat cap aprovació per a aquesta combinació de regla, registre i "
+"usuari."
 
 #. module: web_studio
 #. openerp-web
@@ -2811,13 +2841,13 @@ msgstr "Sense capçalera/peu de pàgina"
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_manager.js:0
 #, python-format
 msgid "No related many2one fields found"
-msgstr ""
+msgstr "No es van trobar camps many2one relacionats"
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/report.py:0
 #, python-format
 msgid "No view found for the given report!"
-msgstr ""
+msgstr "No es va trobar cap vista per al report donat."
 
 #. module: web_studio
 #. openerp-web
@@ -2886,7 +2916,7 @@ msgstr "D'un a diversos"
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "Only %s members can approve this rule."
-msgstr ""
+msgstr "Només els membres %s poden aprovar aquesta regla."
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/main.py:0
@@ -2989,7 +3019,7 @@ msgstr "Pastís"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Pipeline stages"
-msgstr ""
+msgstr "Etapes del flux"
 
 #. module: web_studio
 #. openerp-web
@@ -3063,6 +3093,8 @@ msgid ""
 "Private methods cannot be restricted (since they cannot be called remotely, "
 "this would be useless)."
 msgstr ""
+"No es poden restringir els mètodes privats (seria inútil, ja que no es poden"
+" activar de manera remota)."
 
 #. module: web_studio
 #. openerp-web
@@ -3263,7 +3295,7 @@ msgstr "Acció d'informe"
 #: code:addons/web_studio/static/src/legacy/xml/action_editor.xml:0
 #, python-format
 msgid "Reporting Views"
-msgstr ""
+msgstr "Vistes d'informes"
 
 #. module: web_studio
 #. openerp-web
@@ -3310,14 +3342,14 @@ msgstr "Responsable"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Restore Default View"
-msgstr ""
+msgstr "Restaurar vista per defecte"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Restrict a record to a specific company"
-msgstr ""
+msgstr "Restringir un registre a una empresa especifica"
 
 #. module: web_studio
 #. openerp-web
@@ -3339,14 +3371,14 @@ msgstr "Revocar"
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Row grouping - First level"
-msgstr ""
+msgstr "Agrupar files - primer nivell"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Row grouping - Second level"
-msgstr ""
+msgstr "Agrupar files - segon nivell"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_rule
@@ -3360,6 +3392,8 @@ msgid ""
 "Rules with existing entries cannot be deleted since it would delete existing"
 " approval entries. You should archive the rule instead."
 msgstr ""
+"No es poden eliminar les regles amb entrades existents, ja que s'esborrarien"
+" les entrades d'aprovació existents. El millor és arxivar la regla."
 
 #. module: web_studio
 #: code:addons/web_studio/models/studio_approval.py:0
@@ -3368,6 +3402,9 @@ msgid ""
 "Rules with existing entries cannot be modified since it would break existing"
 " approval entries. You should archive the rule and create a new one instead."
 msgstr ""
+"No es poden modificar les regles amb entrades existents, ja que es danyarien"
+" les entrades d'aprovació existents. El millor és arxivar la regla i crear "
+"una nova."
 
 #. module: web_studio
 #. openerp-web
@@ -3461,7 +3498,7 @@ msgstr "Envia un"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Send messages, log notes and schedule activities"
-msgstr ""
+msgstr "Enviï missatges, registri notes i programi activitats"
 
 #. module: web_studio
 #. openerp-web
@@ -3633,7 +3670,7 @@ msgstr "Nom de la fase"
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Stage and visualize records in a custom pipeline"
-msgstr ""
+msgstr "Organitzi i visualitzi registres en un flux personalitzat"
 
 #. module: web_studio
 #: code:addons/web_studio/models/ir_model.py:0
@@ -3686,39 +3723,39 @@ msgstr "Creador d'aplicacions de Studio"
 #: model:ir.actions.act_window,name:web_studio.studio_approval_entry_action
 #: model:ir.ui.menu,name:web_studio.menu_studio_approval_entry
 msgid "Studio Approval Entries"
-msgstr ""
+msgstr "Entrades d'aprovació de Studio"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_approval_entry
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_form_view
 msgid "Studio Approval Entry"
-msgstr ""
+msgstr "Entrada d'aprovació de Studio"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_approval_request
 msgid "Studio Approval Request"
-msgstr ""
+msgstr "Sol·licitud d'aprovació de Studio"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_studio_approval_rule
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_form_view
 msgid "Studio Approval Rule"
-msgstr ""
+msgstr "Regla d'aprovació de Studio"
 
 #. module: web_studio
 #: model:ir.actions.act_window,name:web_studio.studio_approval_rule_action
 msgid "Studio Approvals"
-msgstr ""
+msgstr "Aprovacions de Studio"
 
 #. module: web_studio
 #: model:ir.ui.menu,name:web_studio.menu_studio_approval_rule
 msgid "Studio Approvals Rules"
-msgstr ""
+msgstr "Regles d'aprovació de Studio"
 
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_ir_ui_menu__is_studio_configuration
 msgid "Studio Configuration Menu"
-msgstr ""
+msgstr "Menú de configuració de Studio"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_customizations_filter
@@ -3750,7 +3787,7 @@ msgstr "Subtotal i Total"
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Subview %s"
-msgstr ""
+msgstr "Vista secundària %s"
 
 #. module: web_studio
 #. openerp-web
@@ -3758,7 +3795,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.xml:0
 #, python-format
 msgid "Suggested features for your new model"
-msgstr ""
+msgstr "Funcions suggerides per al seu nou model"
 
 #. module: web_studio
 #. openerp-web
@@ -3848,6 +3885,8 @@ msgid ""
 "The approval rule is only applied to records matching the following "
 "condition:"
 msgstr ""
+"La regla d'aprovació aplica únicament en els registres que compleixin la "
+"següent condició:"
 
 #. module: web_studio
 #. openerp-web
@@ -3857,6 +3896,8 @@ msgid ""
 "The description will be shown to users to understand why they must ask for "
 "approval."
 msgstr ""
+"Es mostrarà la descripció als usuaris perquè entenguin per què han de "
+"sol·licitar l'aprovació."
 
 #. module: web_studio
 #. openerp-web
@@ -3880,14 +3921,14 @@ msgstr "El camp%s no existeix"
 #: code:addons/web_studio/static/src/legacy/js/views/controllers/form_controller.js:0
 #, python-format
 msgid "The following approvals are missing:"
-msgstr ""
+msgstr "Falten les següents aprovacions:"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/legacy/js/views/view_editor_sidebar.js:0
 #, python-format
 msgid "The following fields are currently not in the view."
-msgstr ""
+msgstr "Els següents camps actualment no estan en la vista."
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/main.py:0
@@ -3914,7 +3955,7 @@ msgstr "El model %s no existeix "
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "The model %s doesn't support adding fields."
-msgstr ""
+msgstr "El model %s no suporta agregar camps."
 
 #. module: web_studio
 #. openerp-web
@@ -3931,7 +3972,7 @@ msgstr ""
 #: code:addons/web_studio/controllers/main.py:0
 #, python-format
 msgid "The operation  type \"%s\" is not supported"
-msgstr ""
+msgstr "El tipus d'operació \"%s\" no és compatible"
 
 #. module: web_studio
 #. openerp-web
@@ -3965,6 +4006,8 @@ msgid ""
 "The user who approves this rule will not be able to approve other rules for "
 "the same record."
 msgstr ""
+"L'usuari que aprovi aquesta regla no podrà aprovar altres regles per al "
+"mateix registre."
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/main.py:0
@@ -3973,19 +4016,21 @@ msgid ""
 "There are %s records using selection values not listed in those you are trying to save.\n"
 "Are you sure you want to remove the selection values of those records?"
 msgstr ""
+"Hi ha %s registres utilitzant valors de selecció que no figuren en els que està intentant guardar.\n"
+"Està segur que desitja eliminar els valors de selecció d'aquests registres?"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_manager.xml:0
 #, python-format
 msgid "There are no many2one fields related to the current model."
-msgstr ""
+msgstr "No hi ha camps many2one relacionats amb el model actual."
 
 #. module: web_studio
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "There is no method %s on the model %s (%s)"
-msgstr ""
+msgstr "No hi ha cap mètode %s al model %s (%s)"
 
 #. module: web_studio
 #. openerp-web
@@ -4009,6 +4054,8 @@ msgid ""
 "This approval or the one you already submitted limits you to a single approval on this action.\n"
 "Another user is required to further approve this action."
 msgstr ""
+"Aquesta aprovació o la que ja vas enviar et limita a una sola aprovació per aquesta acció.\n"
+"Es requereix un altre usuari per aprovar aquesta acció."
 
 #. module: web_studio
 #. openerp-web
@@ -4029,6 +4076,8 @@ msgid ""
 "This field will be used when creating records directly from the calendar "
 "view."
 msgstr ""
+"S'utilitzarà aquest camp en crear registres directament des de la vista de "
+"calendari."
 
 #. module: web_studio
 #. openerp-web
@@ -4049,6 +4098,11 @@ msgid ""
 "custom report type that needs custom data to be rendered and so is not "
 "editable by studio."
 msgstr ""
+"No es pot obtenir una vista prèvia o editar aquest registre perquè no s'ha "
+"pogut presentar amb aquest missatge: %s. Això podria estar passant perquè "
+"aquest és un tipus de report personalitzat que necessita dades "
+"personalitzades per a mostrar-se i, per tant, no és editable mitjançant "
+"Studio."
 
 #. module: web_studio
 #: code:addons/web_studio/models/studio_approval.py:0
@@ -4063,6 +4117,7 @@ msgstr "Aquesta norma ja ha estat aprovada/rebutjada."
 #, python-format
 msgid "This rule limits this user to a single approval for this action."
 msgstr ""
+"Aquesta regla limita aquest usuari a una sola aprovació per a aquesta acció."
 
 #. module: web_studio
 #. openerp-web
@@ -4070,6 +4125,8 @@ msgstr ""
 #, python-format
 msgid "This user will be assigned a next activity when approval is requested."
 msgstr ""
+"Se li assignarà una següent activitat a aquest usuari quan se sol·liciti "
+"l'aprovació."
 
 #. module: web_studio
 #. openerp-web
@@ -4115,12 +4172,14 @@ msgid ""
 "To create a one2many field on the current model, you must first create its "
 "many2one counterpart on the model you want to relate to."
 msgstr ""
+"Per a crear un camp one2many en el model actual, primer ha de crear la seva "
+"contrapart many2one en el model amb el qual desitja relacionar-lo."
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/report.py:0
 #, python-format
 msgid "To edit this document please create a record first"
-msgstr ""
+msgstr "Per editar aquest document, creeu primer un registre"
 
 #. module: web_studio
 #. openerp-web
@@ -4154,7 +4213,7 @@ msgstr "Tipus"
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Type down your notes here..."
-msgstr ""
+msgstr "Escrigui les seves notes aquí..."
 
 #. module: web_studio
 #. openerp-web
@@ -4297,12 +4356,12 @@ msgstr "Què tal una <b>Vista Kanban</b>?"
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_studio_approval_rule__can_validate
 msgid "Whether the rule can be approved by the current user"
-msgstr ""
+msgstr "Si la regla pot ser aprovada per l'usuari actual"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_model__abstract
 msgid "Whether this model is abstract"
-msgstr ""
+msgstr "Si aquest model és abstracte"
 
 #. module: web_studio
 #. openerp-web
@@ -4342,7 +4401,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Write additional notes or comments"
-msgstr ""
+msgstr "Escrigui notes o comentaris addicionals"
 
 #. module: web_studio
 #. openerp-web
@@ -4370,6 +4429,7 @@ msgstr "Només pots mostrar un usuari o un partner"
 #, python-format
 msgid "You cannot cancel an approval you didn't set yourself."
 msgstr ""
+"No podeu cancel·lar una regla que no va ser establerta per vostè mateix"
 
 #. module: web_studio
 #. openerp-web
@@ -4377,7 +4437,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/action_editor_main.js:0
 #, python-format
 msgid "You cannot deactivate this view as it is the last one active."
-msgstr ""
+msgstr "No podeu desactivar aquesta vista, ja que és l'última activa."
 
 #. module: web_studio
 #: code:addons/web_studio/controllers/report.py:0
@@ -4393,6 +4453,8 @@ msgid ""
 "You cannot remove all the menu items of an app.\r\n"
 "Try uninstalling the app instead."
 msgstr ""
+"No pot eliminar tots els elements del menú d'una aplicació.\r\n"
+"Prova de desinstal·lar l'aplicació en el seu lloc."
 
 #. module: web_studio
 #. openerp-web
@@ -4417,14 +4479,14 @@ msgstr ""
 #: code:addons/web_studio/models/studio_approval.py:0
 #, python-format
 msgid "You just like to break things, don't you?"
-msgstr ""
+msgstr "Li encanta destruir les coses, cert?"
 
 #. module: web_studio
 #. openerp-web
 #: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
 #, python-format
 msgid "You must have at least one option set"
-msgstr ""
+msgstr "Ha d'establir almenys una opció."
 
 #. module: web_studio
 #. openerp-web
@@ -4536,6 +4598,7 @@ msgstr "dreta"
 #, python-format
 msgid "studio_approval attribute can only be set in form views"
 msgstr ""
+"L'atribut studio_approval només es pot establir en vistes de formulari"
 
 #. module: web_studio
 #. openerp-web

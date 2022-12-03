@@ -5,8 +5,8 @@
 # Translators:
 # Djordje Marjanovic <djvmarjanovic@gmail.com>, 2022
 # Uros Kalajdzic <ukalajdzic@gmail.com>, 2022
-# Slobodan Simić <slsimic@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:47+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -42,6 +42,8 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
 msgid "<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Manage\" title=\"Manage\"/>"
 msgstr ""
+"<i class=\"fa fa-ellipsis-v\" role=\"img\" aria-label=\"Upravljaj\" "
+"title=\"Upravljaj\"/>"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
@@ -177,7 +179,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.actions.act_window,help:quality_control.quality_tag_action
 msgid "Add a new tag"
-msgstr ""
+msgstr "Dodaj novu oznaku"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__additional_note
@@ -208,7 +210,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Archived"
-msgstr ""
+msgstr "Arhivirano"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__average
@@ -218,7 +220,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
 msgid "Cancel"
-msgstr "Откажи"
+msgstr "Otkaži"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__check_ids
@@ -256,7 +258,7 @@ msgstr ""
 #: model:ir.ui.menu,name:quality_control.menu_quality_configuration
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
 msgid "Configuration"
-msgstr "Подешавање"
+msgstr "Podešavanje"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_wizard_form_failure
@@ -335,7 +337,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_frequency_unit__day
 msgid "Days"
-msgstr "дана"
+msgstr "dana"
 
 #. module: quality_control
 #: model:ir.model.fields,help:quality_control.field_quality_check__uom_id
@@ -371,7 +373,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_form
 msgid "Description"
-msgstr "Опис"
+msgstr "Opis"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_form
@@ -388,12 +390,12 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Naziv za prikaz"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_view_form
 msgid "Email Alias"
-msgstr ""
+msgstr "Email Alias"
 
 #. module: quality_control
 #: model:ir.model.fields,help:quality_control.field_quality_check__product_tracking
@@ -406,7 +408,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
 msgid "Fail"
-msgstr "Неуспело"
+msgstr "Neuspelo"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
@@ -471,17 +473,17 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Poslednja izmena dana"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Poslednje izmenio/la"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Poslednje ažuriranje dana"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__lot_line_id
@@ -554,7 +556,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_form
 msgid "Miscellaneous"
-msgstr "Остало"
+msgstr "Ostalo"
 
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_frequency_unit__month
@@ -575,7 +577,7 @@ msgstr "Novo"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
 msgid "Next"
-msgstr ""
+msgstr "Sledeće"
 
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__stock_move_line__check_state__no_checks
@@ -585,7 +587,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.actions.act_window,help:quality_control.quality_check_action_spc
 msgid "No data yet!"
-msgstr ""
+msgstr "Još uvek nema podataka!"
 
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_check__measure_success__none
@@ -628,7 +630,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__note
 msgid "Note"
-msgstr "Белешка"
+msgstr "Beleška"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
@@ -676,7 +678,7 @@ msgstr "Partner"
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
 msgid "Pass"
-msgstr "Прошло"
+msgstr "Prošlo"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
@@ -702,7 +704,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__picture
 msgid "Picture"
-msgstr ""
+msgstr "Slika"
 
 #. module: quality_control
 #: code:addons/quality_control/models/quality.py:0
@@ -723,7 +725,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
 msgid "Previous"
-msgstr ""
+msgstr "Prethodno"
 
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_product_template
@@ -753,7 +755,7 @@ msgstr "Varijante proizvoda"
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.quality_control_menu_product_variant
 msgid "Product Variants"
-msgstr ""
+msgstr "Varijante proizvoda"
 
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.quality_control_menu_product
@@ -818,7 +820,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:quality_control.view_stock_move_line_detailed_operation_tree_inherit_quality
 #, python-format
 msgid "Quality Check"
-msgstr "Провера квалитета"
+msgstr "Provera kvaliteta"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_graph
@@ -961,7 +963,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_check__measure_on__move_line
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_on__move_line
 msgid "Quantity"
-msgstr "Kolicina"
+msgstr "Količina"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__qty_tested
@@ -1005,7 +1007,7 @@ msgstr "Izveštavanje"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Responsible"
-msgstr "Одговорно лице"
+msgstr "Odgovorno lice"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__show_lot_text
@@ -1042,7 +1044,7 @@ msgstr "Status"
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_stock_move
 msgid "Stock Move"
-msgstr "Премештање залиха"
+msgstr "Premeštanje zaliha"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__move_line_id
@@ -1114,12 +1116,12 @@ msgstr "Praćenje"
 #: model:ir.model,name:quality_control.model_stock_picking
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_tree
 msgid "Transfer"
-msgstr "Пренос"
+msgstr "Prenos"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 msgid "Type"
-msgstr "Врста"
+msgstr "Vrsta"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control

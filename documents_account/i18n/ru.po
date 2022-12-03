@@ -349,6 +349,8 @@ msgstr "счет поставщика"
 msgid ""
 "Want to become a <b>paperless company</b>? Let's discover Odoo Documents."
 msgstr ""
+"Хотите стать <b>\"безбумажной\" компанией</b>? Давайте познакомимся с Odoo "
+"Документы."
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__folder_id
@@ -364,6 +366,8 @@ msgid ""
 "Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is "
 "complete. Try uploading your own documents now."
 msgstr ""
+"Ого... 6 документов обработаны за несколько секунд, Вы молодцы. Теперь "
+"попробуйте загрузить свои собственные документы сейчас."
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_res_config_settings__account_folder

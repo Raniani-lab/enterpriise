@@ -9,7 +9,6 @@
 # Natalia Gros <nag@odoo.com>, 2022
 # Maja Stawicka <mjstwck@wp.pl>, 2022
 # Grzegorz Krukar <grzegorzgk1@gmail.com>, 2022
-# Paweł Wodyński <pw@myodoo.pl>, 2022
 # Mariusz, 2022
 # Paweł Michoń <michon.pawel@wp.pl>, 2022
 # Piotr Cierkosz <piotr.w.cierkosz@gmail.com>, 2022
@@ -26,6 +25,7 @@
 # Grzegorz Grzelak <grzegorz.grzelak@openglobe.pl>, 2022
 # Marcin Młynarczyk <mlynarczyk@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Paweł Wodyński <pw@myodoo.pl>, 2022
 # 
 msgid ""
 msgstr ""
@@ -33,7 +33,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2022\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -92,6 +92,14 @@ msgstr "&amp;nbsp;"
 msgid ""
 "'Open General Ledger' caret option is only available form report lines "
 "targetting accounts."
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid ""
+"'View Bank Statement' caret option is only available for report lines "
+"targeting bank statements."
 msgstr ""
 
 #. module: account_reports
@@ -282,7 +290,12 @@ msgstr "<span class=\"fa fa-filter\"/> Opcje:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
-msgid "<span class=\"fa fa-folder-open\"/> Analytic"
+msgid "<span class=\"fa fa-folder-open\"/> Analytic Filter"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
+msgid "<span class=\"fa fa-folder-open\"/> Analytic Group By"
 msgstr ""
 
 #. module: account_reports
@@ -682,6 +695,11 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Analytic Accounts:"
+msgstr ""
+
+#. module: account_reports
+#: model:ir.model.fields,field_description:account_reports.field_account_report__filter_analytic_groupby
+msgid "Analytic Group By"
 msgstr ""
 
 #. module: account_reports
@@ -1551,11 +1569,6 @@ msgstr ""
 msgid ""
 "Field 'Custom Handler Model' can only reference records inheriting from "
 "[%s]."
-msgstr ""
-
-#. module: account_reports
-#: model:ir.model.fields,field_description:account_reports.field_account_report__filter_analytic_groupby
-msgid "Filter Analytic Groupby"
 msgstr ""
 
 #. module: account_reports
@@ -2617,7 +2630,7 @@ msgstr "Zwrot z inwestycji (zysk netto / aktywa)"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__reversal_date
 msgid "Reversal Date"
-msgstr ""
+msgstr "Data odwrócenia"
 
 #. module: account_reports
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
@@ -2923,6 +2936,13 @@ msgstr ""
 #: code:addons/account_reports/models/account_tax.py:0
 #, python-format
 msgid "The main company of a tax unit has to be part of it."
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_journal_report.py:0
+#, python-format
+msgid ""
+"The selected report line does not target a Journal Entry or a Journal Item."
 msgstr ""
 
 #. module: account_reports

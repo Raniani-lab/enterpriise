@@ -1047,7 +1047,7 @@ msgstr "Бүлэглэлт"
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Мессежтэй"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_validated

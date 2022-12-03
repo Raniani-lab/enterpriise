@@ -6,8 +6,8 @@
 # Uros Kalajdzic <ukalajdzic@gmail.com>, 2022
 # Bojan Borovnjak <bojan.borovnjak@modoolar.com>, 2022
 # Djordje Marjanovic <djvmarjanovic@gmail.com>, 2022
-# Slobodan Simić <slsimic@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:24+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -122,7 +122,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_account_analytic_line
 msgid "Analytic Account"
-msgstr "Рачун аналитике"
+msgstr "Račun analitike"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_billable
@@ -169,7 +169,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Podešavanje konfiguracije"
 
 #. module: industry_fsm_sale
 #. openerp-web
@@ -217,7 +217,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "Description"
-msgstr "Опис"
+msgstr "Opis"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__display_create_invoice_primary
@@ -232,12 +232,12 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
 msgid "Dropdown menu"
-msgstr ""
+msgstr "Padajući meni"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
 msgid "Edit"
-msgstr ""
+msgstr "Uredi"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_quotations
@@ -291,7 +291,7 @@ msgstr "U radu"
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
 msgid "Invoice"
-msgstr "Фактура"
+msgstr "Faktura"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__portal_invoice_count
@@ -316,7 +316,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_form_quotation
 #, python-format
 msgid "Invoices"
-msgstr "Računi"
+msgstr "Fakture"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__is_task_phone_update
@@ -412,7 +412,7 @@ msgstr "Kategorija proizvoda"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
 msgid "Product Template"
-msgstr "Шаблон производа"
+msgstr "Šablon proizvoda"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
@@ -444,7 +444,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__project_id
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_template__project_id
 msgid "Project"
-msgstr "Пројекат"
+msgstr "Projekat"
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_project_sale_line_employee_map
@@ -454,13 +454,13 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "Quantity"
-msgstr "Kolicina"
+msgstr "Količina"
 
 #. module: industry_fsm_sale
 #: code:addons/industry_fsm_sale/controllers/portal.py:0
 #, python-format
 msgid "Quotation"
-msgstr "Najava"
+msgstr "Ponuda"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__quotation_count
@@ -479,7 +479,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_form_quotation
 #, python-format
 msgid "Quotations"
-msgstr "Upiti"
+msgstr "Ponude"
 
 #. module: industry_fsm_sale
 #: model:project.task.type,legend_done:industry_fsm_sale.field_service_project_stage_0
@@ -504,7 +504,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_sale_order
 msgid "Sales Order"
-msgstr "Наруџбеница"
+msgstr "Porudžbenica"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__sale_line_id
@@ -523,7 +523,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Линија наруџбенице"
+msgstr "Linija porudžbenice"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,help:industry_fsm_sale.field_project_project__sale_line_id
@@ -630,7 +630,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_sale_line_employee_map__price_unit
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "Unit Price"
-msgstr "Jedinična cijena"
+msgstr "Jedinična cena"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields.selection,name:industry_fsm_sale.selection__report_project_task_user_fsm__invoice_status__upselling

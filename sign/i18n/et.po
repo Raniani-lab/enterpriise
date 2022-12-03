@@ -36,7 +36,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_res_partner__signature_count
 #: model:ir.model.fields,field_description:sign.field_res_users__signature_count
 msgid "# Signatures"
-msgstr ""
+msgstr "# Allkirjad"
 
 #. module: sign
 #: code:addons/sign/controllers/main.py:0
@@ -842,7 +842,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_request__cc_partner_ids
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__cc_partner_ids
 msgid "Copy to"
-msgstr ""
+msgstr "Kopeeri"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
@@ -1288,7 +1288,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_duplicate_template_pdf__new_pdf
 msgid "File name"
-msgstr ""
+msgstr "Faili nimi"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__filename
@@ -2094,7 +2094,7 @@ msgstr ""
 #: model:sign.template,redirect_url_text:sign.template_sign_5
 #: model:sign.template,redirect_url_text:sign.template_sign_tour
 msgid "Open Link"
-msgstr ""
+msgstr "Ava link"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_option__value
@@ -2109,7 +2109,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Optional Message..."
-msgstr ""
+msgstr "Valikuline sõnum"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_template__redirect_url
@@ -2313,7 +2313,7 @@ msgstr ""
 #: model:mail.activity.type,name:sign.mail_activity_data_signature_request
 #, python-format
 msgid "Request Signature"
-msgstr ""
+msgstr "Taotleja allkiri"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__nb_total
@@ -2807,7 +2807,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 #, python-format
 msgid "Signature Request"
-msgstr ""
+msgstr "Allkirjataotlus"
 
 #. module: sign
 #: code:addons/sign/wizard/sign_send_request.py:0
@@ -2819,7 +2819,7 @@ msgstr ""
 #: code:addons/sign/wizard/sign_send_request.py:0
 #, python-format
 msgid "Signature Request - %s"
-msgstr ""
+msgstr "Allkirjataotlus - %s"
 
 #. module: sign
 #: model:ir.model,name:sign.model_sign_request_item
@@ -2839,7 +2839,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__sign_request_ids
 msgid "Signature Requests"
-msgstr ""
+msgstr "Allkirjataotlused"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__start_sign
@@ -3729,7 +3729,7 @@ msgstr "Laius"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Write email or search contact..."
-msgstr ""
+msgstr "Kirjuta e-mail või otsi kontakti..."
 
 #. module: sign
 #: code:addons/sign/controllers/main.py:0

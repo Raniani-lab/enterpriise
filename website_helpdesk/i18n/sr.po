@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Slobodan Simić <slsimic@gmail.com>, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:50+0000\n"
-"Last-Translator: Slobodan Simić <slsimic@gmail.com>, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -133,12 +133,12 @@ msgstr ""
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__can_publish
 msgid "Can Publish"
-msgstr ""
+msgstr "Može da objavljuje"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.footer
 msgid "Contact Us"
-msgstr ""
+msgstr "Kontaktirajte nas"
 
 #. module: website_helpdesk
 #: code:addons/website_helpdesk/__init__.py:0
@@ -181,30 +181,30 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team
 #, python-format
 msgid "Helpdesk Team"
-msgstr ""
+msgstr "Helpdesk ti"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__is_published
 msgid "Is Published"
-msgstr ""
+msgstr "Je objavljeno"
 
 #. module: website_helpdesk
 #: code:addons/website_helpdesk/controllers/main.py:0
 #, python-format
 msgid "Last Month"
-msgstr ""
+msgstr "Prošli mesec"
 
 #. module: website_helpdesk
 #: code:addons/website_helpdesk/controllers/main.py:0
 #, python-format
 msgid "Last Week"
-msgstr ""
+msgstr "Prošla sedmica"
 
 #. module: website_helpdesk
 #: code:addons/website_helpdesk/controllers/main.py:0
 #, python-format
 msgid "Last Year"
-msgstr ""
+msgstr "Prošla godina"
 
 #. module: website_helpdesk
 #. openerp-web
@@ -223,7 +223,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submit_form
 msgid "Submit"
-msgstr ""
+msgstr "Pošalji"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
@@ -234,7 +234,7 @@ msgstr ""
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Tags Filter"
-msgstr ""
+msgstr "Filter oznaka"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submited
@@ -245,7 +245,7 @@ msgstr ""
 #. module: website_helpdesk
 #: model:ir.model.fields,help:website_helpdesk.field_helpdesk_team__website_url
 msgid "The full URL to access the document through the website."
-msgstr ""
+msgstr "Kompletna URL adresa za pristup dokumentima putem website-a."
 
 #. module: website_helpdesk
 #: code:addons/website_helpdesk/models/helpdesk.py:0
@@ -266,23 +266,23 @@ msgstr ""
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_published
 msgid "Visible on current website"
-msgstr ""
+msgstr "Vidljivo na trenutno website-u"
 
 #. module: website_helpdesk
 #: model:ir.model,name:website_helpdesk.model_website
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_id
 msgid "Website"
-msgstr "Вебсајт"
+msgstr "Website"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_menu_id
 msgid "Website Menu"
-msgstr ""
+msgstr "Website meni"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_url
 msgid "Website URL"
-msgstr ""
+msgstr "Website URL"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submited

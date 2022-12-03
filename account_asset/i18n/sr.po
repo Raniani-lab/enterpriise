@@ -6,8 +6,8 @@
 # Uros Kalajdzic <ukalajdzic@gmail.com>, 2022
 # Đorđe Cvijanović <cdorde@gmail.com>, 2022
 # Martin Trigaux, 2022
-# Slobodan Simić <slsimic@gmail.com>, 2022
 # Geoinfo d.o.o. <geoinfobih@gmail.com>, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Geoinfo d.o.o. <geoinfobih@gmail.com>, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -158,7 +158,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_account
 msgid "Account"
-msgstr "Рачун"
+msgstr "Račun"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_type
@@ -233,7 +233,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Accounting"
-msgstr "Рачуноводство"
+msgstr "Računovodstvo"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_report
@@ -250,37 +250,37 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__modify_action
 msgid "Action"
-msgstr "Радња"
+msgstr "Radnja"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Potrebna akcija"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__active
 msgid "Active"
-msgstr "Активно"
+msgstr "Aktivno"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_ids
 msgid "Activities"
-msgstr "Активности"
+msgstr "Aktivnosti"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Dekoracija izuzeć́a aktivnosti"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Stanje aktivnosti"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "Ikonica vrste aktivnosti"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
@@ -340,7 +340,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Archived"
-msgstr ""
+msgstr "Arhivirano"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -490,11 +490,6 @@ msgid "Asset unpaused. %s"
 msgstr ""
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Asset(s)"
-msgstr ""
-
-#. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
 msgid "Asset/Revenue Recognition"
 msgstr "Vlasništvo/Prihod odredjivanje"
@@ -506,6 +501,7 @@ msgstr "Vlasništvo/Prihod odredjivanje"
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_ids
 #: model:ir.ui.menu,name:account_asset.menu_action_account_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_purchase_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Assets"
 msgstr "Aktivan"
 
@@ -527,7 +523,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Brojač priloga"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
@@ -572,7 +568,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 msgid "Cancel"
-msgstr "Откажи"
+msgstr "Otkaži"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -607,7 +603,7 @@ msgstr "Zatvoren"
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_res_company
 msgid "Companies"
-msgstr "Предузећа"
+msgstr "Preduzeća"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__company_id
@@ -638,7 +634,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Confirm"
-msgstr "Потврда"
+msgstr "Potvrdi"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__constant_periods
@@ -730,7 +726,7 @@ msgstr "Valuta"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Current"
-msgstr ""
+msgstr "Trenutni"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -746,7 +742,7 @@ msgstr "Račun kupca"
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__date
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Date"
-msgstr "Датум"
+msgstr "Datum"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_depreciation_beginning_date
@@ -776,6 +772,16 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method__degressive_then_linear
 msgid "Declining then Straight Line"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
+msgid "Def. Expenses"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
+msgid "Def. Revenues"
 msgstr ""
 
 #. module: account_asset
@@ -823,11 +829,6 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Deferred Expense name"
-msgstr ""
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Deferred Expense(s)"
 msgstr ""
 
 #. module: account_asset
@@ -886,11 +887,6 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Deferred Revenue name"
-msgstr ""
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Deferred Revenue(s)"
 msgstr ""
 
 #. module: account_asset
@@ -1017,7 +1013,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__display_name
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Naziv za prikaz"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -1043,7 +1039,9 @@ msgid "Disposal Moves"
 msgstr ""
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Dispose"
 msgstr ""
 
@@ -1065,7 +1063,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_kanban
 msgid "Duration"
-msgstr "Трајање"
+msgstr "Trajanje"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_duration_rate
@@ -1129,17 +1127,17 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Pratioci"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Pratioci (Partneri)"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
-msgstr ""
+msgstr "Font awesome ikonica npr. fa-tasks"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__form_view_ref
@@ -1149,7 +1147,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Future Activities"
-msgstr ""
+msgstr "Buduće aktivnosti"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__gain_or_loss__gain
@@ -1205,7 +1203,7 @@ msgstr "Grupisano po"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Ima poruku"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__id
@@ -1221,18 +1219,18 @@ msgstr "Ikona"
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr ""
+msgstr "Ikonica koja označava aktivnost izuzetka."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Ako je označeno, nove poruke zahtevaju vašu pažnju."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_has_error
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Ako je označeno, neke poruke imaju grešku u isporuci."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_account__asset_model
@@ -1262,7 +1260,7 @@ msgstr "Red računa"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Je Pratilac"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__salvage_value
@@ -1275,31 +1273,31 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_expense_model_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Journal"
-msgstr "Извештај"
+msgstr "Izveštaj"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Journal Entries"
-msgstr "Уноси извештаја"
+msgstr "Unosi izveštaja"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_move
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Journal Entry"
-msgstr "Sadrzaj dnevnika"
+msgstr "Sadržaj dnevnika"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_move_line
 msgid "Journal Item"
-msgstr "Ставка извештаја"
+msgstr "Stavka izveštaja"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__original_move_line_ids
 #, python-format
 msgid "Journal Items"
-msgstr "Sadrzaj Dnevnika"
+msgstr "Sadržaj Dnevnika"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
@@ -1312,24 +1310,24 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_account_asset____last_update
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Poslednja izmena dana"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__write_uid
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Poslednje izmenio/la"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__write_date
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Poslednje ažuriranje dana"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Late Activities"
-msgstr ""
+msgstr "Zakasnele aktivnosti"
 
 #. module: account_asset
 #: code:addons/account_asset/report/account_assets_report.py:0
@@ -1358,7 +1356,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Glavni prilog"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
@@ -1368,7 +1366,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Greška u isporuci poruke"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_ids
@@ -1437,7 +1435,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__my_activity_date_deadline
 msgid "My Activity Deadline"
-msgstr ""
+msgstr "Rok moje aktivnosti"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__value_residual
@@ -1450,24 +1448,19 @@ msgid "New salvage amount for the asset"
 msgstr ""
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_calendar_event_id
-msgid "Next Activity Calendar Event"
-msgstr ""
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Rok za sledeću aktivnosti"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Pregled sledeće aktivnosti"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Tip sledeće aktivnosti"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1483,7 +1476,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__create_asset__no
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__gain_or_loss__no
 msgid "No"
-msgstr ""
+msgstr "Ne"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__none
@@ -1509,7 +1502,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__name
 msgid "Note"
-msgstr "Белешка"
+msgstr "Beleška"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__number_asset_ids
@@ -1521,7 +1514,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Broj akcija"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_purchase_tree
@@ -1561,17 +1554,17 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "Broj grešaka"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Broj poruka koje zahtevaju akciju"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Broj poruka sa greškom u isporuci"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__paused
@@ -1596,7 +1589,9 @@ msgid "Parent"
 msgstr "Roditelj"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Pause"
 msgstr "Pauza"
 
@@ -1625,6 +1620,12 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__purchase
 msgid "Purchase: Asset"
+msgstr ""
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid "Re-evaluate"
 msgstr ""
 
 #. module: account_asset
@@ -1671,7 +1672,9 @@ msgid "Responsible User"
 msgstr "Odgovorni korisnik"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Resume"
 msgstr "Nastavi"
 
@@ -1685,7 +1688,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 #, python-format
 msgid "Revenue"
-msgstr ""
+msgstr "Prihod"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
@@ -1736,7 +1739,7 @@ msgstr "Pokrenut"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "Greška u dostavi SMS-a"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -1766,7 +1769,9 @@ msgid "Select Invoice Line"
 msgstr ""
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Sell"
 msgstr ""
 
@@ -1784,6 +1789,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Show all records which has next action date is before today"
 msgstr ""
+"Prikaži sve zapise koji imaju datum sledeće aktivnosti pre današnjeg datuma"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
@@ -1810,6 +1816,10 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
+"Status na osnovu aktivnosti\n"
+"Isteklo: Datum postavljen kao rok je već prošao\n"
+"Danas: Datum aktivnosti je danas\n"
+"Planirano: Buduće aktivnosti."
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method__linear
@@ -1880,7 +1890,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Today Activities"
-msgstr ""
+msgstr "Današnje aktivnosti"
 
 #. module: account_asset
 #: code:addons/account_asset/report/account_assets_report.py:0
@@ -1919,7 +1929,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "Zabeležen tip aktivnosti izuzeća."
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -1948,12 +1958,12 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Website poruke"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Istorija website komunikacije"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__state
@@ -1969,7 +1979,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method_period__12
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__method_period__12
 msgid "Years"
-msgstr ""
+msgstr "Godine"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_move.py:0
@@ -2000,6 +2010,14 @@ msgstr ""
 msgid ""
 "You cannot create an asset from lines containing credit and debit on the "
 "account or with a null amount"
+msgstr ""
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid ""
+"You cannot delete an asset linked to posted entries.\n"
+"You should either confirm the asset, then, sell or dispose of it, or cancel the linked journal entries."
 msgstr ""
 
 #. module: account_asset

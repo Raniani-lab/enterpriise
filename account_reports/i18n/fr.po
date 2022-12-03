@@ -90,6 +90,14 @@ msgstr ""
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
+msgid ""
+"'View Bank Statement' caret option is only available for report lines "
+"targeting bank statements."
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
 msgid "'external' engine does not support groupby, limit nor offset."
 msgstr ""
 "le moteur 'externe' ne prend pas en charge les options grouper, limiter ou "
@@ -302,8 +310,13 @@ msgstr "<span class=\"fa fa-filter\"/> Options :"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
-msgid "<span class=\"fa fa-folder-open\"/> Analytic"
-msgstr "<span class=\"fa fa-folder-open\"/> Analytique"
+msgid "<span class=\"fa fa-folder-open\"/> Analytic Filter"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
+msgid "<span class=\"fa fa-folder-open\"/> Analytic Group By"
+msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_partner
@@ -720,6 +733,11 @@ msgstr "Montant en devise : %s"
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Analytic Accounts:"
 msgstr "Comptes analytiques :"
+
+#. module: account_reports
+#: model:ir.model.fields,field_description:account_reports.field_account_report__filter_analytic_groupby
+msgid "Analytic Group By"
+msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -1616,11 +1634,6 @@ msgid ""
 msgstr ""
 "Le champ 'Modèle de gestionnaire personnalisé' peut seulement faire "
 "référence à des enregistrements héritant de [%s]."
-
-#. module: account_reports
-#: model:ir.model.fields,field_description:account_reports.field_account_report__filter_analytic_groupby
-msgid "Filter Analytic Groupby"
-msgstr "Filtre groupby analytique"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -3021,6 +3034,13 @@ msgstr ""
 #, python-format
 msgid "The main company of a tax unit has to be part of it."
 msgstr "La société principale d'une entité fiscale doit en faire partie."
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_journal_report.py:0
+#, python-format
+msgid ""
+"The selected report line does not target a Journal Entry or a Journal Item."
+msgstr ""
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_res_company__account_tax_unit_ids

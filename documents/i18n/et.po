@@ -1044,7 +1044,7 @@ msgstr "Kustuta"
 #. module: documents
 #: model:ir.actions.act_window,name:documents.documents_folder_deletion_wizard_action
 msgid "Delete Confirmation"
-msgstr ""
+msgstr "Kustuta kinnitus"
 
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_deprecate
@@ -1882,7 +1882,7 @@ msgstr "Ühtegi dokumenti pole valitud"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "No limit"
-msgstr ""
+msgstr "Piirangud puuduvad"
 
 #. module: documents
 #: model_terms:ir.actions.act_window,help:documents.share_action

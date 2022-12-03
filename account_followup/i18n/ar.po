@@ -608,7 +608,7 @@ msgstr "محرر "
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__join_invoices
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__join_invoices
-msgid "Join Invoices"
+msgid "Attach Invoices"
 msgstr ""
 
 #. module: account_followup

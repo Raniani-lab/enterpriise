@@ -8,6 +8,7 @@
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Triine Aavik <triine@avalah.ee>, 2022
 # Piia Paurson <piia@avalah.ee>, 2022
+# Jana Jaakson, 2022
 # 
 msgid ""
 msgstr ""
@@ -15,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-27 15:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Piia Paurson <piia@avalah.ee>, 2022\n"
+"Last-Translator: Jana Jaakson, 2022\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +28,7 @@ msgstr ""
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "%s's Application"
-msgstr ""
+msgstr "%s's Kandideerimisavaldus"
 
 #. module: hr_recruitment_extract
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
@@ -39,7 +40,7 @@ msgstr "Ilmnes viga"
 #. module: hr_recruitment_extract
 #: model:ir.model,name:hr_recruitment_extract.model_hr_applicant
 msgid "Applicant"
-msgstr "kandideermisavaldus"
+msgstr "Kandidaat"
 
 #. module: hr_recruitment_extract
 #: model:ir.model,name:hr_recruitment_extract.model_ir_attachment
@@ -55,7 +56,7 @@ msgstr "Osta punkte"
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "CV is being Digitized"
-msgstr ""
+msgstr "CV-d tehakse digitaalseks"
 
 #. module: hr_recruitment_extract
 #: model:ir.model,name:hr_recruitment_extract.model_res_company
@@ -65,7 +66,7 @@ msgstr "Ettevõtted"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__done
 msgid "Completed flow"
-msgstr ""
+msgstr "Lõpetatud töövoog"
 
 #. module: hr_recruitment_extract
 #: model:ir.model,name:hr_recruitment_extract.model_res_config_settings
@@ -75,17 +76,17 @@ msgstr "Seadistused"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__res_company__recruitment_extract_show_ocr_option_selection__auto_send
 msgid "Digitize automatically"
-msgstr ""
+msgstr "Tee automaatselt digitaalseks"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__res_company__recruitment_extract_show_ocr_option_selection__manual_send
 msgid "Digitize on demand only"
-msgstr ""
+msgstr "Tee digitaalseks ainult nõudmisel"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__res_company__recruitment_extract_show_ocr_option_selection__no_send
 msgid "Do not digitize"
-msgstr ""
+msgstr "Ära tee digitaalseks"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_error_message
@@ -95,34 +96,34 @@ msgstr "Veateade"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_can_show_resend_button
 msgid "Extract Can Show Resend Button"
-msgstr ""
+msgstr "Väljavõte võib näidata uuesti saatmise nuppu"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_can_show_send_button
 msgid "Extract Can Show Send Button"
-msgstr ""
+msgstr "Väljavõte võib näidata saatmise nuppu"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_state
 msgid "Extract State"
-msgstr ""
+msgstr "Väljavõtte olek"
 
 #. module: hr_recruitment_extract
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Generated Applicant"
-msgstr ""
+msgstr "Loodud kandideerija"
 
 #. module: hr_recruitment_extract
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Generated Applicants"
-msgstr ""
+msgstr "Loodud kandideerijad"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__is_first_stage
 msgid "Is First Stage"
-msgstr ""
+msgstr "Esimeses etapis"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__no_extract_requested
@@ -158,7 +159,7 @@ msgstr ""
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_config_settings__recruitment_extract_show_ocr_option_selection
 msgid "Recruitment processing option"
-msgstr ""
+msgstr "Värbamise protsessi võimalus"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__extract_remote_id
@@ -173,30 +174,30 @@ msgstr "Saatke uuesti digitaliseerimiseks"
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "Resend For Digitization"
-msgstr ""
+msgstr "Saatke uuesti digitaliseerimiseks"
 
 #. module: hr_recruitment_extract
 #: model:ir.actions.server,name:hr_recruitment_extract.ir_actions_server_digitize_cv
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "Send For Digitization"
-msgstr ""
+msgstr "Saatke digitaliseerimiseks"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_res_company__recruitment_extract_show_ocr_option_selection
 msgid "Send mode on applicant attachments"
-msgstr ""
+msgstr "Kandideerija lisadokumentide saatmisviis"
 
 #. module: hr_recruitment_extract
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Server is currently under maintenance. Please retry later"
-msgstr ""
+msgstr "Serveris käib hetkel hooldus. Palun proovige hiljem uuesti"
 
 #. module: hr_recruitment_extract
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Server not available. Please retry later"
-msgstr ""
+msgstr "Server ei ole hetkel saadaval. Palun proovige hiljem uuesti"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields,field_description:hr_recruitment_extract.field_hr_applicant__state_processed
@@ -214,12 +215,14 @@ msgid ""
 "The data extraction is not finished yet. The extraction usually takes "
 "between 5 and 10 seconds."
 msgstr ""
+"Andmete välja võtmine pole veel lõppenud. Välja võtmine kestab tavaliselt 5 "
+"- 10 sekundit."
 
 #. module: hr_recruitment_extract
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "The document could not be found"
-msgstr ""
+msgstr "Dokumenti ei leitud"
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
@@ -227,6 +230,8 @@ msgid ""
 "The file has been sent and is being processed. It usually takes between 5 "
 "and 10 seconds."
 msgstr ""
+"Fail on saadetud ja seda töödeldakse. Tavaliselt kulub selleks 5–10 "
+"sekundit."
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__to_validate
@@ -237,7 +242,7 @@ msgstr "Kinnitada"
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "Unsupported image format"
-msgstr ""
+msgstr "Süsteem ei toeta pildivormingut"
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
@@ -252,12 +257,12 @@ msgstr "Ootab väljavõtteid"
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__extract_not_ready
 msgid "Waiting extraction, but not ready"
-msgstr ""
+msgstr "Väljavõtte ootel, pole veel valmis"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__waiting_upload
 msgid "Waiting upload"
-msgstr ""
+msgstr "Ootab üleslaadimist"
 
 #. module: hr_recruitment_extract
 #: model:ir.model.fields.selection,name:hr_recruitment_extract.selection__hr_applicant__extract_state__waiting_validation
@@ -268,9 +273,9 @@ msgstr "Ootab kinnitamist"
 #: code:addons/hr_recruitment_extract/models/hr_applicant.py:0
 #, python-format
 msgid "You cannot send a CV for an applicant who's not in first stage!"
-msgstr ""
+msgstr "Te ei saa saata CV-d kandideerijale, kes ei ole esimeses etapis!"
 
 #. module: hr_recruitment_extract
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_extract.hr_recruitment_extract_view_form
 msgid "You don't have enough credit to extract data from your CV."
-msgstr ""
+msgstr "Teil ei ole piisavalt krediiti, et CV-st andmeid välja võtta."

@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Slobodan Simić <slsimic@gmail.com>, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Slobodan Simić <slsimic@gmail.com>, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,12 +41,12 @@ msgstr ""
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "Body"
-msgstr "Тело"
+msgstr "Telo"
 
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Podešavanje konfiguracije"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
@@ -63,7 +63,7 @@ msgstr ""
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor_push_subscription__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Naziv za prikaz"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_post__display_push_notification_attributes
@@ -87,7 +87,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social_push_notifications.field_res_config_settings__firebase_enable_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_website__firebase_enable_push_notifications
 msgid "Enable Web Push Notifications"
-msgstr ""
+msgstr "Omogući (web push) notifikacije"
 
 #. module: social_push_notifications
 #: code:addons/social_push_notifications/controllers/main.py:0
@@ -145,7 +145,7 @@ msgstr ""
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_ir_http
 msgid "HTTP Routing"
-msgstr ""
+msgstr "HTTP rutiranje"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor_push_subscription__id
@@ -170,7 +170,7 @@ msgstr ""
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor_push_subscription____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Poslednja izmena dana"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.social_post_view_form
@@ -229,7 +229,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.utm_campaign_view_form
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.utm_campaign_view_kanban
 msgid "Notifications"
-msgstr ""
+msgstr "Notifikacije"
 
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_marketing_campaign__social_push_notifications_count
@@ -333,7 +333,7 @@ msgstr ""
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.utm_campaign_view_form
 msgid "Send Push"
-msgstr ""
+msgstr "Šalji push"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.website_visitor_view_form
@@ -362,7 +362,7 @@ msgstr ""
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "Sender ID"
-msgstr ""
+msgstr "ID pošiljaoca"
 
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_social_account
@@ -382,7 +382,7 @@ msgstr ""
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_social_post
 msgid "Social Post"
-msgstr ""
+msgstr "Objava na društvenoj mreži"
 
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_social_post_template
@@ -425,7 +425,7 @@ msgstr "Naslov"
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_utm_campaign
 msgid "UTM Campaign"
-msgstr ""
+msgstr "UTM kampanja"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
@@ -473,13 +473,13 @@ msgstr ""
 #: model:ir.model,name:social_push_notifications.model_website
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_account__website_id
 msgid "Website"
-msgstr "Вебсајт"
+msgstr "Website"
 
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_website_visitor
 #: model:ir.model.fields,field_description:social_push_notifications.field_website_visitor_push_subscription__website_visitor_id
 msgid "Website Visitor"
-msgstr ""
+msgstr "Posetilac website-a"
 
 #. module: social_push_notifications
 #: code:addons/social_push_notifications/models/social_account.py:0

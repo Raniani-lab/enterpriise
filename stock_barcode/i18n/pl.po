@@ -20,9 +20,9 @@
 # Judyta Kaźmierczak <judyta.kazmierczak@openglobe.pl>, 2022
 # Tomasz Leppich <t.leppich@gmail.com>, 2022
 # Piotr Strębski <strebski@gmail.com>, 2022
-# Paweł Wodyński <pw@myodoo.pl>, 2022
 # Martin Trigaux, 2022
 # Paweł Michoń <michon.pawel@wp.pl>, 2022
+# Paweł Wodyński <pw@myodoo.pl>, 2022
 # 
 msgid ""
 msgstr ""
@@ -30,7 +30,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Paweł Michoń <michon.pawel@wp.pl>, 2022\n"
+"Last-Translator: Paweł Wodyński <pw@myodoo.pl>, 2022\n"
 "Language-Team: Polish (https://www.transifex.com/odoo/teams/41243/pl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -748,7 +748,7 @@ msgstr "Opakowania"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_packaging_uom_qty
 msgid "Packaging Quantity"
-msgstr ""
+msgstr "Ilość w opakowaniu"
 
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_backorder_confirmation__partial_move_count

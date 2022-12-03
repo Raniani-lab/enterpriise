@@ -1651,7 +1651,7 @@ msgstr ""
 #: code:addons/hr_appraisal/models/hr_appraisal.py:0
 #, python-format
 msgid "Unpublished"
-msgstr ""
+msgstr "Belum dipublikasikan"
 
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_res_users

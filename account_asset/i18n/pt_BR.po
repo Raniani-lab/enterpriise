@@ -6,8 +6,8 @@
 # falexandresilva <falexandresilva@gmail.com>, 2022
 # Gideoni Silva <gd.willian@gmail.com>, 2022
 # Marcel Savegnago <marcel.savegnago@gmail.com>, 2022
-# Marcos Rodrigues, 2022
 # Martin Trigaux, 2022
+# Marcos Rodrigues, 2022
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Marcos Rodrigues, 2022\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -500,11 +500,6 @@ msgid "Asset unpaused. %s"
 msgstr ""
 
 #. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Asset(s)"
-msgstr "Ativo(s)"
-
-#. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
 msgid "Asset/Revenue Recognition"
 msgstr "Reconhecimento de Ativo/Receita"
@@ -516,6 +511,7 @@ msgstr "Reconhecimento de Ativo/Receita"
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_ids
 #: model:ir.ui.menu,name:account_asset.menu_action_account_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_purchase_tree
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Assets"
 msgstr "Patrimônios"
 
@@ -789,6 +785,16 @@ msgid "Declining then Straight Line"
 msgstr "Linha reta em decadência e depois linha reta"
 
 #. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
+msgid "Def. Expenses"
+msgstr ""
+
+#. module: account_asset
+#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
+msgid "Def. Revenues"
+msgstr ""
+
+#. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__asset_type__expense
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__expense
@@ -834,11 +840,6 @@ msgstr "Opções de despesas diferidas"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Deferred Expense name"
 msgstr "Nome da despesa diferida"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Deferred Expense(s)"
-msgstr "Despesa(s) diferida(s)"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_expense_form
@@ -897,11 +898,6 @@ msgstr "Opções de receita diferida"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Deferred Revenue name"
 msgstr "Nome de Receita Diferida"
-
-#. module: account_asset
-#: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
-msgid "Deferred Revenue(s)"
-msgstr "Receita(s) diferida(s)"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_revenue_form
@@ -1053,7 +1049,9 @@ msgid "Disposal Moves"
 msgstr "Eliminar Movimentações"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Dispose"
 msgstr "Descarte"
 
@@ -1468,11 +1466,6 @@ msgid "New salvage amount for the asset"
 msgstr "Novo valor de resgate para o bem"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_calendar_event_id
-msgid "Next Activity Calendar Event"
-msgstr ""
-
-#. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_date_deadline
 msgid "Next Activity Deadline"
 msgstr "Prazo Final para Próxima Atividade"
@@ -1614,7 +1607,9 @@ msgid "Parent"
 msgstr "Superior (Conta-pai)"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Pause"
 msgstr "Pausa"
 
@@ -1644,6 +1639,12 @@ msgstr "Prorata Data"
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__purchase
 msgid "Purchase: Asset"
 msgstr "Compra: Ativos"
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid "Re-evaluate"
+msgstr ""
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1689,7 +1690,9 @@ msgid "Responsible User"
 msgstr "Usuário Responsável"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Resume"
 msgstr "Continuar vendendo"
 
@@ -1786,7 +1789,9 @@ msgid "Select Invoice Line"
 msgstr "Selecione Linha de Fatura"
 
 #. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
+#, python-format
 msgid "Sell"
 msgstr "Vender"
 
@@ -2034,6 +2039,16 @@ msgid ""
 msgstr ""
 "Você não pode criar um ativo a partir de linhas contendo crédito e débito na"
 " conta ou com um valor nulo"
+
+#. module: account_asset
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid ""
+"You cannot delete an asset linked to posted entries.\n"
+"You should either confirm the asset, then, sell or dispose of it, or cancel the linked journal entries."
+msgstr ""
+"Não é possível eliminar um bem vinculado a entradas lançadas.\n"
+"Você deve confirmar o bem, então, vender ou dispor dele, ou cancelar os lançamentos de diário vinculados."
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0

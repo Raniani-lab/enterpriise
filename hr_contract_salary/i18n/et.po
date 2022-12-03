@@ -32,7 +32,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__signatures_count
 msgid "# Signatures"
-msgstr ""
+msgstr "# Allkirjad"
 
 #. module: hr_contract_salary
 #: model:mail.template,body_html:hr_contract_salary.mail_template_send_offer
@@ -395,7 +395,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:ir.model,name:hr_contract_salary.model_hr_contract_history
 msgid "Contract history"
-msgstr ""
+msgstr "Lepingu ajalugu"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__activity_creation__countersigned
@@ -576,7 +576,7 @@ msgstr "Dokument"
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract_sign_document_wizard__sign_template_ids
 msgid "Documents to sign"
-msgstr ""
+msgstr "Dokument allkirjastamiseks"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,help:hr_contract_salary.field_hr_contract_sign_document_wizard__sign_template_ids
@@ -585,6 +585,9 @@ msgid ""
 "        Documents with 1 responsible will only have to be signed by the employee while documents with 2 different responsible will have to be signed by both the employee and the responsible.\n"
 "        "
 msgstr ""
+"Dokumendid allkirjastamiseks. Valikus on dokumendid, millel on vähemalt 1 või 2 vastutajat.\n"
+"        Ühe vastutajaga dokumendi peab allkirjastama ainult töötaja, kahe erineva vastutajaga dokumendi peavad allkirjastama nii töötaja kui ka ettevõttepoolne vastutav isik.\n"
+"        "
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__display_type__dropdown
@@ -1098,7 +1101,7 @@ msgstr ""
 #. module: hr_contract_salary
 #: model:sign.template,redirect_url_text:hr_contract_salary.sign_template_cdi_developer
 msgid "Open Link"
-msgstr ""
+msgstr "Ava link"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields,field_description:hr_contract_salary.field_hr_contract__origin_contract_id
@@ -1408,7 +1411,7 @@ msgstr ""
 #: code:addons/hr_contract_salary/controllers/main.py:0
 #, python-format
 msgid "Signature Request - %s"
-msgstr ""
+msgstr "Allkirjataotlus - %s"
 
 #. module: hr_contract_salary
 #: model:ir.model.fields.selection,name:hr_contract_salary.selection__hr_contract_salary_advantage__display_type__slider

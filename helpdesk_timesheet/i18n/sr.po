@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Uros Kalajdzic <ukalajdzic@gmail.com>, 2022
-# Slobodan Simić <slsimic@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,7 +35,7 @@ msgstr ""
 #: model:ir.model,name:helpdesk_timesheet.model_account_analytic_line
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__analytic_account_id
 msgid "Analytic Account"
-msgstr "Рачун аналитике"
+msgstr "Račun analitike"
 
 #. module: helpdesk_timesheet
 #: code:addons/helpdesk_timesheet/models/helpdesk.py:0
@@ -76,7 +76,7 @@ msgstr ""
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_create_timesheet_view_form
 msgid "Delete"
-msgstr ""
+msgstr "Obriši"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_sla_report_analysis__department_id
@@ -94,7 +94,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_create_timesheet__description
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_timesheet
 msgid "Description"
-msgstr "Опис"
+msgstr "Opis"
 
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_timesheet
@@ -104,12 +104,12 @@ msgstr ""
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_create_timesheet_view_form
 msgid "Discard"
-msgstr ""
+msgstr "Poništi"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_create_timesheet__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Naziv za prikaz"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_account_analytic_line__display_task
@@ -154,13 +154,13 @@ msgstr ""
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_timesheet
 msgid "Duration"
-msgstr "Трајање"
+msgstr "Trajanje"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_sla_report_analysis__employee_id
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_report_analysis__employee_id
 msgid "Employee"
-msgstr "Запослени"
+msgstr "Zaposleni"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__encode_uom_in_days
@@ -177,14 +177,14 @@ msgstr ""
 #: model:ir.model,name:helpdesk_timesheet.model_helpdesk_team
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_project_project__helpdesk_team
 msgid "Helpdesk Team"
-msgstr ""
+msgstr "Helpdesk ti"
 
 #. module: helpdesk_timesheet
 #: model:ir.model,name:helpdesk_timesheet.model_helpdesk_ticket
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_account_analytic_line__helpdesk_ticket_id
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_timesheets_analysis_report__helpdesk_ticket_id
 msgid "Helpdesk Ticket"
-msgstr "Карта за помоћ"
+msgstr "Zahtev za pomoć"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__total_hours_spent
@@ -210,17 +210,17 @@ msgstr ""
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_create_timesheet____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Poslednja izmena dana"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_create_timesheet__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Poslednje izmenio/la"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_create_timesheet__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Poslednje ažuriranje dana"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_sla_report_analysis__manager_id
@@ -270,7 +270,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_team__project_id
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__project_id
 msgid "Project"
-msgstr "Пројекат"
+msgstr "Projekat"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,help:helpdesk_timesheet.field_helpdesk_team__project_id
@@ -303,7 +303,7 @@ msgstr ""
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_create_timesheet_view_form
 msgid "Save"
-msgstr "Сачувај"
+msgstr "Sačuvaj"
 
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_create_timesheet_view_form
@@ -345,7 +345,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.timesheet_table
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.timesheet_view_form_helpdesk
 msgid "Ticket"
-msgstr ""
+msgstr "Ulaznica"
 
 #. module: helpdesk_timesheet
 #: model:ir.model,name:helpdesk_timesheet.model_helpdesk_ticket_report_analysis
@@ -369,7 +369,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_project_project__ticket_ids
 #, python-format
 msgid "Tickets"
-msgstr ""
+msgstr "Tiketi"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_create_timesheet__time_spent

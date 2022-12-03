@@ -1658,18 +1658,18 @@ msgstr "Jenis dari aktivitas pengecualian pada rekaman data."
 #: model:ir.model,name:social.model_utm_campaign
 #: model:ir.model.fields,field_description:social.field_social_post__utm_campaign_id
 msgid "UTM Campaign"
-msgstr ""
+msgstr "Kampanye UTM"
 
 #. module: social
 #: model:ir.model,name:social.model_utm_medium
 #: model:ir.model.fields,field_description:social.field_social_account__utm_medium_id
 msgid "UTM Medium"
-msgstr ""
+msgstr "Medium UTM"
 
 #. module: social
 #: model:ir.model,name:social.model_utm_source
 msgid "UTM Source"
-msgstr ""
+msgstr "Sumber UTM"
 
 #. module: social
 #: code:addons/social/models/social_post.py:0

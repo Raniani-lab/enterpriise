@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Uros Kalajdzic <ukalajdzic@gmail.com>, 2022
-# Slobodan Simić <slsimic@gmail.com>, 2022
 # Martin Trigaux, 2022
+# Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Dragan Vukosavljevic <dragan.vukosavljevic@gmail.com>, 2022\n"
 "Language-Team: Serbian (https://www.transifex.com/odoo/teams/41243/sr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -64,7 +64,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_partner_ledger_report
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_line_template
 msgid "&amp;nbsp;"
-msgstr ""
+msgstr "&amp;nbsp;"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -72,6 +72,14 @@ msgstr ""
 msgid ""
 "'Open General Ledger' caret option is only available form report lines "
 "targetting accounts."
+msgstr ""
+
+#. module: account_reports
+#: code:addons/account_reports/models/account_report.py:0
+#, python-format
+msgid ""
+"'View Bank Statement' caret option is only available for report lines "
+"targeting bank statements."
 msgstr ""
 
 #. module: account_reports
@@ -260,7 +268,12 @@ msgstr ""
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
-msgid "<span class=\"fa fa-folder-open\"/> Analytic"
+msgid "<span class=\"fa fa-folder-open\"/> Analytic Filter"
+msgstr ""
+
+#. module: account_reports
+#: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
+msgid "<span class=\"fa fa-folder-open\"/> Analytic Group By"
 msgstr ""
 
 #. module: account_reports
@@ -281,6 +294,8 @@ msgid ""
 "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
 "specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Vrednosti postavljene ovde su"
+" specifične za kompaniju.\" groups=\"base.group_multi_company\"/>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.multicurrency_report_search_template
@@ -385,7 +400,7 @@ msgstr ""
 #: model:ir.model,name:account_reports.model_account_account
 #, python-format
 msgid "Account"
-msgstr "Рачун"
+msgstr "Račun"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_chart_template
@@ -452,7 +467,7 @@ msgstr ""
 #: code:addons/account_reports/static/src/js/account_reports.js:0
 #, python-format
 msgid "Accounts"
-msgstr "Рачуни"
+msgstr "Računi"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_form
@@ -477,7 +492,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_mail_activity_type__category
 msgid "Action"
-msgstr "Радња"
+msgstr "Radnja"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_mail_activity_type__category
@@ -485,16 +500,18 @@ msgid ""
 "Actions may trigger specific behavior like opening calendar view or "
 "automatically mark as done when a document is uploaded"
 msgstr ""
+"Radnje mogu pokrenuti određeno ponašanje poput otvaranja prikaza kalendara "
+"ili automatski označiti kao gotovo kada se dokument učita"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_mail_activity
 msgid "Activity"
-msgstr "Активност"
+msgstr "Aktivnost"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_mail_activity_type
 msgid "Activity Type"
-msgstr ""
+msgstr "Vrsta aktivnosti"
 
 #. module: account_reports
 #. openerp-web
@@ -651,6 +668,11 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Analytic Accounts:"
+msgstr ""
+
+#. module: account_reports
+#: model:ir.model.fields,field_description:account_reports.field_account_report__filter_analytic_groupby
+msgid "Analytic Group By"
 msgstr ""
 
 #. module: account_reports
@@ -811,7 +833,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_bank_rec_widget
 msgid "Bank reconciliation widget for a single statement line"
-msgstr ""
+msgstr "Vidžet za usaglašavanje banke za jednu liniju izvoda"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_general_ledger.py:0
@@ -835,7 +857,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.view_report_export_wizard
 #, python-format
 msgid "Cancel"
-msgstr "Откажи"
+msgstr "Otkaži"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
@@ -993,7 +1015,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_form
 msgid "Columns"
-msgstr ""
+msgstr "Kolone"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.general_ledger_report_communication
@@ -1004,7 +1026,7 @@ msgstr "Komunikacija"
 #: model:ir.model,name:account_reports.model_res_company
 #: model:ir.model.fields,field_description:account_reports.field_account_tax_unit__company_ids
 msgid "Companies"
-msgstr "Предузећа"
+msgstr "Preduzeća"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__company_id
@@ -1039,7 +1061,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Podešavanje konfiguracije"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
@@ -1055,7 +1077,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_res_partner
 msgid "Contact"
-msgstr "Контакт"
+msgstr "Kontakt"
 
 #. module: account_reports
 #: model:account.report.expression,report_line_name:account_reports.account_financial_report_cost_sales0_balance
@@ -1088,7 +1110,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_report_search
 msgid "Country"
-msgstr "Држава"
+msgstr "Zemlja"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.account_financial_report_ec_sales_country
@@ -1212,7 +1234,7 @@ msgstr ""
 #: model:account.report.column,name:account_reports.general_ledger_report_date
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__date
 msgid "Date"
-msgstr "Датум"
+msgstr "Datum"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
@@ -1276,7 +1298,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard_format__display_name
 #: model:ir.model.fields,field_description:account_reports.field_account_tax_unit__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Naziv za prikaz"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard__doc_name
@@ -1519,11 +1541,6 @@ msgstr ""
 msgid ""
 "Field 'Custom Handler Model' can only reference records inheriting from "
 "[%s]."
-msgstr ""
-
-#. module: account_reports
-#: model:ir.model.fields,field_description:account_reports.field_account_report__filter_analytic_groupby
-msgid "Filter Analytic Groupby"
 msgstr ""
 
 #. module: account_reports
@@ -1869,12 +1886,12 @@ msgstr "Dnevnik"
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:account_reports.setup_financial_year_opening_form
 msgid "Journal"
-msgstr "Извештај"
+msgstr "Izveštaj"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_move
 msgid "Journal Entry"
-msgstr "Sadrzaj dnevnika"
+msgstr "Sadržaj dnevnika"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -1885,7 +1902,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_move_line
 msgid "Journal Item"
-msgstr "Ставка извештаја"
+msgstr "Stavka izveštaja"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_bank_reconciliation_report.py:0
@@ -1893,7 +1910,7 @@ msgstr "Ставка извештаја"
 #: code:addons/account_reports/models/account_trial_balance_report.py:0
 #, python-format
 msgid "Journal Items"
-msgstr "Sadrzaj Dnevnika"
+msgstr "Sadržaj Dnevnika"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
@@ -1955,12 +1972,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard_format____last_update
 #: model:ir.model.fields,field_description:account_reports.field_account_tax_unit____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Poslednja izmena dana"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "Last Month"
-msgstr ""
+msgstr "Prošli mesec"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
@@ -1982,7 +1999,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard_format__write_uid
 #: model:ir.model.fields,field_description:account_reports.field_account_tax_unit__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Poslednje izmenio/la"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__write_date
@@ -1994,12 +2011,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard_format__write_date
 #: model:ir.model.fields,field_description:account_reports.field_account_tax_unit__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Poslednje ažuriranje dana"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_footnote__line
 msgid "Line"
-msgstr ""
+msgstr "Linija"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__line_template
@@ -2293,7 +2310,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "PDF"
-msgstr ""
+msgstr "PDF"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard__report_id
@@ -2426,7 +2443,7 @@ msgstr "Pozicija"
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "Post"
-msgstr "Пошаљи"
+msgstr "Pošalji"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -2615,7 +2632,7 @@ msgstr ""
 #: code:addons/account_reports/static/src/js/account_reports.js:0
 #, python-format
 msgid "Save"
-msgstr "Сачувај"
+msgstr "Sačuvan"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__search_template
@@ -2894,6 +2911,13 @@ msgid "The main company of a tax unit has to be part of it."
 msgstr ""
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_journal_report.py:0
+#, python-format
+msgid ""
+"The selected report line does not target a Journal Entry or a Journal Item."
+msgstr ""
+
+#. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_res_company__account_tax_unit_ids
 msgid "The tax units this company belongs to."
 msgstr ""
@@ -2901,7 +2925,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "There are"
-msgstr ""
+msgstr "Postoje"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template
@@ -3129,7 +3153,7 @@ msgstr "Otvoren"
 #. module: account_reports
 #: model:account.report.column,name:account_reports.account_financial_report_ec_sales_vat
 msgid "VAT Number"
-msgstr ""
+msgstr "PIB broj"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_company_form

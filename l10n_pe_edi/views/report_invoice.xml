@@ -15,11 +15,11 @@
                 </p>
             </xpath>
 
-            <xpath expr="//h2/span[@id='posted_out_invoice']" position="attributes">
+            <xpath expr="//h2/span[contains(@t-if, 'out_invoice') and contains(@t-if, 'posted')]" position="attributes">
                 <attribute name="t-out">o.l10n_latam_document_type_id.report_name</attribute>
             </xpath>
 
-            <xpath expr="//h2/span[@id='posted_out_refund']" position="attributes">
+            <xpath expr="//h2/span[contains(@t-elif, 'out_refund') and contains(@t-elif, 'posted')]" position="attributes">
                 <attribute name="t-out">o.l10n_latam_document_type_id.report_name</attribute>
             </xpath>
 

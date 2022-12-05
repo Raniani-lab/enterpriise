@@ -82,14 +82,16 @@ class BelgianECSalesReportCustomHandler(models.AbstractModel):
         """
         vat_report = self.env.ref('l10n_be.tax_report_vat')
         tax_report_options = vat_report._get_options(options)
-        expressions = (
-            self.env.ref('l10n_be.tax_report_line_44_tag'),
-            self.env.ref('l10n_be.tax_report_line_46L_tag'),
-            self.env.ref('l10n_be.tax_report_line_46T_tag'),
-            self.env.ref('l10n_be.tax_report_line_48s44_tag'),
-            self.env.ref('l10n_be.tax_report_line_48s46L_tag'),
-            self.env.ref('l10n_be.tax_report_line_48s46T_tag'),
-        )
+
+        expressions = self.env['account.report.expression']
+        for expression_xmlid in ('l10n_be.tax_report_line_44_tag',
+                                 'l10n_be.tax_report_line_46L_tag',
+                                 'l10n_be.tax_report_line_46T_tag',
+                                 'l10n_be.tax_report_line_48s44_tag',
+                                 'l10n_be.tax_report_line_48s46L_tag',
+                                 'l10n_be.tax_report_line_48s46T_tag'):
+            expressions |= self.env.ref(expression_xmlid)
+
         tax_total = 0.0
         tax_total_grouped = vat_report._compute_expression_totals_for_each_column_group(expressions, tax_report_options)
         for expr_dict in tax_total_grouped.values():

@@ -274,6 +274,7 @@
                     <field name="name"/>
                     <field name="date"/>
                     <field name="value"/>
+                    <field name="text_value"/>
                     <field name="target_report_expression_id" optional="hide"/>
                     <field name="target_report_line_id" optional="hide"/>
                     <field name="target_report_expression_label" optional="hide"/>

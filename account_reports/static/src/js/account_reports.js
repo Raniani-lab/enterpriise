@@ -225,7 +225,17 @@ var accountReportsWidget = AbstractAction.extend({
             }
 
             if (event.target.classList.contains("account_reports_submit_manual_value")) {
-                let manual_value = document.getElementById('account_reports_manual_value_input').value;
+                let manual_inputs = document.getElementsByName('account_reports_manual_value_input');
+                let manual_value = false;
+                if (manual_inputs.length == 1) {
+                    manual_value = manual_inputs[0].value;
+                } else {
+                    for (let input of manual_inputs) {
+                        if (input.checked) {
+                            manual_value = input.value;
+                        }
+                    }
+                }
                 self._rpc({
                     model: 'account.report',
                     method: 'action_modify_manual_value',

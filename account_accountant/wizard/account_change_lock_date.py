@@ -1,6 +1,8 @@
 from odoo import models, fields, _
 from odoo.exceptions import UserError
+from odoo.tools import date_utils
 
+from datetime import timedelta
 
 class AccountChangeLockDate(models.TransientModel):
     """
@@ -31,6 +33,20 @@ class AccountChangeLockDate(models.TransientModel):
             'tax_lock_date': self.tax_lock_date,
         }
 
+    def _get_current_period_dates(self, lock_date_field):
+        """ Gets the date_from - either the previous lock date or the start of the fiscal year.
+        """
+        company_lock_date = self.env.company[lock_date_field]
+        if company_lock_date:
+            date_from = company_lock_date + timedelta(days=1)
+        else:
+            date_from = date_utils.get_fiscal_year(self[lock_date_field])[0]
+        return date_from, self[lock_date_field]
+
+    def _create_default_report_external_values(self, lock_date_field):
+        # to be overriden
+        pass
+
     def change_lock_date(self):
         if self.user_has_groups('account.group_account_manager'):
             if any(
@@ -42,6 +58,10 @@ class AccountChangeLockDate(models.TransientModel):
                     if lock_date
             ):
                 raise UserError(_('You cannot set a lock date in the future.'))
+            if self.fiscalyear_lock_date and self.fiscalyear_lock_date != self.env.company.fiscalyear_lock_date:
+                self._create_default_report_external_values('fiscalyear_lock_date')
+            if self.tax_lock_date and self.tax_lock_date != self.env.company.tax_lock_date:
+                self._create_default_report_external_values('tax_lock_date')
             self.env.company.sudo().write(self._prepare_lock_date_values())
         else:
             raise UserError(_('Only Billing Administrators are allowed to change lock dates!'))

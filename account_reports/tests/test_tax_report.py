@@ -2323,3 +2323,227 @@ class TestTaxReport(TestAccountReportsCommon):
                 ("tax_foreign",                                20.0),
             ],
         )
+    def test_engine_external_many_fiscal_positions(self):
+        # Create a tax report that contains default manual expressions
+        self.basic_tax_report_2 = self.env['account.report'].create({
+            'name': "The Other Tax Report",
+            'country_id': self.fiscal_country.id,
+            'root_report_id': self.env.ref("account.generic_tax_report").id,
+            'column_ids': [Command.create({'name': 'balance', 'sequence': 1, 'expression_label': 'balance'})],
+            'line_ids': [
+                Command.create({
+                    'name': "test_line_1",
+                    'code': "test_line_1",
+                    'sequence': 1,
+                    'expression_ids': [
+                        Command.create({
+                            'date_scope': 'strict_range',
+                            'engine': 'external',
+                            'formula': 'sum',
+                            'label': 'balance',
+                        }),
+                        Command.create({
+                            'date_scope': 'strict_range',
+                            'engine': 'account_codes',
+                            'formula': '101',
+                            'label': '_default_balance',
+                        })
+                    ]
+                }),
+                Command.create({
+                    'name': "test_line_2",
+                    'code': "test_line_2",
+                    'sequence': 2,
+                    'expression_ids': [
+                        Command.create({
+                            'date_scope': 'strict_range',
+                            'engine': 'account_codes',
+                            'formula': '101',
+                            'label': 'balance',
+                        })
+                    ],
+                })
+            ]
+        })
+
+        company_2 = self.company_data_2['company']
+        company_2.country_id = self.fiscal_country
+        company_2.currency_id = self.company_data['company'].currency_id
+
+        # create two foreign fiscal positions (FPs), so we could create moves for each of them
+        foreign_vat_fpos = self.env['account.fiscal.position'].create([
+            {
+                'name': 'fpos 1',
+                'foreign_vat': 'A Swallow from Africa',
+                'country_id': self.fiscal_country.id,
+                'company_id': company_2.id,
+                'state_ids': self.country_state_1,
+            },
+            {
+                'name': 'fpos 2',
+                'foreign_vat': 'A Swallow from Europe',
+                'country_id': self.fiscal_country.id,
+                'company_id': company_2.id,
+                'state_ids': self.country_state_2,
+            },
+        ])
+
+        test_account_1 = self.env['account.account'].create({
+            'code': "101007",
+            'name': "test account",
+            'account_type': "asset_current",
+            'company_id': company_2.id,
+        })
+
+        test_account_2 = self.env['account.account'].create({
+            'code': "test",
+            'name': "test",
+            'account_type': "asset_current",
+            'company_id': company_2.id,
+        })
+
+        move_vals = [{
+            'date': fields.Date.from_string('2020-01-01'),
+            'fiscal_position_id': fp.id,
+            'company_id': company_2.id,
+            'line_ids': [
+                Command.create({
+                    'name': 'line 1',
+                    'account_id': test_account_1.id,
+                    'debit': 1000 * (i + 1),
+                    'credit': 0.0,
+                }),
+                Command.create({
+                    'name': 'line 2',
+                    'account_id': test_account_2.id,
+                    'debit': 0.0,
+                    'credit': 1000 * (i + 1),
+                }),
+            ]
+        } for i, fp in enumerate(foreign_vat_fpos)]
+
+        # create a move that includes an account starting with '101'
+        # to make sure its amount does not appear in the tax report for company_2
+        other_company_move_vals = {
+            'date': fields.Date.from_string('2020-01-01'),
+            'company_id': self.company_data['company'].id,
+            'line_ids': [
+                Command.create({
+                    'name': 'line 1',
+                    'account_id': self.company_data['default_account_revenue'].id,
+                    'debit': 1200,
+                    'credit': 0.0,
+                }),
+                Command.create({
+                    'name': 'line 2',
+                    'account_id': self.company_data['default_account_assets'].id,
+                    'debit': 0.0,
+                    'credit': 1200,
+                }),
+            ]
+        }
+
+        moves = self.env['account.move'].create(move_vals)
+        moves.action_post()
+        other_company_move = self.env['account.move'].create(other_company_move_vals)
+        other_company_move.action_post()
+
+        # we need to create different options per FP
+        fiscal_positions = ['all'] + foreign_vat_fpos.ids
+        report_options = {}
+        for fp in fiscal_positions:
+            fp_options = self._generate_options(
+                self.basic_tax_report_2.with_context(allowed_company_ids=[company_2.id]),
+                '2020-01-01', '2020-01-04',
+                default_options={
+                    'fiscal_position': fp,
+                }
+            )
+            report_options[fp] = fp_options
+
+        # when we filter by all FPs, the result on the second line
+        # should be the sum of the moves
+        # the first line contains a default expression and remains empty
+        # until we set a lock date
+        total_amount = sum([1000 * (i + 1) for i in range(len(foreign_vat_fpos.ids))])
+        report_lines = self.basic_tax_report_2\
+            .with_company(company_2)._get_lines(report_options['all'])
+        self.assertLinesValues(
+            # pylint: disable=bad-whitespace
+            report_lines,
+            [0,                             1],
+            [
+                ('test_line_1',            ''),
+                ('test_line_2',  total_amount),
+            ],
+            report_options['all'],
+        )
+
+        # subsequently, line 2 should only contain the amount for the selected FP
+        for i, fp in enumerate(foreign_vat_fpos.ids):
+            report_lines = self.basic_tax_report_2\
+                .with_company(company_2)._get_lines(report_options[fp])
+            self.assertLinesValues(
+                # pylint: disable=bad-whitespace
+                report_lines,
+                [0,                               1],
+                [
+                    ('test_line_1',              ''),
+                    ('test_line_2', 1000 * (i + 1)),
+                ],
+                report_options[fp],
+            )
+
+        # the default values shouldn't be created if the general lock date is set
+        lock_date_wizard = self.env['account.change.lock.date']\
+            .with_company(company_2).create({
+            'fiscalyear_lock_date': fields.Date.from_string('2020-01-04'),
+        })
+        lock_date_wizard.change_lock_date()
+
+        report_lines = self.basic_tax_report_2\
+            .with_company(company_2)._get_lines(report_options['all'])
+        self.assertLinesValues(
+            # pylint: disable=bad-whitespace
+            report_lines,
+            [0,                             1],
+            [
+                ('test_line_1',            ''),
+                ('test_line_2',  total_amount),
+            ],
+            report_options['all'],
+        )
+
+        # if we change the tax_lock_date, the default values should be created
+        lock_date_wizard = self.env['account.change.lock.date']\
+            .with_company(company_2).create({
+            'tax_lock_date': fields.Date.from_string('2020-01-04'),
+        })
+        lock_date_wizard.change_lock_date()
+
+        report_lines = self.basic_tax_report_2\
+            .with_company(company_2)._get_lines(report_options['all'])
+        self.assertLinesValues(
+            # pylint: disable=bad-whitespace
+            report_lines,
+            [0,                             1],
+            [
+                ('test_line_1',  total_amount),
+                ('test_line_2',  total_amount),
+            ],
+            report_options['all'],
+        )
+
+        for i, fp in enumerate(foreign_vat_fpos.ids):
+            report_lines = self.basic_tax_report_2\
+                .with_company(company_2)._get_lines(report_options[fp])
+            self.assertLinesValues(
+                # pylint: disable=bad-whitespace
+                report_lines,
+                [0,                               1],
+                [
+                    ('test_line_1', 1000 * (i + 1)),
+                    ('test_line_2', 1000 * (i + 1)),
+                ],
+                report_options[fp],
+            )

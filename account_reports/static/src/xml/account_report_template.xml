@@ -125,7 +125,29 @@
 
     <t t-name="accountReports.EditColumnTemplate">
         <div class="d-flex align-items-center">
-            <input id="account_reports_manual_value_input" class="account_reports_popup_no_hide"/>
+            <t t-if="figure_type == 'boolean'">
+                <div class="d-flex align-items-center gap-1">
+                    <input
+                        id="manual_value_true"
+                        name="account_reports_manual_value_input"
+                        class="account_reports_popup_no_hide"
+                        type="radio"
+                        t-att-checked="(column_value == '1') ? 'checked' : undefined"
+                        value="1"/>
+                    <label for="account_reports_manual_value_input" class="fw-bold">Yes</label>
+                    <input
+                        id="manual_value_false"
+                        name="account_reports_manual_value_input"
+                        class="account_reports_popup_no_hide"
+                        type="radio"
+                        t-att-checked="(column_value == '0') ? 'checked' : undefined"
+                        value="0"/>
+                    <label for="account_reports_manual_value_input" class="fw-bold">No</label>
+                </div>
+            </t>
+            <t t-else="">
+                <input id="account_reports_manual_value_input" name="account_reports_manual_value_input" class="account_reports_popup_no_hide"/>
+            </t>
             <button
                 class="account_reports_submit_manual_value btn btn-primary btn-sm ms-3"
                 t-att-data-column-group-key="column_group_key"

@@ -1943,7 +1943,7 @@ class AccountReport(models.Model):
             col_expression_to_figure_type = {
                 column.get('expression_label'): column.get('figure_type') for column in options['columns']
             }
-            for expression in line.expression_ids:
+            for expression in line.expression_ids.filtered(lambda x: not x.label.startswith('_default')):
                 engine_label = engine_selection_labels[expression.engine]
                 figure_type = expression.figure_type or col_expression_to_figure_type.get(expression.label) or 'none'
                 expressions_detail[engine_label].append((
@@ -1966,7 +1966,7 @@ class AccountReport(models.Model):
         columns = []
         for column_data in options['columns']:
             current_group_expression_totals = all_column_groups_expression_totals[column_data['column_group_key']]
-            target_line_res_dict = {expr.label: current_group_expression_totals[expr] for expr in line.expression_ids}
+            target_line_res_dict = {expr.label: current_group_expression_totals[expr] for expr in line.expression_ids if not expr.label.startswith('_default')}
 
             column_expr_label = column_data['expression_label']
             column_res_dict = target_line_res_dict.get(column_expr_label, {})
@@ -2017,6 +2017,8 @@ class AccountReport(models.Model):
                         'column_group_key': column_data['column_group_key'],
                         'target_expression_id': column_expression.id,
                         'rounding': rounding,
+                        'figure_type': figure_type,
+                        'column_value': column_value,
                     }
 
                 formatter_params = {'digits': rounding}
@@ -2047,6 +2049,7 @@ class AccountReport(models.Model):
                 'report_line_id': line.id,
                 'class': 'number' if isinstance(column_value, (int, float)) else '',
                 'is_zero': column_value is None or (figure_type in ('float', 'integer', 'monetary', 'monetary_without_symbol') and self.is_zero(column_value, figure_type=figure_type, **formatter_params)),
+                'figure_type': figure_type,
             }
 
             if info_popup_data:
@@ -2064,7 +2067,7 @@ class AccountReport(models.Model):
             return self.env[self.custom_handler_model_name]._dynamic_lines_generator(self, options, all_column_groups_expression_totals)
         return []
 
-    def _compute_expression_totals_for_each_column_group(self, expressions, options, groupby_to_expand=None, forced_all_column_groups_expression_totals=None, offset=0, limit=None):
+    def _compute_expression_totals_for_each_column_group(self, expressions, options, groupby_to_expand=None, forced_all_column_groups_expression_totals=None, offset=0, limit=None, include_default_vals=False):
         """
             Main computation function for static lines.
 
@@ -2122,6 +2125,8 @@ class AccountReport(models.Model):
 
         # Group formulas for batching (when possible)
         grouped_formulas = {}
+        if expressions and not include_default_vals:
+            expressions = expressions.filtered(lambda x: not x.label.startswith('_default'))
         for expression in expressions:
             add_expressions_to_groups(expression, grouped_formulas)
 
@@ -2323,13 +2328,15 @@ class AccountReport(models.Model):
         for expression, expression_res in other_current_report_expr_totals.items():
             if expression.report_line_id.code:
                 line_code_result_dict = current_report_eval_dict.setdefault(expression.report_line_id.code, {})
-                line_code_result_dict[expression.label] = self.env.company.currency_id.round(expression_res['value'])
+                if expression.figure_type != 'string':
+                    line_code_result_dict[expression.label] = self.env.company.currency_id.round(expression_res['value'])
 
         for forced_date_scope, scope_expr_totals in other_cross_report_expr_totals_by_scope.items():
             for expression, expression_res in scope_expr_totals.items():
                 if expression.report_line_id.code:
                     line_code_result_dict = other_reports_eval_dict.setdefault(forced_date_scope, {}).setdefault(expression.report_line_id.code, {})
-                    line_code_result_dict[expression.label] = self.env.company.currency_id.round(expression_res['value'])
+                    if expression.figure_type != 'string':
+                        line_code_result_dict[expression.label] = self.env.company.currency_id.round(expression_res['value'])
 
         # Complete current_report_eval_dict with the formulas of uncomputed aggregation lines
         aggregations_terms_to_evaluate = set() # Those terms are part of the formulas to evaluate; we know they will get a value eventually
@@ -2877,7 +2884,7 @@ class AccountReport(models.Model):
 
         Two different formulas are possible:
         - sum: if the result must be the sum of all the external values in the period.
-        - most_recent: it the result must be the value of the latest external value in the period.
+        - most_recent: it the result must be the value of the latest external value in the period, which can be a number or a text
 
         No subformula is allowed for this engine.
         """
@@ -2907,8 +2914,10 @@ class AccountReport(models.Model):
         # Do the computation
         dummy, where_clause, where_params = self.env['account.report.external.value']._where_calc(external_value_domain).get_sql()
         currency_table_query = self.env['res.currency']._get_query_currency_table(options)
-        queries = []
-        query_params = []
+
+        # We have to execute two separate queries, one for text values and one for numeric values
+        num_queries, num_query_params = [], []
+        string_queries, string_query_params = [], []
         for formula, expressions in formulas_dict.items():
             query_end = ''
             if formula == 'most_recent':
@@ -2917,35 +2926,51 @@ class AccountReport(models.Model):
                     ORDER BY date DESC
                     LIMIT 1
                 """
+            string_query = f"""
+                    SELECT %s, text_value
+                    FROM account_report_external_value
+                    WHERE {where_clause} AND target_report_expression_id = %s
+                """
+            num_query = f"""
+                SELECT
+                    %s,
+                    COALESCE(SUM(COALESCE(ROUND(CAST(value AS numeric) * currency_table.rate, currency_table.precision), 0)), 0)
+                FROM account_report_external_value
+                    JOIN {currency_table_query} ON currency_table.company_id = account_report_external_value.company_id
+                WHERE {where_clause} AND target_report_expression_id = %s
+                {query_end}
+            """
 
             for expression in expressions:
-                queries.append(f"""
-                    SELECT
-                        %s,
-                        COALESCE(SUM(COALESCE(ROUND(CAST(value AS numeric) * currency_table.rate, currency_table.precision), 0)), 0)
-                    FROM account_report_external_value
-                        JOIN {currency_table_query} ON currency_table.company_id = account_report_external_value.company_id
-                    WHERE {where_clause} AND target_report_expression_id = %s
-                    {query_end}
-                """)
-                query_params += [
+                params = [
                     expression.id,
                     *where_params,
                     expression.id,
                 ]
-        query = '(' + ') UNION ALL ('.join(queries) + ')'
-        self._cr.execute(query, query_params)
-        query_results = self._cr.fetchall()
+                if expression.figure_type == "string":
+                    string_queries.append(string_query)
+                    string_query_params += params
+                else:
+                    num_queries.append(num_query)
+                    num_query_params += params
 
         # Convert to dict to have expression ids as keys
-        query_results_dict = dict(query_results)
+        query_results_dict = {}
+        for query_list, query_params in ((num_queries, num_query_params), (string_queries, string_query_params)):
+            if query_list:
+                query = '(' + ') UNION ALL ('.join(query_list) + ')'
+                self._cr.execute(query, query_params)
+                query_results = self._cr.fetchall()
+                query_results_dict.update(dict(query_results))
+
         # Build result dict
         rslt = {}
         for formula, expressions in formulas_dict.items():
             for expression in expressions:
                 expression_value = query_results_dict.get(expression.id)
                 # If expression_value is None, we have no previous value for this expression (set default at 0.0)
-                rslt[(formula, expression)] = {'result': expression_value or 0.0, 'has_sublines': False}
+                expression_value = expression_value or ('' if expression.figure_type == 'string' else 0.0)
+                rslt[(formula, expression)] = {'result': expression_value, 'has_sublines': False}
 
         return rslt
 
@@ -3023,6 +3048,90 @@ class AccountReport(models.Model):
             for expr in carryover_expressions:
                 difference = carryover_values[expr] - multi_company_carryover_values_sum[expr]
                 self._create_carryover_for_company(options, main_company, {expr: difference}, label=_("Carryover adjustment for tax unit"))
+
+    @api.model
+    def _generate_default_external_values(self, date_from, date_to, is_tax_report=False):
+        """ Generates the account.report.external.value objects for the given dates.
+        If is_tax_report, the values are only created for tax reports, else for all other reports.
+        """
+        options_dict = {}
+        default_expr_by_report = defaultdict(list)
+        tax_report = self.env.ref('account.generic_tax_report')
+        company = self.env.company
+        previous_options = {
+            'date': {
+                'date_from': date_from,
+                'date_to': date_to,
+            }
+        }
+
+        # Get all the default expressions from all reports
+        default_expressions = self.env['account.report.expression'].search([('label', '=like', '_default_%')])
+        # Options depend on the report, also we need to filter out tax report/other reports depending on is_tax_report
+        # Hence we need to group the default expressions by report
+        for expr in default_expressions:
+            report = expr.report_line_id.report_id
+            if (is_tax_report and (report.root_report_id or report) == tax_report)\
+                    or (not is_tax_report and (report.root_report_id or report) != tax_report):
+                if report not in options_dict:
+                    options = report.with_context(allowed_company_ids=[company.id])._get_options(previous_options)
+                    options_dict[report] = options
+
+                default_expr_by_report[report].append(expr)
+
+        external_values_create_vals = []
+        for report, report_default_expressions in default_expr_by_report.items():
+            options = options_dict[report]
+            fpos_options = {options['fiscal_position']}
+
+            for available_fp in options['available_vat_fiscal_positions']:
+                fpos_options.add(available_fp['id'])
+
+            # remove 'all' from fiscal positions if we have several of them - all will then include the sum of other fps
+            # but if there aren't any other fps, we need to keep 'all'
+            if len(fpos_options) > 1 and 'all' in fpos_options:
+                fpos_options.remove('all')
+
+            # The default values should be created for every fiscal position available
+            for fiscal_pos in fpos_options:
+                fiscal_pos_id = int(fiscal_pos) if fiscal_pos not in {'domestic', 'all'} else None
+                fp_options = {**options, 'fiscal_position': fiscal_pos}
+
+                expressions_to_compute = {}
+                for default_expression in report_default_expressions:
+                    # The default expression needs to have the same label as the target external expression, e.g. '_default_balance'
+                    target_label = default_expression.label[len('_default_'):]
+                    target_external_expression = default_expression.report_line_id.expression_ids.filtered(lambda x: x.label == target_label)
+                    # If the value has been created before/modified manually, we shouldn't create anything
+                    # and we won't recompute expression totals for them
+                    external_value = self.env['account.report.external.value'].search([
+                        ('company_id', '=', company.id),
+                        ('date', '>=', date_from),
+                        ('date', '<=', date_to),
+                        ('foreign_vat_fiscal_position_id', '=', fiscal_pos_id),
+                        ('target_report_expression_id', '=', target_external_expression.id),
+                    ])
+
+                    if not external_value:
+                        expressions_to_compute[default_expression] = target_external_expression.id
+
+                # Evaluate the expressions for the report to fetch the value of the default expression
+                # These have to be computed for each fiscal position
+                expression_totals_per_col_group = report.with_company(company)\
+                    ._compute_expression_totals_for_each_column_group(expressions_to_compute, fp_options, include_default_vals=True)
+                expression_totals = expression_totals_per_col_group[list(fp_options['column_groups'].keys())[0]]
+
+                for expression, target_expression in expressions_to_compute.items():
+                    external_values_create_vals.append({
+                        'name': _("Manual value"),
+                        'value': expression_totals[expression]['value'],
+                        'date': date_to,
+                        'target_report_expression_id': target_expression,
+                        'foreign_vat_fiscal_position_id': fiscal_pos_id,
+                        'company_id': company.id,
+                    })
+
+        self.env['account.report.external.value'].create(external_values_create_vals)
 
     @api.model
     def _get_sender_company_for_export(self, options):
@@ -3403,23 +3512,33 @@ class AccountReport(models.Model):
             existing_value_to_modify = existing_external_values[-1] if existing_external_values and str(existing_external_values[-1].date) == date_to  else None
             value_to_adjust = sum(existing_external_values.filtered(lambda x: x != existing_value_to_modify).mapped('value'))
 
-        if not new_value_str:
-            new_value = 0
-        else:
-            new_value_str = new_value_str.replace(',', '').replace('+', '', 1)
-            if new_value_str.replace('.', '', 1).replace('-', '', 1).isnumeric():
-                new_value = float(new_value_str)
-            else:
-                raise UserError(_("%s is not a numeric value", new_value_str))
+        if not new_value_str and target_expression.figure_type != 'string':
+            new_value_str = '0'
 
-        value_to_set = float_round(new_value - value_to_adjust, precision_digits=rounding)
+        try:
+            float(new_value_str)
+            is_number = True
+        except ValueError:
+            is_number = False
+
+        if target_expression.figure_type == 'string':
+            value_to_set = new_value_str
+        else:
+            if not is_number:
+                raise UserError(_("%s is not a numeric value", new_value_str))
+            if target_expression.figure_type == 'boolean':
+                rounding = 0
+            value_to_set = float_round(float(new_value_str) - value_to_adjust, precision_digits=rounding)
+
+        field_name = 'value' if target_expression.figure_type != 'string' else 'text_value'
+
         if existing_value_to_modify:
-            existing_value_to_modify.value = value_to_set
+            existing_value_to_modify[field_name] = value_to_set
             existing_value_to_modify.flush_recordset()
         else:
             self.env['account.report.external.value'].create({
                 'name': _("Manual value"),
-                'value': value_to_set,
+                field_name: value_to_set,
                 'date': date_to,
                 'target_report_expression_id': target_expression.id,
                 'company_id': self.env.company.id,
@@ -4137,6 +4256,10 @@ class AccountReport(models.Model):
         elif figure_type == 'monetary_without_symbol':  # Keep the rounding of the currency, but do not display the symbol.
             digits = (currency or self.env.company.currency_id).decimal_places
             currency = None
+        elif figure_type == 'boolean':
+            return bool(value)
+        elif figure_type == 'string':
+            return str(value)
         elif figure_type in ('date', 'datetime'):
             return format_date(self.env, value)
         else:

@@ -108,17 +108,18 @@ class TestReportEngines(TestAccountReportsCommon):
         moves.action_post()
         return moves
 
-    def _prepare_test_external_values(self, value, date):
+    def _prepare_test_external_values(self, value, date, figure_type=False):
+        field_name = 'text_value' if figure_type == 'string' else 'value'
         return {
             'name': date,
-            'value': value,
+            field_name: value,
             'date': date,
         }
 
-    def _prepare_test_expression(self, formula, **kwargs):
+    def _prepare_test_expression(self, formula, label='balance', **kwargs):
         return {
             'expression_values': {
-                'label': 'balance',
+                'label': label,
                 'formula': formula,
                 **kwargs,
             },
@@ -1082,4 +1083,207 @@ class TestReportEngines(TestAccountReportsCommon):
             [
                 ('Partner C',       '$ 3,000.00'),
             ]
+        )
+
+    def test_engine_external_boolean(self):
+        # Create the report.
+        test_line = self._prepare_test_report_line(
+            self._prepare_test_expression_external('most_recent', [
+                self._prepare_test_external_values('1', '2020-01-02'),
+                self._prepare_test_external_values('0', '2020-01-03'),
+                self._prepare_test_external_values('1', '2020-01-03'),
+                self._prepare_test_external_values('0', '2020-01-05'),
+            ], figure_type='boolean')
+        )
+
+        report = self._create_report([test_line])
+        # Check the values at multiple dates.
+        options = self._generate_options(report, '2020-01-01', '2020-01-01')
+        self.assertLinesValues(
+            # pylint: disable=bad-whitespace
+            report._get_lines(options),
+            [   0,                          1],
+            [
+                ('test_line_1',         False),
+            ],
+            options,
+        )
+
+        options = self._generate_options(report, '2020-01-02', '2020-01-02')
+        self.assertLinesValues(
+            # pylint: disable=bad-whitespace
+            report._get_lines(options),
+            [   0,                          1],
+            [
+                ('test_line_1',          True),
+            ],
+            options,
+        )
+
+        options = self._generate_options(report, '2020-01-03', '2020-01-03')
+        self.assertLinesValues(
+            # pylint: disable=bad-whitespace
+            report._get_lines(options),
+            [   0,                          1],
+            [
+                ('test_line_1',          True),
+            ],
+            options,
+        )
+
+        options = self._generate_options(report, '2020-01-05', '2020-01-05')
+        self.assertLinesValues(
+            # pylint: disable=bad-whitespace
+            report._get_lines(options),
+            [   0,                          1],
+            [
+                ('test_line_1',         False),
+            ],
+            options,
+        )
+
+        options = self._generate_options(report, '2020-01-02', '2020-01-05')
+        self.assertLinesValues(
+            # pylint: disable=bad-whitespace
+            report._get_lines(options),
+            [   0,                          1],
+            [
+                ('test_line_1',         False),
+            ],
+            options,
+        )
+
+    def test_engine_external_string(self):
+        # Create the report.
+        test_line = self._prepare_test_report_line(
+            self._prepare_test_expression_external('most_recent', [
+                self._prepare_test_external_values('TARDIS', '2020-01-02', figure_type='string'),
+                self._prepare_test_external_values('Kris Kelvin', '2020-01-03', figure_type='string'),
+                self._prepare_test_external_values('Trisolaris', '2020-01-03', figure_type='string'),
+                self._prepare_test_external_values("5-ounce bird carrying a 1-pound coconut", '2020-01-05', figure_type='string'),
+            ], figure_type='string')
+        )
+
+        report = self._create_report([test_line])
+        # Check the values at multiple dates.
+        options = self._generate_options(report, '2020-01-01', '2020-01-01')
+        self.assertLinesValues(
+            # pylint: disable=bad-whitespace
+            report._get_lines(options),
+            [   0,                                    1],
+            [
+                ('test_line_1',                      ''),
+            ],
+            options,
+        )
+
+        options = self._generate_options(report, '2020-01-02', '2020-01-02')
+        self.assertLinesValues(
+            # pylint: disable=bad-whitespace
+            report._get_lines(options),
+            [   0,                                    1],
+            [
+                ('test_line_1',                'TARDIS'),
+            ],
+            options,
+        )
+
+        options = self._generate_options(report, '2020-01-03', '2020-01-03')
+        self.assertLinesValues(
+            # pylint: disable=bad-whitespace
+            report._get_lines(options),
+            [   0,                                    1],
+            [
+                ('test_line_1',            'Trisolaris'),
+            ],
+            options,
+        )
+
+        options = self._generate_options(report, '2020-01-05', '2020-01-05')
+        self.assertLinesValues(
+            # pylint: disable=bad-whitespace
+            report._get_lines(options),
+            [   0,                                    1],
+            [
+                ('test_line_1', "5-ounce bird carrying a 1-pound coconut"),
+            ],
+            options,
+        )
+
+        options = self._generate_options(report, '2020-01-02', '2020-01-05')
+        self.assertLinesValues(
+            # pylint: disable=bad-whitespace
+            report._get_lines(options),
+            [   0,                                    1],
+            [
+                ('test_line_1', "5-ounce bird carrying a 1-pound coconut"),
+            ],
+            options,
+        )
+
+    def test_engine_external_default_value(self):
+        # Create the report with one default and one non-default line
+        # Both will have the same account code in the formula to compare the values
+        test_line_1 = self._prepare_test_report_line(
+            self._prepare_test_expression_account_codes('1'),
+            groupby='account_id',
+        )
+        test_line_2 = self._prepare_test_report_line(
+            self._prepare_test_expression_external('sum', {}),
+            self._prepare_test_expression_account_codes('1', label='_default_balance'),
+        )
+
+        report = self._create_report([test_line_1, test_line_2])
+
+        # Create the journal entries.
+        self._create_test_account_moves([
+            self._prepare_test_account_move_line(1000.0, account_code='100001'),
+            self._prepare_test_account_move_line(-300.0, account_code='101002'),
+            self._prepare_test_account_move_line(-600.0, account_code='314159'),
+        ])
+
+        # Check the values.
+        options = self._generate_options(
+            report,
+            '2020-01-01', '2020-01-02',
+            default_options={
+                'unfold_all': True,
+            }
+        )
+        report_lines = report._get_lines(options)
+
+        # Default values should not have been created without the lock date being set
+        self.assertLinesValues(
+            # pylint: disable=bad-whitespace
+            report_lines,
+            [0,                             1],
+            [
+                ('test_line_1',         700.0),
+                ('100001 100001',      1000.0),
+                ('101002 101002',      -300.0),
+                ('test_line_2',            ''),
+            ],
+            options,
+        )
+
+        lock_date_wizard = self.env['account.change.lock.date'].create({
+            'fiscalyear_lock_date': fields.Date.from_string('2020-01-02'),
+        })
+        lock_date_wizard.change_lock_date()
+        # Check the values after setting the general lock date.
+        report_lines = report._get_lines(options)
+
+        # Now that the lock date is set, the default values are generated
+        # The amount on test line 2 should match the total amount on test line 1
+        self.assertLinesValues(
+            # pylint: disable=bad-whitespace
+            report_lines,
+            [0,                             1],
+            [
+                ('test_line_1',         700.0),
+                ('100001 100001',      1000.0),
+                ('101002 101002',      -300.0),
+                ('test_line_2',         700.0),
+            ],
+            options,
         )

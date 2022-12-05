@@ -175,8 +175,14 @@
                             t-att-data-calling_line_dict_id="calling_line_dict_id"
                             t-att-data-column_group_key="cell['column_group_key']"
                             t-att-data-expression_label="cell['expression_label']"
-                            t-out="cell.get('name')"
-                        />
+                        >
+                            <t t-if="cell.get('figure_type') == 'boolean'">
+                                <t t-out="'Yes' if cell.get('name') else 'No'"/>
+                            </t>
+                            <t t-else="">
+                                <t t-out="cell.get('name')"/>
+                            </t>
+                        </a>
                     </t>
                     <t t-else="">
                         <span class="o_account_report_column_value" t-out="cell.get('name')"/>

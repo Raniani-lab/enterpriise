@@ -1469,7 +1469,7 @@ class TestSubscription(TestSubscriptionCommon):
                 'product_uom_qty': 1.0,
                 'product_uom': self.product.uom_id.id,
             })]
-            self.assertEqual(upsell_so.next_invoice_date, datetime.date(2023, 1, 1), "The end date is the the same than the parent sub")
+            self.assertEqual(upsell_so.next_invoice_date, datetime.date(2023, 1, 1), "The end date is the same than the parent sub")
             discounts = upsell_so.order_line.mapped('discount')
             self.assertEqual(discounts, [46.58, 46.58, 0.0, 46.58], "The discount is almost equal to 50%")
             self.assertEqual(sub.next_invoice_date, datetime.date(2023, 1, 1), 'the first year should be invoiced')

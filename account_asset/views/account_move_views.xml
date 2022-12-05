@@ -73,7 +73,9 @@
         <field name="inherit_id" ref="account.view_move_line_form"/>
         <field name="arch" type="xml">
             <field name="move_id" position="after">
-                <field name="asset_ids" attrs="{'invisible': [('asset_ids','=',[])]}"/>
+                <group string="Related Assets" attrs="{'invisible': [('asset_ids','=',[])]}">
+                    <field name="asset_ids" nolabel="1" colspan="2"/>
+                </group>
             </field>
         </field>
     </record>

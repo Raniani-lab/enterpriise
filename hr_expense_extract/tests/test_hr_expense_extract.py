@@ -154,7 +154,7 @@ class TestExpenseExtractProcess(TestExpenseCommon):
 
     def test_status_not_ready(self):
         # test the NOT_READY ocr status effects
-        self.env.company.recruitment_extract_show_ocr_option_selection = 'auto_send'
+        self.env.company.expense_extract_show_ocr_option_selection = 'auto_send'
         status_response = {'status_code': NOT_READY}
 
         with self._mock_iap_extract(status_response):
@@ -166,7 +166,7 @@ class TestExpenseExtractProcess(TestExpenseCommon):
 
     def test_expense_validation(self):
         # test that when the expense is hired, the validation is sent to the server
-        self.env.company.recruitment_extract_show_ocr_option_selection = 'auto_send'
+        self.env.company.expense_extract_show_ocr_option_selection = 'auto_send'
         extract_response = self.get_default_extract_response()
 
         with self._mock_iap_extract(extract_response):

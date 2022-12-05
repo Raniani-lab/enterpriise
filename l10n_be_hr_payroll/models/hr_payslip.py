@@ -375,7 +375,7 @@ class Payslip(models.Model):
 
     def _compute_number_complete_months_of_work(self, date_from, date_to, contracts):
         invalid_days_by_year = defaultdict(lambda: defaultdict(dict))
-        for day in rrule.rrule(rrule.DAILY, dtstart=date_from, until=date_to):
+        for day in rrule.rrule(rrule.DAILY, dtstart=date_from + relativedelta(day=1), until=date_to + relativedelta(day=31)):
             invalid_days_by_year[day.year][day.month][day.date()] = True
 
         for contract in contracts:
@@ -402,20 +402,29 @@ class Payslip(models.Model):
                     out_of_schedule = False
                 invalid_days_by_year[day.year][day.month][day] &= out_of_schedule
 
-        # If X = valid days
-        # -  0 <= X <= 10 days :   0 month
-        # - 11 <= X <= 20 days : 0.5 month
-        # - 21 <= X <= 31 days :   1 month
-        # If X = invalid days
-        # -  0 <= X <= 10 days :   1 month
-        # - 11 <= X <= 20 days : 0.5 month
-        # - 21 <= X <= 31 days :   0 month
-        complete_months = [
-            1 if sum(days.values()) <= 10 else 0.5 if 11 <= sum(days.values()) <= 20 else 0
-            for year, invalid_days_by_months in invalid_days_by_year.items()
-            for month, days in invalid_days_by_months.items()
-        ]
-        return sum(complete_months)
+        if self.struct_id.code == "CP200THIRTEEN":
+            complete_months = [
+                month
+                for year, invalid_days_by_months in invalid_days_by_year.items()
+                for month, days in invalid_days_by_months.items()
+                if not any(days.values())
+            ]
+            return len(complete_months)
+        else:
+            # If X = valid days
+            # -  0 <= X <= 10 days :   0 month
+            # - 11 <= X <= 20 days : 0.5 month
+            # - 21 <= X <= 31 days :   1 month
+            # If X = invalid days
+            # -  0 <= X <= 10 days :   1 month
+            # - 11 <= X <= 20 days : 0.5 month
+            # - 21 <= X <= 31 days :   0 month
+            complete_months = [
+                1 if sum(days.values()) <= 10 else 0.5 if 11 <= sum(days.values()) <= 20 else 0
+                for year, invalid_days_by_months in invalid_days_by_year.items()
+                for month, days in invalid_days_by_months.items()
+            ]
+            return sum(complete_months)
 
     def _compute_presence_prorata(self, date_from, date_to, contracts):
         unpaid_work_entry_types = self.struct_id.unpaid_work_entry_type_ids
@@ -441,7 +450,7 @@ class Payslip(models.Model):
                 or (first_contract_date.month > 7)):
             return 0.0
 
-        date_from = first_contract_date
+        date_from = max(first_contract_date, self.date_from + relativedelta(day=1, month=1))
         date_to = self.date_to + relativedelta(day=31)
 
         basic = self.contract_id._get_contract_wage()

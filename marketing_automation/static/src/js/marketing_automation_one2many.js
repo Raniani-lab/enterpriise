@@ -34,6 +34,7 @@ export class HierarchyKanbanRecord extends KanbanRecord {
         return {
             ...super.renderingContext,
             props: this.props,
+            state: this.state,
             onMarketingActivityTabClick: (...args) => this.onMarketingActivityTabClick(...args),
             addChildActivity: (...args) => this.addChildActivity(...args),
         };

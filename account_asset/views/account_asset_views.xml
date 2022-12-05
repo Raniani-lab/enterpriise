@@ -127,7 +127,7 @@
                                         <field name="method_period" required="1" nolabel="1"/>
                                     </div>
                                     <field name="prorata_computation_type"/>
-                                    <field name="prorata_date" attrs="{'invisible': [('prorata_computation_type', '=', 'none')], 'readonly': [('state', '!=', 'draft')]}"/>
+                                    <field name="prorata_date" required="1" attrs="{'invisible': [('prorata_computation_type', '=', 'none')], 'readonly': [('state', '!=', 'draft')]}"/>
                                 </group>
                                 <group string="Accounting">
                                     <field name="company_id" options="{'no_create': True}" groups="base.group_multi_company"/>

@@ -68,7 +68,7 @@ class TestHR(common.TransactionCase):
                 leave_type_form.allocation_validation_type = allocation_validation
         leave_type_form.leave_validation_type = validation
         leave_type_form.request_unit = request_unit
-        leave_type_form.responsible_id = user
+        leave_type_form.responsible_ids.add(user)
         return leave_type_form.save()
 
     def create_allocation(self, user, employee, leave_type, number_of_days=10):

@@ -1792,7 +1792,7 @@
         <field name="leave_validation_type">both</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
-        <field name="responsible_id" ref="base.user_admin"/>
+        <field name="responsible_ids" eval="[(4, ref('base.user_admin'))]"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_legal_leave"></field>
     </record>
@@ -1802,7 +1802,7 @@
         <field name="name">Sick Time Off</field>
         <field name="requires_allocation">no</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave_sick"/>
-        <field name="responsible_id" ref="base.user_admin"/>
+        <field name="responsible_ids" eval="[(4, ref('base.user_admin'))]"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="support_document">True</field>
         <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_sick_leave"></field>
@@ -1816,7 +1816,7 @@
         <field name="leave_validation_type">both</field>
         <field name="request_unit">hour</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
-        <field name="responsible_id" ref="base.user_admin"/>
+        <field name="responsible_ids" eval="[(4, ref('base.user_admin'))]"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_compensatory"></field>
     </record>
@@ -1829,7 +1829,7 @@
         <field name="request_unit">hour</field>
         <field name="unpaid" eval="True"/>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave_unpaid"/>
-        <field name="responsible_id" ref="base.user_admin"/>
+        <field name="responsible_ids" eval="[(4, ref('base.user_admin'))]"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_unpaid_leave"></field>
     </record>
@@ -1840,7 +1840,7 @@
         <field name="employee_requests">no</field>
         <field name="allocation_validation_type">officer</field>
         <field name="leave_validation_type">both</field>
-        <field name="responsible_id" ref="base.user_admin"/>
+        <field name="responsible_ids" eval="[(4, ref('base.user_admin'))]"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_sick_leave"></field>
     </record>
@@ -2350,7 +2350,7 @@
         <field name="leave_validation_type">both</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
-        <field name="responsible_id" ref="base.user_admin"/>
+        <field name="responsible_ids" eval="[(4, ref('base.user_admin'))]"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_legal_leave"></field>
     </record>
@@ -2363,7 +2363,7 @@
         <field name="leave_validation_type">both</field>
         <field name="leave_notif_subtype_id" ref="hr_holidays.mt_leave"/>
         <field name="allocation_notif_subtype_id" ref="hr_holidays.mt_leave_allocation"/>
-        <field name="responsible_id" ref="base.user_admin"/>
+        <field name="responsible_ids" eval="[(4, ref('base.user_admin'))]"/>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
         <field name="work_entry_type_id" ref="hr_work_entry_contract.work_entry_type_legal_leave"></field>
     </record>

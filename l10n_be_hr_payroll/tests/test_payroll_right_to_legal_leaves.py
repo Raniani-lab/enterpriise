@@ -3,6 +3,7 @@
 
 from datetime import date
 
+from odoo import Command
 from odoo.tests import tagged
 
 from .common import TestPayrollCommon
@@ -21,7 +22,7 @@ class TestPayrollRightToLegalLeaves(TestPayrollCommon):
             'employee_requests': 'no',
             'allocation_validation_type': 'officer',
             'leave_validation_type': 'both',
-            'responsible_id': cls.env.ref('base.user_admin').id,
+            'responsible_ids': [Command.link(cls.env.ref('base.user_admin').id)],
             'request_unit': 'day'
         })
 

@@ -3,6 +3,7 @@
 
 from datetime import date
 
+from odoo import Command
 from odoo.tests.common import TransactionCase
 from odoo.tests import tagged
 
@@ -24,7 +25,7 @@ class TestPayrollCommon(TransactionCase):
             'employee_requests': 'no',
             'allocation_validation_type': 'officer',
             'leave_validation_type': 'both',
-            'responsible_id': cls.env.ref('base.user_admin').id,
+            'responsible_ids': [Command.link(cls.env.ref('base.user_admin').id)],
             'request_unit': 'day'
         }])
 

@@ -267,9 +267,17 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                 }
 
                 // load the new record
-                await this.props.record.model.load({
-                    resId: resId,
-                });
+                try {
+                    await this.props.record.model.load({
+                        resId: resId,
+                    });
+                } catch (_) {
+                    this.actionService.doAction(
+                        await this.orm.call('knowledge.article', 'action_home_page', [false]),
+                        {stackPosition: 'replaceCurrentAction'}
+                    );
+                }
+
             }
         }
     }

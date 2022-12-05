@@ -260,7 +260,6 @@ class AccountMove(models.Model):
                 'account_token': account_token.account_token,
                 'dbuuid': self.env['ir.config_parameter'].sudo().get_param('database.uuid'),
                 'documents': [x.datas.decode('utf-8') for x in attachments],
-                'file_names': [x.name for x in attachments],
                 'user_infos': user_infos,
                 'webhook_url': webhook_url,
             }

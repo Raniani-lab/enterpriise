@@ -9,12 +9,10 @@
     'summary': 'Enrich lead created automatically through an appointment with gathered website visitor information',
     'website': 'https://www.odoo.com/app/appointments',
     'description': """
-Enrich lead created automatically through an appointment with gathered website visitor information such as language, 
+Enrich lead created automatically through an appointment with gathered website visitor information such as language,
 country and detailed information like pages browsed by the lead (through a link to website visitor).
 """,
     'depends': ['appointment_crm', 'website_crm'],
-    'data': [
-    ],
     'auto_install': True,
     'license': 'OEEL-1',
 }

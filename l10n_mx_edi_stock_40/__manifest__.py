@@ -12,8 +12,6 @@
     'data': [
         'data/cfdi_cartaporte.xml',
     ],
-    'demo': [
-    ],
     'installable': True,
     'auto_install': True,
     'license': 'OEEL-1',

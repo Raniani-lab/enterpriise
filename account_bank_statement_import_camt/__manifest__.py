@@ -11,8 +11,6 @@ Module to import CAMT bank statements.
 
 Improve the import of bank statement feature to support the SEPA recommended Cash Management format (CAMT.053).
     """,
-    'data': [
-    ],
     'license': 'OEEL-1',
     'auto_install': True,
 }

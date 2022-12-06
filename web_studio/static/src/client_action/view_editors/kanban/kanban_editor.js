@@ -2,6 +2,7 @@
 import { registry } from "@web/core/registry";
 import { kanbanView } from "@web/views/kanban/kanban_view";
 import { KanbanEditorRenderer } from "@web_studio/client_action/view_editors/kanban/kanban_editor_renderer";
+import { makeModelErrorResilient } from "@web_studio/client_action/view_editors/utils";
 
 class OneRecordModel extends kanbanView.Model {
     async load() {
@@ -45,7 +46,7 @@ const kanbanEditor = {
     props(genericProps, editor, config) {
         const props = kanbanView.props(genericProps, editor, config);
         props.defaultGroupBy = props.archInfo.defaultGroupBy;
-        props.Model = OneRecordModel;
+        props.Model = makeModelErrorResilient(OneRecordModel);
         props.limit = 1;
         props.Renderer = KanbanEditorRenderer;
         return props;

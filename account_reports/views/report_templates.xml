@@ -451,13 +451,13 @@
             </t>
         </button>
         <div class="dropdown-menu o_filter_menu" role="menu">
-            <t t-if="options['date']['mode'] == 'single'">
+            <t id="menu_date_filter_single" t-if="options['date']['mode'] == 'single'">
                 <a role="menuitem" class="dropdown-item js_account_report_date_filter" title="Today" data-filter="today">Today</a>
                 <a role="menuitem" class="dropdown-item js_account_report_date_filter" title="End of Last Month" data-filter="last_month">End of Last Month</a>
                 <a role="menuitem" class="dropdown-item js_account_report_date_filter" title="End of Last Quarter" data-filter="last_quarter">End of Last Quarter</a>
                 <a role="menuitem" class="dropdown-item js_account_report_date_filter" title="End of Last Financial Year" data-filter="last_year">End of Last Financial Year</a>
             </t>
-            <t t-if="options['date']['mode'] == 'range'">
+            <t id="menu_date_filter_range" t-if="options['date']['mode'] == 'range'">
                 <a role="menuitem" class="dropdown-item js_account_report_date_filter" title="This Month" data-filter="this_month">This Month</a>
                 <a role="menuitem" class="dropdown-item js_account_report_date_filter" title="This Quarter" data-filter="this_quarter">This Quarter</a>
                 <a role="menuitem" class="dropdown-item js_account_report_date_filter" title="This Financial Year" data-filter="this_year">This Financial Year</a>

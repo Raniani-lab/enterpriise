@@ -1,21 +1,23 @@
 # -*- coding: utf-8 -*-
 
+import base64
 import requests
 import logging
 import re
+import uuid
 import odoo
 import odoo.release
 from dateutil.relativedelta import relativedelta
 
 from requests.exceptions import RequestException, Timeout, ConnectionError
 from odoo import api, fields, models, _
-from odoo.tools import format_date
 from odoo.exceptions import UserError, CacheMiss, MissingError, ValidationError
 from odoo.addons.account_online_synchronization.models.odoofin_auth import OdooFinAuth
-from odoo.tools.misc import get_lang
+from odoo.tools.misc import format_amount, format_date, get_lang
 
 _logger = logging.getLogger(__name__)
 pattern = re.compile("^[a-z0-9-_]+$")
+
 
 class AccountOnlineAccount(models.Model):
     _name = 'account.online.account'
@@ -47,13 +49,62 @@ class AccountOnlineAccount(models.Model):
         if len(self.journal_ids) > 1:
             raise ValidationError(_('You cannot have two journals associated with the same Online Account.'))
 
-    def unlink(self):
-        online_link = self.mapped('account_online_link_id')
-        res = super(AccountOnlineAccount, self).unlink()
-        for link in online_link:
-            if len(link.account_online_account_ids) == 0:
-                link.unlink()
-        return res
+    def _assign_journal(self):
+        """
+        This method allows to link an online account to a journal with the following heuristics
+        If a journal is present in the context (active_model = account.journal and active_id), we assume that
+        We started the journey from a journal and we assign the online_account to that particular journal.
+        Otherwise we will create a new journal on the fly and assign the online_account to it.
+        If an online_account was previously set on the journal, it will be removed and deleted.
+        This will also set the 'online_sync' source on the journal and create an activity for the consent renewal
+        The date to fetch transaction will also be set and have the following value:
+            date of the latest statement line on the journal
+            or date of the fiscalyear lock date
+            or False (we fetch transactions as far as possible)
+        """
+        self.ensure_one()
+        ctx = self.env.context
+        active_id = ctx.get('active_id')
+        if not (ctx.get('active_model') == 'account.journal' and active_id):
+            new_journal_code = self.env['account.journal'].get_next_bank_cash_default_code('bank', self.env.company)
+            journal = self.env['account.journal'].create({
+                'name': self.account_number or self.display_name,
+                'code': new_journal_code,
+                'type': 'bank',
+                'company_id': self.env.company.id,
+                'currency_id': self.currency_id.id != self.env.company.currency_id.id and self.currency_id.id or False,
+            })
+        else:
+            journal = self.env['account.journal'].browse(active_id)
+            # If we already have a linked account on that journal, it means we are in the process of relinking
+            # it is due to an error that occured which require to redo the connection (can't fix it).
+            # Hence we delete the previously linked account.online.link to prevent showing multiple
+            # duplicate existing connections when opening the iframe
+            if journal.account_online_link_id:
+                journal.account_online_link_id.unlink()
+            # Check for any existing transactions on the journal to assign currency
+            if self.currency_id.id != self.env.company.currency_id.id:
+                existing_entries = self.env['account.bank.statement.line'].search([('journal_id', '=', journal.id)])
+                if not existing_entries:
+                    journal.currency_id = self.currency_id.id
+
+        self.journal_ids = journal
+
+        journal_vals = {
+            'bank_statements_source': 'online_sync',
+        }
+        if self.account_number and not self.journal_ids.bank_acc_number:
+            journal_vals['bank_acc_number'] = self.account_number
+        self.journal_ids.write(journal_vals)
+        # Get consent expiration date and create an activity on related journal
+        self.account_online_link_id._get_consent_expiring_date()
+
+        # Set last_sync date (date of latest statement or accounting lock date or False)
+        last_sync = self.env.company.fiscalyear_lock_date
+        bnk_stmt_line = self.env['account.bank.statement.line'].search([('journal_id', 'in', self.journal_ids.ids)], order="date desc", limit=1)
+        if bnk_stmt_line:
+            last_sync = bnk_stmt_line.date
+        self.last_sync = last_sync
 
     def _refresh(self):
         data = {'account_id': self.online_identifier}
@@ -78,16 +129,16 @@ class AccountOnlineAccount(models.Model):
         return True
 
     def _retrieve_transactions(self):
-        start_date = self.last_sync or fields.Date().today() - relativedelta(days=15)
         last_stmt_line = self.env['account.bank.statement.line'].search([
-                ('date', '<=', start_date),
+                ('date', '<=', self.last_sync or fields.Date().today()),
                 ('online_transaction_identifier', '!=', False),
                 ('journal_id', 'in', self.journal_ids.ids),
                 ('online_account_id', '=', self.id)
             ], order="date desc", limit=1)
         transactions = []
         data = {
-            'start_date': format_date(self.env, start_date, date_format='yyyy-MM-dd'),
+            # If we are in a new sync, we do not give a start date; We will fetch as much as possible. Otherwise, the last sync is the start date.
+            'start_date': self.last_sync and format_date(self.env, self.last_sync, date_format='yyyy-MM-dd'),
             'account_id': self.online_identifier,
             'last_transaction_identifier': last_stmt_line.online_transaction_identifier,
             'currency_code': self.journal_ids[0].currency_id.name,
@@ -115,6 +166,16 @@ class AccountOnlineAccount(models.Model):
 
         return self.env['account.bank.statement.line']._online_sync_bank_statement(transactions, self)
 
+    def get_formatted_balances(self):
+        balances = {}
+        for account in self:
+            if account.currency_id:
+                formatted_balance = format_amount(self.env, account.balance, account.currency_id)
+            else:
+                formatted_balance = '%.2f' % account.balance
+            balances[account.id] = [formatted_balance, account.balance]
+        return balances
+
 
 class AccountOnlineLink(models.Model):
     _name = 'account.online.link'
@@ -133,6 +194,7 @@ class AccountOnlineLink(models.Model):
     auto_sync = fields.Boolean(default=True, string="Automatic synchronization",
                                help="If possible, we will try to automatically fetch new transactions for this record")
     company_id = fields.Many2one('res.company', required=True, default=lambda self: self.env.company)
+    has_unlinked_accounts = fields.Boolean(default=True, help="True if that connection still has accounts that are not linked to an Odoo journal")
 
     # Information received from OdooFin, should not be tampered with
     name = fields.Char(help="Institution Name", readonly=True)
@@ -143,6 +205,7 @@ class AccountOnlineLink(models.Model):
     provider_data = fields.Char(help="Information needed to interact with third party provider", readonly=True)
     expiring_synchronization_date = fields.Date(help="Date when the consent for this connection expires",
                                                 readonly=True)
+    journal_ids = fields.One2many(related='account_online_account_ids.journal_ids')
 
     ##########################
     # Wizard opening actions #
@@ -154,7 +217,7 @@ class AccountOnlineLink(models.Model):
         ctx = self.env.context
         # if this was called from kanban box, active_model is in context
         if self.env.context.get('active_model') == 'account.journal':
-            ctx = {**ctx, 'default_linked_journal_id': ctx.get('journal_id', False)}
+            ctx = {**ctx, 'default_linked_journal_id': ctx.get('active_id', False)}
         return {
             'type': 'ir.actions.act_window',
             'name': _('Create a Bank Account'),
@@ -165,28 +228,25 @@ class AccountOnlineLink(models.Model):
             'views': [[view_id, 'form']]
         }
 
-    def _link_accounts_to_journals_action(self, accounts):
+    def _link_accounts_to_journals_action(self):
         """
         This method opens a wizard allowing the user to link
         his bank accounts with new or existing journal.
         :return: An action openning a wizard to link bank accounts with account journal.
         """
         self.ensure_one()
-        account_link_journal_wizard = self.env['account.link.journal'].create({
-            'number_added': len(accounts),
-            'account_ids': [(0, 0, {
-                'online_account_id': online_account.id,
-                'journal_id': online_account.journal_ids[0].id if online_account.journal_ids else None
-            }) for online_account in accounts]
+        account_bank_selection_wizard = self.env['account.bank.selection'].create({
+            'account_online_link_id': self.id,
         })
 
         return {
-            "name": _("Link Account to Journal"),
+            "name": _("Select a Bank Account"),
             "type": "ir.actions.act_window",
-            "res_model": "account.link.journal",
+            "res_model": "account.bank.selection",
             "views": [[False, "form"]],
             "target": "new",
-            "res_id": account_link_journal_wizard.id
+            "res_id": account_bank_selection_wizard.id,
+            "context": self.env.context,
         }
 
     def _show_fetched_transactions_action(self, stmt_line_ids):
@@ -251,17 +311,17 @@ class AccountOnlineLink(models.Model):
                 # as it contains encrypted credentials from external provider and if we loose them we
                 # loose access to the bank account, As it is possible that provider_data
                 # are received during a transaction containing multiple calls to the proxy, we ensure
-                # that provider_data is commited in database as soon as we received it.
+                # that provider_data is committed in database as soon as we received it.
                 self.provider_data = result.get('provider_data')
                 self.env.cr.commit()
             return result
         else:
             error = resp_json.get('error')
             # Not considered as error
-            if error.get('code') == 101: # access token expired, not an error
+            if error.get('code') == 101:  # access token expired, not an error
                 self._get_access_token()
                 return self._fetch_odoo_fin(url, data, ignore_status)
-            elif error.get('code') == 102: # refresh token expired, not an error
+            elif error.get('code') == 102:  # refresh token expired, not an error
                 self._get_refresh_token()
                 self._get_access_token()
                 # We need to commit here because if we got a new refresh token, and a new access token
@@ -269,7 +329,7 @@ class AccountOnlineLink(models.Model):
                 # error would lose the new refresh_token hence blocking the account ad vitam eternam
                 self.env.cr.commit()
                 return self._fetch_odoo_fin(url, data, ignore_status)
-            elif error.get('code') == 300: # redirect, not an error
+            elif error.get('code') == 300:  # redirect, not an error
                 return error
             # If we are in the process of deleting the record ignore code 100 (invalid signature), 104 (account deleted)
             # 106 (provider_data corrupted) and allow user to delete his record from this side.
@@ -292,7 +352,7 @@ class AccountOnlineLink(models.Model):
         if reset_tx:
             self.env.cr.rollback()
         try:
-            # if state is disconnected, and newstate is error: ignore it
+            # if state is disconnected, and new state is error: ignore it
             if state == 'error' and self.state == 'disconnected':
                 state = 'disconnected'
             if subject and message:
@@ -327,16 +387,24 @@ class AccountOnlineLink(models.Model):
         to_unlink = self.env['account.online.link']
         for link in self:
             try:
-                resp_json = link.with_context(delete_sync=True)._fetch_odoo_fin('/proxy/v1/delete_user', data={'provider_data': link.provider_data}, ignore_status=True) # delete proxy user
+                resp_json = link.with_context(delete_sync=True)._fetch_odoo_fin('/proxy/v1/delete_user', data={'provider_data': link.provider_data}, ignore_status=True)  # delete proxy user
                 if resp_json.get('delete', True) is True:
                     to_unlink += link
-            except UserError as e:
+            except UserError:
                 continue
         if to_unlink:
             return super(AccountOnlineLink, to_unlink).unlink()
 
-    def _fetch_accounts(self, add_new_accounts=True):
+    def _fetch_accounts(self, online_identifier=False):
         self.ensure_one()
+        # Delete all accounts not yet linked to a journal to clean up customer data and to ensure that we will fetch
+        # the correct balance in case we try to add a new account
+        self.account_online_account_ids.filtered(lambda acc: acc.journal_ids is False).unlink()
+        # Ignore account that is already there and linked to a journal as there is no need to fetch information for that one
+        if online_identifier:
+            matching_account = self.account_online_account_ids.filtered(lambda l: l.online_identifier == online_identifier)
+            if matching_account:
+                return matching_account
         accounts = {}
         data = {}
         while True:
@@ -346,7 +414,10 @@ class AccountOnlineLink(models.Model):
             # In such a case, we renew the token with the provider and send back the newly encrypted token inside provider_data
             # which result in the information having changed, henceforth why that field is passed at every loop.
             data['provider_data'] = self.provider_data
-            data['add_new_accounts'] = add_new_accounts
+            # Retrieve information about a specific account
+            if online_identifier:
+                data['online_identifier'] = online_identifier
+
             resp_json = self._fetch_odoo_fin('/proxy/v1/accounts', data)
             for acc in resp_json.get('accounts', []):
                 acc['account_online_link_id'] = self.id
@@ -360,20 +431,10 @@ class AccountOnlineLink(models.Model):
                 break
             data['next_data'] = resp_json.get('next_data')
 
-        accounts_to_delete = self.env['account.online.account']
-        for account in self.account_online_account_ids:
-            # pop from accounts to create as it already exists, otherwise mark for deletion
-            existing_account = accounts.pop(account.online_identifier, False)
-            if existing_account:
-                account.account_data = existing_account.get('account_data')
-            else:
-                accounts_to_delete += account
-
-        accounts_to_delete.unlink()
-        new_accounts = self.env['account.online.account']
-        if add_new_accounts and accounts:
-            new_accounts = self.env['account.online.account'].create(accounts.values())
-        return new_accounts
+        if accounts:
+            self.has_unlinked_accounts = True
+            return self.env['account.online.account'].create(accounts.values())
+        return False
 
     def _fetch_transactions(self, refresh=True, accounts=False):
         self.ensure_one()
@@ -385,7 +446,9 @@ class AccountOnlineLink(models.Model):
             if online_account.journal_ids:
                 if refresh:
                     status = online_account._refresh()
-                    if status is not True:
+                    if status == 'link':
+                        return self.action_new_synchronization()
+                    elif status is not True:
                         return self._open_iframe(status)
                 bank_statement_line_ids += online_account._retrieve_transactions()
 
@@ -399,27 +462,67 @@ class AccountOnlineLink(models.Model):
             expiring_synchronization_date = fields.Date.to_date(resp_json['consent_expiring_date'])
             if expiring_synchronization_date != self.expiring_synchronization_date:
                 bank_sync_activity_type_id = self.env.ref('account_online_synchronization.bank_sync_activity_update_consent')
-                account_online_link_model_id = self.env['ir.model']._get_id('account.online.link')
+                account_journal_model_id = self.env['ir.model']._get_id('account.journal')
 
                 # Remove old activities
                 self.env['mail.activity'].search([
-                    ('res_id', '=', self.id),
-                    ('res_model_id', '=', account_online_link_model_id),
+                    ('res_id', 'in', self.journal_ids.ids),
+                    ('res_model_id', '=', account_journal_model_id),
                     ('activity_type_id', '=', bank_sync_activity_type_id.id),
                     ('date_deadline', '<=', self.expiring_synchronization_date),
                     ('user_id', '=', self.env.user.id),
                 ]).unlink()
 
-                # Create a new activity
+                # Create a new activity for each journals for this synch
                 self.expiring_synchronization_date = expiring_synchronization_date
-                self.env['mail.activity'].create({
-                    'res_id': self.id,
-                    'res_model_id': account_online_link_model_id,
-                    'date_deadline': self.expiring_synchronization_date,
-                    'summary': _("Bank Synchronization: Update your consent"),
-                    'note': resp_json.get('activity_message') or '',
-                    'activity_type_id': bank_sync_activity_type_id.id,
-                })
+                new_activity_vals = []
+                for journal in self.journal_ids:
+                    new_activity_vals.append({
+                        'res_id': journal.id,
+                        'res_model_id': account_journal_model_id,
+                        'date_deadline': self.expiring_synchronization_date,
+                        'summary': _("Bank Synchronization: Update your consent"),
+                        'note': resp_json.get('activity_message') or '',
+                        'activity_type_id': bank_sync_activity_type_id.id,
+                    })
+                self.env['mail.activity'].create(new_activity_vals)
+
+    def _authorize_access(self, data_access_token):
+        """
+        This method is used to allow an existing connection to give temporary access
+        to a new connection in order to see the list of available unlinked accounts.
+        We pass as parameter the list of already linked account, so that if there are
+        no more accounts to link, we will receive a response telling us so and we won't
+        call authorize for that connection later on.
+        """
+        self.ensure_one()
+        data = {
+            'linked_accounts': self.account_online_account_ids.filtered('journal_ids').mapped('online_identifier'),
+            'record_access_token': data_access_token,
+        }
+        try:
+            resp_json = self._fetch_odoo_fin('/proxy/v1/authorize_access', data)
+            self.has_unlinked_accounts = resp_json.get('has_unlinked_accounts')
+        except UserError:
+            # We don't want to throw an error to the customer so ignore error
+            pass
+
+    @api.model
+    def _cron_delete_unused_connection(self):
+        account_online_links = self.search([
+            ('write_date', '<=', fields.Datetime.now() - relativedelta(months=1)),
+            ('provider_data', '!=', False)
+        ])
+        for link in account_online_links:
+            if not link.account_online_account_ids.filtered('journal_ids'):
+                link.unlink()
+
+    @api.returns('mail.message', lambda value: value.id)
+    def message_post(self, **kwargs):
+        """Override to log all message to the linked journal as well."""
+        for journal in self.journal_ids:
+            journal.message_post(**kwargs)
+        return super(AccountOnlineLink, self).message_post(**kwargs)
 
     ################################
     # Callback methods from iframe #
@@ -432,11 +535,11 @@ class AccountOnlineLink(models.Model):
             # as it contains encrypted credentials from external provider and if we loose them we
             # loose access to the bank account, As it is possible that provider_data
             # are received during a transaction containing multiple calls to the proxy, we ensure
-            # that provider_data is commited in database as soon as we received it.
+            # that provider_data is committed in database as soon as we received it.
             if data.get('provider_data'):
                 self.env.cr.commit()
-
-            self._get_consent_expiring_date()
+            if self.journal_ids:  # We can't do it unless we already have a journal
+                self._get_consent_expiring_date()
         # if for some reason we just have to update the record without doing anything else, the mode will be set to 'none'
         if mode == 'none':
             return {'type': 'ir.actions.client', 'tag': 'reload'}
@@ -451,6 +554,22 @@ class AccountOnlineLink(models.Model):
             self._log_information(state='error', subject=_('Internal Error'), message=message, reset_tx=True)
             raise UserError(message)
         return method()
+
+    @api.model
+    def connect_existing_account(self, data):
+        # extract client_id and online_identifier from data and retrieve the account detail from the connection.
+        # If we have a journal in context, assign to journal, otherwise create new journal then fetch transaction
+        client_id = data.get('client_id')
+        online_identifier = data.get('online_identifier')
+        if client_id and online_identifier:
+            online_link = self.search([('client_id', '=', client_id)], limit=1)
+            if not online_link:
+                return {'type': 'ir.actions.client', 'tag': 'reload'}
+            new_account = online_link._fetch_accounts(online_identifier=online_identifier)
+            if new_account:
+                new_account._assign_journal()
+                return online_link._fetch_transactions(accounts=new_account)
+        return True
 
     def exchange_token(self, exchange_token):
         self.ensure_one()
@@ -472,17 +591,11 @@ class AccountOnlineLink(models.Model):
     def _success_link(self):
         self.ensure_one()
         self._log_information(state='connected')
-        new_accounts = self._fetch_accounts()
-        return self._link_accounts_to_journals_action(new_accounts)
-
-    def _success_updateAccounts(self):
-        self.ensure_one()
-        new_accounts = self._fetch_accounts()
-        return self._link_accounts_to_journals_action(new_accounts)
+        self._fetch_accounts()
+        return self._link_accounts_to_journals_action()
 
     def _success_updateCredentials(self):
         self.ensure_one()
-        self._fetch_accounts(add_new_accounts=False)
         return {'type': 'ir.actions.client', 'tag': 'reload'}
 
     def _success_refreshAccounts(self):
@@ -511,9 +624,6 @@ class AccountOnlineLink(models.Model):
     def action_update_credentials(self):
         return self._open_iframe('updateCredentials')
 
-    def action_initialize_update_accounts(self):
-        return self._open_iframe('updateAccounts')
-
     def action_fetch_transactions(self):
         return self._fetch_transactions()
 
@@ -524,6 +634,7 @@ class AccountOnlineLink(models.Model):
         self.ensure_one()
         if self.client_id and self.sudo().refresh_token:
             self._get_access_token()
+
         proxy_mode = self.env['ir.config_parameter'].sudo().get_param('account_online_synchronization.proxy_mode') or 'production'
         country = self.env.company.country_id
         action = {
@@ -539,15 +650,22 @@ class AccountOnlineLink(models.Model):
                     'lang': get_lang(self.env).code,
                     'countryCode': country.code,
                     'countryName': country.display_name,
-                    'serverVersion': odoo.release.serie
+                    'serverVersion': odoo.release.serie,
                 }
-            }
+            },
         }
         if self.provider_data:
             action['params']['providerData'] = self.provider_data
 
         if mode == 'link':
-            user_partner_id = self.env.user.partner_id
-            action['params']['includeParam']['phoneNumber'] = user_partner_id.mobile or user_partner_id.phone or ''
+            user_email = self.env.user.email or self.env.ref('base.user_admin').email or ''  # Necessary for some providers onboarding
             action['params']['includeParam']['dbUuid'] = self.env['ir.config_parameter'].sudo().get_param('database.uuid')
+            action['params']['includeParam']['userEmail'] = user_email
+            # Compute a hash of a random string for each connection in success
+            existing_link = self.search([('state', '!=', 'disconnected'), ('has_unlinked_accounts', '=', True)])
+            if existing_link:
+                record_access_token = base64.b64encode(uuid.uuid4().bytes).decode('utf-8')
+                for link in existing_link:
+                    link._authorize_access(record_access_token)
+                action['params']['includeParam']['recordAccessToken'] = record_access_token
         return action

@@ -14,57 +14,39 @@
                     <field name="account_online_link_state"/>
                 </field>
 
+                <xpath expr='//div[@name="bank_journal_transactions"]' position='attributes'>
+                    <attribute name="attrs">{'invisible': [('account_online_account_id', '!=', False)]}</attribute>
+                </xpath>
+
                 <xpath expr='//div[@name="bank_journal_cta"]' position='inside'>
                     <t t-if="dashboard.bank_statements_source === 'online_sync'">
                         <t t-if="record.account_online_link_state.raw_value === 'connected'">
                             <t t-set="test_danger_expiring_date" t-value="record.expiring_synchronization_due_day.value &lt;= 3"/>
                             <t t-set="test_warning_expiring_date" t-value="record.expiring_synchronization_due_day.value &lt;= 7"/>
-                            <a groups="account.group_account_user" attrs="{'invisible': [('expiring_synchronization_date', '=', False)]}"
-                               type="object" name="action_open_account_online_link"
-                               t-att-class="'oe_inline ' + (test_warning_expiring_date ? test_danger_expiring_date ? 'text-danger' : 'text-warning' : '')">
-                                <t t-if="record.expiring_synchronization_due_day.value == 0">
-                                    Consent expires today
-                                </t>
-                                <t t-elif="record.expiring_synchronization_due_day.value &lt; 0">
-                                    Consent expired
-                                </t>
-                                <t t-elif="record.expiring_synchronization_due_day.value &lt; 7">
-                                    Consent expires in <t t-esc="record.expiring_synchronization_due_day.value"/> day<t t-if="record.expiring_synchronization_due_day.value &gt; 1">s</t>
-                                </t>
-                            </a>
-                            <br attrs="{'invisible': [('expiring_synchronization_date', '=', False)]}"/>
                             <a attrs="{'invisible': [('account_online_account_id', '=', False)]}" type="object"
-                                name="manual_sync" class="oe_inline" groups="account.group_account_user">Synchronize now</a>
-                            <br/>
+                                name="manual_sync" class="oe_inline" groups="account.group_account_manager">Fetch Transactions</a>
+                            <br attrs="{'invisible': [('expiring_synchronization_date', '=', False)]}"/>
+                            <span groups="account.group_account_manager" attrs="{'invisible': [('expiring_synchronization_date', '=', False)]}">
+                                <widget name="connected_until_widget"
+                                        t-att-formatted_date="luxon.DateTime.fromISO(record.expiring_synchronization_date.raw_value).toFormat('MMM dd')"
+                                        t-att-styling="test_warning_expiring_date ? test_danger_expiring_date ? 'text-danger' : 'text-warning' : ''"
+                                        t-att-journal_id="record.id.raw_value"
+                                        t-att-warning="test_danger_expiring_date"/>
+                            </span>
+                        </t>
+                        <t t-elif="record.account_online_link_state.raw_value == 'error' || (record.expiring_synchronization_date.raw_value &amp;&amp; record.expiring_synchronization_due_day.value &lt;= 0)">
+                            <button groups="account.group_account_user" type="object" name="manual_sync" class="btn btn-danger">Reconnect Bank</button>
+                        </t>
+                        <t t-elif="record.account_online_link_state.raw_value == 'disconnected'">
+                            <button groups="account.group_account_user" type="object" name="action_reconnect_online_account" class="btn btn-danger">Reconnect Bank</button>
                         </t>
                     </t>
-
-                    <t t-if="record.account_online_link_state.raw_value === 'connected'">
-                        <span groups="account.group_account_user" class="text-muted" t-if="(record.next_link_synchronization !== undefined)">
-                            Next sync: <t t-out="luxon.DateTime.fromISO(record.next_link_synchronization.raw_value).toFormat('dd MMM HH:mm:ss')"/>
-                        </span>
-                        <br/>
-                    </t>
-                    <t t-if="record.account_online_link_state.raw_value &amp;&amp; record.account_online_link_state.raw_value !== 'connected'">
-                        <span class="text-muted" t-if="(record.account_online_link_state.raw_value === 'error')">Problem during synchronization</span>
-                        <span class="text-muted" t-if="(record.account_online_link_state.raw_value === 'disconnected')">Synchronization link disconnected</span>
-                        <br/>
-                        <a type="action" name="%(action_account_online_link_form)d" groups="account.group_account_manager" class="oe_inline">View problem</a>
-                        <br/>
-                    </t>
                 </xpath>
 
-                <!-- Replace individualy this element because it wasn't override before.. -->
                 <xpath expr='//button[@name="action_configure_bank_journal"]' position='replace'>
-                    <button t-if="dashboard.number_to_reconcile == 0" groups="account.group_account_manager" attrs="{'invisible': [('account_online_account_id', '!=', False)]}"
-                            type="object" name="action_configure_bank_journal" class="btn btn-primary">Online Synchronization</button>
+                    <button groups="account.group_account_manager" attrs="{'invisible': [('account_online_account_id', '!=', False)]}"
+                            type="object" name="action_configure_bank_journal" class="btn btn-primary me-1">Connect Bank</button>
                 </xpath>
-
-                <xpath expr='//a[@name="action_configure_bank_journal"]' position='replace'>
-                    <a t-if="dashboard.number_to_reconcile > 0" groups="account.group_account_manager" attrs="{'invisible': [('account_online_account_id', '!=', False)]}"
-                            type="object" name="action_configure_bank_journal" class="oe_inline">Online Synchronization</a>
-                </xpath>
-
             </field>
         </record>
     </data>

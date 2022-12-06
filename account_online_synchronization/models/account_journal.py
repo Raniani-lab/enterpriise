@@ -3,6 +3,7 @@
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError, ValidationError
 
+
 class AccountJournal(models.Model):
     _inherit = "account.journal"
 
@@ -20,20 +21,27 @@ class AccountJournal(models.Model):
         rslt.append(("online_sync", _("Automated Bank Synchronization")))
         return rslt
 
-    @api.model
-    def _get_statement_creation_possible_values(self):
-        return [('none', _('Create one statement per synchronization')),
-                ('day', _('Create daily statements')),
-                ('week', _('Create weekly statements')),
-                ('bimonthly', _('Create bi-monthly statements')),
-                ('month', _('Create monthly statements'))]
-
     next_link_synchronization = fields.Datetime("Online Link Next synchronization", related='account_online_link_id.next_refresh')
     expiring_synchronization_date = fields.Date(related='account_online_link_id.expiring_synchronization_date')
     expiring_synchronization_due_day = fields.Integer(compute='_compute_expiring_synchronization_due_day')
     account_online_account_id = fields.Many2one('account.online.account', copy=False, ondelete='set null')
     account_online_link_id = fields.Many2one('account.online.link', related='account_online_account_id.account_online_link_id', readonly=True, store=True)
     account_online_link_state = fields.Selection(related="account_online_link_id.state", readonly=True)
+    renewal_contact_email = fields.Char(
+        string='Connection Requests',
+        help='Comma separated list of email addresses to send consent renewal notifications 15, 3 and 1 days before expiry',
+        default=lambda self: self.env.user.email,
+    )
+
+    def write(self, vals):
+        # When changing the bank_statement_source, unlink the connection if there is any
+        if 'bank_statements_source' in vals and vals.get('bank_statements_source') != 'online_sync':
+            for journal in self:
+                if journal.bank_statements_source == 'online_sync':
+                    # unlink current connection
+                    vals['account_online_account_id'] = False
+                    journal.account_online_link_id.has_unlinked_accounts = True
+        return super().write(vals)
 
     @api.depends('expiring_synchronization_date')
     def _compute_expiring_synchronization_due_day(self):
@@ -61,6 +69,12 @@ class AccountJournal(models.Model):
                 except UserError:
                     pass
 
+    @api.model
+    def _cron_send_reminder_email(self):
+        for journal in self.search([('account_online_account_id', '!=', False)]):
+            if journal.expiring_synchronization_due_day in {1, 3, 15}:
+                journal.action_send_reminder()
+
     def manual_sync(self):
         self.ensure_one()
         if self.account_online_link_id:
@@ -81,6 +95,7 @@ class AccountJournal(models.Model):
         Override the "action_configure_bank_journal" and change the flow for the
         "Configure" button in dashboard.
         """
+        self.ensure_one()
         return self.env['account.online.link'].action_new_synchronization()
 
     def action_open_account_online_link(self):
@@ -94,3 +109,21 @@ class AccountJournal(models.Model):
             'views': [[False, 'form']],
             'res_id': self.account_online_link_id.id,
         }
+
+    def action_extend_consent(self):
+        """
+        Extend the consent of the user by redirecting him to update his credentials
+        """
+        self.ensure_one()
+        return self.account_online_link_id.action_update_credentials()
+
+    def action_reconnect_online_account(self):
+        self.ensure_one()
+        return self.account_online_link_id.action_reconnect_account()
+
+    def action_send_reminder(self):
+        self.ensure_one()
+        self._portal_ensure_token()
+        template = self.env.ref('account_online_synchronization.email_template_sync_reminder')
+        template.send_mail(self.id)
+        self.message_post(body=_('Renewal mail sent to %s') % self.renewal_contact_email)

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from odoo.addons.base.models.res_bank import sanitize_account_number
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 from odoo.addons.account_accountant.tests.test_bank_rec_widget import WizardForm
 from odoo.tests import tagged
@@ -180,7 +181,9 @@ class TestSynchStatementCreation(AccountTestInvoicingCommon):
         self.reconncile_st_lines(created_st_line)
         self.assertEqual(self.partner_a.online_partner_information, False)
 
-    def test_automatic_journal_assignment(self):
+    @patch('odoo.addons.account_online_synchronization.models.account_online.AccountOnlineLink._fetch_transactions')
+    @patch('odoo.addons.account_online_synchronization.models.account_online.AccountOnlineLink._get_consent_expiring_date')
+    def test_automatic_journal_assignment(self, patched_get_consent, patched_fetch_transactions):
         def create_online_account(name, link_id, iban, currency_id):
             return self.env['account.online.account'].create({
                 'name': name,
@@ -206,33 +209,38 @@ class TestSynchStatementCreation(AccountTestInvoicingCommon):
 
         eur_currency = self.env.ref('base.EUR')
         bank_account_1 = create_bank_account('BE48485444456727', self.company_data['company'].partner_id.id)
-        bank_account_2 = create_bank_account('Coucou--.BE619-.--5-----4856342317yocestmoi-', self.company_data['company'].partner_id.id)
-        bank_account_3 = create_bank_account('BE23798242487491', self.company_data['company'].partner_id.id)
+        bank_account_2 = create_bank_account('BE23798242487491', self.company_data['company'].partner_id.id)
 
-        bank_journal_with_account_eur = create_journal('Bank with account', 'bank', 'BJWA1', eur_currency.id, bank_account_1.id)
-        bank_journal_with_badly_written_account_eur = create_journal('Bank with errors in account name', 'bank', 'BJWA2', eur_currency.id, bank_account_2.id)
-        bank_journal_with_account_usd = create_journal('Bank with account USD', 'bank', 'BJWA3', self.env.ref('base.USD').id, bank_account_3.id)
-        bank_journal_simple = create_journal('Bank without account and currency', 'bank', 'BJWOA2')
+        bank_journal_with_account_eur = create_journal('Bank with account', 'bank', 'BJWA1', eur_currency.id)
+        bank_journal_with_account_usd = create_journal('Bank with account USD', 'bank', 'BJWA3', self.env.ref('base.USD').id, bank_account_2.id)
 
         online_account_1 = create_online_account('OnlineAccount1', self.link_account.id, 'BE48485444456727', eur_currency.id)
         online_account_2 = create_online_account('OnlineAccount2', self.link_account.id, 'BE61954856342317', eur_currency.id)
-        online_account_3 = create_online_account('OnlineAccount3', self.link_account.id, 'BE23798242487491', eur_currency.id)
-        online_account_4 = create_online_account('OnlineAccount4', self.link_account.id, 'BE31812561129155', eur_currency.id)
-        online_accounts = [online_account_1, online_account_2, online_account_3, online_account_4]
+        online_account_3 = create_online_account('OnlineAccount3', self.link_account.id, 'BE23798242487495', eur_currency.id)
 
-        account_link_journal_wizard = self.env['account.link.journal'].create({
-            'number_added': len(online_accounts),
-            'account_ids': [Command.create({
-                'online_account_id': online_account.id,
-                'journal_id': online_account.journal_ids[0].id if online_account.journal_ids else None
-            }) for online_account in online_accounts]
-        })
-        with patch('odoo.addons.account_online_synchronization.models.account_online.AccountOnlineLink.action_fetch_transactions', return_value=True):
-            account_link_journal_wizard.sync_now()
+        patched_fetch_transactions.return_value = True
+        patched_get_consent.return_value = True
 
-        self.assertEqual(online_account_1.id, bank_journal_with_account_eur.account_online_account_id.id, "The wizard should have linked the first online account to the journal with the same account.")
-        self.assertEqual(online_account_2.id, bank_journal_with_badly_written_account_eur.account_online_account_id.id, "The wizard should have linked the second online account to the journal with the same account, after sanitization.")
-        self.assertNotEqual(online_account_3.id, bank_journal_with_account_usd.account_online_account_id.id, "As the currency in the journal is different than the one specified in the online account, they should not be linked to each other.")
-        self.assertEqual(online_account_3.id, bank_journal_simple.account_online_account_id.id, "The next empty journal should be linked to the online account, when no journal exists with the corresponding currency and account number.")
-        previously_created_journals = [bank_journal_with_account_eur, bank_journal_with_badly_written_account_eur, bank_journal_with_account_usd, bank_journal_simple, self.bank_journal]
-        self.assertTrue(online_account_4.journal_ids and online_account_4.journal_ids[0] not in previously_created_journals, "A new journal should be created for the remaining online account.")
+        account_link_journal_wizard = self.env['account.bank.selection'].create({'account_online_link_id': self.link_account.id})
+        account_link_journal_wizard.with_context(active_model='account.journal', active_id=bank_journal_with_account_eur.id).sync_now()
+        self.assertEqual(
+            online_account_1.id, bank_journal_with_account_eur.account_online_account_id.id,
+            "The wizard should have linked theonline account to the journal with the same account."
+        )
+        self.assertEqual(bank_journal_with_account_eur.bank_account_id, bank_account_1, "Account should be set on the journal")
+
+        # Test with no context present, should create a new journal
+        previous_number = self.env['account.journal'].search_count([])
+        account_link_journal_wizard.selected_account = online_account_2
+        account_link_journal_wizard.sync_now()
+        actual_number = self.env['account.journal'].search_count([])
+        self.assertEqual(actual_number, previous_number+1, "should have created a new journal")
+        self.assertEqual(online_account_2.journal_ids.currency_id, eur_currency)
+        self.assertEqual(online_account_2.journal_ids.bank_account_id.sanitized_acc_number, sanitize_account_number('BE61954856342317'))
+
+        # Test assigning to a journal in another currency
+        account_link_journal_wizard.selected_account = online_account_3
+        account_link_journal_wizard.with_context(active_model='account.journal', active_id=bank_journal_with_account_usd.id).sync_now()
+        self.assertEqual(online_account_3.id, bank_journal_with_account_usd.account_online_account_id.id)
+        self.assertEqual(bank_journal_with_account_usd.bank_account_id, bank_account_2, "Bank Account should not have changed")
+        self.assertEqual(bank_journal_with_account_usd.currency_id, eur_currency, "Currency should have changed")

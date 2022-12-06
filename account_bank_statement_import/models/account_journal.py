@@ -19,7 +19,7 @@ class AccountJournal(models.Model):
         if formats_list:
             formats_list.sort()
             import_formats_str = ', '.join(formats_list)
-            rslt.append(("file_import", _("Import") + "(" + import_formats_str + ")"))
+            rslt.append(("file_import", _("Manual (or import %(import_formats)s)", import_formats=import_formats_str)))
         return rslt
 
     def create_document_from_attachment(self, attachment_ids=None):

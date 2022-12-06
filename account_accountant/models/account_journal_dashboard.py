@@ -48,6 +48,12 @@ class account_journal(models.Model):
             kanban_first=False,
         )
 
+    def action_new_transaction(self):
+        self.ensure_one()
+        action = self.env['ir.actions.act_window']._for_xml_id('account_accountant.action_bank_statement_line_form_bank_rec_widget')
+        action['context'] = {'default_journal_id': self.id}
+        return action
+
     def open_action(self):
         # EXTENDS account
         # set default action for liquidity journals in dashboard

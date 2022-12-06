@@ -11,7 +11,6 @@
                                 type="object" groups="account.group_account_user"
                                 attrs="{'invisible': ['|', ('state', '=', 'disconnected'), ('provider_data', '=', False)]}"/>
                         <button groups="account.group_account_manager" name="action_update_credentials" string="Update Credentials" class="btn-secondary" type="object" attrs="{'invisible': ['|', ('state', '=', 'disconnected'), ('provider_data', '=', False)]}"/>
-                        <button groups="account.group_account_manager" name="action_initialize_update_accounts" string="Fetch Accounts" class="btn-secondary" type="object" attrs="{'invisible': ['|', ('state', '=', 'disconnected'), ('provider_data', '=', False)]}"/>
                         <button groups="account.group_account_manager" name="action_reconnect_account" string="Reconnect" class="btn-primary" type="object" attrs="{'invisible': ['|', ('state', '!=', 'disconnected'), ('provider_data', '=', False)]}"/>
                         <button groups="account.group_account_manager" name="action_new_synchronization" string="Connect" class="btn-primary" type="object" attrs="{'invisible': ['|', ('state', '!=', 'disconnected'), ('provider_data', '!=', False)]}"/>
                         <field name="state" widget="statusbar" readonly="1"/>
@@ -39,6 +38,7 @@
                                     <field name="account_number"/>
                                     <field name="journal_ids"
                                         widget="many2many_tags"
+                                        options="{'no_quick_create': True}"
                                         domain="[('type', '=', 'bank'), ('account_online_account_id', '=', False)]"
                                         context="{'default_type': 'bank', 'default_bank_statements_source': 'online_sync', 'default_account_online_account_id': id}"/>
                                     <field name="last_sync"/>
@@ -88,9 +88,6 @@
             <field name="model">account.online.link</field>
             <field name="arch" type="xml">
                 <tree decoration-danger="state != 'connected'" create="false">
-                    <header>
-                        <button name="%(account.action_new_bank_setting)d" type="action" string="Add A Bank Account" class="btn btn-primary" display="always"/>
-                    </header>
                     <field name="name" readonly="1"/>
                     <field name="state"/>
                     <field name="last_refresh" readonly="1"/>
@@ -120,7 +117,7 @@
             parent="account.account_banks_menu"
             action="action_account_online_link_form"
             id="menu_action_online_link_account"
-            groups="account.group_account_manager"
+            groups="base.group_no_one"
             sequence="4"/>
     </data>
 </odoo>

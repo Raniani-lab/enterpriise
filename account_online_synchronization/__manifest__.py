@@ -18,21 +18,28 @@ a periodic and automatic synchronization of their bank statements.
         'data/config_parameter.xml',
         'data/ir_cron.xml',
         'data/mail_activity_type_data.xml',
+        'data/sync_reminder_email_template.xml',
 
         'security/ir.model.access.csv',
         'security/account_online_sync_security.xml',
 
         'views/account_online_sync_views.xml',
         'views/account_bank_statement_view.xml',
+        'views/account_journal_view.xml',
+        'views/account_online_sync_portal_templates.xml',
         'views/account_journal_dashboard_view.xml',
 
-        'wizard/account_link_journal_wizard.xml',
+        'wizard/account_bank_selection_wizard.xml',
     ],
     'license': 'OEEL-1',
     'auto_install': True,
     'assets': {
         'web.assets_backend': [
-            'account_online_synchronization/static/**/*',
+            'account_online_synchronization/static/src/components/**/*',
+            'account_online_synchronization/static/src/js/odoo_fin_connector.js',
+        ],
+        'web.assets_frontend': [
+            'account_online_synchronization/static/src/js/online_sync_portal.js',
         ],
     }
 }

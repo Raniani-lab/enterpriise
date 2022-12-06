@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<templates>
+    <t t-name="account_online_synchronization.ConnectedUntil" owl="1">
+        <div t-on-mouseenter="onMouseEnter" t-on-mouseleave="onMouseLeave" t-att-class="props.styling">
+            <t t-if="!this.state.isHovered" t-att-class="'text-danger' if props.warning else ''">
+                <t t-if="props.warning" class="text-danger">
+                    <i class="fa fa-warning"/>
+                </t>
+                Connected until <t t-out="props.formatted_date"/>
+            </t>
+            <t t-if="this.state.isHovered">
+                <a class="oe_inline oe_kanban_action oe_kanban_action_a" href="#" t-on-click="extendConnection">Extend Connection</a>
+            </t>
+        </div>
+    </t>
+</templates>

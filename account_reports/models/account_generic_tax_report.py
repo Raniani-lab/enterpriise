@@ -27,6 +27,8 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
     def _custom_options_initializer(self, report, options, previous_options=None):
         super()._custom_options_initializer(report, options, previous_options=previous_options)
         options['buttons'].append({'name': _('Closing Entry'), 'action': 'action_periodic_vat_entries', 'sequence': 80})
+        domain = self._get_amls_with_archived_tags_domain(options)
+        options['contains_archived_tag'] = bool(self.env['account.move.line'].search(domain, limit=1))
 
     def _get_dynamic_lines(self, report, options, grouping):
         """ Compute the report lines for the generic tax report.
@@ -860,6 +862,26 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
             include_domestic = options['fiscal_position'] == 'domestic'
 
         return include_domestic, fiscal_positions
+
+    def _get_amls_with_archived_tags_domain(self, options):
+        domain = [
+            ('tax_tag_ids.active', '=', False),
+            ('move_id.state', '=', 'posted'),
+            ('date', '>=', options['date']['date_from']),
+        ]
+        if options['date']['mode'] == 'single':
+            domain.append(('date', '<=', options['date']['date_to']))
+        return domain
+
+    def action_open_amls_with_archive_tags(self, options, params=None):
+        return {
+            'name': _("Journal items with archived tax tags"),
+            'type': 'ir.actions.act_window',
+            'res_model': 'account.move.line',
+            'domain': self._get_amls_with_archived_tags_domain(options),
+            'context': {'active_test': False},
+            'views': [(self.env.ref('account_reports.view_archived_tag_move_tree').id, 'list')],
+        }
 
 
 class GenericTaxReportCustomHandlerAT(models.AbstractModel):

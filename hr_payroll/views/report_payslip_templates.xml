@@ -106,15 +106,12 @@
                             </t>
                         </span>
                         <span t-foreach="o.line_ids.filtered(lambda line: line.appears_on_payslip)" t-as="line">
+                            <t t-set="line_styling" t-value="line.get_payslip_styling_dict()"/>
                             <t t-set="line_style"/>
                             <t t-set="line_class"/>
-                            <t t-if="line.code == 'NET'">
-                                <t t-set="line_style" t-value="'color:#875A7B;'"/>
-                                <t t-set="line_class" t-value="'o_total o_border_bottom fw-bold'"/>
-                            </t>
-                            <t t-if="(line.code == 'BASIC') or (line.code == 'GROSS')">
-                                <t t-set="line_style" t-value="'color:#00A09D;'"/>
-                                <t t-set="line_class" t-value="'o_subtotal o_border_bottom'"/>
+                            <t t-if="line.code in line_styling">
+                                <t t-set="line_style" t-value="line_styling[line.code]['line_style']"/>
+                                <t t-set="line_class" t-value="line_styling[line.code]['line_class']"/>
                             </t>
                             <tr t-att-class="line_class" t-att-style="line_style" id="line_display">
                                 <td><span t-field="line.name"/></td>

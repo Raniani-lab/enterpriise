@@ -50,7 +50,7 @@ class account_journal(models.Model):
     def open_action(self):
         if self.type in ('bank', 'cash'):
             return self.env['account.bank.statement.line']._action_open_bank_reconciliation_widget(
-                extra_domain=[('journal_id', '=', self.id)],
+                extra_domain=[('journal_id', '=', self.id), ('line_ids.account_id', '=', self.default_account_id.id)],
                 default_context={'default_journal_id': self.id},
             )
         return super().open_action()

@@ -16,10 +16,16 @@ a periodic and automatic synchronization of their bank statements.
 
     'data': [
         'data/config_parameter.xml',
+        'data/ir_cron.xml',
         'data/mail_activity_type_data.xml',
+
         'security/ir.model.access.csv',
         'security/account_online_sync_security.xml',
-        'views/account_online_sync.xml',
+
+        'views/account_online_sync_views.xml',
+        'views/account_bank_statement_view.xml',
+        'views/account_journal_dashboard_view.xml',
+
         'wizard/account_link_journal_wizard.xml',
     ],
     'license': 'OEEL-1',

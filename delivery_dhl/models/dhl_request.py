@@ -32,7 +32,7 @@ class DHLProvider():
 
     def _set_client(self, wsdl_filename, api):
         wsdl_path = get_resource_path('delivery_dhl', 'api', wsdl_filename)
-        client = Client('file:///%s' % wsdl_path.lstrip('/'))
+        client = Client(wsdl_path)
         return client
 
     def _set_request(self, site_id, password):

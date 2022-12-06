@@ -68,7 +68,7 @@ class AccountMove(models.Model):
             ('D08', 'Mandatory School Transportation Expenses'),
             ('D09', 'Deposits in savings accounts, premiums based on pension plans.'),
             ('D10', 'Payments for educational services (Colegiatura)'),
-            ('P01', 'To define'),
+            ('P01', 'To define (CFDI 3.3 only)'),
         ],
         string="Usage",
         default='P01',

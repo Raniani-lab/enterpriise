@@ -12,6 +12,7 @@ var framework = require('web.framework');
 const { ListRenderer } = require("@web/views/list/list_renderer");
 var testUtils = require('web.test_utils');
 var { session } = require('@web/session');
+const { RPCError } = require("@web/core/network/rpc_service");
 
 var studioTestUtils = require('web_studio.testUtils');
 
@@ -5827,6 +5828,110 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click(target.querySelector('.o_web_studio_sidebar .o_web_studio_parameters'));
         await legacyExtraNextTick();
         assert.containsOnce(target, ".o_studio .o_action_manager .o_form_view");
+    });
+
+    QUnit.test("kanban: onchange is resilient to errors", async (assert) => {
+        await studioTestUtils.createViewEditorManager({
+            model: 'coucou',
+            arch: `
+            <kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="rendered">
+                            <field name="display_name" />
+                        </div>
+                    </t>
+                </templates>
+            </kanban>`,
+            mockRPC(route, args) {
+                if (args.method === "onchange") {
+                    assert.step("onchange");
+                    throw new Error("Boom");
+                }
+            }
+        });
+
+        assert.verifySteps(["onchange"]);
+        assert.containsOnce(target, ".rendered");
+    });
+
+    QUnit.test("kanban: onchange is resilient to errors -- debug mode", async (assert) => {
+        const _console = window.console;
+        window.console = Object.assign(Object.create(_console), {
+            warn(msg) {
+                assert.step(msg);
+            },
+        });
+        registerCleanup(() => {
+            window.console = _console;
+        });
+        patchWithCleanup(odoo, {
+            debug: true,
+        });
+        await studioTestUtils.createViewEditorManager({
+            model: 'coucou',
+            arch: `
+            <kanban>
+                <templates>
+                    <t t-name="kanban-box">
+                        <div class="rendered">
+                            <field name="display_name" />
+                        </div>
+                    </t>
+                </templates>
+            </kanban>`,
+            mockRPC(route, args) {
+                if (args.method === "onchange") {
+                    assert.step("onchange");
+                    throw new Error("Boom");
+                }
+            }
+        });
+
+        assert.verifySteps([
+            "onchange",
+            "The onchange triggered an error. It may indicate either a faulty call to onchange, or a faulty model python side"
+        ]);
+        assert.containsOnce(target, ".rendered");
+    });
+
+    QUnit.test("form: onchange is resilient to errors -- debug mode", async (assert) => {
+        const _console = window.console;
+        window.console = Object.assign(Object.create(_console), {
+            warn(msg) {
+                assert.step(msg);
+            },
+        });
+        registerCleanup(() => {
+            window.console = _console;
+        });
+        patchWithCleanup(odoo, {
+            debug: true,
+        });
+        await studioTestUtils.createViewEditorManager({
+            model: 'coucou',
+            arch: `
+            <form>
+                <div class="rendered">
+                    <field name="name" />
+                </div>
+            </form>`,
+            mockRPC(route, args) {
+                if (args.method === "onchange") {
+                    assert.step("onchange");
+                    const error = new RPCError();
+                    error.exceptionName = "odoo.exceptions.ValidationError";
+                    error.code = 200;
+                    return Promise.reject(error);
+                }
+            }
+        });
+
+        assert.verifySteps([
+            "onchange",
+            "The onchange triggered an error. It may indicate either a faulty call to onchange, or a faulty model python side"
+        ]);
+        assert.containsOnce(target, ".rendered");
     });
 
     QUnit.module('X2Many');

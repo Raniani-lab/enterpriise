@@ -33,22 +33,26 @@ export class MrpMpsControlPanel extends ControlPanel {
         return this.model.selectedRecords.size > 0;
     }
 
-    getActionMenuItems() {
-        return Object.assign({}, {
-            other: [{
-                key: "export",
-                description: this.env._t("Export"),
-                callback: () => this.onExportData(),
-            }, {
-                key: "delete",
-                description: this.env._t("Delete"),
-                callback: () => this.unlinkSelectedRecord(),
-            }, {
-                key: "replenish",
-                description: this.env._t("Replenish"),
-                callback: () => this.replenishSelectedRecords(),
-            }]
-        });
+    get actionMenuItems() {
+        return {
+            action: [
+                {
+                    key: "export",
+                    description: this.env._t("Export"),
+                    callback: () => this.onExportData(),
+                },
+                {
+                    key: "delete",
+                    description: this.env._t("Delete"),
+                    callback: () => this.unlinkSelectedRecord(),
+                },
+                {
+                    key: "replenish",
+                    description: this.env._t("Replenish"),
+                    callback: () => this.replenishSelectedRecords(),
+                },
+            ],
+        };
     }
 
     /**

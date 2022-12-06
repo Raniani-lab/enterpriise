@@ -19,7 +19,7 @@
                 getActiveIds="() => Array.from(model.selectedRecords)"
                 context="{}"
                 domain="model.domain"
-                items="getActionMenuItems()"
+                items="actionMenuItems"
                 isDomainSelected="model.isDomainSelected"
                 resModel="'mrp.production.schedule'"/>
         </xpath>

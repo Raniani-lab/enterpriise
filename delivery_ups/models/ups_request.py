@@ -147,7 +147,7 @@ class UPSRequest():
 
     def _set_client(self, wsdl, api, root):
         wsdl_path = os.path.join(os.path.dirname(os.path.realpath(__file__)), wsdl)
-        client = Client('file:///%s' % wsdl_path.lstrip('/'), plugins=[FixRequestNamespacePlug(root), LogPlugin(self.debug_logger)])
+        client = Client(wsdl_path, plugins=[FixRequestNamespacePlug(root), LogPlugin(self.debug_logger)])
         self.factory_ns2 = client.type_factory('ns2')
         self.factory_ns3 = client.type_factory('ns3')
         # ns4 only exists for Ship API - we only use it for the invoice

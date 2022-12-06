@@ -258,6 +258,12 @@ class TestMockDeliveryFedex(TestDeliveryFedex):
             def __init__(self, *args, **kwargs):
                 self.headers = dict()
 
+            def mount(self, *args, **kwargs):
+                return None
+
+            def close(self, *args, **kwargs):
+                return None
+
             def post(self, *args, **kwargs):
                 response = Mock()
                 response.headers = {}

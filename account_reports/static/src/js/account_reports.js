@@ -492,19 +492,20 @@ var accountReportsWidget = AbstractAction.extend({
         var self = this;
         var split_target = $(event.target).attr('data-id').split("-");
         var targetID = parseInt(split_target[split_target.length - 1]);
-        var split_parent = $(event.target).attr('parent-id').split("-");
-        var parentID = parseInt(split_parent[split_parent.length - 1]);
         var $content = $(QWeb.render("paymentDateForm", {target_id: targetID}));
+        var moveLineID = parseInt($content.find("#target_id").val());
         var paymentDatePicker = new datepicker.DateWidget(this);
         paymentDatePicker.appendTo($content.find('div.o_account_reports_payment_date_picker'));
         var save = function () {
             return this._rpc({
-                model: 'res.partner',
+                model: 'account.move.line',
                 method: 'change_expected_date',
-                args: [[parentID], {
-                    move_line_id: parseInt($content.find("#target_id").val()),
-                    expected_pay_date: paymentDatePicker.getValue(),
-                }],
+                args: [
+                    [moveLineID],
+                    {
+                        expected_pay_date: paymentDatePicker.getValue(),
+                    }
+                ],
             }).then(function() {
                 self.reload();
             });

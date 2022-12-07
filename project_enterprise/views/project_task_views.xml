@@ -9,7 +9,7 @@
             <xpath expr="//sheet" position="before">
                 <div role="alert" class="alert alert-warning p-3 text-center alert-overflow"
                     attrs="{'invisible': [('planning_overlap', '=', False)]}">
-                    <button name="action_fsm_view_overlapping_tasks" type="object" class="btn-link pe-1">
+                    <button name="action_fsm_view_overlapping_tasks" type="object" class="btn-link pe-1" attrs="{'invisible': [('planning_overlap', '=', False)]}">
                         <field name="planning_overlap" widget="html"/>
                     </button>
                 </div>

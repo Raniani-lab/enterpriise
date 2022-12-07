@@ -3241,6 +3241,13 @@ msgid "You are using custom exchange rates."
 msgstr ""
 
 #. module: account_reports
+#: code:addons/account_reports/models/account_move.py:0
+#, python-format
+msgid "You cannot reset this closing entry to draft, as it would delete carryover values impacting the tax report of a "
+"locked period. To do this, you first need to modify you tax return lock date."
+msgstr ""
+
+#. module: account_reports
 #: model:ir.model.fields.selection,name:account_reports.selection__res_company__account_tax_periodicity__year
 msgid "annually"
 msgstr ""

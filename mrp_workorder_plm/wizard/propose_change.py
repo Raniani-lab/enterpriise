@@ -64,6 +64,15 @@ class ProposeChange(models.TransientModel):
         # get the step on the new bom related to the one we want to delete
         new_step = eco.new_bom_id.operation_ids.quality_point_ids.filtered(lambda p: p._get_comparison_values() == self.step_id.point_id._get_comparison_values())
         new_step.unlink()
+        # Leave a note in the old step's chatter telling why it should be removed.
+        old_step = self.step_id.point_id
+        if old_step:
+            tl_text = _("%(user_name)s suggests to delete this instruction", user_name=self._workorder_name())
+            body = Markup("<b>%s</b>") % tl_text
+            if self.comment:
+                tl_text = _("Reason:")
+                body += Markup("<br/><b>%s</b> %s") % (tl_text, self.comment)
+            old_step.message_post(body=body)
 
     def _do_set_picture(self):
         eco = self._get_eco()

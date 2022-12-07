@@ -218,10 +218,16 @@ class RevenueKPIsDashboard(http.Controller):
         start_date_delta = start_date - relativedelta(months=+1)
         end_date_delta = end_date - relativedelta(months=+1)
 
-        last_month_value = self.compute_stat(stat_type, start_date_delta, end_date_delta, filters)
-        current_value = self.compute_stat(stat_type, start_date, end_date, filters)
+        if 'compute_batch' in STAT_TYPES[stat_type]:
+            dates = [start_date_delta, end_date_delta, start_date, end_date]
+            stats = self.compute_stat_batch(stat_type, dates, filters)
+            last_month_value = stats[1][1]
+            current_value = stats[3][1]
+        else:
+            last_month_value = self.compute_stat(stat_type, start_date_delta, end_date_delta, filters)
+            current_value = self.compute_stat(stat_type, start_date, end_date, filters)
+
         perc = 100 if not last_month_value else round(100 * (current_value - last_month_value) / float(last_month_value), 1)
-        perc = 0 if not last_month_value and not current_value else perc
 
         result = {
             'value_1': str(last_month_value),

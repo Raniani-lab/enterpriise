@@ -113,9 +113,9 @@ class TestMxEdiCommon(AccountEdiTestCommon):
         cls.payment_term = cls.env['account.payment.term'].create({
             'name': 'test l10n_mx_edi',
             'line_ids': [(0, 0, {
-                'value': 'balance',
-                'value_amount': 0.0,
-                'days': 90,
+                'value': 'percent',
+                'value_amount': 100.0,
+                'nb_days': 90,
             })],
         })
 

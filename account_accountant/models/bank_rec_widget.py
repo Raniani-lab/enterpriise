@@ -1134,7 +1134,7 @@ class BankRecWidget(models.Model):
         for aml_line in all_aml_lines:
             aml = aml_line.source_aml_id
 
-            if aml._is_eligible_for_early_payment_discount(self.transaction_currency_id, self.st_line_id.date):
+            if aml.move_id._is_eligible_for_early_payment_discount(self.transaction_currency_id, self.st_line_id.date):
                 at_least_one_aml_for_early_payment = True
                 total_early_payment_discount += aml.amount_currency - aml.discount_amount_currency
 

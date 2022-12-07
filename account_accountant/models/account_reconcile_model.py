@@ -485,12 +485,16 @@ class AccountReconcileModel(models.Model):
             amls_values_list.append(aml_values)
 
             # Manage the early payment discount.
+            if aml.move_id.invoice_payment_term_id:
+                last_discount_date = aml.move_id.invoice_payment_term_id._get_last_discount_date(aml.move_id.date)
+            else:
+                last_discount_date = False
             if same_currency_mode \
-                and aml.move_id.move_type in ('out_invoice', 'out_receipt', 'in_invoice', 'in_receipt') \
-                and not aml.matched_debit_ids \
-                and not aml.matched_credit_ids \
-                and aml.discount_date \
-                and st_line.date <= aml.discount_date:
+                    and aml.move_id.move_type in ('out_invoice', 'out_receipt', 'in_invoice', 'in_receipt') \
+                    and not aml.matched_debit_ids \
+                    and not aml.matched_credit_ids \
+                    and last_discount_date \
+                    and st_line.date <= last_discount_date:
 
                 rate = abs(aml.amount_currency) / abs(aml.balance) if aml.balance else 1.0
                 amls_with_epd_values_list.append({

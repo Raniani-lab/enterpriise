@@ -70,9 +70,11 @@ class PartnerLedgerCustomHandler(models.AbstractModel):
     def _custom_unfold_all_batch_data_generator(self, report, options, lines_to_expand_by_function):
         partner_ids_to_expand = []
         for line_dict in lines_to_expand_by_function.get('_report_expand_unfoldable_line_partner_ledger', []):
-            model, model_id = self.env['account.report']._get_model_info_from_id(line_dict['id'])
+            markup, model, model_id = self.env['account.report']._parse_line_id(line_dict['id'])[-1]
             if model == 'res.partner':
                 partner_ids_to_expand.append(model_id)
+            elif markup == 'no_partner':
+                partner_ids_to_expand.append(None)
 
         return {
             'initial_balances': self._get_initial_balance_values(partner_ids_to_expand, options) if partner_ids_to_expand else {},

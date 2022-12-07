@@ -90,8 +90,11 @@ class SaleOrderAlert(models.Model):
             domain = literal_eval(alert.filter_domain) if alert.filter_domain else []
             alert.subscription_count = self.env['sale.order'].search_count(domain)
 
-    def _configure_filter_domain(self):
-        for alert in self:
+    def _configure_filter_domain(self, vals_list):
+        for alert, vals in zip(self, vals_list):
+            if vals.get('filter_domain'):
+                # Write or create has already set the value
+                continue
             domain = [('is_subscription', '=', True)]
             if alert.subscription_template_ids:
                 domain += [('sale_order_template_id', 'in', alert.subscription_template_ids.ids)]
@@ -173,7 +176,7 @@ class SaleOrderAlert(models.Model):
             if vals.get('trigger_condition'):
                 vals['trigger'] = vals['trigger_condition']
         alerts = super().create(vals_list)
-        alerts._configure_filter_domain()
+        alerts._configure_filter_domain(vals_list)
         alerts._configure_filter_pre_domain()
         alerts._configure_alert_from_action(vals_list)
         return alerts
@@ -182,7 +185,7 @@ class SaleOrderAlert(models.Model):
         if vals.get('trigger_condition'):
             vals['trigger'] = vals['trigger_condition']
         res = super().write(vals)
-        self._configure_filter_domain()
+        self._configure_filter_domain([vals])
         self._configure_filter_pre_domain()
         self._configure_alert_from_action([vals])
         return res

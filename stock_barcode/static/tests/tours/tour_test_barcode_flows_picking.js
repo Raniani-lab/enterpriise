@@ -196,6 +196,25 @@ tour.register('test_internal_picking_from_scratch', {test: true}, [
     { trigger: '.o_notification.border-success' } // Second call to write (change the dest. location).
 ]);
 
+tour.register('test_internal_picking_from_scratch_with_package', { test: true }, [
+    { trigger: '.o_stock_barcode_main_menu', run: 'scan WH-INTERNAL' },
+    // Scans product1 and put it in P00001, then do the same for product2.
+    { trigger: '.o_barcode_client_action', run: 'scan product1' },
+    { trigger: '.o_barcode_line.o_selected', run: 'scan P00001' },
+    // Scans the destination.
+    { trigger: '.o_barcode_line .result-package', run: 'scan LOC-01-02-00' },
+    { trigger: '.o_barcode_line:not(.o_selected)', run: 'scan product2' },
+    { trigger: '.o_barcode_line[data-barcode="product2"].o_selected', run: 'scan P00001' },
+    { // Scans the destination.
+        trigger: '.o_barcode_line[data-barcode="product2"] .result-package', run: 'scan LOC-01-02-00',
+    },
+    { // Validates the internal picking.
+        trigger: '.o_barcode_line[data-barcode="product2"] .o_line_destination_location',
+        run: 'scan O-BTN.validate',
+    },
+    { trigger: '.o_notification.border-success' },
+]);
+
 tour.register('test_internal_picking_reserved_1', {test: true}, [
     {
         trigger: '.o_barcode_client_action',

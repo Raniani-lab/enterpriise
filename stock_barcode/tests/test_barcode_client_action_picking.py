@@ -89,6 +89,29 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         self.assertEqual(prod2_ml[1].location_id, self.shelf1)
         self.assertEqual(prod2_ml[1].location_dest_id, self.shelf3)
 
+    def test_internal_picking_from_scratch_with_package(self):
+        """ Opens an empty internal picking, scans the source (shelf1), then scans
+        the products (product1 and product2), scans a existing empty package to
+        assign it as the result package, and finally scans the destination (shelf2).
+        Checks the dest location is correctly set on the lines.
+        """
+        self.clean_access_rights()
+        grp_pack = self.env.ref('stock.group_tracking_lot')
+        grp_multi_loc = self.env.ref('stock.group_stock_multi_locations')
+        self.env.user.write({'groups_id': [(4, grp_multi_loc.id, 0), (4, grp_pack.id, 0)]})
+        self.picking_type_internal.active = True
+
+        action_id = self.env.ref('stock_barcode.stock_barcode_action_main_menu')
+        url = "/web#action=" + str(action_id.id)
+        self.start_tour(url, 'test_internal_picking_from_scratch_with_package', login='admin', timeout=180)
+
+        self.assertEqual(len(self.package.quant_ids), 2)
+        self.assertEqual(self.package.location_id.id, self.shelf2.id)
+        self.assertRecordValues(self.package.quant_ids, [
+            {'product_id': self.product1.id, 'quantity': 1, 'location_id': self.shelf2.id},
+            {'product_id': self.product2.id, 'quantity': 1, 'location_id': self.shelf2.id},
+        ])
+
     def test_internal_picking_reserved_1(self):
         """ Open a reserved internal picking
           - move 1 `self.product1` and 1 `self.product2` from shelf1 to shelf2

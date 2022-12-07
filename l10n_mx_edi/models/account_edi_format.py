@@ -325,7 +325,7 @@ class AccountEdiFormat(models.Model):
                 discount_line_tax_details = cfdi_values[tax_key]['tax_details_per_record'][discount_line]['tax_details']
                 other_line_tax_details = cfdi_values[tax_key]['tax_details_per_record'][other_line]['tax_details']
                 for k, tax_values in discount_line_tax_details.items():
-                    if discount_line.currency_id.is_zero(tax_values['tax_amount_currency']):
+                    if discount_line.currency_id.is_zero(tax_values['base_amount_currency']):
                         continue
 
                     other_tax_values = other_line_tax_details[k]

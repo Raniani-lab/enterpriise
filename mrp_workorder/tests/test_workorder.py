@@ -268,12 +268,13 @@ class TestWorkOrder(common.TestMrpCommon):
         """ Production with a strict consumption
         Check that consuming the right amount of component doesn't trigger any error"""
 
-        self.env['quality.point'].create({
+        quality_point = self.env['quality.point'].create({
             'product_ids': [(4, self.submarine_pod.id)],
             'picking_type_ids': [(4, self.env['stock.picking.type'].search([('code', '=', 'mrp_operation')], limit=1).id)],
             'operation_id': self.bom_submarine.operation_ids[0].id,
             'test_type_id': self.env.ref('mrp_workorder.test_type_register_consumed_materials').id,
             'component_id': self.trapped_child.id,
+            'title': "Quality Control Point Title"
         })
         self.bom_submarine.bom_line_ids.filtered(lambda line: line.product_id == self.trapped_child).operation_id = self.bom_submarine.operation_ids[0]
         mo_form = Form(self.env['mrp.production'])
@@ -288,6 +289,7 @@ class TestWorkOrder(common.TestMrpCommon):
         sorted_workorder_ids = mo.workorder_ids.sorted()
         wo = sorted_workorder_ids[0]
         wo.button_start()
+        self.assertEqual(wo.check_ids[0].title, quality_point.title, "quality check title should match its corresponding quality point title")
         wo_form = Form(wo, view='mrp_workorder.mrp_workorder_view_form_tablet')
         self.assertEqual(wo_form.qty_producing, 1)
         wo_form.finished_lot_id = self.sp1
@@ -304,6 +306,7 @@ class TestWorkOrder(common.TestMrpCommon):
         qc._next()
         wo_form = Form(wo, view='mrp_workorder.mrp_workorder_view_form_tablet')
         qc_form = Form(wo.current_quality_check_id, view='mrp_workorder.quality_check_view_form_tablet')
+        self.assertEqual(wo.check_ids[1].title, '{} "{}"'.format(wo.check_ids[1].test_type_id.display_name, qc_form.component_id.name), "title of quality check with no control point should be based on consumed material test type + component")
         self.assertEqual(qc_form.qty_done, 2, 'The suggested component qty_done is wrong')
         self.assertEqual(qc_form.lot_id, self.mc1, 'The suggested lot is wrong')
         qc_form.qty_done = 1

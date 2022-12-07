@@ -27,10 +27,6 @@ class DataCleaningRecord(models.Model):
     country_id = fields.Many2one('res.country', compute='_compute_values', store=True)
     company_id = fields.Many2one('res.company', compute='_compute_values', store=True)
 
-    def create(self, vals):
-        res = super(DataCleaningRecord, self).create(vals)
-        return res
-
     @api.model
     def _get_country_id(self, record):
         country_id = self.env['res.country']

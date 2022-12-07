@@ -924,6 +924,8 @@ class HrContractSalary(http.Controller):
                     new_value = new_values[0]
                     if isinstance(new_value, float):
                         new_value = round(new_value, 2)
+                    if item.type_id.item_type == "checkbox":
+                        new_value = 'on' if new_value else 'off'
                 if new_value is not None:
                     sign_values_by_role[item.responsible_id][str(item.id)] = new_value
             except Exception:

@@ -50,7 +50,7 @@ tour.register('rental_order_with_sale_product_matrix_tour', {
 }, {
     trigger: 'ul.ui-autocomplete a:contains("Matrix")',
 }, {
-    trigger: '.o_product_variant_matrix',
+    trigger: '.o_matrix_input_table',
     run: function () {
         $('.o_matrix_input').slice(8, 16).val(4);
     } // set the qty to 4 for half of the matrix products.

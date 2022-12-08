@@ -5,8 +5,6 @@ import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_d
 import { FormRenderer } from '@web/views/form/form_renderer';
 import KnowledgeTreePanelMixin from '@knowledge/js/tools/tree_panel_mixin';
 import { patch } from "@web/core/utils/patch";
-import MoveArticleDialog from "@knowledge/components/move_article_dialog/move_article_dialog";
-import PermissionPanel from '@knowledge/components/permission_panel/permission_panel';
 import { sprintf } from '@web/core/utils/strings';
 import { useService } from "@web/core/utils/hooks";
 import { onMounted, onPatched, onWillDestroy, useChildSubEnv, useEffect, useRef, useState, xml } from "@odoo/owl";
@@ -149,6 +147,24 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             messaging.messagingBus.removeEventListener('knowledge_add_emoji', this._onAddEmoji);
             messaging.messagingBus.removeEventListener('knowledge_remove_emoji', this._onRemoveEmoji);
         });
+
+        useChildSubEnv({
+            _showEmojiPicker: this._showEmojiPicker.bind(this),
+            createArticle: this.createArticle.bind(this),
+            openArticle: this.openArticle.bind(this),
+            config: this.env.config,
+            _resizeNameInput: this._resizeNameInput.bind(this),
+            _rename: this._rename.bind(this),
+            _renderTree: this._renderTree.bind(this),
+            toggleFavorite: this.toggleFavorite.bind(this),
+            toggleProperties: this.toggleProperties.bind(this),
+            toggleChatter: this.toggleChatter.bind(this),
+            _arePropertiesActivated: this._arePropertiesActivated.bind(this),
+            _isPanelDisplayed: this._isPanelDisplayed.bind(this),
+            _saveIfDirty: this._saveIfDirty.bind(this),
+            messagingService: this.messagingService,
+            addProperties: this.addProperties.bind(this),
+        });
     }
 
 
@@ -169,22 +185,9 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             props: this.props,
             root: this.root,
             state: this.state,
-            actionService: this.actionService,
             addIcon: (ev) => this.addIcon(ev),
-            addProperties: (ev) => this.addProperties(ev),
-            convertToArticle: () => this.setIsArticleItem(false),
-            convertToItem: () => this.setIsArticleItem(true),
-            copyArticleAsPrivate: () => this.copyArticleAsPrivate(),
             createArticle: (category, targetParentId) => this.createArticle(category, targetParentId),
-            onMoveArticleClick: () => this.onMoveArticleClick(),
             resizeSidebar: (el) => this.resizeSidebar(el),
-            toggleChatter: () => this.toggleChatter(),
-            toggleFavorite: (ev) => this.toggleFavorite(ev),
-            toggleProperties: () => this.toggleProperties(),
-            _onNameClick: (ev) => this._onNameClick(ev),
-            _rename: (name) => this._rename(name),
-            _renderTree: (activeArticleId, route) => this._renderTree(activeArticleId, route),
-            _resizeNameInput: (name) => this._resizeNameInput(name),
             _showEmojiPicker: (ev) => this._showEmojiPicker(ev),
             __comp__: this, // used by the compiler
             this: this, // used by the arch directly
@@ -213,19 +216,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         // See onPatched: triggers a click when properties widget is ready and added
         // in to DOM. It opens the panel directly.
         this.triggerClickOnAddProperty = true;
-    }
-
-    /**
-     * Copy the current article in private section and open it.
-     */
-    async copyArticleAsPrivate() {
-        await this._saveIfDirty();
-        const articleId = await this.orm.call(
-            "knowledge.article",
-            "action_make_private_copy",
-            [this.resId]
-        );
-        this.openArticle(articleId, true);
     }
 
     /**
@@ -377,47 +367,17 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         }
     }
 
-    async setIsArticleItem(newArticleItemStatus){
-        await this.props.record.update({is_article_item: newArticleItemStatus});
-        await this.props.record.save({stayInEdition: true});
-        this._renderTree(this.resId, '/knowledge/tree_panel');
-    }
-
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
 
-    /**
-     * Show the Dialog allowing to move the current article.
-     */
-    onMoveArticleClick() {
-        this.dialog.add(
-            MoveArticleDialog,
-            {
-                articleName: this.props.record.data.name,
-                articleId: this.resId,
-                category: this.props.record.data.category,
-                moveArticle: this._moveArticle.bind(this),
-                reloadTree: this._renderTree.bind(this),
-            }
-        );
+    _arePropertiesActivated() {
+        return this.state.displayPropertyToggle;
     }
 
-    /**
-     * When the user clicks on the name of the article, checks if the article
-     * name hasn't been set yet. If it hasn't, it will look for a title in the
-     * body of the article and set it as the name of the article.
-     * @param {Event} event
-     */
-    async _onNameClick(event) {
-        if (!this.props.record.data.name) {
-            await this._rename();
-            window.setTimeout(() => {
-                event.target.select();
-            });
-        }
+    _isPanelDisplayed() {
+        return this.state.displayPropertyPanel;
     }
-
 
     //--------------------------------------------------------------------------
     // Private
@@ -919,7 +879,6 @@ patch(KnowledgeArticleFormRenderer.prototype, "knowledge_article_form_renderer",
 KnowledgeArticleFormRenderer.template = xml`<t t-call="{{ templates.FormRenderer }}" t-call-context="renderingContext" />`;
 KnowledgeArticleFormRenderer.components = {
     ...FormRenderer.components,
-    PermissionPanel,
 };
 KnowledgeArticleFormRenderer.defaultProps = {
 };

@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <data noupdate="1">
+        <record id="preparation_display_main" model="pos_preparation_display.display">
+            <field name="name">Preparation Display</field>
+        </record>
+    </data>
+</odoo>

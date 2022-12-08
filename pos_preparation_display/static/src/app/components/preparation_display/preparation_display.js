@@ -1,0 +1,55 @@
+/** @odoo-module **/
+import { Category } from "@pos_preparation_display/app/components/category/category";
+import { Stages } from "@pos_preparation_display/app/components/stages/stages";
+import { Order } from "@pos_preparation_display/app/components/order/order";
+import { usePreparationDisplay } from "@pos_preparation_display/app/preparation_display_service";
+import { Component, onPatched } from "@odoo/owl";
+
+export class PreparationDisplay extends Component {
+    static props = {};
+
+    setup() {
+        this.preparationDisplay = usePreparationDisplay();
+        this.displayName = odoo.preparation_display.name;
+        this.onNextPatch = new Set();
+
+        onPatched(() => {
+            for (const cb of this.onNextPatch) {
+                cb();
+            }
+        });
+    }
+    get filterSelected() {
+        return (
+            this.preparationDisplay.selectedCategories.size +
+            this.preparationDisplay.selectedProducts.size
+        );
+    }
+    archiveAllVisibleOrders() {
+        const lastStageVisibleOrderIds = this.preparationDisplay.filteredOrders.filter(
+            (order) => order.stageId === this.preparationDisplay.lastStage.id
+        );
+
+        for (const order of lastStageVisibleOrderIds) {
+            order.displayed = false;
+        }
+
+        this.preparationDisplay.doneOrders(lastStageVisibleOrderIds);
+        this.preparationDisplay.filterOrders();
+    }
+    resetFilter() {
+        this.preparationDisplay.selectedCategories = new Set();
+        this.preparationDisplay.selectedProducts = new Set();
+        this.preparationDisplay.filterOrders();
+    }
+    toggleCategoryFilter() {
+        this.preparationDisplay.showCategoryFilter = !this.preparationDisplay.showCategoryFilter;
+    }
+    onPatched(cb) {
+        this.onNextPatch.add(cb);
+        return () => this.onNextPatch.delete(cb);
+    }
+}
+
+PreparationDisplay.components = { Category, Stages, Order };
+PreparationDisplay.template = `PreparationDisplay`;

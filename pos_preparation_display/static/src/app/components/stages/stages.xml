@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="pos_preparation_display.Stages" owl="1">
+        <section class="d-flex justify-content-center">
+            <div class="d-flex align-items-center justify-content-center py-2 fw-bolder text-800">
+                <div
+                    class="d-flex align-items-center py-3 px-4 mx-2 rounded cursor-pointer"
+                    t-att-class="{ 'bg-200': this.preparationDisplay.selectedStageId === 0 }"
+                    t-on-click="() => this.preparationDisplay.selectStage(0)"
+                >
+                    All
+                </div>
+                <div
+                    t-foreach="[...this.props.stages.values()]"
+                    t-as="stage"
+                    t-key="stage.id"
+                    class="o_pdis_navbar_stage d-flex align-items-center py-3 px-4 mx-2 rounded cursor-pointer bg-opacity-50"
+                    t-on-click="() => this.preparationDisplay.selectStage(stage.id)"
+                    t-attf-style="{{ this.preparationDisplay.selectedStageId === stage.id ? 'background-color:' + stage.color + '33' + ';' : '' }}"
+                >
+                    <span t-esc="stage.name"/>
+                    <div t-att-style="'background-color:' + stage.color + 80" class="ms-2 px-2 rounded" t-esc="stage.orderCount"/>
+                </div>
+            </div>
+        </section>
+    </t>
+</templates>

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates id="template" xml:space="preserve">
+    <t t-name="PreparationDisplay" owl="1">
+        <div class="o_pdis_main_screen d-flex flex-column vh-100 w-100 bg-view overflow-hidden">
+            <div class="o_pdis_navbar d-flex justify-content-between border-bottom">
+                <div class="d-flex align-items-center justify-content-start w-25">
+                    <button class="btn rounded-0 border-end px-4 h-100" t-on-click="() => this.toggleCategoryFilter()">
+                        <i class="fa fa-list" role="img"/>
+                    </button>
+                    <div t-if="this.filterSelected" class="btn btn-info mx-3 rounded" t-on-click="() => this.resetFilter()">
+                        <i class="fa fa-times pe-2" aria-hidden="true"></i>
+                        <t t-esc="this.filterSelected" /> filter(s)
+                    </div>
+                </div>
+                <Stages stages="this.preparationDisplay.stages" />
+                <div class="d-flex align-items-center h-100 justify-content-end w-25">
+                    <div class="btn btn-danger mx-3 rounded"
+                        t-if="this.preparationDisplay.selectedStageId === this.preparationDisplay.lastStage.id and this.preparationDisplay.lastStage.orderCount and !this.env.debug"
+                        t-on-click="() => this.archiveAllVisibleOrders()">
+                        <i class="fa fa-archive pe-2" aria-hidden="true"></i>
+                        Archive all
+                    </div>
+                    <div class="btn btn-danger mx-3 rounded"
+                        t-if="this.env.debug"
+                        t-on-click="() => this.preparationDisplay.resetOrders()">
+                        <i class="fa fa-archive pe-2" aria-hidden="true"></i>
+                        Archive all
+                    </div>
+                    <button class="btn rounded-0 border-start px-4 h-100" t-on-click="() => this.preparationDisplay.exit()">
+                        <i class="fa fa-sign-out" role="img"/>
+                        <span class="o_pdis_close px-2">Close</span>
+                    </button>
+                </div>
+            </div>
+            <div class="o_pdis_content d-flex w-100">
+                <div class="o_pdis_sidebar d-flex flex-column border-end text-800" t-att-class="{'hide-category d-none': !this.preparationDisplay.showCategoryFilter}">
+                    <div class="o_pdis_categories mh-100 overflow-auto mb-auto">
+                        <t t-foreach="this.preparationDisplay.categories" t-as="category" t-key="category">
+                            <Category category="category_value" />
+                        </t>
+                    </div>
+                    <div class="o_pdis_logo d-flex justify-content-center py-2 border-top">
+                        <img class="w-50" src="/web/static/img/logo.png" />
+                    </div>
+                </div>
+
+                <div class="o_pdis_orders d-grid gap-3 w-100 bg-300 p-4 overflow-auto">
+                    <t t-foreach="this.preparationDisplay.filteredOrders" t-as="order" t-key="order.id">
+                        <Order order="order" onPatched.bind="onPatched" />
+                    </t>
+                </div>
+            </div>
+        </div>
+    </t>
+</templates>

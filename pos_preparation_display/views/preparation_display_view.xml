@@ -1,0 +1,140 @@
+<odoo>
+    <record id="action_preparation_display" model="ir.actions.act_window">
+        <field name="name">Preparation Display</field>
+        <field name="type">ir.actions.act_window</field>
+        <field name="res_model">pos_preparation_display.display</field>
+        <field name="view_mode">kanban,tree,form</field>
+    </record>
+
+    <record id="preparation_display_view_form" model="ir.ui.view">
+        <field name="name">preparation.display.form.view</field>
+        <field name="model">pos_preparation_display.display</field>
+        <field name="arch" type="xml">
+            <form string="Preparation Display">
+                <sheet>
+                    <div class="oe_title mb-32">
+                        <label for="name" />
+                        <h1>
+                            <field name="name" class="oe_inline" />
+                        </h1>
+                    </div>
+                    <group>
+                        <group>
+                            <field name="pos_config_ids" widget="many2many_tags" options="{'create':false}" placeholder="All PoS"/>
+                            <field name="category_ids" widget="many2many_tags" options="{'create':false}" placeholder="All categories"/>
+                        </group>
+                    </group>
+                    <notebook>
+                        <page name="stages" string="Stages">
+                            <field name="stage_ids">
+                                <tree string="Offer" editable="bottom">
+                                    <field name="sequence" widget="handle"/>
+                                    <field name="name" />
+                                    <field name="color" widget="color" />
+                                    <field name="alert_timer" />
+                                </tree>
+                            </field>
+                        </page>
+                    </notebook>
+                </sheet>
+            </form>
+        </field>
+    </record>
+
+    <record id="preparation_display_view_tree" model="ir.ui.view">
+        <field name="name">preparation.display.tree.view</field>
+        <field name="model">pos_preparation_display.display</field>
+        <field name="arch" type="xml">
+            <tree string="Preparation Display" create="1" delete="1">
+                <field name="name" />
+                <field name="pos_config_ids" widget="many2many_tags" />
+                <field name="category_ids" widget="many2many_tags" />
+                <field name="stage_ids" widget="many2many_tags" options="{'color_field':'color'}" />
+            </tree>
+        </field>
+    </record>
+
+    <record id="preparation_display_view_search" model="ir.ui.view">
+        <field name="name">preparation.display.search.view</field>
+        <field name="model">pos_preparation_display.display</field>
+        <field name="arch" type="xml">
+            <search string="Preparation Display">
+                <field name="name" />
+                <field name="pos_config_ids" />
+            </search>
+        </field>
+    </record>
+
+    <record id="preparation_display_view_kanban" model="ir.ui.view">
+        <field name="name">preparation.display.kanban.view</field>
+        <field name="model">pos_preparation_display.display</field>
+        <field name="arch" type="xml">
+            <kanban class="o_kanban_dashboard o_pos_kanban">
+                <templates>
+                    <t t-name="kanban-menu">
+                        <div class="container">
+                            <div class="row">
+                                <div class="col-4 o_kanban_card_manage_section o_kanban_manage_view">
+                                    <div groups="point_of_sale.group_pos_manager">
+                                        <a type="edit" class="oe_kanban_action oe_kanban_action_a">Configure</a>
+                                    </div>
+                                    <div groups="base.group_no_one">
+                                        <a name="open_reset_wizard" type="object" class="oe_kanban_action oe_kanban_action_a">Reset all orders</a>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                    <t t-name="kanban-box">
+                        <div>
+                            <div class="o_kanban_card_header">
+                                <div class="o_kanban_card_header_title mb16">
+                                    <div class="o_primary">
+                                        <field name="name" />
+                                    </div>
+                                    <field name="stage_ids" widget="many2many_tags" />
+                                </div>
+                            </div>
+                            <div class="container o_kanban_card_content">
+                                <div class="row">
+                                    <div class="col-6 o_kanban_primary_left">
+                                        <button class="btn btn-primary" name="open_ui" type="object">
+                                            Open Display
+                                        </button>
+                                    </div>
+                                    <div class="col-6 o_kanban_primary_right">
+
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <span>In progress</span>
+                                            </div>
+                                            <div class="col-6">
+                                                <span><field name="order_count"/></span>
+                                            </div>
+                                        </div>
+
+                                        <div class="row">
+                                            <div class="col-6">
+                                                <span>Average time</span>
+                                            </div>
+                                            <div class="col-6">
+                                                <span><field name="average_time" />'</span>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>
+        </field>
+    </record>
+
+    <menuitem
+        name="Preparation Display"
+        id="point_of_sale.menu_pos_preparation_display"
+        parent="point_of_sale.menu_point_of_sale"
+        action="action_preparation_display"
+        sequence="99" />
+</odoo>

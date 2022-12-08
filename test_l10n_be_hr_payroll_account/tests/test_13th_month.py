@@ -48,7 +48,7 @@ class Test13thMonth(TestPayslipBase):
         work_entries.action_validate()
         self.payslip.contract_id = contract
         self.payslip.struct_id = self.structure
-        self.assertEqual(self.payslip._get_paid_amount(), 0)
+        self.assertEqual(self.payslip._get_paid_amount(), 1250)
 
     def test_13th_month_paid_amount_first_july(self):
         contract = self.create_contract(date(2019, 7, 1))
@@ -64,7 +64,7 @@ class Test13thMonth(TestPayslipBase):
         work_entries.action_validate()
         self.payslip.contract_id = contract
         self.payslip.struct_id = self.structure
-        self.assertAlmostEqual(self.payslip._get_paid_amount(), contract.wage * 6 / 12, msg='It should count 6/12 months')
+        self.assertAlmostEqual(self.payslip._get_paid_amount(), contract.wage * 7 / 12, msg='It should count 7/12 months')
 
     def test_13th_month_paid_amount_month_middle(self):
         contract = self.create_contract(date(2019, 6, 10))  # in the middle of June => June should not count

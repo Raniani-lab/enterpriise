@@ -387,7 +387,7 @@ class Payslip(models.Model):
                 contract_start = contract.date_start
             work_days = {int(d) for d in contract.resource_calendar_id._get_global_attendances().mapped('dayofweek')}
 
-            previous_week_start = max(contract_start + relativedelta(weeks=-1, weekday=MO(-1)), date_from)
+            previous_week_start = max(contract_start + relativedelta(weeks=-1, weekday=MO(-1)), date_from + relativedelta(day=1))
             next_week_end = min(contract.date_end + relativedelta(weeks=+1, weekday=SU(+1)) if contract.date_end else date.max, date_to)
             days_to_check = rrule.rrule(rrule.DAILY, dtstart=previous_week_start, until=next_week_end)
             for day in days_to_check:

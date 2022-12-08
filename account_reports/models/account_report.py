@@ -1632,9 +1632,13 @@ class AccountReport(models.Model):
         return self.env['ir.model.data']._xmlid_lookup(view_xmlid)[2]
 
     def caret_option_open_general_ledger(self, options, params):
-        model, record_id = self._get_model_info_from_id(params['line_id'])
+        record_id = None
+        for dummy, model, model_id in reversed(self._parse_line_id(params['line_id'])):
+            if model == 'account.account':
+                record_id = model_id
+                break
 
-        if model != 'account.account':
+        if record_id is None:
             raise UserError(_("'Open General Ledger' caret option is only available form report lines targetting accounts."))
 
         account_line_id = self._get_generic_line_id('account.account', record_id)

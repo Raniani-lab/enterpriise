@@ -211,6 +211,7 @@
         <field name="name">view.task.form2.inherit</field>
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.view_task_form2"/>
+        <field name="priority">200</field>
         <field name="arch" type="xml">
             <field name="partner_id" position="attributes">
                 <attribute name="options">{'always_reload': True}</attribute>

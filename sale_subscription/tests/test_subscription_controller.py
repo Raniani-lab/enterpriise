@@ -209,7 +209,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         subscription.transaction_ids._reconcile_after_done()  # Create the payment
         self.assertEqual(subscription.invoice_count, 1, "One invoice should be created")
         self.assertTrue(subscription.next_invoice_date > datetime.date.today(), "the next invoice date should be updated")
-        subscription.with_context(arj=True)._cron_recurring_create_invoice()
+        subscription._cron_recurring_create_invoice()
         self.assertEqual(subscription.invoice_count, 1, "Only one invoice should be created")
         # test transaction flow when paying from the portal
         self.assertEqual(len(subscription.transaction_ids), 1, "Only one transaction should be created")

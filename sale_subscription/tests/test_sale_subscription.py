@@ -1248,7 +1248,7 @@ class TestSubscription(TestSubscriptionCommon):
         self.assertEqual(subscription.order_line.price_unit, 10, "The second pricing should be applied")
         self.assertEqual(subscription.sale_order_option_ids.price_unit, 10, "The second pricing should be applied")
         subscription.pricelist_id = other_pricelist.id
-        subscription.with_context(arj=True)._onchange_sale_order_template_id()
+        subscription._onchange_sale_order_template_id()
         self.assertEqual(subscription.pricelist_id.id, other_pricelist.id, "The second pricelist should be applied")
         self.assertEqual(subscription.pricelist_id, subscription.order_line.pricing_id.pricelist_id, "The second pricing should be applied")
         self.assertEqual(subscription.order_line.price_unit, 15, "The second pricing should be applied")

@@ -59,7 +59,6 @@ class TestWebsiteSaleRentingProductAttributeValueConfig(TestSaleProductAttribute
 
         with MockRequest(self.env, website=current_website):
             combination_info = self.computer.with_context(
-                arj=True,
                 start_date=fields.Datetime.now(),
                 end_date=fields.Datetime.now() + relativedelta(hours=5)
             )._get_combination_info()

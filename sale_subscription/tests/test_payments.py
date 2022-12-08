@@ -165,7 +165,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
 
             with freeze_time("2022-05-03"):
                 self.subscription.invalidate_recordset(fnames=['stage_id', 'stage_category'])
-                self.env['sale.order'].with_context(arj=True)._cron_recurring_create_invoice()
+                self.env['sale.order']._cron_recurring_create_invoice()
                 self.assertEqual(self.subscription.stage_category, 'closed', 'the end_date is passed, the subscription is automatically closed')
                 invoice = self.subscription.invoice_ids.sorted('date')[-1]
                 self.assertEqual(invoice.date, datetime.date(2021, 4, 3), 'We should not create a new invoices')

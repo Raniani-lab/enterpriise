@@ -138,6 +138,11 @@ class AccountJournal(models.Model):
         # Needed for BNP France
         if len(sanitized_acc_number) == 27 and len(account_number) == 11 and sanitized_acc_number[:2].upper() == "FR":
             return sanitized_acc_number[14:-2] == account_number
+
+        # Needed for Credit Lyonnais (LCL)
+        if len(sanitized_acc_number) == 27 and len(account_number) == 7 and sanitized_acc_number[:2].upper() == "FR":
+            return sanitized_acc_number[18:-2] == account_number
+
         return sanitized_acc_number == account_number
 
     def _find_additional_data(self, currency_code, account_number):

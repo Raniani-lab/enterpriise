@@ -9,11 +9,8 @@ DOCTYPE = '<!DOCTYPE eSKDUpload PUBLIC "-//Skatteverket, Sweden//DTD Skatteverke
 
 class SwedishTaxReportCustomHandler(models.AbstractModel):
     _name = 'l10n_se.tax.report.handler'
-    _inherit = 'account.generic.tax.report.handler'
+    _inherit = 'account.tax.report.handler'
     _description = 'Swedish Tax Report Custom Handler'
-
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
-        return []
 
     def _custom_options_initializer(self, report, options, previous_options=None):
         super()._custom_options_initializer(report, options, previous_options=previous_options)

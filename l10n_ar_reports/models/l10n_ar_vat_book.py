@@ -11,7 +11,7 @@ import io
 
 class ArgentinianReportCustomHandler(models.AbstractModel):
     _name = 'l10n_ar.tax.report.handler'
-    _inherit = 'account.generic.tax.report.handler'
+    _inherit = 'account.tax.report.handler'
     _description = 'Argentinian Report Custom Handler'
 
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):

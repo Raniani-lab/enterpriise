@@ -20,7 +20,6 @@ class MexicanAccountReportCustomHandler(models.AbstractModel):
     _description = 'Mexican Account Report Custom Handler'
 
     def _custom_options_initializer(self, report, options, previous_options=None):
-        super()._custom_options_initializer(report, options, previous_options=previous_options)
         options['columns'] = [column for column in options['columns']]
         options.setdefault('buttons', []).extend((
             {'name': _('DIOT (txt)'), 'sequence': 40, 'action': 'export_file', 'action_param': 'action_get_diot_txt', 'file_export_type': _('DIOT')},

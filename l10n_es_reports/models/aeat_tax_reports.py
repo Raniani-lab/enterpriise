@@ -1,15 +1,13 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import fields, models, api, _
+from odoo import fields, models, _
 from odoo.exceptions import UserError
 import odoo.release
 from odoo.tools.float_utils import float_split_str
 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
-import ast
-import json
 import re
 import unicodedata
 
@@ -108,17 +106,13 @@ class AccountReport(models.Model):
 
 class SpanishTaxReportCustomHandler(models.AbstractModel):
     _name = 'l10n_es.tax.report.handler'
-    _inherit = 'account.generic.tax.report.handler'
+    _inherit = 'account.tax.report.handler'
     _description = 'Spanish Tax Report Custom Handler'
 
     def _append_boe_button(self, options, boe_number):
         options.setdefault('buttons', []).append(
             {'name': _('BOE'), 'sequence': 0, 'action': 'open_boe_wizard', 'action_param': boe_number, 'file_export_type': _('BOE')},
         )
-
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
-        # Overridden to prevent having unnecessary lines from the generic tax report.
-        return []
 
     def open_boe_wizard(self, options, boe_number):
         """ Triggers the generation of the BOE file for the current mod report.

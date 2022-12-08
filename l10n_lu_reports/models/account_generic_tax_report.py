@@ -9,7 +9,7 @@ from odoo.exceptions import UserError
 
 class LuxembourgishTaxReportCustomHandler(models.AbstractModel):
     _name = 'l10n_lu.tax.report.handler'
-    _inherit = 'account.generic.tax.report.handler'
+    _inherit = 'account.tax.report.handler'
     _description = 'Luxembourgish Tax Report Custom Handler'
 
     def _custom_options_initializer(self, report, options, previous_options=None):
@@ -17,10 +17,6 @@ class LuxembourgishTaxReportCustomHandler(models.AbstractModel):
         options.setdefault('buttons', []).append(
             {'name': _('XML'), 'sequence': 30, 'action': 'open_report_export_wizard', 'file_export_type': _('XML')}
         )
-
-    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
-        # Overridden to prevent having unnecessary lines from the generic tax report.
-        return []
 
     def get_tax_electronic_report_values(self, options):
         report = self.env['account.report'].browse(options['report_id'])

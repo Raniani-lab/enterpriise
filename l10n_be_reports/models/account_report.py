@@ -86,7 +86,7 @@ def _get_xml_export_representative_node(report):
 
 class BelgianTaxReportCustomHandler(models.AbstractModel):
     _name = 'l10n_be.tax.report.handler'
-    _inherit = 'account.generic.tax.report.handler'
+    _inherit = 'account.tax.report.handler'
     _description = 'Belgian Tax Report Custom Handler'
 
     def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):

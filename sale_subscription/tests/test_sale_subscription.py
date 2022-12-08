@@ -1209,7 +1209,7 @@ class TestSubscription(TestSubscriptionCommon):
         order_log_ids = sub.order_log_ids.sorted('event_date')
         sub_data = [(log.event_type, log.event_date, log.category, log.amount_signed, log.recurring_monthly) for log in order_log_ids]
         self.assertEqual(sub_data, [('0_creation', datetime.date(2021, 1, 1), 'progress', 21, 21),
-                                    ('3_transfer', datetime.date(2021, 5, 5), 'closed', 0.0, -21.0)])
+                                    ('3_transfer', datetime.date(2021, 5, 5), 'closed', -21, 0)])
         renew_logs = renewal_so.order_log_ids.sorted('event_date')
         renew_data = [(log.event_type, log.event_date, log.category, log.amount_signed, log.recurring_monthly) for log in renew_logs]
 

@@ -539,8 +539,8 @@ class SaleOrder(models.Model):
                 return
             values.update({
                 'event_type': event_type,
-                'amount_signed': recurring_monthly,
-                'recurring_monthly': amount_signed
+                'amount_signed': amount_signed,
+                'recurring_monthly': recurring_monthly
             })
             # prevent duplicate logs
             if not self.order_log_ids.filtered(

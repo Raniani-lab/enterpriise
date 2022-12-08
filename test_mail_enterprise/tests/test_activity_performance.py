@@ -198,7 +198,7 @@ class TestActivityPerformance(BaseMailPerformance):
         ])
         self.env.flush_all()
 
-        with self.assertQueryCount(employee=100):
+        with self.assertQueryCount(employee=80):
             activities.action_feedback(
                 feedback='Intense feedback',
                 attachment_ids=attachments.ids,
@@ -241,7 +241,7 @@ class TestActivityPerformance(BaseMailPerformance):
         ])
         self.env.flush_all()
 
-        with self.assertQueryCount(employee=110):
+        with self.assertQueryCount(employee=90):
             activities.action_feedback(
                 feedback='Intense feedback',
                 attachment_ids=attachments.ids,

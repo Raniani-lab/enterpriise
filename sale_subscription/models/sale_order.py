@@ -181,8 +181,6 @@ class SaleOrder(models.Model):
         not_star_subscriptions.write({'starred_user_ids': [(4, self.env.uid)]})
         starred_subscriptions.write({'starred_user_ids': [(3, self.env.uid)]})
 
-    @api.depends(
-        'order_line.recurring_monthly', 'stage_category', 'state', 'is_subscription', 'next_invoice_date')
     @api.depends('stage_category', 'state', 'is_subscription', 'amount_untaxed')
     def _compute_recurring_monthly(self):
         """ Compute the amount monthly recurring revenue. When a subscription has a parent still ongoing.

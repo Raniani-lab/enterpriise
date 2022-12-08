@@ -340,7 +340,7 @@ class TestSubscription(TestSubscriptionCommon):
                 'currency_id': self.subscription.currency_id.id,
                 'amount': self.subscription.amount_total,
             })._create_payments()
-        self.assertEqual(self.subscription.invoice_ids.payment_state, 'in_payment')
+        self.assertTrue(self.subscription.invoice_ids.payment_state in ['in_payment', 'paid'], "the invoice is considered paid, depending on the settings.")
 
         with freeze_time("2021-12-18"):
             subscription_alert.automation_id._check(automatic=False) # manually trigger the actions

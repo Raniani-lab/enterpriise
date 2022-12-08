@@ -55,7 +55,14 @@ class ResPartner(models.Model):
         groups='account.group_account_readonly,account.group_account_invoice',
     )
     followup_reminder_type = fields.Selection([('automatic', 'Automatic'), ('manual', 'Manual')], string="Reminders", default='automatic')
-    type = fields.Selection(selection_add=[('followup', 'Follow-up Address')])
+    type = fields.Selection(
+        selection_add=[('followup', 'Follow-up Address'), ('other',)],
+        help="- Contact: Use this to organize the contact details of employees of a given company (e.g. CEO, CFO, ...).\n"
+             "- Invoice Address : Preferred address for all invoices. Selected by default when you invoice an order that belongs to this company.\n"
+             "- Delivery Address : Preferred address for all deliveries. Selected by default when you deliver an order that belongs to this company.\n"
+             "- Private: Private addresses are only visible by authorized users and contain sensitive data (employee home addresses, ...).\n"
+             "- Follow-up Address: Preferred address for follow-up reports. Selected by default when you send reminders about overdue invoices.\n"
+             "- Other: Other address for the company (e.g. subsidiary, ...)")
     followup_responsible_id = fields.Many2one(
         comodel_name='res.users',
         string='Responsible',

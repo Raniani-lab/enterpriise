@@ -213,7 +213,7 @@ class AccountEdiFormat(models.Model):
                                           invoice.company_id.l10n_co_edi_header_resolucion_aplicable or '',
                                           invoice.company_id.l10n_co_edi_header_actividad_economica or ''),
                 '2.-%s' % (invoice.company_id.l10n_co_edi_header_bank_information or '').replace('\n', '|'),
-                ('3.- %s' % (narration or 'N/A'))[:500],
+                ('3.- %s' % (narration or 'N/A'))[:5000],
                 '6.- %s|%s' % (html2plaintext(invoice.invoice_payment_term_id.note), amount_in_words),
                 '7.- %s' % (invoice.company_id.website),
                 '8.-%s|%s|%s' % (invoice.partner_id.commercial_partner_id._get_vat_without_verification_code() or '', invoice.partner_shipping_id.phone or '', invoice.invoice_origin and invoice.invoice_origin.split(',')[0] or ''),

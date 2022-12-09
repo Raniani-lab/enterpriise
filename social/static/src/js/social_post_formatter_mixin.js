@@ -31,8 +31,8 @@ export const SocialPostFormatterMixin = Object.assign({}, SocialPostFormatterReg
     },
 
     _getMediaType() {
-        return this.props && this.props.mediaType || 
-            this.record && this.record.media_type.raw_value ||
+        return this.props && this.props.mediaType ||
+            this.props.record && this.props.record.data.media_type ||
             this.originalPost && this.originalPost.media_type.raw_value || '';
     }
 

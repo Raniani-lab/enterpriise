@@ -5,21 +5,25 @@ import { StreamPostCommentsYoutube } from './stream_post_comments';
 
 import { patch } from '@web/core/utils/patch';
 
+const { useEffect } = owl;
+
 patch(StreamPostKanbanRecord.prototype, 'social_youtube.StreamPostKanbanRecord', {
 
-    /**
-     * FIXME: this is temporary, waiting for these implemention details to be removed from the arch.
-     *
-     * @override
-     */
-    get renderingContext() {
-        return {
-            ...this._super(),
-            _onYoutubeCommentsClick: () => this._onYoutubeCommentsClick(),
-        };
+    setup() {
+        this._super(...arguments);
+        useEffect((commentEl) => {
+            if (commentEl) {
+                const onYoutubeCommentsClick = this._onYoutubeCommentsClick.bind(this);
+                commentEl.addEventListener('click', onYoutubeCommentsClick);
+                return () => {
+                    commentEl.removeEventListener('click', onYoutubeCommentsClick);
+                };
+            }
+        }, () => [this.rootRef.el.querySelector('.o_social_youtube_comments')]);
     },
 
-    _onYoutubeCommentsClick() {
+    _onYoutubeCommentsClick(ev) {
+        ev.stopPropagation();
         const postId = this.record.id.raw_value;
         this.rpc('/social_youtube/get_comments', {
             stream_post_id: postId,

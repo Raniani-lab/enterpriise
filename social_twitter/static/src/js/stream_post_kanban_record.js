@@ -8,29 +8,54 @@ import { patch } from '@web/core/utils/patch';
 import { sprintf } from '@web/core/utils/strings';
 import { useService } from '@web/core/utils/hooks';
 
+const { useEffect } = owl;
+
 patch(StreamPostKanbanRecord.prototype, 'social_twitter.StreamPostKanbanRecord', {
 
     setup() {
         this._super(...arguments);
         this.notification = useService('notification');
+
+        useEffect((commentEl) => {
+            if (commentEl) {
+                const onTwitterCommentsClick = this._onTwitterCommentsClick.bind(this);
+                commentEl.addEventListener('click', onTwitterCommentsClick);
+                return () => {
+                    commentEl.removeEventListener('click', onTwitterCommentsClick);
+                };
+            }
+        }, () => [this.rootRef.el.querySelector('.o_social_twitter_comments')]);
+        useEffect((likeEl) => {
+            if (likeEl) {
+                const onTwitterTweetLike = this._onTwitterTweetLike.bind(this);
+                likeEl.addEventListener('click', onTwitterTweetLike);
+                return () => {
+                    likeEl.removeEventListener('click', onTwitterTweetLike);
+                };
+            }
+        }, () => [this.rootRef.el.querySelector('.o_social_twitter_likes')]);
+        useEffect((retweetEl) => {
+            if (retweetEl) {
+                const onTwitterRetweet = this._onTwitterRetweet.bind(this);
+                retweetEl.addEventListener('click', onTwitterRetweet);
+                return () => {
+                    retweetEl.removeEventListener('click', onTwitterRetweet);
+                };
+            }
+        }, () => [this.rootRef.el.querySelector('.o_social_twitter_retweet')]);
+        useEffect((quoteEl) => {
+            if (quoteEl) {
+                const onTwitterQuote = this._onTwitterQuote.bind(this);
+                quoteEl.addEventListener('click', onTwitterQuote);
+                return () => {
+                    quoteEl.removeEventListener('click', onTwitterQuote);
+                };
+            }
+        }, () => [this.rootRef.el.querySelector('.o_social_twitter_quote')]);
     },
 
-    /**
-     * FIXME: this is temporary, waiting for these implemention details to be removed from the arch.
-     *
-     * @override
-     */
-    get renderingContext() {
-        return {
-            ...this._super(),
-            _onTwitterCommentsClick: () => this._onTwitterCommentsClick(),
-            _onTwitterTweetLike: () => this._onTwitterTweetLike(),
-            _onTwitterRetweet: (ev) => this._onTwitterRetweet(ev),
-            _onTwitterQuote: () => this._onTwitterQuote(),
-        };
-    },
-
-    _onTwitterCommentsClick() {
+    _onTwitterCommentsClick(ev) {
+        ev.stopPropagation();
         const postId = this.record.id.raw_value;
 
         this.rpc('/social_twitter/get_comments', {

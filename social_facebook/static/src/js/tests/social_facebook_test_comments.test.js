@@ -79,23 +79,18 @@ return '<kanban class="o_social_stream_post_kanban"' +
 '				class="o_social_stream_post_message_body px-2 pb-2 mb-2 border-bottom}">' +
 '' +
 '				<div class="o_social_stream_post_message_text overflow-hidden mb-2">' +
-'                   <t t-if="record.message.raw_value">' +
-'		    			<div t-if="formatPost" t-out="formatPost(record.message.value)"/>' +
-'                       <div t-else="" t-out="record.message.value"/>' +
-'                   </t>' +
+'					<field name="message" widget="social_post_formatter"/>' +
 '				</div>' +
 '			</div>' +
 '           <div class="o_social_stream_post_facebook_stats px-2 d-flex justify-content-around"' +
 '           	t-if="record.media_type.raw_value === \'facebook\'">' +
-'           	<div t-attf-class="o_social_facebook_likes o_social_subtle_btn ps-2 pe-3 #{record.facebook_user_likes.raw_value ? \'o_social_facebook_user_likes\' : \'\'}"' +
-'            		t-on-click.stop="_onFacebookPostLike">' +
+'           	<div t-attf-class="o_social_facebook_likes o_social_subtle_btn ps-2 pe-3 #{record.facebook_user_likes.raw_value ? \'o_social_facebook_user_likes\' : \'\'}">' +
 '            		<t t-if="record.facebook_likes_count.raw_value !== 0">' +
 '            			<i class="fa fa-thumbs-up me-1" title="Likes"/>' +
 '            			<field name="facebook_likes_count" class="fw-bold"/>' +
 '            		</t>' +
 '            	</div>' +
-'            	<div class="o_social_facebook_comments o_social_comments o_social_subtle_btn px-3"' +
-'            		 t-on-click.stop="_onFacebookCommentsClick">' +
+'            	<div class="o_social_facebook_comments o_social_comments o_social_subtle_btn px-3">' +
 '            		<i class="fa fa-comments me-1" title="Comments"/>' +
 '            		<b t-esc="record.facebook_comments_count.value !== \'0\' ? record.facebook_comments_count.value : \'\'"/>' +
 '            	</div>' +

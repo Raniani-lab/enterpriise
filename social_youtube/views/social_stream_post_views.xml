@@ -36,7 +36,7 @@
                             class="w-100 py-2 o_social_youtube_thumbnail"/>
                     </a>
                     <div class="px-2">
-                        <field name="message"/>
+                        <span t-out="record.message.value"/>
                     </div>
                 </div>
 
@@ -49,8 +49,7 @@
                                 %
                             </b>
                         </div>
-                        <div class="o_social_youtube_comments o_social_comments o_social_subtle_btn ps-3"
-                             t-on-click.prevent="_onYoutubeCommentsClick">
+                        <div class="o_social_youtube_comments o_social_comments o_social_subtle_btn ps-3">
                             <i class="fa fa-comments me-1" title="Comments"/>
                             <b t-esc="record.youtube_comments_count.value"/>
                         </div>

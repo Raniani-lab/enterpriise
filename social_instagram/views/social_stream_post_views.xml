@@ -21,8 +21,7 @@
                         <i class="fa fa-heart me-1" title="Likes"/>
                         <field name="instagram_likes_count" class="fw-bold"/>
                     </div>
-                    <div t-attf-class="o_social_instagram_comments o_social_comments o_social_subtle_btn px-3"
-                         t-on-click.prevent="_onInstagramCommentsClick">
+                    <div t-attf-class="o_social_instagram_comments o_social_comments o_social_subtle_btn px-3">
                         <i class="fa fa-comments me-1" title="Comments"/>
                         <b t-esc="record.instagram_comments_count.value !== '0' ? record.instagram_comments_count.value : ''"/>
                     </div>

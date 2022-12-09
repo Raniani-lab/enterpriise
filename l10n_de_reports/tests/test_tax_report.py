@@ -19,6 +19,8 @@ class GermanTaxReportTest(AccountSalesReportCommon):
         res['company'].update({
             'country_id': cls.env.ref('base.de').id,
             'vat': 'DE123456788',
+            'l10n_de_stnr': '151/815/08156',
+            'state_id': cls.env.ref('base.state_de_th')
         })
         res['company'].partner_id.update({
             'email': 'jsmith@mail.com',
@@ -72,7 +74,7 @@ class GermanTaxReportTest(AccountSalesReportCommon):
                 <Umsatzsteuervoranmeldung>
                     <Jahr>2019</Jahr>
                     <Zeitraum>11</Zeitraum>
-                    <Steuernummer />
+                    <Steuernummer>4151081508156</Steuernummer>
                     <Kz09>0.00</Kz09>
                     <Kz81>28</Kz81>
                     <Kz89>14</Kz89>

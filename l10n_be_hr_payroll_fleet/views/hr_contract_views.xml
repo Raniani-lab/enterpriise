@@ -39,6 +39,9 @@
             <xpath expr="//div[@name='fuel_card_div']" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', ('wage_type', '=', 'hourly'), ('transport_mode_car', '=', False), ('new_car', '=', False)]}</attribute>
             </xpath>
+            <xpath expr="//div[@name='fuel_card_div']" position="inside">
+                <span attrs="{'invisible': [('fuel_type', '=', False)]}">(Fuel Type: <field name="fuel_type" class="oe_inline" readonly="1"/>)</span>
+            </xpath>
             <field name="car_atn" position="attributes">
                 <attribute name="attrs">{'invisible': [('transport_mode_car', '=', False), ('new_car', '=', False)]}</attribute>
             </field>

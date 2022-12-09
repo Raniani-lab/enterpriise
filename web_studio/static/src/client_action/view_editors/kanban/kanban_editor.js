@@ -18,7 +18,7 @@ class OneRecordModel extends kanbanView.Model {
         }
         if (!hasRecords) {
             if (isGrouped) {
-                const group = this.createDataPoint("group", {
+                const params = {
                     ...list.commonGroupParams,
                     isFolded: false,
                     count: 0,
@@ -28,7 +28,11 @@ class OneRecordModel extends kanbanView.Model {
                     groupByField: list.groupByField,
                     groupDomain: [],
                     rawContext: list.rawContext,
-                });
+                };
+                if (["date", "datetime"].includes(list.groupByField.type)) {
+                    params.range = {};
+                }
+                const group = this.createDataPoint("group", params);
                 list.groups.push(group);
 
                 list = group.list;

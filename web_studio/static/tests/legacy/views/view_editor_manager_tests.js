@@ -3180,6 +3180,26 @@ QUnit.module('ViewEditorManager', {
 
     });
 
+    QUnit.test('kanban editor, grouped on date field, no record', async function (assert) {
+        this.data.coucou.fields.date = { name: 'date', type: 'date', string: "Date" };
+        this.data.coucou.records = [];
+
+        const vem = await studioTestUtils.createViewEditorManager({
+            model: 'coucou',
+            arch: `
+                <kanban default_group_by='date'>
+                    <templates>
+                        <t t-name='kanban-box'>
+                            <div>field name='display_name'/></div>
+                        </t>
+                    </templates>
+                </kanban>`,
+        });
+
+        assert.hasClass(vem.$('.o_web_studio_kanban_view_editor'), 'o_kanban_grouped');
+        assert.containsOnce(vem, ".o_kanban_record:not(.o_kanban_demo)");
+    });
+
     QUnit.test('Remove a drop-down menu using kanban editor', async function (assert) {
         assert.expect(5);
         var arch =

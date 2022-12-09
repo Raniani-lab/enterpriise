@@ -1,5 +1,10 @@
-from odoo import models, fields, _
+from odoo import api, models, _
+from odoo.exceptions import RedirectWarning
 from odoo.tools import float_repr
+
+import stdnum.de.stnr
+import stdnum.exceptions
+
 from lxml import etree
 from datetime import date, datetime
 
@@ -25,7 +30,31 @@ class GermanTaxReportCustomHandler(models.AbstractModel):
             }
         )
 
+    @api.model
+    def _redirect_to_misconfigured_company_number(self, message):
+        """ Raises a RedirectWarning informing the user his company is missing configuration, redirecting him to the
+         tree view of res.company
+        """
+        action = self.env.ref('base.action_res_company_form')
+
+        raise RedirectWarning(
+            message,
+            action.id,
+            _("Configure your company"),
+        )
+
     def export_tax_report_to_xml(self, options):
+
+        if self.env.company.l10n_de_stnr:
+            try:
+                steuer_nummer = stdnum.de.stnr.to_country_number(self.env.company.l10n_de_stnr, self.env.company.state_id.with_context(lang='de_DE').name)
+            except stdnum.exceptions.InvalidComponent:
+                self._redirect_to_misconfigured_company_number(_("Your company's SteuerNummer is not compatible with your state"))
+            except stdnum.exceptions.InvalidFormat:
+                self._redirect_to_misconfigured_company_number(_("Your company's SteuerNummer is not valid"))
+        else:
+            self._redirect_to_misconfigured_company_number(_("Your company's SteuerNummer field should be filled"))
+
         report = self.env['account.report'].browse(options['report_id'])
         template_context = {}
         options = report._get_options(options)
@@ -48,6 +77,9 @@ class GermanTaxReportCustomHandler(models.AbstractModel):
         tree = etree.fromstring(doc, parser)
 
         taxes = tree.xpath('//Umsatzsteuervoranmeldung')[0]
+        tax_number = tree.xpath('//Umsatzsteuervoranmeldung/Steuernummer')[0]
+        tax_number.text = steuer_nummer
+
         # Add the values dynamically. We do it here because the tag is generated from the code and
         # Qweb doesn't allow dynamically generated tags.
         elem = etree.SubElement(taxes, "Kz09")

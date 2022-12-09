@@ -18,6 +18,16 @@
                 <field name="template_tags"/>
                 <progressbar field="activity_state" colors='{"planned": "success", "overdue": "danger", "today": "warning"}'/>
                 <templates>
+                    <div t-name="kanban-menu">
+                        <a role="menuitem" type="object" name="get_formview_action" class="dropdown-item">Details</a>
+                        <a role="menuitem" type="object" name="open_template" class="dropdown-item">Template</a>
+                        <a role="menuitem" type="object" name="toggle_active" class="dropdown-item" states="sent,signed,refused,canceled">
+                            <t t-if="!record.active.raw_value">Restore</t>
+                            <t t-if="record.active.raw_value">Archive</t>
+                        </a>
+                        <a role="menuitem" type="delete" states="shared" class="dropdown-item">Stop Sharing</a>
+                        <ul class="oe_kanban_colorpicker" data-field="color"/>
+                    </div>
                     <div t-name="kanban-box" t-attf-class="o_sign_sticky_bottom oe_kanban_global_click {{!selection_mode ? kanban_color(record.color.raw_value) : ''}}">
                         <div class="oe_kanban_main">
                             <div class="o_kanban_record_top">
@@ -32,21 +42,6 @@
                                                class="fa fa-lg fa-star favorite_sign_button_enabled favorite_sign_button"/>
                                         </t>
                                         <span class="ps-4"><field name="reference"/></span>
-                                    </div>
-                                </div>
-                                <div class="o_dropdown_kanban dropdown">
-                                    <a role="button" class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
-                                        <span class="fa fa-ellipsis-v"/>
-                                    </a>
-                                    <div class="dropdown-menu" role="menu">
-                                        <a role="menuitem" type="object" name="get_formview_action" class="dropdown-item">Details</a>
-                                        <a role="menuitem" type="object" name="open_template" class="dropdown-item">Template</a>
-                                        <a role="menuitem" type="object" name="toggle_active" class="dropdown-item" states="sent,signed,refused,canceled">
-                                            <t t-if="!record.active.raw_value">Restore</t>
-                                            <t t-if="record.active.raw_value">Archive</t>
-                                        </a>
-                                        <a role="menuitem" type="delete" states="shared" class="dropdown-item">Stop Sharing</a>
-                                        <ul class="oe_kanban_colorpicker" data-field="color"/>
                                     </div>
                                 </div>
                             </div>

@@ -140,6 +140,14 @@
                 <field name="nb_ecos"/>
                 <field name="color"/>
                 <templates>
+                    <t t-name="kanban-menu">
+                        <div t-if="widget.editable" role="menuitem">
+                            <a class="dropdown-item ps-0" type="edit">Configuration</a>
+                        </div>
+                        <div t-if="widget.editable" role="menuitem" aria-haspopup="true" class="o_no_padding_kanban_colorpicker">
+                            <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
+                        </div>
+                    </t>
                     <t t-name="kanban-box">
                         <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''}">
                             <span class="oe_kanban_color_help" t-attf-title="In #{kanban_getcolorname(record.color.raw_value)}" role="img" t-attf-aria-label="In #{kanban_getcolorname(record.color.raw_value)}"/>
@@ -194,15 +202,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
-                                <div t-if="widget.editable" role="menuitem">
-                                    <a class="dropdown-item ps-0" type="edit">Configuration</a>
-                                </div>
-                                <div t-if="widget.editable" role="menuitem" aria-haspopup="true" class="o_no_padding_kanban_colorpicker">
-                                    <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
-                                </div>
-                            </div>
-                            <a class="o_kanban_manage_toggle_button o_left" href="#"><i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/></a>
                         </div>
                     </t>
                 </templates>
@@ -332,20 +331,15 @@
                 <field name="legend_done"/>
                 <progressbar field="kanban_state" colors='{"done": "success", "blocked": "danger"}'/>
                 <templates>
+                    <t t-name="kanban-menu" groups="base.group_user">
+                        <t t-if="widget.editable"><a type="set_cover" class="dropdown-item" role="menuitem" data-field="displayed_image_attachment_id">Set Cover Image</a></t>
+                        <t t-if="widget.editable"><a type="edit" class="dropdown-item" role="menuitem">Edit Task</a></t>
+                        <t t-if="widget.deletable"><a type="delete" class="dropdown-item" role="menuitem">Delete</a></t>
+                        <ul class="oe_kanban_colorpicker" data-field="color"/>
+                    </t>
                     <t t-name="kanban-box">
                          <div t-attf-class="{{!selection_mode ? 'oe_kanban_color_' + kanban_getcolor(record.color.raw_value) : ''}} oe_kanban_card oe_kanban_global_click">
                             <span class="oe_kanban_color_help" t-attf-title="In #{kanban_getcolorname(record.color.raw_value)}" role="img" t-attf-aria-label="In #{kanban_getcolorname(record.color.raw_value)}"/>
-                            <div class="o_dropdown_kanban dropdown" groups="base.group_user">
-                                <a role="button" class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
-                                    <span class="fa fa-ellipsis-v"/>
-                                </a>
-                                <div class="dropdown-menu" role="menu">
-                                    <t t-if="widget.editable"><a type="set_cover" class="dropdown-item" role="menuitem" data-field="displayed_image_attachment_id">Set Cover Image</a></t>
-                                    <t t-if="widget.editable"><a type="edit" class="dropdown-item" role="menuitem">Edit Task</a></t>
-                                    <t t-if="widget.deletable"><a type="delete" class="dropdown-item" role="menuitem">Delete</a></t>
-                                    <ul class="oe_kanban_colorpicker" data-field="color"/>
-                                </div>
-                            </div>
                             <div class="oe_kanban_content">
                                 <div class="o_kanban_record_title">
                                     <field name="name"/>

@@ -18,16 +18,11 @@
             <field name="fsm_partner_price"/>
             <field name="fsm_partner_price_currency_id"/>
             <templates>
+                <t t-name="kanban-menu">
+                    <a class="dropdown-item" role="menuitem" type="edit" groups="sales_team.group_sale_manager">Edit</a>
+                </t>
                 <t t-name="kanban-box">
                     <div class="o_fsm_industry_product d-flex flex-column justify-content-between" style="min-height: 100px">
-                        <div class="o_dropdown_kanban dropdown" t-if="!selection_mode">
-                        <a role="button" class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" data-bs-display="static" href="#" aria-label="Dropdown menu" title="Dropdown menu">
-                            <span class="fa fa-ellipsis-v"/>
-                        </a>
-                        <div class="dropdown-menu" role="menu">
-                            <a class="dropdown-item" role="menuitem" type="edit" groups="sales_team.group_sale_manager">Edit</a>
-                        </div>
-                    </div>
                         <div class="d-flex">
                             <div class="o_kanban_image">
                             <img t-att-src="kanban_image('product.product', 'image_128', record.id.raw_value)" alt="Product" class="o_image_64_contain"/>

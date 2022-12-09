@@ -1096,19 +1096,14 @@ Are you sure you want to remove the selection values of those records?""") % len
 
         # add the dropdown before the rest
         dropdown_node = etree.fromstring("""
-            <div class="o_dropdown_kanban dropdown" name="kanban_dropdown">
-                <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu" role="button">
-                    <span class="fa fa-ellipsis-v"/>
-                </a>
-                <div class="dropdown-menu" role="menu">
-                    <t t-if="widget.editable"><a type="edit" class="dropdown-item">Edit</a></t>
-                    <t t-if="widget.deletable"><a type="delete" class="dropdown-item">Delete</a></t>
-                    <ul class="oe_kanban_colorpicker" data-field="%(field)s"/>
-                </div>
-            </div>
+            <t t-name="kanban-menu">
+                <t t-if="widget.editable"><a type="edit" class="dropdown-item">Edit</a></t>
+                <t t-if="widget.deletable"><a type="delete" class="dropdown-item">Delete</a></t>
+                <ul class="oe_kanban_colorpicker" data-field="%(field)s"/>
+            </t>
         """ % {'field': color_field_name})
         etree.SubElement(arch, 'xpath', {
-            'expr': '//div/*[1]',
+            'expr': '//t[@t-name="kanban-box"]',
             'position': 'before',
         }).append(dropdown_node)
 
@@ -1222,8 +1217,8 @@ Are you sure you want to remove the selection values of those records?""") % len
 
         # add link inside the dropdown
         etree.SubElement(arch, 'xpath', {
-            'expr': '//div[hasclass("dropdown-menu")]//a',
-            'position': 'before',
+            'expr': '//t[@t-name="kanban-menu"]',
+            'position': 'inside',
         }).append(
             etree.fromstring("""
                 <a data-type="set_cover" href="#" data-field="%s" class="dropdown-item oe_kanban_action oe_kanban_action_a" >

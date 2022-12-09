@@ -525,6 +525,11 @@
         <div t-if="widget.state.node.tag === 'group'" class="o_web_studio_sidebar_content o_display_group">
             <t t-call="web_studio.ViewEditorSidebar.group"/>
         </div>
+        <t t-if="widget.state.node.tag === 't' and widget.state.node.attrs['t-name'] === 'kanban-menu'">
+            <div class="o_web_studio_sidebar_content o_display_div">
+                <t t-call="web_studio.ViewEditorSidebar.div"/>
+            </div>
+        </t>
         <t t-if="widget.state.node.tag === 'div'">
             <t t-if="widget.state.node.attrs.class === 'oe_chatter'">
                 <div class="o_web_studio_sidebar_content o_display_chatter">

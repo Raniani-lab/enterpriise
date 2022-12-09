@@ -69,18 +69,13 @@
                 <field name="description"/>
                 <field name="progression"/>
                 <templates>
+                    <t t-name="kanban-menu">
+                        <t t-if="widget.deletable"><a type="delete" class="dropdown-item" role="menuitem">Delete</a></t>
+                    </t>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_card oe_kanban_global_click oe_kanban_content">
                             <div class="ribbon ribbon-top-right" attrs="{'invisible': [('progression', '!=', '100')]}">
                                 <span class="bg-success">Done</span>
-                            </div>
-                            <div class="o_dropdown_kanban dropdown" groups="base.group_user">
-                                <a class="dropdown-toggle o-no-caret btn" role="button" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
-                                    <span class="fa fa-ellipsis-v"/>
-                                </a>
-                                <div class="dropdown-menu" role="menu">
-                                    <t t-if="widget.deletable"><a type="delete" class="dropdown-item" role="menuitem">Delete</a></t>
-                                </div>
                             </div>
                             <div class="o_kanban_record_top mb-0">
                                 <div class="o_kanban_record_top_left">

@@ -1172,6 +1172,9 @@ export const ViewEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
         if (elementName === 'div' && this.state.node.attrs.class === 'oe_chatter') {
             elementName = 'chatter';
         }
+        if (elementName === 't' && this.state.node.attrs["t-name"] === "kanban-menu") {
+            elementName = 'dropdown';
+        }
         var message = _.str.sprintf(_t('Are you sure you want to remove this %s from the view?'), elementName);
 
         Dialog.confirm(this, message, {

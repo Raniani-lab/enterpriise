@@ -233,24 +233,18 @@
                 <field name="activity_ids"/>
                 <field name="category_id" readonly="1"/>
                 <templates>
+                    <t t-name="kanban-menu">
+                        <a t-if="widget.editable" role="menuitem" type="edit" class="dropdown-item">Edit Request</a>
+                        <a t-if="widget.deletable" role="menuitem" type="delete" class="dropdown-item">Delete</a>
+                        <a name="action_approve" type="object" attrs="{'invisible':[('user_status','!=','pending')]}"
+                            role="menuitem" class="dropdown-item">Approve</a>
+                        <a name="action_refuse" type="object" attrs="{'invisible':[('user_status','!=','pending')]}"
+                            role="menuitem" class="dropdown-item">Refuse</a>
+                        <a name="action_withdraw" type="object" attrs="{'invisible':['|',('request_status','=','new'),('user_status','in',['waiting', 'pending','cancel'])]}"
+                            role="menuitem" class="dropdown-item">Withdraw</a>
+                    </t>
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click container">
-                            <div class="o_dropdown_kanban dropdown" t-if="!selection_mode">
-
-                                <a class="dropdown-toggle o-no-caret btn" role="button" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
-                                    <span class="fa fa-ellipsis-v"/>
-                                </a>
-                                <div class="dropdown-menu" role="menu">
-                                    <a t-if="widget.editable" role="menuitem" type="edit" class="dropdown-item">Edit Request</a>
-                                    <a t-if="widget.deletable" role="menuitem" type="delete" class="dropdown-item">Delete</a>
-                                    <a name="action_approve" type="object" attrs="{'invisible':[('user_status','!=','pending')]}"
-                                        role="menuitem" class="dropdown-item">Approve</a>
-                                    <a name="action_refuse" type="object" attrs="{'invisible':[('user_status','!=','pending')]}"
-                                        role="menuitem" class="dropdown-item">Refuse</a>
-                                    <a name="action_withdraw" type="object" attrs="{'invisible':['|',('request_status','=','new'),('user_status','in',['waiting', 'pending','cancel'])]}"
-                                        role="menuitem" class="dropdown-item">Withdraw</a>
-                                </div>
-                            </div>
                             <div class="oe_kanban_content">
                                 <t t-if="record.user_status.raw_value == 'pending'">
                                     <span class="badge rounded-pill float-end text-bg-warning mt4 mr16"><t t-esc="record.user_status.value"/></span>

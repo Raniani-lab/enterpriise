@@ -14,7 +14,10 @@ import {
     hookPositionTolerance,
     getHooks,
 } from "@web_studio/client_action/view_editors/utils";
-import { nodeStudioXpathSymbol } from "@web_studio/client_action/view_editors/xml_utils";
+import {
+    computeXpath,
+    nodeStudioXpathSymbol,
+} from "@web_studio/client_action/view_editors/xml_utils";
 import { closest, touching } from "@web/core/utils/ui";
 import { useService } from "@web/core/utils/hooks";
 import { AlertDialog, ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
@@ -79,6 +82,14 @@ SafeKanbanRecord.template = "web_studio.SafeKanbanRecord";
 class _KanbanEditorRecord extends KanbanRecord {
     setup() {
         super.setup();
+        if (this.constructor.KANBAN_MENU_ATTRIBUTE in this.props.templates) {
+            const compiledTemplateMenu =
+                this.props.templates[this.constructor.KANBAN_MENU_ATTRIBUTE];
+            this.dropdownXpath = computeXpath(compiledTemplateMenu, "kanban");
+            this.dropdownHasCoverSetter = Boolean(
+                compiledTemplateMenu.querySelectorAll("a[data-type='set_cover']").length
+            );
+        }
         this.dialogService = useService("dialog");
         this.studioHasError = false;
         onError((error) => {
@@ -234,6 +245,7 @@ _KanbanEditorRecord.components = {
     StudioHook,
     ViewButton: ViewButtonStudio,
 };
+_KanbanEditorRecord.menuTemplate = "web_studio.SafeKanbanRecordMenu";
 _KanbanEditorRecord.template = "web_studio.SafeKanbanRecord";
 
 export class KanbanEditorRecord extends Component {

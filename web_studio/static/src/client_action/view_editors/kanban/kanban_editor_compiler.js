@@ -9,8 +9,6 @@ const interestingSelector = [
     "field",
     "widget",
     ".dropdown",
-    ".o_dropdown_kanban",
-    ".o_kanban_manage_button_section",
     "img.oe_kanban_avatar",
     ".o_kanban_record_body",
     ".o_kanban_record_bottom",
@@ -53,15 +51,15 @@ export class KanbanEditorCompiler extends KanbanCompiler {
                 this.addTagsWidgetHook(compiled);
             }
 
-            const dropdown = xml.querySelector(".dropdown, .o_dropdown_kanban");
-            if (!dropdown) {
-                this.addDropdownHook(compiled);
-            }
-
             const priorityWidget = xml.querySelector("field[widget='priority']");
             const favoriteWidget = xml.querySelector("field[widget='boolean_favorite']");
             if (!priorityWidget && !favoriteWidget) {
                 this.addPriorityHook(compiled);
+            }
+
+            const dropdown = this.templates["kanban-menu"];
+            if (!dropdown) {
+                this.addDropdownHook(compiled);
             }
 
             const avatarImg = xml.querySelector("img.oe_kanban_avatar");
@@ -69,11 +67,6 @@ export class KanbanEditorCompiler extends KanbanCompiler {
                 this.addAvatarHook(compiled);
             }
         }
-
-        compiled.querySelectorAll("a[data-type='set_cover']").forEach((el) => {
-            const dropdown = el.closest("Dropdown");
-            dropdown.setAttribute("hasCoverSetter", "true");
-        });
 
         compiled.querySelectorAll(".oe_kanban_avatar").forEach((el) => {
             const tIf = el.closest("[t-if]");
@@ -120,7 +113,7 @@ export class KanbanEditorCompiler extends KanbanCompiler {
 
     compileNode(node, params) {
         const nodeType = node.nodeType;
-        if (nodeType === 1 && (isComponentNode(node) || node.getAttribute('studio_no_fetch'))) {
+        if (nodeType === 1 && (isComponentNode(node) || node.getAttribute("studio_no_fetch"))) {
             return;
         }
 
@@ -223,11 +216,7 @@ export class KanbanEditorCompiler extends KanbanCompiler {
                 "t-on-click": "() => this.onAddDropdown()",
             }
         );
-        if (parentElement.firstChild) {
-            parentElement.insertBefore(dropdownHook, parentElement.firstChild);
-        } else {
-            parentElement.appendChild(dropdownHook);
-        }
+        parentElement.appendChild(dropdownHook);
     }
 
     addPriorityHook(compiled) {

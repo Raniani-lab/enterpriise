@@ -3189,39 +3189,33 @@ QUnit.module('ViewEditorManager', {
 
     QUnit.test('Remove a drop-down menu using kanban editor', async function (assert) {
         assert.expect(5);
-        var arch =
-            '<kanban>' +
-                '<templates>' +
-                    '<t t-name="kanban-box">' +
-                        '<div>' +
-                            '<div>' +
-                                '<field name="display_name"/>' +
-                            '</div>' +
-                            '<div class="o_dropdown_kanban dropdown">' +
-                                '<a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#">' +
-                                    '<span class="fa fa-bars fa-lg"/>' +
-                                '</a>' +
-                                '<div class="dropdown-menu" role="menu">' +
-                                    '<a type="edit" class="dropdown-item">Edit</a>'+
-                                '</div>' +
-                            '</div>' +
-                        '</div>' +
-                    '</t>' +
-                '</templates>' +
-            '</kanban>';
+        var arch = `
+            <kanban>
+                <templates>
+                    <t t-name="kanban-menu">
+                        <a type="edit" class="dropdown-item">Edit</a>
+                    </t>
+                    <t t-name="kanban-box">
+                        <div>
+                            <div>
+                                <field name="display_name"/>
+                            </div>
+                        </div>
+                    </t>
+                </templates>
+            </kanban>`;
         var vem = await studioTestUtils.createViewEditorManager({
             model: 'coucou',
             arch: arch,
             mockRPC: function (route, args) {
                 if (route === '/web_studio/edit_view') {
                     assert.strictEqual(args.operations[0].type, 'remove', 'Should have passed correct OP type');
-                    assert.strictEqual(args.operations[0].target.tag, 'div', 'Should have correct target tag');
+                    assert.strictEqual(args.operations[0].target.tag, 't', 'Should have correct target tag');
                     assert.deepEqual(args.operations[0].target.xpath_info, [
                         {tag: 'kanban', indice: 1},
                         {tag: 'templates', indice: 1},
                         {tag: 't', indice: 1},
-                        {tag: 'div', indice: 1},
-                        {tag: 'div', indice: 2}],
+                    ],
                         'Should have correct xpath_info as we do not have any tag identifier attribute on drop-down div'
                     );
                     return getCurrentMockServer()._mockReturnView(arch, "coucou");
@@ -3232,83 +3226,26 @@ QUnit.module('ViewEditorManager', {
         await testUtils.dom.click(vem.$('.o_dropdown_kanban'));
         // remove drop-down from sidebar
         await testUtils.dom.click(vem.$('.o_web_studio_sidebar .o_web_studio_remove'));
-        assert.strictEqual($('.modal-body:first').text(), "Are you sure you want to remove this div from the view?",
+        assert.strictEqual($('.modal-body:first').text(), "Are you sure you want to remove this dropdown from the view?",
             "should display the correct message");
         await testUtils.dom.click($('.modal .btn-primary'));
     });
 
-    QUnit.test("specific dropdown arch with distinct parts in a '<a />' tag", async (assert) => {
-        await studioTestUtils.createViewEditorManager({
-            model: 'coucou',
-            arch: `
-                <kanban>
-                    <templates>
-                        <t t-name="kanban-box" >
-                            <div>
-                                <div class="dropdown-menu o_kanban_card_manage_section">
-                                    <div role="menuitem">
-                                        <a class="dropdown-item" role="menuitem">View</a>
-                                    </div>
-                                </div>
-                                <a class="o_dropdown_kanban o_kanban_manage_toggle_button">
-                                    <i class="fa fa-ellipsis-v myCustomClass"/>
-                                </a>
-                            </div>
-                        </t>
-                    </templates>
-                </kanban>
-            `,
-        });
-
-        assert.containsOnce(target, ".o_kanban_record .dropdown");
-        await click(target.querySelector(".o_kanban_record .myCustomClass"));
-        assert.containsOnce(target, ".o_web_studio_properties.active");
-        assert.strictEqual(target.querySelector(".o_web_studio_sidebar_content").textContent.trim(), "");
-    });
-
-    QUnit.test("specific dropdown with o_kanban_card_manage_section only", async (assert) => {
-        await studioTestUtils.createViewEditorManager({
-            model: 'coucou',
-            arch: `
-                <kanban>
-                    <templates>
-                        <t t-name="kanban-box" >
-                            <div>
-                                <div class="o_kanban_manage_button_section">
-                                    <a class="o_dropdown_kanban" href="#"><i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/></a>
-                                </div>
-                            </div>
-                        </t>
-                    </templates>
-                </kanban>
-            `,
-        });
-
-        assert.containsOnce(target, ".o_kanban_record .dropdown");
-        await click(target.querySelector(".o_kanban_record .dropdown"));
-        assert.containsOnce(target, ".o_web_studio_properties.active");
-        assert.strictEqual(target.querySelector(".o_web_studio_sidebar_content").textContent.trim(), "");
-    });
-
     QUnit.test('kanban editor remove "Set Cover Image" from dropdown menu', async function (assert) {
         assert.expect(1);
-        var arch = "<kanban>" +
-                    "<templates>" +
-                        "<t t-name='kanban-box'>" +
-                            "<div class='o_kanban_record'>" +
-                                '<div class="o_dropdown_kanban dropdown">' +
-                                    '<a>' +
-                                        '<span class="fa fa-ellipsis-v"/>' +
-                                    '</a>' +
-                                    '<div class="dropdown-menu" role="menu">' +
-                                        '<a data-type="set_cover">Set Cover Image</a>' +
-                                    "</div>" +
-                                "</div>" +
-                                "<field name='displayed_image_id' widget='attachment_image'/>" +
-                            "</div>" +
-                        "</t>" +
-                    "</templates>" +
-                "</kanban>";
+        var arch = `
+                <kanban>
+                    <templates>
+                        <t t-name="kanban-menu">
+                            <a data-type="set_cover">Set Cover Image</a>
+                        </t>
+                        <t t-name='kanban-box'>
+                            <div class='o_kanban_record'>
+                                <field name='displayed_image_id' widget='attachment_image'/>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>`;
 
         var vem = await studioTestUtils.createViewEditorManager({
             model: 'partner',
@@ -3340,21 +3277,16 @@ QUnit.module('ViewEditorManager', {
 
     QUnit.test('kanban editor add "Set Cover Image" option in dropdown menu', async function (assert) {
         assert.expect(3);
-        var arch = "<kanban>" +
-                    "<templates>" +
-                        "<t t-name='kanban-box'>" +
-                            "<div class='o_kanban_record'>" +
-                                '<div class="o_dropdown_kanban dropdown">' +
-                                    '<a>' +
-                                        '<span class="fa fa-ellipsis-v"/>' +
-                                    '</a>' +
-                                    '<div class="dropdown-menu" role="menu">' +
-                                    "</div>" +
-                                "</div>" +
-                            "</div>" +
-                        "</t>" +
-                    "</templates>" +
-                "</kanban>";
+        var arch = `
+                <kanban>
+                    <templates>
+                        <t t-name='kanban-menu'/>
+                        <t t-name='kanban-box'>
+                            <div class='o_kanban_record'>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>`;
         var vem = await studioTestUtils.createViewEditorManager({
             model: 'partner',
             arch: arch,
@@ -3575,22 +3507,17 @@ QUnit.module('ViewEditorManager', {
         const newArch = `
             <kanban>
                 <templates>
+                    <t t-name='kanban-menu'>
+                        <t t-if="widget.editable">
+                            <a type="edit" class="dropdown-item">Edit</a>
+                        </t>
+                        <t t-if="widget.deletable">
+                            <a type="delete" class="dropdown-item">Delete</a>
+                        </t>
+                        <ul class="oe_kanban_colorpicker" data-field="x_color"/>
+                    </t>
                     <t t-name='kanban-box'>
                         <div class='oe_kanban_card'>
-                            <div class="o_dropdown_kanban dropdown" name="kanban_dropdown">
-                              <a class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu" role="button">
-                                <span class="fa fa-ellipsis-v"/>
-                              </a>
-                              <div class="dropdown-menu" role="menu" name="studio_div_e269b5">
-                                <t t-if="widget.editable">
-                                  <a type="edit" class="dropdown-item">Edit</a>
-                                </t>
-                                <t t-if="widget.deletable">
-                                  <a type="delete" class="dropdown-item">Delete</a>
-                                </t>
-                                <ul class="oe_kanban_colorpicker" data-field="x_color"/>
-                              </div>
-                            </div>
                         </div>
                     </t>
                 </templates>

@@ -139,6 +139,11 @@
                     <field name="color"/>
                     <field name="chart_id"/> <!-- Needed to allow chart color update -->
                     <templates>
+                        <t t-name="kanban-menu">
+                            <div class="container">
+                                <t t-call="analysis_period_menu"/>
+                            </div>
+                        </t>
                         <t t-name="kanban-box">
                             <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_global_click">
                                 <div class="oe_kanban_content o_kanban_consolidation_content" style="height:100%">
@@ -147,9 +152,6 @@
                                         <div class="row">
                                             <t t-call="analysis_period_body"/>
                                         </div>
-                                    </div>
-                                    <div class="container o_kanban_card_manage_pane dropdown-menu" role="menu">
-                                        <t t-call="analysis_period_menu"/>
                                     </div>
                                 </div>
                             </div>
@@ -171,12 +173,6 @@
                                     <div class="o_secondary">
                                         <field name="display_dates"/>
                                     </div>
-                                </div>
-                                <div class="o_kanban_manage_button_section">
-                                    <a class="o_kanban_manage_toggle_button" href="#">
-                                        <i class="fa fa-ellipsis-v" aria-label="Selection" role="img"
-                                           title="Selection"/>
-                                    </a>
                                 </div>
                             </div>
                         </t>

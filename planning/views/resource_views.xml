@@ -133,6 +133,9 @@
             <kanban class="o_kanban_dashboard" sample="1">
                 <field name="color" invisible="1" />
                 <templates>
+                    <t t-name="kanban-menu">
+                        <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
+                    </t>
                     <t t-name="kanban-box">
                         <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
                             <div class="o_kanban_record_top">
@@ -140,14 +143,6 @@
                                     <div class="o_kanban_record_title">
                                         <field name="name" />
                                     </div>
-                                </div>
-                            </div>
-                            <div class="o_dropdown_kanban dropdown" groups="planning.group_planning_manager">
-                                <a role="button" class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
-                                    <span class="fa fa-ellipsis-v"/>
-                                </a>
-                                <div class="dropdown-menu" role="menu">
-                                    <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
                                 </div>
                             </div>
                             <div class="text-truncate">

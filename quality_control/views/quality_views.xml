@@ -555,6 +555,14 @@
                 <field name="alias_domain"/>
                 <field name="color"/>
                 <templates>
+                    <t t-name="kanban-menu">
+                        <div t-if="widget.editable" role="menuitem">
+                            <a class="dropdown-item ps-0" type="edit">Configuration</a>
+                        </div>
+                        <div t-if="widget.editable" role="menuitem" aria-haspopup="true" class="o_no_padding_kanban_colorpicker">
+                            <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
+                        </div>
+                    </t>
                     <t t-name="kanban-box">
                         <div t-attf-class="#{kanban_color(record.color.raw_value)}">
                             <span class="oe_kanban_color_help" t-attf-title="In #{kanban_getcolorname(record.color.raw_value)}" role="img" t-attf-aria-label="In #{kanban_getcolorname(record.color.raw_value)}"/>
@@ -581,15 +589,6 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
-                                <div t-if="widget.editable" role="menuitem">
-                                    <a class="dropdown-item ps-0" type="edit">Configuration</a>
-                                </div>
-                                <div t-if="widget.editable" role="menuitem" aria-haspopup="true" class="o_no_padding_kanban_colorpicker">
-                                    <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
-                                </div>
-                            </div>
-                            <a class="o_kanban_manage_toggle_button o_left" href="#"><i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/></a>
                         </div>
                     </t>
                 </templates>

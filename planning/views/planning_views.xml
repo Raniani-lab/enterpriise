@@ -140,6 +140,10 @@
                 <field name="color"/>
                 <field name="allocated_percentage"/>
                 <templates>
+                    <t t-name="kanban-menu">
+                        <t t-if="widget.editable"><a role="menuitem" type="edit" class="dropdown-item">Edit</a></t>
+                        <t t-if="widget.deletable"><a role="menuitem" type="delete" class="dropdown-item">Delete</a></t>
+                    </t>
                     <t t-name="kanban-box">
                         <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
                             <div class="o_kanban_record_top">
@@ -157,15 +161,6 @@
                                                 </t>
                                             </span>
                                         </em>
-                                    </div>
-                                </div>
-                                <div class="o_dropdown_kanban dropdown" groups="planning.group_planning_manager">
-                                    <a role="button" class="dropdown-toggle o-no-caret btn" data-bs-toggle="dropdown" href="#" aria-label="Dropdown menu" title="Dropdown menu">
-                                        <span class="fa fa-ellipsis-v"/>
-                                    </a>
-                                    <div class="dropdown-menu" role="menu">
-                                        <t t-if="widget.editable"><a role="menuitem" type="edit" class="dropdown-item">Edit</a></t>
-                                        <t t-if="widget.deletable"><a role="menuitem" type="delete" class="dropdown-item">Delete</a></t>
                                     </div>
                                 </div>
                             </div>
@@ -458,6 +453,19 @@
             <kanban class="o_kanban_dashboard">
                 <field name="color"/>
                 <templates>
+                    <t t-name="kanban-menu">
+                        <div class="o_kanban_card_manage_section" t-if="widget.editable or widget.deletable">
+                            <div role="menuitem">
+                                <a t-if="widget.editable" role="menuitem" type="edit">Edit</a>
+                            </div>
+                            <div role="menuitem">
+                                <a t-if="widget.deletable" role="menuitem" type="delete">Delete</a>
+                            </div>
+                        </div>
+                        <div role="menuitem" aria-haspopup="true" class="o_no_padding_kanban_colorpicker">
+                            <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
+                        </div>
+                    </t>
                     <t t-name="kanban-box">
                         <div t-attf-class="#{kanban_color(record.color.raw_value)} oe_kanban_card oe_kanban_global_click">
                             <div class="o_kanban_card_header">
@@ -470,24 +478,6 @@
                                     <div class="col o_kanban_primary_left">
                                         <field name="resource_ids" widget="many2many_tags"/>
                                     </div>
-                                </div>
-                                <div class="o_kanban_manage_button_section o_dropdown_kanban">
-                                    <a role="button" class="o_kanban_manage_toggle_button" href="#" title="Dropdown menu">
-                                        <i class="fa fa-ellipsis-v" aria-label="Manage" title="Manage"/>
-                                    </a>
-                                </div>
-                            </div>
-                            <div class="o_kanban_card_manage_pane dropdown-menu" role="menu">
-                                <div class="o_kanban_card_manage_section" t-if="widget.editable or widget.deletable">
-                                    <div role="menuitem">
-                                        <a t-if="widget.editable" role="menuitem" type="edit">Edit</a>
-                                    </div>
-                                    <div role="menuitem">
-                                        <a t-if="widget.deletable" role="menuitem" type="delete">Delete</a>
-                                    </div>
-                                </div>
-                                <div role="menuitem" aria-haspopup="true" class="o_no_padding_kanban_colorpicker">
-                                    <ul class="oe_kanban_colorpicker" data-field="color" role="popup"/>
                                 </div>
                             </div>
                         </div>

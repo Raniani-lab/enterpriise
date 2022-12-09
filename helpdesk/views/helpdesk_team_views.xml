@@ -493,6 +493,39 @@
                 <field name="rating_count"/>
                 <field name="rating_avg" />
                 <templates>
+                    <t t-name="kanban-menu">
+                        <div class="container">
+                            <div t-if="widget.editable" class="row">
+                                <div class="col-6 o_kanban_card_manage_section o_kanban_manage_view">
+                                    <div role="menuitem" class="o_kanban_card_manage_title">
+                                        <span>View</span>
+                                    </div>
+                                    <div role="menuitem">
+                                        <a name="action_view_ticket" type="object">Tickets</a>
+                                    </div>
+                                </div>
+                                <div class="col-6 o_kanban_card_manage_section o_kanban_manage_reporting">
+                                    <div role="menuitem" class="o_kanban_card_manage_title">
+                                        <span>Reporting</span>
+                                    </div>
+                                    <div role="menuitem">
+                                        <a name="%(helpdesk.helpdesk_ticket_analysis_action)d" type="action" context="{'search_default_team_id': active_id}">Tickets Analysis</a>
+                                    </div>
+                                    <div role="menuitem">
+                                        <a name="%(helpdesk.helpdesk_sla_report_analysis_action)d" type="action" context="{'search_default_team_id': active_id}">SLA Status Analysis</a>
+                                    </div>
+                                </div>
+                            </div>
+                            <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
+                                <div role="menuitem" aria-haspopup="true" class="col-8">
+                                    <ul class="oe_kanban_colorpicker" data-field="color" role="menu"/>
+                                </div>
+                                <div role="menuitem" class="col-4">
+                                    <a class="dropdown-item" role="menuitem" type="edit">Settings</a>
+                                </div>
+                            </div>
+                        </div>
+                    </t>
                     <t t-name="kanban-box">
                         <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''} oe_kanban_global_click">
                             <span class="oe_kanban_color_help" t-attf-title="In #{kanban_getcolorname(record.color.raw_value)}" role="img" t-attf-aria-label="In #{kanban_getcolorname(record.color.raw_value)}"/>
@@ -500,9 +533,6 @@
                                 <div class="o_kanban_card_header_title">
                                     <div class="o_primary"><field name="display_name"/></div>
                                     <small t-if="record.use_alias.value and record.alias_name.value and record.alias_domain.value"><i class="fa fa-envelope-o" title="Domain alias" role="img" aria-label="Domain alias"></i>&amp;nbsp; <t t-out="record.alias_id.value"/></small>
-                                </div>
-                                <div class="o_kanban_manage_button_section" t-if="!selection_mode" groups="helpdesk.group_helpdesk_manager">
-                                    <a class="o_kanban_manage_toggle_button o_dropdown_kanban" href="#"><i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/></a>
                                 </div>
                             </div>
                             <div class="container o_kanban_card_content" t-if="!selection_mode">
@@ -566,38 +596,6 @@
                                             <span class="fw-bold"><field name="sla_failed"/></span>
                                             <span class="text-muted">Failed</span>
                                         </a>
-                                    </div>
-                                </div>
-                            </div>
-
-                            <div class="container o_kanban_card_manage_pane dropdown-menu" role="menu">
-                                <div t-if="widget.editable" class="row">
-                                    <div class="col-6 o_kanban_card_manage_section o_kanban_manage_view">
-                                        <div role="menuitem" class="o_kanban_card_manage_title">
-                                            <span>View</span>
-                                        </div>
-                                        <div role="menuitem">
-                                            <a name="action_view_ticket" type="object">Tickets</a>
-                                        </div>
-                                    </div>
-                                    <div class="col-6 o_kanban_card_manage_section o_kanban_manage_reporting">
-                                        <div role="menuitem" class="o_kanban_card_manage_title">
-                                            <span>Reporting</span>
-                                        </div>
-                                        <div role="menuitem">
-                                            <a name="%(helpdesk.helpdesk_ticket_analysis_action)d" type="action" context="{'search_default_team_id': active_id}">Tickets Analysis</a>
-                                        </div>
-                                        <div role="menuitem">
-                                            <a name="%(helpdesk.helpdesk_sla_report_analysis_action)d" type="action" context="{'search_default_team_id': active_id}">SLA Status Analysis</a>
-                                        </div>
-                                    </div>
-                                </div>
-                                <div t-if="widget.editable" class="o_kanban_card_manage_settings row">
-                                    <div role="menuitem" aria-haspopup="true" class="col-8">
-                                        <ul class="oe_kanban_colorpicker" data-field="color" role="menu"/>
-                                    </div>
-                                    <div role="menuitem" class="col-4">
-                                        <a class="dropdown-item" role="menuitem" type="edit">Settings</a>
                                     </div>
                                 </div>
                             </div>

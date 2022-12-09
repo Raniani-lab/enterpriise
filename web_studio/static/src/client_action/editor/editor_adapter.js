@@ -5,7 +5,6 @@ import { registry } from "@web/core/registry";
 import { NewViewDialog } from "@web_studio/client_action/editor/new_view_dialogs/new_view_dialog";
 import { MapNewViewDialog } from "@web_studio/client_action/editor/new_view_dialogs/map_new_view_dialog";
 import { ConfirmationDialog, AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import ActionEditor from "web_studio.ActionEditor";
 import { ActionEditorMain } from "../../legacy/action_editor_main";
 
 import { Component } from "@odoo/owl";
@@ -23,8 +22,6 @@ export class EditorAdapter extends ComponentAdapter {
 
         if (this.studio.editedViewType) {
             this.props.Component = ActionEditorMain;
-        } else {
-            this.props.Component = ActionEditor;
         }
 
         this.dialog = useService("dialog");
@@ -230,20 +227,16 @@ export class EditorAdapter extends ComponentAdapter {
 
     get widgetArgs() {
         const { editedAction, editedViewType, editedControllerState, x2mEditorPath } = this.studio;
-        if (this.props.Component === ActionEditor) {
-            return [editedAction];
-        } else {
-            return [
-                {
-                    action: editedAction,
-                    viewType: editedViewType,
-                    controllerState: editedControllerState,
-                    x2mEditorPath: x2mEditorPath,
-                    wowlEnv: this.wowlEnv,
-                },
-            ];
-        }
+        return [
+            {
+                action: editedAction,
+                viewType: editedViewType,
+                controllerState: editedControllerState,
+                x2mEditorPath: x2mEditorPath,
+                wowlEnv: this.wowlEnv,
+            },
+        ];
     }
 }
 
-registry.category("actions").add("web_studio.action_editor", EditorAdapter);
+registry.category("actions").add("web_studio.view_editor", EditorAdapter);

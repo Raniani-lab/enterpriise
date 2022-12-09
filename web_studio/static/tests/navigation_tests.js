@@ -13,7 +13,12 @@ import { toggleFilterMenu, toggleMenuItem } from "@web/../tests/search/helpers";
 import { companyService } from "@web/webclient/company_service";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 import { getActionManagerServerData } from "@web/../tests/webclient/helpers";
-import { leaveStudio, openStudio, registerStudioDependencies } from "@web_studio/../tests/helpers";
+import {
+    leaveStudio,
+    openStudio,
+    registerStudioDependencies,
+    fillActionFieldsDefaults,
+} from "@web_studio/../tests/helpers";
 import { registry } from "@web/core/registry";
 import { session } from "@web/session";
 import { patch, unpatch } from "@web/core/utils/patch";
@@ -31,6 +36,12 @@ QUnit.module("Studio", (hooks) => {
     hooks.beforeEach(() => {
         target = getFixture();
         serverData = getActionManagerServerData();
+
+        const actions = serverData.actions;
+        for (const actId of Object.keys(actions)) {
+            actions[actId] = fillActionFieldsDefaults(actions[actId]);
+        }
+
         registerStudioDependencies();
         const serviceRegistry = registry.category("services");
         serviceRegistry.add("company", companyService);
@@ -565,6 +576,8 @@ QUnit.module("Studio", (hooks) => {
             name: "Partners Action 99",
             res_model: "partner",
             type: "ir.actions.act_window",
+            help: "",
+            groups_id: [],
             views: [
                 [42, "grid"],
                 [2, "list"],

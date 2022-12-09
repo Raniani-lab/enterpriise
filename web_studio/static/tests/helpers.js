@@ -94,3 +94,23 @@ export function getReportServerData() {
 
     return { models, views };
 }
+
+export function fillActionFieldsDefaults(action) {
+    if (action.type !== "ir.actions.act_window") {
+        return action;
+    }
+    action = { ...action };
+    if (!("groups_id" in action)) {
+        action.groups_id = [];
+    }
+    if (!("view_mode" in action)) {
+        action.view_mode = action.views.map((v) => v[0]).join(",");
+    }
+    if (!("name" in action)) {
+        action.name = "";
+    }
+    if (!("help" in action)) {
+        action.help = "";
+    }
+    return action;
+}

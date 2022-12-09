@@ -10,7 +10,6 @@ import dom from "web.dom";
 import session from "web.session";
 import Widget from "web.Widget";
 
-import ActionEditor from "web_studio.ActionEditor";
 import bus from "web_studio.bus";
 import ViewEditorManager from "web_studio.ViewEditorManager";
 
@@ -70,30 +69,23 @@ export const ActionEditorMain = Widget.extend({
      */
     start: function () {
         var self = this;
-        var def;
         this.$el.addClass("o_web_studio_client_action");
-        var isEditable = _.contains(ActionEditor.prototype.VIEW_TYPES, this.viewType);
-        if (this.options.noEdit || !isEditable) {
-            // click on "Views" in menu or view we cannot edit
-            this.action_editor = new ActionEditor(this, this.action);
-            def = this.action_editor.appendTo(this.$(".o_content"));
-        } else {
-            // directly edit the view instead of displaying all views
-            def = this._editView();
-        }
-        return Promise.all([def, this._super.apply(this, arguments)]).then(function () {
-            self._pushState();
-            bus.trigger("studio_main", self.action);
-            if (!self.options.noEdit) {
-                // TODO: try to put it in editView
-                bus.trigger("edition_mode_entered", self.viewType);
+        // directly edit the view instead of displaying all views
+        return Promise.all([this._editView(), this._super.apply(this, arguments)]).then(
+            function () {
+                self._pushState();
+                bus.trigger("studio_main", self.action);
+                if (!self.options.noEdit) {
+                    // TODO: try to put it in editView
+                    bus.trigger("edition_mode_entered", self.viewType);
+                }
+                // add class when activating a pivot/graph view through studio
+                const model = self.view_editor && self.view_editor.view.model;
+                if (model && model._isInSampleMode) {
+                    self.el.classList.add("o_legacy_view_sample_data");
+                }
             }
-            // add class when activating a pivot/graph view through studio
-            const model = self.view_editor && self.view_editor.view.model;
-            if (model && model._isInSampleMode) {
-                self.el.classList.add("o_legacy_view_sample_data");
-            }
-        });
+        );
     },
     /**
      * @override

@@ -384,9 +384,6 @@ class WebStudioController(http.Controller):
 
         action_id = request.env[action_type].browse(action_id)
         if action_id:
-            if 'groups_id' in args:
-                args['groups_id'] = [(6, 0, args['groups_id'])]
-
             if 'view_mode' in args:
                 args['view_mode'] = args['view_mode'].replace('list', 'tree')  # list is stored as tree in db
 

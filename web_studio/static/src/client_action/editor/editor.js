@@ -9,19 +9,21 @@ import { EditorMenu } from "./editor_menu/editor_menu";
 
 import { mapDoActionOptionAPI } from "@web/legacy/backend_utils";
 
-import { Component, EventBus, markup, onWillStart, useSubEnv } from "@odoo/owl";
+import { Component, EventBus, markup, onWillStart, useSubEnv, reactive } from "@odoo/owl";
+import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+import { KeepLast } from "@web/core/utils/concurrency";
 
 const editorTabRegistry = registry.category("web_studio.editor_tabs");
 
 const actionServiceStudio = {
     dependencies: ["studio"],
-    start(env) {
+    start(env, { studio }) {
         const action = actionService.start(env);
         const _doAction = action.doAction;
 
         async function doAction(actionRequest, options) {
             if (actionRequest === "web_studio.action_edit_report") {
-                return env.services.studio.setParams({
+                return studio.setParams({
                     editedReport: options.report,
                 });
             }
@@ -32,27 +34,82 @@ const actionServiceStudio = {
     },
 };
 
+class EditionFlow {
+    constructor(env, services) {
+        this.env = env;
+        for (const [servName, serv] of Object.entries(services)) {
+            this[servName] = serv;
+        }
+    }
+    loadViews() {
+        const { context, views, res_model, id } = this.studio.editedAction;
+        const newContext = { ...context, studio: true, lang: false };
+        const options = { loadIrFilters: true, loadActionMenus: false, id };
+        return this.view.loadViews({ resModel: res_model, views, context: newContext }, options);
+    }
+    restoreDefaultView(viewId, viewType) {
+        return new Promise((resolve) => {
+            const confirm = async () => {
+                if (!viewId && viewType) {
+                    // To restore the default view from an inherited one, we need first to retrieve the default view id
+                    const result = await this.loadViews();
+                    viewId = result.views[viewType].id;
+                }
+                const res = await this.rpc("/web_studio/restore_default_view", {
+                    view_id: viewId,
+                });
+                this.env.bus.trigger("CLEAR-CACHES");
+                resolve(res);
+            };
+            this.dialog.add(ConfirmationDialog, {
+                body: this.env._t(
+                    "Are you sure you want to restore the default view?\r\nAll customization done with studio on this view will be lost."
+                ),
+                confirm,
+                cancel: () => resolve(false),
+            });
+        });
+    }
+}
+
 export class Editor extends Component {
     setup() {
         const services = Object.create(this.env.services);
 
+        const globalBus = this.env.bus;
+        const newBus = new EventBus();
+        newBus.on("CLEAR-CACHES", this, () => globalBus.trigger("CLEAR-CACHES"));
+
         useSubEnv({
-            bus: new EventBus(),
+            bus: newBus,
             services,
         });
-        // Assuming synchronousness
+
+        // Assuming synchronousness for all services instanciation
         services.router = {
             current: { hash: {} },
             pushState() {},
         };
-        services.action = actionServiceStudio.start(this.env);
-
         this.studio = useService("studio");
+
+        services.action = actionServiceStudio.start(this.env, { studio: this.studio });
+
+        const editionFlow = new EditionFlow(this.env, {
+            rpc: useService("rpc"),
+            dialog: useService("dialog"),
+            studio: this.studio,
+            view: useService("view"),
+        });
+        useSubEnv({
+            editionFlow: reactive(editionFlow),
+        });
+
         this.actionService = useService("action");
         this.rpc = useService("rpc");
 
+        const keepLastStudio = new KeepLast();
         useBus(this.studio.bus, "UPDATE", async () => {
-            const action = await this.getStudioAction();
+            const action = await keepLastStudio.add(this.getStudioAction());
             this.actionService.doAction(action, {
                 clearBreadcrumbs: true,
             });
@@ -77,8 +134,14 @@ export class Editor extends Component {
     }
 
     async getStudioAction() {
-        const { editorTab, editedAction, editedReport } = this.studio;
+        const { editorTab, editedAction, editedReport, editedViewType } = this.studio;
         const tab = editorTabRegistry.get(editorTab);
+        if (editorTab === "views") {
+            if (editedViewType) {
+                return "web_studio.view_editor";
+            }
+            return tab.action;
+        }
         if (tab.action) {
             return tab.action;
         } else if (editorTab === "reports" && editedReport) {

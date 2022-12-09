@@ -16,7 +16,7 @@ export class StudioClientAction extends Component {
     setup() {
         this.studio = useService("studio");
         useBus(this.studio.bus, "UPDATE", () => {
-            this.render(true);
+            this.render();
             cleanDomFromBootstrap();
         });
 

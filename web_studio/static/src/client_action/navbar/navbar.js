@@ -7,12 +7,23 @@ import { HomeMenuCustomizer } from "./home_menu_customizer/home_menu_customizer"
 import { EditMenuItem } from "../../legacy/edit_menu_adapter";
 import { NewModelItem } from "@web_studio/legacy/new_model_adapter";
 
-import { onMounted } from "@odoo/owl";
+import { onMounted, useState, onWillUnmount } from "@odoo/owl";
+
+function useStudioServiceAsReactive() {
+    const studio = useService("studio");
+    const state = useState({ ...studio });
+    function onUpdate() {
+        Object.assign(state, studio);
+    }
+    studio.bus.addEventListener("UPDATE", onUpdate);
+    onWillUnmount(() => studio.bus.removeEventListener("UPDATE", onUpdate));
+    return state;
+}
 
 export class StudioNavbar extends EnterpriseNavBar {
     setup() {
         super.setup();
-        this.studio = useService("studio");
+        this.studio = useStudioServiceAsReactive();
         this.actionManager = useService("action");
         this.user = useService("user");
         this.dialogManager = useService("dialog");

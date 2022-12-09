@@ -3,6 +3,7 @@ import { registry } from "@web/core/registry";
 import { delay } from "web.concurrency";
 import legacyBus from "web_studio.bus";
 import { resetViewCompilerCache } from "@web/views/view_compiler";
+import { _lt } from "@web/core/l10n/translation";
 
 import { EventBus } from "@odoo/owl";
 
@@ -19,23 +20,29 @@ export const MODES = {
 
 export class NotEditableActionError extends Error {}
 
-export const SUPPORTED_VIEW_TYPES = [
-    "activity",
-    "calendar",
-    "cohort",
-    "form",
-    "gantt",
-    "graph",
-    "kanban",
-    "list",
-    "map",
-    "pivot",
-    "search",
-];
+const SUPPORTED_VIEW_TYPES = {
+    activity: _lt("Activity"),
+    calendar: _lt("Calendar"),
+    cohort: _lt("Cohort"),
+    form: _lt("Form"),
+    gantt: _lt("Gantt"),
+    graph: _lt("Graph"),
+    kanban: _lt("Kanban"),
+    list: _lt("List"),
+    map: _lt("Map"),
+    pivot: _lt("Pivot"),
+    search: _lt("Search"),
+};
+
+export function viewTypeToString(vType) {
+    return SUPPORTED_VIEW_TYPES[vType] || vType;
+}
 
 export const studioService = {
-    dependencies: ["action", "cookie", "color_scheme", "home_menu", "router", "user"],
-    async start(env, { user, cookie, color_scheme }) {
+    dependencies: ["action", "cookie", "color_scheme", "home_menu", "router", "user", "rpc"],
+    async start(env, { user, cookie, color_scheme, rpc }) {
+        const supportedViewTypes = Object.keys(SUPPORTED_VIEW_TYPES);
+
         function _getCurrentAction() {
             const currentController = env.services.action.currentController;
             return currentController ? currentController.action : null;
@@ -74,7 +81,7 @@ export const studioService = {
         }
 
         function isViewEditable(view) {
-            return view && SUPPORTED_VIEW_TYPES.includes(view);
+            return view && supportedViewTypes.includes(view);
         }
 
         const bus = new EventBus();
@@ -328,6 +335,25 @@ export const studioService = {
         legacyBus.trigger = mappedTrigger;
         bus.trigger = mappedTrigger;
 
+        const isAllowedCache = {
+            activity: {},
+            chatter: {},
+        };
+
+        function isAllowed(type, resModel) {
+            if (!Object.keys(isAllowedCache).includes(type)) {
+                return;
+            }
+            let val;
+            if (resModel in isAllowedCache[type]) {
+                val = isAllowedCache[type][resModel];
+            } else {
+                val = rpc(`/web_studio/${type}_allowed`, { model: resModel });
+                isAllowedCache[type][resModel] = val;
+            }
+            return val;
+        }
+
         return {
             MODES,
             bus,
@@ -365,6 +391,7 @@ export const studioService = {
             get x2mEditorPath() {
                 return state.x2mEditorPath;
             },
+            isAllowed,
         };
     },
 };

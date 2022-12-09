@@ -1,4 +1,4 @@
-.o_web_studio_sidebar_legacy {
+.o_web_studio_sidebar {
     display: flex;
     flex-flow: column nowrap;
     color: white;
@@ -42,10 +42,6 @@
     .o_web_studio_sidebar_content {
         padding: 0 $o-web-studio-sidebar-margin $o-web-studio-sidebar-margin;
 
-        > :first-child {
-            margin-top: 0;
-        }
-
         > h3 {
             color: white;
             margin: 10px 0 15px 0;
@@ -81,8 +77,6 @@
         .o_studio_sidebar_approval_rule > div,
         > div > .card > .card-collapse > .card-body > div
          {
-            margin-top: 12px;
-
             // Generic style for all field types
             label {
                 font-size: 12px;
@@ -124,7 +118,7 @@
             }
 
             // Specific style for each field type
-            &.o_web_studio_sidebar_iscode {
+            &.o_web_studio_sidebar_iscode, .o_web_studio_field_code {
                 input, textarea {
                     font-family: $o-web-studio-font-family-monospace;
                     font-size: 11px;

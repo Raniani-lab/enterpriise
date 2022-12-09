@@ -91,8 +91,6 @@ registry.category("web_tour.tours").add('test_gs1_inventory_lot_serial', {test: 
         trigger: '.o_barcode_client_action',
         run: 'scan 010011115555571710LOT-AAB',
     },
-    // Unfolds the group and clicks on the right line to select it.
-    { trigger: '.o_toggle_sublines .fa-caret-down' },
     { trigger: '.o_sublines .o_barcode_line:contains("AAB")' },
     {
         trigger: '.o_sublines .o_barcode_line.o_selected:contains("AAB")',
@@ -208,8 +206,6 @@ registry.category("web_tour.tours").add('test_gs1_inventory_lot_serial', {test: 
         trigger: '.o_barcode_client_action',
         run: 'scan 011522222222221921Serial2',
     },
-    // Unfolds the group and clicks on the right line to select it.
-    { trigger: '.o_barcode_line.o_selected .o_toggle_sublines .fa-caret-down' },
     { trigger: '.o_sublines .o_barcode_line:contains("Serial2")' },
     {
         trigger: '.o_barcode_line:contains("Serial2")',

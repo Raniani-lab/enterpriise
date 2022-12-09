@@ -239,7 +239,6 @@ registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_produ
         trigger: '.o_barcode_client_action',
         run: 'scan serial2',
     },
-    { trigger: '.o_barcode_line.o_selected .btn.o_toggle_sublines .fa-caret-down' },
 
     {
         trigger: '.o_barcode_line:contains("serial2")',
@@ -298,7 +297,6 @@ registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_produ
         trigger: '.o_barcode_line.o_selected:contains("productlot1")',
         run: 'scan lot2',
     },
-    { trigger: '.o_barcode_line.o_selected .btn.o_toggle_sublines .fa-caret-down' },
     {
         trigger: '.o_barcode_line .o_barcode_line:contains("lot2")',
         run: 'scan lot3',
@@ -359,13 +357,6 @@ registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_produ
             const serialLine = helper.getLine({ barcode: "productserial1" });
             helper.assertLineSourceLocation(serialLine, "WH/Stock/Section 1");
             helper.assertLineQty(1, "? / 3");
-        }
-    },
-    // Shows sublines.
-    { trigger: '.o_barcode_line.o_selected .btn.o_toggle_sublines .fa-caret-down' },
-    {
-        trigger: '.o_sublines',
-        run: function() {
             helper.assertSublinesCount(3)
             const [subline1, subline2, subline3] = helper.getSublines();
             helper.assertLineQty(subline1, "? / 1");
@@ -447,7 +438,6 @@ registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_produ
         trigger: '.o_barcode_client_action',
         run: 'scan lot1',
     },
-    { trigger: '.o_barcode_line.o_selected .btn.o_toggle_sublines .fa-caret-down' },
     // Must have 2 lines in one group: one without lot and one with lot1.
     // Grouped lines for `productlot1` should be unfolded.
     {

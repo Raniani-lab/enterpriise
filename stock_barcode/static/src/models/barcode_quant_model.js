@@ -632,4 +632,12 @@ export default class BarcodeQuantModel extends BarcodeModel {
         options.additional_context = { active_ids: quantsToPrint.map(quant => quant.id) };
         return options;
     }
+
+    _selectLine(line) {
+        if (this.selectedLineVirtualId !== line.virtual_id) {
+            // Unfolds the group where the line is, folds other lines' group.
+            this.unfoldLineKey = this.groupKey(line);
+        }
+        super._selectLine(...arguments);
+    }
 }

@@ -382,7 +382,7 @@ export default class BarcodeModel extends EventBus {
     }
 
     selectLine(line) {
-        if (this.lineCanBeSelected(line)) {
+        if (this.lineCanBeSelected(line) && (!line.virtual_ids || !line.virtual_ids.includes(this.selectedLineVirtualId))) {
             this._selectLine(line);
         }
     }

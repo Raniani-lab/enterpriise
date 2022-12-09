@@ -1,9 +1,8 @@
+/** @odoo-module */
 /* global posmodel */
-odoo.define('posiot.scale.tour', function (require) {
-    'use strict';
 
-var Tour = require('web_tour.tour');
-var DeviceProxy = require('iot.DeviceProxy');
+import Tour from "web_tour.tour";
+import DeviceProxy from "iot.DeviceProxy";
 
 var PosScaleDummy = DeviceProxy.extend({
     action: function () { },
@@ -44,4 +43,3 @@ Tour.register('pos_iot_scale_tour', {
         trigger: ".header-button",
         run: function () { }, //it's a check,
     }]);
-});

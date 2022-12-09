@@ -1,7 +1,6 @@
-odoo.define('pos_iot.BarcodeReader', function (require) {
-"use strict";
+/** @odoo-module */
 
-var BarcodeReader = require('point_of_sale.BarcodeReader');
+import BarcodeReader from "@point_of_sale/js/barcode_reader";
 
 BarcodeReader.include({
     connect_to_proxy: function () {
@@ -22,6 +21,4 @@ BarcodeReader.include({
             }
         }
     },
-});
-
 });

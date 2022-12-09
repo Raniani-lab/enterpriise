@@ -1,37 +1,40 @@
-odoo.define('l10n_de_pos_res_cert.pos', function(require) {
-    "use strict";
+/** @odoo-module */
 
-    const { PosGlobalState, Order } = require('point_of_sale.models');
-    const { uuidv4 } = require('point_of_sale.utils');
-    const Registries = require('point_of_sale.Registries');
+import { PosGlobalState, Order } from "@point_of_sale/js/models";
+import { uuidv4 } from "@point_of_sale/js/utils";
+import Registries from "@point_of_sale/js/Registries";
 
-
-    const L10nDePosResPosGlobalState = (PosGlobalState) => class L10nDePosResPosGlobalState extends PosGlobalState {
+const L10nDePosResPosGlobalState = (PosGlobalState) =>
+    class L10nDePosResPosGlobalState extends PosGlobalState {
         isRestaurantCountryGermanyAndFiskaly() {
             return this.isCountryGermanyAndFiskaly() && this.config.iface_floorplan;
         }
         //@Override
         disallowLineQuantityChange() {
-            let result = super.disallowLineQuantityChange(...arguments);
+            const result = super.disallowLineQuantityChange(...arguments);
             return this.isRestaurantCountryGermanyAndFiskaly() || result;
         }
         //@Override
         _updateTableOrder(orderResponseData, tableOrders) {
             const order = super._updateTableOrder(...arguments);
-            if (this.isRestaurantCountryGermanyAndFiskaly() && orderResponseData.differences && order) {
-                    order.createAndFinishOrderTransaction(orderResponseData.differences)
-                }
-            return order
+            if (
+                this.isRestaurantCountryGermanyAndFiskaly() &&
+                orderResponseData.differences &&
+                order
+            ) {
+                order.createAndFinishOrderTransaction(orderResponseData.differences);
+            }
+            return order;
         }
         //@Override
         _postRemoveFromServer(serverIds, data) {
             if (this.isRestaurantCountryGermanyAndFiskaly() && data.length > 0) {
                 // at this point of the flow, it's impossible to retrieve the local order, only the ids were stored
                 // therefore we create an "empty" order object in order to call the needed methods
-                data.forEach(async elem => {
-                    const order = Order.create({}, {pos: this});
+                data.forEach(async (elem) => {
+                    const order = Order.create({}, { pos: this });
                     await order.cancelOrderTransaction(elem.differences);
-                })
+                });
             }
             return super._postRemoveFromServer(...arguments);
         }
@@ -46,27 +49,29 @@ odoo.define('l10n_de_pos_res_cert.pos', function(require) {
             if (!orders || !orders.length) {
                 return Promise.resolve([]);
             }
-            const ordersCheckDifference = orders.filter(elem => !elem.data.fiskaly_lines_sent).map(elem => elem.data);
+            const ordersCheckDifference = orders
+                .filter((elem) => !elem.data.fiskaly_lines_sent)
+                .map((elem) => elem.data);
             let differences = {};
             if (ordersCheckDifference.length > 0) {
                 try {
                     differences = await this.env.services.rpc({
-                        model: 'pos.order',
-                        method: 'retrieve_line_difference',
-                        args: [ordersCheckDifference]
+                        model: "pos.order",
+                        method: "retrieve_line_difference",
+                        args: [ordersCheckDifference],
                     });
                 } catch (error) {
-                    this.set_synch('disconnected');
+                    this.set_synch("disconnected");
                     throw error;
                 }
             }
 
             let fiskalyError;
             if (Object.keys(differences).length > 0) {
-                const ordersToUpdate = {}
+                const ordersToUpdate = {};
                 for (const orderJsonData of ordersCheckDifference) {
                     if (!fiskalyError && differences[orderJsonData.uid].length > 0) {
-                        let order = Order.create({}, {pos: this, json: orderJsonData});
+                        const order = Order.create({}, { pos: this, json: orderJsonData });
                         try {
                             await order.sendLineDifference(differences[orderJsonData.uid]);
                             ordersToUpdate[orderJsonData.uid] = order.export_as_JSON();
@@ -81,22 +86,22 @@ odoo.define('l10n_de_pos_res_cert.pos', function(require) {
                             order.data = ordersToUpdate[order.data.uid];
                         }
                     }
-                    this.db.save('orders', orders);
+                    this.db.save("orders", orders);
                 }
                 if (fiskalyError) {
-                    this.set_synch('disconnected');
-                    fiskalyError.code = 'fiskaly';
+                    this.set_synch("disconnected");
+                    fiskalyError.code = "fiskaly";
                     throw fiskalyError;
                 }
             }
 
             return super._flush_orders(...arguments);
         }
-    }
-    Registries.Model.extend(PosGlobalState, L10nDePosResPosGlobalState);
+    };
+Registries.Model.extend(PosGlobalState, L10nDePosResPosGlobalState);
 
-
-    const L10nDePosResOrder = (Order) => class L10nDePosResOrder extends Order {
+const L10nDePosResOrder = (Order) =>
+    class L10nDePosResOrder extends Order {
         // @Override
         constructor() {
             super(...arguments);
@@ -109,7 +114,7 @@ odoo.define('l10n_de_pos_res_cert.pos', function(require) {
         export_as_JSON() {
             const json = super.export_as_JSON(...arguments);
             if (this.pos.isRestaurantCountryGermanyAndFiskaly()) {
-                json['fiskaly_lines_sent'] = this.fiskalyLinesSent;
+                json["fiskaly_lines_sent"] = this.fiskalyLinesSent;
             }
             return json;
         }
@@ -121,7 +126,12 @@ odoo.define('l10n_de_pos_res_cert.pos', function(require) {
             }
         }
         _updateTimeStart(seconds) {
-            if (!(this.pos.isRestaurantCountryGermanyAndFiskaly() && this.tssInformation.time_start.value)) {
+            if (
+                !(
+                    this.pos.isRestaurantCountryGermanyAndFiskaly() &&
+                    this.tssInformation.time_start.value
+                )
+            ) {
                 super._updateTimeStart(...arguments);
             }
         }
@@ -131,72 +141,83 @@ odoo.define('l10n_de_pos_res_cert.pos', function(require) {
                 await this._authenticate();
             }
 
-            lineDifference.forEach(line => {
+            lineDifference.forEach((line) => {
                 line.quantity = line.quantity.toString(); // Fiskaly ask this to be a string
                 line.price_per_unit = this.pos.format_round_decimals_currency(line.price_per_unit);
             });
             const data = {
-                'state': 'ACTIVE',
-                'client_id': this.pos.getClientId()
+                state: "ACTIVE",
+                client_id: this.pos.getClientId(),
             };
             return $.ajax({
-                url: `${this.pos.getApiUrl()}/tss/${this.pos.getTssId()}/tx/${transactionUuid}${this.pos.isUsingApiV2() ? '?tx_revision=1' : ''}`,
-                method: 'PUT',
-                headers: { 'Authorization': `Bearer ${this.pos.getApiToken()}` },
+                url: `${this.pos.getApiUrl()}/tss/${this.pos.getTssId()}/tx/${transactionUuid}${
+                    this.pos.isUsingApiV2() ? "?tx_revision=1" : ""
+                }`,
+                method: "PUT",
+                headers: { Authorization: `Bearer ${this.pos.getApiToken()}` },
                 data: JSON.stringify(data),
-                contentType: 'application/json',
-                timeout: 5000
-            }).then(() => {
-                const data = {
-                    'state': 'FINISHED',
-                    'client_id': this.pos.getClientId(),
-                    'schema': {
-                        'standard_v1': {
-                            'order': {
-                                'line_items': lineDifference
-                            }
-                        }
+                contentType: "application/json",
+                timeout: 5000,
+            })
+                .then(() => {
+                    const data = {
+                        state: "FINISHED",
+                        client_id: this.pos.getClientId(),
+                        schema: {
+                            standard_v1: {
+                                order: {
+                                    line_items: lineDifference,
+                                },
+                            },
+                        },
+                    };
+                    return $.ajax({
+                        url: `${this.pos.getApiUrl()}/tss/${this.pos.getTssId()}/tx/${transactionUuid}?${
+                            this.pos.isUsingApiV2() ? "tx_revision=2" : "last_revision=1"
+                        }`,
+                        method: "PUT",
+                        headers: { Authorization: `Bearer ${this.pos.getApiToken()}` },
+                        data: JSON.stringify(data),
+                        contentType: "application/json",
+                        timeout: 5000,
+                    });
+                })
+                .catch(async (error) => {
+                    if (error.status === 401) {
+                        // Need to update the token
+                        await this._authenticate();
+                        return this.createAndFinishOrderTransaction(lineDifference);
                     }
-                };
-                return $.ajax({
-                    url: `${this.pos.getApiUrl()}/tss/${this.pos.getTssId()}/tx/${transactionUuid}?${this.pos.isUsingApiV2() ? 'tx_revision=2' : 'last_revision=1'}`,
-                    method: 'PUT',
-                    headers: {'Authorization': `Bearer ${this.pos.getApiToken()}`},
-                    data: JSON.stringify(data),
-                    contentType: 'application/json',
-                    timeout: 5000
+                    // Return a Promise with rejected value for errors that are not handled here
+                    return Promise.reject(error);
                 });
-            }).catch(async (error) => {
-                if (error.status === 401) {  // Need to update the token
-                    await this._authenticate();
-                    return this.createAndFinishOrderTransaction(lineDifference);
-                }
-                // Return a Promise with rejected value for errors that are not handled here
-                return Promise.reject(error);
-            });
         }
         exportOrderLinesAsJson() {
             const orderLines = [];
-            this.orderlines.forEach(_.bind( function(item) {
-                return orderLines.push([0, 0, item.export_as_JSON()]);
-            }, this));
+            this.orderlines.forEach(
+                _.bind(function (item) {
+                    return orderLines.push([0, 0, item.export_as_JSON()]);
+                }, this)
+            );
 
             return {
                 server_id: this.server_id ? this.server_id : false,
                 uid: this.uid,
                 lines: orderLines,
-            }
+            };
         }
         async retrieveAndSendLineDifference() {
-            await this.pos.env.services.rpc({
-                model: 'pos.order',
-                method: 'retrieve_line_difference',
-                args: [[this.exportOrderLinesAsJson()]]
-            }).then(async data => {
-                if (data[this.uid].length > 0) {
-                    await this.sendLineDifference(data[this.uid])
-                }
-            });
+            await this.pos.env.services
+                .rpc({
+                    model: "pos.order",
+                    method: "retrieve_line_difference",
+                    args: [[this.exportOrderLinesAsJson()]],
+                })
+                .then(async (data) => {
+                    if (data[this.uid].length > 0) {
+                        await this.sendLineDifference(data[this.uid]);
+                    }
+                });
         }
         async sendLineDifference(difference) {
             await this.createAndFinishOrderTransaction(difference);
@@ -209,6 +230,5 @@ odoo.define('l10n_de_pos_res_cert.pos', function(require) {
             await this.createTransaction();
             await this.cancelTransaction();
         }
-    }
-    Registries.Model.extend(Order, L10nDePosResOrder);
-});
+    };
+Registries.Model.extend(Order, L10nDePosResOrder);

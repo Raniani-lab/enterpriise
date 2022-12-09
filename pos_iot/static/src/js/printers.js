@@ -1,8 +1,7 @@
-odoo.define('pos_iot.Printer', function (require) {
-"use strict";
+/** @odoo-module */
 
-var PrinterMixin = require('point_of_sale.Printer').PrinterMixin;
-var DeviceProxy = require('iot.DeviceProxy');
+import { PrinterMixin } from "@point_of_sale/js/printers";
+import DeviceProxy from "iot.DeviceProxy";
 
 var PrinterProxy = DeviceProxy.extend(PrinterMixin, {
     init: function (parent, device, pos) {
@@ -11,19 +10,16 @@ var PrinterProxy = DeviceProxy.extend(PrinterMixin, {
     },
     open_cashbox: function () {
         var self = this;
-        return this.action({ action: 'cashbox' })
+        return this.action({ action: "cashbox" })
             .then(self._onIoTActionResult.bind(self))
             .guardedCatch(self._onIoTActionFail.bind(self));
     },
     send_printing_job: function (img) {
         return this.action({
-            action: 'print_receipt',
+            action: "print_receipt",
             receipt: img,
         });
-
     },
 });
 
-return PrinterProxy;
-
-});
+export default PrinterProxy;

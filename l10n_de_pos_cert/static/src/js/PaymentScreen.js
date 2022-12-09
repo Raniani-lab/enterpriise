@@ -1,27 +1,28 @@
-odoo.define('l10n_de_pos_cert.PaymentScreen', function(require) {
-    "use strict";
+/** @odoo-module */
 
-    const PaymentScreen = require('point_of_sale.PaymentScreen');
-    const Registries = require('point_of_sale.Registries');
+import PaymentScreen from "@point_of_sale/js/Screens/PaymentScreen/PaymentScreen";
+import Registries from "@point_of_sale/js/Registries";
 
-
-    const PosDePaymentScreen = PaymentScreen => class extends PaymentScreen {
+const PosDePaymentScreen = (PaymentScreen) =>
+    class extends PaymentScreen {
         //@Override
         setup() {
             super.setup();
             if (this.env.pos.isCountryGermanyAndFiskaly()) {
                 const _super_handlePushOrderError = this._handlePushOrderError.bind(this);
                 this._handlePushOrderError = async (error) => {
-                    if (error.code === 'fiskaly') {
+                    if (error.code === "fiskaly") {
                         const message = {
-                            'noInternet': this.env._t('Cannot sync the orders with Fiskaly !'),
-                            'unknown': this.env._t('An unknown error has occurred ! Please contact Odoo for more information.')
+                            noInternet: this.env._t("Cannot sync the orders with Fiskaly !"),
+                            unknown: this.env._t(
+                                "An unknown error has occurred ! Please contact Odoo for more information."
+                            ),
                         };
-                        this.trigger('fiskaly-error', {error, message});
+                        this.trigger("fiskaly-error", { error, message });
                     } else {
                         _super_handlePushOrderError(error);
                     }
-                }
+                };
                 this.validateOrderFree = true;
             }
         }
@@ -48,34 +49,46 @@ odoo.define('l10n_de_pos_cert.PaymentScreen', function(require) {
                         await this.currentOrder.createTransaction();
                     } catch (error) {
                         if (error.status === 0) {
-                            this.trigger('fiskaly-no-internet-confirm-popup', super._finalizeValidation.bind(this));
+                            this.trigger(
+                                "fiskaly-no-internet-confirm-popup",
+                                super._finalizeValidation.bind(this)
+                            );
                         } else {
-                            const message = {'unknown': this.env._t('An unknown error has occurred ! Please, contact Odoo.')};
-                            this.trigger('fiskaly-error', {error, message});
+                            const message = {
+                                unknown: this.env._t(
+                                    "An unknown error has occurred ! Please, contact Odoo."
+                                ),
+                            };
+                            this.trigger("fiskaly-error", { error, message });
                         }
                     }
                 }
                 if (this.currentOrder.isTransactionStarted()) {
                     try {
                         await this.currentOrder.finishShortTransaction();
-                        await super._finalizeValidation(...arguments)
+                        await super._finalizeValidation(...arguments);
                     } catch (error) {
                         if (error.status === 0) {
-                            this.trigger('fiskaly-no-internet-confirm-popup', super._finalizeValidation.bind(this));
+                            this.trigger(
+                                "fiskaly-no-internet-confirm-popup",
+                                super._finalizeValidation.bind(this)
+                            );
                         } else {
-                            const message = {'unknown': this.env._t('An unknown error has occurred ! Please, contact Odoo.')};
-                            this.trigger('fiskaly-error', {error, message});
+                            const message = {
+                                unknown: this.env._t(
+                                    "An unknown error has occurred ! Please, contact Odoo."
+                                ),
+                            };
+                            this.trigger("fiskaly-error", { error, message });
                         }
                     }
                 }
-            }
-            else {
+            } else {
                 await super._finalizeValidation(...arguments);
             }
         }
     };
 
-    Registries.Component.extend(PaymentScreen, PosDePaymentScreen);
+Registries.Component.extend(PaymentScreen, PosDePaymentScreen);
 
-    return PaymentScreen;
-});
+export default PaymentScreen;

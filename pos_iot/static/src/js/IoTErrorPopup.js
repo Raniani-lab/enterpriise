@@ -1,26 +1,24 @@
-odoo.define('pos_iot.IoTErrorPopup', function(require) {
-    'use strict';
+/** @odoo-module */
 
-    const AbstractAwaitablePopup = require('point_of_sale.AbstractAwaitablePopup');
-    const Registries = require('point_of_sale.Registries');
+import AbstractAwaitablePopup from "@point_of_sale/js/Popups/AbstractAwaitablePopup";
+import Registries from "@point_of_sale/js/Registries";
 
-    class IoTErrorPopup extends AbstractAwaitablePopup {
-        setup() {
-            super.setup();
-            owl.onMounted(this.onMounted);
-        }
-        onMounted() {
-            this.playSound('error');
-        }
+class IoTErrorPopup extends AbstractAwaitablePopup {
+    setup() {
+        super.setup();
+        owl.onMounted(this.onMounted);
     }
-    IoTErrorPopup.template = 'IoTErrorPopup';
-    IoTErrorPopup.defaultProps = {
-        confirmText: 'Ok',
-        title: 'Error',
-        cancelKey: false,
-    };
+    onMounted() {
+        this.playSound("error");
+    }
+}
+IoTErrorPopup.template = "IoTErrorPopup";
+IoTErrorPopup.defaultProps = {
+    confirmText: "Ok",
+    title: "Error",
+    cancelKey: false,
+};
 
-    Registries.Component.add(IoTErrorPopup);
+Registries.Component.add(IoTErrorPopup);
 
-    return IoTErrorPopup;
-});
+export default IoTErrorPopup;

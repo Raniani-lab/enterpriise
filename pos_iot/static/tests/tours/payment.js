@@ -1,10 +1,9 @@
+/** @odoo-module */
 /* global posmodel */
-odoo.define('pos_iot.test.payment_terminals', function (require) {
-'use strict';
 
-var tour = require('web_tour.tour');
+import tour from "web_tour.tour";
 
-var DeviceProxy = require('iot.DeviceProxy');
+import DeviceProxy from "iot.DeviceProxy";
 
 var TerminalProxy = DeviceProxy.extend({
     /**
@@ -158,4 +157,3 @@ tour.register('payment_terminals_tour', {
         run: function() {}
     },
 ]);
-});

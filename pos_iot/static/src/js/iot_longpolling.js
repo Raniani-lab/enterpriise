@@ -1,26 +1,30 @@
+/** @odoo-module */
 /* global posmodel */
-odoo.define('pos_iot.IoTLongpolling', function (require) {
-'use strict';
 
-var core = require('web.core');
-var { IoTLongpolling } = require('@iot/iot_longpolling');
-const { patch } = require('@web/core/utils/patch');
-const { Gui } = require('point_of_sale.Gui');
+import core from "web.core";
+import { IoTLongpolling } from "@iot/iot_longpolling";
+import { patch } from "@web/core/utils/patch";
+import { Gui } from "@point_of_sale/js/Gui";
 
 var _t = core._t;
 
-patch(IoTLongpolling.prototype, 'pos_iot.IotLongpolling', {
+patch(IoTLongpolling.prototype, "pos_iot.IotLongpolling", {
     _doWarnFail: function (url) {
-        Gui.showPopup('IoTErrorPopup', {
-            title: _t('Connection to IoT Box failed'),
+        Gui.showPopup("IoTErrorPopup", {
+            title: _t("Connection to IoT Box failed"),
             url: url,
         });
         posmodel.env.proxy.proxy_connection_status(url, false);
         const order = posmodel.get_order();
-        if (order && order.selected_paymentline &&
-            order.selected_paymentline.payment_method.use_payment_terminal === 'worldline' &&
-            ['waiting', 'waitingCard', 'waitingCancel'].includes(order.selected_paymentline.payment_status)) {
-            order.selected_paymentline.set_payment_status('force_done');
+        if (
+            order &&
+            order.selected_paymentline &&
+            order.selected_paymentline.payment_method.use_payment_terminal === "worldline" &&
+            ["waiting", "waitingCard", "waitingCancel"].includes(
+                order.selected_paymentline.payment_status
+            )
+        ) {
+            order.selected_paymentline.set_payment_status("force_done");
         }
     },
 
@@ -39,6 +43,4 @@ patch(IoTLongpolling.prototype, 'pos_iot.IotLongpolling', {
     },
 });
 
-return IoTLongpolling;
-
-});
+export default IoTLongpolling;

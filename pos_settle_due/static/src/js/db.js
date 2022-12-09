@@ -1,12 +1,10 @@
-odoo.define('pos_settle_due.db', function (require) {
-    'use strict';
+/** @odoo-module */
 
-    const PosDB = require('point_of_sale.DB');
-    PosDB.include({
-        update_partners: function (partnersWithUpdatedFields) {
-            for (const updatedFields of partnersWithUpdatedFields) {
-                Object.assign(this.partner_by_id[updatedFields.id], updatedFields);
-            }
-        },
-    });
+import PosDB from "@point_of_sale/js/db";
+PosDB.include({
+    update_partners: function (partnersWithUpdatedFields) {
+        for (const updatedFields of partnersWithUpdatedFields) {
+            Object.assign(this.partner_by_id[updatedFields.id], updatedFields);
+        }
+    },
 });

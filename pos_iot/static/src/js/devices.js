@@ -1,8 +1,7 @@
-odoo.define('pos_iot.devices', function (require) {
-"use strict";
+/** @odoo-module */
 
-var rpc = require('web.rpc');
-var ProxyDevice = require('point_of_sale.devices').ProxyDevice;
+import rpc from "web.rpc";
+import { ProxyDevice } from "@point_of_sale/js/devices";
 
 ProxyDevice.include({
     /**
@@ -21,14 +20,16 @@ ProxyDevice.include({
         this.set_connection_status("connecting");
         _.each(this.iot_boxes, function (iot_box) {
             $.ajax({
-                url: iot_box.ip_url + '/hw_proxy/hello',
-                method: 'GET',
+                url: iot_box.ip_url + "/hw_proxy/hello",
+                method: "GET",
                 timeout: 1000,
-            }).then(function () {
-                self.proxy_connection_status(iot_box.ip, true);
-            }).catch(function () {
-                self.proxy_connection_status(iot_box.ip, false);
-            });
+            })
+                .then(function () {
+                    self.proxy_connection_status(iot_box.ip, true);
+                })
+                .catch(function () {
+                    self.proxy_connection_status(iot_box.ip, false);
+                });
         });
     },
     /**
@@ -55,16 +56,19 @@ ProxyDevice.include({
         var self = this;
         this.status_loop_running = true;
         rpc.query({
-            model: 'iot.device',
-            method: 'search_read',
-            fields: ['type'],
-            domain: [['id', 'in', this.pos.config.iot_device_ids], ['connected', '=', true]],
+            model: "iot.device",
+            method: "search_read",
+            fields: ["type"],
+            domain: [
+                ["id", "in", this.pos.config.iot_device_ids],
+                ["connected", "=", true],
+            ],
         }).then(function (iot_devices) {
             var drivers_status = {};
-            _.each(iot_devices, function(iot_device) {
-                drivers_status[iot_device.type] = {status: "connected"};
+            _.each(iot_devices, function (iot_device) {
+                drivers_status[iot_device.type] = { status: "connected" };
             });
-            var old_status = self.get('status');
+            var old_status = self.get("status");
             self.set_connection_status(old_status.status, drivers_status, old_status.msg);
             setTimeout(function () {
                 self.status_loop();
@@ -80,12 +84,16 @@ ProxyDevice.include({
             return !iot_box.connected;
         });
         if (disconnected_proxies.length) {
-            var disconnected_proxies_string = disconnected_proxies.map((proxy) => proxy.name).join(" & ");
-            this.set_connection_status("disconnected", false, disconnected_proxies_string + " disconnected");
+            var disconnected_proxies_string = disconnected_proxies
+                .map((proxy) => proxy.name)
+                .join(" & ");
+            this.set_connection_status(
+                "disconnected",
+                false,
+                disconnected_proxies_string + " disconnected"
+            );
         } else {
             this.set_connection_status("connected");
         }
-    }
-});
-
+    },
 });

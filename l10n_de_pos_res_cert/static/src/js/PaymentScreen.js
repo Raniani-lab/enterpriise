@@ -1,16 +1,15 @@
-odoo.define('l10n_de_pos_res_cert.PaymentScreen', function(require) {
-    "use strict";
+/** @odoo-module */
 
-    const PaymentScreen = require('point_of_sale.PaymentScreen');
-    const Registries = require('point_of_sale.Registries');
+import PaymentScreen from "@point_of_sale/js/Screens/PaymentScreen/PaymentScreen";
+import Registries from "@point_of_sale/js/Registries";
 
-
-    const PosDeResPaymentScreen = PaymentScreen => class extends PaymentScreen {
+const PosDeResPaymentScreen = (PaymentScreen) =>
+    class extends PaymentScreen {
         //@Override
         async _finalizeValidation() {
             if (this.env.pos.isRestaurantCountryGermanyAndFiskaly()) {
                 try {
-                    await this.currentOrder.retrieveAndSendLineDifference()
+                    await this.currentOrder.retrieveAndSendLineDifference();
                 } catch {
                     // do nothing with the error
                 }
@@ -19,7 +18,6 @@ odoo.define('l10n_de_pos_res_cert.PaymentScreen', function(require) {
         }
     };
 
-    Registries.Component.extend(PaymentScreen, PosDeResPaymentScreen);
+Registries.Component.extend(PaymentScreen, PosDeResPaymentScreen);
 
-    return PosDeResPaymentScreen;
-});
+export default PosDeResPaymentScreen;

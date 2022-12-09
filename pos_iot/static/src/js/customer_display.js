@@ -1,23 +1,21 @@
-odoo.define('pos_iot.customer_display', function (require) {
-"use strict";
+/** @odoo-module */
 
-var ProxyDevice = require('point_of_sale.devices').ProxyDevice;
+import { ProxyDevice } from "@point_of_sale/js/devices";
 
 ProxyDevice.include({
-    update_customer_facing_display: function(html) {
+    update_customer_facing_display: function (html) {
         if (this.env.proxy.iot_device_proxies.display) {
             return this.env.proxy.iot_device_proxies.display.action({
-                action: 'customer_facing_display',
+                action: "customer_facing_display",
                 html: html,
             });
         }
     },
 
-    take_ownership_over_customer_screen: function(html) {
+    take_ownership_over_customer_screen: function (html) {
         return this.env.proxy.iot_device_proxies.display.action({
             action: "take_control",
             html: html,
         });
     },
-});
 });

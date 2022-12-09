@@ -9,12 +9,12 @@ _logger = logging.getLogger(__name__)
 
 
 def post_init_hook(cr, registry):
-    _load_unspsc_codes(cr, registry)
-    _assign_codes_uom(cr, registry)
     env = api.Environment(cr, SUPERUSER_ID, {})
+    _load_unspsc_codes(cr, registry)
+    _assign_codes_uom(env, registry)
     demo_product = env.ref('product.consu_delivery_03', raise_if_not_found=False)
     if demo_product:
-        _assign_codes_demo(cr, registry)
+        _assign_codes_demo(env, registry)
 
 def uninstall_hook(cr, registry):
     cr.execute("DELETE FROM product_unspsc_code;")
@@ -40,14 +40,14 @@ def _load_unspsc_codes(cr, registry):
            SELECT concat('unspsc_code_', code), id, 'product_unspsc', 'product.unspsc.code', 't'
            FROM product_unspsc_code""")
 
-def _assign_codes_uom(cr, registry):
+def _assign_codes_uom(env, registry):
     """Assign the codes in UoM of each data, this is here because the data is
     created in the last method"""
     tools.convert.convert_file(
-        cr, 'product_unspsc', 'data/product_data.xml', None, mode='init',
+        env, 'product_unspsc', 'data/product_data.xml', None, mode='init',
         kind='data')
 
-def _assign_codes_demo(cr, registry):
+def _assign_codes_demo(env, registry):
     """Assign the codes in the products used in demo invoices, this is here because the data is
     created in the last method"""
-    tools.convert.convert_file(cr, 'product_unspsc', 'demo/product_demo.xml', None, mode='init')
+    tools.convert.convert_file(env, 'product_unspsc', 'demo/product_demo.xml', None, mode='init')

@@ -909,7 +909,7 @@ class HrPayslip(models.Model):
         idref = {}
         for module_name, files_to_update in data_to_update:
             for file_to_update in files_to_update:
-                convert_file(self.env.cr, module_name, file_to_update, idref)
+                convert_file(self.env, module_name, file_to_update, idref)
 
     def action_edit_payslip_lines(self):
         self.ensure_one()

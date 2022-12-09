@@ -15,20 +15,15 @@ class GermanTaxReportCustomHandler(models.AbstractModel):
 
     def _custom_options_initializer(self, report, options, previous_options=None):
         super()._custom_options_initializer(report, options, previous_options=previous_options)
-        options.setdefault('buttons', []).extend((
+        options.setdefault('buttons', []).append(
             {
                 'name': _('XML'),
                 'sequence': 30,
                 'action': 'export_file',
                 'action_param': 'export_tax_report_to_xml',
                 'file_export_type': _('XML'),
-            },
-            {
-                'name': _('Closing Entry'),
-                'action': 'action_periodic_vat_entries',
-                'sequence': 80,
-            },
-        ))
+            }
+        )
 
     def export_tax_report_to_xml(self, options):
         report = self.env['account.report'].browse(options['report_id'])

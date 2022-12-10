@@ -17,12 +17,14 @@
         <field name="model">l10n_cl.company.activities</field>
         <field name="arch" type="xml">
             <form string="SII Economic Activities">
-                <group>
-                    <field name="code"/>
-                    <field name="name"/>
-                    <field name="tax_category"/>
-                    <field name="active"/>
-                </group>
+                <sheet>
+                    <group>
+                        <field name="code"/>
+                        <field name="name"/>
+                        <field name="tax_category"/>
+                        <field name="active"/>
+                    </group>
+                </sheet>
             </form>
         </field>
     </record>

@@ -86,7 +86,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
 #, python-format
 msgid "Go to Apps"
-msgstr ""
+msgstr "Idi na aplikacije"
 
 #. module: account_bank_statement_import
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
@@ -95,6 +95,7 @@ msgid ""
 "If it contains transactions for more than one account, it must be imported "
 "on each of them."
 msgstr ""
+"Ako sadrži transakcije za više računa, mora se uvesti na svakom od njih."
 
 #. module: account_bank_statement_import
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
@@ -121,7 +122,7 @@ msgstr "Dnevnik"
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
 #, python-format
 msgid "No attachment was provided"
-msgstr ""
+msgstr "Prilog nije dostavljen"
 
 #. module: account_bank_statement_import
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
@@ -166,4 +167,4 @@ msgstr "Već ste učitali tu datoteku"
 #: code:addons/account_bank_statement_import/models/account_journal.py:0
 #, python-format
 msgid "You have to set a Default Account for the journal: %s"
-msgstr ""
+msgstr "Morate postaviti zadani konto za dnevnik: %s"

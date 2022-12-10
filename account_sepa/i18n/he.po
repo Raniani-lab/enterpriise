@@ -108,7 +108,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_sepa.field_res_company__sepa_orgid_issr
 #: model:ir.model.fields,field_description:account_sepa.field_res_config_settings__sepa_orgid_issr
 msgid "Issuer"
-msgstr ""
+msgstr "מנפיק"
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_journal
@@ -119,7 +119,7 @@ msgstr "יומן"
 #: code:addons/account_sepa/models/account_batch_payment.py:0
 #, python-format
 msgid "Maximum amount is %s for payments in Euros, %s for other currencies."
-msgstr ""
+msgstr "הסכום המקסימלי לתשלום ביורו הוא %s. במטבעות אחרים זה %s."
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_config_settings__sepa_initiating_party_name
@@ -132,13 +132,13 @@ msgstr ""
 #: code:addons/account_sepa/models/account_journal.py:0
 #, python-format
 msgid "Partner %s has no country code defined."
-msgstr ""
+msgstr "לשותף %s לא מוגדר קוד מדינה."
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_journal.py:0
 #, python-format
 msgid "Partner %s has not bank account defined."
-msgstr ""
+msgstr "לשותף %s אין חשבון בנק מוגדר."
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_payment_method
@@ -216,7 +216,7 @@ msgstr ""
 #: code:addons/account_sepa/models/account_batch_payment.py:0
 #, python-format
 msgid "Some payments are above the maximum amount allowed."
-msgstr ""
+msgstr "חלק מהתשלומים הם מעל הסכום המותר."
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_batch_payment.py:0
@@ -246,7 +246,7 @@ msgstr ""
 #: code:addons/account_sepa/models/account_batch_payment.py:0
 #, python-format
 msgid "Some payments have no recipient bank account set."
-msgstr ""
+msgstr "לחלק מהתשלומים לא מוגדר חשבון בנק לקבלת תשלומים."
 
 #. module: account_sepa
 #: code:addons/account_sepa/models/account_batch_payment.py:0
@@ -255,6 +255,8 @@ msgid ""
 "Some payments were instructed in another currency than Euro. This batch "
 "might not be accepted by certain banks because of that."
 msgstr ""
+"חלק מהתשלומים לא מוגדרים במטבע יורו. ייתכן והסבב הזה לא יתקבל בחלק מהבנקים "
+"בגלל סיבה זו."
 
 #. module: account_sepa
 #: model:ir.model.fields.selection,name:account_sepa.selection__account_journal__sepa_pain_version__pain_001_001_03_se
@@ -345,7 +347,7 @@ msgstr ""
 #: code:addons/account_sepa/models/account_journal.py:0
 #, python-format
 msgid "Too many transactions for a single file."
-msgstr ""
+msgstr "יותר מדי פעולות לקובץ אחד."
 
 #. module: account_sepa
 #: model:ir.model.fields,help:account_sepa.field_res_company__sepa_initiating_party_name

@@ -5,8 +5,8 @@
 # Translators:
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2022
 # Martin Trigaux, 2022
-# Jolien De Paepe, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -702,7 +702,7 @@ msgstr "Markeren"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__force_price_included_taxes
 msgid "Force Price Included Taxes"
-msgstr "Forceer prijs inclusief belastingen"
+msgstr "Forceer prijs inclusief BTW"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_account_id
@@ -857,7 +857,7 @@ msgstr "Top! Laten we doorgaan."
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__group_tax_id
 msgid "Group Tax"
-msgstr "Groepsbelasting"
+msgstr "Groeper BTW"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__id
@@ -918,7 +918,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_accountant.field_res_company__invoicing_switch_threshold
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__invoicing_switch_threshold
 msgid "Invoicing Switch Threshold"
-msgstr "Drempel voor facturering"
+msgstr "Overstapdatum facturatie"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__st_line_is_reconciled
@@ -1131,7 +1131,7 @@ msgstr "Match"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "Match Existing Entries"
-msgstr "Overeenkomen met bestaande inzendingen"
+msgstr "Afletteren met bestaande boekingen"
 
 #. module: account_accountant
 #. openerp-web
@@ -1624,7 +1624,7 @@ msgstr "BTW"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_base_amount_currency
 msgid "Tax Base Amount Currency"
-msgstr "Valuta belastinggrondslag"
+msgstr "BTW grondslag in valuta"
 
 #. module: account_accountant
 #. openerp-web
@@ -1651,7 +1651,7 @@ msgstr "Vergrendelingsdatum BTW-aangifte"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__tax_tag_ids
 msgid "Tax Tag"
-msgstr "Belastinglabel"
+msgstr "BTW-label"
 
 #. module: account_accountant
 #. openerp-web
@@ -1689,8 +1689,8 @@ msgid ""
 "The invoice %(display_name_html)s with an open amount of %(open_amount)s "
 "will be entirely paid by the transaction."
 msgstr ""
-"De factuur %(display_name_html)s met een openstaand bedrag van "
-"%(open_amount)s wordt volledig betaald door de transactie."
+"Factuur %(display_name_html)s met een openstaand bedrag van %(open_amount)s "
+"wordt volledig betaald door de transactie."
 
 #. module: account_accountant
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
@@ -1699,8 +1699,8 @@ msgid ""
 "The invoice %(display_name_html)s with an open amount of %(open_amount)s "
 "will be reduced by %(amount)s."
 msgstr ""
-"De factuur %(display_name_html)s met een openstaand bedrag van "
-"%(open_amount)s wordt verminderd met %(amount)s."
+"Factuur %(display_name_html)s met een openstaand bedrag van %(open_amount)s "
+"wordt verminderd met %(amount)s."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -1838,7 +1838,7 @@ msgstr "Controleer"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
 msgid "View"
-msgstr "Weergave"
+msgstr "Bekijk"
 
 #. module: account_accountant
 #. openerp-web
@@ -1957,7 +1957,8 @@ msgstr ""
 msgid ""
 "You might want to set the invoice as %(btn_start)sfully paid%(btn_end)s."
 msgstr ""
-"Misschien wil je de factuur instellen als %(btn_start)sfullypaid%(btn_end)s."
+"Misschien wil je de factuur instellen als %(btn_start)svolledig "
+"betaald%(btn_end)s."
 
 #. module: account_accountant
 #. openerp-web

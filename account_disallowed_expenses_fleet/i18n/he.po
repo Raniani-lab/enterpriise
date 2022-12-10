@@ -47,7 +47,7 @@ msgstr "נוצר ב-"
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_account_disallowed_expenses_category
 msgid "Disallowed Expenses Category"
-msgstr ""
+msgstr "קטגוריית הוצאות לא מורשות"
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_account_disallowed_expenses_fleet_report_handler
@@ -58,7 +58,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_vehicle__rate_ids
 #: model_terms:ir.ui.view,arch_db:account_disallowed_expenses_fleet.fleet_vehicle_view_form
 msgid "Disallowed Expenses Rate"
-msgstr ""
+msgstr "גובה הוצאה לא מורשית"
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_disallowed_expenses_rate__display_name
@@ -98,7 +98,7 @@ msgstr "תאריך תחילה"
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model.fields,help:account_disallowed_expenses_fleet.field_account_disallowed_expenses_category__car_category
 msgid "This checkbox makes the vehicle mandatory while booking a vendor bill."
-msgstr ""
+msgstr "סימון תיבה זו הופכת את הרכב לחובה כשמזמינים חשבונית ספק."
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_fleet_vehicle
@@ -109,7 +109,7 @@ msgstr "רכב"
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_fleet_disallowed_expenses_rate
 msgid "Vehicle Disallowed Expenses Rate"
-msgstr ""
+msgstr "שיעור הוצאה לא מורשית לרכב"
 
 #. module: account_disallowed_expenses_fleet
 #: model_terms:ir.ui.view,arch_db:account_disallowed_expenses_fleet.disallowed_expenses_fleet_search_template_extra_options

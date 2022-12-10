@@ -1776,7 +1776,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "View"
-msgstr "Weergave"
+msgstr "Bekijk"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__website_message_ids

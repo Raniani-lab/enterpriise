@@ -5,18 +5,18 @@
 # Translators:
 # Egon Raamat <egon@avalah.ee>, 2022
 # Marek Pontus, 2022
+# Andre Roomet <andreroomet@gmail.com>, 2022
 # Martin Aavastik <martin@avalah.ee>, 2022
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
-# Andre Roomet <andreroomet@gmail.com>, 2022
 # Algo Kärp <algokarp@gmail.com>, 2022
 # Piia Paurson <piia@avalah.ee>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Rivo Zängov <eraser@eraser.ee>, 2022
 # Martin Trigaux, 2022
 # Triine Aavik <triine@avalah.ee>, 2022
-# Patrick-Jordan Kiudorv, 2022
 # Leaanika Randmets, 2022
 # Jana Jaakson, 2022
+# Patrick-Jordan Kiudorv, 2022
 # 
 msgid ""
 msgstr ""
@@ -24,7 +24,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Jana Jaakson, 2022\n"
+"Last-Translator: Patrick-Jordan Kiudorv, 2022\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -742,13 +742,13 @@ msgstr "Loonud"
 #: model:ir.model.fields,field_description:planning.field_planning_slot_template__create_date
 #: model:ir.model.fields,field_description:planning.field_slot_planning_select_send__create_date
 msgid "Created on"
-msgstr "Loomise kuupäev"
+msgstr "Loodud"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form
 msgid "Date"
-msgstr "Date"
+msgstr "Kuupäev"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_planning__date_end
@@ -862,7 +862,7 @@ msgstr "Loobu"
 #: model:ir.model.fields,field_description:planning.field_planning_slot_template__display_name
 #: model:ir.model.fields,field_description:planning.field_slot_planning_select_send__display_name
 msgid "Display Name"
-msgstr "Näidatav nimi"
+msgstr "Kuva nimi"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_resources
@@ -1077,7 +1077,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Group By"
-msgstr "Grupeeri"
+msgstr "Rühmitamine"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot_template__name
@@ -1137,6 +1137,8 @@ msgid ""
 "If you are happy with your planning, you can now <b>send</b> it to your "
 "employees."
 msgstr ""
+"Valitult tähendab see, et graafikusisestus on töötajale saadetud. "
+"Graafikusisestuse muutmine märgib selle mitte saadetuks."
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_send__include_unassigned
@@ -1200,7 +1202,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:planning.field_planning_slot_template____last_update
 #: model:ir.model.fields,field_description:planning.field_slot_planning_select_send____last_update
 msgid "Last Modified on"
-msgstr "Viimati muudetud"
+msgstr "Viimati muudetud (millal)"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_planning__write_uid
@@ -1211,7 +1213,7 @@ msgstr "Viimati muudetud"
 #: model:ir.model.fields,field_description:planning.field_planning_slot_template__write_uid
 #: model:ir.model.fields,field_description:planning.field_slot_planning_select_send__write_uid
 msgid "Last Updated by"
-msgstr "Viimati uuendas"
+msgstr "Viimati uuendatud (kelle poolt)"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_planning__write_date
@@ -1583,7 +1585,7 @@ msgstr "Eelnev mall"
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
 #, python-format
 msgid "Publish"
-msgstr "Avalikusta"
+msgstr "Avalda"
 
 #. module: planning
 #: model:ir.actions.server,name:planning.model_planning_slot_action_publish_and_send
@@ -1602,7 +1604,7 @@ msgstr "Avalda ja saada"
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 #, python-format
 msgid "Published"
-msgstr "Avalikustatud"
+msgstr "Avaldatud"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_res_company__planning_generation_interval
@@ -1760,7 +1762,7 @@ msgstr ""
 #: model:ir.ui.menu,name:planning.planning_menu_schedule
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_gantt
 msgid "Schedule"
-msgstr "Graafik"
+msgstr "Planeeri"
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_schedule_by_resource
@@ -1934,7 +1936,7 @@ msgstr "Staatus"
 #: model:ir.model.fields,field_description:planning.field_planning_planning__end_datetime
 #: model:ir.model.fields,field_description:planning.field_planning_send__end_datetime
 msgid "Stop Date"
-msgstr "Lõpukuupäev"
+msgstr "Lõpetamise kuupäev"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__template_autocomplete_ids
@@ -2192,7 +2194,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:planning.selection__planning_recurrency__repeat_unit__week
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__repeat_unit__week
 msgid "Weeks"
-msgstr "nädala järel"
+msgstr "Nädalad"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__work_address_id

@@ -39,7 +39,7 @@ msgstr "세율을 자동으로 계산하려면 Taxcloud 자격 증명을 입력�
 #. module: sale_account_taxcloud
 #: model:ir.model,name:sale_account_taxcloud.model_sale_advance_payment_inv
 msgid "Sales Advance Payment Invoice"
-msgstr "선결제 주문 인보이스"
+msgstr "선결제 주문 청구서"
 
 #. module: sale_account_taxcloud
 #: model:ir.model,name:sale_account_taxcloud.model_sale_order

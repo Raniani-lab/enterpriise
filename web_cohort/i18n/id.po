@@ -55,7 +55,7 @@ msgstr "Average Value"
 #. module: web_cohort
 #: model:ir.model,name:web_cohort.model_base
 msgid "Base"
-msgstr "Dasar"
+msgstr "Base"
 
 #. module: web_cohort
 #: model:ir.model.fields.selection,name:web_cohort.selection__ir_actions_act_window_view__view_mode__cohort

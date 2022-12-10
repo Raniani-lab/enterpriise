@@ -27,20 +27,20 @@ msgstr ""
 #: code:addons/account_inter_company_rules/models/account_move.py:0
 #, python-format
 msgid "%s Invoice: %s"
-msgstr ""
+msgstr "%sחשבונית:%s"
 
 #. module: account_inter_company_rules
 #: model:ir.model.fields,field_description:account_inter_company_rules.field_account_bank_statement_line__auto_generated
 #: model:ir.model.fields,field_description:account_inter_company_rules.field_account_move__auto_generated
 #: model:ir.model.fields,field_description:account_inter_company_rules.field_account_payment__auto_generated
 msgid "Auto Generated Document"
-msgstr ""
+msgstr "מסמך שנוצר אוטומטית"
 
 #. module: account_inter_company_rules
 #: code:addons/account_inter_company_rules/models/account_move.py:0
 #, python-format
 msgid "Automatically generated from %(origin)s of company %(company)s."
-msgstr ""
+msgstr "נוצר אוטומטית מתוך %(origin)s של הארגון %(company)s."
 
 #. module: account_inter_company_rules
 #: model:ir.model,name:account_inter_company_rules.model_res_company
@@ -68,7 +68,7 @@ msgstr "לא לסנכרן"
 #, python-format
 msgid ""
 "Generate a bill/invoice when a company confirms an invoice/bill for %s."
-msgstr ""
+msgstr "יצירת חשבונית/דרישה כשארגון מאשר דרישה/חשבונית עבור %s."
 
 #. module: account_inter_company_rules
 #: model_terms:ir.ui.view,arch_db:account_inter_company_rules.view_company_inter_change_inherit_form
@@ -79,7 +79,7 @@ msgstr "עסקאות בין-חברתיות"
 #: model:ir.model.fields,field_description:account_inter_company_rules.field_res_company__intercompany_transaction_message
 #: model:ir.model.fields,field_description:account_inter_company_rules.field_res_config_settings__intercompany_transaction_message
 msgid "Intercompany Transaction Message"
-msgstr ""
+msgstr "הודעת פעולה פנים-ארגונית"
 
 #. module: account_inter_company_rules
 #: model:ir.model,name:account_inter_company_rules.model_account_move
@@ -96,7 +96,7 @@ msgstr "תנועת יומן"
 #: model:ir.model.fields,help:account_inter_company_rules.field_res_config_settings__intercompany_user_id
 msgid ""
 "Responsible user for creation of documents triggered by intercompany rules."
-msgstr ""
+msgstr "המשתמש שאחראי על יצירת מסמכים שנוצרים מתוך כללים פנים-ארגוניים."
 
 #. module: account_inter_company_rules
 #: model:ir.model.fields,field_description:account_inter_company_rules.field_res_company__rule_type
@@ -113,7 +113,7 @@ msgstr "בחירת חברה"
 #: model:ir.model.fields,help:account_inter_company_rules.field_res_company__rule_type
 #: model:ir.model.fields,help:account_inter_company_rules.field_res_config_settings__rule_type
 msgid "Select the type to setup inter company rules in selected company."
-msgstr ""
+msgstr "בחירת הסוג כדי להגדיר כללי ארגון בארגון הנבחר"
 
 #. module: account_inter_company_rules
 #: model:ir.model.fields,field_description:account_inter_company_rules.field_account_bank_statement_line__auto_invoice_id
@@ -125,4 +125,4 @@ msgstr "חשבונית מקור"
 #. module: account_inter_company_rules
 #: model:ir.model.fields.selection,name:account_inter_company_rules.selection__res_company__rule_type__invoice_and_refund
 msgid "Synchronize invoices/bills"
-msgstr ""
+msgstr "סנכרון חשבוניות"

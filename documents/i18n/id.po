@@ -2284,7 +2284,7 @@ msgstr "Bagikan"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__share_link_ids
 msgid "Share Links"
-msgstr ""
+msgstr "Share Links"
 
 #. module: documents
 #: code:addons/documents/controllers/main.py:0
@@ -2426,7 +2426,7 @@ msgstr "Tag"
 #: model:ir.model.fields,field_description:documents.field_documents_folder__facet_ids
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_tree
 msgid "Tag Categories"
-msgstr ""
+msgstr "Tag Kategori"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_form

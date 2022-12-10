@@ -141,7 +141,7 @@ msgstr "<strong>备注 : </strong>"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_point_kanban
 msgid "<strong>Operations :</strong>"
-msgstr "<strong>操作</strong>"
+msgstr "<strong>作业：</strong>"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.worksheet_page
@@ -505,7 +505,7 @@ msgstr "批次行"
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__is_lot_tested_fractionally
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__is_lot_tested_fractionally
 msgid "Lot Tested Fractionally"
-msgstr "批次测试"
+msgstr "批次略微测试"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
@@ -634,7 +634,7 @@ msgstr "正常"
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__norm_unit
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__norm_unit
 msgid "Norm Unit"
-msgstr "正常单位"
+msgstr "基准单位"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__note
@@ -655,7 +655,7 @@ msgstr "OK"
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_check__measure_on__operation
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_on__operation
 msgid "Operation"
-msgstr "操作"
+msgstr "作业"
 
 #. module: quality_control
 #: model:ir.model.fields,help:quality_control.field_quality_check__measure_on
@@ -678,7 +678,7 @@ msgstr "概述"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
 msgid "Partial Transfer Test"
-msgstr "部分转移测试"
+msgstr "部分调拨测试"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form

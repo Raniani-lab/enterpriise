@@ -849,7 +849,7 @@ msgstr "产品包装"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_stock_quant_ids
 msgid "Product Stock Quant"
-msgstr "产品库存量化"
+msgstr "产品库存量"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_uom_uom

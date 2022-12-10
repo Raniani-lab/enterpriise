@@ -1062,7 +1062,7 @@ msgstr "회사 내 이체"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Invoice Accepted with Differed Due Date"
-msgstr "마감일을 변경하여 수락된 인보이스"
+msgstr "마감일 변경이 허용된 청구서"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

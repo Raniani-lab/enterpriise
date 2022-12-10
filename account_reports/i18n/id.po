@@ -504,6 +504,8 @@ msgid ""
 "Actions may trigger specific behavior like opening calendar view or "
 "automatically mark as done when a document is uploaded"
 msgstr ""
+"Tindakan dapat memicu perilaku spesifik seperti membuka tampilan kalender "
+"atau secara otomatis ditandai sebagai selesai saat dokumen diunggah"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_mail_activity

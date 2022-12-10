@@ -140,7 +140,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "-> Refresh"
-msgstr ""
+msgstr "-> Обновить"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.aged_payable_report_period1
@@ -351,6 +351,8 @@ msgid ""
 "<span class=\"o_form_label\">Tax Return Periodicity</span>\n"
 "                        <span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-specific.\" role=\"img\" aria-label=\"Values set here are company-specific.\" groups=\"base.group_multi_company\"/>"
 msgstr ""
+"<span class=\"o_form_label\">Периодичность налоговой декларации</span>\n"
+"                        <span class=\"fa fa-lg fa-building-o\" title=\"Значения зависят от выбранной компании.\" role=\"img\" aria-label=\"Значения зависят от выбранной компании.\" groups=\"base.group_multi_company\"/>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template_with_filter_input_accounts
@@ -403,7 +405,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 msgid "=&gt; Journal Items"
-msgstr ""
+msgstr "=&gt; Записи журнала"
 
 #. module: account_reports
 #: model:ir.model.constraint,message:account_reports.constraint_account_report_horizontal_group_name_uniq
@@ -1035,7 +1037,7 @@ msgstr "Изменить ожидаемую дату платежа"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Closing Entry"
-msgstr ""
+msgstr "Закрывающая запись"
 
 #. module: account_reports
 #: model:account.report.expression,report_line_name:account_reports.account_financial_report_executivesummary_closing_bank_balance0_balance
@@ -1051,7 +1053,7 @@ msgstr "Колонки"
 #. module: account_reports
 #: model:account.report.column,name:account_reports.general_ledger_report_communication
 msgid "Communication"
-msgstr "Общение"
+msgstr "Обозначение "
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_res_company
@@ -1421,7 +1423,7 @@ msgstr "Конец последнего квартала"
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Ending Balance :"
-msgstr ""
+msgstr "Конечный баланс :"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -1955,7 +1957,7 @@ msgstr "Элементы журнала для налогового аудита
 #: model:ir.actions.client,name:account_reports.action_account_report_ja
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_ja
 msgid "Journal Report"
-msgstr ""
+msgstr "Отчет по журналам"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_journal_report_handler
@@ -2536,7 +2538,7 @@ msgstr "Доходность"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "Proposition of tax closing journal entry."
-msgstr ""
+msgstr "Предложение записи для налоговой декларации."
 
 #. module: account_reports
 #: code:addons/account_reports/wizard/multicurrency_revaluation.py:0
@@ -2764,7 +2766,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Starting Balance :"
-msgstr ""
+msgstr "Начальный баланс :"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_manager__summary
@@ -2846,7 +2848,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.setup_financial_year_opening_form
 msgid "Tax Return"
-msgstr ""
+msgstr "Налоговая декларация"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_tax_unit
@@ -2872,13 +2874,13 @@ msgstr ""
 #: code:addons/account_reports/models/res_company.py:0
 #, python-format
 msgid "Tax return for %s%s"
-msgstr ""
+msgstr "Налоговая декларация за %s%s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/res_company.py:0
 #, python-format
 msgid "Tax return from %s to %s%s"
-msgstr ""
+msgstr "Налоговая декларация c %s по %s%s"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_journal_report.py:0

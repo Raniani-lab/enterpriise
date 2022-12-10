@@ -180,7 +180,7 @@ msgstr "고객"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_config_settings__extract_out_invoice_digitalization_mode
 msgid "Customer Invoices"
-msgstr "고객 인보이스"
+msgstr "고객 청구서"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_company__extract_out_invoice_digitalization_mode
@@ -218,7 +218,7 @@ msgstr ""
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.res_config_settings_view_form
 msgid "Enable to get only one invoice line per tax"
-msgstr "세금 항목별 하나의 인보이스 내역만 받을 수 있습니다."
+msgstr "세금 항목별 하나의 청구서 내역만 받을 수 있습니다."
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_bank_statement_line__extract_error_message
@@ -258,7 +258,7 @@ msgstr "추출 상태"
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_account_invoice_extract_words
 msgid "Extracted words from invoice scan"
-msgstr "인보이스를 스캔하여 추출된 단어"
+msgstr "청구서를 스캔하여 추출된 단어"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
@@ -297,13 +297,13 @@ msgstr ""
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__invoice_id
 msgid "Invoice"
-msgstr "인보이스"
+msgstr "청구서"
 
 #. module: account_invoice_extract
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "Invoice Date"
-msgstr "인보이스 발행일"
+msgstr "청구서 발행일"
 
 #. module: account_invoice_extract
 #: model:ir.actions.server,name:account_invoice_extract.ir_cron_ocr_parse_ir_actions_server
@@ -317,7 +317,7 @@ msgstr ""
 #: model:ir.cron,cron_name:account_invoice_extract.ir_cron_update_ocr_status
 #: model:ir.cron,name:account_invoice_extract.ir_cron_update_ocr_status
 msgid "Invoice OCR: Update All Status"
-msgstr "인보이스 OCR : 모든 상태 업데이트"
+msgstr "청구서 OCR : 전체 상태 업데이트"
 
 #. module: account_invoice_extract
 #: model:ir.actions.server,name:account_invoice_extract.ir_cron_ocr_validate_ir_actions_server
@@ -530,7 +530,7 @@ msgstr ""
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "You don't have enough credit to extract data from your invoice."
-msgstr "인보이스에서 데이터를 추출하기에 충분한 크레딧이 없습니다."
+msgstr "청구서에서 데이터를 추출하기에 충분한 크레딧이 없습니다."
 
 #. module: account_invoice_extract
 #: code:addons/account_invoice_extract/models/account_invoice.py:0

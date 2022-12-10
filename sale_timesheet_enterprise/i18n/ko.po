@@ -28,7 +28,7 @@ msgstr "<span class=\"o_form_label\">청구 기준</span>"
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_form_so_line_inherit
 msgid "<span class=\"o_stat_text\">Invoice</span>"
-msgstr "<span class=\"o_stat_text\">인보이스</span>"
+msgstr "<span class=\"o_stat_text\">청구서</span>"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_form_so_line_inherit
@@ -89,7 +89,7 @@ msgstr "소요 시간"
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
 #, python-format
 msgid "Invoice"
-msgstr "인보이스"
+msgstr "청구서"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_account_move_line

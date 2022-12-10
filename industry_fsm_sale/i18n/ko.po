@@ -180,7 +180,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_list_fsm_sale_inherit
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
 msgid "Create Invoice"
-msgstr "인보이스 발행"
+msgstr "청구서 발행"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
@@ -267,7 +267,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model.fields.selection,name:industry_fsm_sale.selection__report_project_task_user_fsm__invoice_status__invoiced
 msgid "Fully Invoiced"
-msgstr "인보이스 발행 완료"
+msgstr "청구서 발행 완료"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
@@ -289,18 +289,18 @@ msgstr "진행 중"
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
 msgid "Invoice"
-msgstr "인보이스"
+msgstr "청구서"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__portal_invoice_count
 msgid "Invoice Count"
-msgstr "인보이스 수"
+msgstr "청구서 수"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__invoice_status
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_report_project_task_user_fsm__invoice_status
 msgid "Invoice Status"
-msgstr "인보이스 상태"
+msgstr "청구서 상태"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.actions.act_window,help:industry_fsm_sale.project_task_action_to_invoice_fsm
@@ -314,7 +314,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_form_quotation
 #, python-format
 msgid "Invoices"
-msgstr "인보이스"
+msgstr "청구서"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__is_task_phone_update
@@ -368,12 +368,12 @@ msgstr "작업이 없습니다."
 #. module: industry_fsm_sale
 #: model:ir.model.fields.selection,name:industry_fsm_sale.selection__report_project_task_user_fsm__invoice_status__no
 msgid "Nothing to Invoice"
-msgstr "인보이스 발행할 내용 없음"
+msgstr "청구할 내용 없음"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_task__invoice_count
 msgid "Number of invoices"
-msgstr "인보이스 수"
+msgstr "청구서 수"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__fsm_partner_price
@@ -497,7 +497,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_sale_advance_payment_inv
 msgid "Sales Advance Payment Invoice"
-msgstr "선결제 주문 인보이스"
+msgstr "선결제 주문 청구서"
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_sale_order
@@ -607,7 +607,7 @@ msgstr "시간 &amp; 재료"
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_task_view_search_fsm_inherit_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.report_project_task_user_fsm_view_search_inherit_sale
 msgid "To Invoice"
-msgstr "인보이스 발행 대기"
+msgstr "청구서 발행 대기"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material

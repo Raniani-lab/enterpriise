@@ -569,7 +569,7 @@ msgstr "E-mail onderwerp"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Exclude from Follow-ups"
-msgstr "Uitsluiten van follow-ups"
+msgstr "Uitsluiten van herinnering"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__email_recipient_ids

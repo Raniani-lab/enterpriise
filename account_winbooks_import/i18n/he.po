@@ -106,7 +106,7 @@ msgstr "ייבא"
 #. module: account_winbooks_import
 #: model_terms:ir.ui.view,arch_db:account_winbooks_import.winbooks_import_form
 msgid "Import (safe-mode)"
-msgstr ""
+msgstr "ייבוא (מצב בטוח)"
 
 #. module: account_winbooks_import
 #. openerp-web
@@ -118,7 +118,7 @@ msgstr ""
 #. module: account_winbooks_import
 #: model:ir.model.fields,field_description:account_winbooks_import.field_account_winbooks_import_wizard__only_open
 msgid "Import only open years"
-msgstr ""
+msgstr "ייבוא שנים פתוחות בלבד"
 
 #. module: account_winbooks_import
 #: model:ir.model,name:account_winbooks_import.model_account_move_line
@@ -159,7 +159,7 @@ msgstr "לא בוצע"
 #: code:addons/account_winbooks_import/wizard/import_wizard.py:0
 #, python-format
 msgid "Please define the country on your company."
-msgstr ""
+msgstr "נא להגדיר את מדינת הארגון."
 
 #. module: account_winbooks_import
 #: model_terms:ir.ui.view,arch_db:account_winbooks_import.winbooks_import_form

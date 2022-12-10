@@ -725,7 +725,7 @@ msgstr "Google Play Store"
 #: code:addons/timesheet_grid/static/src/js/timesheet_grid/timesheet_grid_group_by_no_date_mixin.js:0
 #, python-format
 msgid "Grouping by date is not supported"
-msgstr ""
+msgstr "Tidak dapat mengelompokkan berdarsakan tanggal "
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
@@ -1040,7 +1040,7 @@ msgstr ""
 #: code:addons/timesheet_grid/static/src/xml/timesheet_grid.xml:0
 #, python-format
 msgid "See all the records aggregated in this cell"
-msgstr ""
+msgstr "Lihat semua record agregat dalam cell ini"
 
 #. module: timesheet_grid
 #. openerp-web

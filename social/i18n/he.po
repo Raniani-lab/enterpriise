@@ -15,6 +15,7 @@
 # Lilach Gilliam <lilach.gilliam@gmail.com>, 2022
 # ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022
 # NoaFarkash, 2022
+# Ha Ketem <haketem@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -22,7 +23,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: NoaFarkash, 2022\n"
+"Last-Translator: Ha Ketem <haketem@gmail.com>, 2022\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -244,7 +245,7 @@ msgstr "קמפיינים"
 msgid ""
 "Campaigns are used to centralize your marketing efforts and track their "
 "results."
-msgstr ""
+msgstr "שימוש בקמפיינים כדי לאחד את מאמצי השיווק ולעקוב אחרי התוצאות."
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__can_link_accounts
@@ -943,7 +944,7 @@ msgstr "מועד אחרון לפעילות שלי"
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_search
 msgid "My Posts"
-msgstr ""
+msgstr "הפוסטים שלי"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_stream_post_view_search
@@ -1671,12 +1672,12 @@ msgstr "קמפיין UTM"
 #: model:ir.model,name:social.model_utm_medium
 #: model:ir.model.fields,field_description:social.field_social_account__utm_medium_id
 msgid "UTM Medium"
-msgstr ""
+msgstr "ערוץ UTM"
 
 #. module: social
 #: model:ir.model,name:social.model_utm_source
 msgid "UTM Source"
-msgstr ""
+msgstr "מקור UTM"
 
 #. module: social
 #: code:addons/social/models/social_post.py:0

@@ -120,7 +120,7 @@ msgstr "آخر تحديث في"
 #. module: account_accountant_batch_payment
 #: model:ir.model,name:account_accountant_batch_payment.model_bank_rec_widget_line
 msgid "Line of the lines_widget"
-msgstr ""
+msgstr "بند من lines_widget "
 
 #. module: account_accountant_batch_payment
 #: model:ir.model,name:account_accountant_batch_payment.model_account_batch_payment_rejection
@@ -140,12 +140,12 @@ msgstr ""
 #. module: account_accountant_batch_payment
 #: model:ir.model.fields,field_description:account_accountant_batch_payment.field_account_batch_payment_rejection__next_action_todo
 msgid "Next Action Todo"
-msgstr ""
+msgstr "الإجراء التالي للقيام به "
 
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_list_bank_rec_widget
 msgid "Open Amount"
-msgstr ""
+msgstr "المبلغ المفتوح "
 
 #. module: account_accountant_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_accountant_batch_payment.view_account_batch_payment_list_bank_rec_widget

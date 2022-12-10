@@ -493,12 +493,12 @@ msgstr ""
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__word_page
 msgid "Word Page"
-msgstr ""
+msgstr "עמוד מילה"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__word_text
 msgid "Word Text"
-msgstr ""
+msgstr "טקסט מילה"
 
 #. module: hr_expense_extract
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
@@ -515,7 +515,7 @@ msgstr ""
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "You must send the same quantity of documents and file names"
-msgstr ""
+msgstr "יש לשלוח את אותה כמות של מסמכים ושל שמות קבצים"
 
 #. module: hr_expense_extract
 #. openerp-web

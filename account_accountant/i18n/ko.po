@@ -1956,7 +1956,7 @@ msgstr "다음에서의 거래"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "unpaid invoices"
-msgstr "미지급 인보이스"
+msgstr "미지급 청구서"
 
 #. module: account_accountant
 #. openerp-web

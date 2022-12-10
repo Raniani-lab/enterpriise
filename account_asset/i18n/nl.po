@@ -3,7 +3,6 @@
 # 	* account_asset
 # 
 # Translators:
-# Lukas Van Cauter <cvl@odoo.com>, 2022
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2022
@@ -165,7 +164,7 @@ msgstr "Er is een bruto verhoging aangemaakt: %s"
 #, python-format
 msgid "A non deductible tax value of %s was added to %s's initial value of %s"
 msgstr ""
-"Een niet-aftrekbare belastingwaarde van %s is toegevoegd aan %s's originele "
+"Een niet-aftrekbare BTW-waarde van %s is toegevoegd aan %s's originele "
 "waarde van %s"
 
 #. module: account_asset
@@ -1534,7 +1533,7 @@ msgstr "Geen prorata"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__non_deductible_tax_value
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__non_deductible_tax_value
 msgid "Non Deductible Tax Value"
-msgstr "Niet-aftrekbare belastingwaarde"
+msgstr "Niet-aftrekbare BTW-waarde"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__salvage_value

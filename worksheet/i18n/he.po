@@ -156,7 +156,7 @@ msgstr "התבנית להדפסת תבנית גיליון עבודה זה צרי
 #: code:addons/worksheet/models/worksheet_template.py:0
 #, python-format
 msgid "There is still %s linked to this template. Please unlink them first."
-msgstr ""
+msgstr "עדיין יש %s מקושר לתבנית זו. נא להסיר את הקישור קודם."
 
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__worksheet_count

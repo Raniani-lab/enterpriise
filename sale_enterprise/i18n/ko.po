@@ -69,12 +69,12 @@ msgstr "현황판"
 #: model:ir.model.fields.selection,name:sale_enterprise.selection__sale_report__invoice_status__invoiced
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit
 msgid "Fully Invoiced"
-msgstr "인보이스 발행 완료"
+msgstr "청구서 발행 완료"
 
 #. module: sale_enterprise
 #: model:ir.model.fields,field_description:sale_enterprise.field_sale_report__invoice_status
 msgid "Invoice Status"
-msgstr "인보이스 상태"
+msgstr "청구서 상태"
 
 #. module: sale_enterprise
 #: model_terms:ir.actions.act_window,help:sale_enterprise.sale_report_action_dashboard
@@ -84,7 +84,7 @@ msgstr "아직 정보가 없습니다!"
 #. module: sale_enterprise
 #: model:ir.model.fields.selection,name:sale_enterprise.selection__sale_report__invoice_status__no
 msgid "Nothing to Invoice"
-msgstr "인보이스 발행할 내용 없음"
+msgstr "청구서 발행할 내용 없음"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard
@@ -110,7 +110,7 @@ msgstr "영업팀"
 #: model:ir.model.fields.selection,name:sale_enterprise.selection__sale_report__invoice_status__to_invoice
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.view_order_product_search_inherit
 msgid "To Invoice"
-msgstr "인보이스 발행 대기"
+msgstr "청구서 발행 대기"
 
 #. module: sale_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_enterprise.sale_report_view_dashboard

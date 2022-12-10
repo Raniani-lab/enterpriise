@@ -65,7 +65,7 @@ msgstr "线上帐户"
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_journal__account_online_link_id
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_account__account_online_link_id
 msgid "Account Online Link"
-msgstr "线上账户链接"
+msgstr "线上科目链接"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal_line__account_online_wizard_id
@@ -835,7 +835,7 @@ msgstr "您不能将两个账户链接到同一个账簿。"
 #: code:addons/account_online_synchronization/models/account_online.py:0
 #, python-format
 msgid "You cannot have two journals associated with the same Online Account."
-msgstr "您不能有两个账簿与同一个线上账户相关联。"
+msgstr "您不能有两个账簿与同一个线上科目相关联。"
 
 #. module: account_online_synchronization
 #: model_terms:ir.ui.view,arch_db:account_online_synchronization.view_account_link_journal_form_wizard

@@ -246,7 +246,7 @@ msgstr "회사"
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__company_id
 msgid "Company for whose invoices the mandate can be used."
-msgstr "인보이스에 위임장을 사용할 수 있는 회사입니다."
+msgstr "청구서에 위임장을 사용할 수 있는 회사입니다."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model,name:account_sepa_direct_debit.model_res_config_settings
@@ -477,13 +477,13 @@ msgstr "잘못된 채권자 식별자. 잘못된 형식."
 #. module: account_sepa_direct_debit
 #: model:mail.message.subtype,description:account_sepa_direct_debit.sdd_mt_invoice_paid_with_mandate
 msgid "Invoice paid via direct debit."
-msgstr "자동 이체를 통해 결제된 인보이스"
+msgstr "자동 이체로 결제된 청구서"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__paid_invoice_ids
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sepa_direct_debit_mandate_form
 msgid "Invoices Paid"
-msgstr "지불 완료된 인보이스"
+msgstr "지불 완료된 청구서"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.view_account_invoice_filter
@@ -699,12 +699,12 @@ msgstr "최초의 SEPA 위임장"
 #: code:addons/account_sepa_direct_debit/models/sdd_mandate.py:0
 #, python-format
 msgid "Paid Invoices"
-msgstr "결제 완료된 인보이스"
+msgstr "결제 완료된 청구서"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__paid_invoices_nber
 msgid "Paid Invoices Number"
-msgstr "결제 완료된 인보이스 번호"
+msgstr "결제 완료된 청구서 번호"
 
 #. module: account_sepa_direct_debit
 #: model:mail.message.subtype,name:account_sepa_direct_debit.sdd_mt_invoice_paid_with_mandate

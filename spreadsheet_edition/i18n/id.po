@@ -695,7 +695,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #, python-format
 msgid "Sorting"
-msgstr ""
+msgstr "Penyortiran"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_collaborative_mixin__spreadsheet_revision_ids

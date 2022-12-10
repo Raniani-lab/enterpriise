@@ -580,17 +580,17 @@ msgstr "작업 필요"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Invoice No."
-msgstr ""
+msgstr "청구서 번호"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_move_line__invoice_date
 msgid "Invoice/Bill Date"
-msgstr "인보이스/청구서 발행일"
+msgstr "청구서/공급업체 청구서 발행일"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Invoices"
-msgstr "인보이스"
+msgstr "청구서"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__is_mail_template_editor
@@ -728,7 +728,7 @@ msgstr "출발지"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_search_view
 msgid "Overdue Invoices"
-msgstr "연체된 인보이스"
+msgstr "연체된 청구서"
 
 #. module: account_followup
 #: code:addons/account_followup/models/res_partner.py:0
@@ -898,7 +898,7 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model.fields,help:account_followup.field_account_move_line__invoice_origin
 msgid "The document(s) that generated the invoice."
-msgstr "인보이스를 생성한 문서"
+msgstr "청구서 생성 문서"
 
 #. module: account_followup
 #: model:ir.model.fields,help:account_followup.field_account_followup_followup_line__delay
@@ -956,13 +956,13 @@ msgstr "미조정된 Aml"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.followup_search_template
 msgid "With Overdue Invoices"
-msgstr "연체 청구서 사용"
+msgstr "연체된 청구서 포함"
 
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__res_partner__followup_status__with_overdue_invoices
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "With overdue invoices"
-msgstr "연체 청구서 사용"
+msgstr "연체된 청구서 포함"
 
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_followup_manual_reminder

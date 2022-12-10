@@ -140,7 +140,7 @@ msgstr "대변전표 만들기"
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.customer_invoice_rule
 msgid "Create Customer Invoice"
-msgstr "고객 인보이스 발행"
+msgstr "고객 청구서 발행"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__create_uid
@@ -160,7 +160,7 @@ msgstr "대변전표"
 #. module: documents_account
 #: model:ir.model.fields.selection,name:documents_account.selection__documents_workflow_rule__create_model__account_move_out_invoice
 msgid "Customer invoice"
-msgstr "고객 인보이스"
+msgstr "고객 청구서"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__display_name
@@ -356,4 +356,4 @@ msgstr "계정 기본 폴더"
 #. module: documents_account
 #: model_terms:ir.ui.view,arch_db:documents_account.view_account_move_form_inherit_documents_account
 msgid "to mark this invoice as paid."
-msgstr "인보이스를 결제완료 표시"
+msgstr "이 청구서를 지불 완료로 표시하기."

@@ -89,6 +89,8 @@ msgid ""
 "'View Bank Statement' caret option is only available for report lines "
 "targeting bank statements."
 msgstr ""
+"Опція створення 'Переглянути банківську виписку' доступна лише для рядків "
+"звіту банківської виписки."
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -303,12 +305,12 @@ msgstr "<span class=\"fa fa-filter\"/> Опції:"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
 msgid "<span class=\"fa fa-folder-open\"/> Analytic Filter"
-msgstr ""
+msgstr "<span class=\"fa fa-folder-open\"/> Фільтр аналітики"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
 msgid "<span class=\"fa fa-folder-open\"/> Analytic Group By"
-msgstr ""
+msgstr "<span class=\"fa fa-folder-open\"/> Групування аналітики"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_partner
@@ -726,7 +728,7 @@ msgstr "Аналітичні рахунки:"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__filter_analytic_groupby
 msgid "Analytic Group By"
-msgstr ""
+msgstr "Групування аналітики"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
@@ -3010,6 +3012,7 @@ msgstr "Головна компанія одиниці податку повин
 msgid ""
 "The selected report line does not target a Journal Entry or a Journal Item."
 msgstr ""
+"Вибраний рядок звіту не націлений на запис журналу або елемент журналу."
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_res_company__account_tax_unit_ids

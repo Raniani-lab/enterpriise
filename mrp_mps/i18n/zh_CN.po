@@ -282,7 +282,7 @@ msgstr "外部 ID"
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_mrp_mps_forecast_details
 msgid "Forecast Demand Details"
-msgstr "显示需求明细"
+msgstr "预测需求详情"
 
 #. module: mrp_mps
 #. openerp-web
@@ -646,7 +646,7 @@ msgid ""
 "                    It's the perfect tool to support your S&OP meetings."
 msgstr ""
 "主计划将您的销售和需求预测转换为每个组件的生产和采购计划。\n"
-"它可以根据诸如安全库存，生产能力，交货时间之类的约束确保一切按计划进行。\n"
+"它可以根据诸如安全库存，生能力力，交货时间之类的约束确保一切按计划进行。\n"
 "它是支持您的S＆OP会议的理想工具。"
 
 #. module: mrp_mps

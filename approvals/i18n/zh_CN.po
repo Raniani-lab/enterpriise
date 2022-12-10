@@ -535,7 +535,7 @@ msgstr "有产品"
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_quantity
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_quantity
 msgid "Has Quantity"
-msgstr "包含数量"
+msgstr "有数量"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_reference
@@ -848,7 +848,7 @@ msgstr "要验证的申请数量"
 #. module: approvals
 #: model:res.groups,name:approvals.group_approval_user
 msgid "Officer : Approve all requests"
-msgstr "官员：批准所有请求"
+msgstr "主管：批准所有请求"
 
 #. module: approvals
 #: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_amount__optional

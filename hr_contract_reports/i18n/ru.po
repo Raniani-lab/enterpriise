@@ -32,7 +32,7 @@ msgstr ""
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__count_new_employee
 msgid "# New Employees"
-msgstr ""
+msgstr "# Новые сотрудники"
 
 #. module: hr_contract_reports
 #: model:ir.model.fields,field_description:hr_contract_reports.field_hr_contract_employee_report__company_id

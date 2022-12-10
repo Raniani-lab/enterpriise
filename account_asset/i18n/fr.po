@@ -815,12 +815,12 @@ msgstr "Dégressif puis linéaire."
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Def. Expenses"
-msgstr ""
+msgstr "Dépenses différées"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 msgid "Def. Revenues"
-msgstr ""
+msgstr "Revenus différés"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0
@@ -1676,7 +1676,7 @@ msgstr "Achat : Immobilisation"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Re-evaluate"
-msgstr ""
+msgstr "Réévaluez"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -2092,6 +2092,8 @@ msgid ""
 "You cannot delete an asset linked to posted entries.\n"
 "You should either confirm the asset, then, sell or dispose of it, or cancel the linked journal entries."
 msgstr ""
+"Vous ne pouvez pas supprimer une immobilisation liée à des écritures comptables.\n"
+"Vous devez soit confirmer l'immobilisation, puis la vendre ou la céder, soit annuler les écritures liées."
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0

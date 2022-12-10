@@ -74,7 +74,7 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
 msgid "Active invoices"
-msgstr "활성화된 인보이스"
+msgstr "활성화된 청구서"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
@@ -281,7 +281,7 @@ msgstr "예측된 KPI"
 #: model_terms:ir.actions.act_window,help:sale_subscription_dashboard.action_move_line_entries_report
 msgid ""
 "From this view, have an analysis of your different invoice line entries."
-msgstr "이 화면에서 다른 인보이스 항목을 분석할 수 있습니다."
+msgstr "이 화면에서 다른 청구서 항목을 분석할 수 있습니다."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -316,7 +316,7 @@ msgstr "In"
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_pivot
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
 msgid "Invoice Line Entries Analysis"
-msgstr "인보이스 내역 분석"
+msgstr "청구서 내역 분석"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:0
@@ -516,7 +516,7 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
 msgid "OUT invoices"
-msgstr "OUT 인보이스"
+msgstr "OUT 청구서"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -789,7 +789,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "There is no invoice during this period."
-msgstr "해당 기간동안 인보이스 내역이 없습니다."
+msgstr "해당 기간동안 청구서 내역이 없습니다."
 
 #. module: sale_subscription_dashboard
 #. openerp-web

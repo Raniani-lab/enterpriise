@@ -726,7 +726,7 @@ msgstr "مخطط شريطي مكدس "
 #: code:addons/spreadsheet_edition/static/src/bundle/chart/side_panels/odoo_line/odoo_line_config_panel.xml:0
 #, python-format
 msgid "Stacked linechart"
-msgstr ""
+msgstr "رسم بياني خطي مكدس "
 
 #. module: spreadsheet_edition
 #. openerp-web

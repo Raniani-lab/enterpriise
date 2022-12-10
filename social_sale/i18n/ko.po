@@ -35,7 +35,7 @@ msgstr "<small>수익 :</small>"
 #. module: social_sale
 #: model:ir.model.fields,field_description:social_sale.field_social_post__sale_invoiced_amount
 msgid "Invoiced Amount"
-msgstr "인보이스 금액"
+msgstr "청구 금액"
 
 #. module: social_sale
 #: model:ir.model.fields,field_description:social_sale.field_social_post__sale_quotation_count

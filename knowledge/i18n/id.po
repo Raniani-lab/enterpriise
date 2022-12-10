@@ -860,7 +860,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_member_view_search
 #, python-format
 msgid "Article"
-msgstr ""
+msgstr "Artikel"
 
 #. module: knowledge
 #: code:addons/knowledge/models/knowledge_article_member.py:0
@@ -915,7 +915,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
 #, python-format
 msgid "Articles"
-msgstr ""
+msgstr "Artikel"
 
 #. module: knowledge
 #: code:addons/knowledge/models/knowledge_article.py:0

@@ -79,7 +79,7 @@ msgstr ""
 #: model:mail.template,name:account_invoice_extract.account_invoice_extract_no_credit
 #: model:mail.template,subject:account_invoice_extract.account_invoice_extract_no_credit
 msgid "Account Invoice Extract Notification"
-msgstr ""
+msgstr "הודעת חילוץ פרטי חשבון וחשבונית"
 
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
@@ -87,6 +87,7 @@ msgid ""
 "All fields will be automated by Artificial Intelligence, it might take 5 "
 "seconds."
 msgstr ""
+"כל השדות ימולאו אוטומטית באמצעו תבינה מלאכותית, זה יכול לקחת כ-5 שניות."
 
 #. module: account_invoice_extract
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
@@ -262,7 +263,7 @@ msgstr "מילים מחולצות מסריקת חשבונית"
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "Extraction Information"
-msgstr ""
+msgstr "מידע שחולץ"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__field
@@ -316,7 +317,7 @@ msgstr ""
 #: model:ir.cron,cron_name:account_invoice_extract.ir_cron_update_ocr_status
 #: model:ir.cron,name:account_invoice_extract.ir_cron_update_ocr_status
 msgid "Invoice OCR: Update All Status"
-msgstr ""
+msgstr "זיהוי תווים אופטי בחשבונית: עדכון כל הסטטוס"
 
 #. module: account_invoice_extract
 #: model:ir.actions.server,name:account_invoice_extract.ir_cron_ocr_validate_ir_actions_server
@@ -485,37 +486,37 @@ msgstr "ממתין לאישור"
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__word_box_angle
 msgid "Word Box Angle"
-msgstr ""
+msgstr "זווית תיבת מילה"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__word_box_height
 msgid "Word Box Height"
-msgstr ""
+msgstr "גובה תיבת מילה"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__word_box_midX
 msgid "Word Box Midx"
-msgstr ""
+msgstr "אמצע תיבת מילה"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__word_box_midY
 msgid "Word Box Midy"
-msgstr ""
+msgstr "Y אמצע תיבת מילה"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__word_box_width
 msgid "Word Box Width"
-msgstr ""
+msgstr "רוחב תיבת מילה"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__word_page
 msgid "Word Page"
-msgstr ""
+msgstr "עמוד מילה"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_account_invoice_extract_words__word_text
 msgid "Word Text"
-msgstr ""
+msgstr "טקסט מילה"
 
 #. module: account_invoice_extract
 #. openerp-web
@@ -529,20 +530,20 @@ msgstr ""
 #. module: account_invoice_extract
 #: model_terms:ir.ui.view,arch_db:account_invoice_extract.view_move_form_inherit_ocr
 msgid "You don't have enough credit to extract data from your invoice."
-msgstr ""
+msgstr "אין לך מספיק קרדיט כדי לחלץ מידע מהחשבונית שלך."
 
 #. module: account_invoice_extract
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid "You must send the same quantity of documents and file names"
-msgstr ""
+msgstr "יש לשלוח את אותה כמות של מסמכים ושל שמות קבצים"
 
 #. module: account_invoice_extract
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
 #, python-format
 msgid ""
 "Your PDF file is protected by a password. The OCR can't extract data from it"
-msgstr ""
+msgstr "ה-PDF שלך מוגן בסיסמא. מערכת זיהוי התווים לא יכולה לחלץ מהקובץ מידע."
 
 #. module: account_invoice_extract
 #: code:addons/account_invoice_extract/models/account_invoice.py:0
@@ -551,6 +552,8 @@ msgid ""
 "Your invoice is too heavy to be processed by the OCR. Try to reduce the "
 "number of pages and avoid pages with too many text"
 msgstr ""
+"החשבונית כבדה מדי לעיבוד של מזהה התווים האופטי (OCR). נסו להקטין את מספר "
+"הדפים והמנעו מדפים עם יותר מדי טקסט"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__extract_not_ready

@@ -25,28 +25,28 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "%s days"
-msgstr ""
+msgstr "%s hari"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/settings_form_view/res_config_edition.xml:0
 #, python-format
 msgid "(Enterprise Edition)"
-msgstr ""
+msgstr "(Edisi Enterprise)"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid ") with the instructions to follow"
-msgstr ""
+msgstr ") dengan instruksi untuk diikuti"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "1 month"
-msgstr ""
+msgstr "1 bulan"
 
 #. module: web_enterprise
 #. openerp-web
@@ -61,7 +61,7 @@ msgstr "Tindakan"
 #: code:addons/web_enterprise/static/src/views/list/list_renderer_desktop.xml:0
 #, python-format
 msgid "Add Custom Field"
-msgstr ""
+msgstr "Tambahkan Field Kustom"
 
 #. module: web_enterprise
 #. openerp-web
@@ -69,7 +69,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
 msgid "Add new fields and much more with"
-msgstr ""
+msgstr "Tambahkan field baru dan lebih banyak lagi dengan"
 
 #. module: web_enterprise
 #. openerp-web
@@ -97,7 +97,7 @@ msgstr "Bersihkan"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Click here to send an email"
-msgstr ""
+msgstr "Klik di sini untuk mengirimkan email"
 
 #. module: web_enterprise
 #. openerp-web
@@ -120,39 +120,40 @@ msgid ""
 "Contact your sales representative to help you to unlink your previous "
 "database"
 msgstr ""
+"Hubungi wakil sales Anda untuk membantu Anda unlink database Anda sebelumnya"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
 #, python-format
 msgid "Control panel toolbar"
-msgstr ""
+msgstr "Toolbar control panel"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/settings_form_view/res_config_edition.xml:0
 #, python-format
 msgid "Database expiration:"
-msgstr ""
+msgstr "Tanggal berakhir database:"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Dismiss"
-msgstr ""
+msgstr "Dismiss"
 
 #. module: web_enterprise
 #: model:ir.actions.server,name:web_enterprise.download_contact
 msgid "Download (vCard)"
-msgstr ""
+msgstr "Unduh (vCard)"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Error reason:"
-msgstr ""
+msgstr "Alasan error:"
 
 #. module: web_enterprise
 #. openerp-web
@@ -172,7 +173,7 @@ msgstr "HTTP routing"
 #: code:addons/web_enterprise/static/src/webclient/navbar/navbar.js:0
 #, python-format
 msgid "Home menu"
-msgstr ""
+msgstr "Menu Home"
 
 #. module: web_enterprise
 #. openerp-web
@@ -180,21 +181,21 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
 msgid "Install Odoo Studio"
-msgstr ""
+msgstr "Instal Odoo Studio"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Log in as an administrator to correct the issue."
-msgstr ""
+msgstr "Log in sebagai administrator untuk membetulkan masalah ini."
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Login to your Odoo.com dashboard then unlink your previous database:"
-msgstr ""
+msgstr "Login ke dashboard Odoo.com Anda lalu unlink database sebelumnya:"
 
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_ui_menu
@@ -206,7 +207,7 @@ msgstr "Menu"
 #: code:addons/web_enterprise/static/src/legacy/xml/web_calendar.xml:0
 #, python-format
 msgid "No filter available"
-msgstr ""
+msgstr "Tidak ada filter yang tersedia"
 
 #. module: web_enterprise
 #. openerp-web
@@ -227,7 +228,7 @@ msgstr "Odoo"
 #: code:addons/web_enterprise/static/src/webclient/settings_form_view/res_config_edition.xml:0
 #, python-format
 msgid "Odoo Enterprise Edition License V1.0"
-msgstr ""
+msgstr "Odoo Enterprise Edition License V1.0"
 
 #. module: web_enterprise
 #. openerp-web
@@ -235,7 +236,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
 msgid "Odoo Studio"
-msgstr ""
+msgstr "Odoo Studio"
 
 #. module: web_enterprise
 #. openerp-web
@@ -243,21 +244,21 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Odoo Support"
-msgstr ""
+msgstr "Odoo Support"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Paste code here"
-msgstr ""
+msgstr "Tempel kode di sini"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/navbar/navbar.js:0
 #, python-format
 msgid "Previous view"
-msgstr ""
+msgstr "Tampilan sebelumnya"
 
 #. module: web_enterprise
 #. openerp-web
@@ -274,14 +275,14 @@ msgstr "Pencarian Cepat: %s"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Refresh subscription status"
-msgstr ""
+msgstr "Refresh status langgana"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Register your subscription"
-msgstr ""
+msgstr "Daftarkan langganan Anda"
 
 #. module: web_enterprise
 #. openerp-web
@@ -295,7 +296,7 @@ msgstr "Hapus"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Renew your subscription"
-msgstr ""
+msgstr "Perbarui langganan Anda"
 
 #. module: web_enterprise
 #. openerp-web
@@ -318,7 +319,7 @@ msgstr "Scan barcode"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Sending the instructions by email ..."
-msgstr ""
+msgstr "Mengirimkan instruksi melalui email ..."
 
 #. module: web_enterprise
 #. openerp-web
@@ -328,13 +329,15 @@ msgid ""
 "Something went wrong while registering your database. You can try again or "
 "contact"
 msgstr ""
+"Terjadi kesalahan saat mendaftarkan database Anda. Anda dapat coba lagi atau"
+" hubungi"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Subscription Code:"
-msgstr ""
+msgstr "Kode Langganan:"
 
 #. module: web_enterprise
 #. openerp-web
@@ -349,7 +352,7 @@ msgstr "TIP"
 #, python-format
 msgid ""
 "Thank you, your registration was successful! Your database is valid until"
-msgstr ""
+msgstr "Terima kasih, pendaftaran Anda sukses! Database Anda valid sampai"
 
 #. module: web_enterprise
 #. openerp-web
@@ -358,7 +361,7 @@ msgstr ""
 msgid ""
 "Thank you, your registration was successful! Your database is valid until "
 "%s."
-msgstr ""
+msgstr "Terima kasih, pendaftaran Anda sukses! Database Anda valid sampai %s."
 
 #. module: web_enterprise
 #. openerp-web
@@ -368,34 +371,36 @@ msgid ""
 "The instructions to unlink your subscription from the previous database(s) "
 "have been sent"
 msgstr ""
+"Instruksi untuk unlink langganan Anda dari database sebelumnya yang sudah "
+"dikirim"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "This database has expired. "
-msgstr ""
+msgstr "Database ini telah habis masa berlaku."
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "This database will expire in %s. "
-msgstr ""
+msgstr "Database ini akan habis masa berlaku pada %s."
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "This demo database will expire in %s. "
-msgstr ""
+msgstr "Demo database akan habis masa berlaku pada %s."
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "To unlink it you can either:"
-msgstr ""
+msgstr "Untuk unlink Anda dapat:"
 
 #. module: web_enterprise
 #. openerp-web
@@ -410,14 +415,14 @@ msgstr "Hari Ini"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Unable to send the instructions by email, please contact the"
-msgstr ""
+msgstr "Tidak dapat mengirimkan instruksi melalui email, silakan hubungi"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Upgrade your subscription"
-msgstr ""
+msgstr "Upgrade langganan Anda"
 
 #. module: web_enterprise
 #. openerp-web
@@ -433,6 +438,8 @@ msgstr "Lihat pengalih"
 msgid ""
 "You have more users or more apps installed than your subscription allows."
 msgstr ""
+"Anda memiliki lebih banyak user atau aplikasi yang diinstal ketimbang yang "
+"diizinkan langganan Anda."
 
 #. module: web_enterprise
 #. openerp-web
@@ -442,34 +449,36 @@ msgid ""
 "You will be able to register your database once you have installed your "
 "first app."
 msgstr ""
+"Anda akan dapat mendaftaran database Anda setelah Anda menginstal aplikasi "
+"pertama Anda."
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Your subscription code"
-msgstr ""
+msgstr "Kode langganan Anda"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Your subscription is already linked to a database."
-msgstr ""
+msgstr "Langganan Anda sudah dilink ke database."
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "Your subscription was updated and is valid until"
-msgstr ""
+msgstr "Langganan Anda sudah diupdate dan valid sampai"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "buy a subscription"
-msgstr ""
+msgstr "beli langganan"
 
 #. module: web_enterprise
 #. openerp-web
@@ -483,11 +492,11 @@ msgstr "atau"
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.xml:0
 #, python-format
 msgid "to the subscription owner (email:"
-msgstr ""
+msgstr "ke pemilik langganan (email:"
 
 #. module: web_enterprise
 #. openerp-web
 #: code:addons/web_enterprise/static/src/webclient/home_menu/home_menu.xml:0
 #, python-format
 msgid "— open me anywhere with"
-msgstr ""
+msgstr "— buka saya dimana saja dengan"

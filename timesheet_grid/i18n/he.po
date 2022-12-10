@@ -15,6 +15,7 @@
 # דודי מלכה <Dudimalka6@gmail.com>, 2022
 # NoaFarkash, 2022
 # Roy Sayag, 2022
+# Ha Ketem <haketem@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -22,7 +23,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:26+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Roy Sayag, 2022\n"
+"Last-Translator: Ha Ketem <haketem@gmail.com>, 2022\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -224,7 +225,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_form
 msgid "Add a Task"
-msgstr ""
+msgstr "הוספת משימה"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.res_config_settings_view_form
@@ -247,7 +248,7 @@ msgstr "סכום כולל"
 #: code:addons/timesheet_grid/models/analytic.py:0
 #, python-format
 msgid "An employee must be linked to your user to record time."
-msgstr ""
+msgstr "עובד צריך להיות משוייך למשתמש שלך כדי לרשום זמנים."
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_account_analytic_line
@@ -354,17 +355,17 @@ msgstr "יום"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_gantt_timesheet
 msgid "Days Spent —"
-msgstr ""
+msgstr "ימים שהושקעו --"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__reminder_manager_delay
 msgid "Days to Remind Manager"
-msgstr ""
+msgstr "ימים להזכיר מנהל"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_config_settings__reminder_user_delay
 msgid "Days to Remind User"
-msgstr ""
+msgstr "ימים להזכיר משתמש"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -372,7 +373,7 @@ msgstr ""
 #: code:addons/timesheet_grid/static/src/js/timesheet_uom_timer.js:0
 #, python-format
 msgid "Decrease Time"
-msgstr ""
+msgstr "הפחת זמן"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_account_analytic_line__employee_id
@@ -471,13 +472,13 @@ msgstr "שם לתצוגה"
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__display_timer
 msgid "Display Timer"
-msgstr ""
+msgstr "הצגת טיימר"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__display_timer_pause
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task__display_timer_pause
 msgid "Display Timer Pause"
-msgstr ""
+msgstr "הצגת אפשרות עצירת טיימר"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__display_timer_resume
@@ -591,7 +592,7 @@ msgstr "זמן עבודה"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_gantt_timesheet
 msgid "Hours Spent —"
-msgstr ""
+msgstr "שעות שהושקעו --"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__id
@@ -605,7 +606,7 @@ msgstr "מזהה"
 #: code:addons/timesheet_grid/static/src/js/timesheet_uom_timer.js:0
 #, python-format
 msgid "Increase Time"
-msgstr ""
+msgstr "הוספת זמן"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__is_timer_running
@@ -663,7 +664,7 @@ msgstr ""
 #: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
 msgid "Launch the <b>timer</b> to start a new activity."
-msgstr ""
+msgstr "הפעל את ה<b>טיימר</b> ליצירת פעולה חדשה."
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_company__prevent_old_timesheets_encoding
@@ -769,7 +770,7 @@ msgstr "לא נמצאו פעילויות. בואו ניצור אחת חדשה!"
 #: model_terms:ir.actions.act_window,help:timesheet_grid.action_timesheet_previous_month
 #: model_terms:ir.actions.act_window,help:timesheet_grid.action_timesheet_previous_week
 msgid "No activities to validate."
-msgstr ""
+msgstr "אין פעולות לאשר."
 
 #. module: timesheet_grid
 #: model_terms:ir.actions.act_window,help:timesheet_grid.timesheet_grid_to_validate_action
@@ -815,7 +816,7 @@ msgstr "השהה טיימר"
 #: code:addons/timesheet_grid/static/src/js/timesheet_uom_timer.js:0
 #, python-format
 msgid "Play"
-msgstr ""
+msgstr "הפעלה"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -903,7 +904,7 @@ msgstr "ראה את כל הרשומות שנצברו בתא זה"
 #: code:addons/timesheet_grid/static/src/js/timesheet_grid/timer_m2o.js:0
 #, python-format
 msgid "Select a Project"
-msgstr ""
+msgstr "בחירת פרויקט"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -917,7 +918,7 @@ msgstr "בחר משימה"
 #: code:addons/timesheet_grid/static/src/js/tours/timesheet_grid.js:0
 #, python-format
 msgid "Select the <b>project</b> on which you are working."
-msgstr ""
+msgstr "בחירת <b>הפרויקט</b> עליו את/ה עובד/ת."
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_hr_employee__timesheet_manager_id
@@ -961,7 +962,7 @@ msgstr "התחל"
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
 msgid "Start timer"
-msgstr ""
+msgstr "הפעלת טיימר"
 
 #. module: timesheet_grid
 #. openerp-web
@@ -988,7 +989,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_view_form
 msgid "Stop timer"
-msgstr ""
+msgstr "הפסקת טיימר"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid

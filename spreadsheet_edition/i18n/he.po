@@ -15,6 +15,7 @@
 # david danilov, 2022
 # ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022
 # Roy Sayag, 2022
+# Ha Ketem <haketem@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -22,7 +23,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Roy Sayag, 2022\n"
+"Last-Translator: Ha Ketem <haketem@gmail.com>, 2022\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -40,7 +41,7 @@ msgstr "פעיל"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Add a new filter..."
-msgstr ""
+msgstr "הוספת פילטר חדש..."
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -117,7 +118,7 @@ msgstr ""
 #. module: spreadsheet_edition
 #: model:ir.model,name:spreadsheet_edition.model_spreadsheet_revision
 msgid "Collaborative spreadsheet revision"
-msgstr ""
+msgstr "גרסאות של גליון שיתופי"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__commands
@@ -210,7 +211,7 @@ msgstr "שם לתצוגה"
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/pivot_dialog.xml:0
 #, python-format
 msgid "Display missing cells only"
-msgstr ""
+msgstr "הצגת תאים חסרים בלבד"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -232,7 +233,7 @@ msgstr "הורד"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/filter_editor_side_panel.js:0
 #, python-format
 msgid "Duplicated Label"
-msgstr ""
+msgstr "שכפול תווית"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -268,7 +269,7 @@ msgstr "קובץ"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/index.js:0
 #, python-format
 msgid "Filter properties"
-msgstr ""
+msgstr "הגדרות מסנן"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -315,7 +316,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.xml:0
 #, python-format
 msgid "Insert the first"
-msgstr ""
+msgstr "הכנסת הראשון"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -345,14 +346,14 @@ msgstr "עדכון אחרון ב"
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #, python-format
 msgid "Last updated at"
-msgstr ""
+msgstr "עודכן לאחרונה ב"
 
 #. module: spreadsheet_edition
 #. openerp-web
 #: code:addons/spreadsheet_edition/static/src/bundle/ir_ui_menu/index.js:0
 #, python-format
 msgid "Link an Odoo menu"
-msgstr ""
+msgstr "קישור לתפריט Odoo"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -373,21 +374,21 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/list/side_panels/listing_details_side_panel.xml:0
 #, python-format
 msgid "List Name"
-msgstr ""
+msgstr "שם רשימה"
 
 #. module: spreadsheet_edition
 #. openerp-web
 #: code:addons/spreadsheet_edition/static/src/bundle/list/index.js:0
 #, python-format
 msgid "List properties"
-msgstr ""
+msgstr "תכונות רשימה"
 
 #. module: spreadsheet_edition
 #. openerp-web
 #: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
 #, python-format
 msgid "Make a copy"
-msgstr ""
+msgstr "יצירת עותק"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -446,14 +447,14 @@ msgstr "חדש"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/filter_editor_side_panel.js:0
 #, python-format
 msgid "New %s filter"
-msgstr ""
+msgstr "מסנן %s חדש"
 
 #. module: spreadsheet_edition
 #. openerp-web
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "New sheet inserted in '%s'"
-msgstr ""
+msgstr "גליון חדש הוכנס ל'%s'"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -493,14 +494,14 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #, python-format
 msgid "Pivot name"
-msgstr ""
+msgstr "שם ציר"
 
 #. module: spreadsheet_edition
 #. openerp-web
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/index.js:0
 #, python-format
 msgid "Pivot properties"
-msgstr ""
+msgstr "תכונות ציר"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -542,7 +543,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/list/plugins/list_autofill_plugin.js:0
 #, python-format
 msgid "Record #"
-msgstr ""
+msgstr "מספר רשומה"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__res_id
@@ -554,7 +555,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
 #, python-format
 msgid "Refresh all data"
-msgstr ""
+msgstr "רענון כל הנתונים"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -562,7 +563,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #, python-format
 msgid "Refresh values"
-msgstr ""
+msgstr "רענון ערכים"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -576,7 +577,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Relation"
-msgstr ""
+msgstr "יחס"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -662,7 +663,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/assets/components/ir_menu_selector/ir_menu_selector.js:0
 #, python-format
 msgid "Select a menu..."
-msgstr ""
+msgstr "בחירת תפריט..."
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -676,14 +677,14 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/assets/components/ir_menu_selector/ir_menu_selector.js:0
 #, python-format
 msgid "Select an Odoo menu to link in your spreadsheet"
-msgstr ""
+msgstr "בחירת תפריט Odoo לקשר לגליון שלך"
 
 #. module: spreadsheet_edition
 #. openerp-web
 #: code:addons/spreadsheet_edition/static/src/bundle/actions/spreadsheet_component.js:0
 #, python-format
 msgid "Select the number of records to insert"
-msgstr ""
+msgstr "בחירת מספר הרשומות להכניס"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -705,12 +706,12 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #, python-format
 msgid "Sorting"
-msgstr ""
+msgstr "ממיין"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_collaborative_mixin__spreadsheet_revision_ids
 msgid "Spreadsheet Revision"
-msgstr ""
+msgstr "עריכות גליון"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_collaborative_mixin__spreadsheet_snapshot
@@ -801,7 +802,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/pivot_dialog.xml:0
 #, python-format
 msgid "has no cell missing from this sheet"
-msgstr ""
+msgstr "אין תא חסר בגליון זה"
 
 #. module: spreadsheet_edition
 #. openerp-web
@@ -842,7 +843,7 @@ msgstr ""
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.xml:0
 #, python-format
 msgid "records of the list."
-msgstr ""
+msgstr "רשומות מהרשימה."
 
 #. module: spreadsheet_edition
 #: model:ir.model,name:spreadsheet_edition.model_ir_websocket

@@ -1106,7 +1106,7 @@ msgstr "Catatan"
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_campaign_test__res_id
 #: model:ir.model.fields,field_description:marketing_automation.field_marketing_participant__res_id
 msgid "Record ID"
-msgstr ""
+msgstr "Record ID"
 
 #. module: marketing_automation
 #: code:addons/marketing_automation/models/marketing_participant.py:0

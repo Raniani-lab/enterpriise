@@ -37,7 +37,7 @@ msgstr "Tạo"
 #: code:addons/documents_sign/models/workflow.py:0
 #, python-format
 msgid "New templates"
-msgstr "New templates"
+msgstr ""
 
 #. module: documents_sign
 #: model:ir.model.fields.selection,name:documents_sign.selection__documents_workflow_rule__create_model__sign_template_direct
@@ -62,14 +62,14 @@ msgstr "Yêu cầu kí"
 #. module: documents_sign
 #: model:ir.model,name:documents_sign.model_sign_template
 msgid "Signature Template"
-msgstr "Signature Template"
+msgstr ""
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_template__documents_tag_ids
 msgid "Signed Document Tags"
-msgstr "Signed Document Tags"
+msgstr ""
 
 #. module: documents_sign
 #: model:ir.model.fields,field_description:documents_sign.field_sign_template__folder_id
 msgid "Signed Document Workspace"
-msgstr "Signed Document Workspace"
+msgstr ""

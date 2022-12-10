@@ -733,7 +733,7 @@ msgstr "현재 가치"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__invoice_ids
 msgid "Customer Invoice"
-msgstr "고객 인보이스"
+msgstr "고객 청구서"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__date
@@ -1254,7 +1254,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__invoice_line_ids
 msgid "Invoice Line"
-msgstr "인보이스 내역"
+msgstr "청구서 내역"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_is_follower
@@ -1765,7 +1765,7 @@ msgstr "저장 모델"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__select_invoice_line_id
 msgid "Select Invoice Line"
-msgstr "인보이스 내역 선택"
+msgstr "청구서 내역 선택"
 
 #. module: account_asset
 #: code:addons/account_asset/models/account_asset.py:0

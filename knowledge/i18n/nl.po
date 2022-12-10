@@ -31,9 +31,9 @@ msgid ""
 "            before being permanently removed for your database"
 msgstr ""
 "\n"
-"            Verwijderde artikelen worden extra opgeslagen in de Prullenbak\n"
-"            <b>%(threshold)s</b> dagen\n"
-"            voordat het permanent wordt verwijderd voor je database"
+"            Verwijderde artikelen worden\n"
+"            <b>%(threshold)s</b> dagen extra opgeslagen in de prullenbak\n"
+"            voordat deze definitief worden verwijderd uit je database"
 
 #. module: knowledge
 #. openerp-web

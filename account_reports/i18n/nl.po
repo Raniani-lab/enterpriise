@@ -137,7 +137,7 @@ msgstr ", Gesorteerd op nummer"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
 msgid "-> Check your tax report"
-msgstr "-> Controleer je belastingaangifte"
+msgstr "-> Controleer je BTW-aangifte"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_move_form_vat_return
@@ -330,7 +330,7 @@ msgid ""
 "            Tax Unit:"
 msgstr ""
 "<span class=\"fa fa-home\"/>\n"
-"            Belastingeenheid:"
+"            BTW-eenheid:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
@@ -928,8 +928,7 @@ msgstr "Annuleren"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Cannot audit tax from another model than account.tax."
-msgstr ""
-"Kan geen belasting controleren vanuit een ander model dan account.tax."
+msgstr "Kan geen BTW controleren vanuit een ander model dan account.tax."
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -949,7 +948,7 @@ msgstr "Overdragen"
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Carryover adjustment for tax unit"
-msgstr "Overboekingscorrectie voor belastingeenheid"
+msgstr "Overboekingscorrectie voor fiscale BTW-eenheid"
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_report.py:0
@@ -1709,12 +1708,12 @@ msgstr "Algemene EC-verkooplijst"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler
 msgid "Generic Tax Report Custom Handler"
-msgstr "Algemene belastingrapportage Custom Handler"
+msgstr "Algemene BTW-rapportage Custom Handler"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler_account_tax
 msgid "Generic Tax Report Custom Handler (Account -> Tax)"
-msgstr "Generiek belastingrapport Custom Handler (Account -> Belasting)"
+msgstr "Generiek BTW-rapport Custom Handler (Rekening -> BTW)"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_generic_tax_report_handler_tax_account
@@ -1730,7 +1729,7 @@ msgstr "Goederen"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 msgid "Grid"
-msgstr "Matrix"
+msgstr "Rubriek"
 
 #. module: account_reports
 #: model:account.report.expression,report_line_name:account_reports.account_financial_report_gross_profit0_balance
@@ -1832,7 +1831,7 @@ msgstr "ID"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 msgid "Impact On Grid"
-msgstr "Impact op raster"
+msgstr "Impact op BTW-rubriek"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
@@ -1840,7 +1839,7 @@ msgid ""
 "Impacted Tax Grids\n"
 "                                        &amp;nbsp;"
 msgstr ""
-"Beïnvloede belastingroosters\n"
+"Beïnvloede BTW-rubriek\n"
 "                                        &amp;nbsp;"
 
 #. module: account_reports
@@ -2150,8 +2149,8 @@ msgstr "Hoofdsjabloon"
 msgid ""
 "Main company of this unit; the one actually reporting and paying the taxes."
 msgstr ""
-"Hoofdbedrijf van deze eenheid; degene die daadwerkelijk de belastingen "
-"rapporteert en betaalt."
+"Hoofdbedrijf van deze eenheid; degene die daadwerkelijk de BTW rapporteert "
+"en betaalt."
 
 #. module: account_reports
 #: code:addons/account_reports/models/account_multicurrency_revaluation_report.py:0
@@ -2220,7 +2219,7 @@ msgid ""
 "Multiple draft tax closing entries exist for fiscal position %s after %s. There should be at most one. \n"
 " %s"
 msgstr ""
-"Er zijn meerdere concept belastingafsluitingen voor fiscale positie %s na %s. Er moet er hoogstens één zijn.\n"
+"Er zijn meerdere concept BTW-afsluitingen voor fiscale positie %s na %s. Er moet er hoogstens één zijn.\n"
 "  %s"
 
 #. module: account_reports
@@ -2230,7 +2229,7 @@ msgid ""
 "Multiple draft tax closing entries exist for your domestic region after %s. There should be at most one. \n"
 " %s"
 msgstr ""
-"Na %s zijn er meerdere concept belastingafsluitingen voor je binnenlandse regio. Er moet er hoogstens één zijn.\n"
+"Na %s zijn er meerdere concept BTW-afsluitingen voor je binnenlandse regio. Er moet er hoogstens één zijn.\n"
 "  %s"
 
 #. module: account_reports
@@ -2510,7 +2509,7 @@ msgstr "Plannen"
 #: code:addons/account_reports/models/account_generic_tax_report.py:0
 #, python-format
 msgid "Please specify the accounts necessary for the Tax Closing Entry."
-msgstr "Geef de rekeningen op die nodig zijn voor de belastingafsluiting."
+msgstr "Geef de rekeningen op die nodig zijn voor de BTW-afsluiting."
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_fixed_assets_view0
@@ -2876,7 +2875,7 @@ msgstr "BTW declaratie"
 #: code:addons/account_reports/models/account_journal_report.py:0
 #, python-format
 msgid "Tax Grids"
-msgstr "BTW rubriek"
+msgstr "BTW-rubriek"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_tax_unit__vat
@@ -2960,7 +2959,7 @@ msgid ""
 "Taxes Applied\n"
 "                            &amp;nbsp;"
 msgstr ""
-"Toegepaste belastingen\n"
+"Toegepaste BTW\n"
 "                            &amp;nbsp;"
 
 #. module: account_reports

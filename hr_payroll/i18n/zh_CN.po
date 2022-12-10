@@ -2324,7 +2324,7 @@ msgstr "发送错误的消息数量"
 #. module: hr_payroll
 #: model:res.groups,name:hr_payroll.group_hr_payroll_user
 msgid "Officer : Manage all contracts"
-msgstr "干事 ： 管理所有合同"
+msgstr "主管 ： 管理所有合同"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_note_demo_content

@@ -943,7 +943,7 @@ msgstr "Pregled"
 #. module: voip
 #: model:ir.model,name:voip.model_ir_config_parameter
 msgid "System Parameter"
-msgstr ""
+msgstr "Sistemski parametar"
 
 #. module: voip
 #. openerp-web

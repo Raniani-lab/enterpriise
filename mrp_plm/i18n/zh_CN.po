@@ -691,7 +691,7 @@ msgstr "ECO阶段为工程变更单提供了不同的阶段"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__eco_ids
 msgid "ECO to be applied"
-msgstr "待应用的 ECO"
+msgstr "将被应用的 ECO"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_bom_view_form_inherit_plm
@@ -924,7 +924,7 @@ msgstr "如果启用字段设置为否，可隐藏工程更改顺序而不移除
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_bom__image_128
 msgid "Image 128"
-msgstr "图像128"
+msgstr "图像 128"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban

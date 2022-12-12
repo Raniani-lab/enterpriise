@@ -97,8 +97,9 @@ class MrpProductionWorkcenterLine(models.Model):
         res = super().write(values)
         if 'qty_producing' in values:
             for wo in self:
-                if wo.current_quality_check_id.component_id:
-                    wo.current_quality_check_id._update_component_quantity()
+                for check in wo.check_ids:
+                    if check.component_id:
+                        check._update_component_quantity()
         return res
 
     def action_back(self):

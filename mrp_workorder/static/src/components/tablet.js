@@ -192,27 +192,31 @@ class Tablet extends Component {
     }
 
     get views() {
-        const data = {
-            workorder: {
-                type: 'workorder_form',
-                mode: 'edit',
-                resModel: 'mrp.workorder',
-                viewId: this.viewsId.workorder,
-                resId: this.workorderId,
-                display: { controlPanel: false },
-                workorderBus: this.workorderBus,
-            },
-            check: {
-                type: 'workorder_form',
-                mode: 'edit',
-                resModel: 'quality.check',
-                viewId: this.viewsId.check,
-                resId: this.state.selectedStepId,
-                display: { controlPanel: false },
-                workorderBus: this.workorderBus,
-            },
+        const workorder = {
+            type: 'workorder_form',
+            mode: 'edit',
+            resModel: 'mrp.workorder',
+            viewId: this.viewsId.workorder,
+            resId: this.workorderId,
+            display: { controlPanel: false },
+            workorderBus: this.workorderBus,
         };
-        return data;
+        if (this.state.selectedStepId) {
+            workorder.onRecordChanged = async (rootRecord) => {
+                await rootRecord.save();
+                this.render(true);
+            }
+        }
+        const check = {
+            type: 'workorder_form',
+            mode: 'edit',
+            resModel: 'quality.check',
+            viewId: this.viewsId.check,
+            resId: this.state.selectedStepId,
+            display: { controlPanel: false },
+            workorderBus: this.workorderBus,
+        };
+        return { workorder, check };
     }
 
     get checkInstruction() {

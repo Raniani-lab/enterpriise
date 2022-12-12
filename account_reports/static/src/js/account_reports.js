@@ -430,15 +430,12 @@ var accountReportsWidget = AbstractAction.extend({
         var self = this;
         var query = e.target.value.trim().toLowerCase();
         this.filterOn = false;
-        this.$('.o_account_searchable_line').each(function(index, el) {
-            var $accountReportLineFoldable = $(el);
-            var line_id = $accountReportLineFoldable.find('.o_account_report_line').data('id');
-            if (line_id.endsWith("total--")) { //continue on the line with total in the id
-                return;
-            }
-            var $childs = self.$('tr[data-parent-id="'+$.escapeSelector(String(line_id))+'"]');
-
-            const lineNameEl = $accountReportLineFoldable.find('.account_report_line_name')[0];
+        const reportLines = this.el.querySelectorAll('.o_account_reports_table tbody tr');
+        let lastKnownParent = null;
+        let isLastParentHidden = null;
+        reportLines.forEach(reportLine => {
+            if (reportLine.classList.length == 0) return;
+            const lineNameEl = reportLine.querySelector('.account_report_line_name');
             // Only the direct text node, not text situated in other child nodes
             const displayName = lineNameEl.childNodes[0].nodeValue.trim().toLowerCase();
 
@@ -451,13 +448,20 @@ var accountReportsWidget = AbstractAction.extend({
                 queryFound = displayName.includes(query);
             }
 
-            $accountReportLineFoldable.toggleClass('o_account_reports_filtered_lines', !queryFound);
-            $childs.toggleClass('o_account_reports_filtered_lines', !queryFound);
+            if (reportLine.classList.contains('o_account_searchable_line')){
+                reportLine.classList.toggle('o_account_reports_filtered_lines', !queryFound);
+                lastKnownParent = reportLine.querySelector('.o_account_report_line').dataset.id;
+                isLastParentHidden = !queryFound;
+            }
+            else if (reportLine.getAttribute('data-parent-id') == lastKnownParent){
+                reportLine.classList.toggle('o_account_reports_filtered_lines', isLastParentHidden);
+            }
 
             if (!queryFound) {
                 self.filterOn = true;
             }
         });
+
         // Make sure all ancestors are displayed.
         const $matchingChilds = this.$('tr[data-parent-id]:not(.o_account_reports_filtered_lines)');
         $($matchingChilds.get().reverse()).each(function(index, el) {

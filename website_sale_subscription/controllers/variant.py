@@ -21,7 +21,8 @@ class WebsiteSale(website_sale_portal.WebsiteSale):
     def _get_shop_payment_values(self, order, **kwargs):
         """ Override of `website_sale` to specify whether the sales order is a subscription.
 
-        :param recordset order: The sales order being paid, as a `sale.order` record.
+        :param sale.order order: The sales order being paid.
+        :param dict kwargs: Locally unused keywords arguments.
         :return: The payment-specific values.
         :rtype: dict
         """

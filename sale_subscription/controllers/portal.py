@@ -116,36 +116,6 @@ class CustomerPortal(payment_portal.PaymentPortal):
             return redirection
         if report_type in ('html', 'pdf', 'text'):
             return self._show_report(model=order_sudo, report_type=report_type, report_ref='sale.action_report_saleorder', download=download)
-
-        providers_sudo = request.env['payment.provider'].sudo()._get_compatible_providers(
-            order_sudo.company_id.id,
-            order_sudo.partner_id.id,
-            order_sudo.amount_total,
-            currency_id=order_sudo.currency_id.id,
-            is_validation=not order_sudo.to_renew,
-            sale_order_id=order_id,
-        )  # In sudo mode to read the fields of providers and partner (if not logged in)
-        # The tokens are filtered based on the partner hierarchy to allow managing tokens of any
-        # sibling partners. As a result, a partner can manage any token belonging to partners of its
-        # own company from a subscription.
-        logged_in = not request.env.user.sudo()._is_public()
-        tokens = request.env['payment.token'].search([
-            ('provider_id', 'in', providers_sudo.ids),
-            ('partner_id', 'child_of', order_sudo.partner_id.commercial_partner_id.id),
-        ]) if logged_in else request.env['payment.token']
-
-        # Make sure that the partner's company matches the subscription's company.
-        company_mismatch = not payment_portal.PaymentPortal._can_partner_pay_in_company(
-            order_sudo.partner_id, order_sudo.company_id
-        )
-
-        fees_by_provider = {
-            provider: provider._compute_fees(
-                order_sudo.amount_total,
-                order_sudo.currency_id,
-                order_sudo.partner_id.country_id
-            ) for provider in providers_sudo.filtered('fees_active')
-        }
         active_plan_sudo = order_sudo.sale_order_template_id.sudo()
         display_close = active_plan_sudo.user_closable and order_sudo.stage_category == 'progress'
         is_follower = request.env.user.partner_id in order_sudo.message_follower_ids.partner_id
@@ -171,23 +141,15 @@ class CustomerPortal(payment_portal.PaymentPortal):
             'message_class': message_class,
             'pricelist': order_sudo.pricelist_id.sudo(),
             'renew_url': f'/my/subscription/{order_sudo.id}/renew?access_token={order_sudo.access_token}',
-            'company_mismatch': company_mismatch,
-            'expected_company': order_sudo.company_id,
         }
         payment_values = {
-            'providers': providers_sudo,
-            'tokens': tokens,
-            'default_token_id': order_sudo.payment_token_id.id,
-            'fees_by_provider': fees_by_provider,
-            'show_tokenize_input': self._compute_show_tokenize_input_mapping(
-                providers_sudo, logged_in=logged_in, sale_order_id=order_sudo.id
+            **SalePortal._get_payment_values(
+                self, order_sudo, is_validation=not order_sudo.to_renew, is_subscription=True
             ),
+            'default_token_id': order_sudo.payment_token_id.id,
             'amount': None,  # Determined by the generated invoice
-            'currency': order_sudo.currency_id,
             'partner_id': order_sudo.partner_id.id,
-            'access_token': order_sudo.access_token,
             'transaction_route': f'/my/subscription/transaction/{order_sudo.id}',
-            'is_subscription': True,
             # Operation-dependent values are defined in the view
         }
         values.update(payment_values)
@@ -326,15 +288,19 @@ class SalePortal(sale_portal.CustomerPortal):
         domain.append(('is_subscription', '=', False))
         return domain
 
-    def _get_payment_values(self, order_sudo):
+    def _get_payment_values(self, order_sudo, is_subscription=False, **kwargs):
         """ Override of `sale` to specify whether the sales order is a subscription.
 
-        :param recordset order_sudo: The sales order being paid, as a `sale.order` record.
+        :param sale.order order_sudo: The sales order being paid.
+        :param bool is_subscription: Whether the order is a subscription.
+        :param dict kwargs: Locally unused keywords arguments.
         :return: The payment-specific values.
         :rtype: dict
         """
-        is_subscription = order_sudo.is_subscription or order_sudo.subscription_id.is_subscription
+        is_subscription = is_subscription \
+                          or order_sudo.is_subscription \
+                          or order_sudo.subscription_id.is_subscription
         return {
-            **super()._get_payment_values(order_sudo),
+            **super()._get_payment_values(order_sudo, is_subscription=is_subscription, **kwargs),
             'is_subscription': is_subscription,
         }

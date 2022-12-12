@@ -10,6 +10,7 @@ const interestingSelector = [
     "widget",
     ".dropdown",
     ".o_dropdown_kanban",
+    ".o_kanban_manage_button_section",
     "img.oe_kanban_avatar",
     ".o_kanban_record_body",
     ".o_kanban_record_bottom",

@@ -3279,6 +3279,30 @@ QUnit.module('ViewEditorManager', {
         assert.strictEqual(target.querySelector(".o_web_studio_sidebar_content").textContent.trim(), "");
     });
 
+    QUnit.test("specific dropdown with o_kanban_card_manage_section only", async (assert) => {
+        await studioTestUtils.createViewEditorManager({
+            model: 'coucou',
+            arch: `
+                <kanban>
+                    <templates>
+                        <t t-name="kanban-box" >
+                            <div>
+                                <div class="o_kanban_manage_button_section">
+                                    <a class="o_dropdown_kanban" href="#"><i class="fa fa-ellipsis-v" role="img" aria-label="Manage" title="Manage"/></a>
+                                </div>
+                            </div>
+                        </t>
+                    </templates>
+                </kanban>
+            `,
+        });
+
+        assert.containsOnce(target, ".o_kanban_record .dropdown");
+        await click(target.querySelector(".o_kanban_record .dropdown"));
+        assert.containsOnce(target, ".o_web_studio_properties.active");
+        assert.strictEqual(target.querySelector(".o_web_studio_sidebar_content").textContent.trim(), "");
+    });
+
     QUnit.test('kanban editor remove "Set Cover Image" from dropdown menu', async function (assert) {
         assert.expect(1);
         var arch = "<kanban>" +

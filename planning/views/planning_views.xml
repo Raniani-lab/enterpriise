@@ -143,7 +143,7 @@
                                 <div class="o_kanban_record_headings">
                                     <div class="o_kanban_record_title">
                                         <em>
-                                            <i class="fa fa-clock-o" role="img" aria-label="Date" title="Date"/>
+                                            <i class="me-1 fa fa-clock-o" role="img" aria-label="Date" title="Date"/>
                                             <!-- To do: remove in master -->
                                             <field name="start_datetime" invisible="1"/>
                                             <field name="end_datetime" invisible="1"/>

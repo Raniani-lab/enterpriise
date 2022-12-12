@@ -1,6 +1,5 @@
 /** @odoo-module **/
 
-/*const EmployeeProfileFormView = require('@hr/js/language')[Symbol.for("default")];*/
 import session from 'web.session';
 import mobile from 'web_mobile.core';
 import { patchWithCleanup, clickSave, getFixture } from "@web/../tests/helpers/utils";

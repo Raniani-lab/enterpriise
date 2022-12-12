@@ -170,7 +170,7 @@
                                 <div class="o_kanban_record_headings">
                                     <div class="o_kanban_record_title">
                                         <em>
-                                            <i class="fa fa-clock-o" role="img" aria-label="Date" title="Date"/>
+                                            <i class="me-1 fa fa-clock-o" role="img" aria-label="Date" title="Date"/>
                                             <t t-if="record.start_datetime.raw_value and record.end_datetime.raw_value">
                                                 <field name="start_datetime"/>
                                                 -

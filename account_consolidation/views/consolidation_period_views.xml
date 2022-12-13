@@ -327,7 +327,7 @@
                     <sheet>
                         <group>
                             <field name="company_id"/>
-                            <field name="period_id" invisible="context.get('from_analysis_period', False)" required="not context.get('from_analysis_period', True)"/>
+                            <field name="period_id" invisible="context.get('from_analysis_period', False)"/>
                         </group>
                         <notebook>
                             <page string="Settings" name="settings">

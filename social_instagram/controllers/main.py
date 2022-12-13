@@ -91,7 +91,6 @@ class SocialInstagramController(SocialController):
         return request.env['ir.binary']._get_stream_from(
             social_post.instagram_image_id,
             default_mimetype='image/jpeg',
-            placeholder=request.env['ir.http']._placeholder_path(),
         ).get_response()
 
     def _instagram_create_accounts(self, access_token, extended_access_token):

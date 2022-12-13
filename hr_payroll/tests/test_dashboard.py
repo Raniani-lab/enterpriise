@@ -190,7 +190,8 @@ class TestDashboard(TransactionCase):
         # We remove english from every model of the app that needed it to get french as main and unique language
         self.env['res.lang']._activate_lang('fr_FR')
         fr_lang = self.env['res.lang'].search([['code', '=', 'fr_FR']])
-        self.env['website'].search([]).write({'language_ids': fr_lang.ids, 'default_lang_id': fr_lang.id})
+        if 'website' in self.env:
+            self.env['website'].search([]).write({'language_ids': fr_lang.ids, 'default_lang_id': fr_lang.id})
         self.env['res.users'].search([]).write({'lang' : 'fr_FR'})
         self.env['res.partner'].search([]).write({'lang' : 'fr_FR'})
 

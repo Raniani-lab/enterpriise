@@ -4,7 +4,9 @@
         <function model="account.chart.template" name="_load_payroll_accounts">
             <value eval="[]"/>
             <value>be</value>
-            <value model="res.company" eval="obj().search([('chart_template', '=', 'be')])"/>
+            <value
+                model="res.company"
+                eval="obj().search([('chart_template', 'in', ('be_comp', 'be_asso'))])"/>
         </function>
     </data>
 </odoo>

@@ -11,7 +11,7 @@ from odoo.tools import file_open
 class TestSodaFile(AccountTestInvoicingCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='be'):
+    def setUpClass(cls, chart_template_ref='be_comp'):
         super().setUpClass(chart_template_ref=chart_template_ref)
         cls.env.company.vat = 'BE0477472701'
         cls.misc_journal = cls.env['account.journal'].create({

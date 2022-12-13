@@ -12,7 +12,7 @@ from freezegun import freeze_time
 @tagged('post_install_l10n', 'post_install', '-at_install')
 class BelgiumPartnerVatListingTest(TestAccountReportsCommon):
     @classmethod
-    def setUpClass(cls, chart_template_ref='be'):
+    def setUpClass(cls, chart_template_ref='be_comp'):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.partner_a_be = cls.env['res.partner'].create({

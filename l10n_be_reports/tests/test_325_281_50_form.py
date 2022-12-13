@@ -13,7 +13,7 @@ from odoo.tests import tagged
 class TestResPartner(AccountTestInvoicingCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='be'):
+    def setUpClass(cls, chart_template_ref='be_comp'):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.invoice = cls.init_invoice('in_invoice')

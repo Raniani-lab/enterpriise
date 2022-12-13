@@ -10,7 +10,7 @@ from odoo.tests import tagged
 class BelgiumGeneralLedgerTest(AccountSalesReportCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='be'):
+    def setUpClass(cls, chart_template_ref='be_comp'):
         super().setUpClass(chart_template_ref)
 
     @classmethod
@@ -54,8 +54,8 @@ class BelgiumGeneralLedgerTest(AccountSalesReportCommon):
         report = self.env.ref('account_reports.general_ledger_report')
         options = self._generate_options(report, '2023-01-01', '2023-01-01')
         annual_accounts_data = self.env[report.custom_handler_model_name].l10n_be_get_annual_accounts(options)
-        expected = b"""400000\tTrade debtors within one year - Customer\t1000,0\t0,0
-440000\tSuppliers payable within one year\t250,0\t0,0
-600000\tPurchases of raw materials\t0,0\t250,0
-700000\tSales rendered in Belgium (marchandises)\t0,0\t1000,0"""
+        expected = b"""400000\tCustomers\t1000,0\t0,0
+440000\tSuppliers\t250,0\t0,0
+600000\tPurchases of Raw Materials\t0,0\t250,0
+700000\tSales in Belgium (Trade Goods)\t0,0\t1000,0"""
         self.assertEqual(annual_accounts_data['file_content'], expected)

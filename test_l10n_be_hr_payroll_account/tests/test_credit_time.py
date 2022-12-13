@@ -11,7 +11,7 @@ from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 class TestCreditTime(AccountTestInvoicingCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='be'):
+    def setUpClass(cls, chart_template_ref='be_comp'):
         super().setUpClass(chart_template_ref=chart_template_ref)
 
         cls.company_data['company'].country_id = cls.env.ref('base.be')

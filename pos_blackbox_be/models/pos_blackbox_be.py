@@ -762,7 +762,7 @@ class ProductProduct(models.Model):
     def set_tax_on_work_in_out(self):
         existing_companies = self.env['res.company'].sudo().search([])
         for company in existing_companies:
-            if company.chart_template == 'be':
+            if company.chart_template in ('be_comp', 'be_asso'):
                 work_in = self.env.ref('pos_blackbox_be.product_product_work_in')
                 work_out = self.env.ref('pos_blackbox_be.product_product_work_out')
                 taxes = self.env['account.tax'].sudo().with_context(active_test=False).search([
@@ -782,7 +782,7 @@ class AccountChartTemplate(models.Model):
 
     def _load(self, template_code, company, install_demo):
         super(AccountChartTemplate, self)._load(template_code, company, install_demo)
-        if template_code == 'be':
+        if template_code in ('be_comp', 'be_asso'):
             work_in = self.env.ref('pos_blackbox_be.product_product_work_in')
             work_out = self.env.ref('pos_blackbox_be.product_product_work_out')
             taxes = self.env['account.tax'].sudo().with_context(active_test=False).search([

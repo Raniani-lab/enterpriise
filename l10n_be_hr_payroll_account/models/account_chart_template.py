@@ -17,7 +17,7 @@ class AccountChartTemplate(models.AbstractModel):
             '620200',  # Remuneration, Representation Fees; Private Car
             '621000',  # ONSS Employer (debit)
             '643000',  # IP
-            '740000',  # Meal Vouchers
+            '743000',  # Meal Vouchers
         ]
         default_account = '620200'
         rules_mapping = defaultdict(dict)
@@ -102,7 +102,7 @@ class AccountChartTemplate(models.AbstractModel):
 
         # Meal vouchers
         meal_rule = self.env.ref('l10n_be_hr_payroll.cp200_employees_salary_ch_worker')
-        rules_mapping[meal_rule]['debit'] = '740000'  # Note: this is a credit, but the amount is negative
+        rules_mapping[meal_rule]['debit'] = '743000'  # Note: this is a credit, but the amount is negative
 
         # Owed Remunerations (NET)
         net_rule = self.env['hr.salary.rule'].search([
@@ -185,3 +185,9 @@ class AccountChartTemplate(models.AbstractModel):
             account_codes=account_codes,
             rules_mapping=rules_mapping,
             default_account=default_account)
+
+    def _configure_payroll_account_be_comp(self, companies):
+        return self._configure_payroll_account_be(companies)
+
+    def _configure_payroll_account_be_asso(self, companies):
+        return self._configure_payroll_account_be(companies)

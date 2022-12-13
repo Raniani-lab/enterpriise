@@ -12,7 +12,7 @@ from odoo.addons.account.tests.common import AccountTestInvoicingCommon
 class TestSEPAFile(AccountTestInvoicingCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='be'):
+    def setUpClass(cls, chart_template_ref='be_comp'):
         super().setUpClass(chart_template_ref=chart_template_ref)
         cls.company_data['company'].country_id = cls.env.ref('base.be')
         cls.company_data['company'].sepa_orgid_id = "123456789"

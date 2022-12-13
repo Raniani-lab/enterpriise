@@ -11,7 +11,7 @@ class BelgiumSalesReportTest(AccountSalesReportCommon):
 
     @classmethod
     def setUpClass(cls, chart_template_ref=None):
-        super().setUpClass('be')
+        super().setUpClass('be_comp')
         cls.partner_b.update({
             'country_id': cls.env.ref('base.de').id,
             "vat": "DE123456788",

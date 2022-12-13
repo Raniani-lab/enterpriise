@@ -20,7 +20,7 @@
 
     <function model="account.chart.template" name="try_loading">
         <value eval="[]"/>
-        <value name="template_code" eval="'be'"/>
+        <value name="template_code" eval="'be_comp'"/>
         <value name="company" model="res.company" eval="ref('l10n_be_hr_payroll.res_company_be')"/>
     </function>
 

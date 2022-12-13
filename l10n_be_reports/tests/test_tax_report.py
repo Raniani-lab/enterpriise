@@ -11,7 +11,7 @@ from freezegun import freeze_time
 class BelgiumTaxReportTest(AccountSalesReportCommon):
 
     @classmethod
-    def setUpClass(cls, chart_template_ref='be'):
+    def setUpClass(cls, chart_template_ref='be_comp'):
         super().setUpClass(chart_template_ref)
 
     @classmethod

@@ -121,6 +121,7 @@ class SaleOrderLine(models.Model):
         if qty <= 0 or not self.is_late:
             return
 
+        self = self.with_company(self.company_id)
         duration = fields.Datetime.now() - self.return_date
 
         delay_price = self.product_id._compute_delay_price(duration)
@@ -147,11 +148,9 @@ class SaleOrderLine(models.Model):
         if not delay_product.active:
             return
 
-        delay_price = self.product_id.currency_id._convert(
-            from_amount=delay_price,
-            to_currency=self.currency_id,
-            company=self.company_id,
-            date=date.today(),
+        delay_price = self._convert_to_sol_currency(
+            delay_price,
+            self.product_id.currency_id,
         )
 
         vals = self._prepare_delay_line_vals(delay_product, delay_price, qty)

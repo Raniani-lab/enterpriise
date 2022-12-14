@@ -110,7 +110,10 @@ class TrialBalanceCustomHandler(models.AbstractModel):
 
         # Initial balance
         initial_balance_options = self.env['account.general.ledger.report.handler']._get_options_initial_balance(options)
-        initial_forced_options = {'date': initial_balance_options['date'], 'include_current_year_in_unaff_earnings': True}
+        initial_forced_options = {
+            'date': initial_balance_options['date'],
+            'include_current_year_in_unaff_earnings': initial_balance_options['include_current_year_in_unaff_earnings']
+        }
         initial_header_element = [{'name': _("Initial Balance"), 'forced_options': initial_forced_options}]
         col_headers_initial = [
             initial_header_element,

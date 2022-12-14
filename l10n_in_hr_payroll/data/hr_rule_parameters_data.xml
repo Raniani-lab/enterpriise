@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<odoo>
+
+    <record id="rule_parameter_basic_with_pf" model="hr.rule.parameter">
+        <field name="name">India: Basic With PF</field>
+        <field name="code">basic_with_pf</field>
+        <field name="country_id" ref="base.in"/>
+    </record>
+    <record id="rule_parameter_basic_with_pf_value" model="hr.rule.parameter.value">
+        <field name="parameter_value">7000</field>
+        <field name="rule_parameter_id" ref="l10n_in_hr_payroll.rule_parameter_basic_with_pf"/>
+        <field name="date_from" eval="datetime(2000, 1, 1).date()"/>
+    </record>
+
+    <record id="rule_parameter_basic_without_pf" model="hr.rule.parameter">
+        <field name="name">India: Basic Without PF</field>
+        <field name="code">basic_without_pf</field>
+        <field name="country_id" ref="base.in"/>
+    </record>
+    <record id="rule_parameter_basic_without_pf_value" model="hr.rule.parameter.value">
+        <field name="parameter_value">16500</field>
+        <field name="rule_parameter_id" ref="l10n_in_hr_payroll.rule_parameter_basic_without_pf"/>
+        <field name="date_from" eval="datetime(2000, 1, 1).date()"/>
+    </record>
+
+     <record id="rule_parameter_professional_tax" model="hr.rule.parameter">
+        <field name="name">India: Professional Tax</field>
+        <field name="code">l10n_in_professional_tax</field>
+        <field name="country_id" ref="base.in"/>
+    </record>
+    <record id="rule_parameter_professional_tax_2022" model="hr.rule.parameter.value">
+        <field name="parameter_value">[-200, -150, -80]</field>
+        <field name="rule_parameter_id" ref="rule_parameter_professional_tax"/>
+        <field name="date_from" eval="datetime(2000, 1, 1).date()"/>
+    </record>
+
+</odoo>

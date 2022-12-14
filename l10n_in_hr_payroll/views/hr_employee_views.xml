@@ -8,9 +8,9 @@
         <field name="arch" type="xml">
             <xpath expr="//page[@name='personal_information']/group" position="inside">
                 <group string="Personal Information" attrs="{'invisible': [('company_country_code', '!=', 'IN')]}">
-                    <field name="uan" placeholder="12 digit Universal Account Number"/>
-                    <field name="esic_number" placeholder="17 digit ESIC Number"/>
-                    <field name="pan"/>
+                    <field name="l10n_in_uan" placeholder="12 digit Universal Account Number"/>
+                    <field name="l10n_in_esic_number" placeholder="17 digit ESIC Number"/>
+                    <field name="l10n_in_pan" placeholder="10 digit Permanent Account Number"/>
                 </group>
             </xpath>
         </field>

@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<odoo>
+    <!-- salary category -->
+    <record id="BSL" model="hr.salary.rule.category">
+        <field name="name">Base Salary</field>
+        <field name="code">BSL</field>
+    </record>
+
+    <record id="DSL" model="hr.salary.rule.category">
+        <field name="name">Daily Salary</field>
+        <field name="code">DSL</field>
+    </record>
+
+    <record id="SPA" model="hr.salary.rule.category">
+        <field name="name">Special Allowance</field>
+        <field name="code">SPA</field>
+    </record>
+</odoo>

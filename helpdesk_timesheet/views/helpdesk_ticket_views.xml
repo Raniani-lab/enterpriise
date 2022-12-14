@@ -36,6 +36,8 @@
             <xpath expr="//field[@name='email_cc']" position="after">
                 <field name="use_helpdesk_timesheet" invisible="1"/>
                 <field name="project_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//page[@name='extra_info']//field[@name='company_id']" position="after">
                 <field name="analytic_account_id" groups="analytic.group_analytic_accounting" attrs="{'invisible': [('use_helpdesk_timesheet', '=', False)]}"/>
             </xpath>
             <xpath expr="//page[@name='description']" position="after">

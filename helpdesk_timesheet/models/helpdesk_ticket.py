@@ -97,6 +97,15 @@ class HelpdeskTicket(models.Model):
             arch = self.env['account.analytic.line']._apply_time_label(arch, related_model=self._name)
         return arch, view
 
+    @api.depends('use_helpdesk_timesheet')
+    def _compute_display_extra_info(self):
+        if self.env.user.has_group('analytic.group_analytic_accounting'):
+            show_analytic_account_id_records = self.filtered('use_helpdesk_timesheet')
+            show_analytic_account_id_records.display_extra_info = True
+            super(HelpdeskTicket, self - show_analytic_account_id_records)._compute_display_extra_info()
+        else:
+            super()._compute_display_extra_info()
+
     def action_timer_start(self):
         if not self.user_timer_id.timer_start and self.display_timesheet_timer:
             super().action_timer_start()

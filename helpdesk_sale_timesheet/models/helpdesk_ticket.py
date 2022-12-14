@@ -11,6 +11,8 @@ class HelpdeskTicket(models.Model):
 
     use_helpdesk_sale_timesheet = fields.Boolean('Reinvoicing Timesheet activated on Team', related='team_id.use_helpdesk_sale_timesheet', readonly=True)
     sale_order_id = fields.Many2one('sale.order', compute="_compute_helpdesk_sale_order", compute_sudo=True, store=True, readonly=False)
+    invoice_count = fields.Integer(related='sale_order_id.invoice_count')
+    display_invoice_button = fields.Boolean(compute='_compute_display_invoice_button', compute_sudo=True)
     sale_line_id = fields.Many2one(
         'sale.order.line', string="Sales Order Item", tracking=True,
         compute="_compute_sale_line_id", store=True, readonly=False,
@@ -61,6 +63,11 @@ class HelpdeskTicket(models.Model):
                 ticket.sale_line_id = False
             if not ticket.sale_line_id:
                 ticket.sale_line_id = ticket._get_last_sol_of_customer()
+
+    def _compute_display_invoice_button(self):
+        for ticket in self:
+            ticket.display_invoice_button = ticket.use_helpdesk_sale_timesheet and\
+                (ticket.sale_order_id or ticket.sale_line_id) and ticket.invoice_count > 0
 
     def _get_last_sol_of_customer(self):
         # Get the last SOL made for the customer in the current task where we need to compute
@@ -135,3 +142,16 @@ class HelpdeskTicket(models.Model):
             "res_id": self.sale_line_id.order_id.id or self.sale_order_id.id
         }
         return action_window
+
+    def action_view_invoices(self):
+        self.ensure_one()
+        invoices = self.sale_order_id.invoice_ids
+        return {
+            "type": "ir.actions.act_window",
+            "res_model": "account.move",
+            "name": _("Invoices"),
+            "views": [[False, 'form']] if len(invoices) == 1 else [[False, "tree"], [False, "form"]],
+            "context": {"create": False},
+            "domain": [('id', 'in', invoices.ids)],
+            "res_id": invoices.id if len(invoices) == 1 else False,
+        }

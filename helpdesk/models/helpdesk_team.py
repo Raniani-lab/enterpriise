@@ -80,7 +80,7 @@ class HelpdeskTeam(models.Model):
     access_instruction_message = fields.Char('Access Instruction Message', compute='_compute_access_instruction_message')
     ticket_ids = fields.One2many('helpdesk.ticket', 'team_id', string='Tickets')
 
-    use_alias = fields.Boolean('Email Alias', compute='_compute_use_alias', default=True, store=True, readonly=False)
+    use_alias = fields.Boolean('Email Alias', default=True)
     has_external_mail_server = fields.Boolean(compute='_compute_has_external_mail_server')
     allow_portal_ticket_closing = fields.Boolean('Closure by Customers')
     use_website_helpdesk_form = fields.Boolean('Website Form', compute='_compute_use_website_helpdesk_form', readonly=False, store=True)
@@ -148,10 +148,6 @@ class HelpdeskTeam(models.Model):
                 (val, stage_id) for stage_id, val in stages_dict.items() if stage_id in team.stage_ids.ids
             ])
             team.to_stage_id = stage_ids[0][1] if stage_ids else team.stage_ids and team.stage_ids.ids[-1]
-
-    @api.depends('alias_name')
-    def _compute_use_alias(self):
-        self.filtered(lambda team: not team.alias_name and team.use_alias).use_alias = False
 
     @api.depends('alias_name', 'alias_domain')
     def _compute_display_alias_name(self):
@@ -350,6 +346,9 @@ class HelpdeskTeam(models.Model):
     def write(self, vals):
         if vals.get('privacy_visibility'):
             self._change_privacy_visibility(vals['privacy_visibility'])
+        if 'alias_name' in vals and not vals['alias_name'] and (vals['use_alias'] if 'use_alias' in vals else self.use_alias):
+            default_alias = self.name.replace(' ', '-') if self.name else ''
+            vals['alias_name'] = self.alias_name or default_alias
 
         result = super(HelpdeskTeam, self).write(vals)
         if 'active' in vals:

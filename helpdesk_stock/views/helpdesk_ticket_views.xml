@@ -11,7 +11,7 @@
                     <field name="pickings_count" string="Returns" widget="statinfo" />
                 </button>
             </button>
-            <field name='sale_order_id' position="after">
+            <xpath expr="//page[@name='extra_info']//field[@name='company_id']" position="after">
                 <field name="use_credit_notes" invisible="1"/>
                 <field name="use_product_returns" invisible="1"/>
                 <field name="use_product_repairs" invisible="1"/>
@@ -23,7 +23,7 @@
                 <field name="lot_id" invisible="1"/>
                 <field name="lot_id" groups="stock.group_production_lot" context="{'default_product_id': product_id, 'default_company_id': company_id}"
                     attrs="{'invisible': ['|', ('tracking', 'in', ['none', False]), '&amp;', '&amp;', ('use_credit_notes', '=', False), ('use_product_returns', '=', False), ('use_product_repairs', '=', False)]}" />
-            </field>
+            </xpath>
         </field>
     </record>
 

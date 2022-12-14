@@ -382,7 +382,6 @@
                             <field name="priority" widget="priority"/>
                             <field name="ticket_type_id" options="{'no_open': True}"/>
                             <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}"/>
-                            <field name="company_id" groups="base.group_multi_company" context="{'create': False}"/>
                         </group>
                         <group>
                             <field name="partner_id" class="field_partner_id" domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]" widget="res_partner_many2one" context="{'default_phone': partner_phone}"/>
@@ -400,8 +399,15 @@
                         <field name="properties" nolabel="1" columns="2" hideKanbanOption="1" hideAddButton="1"/>
                     </div>
                     <notebook>
+                        <field name="display_extra_info" invisible="1"/>
                         <page string="Description" name="description">
                             <field name="description"/>
+                        </page>
+                        <page string="Extra Info" name="extra_info"
+                              attrs="{'invisible': [('display_extra_info', '=', False)]}">
+                            <group>
+                                <field name="company_id" groups="base.group_multi_company" context="{'create': False}"/>
+                            </group>
                         </page>
                     </notebook>
                 </sheet>

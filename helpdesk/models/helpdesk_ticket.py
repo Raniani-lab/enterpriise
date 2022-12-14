@@ -128,6 +128,7 @@ class HelpdeskTicket(models.Model):
     oldest_unanswered_customer_message_date = fields.Datetime("Oldest Unanswered Customer Message Date")
     answered_customer_message_count = fields.Integer('# Exchanges')
     total_response_hours = fields.Float("Total Exchange Time in Hours")
+    display_extra_info = fields.Boolean(compute="_compute_display_extra_info")
 
     @api.depends('stage_id', 'kanban_state')
     def _compute_kanban_state_label(self):
@@ -277,16 +278,11 @@ class HelpdeskTicket(models.Model):
 
     @api.depends('partner_id', 'partner_email', 'partner_phone')
     def _compute_partner_ticket_count(self):
-
-        def _get_email_to_search(email):
-            domain = tools.email_domain_extract(email)
-            return ("@" + domain) if domain and domain not in iap_tools._MAIL_DOMAIN_BLACKLIST else email
-
         for ticket in self:
             domain = []
             partner_ticket = ticket
             if ticket.partner_email:
-                email_search = _get_email_to_search(ticket.partner_email)
+                email_search = ticket.partner_email
                 domain = expression.OR([domain, [('partner_email', 'ilike', email_search)]])
             if ticket.partner_phone:
                 domain = expression.OR([domain, [('partner_phone', 'ilike', ticket.partner_phone)]])
@@ -331,6 +327,9 @@ class HelpdeskTicket(models.Model):
                 ticket.open_hours = (time_difference.seconds) / 3600 + time_difference.days * 24
             else:
                 ticket.open_hours = 0
+
+    def _compute_display_extra_info(self):
+        self.display_extra_info = self.env.user.has_group('base.group_multi_company')
 
     @api.model
     def _search_open_hours(self, operator, value):

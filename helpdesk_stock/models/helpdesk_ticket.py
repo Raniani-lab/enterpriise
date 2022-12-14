@@ -63,6 +63,15 @@ class HelpdeskTicket(models.Model):
         for ticket in self:
             ticket.pickings_count = len(ticket.picking_ids)
 
+    @api.onchange('partner_id', 'team_id')
+    def _compute_display_extra_info(self):
+        show_product_id_records = self.filtered(lambda ticket:
+            (ticket.partner_id or ticket.use_product_repairs) and\
+            (ticket.use_credit_notes or ticket.use_product_returns or ticket.use_product_repairs)
+        )
+        show_product_id_records.display_extra_info = True
+        super(HelpdeskTicket, self - show_product_id_records)._compute_display_extra_info()
+
     def write(self, vals):
         res = super().write(vals)
         if 'suitable_product_ids' in vals:

@@ -28,6 +28,7 @@
             </xpath>
             <xpath expr="//field[@name='project_id']" position="before">
                 <field name="use_helpdesk_sale_timesheet" invisible="1"/>
+                <field name="display_invoice_button" invisible="1"/>
             </xpath>
             <xpath expr="//button[@name='action_open_helpdesk_ticket']" position="before">
                 <button class="oe_stat_button"
@@ -35,6 +36,13 @@
                         attrs="{'invisible': ['|', ('use_helpdesk_sale_timesheet', '=', False), '&amp;', ('sale_order_id', '=', False), ('sale_line_id', '=', False)]}"
                         string="Sales Order"
                         groups="sales_team.group_sale_salesman"/>
+                <button class="oe_stat_button"
+                        type="object" name="action_view_invoices" icon="fa-pencil-square-o"
+                        attrs="{'invisible': [('display_invoice_button', '=', False)]}"
+                        string="Invoices"
+                        groups="account.group_account_readonly,account.group_account_invoice,account.group_account_manager,sales_team.group_sale_salesman_all_leads">
+                    <field name="invoice_count" widget="statinfo" string="Invoices"/>
+                </button>
             </xpath>
             <xpath expr="//field[@name='project_id']" position="after">
                 <field name="sale_line_id" groups="!sales_team.group_sale_salesman" attrs="{'invisible': ['|', ('use_helpdesk_sale_timesheet', '=', False), ('partner_id', '=', False)]}" options="{'no_create': True, 'no_open': True}" context="{'create': False}"/>

@@ -487,3 +487,13 @@ class TestEditView(TestStudioController):
             modifiers = json.loads(tree.xpath('//*[@name="name"]')[0].get('modifiers'))
             for modifier, value in expected_modifiers.items():
                 self.assertEqual(modifiers.get(modifier), value)
+
+    def test_open_users_form_with_studio(self):
+        """Tests the res.users form view can be loaded with Studio.
+
+        The res.users form is an edge case, because it uses fake fields in its view, which do not exist in the model.
+        Make sure the Studio overrides regarding the loading of the views, including the postprocessing,
+        are able to handle these non-existing fields.
+        """
+        arch = self.env['res.users'].with_context(studio=True).get_view(self.env.ref('base.view_users_form').id)['arch']
+        self.assertTrue(arch)

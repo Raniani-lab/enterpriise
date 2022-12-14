@@ -98,8 +98,11 @@ class View(models.Model):
                     # For them, set a special argument to tell the web client to not read the content of the field
                     # while still displaying the field in the view.
                     model = node.xpath("ancestor::*[@model_access_rights][position()=1]")[0].get('model_access_rights')
-                    field = self.env[model]._fields[node.get('name')]
-                    if field.groups and not self.user_has_groups(field.groups):
+                    # The form view of `res.users` has fake fields, not existing in the model,
+                    # so use `_fields.get(...)` instead of `_fields[...]`
+                    # e.g. `in_group_12`
+                    field = self.env[model]._fields.get(node.get('name'))
+                    if field and field.groups and not self.user_has_groups(field.groups):
                         node.set('studio_no_fetch', '1')
 
             for node in set_invisible_nodes:

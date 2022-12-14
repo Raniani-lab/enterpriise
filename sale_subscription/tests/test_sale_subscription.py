@@ -414,7 +414,7 @@ class TestSubscription(TestSubscriptionCommon):
             upsell_so = self.env['sale.order'].browse(action['res_id'])
             self.assertEqual(upsell_so.order_line.mapped('product_uom_qty'), [0, 0, 0], 'The upsell order has 0 quantity')
             note = upsell_so.order_line.filtered('display_type')
-            self.assertEqual(note.name, 'Recurring products are discounted according to the prorated period from 01/15/2021 to 01/31/2021 based on a recurrence of one month')
+            self.assertEqual(note.name, 'Recurring products are discounted according to the prorated period from 01/15/2021 to 01/31/2021')
             self.assertEqual(upsell_so.order_line.product_id, self.subscription.order_line.product_id)
             upsell_so.order_line.filtered(lambda l: not l.display_type).product_uom_qty = 1
             # When the upsell order is created, all quantities are equal to 0
@@ -1856,9 +1856,9 @@ class TestSubscription(TestSubscriptionCommon):
             discount = [round(v, 2) for v in upsell_so.order_line.mapped('discount')]
             self.assertAlmostEqual(discount, [84.71, 84.71, 0])
 
-    def test_negative_discount(self):
-        """ Upselling a renewed order before it started should create a negative discount to invoice the previous
-            period
+    def test_upsell_renewal(self):
+        """ Upselling a invoiced renewed order before it started should create a negative discount to invoice the previous
+            period. If the renewal has not been invoiced yet, we should only invoice for the previous period.
         """
         with freeze_time("2022-01-01"):
             self.subscription.start_date = False
@@ -1910,7 +1910,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(upsell_so.order_line.mapped('discount'), [-24.93, -24.93, 0])
             self.assertEqual(upsell_so.start_date, datetime.date(2022, 10, 2))
             self.assertEqual(upsell_so.next_invoice_date, datetime.date(2024, 1, 1))
-            self.assertEqual(upsell_so_2.amount_untaxed, 120)
+            self.assertEqual(upsell_so_2.amount_untaxed, 29.92)
             # upsell_so_2.order_line.flush()
             line = upsell_so_2.order_line.filtered('display_type')
             self.assertEqual(line.display_type, 'line_note')
@@ -1918,8 +1918,12 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertFalse(line.price_unit)
             self.assertFalse(line.customer_lead)
             self.assertFalse(line.product_id)
-            with self.assertRaises(ValidationError):
-                upsell_so_2.action_confirm()
+
+            self.assertEqual(upsell_so_2.order_line.mapped('product_uom_qty'), [1.0, 1.0, 0])
+            for discount, value in zip(upsell_so_2.order_line.mapped('discount'), [75.07, 75.07, 0.0]):
+                self.assertAlmostEqual(discount, value)
+            self.assertEqual(upsell_so_2.next_invoice_date, datetime.date(2023, 1, 1),
+                             'We only invoice until the start of the renewal')
 
     def test_free_product_do_not_invoice(self):
         sub_product_tmpl = self.env['product.template'].create({
@@ -2304,6 +2308,8 @@ class TestSubscription(TestSubscriptionCommon):
             'name': 'Euro pricelist',
             'currency_id': self.env.ref('base.EUR').id,
         })
+        self.subscription.action_confirm()
+        self.subscription._create_recurring_invoice()
         action = self.subscription.prepare_upsell_order()
         upsell_so = self.env['sale.order'].browse(action['res_id'])
         with self.assertRaises(ValidationError):

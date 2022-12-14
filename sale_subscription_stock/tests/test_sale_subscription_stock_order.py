@@ -252,7 +252,7 @@ class TestSubscriptionStockOnOrder(TestSubscriptionStockCommon):
             self.assertEqual(order_line.discount, 0, 'The discount should be 0')
             self.assertEqual(order_line.product_uom_qty, 0, 'The upsell order has 0 quantity')
 
-            upsell_so.order_line.product_uom_qty = 2
+            upsell_so.order_line.filtered('product_id').product_uom_qty = 2
             upsell_so.action_confirm()
 
             upsell_move = upsell_so.picking_ids.move_ids

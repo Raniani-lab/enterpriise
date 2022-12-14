@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from dateutil.relativedelta import relativedelta
-from collections import defaultdict
 
 from odoo import fields, models, api, _, Command
 from odoo.tools.date_utils import get_timedelta
@@ -64,33 +63,40 @@ class SaleOrderLine(models.Model):
 
     @api.depends('order_id.subscription_management', 'order_id.start_date')
     def _compute_discount(self):
+        """ For upsells : this method compute the prorata ratio for upselling when the current and possibly future
+                        period have already been invoiced.
+                        The algorithm work backward by trying to remove one period at a time from the end to have a number of
+                        complete period before computing the prorata for the current period.
+                        For the current period, we use the remaining number of days / by the number of day in the current period.
+        """
         today = fields.Date.today()
         other_lines = self.env['sale.order.line']
+
         for line in self:
-            if not line.order_id.next_invoice_date or line.order_id.subscription_management != 'upsell':
-                other_lines |= line
+            parent_so = line.order_id.subscription_id
+            if not parent_so.next_invoice_date or line.order_id.subscription_management != 'upsell' or not line.product_id.recurring_invoice:
+                other_lines += line # We don't apply discount
                 continue
-            period_end = line.order_id.next_invoice_date
-            current_period_start = line.order_id.start_date or today
-            previous_period_start = line.order_id.subscription_id.last_invoice_date or line.order_id.subscription_id.start_date
-            time_to_invoice = period_end - current_period_start
-            if period_end and (period_end - previous_period_start).days != 0:
-                ratio = float(time_to_invoice.days) / float((period_end - previous_period_start).days)
+            start_date = max(line.order_id.start_date or today, line.order_id.origin_order_id.start_date)
+            end_date = line.order_id.subscription_id.next_invoice_date
+            if start_date >= end_date:
+                ratio = 0
             else:
-                ratio = 1
-            # Warning: we allow here ratio > 1 to be able to have negative discount.
-            # Negative discount are useful when we want to upsell a renewal order that not started yet.
-            # In that case, the upsell will also impact the renewed contract for a prorata temporis of the previous period
-            if ratio < 0:
-                ratio = 1.00  # Something went wrong in the dates
-            if line.order_id.subscription_management == 'upsell' and line.product_id.recurring_invoice and line.order_id.next_invoice_date:
+                recurrence = line.order_id.subscription_id.recurrence_id.get_recurrence_timedelta()
+                complete_rec = 0
+                while end_date - recurrence >= start_date:
+                    complete_rec += 1
+                    end_date -= recurrence
+                ratio = (end_date - start_date).days / ((start_date + recurrence) - start_date).days + complete_rec
+            # If the parent line had a discount, we reapply it to keep the same conditions.
+            # E.G. base price is 200€, parent line has a 10% discount and upsell has a 25% discount.
+            # We want to apply a final price equal to 200 * 0.75 (prorata) * 0.9 (discount) = 135 or 200*0,675
+            # We need 32.5 in the discount
+            if line.parent_line_id and line.parent_line_id.discount:
+                line.discount = (1 - ratio * (1 - line.parent_line_id.discount / 100)) * 100
+            else:
                 line.discount = (1 - ratio) * 100
-                if line.parent_line_id:
-                    # If the parent line had a discount, we reapply it to keep the same conditions. E.G. base price is 200€
-                    # parent line has a 10% discount and upsell has a 25% discount.
-                    # We want to apply a final price equal to 200 * 0.75 (prorata) * 0.9 (discount) = 135 or 200*0,675
-                    # We save 32.5 in the discount
-                    line.discount = (1 - (1 - line.discount / 100) * (1 - line.parent_line_id.discount / 100)) * 100
+
         return super(SaleOrderLine, other_lines)._compute_discount()
 
     @api.depends('order_id.recurrence_id', 'parent_line_id')
@@ -236,7 +242,7 @@ class SaleOrderLine(models.Model):
             lang_code = self.order_id.partner_id.lang
             if self.order_id.subscription_management == 'upsell':
                 # We start at the beginning of the upsell as it's a part of recurrence
-                new_period_start = self.order_id.start_date or fields.Datetime.today()
+                new_period_start = max(self.order_id.start_date or fields.Datetime.today(), self.order_id.origin_order_id.start_date)
             else:
                 # We need to invoice the next period: last_invoice_date will be today once this invoice is created. We use get_timedelta to avoid gaps
                 # We always use next_invoice_date as the recurrence are synchronized with the invoicing periods.
@@ -314,16 +320,20 @@ class SaleOrderLine(models.Model):
             }))
             description_needed = True
         if subscription_management == 'upsell' and description_needed and period_end:
-            format_start = format_date(self.env, fields.Date.today())
-            end_period = period_end - relativedelta(days=1)  # the period ends the day before the next invoice
-            format_next_invoice = format_date(self.env, end_period)
-            order_lines.append((
-                0,
-                0,
+            start_date = max(fields.Date.today(), line.order_id.origin_order_id.start_date)
+            end_date = period_end - relativedelta(days=1)  # the period ends the day before the next invoice
+            if start_date >= end_date:
+                line_name = _('Recurring product are entirely discounted as the next period has not been invoiced yet.')
+            else:
+                format_start = format_date(self.env, start_date)
+                format_end = format_date(self.env, end_date)
+                line_name = _('Recurring product are discounted according to the prorated period from %s to %s', format_start, format_end)
+
+            order_lines.append((0, 0,
                 {
                     'display_type': 'line_note',
                     'sequence': 999,
-                    'name': _('Recurring product are discounted according to the prorated period from %s to %s', format_start, format_next_invoice)
+                    'name': line_name
                 }
             ))
 

@@ -643,11 +643,12 @@ class SaleOrder(models.Model):
         """
         When confirming an upsell order, the recurring product lines must be updated
         """
+        today = fields.Date.today()
         for so in self:
             # We check the subscription direct invoice and not the one related to the whole SO
-            if so.subscription_id.start_date == so.subscription_id.next_invoice_date:
-                raise ValidationError(_("You can not upsell a subscription that has not been invoiced yet. "
-                                        "Please, update directly the %s contract or invoice it first.", so.subscription_id.name))
+            if (so.start_date or today) >= so.subscription_id.next_invoice_date:
+                raise ValidationError(_("You cannot upsell a subscription whose next invoice date is in the past.\n"
+                                        "Please, invoice directly the %s contract.", so.subscription_id.name))
         existing_line_ids = self.subscription_id.order_line
         dummy, update_values = self.update_existing_subscriptions()
         updated_line_ids = self.env['sale.order.line'].browse({val[1] for val in update_values})
@@ -860,6 +861,10 @@ class SaleOrder(models.Model):
         :return: dict of new sale order values
         """
         self.ensure_one()
+        if subscription_management == 'upsell' and self.next_invoice_date <= max(self.origin_order_id.start_date, fields.date.today()):
+            raise UserError(_('You cannot create an upsell for this subscription because it :\n'
+                              ' - Has not started yet.\n'
+                              ' - Has no invoiced period in the future.'))
         subscription = self.with_company(self.company_id)
         order_lines = self.order_line._get_renew_upsell_values(subscription_management, period_end=self.next_invoice_date)
         is_subscription = subscription_management == 'renew'

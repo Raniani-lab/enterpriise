@@ -171,10 +171,10 @@
             </xpath>
             <group name="sales_person" position='inside'>
                 <field name="start_date" groups="!sales_team.group_sale_manager"
-                       attrs="{'readonly': ['|', ('subscription_management', 'in', ['upsell', 'renew']),
+                       attrs="{'readonly': ['|', ('subscription_management', '=', 'renew'),
                                                  ('stage_category', 'in', ['progress', 'paused'])]}"/>
                 <field name="start_date" groups="sales_team.group_sale_manager"
-                       attrs="{'readonly': [('subscription_management', 'in', ['upsell', 'renew'])]}"/>
+                       attrs="{'readonly': [('subscription_management', '=', 'renew')]}"/>
                 <field name="to_renew" attrs="{'invisible': [('is_subscription', '=', False)]}"/>
             </group>
             <group name="sale_info" position='inside'>

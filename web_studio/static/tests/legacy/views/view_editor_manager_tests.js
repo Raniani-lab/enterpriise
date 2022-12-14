@@ -1948,6 +1948,25 @@ QUnit.module('ViewEditorManager', {
 
     });
 
+    QUnit.test("notebook with empty page", async (assert) => {
+        assert.expect(1);
+        
+        var vem = await studioTestUtils.createViewEditorManager({
+            model: 'coucou',
+            arch: `<form>
+                    <sheet>
+                        <notebook>
+                            <page string="field"></page>
+                        </notebook>
+                    </sheet>
+                </form>`,
+        });
+
+        await testUtils.dom.click(vem.$('.o_notebook li:first'));
+        assert.containsOnce(vem, '.o_web_studio_sidebar_content.o_display_page',
+            "the sidebar should now display the page properties");
+    });
+
     QUnit.test('invisible notebook page in form', async function (assert) {
         assert.expect(9);
 

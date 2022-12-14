@@ -265,7 +265,7 @@ class HelpdeskTicket(models.Model):
         readonly=False, ondelete='restrict', tracking=1, group_expand='_read_group_stage_ids',
         copy=False, index=True, domain="[('team_ids', '=', team_id)]")
     date_last_stage_update = fields.Datetime("Last Stage Update", copy=False, readonly=True)
-    ticket_ref = fields.Char(string='Ticket IDs Sequence', copy=False, readonly=True)
+    ticket_ref = fields.Char(string='Ticket IDs Sequence', copy=False, readonly=True, index=True)
     # next 4 fields are computed in write (or create)
     assign_date = fields.Datetime("First assignment date")
     assign_hours = fields.Integer("Time to first assignment (hours)", compute='_compute_assign_hours', store=True)

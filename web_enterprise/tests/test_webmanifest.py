@@ -28,3 +28,12 @@ class WebManifestRoutesTest(HttpCase):
             {'src': '/web_enterprise/static/img/odoo-icon-192x192.png', 'sizes': '192x192', 'type': 'image/png'},
             {'src': '/web_enterprise/static/img/odoo-icon-512x512.png', 'sizes': '512x512', 'type': 'image/png'}
         ])
+
+    def test_serviceworker(self):
+        """
+        This route returns a JavaScript's ServiceWorker
+        """
+        response = self.url_open("/web/service-worker.js")
+        self.assertEqual(response.status_code, 200)
+        self.assertEqual(response.headers["Content-Type"], "text/javascript")
+        self.assertEqual(response.headers["Service-Worker-Allowed"], "/web")

@@ -38,3 +38,20 @@ class WebManifest(http.Controller):
             ('Content-Type', 'application/manifest+json'),
         ])
         return response
+
+    @http.route('/web/service-worker.js', type='http', auth='public', methods=['GET'])
+    def service_worker(self):
+        """ Returns a ServiceWorker javascript file scoped for the backend (aka. '/web')
+        """
+        body = """
+            /**
+            * PWA "installability" criteria requires to have a listener registered
+            * for "fetch" events in the ServiceWorker, even an empty one.
+            */
+            self.addEventListener("fetch", () => {});
+        """
+        response = request.make_response(body, [
+            ('Content-Type', 'text/javascript'),
+            ('Service-Worker-Allowed', url_for('/web')),
+        ])
+        return response

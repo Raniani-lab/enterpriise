@@ -78,6 +78,106 @@ class TestTrialBalanceReport(TestAccountReportsCommon):
     # -------------------------------------------------------------------------
     # TESTS: Trial Balance
     # -------------------------------------------------------------------------
+    def test_trial_balance_unaffected_earnings_current_fiscal_year(self):
+        def invoice_move(date):
+            return self.env['account.move'].create({
+                'move_type': 'entry',
+                'date': fields.Date.from_string(date),
+                'journal_id': self.company_data['default_journal_misc'].id,
+                'line_ids': [
+                    (0, 0, {'debit': 1000.0, 'credit': 0.0,    'name': 'payable', 'account_id': self.company_data['default_account_payable'].id}),
+                    (0, 0, {'debit': 2000.0, 'credit': 0.0,    'name': 'expense', 'account_id': self.company_data['default_account_expense'].id}),
+                    (0, 0, {'debit': 0.0,    'credit': 3000.0, 'name': 'revenue', 'account_id': self.company_data['default_account_revenue'].id}),
+                ],
+            })
+
+        move_2009_12 = invoice_move('2009-12-31')
+        move_2009_12.action_post()
+
+        move_2010_01 = invoice_move('2010-01-31')
+        move_2010_01.action_post()
+
+        move_2010_02 = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': fields.Date.from_string('2010-02-01'),
+            'journal_id': self.company_data['default_journal_misc'].id,
+            'line_ids': [
+                (0, 0, {'debit': 100.0, 'credit': 0.0,    'name': 'payable', 'account_id': self.company_data['default_account_payable'].id}),
+                (0, 0, {'debit': 200.0, 'credit': 0.0,    'name': 'expense', 'account_id': self.company_data['default_account_expense'].id}),
+                (0, 0, {'debit': 0.0,    'credit': 300.0, 'name': 'revenue', 'account_id': self.company_data['default_account_revenue'].id}),
+            ],
+        })
+        move_2010_02.action_post()
+
+        move_2010_03 = invoice_move('2010-03-01')
+        move_2010_03.action_post()
+
+        options = self._generate_options(self.report, fields.Date.from_string('2010-02-01'), fields.Date.from_string('2010-02-28'))
+
+        self.assertLinesValues(
+            self.report._get_lines(options),
+            #                                           [  Initial Balance   ]          [       Balance      ]          [       Total        ]
+            #   Name                                    Debit           Credit          Debit           Credit          Debit           Credit
+            [   0,                                      1,              2,              3,              4,              5,              6],
+            [
+                ('211000 Account Payable',              2000.0,         '',             100.0,          '',             2100.0,         ''),
+                ('400000 Product Sales',                '',             3000.0,         '',             300.0,          '',             3300.0),
+                ('600000 Expenses',                     2000.0,         '',             200.0,          '',             2200.0,         ''),
+                ('999999 Undistributed Profits/Losses', '',             1000.0,         '',             '',             '',             1000.0),
+                ('Total',                               4000.0,         4000.0,         300.0,          300.0,          4300.0,         4300.0),
+            ],
+        )
+
+    def test_trial_balance_unaffected_earnings_previous_fiscal_year(self):
+        def invoice_move(date):
+            return self.env['account.move'].create({
+                'move_type': 'entry',
+                'date': fields.Date.from_string(date),
+                'journal_id': self.company_data['default_journal_misc'].id,
+                'line_ids': [
+                    (0, 0, {'debit': 1000.0, 'credit': 0.0,    'name': 'payable', 'account_id': self.company_data['default_account_payable'].id}),
+                    (0, 0, {'debit': 2000.0, 'credit': 0.0,    'name': 'expense', 'account_id': self.company_data['default_account_expense'].id}),
+                    (0, 0, {'debit': 0.0,    'credit': 3000.0, 'name': 'revenue', 'account_id': self.company_data['default_account_revenue'].id}),
+                ],
+            })
+
+        move_2009_12 = invoice_move('2009-12-31')
+        move_2009_12.action_post()
+
+        move_2010_01 = invoice_move('2010-01-31')
+        move_2010_01.action_post()
+
+        move_2010_02 = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': fields.Date.from_string('2010-02-01'),
+            'journal_id': self.company_data['default_journal_misc'].id,
+            'line_ids': [
+                (0, 0, {'debit': 100.0, 'credit': 0.0,    'name': 'payable', 'account_id': self.company_data['default_account_payable'].id}),
+                (0, 0, {'debit': 200.0, 'credit': 0.0,    'name': 'expense', 'account_id': self.company_data['default_account_expense'].id}),
+                (0, 0, {'debit': 0.0,    'credit': 300.0, 'name': 'revenue', 'account_id': self.company_data['default_account_revenue'].id}),
+            ],
+        })
+        move_2010_02.action_post()
+
+        move_2010_03 = invoice_move('2010-03-01')
+        move_2010_03.action_post()
+
+        options = self._generate_options(self.report, fields.Date.from_string('2010-01-01'), fields.Date.from_string('2010-02-28'))
+
+        self.assertLinesValues(
+            self.report._get_lines(options),
+            #                                           [  Initial Balance   ]          [       Balance      ]          [       Total        ]
+            #   Name                                    Debit           Credit          Debit           Credit          Debit           Credit
+            [   0,                                      1,              2,              3,              4,              5,              6],
+            [
+                ('211000 Account Payable',              1000.0,         '',             1100.0,         '',             2100.0,         ''),
+                ('400000 Product Sales',                '',             '',             '',             3300.0,         '',             3300.0),
+                ('600000 Expenses',                     '',             '',             2200.0,         '',             2200.0,         ''),
+                ('999999 Undistributed Profits/Losses', '',             1000.0,         '',             '',             '',             1000.0),
+                ('Total',                               1000.0,         1000.0,         3300.0,         3300.0,         4300.0,         4300.0),
+            ],
+        )
+
     def test_trial_balance_whole_report(self):
         options = self._generate_options(self.report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
 

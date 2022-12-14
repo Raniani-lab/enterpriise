@@ -34,7 +34,15 @@ class DisallowedExpensesFleetCustomHandler(models.AbstractModel):
             ARRAY_AGG(vehicle.name) vehicle_name,
             SUM(aml.balance * (
                 CASE WHEN fleet_rate.rate IS NOT NULL
-                THEN fleet_rate.rate
+                THEN 
+                    CASE WHEN rate.rate IS NOT NULL
+                    THEN 
+                        CASE WHEN fleet_rate.rate < rate.rate
+                        THEN fleet_rate.rate
+                        ELSE rate.rate
+                        END
+                    ELSE fleet_rate.rate
+                    END
                 ELSE rate.rate
                 END)) / 100 AS fleet_disallowed_amount
         """
@@ -230,7 +238,10 @@ class DisallowedExpensesFleetCustomHandler(models.AbstractModel):
         current_rate = ''
         if fleet_rate is not False:
             if fleet_rate is not None:
-                current_rate = fleet_rate
+                if account_rate:
+                    current_rate = min(account_rate, fleet_rate)
+                else:
+                    current_rate = fleet_rate
             elif account_rate:
                 current_rate = account_rate
 

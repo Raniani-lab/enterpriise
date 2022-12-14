@@ -563,3 +563,104 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
                 ('Total Aged Receivable',        '',        '',         '',         '',         '',         '',         '',          ''),
             ],
         )
+
+    def test_aged_receivable_prefix_groups(self):
+        partner_names = [
+            'A',
+            'A partner',
+            'A nice partner',
+            'A new partner',
+            'An original partner',
+            'Another partner',
+            'Anonymous partner',
+            'Annoyed partner',
+            'Brave partner',
+        ]
+
+        test_date = '2010-12-13'
+        invoices_map = {}
+        for name in partner_names:
+            partner = self.env['res.partner'].create({'name': name})
+            invoice = self.init_invoice('out_invoice', partner=partner, invoice_date=test_date, amounts=[42.0], taxes=[], post=True)
+            invoices_map[name] = f'{invoice.name} {invoice.payment_reference}'
+
+        # Without prefix groups
+        options = self._generate_options(self.report, test_date, test_date)
+
+        self.assertLinesValues(
+            self.report._get_lines(options),
+            #   Name                  Not Due On      1 - 30     31 - 60     61 - 90    91 - 120       Older         Total
+            [   0,                            4,          5,          6,          7,          8,          9,          10],
+            [
+                ('Aged Receivable',       378.0,         '',         '',         '',         '',         '',       378.0),
+                ('A',                      42.0,         '',         '',         '',         '',         '',        42.0),
+                ('A new partner',          42.0,         '',         '',         '',         '',         '',        42.0),
+                ('A nice partner',         42.0,         '',         '',         '',         '',         '',        42.0),
+                ('A partner',              42.0,         '',         '',         '',         '',         '',        42.0),
+                ('An original partner',    42.0,         '',         '',         '',         '',         '',        42.0),
+                ('Annoyed partner',        42.0,         '',         '',         '',         '',         '',        42.0),
+                ('Anonymous partner',      42.0,         '',         '',         '',         '',         '',        42.0),
+                ('Another partner',        42.0,         '',         '',         '',         '',         '',        42.0),
+                ('Brave partner',          42.0,         '',         '',         '',         '',         '',        42.0),
+                ('Total Aged Receivable', 378.0,         '',         '',         '',         '',         '',       378.0),
+            ],
+        )
+
+        # With prefix groups
+        self.env['ir.config_parameter'].set_param('account_reports.aged_partner_balance.groupby_prefix_groups_threshold', '3')
+        options = self._generate_options(self.report, test_date, test_date, default_options={'unfold_all': True})
+
+        self.assertLinesValues(
+            self.report._get_lines(options),
+            #   Name                             Not Due On    1 - 30     31 - 60     61 - 90    91 - 120       Older         Total
+            [   0,                                       4,        5,          6,          7,          8,          9,          10],
+            [
+                ('Aged Receivable',                  378.0,       '',         '',         '',         '',         '',       378.0),
+                ('A (8 lines)',                      336.0,       '',         '',         '',         '',         '',       336.0),
+                ('A',                                 42.0,       '',         '',         '',         '',         '',        42.0),
+                (invoices_map['A'],                   42.0,       '',         '',         '',         '',         '',          ''),
+                ('Total A',                           42.0,       '',         '',         '',         '',         '',        42.0),
+                ('A[ ] (3 lines)',                   126.0,       '',         '',         '',         '',         '',       126.0),
+                ('A N (2 lines)',                     84.0,       '',         '',         '',         '',         '',        84.0),
+                ('A new partner',                     42.0,       '',         '',         '',         '',         '',        42.0),
+                (invoices_map['A new partner'],       42.0,       '',         '',         '',         '',         '',          ''),
+                ('Total A new partner',               42.0,       '',         '',         '',         '',         '',        42.0),
+                ('A nice partner',                    42.0,       '',         '',         '',         '',         '',        42.0),
+                (invoices_map['A nice partner'],      42.0,       '',         '',         '',         '',         '',          ''),
+                ('Total A nice partner',              42.0,       '',         '',         '',         '',         '',        42.0),
+                ('Total A N (2 lines)',               84.0,       '',         '',         '',         '',         '',        84.0),
+                ('A P (1 line)',                      42.0,       '',         '',         '',         '',         '',        42.0),
+                ('A partner',                         42.0,       '',         '',         '',         '',         '',        42.0),
+                (invoices_map['A partner'],           42.0,       '',         '',         '',         '',         '',          ''),
+                ('Total A partner',                   42.0,       '',         '',         '',         '',         '',        42.0),
+                ('Total A P (1 line)',                42.0,       '',         '',         '',         '',         '',        42.0),
+                ('Total A[ ] (3 lines)',             126.0,       '',         '',         '',         '',         '',       126.0),
+                ('AN (4 lines)',                     168.0,       '',         '',         '',         '',         '',       168.0),
+                ('AN[ ] (1 line)',                    42.0,       '',         '',         '',         '',         '',        42.0),
+                ('An original partner',               42.0,       '',         '',         '',         '',         '',        42.0),
+                (invoices_map['An original partner'], 42.0,       '',         '',         '',         '',         '',          ''),
+                ('Total An original partner',         42.0,       '',         '',         '',         '',         '',        42.0),
+                ('Total AN[ ] (1 line)',              42.0,       '',         '',         '',         '',         '',        42.0),
+                ('ANN (1 line)',                      42.0,       '',         '',         '',         '',         '',        42.0),
+                ('Annoyed partner',                   42.0,       '',         '',         '',         '',         '',        42.0),
+                (invoices_map['Annoyed partner'],     42.0,       '',         '',         '',         '',         '',          ''),
+                ('Total Annoyed partner',             42.0,       '',         '',         '',         '',         '',        42.0),
+                ('Total ANN (1 line)',                42.0,       '',         '',         '',         '',         '',        42.0),
+                ('ANO (2 lines)',                     84.0,       '',         '',         '',         '',         '',        84.0),
+                ('Anonymous partner',                 42.0,       '',         '',         '',         '',         '',        42.0),
+                (invoices_map['Anonymous partner'],   42.0,       '',         '',         '',         '',         '',          ''),
+                ('Total Anonymous partner',           42.0,       '',         '',         '',         '',         '',        42.0),
+                ('Another partner',                   42.0,       '',         '',         '',         '',         '',        42.0),
+                (invoices_map['Another partner'],     42.0,       '',         '',         '',         '',         '',          ''),
+                ('Total Another partner',             42.0,       '',         '',         '',         '',         '',        42.0),
+                ('Total ANO (2 lines)',               84.0,       '',         '',         '',         '',         '',        84.0),
+                ('Total AN (4 lines)',               168.0,       '',         '',         '',         '',         '',       168.0),
+                ('Total A (8 lines)',                336.0,       '',         '',         '',         '',         '',       336.0),
+                ('B (1 line)',                        42.0,       '',         '',         '',         '',         '',        42.0),
+                ('Brave partner',                     42.0,       '',         '',         '',         '',         '',        42.0),
+                (invoices_map['Brave partner'],       42.0,       '',         '',         '',         '',         '',          ''),
+                ('Total Brave partner',               42.0,       '',         '',         '',         '',         '',        42.0),
+                ('Total B (1 line)',                  42.0,       '',         '',         '',         '',         '',        42.0),
+                ('Total Aged Receivable',            378.0,       '',         '',         '',         '',         '',       378.0),
+            ],
+        )

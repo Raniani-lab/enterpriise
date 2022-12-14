@@ -1024,7 +1024,7 @@ var accountReportsWidget = AbstractAction.extend({
             }
 
             $line.find('.fa-caret-down').toggleClass('fa-caret-right fa-caret-down');
-            $line.toggleClass('folded');
+            $line.addClass('folded');
             $line.parent('tr').removeClass('o_js_account_report_parent_row_unfolded');
             parent_ids.set($line.data('id'), $line);
             var index = this.report_options.unfolded_lines.indexOf($line.data('id'));
@@ -1032,6 +1032,7 @@ var accountReportsWidget = AbstractAction.extend({
                 this.report_options.unfolded_lines.splice(index, 1);
             }
         });
+
         var rows = this.$el.find('tr');
         var children = rows.map((it, row) => {
             let $row = $(row);
@@ -1045,6 +1046,7 @@ var accountReportsWidget = AbstractAction.extend({
                 }
             }
         });
+
         if (children.length > 0) {
             this.batch_fold(children);
         }
@@ -1127,14 +1129,16 @@ var accountReportsWidget = AbstractAction.extend({
                 })
                 .then(function(result){
                     line[0].dataset.unfolded = 'True';
-                    $(line).parent('tr').after(result);
-                    self._add_line_classes();
-                    var displayed_table = $('.o_account_reports_table:not(#table_header_clone)')
-                    displayed_table.find('.js_account_report_foldable').each(function() {
+
+                    let $result = $(result)
+                    $(line).parent('tr').after($result);
+                    $result.find('.js_account_report_foldable').each(function() {
                         if(!$(this).data('unfolded')) {
-                            self.fold($(this));
+                            self.batch_fold($(this));
                         }
                     });
+
+                    self._add_line_classes();
                 });
         }
     },

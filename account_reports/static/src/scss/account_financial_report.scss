@@ -561,6 +561,12 @@
     .o_account_reports_ja_move_line {
         background-color: var(--AccountFinancial-background-contrast, #f6f7fa);
     }
+
+    .o_account_reports_prefix_group{
+        td {
+            font-weight: bold !important;
+        }
+    }
 }
 
 .o_form_view {

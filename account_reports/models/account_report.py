@@ -1573,6 +1573,16 @@ class AccountReport(models.Model):
         for dummy, model, value in reversed(self._parse_line_id(line_id)):
             if target_model_name == model:
                 return value
+    @api.model
+    def _get_markup(self, line_id):
+        """ Directly returns the markup associated with the provided line_id.
+        """
+        return self._parse_line_id(line_id)[-1][0] if line_id else None
+
+    def _build_subline_id(self, parent_line_id, subline_id_postfix):
+        """ Creates a new subline id by concatanating parent_line_id with the provided id postfix.
+        """
+        return f"{parent_line_id}|{subline_id_postfix}"
 
     ####################################################
     # CARET OPTIONS MANAGEMENT
@@ -1821,47 +1831,11 @@ class AccountReport(models.Model):
         if options.get('hierarchy'):
             lines = self._create_hierarchy(lines, options)
 
-        # Unfold lines (static or dynamic) if necessary and prepare totals below section
+        # Handle totals below sections for static lines
+        lines = self._add_totals_below_sections(lines, options)
+
+        # Unfold lines (static or dynamic) if necessary and add totals below section to dynamic lines
         lines = self._fully_unfold_lines_if_needed(lines, options)
-
-        # Handle totals below sections setting
-        if self.env.company.totals_below_sections and not options.get('ignore_totals_below_sections'):
-
-            # Gather the lines needing the totals
-            lines_needing_total_below = set()
-            for line_dict, child_dict in zip(lines, lines[1:] + [None]):
-                line_markup = self._parse_line_id(line_dict['id'])[-1][0]
-
-                if line_markup != 'total':
-                    # If we are on the first level of a groupby, wee need to add the total below section now.
-                    # Sublevels (if any) will be handled by _expand_groupby.
-                    has_child = child_dict and child_dict.get('parent_id') == line_dict['id']
-                    if (line_dict.get('unfoldable') or has_child) and not line_markup.startswith('groupby'):
-                        lines_needing_total_below.add(line_dict['id'])
-
-                    # All lines that are parent of other lines need to receive a total if thery're not a groupby themselves
-                    line_parent_id = line_dict.get('parent_id')
-                    if line_parent_id and not line_markup.startswith('groupby'):
-                        lines_needing_total_below.add(line_parent_id)
-
-            # Inject the totals
-            if lines_needing_total_below:
-                lines_with_totals_below = []
-                totals_below_stack = []
-                for line_dict in lines:
-                    while totals_below_stack and not line_dict['id'].startswith(totals_below_stack[-1]['parent_id']):
-                        lines_with_totals_below.append(totals_below_stack.pop())
-
-                    lines_with_totals_below.append(line_dict)
-
-                    if line_dict['id'] in lines_needing_total_below and any(col.get('no_format') is not None for col in line_dict['columns']):
-                        line_dict['class'] = f"{line_dict.get('class', '')} o_account_reports_totals_below_sections"
-                        totals_below_stack.append(self._generate_total_below_section_line(line_dict))
-
-                while totals_below_stack:
-                    lines_with_totals_below.append(totals_below_stack.pop())
-
-                lines = lines_with_totals_below
 
         if self.custom_handler_model_id:
             lines = self.env[self.custom_handler_model_name]._custom_line_postprocessor(self, options, lines)
@@ -3467,7 +3441,7 @@ class AccountReport(models.Model):
         :return:        Lines sorted by the selected column.
         '''
         def needs_to_be_at_bottom(line_elem):
-            return self._parse_line_id(line_elem.get('id'))[-1][0] in ('total', 'load_more')
+            return self._get_markup(line_elem.get('id')) in ('total', 'load_more')
 
         def compare_values(a_line_dict, b_line_dict):
             type_seq = {
@@ -3513,12 +3487,18 @@ class AccountReport(models.Model):
         comp_key = cmp_to_key(compare_values)
         sorted_list = []
         tree = defaultdict(list)
+        non_total_parents = set()
         for line in lines:
-            tree[line.get('parent_id') or None].append(line)
+            line_parent = line.get('parent_id') or None
+            tree[line_parent].append(line)
 
-        if None not in tree and len(tree) == 1:
+            line_markup = self._get_markup(line['id'])
+            if line_markup != 'total':
+                non_total_parents.add(line_parent)
+
+        if None not in tree and len(non_total_parents) == 1:
             # Happens when unfolding a groupby line, to sort its children.
-            sorting_root = list(tree.keys())[0]
+            sorting_root = next(iter(non_total_parents))
         else:
             sorting_root = None
 
@@ -3780,6 +3760,8 @@ class AccountReport(models.Model):
         """
         lines = self._expand_unfoldable_line(expand_function_name, line_dict_id, groupby, options, progress, offset)
         lines = self._fully_unfold_lines_if_needed(lines, options)
+        if self.custom_handler_model_id:
+            lines = self.env[self.custom_handler_model_name]._custom_line_postprocessor(self, options, lines)
         return self.get_html(options, lines, template=self.line_template)
 
     def _expand_unfoldable_line(self, expand_function_name, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
@@ -3802,7 +3784,49 @@ class AccountReport(models.Model):
         if expansion_result.get('after_load_more_lines'):
             rslt.extend(expansion_result['after_load_more_lines'])
 
-        return rslt
+        return self._add_totals_below_sections(rslt, options)
+
+    def _add_totals_below_sections(self, lines, options):
+        """ Returns a new list, corresponding to lines with the required total lines added as sublines of the sections it contains.
+        """
+        if not self.env.company.totals_below_sections or options.get('ignore_totals_below_sections'):
+            return lines
+
+        # Gather the lines needing the totals
+        lines_needing_total_below = set()
+        for line_dict in lines:
+            line_markup = self._get_markup(line_dict['id'])
+
+            if line_markup != 'total':
+                # If we are on the first level of an expandable line, we arelady generate its total
+                if line_dict.get('unfoldable') or (line_dict.get('unfolded') and line_dict.get('expand_function')):
+                    lines_needing_total_below.add(line_dict['id'])
+
+                # All lines that are parent of other lines need to receive a total
+                line_parent_id = line_dict.get('parent_id')
+                if line_parent_id:
+                    lines_needing_total_below.add(line_parent_id)
+
+        # Inject the totals
+        if lines_needing_total_below:
+            lines_with_totals_below = []
+            totals_below_stack = []
+            for line_dict in lines:
+                while totals_below_stack and not line_dict['id'].startswith(totals_below_stack[-1]['parent_id']):
+                    lines_with_totals_below.append(totals_below_stack.pop())
+
+                lines_with_totals_below.append(line_dict)
+
+                if line_dict['id'] in lines_needing_total_below and any(col.get('no_format') is not None for col in line_dict['columns']):
+                    line_dict['class'] = f"{line_dict.get('class', '')} o_account_reports_totals_below_sections"
+                    totals_below_stack.append(self._generate_total_below_section_line(line_dict))
+
+            while totals_below_stack:
+                lines_with_totals_below.append(totals_below_stack.pop())
+
+            return lines_with_totals_below
+
+        return lines
 
     @api.model
     def _get_load_more_line(self, offset, parent_line_id, expand_function_name, groupby, progress, options):
@@ -3862,11 +3886,159 @@ class AccountReport(models.Model):
         rslt_lines = line._expand_groupby(line_dict_id, groupby, options, offset=offset, limit=limit_to_load, unfold_all_batch_data=unfold_all_batch_data)
         lines_to_load = rslt_lines[:self.load_more_limit] if limit_to_load else rslt_lines
 
+        if not limit_to_load and not self._context.get('print_mode'):
+            lines_to_load = self._regroup_lines_by_name_prefix(options, rslt_lines, '_report_expand_unfoldable_line_groupby_prefix_group', line.hierarchy_level,
+                                                               groupby=groupby, parent_line_dict_id=line_dict_id)
+
         return {
             'lines': lines_to_load,
             'offset_increment': len(lines_to_load),
-            'has_more': len(lines_to_load) < len(rslt_lines),
+            'has_more': len(lines_to_load) < len(rslt_lines) if limit_to_load else False,
         }
+
+    def _regroup_lines_by_name_prefix(self, options, lines_to_group, expand_function_name, parent_level, matched_prefix='', groupby=None, parent_line_dict_id=None):
+        """ Postprocesses a list of report line dictionaries in order to regroup them by name prefix and reduce the overall number of lines
+        if their number is above a provided threshold (set using 'groupby_prefix_groups_threshold' options key).
+
+        The lines regrouped under a common prefix will be removed from the returned list of lines; only the prefix line will stay, folded.
+        Its expand function must ensure the right sublines are reloaded when unfolding it.
+
+        :param options: Option dict for this report.
+        :lines_to_group: The lines list to regroup by prefix if necessary. They must all have the same parent line (which might be no line at all).
+        :expand_function_name: Name of the expand function to be called on created prefix group lines, when unfolding them
+        :parent_level: Level of the parent line, which generated the lines in lines_to_group. It will be used to compute the level of the prefix group lines.
+        :matched_prefix': A string containing the parent prefix that's already matched. For example, when computing prefix 'ABC', matched_prefix will be 'AB'.
+        :groupby: groupby value of the parent line, which generated the lines in lines_to_group.
+        :parent_line_dict_id: id of the parent line, which generated the lines in lines_to_group.
+
+        :return: lines_to_group, grouped by prefix if it was necessary.
+        """
+        threshold = options.get('groupby_prefix_groups_threshold', 0)
+
+        # When grouping by prefix, we ignore the totals
+        lines_to_group_without_totals = list(filter(lambda x: self._get_markup(x['id']) != 'total', lines_to_group))
+
+        if self._context.get('print_mode') or threshold <= 0 or len(lines_to_group_without_totals) < threshold:
+            # No grouping needs to be done
+            return lines_to_group
+
+        char_index = len(matched_prefix)
+        prefix_groups = defaultdict(list)
+        rslt = []
+        for line in lines_to_group_without_totals:
+            line_name = line['name'].strip()
+
+            if len(line_name) - 1 < char_index:
+                rslt.append(line)
+            else:
+                prefix_groups[line_name[char_index].lower()].append(line)
+
+        unfold_all = self._context.get('print_mode') or options.get('unfold_all')
+        for prefix_key, prefix_sublines in sorted(prefix_groups.items(), key=lambda x: x[0]):
+            # Compute the total of this prefix line, summming all of its content
+            prefix_expression_totals_by_group = {column_group_key: defaultdict(float) for column_group_key in options['column_groups']}
+            for column_index, column_data in enumerate(options['columns']):
+                if column_data['figure_type'] in {'monetary', 'monetary_without_symbol', 'integer', 'float'}:
+                    # Then we want to sum this column's value in our children
+                    for prefix_subline in prefix_sublines:
+                        prefix_expression_totals_by_group[column_data['column_group_key']][column_data['expression_label']] += (prefix_subline['columns'][column_index]['no_format'] or 0)
+
+            column_values = []
+            for column in options['columns']:
+                col_expr_label = column['expression_label']
+                value = prefix_expression_totals_by_group[column['column_group_key']][col_expr_label]
+
+                column_values.append({
+                    'name': self.format_value(value, figure_type=column['figure_type'], blank_if_zero=column['blank_if_zero']),
+                    'no_format': value,
+                    'class': 'number'
+                })
+
+            line_id = self._get_generic_line_id(None, None, parent_line_id=parent_line_dict_id, markup=f"groupby_prefix_group:{prefix_key}")
+
+            sublines_nber = len(prefix_sublines)
+            prefix_to_display = prefix_key.upper()
+
+            if re.match(r'\s', prefix_to_display[-1]):
+                # In case the last character of the prefix to_display is blank, replace it by "[ ]", to make the space more visible to the user.
+                prefix_to_display = f'{prefix_to_display[:-1]}[ ]'
+
+            if sublines_nber == 1:
+                prefix_group_line_name = f"{matched_prefix}{prefix_to_display} " + _("(1 line)")
+            else:
+                prefix_group_line_name = f"{matched_prefix}{prefix_to_display} " + _("(%s lines)", sublines_nber)
+
+            prefix_group_line = {
+                'id': line_id,
+                'name': prefix_group_line_name,
+                'unfoldable': True,
+                'unfolded': unfold_all or line_id in options.get('unfolded_lines', {}),
+                'class': 'o_account_reports_prefix_group',
+                'columns': column_values,
+                'groupby': groupby,
+                'level': parent_level + 1,
+                'parent_id': parent_line_dict_id,
+                'expand_function': expand_function_name,
+            }
+            rslt.append(prefix_group_line)
+
+        return rslt
+
+    def _report_expand_unfoldable_line_groupby_prefix_group(self, line_dict_id, groupby, options, progress, offset, unfold_all_batch_data=None):
+        """ Expand function used by prefix_group lines generated for groupby lines.
+        """
+        report_line_id = None
+        parent_groupby_count = 0
+        for markup, model, model_id in reversed(self._parse_line_id(line_dict_id)):
+            if model == 'account.report.line':
+                report_line_id = model_id
+                break
+            elif markup.startswith('groupby'): # for groupby: and groupby_prefix_group:
+                parent_groupby_count += 1
+
+        if report_line_id is None:
+            raise UserError(_("Trying to expand a group for a line which was not generated by a report line: %s", line_dict_id))
+
+        report_line = self.env['account.report.line'].browse(report_line_id)
+
+
+        matched_prefix = self._get_prefix_groups_matched_prefix_from_line_id(line_dict_id)
+        first_groupby = groupby.split(',')[0]
+        expand_options = {
+            **options,
+            'forced_domain': options.get('forced_domain', []) + [(f"{f'{first_groupby}.' if first_groupby != 'id' else ''}name", '=ilike', f'{matched_prefix}%')]
+        }
+        expanded_groupby_lines = report_line._expand_groupby(line_dict_id, groupby, expand_options)
+        parent_level = report_line.hierarchy_level + parent_groupby_count * 2
+
+        lines = self._regroup_lines_by_name_prefix(
+            options,
+            expanded_groupby_lines,
+            '_report_expand_unfoldable_line_groupby_prefix_group',
+            parent_level,
+            groupby=groupby,
+            matched_prefix=matched_prefix,
+            parent_line_dict_id=line_dict_id,
+        )
+
+        return {
+            'lines': lines,
+            'offset_increment': len(lines),
+            'has_more': False,
+        }
+
+    def _get_prefix_groups_matched_prefix_from_line_id(self, line_dict_id):
+        matched_prefix = ''
+        for markup, dummy1, dummy2 in self._parse_line_id(line_dict_id):
+            if markup and markup.startswith('groupby_prefix_group'):
+                prefix_piece = markup.split(':')[1]
+                matched_prefix += prefix_piece.upper()
+            else:
+                # Might happen if a groupby is grouped by prefix, then a subgroupby is grouped by another subprefix.
+                # In this case, we want to reset the prefix group to only consider the one used in the subgroupby.
+                matched_prefix = ''
+
+        return matched_prefix
 
     def get_html_footnotes(self, footnotes):
         rcontext = {'footnotes': footnotes, 'context': self.env.context}
@@ -4207,7 +4379,7 @@ class AccountReport(models.Model):
         else:
             return self.env.company.ids
 
-    def _get_partner_and_general_ledger_initial_balance_line(self, options, parent_line_id, eval_dict, account_currency=None):
+    def _get_partner_and_general_ledger_initial_balance_line(self, options, parent_line_id, eval_dict, account_currency=None, level_shift=0):
         """ Helper to generate dynamic 'initial balance' lines, used by general ledger and partner ledger.
         """
         line_columns = []
@@ -4236,6 +4408,7 @@ class AccountReport(models.Model):
             'id': self._get_generic_line_id(None, None, parent_line_id=parent_line_id, markup='initial'),
             'class': 'o_account_reports_initial_balance',
             'name': _("Initial Balance"),
+            'level': 2 + level_shift,
             'parent_id': parent_line_id,
             'columns': line_columns,
         }
@@ -4574,6 +4747,7 @@ class AccountReportLine(models.Model):
 
         # If this line is a sub-groupby of groupby line (for example, when grouping by partner, id; the id line is a subgroup of partner),
         # we need to add the domain of the parent groupby criteria to the options
+        prefix_groups_count = 0
         sub_groupby_domain = []
         full_sub_groupby_key_elements = []
         for markup, model, value in line_id_list:
@@ -4581,6 +4755,9 @@ class AccountReportLine(models.Model):
                 field_name = markup.split(':')[1]
                 sub_groupby_domain.append((field_name, '=', value))
                 full_sub_groupby_key_elements.append(f"{field_name}:{value}")
+            elif markup.startswith('groupby_prefix_group:'):
+                prefix_groups_count += 1
+
             if model == 'account.group':
                 group_indent += 1
 
@@ -4650,7 +4827,7 @@ class AccountReportLine(models.Model):
                 'unfolded': options['unfold_all'] or line_id in options.get('unfolded_lines', {}),
                 'groupby': next_groupby,
                 'columns': self.report_id._build_static_line_columns(self, options, group_totals),
-                'level': self.hierarchy_level + 2 * (len(sub_groupby_domain) + 1) + (group_indent - 1),
+                'level': self.hierarchy_level + 2 * (prefix_groups_count + len(sub_groupby_domain) + 1) + (group_indent - 1),
                 'parent_id': line_dict_id,
                 'expand_function': '_report_expand_unfoldable_line_with_groupby' if next_groupby else None,
                 'caret_options': groupby_model if not next_groupby else None,
@@ -4688,12 +4865,6 @@ class AccountReportLine(models.Model):
             group_line_dict = group_lines_by_keys[grouping_key]
             group_line_dict['name'] = line_name
             group_lines.append(group_line_dict)
-
-            if next_groupby and self.env.company.totals_below_sections and any(col.get('no_format') is not None for col in group_line_dict['columns']):
-                # This groupby has a sub-groupby, and is hence to be considered as some kind of section, meaning we need
-                # a total line when using 'totals below section' option.
-                group_line_dict['class'] = f"{group_line_dict.get('class', '')} o_account_reports_totals_below_sections"
-                group_lines.append(self.report_id._generate_total_below_section_line(group_line_dict))
 
         if options.get('hierarchy'):
             group_lines = self.report_id._create_hierarchy(group_lines, options)

@@ -27,6 +27,11 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
 
         options['order_column'] = (previous_options or {}).get('order_column') or default_order_column
 
+        prefix_group_parameter_name = 'account_reports.aged_partner_balance.groupby_prefix_groups_threshold'
+        prefix_groups_threshold = int(self.env['ir.config_parameter'].sudo().get_param(prefix_group_parameter_name, 0))
+        if prefix_groups_threshold:
+            options['groupby_prefix_groups_threshold'] = prefix_groups_threshold
+
     def _custom_line_postprocessor(self, report, options, lines):
         partner_lines_map = {}
 

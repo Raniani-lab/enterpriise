@@ -59,7 +59,7 @@ QUnit.module("Views > MRP Workorder Gantt", {
 });
 
 QUnit.test("progress bar has the correct unit", async (assert) => {
-    assert.expect(11);
+    assert.expect(13);
     await makeView({
         type: "gantt",
         arch: `
@@ -101,11 +101,19 @@ QUnit.test("progress bar has the correct unit", async (assert) => {
         target.querySelector(SELECTORS.progressBarForeground).textContent,
         "465 h / 744 h"
     );
+    assert.deepEqual(
+        target.querySelector(SELECTORS.progressBar + " > span > .o_gantt_group_hours_ratio").textContent,
+        "(62.5%)"
+    );
 
     await hoverGridCell(2, 1);
     assert.containsOnce(target, SELECTORS.progressBarForeground);
     assert.deepEqual(
         target.querySelector(SELECTORS.progressBarForeground).textContent,
         "651 h / 744 h"
+    );
+    assert.deepEqual(
+        target.querySelector(SELECTORS.progressBar + " > span > .o_gantt_group_hours_ratio").textContent,
+        "(87.5%)"
     );
 });

@@ -1,6 +1,7 @@
 /** @odoo-module **/
 
 import { GanttModel } from "@web_gantt/gantt_model";
+import { formatPercentage } from "@web/views/fields/formatters";
 
 export class MRPWorkorderGanttModel extends GanttModel {
     /**
@@ -16,6 +17,7 @@ export class MRPWorkorderGanttModel extends GanttModel {
                 if (row.progressBar.max_value_formatted) {
                     row.progressBar.max_value_formatted += this.env._t(" h");
                 }
+                row.progressBar.ratio_formatted = formatPercentage(row.progressBar.ratio / 100);
             }
         }
     }

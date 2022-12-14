@@ -3,6 +3,7 @@
 import { formatFloatTime } from "@web/views/fields/formatters";
 import { getIntersection, getUnionOfIntersections } from "@web_gantt/gantt_helpers";
 import { GanttRenderer } from "@web_gantt/gantt_renderer";
+import { MRPWorkorderGanttRowProgressBar } from "./mrp_workorder_gantt_row_progress_bar";
 
 const { Duration } = luxon;
 
@@ -56,3 +57,8 @@ export class MRPWorkorderGanttRenderer extends GanttRenderer {
         return false;
     }
 }
+
+MRPWorkorderGanttRenderer.components = {
+    ...GanttRenderer.components,
+    GanttRowProgressBar: MRPWorkorderGanttRowProgressBar,
+};

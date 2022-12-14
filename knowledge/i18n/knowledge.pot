@@ -554,7 +554,7 @@ msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
-msgid "<span style=\"font-size: 14px;\">Each of them can bu used both as:</span>"
+msgid "<span style=\"font-size: 14px;\">Each of them can be used both as:</span>"
 msgstr ""
 
 #. module: knowledge

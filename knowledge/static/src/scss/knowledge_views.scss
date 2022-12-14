@@ -49,7 +49,9 @@
     .o_knowledge_option_button {
         visibility: hidden;
         opacity: 0;
-        transition: visibility 0.3s, opacity 0.3s linear;
+        &:not(.o_knowledge_option_button_fake) {
+            transition: visibility 0.3s, opacity 0.3s linear;
+        }
     }
     
     .o_knowledge_icon_cover_buttons {
@@ -58,10 +60,15 @@
 
     .o_knowledge_icon_cover_buttons:hover > a,
     .o_knowledge_cover:hover .o_knowledge_edit_cover_buttons > a {
-        visibility: visible;
-        opacity: 1;
+        &:not(.o_knowledge_option_button_fake) {
+            visibility: visible;
+            opacity: 1;
+        }
     }
 
+    .o_knowledge_editor .o_field_html .note-editable{
+        padding-top: 0px;
+    }
     .o_knowledge_icon.o_large,
     .o_knowledge_icon_cover_buttons,
     .o_knowledge_editor .o_field_html .note-editable,
@@ -383,8 +390,10 @@
             width: 100%;
         }
         .o_knowledge_option_button {
-            visibility: visible;
-            opacity: 1;
+            &:not(.o_knowledge_option_button_fake) {
+                visibility: visible;
+                opacity: 1;
+            }
         }
     }
 }

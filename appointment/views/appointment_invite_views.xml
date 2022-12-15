@@ -48,12 +48,12 @@
                 </div>
                 <sheet>
                     <group class="mb-0">
-                        <field name="appointment_type_ids" widget="many2many_tags" options="{'no_create': True, 'no_edit_color': True}"/>
+                        <field name="appointment_type_ids" class="o_input" widget="many2many_tags" options="{'no_create': True, 'no_edit_color': True}"/>
                         <field name="suggested_staff_user_ids" invisible="1"/>
                         <field name="suggested_staff_user_count" invisible="1"/>
                         <field name="appointment_type_count" invisible="1"/>
                         <field name="staff_users_choice" widget="radio" attrs="{'invisible': ['|', ('appointment_type_count', '!=', 1), ('suggested_staff_user_count', '&lt;=', 1)]}"/>
-                        <field name="staff_user_ids" widget="many2many_tags_avatar" options="{'no_create': True}"
+                        <field name="staff_user_ids" class="o_input" widget="many2many_tags_avatar" options="{'no_create': True}"
                                attrs="{'invisible': [
                                     '|', ('suggested_staff_user_ids', '=', []), '|', ('appointment_type_count', '!=', 1),
                                     '|', ('staff_users_choice', '=', 'current_user'), ('staff_users_choice', '=', 'all_assigned_users')]}"/>

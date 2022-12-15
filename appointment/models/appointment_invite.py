@@ -173,7 +173,7 @@ class AppointmentShare(models.Model):
         :param recordset users: the staff users representing the filter_staff_user_ids
         """
         self.ensure_one()
-        if self.appointment_type_ids != appointment_types or self.staff_user_ids != users:
+        if (self.appointment_type_ids and self.appointment_type_ids != appointment_types) or self.staff_user_ids != users:
             return False
         return True
 

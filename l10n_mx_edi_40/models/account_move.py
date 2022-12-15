@@ -7,6 +7,11 @@ class AccountMove(models.Model):
 
     l10n_mx_edi_usage = fields.Selection(selection_add=[('S01', "Without fiscal effects")], default='S01')
 
+    l10n_mx_edi_cfdi_to_public = fields.Boolean(
+        string="CFDI to public",
+        help="Send the CFDI with recipient 'publico en general'",
+    )
+
     def _l10n_mx_edi_get_tax_objected(self):
         """Used to determine the IEPS tax breakdown in CFDI
              01 - Used by foreign partners not subject to tax

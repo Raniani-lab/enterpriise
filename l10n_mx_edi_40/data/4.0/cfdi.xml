@@ -40,9 +40,9 @@
                     t-att-Rfc="customer_rfc"
                     t-att-Nombre="format_string(customer_name, 254)"
                     t-att-ResidenciaFiscal="customer_fiscal_residence"
-                    t-att-DomicilioFiscalReceptor="customer.zip if customer.country_id.code == 'MX' else issued_address.zip or supplier.zip"
+                    t-att-DomicilioFiscalReceptor="domicilio_fiscal_receptor"
                     t-att-RegimenFiscalReceptor="fiscal_regime"
-                    t-att-UsoCFDI="record.l10n_mx_edi_usage if record.l10n_mx_edi_usage != 'P01' else 'S01'"/>
+                    t-att-UsoCFDI="uso_cfdi"/>
                 <cfdi:Conceptos>
                     <t t-foreach="invoice_line_vals_list" t-as="line_values">
                         <t t-set="line" t-value="line_values['line']"/>

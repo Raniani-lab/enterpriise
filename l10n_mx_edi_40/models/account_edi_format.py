@@ -18,14 +18,26 @@ class AccountEdiFormat(models.Model):
 
     def _l10n_mx_edi_get_40_values(self, move):
         customer = move.partner_id if move.partner_id.type == 'invoice' else move.partner_id.commercial_partner_id
+        supplier = move.company_id.partner_id.commercial_partner_id
+        issued_address = move._get_l10n_mx_edi_issued_address()
         vals = {
             'fiscal_regime': customer.l10n_mx_edi_fiscal_regime,
             'tax_objected': move._l10n_mx_edi_get_tax_objected(),
             'supplier_name': self._l10n_mx_edi_clean_to_legal_name(move.company_id.name),
             'customer_name': self._l10n_mx_edi_clean_to_legal_name(move.commercial_partner_id.name),
+            'domicilio_fiscal_receptor': customer.zip if customer.country_id.code == 'MX' else issued_address.zip or supplier.zip,
+            'uso_cfdi': move.l10n_mx_edi_usage if move.l10n_mx_edi_usage != 'P01' else 'S01',
         }
         if customer.country_code not in [False, 'MX']:
             vals['fiscal_regime'] = '616'
+        if move.l10n_mx_edi_cfdi_to_public:
+            vals.update({
+                'customer_rfc': "XAXX010101000",
+                'customer_name': "“PUBLICO EN GENERAL”",
+                'fiscal_regime': '616',
+                'uso_cfdi': 'S01',
+                'domicilio_fiscal_receptor': issued_address.zip or supplier.zip,
+            })
         return vals
 
     def _l10n_mx_edi_get_invoice_cfdi_values(self, invoice):

@@ -24,11 +24,33 @@ class HelpdeskTicket(models.Model):
             'res_model': 'repair.order',
             'view_mode': 'tree,form',
             'domain': [('id', 'in', self.repair_ids.ids)],
-            'context': dict(self._context, create=False, default_company_id=self.company_id.id, default_ticket_id=self.id),
         }
+        action['context'] = self._prepare_repairs_default_value()
         if self.repairs_count == 1:
             action.update({
                 'view_mode': 'form',
                 'res_id': self.repair_ids.id
             })
         return action
+
+    def action_repair_order_form(self):
+        self.ensure_one()
+        action = self.env['ir.actions.act_window']._for_xml_id("helpdesk_repair.action_repair_order_form")
+        action['context'] = self._prepare_repairs_default_value()
+        return action
+
+    def _prepare_repairs_default_value(self):
+        return {
+            **self.env.context,
+            'default_product_id': self.product_id.id,
+            'default_lot_id': self.lot_id.id,
+            'default_partner_id': self.partner_id.id,
+            'default_ticket_id': self.id,
+            'default_company_id': self.company_id.id,
+            'default_description': self.name,
+            'default_sale_order_id': self.sale_order_id.id,
+            'default_user_id': False,
+            'default_internal_notes': self.description,
+            'default_picking_id': self.picking_ids.filtered(lambda x: x.product_id == self.product_id)[-1].id
+                if self.picking_ids and self.product_id else self.picking_ids[-1:].id,
+        }

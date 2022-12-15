@@ -22,10 +22,8 @@
         <field name="arch" type="xml">
             <field name="stage_id" position="before">
                 <field name="use_product_repairs" invisible="1" groups="stock.group_stock_user"/>
-                <button name="%(helpdesk_repair.action_repair_order_form)d" type="action"
-                    groups="stock.group_stock_user"
-                    string="Repair" attrs="{'invisible': [('use_product_repairs', '=', False)]}"
-                    context="{'default_product_id': product_id, 'default_lot_id': lot_id, 'default_partner_id': partner_id, 'default_ticket_id': id, 'default_company_id': company_id}" data-hotkey="t"/>
+                <button name="action_repair_order_form" type="object" groups="stock.group_stock_user"
+                    string="Repair" attrs="{'invisible': [('use_product_repairs', '=', False)]}" data-hotkey="t"/>
             </field>
         </field>
     </record>

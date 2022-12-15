@@ -1,6 +1,5 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
-from odoo import api, SUPERUSER_ID
 from . import models
 from . import wizards
 
@@ -28,7 +27,6 @@ def _set_wsdl_ir_config_param(env):
     env['ir.config_parameter'].set_param('l10n_edi_carvajal_wsdl', 'https://ws%s.facturacarvajal.com/isows/InvoiceService?wsdl')
 
 
-def _l10n_co_edi_post_init(cr, registry):
-    env = api.Environment(cr, SUPERUSER_ID, {})
+def _l10n_co_edi_post_init(env):
     _setup_tax_type(env)
     _set_wsdl_ir_config_param(env)

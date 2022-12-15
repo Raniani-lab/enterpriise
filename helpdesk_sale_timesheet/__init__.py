@@ -5,11 +5,8 @@ from . import controllers
 from . import models
 from . import wizard
 
-from odoo import api, SUPERUSER_ID
 
-
-def _helpdesk_sale_timesheet_post_init(cr, registry):
-    env = api.Environment(cr, SUPERUSER_ID, {})
+def _helpdesk_sale_timesheet_post_init(env):
     teams = env['helpdesk.team'].search([('use_helpdesk_timesheet', '=', True), ('use_helpdesk_sale_timesheet', '=', True)])
 
     projects = teams.filtered(lambda team: team.project_id and not team.project_id.allow_billable).mapped('project_id')

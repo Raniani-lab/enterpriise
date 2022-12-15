@@ -2,16 +2,14 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import logging
 
-from odoo import api, fields, SUPERUSER_ID
+from odoo import fields
 from odoo.fields import Datetime
 from dateutil.relativedelta import relativedelta
 
 _logger = logging.getLogger(__name__)
 
 
-def _generate_payslips(cr, registry):
-    env = api.Environment(cr, SUPERUSER_ID, {})
-
+def _generate_payslips(env):
     # Do this only when demo data is activated
     if env.ref('l10n_be_hr_payroll.res_company_be', raise_if_not_found=False):
         if not env['hr.payslip'].sudo().search_count([('employee_id.name', '=', 'Marian Weaver')]):

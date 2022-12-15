@@ -3,11 +3,8 @@
 
 from . import models
 
-from odoo import api, SUPERUSER_ID
 
-
-def _documents_fsm_post_init(cr, registry):
-    env = api.Environment(cr, SUPERUSER_ID, {})
+def _documents_fsm_post_init(env):
     fsm_projects = env["project.project"].search([("is_fsm", "=", True), ("use_documents", "=", True)])
     read_group_var = (
         env["documents.document"]

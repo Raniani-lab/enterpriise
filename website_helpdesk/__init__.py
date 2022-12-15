@@ -1,17 +1,16 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, SUPERUSER_ID, Command, _
+from odoo import Command, _
 
 from . import controllers
 from . import models
 from . import tests
 
 
-def _configure_teams(cr, registry):
+def _configure_teams(env):
     # Ensure at least one team exists when enabling the module, otherwise create
     # a default one.
-    env = api.Environment(cr, SUPERUSER_ID, {})
     team = env["helpdesk.team"].search([], limit=1)  # Default order is sequence, name
     if team:
         team.use_website_helpdesk_form = True

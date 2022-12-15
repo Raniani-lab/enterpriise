@@ -8,17 +8,17 @@ from . import wizard
 from . import populate
 
 
-def _pre_init_sale_subscription(cr):
+def _pre_init_sale_subscription(env):
     """ Allow installing sale_subscription in databases with large sale.order / sale.order.line tables.
     The different sale_subscription fields are all NULL (falsy) for existing sale orders,
     the computation is way more efficient in SQL than in Python.
     """
-    cr.execute("""
+    env.cr.execute("""
         ALTER TABLE "sale_order_line"
         ADD COLUMN "parent_line_id" int4,
         ADD COLUMN "pricing_id" int4
     """)
-    cr.execute("""
+    env.cr.execute("""
         ALTER TABLE "sale_order"
         ADD COLUMN "is_subscription" bool,
         ADD COLUMN  "to_renew" bool,

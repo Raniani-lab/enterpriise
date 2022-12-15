@@ -6,13 +6,10 @@ from . import wizard
 
 import logging
 
-from odoo import api, SUPERUSER_ID
-
 _logger = logging.getLogger(__name__)
 
 
-def _account_accountant_post_init(cr, registry):
-    env = api.Environment(cr, SUPERUSER_ID, {})
+def _account_accountant_post_init(env):
     country_code = env.company.country_id.code
     if country_code:
         module_list = []
@@ -32,9 +29,7 @@ def _account_accountant_post_init(cr, registry):
             module_ids.sudo().button_install()
 
 
-def uninstall_hook(cr, registry):
-    env = api.Environment(cr, SUPERUSER_ID, {})
-
+def uninstall_hook(env):
     try:
         group_user = env.ref("account.group_account_user")
         group_user.write({

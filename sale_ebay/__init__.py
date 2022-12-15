@@ -6,10 +6,7 @@ from . import models
 from . import tools
 from . import wizard
 
-from odoo import api, SUPERUSER_ID
-
-def uninstall_hook(cr, registry):
-    env = api.Environment(cr, SUPERUSER_ID, {})
+def uninstall_hook(env):
     icp = env['ir.config_parameter']
     # remove config parameter to ebay.site record
     icp.set_param('ebay_site', False)

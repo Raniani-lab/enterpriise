@@ -2,12 +2,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from os.path import join, dirname, realpath
-from odoo import api, tools, SUPERUSER_ID
+from odoo import tools
 import csv
 
 
-def post_init_hook(cr, registry):
-    env = api.Environment(cr, SUPERUSER_ID, {})
+def post_init_hook(env):
     mx_country = env["res.country"].search([("code", "=", "MX")])
     # Load cities
     res_city_vals_list = []
@@ -28,7 +27,7 @@ def post_init_hook(cr, registry):
     if res_city_vals_list:
         cities = env['res.city'].create(res_city_vals_list)
 
-        cr.execute('''
+        env.cr.execute('''
            INSERT INTO ir_model_data (name, res_id, module, model, noupdate)
                SELECT
                     'res_city_mx_' || lower(res_country_state.code) || '_' || res_city.l10n_mx_edi_code,
@@ -59,7 +58,7 @@ def post_init_hook(cr, registry):
         localities = env['l10n_mx_edi.res.locality'].create(tariff_fraction_vals_list)
 
         if localities:
-            cr.execute('''
+            env.cr.execute('''
                INSERT INTO ir_model_data (name, res_id, module, model, noupdate)
                    SELECT 
                         'res_locality_mx_' || lower(res_country_state.code) || '_' || l10n_mx_edi_res_locality.code,
@@ -84,7 +83,7 @@ def post_init_hook(cr, registry):
         tariff_fractions = env['l10n_mx_edi.tariff.fraction'].create(tariff_fraction_vals_list)
 
         if tariff_fractions:
-            cr.execute('''
+            env.cr.execute('''
                INSERT INTO ir_model_data (name, res_id, module, model, noupdate)
                    SELECT 
                         'tariff_fraction_' || l10n_mx_edi_tariff_fraction.code,
@@ -97,5 +96,5 @@ def post_init_hook(cr, registry):
             ''', [tuple(tariff_fractions.ids)])
 
 
-def uninstall_hook(cr, registry):
-    cr.execute("DELETE FROM ir_model_data WHERE model='l10n_mx_edi.tariff.fraction';")
+def uninstall_hook(env):
+    env.cr.execute("DELETE FROM ir_model_data WHERE model='l10n_mx_edi.tariff.fraction';")

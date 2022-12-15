@@ -264,23 +264,14 @@
 
     .o_knowledge_properties {
         min-width: 250px;
+
+        .o_inner_group {
+            width: 100%;
+            grid-template-columns: 1fr;
+        }
         .o_property_field {
-            flex-direction: column !important;
-            padding: 0 !important;
-            margin-bottom: 1rem;
-            .o_td_label {
-                width: 100% !important;
-                padding: 0px !important;
-                .o_property_field_highlight b {
-                    margin-left: 0px;
-                }
-            }
             .o_property_field_value {
-                padding: 0rem !important;
                 .o_input_dropdown {
-                    margin-left: 0;
-                    padding-left: 0;
-                    min-width: auto;
                     .dropdown {
                         padding-right: 10px;
                     }
@@ -338,7 +329,6 @@
         }
         .o_knowledge_properties {
             .o_property_field {
-                flex-direction: row !important;
                 label {
                     font-size: $o-font-size-base;
                 }

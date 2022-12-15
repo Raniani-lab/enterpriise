@@ -177,8 +177,8 @@
     }
     // truncate span content and add '...' if content width > span width
     .o_account_report_line_ellipsis, .o_account_report_name_ellipsis {
-        min-width: 320px;
-        max-width: 320px;
+        min-width: 160px;
+        max-width: 160px;
 
         .dropdown-toggle, .account_report_line_name {
             display: inline-block;

@@ -93,7 +93,10 @@ function beforeEach() {
 QUnit.module("documents_spreadsheet > Spreadsheet Selector Dialog", { beforeEach }, () => {
     QUnit.test("Display only spreadsheet and a blank spreadsheet", async (assert) => {
         const { target } = await mountSpreadsheetSelectorDialog();
-        assert.strictEqual(target.querySelectorAll(".o-sp-dialog-item").length, 3);
+        assert.strictEqual(
+            target.querySelectorAll(".o-sp-dialog-item:not(.o-sp-dialog-ghost-item)").length,
+            3
+        );
     });
 
     QUnit.test("Threshold is not displayed with pivot type", async (assert) => {

@@ -82,7 +82,7 @@
         <div class="container">
             <h2 class="text-muted">
                 Submit a Ticket
-                <t t-if="multiple_teams">- <t t-out="team.name" /></t>
+                <t t-if="multiple_teams"> - <t t-out="team.name" /></t>
             </h2>
             <div class="oe_structure" id="oe_structure_whelpdesk_form_1"/>
             <span class="hidden" data-for="helpdesk_ticket_form" t-att-data-values="{'team_id': team and team.id or ''}" />

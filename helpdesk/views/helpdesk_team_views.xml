@@ -234,6 +234,9 @@
                     </div>
                     <h2>Self-Service</h2>
                     <div class="row mt16 o_settings_container" id="self-Service">
+                        <setting help="Allow your customers to close their own tickets" documentation="/applications/services/helpdesk/advanced/close_tickets.html">
+                            <field name="allow_portal_ticket_closing"/>
+                        </setting>
                         <setting help="Close inactive tickets automatically">
                             <field name="auto_close_ticket"/>
                             <div class="content-group" attrs="{'invisible': [('auto_close_ticket', '=', False)]}">
@@ -250,9 +253,6 @@
                                     <field name="from_stage_ids" widget="many2many_tags" class="ms-2 oe_inline" context="{'default_team_id': active_id}"/>
                                 </div>
                             </div>
-                        </setting>
-                        <setting help="Allow your customers to close their own tickets" documentation="/applications/services/helpdesk/advanced/close_tickets.html">
-                            <field name="allow_portal_ticket_closing"/>
                         </setting>
                     </div>
                     <h2>After-Sales <a href="https://www.odoo.com/documentation/master/applications/services/helpdesk/advanced/after_sales.html" title="Documentation" class="o_doc_link" target="_blank"></a></h2>
@@ -388,7 +388,9 @@
                             <div class="o_kanban_card_header">
                                 <div class="o_kanban_card_header_title">
                                     <div class="o_primary"><field name="display_name"/></div>
-                                    <small t-if="record.use_alias.value and record.alias_name.value and record.alias_domain.value"><i class="fa fa-envelope-o" title="Domain alias" role="img" aria-label="Domain alias"></i>&amp;nbsp; <t t-out="record.alias_id.value"/></small>
+                                    <small t-if="record.use_alias.value and record.alias_name.value and record.alias_domain.value">
+                                        <a t-att-href="'mailto:' + record.alias_id.value"><i class="fa fa-envelope-o" title="Domain alias" role="img" aria-label="Domain alias"></i>&amp;nbsp; <t t-out="record.alias_id.value"/></a>
+                                    </small>
                                 </div>
                             </div>
                             <div class="container o_kanban_card_content" t-if="!selection_mode">

@@ -393,7 +393,7 @@ class HelpdeskTicket(models.Model):
         self = self.with_context(
             empty_list_help_id=self.env.context.get('default_team_id'),
             empty_list_help_model='helpdesk.team',
-            empty_list_help_document_name=_("ticket"),
+            empty_list_help_document_name=_("tickets"),
         )
         return super(HelpdeskTicket, self).get_empty_list_help(help_message)
 

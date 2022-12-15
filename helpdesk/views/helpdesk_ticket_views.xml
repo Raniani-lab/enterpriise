@@ -381,7 +381,7 @@
                     </div>
                     <notebook>
                         <page string="Description" name="description">
-                            <field name="description" placeholder="Add details about this ticket..."/>
+                            <field name="description"/>
                         </page>
                     </notebook>
                 </sheet>

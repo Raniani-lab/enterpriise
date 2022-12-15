@@ -40,7 +40,7 @@
 
     <menuitem
         id="menu_l10n_be_individual_account"
-        name="Indivual Accounts"
+        name="Individual Accounts"
         action="l10n_be_individual_account_action"
         parent="l10n_be_hr_payroll.menu_reporting_l10n_be"
         sequence="505"/>

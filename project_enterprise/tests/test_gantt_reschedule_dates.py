@@ -5,11 +5,12 @@ from datetime import datetime, timedelta
 from dateutil.relativedelta import relativedelta
 from freezegun import freeze_time
 
-from .gantt_reschedule_dates_common import ProjectEnterpriseGanttRescheduleCommon, fake_now
 from odoo.fields import Command
-from odoo.tests.common import users, warmup
+from odoo.tests.common import users, tagged
+from .gantt_reschedule_dates_common import ProjectEnterpriseGanttRescheduleCommon, fake_now
 
 
+@tagged('gantt_reschedule')
 @freeze_time(fake_now)
 class TestGanttRescheduleOnTasks(ProjectEnterpriseGanttRescheduleCommon):
 

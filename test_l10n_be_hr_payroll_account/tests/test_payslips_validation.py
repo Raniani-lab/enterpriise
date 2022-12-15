@@ -46,14 +46,19 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
             }) for dayofweek, hour_from, hour_to, day_period in [
                 ("0", 8.0, 12.0, "morning"),
+                ("0", 12.0, 13.0, "lunch"),
                 ("0", 13.0, 16.6, "afternoon"),
                 ("1", 8.0, 12.0, "morning"),
+                ("1", 12.0, 13.0, "lunch"),
                 ("1", 13.0, 16.6, "afternoon"),
                 ("2", 8.0, 12.0, "morning"),
+                ("2", 12.0, 13.0, "lunch"),
                 ("2", 13.0, 16.6, "afternoon"),
                 ("3", 8.0, 12.0, "morning"),
+                ("3", 12.0, 13.0, "lunch"),
                 ("3", 13.0, 16.6, "afternoon"),
                 ("4", 8.0, 12.0, "morning"),
+                ("4", 12.0, 13.0, "lunch"),
                 ("4", 13.0, 16.6, "afternoon"),
 
             ]],
@@ -77,14 +82,19 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
             }) for dayofweek, hour_from, hour_to, day_period in [
                 ("0", 9.0, 12.8, "morning"),
+                ("0", 12.8, 13.8, "lunch"),
                 ("0", 13.8, 17.6, "afternoon"),
                 ("1", 9.0, 12.8, "morning"),
+                ("1", 12.8, 13.8, "lunch"),
                 ("1", 13.8, 17.6, "afternoon"),
                 ("2", 9.0, 12.8, "morning"),
+                ("2", 12.8, 13.8, "lunch"),
                 ("2", 13.8, 17.6, "afternoon"),
                 ("3", 9.0, 12.8, "morning"),
+                ("3", 12.8, 13.8, "lunch"),
                 ("3", 13.8, 17.6, "afternoon"),
                 ("4", 9.0, 12.8, "morning"),
+                ("4", 12.8, 13.8, "lunch"),
                 ("4", 13.8, 17.6, "afternoon"),
 
             ]],
@@ -108,12 +118,16 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
             }) for dayofweek, hour_from, hour_to, day_period in [
                 ("0", 8.0, 12.0, "morning"),
+                ("0", 12.0, 13.0, "lunch"),
                 ("0", 13.0, 16.6, "afternoon"),
                 ("1", 8.0, 12.0, "morning"),
+                ("1", 12.0, 13.0, "lunch"),
                 ("1", 13.0, 16.6, "afternoon"),
                 ("3", 8.0, 12.0, "morning"),
+                ("3", 12.0, 13.0, "lunch"),
                 ("3", 13.0, 16.6, "afternoon"),
                 ("4", 8.0, 12.0, "morning"),
+                ("4", 12.0, 13.0, "lunch"),
                 ("4", 13.0, 16.6, "afternoon"),
 
             ]],
@@ -137,12 +151,16 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
             }) for dayofweek, hour_from, hour_to, day_period in [
                 ("0", 8.0, 12.0, "morning"),
+                ("0", 12.0, 13.0, "lunch"),
                 ("0", 13.0, 16.6, "afternoon"),
                 ("1", 8.0, 12.0, "morning"),
+                ("1", 12.0, 13.0, "lunch"),
                 ("1", 13.0, 16.6, "afternoon"),
                 ("2", 8.0, 12.0, "morning"),
+                ("2", 12.0, 13.0, "lunch"),
                 ("2", 13.0, 16.6, "afternoon"),
                 ("4", 8.0, 12.0, "morning"),
+                ("4", 12.0, 13.0, "lunch"),
                 ("4", 13.0, 16.6, "afternoon"),
 
             ]],
@@ -166,12 +184,16 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
             }) for dayofweek, hour_from, hour_to, day_period in [
                 ("0", 8.0, 12.0, "morning"),
+                ("0", 12.0, 13.0, "lunch"),
                 ("0", 13.0, 16.6, "afternoon"),
                 ("1", 8.0, 12.0, "morning"),
+                ("1", 12.0, 13.0, "lunch"),
                 ("1", 13.0, 16.6, "afternoon"),
                 ("2", 8.0, 12.0, "morning"),
+                ("2", 12.0, 13.0, "lunch"),
                 ("2", 13.0, 16.6, "afternoon"),
                 ("3", 8.0, 12.0, "morning"),
+                ("3", 12.0, 13.0, "lunch"),
                 ("3", 13.0, 16.6, "afternoon"),
             ]],
         }])
@@ -194,8 +216,10 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
             }) for dayofweek, hour_from, hour_to, day_period in [
                 ("0", 8.0, 12.0, "morning"),
+                ("0", 12.0, 13.0, "lunch"),
                 ("0", 13.0, 16.6, "afternoon"),
                 ("1", 8.0, 12.0, "morning"),
+                ("1", 12.0, 13.0, "lunch"),
                 ("1", 13.0, 16.6, "afternoon"),
                 ("2", 8.0, 11.8, "morning"),
             ]],
@@ -218,6 +242,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
                 'work_entry_type_id': cls.env.ref('hr_work_entry.work_entry_type_attendance').id
             }) for dayofweek, hour_from, hour_to, day_period in [
                 ("0", 8.0, 12.0, "morning"),
+                ("0", 12.0, 13.0, "lunch"),
                 ("0", 13.0, 16.6, "afternoon"),
             ]],
         }])
@@ -309,23 +334,32 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
                     'work_entry_type_id': cls.env.ref('hr_work_entry.work_entry_type_attendance').id
                 }) for dayofweek, hour_from, hour_to, day_period, week_type, sequence in [
                     ("0", 8.0, 12.0, "morning", "0", "1"),
-                    ("0", 13.0, 16.6, "afternoon", "0", "2"),
-                    ("1", 8.0, 12.0, "morning", "0", "3"),
-                    ("1", 13.0, 16.6, "afternoon", "0", "4"),
-                    ("2", 8.0, 12.0, "morning", "0", "5"),
-                    ("2", 13.0, 16.6, "afternoon", "0", "6"),
-                    ("3", 8.0, 12.0, "morning", "0", "7"),
-                    ("3", 13.0, 16.6, "afternoon", "0", "8"),
-                    ("4", 8.0, 12.0, "morning", "0", "9"),
-                    ("4", 13.0, 16.6, "afternoon", "0", "10"),
+                    ("0", 12.0, 13.0, "lunch", "0", "2"),
+                    ("0", 13.0, 16.6, "afternoon", "0", "3"),
+                    ("1", 8.0, 12.0, "morning", "0", "4"),
+                    ("1", 12.0, 13.0, "lunch", "0", "5"),
+                    ("1", 13.0, 16.6, "afternoon", "0", "6"),
+                    ("2", 8.0, 12.0, "morning", "0", "7"),
+                    ("2", 12.0, 13.0, "lunch", "0", "8"),
+                    ("2", 13.0, 16.6, "afternoon", "0", "9"),
+                    ("3", 8.0, 12.0, "morning", "0", "10"),
+                    ("3", 12.0, 13.0, "lunch", "0", "11"),
+                    ("3", 13.0, 16.6, "afternoon", "0", "12"),
+                    ("4", 8.0, 12.0, "morning", "0", "13"),
+                    ("4", 12.0, 13.0, "lunch", "0", "14"),
+                    ("4", 13.0, 16.6, "afternoon", "0", "15"),
                     ("1", 8.0, 12.0, "morning", "1", "26"),
-                    ("1", 13.0, 16.6, "afternoon", "1", "27"),
-                    ("2", 8.0, 12.0, "morning", "1", "28"),
-                    ("2", 13.0, 16.6, "afternoon", "1", "29"),
-                    ("3", 8.0, 12.0, "morning", "1", "30"),
-                    ("3", 13.0, 16.6, "afternoon", "1", "31"),
-                    ("4", 8.0, 12.0, "morning", "1", "32"),
-                    ("4", 13.0, 16.6, "afternoon", "1", "33")]],
+                    ("1", 12.0, 13.0, "lunch", "1", "27"),
+                    ("1", 13.0, 16.6, "afternoon", "1", "28"),
+                    ("2", 8.0, 12.0, "morning", "1", "29"),
+                    ("2", 12.0, 13.0, "lunch", "1", "30"),
+                    ("2", 13.0, 16.6, "afternoon", "1", "31"),
+                    ("3", 8.0, 12.0, "morning", "1", "32"),
+                    ("3", 12.0, 13.0, "lunch", "1", "33"),
+                    ("3", 13.0, 16.6, "afternoon", "1", "34"),
+                    ("4", 8.0, 12.0, "morning", "1", "35"),
+                    ("4", 12.0, 13.0, "lunch", "1", "36"),
+                    ("4", 13.0, 16.6, "afternoon", "1", "37")]],
         }])
 
         cls.resource_calendar_9_10_strange = cls.env['resource.calendar'].create([{
@@ -367,24 +401,33 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
                     'work_entry_type_id': cls.env.ref('hr_work_entry.work_entry_type_attendance').id
                 }) for dayofweek, hour_from, hour_to, day_period, week_type, sequence in [
                     ("0", 9.0, 12.8, "morning", "0", "1"),
-                    ("0", 13.8, 17.6, "afternoon", "0", "2"),
-                    ("1", 9.0, 12.8, "morning", "0", "3"),
-                    ("1", 13.8, 17.6, "afternoon", "0", "4"),
-                    ("2", 9.0, 12.8, "morning", "0", "5"),
-                    ("2", 13.8, 17.6, "afternoon", "0", "6"),
-                    ("3", 9.0, 12.8, "morning", "0", "7"),
-                    ("3", 13.8, 17.6, "afternoon", "0", "8"),
-                    ("4", 9.0, 12.8, "morning", "0", "9"),
-                    ("4", 13.8, 17.6, "afternoon", "0", "10"),
+                    ("0", 12.8, 13.8, "lunch", "0", "2"),
+                    ("0", 13.8, 17.6, "afternoon", "0", "3"),
+                    ("1", 9.0, 12.8, "morning", "0", "4"),
+                    ("1", 12.8, 13.8, "lunch", "0", "5"),
+                    ("1", 13.8, 17.6, "afternoon", "0", "6"),
+                    ("2", 9.0, 12.8, "morning", "0", "7"),
+                    ("2", 12.8, 13.8, "lunch", "0", "8"),
+                    ("2", 13.8, 17.6, "afternoon", "0", "9"),
+                    ("3", 9.0, 12.8, "morning", "0", "10"),
+                    ("3", 12.8, 13.8, "lunch", "0", "11"),
+                    ("3", 13.8, 17.6, "afternoon", "0", "12"),
+                    ("4", 9.0, 12.8, "morning", "0", "13"),
+                    ("4", 12.8, 13.8, "lunch", "0", "14"),
+                    ("4", 13.8, 17.6, "afternoon", "0", "15"),
                     ("0", 9.0, 12.8, "morning", "1", "26"),
-                    ("0", 13.8, 16.6, "afternoon", "1", "27"),
-                    ("1", 9.0, 12.8, "morning", "1", "28"),
-                    ("1", 13.8, 16.6, "afternoon", "1", "29"),
-                    ("2", 9.0, 12.8, "morning", "1", "30"),
-                    ("3", 9.0, 12.8, "morning", "1", "32"),
-                    ("3", 13.8, 16.6, "afternoon", "1", "33"),
-                    ("4", 9.0, 12.8, "morning", "1", "34"),
-                    ("4", 13.8, 16.6, "afternoon", "1", "35")]],
+                    ("0", 12.8, 13.8, "lunch", "1", "27"),
+                    ("0", 13.8, 16.6, "afternoon", "1", "28"),
+                    ("1", 9.0, 12.8, "morning", "1", "29"),
+                    ("1", 12.8, 13.8, "lunch", "1", "30"),
+                    ("1", 13.8, 16.6, "afternoon", "1", "31"),
+                    ("2", 9.0, 12.8, "morning", "1", "32"),
+                    ("3", 9.0, 12.8, "morning", "1", "33"),
+                    ("3", 12.8, 13.8, "lunch", "1", "34"),
+                    ("3", 13.8, 16.6, "afternoon", "1", "35"),
+                    ("4", 9.0, 12.8, "morning", "1", "36"),
+                    ("4", 12.8, 13.8, "lunch", "1", "37"),
+                    ("4", 13.8, 16.6, "afternoon", "1", "38")]],
         }])
 
         cls.resource_calendar_4_5_monday_off_equal_morning_afternoon = cls.env['resource.calendar'].create([{
@@ -406,10 +449,13 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             }) for dayofweek, hour_from, hour_to, day_period in [
                 ("0", 9.0, 12.8, "morning"),
                 ("1", 9.0, 12.8, "morning"),
+                ("1", 12.8, 13.8, "lunch"),
                 ("1", 13.8, 17.6, "afternoon"),
                 ("2", 9.0, 12.8, "morning"),
+                ("2", 12.8, 13.8, "lunch"),
                 ("2", 13.8, 17.6, "afternoon"),
                 ("3", 9.0, 12.8, "morning"),
+                ("3", 12.8, 13.8, "lunch"),
                 ("3", 13.8, 17.6, "afternoon"),
                 ("4", 9.0, 12.8, "morning"),
             ]],
@@ -8081,7 +8127,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         }
         self._validate_payslip(payslip, payslip_results)
 
-    def test_aa_relapse_without_guaranteed_salary_split_time_off(self):
+    def test_relapse_without_guaranteed_salary_split_time_off(self):
         # Check when the employee is always sick, but with split time off
         # Sick 3 days (27 - 29 April 2022)
         # Sick 1 week (2 - 6 May)

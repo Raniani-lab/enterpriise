@@ -478,27 +478,16 @@
                 <header>
                     <!-- company_id invisible to be available in domains -->
                     <field name="company_id" invisible="1"/>
+                    <field name="cron_nextcall" invisible="1"/>
                        <button name="run_cron_manually" string="Trigger Now" type="object" class="btn-primary"
-                       confirm="This will trigger the action on all linked subsccriptions, regardless of possible timed conditions. Are you sure you want to proceed?"/>
+                       confirm="This will trigger the action on all linked subsccriptions, regardless of possible timed conditions. Are you sure you want to proceed?"
+                       attrs="{'invisible': [('trigger_condition', '!=', 'on_time')]}"/>
                 </header>
                 <sheet>
-                    <div class="oe_button_box" name="button_box">
-                        <button class="oe_stat_button"
-                                icon="fa-book"
-                                name="action_view_subscriptions"
-                                attrs="{'invisible': [('subscription_count', '=', 0)]}"
-                                type="object">
-                            <field name="subscription_count" widget="statinfo" string="Subscriptions"/>
-                        </button>
-                    </div>
                     <widget name="web_ribbon" title="Archived" bg_color="bg-danger" attrs="{'invisible': [('active', '=', True)]}"/>
                     <div class="oe_title">
                         <label for="name" string="Action Name"/>
                         <h1><field name="name" placeholder="e.g. Closed Subscription"/></h1>
-                    </div>
-                    <div attrs="{'invisible': [('cron_nextcall', '=', False)]}">
-                        By default, the alert is triggered weekly and applies on the subscriptions that match
-                        the following criterias. The next run is on <field name="cron_nextcall" nolabel="1"/>.
                     </div>
                     <div attrs="{'invisible': ['|', ('cron_nextcall', '!=', False), ('id', '=', False)]}">
                         The scheduled action for alerts has been deleted. Update the Subscriptions module to re-create it.
@@ -532,6 +521,10 @@
                                 <strong>to</strong>
                                 <field name="stage_to_id" placeholder=" Destination"/>
                             </div>
+                            <button name="action_view_subscriptions" type="object" icon="fa-arrow-right" class="btn-link o_row">
+                                <field name="subscription_count" class="w-auto"/>
+                                <strong>Subscriptions</strong>
+                            </button>
                         </group>
                         <group name="subscription_details">
                             <field name="active" invisible="1"/>
@@ -544,35 +537,46 @@
                     </group>
                     <group string="Action" name="action_wrapper">
                         <group name="action_content">
-                            <field name="action"/>
+                            <field name="action" attrs="{'readonly': [('id', '!=', False)]}"/>
                             <field name="stage_id"
                                    attrs="{'invisible': [('action', '!=', 'set_stage')],
-                                           'required': [('action', '=', 'set_stage')]}"/>
+                                           'required': [('action', '=', 'set_stage')],
+                                           'readonly': [('id', '!=', False)]}"/>
                             <field name="template_id"
                                    attrs="{'invisible': [('action', '!=', 'mail_post')],
-                                           'required': [('action', '=', 'mail_post')]}"/>
+                                           'required': [('action', '=', 'mail_post')],
+                                           'readonly': [('id', '!=', False)]}"/>
                             <field name="sms_template_id"
                                    context="{'default_model_id': model_id}"
                                    attrs="{'invisible': [('action', '!=', 'sms')],
-                                           'required': [('action', '=', 'sms')]}"/>
+                                           'required': [('action', '=', 'sms')],
+                                           'readonly': [('id', '!=', False)]}"/>
                             <field name="health"
                                    attrs="{'invisible': [('action', '!=', 'set_health_value')],
-                                           'required': [('action', '=', 'set_health_value')]}"/>
+                                           'required': [('action', '=', 'set_health_value')],
+                                           'readonly': [('id', '!=', False)]}"/>
+                            <div class="text-muted fst-italic" colspan="2" attrs="{'invisible': [('id', '=', False)]}">
+                                Action data can not be updated to avoid unexpected behaviors. Create a new action instead.
+                            </div>
                         </group>
                         <group name="action_details">
                             <field name="model_id" invisible="1"/>
                             <field name="model_name" invisible="1"/>
-                            <field name="trigger_condition"/>
+                            <field name="trigger_condition" attrs="{'readonly': [('id', '!=', False)]}"/>
                             <field name="trg_date_id"
                                    attrs="{'invisible': [('trigger_condition', '!=', 'on_time')],
-                                           'required': [('trigger_condition', '=', 'on_time')]}"
+                                           'required': [('trigger_condition', '=', 'on_time')],
+                                           'readonly': [('id', '!=', False)]} "
                                    options="{'no_open': True, 'no_create_edit': True}"/>
                             <label for="trg_date_range"
                                    string="Delay After Trigger"
-                                   attrs="{'invisible': [('trigger_condition', '!=', 'on_time')]}"/>
+                                   attrs="{'invisible': [('trigger_condition', '!=', 'on_time')],
+                                           'readonly': [('id', '!=', False)]}"/>
                             <div class="o_row" attrs="{'invisible': [('trigger_condition', '!=', 'on_time')]}">
-                                <field name="trg_date_range" attrs="{'required': [('trigger_condition','=','on_time')]}"/>
-                                <field name="trg_date_range_type" attrs="{'required': [('trigger_condition','=','on_time')]}"/>
+                                <field name="trg_date_range" attrs="{'required': [('trigger_condition','=','on_time')],
+                                                                     'readonly': [('id', '!=', False)]}"/>
+                                <field name="trg_date_range_type" attrs="{'required': [('trigger_condition','=','on_time')],
+                                                                          'readonly': [('id', '!=', False)]}"/>
                             </div>
                             <field name="trg_date_calendar_id"
                                    attrs="{'invisible': ['|', ('trg_date_id', '=', False), ('trg_date_range_type', '!=', 'day')]}"/>
@@ -608,9 +612,10 @@
         <field name="model">sale.order.alert</field>
         <field name="arch" type="xml">
             <tree string="Automated actions">
-                <field name="name"/>
+                <field name="name" string="Name"/>
+                <field name="action"/>
+                <field name="trigger_condition"/>
                 <field name="company_id" groups="base.group_multi_company"/>
-                <field name="subscription_count"/>
             </tree>
         </field>
     </record>

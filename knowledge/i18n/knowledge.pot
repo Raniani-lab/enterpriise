@@ -2261,6 +2261,12 @@ msgstr ""
 
 #. module: knowledge
 #. openerp-web
+#: code:addons/knowledge/models/knowledge_article.py:0
+#, python-format
+msgid "The Article you are trying to access has been deleted"
+msgstr ""
+
+#. module: knowledge
 #: code:addons/knowledge/static/src/components/behaviors/article_behavior/article_behavior.js:0
 #, python-format
 msgid "This article was deleted or you don't have the rights to access it."

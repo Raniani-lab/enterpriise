@@ -290,13 +290,18 @@ class Task(models.Model):
 
         self = self.with_company(self.company_id)
 
-        domain = [('sale_ok', '=', True),
+        domain = [
+            ('company_id', 'in', [self.company_id.id, False]),
+            ('sale_ok', '=', True),
             '|', ('detailed_type', 'in', ['consu', 'product']),
-            '&', '&', ('detailed_type', '=', 'service'), ('invoice_policy', '=', 'delivery'), ('service_type', '=', 'manual'),
-            '|', ('company_id', '=', self.company_id.id), ('company_id', '=', False)]
+                '&', '&',
+                    ('detailed_type', '=', 'service'),
+                    ('invoice_policy', '=', 'delivery'),
+                    ('service_type', '=', 'manual'),
+        ]
         if self.project_id and self.timesheet_product_id:
             domain = expression.AND([domain, [('id', '!=', self.timesheet_product_id.id)]])
-        deposit_product = self.env['ir.config_parameter'].sudo().get_param('sale.default_deposit_product_id')
+        deposit_product = self.company_id.sale_down_payment_product_id
         if deposit_product:
             domain = expression.AND([domain, [('id', '!=', deposit_product)]])
 

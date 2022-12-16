@@ -516,7 +516,7 @@ class TestSubscription(TestSubscriptionCommon):
             # discounts for: 12d/31d; 40d/59d; 21d/31d (shifted); 31d/41d; 59d/78d;
             self.assertEqual(discounts, [0, 32, 32, 32, 32], 'Prorated prices should be applied')
             prices = [round(v, 2) for v in upsell_so.order_line.sorted('pricing_id').mapped('price_subtotal')]
-            self.assertEqual(prices, [0.0, 28.48, 1.36, 28.48, 28.48], 'Prorated prices should be applied')
+            self.assertEqual(prices, [0.0, 28.48, 28.48, 28.48, 28.48], 'Prorated prices should be applied')
 
     def test_recurring_revenue(self):
         """Test computation of recurring revenue"""
@@ -1674,13 +1674,11 @@ class TestSubscription(TestSubscriptionCommon):
             upsell_so = self.env['sale.order'].browse(action['res_id'])
             # Create new lines that should be aligned with existing ones
             parent_line_id = upsell_so.order_line.parent_line_id
-            self.assertEqual(upsell_so.order_line.parent_line_id, parent_line_id, "The parent line is the one from the subscription")
+            self.assertEqual(self.subscription.order_line, parent_line_id, "The parent line is the one from the subscription")
             first_line_id = upsell_so.order_line[0] # line 0 is the upsell line
             first_line_id.product_id = self.product2
             self.assertFalse(first_line_id.parent_line_id, "The new line should not have a parent line")
             upsell_so.currency_id = False
-            upsell_so.currency_id = False
-            first_line_id._compute_parent_line_id()
             self.assertFalse(first_line_id.parent_line_id, "The new line should not have a parent line even without currency_id")
             self.subscription._compute_pricelist_id() # reset the currency_id
             upsell_so._compute_pricelist_id()
@@ -1709,6 +1707,13 @@ class TestSubscription(TestSubscriptionCommon):
             upsell_so.action_confirm()
             self.assertEqual(self.subscription.order_line[0].product_uom_qty, 4, "The original line qty should be 4 (1 + 3 upsell line 1)")
             self.assertEqual(self.subscription.order_line[1].product_uom_qty, 2, "The new line qty should be 2 (upsell line 0)")
+
+            action = self.subscription.prepare_renewal_order()
+            renew_so = self.env['sale.order'].browse(action['res_id'])
+            parent_line_id = renew_so.order_line.parent_line_id
+            self.assertEqual(self.subscription.order_line, parent_line_id, "The parent line is the one from the subscription")
+            renew_so.recurrence_id = self.recurrence_year.id
+            self.assertFalse(renew_so.order_line.parent_line_id, "The lines should not have parent lines anymore")
 
     def test_subscription_constraint(self):
         self.subscription.recurrence_id = False
@@ -1861,7 +1866,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.assertEqual(upsell_so.order_line.mapped('discount'), [-24.93, -24.93, 0])
             self.assertEqual(upsell_so.start_date, datetime.date(2022, 10, 2))
             self.assertEqual(upsell_so.next_invoice_date, datetime.date(2024, 1, 1))
-            self.assertEqual(upsell_so_2.amount_untaxed, 32)
+            self.assertEqual(upsell_so_2.amount_untaxed, 120)
             # upsell_so_2.order_line.flush()
             line = upsell_so_2.order_line.filtered('display_type')
             self.assertEqual(line.display_type, 'line_note')

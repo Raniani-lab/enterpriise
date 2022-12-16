@@ -3,7 +3,6 @@
     <record id="knowledge_article_member_view_form" model="ir.ui.view">
         <field name="name">knowledge.article.member.view.form</field>
         <field name="model">knowledge.article.member</field>
-        <field name="type">form</field>
         <field name="arch" type="xml">
             <form string="Member">
                 <sheet>

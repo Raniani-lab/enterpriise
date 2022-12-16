@@ -767,13 +767,12 @@ tour.register('test_gs1_receipt_lot_serial', {test: true}, [
     {
         trigger: '.modal-content .modal-body #manual_barcode',
         run: function(actions) {
-            var barcode = '(01)00000076543210(10)b1-b001(30)00000008';
-            actions.text(barcode);
+            actions.text("(01)00000076543210(10)b1-b001(30)00000008");
         }
     },
     // Apply the manual entry of barcode.
     {
-        trigger: '.modal-content .modal-footer .btn-primary',
+        trigger: '.modal-content .modal-footer .btn-primary:not(:disabled)',
     },
 
     {

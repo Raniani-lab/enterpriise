@@ -1,19 +1,22 @@
 /** @odoo-module **/
 
-import { TextField } from "@web/views/fields/text/text_field";
 import { patch } from '@web/core/utils/patch';
 import { registry } from "@web/core/registry";
+import { standardFieldProps } from "@web/views/fields/standard_field_props";
 
 import { SocialPostFormatterMixin } from "../social_post_formatter_mixin";
 
-const { markup } = owl;
+const { Component, markup } = owl;
 
-export class PostFormatterField extends TextField {
+export class PostFormatterField extends Component {
     get formattedPost() {
         return markup(this._formatPost(this.props.value || ''));
     }
 }
 patch(PostFormatterField.prototype, 'social.PostFormatterField', SocialPostFormatterMixin);
 PostFormatterField.template = 'social.PostFormatterField';
+PostFormatterField.props = {
+    ...standardFieldProps,
+};
 
 registry.category('fields').add('social_post_formatter', PostFormatterField);

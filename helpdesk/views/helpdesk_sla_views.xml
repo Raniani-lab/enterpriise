@@ -95,12 +95,20 @@
                             <field name="active" invisible="1"/>
                             <field name="company_id" invisible="1"/>
                             <separator colspan="2" string="Criteria"/>
+                            <div class="text-muted mb32" colspan="2">This SLA Policy will apply to tickets matching ALL of the following criteria:</div>
                             <field name="team_id" domain="[('use_sla', '=', True)]"/>
                             <field name="priority" widget="priority"/>
                             <field name="ticket_type_ids" options="{'no_open': True, 'no_create_edit': True}" widget="many2many_tags"/>
-                            <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
-                            <field name="partner_ids" widget="many2many_tags"
-                                domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
+                            <label for="tag_ids"/>
+                            <div class="d-flex justify-content-center">
+                                <field name="tag_ids" class="" widget="many2many_tags" options="{'color_field': 'color', 'no_create_edit': True}"/>
+                                <div class="text-end text-muted col-4">(any of these tags)</div>
+                            </div>
+                            <label for="partner_ids"/>
+                            <div class="d-md-flex" name="partners">
+                                <field name="partner_ids" widget="many2many_tags"
+                                    domain="['|', ('company_id', '=', False), ('company_id', '=', company_id)]"/>
+                             </div>
 
                             <separator colspan="2" string="Target" class="mt32"/>
                             <field name="stage_id" string="Reach Stage" domain="[('team_ids', '=', team_id), ('id', 'not in', exclude_stage_ids)]" required="1" context="{'default_team_ids': team_id and [(6, 0, [team_id])]}"/>

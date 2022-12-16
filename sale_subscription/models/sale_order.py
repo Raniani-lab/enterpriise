@@ -624,6 +624,15 @@ class SaleOrder(models.Model):
             subscriptions_to_confirm.action_confirm()
         return res
 
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_draft_or_cancel(self):
+        for order in self:
+            # To have a subscription with the state 'cancel',
+            # it has to have a stage_category which is 'closed'.
+            if order.is_subscription and (order.state not in ['draft', 'sent'] and order.stage_category != 'closed'):
+                raise UserError(_('You can not delete a confirmed subscription. You must first close and cancel it before you can delete it.'))
+        return super(SaleOrder, self)._unlink_except_draft_or_cancel()
+
     def copy_data(self, default=None):
         if default is None:
             default = {}

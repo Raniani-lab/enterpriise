@@ -379,6 +379,10 @@ export default class BarcodePickingModel extends BarcodeModel {
         return super.canBeValidate;
     }
 
+    get cancelLabel() {
+        return _t("Cancel Transfer");
+    }
+
     get canCreateNewLot() {
         return this.record.use_create_lots;
     }

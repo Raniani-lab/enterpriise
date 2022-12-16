@@ -80,10 +80,8 @@
                     t-on-click="() => env.model.print(button.action, button.method)"/>
             </t>
             <button t-if="env.model.displayCancelButton"
-                t-on-click="cancel"
-                class="o_cancel_operation btn-lg btn btn-light text-uppercase">
-                Cancel
-            </button>
+                t-on-click="cancel" t-out="env.model.cancelLabel"
+                class="o_cancel_operation btn-lg btn btn-light text-uppercase"/>
         </div>
         <div t-if="state.view === 'barcodeLines' &amp;&amp; env.model.canBeProcessed"
              class="o_barcode_control o_action_buttons d-flex"> <!-- Footer -->

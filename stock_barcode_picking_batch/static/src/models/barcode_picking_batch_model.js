@@ -89,6 +89,10 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
         return super.canBeProcessed;
     }
 
+    get cancelLabel() {
+        return _t("Cancel Batch Transfer");
+    }
+
     get canConfirmSelection() {
         if (this.needPickingType) {
             return Boolean(this.selectedPickingTypeId);

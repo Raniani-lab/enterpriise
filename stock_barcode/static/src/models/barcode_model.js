@@ -137,6 +137,10 @@ export default class BarcodeModel extends EventBus {
         return this.pageLines.length + this.packageLines.length;
     }
 
+    get cancelLabel() {
+        return _t("Cancel");
+    }
+
     get canSelectLocation() {
         return true;
     }

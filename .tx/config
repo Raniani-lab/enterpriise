@@ -262,6 +262,11 @@ file_filter = delivery_usps/i18n/<lang>.po
 source_file = delivery_usps/i18n/delivery_usps.pot
 source_lang = en
 
+[odoo-16.digest_enterprise]
+file_filter = digest_enterprise/i18n/<lang>.po
+source_file = digest_enterprise/i18n/digest_enterprise.pot
+source_lang = en
+
 [odoo-16.documents]
 file_filter = documents/i18n/<lang>.po
 source_file = documents/i18n/documents.pot
@@ -270,6 +275,11 @@ source_lang = en
 [odoo-16.documents_account]
 file_filter = documents_account/i18n/<lang>.po
 source_file = documents_account/i18n/documents_account.pot
+source_lang = en
+
+[odoo-16.documents_fleet]
+file_filter = documents_fleet/i18n/<lang>.po
+source_file = documents_fleet/i18n/documents_fleet.pot
 source_lang = en
 
 [odoo-16.documents_hr]
@@ -315,6 +325,16 @@ source_lang = en
 [odoo-16.documents_spreadsheet]
 file_filter = documents_spreadsheet/i18n/<lang>.po
 source_file = documents_spreadsheet/i18n/documents_spreadsheet.pot
+source_lang = en
+
+[odoo-16.documents_spreadsheet_account]
+file_filter = documents_spreadsheet_account/i18n/<lang>.po
+source_file = documents_spreadsheet_account/i18n/documents_spreadsheet_account.pot
+source_lang = en
+
+[odoo-16.documents_spreadsheet_crm]
+file_filter = documents_spreadsheet_crm/i18n/<lang>.po
+source_file = documents_spreadsheet_crm/i18n/documents_spreadsheet_crm.pot
 source_lang = en
 
 [odoo-16.event_barcode]
@@ -662,6 +682,21 @@ file_filter = planning_holidays/i18n/<lang>.po
 source_file = planning_holidays/i18n/planning_holidays.pot
 source_lang = en
 
+[odoo-16.planning_hr_skills]
+file_filter = planning_hr_skills/i18n/<lang>.po
+source_file = planning_hr_skills/i18n/planning_hr_skills.pot
+source_lang = en
+
+[odoo-16.pos_enterprise]
+file_filter = pos_enterprise/i18n/<lang>.po
+source_file = pos_enterprise/i18n/pos_enterprise.pot
+source_lang = en
+
+[odoo-16.pos_hr_mobile]
+file_filter = pos_hr_mobile/i18n/<lang>.po
+source_file = pos_hr_mobile/i18n/pos_hr_mobile.pot
+source_lang = en
+
 [odoo-16.pos_iot]
 file_filter = pos_iot/i18n/<lang>.po
 source_file = pos_iot/i18n/pos_iot.pot
@@ -787,6 +822,11 @@ file_filter = quality_mrp_workorder_iot/i18n/<lang>.po
 source_file = quality_mrp_workorder_iot/i18n/quality_mrp_workorder_iot.pot
 source_lang = en
 
+[odoo-16.quality_mrp_workorder_worksheet]
+file_filter = quality_mrp_workorder_worksheet/i18n/<lang>.po
+source_file = quality_mrp_workorder_worksheet/i18n/quality_mrp_workorder_worksheet.pot
+source_lang = en
+
 [odoo-16.sale_account_accountant]
 file_filter = sale_account_accountant/i18n/<lang>.po
 source_file = sale_account_accountant/i18n/sale_account_accountant.pot
@@ -820,6 +860,11 @@ source_lang = en
 [odoo-16.sale_loyalty_taxcloud]
 file_filter = sale_loyalty_taxcloud/i18n/<lang>.po
 source_file = sale_loyalty_taxcloud/i18n/sale_loyalty_taxcloud.pot
+source_lang = en
+
+[odoo-16.sale_loyalty_taxcloud_delivery]
+file_filter = sale_loyalty_taxcloud_delivery/i18n/<lang>.po
+source_file = sale_loyalty_taxcloud_delivery/i18n/sale_loyalty_taxcloud_delivery.pot
 source_lang = en
 
 [odoo-16.sale_planning]
@@ -1047,9 +1092,19 @@ file_filter = timesheet_grid/i18n/<lang>.po
 source_file = timesheet_grid/i18n/timesheet_grid.pot
 source_lang = en
 
+[odoo-16.timesheet_grid_holidays]
+file_filter = timesheet_grid_holidays/i18n/<lang>.po
+source_file = timesheet_grid_holidays/i18n/timesheet_grid_holidays.pot
+source_lang = en
+
 [odoo-16.voip]
 file_filter = voip/i18n/<lang>.po
 source_file = voip/i18n/voip.pot
+source_lang = en
+
+[odoo-16.voip_crm]
+file_filter = voip_crm/i18n/<lang>.po
+source_file = voip_crm/i18n/voip_crm.pot
 source_lang = en
 
 [odoo-16.voip_onsip]
@@ -1172,9 +1227,24 @@ file_filter = website_sale_renting/i18n/<lang>.po
 source_file = website_sale_renting/i18n/website_sale_renting.pot
 source_lang = en
 
+[odoo-16.website_sale_renting_comparison]
+file_filter = website_sale_renting_comparison/i18n/<lang>.po
+source_file = website_sale_renting_comparison/i18n/website_sale_renting_comparison.pot
+source_lang = en
+
+[odoo-16.website_sale_renting_wishlist]
+file_filter = website_sale_renting_wishlist/i18n/<lang>.po
+source_file = website_sale_renting_wishlist/i18n/website_sale_renting_wishlist.pot
+source_lang = en
+
 [odoo-16.website_sale_stock_renting]
 file_filter = website_sale_stock_renting/i18n/<lang>.po
 source_file = website_sale_stock_renting/i18n/website_sale_stock_renting.pot
+source_lang = en
+
+[odoo-16.website_sale_subscription]
+file_filter = website_sale_subscription/i18n/<lang>.po
+source_file = website_sale_subscription/i18n/website_sale_subscription.pot
 source_lang = en
 
 [odoo-16.website_studio]

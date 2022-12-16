@@ -810,6 +810,22 @@ export default class BarcodeModel extends EventBus {
         return result;
     }
 
+    async print(action, method) {
+        await this.save();
+        const options = this._getPrintOptions();
+        if (options.warning) {
+            return this.notification.add(options.warning, { type: 'warning' });
+        }
+        if (!action && method) {
+            action = await this.orm.call(
+                this.resModel,
+                method,
+                [[this.resId]]
+            );
+        }
+        this.trigger('do-action', { action, options });
+    }
+
     async _processGs1Data(data) {
         const result = {};
         const { rule, value } = data;

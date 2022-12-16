@@ -801,6 +801,8 @@ export default class BarcodePickingModel extends BarcodeModel {
         return Object.assign(super._getCommands(), {
             'O-BTN.pack': this._putInPack.bind(this),
             'O-CMD.cancel': this._cancel.bind(this),
+            'O-BTN.print-slip': this.print.bind(this, false, 'action_print_delivery_slip'),
+            'O-BTN.print-op': this.print.bind(this, false, 'do_print_picking'),
         });
     }
 

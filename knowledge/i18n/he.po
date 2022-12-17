@@ -15,8 +15,8 @@
 # שהאב חוסיין <shhab89@gmail.com>, 2022
 # Yihya Hugirat <hugirat@gmail.com>, 2022
 # Martin Trigaux, 2022
-# ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022
 # NoaFarkash, 2022
+# ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -24,7 +24,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: NoaFarkash, 2022\n"
+"Last-Translator: ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -827,16 +827,16 @@ msgstr ""
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
-msgid "Are you sure you want to remove you own \"Write\" access ?"
+msgid ""
+"Are you sure you want to remove your member? By leaving an article, you may "
+"lose access to it."
 msgstr ""
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
-msgid ""
-"Are you sure you want to remove your member? By leaving an article, you may "
-"lose access to it."
+msgid "Are you sure you want to remove your own \"Write\" access ?"
 msgstr ""
 
 #. module: knowledge
@@ -1594,7 +1594,17 @@ msgid "Item List"
 msgstr "רשימת פריטי מאמר"
 
 #. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #: model:ir.ui.menu,name:knowledge.knowledge_menu_root
+#, python-format
 msgid "Knowledge"
 msgstr "ידע"
 
@@ -1709,6 +1719,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_main_attachment_id
 msgid "Main Attachment"
 msgstr "קובץ ראשי מצורף "
+
+#. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Media"
+msgstr "מדיה"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_member_view_form

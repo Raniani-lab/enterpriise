@@ -537,13 +537,9 @@ msgstr "ID"
 #: code:addons/stock_barcode/models/stock_picking.py:0
 #, python-format
 msgid ""
-"If the source location must be scanned for each product, the destination "
-"location must be either scanned after each line too, either not scanned at "
-"all."
+"If the source location must be scanned, then the destination location must "
+"either be scanned after each product or not scanned at all."
 msgstr ""
-"Als de bronlocatie voor elk product moet worden gescand, moet de "
-"bestemmingslocatie ofwel na elke regel worden gescand, ofwel helemaal niet "
-"worden gescand."
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_picking_type_kanban

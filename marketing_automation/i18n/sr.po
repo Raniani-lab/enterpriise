@@ -987,6 +987,8 @@ msgstr ""
 msgid ""
 "Number of interactions (likes, shares, comments ...) with the social posts"
 msgstr ""
+"Broj interakcija (lajkovi, deljenja, komentari...) sa objavama na društvenim"
+" mrežama"
 
 #. module: marketing_automation
 #: model_terms:ir.ui.view,arch_db:marketing_automation.marketing_campaign_view_form

@@ -6,20 +6,20 @@
 # Kim Asplund <kim.asplund@gmail.com>, 2022
 # Mikael Åkerberg <mikael.akerberg@mariaakerberg.com>, 2022
 # Martin Wilderoth <martin.wilderoth@linserv.se>, 2022
-# Kristoffer Grundström <lovaren@gmail.com>, 2022
-# Anders Wallenquist <anders.wallenquist@vertel.se>, 2022
 # Chrille Hedberg <hedberg.chrille@gmail.com>, 2022
 # Simon S, 2022
-# Martin Trigaux, 2022
 # 3eec91a23d05c632ffac786ac42b81b8_b6fff7b <8985b7bc57db860af29969457dbb51b3_1018915>, 2022
+# Kristoffer Grundström <lovaren@gmail.com>, 2022
+# Martin Trigaux, 2022
+# Anders Wallenquist <anders.wallenquist@vertel.se>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:49+0000\n"
+"POT-Creation-Date: 2022-12-15 13:30+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: 3eec91a23d05c632ffac786ac42b81b8_b6fff7b <8985b7bc57db860af29969457dbb51b3_1018915>, 2022\n"
+"Last-Translator: Anders Wallenquist <anders.wallenquist@vertel.se>, 2022\n"
 "Language-Team: Swedish (https://www.transifex.com/odoo/teams/41243/sv/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,12 +28,14 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: sale_temporal
+#. odoo-python
 #: code:addons/sale_temporal/models/product_template.py:0
 #, python-format
 msgid "%(amount)s (fixed)"
 msgstr ""
 
 #. module: sale_temporal
+#. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
 #: code:addons/sale_temporal/models/sale_order_recurrence.py:0
 #, python-format
@@ -85,6 +87,13 @@ msgid "Custom Pricings"
 msgstr ""
 
 #. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/product_pricing.py:0
+#, python-format
+msgid "Day"
+msgstr "Dag"
+
+#. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__day
 msgid "Days"
 msgstr "Dagar"
@@ -109,6 +118,13 @@ msgstr "Varaktighet"
 #: model:ir.model.fields,help:sale_temporal.field_product_product__display_price
 #: model:ir.model.fields,help:sale_temporal.field_product_template__display_price
 msgid "First leasing pricing of the product"
+msgstr ""
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/product_pricing.py:0
+#, python-format
+msgid "Hour"
 msgstr ""
 
 #. module: sale_temporal
@@ -165,6 +181,13 @@ msgid ""
 msgstr ""
 
 #. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/product_pricing.py:0
+#, python-format
+msgid "Month"
+msgstr "Månad"
+
+#. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__month
 msgid "Months"
 msgstr "Månader"
@@ -181,6 +204,12 @@ msgid "Notes"
 msgstr "Anteckningar"
 
 #. module: sale_temporal
+#: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
+#: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
+msgid "Period"
+msgstr "Period"
+
+#. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_temporal_recurrence_view_form
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_temporal_recurrence_view_tree
 msgid "Periodicity"
@@ -193,7 +222,6 @@ msgstr ""
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__price
-#: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
 msgid "Price"
 msgstr "Pris"
 
@@ -246,7 +274,6 @@ msgstr "Frekvens"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricelist__product_pricing_ids
-#: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Recurring Price Rules"
 msgstr ""
 
@@ -293,9 +320,20 @@ msgid "The pricing duration has to be greater or equal to 0."
 msgstr ""
 
 #. module: sale_temporal
+#. odoo-python
 #: code:addons/sale_temporal/models/product_template.py:0
 #, python-format
 msgid "The product (%s) has incompatible values: %s"
+msgstr ""
+
+#. module: sale_temporal
+#: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
+msgid "Time based pricing"
+msgstr ""
+
+#. module: sale_temporal
+#: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
+msgid "Time based rules"
 msgstr ""
 
 #. module: sale_temporal
@@ -309,9 +347,23 @@ msgid "Variants"
 msgstr "Varianter"
 
 #. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/product_pricing.py:0
+#, python-format
+msgid "Week"
+msgstr "Vecka"
+
+#. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__week
 msgid "Weeks"
 msgstr "Veckor"
+
+#. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/product_pricing.py:0
+#, python-format
+msgid "Year"
+msgstr "År"
 
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__year
@@ -319,6 +371,16 @@ msgid "Years"
 msgstr "År"
 
 #. module: sale_temporal
+#. odoo-python
+#: code:addons/sale_temporal/models/product_pricelist.py:0
+#, python-format
+msgid ""
+"You can not have a time-based rule for products that are not recurring or "
+"rentable."
+msgstr ""
+
+#. module: sale_temporal
+#. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
 #, python-format
 msgid ""
@@ -327,6 +389,7 @@ msgid ""
 msgstr ""
 
 #. module: sale_temporal
+#. odoo-python
 #: code:addons/sale_temporal/models/product_pricing.py:0
 #: code:addons/sale_temporal/models/product_pricing.py:0
 #, python-format

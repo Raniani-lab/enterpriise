@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Fabien Pinckaers <fp@openerp.com>, 2022
-# Martin Trigaux, 2022
 # Cécile Collart <cco@odoo.com>, 2022
+# Martin Trigaux, 2022
 # Jolien De Paepe, 2022
 # 
 msgid ""
@@ -1068,19 +1068,19 @@ msgstr ""
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
-msgid "Are you sure you want to remove you own \"Write\" access ?"
-msgstr "Voulez-vous vraiment supprimer votre propre accès \"Ecriture\" ?"
-
-#. module: knowledge
-#. openerp-web
-#: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
-#, python-format
 msgid ""
 "Are you sure you want to remove your member? By leaving an article, you may "
 "lose access to it."
 msgstr ""
 "Voulez-vous vraiment supprimer votre membre ? En quittant un article, vous "
 "risquez de perdre l'accès à celui-ci."
+
+#. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
+#, python-format
+msgid "Are you sure you want to remove your own \"Write\" access ?"
+msgstr "Êtes-vous sûr de vouloir supprimer votre propre accès \"Écriture\" ?"
 
 #. module: knowledge
 #. openerp-web
@@ -1865,7 +1865,17 @@ msgid "Item List"
 msgstr "Liste d'éléments"
 
 #. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #: model:ir.ui.menu,name:knowledge.knowledge_menu_root
+#, python-format
 msgid "Knowledge"
 msgstr "Connaissances"
 
@@ -1982,6 +1992,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_main_attachment_id
 msgid "Main Attachment"
 msgstr "Pièce jointe principale"
+
+#. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Media"
+msgstr "Media"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_member_view_form

@@ -372,7 +372,7 @@ msgstr "Kupac"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_task_form2_inherit
 msgid "Customer Preview"
-msgstr ""
+msgstr "Korisnički pregled"
 
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_reporting_customer_ratings

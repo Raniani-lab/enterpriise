@@ -308,6 +308,18 @@ msgid "In Progress"
 msgstr "In behandeling"
 
 #. module: industry_fsm_sale
+#: code:addons/industry_fsm_sale/models/product_product.py:0
+#, python-format
+msgid "Invalid operator: %s"
+msgstr "Ongeldige operator: %s"
+
+#. module: industry_fsm_sale
+#: code:addons/industry_fsm_sale/models/product_product.py:0
+#, python-format
+msgid "Invalid value: %s"
+msgstr "Ongeldige waarde: %s"
+
+#. module: industry_fsm_sale
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
 msgid "Invoice"

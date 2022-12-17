@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # 	* knowledge
 # 
+# Translators:
+# Mehjabin Farsana, 2022
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
+"Last-Translator: Mehjabin Farsana, 2022\n"
 "Language-Team: Malay (https://www.transifex.com/odoo/teams/41243/ms/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -796,16 +800,16 @@ msgstr ""
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
-msgid "Are you sure you want to remove you own \"Write\" access ?"
+msgid ""
+"Are you sure you want to remove your member? By leaving an article, you may "
+"lose access to it."
 msgstr ""
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
-msgid ""
-"Are you sure you want to remove your member? By leaving an article, you may "
-"lose access to it."
+msgid "Are you sure you want to remove your own \"Write\" access ?"
 msgstr ""
 
 #. module: knowledge
@@ -1131,7 +1135,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
 msgid "Created by"
-msgstr ""
+msgstr "Dicipta oleh"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -1147,7 +1151,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
 msgid "Created on"
-msgstr ""
+msgstr "Dicipta pada"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_mail_invite
@@ -1192,7 +1196,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__display_name
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nama paparan"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -1384,7 +1388,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__id
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_exception_icon
@@ -1559,7 +1563,17 @@ msgid "Item List"
 msgstr ""
 
 #. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #: model:ir.ui.menu,name:knowledge.knowledge_menu_root
+#, python-format
 msgid "Knowledge"
 msgstr ""
 
@@ -1607,7 +1621,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover____last_update
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Terakhir Diubah suai pada"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__write_uid
@@ -1616,7 +1630,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__write_uid
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Kemas Kini Terakhir oleh"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__write_date
@@ -1625,7 +1639,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__write_date
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Kemas Kini Terakhir pada"
 
 #. module: knowledge
 #. openerp-web
@@ -1673,6 +1687,14 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_main_attachment_id
 msgid "Main Attachment"
+msgstr ""
+
+#. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Media"
 msgstr ""
 
 #. module: knowledge
@@ -1758,7 +1780,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_trash
 msgid "Name"
-msgstr ""
+msgstr "Nama"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -2102,7 +2124,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__sequence
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_favorite__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Urutan"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__category__shared

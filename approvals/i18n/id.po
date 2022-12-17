@@ -516,7 +516,7 @@ msgstr ""
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Memiliki Pesan"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_payment_method

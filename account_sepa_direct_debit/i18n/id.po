@@ -414,7 +414,7 @@ msgstr ""
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Memiliki Pesan"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__partner_bank_id

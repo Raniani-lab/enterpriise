@@ -3,11 +3,12 @@
 # 	* account_disallowed_expenses_fleet
 # 
 # Translators:
-# jabelchi, 2022
+# Josep Anton Belchi, 2022
 # Martin Trigaux, 2022
 # Manel Fernandez Ramirez <manelfera@outlook.com>, 2022
 # Quim - eccit <quim@eccit.com>, 2022
 # AncesLatino2004, 2022
+# Óscar Fonseca <tecnico@extreme-micro.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -15,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: AncesLatino2004, 2022\n"
+"Last-Translator: Óscar Fonseca <tecnico@extreme-micro.com>, 2022\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -51,7 +52,7 @@ msgstr "Categoria de despeses no permesa"
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_account_disallowed_expenses_fleet_report_handler
 msgid "Disallowed Expenses Fleet Custom Handler"
-msgstr ""
+msgstr "Gestor personalitzat de despeses no admeses al Parc automobilístic"
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_vehicle__rate_ids

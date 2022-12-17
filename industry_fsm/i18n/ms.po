@@ -2,12 +2,17 @@
 # This file contains the translation of the following modules:
 # 	* industry_fsm
 # 
+# Translators:
+# Niyas Raphy, 2022
+# Mehjabin Farsana, 2022
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
+"Last-Translator: Mehjabin Farsana, 2022\n"
 "Language-Team: Malay (https://www.transifex.com/odoo/teams/41243/ms/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -262,7 +267,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__company_id
 #: model_terms:ir.ui.view,arch_db:industry_fsm.view_project_project_filter_inherit_industry_fsm
 msgid "Company"
-msgstr ""
+msgstr "Syarikat"
 
 #. module: industry_fsm
 #: model:ir.model,name:industry_fsm.model_res_config_settings
@@ -339,13 +344,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard__create_uid
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard_line__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Dicipta oleh"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard__create_date
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard_line__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Dicipta pada"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_res_config_settings__module_industry_fsm_report
@@ -395,7 +400,7 @@ msgstr ""
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.worksheet_custom_page
 msgid "Description"
-msgstr ""
+msgstr "Penerangan"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_project_view_form_simplified_footer_fsm
@@ -422,7 +427,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard_line__display_name
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nama paparan"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task__display_satisfied_conditions_count
@@ -589,7 +594,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard_line__id
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: industry_fsm
 #: model:project.task,legend_normal:industry_fsm.planning_task_0
@@ -670,7 +675,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard_line____last_update
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Terakhir Diubah suai pada"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__date_last_stage_update
@@ -681,13 +686,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard__write_uid
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard_line__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Kemas Kini Terakhir oleh"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard__write_date
 #: model:ir.model.fields,field_description:industry_fsm.field_project_task_stop_timers_wizard_line__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Kemas Kini Terakhir pada"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -910,7 +915,7 @@ msgstr ""
 #. module: industry_fsm
 #: model:ir.ui.menu,name:industry_fsm.fsm_menu_planning
 msgid "Planning"
-msgstr ""
+msgstr "Perancangan"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__planning_overlap
@@ -1137,7 +1142,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "Start Date"
-msgstr ""
+msgstr "Tarikh mula"
 
 #. module: industry_fsm
 #: model:ir.model.fields,field_description:industry_fsm.field_report_project_task_user_fsm__planned_date_begin

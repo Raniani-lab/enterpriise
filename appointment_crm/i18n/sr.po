@@ -59,7 +59,7 @@ msgstr ""
 #. module: appointment_crm
 #: model:crm.tag,name:appointment_crm.appointment_crm_tag
 msgid "Online Appointment"
-msgstr ""
+msgstr "Online zakazivanje"
 
 #. module: appointment_crm
 #: model:ir.model.fields,field_description:appointment_crm.field_calendar_event__opportunity_id

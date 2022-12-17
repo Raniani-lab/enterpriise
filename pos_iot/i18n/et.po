@@ -10,6 +10,7 @@
 # Maidu Targama <m.targama@gmail.com>, 2022
 # Algo Kärp <algokarp@gmail.com>, 2022
 # Triine Aavik <triine@avalah.ee>, 2022
+# Jana Jaakson, 2022
 # 
 msgid ""
 msgstr ""
@@ -17,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-02-11 15:05+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Triine Aavik <triine@avalah.ee>, 2022\n"
+"Last-Translator: Jana Jaakson, 2022\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -163,6 +164,8 @@ msgid ""
 "Enable barcode scanning with a remotely connected barcode scanner and card "
 "swiping with a Vantiv card reader."
 msgstr ""
+"Lubage vöötkoodi skanneerimine kaugühendusega vöötkoodiskanneriga ja kaardi "
+"läbi tõmbamine Vantivi kaardilugejaga."
 
 #. module: pos_iot
 #: model:ir.model.fields,help:pos_iot.field_pos_config__iface_electronic_scale

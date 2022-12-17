@@ -22,9 +22,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:26+0000\n"
+"POT-Creation-Date: 2022-11-25 09:15+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
 "Last-Translator: Ha Ketem <haketem@gmail.com>, 2022\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
@@ -116,14 +116,6 @@ msgstr ""
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
-msgid ""
-"<span class=\"ml4 mr4\" attrs=\"{'invisible': ['|', "
-"('form_single_currency_mode', '=', True), ('form_index', '=', "
-"False)]}\">in</span>"
-msgstr ""
-
-#. module: account_accountant
-#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "<span class=\"ml4 mr4\">-</span>"
 msgstr ""
 
@@ -135,17 +127,16 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid ""
-"<span class=\"o_form_label\" attrs=\"{'invisible': ['|', '|', "
-"('form_single_currency_mode', '=', True), ('form_force_negative_sign', '=', "
-"False), ('form_index', '=', False)]}\">-</span>"
+"<span class=\"o_form_label\" attrs=\"{'invisible': ['|', "
+"('form_force_negative_sign', '=', False), ('form_index', '=', "
+"False)]}\">-</span>"
 msgstr ""
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid ""
-"<span class=\"o_form_label\" attrs=\"{'invisible': ['|', "
-"('form_force_negative_sign', '=', False), ('form_index', '=', "
-"False)]}\">-</span>"
+"<span class=\"o_form_label\" attrs=\"{'invisible': "
+"[('form_force_negative_sign', '=', False)]}\">-</span>"
 msgstr ""
 
 #. module: account_accountant
@@ -304,9 +295,9 @@ msgid "Analytic Account"
 msgstr "חשבון אנליטי"
 
 #. module: account_accountant
-#: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__analytic_distribution_stored_char
-#: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_distribution_stored_char
-msgid "Analytic Distribution Stored Char"
+#: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__analytic_precision
+#: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_precision
+msgid "Analytic Precision"
 msgstr ""
 
 #. module: account_accountant
@@ -545,6 +536,7 @@ msgstr "מטבע"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__date
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 #, python-format
 msgid "Date"
@@ -632,6 +624,16 @@ msgid ""
 " status, hiding all the accounting entries related to it. Use this option "
 "after installing Accounting if you were using only Invoicing before, before "
 "importing all your actual accounting data in to Odoo."
+msgstr ""
+"בכל תצוגת רשימה, בחרו מספר רשומות ואז הרשימה ניתנת לעריכה. אם תעדכנו תא אחד,"
+" אז כל הרשומות הנבחרות יעודכנו בבת-אחת. השתמשו באפשרות זו לאחר התקנת הנה\"ח,"
+" ואם השתמשתם לפני-כן רק ביישום חשבוניות, ובכוונתך לייבא את כל המידע החשבונאי"
+" לתוך Odoo."
+
+#. module: account_accountant
+#: code:addons/account_accountant/models/bank_rec_widget.py:0
+#, python-format
+msgid "Exchange Difference: %s"
 msgstr ""
 
 #. module: account_accountant
@@ -795,6 +797,9 @@ msgid ""
 "feature to update multiple journal entries from the General Ledger, or any "
 "Journal view."
 msgstr ""
+"בכל תצוגת רשימה, בחרו מספר שורות והרשימה תהיה זמינה לעריכה. אם תעדכנו תא "
+"אחד, כל הרשומות שנבחרו יעודכנו בבת-אחת. השתמשו בתכונה זו כדי לעדכון מספר "
+"תנועות יומן בפנקס הראשי או בכל תצוגת יומן."
 
 #. module: account_accountant
 #. openerp-web
@@ -808,7 +813,7 @@ msgstr "מעתה, ייתכן שתרצה:"
 #: code:addons/account_accountant/static/src/js/tours/account_accountant.js:0
 #, python-format
 msgid "Get back to the dashboard using your previous path…"
-msgstr ""
+msgstr "חזרה ללוח הבקרה שבאת ממנו..."
 
 #. module: account_accountant
 #. openerp-web
@@ -891,7 +896,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_accountant.field_res_company__invoicing_switch_threshold
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__invoicing_switch_threshold
 msgid "Invoicing Switch Threshold"
-msgstr ""
+msgstr "סף העברת חשבונית"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__st_line_is_reconciled
@@ -1037,6 +1042,8 @@ msgid ""
 "Let’s use AI to fill in the form<br/><br/><i>Tip: If the OCR is not done "
 "yet, wait a few more seconds and try again.</i>"
 msgstr ""
+"בואו נשתמש בבינה מלאכותית בטופס <br/><br/><i>טיפ: אם מזהה התווים האופטי OCR "
+"לא סיים, יש להמתין כמה שניות ולנסות שוב.</i>"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__line_ids
@@ -1204,6 +1211,7 @@ msgstr ""
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_tree_bank_rec_widget
 msgid "Notes"
 msgstr "הערות"
 
@@ -1211,7 +1219,7 @@ msgstr "הערות"
 #: code:addons/account_accountant/wizard/account_change_lock_date.py:0
 #, python-format
 msgid "Only Billing Administrators are allowed to change lock dates!"
-msgstr ""
+msgstr "רק משתמשים המוגדרים כמנהלי חשבונות יכולים לשנות תאריך נעילה!"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_res_config_settings__period_lock_date
@@ -1343,6 +1351,8 @@ msgid ""
 "Prevents Journal Entry creation or modification prior to the defined date "
 "for all users. As a closed period, all accounting operations are prohibited."
 msgstr ""
+"מונה מרשומות בימון להווצר או להשתנות עבור לפני תאריך מסויים עבור כל "
+"המשתמשים. כתקופה סגורה, אסור לבצע כל פעולה חשבונאית."
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_change_lock_date__period_lock_date
@@ -1358,6 +1368,8 @@ msgid ""
 " involving taxes). The Tax Return Lock Date is automatically set when the "
 "corresponding Journal Entry is posted."
 msgstr ""
+"מונע שינויים בהחזרי המס לפני תאריך שהוגדר (רשומות יומן הכוללים מדים). תאריך "
+"נעילת החזרי המס ייקבע אוטומטית כשתינעל המנה של אותו יומן."
 
 #. module: account_accountant
 #. openerp-web
@@ -1784,6 +1796,7 @@ msgstr "אשר"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_tree_bank_rec_widget
 msgid "View"
 msgstr "תצוגה"
 
@@ -1927,6 +1940,11 @@ msgstr "למשל עמלות בנק"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__early_payment
 msgid "early_payment"
+msgstr ""
+
+#. module: account_accountant
+#: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__exchange_diff
+msgid "exchange_diff"
 msgstr ""
 
 #. module: account_accountant

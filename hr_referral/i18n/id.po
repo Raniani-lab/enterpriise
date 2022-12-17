@@ -587,7 +587,7 @@ msgstr ""
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_reward__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Memiliki Pesan"
 
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_recruitment_report__has_referrer
@@ -792,7 +792,7 @@ msgstr "Tingkatan"
 #. module: hr_referral
 #: model:ir.model.fields,field_description:hr_referral.field_hr_referral_level__name
 msgid "Level Name"
-msgstr ""
+msgstr "Nama Level"
 
 #. module: hr_referral
 #: model:ir.model,name:hr_referral.model_hr_referral_level

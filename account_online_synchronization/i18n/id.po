@@ -364,7 +364,7 @@ msgstr ""
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_online_link__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Memiliki Pesan"
 
 #. module: account_online_synchronization
 #: model:ir.model.fields,field_description:account_online_synchronization.field_account_link_journal__id

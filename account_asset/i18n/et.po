@@ -13,17 +13,18 @@
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Piia Paurson <piia@avalah.ee>, 2022
 # Egon Raamat <egon@avalah.ee>, 2022
-# Rivo Zängov <eraser@eraser.ee>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Jana Jaakson, 2022
+# Leaanika Randmets, 2022
+# Rivo Zängov <eraser@eraser.ee>, 2022
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:27+0000\n"
+"POT-Creation-Date: 2022-12-16 09:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Jana Jaakson, 2022\n"
+"Last-Translator: Rivo Zängov <eraser@eraser.ee>, 2022\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -32,12 +33,14 @@ msgstr ""
 "Plural-Forms: nplurals=2; plural=(n != 1);\n"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid " (%s of %s)"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid " (copy)"
@@ -59,6 +62,7 @@ msgid "# Posted Depreciation Entries"
 msgstr "# Kinnitatud amortisatsiooni kanded"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid ""
@@ -67,24 +71,28 @@ msgid ""
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "%s created from invoice: %s"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "%s m"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "%s y"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "%s: Depreciation"
@@ -96,24 +104,28 @@ msgid "(incl."
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "A deferred expense has been created for this move:"
 msgstr "Viitkulu on loodud:"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "A deferred revenue has been created for this move:"
 msgstr "Viittulu on loodud:"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "A depreciation entry will be posted on and including the date %s."
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid ""
@@ -123,6 +135,7 @@ msgid ""
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid ""
@@ -131,6 +144,7 @@ msgid ""
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid ""
@@ -140,24 +154,28 @@ msgid ""
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "A document linked to %s has been deleted: %s"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "A document linked to this move has been deleted: %s"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "A gross increase has been created: %s"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "A non deductible tax value of %s was added to %s's initial value of %s"
@@ -300,6 +318,7 @@ msgid "Add an internal note"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
@@ -307,6 +326,7 @@ msgid "All the lines should be from the same account"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
@@ -324,12 +344,14 @@ msgid "An asset has a parent when it is the result of gaining value"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "An asset has been created for this move:"
 msgstr "Vara on loodud selle siirde jaoks:"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
@@ -342,8 +364,8 @@ msgid "Analytic"
 msgstr "Analüütiline"
 
 #. module: account_asset
-#: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution_stored_char
-msgid "Analytic Distribution Stored Char"
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_precision
+msgid "Analytic Precision"
 msgstr ""
 
 #. module: account_asset
@@ -355,6 +377,7 @@ msgid "Archived"
 msgstr "Arhiveeritud"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #: code:addons/account_asset/models/account_move.py:0
 #: code:addons/account_asset/models/account_move.py:0
@@ -375,12 +398,14 @@ msgid "Asset Account"
 msgstr "Vara konto"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset Cancelled"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid ""
@@ -472,30 +497,35 @@ msgid "Asset Values"
 msgstr "Vara väärtused"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset created"
 msgstr "Vara on loodud"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset disposed. %s"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset paused. %s"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset sold. %s"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Asset unpaused. %s"
@@ -507,6 +537,8 @@ msgid "Asset/Revenue Recognition"
 msgstr "Vara/tulu tuvastamine"
 
 #. module: account_asset
+#. odoo-python
+#: code:addons/account_asset/report/account_assets_report.py:0
 #: model:ir.actions.act_window,name:account_asset.action_account_asset_form
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_ids
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_ids
@@ -514,6 +546,7 @@ msgstr "Vara/tulu tuvastamine"
 #: model:ir.ui.menu,name:account_asset.menu_action_account_asset_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_purchase_tree
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
+#, python-format
 msgid "Assets"
 msgstr "Varad"
 
@@ -568,7 +601,10 @@ msgid "Bills"
 msgstr "Ostuarved"
 
 #. module: account_asset
+#. odoo-python
+#: code:addons/account_asset/report/account_assets_report.py:0
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__book_value
+#, python-format
 msgid "Book Value"
 msgstr "Arvestuslik väärtus"
 
@@ -591,6 +627,13 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__cancelled
 msgid "Cancelled"
 msgstr "Tühistatud"
+
+#. module: account_asset
+#. odoo-python
+#: code:addons/account_asset/report/account_assets_report.py:0
+#, python-format
+msgid "Characteristics"
+msgstr "Omadused"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__children_ids
@@ -764,12 +807,14 @@ msgid "Date of the beginning of the depreciation"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "Dec. then Straight"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method__degressive
 #, python-format
@@ -797,6 +842,7 @@ msgid "Def. Revenues"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__asset_type__expense
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__expense
@@ -856,6 +902,7 @@ msgid "Deferred Expenses Models"
 msgstr "Viitkulude mudelid"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__asset_type__sale
 #, python-format
@@ -914,24 +961,28 @@ msgid "Deferred Revenues Models"
 msgstr "Viittulude mudelid"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Deferred expense"
 msgstr "Viitkulu"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Deferred expense created"
 msgstr "Viitkulu loodud"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Deferred revenue"
 msgstr "Viittulu"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Deferred revenue created"
@@ -956,10 +1007,13 @@ msgid "Depreciated Amount"
 msgstr "Amortiseeritud summa"
 
 #. module: account_asset
+#. odoo-python
+#: code:addons/account_asset/report/account_assets_report.py:0
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__depreciation_value
 #: model:ir.model.fields,field_description:account_asset.field_account_move__depreciation_value
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__depreciation_value
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
+#, python-format
 msgid "Depreciation"
 msgstr "Amortisatsioon"
 
@@ -999,18 +1053,21 @@ msgid "Depreciation Schedule"
 msgstr "Amortisatsiooni graafik"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Depreciation board modified %s"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Depreciation entry %s posted (%s)"
 msgstr "Amortisatsiooni kanne %s kinnitatud (%s)"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Depreciation entry %s reversed (%s)"
@@ -1028,6 +1085,7 @@ msgid "Display Name"
 msgstr "Kuva nimi"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Disposal"
@@ -1039,19 +1097,22 @@ msgid "Disposal Date"
 msgstr "Mahakandmise kuupäev"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Disposal Move"
 msgstr "Mahakandmise liikumine"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Disposal Moves"
 msgstr "Mahakandmise liikumised"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:0
+#. odoo-python
+#: code:addons/account_asset/wizard/asset_modify.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #, python-format
 msgid "Dispose"
@@ -1083,6 +1144,7 @@ msgid "Duration / Rate"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_tree
@@ -1183,6 +1245,7 @@ msgid "Gain Value"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 #, python-format
@@ -1288,6 +1351,7 @@ msgid "Journal"
 msgstr "Andmik"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Journal Entries"
@@ -1305,6 +1369,7 @@ msgid "Journal Item"
 msgstr "Andmiku kanderida"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__original_move_line_ids
 #, python-format
@@ -1312,6 +1377,7 @@ msgid "Journal Items"
 msgstr "Andmike kanderead"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid ""
@@ -1342,6 +1408,7 @@ msgid "Late Activities"
 msgstr "Hilinenud tegevused"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "Linear"
@@ -1404,6 +1471,7 @@ msgid "Modify"
 msgstr "Muuda"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #: model:ir.model,name:account_asset.model_asset_modify
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
@@ -1460,6 +1528,11 @@ msgstr ""
 #: model:ir.model.fields,help:account_asset.field_asset_modify__salvage_value
 msgid "New salvage amount for the asset"
 msgstr ""
+
+#. module: account_asset
+#: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_calendar_event_id
+msgid "Next Activity Calendar Event"
+msgstr "Järgmine tegevus kalendris"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_date_deadline
@@ -1586,6 +1659,7 @@ msgid "On Hold"
 msgstr "Ootel"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "Open Asset"
@@ -1603,7 +1677,8 @@ msgid "Parent"
 msgstr "Ülem"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:0
+#. odoo-python
+#: code:addons/account_asset/wizard/asset_modify.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #, python-format
 msgid "Pause"
@@ -1632,12 +1707,20 @@ msgid "Prorata Date"
 msgstr "Prorata kuupäev"
 
 #. module: account_asset
+#. odoo-python
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid "Prorata Date can not be empty"
+msgstr ""
+
+#. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__purchase
 msgid "Purchase: Asset"
 msgstr "Ost: Vara"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:0
+#. odoo-python
+#: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Re-evaluate"
 msgstr ""
@@ -1669,6 +1752,7 @@ msgid "Related Sales"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Reset to running"
@@ -1686,7 +1770,8 @@ msgid "Responsible User"
 msgstr "Vastutav kasutaja"
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:0
+#. odoo-python
+#: code:addons/account_asset/wizard/asset_modify.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #, python-format
 msgid "Resume"
@@ -1698,6 +1783,7 @@ msgid "Resume Depreciation"
 msgstr "Jätka amortisatsiooni arvestamisega"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 #, python-format
@@ -1738,6 +1824,7 @@ msgid "Revenue Recognition"
 msgstr "Tulu tunnustamine"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid ""
@@ -1756,6 +1843,7 @@ msgid "SMS Delivery error"
 msgstr "Sõnumi kohaletoimetamise veateade"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Sale"
@@ -1772,6 +1860,7 @@ msgid "Save as Model"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Save model"
@@ -1783,7 +1872,8 @@ msgid "Select Invoice Line"
 msgstr ""
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:0
+#. odoo-python
+#: code:addons/account_asset/wizard/asset_modify.py:0
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #, python-format
 msgid "Sell"
@@ -1806,12 +1896,14 @@ msgstr ""
 "Näita kõiki andmeid, mille järgmise tegevuse kuupäev on enne tänast kuupäeva"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Some fields are missing {}"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Some required values are missing"
@@ -1854,6 +1946,7 @@ msgid "The amount of time between two depreciations"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid ""
@@ -1884,6 +1977,7 @@ msgid "The number of depreciations needed to depreciate your asset"
 msgstr "Vajalike amortisatsioonide arv"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "The remaining value on the last depreciation line must be 0"
@@ -1895,7 +1989,16 @@ msgid "There are multiple lines that could be the related to this asset"
 msgstr ""
 
 #. module: account_asset
-#. openerp-web
+#. odoo-python
+#: code:addons/account_asset/wizard/asset_modify.py:0
+#, python-format
+msgid ""
+"There are unposted depreciations prior to the selected operation date, "
+"please deal with them first."
+msgstr ""
+
+#. module: account_asset
+#. odoo-javascript
 #: code:addons/account_asset/static/src/components/move_reversed/move_reversed.xml:0
 #, python-format
 msgid "This move has been reversed"
@@ -1907,6 +2010,7 @@ msgid "Today Activities"
 msgstr "Tänased tegevused"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "Total"
@@ -1918,18 +2022,21 @@ msgid "Total Depreciable Value"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Turn as a deferred expense"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Turn as a deferred revenue"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "Turn as an asset"
@@ -1951,12 +2058,14 @@ msgid "Value at Import"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Value decrease for: %(asset)s"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
@@ -1964,6 +2073,7 @@ msgid "Value increase for: %(asset)s"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Warning for the Original Value of %s"
@@ -1996,6 +2106,7 @@ msgid "Years"
 msgstr "aasta järel"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid ""
@@ -2004,12 +2115,14 @@ msgid ""
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "You cannot archive a record that is not closed"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
@@ -2019,6 +2132,7 @@ msgid ""
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid ""
@@ -2027,6 +2141,14 @@ msgid ""
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
+#: code:addons/account_asset/models/account_asset.py:0
+#, python-format
+msgid "You cannot delete a document that is in %s state."
+msgstr ""
+
+#. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid ""
@@ -2035,18 +2157,14 @@ msgid ""
 msgstr ""
 
 #. module: account_asset
-#: code:addons/account_asset/models/account_asset.py:0
-#, python-format
-msgid "You cannot delete a document that is in %s state."
-msgstr ""
-
-#. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "You cannot reset to draft an entry related to a posted asset"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "You cannot resume at a date equal to or before the pause date"
@@ -2090,12 +2208,14 @@ msgid "e.g. Laptop iBook"
 msgstr "nt. iBook sülearvuti"
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "entries"
 msgstr ""
 
 #. module: account_asset
+#. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "entry"

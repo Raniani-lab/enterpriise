@@ -1051,19 +1051,19 @@ msgstr ""
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
-msgid "Are you sure you want to remove you own \"Write\" access ?"
-msgstr "هل أنت متأكد من أنك ترغب في إزالة صلاحيات \"الكتابة\" الخاصة بك؟ "
-
-#. module: knowledge
-#. openerp-web
-#: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
-#, python-format
 msgid ""
 "Are you sure you want to remove your member? By leaving an article, you may "
 "lose access to it."
 msgstr ""
 "هل أنت متأكد من أنك ترغب في إزالة عضوك؟ إذا قمت بمغادرة المقال، قد تفقد "
 "صلاحية الوصول إليه. "
+
+#. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
+#, python-format
+msgid "Are you sure you want to remove your own \"Write\" access ?"
+msgstr ""
 
 #. module: knowledge
 #. openerp-web
@@ -1837,7 +1837,17 @@ msgid "Item List"
 msgstr "قائمة العناصر "
 
 #. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #: model:ir.ui.menu,name:knowledge.knowledge_menu_root
+#, python-format
 msgid "Knowledge"
 msgstr "المعرفة"
 
@@ -1954,6 +1964,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_main_attachment_id
 msgid "Main Attachment"
 msgstr "المرفق الرئيسي"
+
+#. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Media"
+msgstr "الوسائط "
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_member_view_form

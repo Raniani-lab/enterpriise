@@ -2,12 +2,17 @@
 # This file contains the translation of the following modules:
 # 	* account_accountant
 # 
+# Translators:
+# Niyas Raphy, 2022
+# Mehjabin Farsana, 2022
+# 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:26+0000\n"
+"POT-Creation-Date: 2022-11-25 09:15+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
+"Last-Translator: Mehjabin Farsana, 2022\n"
 "Language-Team: Malay (https://www.transifex.com/odoo/teams/41243/ms/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -92,14 +97,6 @@ msgstr ""
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
-msgid ""
-"<span class=\"ml4 mr4\" attrs=\"{'invisible': ['|', "
-"('form_single_currency_mode', '=', True), ('form_index', '=', "
-"False)]}\">in</span>"
-msgstr ""
-
-#. module: account_accountant
-#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid "<span class=\"ml4 mr4\">-</span>"
 msgstr ""
 
@@ -111,17 +108,16 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid ""
-"<span class=\"o_form_label\" attrs=\"{'invisible': ['|', '|', "
-"('form_single_currency_mode', '=', True), ('form_force_negative_sign', '=', "
-"False), ('form_index', '=', False)]}\">-</span>"
+"<span class=\"o_form_label\" attrs=\"{'invisible': ['|', "
+"('form_force_negative_sign', '=', False), ('form_index', '=', "
+"False)]}\">-</span>"
 msgstr ""
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 msgid ""
-"<span class=\"o_form_label\" attrs=\"{'invisible': ['|', "
-"('form_force_negative_sign', '=', False), ('form_index', '=', "
-"False)]}\">-</span>"
+"<span class=\"o_form_label\" attrs=\"{'invisible': "
+"[('form_force_negative_sign', '=', False)]}\">-</span>"
 msgstr ""
 
 #. module: account_accountant
@@ -165,62 +161,62 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #, python-format
 msgid "Account"
-msgstr ""
+msgstr "Akaun"
 
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_account_group_tree
 #: model:ir.ui.menu,name:account_accountant.menu_account_group
 msgid "Account Groups"
-msgstr ""
+msgstr "Kumpulan Akaun"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__module_account_predictive_bills
 msgid "Account Predictive Bills"
-msgstr ""
+msgstr "Bil Ramalan Akaun"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_reconciliation_widget
 msgid "Account Reconciliation widget"
-msgstr ""
+msgstr "Widget Penyesuaian Akaun"
 
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.account_tag_action
 #: model:ir.ui.menu,name:account_accountant.account_tag_menu
 msgid "Account Tags"
-msgstr ""
+msgstr "Teg Akaun"
 
 #. module: account_accountant
 #: model:ir.ui.menu,name:account_accountant.menu_accounting
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_partner_view_form
 msgid "Accounting"
-msgstr ""
+msgstr "Perakaunan"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_change_lock_date
 msgid "Accounting Period Closing"
-msgstr ""
+msgstr "Penutupan Tempoh Perakaunan"
 
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_view_account_change_lock_date
 msgid "Accounting closing dates"
-msgstr ""
+msgstr "Tarikh tutup perakaunan"
 
 #. module: account_accountant
 #: model:ir.actions.act_window,name:account_accountant.action_bank_statement_line_form_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_form_bank_rec_widget
 msgid "Add a Transaction"
-msgstr ""
+msgstr "Tambah Transaksi"
 
 #. module: account_accountant
 #: model_terms:ir.actions.act_window,help:account_accountant.account_tag_action
 msgid "Add a new tag"
-msgstr ""
+msgstr "Tambahkan teg baharu"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__fiscalyear_lock_date
 msgid "All Users Lock Date"
-msgstr ""
+msgstr "Tarikh Kunci Semua Pengguna"
 
 #. module: account_accountant
 #. openerp-web
@@ -229,12 +225,13 @@ msgstr ""
 msgid ""
 "All invoices and payments have been matched, your accounts' balances are "
 "clean."
-msgstr ""
+msgstr "Semua invois dan pembayaran telah dipadankan, baki akaun anda bersih."
 
 #. module: account_accountant
 #: model:res.groups,name:account_accountant.group_fiscal_year
 msgid "Allow to define fiscal years of more or less than a year"
 msgstr ""
+"Benarkan untuk menentukan tahun fiskal lebih atau kurang daripada setahun"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__amls_widget
@@ -280,9 +277,9 @@ msgid "Analytic Account"
 msgstr ""
 
 #. module: account_accountant
-#: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__analytic_distribution_stored_char
-#: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_distribution_stored_char
-msgid "Analytic Distribution Stored Char"
+#: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__analytic_precision
+#: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_precision
+msgid "Analytic Precision"
 msgstr ""
 
 #. module: account_accountant
@@ -401,7 +398,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_accountant.field_account_fiscal_year__company_id
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__company_id
 msgid "Company"
-msgstr ""
+msgstr "Syarikat"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_res_config_settings
@@ -480,13 +477,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__create_uid
 #: model:ir.model.fields,field_description:account_accountant.field_account_fiscal_year__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Dicipta oleh"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__create_date
 #: model:ir.model.fields,field_description:account_accountant.field_account_fiscal_year__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Dicipta pada"
 
 #. module: account_accountant
 #. openerp-web
@@ -516,6 +513,7 @@ msgstr ""
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__date
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 #, python-format
 msgid "Date"
@@ -560,7 +558,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__display_name
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Nama paparan"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__display_stroked_amount_currency
@@ -603,6 +601,12 @@ msgid ""
 " status, hiding all the accounting entries related to it. Use this option "
 "after installing Accounting if you were using only Invoicing before, before "
 "importing all your actual accounting data in to Odoo."
+msgstr ""
+
+#. module: account_accountant
+#: code:addons/account_accountant/models/bank_rec_widget.py:0
+#, python-format
+msgid "Exchange Difference: %s"
 msgstr ""
 
 #. module: account_accountant
@@ -815,7 +819,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__id
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_bank_rec_widget__to_check
@@ -887,7 +891,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 #, python-format
 msgid "Journal"
-msgstr ""
+msgstr "Jurnal"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__journal_currency_id
@@ -905,7 +909,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_search_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Journal Entry"
-msgstr ""
+msgstr "Kemasukan jurnal"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_move_line
@@ -948,7 +952,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget____last_update
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Terakhir Diubah suai pada"
 
 #. module: account_accountant
 #. openerp-web
@@ -961,13 +965,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__write_uid
 #: model:ir.model.fields,field_description:account_accountant.field_account_fiscal_year__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Kemas Kini Terakhir oleh"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_change_lock_date__write_date
 #: model:ir.model.fields,field_description:account_accountant.field_account_fiscal_year__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Kemas Kini Terakhir pada"
 
 #. module: account_accountant
 #. openerp-web
@@ -1122,7 +1126,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_accountant.field_account_fiscal_year__name
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__name
 msgid "Name"
-msgstr ""
+msgstr "Nama"
 
 #. module: account_accountant
 #. openerp-web
@@ -1170,6 +1174,7 @@ msgstr ""
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_tree_bank_rec_widget
 msgid "Notes"
 msgstr ""
 
@@ -1507,7 +1512,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_account_fiscal_year__date_from
 msgid "Start Date"
-msgstr ""
+msgstr "Tarikh mula"
 
 #. module: account_accountant
 #: model:ir.model.fields,help:account_accountant.field_account_fiscal_year__date_from
@@ -1517,7 +1522,7 @@ msgstr ""
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__state
 msgid "State"
-msgstr ""
+msgstr "negeri"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
@@ -1746,6 +1751,7 @@ msgstr ""
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_account_move_line_list_bank_rec_widget
+#: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_tree_bank_rec_widget
 msgid "View"
 msgstr ""
 
@@ -1889,6 +1895,11 @@ msgid "early_payment"
 msgstr ""
 
 #. module: account_accountant
+#: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__exchange_diff
+msgid "exchange_diff"
+msgstr ""
+
+#. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__liquidity
 msgid "liquidity"
 msgstr ""
@@ -1932,7 +1943,7 @@ msgstr ""
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
 msgid "to check"
-msgstr ""
+msgstr "untuk memeriksa"
 
 #. module: account_accountant
 #. openerp-web

@@ -192,6 +192,13 @@ msgid "ID"
 msgstr "ID"
 
 #. module: project_enterprise
+#. openerp-web
+#: code:addons/project_enterprise/static/src/js/task_gantt_utils.js:0
+#, python-format
+msgid "Invalid scale interval"
+msgstr ""
+
+#. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard____last_update
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_wizard____last_update
 msgid "Last Modified on"
@@ -230,6 +237,14 @@ msgstr "Mobiil"
 #, python-format
 msgid "No task has been scheduled in the future."
 msgstr "Ühtegi ülesannet pole tulevikuks planeeritud."
+
+#. module: project_enterprise
+#: code:addons/project_enterprise/models/project_task.py:0
+#, python-format
+msgid ""
+"One parameter is missing to use this method. You should give a start and end"
+" dates."
+msgstr ""
 
 #. module: project_enterprise
 #: code:addons/project_enterprise/models/project_task.py:0
@@ -394,6 +409,12 @@ msgstr "Ülesanne on edukalt planeeritud."
 #, python-format
 msgid "The tasks have been successfully scheduled."
 msgstr "Ülesanded on edukalt planeeritud."
+
+#. module: project_enterprise
+#: code:addons/project_enterprise/models/project_task.py:0
+#, python-format
+msgid "This Progress Bar is not implemented."
+msgstr ""
 
 #. module: project_enterprise
 #: code:addons/project_enterprise/models/project_task.py:0

@@ -105,7 +105,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social_linkedin.field_social_stream_post__linkedin_comments_count
 #, python-format
 msgid "LinkedIn Comments"
-msgstr ""
+msgstr "LinkedIn komentari"
 
 #. module: social_linkedin
 #: model:ir.model.fields,field_description:social_linkedin.field_social_stream_post__linkedin_likes_count

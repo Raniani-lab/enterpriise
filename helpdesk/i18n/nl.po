@@ -11,9 +11,9 @@
 # 
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-10-10 13:27+0000\n"
+"POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
 "Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
@@ -64,6 +64,7 @@ msgid "% of Successful SLA"
 msgstr "% van succesvolle SLA"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/models/helpdesk.py:0
 #: code:addons/helpdesk/models/helpdesk.py:0
 #: code:addons/helpdesk/models/helpdesk_ticket.py:0
@@ -92,7 +93,7 @@ msgid "<b class=\"tip_title\">Tip: Create tickets from incoming emails</b>"
 msgstr "<b class=\"tip_title\">Tip: Maak tickets van inkomende e-mails</b>"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "<b>Drag &amp; drop</b> the card to change the stage of your ticket."
@@ -100,7 +101,7 @@ msgstr ""
 "<b>Drag &amp; drop</b> de kaart vallen om de fase van je ticket te wijzigen."
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid ""
@@ -113,7 +114,7 @@ msgstr ""
 "    of <b># vermeldingen</b> om contact op te nemen met een groep mensen."
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid ""
@@ -613,7 +614,7 @@ msgid "Activity Types"
 msgstr "Activiteitssoorten"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid ""
@@ -650,7 +651,7 @@ msgid "Add team members..."
 msgstr "Teamleden toevoegen..."
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid ""
@@ -706,6 +707,7 @@ msgid "Aliased Model"
 msgstr "Aliased Model"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "All"
@@ -768,19 +770,21 @@ msgid "Assign To Me"
 msgstr "Aan mij toewijzen"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "Assign the ticket to a <b>member of your team</b>."
 msgstr "Wijs het ticket toe aan een <b>lid van je team</b>."
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/models/helpdesk_ticket.py:0
 #, python-format
 msgid "Assign to me"
 msgstr "Aan mij toewijzen"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Assigned"
@@ -793,6 +797,7 @@ msgid "Assigned To"
 msgstr "Toegewezen aan"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #: code:addons/helpdesk/controllers/portal.py:0
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__user_id
@@ -869,7 +874,7 @@ msgid "Average Hours to Respond"
 msgstr "Gemiddelde uren om te reageren"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__rating_avg
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__rating_avg
@@ -906,21 +911,21 @@ msgid "Average rating for the last 7 days"
 msgstr "Gemiddelde beoordeling van de afgelopen 7 dagen"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
 msgid "Avg 7 Days Customer Satisfaction"
 msgstr "Gemiddelde 7 dagen klanttevredenheid"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
 msgid "Avg Last 7 days"
 msgstr "Gem. afgelopen 7 dagen"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
 msgid "Avg Open Hours"
@@ -937,6 +942,7 @@ msgid "Bill the time spent on your tickets to your customers"
 msgstr "Factureer de tijd die je aan je tickets besteedt aan je klanten"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/models/helpdesk.py:0
 #: model:helpdesk.stage,legend_blocked:helpdesk.stage_cancelled
 #: model:helpdesk.stage,legend_blocked:helpdesk.stage_done
@@ -944,29 +950,6 @@ msgstr "Factureer de tijd die je aan je tickets besteedt aan je klanten"
 #: model:helpdesk.stage,legend_blocked:helpdesk.stage_new
 #: model:helpdesk.stage,legend_blocked:helpdesk.stage_on_hold
 #: model:helpdesk.stage,legend_blocked:helpdesk.stage_solved
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_1
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_10
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_11
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_12
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_13
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_14
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_15
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_16
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_17
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_18
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_19
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_2
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_20
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_21
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_22
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_23
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_3
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_4
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_5
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_6
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_7
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_8
-#: model:helpdesk.ticket,legend_blocked:helpdesk.helpdesk_ticket_9
 #, python-format
 msgid "Blocked"
 msgstr "Geblokkeerd"
@@ -997,7 +980,7 @@ msgid "Channels"
 msgstr "Kanalen"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_target/helpdesk_team_target.xml:0
 #, python-format
 msgid "Click to set"
@@ -1036,6 +1019,7 @@ msgid "Close ticket"
 msgstr "Ticket afsluiten"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_report_analysis_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
@@ -1044,7 +1028,7 @@ msgid "Closed"
 msgstr "Gesloten"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis
 #, python-format
@@ -1146,6 +1130,7 @@ msgid "Confirm"
 msgstr "Bevestigen"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/wizard/helpdesk_stage_delete.py:0
 #, python-format
 msgid "Confirmation"
@@ -1257,6 +1242,7 @@ msgid "Custom Bounced Message"
 msgstr "Aangepast teruggestuurd bericht"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/models/helpdesk_ticket.py:0
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_sla_report_analysis__partner_id
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__partner_id
@@ -1269,6 +1255,7 @@ msgid "Customer"
 msgstr "Klant"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/models/helpdesk.py:0
 #: code:addons/helpdesk/models/res_company.py:0
 #: model:helpdesk.team,name:helpdesk.helpdesk_team1
@@ -1277,6 +1264,7 @@ msgid "Customer Care"
 msgstr "Klantenservice"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/models/helpdesk_ticket.py:0
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__partner_email
 #, python-format
@@ -1311,20 +1299,21 @@ msgid "Customers"
 msgstr "Klanten"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/models/helpdesk.py:0
 #, python-format
 msgid "Customers will be added to the followers of their tickets."
 msgstr "Klanten worden toegevoegd aan de volgers van hun tickets."
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
 msgid "Daily Target"
 msgstr "Dagelijks doel"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/views/helpdesk_team_kanban/helpdesk_team_kanban_view.js:0
 #, python-format
 msgid "Dashboard"
@@ -1362,6 +1351,7 @@ msgid "Delete"
 msgstr "Verwijderen"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/models/helpdesk.py:0
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_delete_confirmation_wizard
 #: model_terms:ir.ui.view,arch_db:helpdesk.view_helpdesk_stage_delete_wizard
@@ -1425,6 +1415,7 @@ msgid "Dissatisfied"
 msgstr "Ontevreden"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/models/digest.py:0
 #, python-format
 msgid "Do not have access, skip this data for user's digest email"
@@ -1528,7 +1519,7 @@ msgid "Enable eLearning"
 msgstr "E-learning inschakelen"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid ""
@@ -1565,7 +1556,7 @@ msgid "Failed SLA Ticket"
 msgstr "Mislukt SLA-ticket"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
 msgid "Failed Tickets"
@@ -1657,6 +1648,7 @@ msgid "Grant discounts or free products"
 msgstr "Geef kortingen of gratis producten"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/models/helpdesk.py:0
 #, python-format
 msgid ""
@@ -1667,6 +1659,7 @@ msgstr ""
 "toe te voegen."
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/models/helpdesk.py:0
 #, python-format
 msgid ""
@@ -1801,7 +1794,6 @@ msgstr "Helpdesktickettype"
 #. module: helpdesk
 #: model:ir.actions.server,name:helpdesk.ir_cron_auto_close_ticket_ir_actions_server
 #: model:ir.cron,cron_name:helpdesk.ir_cron_auto_close_ticket
-#: model:ir.cron,name:helpdesk.ir_cron_auto_close_ticket
 msgid "Helpdesk Ticket: Automatically close the tickets"
 msgstr "Helpdeskticket: Sluit de tickets automatisch"
 
@@ -1827,7 +1819,7 @@ msgid "Helpdesk: Ticket Rating Request"
 msgstr "Helpdesk: Beoordelingsverzoek ticket"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_report_analysis_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_view_search
@@ -1962,6 +1954,7 @@ msgid "In #{kanban_getcolorname(record.color.raw_value)}"
 msgstr "In #{kanban_getcolorname(record.color.raw_value)}"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/models/helpdesk.py:0
 #: model:helpdesk.stage,legend_normal:helpdesk.stage_cancelled
 #: model:helpdesk.stage,legend_normal:helpdesk.stage_done
@@ -1970,29 +1963,6 @@ msgstr "In #{kanban_getcolorname(record.color.raw_value)}"
 #: model:helpdesk.stage,legend_normal:helpdesk.stage_on_hold
 #: model:helpdesk.stage,legend_normal:helpdesk.stage_solved
 #: model:helpdesk.stage,name:helpdesk.stage_in_progress
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_1
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_10
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_11
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_12
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_13
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_14
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_15
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_16
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_17
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_18
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_19
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_2
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_20
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_21
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_22
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_23
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_3
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_4
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_5
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_6
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_7
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_8
-#: model:helpdesk.ticket,legend_normal:helpdesk.helpdesk_ticket_9
 #, python-format
 msgid "In Progress"
 msgstr "In behandeling"
@@ -2122,6 +2092,7 @@ msgid "Last Modified on"
 msgstr "Laatst gewijzigd op"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__date_last_stage_update
 #, python-format
@@ -2168,14 +2139,14 @@ msgid "Let your customers answer each other's questions on a forum"
 msgstr "Laat je klanten elkaars vragen beantwoorden op een forum"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "Let's create your first <b>ticket</b>."
 msgstr "Laten we je eerste <b>ticket</b> maken."
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid ""
@@ -2186,7 +2157,7 @@ msgstr ""
 "krijgen van je volgende tickets."
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "Let's view your <b>team's tickets</b>."
@@ -2328,7 +2299,7 @@ msgid "My Activity Deadline"
 msgstr "Mijn activiteit deadline"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
 msgid "My Performance"
@@ -2341,7 +2312,7 @@ msgid "My Teams"
 msgstr "Mijn teams"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
@@ -2379,6 +2350,7 @@ msgid "Neutral face"
 msgstr "Neutraal gezicht"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/models/helpdesk.py:0
 #: model:helpdesk.stage,name:helpdesk.stage_new
 #, python-format
@@ -2395,6 +2367,7 @@ msgstr ""
 "volgens hun werkuren en hun verlofdagen."
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Newest"
@@ -2492,6 +2465,7 @@ msgid "No types found. Let's create one!"
 msgstr "Geen labels gevonden. Maak er één aan!"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "None"
@@ -2583,6 +2557,7 @@ msgid "Ongoing"
 msgstr "Lopend"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_report_analysis_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_tickets_view_search
@@ -2591,7 +2566,7 @@ msgid "Open"
 msgstr "Open"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_view_search_analysis
 #, python-format
@@ -2699,7 +2674,7 @@ msgid "Percentage of happy ratings"
 msgstr "Percentage tevreden beoordelingen"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
@@ -2735,21 +2710,21 @@ msgid "Plan onsite interventions"
 msgstr "Plan interventies ter plaatse"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_target/helpdesk_team_target.js:0
 #, python-format
 msgid "Please enter a number."
 msgstr "Voer alstublieft een nummer in."
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_target/helpdesk_team_target.js:0
 #, python-format
 msgid "Please enter a percentage below 100."
 msgstr "Vul een percentage in onder de 100."
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_target/helpdesk_team_target.js:0
 #, python-format
 msgid "Please enter a positive value."
@@ -2774,6 +2749,7 @@ msgid "Portal Access URL"
 msgstr "Portaal toegang URL"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/models/helpdesk.py:0
 #, python-format
 msgid ""
@@ -2905,6 +2881,7 @@ msgid "Reached Date"
 msgstr "Bereikte datum"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/models/helpdesk.py:0
 #: model:helpdesk.stage,legend_done:helpdesk.stage_cancelled
 #: model:helpdesk.stage,legend_done:helpdesk.stage_done
@@ -2912,29 +2889,6 @@ msgstr "Bereikte datum"
 #: model:helpdesk.stage,legend_done:helpdesk.stage_new
 #: model:helpdesk.stage,legend_done:helpdesk.stage_on_hold
 #: model:helpdesk.stage,legend_done:helpdesk.stage_solved
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_1
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_10
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_11
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_12
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_13
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_14
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_15
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_16
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_17
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_18
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_19
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_2
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_20
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_21
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_22
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_23
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_3
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_4
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_5
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_6
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_7
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_8
-#: model:helpdesk.ticket,legend_done:helpdesk.helpdesk_ticket_9
 #, python-format
 msgid "Ready"
 msgstr "Beschikbaar"
@@ -2965,6 +2919,7 @@ msgid "Red Kanban Label"
 msgstr "Rood kanban label"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Reference"
@@ -3192,13 +3147,14 @@ msgid "Sad face"
 msgstr "Ongelukkig gezicht"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Salesperson"
 msgstr "Verkoper"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
 msgid "Sample"
@@ -3221,13 +3177,21 @@ msgid "Save this page and refresh to activate the feature."
 msgstr "Bewaar deze pagina en vernieuw om deze functionaliteit te activeren."
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "Save this ticket and the modifications you've made to it."
 msgstr "Bewaar dit ticket en de wijzigingen die je hierop hebt gemaakt."
 
 #. module: helpdesk
+#. odoo-javascript
+#: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
+#, python-format
+msgid "Schedule your <b>activity</b>."
+msgstr ""
+
+#. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Search <span class=\"nolabel\"> (in Content)</span>"
@@ -3239,24 +3203,28 @@ msgid "Search SLA Policies"
 msgstr "Zoek SLA afspraken"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Search in Assigned to"
 msgstr "Zoeken in Toegewezen aan"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Search in Messages"
 msgstr "Zoek in berichten"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Search in Reference"
 msgstr "Zoek in referentie"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Search in Stage"
@@ -3268,7 +3236,7 @@ msgid "Security Token"
 msgstr "Veiligheidstoken"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "Select the <b>customer</b> of your ticket."
@@ -3367,6 +3335,7 @@ msgid "Source"
 msgstr "Bron"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #: code:addons/helpdesk/controllers/portal.py:0
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__stage_id
@@ -3443,6 +3412,7 @@ msgstr ""
 "Gepland: Toekomstige activiteiten."
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_ticket__name
 #, python-format
@@ -3450,7 +3420,7 @@ msgid "Subject"
 msgstr "Onderwerp"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #: model:ir.model.fields,field_description:helpdesk.field_helpdesk_team__success_rate
 #, python-format
@@ -3603,6 +3573,7 @@ msgstr ""
 "gebruiker gebruikt."
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "The team does not allow ticket closing through portal"
@@ -3618,6 +3589,7 @@ msgstr ""
 "berekening van de SLA."
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/models/helpdesk.py:0
 #, python-format
 msgid ""
@@ -3691,7 +3663,7 @@ msgstr ""
 "doen (bijvoorbeeld \"Bellen\" of \"E-mail verzenden\")."
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
@@ -3790,6 +3762,7 @@ msgid "Ticket Type"
 msgstr "Ticketsoort"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #, python-format
 msgid "Ticket closed by the customer"
@@ -3801,7 +3774,8 @@ msgid "Ticket created"
 msgstr "Ticket aangemaakt"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
+#. odoo-python
 #: code:addons/helpdesk/models/helpdesk.py:0
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #: model:ir.actions.act_window,name:helpdesk.helpdesk_my_ticket_action_no_create
@@ -3829,7 +3803,7 @@ msgid "Tickets"
 msgstr "Tickets"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
@@ -3900,7 +3874,7 @@ msgstr ""
 "                Werk efficiënt samen door in realtime of via e-mail te chatten."
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
 msgid "Today"
@@ -3912,7 +3886,7 @@ msgid "Today Activities"
 msgstr "Activiteiten van vandaag"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
 msgid "Today Average Rating"
@@ -3953,7 +3927,7 @@ msgid "Twitter"
 msgstr "Twitter"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #, python-format
@@ -3986,12 +3960,14 @@ msgid "Types are perfect for categorizing your tickets."
 msgstr "Types zijn perfect voor het categoriseren van je tickets."
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/models/helpdesk.py:0
 #, python-format
 msgid "Unarchive Tickets"
 msgstr "Kaarten uit het archief verwijderen"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/controllers/portal.py:0
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_sla_report_analysis_view_search
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_ticket_report_analysis_view_search
@@ -4014,7 +3990,7 @@ msgid "Unread Messages"
 msgstr "Ongelezen berichten"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/components/helpdesk_team_dashboard/helpdesk_team_dashboard.xml:0
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_sla__priority__3
 #: model:ir.model.fields.selection,name:helpdesk.selection__helpdesk_sla_report_analysis__priority__3
@@ -4029,7 +4005,7 @@ msgid "Urgent"
 msgstr "Urgent"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid "Use <b>activities</b> to organize your daily work."
@@ -4061,7 +4037,7 @@ msgid "Use Returns"
 msgstr "Gebruik retouren"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid ""
@@ -4093,7 +4069,7 @@ msgid "Visibility"
 msgstr "Zichtbaarheid"
 
 #. module: helpdesk
-#. openerp-web
+#. odoo-javascript
 #: code:addons/helpdesk/static/src/js/tours/helpdesk.js:0
 #, python-format
 msgid ""
@@ -4249,11 +4225,17 @@ msgid "has been created from ticket:"
 msgstr "is gemaakt van ticket:"
 
 #. module: helpdesk
+#: model:ir.actions.server,name:helpdesk.helpdesk_ratings_server_action
+msgid "helpdesk view rating"
+msgstr ""
+
+#. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
 msgid "team search"
 msgstr "team zoeken"
 
 #. module: helpdesk
+#. odoo-python
 #: code:addons/helpdesk/models/helpdesk_ticket.py:0
 #, python-format
 msgid "ticket"

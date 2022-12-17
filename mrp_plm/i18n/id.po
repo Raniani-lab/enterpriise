@@ -843,7 +843,7 @@ msgstr "Kelompokkan menurut...."
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__has_message
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Memiliki Pesan"
 
 #. module: mrp_plm
 #: model:ir.module.category,description:mrp_plm.module_category_manufacturing_product_lifecycle_management_(plm)

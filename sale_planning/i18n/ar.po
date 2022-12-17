@@ -263,6 +263,9 @@ msgid ""
 "are automatically planned, the remaining hours of the sales order item, as "
 "well as the role defined on the service, are taken into account."
 msgstr ""
+"عنصر أمر البيع الذي سيتم إجراء هذه الجلسة من أجله. عندما يتم التخطيط لأوامر "
+"البيع تلقائياً، يتم اعتبار الساعات المتبقية من عنصر أمر البيع، بالإضافة إلى "
+"الدور المحدد في الخدمة. "
 
 #. module: sale_planning
 #: model:ir.actions.act_window,name:sale_planning.sale_planning_action_schedule_by_sale_order

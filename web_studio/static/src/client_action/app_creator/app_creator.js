@@ -1,170 +1,179 @@
 /** @odoo-module **/
+
+import { Component, useExternalListener, useState } from "@odoo/owl";
 import { useAutofocus, useService } from "@web/core/utils/hooks";
-import { ModelConfigurator } from "@web_studio/client_action/model_configurator/model_configurator";
 import { BG_COLORS, COLORS, ICONS } from "@web_studio/utils";
-import { ComponentAdapter, ComponentWrapper, WidgetAdapterMixin } from "web.OwlCompatibility";
-import { FieldMany2One } from "web.relational_fields";
-import StandaloneFieldManagerMixin from "web.StandaloneFieldManagerMixin";
-import Widget from "web.Widget";
+import { Record } from "@web/views/record";
+import { ModelConfigurator } from "@web_studio/client_action/model_configurator/model_configurator";
 import { IconCreator } from "../icon_creator/icon_creator";
+import { _lt } from "@web/core/l10n/translation";
+import { Many2OneField } from "@web/views/fields/many2one/many2one_field";
 
-import { Component, onWillStart, useExternalListener, useState } from "@odoo/owl";
-
-class ModelSelector extends ComponentAdapter {
-    constructor() {
-        Object.assign(arguments[0], { Component: FieldMany2One });
-        super(...arguments);
-    }
-    updateWidget() {}
-    renderWidget() {}
-    _trigger_up(ev) {
-        if (ev.name === "field_changed" && this.props.onFieldChanged) {
-            this.props.onFieldChanged(ev.data);
-        }
-        return super._trigger_up(...arguments);
-    }
-}
-
-export const AppCreatorWrapper = Widget.extend(StandaloneFieldManagerMixin, WidgetAdapterMixin, {
-    target: "fullscreen",
+class AppCreatorState {
     /**
-     * This widget is directly bound to its inner owl component and its sole purpose
-     * is to instanciate it with the adequate properties: it will manually
-     * mount the component when attached to the dom, will dismount it when detached
-     * and destroy it when destroyed itself.
-     * @constructor
+     * @param {Function} onFinished
      */
-    init(parent, props) {
-        this._super(...arguments);
-        StandaloneFieldManagerMixin.init.call(this);
-        this.appCreatorComponent = new ComponentWrapper(this, AppCreator, {
-            ...props,
-            model: this.model,
-        });
-    },
+    constructor({ onFinished }) {
+        // ================== Fields ==================
+        this.fieldsInfo = {
+            modelId: {
+                relation: "ir.model",
+                domain: [
+                    ["transient", "=", false],
+                    ["abstract", "=", false],
+                ],
+                type: "many2one",
+            },
+            modelChoice: {
+                type: "selection",
+                selection: [
+                    ["new", _lt("New Model")],
+                    ["existing", _lt("Existing Model")],
+                ],
+            },
+        };
 
-    async start() {
-        Object.assign(this.el.style, {
-            height: "100%",
-            overflow: "auto",
-        });
-        await this._super(...arguments);
-        return this.appCreatorComponent.mount(this.el);
-    },
+        this.fieldsValidators = {
+            appName: () => !!this.data.appName,
+            menuName: () => !!this.data.menuName,
+            modelId: () => this.data.modelChoice === "new" || !!this.data.modelId,
+        };
 
-    destroy() {
-        WidgetAdapterMixin.destroy.call(this);
-        this._super();
-    },
-
-    //--------------------------------------------------------------------------
-    // Handlers
-    //--------------------------------------------------------------------------
-
-    /**
-     * Overriden to register widgets on the fly since they have been instanciated
-     * by the Component.
-     * @override
-     */
-    _onFieldChanged(ev) {
-        const targetWidget = ev.data.__targetWidget;
-        this._registerWidget(ev.data.dataPointID, targetWidget.name, targetWidget);
-        StandaloneFieldManagerMixin._onFieldChanged.apply(this, arguments);
-    },
-});
-
-/**
- * App creator
- *
- * Action handling the complete creation of a new app. It requires the user
- * to enter an app name, to customize the app icon (@see IconCreator) and
- * to finally enter a menu name, with the option to bind the default app
- * model to an existing one.
- *
- * TODO: this component is bound to an action adapter since the action manager
- * cannot yet handle owl component. This file must be reviewed as soon as
- * the action manager is updated.
- * @extends Component
- */
-class AppCreator extends Component {
-    setup() {
-        // TODO: Many2one component directly attached in XML. For now we have
-        // to toggle it manually according to the state changes.
-        this.state = useState({
-            step: "welcome",
+        this.data = {
             appName: "",
-            menuName: "",
-            modelChoice: "new",
-            modelOptions: [],
-            modelId: false,
             iconData: {
                 backgroundColor: BG_COLORS[5],
                 color: COLORS[4],
                 iconClass: ICONS[0],
                 type: "custom_icon",
             },
-        });
-        this.debug = Boolean(AppCreator.env.isDebug());
-        this.uiService = useService("ui");
-        this.rpc = useService("rpc");
-
-        useAutofocus();
-        this.invalid = useState({
-            appName: false,
-            menuName: false,
+            menuName: "",
+            modelChoice: "new",
             modelId: false,
-        });
-        useExternalListener(window, "keydown", this.onKeydown);
+            modelOptions: [],
+        };
 
-        onWillStart(() => this.onWillStart());
-    }
-
-    async onWillStart() {
-        const recordId = await this.props.model.makeRecord("ir.actions.act_window", [
-            {
-                name: "model",
-                relation: "ir.model",
-                type: "many2one",
-                domain: [
-                    ["transient", "=", false],
-                    ["abstract", "=", false],
-                ],
+        // ================== Steps ==================
+        const data = this.data;
+        this._steps = {
+            welcome: {
+                next: "app",
             },
-        ]);
-        this.record = this.props.model.get(recordId);
+            app: {
+                previous: "welcome",
+                next: "model",
+                fields: ["appName"],
+            },
+            model: {
+                previous: "app",
+                get next() {
+                    return data.modelChoice === "new" ? "model_configuration" : "";
+                },
+                fields: ["menuName", "modelId"],
+            },
+            model_configuration: {
+                previous: "model",
+            },
+        };
+
+        // ==================== Misc ====================
+        this._invalidFields = new Set();
+        this._onFinished = onFinished;
+        this.step = "welcome";
     }
 
     //--------------------------------------------------------------------------
     // Getters
     //--------------------------------------------------------------------------
 
-    /**
-     * @returns {boolean}
-     */
-    get isReady() {
-        return (
-            this.state.step === "welcome" ||
-            (this.state.step === "app" && this.state.appName) ||
-            (this.state.step === "model" &&
-                this.state.menuName &&
-                (this.state.modelChoice === "new" ||
-                    (this.state.modelChoice === "existing" && this.state.modelId)))
-        );
+    get step() {
+        return this._step;
+    }
+
+    set step(step) {
+        this._step = step;
+        this._invalidFields.clear();
+    }
+
+    get nextStep() {
+        return this._stepInvalidFields.length ? false : this._currentStep.next;
+    }
+
+    get hasPrevious() {
+        return "previous" in this._currentStep;
     }
 
     //--------------------------------------------------------------------------
-    // Protected
+    // Public
     //--------------------------------------------------------------------------
 
-    /**
-     * Switch the current step and clean all invalid keys.
-     * @param {string} step
-     */
-    changeStep(step) {
-        this.state.step = step;
-        for (const key in this.invalid) {
-            this.invalid[key] = false;
+    isFieldValid(fieldName) {
+        return !this._invalidFields.has(fieldName);
+    }
+
+    validateField(fieldName) {
+        if (this.fieldsValidators[fieldName]()) {
+            this._invalidFields.delete(fieldName);
+        } else {
+            this._invalidFields.add(fieldName);
         }
+    }
+
+    next() {
+        const invalidFields = this._stepInvalidFields;
+        if (invalidFields.length) {
+            this._invalidFields = new Set(invalidFields);
+            return;
+        }
+        const next = this._currentStep.next;
+        if (next) {
+            this.step = next;
+        } else {
+            return this._onFinished();
+        }
+    }
+
+    previous() {
+        if (this._currentStep.previous) {
+            this.step = this._currentStep.previous;
+        }
+    }
+
+    //--------------------------------------------------------------------------
+    // Private
+    //--------------------------------------------------------------------------
+
+    get _currentStep() {
+        return this._steps[this._step];
+    }
+
+    get _stepInvalidFields() {
+        return (this._currentStep.fields || []).filter((fName) => {
+            return !this.fieldsValidators[fName]();
+        });
+    }
+}
+
+export class AppCreator extends Component {
+    static template = "web_studio.AppCreator";
+    static components = { IconCreator, ModelConfigurator, Record, Many2OneField };
+    static props = {
+        onNewAppCreated: { type: Function },
+    };
+
+    setup() {
+        this.state = useState(
+            new AppCreatorState({
+                onFinished: this.createNewApp.bind(this),
+            })
+        );
+
+        this.uiService = useService("ui");
+        this.rpc = useService("rpc");
+        this.user = useService("user");
+
+        useAutofocus();
+        useExternalListener(window, "keydown", this.onKeydown);
     }
 
     /**
@@ -172,37 +181,27 @@ class AppCreator extends Component {
      */
     async createNewApp() {
         this.uiService.block();
+        const data = this.state.data;
+        const iconData = data.iconData;
+
         const iconValue =
-            this.state.iconData.type === "custom_icon"
+            iconData.type === "custom_icon"
                 ? // custom icon data
-                  [
-                      this.state.iconData.iconClass,
-                      this.state.iconData.color,
-                      this.state.iconData.backgroundColor,
-                  ]
+                  [iconData.iconClass, iconData.color, iconData.backgroundColor]
                 : // attachment
-                  this.state.iconData.uploaded_attachment_id;
+                  iconData.uploaded_attachment_id;
 
         try {
-            const result = await this.rpc({
-                route: "/web_studio/create_new_app",
-                params: {
-                    app_name: this.state.appName,
-                    menu_name: this.state.menuName,
-                    model_choice: this.state.modelChoice,
-                    model_id: this.state.modelChoice && this.state.modelId,
-                    model_options: this.state.modelOptions,
-                    icon: iconValue,
-                    context: this.env.session.user_context,
-                },
+            const result = await this.rpc("/web_studio/create_new_app", {
+                app_name: data.appName,
+                menu_name: data.menuName,
+                model_choice: data.modelChoice,
+                model_id: data.modelChoice && data.modelId[0],
+                model_options: data.modelOptions,
+                icon: iconValue,
+                context: this.user.context,
             });
-            this.props.onNewAppCreated(result);
-        } catch (error) {
-            if (!error || !(error instanceof Error)) {
-                this.onPrevious();
-            } else {
-                throw error;
-            }
+            await this.props.onNewAppCreated(result);
         } finally {
             this.uiService.unblock();
         }
@@ -211,51 +210,6 @@ class AppCreator extends Component {
     //--------------------------------------------------------------------------
     // Handlers
     //--------------------------------------------------------------------------
-
-    /**
-     * @param {Event} ev
-     */
-    onChecked(ev) {
-        const modelChoice = ev.currentTarget.value;
-        this.state.modelChoice = modelChoice;
-        if (this.state.modelChoice === "new") {
-            this.state.modelId = undefined;
-        }
-    }
-
-    /**
-     * @param {Object} detail
-     */
-    onModelIdChanged(detail) {
-        if (this.state.modelChoice === "existing") {
-            this.state.modelId = detail.changes.model.id;
-            this.invalid.modelId = isNaN(this.state.modelId);
-        } else {
-            this.state.modelId = false;
-            this.invalid.modelId = false;
-        }
-    }
-
-    /**
-     * @param {Object} icon
-     */
-    onIconChanged(icon) {
-        for (const key in this.state.iconData) {
-            delete this.state.iconData[key];
-        }
-        Object.assign(this.state.iconData, icon);
-    }
-
-    /**
-     * @param {InputEvent} ev
-     */
-    onInput(ev) {
-        const input = ev.currentTarget;
-        if (this.invalid[input.id]) {
-            this.invalid[input.id] = !input.value;
-        }
-        this.state[input.id] = input.value;
-    }
 
     /**
      * @param {KeyboardEvent} ev
@@ -269,7 +223,7 @@ class AppCreator extends Component {
             )
         ) {
             ev.preventDefault();
-            this.onNext();
+            this.state.next();
         }
     }
 
@@ -278,77 +232,11 @@ class AppCreator extends Component {
      * @param {Object} options
      */
     onConfirmOptions(options) {
-        this.state.modelOptions = Object.entries(options)
+        const mappedOptions = Object.entries(options)
             .filter((opt) => opt[1].value)
             .map((opt) => opt[0]);
-        return this.onNext();
-    }
 
-    async onNext() {
-        switch (this.state.step) {
-            case "welcome": {
-                this.changeStep("app");
-                break;
-            }
-            case "app": {
-                if (!this.state.appName) {
-                    this.invalid.appName = true;
-                } else {
-                    this.changeStep("model");
-                }
-                break;
-            }
-            case "model": {
-                if (!this.state.menuName) {
-                    this.invalid.menuName = true;
-                }
-                if (this.state.modelChoice === "existing" && !this.state.modelId) {
-                    this.invalid.modelId = true;
-                } else if (this.state.modelChoice === "new") {
-                    this.invalid.modelId = false;
-                }
-                const isValid = Object.values(this.invalid).reduce(
-                    (valid, key) => valid && !key,
-                    true
-                );
-                if (isValid) {
-                    if (this.state.modelChoice === "new") {
-                        this.changeStep("model_configuration");
-                    } else {
-                        this.createNewApp();
-                    }
-                }
-                break;
-            }
-            case "model_configuration": {
-                // no validation for this step, every configuration is valid
-                this.createNewApp();
-                break;
-            }
-        }
-    }
-
-    async onPrevious() {
-        switch (this.state.step) {
-            case "app": {
-                this.changeStep("welcome");
-                break;
-            }
-            case "model": {
-                this.changeStep("app");
-                break;
-            }
-            case "model_configuration": {
-                this.changeStep("model");
-                break;
-            }
-        }
+        this.state.data.modelOptions = mappedOptions;
+        return this.state.next();
     }
 }
-
-AppCreator.components = { ModelSelector, IconCreator, ModelConfigurator };
-AppCreator.props = {
-    model: Object,
-    onNewAppCreated: { type: Function },
-};
-AppCreator.template = "web_studio.AppCreator";

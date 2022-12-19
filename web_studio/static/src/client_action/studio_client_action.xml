@@ -6,10 +6,7 @@
         <StudioNavbar />
 
         <StudioHomeMenu t-if="studio.mode === studio.MODES.HOME_MENU" apps="homeMenuProps.apps" />
-        <ComponentAdapter t-elif="studio.mode === studio.MODES.APP_CREATOR"
-            Component="AppCreatorWrapper"
-            props="{ onNewAppCreated: (result) => this.onNewAppCreated(result) }"
-        />
+        <AppCreator t-elif="studio.mode === studio.MODES.APP_CREATOR" onNewAppCreated.bind="onNewAppCreated"/>
         <Editor t-elif="studio.mode === studio.MODES.EDITOR" />
     </div>
 </t>

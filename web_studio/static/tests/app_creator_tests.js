@@ -1,86 +1,158 @@
 /** @odoo-module **/
 
+import { registry } from "@web/core/registry";
+import { browser } from "@web/core/browser/browser";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
+import { makeTestEnv } from "@web/../tests/helpers/mock_env";
+import { setupViewRegistries } from "@web/../tests/views/helpers";
+import { AppCreator } from "@web_studio/client_action/app_creator/app_creator";
+import { IconCreator } from "@web_studio/client_action/icon_creator/icon_creator";
+import { makeFakeHTTPService } from "@web/../tests/helpers/mock_services";
 import {
     click,
-    findChildren,
     getFixture,
     nextTick,
     triggerEvent,
+    editInput,
+    mount,
+    patchWithCleanup,
 } from "@web/../tests/helpers/utils";
-import { AppCreatorWrapper } from "@web_studio/client_action/app_creator/app_creator";
-import { IconCreator } from "@web_studio/client_action/icon_creator/icon_creator";
-import testUtils from "web.test_utils";
+import { AutoComplete } from "@web/core/autocomplete/autocomplete";
 
-import { Component } from "@odoo/owl";
+const serviceRegistry = registry.category("services");
 const sampleIconUrl = "/web_enterprise/Parent.src/img/default_icon_app.png";
 
-const createAppCreator = async ({ env, rpc, state, onNewAppCreated }) => {
-    onNewAppCreated = onNewAppCreated || (() => {});
-    const cleanUp = await testUtils.mock.addMockEnvironmentOwl(Component, {
-        debug: QUnit.config.debug,
-        env,
-        mockRPC: rpc,
-    });
-    const target = getFixture();
-    const wrapper = new AppCreatorWrapper(null, { onNewAppCreated });
-    await wrapper.prependTo(target);
-    const { component } = findChildren(wrapper.appCreatorComponent);
-    if (state) {
-        Object.assign(component.state, state);
-        await nextTick();
+function makeFakeUIService({ block = () => {}, unblock = () => {} } = {}) {
+    return {
+        start(env) {
+            const ui = {
+                block,
+                unblock,
+            };
+            Object.defineProperty(env, "isSmall", {
+                get() {
+                    return false;
+                },
+            });
+            return ui;
+        },
+    };
+}
+
+async function startAtStep(target, startStep) {
+    if (["app", "model", "model_configuration"].includes(startStep)) {
+        // From welcome to app
+        await click(target, ".o_web_studio_app_creator_next");
     }
-    registerCleanup(() => {
-        wrapper.destroy();
-        cleanUp();
+    if (["model", "model_configuration"].includes(startStep)) {
+        // From app to model
+        await editInput(target, "input[name='appName']", "testApp");
+        await click(target, ".o_web_studio_app_creator_next");
+    }
+    if (["model_configuration"].includes(startStep)) {
+        // From model to model_configuration
+        await editInput(target, "input[name='menuName']", "testMenu");
+        await click(target, ".o_web_studio_app_creator_next");
+    }
+}
+
+async function createAppCreator(params = {}) {
+    const onNewAppCreated = params.onNewAppCreated || (() => {});
+
+    for (const serviceKey in params.services) {
+        serviceRegistry.add(serviceKey, params.services[serviceKey], { force: true });
+    }
+
+    const { mockRPC, serverData, startStep } = params;
+    const target = getFixture();
+    const component = await mount(AppCreator, target, {
+        props: { onNewAppCreated },
+        env: await makeTestEnv({
+            serverData,
+            mockRPC,
+        }),
     });
-    return { state: component.state, target };
-};
 
-const editInput = async (el, selector, value) => {
-    const target = el.querySelector(selector);
-    target.value = value;
-    await triggerEvent(target, null, "input");
-};
+    if (startStep) {
+        await startAtStep(target, startStep);
+    }
 
-QUnit.module("Studio", (hooks) => {
+    return { state: component.state };
+}
+
+QUnit.module("AppCreator", (hooks) => {
+    let serverData;
+    let target;
     hooks.beforeEach(() => {
+        target = getFixture();
         IconCreator.enableTransitions = false;
         registerCleanup(() => {
             IconCreator.enableTransitions = true;
         });
-    });
 
-    QUnit.module("AppCreator");
+        patchWithCleanup(browser, {
+            setTimeout: (fn) => fn(),
+            clearTimeout: () => {},
+        });
+        patchWithCleanup(AutoComplete, {
+            timeout: 0,
+        });
+
+        setupViewRegistries();
+
+        serviceRegistry.add("http", makeFakeHTTPService(), { force: true });
+        serviceRegistry.add("ui", makeFakeUIService(), { force: true });
+
+        serverData = {
+            models: {
+                "ir.model": {
+                    fields: {
+                        display_name: { type: "char" },
+                        transient: { type: "boolean" },
+                        abstract: { type: "boolean" },
+                    },
+                    records: [{ id: 69, display_name: "The Value" }],
+                },
+            },
+        };
+    });
 
     QUnit.test("app creator: standard flow with model creation", async (assert) => {
         assert.expect(39);
 
-        const { state, target } = await createAppCreator({
-            env: {
-                services: {
-                    ui: {
-                        block: () => assert.step("UI blocked"),
-                        unblock: () => assert.step("UI unblocked"),
-                    },
-                    async httpRequest(route) {
-                        if (route === "/web/binary/upload_attachment") {
-                            assert.step(route);
-                            return `[{ "id": 666 }]`;
-                        }
-                    },
-                    http: {
-                        async post(route) {
-                            if (route === "/web/binary/upload_attachment") {
-                                assert.step(route);
-                                return `[{ "id": 666 }]`;
-                            }
-                        },
-                    },
-                },
+        const fakeHttpRequestService = {
+            start() {
+                return async (route) => {
+                    if (route === "/web/binary/upload_attachment") {
+                        assert.step(route);
+                        return `[{ "id": 666 }]`;
+                    }
+                };
+            },
+        };
+
+        const { state } = await createAppCreator({
+            serverData,
+            services: {
+                ui: makeFakeUIService({
+                    block: () => assert.step("UI blocked"),
+                    unblock: () => assert.step("UI unblocked"),
+                }),
+                httpRequest: fakeHttpRequestService,
+                http: makeFakeHTTPService(null, async (route) => {
+                    if (route === "/web/binary/upload_attachment") {
+                        assert.step(route);
+                        return `[{ "id": 666 }]`;
+                    }
+                }),
             },
             onNewAppCreated: () => assert.step("new-app-created"),
-            async rpc(route, params) {
+            mockRPC: async (route, params) => {
+                if (typeof route === "object") {
+                    assert.strictEqual(route.model, "ir.attachment");
+                    return [{ datas: sampleIconUrl }];
+                }
+
                 if (route === "/web_studio/create_new_app") {
                     const { app_name, menu_name, model_choice, model_id, model_options } = params;
                     assert.strictEqual(app_name, "Kikou", "App name should be correct");
@@ -92,6 +164,7 @@ QUnit.module("Studio", (hooks) => {
                         ["use_partner", "use_sequence", "use_mail", "use_active"],
                         "Model options should include the defaults and 'use_partner'"
                     );
+                    return true;
                 }
                 if (route === "/web/dataset/call_kw/ir.attachment/read") {
                     assert.strictEqual(params.model, "ir.attachment");
@@ -194,7 +267,7 @@ QUnit.module("Studio", (hooks) => {
         await nextTick();
 
         assert.strictEqual(
-            state.iconData.uploaded_attachment_id,
+            state.data.iconData.uploaded_attachment_id,
             666,
             "attachment id should have been given by the RPC"
         );
@@ -295,13 +368,10 @@ QUnit.module("Studio", (hooks) => {
     QUnit.test("app creator: has 'lines' options to auto-create a one2many", async (assert) => {
         assert.expect(7);
 
-        const { target } = await createAppCreator({
-            env: {
-                services: {
-                    ui: { block: () => {}, unblock: () => {} },
-                },
-            },
-            rpc: async (route, params) => {
+        await createAppCreator({
+            serverData,
+            startStep: "model_configuration",
+            mockRPC: async (route, params) => {
                 if (route === "/web_studio/create_new_app") {
                     const { app_name, menu_name, model_choice, model_id, model_options } = params;
                     assert.strictEqual(app_name, "testApp", "App name should be correct");
@@ -313,15 +383,10 @@ QUnit.module("Studio", (hooks) => {
                         ["lines", "use_sequence", "use_mail", "use_active"],
                         "Model options should include the defaults and 'lines'"
                     );
+                    return true;
                 }
             },
         });
-
-        await click(target, ".o_web_studio_app_creator_next");
-        await editInput(target, "input[id='appName']", "testApp");
-        await click(target, ".o_web_studio_app_creator_next");
-        await editInput(target, "input[id='menuName']", "testMenu");
-        await click(target, ".o_web_studio_app_creator_next");
 
         assert.containsOnce(
             target,
@@ -342,41 +407,38 @@ QUnit.module("Studio", (hooks) => {
     QUnit.test("app creator: debug flow with existing model", async (assert) => {
         assert.expect(16);
 
-        const { state, target } = await createAppCreator({
-            env: {
-                isDebug: () => true,
-                services: {
-                    ui: { block: () => {}, unblock: () => {} },
-                },
-            },
-            async rpc(route, params) {
-                assert.step(route);
+        patchWithCleanup(odoo, { debug: "1" });
+
+        const { state } = await createAppCreator({
+            serverData,
+            startStep: "model",
+            async mockRPC(route, params) {
                 switch (route) {
                     case "/web/dataset/call_kw/ir.model/name_search": {
+                        assert.step(route);
                         assert.strictEqual(
                             params.model,
                             "ir.model",
                             "request should target the right model"
                         );
-                        return [[69, "The Value"]];
+                        break;
                     }
                     case "/web_studio/create_new_app": {
+                        assert.step(route);
                         assert.strictEqual(
                             params.model_id,
                             69,
                             "model id should be the one provided"
                         );
+                        return true;
                     }
                 }
             },
-            state: {
-                menuName: "Kikou",
-                step: "model",
-            },
         });
 
-        let buttonNext = target.querySelector("button.o_web_studio_app_creator_next");
+        await editInput(target, "input[name='menuName']", "testMenuName");
 
+        let buttonNext = target.querySelector("button.o_web_studio_app_creator_next");
         assert.hasClass(buttonNext, "is_ready");
 
         await editInput(target, 'input[name="menuName"]', "Petite Perruche");
@@ -411,7 +473,7 @@ QUnit.module("Studio", (hooks) => {
         assert.doesNotHaveClass(buttonNext, "is_ready");
         assert.containsOnce(
             target,
-            ".o_field_many2one",
+            ".o_field_many2one_selection",
             "There should be a many2one to select a model"
         );
 
@@ -423,10 +485,14 @@ QUnit.module("Studio", (hooks) => {
         );
         assert.doesNotHaveClass(buttonNext, "is_ready");
 
-        await click(target, ".o_field_many2one input");
-        await click(document.querySelector(".ui-menu-item-wrapper"));
+        await editInput(target, ".o_field_many2one_selection input", "The");
+        await click(target.querySelector(".o-autocomplete--dropdown-item"));
 
-        assert.strictEqual(target.querySelector(".o_field_many2one input").value, "The Value");
+        assert.strictEqual(
+            target.querySelector(".o_field_many2one_selection input").value,
+            "The Value",
+            "Correct value should be selected."
+        );
 
         assert.doesNotHaveClass(
             target.querySelector(".o_web_studio_app_creator_model"),
@@ -445,27 +511,27 @@ QUnit.module("Studio", (hooks) => {
     QUnit.test('app creator: navigate through steps using "ENTER"', async (assert) => {
         assert.expect(12);
 
-        const { state, target } = await createAppCreator({
-            env: {
-                services: {
-                    ui: {
-                        block: () => assert.step("UI blocked"),
-                        unblock: () => assert.step("UI unblocked"),
-                    },
-                },
+        const { state } = await createAppCreator({
+            serverData,
+            services: {
+                ui: makeFakeUIService({
+                    block: () => assert.step("UI blocked"),
+                    unblock: () => assert.step("UI unblocked"),
+                }),
             },
             onNewAppCreated: () => assert.step("new-app-created"),
-            async rpc(route, { app_name, menu_name, model_id }) {
+            async mockRPC(route, { app_name, menu_name, model_id }) {
                 if (route === "/web_studio/create_new_app") {
                     assert.strictEqual(app_name, "Kikou", "App name should be correct");
                     assert.strictEqual(menu_name, "Petite Perruche", "Menu name should be correct");
                     assert.notOk(model_id, "Should not have a model id");
+                    return true;
                 }
             },
         });
 
         // step: 'welcome'
-        assert.strictEqual(state.step, "welcome", "Current step should be set to 1");
+        assert.strictEqual(state.step, "welcome", "Current step should be set to welcome");
 
         // go to step 'app'
         await triggerEvent(document, null, "keydown", { key: "Enter" });

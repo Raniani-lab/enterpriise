@@ -5,8 +5,7 @@ import { useBus, useService } from "@web/core/utils/hooks";
 import { cleanDomFromBootstrap } from "@web/legacy/utils";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 import { computeAppsAndMenuItems } from "@web/webclient/menus/menu_helpers";
-import { ComponentAdapter } from "web.OwlCompatibility";
-import { AppCreatorWrapper } from "./app_creator/app_creator";
+import { AppCreator } from "./app_creator/app_creator";
 import { Editor } from "./editor/editor";
 import { StudioNavbar } from "./navbar/navbar";
 import { StudioHomeMenu } from "./studio_home_menu/studio_home_menu";
@@ -32,8 +31,6 @@ export class StudioClientAction extends Component {
             };
             this.render(true);
         });
-
-        this.AppCreatorWrapper = AppCreatorWrapper; // to remove
 
         onWillStart(this.onWillStart);
         onMounted(this.onMounted);
@@ -76,12 +73,7 @@ StudioClientAction.components = {
     StudioNavbar,
     StudioHomeMenu,
     Editor,
-    ComponentAdapter: class extends ComponentAdapter {
-        setup() {
-            super.setup();
-            this.env = Component.env;
-        }
-    },
+    AppCreator,
 };
 StudioClientAction.target = "fullscreen";
 

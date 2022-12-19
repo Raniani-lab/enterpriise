@@ -39,6 +39,15 @@
         );
       }
 
+      .o_web_studio_app_creator_model .o_field_many2one_selection {
+        display: flex;
+        flex-wrap: nowrap;
+      }
+
+      .o_web_studio_app_creator_model .o_input_dropdown {
+        flex-grow: 1;
+      }
+
       .o_web_studio_app_creator_model .o_external_button {
         color: $body-color;
         padding-right: 0;

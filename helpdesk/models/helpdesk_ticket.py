@@ -408,6 +408,15 @@ class HelpdeskTicket(models.Model):
             action['views'] = [(False, view) for view in action['view_mode'].split(",")]
         return action
 
+    @api.model
+    def _find_or_create_partner(self, partner_name, partner_email, company=False):
+        parsed_name, parsed_email = self.env['res.partner']._parse_partner_name(partner_email)
+        if not parsed_name:
+            parsed_name = partner_name
+        return self.env['res.partner'].with_context(default_company_id=company).find_or_create(
+            tools.formataddr((parsed_name, parsed_email))
+        )
+
     @api.model_create_multi
     def create(self, list_value):
         now = fields.Datetime.now()
@@ -428,18 +437,12 @@ class HelpdeskTicket(models.Model):
             partner_name = vals.get('partner_name', False)
             partner_email = vals.get('partner_email', False)
             if partner_name and partner_email and not partner_id:
-                parsed_name, parsed_email = self.env['res.partner']._parse_partner_name(partner_email)
-                if not parsed_name:
-                    parsed_name = partner_name
+                company = False
                 if vals.get('team_id'):
                     team = self.env['helpdesk.team'].browse(vals.get('team_id'))
                     company = team.company_id.id
-                else:
-                    company = False
 
-                vals['partner_id'] = self.env['res.partner'].with_context(default_company_id=company).find_or_create(
-                    tools.formataddr((parsed_name, parsed_email))
-                ).id
+                vals['partner_id'] = self._find_or_create_partner(partner_name, partner_email, company).id
 
         # determine partner email for ticket with partner but no email given
         partners = self.env['res.partner'].browse([vals['partner_id'] for vals in list_value if 'partner_id' in vals and vals.get('partner_id') and 'partner_email' not in vals])

@@ -31,6 +31,8 @@ class HelpdeskTicket(models.Model):
 
     def action_generate_fsm_task(self):
         self.ensure_one()
+        if not self.partner_id:
+            self.partner_id = self._find_or_create_partner(self.partner_name, self.partner_email, self.company_id.id)
         return {
             'type': 'ir.actions.act_window',
             'name': _('Create a Field Service task'),
@@ -41,7 +43,7 @@ class HelpdeskTicket(models.Model):
                 'use_fsm': True,
                 'default_helpdesk_ticket_id': self.id,
                 'default_user_id': False,
-                'default_partner_id': self.partner_id.id if self.partner_id else False,
+                'default_partner_id': self.partner_id.id,
                 'default_name': self.name,
                 'default_project_id': self.team_id.fsm_project_id.id,
             }

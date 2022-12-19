@@ -6,7 +6,7 @@ from datetime import timedelta, datetime
 from collections import defaultdict
 
 from odoo import api, fields, models, _
-from odoo.addons.resource.models.resource import Intervals
+from odoo.addons.resource.models.utils import Intervals
 
 
 class MrpWorkcenter(models.Model):

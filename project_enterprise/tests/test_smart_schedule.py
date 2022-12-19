@@ -8,7 +8,7 @@ from pytz import utc
 from odoo.tests import tagged
 
 from odoo.addons.project.tests.test_project_base import TestProjectCommon
-from odoo.addons.resource.models.resource import sum_intervals
+from odoo.addons.resource.models.utils import sum_intervals
 
 
 @tagged('-at_install', 'post_install')

@@ -10,7 +10,7 @@ from math import modf
 from random import randint
 
 from odoo import api, fields, models, _
-from odoo.addons.resource.models.resource import Intervals, sum_intervals, string_to_datetime
+from odoo.addons.resource.models.utils import Intervals, sum_intervals, string_to_datetime
 from odoo.addons.resource.models.resource_mixin import timezone_datetime
 from odoo.exceptions import UserError, AccessError
 from odoo.osv import expression

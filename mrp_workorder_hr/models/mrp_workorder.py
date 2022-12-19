@@ -3,7 +3,7 @@ from collections import defaultdict
 from datetime import datetime
 
 from odoo import Command, models, fields, api
-from odoo.addons.resource.models.resource import Intervals
+from odoo.addons.resource.models.utils import Intervals
 from odoo.http import request
 
 

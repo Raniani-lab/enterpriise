@@ -10,7 +10,7 @@ from lxml import etree
 from collections import defaultdict
 
 from odoo import tools, models, fields, api, _
-from odoo.addons.resource.models.resource import make_aware
+from odoo.addons.resource.models.utils import make_aware
 from odoo.exceptions import UserError, AccessError
 from odoo.osv import expression
 

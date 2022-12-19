@@ -9,7 +9,7 @@ from odoo import _, api, fields, models
 from odoo.osv import expression
 from odoo.tools import float_utils, DEFAULT_SERVER_DATETIME_FORMAT
 
-from odoo.addons.resource.models.resource import Intervals
+from odoo.addons.resource.models.utils import Intervals
 
 class PlanningSlot(models.Model):
     _inherit = 'planning.slot'

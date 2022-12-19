@@ -6,7 +6,7 @@ import pytz
 
 from odoo import fields
 
-from odoo.addons.resource.models.resource import Intervals
+from odoo.addons.resource.models.utils import Intervals
 from .common import TestCommonPlanning
 
 class TestPlanningHr(TestCommonPlanning):

@@ -73,6 +73,7 @@ class ProductTemplate(models.Model):
             'is_recurrence_possible': self._website_can_be_added(pricelist=pricelist, pricing=pricing, product=product),
             'subscription_duration': pricing.recurrence_id.duration,
             'subscription_unit': pricing.recurrence_id.unit,
+            'subscription_unit_display': pricing.recurrence_id.subscription_unit_display,
         }
 
     def _get_combination_info(

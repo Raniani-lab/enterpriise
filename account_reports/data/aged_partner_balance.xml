@@ -45,9 +45,9 @@
         <field name="line_template">account_reports.aged_report_line_template</field>
         <field name="main_template">account_reports.aged_report_main_template</field>
         <field name="column_ids">
-            <record id="aged_receivable_report_due_date" model="account.report.column">
-                <field name="name">Due Date</field>
-                <field name="expression_label">due_date</field>
+            <record id="aged_receivable_report_invoice_date" model="account.report.column">
+                <field name="name">Invoice Date</field>
+                <field name="expression_label">invoice_date</field>
                 <field name="figure_type">date</field>
                 <field name="sortable" eval="True"/>
             </record>
@@ -70,6 +70,7 @@
                 <field name="name">Expected Date</field>
                 <field name="expression_label">expected_date</field>
                 <field name="figure_type">date</field>
+                <field name="sortable" eval="True"/>
             </record>
             <record id="aged_receivable_report_period0" model="account.report.column">
                 <field name="name">At Date</field>
@@ -112,11 +113,11 @@
               <field name="name">Aged Receivable</field>
               <field name="groupby">partner_id, id</field>
               <field name="expression_ids">
-                  <record id="aged_receivable_line_due_date" model="account.report.expression">
-                      <field name="label">due_date</field>
+                  <record id="aged_receivable_line_invoice_date" model="account.report.expression">
+                      <field name="label">invoice_date</field>
                       <field name="engine">custom</field>
                       <field name="formula">_report_custom_engine_aged_receivable</field>
-                      <field name="subformula">due_date</field>
+                      <field name="subformula">invoice_date</field>
                       <field name="auditable" eval="False"/>
                   </record>
                   <record id="aged_receivable_line_amount_currency" model="account.report.expression">
@@ -208,9 +209,9 @@
         <field name="line_template">account_reports.aged_report_line_template</field>
         <field name="main_template">account_reports.aged_report_main_template</field>
         <field name="column_ids">
-            <record id="aged_payable_report_due_date" model="account.report.column">
-                <field name="name">Due Date</field>
-                <field name="expression_label">due_date</field>
+            <record id="aged_payable_report_invoice_date" model="account.report.column">
+                <field name="name">Invoice Date</field>
+                <field name="expression_label">invoice_date</field>
                 <field name="figure_type">date</field>
                 <field name="sortable" eval="True"/>
             </record>
@@ -233,6 +234,7 @@
                 <field name="name">Expected Date</field>
                 <field name="expression_label">expected_date</field>
                 <field name="figure_type">date</field>
+                <field name="sortable" eval="True"/>
             </record>
             <record id="aged_payable_report_period0" model="account.report.column">
                 <field name="name">At Date</field>
@@ -275,11 +277,11 @@
                 <field name="name">Aged Payable</field>
                 <field name="groupby">partner_id, id</field>
                 <field name="expression_ids">
-                    <record id="aged_payable_line_due_date" model="account.report.expression">
-                        <field name="label">due_date</field>
+                    <record id="aged_payable_line_invoice_date" model="account.report.expression">
+                        <field name="label">invoice_date</field>
                         <field name="engine">custom</field>
                         <field name="formula">_report_custom_engine_aged_payable</field>
-                        <field name="subformula">due_date</field>
+                        <field name="subformula">invoice_date</field>
                         <field name="auditable" eval="False"/>
                     </record>
                     <record id="aged_payable_line_amount_currency" model="account.report.expression">

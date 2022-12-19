@@ -22,7 +22,7 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
 
         default_order_column = 0
         for index, column in enumerate(options.get('columns')):
-            if column.get('expression_label') == 'due_date':
+            if column.get('expression_label') == 'invoice_date':
                 default_order_column = index + 1
                 break
         options['order_column'] = (previous_options or {}).get('order_column') or default_order_column
@@ -94,17 +94,20 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
             if current_groupby == 'id':
                 query_res = query_res_lines[0] # We're grouping by id, so there is only 1 element in query_res_lines anyway
                 currency = self.env['res.currency'].browse(query_res['currency_id'][0]) if len(query_res['currency_id']) == 1 else None
+                expected_date = len(query_res['expected_date']) == 1 and query_res['expected_date'][0] or len(query_res['due_date']) == 1 and query_res['due_date'][0]
                 rslt.update({
+                    'invoice_date': query_res['invoice_date'][0] if len(query_res['invoice_date']) == 1 else None,
                     'due_date': query_res['due_date'][0] if len(query_res['due_date']) == 1 else None,
                     'amount_currency': report.format_value(query_res['amount_currency'], currency=currency),
                     'currency': currency.display_name if currency else None,
                     'account_name': query_res['account_name'][0] if len(query_res['account_name']) == 1 else None,
-                    'expected_date': query_res['expected_date'][0] if len(query_res['expected_date']) == 1 else None,
+                    'expected_date': expected_date or None,
                     'total': None,
                     'has_sublines': query_res['aml_count'] > 0,
                 })
             else:
                 rslt.update({
+                    'invoice_date': None,
                     'due_date': None,
                     'amount_currency': None,
                     'currency': None,
@@ -157,6 +160,7 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
                 %s * SUM(account_move_line.amount_residual_currency) AS amount_currency,
                 ARRAY_AGG(DISTINCT account_move_line.partner_id) AS partner_id,
                 ARRAY_AGG(account_move_line.payment_id) AS payment_id,
+                ARRAY_AGG(DISTINCT move.invoice_date) AS invoice_date,
                 ARRAY_AGG(DISTINCT COALESCE(account_move_line.date_maturity, account_move_line.date)) AS report_date,
                 ARRAY_AGG(DISTINCT account_move_line.expected_pay_date) AS expected_date,
                 ARRAY_AGG(DISTINCT account.code) AS account_name,
@@ -170,6 +174,7 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
 
             JOIN account_journal journal ON journal.id = account_move_line.journal_id
             JOIN account_account account ON account.id = account_move_line.account_id
+            JOIN account_move move ON move.id = account_move_line.move_id
             JOIN {currency_table} ON currency_table.company_id = account_move_line.company_id
 
             LEFT JOIN LATERAL (

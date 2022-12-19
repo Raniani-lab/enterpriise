@@ -4,7 +4,7 @@ from collections import defaultdict
 
 from dateutil.relativedelta import relativedelta
 
-from odoo import models
+from odoo import models, _
 
 
 class AccountMove(models.Model):
@@ -21,7 +21,14 @@ class AccountMove(models.Model):
     def _post(self, soft=True):
         posted_moves = super()._post(soft=soft)
         for move in posted_moves:
-            if not move.invoice_line_ids.subscription_id or move.move_type != 'out_invoice':
+            if not move.invoice_line_ids.subscription_id:
+                continue
+            if move.move_type != 'out_invoice':
+                if move.move_type == 'out_refund':
+                    body = _("The following refund %s has been made on this contract. Please check the next invoice date if necessary.", move._get_html_link())
+                    for so in move.invoice_line_ids.subscription_id:
+                        # Normally, only one subscription_id per move, but we handle multiple contracts as a precaution
+                        so.message_post(body=body)
                 continue
             aml_by_subscription = defaultdict(lambda: self.env['account.move.line'])
             for aml in move.invoice_line_ids:

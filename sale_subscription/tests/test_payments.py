@@ -349,3 +349,56 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
             subscription.start_date, subscription.next_invoice_date,
             "The subscription next invoice date should not have been updated"
         )
+
+    def test_refund_next_invoice_date(self):
+        with freeze_time('2023-01-18'):
+            subscription = self.env['sale.order'].create({
+                'partner_id': self.partner.id,
+                'recurrence_id': self.recurrence_month.id,
+                'order_line': [
+                    (0, 0, {
+                        'name': self.product.name,
+                        'product_id': self.product.id,
+                        'product_uom_qty': 3.0,
+                        'product_uom': self.product.uom_id.id,
+                        'price_unit': 12,
+                    })],
+            })
+            subscription.action_confirm()
+            subscription._create_recurring_invoice(automatic=True)
+            self.assertEqual(subscription.next_invoice_date, datetime.date(2023, 2, 18), "The next invoice date is incremented")
+            subscription._get_invoiced()
+            inv = subscription.invoice_ids
+
+            test_payment_token = self.env['payment.token'].create({
+                'payment_details': 'Test',
+                'partner_id': subscription.partner_id.id,
+                'provider_id': self.dummy_provider.id,
+                'provider_ref': 'test'
+            })
+            payment_with_token = self.env['account.payment'].create({
+                'payment_type': 'inbound',
+                'partner_type': 'customer',
+                'amount': subscription.amount_total,
+                'date': subscription.date_order,
+                'currency_id': subscription.currency_id.id,
+                'partner_id': subscription.partner_id.id,
+                'payment_token_id': test_payment_token.id
+            })
+            transaction_ids = payment_with_token._create_payment_transaction()
+            transaction_ids._set_done()  # dummy transaction will always be successful
+            with freeze_time('2023-02-18'):
+                subscription._create_recurring_invoice(automatic=True)
+                self.assertEqual(subscription.next_invoice_date, datetime.date(2023, 3, 18), "The next invoice date is incremented")
+            # We refund the first invoice
+            refund_wizard = self.env['account.move.reversal'].with_context(
+                active_model="account.move",
+                active_ids=inv.ids).create({
+                'reason': 'Test refund tax repartition',
+                'refund_method': 'cancel',
+                'journal_id': inv.journal_id.id,
+            })
+            res = refund_wizard.reverse_moves()
+            refund_move = self.env['account.move'].browse(res['res_id'])
+            self.assertEqual(inv.reversal_move_id, refund_move, "The initial move should be reversed")
+            self.assertEqual(subscription.next_invoice_date, datetime.date(2023, 3, 18), "The next invoice date not incremented")

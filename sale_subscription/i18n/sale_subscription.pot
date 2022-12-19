@@ -3532,7 +3532,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
-msgid "Your contrat is recurrent"
+msgid "Your contract is recurrent"
 msgstr ""
 
 #. module: sale_subscription

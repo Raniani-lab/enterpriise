@@ -547,7 +547,7 @@ class Article(models.Model):
     # ------------------------------------------------------------
 
     @api.model
-    def search(self, domain, offset=0, limit=None, order=None):
+    def search_fetch(self, domain, field_names, offset=0, limit=None, order=None):
         """ Override to support ordering on is_user_favorite.
 
         Ordering through web client calls search_read with an order parameter set.
@@ -572,14 +572,14 @@ class Article(models.Model):
         side effects. Search_count is not affected by this override.
         """
         if not order or 'is_user_favorite' not in order:
-            return super().search(domain, offset, limit, order)
+            return super().search_fetch(domain, field_names, offset, limit, order)
         order_items = [order_item.strip().lower() for order_item in (order or self._order).split(',')]
         favorite_asc = any('is_user_favorite asc' in item for item in order_items)
 
         # Search articles that are favorite of the current user.
         my_articles_domain = expression.AND([[('favorite_ids.user_id', 'in', [self.env.uid])], domain])
         my_articles_order = ', '.join(item for item in order_items if 'is_user_favorite' not in item)
-        articles_ids = super().search(my_articles_domain, order=my_articles_order).ids
+        articles_ids = super().search_fetch(my_articles_domain, field_names, order=my_articles_order).ids
 
         # keep only requested window (offset + limit, or offset+)
         my_articles_ids_keep = articles_ids[offset:(offset + limit)] if limit else articles_ids[offset:]
@@ -601,9 +601,9 @@ class Article(models.Model):
             article_offset = 0
         article_order = ', '.join(item for item in order_items if 'is_user_favorite' not in item)
 
-        other_article_res = super().search(
+        other_article_res = super().search_fetch(
             expression.AND([[('id', 'not in', my_articles_ids_skip)], domain]),
-            article_offset, article_limit, article_order,
+            field_names, article_offset, article_limit, article_order,
         )
         if favorite_asc in order_items:
             return other_article_res + self.browse(my_articles_ids_keep)

@@ -1,14 +1,13 @@
-import odoo
-from odoo import http
+# Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.http import request
+from odoo.http import request, route
 from odoo.addons.web_studio.controllers import main
 
 class WebStudioController(main.WebStudioController):
 
-    @http.route('/web_studio/edit_view', type='json', auth='user')
+    @route()
     def edit_view(self, view_id, studio_view_arch, operations=None, model=None):
-        action = super(WebStudioController, self).edit_view(view_id, studio_view_arch, operations, model)
+        action = super().edit_view(view_id, studio_view_arch, operations, model)
         model = model or request.env['ir.ui.view'].browse(view_id).model
         worksheet_template_to_change = request.env['worksheet.template'].sudo().search([('model_id', '=', model)])
         if worksheet_template_to_change:

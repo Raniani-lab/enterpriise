@@ -69,7 +69,7 @@ class SignContract(Sign):
 
 class HrContractSalary(main.HrContractSalary):
 
-    @route(['/salary_package/simulation/contract/<int:contract_id>'], type='http', auth="public", website=True)
+    @route()
     def salary_package(self, contract_id=None, **kw):
         contract = request.env['hr.contract'].sudo().browse(contract_id)
 
@@ -78,7 +78,7 @@ class HrContractSalary(main.HrContractSalary):
                                                          'status_message': _('This contract is a full time credit time... No simulation can be done for this type of contract as its wage is equal to 0.')})
         return super(HrContractSalary, self).salary_package(contract_id, **kw)
 
-    @route(['/salary_package/onchange_advantage'], type='json', auth='public')
+    @route()
     def onchange_advantage(self, advantage_field, new_value, contract_id, advantages):
         res = super().onchange_advantage(advantage_field, new_value, contract_id, advantages)
         insurance_fields = [

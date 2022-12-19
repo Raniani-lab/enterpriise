@@ -148,15 +148,13 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
         date_from = dt_from[0:7] + '-01'
         date_to = dt_to[0:7] + '-' + str(calendar.monthrange(int(dt_to[0:4]), int(ending_month))[1])
 
-        data = {'client_nihil': options.get('client_nihil'), 'ask_restitution': options.get('ask_restitution', False), 'ask_payment': options.get('ask_payment', False)}
-
         complete_vat = (country_from_vat or (address.country_id and address.country_id.code or "")) + vat_no
         file_data = {
             'issued_by': issued_by,
             'vat_no': complete_vat,
             'only_vat': vat_no,
             # Company name can contain only latin characters
-            'cmpny_name': sender_company.name,
+            'company_name': sender_company.name,
             'address': "%s %s" % (address.street or "", address.street2 or ""),
             'post_code': address.zip or "",
             'city': address.city or "",
@@ -167,10 +165,10 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
             'quarter': quarter,
             'month': starting_month,
             'year': str(dt_to[:4]),
-            'client_nihil': (data['client_nihil'] and 'YES' or 'NO'),
-            'ask_restitution': (data['ask_restitution'] and 'YES' or 'NO'),
-            'ask_payment': (data['ask_payment'] and 'YES' or 'NO'),
-            'comments': report._get_report_manager(options).summary or '',
+            'client_nihil': options.get('client_nihil', False) and 'YES' or 'NO',
+            'ask_restitution': options.get('ask_restitution', False) and 'YES' or 'NO',
+            'ask_payment': options.get('ask_payment', False) and 'YES' or 'NO',
+            'comment': options.get('comment', ''),
             'representative_node': _get_xml_export_representative_node(report),
         }
 
@@ -180,7 +178,7 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
     <ns2:VATDeclaration SequenceNumber="1" DeclarantReference="%(send_ref)s">
         <ns2:Declarant>
             <VATNumber xmlns="http://www.minfin.fgov.be/InputCommon">%(only_vat)s</VATNumber>
-            <Name>%(cmpny_name)s</Name>
+            <Name>%(company_name)s</Name>
             <Street>%(address)s</Street>
             <PostCode>%(post_code)s</PostCode>
             <City>%(city)s</City>
@@ -254,7 +252,7 @@ class BelgianTaxReportCustomHandler(models.AbstractModel):
         </ns2:Data>
         <ns2:ClientListingNihil>%(client_nihil)s</ns2:ClientListingNihil>
         <ns2:Ask Restitution="%(ask_restitution)s" Payment="%(ask_payment)s"/>
-        <ns2:Comment>%(comments)s</ns2:Comment>
+        <ns2:Comment>%(comment)s</ns2:Comment>
     </ns2:VATDeclaration>
 </ns2:VATConsignment>
         """) % file_data

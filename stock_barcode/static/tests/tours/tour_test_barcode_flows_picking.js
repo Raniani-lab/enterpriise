@@ -479,7 +479,7 @@ tour.register('test_receipt_reserved_1', {test: true}, [
 
     // Apply the manual entry of barcode.
     {
-        trigger: '.modal-content .modal-footer .btn-primary',
+        trigger: '.modal-content .modal-footer .btn-primary:not(:disabled)',
     },
 
     {
@@ -2763,7 +2763,7 @@ tour.register('test_put_in_pack_from_different_location', {test: true}, [
         trigger: '.o_scan_message.o_scan_product_or_dest',
         run: 'scan LOC-01-02-00',
     },
-    ...tour.stepUtils.validateBarcodeOperation(),
+    ...tour.stepUtils.validateBarcodeOperation('.o_scan_message.o_scan_validate'),
 ]);
 
 tour.register('test_put_in_pack_before_dest', {test: true}, [

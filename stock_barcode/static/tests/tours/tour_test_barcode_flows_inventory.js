@@ -136,7 +136,7 @@ tour.register('test_inventory_adjustment_multi_location', {test: true}, [
     },
     // Apply the manual entry of barcode.
     {
-        trigger: '.modal-content .modal-footer .btn-primary',
+        trigger: '.modal-content .modal-footer .btn-primary:not(:disabled)',
     },
     {
         trigger: '.o_barcode_client_action',

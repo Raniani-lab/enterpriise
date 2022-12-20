@@ -1283,7 +1283,7 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         internal_picking.action_assign()
 
         self.start_tour(url, 'test_put_in_pack_from_different_location', login='admin', timeout=180)
-        pack = self.env['stock.quant.package'].search([])[-1]
+        pack = internal_picking.move_line_ids.result_package_id
         self.assertEqual(len(pack.quant_ids), 2)
         self.assertEqual(pack.location_id, self.shelf2)
 

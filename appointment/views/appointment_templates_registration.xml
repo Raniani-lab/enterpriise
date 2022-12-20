@@ -136,7 +136,7 @@
                                         <i class="fa fa-calendar o_appointment_fa_width text-center fs-5 me-2"/>
                                         <span class="lh-base">
                                             <t t-out="date_locale"/> at <t t-out="time_locale"/><br/>
-                                            <span class="text-muted"> (<t t-out="request.session.timezone or appointment_type.timezone"/>)</span>
+                                            <span class="text-muted"> (<t t-out="request.session.get('timezone') or appointment_type.appointment_tz"/>)</span>
                                         </span>
                                     </div>
                                     <div class="d-flex fs-6 lh-lg pt-1">

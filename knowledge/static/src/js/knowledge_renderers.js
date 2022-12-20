@@ -547,7 +547,8 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             this.dialog.add(ConfirmationDialog, {
                 body: message,
                 confirm: async () => await this._confirmMoveArticle(data.article_id, newPosition, data.onSuccess, data.onReject),
-                cancel: data.onReject
+                cancel: data.onReject,
+                confirmLabel : sprintf(this.env._t('Move to %s'), data.newCategory)
             });
         }
     }

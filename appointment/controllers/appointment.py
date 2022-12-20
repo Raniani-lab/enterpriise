@@ -390,7 +390,7 @@ class AppointmentController(http.Controller):
             'duration_str': duration,
             'duration': float(duration),
             'staff_user': request.env['res.users'].browse(int(staff_user_id)),
-            'timezone': request.session['timezone'] or appointment_type.timezone,  # bw compatibility
+            'timezone': request.session.get('timezone') or appointment_type.appointment_tz,  # bw compatibility
             'users_possible': self._get_possible_staff_users(appointment_type, json.loads(kwargs.get('filter_staff_user_ids') or '[]')),
         })
 

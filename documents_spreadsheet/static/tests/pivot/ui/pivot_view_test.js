@@ -947,6 +947,56 @@ QUnit.module("spreadsheet pivot view", {}, () => {
         });
     });
 
+    QUnit.test("search view with group by and additional row group", async (assert) => {
+        const { model } = await createSpreadsheetFromPivotView({
+            additionalContext: { search_default_group_name: true },
+            serverData: {
+                models: getBasicData(),
+                views: {
+                    "partner,false,pivot": /* xml */ `
+                        <pivot>
+                        </pivot>`,
+                    "partner,false,search": /* xml */ `
+                    <search>
+                        <group>
+                            <filter name="group_name" context="{'group_by':'name'}"/>
+                            <filter name="group_foo" context="{'group_by':'foo'}"/>
+                        </group>
+                    </search>
+                `,
+                },
+            },
+            actions: async (target) => {
+                await click(target.querySelectorAll("tbody .o_pivot_header_cell_closed")[0]);
+                // group by foo
+                await click(target.querySelector(".dropdown-menu span:nth-child(2)"));
+            },
+        });
+        assert.strictEqual(getCellContent(model, "A1"), "");
+        assert.strictEqual(getCellContent(model, "A2"), "");
+        assert.strictEqual(getCellContent(model, "A3"), '=ODOO.PIVOT.HEADER(1,"name","false")');
+        assert.strictEqual(
+            getCellContent(model, "A4"),
+            '=ODOO.PIVOT.HEADER(1,"name","false","foo",1)'
+        );
+        assert.strictEqual(
+            getCellContent(model, "A5"),
+            '=ODOO.PIVOT.HEADER(1,"name","false","foo",2)'
+        );
+        assert.strictEqual(
+            getCellContent(model, "A6"),
+            '=ODOO.PIVOT.HEADER(1,"name","false","foo",12)'
+        );
+        assert.strictEqual(
+            getCellContent(model, "A7"),
+            '=ODOO.PIVOT.HEADER(1,"name","false","foo",17)'
+        );
+        assert.strictEqual(
+            getCellContent(model, "B2"),
+            '=ODOO.PIVOT.HEADER(1,"measure","__count")'
+        );
+    });
+
     QUnit.test("Pivot name can be changed from the dialog", async (assert) => {
         assert.expect(2);
 

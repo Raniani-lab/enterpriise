@@ -5,6 +5,7 @@ import { KnowledgePlugin } from "@knowledge/js/knowledge_plugin";
 import { patch } from "@web/core/utils/patch";
 import { templates } from "@web/core/assets";
 import { useService } from "@web/core/utils/hooks";
+import { decodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
 
 // Behaviors:
 
@@ -147,7 +148,7 @@ const HtmlFieldPatch = {
                 let behaviorProps = {};
                 if (anchor.hasAttribute("data-behavior-props")) {
                     try {
-                        behaviorProps = JSON.parse(anchor.dataset.behaviorProps);
+                        behaviorProps = decodeDataBehaviorProps(anchor.dataset.behaviorProps);
                     } catch {}
                 }
                 for (const prop in behaviorProps) {

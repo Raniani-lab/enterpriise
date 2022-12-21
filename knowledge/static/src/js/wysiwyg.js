@@ -7,6 +7,9 @@ import { KnowledgeArticleLinkModal } from './wysiwyg/knowledge_article_link.js';
 import { PromptEmbeddedViewNameDialogWrapper } from '../components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.js';
 import { preserveCursor } from '@web_editor/js/editor/odoo-editor/src/OdooEditor';
 import { Markup } from 'web.utils';
+import {
+    encodeDataBehaviorProps,
+} from "@knowledge/js/knowledge_utils";
 
 Wysiwyg.include({
     /**
@@ -286,7 +289,7 @@ Wysiwyg.include({
                 behaviorType: "o_knowledge_behavior_type_file",
                 fileName: element.title,
                 fileImage: Markup(element.outerHTML),
-                behaviorProps: JSON.stringify({
+                behaviorProps: encodeDataBehaviorProps({
                     fileName: element.title,
                     fileExtension: extension,
                 }),

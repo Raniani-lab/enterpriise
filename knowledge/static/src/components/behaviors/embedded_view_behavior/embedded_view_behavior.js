@@ -4,7 +4,11 @@ import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behav
 import { EmbeddedViewManager } from "@knowledge/components/behaviors/embedded_view_behavior/embedded_view_manager";
 import { Markup } from "web.utils";
 import { makeContext } from "@web/core/context";
-import { setIntersectionObserver } from "@knowledge/js/knowledge_utils";
+import {
+    decodeDataBehaviorProps,
+    encodeDataBehaviorProps,
+    setIntersectionObserver
+} from "@knowledge/js/knowledge_utils";
 import { useService } from "@web/core/utils/hooks";
 
 const {
@@ -79,10 +83,10 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
      * @param {String} name
      */
     setTitle (name) {
-        const data = JSON.parse(this.props.anchor.getAttribute('data-behavior-props'));
+        const data = decodeDataBehaviorProps(this.props.anchor.getAttribute('data-behavior-props'));
         data.act_window.name = name;
         data.act_window.display_name = name;
-        this.props.anchor.setAttribute('data-behavior-props', JSON.stringify(data));
+        this.props.anchor.setAttribute('data-behavior-props', encodeDataBehaviorProps(data));
         Object.assign(this.props.act_window, {
             name: name,
             display_name: name

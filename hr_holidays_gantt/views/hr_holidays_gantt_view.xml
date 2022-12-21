@@ -36,7 +36,7 @@
                     string="Days"
                     default_group_by="employee_id"
                     decoration-warning="state == 'refuse'"
-                    decoration-info="state in ['confirm', 'validate1']"
+                    decoration-info="state in ['confirm']"
                     plan="0"
                 >
                     <field name="state" invisible="1"/>

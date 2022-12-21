@@ -94,16 +94,16 @@ class L10nBeHrPayrollScheduleChange(models.TransientModel):
                 'year': str(date_start.year - 1),
                 'holiday_status_id': leave_allocation.holiday_status_id.id,
                 'employee_ids': leave_allocation.employee_id,
-        })
+            })
         if paid_leave_wizard.alloc_employee_ids:
             new_allocation = max(0, paid_leave_wizard.alloc_employee_ids[0].paid_time_off_to_allocate - leave_allocation.leaves_taken)
         else:
             new_allocation = 0
 
-        #There is a maximum that we should never pass, in theory we should never pass that limit
+        # There is a maximum that we should never pass, in theory we should never pass that limit
         # since we round down, but since the payroll officer will not be able to modify this values
         # it is good to have that limit
-        max_allocation = ((len(new_calendar.attendance_ids) * 4) / 2 if not new_calendar.two_weeks_calendar\
+        max_allocation = ((len(new_calendar.attendance_ids) * 4) / 2 if not new_calendar.two_weeks_calendar
             else (len(new_calendar.attendance_ids) * 2 / 2)) - leave_allocation.leaves_taken
 
         # An allocation's number of days may never be below the number of leaves taken
@@ -128,7 +128,7 @@ class L10nBeHrPayrollScheduleChange(models.TransientModel):
             leave_allocation = self.env['hr.leave.allocation'].search([
                 ('holiday_status_id', '=', wizard.leave_type_id.id),
                 ('employee_id', '=', wizard.contract_id.employee_id.id),
-                ('state', 'in', ('validate', 'validate1'))], limit=1)
+                ('state', 'in', ['validate'])], limit=1)
             if not leave_allocation or len(leave_allocation) > 1:
                 no_leave_wizards |= wizard
                 continue

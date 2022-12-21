@@ -122,4 +122,4 @@ class HrPayslip(models.Model):
         return {**super()._get_base_local_dict(), '_': _}
 
     def _get_employee_timeoff_data(self):
-        return self.env['hr.leave.type'].with_context(employee_id=self.employee_id.id).get_days_all_request()
+        return self.env['hr.leave.type'].with_company(self.company_id).with_context(employee_id=self.employee_id.id).get_allocation_data_request()

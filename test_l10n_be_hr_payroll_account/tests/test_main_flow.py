@@ -142,21 +142,15 @@ class TestHR(common.TransactionCase):
             leave_type=self.leave_type_2,
         )
 
-        allocation_no_validation.action_confirm()
-
         # Holiday user refuse allocation
         allocation_no_validation.action_refuse()
         self.assertEqual(allocation_no_validation.state, 'refuse')
 
-        # Holiday manager reset to draft
-        allocation_no_validation.with_user(self.hr_holidays_manager).action_draft()
-        self.assertEqual(allocation_no_validation.state, 'draft')
-
         # Holiday user approve allocation
-        allocation_no_validation.action_confirm()
         allocation_no_validation.action_validate()
         self.assertEqual(allocation_no_validation.state, 'validate')
         self.assertEqual(allocation_no_validation.approver_id, self.hr_holidays_user.employee_id)
+
 
         # --------------------------------------------------
         # User: Allocation request
@@ -168,8 +162,7 @@ class TestHR(common.TransactionCase):
             employee=self.user.employee_id,
             leave_type=self.leave_type_3,
         )
-        self.assertEqual(allocation.state, 'draft')
-        allocation.action_confirm()
+        self.assertEqual(allocation.state, 'confirm')
 
         # Holiday Manager validates
         allocation.with_user(self.hr_holidays_manager).action_validate()

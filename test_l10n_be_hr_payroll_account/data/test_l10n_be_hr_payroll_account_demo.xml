@@ -2013,13 +2013,9 @@
         <field name="date_to" eval="time.strftime('%Y-12-31')"/>
     </record>
 
-    <!-- approve leave allocations -->
-    <function model="hr.leave.allocation" name="action_confirm">
-        <value model="hr.leave.allocation" eval="obj().search([('state', '=', 'draft'), ('holiday_status_id.company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)]).ids"/>
-    </function>
-
+    <!-- validate leave allocations -->
     <function model="hr.leave.allocation" name="action_validate">
-        <value model="hr.leave.allocation" eval="obj().search([('state', '=', 'confirm'), ('holiday_status_id.company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)]).ids"/>
+        <value model="hr.leave.allocation" eval="obj().search([('state', '=', 'confirm'), ('employee_id.company_id', '=', obj().env.ref('l10n_be_hr_payroll.res_company_be').id)]).ids"/>
     </function>
 
     <record id="hr_holidays_cl" model="hr.leave">
@@ -2309,15 +2305,6 @@
         <field name="date_from" eval="time.strftime('2020-1-1')"/>
         <field name="date_to" eval="time.strftime('2020-12-31')"/>
     </record>
-
-    <function model="hr.leave.allocation" name="action_confirm">
-        <value model="hr.leave.allocation" eval="obj().search([
-            ('state', '=', 'draft'),
-            ('id', 'in', [
-                ref('test_l10n_be_hr_payroll_account.hr_holidays_allocation_joseph_noluck_2019'),
-                ref('test_l10n_be_hr_payroll_account.hr_holidays_allocation_joseph_noluck_2020')])
-        ]).ids"/>
-    </function>
 
     <function model="hr.leave.allocation" name="action_validate">
         <value model="hr.leave.allocation" eval="obj().search([

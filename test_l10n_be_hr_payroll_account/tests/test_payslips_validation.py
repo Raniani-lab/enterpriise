@@ -665,7 +665,6 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'date_to': datetime.date(2025, 12, 31),
         })
 
-        (cls.allocation_2019 + cls.allocation_2020).action_confirm()
         (cls.allocation_2019 + cls.allocation_2020).action_validate()
 
         cls.unpaid_leave_2019 = cls.env['hr.leave'].create({

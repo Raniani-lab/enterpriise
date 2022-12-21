@@ -34,7 +34,7 @@ def _generate_payslips(env):
                 })
                 training_leave._compute_date_from_to()
                 leaves |= env['hr.leave'].create(training_leave._convert_to_write(training_leave._cache))
-            env['hr.leave'].search([]).write({'payslip_state': 'done'})#done or normal : to check!!!
+            env['hr.leave'].search([]).write({'payslip_state': 'done'})  # done or normal : to check!!!
 
             wizard_vals = {
                 'employee_ids': [(4, employee.id) for employee in employees],

@@ -178,8 +178,6 @@
         <field name="number_of_days">100</field>
     </record>
 
-    <function model="hr.leave.allocation" name="action_confirm" eval="[ref('l10n_hk_hr_payroll.demo_leave_allocation')]" />
-
     <function model="hr.leave.allocation" name="action_validate" eval="[ref('l10n_hk_hr_payroll.demo_leave_allocation')]" />
 
     <record id="demo_leave_1" model="hr.leave">

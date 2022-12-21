@@ -182,7 +182,6 @@
         <field name="request_date_to" eval="datetime(1975, 8, 4).date()"/>
         <field name="number_of_days">2</field>
         <field name="holiday_status_id" ref="l10n_au_hr_payroll.hr_leave_type_long_service"/>
-        <field name="holiday_allocation_id" ref="l10n_au_hr_payroll.hr_leave_allocation_long_service_pre_78"/>
         <field name="employee_id" ref="l10n_au_hr_payroll.hr_employee_au"/>
         <field name="state">confirm</field>
     </record>
@@ -191,7 +190,6 @@
         <field name="request_date_to" eval="datetime(1980, 9, 4).date()"/>
         <field name="number_of_days">2</field>
         <field name="holiday_status_id" ref="l10n_au_hr_payroll.hr_leave_type_long_service"/>
-        <field name="holiday_allocation_id" ref="l10n_au_hr_payroll.hr_leave_allocation_long_service_78_to_93"/>
         <field name="employee_id" ref="l10n_au_hr_payroll.hr_employee_au"/>
         <field name="state">confirm</field>
     </record>
@@ -200,7 +198,6 @@
         <field name="request_date_to" eval="datetime(1994, 10, 4).date()"/>
         <field name="number_of_days">2</field>
         <field name="holiday_status_id" ref="l10n_au_hr_payroll.hr_leave_type_long_service"/>
-        <field name="holiday_allocation_id" ref="l10n_au_hr_payroll.hr_leave_allocation_long_service_post_93"/>
         <field name="employee_id" ref="l10n_au_hr_payroll.hr_employee_au"/>
         <field name="state">confirm</field>
     </record>
@@ -209,7 +206,6 @@
         <field name="request_date_to" eval="datetime(1980, 11, 4).date()"/>
         <field name="number_of_days">2</field>
         <field name="holiday_status_id" ref="l10n_au_hr_payroll.hr_leave_type_annual_au"/>
-        <field name="holiday_allocation_id" ref="l10n_au_hr_payroll.hr_leave_allocation_annual_pre_93"/>
         <field name="employee_id" ref="l10n_au_hr_payroll.hr_employee_au"/>
         <field name="state">confirm</field>
     </record>
@@ -218,7 +214,6 @@
         <field name="request_date_to" eval="datetime(1994, 12, 4).date()"/>
         <field name="number_of_days">2</field>
         <field name="holiday_status_id" ref="l10n_au_hr_payroll.hr_leave_type_annual_au"/>
-        <field name="holiday_allocation_id" ref="l10n_au_hr_payroll.hr_leave_allocation_annual_post_93"/>
         <field name="employee_id" ref="l10n_au_hr_payroll.hr_employee_au"/>
         <field name="state">confirm</field>
     </record>

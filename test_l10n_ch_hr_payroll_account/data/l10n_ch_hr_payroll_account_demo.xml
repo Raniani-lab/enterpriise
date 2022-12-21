@@ -1799,10 +1799,6 @@
     </record>
 
     <!-- approve leave allocations -->
-    <function model="hr.leave.allocation" name="action_confirm">
-        <value model="hr.leave.allocation" eval="obj().search([('state', '=', 'draft'), ('holiday_status_id.company_id', '=', obj().env.ref('l10n_ch_hr_payroll.res_company_ch').id)]).ids"/>
-    </function>
-
     <function model="hr.leave.allocation" name="action_validate">
         <value model="hr.leave.allocation" eval="obj().search([('state', '=', 'confirm'), ('holiday_status_id.company_id', '=', obj().env.ref('l10n_ch_hr_payroll.res_company_ch').id)]).ids"/>
     </function>

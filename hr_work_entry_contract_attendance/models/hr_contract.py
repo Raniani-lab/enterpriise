@@ -81,13 +81,7 @@ class HrContract(models.Model):
                 day = (start.year, start.month, start.day)
                 work_intervals_by_resource_day[resource_id][day].append(interval)
 
-        lunch_intervals_by_resource = {
-            resource_id: WorkIntervals([(
-                intervals[0][1],  # Morning End
-                intervals[1][0],  # Afternoon Start
-                intervals[0][2]) for day, intervals in work_intervals_by_day.items() if len(intervals) == 2])
-            for resource_id, work_intervals_by_day in work_intervals_by_resource_day.items()
-        }
+        lunch_intervals_by_resource = self._get_lunch_intervals(start_dt, end_dt)
 
         for attendance in attendances:
             resource = attendance.employee_id.resource_id

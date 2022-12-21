@@ -300,8 +300,8 @@ class HrContract(models.Model):
                 work_data[work_entry.work_entry_type_id.id] += work_entry._get_work_duration(date_start, date_stop)  # Number of hours
         return work_data
 
-    def _get_default_work_entry_type(self):
-        return self.structure_type_id.default_work_entry_type_id or super(HrContract, self)._get_default_work_entry_type()
+    def _get_default_work_entry_type_id(self):
+        return self.structure_type_id.default_work_entry_type_id.id or super()._get_default_work_entry_type_id()
 
     def _get_fields_that_recompute_payslip(self):
         # Returns the fields that should recompute the payslip

@@ -7,6 +7,7 @@ import json
 from collections import defaultdict
 from datetime import datetime, timedelta
 from markupsafe import Markup
+from urllib import parse
 from werkzeug.urls import url_join
 
 from odoo import api, Command, fields, models, _
@@ -2000,12 +2001,12 @@ class Article(models.Model):
         action_data = self._extract_act_window_data(act_window_id_or_xml_id, name)
         link = self.env['ir.qweb']._render(
             'knowledge.knowledge_view_link', {
-                'behavior_props': json.dumps({
+                'behavior_props': parse.quote(json.dumps({
                     'act_window': action_data,
                     'context': context or {},
                     'name': name,
                     'view_type': view_type,
-                })
+                }), safe='()*!\'')
             },
             minimal_qcontext=True,
             raise_if_not_found=False
@@ -2028,11 +2029,11 @@ class Article(models.Model):
         action_data = self._extract_act_window_data(act_window_id_or_xml_id, name)
         return self.env['ir.qweb']._render(
             'knowledge.knowledge_embedded_view', {
-                'behavior_props': json.dumps({
+                'behavior_props': parse.quote(json.dumps({
                     'act_window': action_data,
                     'context': context or {},
                     'view_type': view_type,
-                }),
+                }), safe='()*!\'')
             },
             minimal_qcontext=True,
             raise_if_not_found=False

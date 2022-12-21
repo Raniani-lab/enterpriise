@@ -6,6 +6,13 @@ from odoo import api, models
 class HrAttendance(models.Model):
     _inherit = 'hr.attendance'
 
+    def _get_employee_calendar(self):
+        self.ensure_one()
+        contracts = self.employee_id.sudo()._get_contracts(self.check_in, self.check_out, states=['open', 'close'])
+        if contracts:
+            return contracts[0].resource_calendar_id
+        return super()._get_employee_calendar()
+
     def _create_work_entries(self):
         # Upon creating or closing an attendance, create the work entry directly if the attendance
         # was created within an already generated period

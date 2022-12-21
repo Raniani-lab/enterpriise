@@ -6,12 +6,11 @@ import { Markup } from "web.utils";
 import { makeContext } from "@web/core/context";
 import { setIntersectionObserver } from "@knowledge/js/knowledge_utils";
 import { useService } from "@web/core/utils/hooks";
-
-const {
+import {
     onError,
     onMounted,
     onWillUnmount,
-    useState } = owl;
+    useState } from "@odoo/owl";
 
 let observerId = 0;
 

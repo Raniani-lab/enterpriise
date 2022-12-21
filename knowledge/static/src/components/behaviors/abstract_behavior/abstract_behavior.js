@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 export class AbstractBehavior extends Component {
     setup() {

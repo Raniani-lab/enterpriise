@@ -16,7 +16,7 @@ tour.register('knowledge_list_command_tour', {
         openCommandBar(this.$anchor[0]);
     },
 }, { // click on the /list command
-    trigger: '.oe-powerbox-commandName:contains("List view")',
+    trigger: '.oe-powerbox-commandName:contains("Item List")',
     run: 'click',
 }, { // choose a name for the embedded view
     trigger: '.modal-footer button.btn-primary'

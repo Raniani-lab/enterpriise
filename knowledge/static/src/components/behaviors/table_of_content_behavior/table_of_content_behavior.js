@@ -2,13 +2,12 @@
 
 import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behavior/abstract_behavior";
 import { HEADINGS, fetchValidHeadings } from "@knowledge/js/tools/knowledge_tools";
-
-const {
+import {
     onPatched,
     onWillPatch,
     onWillStart,
     useEffect,
-    useState } = owl;
+    useState } from "@odoo/owl";
 
 let observerId = 0;
 

@@ -6,12 +6,11 @@ import { browser } from "@web/core/browser/browser";
 import { SendAsMessageMacro, UseAsDescriptionMacro } from "@knowledge/macros/template_macros";
 import { Tooltip } from "@web/core/tooltip/tooltip";
 import { useService } from "@web/core/utils/hooks";
-
-const {
+import {
     markup,
     useRef,
     onMounted,
-    onWillUnmount } = owl;
+    onWillUnmount } from "@odoo/owl";
 
 
 export class TemplateBehavior extends AbstractBehavior {

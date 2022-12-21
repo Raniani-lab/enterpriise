@@ -4,8 +4,7 @@ import { _t } from "web.core";
 import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behavior/abstract_behavior";
 import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { useService } from "@web/core/utils/hooks";
-
-const { useEffect } = owl;
+import { useEffect } from "@odoo/owl";
 
 
 export class ArticleBehavior extends AbstractBehavior {

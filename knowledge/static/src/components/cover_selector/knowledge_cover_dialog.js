@@ -5,8 +5,7 @@ import { ConfirmationDialog } from '@web/core/confirmation_dialog/confirmation_d
 import { Dialog } from '@web/core/dialog/dialog';
 import { UnsplashError } from '@web_unsplash/components/media_dialog/image_selector';
 import { useService } from "@web/core/utils/hooks";
-
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 export class AutoResizeCover extends AutoResizeImage {
     setup() {

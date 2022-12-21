@@ -3,8 +3,7 @@
 import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behavior/abstract_behavior";
 import { makeContext } from "@web/core/context";
 import { useService } from "@web/core/utils/hooks";
-
-const { useEffect } = owl;
+import { useEffect } from "@odoo/owl";
 
 
 /**

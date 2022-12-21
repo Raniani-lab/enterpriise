@@ -5,12 +5,11 @@ import { getDefaultConfig, View } from "@web/views/view";
 import { PromptEmbeddedViewNameDialog } from "@knowledge/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog";
 import { useOwnDebugContext } from "@web/core/debug/debug_context";
 import { useService } from "@web/core/utils/hooks";
-
-const {
+import {
     Component,
     onMounted,
     onWillStart,
-    useSubEnv } = owl;
+    useSubEnv } from "@odoo/owl";
 
 const EMBEDDED_VIEW_LIMITS = {
     kanban: 20,

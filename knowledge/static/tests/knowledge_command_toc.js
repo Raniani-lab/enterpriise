@@ -10,11 +10,11 @@ import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from "@web/core/registry";
 import { TableOfContentBehavior } from "@knowledge/components/behaviors/table_of_content_behavior/table_of_content_behavior";
 import { makeFakeMessagingServiceForKnowledge } from "@knowledge/../tests/mock_services";
+import {
+    onMounted,
+} from "@odoo/owl";
 
 const serviceRegistry = registry.category("services");
-const {
-    onMounted,
-} = owl;
 
 /**
  * Insert a Table Of Content (TOC) in the target node. This will guarantee that

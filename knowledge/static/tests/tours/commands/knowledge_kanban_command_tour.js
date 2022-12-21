@@ -16,7 +16,7 @@ tour.register('knowledge_kanban_command_tour', {
         openCommandBar(this.$anchor[0]);
     },
 }, { // click on the /kanban command
-    trigger: '.oe-powerbox-commandName:contains("Kanban view")',
+    trigger: '.oe-powerbox-commandName:contains("Item Kanban")',
     run: 'click',
 }, { // choose a name for the embedded view
     trigger: '.modal-footer button.btn-primary'
@@ -30,4 +30,7 @@ tour.register('knowledge_kanban_command_tour', {
 }, { // create an article item
     trigger: '.o_knowledge_behavior_type_embedded_view .o-kanban-button-new',
     run: 'click',
+}, { // verify that the view switched to the article item
+    trigger: '.o_knowledge_header:has(.o_breadcrumb_article_name_container:contains("Untitled")):has(.breadcrumb-item > a:contains("EditorCommandsArticle"))',
+    run: () => {},
 }]);

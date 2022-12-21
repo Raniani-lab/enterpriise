@@ -3,14 +3,13 @@
 import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behavior/abstract_behavior";
 import { useService } from "@web/core/utils/hooks";
 import { qweb as QWeb }  from "web.core";
-
-const {
+import {
     markup,
     useEffect,
     useState,
     onMounted,
     onPatched,
-    onWillPatch } = owl;
+    onWillPatch } from "@odoo/owl";
 
 let observerId = 0;
 

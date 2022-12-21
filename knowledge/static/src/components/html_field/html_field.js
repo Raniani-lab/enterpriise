@@ -15,14 +15,13 @@ import { EmbeddedViewBehavior } from "@knowledge/components/behaviors/embedded_v
 import { TemplateBehavior } from "@knowledge/components/behaviors/template_behavior/template_behavior";
 import { TableOfContentBehavior } from "@knowledge/components/behaviors/table_of_content_behavior/table_of_content_behavior";
 import { ViewLinkBehavior } from "@knowledge/components/behaviors/view_link_behavior/view_link_behavior";
-
-const {
+import {
     App,
     onMounted,
     onPatched,
     onWillDestroy,
     onWillUnmount,
-} = owl;
+} from "@odoo/owl";
 
 const behaviorTypes = {
     o_knowledge_behavior_type_article: {

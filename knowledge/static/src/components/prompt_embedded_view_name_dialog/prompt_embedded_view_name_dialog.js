@@ -3,13 +3,12 @@
 import { _t } from "@web/core/l10n/translation";
 import { Dialog } from "@web/core/dialog/dialog";
 import { useWowlService } from "@web/legacy/utils";
-
-const {
+import {
     Component,
     onMounted,
     onRendered,
     useRef,
-    xml } = owl;
+    xml } from "@odoo/owl";
 
 export class PromptEmbeddedViewNameDialog extends Component {
     setup () {

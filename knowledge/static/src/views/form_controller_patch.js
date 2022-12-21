@@ -4,8 +4,7 @@ import { Domain } from "@web/core/domain";
 import { FormController } from "@web/views/form/form_controller";
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
-
-const { useEffect } = owl;
+import { useEffect } from "@odoo/owl";
 
 /**
  * Knowledge articles can interact with some records with the help of the

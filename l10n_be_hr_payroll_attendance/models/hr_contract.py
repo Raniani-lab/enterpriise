@@ -17,7 +17,7 @@ class HrContract(models.Model):
         default_work_entry_type = self.structure_type_id.default_work_entry_type_id
         if not attendance_contracts or len(default_work_entry_type) != 1:
             return
-        overtime_work_entry_type = self.env.ref('hr_payroll_work_entry_attendance.overtime_work_entry_type', False)
+        overtime_work_entry_type = self.env.ref('hr_work_entry.overtime_work_entry_type', False)
         if not overtime_work_entry_type:
             return
         overtimes = self.env['hr.attendance.overtime'].sudo().search(

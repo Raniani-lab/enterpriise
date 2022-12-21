@@ -34,11 +34,15 @@ export function pasteElements(dataTransfer, target) {
     if (!lastChild) {
         range.setStart(target, 0);
         range.setEnd(target, 0);
-        target.scrollIntoView();
     } else {
         range.setStartAfter(lastChild);
         range.setEndAfter(lastChild);
-        lastChild.scrollIntoView();
+    }
+    const lastElementChild = target.lastElementChild;
+    if (lastElementChild) {
+        lastElementChild.scrollIntoView();
+    } else {
+        target.scrollIntoView();
     }
     sel.addRange(range);
     target.dispatchEvent(fakePaste);

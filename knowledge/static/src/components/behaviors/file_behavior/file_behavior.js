@@ -8,8 +8,6 @@ import { sprintf } from "@web/core/utils/strings";
 import { useService } from "@web/core/utils/hooks";
 import utils from "web.utils";
 
-const { markup } = owl;
-
 
 export class FileBehavior extends AbstractBehavior {
     setup() {
@@ -18,8 +16,13 @@ export class FileBehavior extends AbstractBehavior {
         this.rpcService = useService('rpc');
         this.uiService = useService('ui');
         this.targetRecordInfo = this.knowledgeCommandsService.getCommandsRecordInfo();
-        if (this.props.fileImage) {
-            this.props.fileImage = markup(this.props.fileImage);
+
+        // ensure that the fileName and extension are saved in data-behavior-props of the anchor element
+        if (!this.props.anchor.dataset.behaviorProps) {
+            this.props.anchor.dataset.behaviorProps = JSON.stringify({
+                fileName: this.props.fileName,
+                fileExtension: this.props.fileExtension,
+            });
         }
     }
     /**
@@ -144,5 +147,5 @@ FileBehavior.props = {
     ...AbstractBehavior.props,
     fileName: { type: String, optional: true },
     fileExtension: { type: String, optional: true },
-    fileImage: { type: String, optional: true },
+    fileImage: { type: Object, optional: true },
 };

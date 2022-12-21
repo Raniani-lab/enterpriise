@@ -30,7 +30,6 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
                 loading: false,
                 refreshing: false,
             });
-            this.props.content = markup(this.props.content);
         } else {
             this.state = useState({
                 loading: true,
@@ -148,5 +147,5 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
 ArticlesStructureBehavior.template = "knowledge.ArticlesStructureBehavior";
 ArticlesStructureBehavior.props = {
     ...AbstractBehavior.props,
-    content: { type: String, optional: true },
+    content: { type: Object, optional: true },
 };

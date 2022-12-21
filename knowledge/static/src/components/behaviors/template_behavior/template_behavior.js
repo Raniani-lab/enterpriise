@@ -7,7 +7,6 @@ import { SendAsMessageMacro, UseAsDescriptionMacro } from "@knowledge/macros/tem
 import { Tooltip } from "@web/core/tooltip/tooltip";
 import { useService } from "@web/core/utils/hooks";
 import {
-    markup,
     useRef,
     onMounted,
     onWillUnmount } from "@odoo/owl";
@@ -40,9 +39,6 @@ export class TemplateBehavior extends AbstractBehavior {
             }
         });
         this.targetRecordInfo = this.knowledgeCommandsService.getCommandsRecordInfo();
-        if (this.props.content) {
-            this.props.content = markup(this.props.content);
-        }
     }
     showTooltip() {
         const closeTooltip = this.popoverService.add(this.copyToClipboardButton.el, Tooltip, {
@@ -119,5 +115,5 @@ export class TemplateBehavior extends AbstractBehavior {
 TemplateBehavior.template = "knowledge.TemplateBehavior";
 TemplateBehavior.props = {
     ...AbstractBehavior.props,
-    content: { type: String, optional: true },
+    content: { type: Object, optional: true },
 };

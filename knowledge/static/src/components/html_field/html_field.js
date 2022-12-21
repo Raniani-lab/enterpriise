@@ -17,6 +17,7 @@ import { TableOfContentBehavior } from "@knowledge/components/behaviors/table_of
 import { ViewLinkBehavior } from "@knowledge/components/behaviors/view_link_behavior/view_link_behavior";
 import {
     App,
+    markup,
     onMounted,
     onPatched,
     onWillDestroy,
@@ -136,7 +137,6 @@ const HtmlFieldPatch = {
                 }
                 // parse html to get all data-behavior-props content nodes
                 const props = {
-                    ...behaviorData.props,
                     readonly: this.props.readonly,
                     anchor: anchor,
                     wysiwyg: this.wysiwyg,
@@ -157,7 +157,8 @@ const HtmlFieldPatch = {
                 const propNodes = anchor.querySelectorAll("[data-prop-name]");
                 for (const node of propNodes) {
                     if (node.dataset.propName in Behavior.props) {
-                        props[node.dataset.propName] = node.innerHTML;
+                        // safe because sanitized by the editor and backend
+                        props[node.dataset.propName] = markup(node.innerHTML);
                     }
                 }
                 anchor.replaceChildren();

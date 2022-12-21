@@ -165,22 +165,22 @@
                                         </a>
                                         <div class="o_knowledge_more_options_panel dropdown-menu" role="menu"
                                              aria-labelledby="dropdown_tools_panel">
-                                            <div attrs="{'invisible': [('user_can_write', '=', False)]}">
+                                            <div>
                                                 <a role="button" class="dropdown-item btn-move" t-on-click="onMoveArticleClick"
-                                                   attrs="{'invisible': ['|', ('active', '=', False), ('is_article_item', '=', True)]}">
+                                                   attrs="{'invisible': ['|', '|', ('user_can_write', '=', False), ('active', '=', False), ('is_article_item', '=', True)]}">
                                                     <i class="fa fa-fw fa-lg fa-angle-double-right"/> Move To
                                                 </a>
                                                 <button class="dropdown-item btn-lock" href="#" type="object" name="action_set_lock"
-                                                    attrs="{'invisible': ['|', ('is_locked', '=', True), ('active', '=', False)]}">
+                                                    attrs="{'invisible': ['|', '|', ('user_can_write', '=', False), ('is_locked', '=', True), ('active', '=', False)]}">
                                                     <i class="fa fa-fw fa-lg fa-lock"/> Lock
                                                 </button>
                                                 <a  role="button" class="dropdown-item btn-lock" href="#" type="object"
                                                     name="action_set_unlock"
-                                                    attrs="{'invisible': ['|', ('is_locked', '=', False), ('active', '=', False)]}">
+                                                    attrs="{'invisible': ['|', '|', ('user_can_write', '=', False), ('is_locked', '=', False), ('active', '=', False)]}">
                                                     <i class="fa fa-fw fa-lg fa-unlock"/> Unlock
                                                 </a>
                                                 <button class="dropdown-item" type="object" name="action_send_to_trash"
-                                                        attrs="{'invisible': [('active', '=', False)]}">
+                                                        attrs="{'invisible': ['|', ('user_can_write', '=', False), ('active', '=', False)]}">
                                                     <i class="fa fa-fw fa-lg fa-trash"/> Delete
                                                 </button>
                                                 <button class="dropdown-item" type="object" name="action_unarchive_article"
@@ -188,14 +188,14 @@
                                                     <i class="fa fa-fw fa-lg fa-trash-o"/> Remove from Trash
                                                 </button>
                                                 <button class="dropdown-item" type="object" name="action_unarchive_article"
-                                                        attrs="{'invisible': ['|', ('active', '=', True), ('to_delete', '=', True)]}">
+                                                        attrs="{'invisible': ['|', '|', ('user_can_write', '=', False), ('active', '=', True), ('to_delete', '=', True)]}">
                                                     <i class="fa fa-fw fa-lg fa-archive"/> Unarchive
                                                 </button>
                                                 <a role="button" class="dropdown-item" t-on-click="copyArticleAsPrivate">
                                                     <i class="fa fa-fw fa-lg fa-copy"/> Create a Copy
                                                 </a>
-                                                <div class="dropdown-divider" attrs="{'invisible': [('active', '=', False)]}"/>
-                                                <div class="dropdown-item user-select-none" attrs="{'invisible': [('active', '=', False)]}"
+                                                <div class="dropdown-divider" attrs="{'invisible': ['|', ('user_can_write', '=', False), ('active', '=', False)]}"/>
+                                                <div class="dropdown-item user-select-none" attrs="{'invisible': ['|', ('user_can_write', '=', False), ('active', '=', False)]}"
                                                      t-on-click.stop="() => this.props.record.update({full_width: !this.props.record.data.full_width})">
                                                     <i class="fa fa-fw fa-lg fa-arrows-h" /> Full Width
                                                     <field name="full_width" widget="boolean_toggle" force_save="1" class="my-0 mx-1"/>

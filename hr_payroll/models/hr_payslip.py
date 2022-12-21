@@ -164,8 +164,8 @@ class HrPayslip(models.Model):
                 lines_to_remove = slip.input_line_ids.filtered(lambda x: x.input_type_id.id in attachment_type_ids)
                 slip.update({'input_line_ids': [Command.unlink(line.id) for line in lines_to_remove]})
             if slip.employee_id.salary_attachment_ids:
-                lines_to_keep = slip.input_line_ids.filtered(lambda x: x.input_type_id.id not in attachment_type_ids)
-                input_line_vals = [Command.clear()] + [Command.link(line.id) for line in lines_to_keep]
+                lines_to_remove = slip.input_line_ids.filtered(lambda x: x.input_type_id.id in attachment_type_ids)
+                input_line_vals = [Command.unlink(line.id) for line in lines_to_remove]
 
                 valid_attachments = slip.employee_id.salary_attachment_ids.filtered(
                     lambda a: a.state == 'open' and a.date_start <= slip.date_to

@@ -1998,6 +1998,7 @@ class Article(models.Model):
         """
         self.ensure_one()
         action_data = self._extract_act_window_data(act_window_id_or_xml_id, name)
+        action_data.pop('help', None)
         link = self.env['ir.qweb']._render(
             'knowledge.knowledge_view_link', {
                 'behavior_props': parse.quote(json.dumps({
@@ -2026,13 +2027,15 @@ class Article(models.Model):
         """
         self.ensure_one()
         action_data = self._extract_act_window_data(act_window_id_or_xml_id, name)
+        action_help = action_data.pop('help', None)
         return self.env['ir.qweb']._render(
             'knowledge.knowledge_embedded_view', {
                 'behavior_props': parse.quote(json.dumps({
                     'act_window': action_data,
                     'context': context or {},
                     'view_type': view_type,
-                }), safe='()*!\'')
+                }), safe='()*!\''),
+                'action_help': Markup(action_help) if action_help else False,
             },
             minimal_qcontext=True,
             raise_if_not_found=False

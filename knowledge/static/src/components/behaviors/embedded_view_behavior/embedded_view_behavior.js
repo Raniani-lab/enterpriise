@@ -2,7 +2,6 @@
 
 import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behavior/abstract_behavior";
 import { EmbeddedViewManager } from "@knowledge/components/behaviors/embedded_view_behavior/embedded_view_manager";
-import { Markup } from "web.utils";
 import { makeContext } from "@web/core/context";
 import {
     decodeDataBehaviorProps,
@@ -69,8 +68,8 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
             this.state.error = true;
             return;
         }
-        if (action.help) {
-            action.help = Markup(action.help);
+        if (this.props.action_help) {
+            action.help = this.props.action_help;
         }
         Object.assign(this.props, {
             act_window: action,
@@ -117,5 +116,6 @@ EmbeddedViewBehavior.props = {
     ...AbstractBehavior.props,
     act_window: { type: Object },
     context: { type: Object },
-    view_type: { type: String }
+    view_type: { type: String },
+    action_help: { type: Object, optional: true},
 };

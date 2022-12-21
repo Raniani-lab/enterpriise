@@ -29,5 +29,9 @@
                 readonly="props.readonly"
             />
         </t>
+        <div t-if="props.action_help" class="o_knowledge_content d-none" data-prop-name="action_help"
+            contenteditable="false">
+            <t t-out="props.action_help"/>
+        </div>
     </t>
 </templates>

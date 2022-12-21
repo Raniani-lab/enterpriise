@@ -123,6 +123,7 @@ class SaleOrder(models.Model):
     archived_product_ids = fields.Many2many('product.product', string='Archived Products', compute='_compute_archived')
     archived_product_count = fields.Integer("Archived Product", compute='_compute_archived')
     history_count = fields.Integer(compute='_compute_history_count')
+    # TODO REMOVE MASTER
     show_rec_invoice_button = fields.Boolean(compute='_compute_show_rec_invoice_button')
     has_recurring_line = fields.Boolean(compute='_compute_has_recurring_line')
 
@@ -405,7 +406,7 @@ class SaleOrder(models.Model):
     def _compute_show_rec_invoice_button(self):
         self.show_rec_invoice_button = False
         for order in self:
-            if not order.is_subscription or order.stage_category != 'progress':
+            if not order.is_subscription or order.stage_category != 'progress' or order.state not in ['sale', 'done']:
                 continue
             order.show_rec_invoice_button = True
 

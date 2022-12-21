@@ -2913,13 +2913,13 @@ tour.register('test_put_in_pack_scan_package', {test: true}, [
         run: 'scan product1',
     },
     {
-        trigger: '.o_barcode_line[data-barcode="product1"] .qty-done:contains("1")',
+        trigger: '.o_barcode_line[data-barcode="product1"].o_selected .qty-done:contains("1")',
         run: 'scan PACK0000001',
     },
     {
-        trigger: '.o_barcode_line:contains("product1"):contains("PACK0000001")',
+        trigger: '.o_barcode_line:contains("product1").o_selected:contains("PACK0000001")',
         run: function() {
-            const $line1 = $('.o_barcode_line:contains("product1")');
+            const $line1 = $('.o_barcode_line.o_selected:contains("product1")');
             const product1_package = $line1.find('div[name="package"]').text().trim();
             helper.assert(product1_package, 'PACK0000001');
         }

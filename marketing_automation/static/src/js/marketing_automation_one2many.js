@@ -48,9 +48,19 @@ export class HierarchyKanbanRecord extends KanbanRecord {
 
         useEffect(
             () => {
-                this.applyTabPanelVisibility();
+                const addChildActivityButtons = this.rootRef.el.querySelectorAll('.o_add_child_activity');
+                const onAddChildActivityClick = this.onAddChildActivityClick.bind(this);
+                addChildActivityButtons.forEach((el) => {
+                    el.addEventListener("click", onAddChildActivityClick);
+                });
+
+                return () => {
+                    addChildActivityButtons.forEach((el) => {
+                        el.removeEventListener("click", onAddChildActivityClick);
+                    });
+                };
             },
-            () => [this.rootRef.el]
+            () => []
         );
     }
 
@@ -86,14 +96,14 @@ export class HierarchyKanbanRecord extends KanbanRecord {
      * Helper method that opens the marketing.activity Form dialog with pre-configured trigger_type
      * and parent_id. Used for the various create buttons on the kanban card footers.
      *
-     * @param {String} triggerType the associated marketing.activity#trigger_type
+     * @param {MouseEvent} ev
      */
-    async addChildActivity(triggerType) {
+    async onAddChildActivityClick(ev) {
         await this.props.list.model.root.save({stayInEdition: true});
 
         const context = {
             default_parent_id: this.props.record.data.id,
-            default_trigger_type: triggerType,
+            default_trigger_type: ev.target.dataset.triggerType,
         };
         this.env.onAddMarketingActivity({ context });
     }
@@ -144,8 +154,6 @@ export class HierarchyKanbanRecord extends KanbanRecord {
         }
     }
 }
-
-HierarchyKanbanRecord.Compiler = HierarchyKanbanCompiler;
 
 HierarchyKanbanRecord.components = {
     ...KanbanRecord.components,

@@ -80,6 +80,7 @@ export class HierarchyKanbanRecord extends KanbanRecord {
             directChildren && directChildren.length !== 0) {
             this.dialogService.add(ConfirmationDialog, {
                 body: this.env._t("Deleting this activity will delete ALL its children activities. Are you sure?"),
+                confirmLabel: this.env._t("Delete"),
                 confirm: () => super.triggerAction(...arguments),
                 cancel: () => {},
             });

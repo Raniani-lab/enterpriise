@@ -17,7 +17,8 @@
                         <span class="o_form_label">Record</span>
                         <field name="is_test" invisible="1"/>
                         <h1>
-                            <field name="resource_ref" required="1" options="{'hide_model': True}"/>
+                            <field name="resource_ref" required="1" class="o_field_highlight"
+                                placeholder="Pick a record..." options="{'hide_model': True}"/>
                         </h1>
                     </div>
                     <group>

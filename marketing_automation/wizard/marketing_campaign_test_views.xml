@@ -17,7 +17,7 @@
                     <field name="res_id" readonly="1" invisible="1"/>
                 </sheet>
                 <footer>
-                    <button string="Continue" name="action_launch_test" type="object" class="btn-primary"/>
+                    <button string="Launch" name="action_launch_test" type="object" class="btn-primary"/>
                     <button string="Cancel" class="btn-secondary" special="cancel"/>
                 </footer>
             </form>

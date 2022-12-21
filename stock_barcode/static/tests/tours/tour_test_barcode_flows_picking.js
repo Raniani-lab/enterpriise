@@ -2889,11 +2889,11 @@ tour.register('test_put_in_pack_scan_package', {test: true}, [
         run: 'scan product1',
     },
     {
-        trigger: '.o_barcode_line:nth-child(2).o_selected.o_line_completed',
+        trigger: '.o_barcode_line[data-barcode="product1"].o_selected .qty-done:contains("1")',
         run: 'scan PACK0000001',
     },
     {
-        trigger: '.o_barcode_line.o_selected:contains("PACK0000001")',
+        trigger: '.o_barcode_line:contains("product1").o_selected:contains("PACK0000001")',
         run: function() {
             const line1 = helper.getLine({ barcode: "product1", selected: true });
             const product1_package = line1.querySelector('div[name="package"]').innerText;

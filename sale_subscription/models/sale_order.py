@@ -319,7 +319,7 @@ class SaleOrder(models.Model):
     def _compute_show_rec_invoice_button(self):
         self.show_rec_invoice_button = False
         for order in self:
-            if not order.is_subscription or order.stage_category != 'progress':
+            if not order.is_subscription or order.stage_category != 'progress' or order.state not in ['sale', 'done']:
                 continue
             order.show_rec_invoice_button = True
 

@@ -50,9 +50,9 @@ class TestPayslipOvertime(HrWorkEntryAttendanceCommon):
             'check_out': datetime(2022, 1, 3, 12, 0, 0),
         })
         self.payslip._compute_worked_days_line_ids()
-        self.assertFalse(self.payslip.worked_days_line_ids.filtered(lambda w: w.code == 'OVERTIME'))
+        self.assertEqual(self.payslip.worked_days_line_ids.filtered(lambda w: w.code == 'OVERTIME').number_of_hours, 3)
 
-    def test_with_overtime_invalid_contract(self):
+    def test_with_overtime_calendar_contract(self):
         self.contract.work_entry_source = 'calendar'
         self.env['hr.attendance'].create({
             'employee_id': self.employee.id,
@@ -60,7 +60,7 @@ class TestPayslipOvertime(HrWorkEntryAttendanceCommon):
             'check_out': datetime(2022, 1, 3, 20, 0, 0),
         })
         self.payslip._compute_worked_days_line_ids()
-        self.assertFalse(self.payslip.worked_days_line_ids.filtered(lambda w: w.code == 'OVERTIME'))
+        self.assertEqual(self.payslip.worked_days_line_ids.filtered(lambda w: w.code == 'OVERTIME').number_of_hours, 11)
 
     def test_overtime_parameter_percent(self):
         self.env['hr.attendance'].create({

@@ -131,7 +131,7 @@ class HrPayslipWorkedDays(models.Model):
                     number_of_hours = sum([
                         wd.number_of_hours
                         for wd in worked_day.payslip_id.worked_days_line_ids
-                        if wd.code not in [main_worked_day, 'OUT'] and not wd.is_credit_time])
+                        if wd.code not in [main_worked_day, 'OUT', 'OVERTIME'] and not wd.is_credit_time])
                     if len(work100_wds) > 1:
                         # In this case, we cannot use the hourly formula since the monthly
                         # salary must always be the same, without having an identical number of

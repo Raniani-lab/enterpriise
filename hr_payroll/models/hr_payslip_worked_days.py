@@ -44,9 +44,13 @@ class HrPayslipWorkedDays(models.Model):
             else:
                 worked_days.amount = worked_days.payslip_id.contract_id.contract_wage * worked_days.number_of_hours / (worked_days.payslip_id.sum_worked_hours or 1) if worked_days.is_paid else 0
 
+    def _is_half_day(self):
+        self.ensure_one()
+        work_hours = self.payslip_id._get_worked_day_lines_hours_per_day()
+        return self.number_of_days < 1 or float_round(self.number_of_hours / self.number_of_days, 2) < work_hours
+
     @api.depends('work_entry_type_id', 'number_of_days', 'number_of_hours', 'payslip_id')
     def _compute_name(self):
         for worked_days in self:
-            work_hours = worked_days.payslip_id._get_worked_day_lines_hours_per_day()
-            half_day = worked_days.number_of_days < 1 or float_round(worked_days.number_of_hours / worked_days.number_of_days, 2) < work_hours
+            half_day = worked_days._is_half_day()
             worked_days.name = worked_days.work_entry_type_id.name + (_(' (Half-Day)') if half_day else '')

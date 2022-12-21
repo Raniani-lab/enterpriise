@@ -50,7 +50,7 @@ const behaviorTypes = {
 const HtmlFieldPatch = {
     setup() {
         this._super(...arguments);
-        this.behaviorAnchors = new Set();
+        this.behaviorApps = new Set();
         this.bindedDelayedRefreshBehaviors = this.delayedRefreshBehaviors.bind(this);
         this.uiService = useService('ui');
         onWillUnmount(() => {
@@ -67,11 +67,8 @@ const HtmlFieldPatch = {
             this.updateBehaviors();
         });
         onWillDestroy(() => {
-            for (const anchor of Array.from(this.behaviorAnchors)) {
-                if (anchor.oKnowledgeBehavior) {
-                    anchor.oKnowledgeBehavior.destroy();
-                    delete anchor.oKnowledgeBehavior;
-                }
+            for (const app of Array.from(this.behaviorApps)) {
+                app.destroy();
             }
         });
     },
@@ -172,6 +169,7 @@ const HtmlFieldPatch = {
                     templates: templates,
                     props,
                 });
+                this.behaviorApps.add(anchor.oKnowledgeBehavior);
                 await anchor.oKnowledgeBehavior.mount(anchor);
                 if (!this.props.readonly && this.wysiwyg && this.wysiwyg.odooEditor) {
                     this.wysiwyg.odooEditor.idSet(anchor);
@@ -215,7 +213,6 @@ const HtmlFieldPatch = {
      * @param {HTMLElement} target
      */
     _scanFieldForBehaviors(behaviorsData, target) {
-        const anchors = new Set();
         const types = new Set(Object.getOwnPropertyNames(this.behaviorTypes));
         const anchorNodes = target.querySelectorAll('.o_knowledge_behavior_anchor');
         const anchorNodesSet = new Set(anchorNodes);
@@ -232,18 +229,8 @@ const HtmlFieldPatch = {
                     anchor: anchor,
                     behaviorType: type,
                 });
-                anchors.add(anchor);
             }
         }
-        // difference between the stored set and the computed one
-        const differenceAnchors = new Set([...this.behaviorAnchors].filter(anchor => !anchors.has(anchor)));
-        // remove obsolete behaviors
-        differenceAnchors.forEach(anchor => {
-            if (anchor.oKnowledgeBehavior) {
-                anchor.oKnowledgeBehavior.destroy();
-                delete anchor.oKnowledgeBehavior;
-            }
-        });
     },
 };
 

@@ -37,7 +37,7 @@ export class SendAsMessageMacro extends AbstractMacro {
                 this.validatePage();
                 const dialog = this.getFirstVisibleElement('.o_dialog_container.modal-open .o_mail_composer_form');
                 if (dialog) {
-                    return this.getFirstVisibleElement(dialog.querySelector('.o_field_html[name="body"] > .odoo-editor-editable'));
+                    return this.getFirstVisibleElement(dialog.querySelector('.o_field_html[name="body"] .odoo-editor-editable'));
                 }
                 return null;
             }.bind(this),
@@ -86,7 +86,7 @@ export class UseAsDescriptionMacro extends AbstractMacro {
         }, {
             trigger: function () {
                 this.validatePage();
-                return this.getFirstVisibleElement(`.o_field_html[name="${this.data.fieldName}"] > .odoo-editor-editable`);
+                return this.getFirstVisibleElement(`.o_field_html[name="${this.data.fieldName}"] .odoo-editor-editable`);
             }.bind(this),
             action: function (el) {
                 pasteElements(this.data.dataTransfer, el);

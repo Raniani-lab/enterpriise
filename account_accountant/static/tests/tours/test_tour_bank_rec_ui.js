@@ -35,7 +35,7 @@ tour.register('account_accountant_bank_rec_widget_ui',
         },
         {
             content: "View an invoice",
-            trigger: "button.btn-secondary[name='action_open_business_doc']:eq(1)",
+            trigger: "button.btn-secondary[name='action_open_business_doc']:eq(0)",
         },
         {
             content: "Breadcrumb back to Bank Reconciliation from INV/2019/00002",
@@ -56,8 +56,8 @@ tour.register('account_accountant_bank_rec_widget_ui',
         // Keep AML search, and prepared entry (lines_widget) when changing tabs, using breadcrumbs, and view switcher
         {
             content: "AMLs list has both invoices",
-            extra_trigger: "div.bank_rec_widget_form_amls_list_anchor table.o_list_table tr:nth-child(3) td[name='move_id']:contains('INV/2019/00001')",
-            trigger: "div.bank_rec_widget_form_amls_list_anchor table.o_list_table tr:nth-child(2) td[name='move_id']:contains('INV/2019/00002')",
+            extra_trigger: "div.bank_rec_widget_form_amls_list_anchor table.o_list_table tr:nth-child(2) td[name='move_id']:contains('INV/2019/00001')",
+            trigger: "div.bank_rec_widget_form_amls_list_anchor table.o_list_table tr:nth-child(1) td[name='move_id']:contains('INV/2019/00002')",
             run: () => {},
         },
         {

@@ -457,6 +457,14 @@ class BankRecWidget(models.Model):
 
     @api.depends('st_line_id')
     def _compute_amls_widget(self):
+        def get_float_comparison(amount_field, currency_field, amount_value, currency_value, decimal_precision):
+            delta_amount = 1 / (10 ** (decimal_precision + 1))
+            return [
+                (amount_field, '>=', amount_value - delta_amount),
+                (amount_field, '<=', amount_value + delta_amount),
+                (currency_field, '=', currency_value),
+            ]
+
         for wizard in self:
             st_line = wizard.st_line_id
 
@@ -528,8 +536,50 @@ class BankRecWidget(models.Model):
             for dynamic_filter in dynamic_filters:
                 dynamic_filter['domain'] = str(dynamic_filter['domain'])
 
+            domain = st_line._get_default_amls_matching_domain()
+
+            # Set the context key to display matching amounts first
+            liquidity_line = self.line_ids.filtered(lambda x: x.flag == 'liquidity')
+
+            # Company currency.
+            amounts_to_match = [(
+                'amount_residual',
+                'company_currency_id',
+                liquidity_line.balance,
+                liquidity_line.company_currency_id.id,
+                liquidity_line.company_currency_id.decimal_places,
+            )]
+
+            # Journal currency.
+            if liquidity_line.currency_id != liquidity_line.company_currency_id:
+                amounts_to_match.append((
+                    'amount_residual_currency',
+                    'currency_id',
+                    liquidity_line.amount_currency,
+                    liquidity_line.currency_id.id,
+                    liquidity_line.currency_id.decimal_places,
+                ))
+
+            # Transaction currency.
+            if st_line.foreign_currency_id not in (liquidity_line.currency_id, liquidity_line.company_currency_id):
+                amounts_to_match.append((
+                    'amount_residual_currency',
+                    'currency_id',
+                    st_line.amount_currency,
+                    st_line.foreign_currency_id.id,
+                    st_line.foreign_currency_id.decimal_places
+                ))
+
+            residual_amount_domain = domain + expression.OR([
+                get_float_comparison(*x)
+                for x in amounts_to_match
+            ])
+
+            preferred_amls = self.env['account.move.line'].search(domain=residual_amount_domain)
+            context['matching_amount_aml_ids'] = preferred_amls.ids
+
             wizard.amls_widget = {
-                'domain': st_line._get_default_amls_matching_domain(),
+                'domain': domain,
 
                 'dynamic_filters': dynamic_filters,
 

@@ -1793,3 +1793,96 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             {'flag': 'new_aml',         'amount_currency': 1200.0,  'balance': 400.0},
             {'flag': 'exchange_diff',   'amount_currency': 0.0,     'balance': 200.0},
         ])
+
+    def test_amls_order_with_matching_amount(self):
+        """ AML's with a matching amount_residual should be displayed first when the order is not specified. """
+
+        st_line = self._create_st_line(
+            500.0,
+            date='2016-01-01',
+            foreign_currency_id=self.currency_data['currency'].id,
+            amount_currency=1500.0,
+        )
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+
+        # Test the order of amls.
+        decimal_precision_name = self.env['account.move.line']._fields['price_unit']._digits
+        decimal_precision = self.env['decimal.precision'].search([('name', '=', decimal_precision_name)])
+        decimal_precision.digits = 3
+
+        aml1_id = self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2017-01-31',
+            invoice_line_ids=[{'price_unit': 1000.0}],
+        ).id
+        aml2_id = self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2017-01-30',
+            invoice_line_ids=[{'price_unit': 500.0}],
+        ).id
+        aml3_id = self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2017-01-29',
+            currency_id=self.currency_data['currency'],
+            invoice_line_ids=[{'price_unit': 1000.001}], # = 500 USD
+        ).id
+        aml4_id = self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2017-01-28',
+            invoice_line_ids=[{'price_unit': 1000.0}],
+        ).id
+        aml5_id = self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2017-01-27',
+            invoice_line_ids=[{'price_unit': 500.0}],
+        ).id
+        # Add a rounding issue.
+        self.cr.execute('''
+            UPDATE account_move_line
+            SET amount_residual = 499.999999
+            WHERE id = %s
+        ''', [aml5_id])
+        aml6_id = self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2017-01-26',
+            invoice_line_ids=[{'price_unit': 1000.0}],
+        ).id
+
+        # Check the lines without the context key.
+        amls_values_list = self.env['account.move.line'].search_read(domain=wizard.amls_widget['domain'], fields=['id'])
+        self.assertEqual(
+            [x['id'] for x in amls_values_list],
+            [aml1_id, aml2_id, aml3_id, aml4_id, aml5_id, aml6_id],
+        )
+
+        # Check the lines with the context key.
+        amls_values_list = self.env['account.move.line']\
+            .with_context(**wizard.amls_widget['context'])\
+            .search_read(domain=wizard.amls_widget['domain'], fields=['id'], offset=0, limit=2)
+        self.assertEqual(
+            [x['id'] for x in amls_values_list],
+            [aml2_id, aml3_id],
+        )
+        amls_values_list = self.env['account.move.line']\
+            .with_context(**wizard.amls_widget['context'])\
+            .search_read(domain=wizard.amls_widget['domain'], fields=['id'], offset=2, limit=2)
+        self.assertEqual(
+            [x['id'] for x in amls_values_list],
+            [aml5_id, aml1_id],
+        )
+        amls_values_list = self.env['account.move.line']\
+            .with_context(**wizard.amls_widget['context'])\
+            .search_read(domain=wizard.amls_widget['domain'], fields=['id'], offset=4)
+        self.assertEqual(
+            [x['id'] for x in amls_values_list],
+            [aml4_id, aml6_id],
+        )
+
+        # Check the lines with the context key and order
+        amls_values_list = self.env['account.move.line']\
+            .with_context(**wizard.amls_widget['context'])\
+            .search_read(domain=wizard.amls_widget['domain'], fields=['id'], order='name DESC')
+        self.assertEqual(
+            [x['id'] for x in amls_values_list],
+            [aml6_id, aml5_id, aml4_id, aml3_id, aml2_id, aml1_id],
+        )

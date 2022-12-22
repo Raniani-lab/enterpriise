@@ -129,8 +129,8 @@ export class BankRecWidgetFormController extends FormController {
         }
 
         // reset the nextActionTodo as it has been done
-        if (this.record.data.nextActionTodo === nextActionTodo) {
-            this.record.update({'next_action_todo': {}});
+        if (this.record.data.next_action_todo === nextActionTodo) {
+            this.record.update({next_action_todo: {}});
         }
     }
 

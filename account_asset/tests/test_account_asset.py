@@ -2008,3 +2008,16 @@ class TestAccountAsset(TestAccountReportsCommon):
                     'analytic_distribution': {str(analytic_account.id): 100},
                 },
             ])
+
+    def test_depreciation_schedule_report_first_depreciation(self):
+        """Test that the depreciation schedule report displays the correct first depreciation date."""
+        # check that the truck's first depreciation date is correct:
+        # the truck has a yearly linear depreciation and it's prorate_date is 2015-01-01
+        # therefore we expect it's first depreciation date to be the last day of 2015
+
+        today = fields.Date.today()
+        report = self.env.ref('account_asset.assets_report')
+        options = self._generate_options(report, today + relativedelta(years=-6, month=1, day=1), today + relativedelta(years=+4, month=12, day=31))
+        lines = report._get_lines({**options, **{'unfold_all': False, 'all_entries': True}})
+
+        self.assertEqual(lines[1]['columns'][1]['name'], '12/31/2015')

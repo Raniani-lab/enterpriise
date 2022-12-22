@@ -1,11 +1,11 @@
 /** @odoo-module **/
 
 import { patch } from "@web/core/utils/patch";
-import { DocumentsListModel } from "@documents/views/list/documents_list_model";
+import { DocumentsActivityModel } from "@documents/views/activity/documents_activity_model";
 
 import { XLSX_MIME_TYPE } from "@documents_spreadsheet/helpers";
 
-patch(DocumentsListModel.Record.prototype, "documents_spreadsheet_documents_kanban_record", {
+patch(DocumentsActivityModel.Record.prototype, "documents_spreadsheet_documents_kanban_record", {
     /**
      * @override
      */

@@ -169,7 +169,7 @@ export function useDocumentView(helpers) {
 /**
  * Hook to setup the file previewer
  */
-function useDocumentsViewFilePreviewer({ getSelectedDocumentsElements }) {
+function useDocumentsViewFilePreviewer({ getSelectedDocumentsElements, isRecordPreviewable = () => true }) {
     const component = useComponent();
     const env = useEnv();
     const bus = env.documentsView.bus;
@@ -223,7 +223,7 @@ function useDocumentsViewFilePreviewer({ getSelectedDocumentsElements }) {
             openPdfSplitter(documents);
             return;
         }
-        const documentsRecords = ((documents.length === 1 && component.model.root.records) || documents).map((rec) => {
+        const documentsRecords = ((documents.length === 1 && component.model.root.records) || documents).filter(isRecordPreviewable).map((rec) => {
             return messaging.models["Document"].insert({
                 id: rec.resId,
                 attachmentId: rec.data.attachment_id && rec.data.attachment_id[0],

@@ -253,6 +253,26 @@
         </field>
     </record>
 
+    <record id="documents_view_activity" model="ir.ui.view">
+        <field name="name">documents.document activity</field>
+        <field name="model">documents.document</field>
+        <field name="arch" type="xml">
+            <activity string="Documents" js_class="documents_activity">
+                <field name="folder_id"/>
+                <templates>
+                    <div t-name="activity-box">
+                        <img t-att-src="activity_image('res.users', 'avatar_128', record.owner_id.raw_value)"
+                            role="img" t-att-title="record.owner_id.value" t-att-alt="record.owner_id.value"/>
+                        <div>
+                            <field class="o_text_block" name="name" display="full"/>
+                            <field name="owner_id" muted="1" display="full"/>
+                        </div>
+                    </div>
+                </templates>
+            </activity>
+        </field>
+    </record>
+
     <record id="action_url_form" model="ir.actions.act_window">
         <field name="name">Add Url</field>
         <field name="res_model">documents.document</field>
@@ -264,11 +284,12 @@
     <record id="document_action" model="ir.actions.act_window">
         <field name="name">Documents</field>
         <field name="res_model">documents.document</field>
-        <field name="view_mode">kanban,tree</field>
+        <field name="view_mode">kanban,tree,activity</field>
         <field name="domain">[]</field>
         <field name="view_ids" eval="[(5, 0, 0),
             (0, 0, {'view_mode': 'kanban', 'view_id': ref('documents.document_view_kanban')}),
-            (0, 0, {'view_mode': 'tree', 'view_id': ref('documents.documents_view_list')})]"/>
+            (0, 0, {'view_mode': 'tree', 'view_id': ref('documents.documents_view_list')}),
+            (0, 0, {'view_mode': 'activity', 'view_id': ref('documents.documents_view_activity')})]"/>
         <field name="help" type="html">
             <p class="o_view_nocontent_smiling_face">Upload <span class="fw-normal">a file or</span> drag <span class="fw-normal">it here.</span></p>
         </field>

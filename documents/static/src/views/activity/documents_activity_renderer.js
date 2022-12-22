@@ -1,0 +1,33 @@
+/** @odoo-module **/
+
+import { ActivityRenderer } from "@mail/views/activity/activity_renderer";
+
+import { DocumentsInspector } from "../inspector/documents_inspector";
+import { DocumentsAttachmentViewer } from "../helper/documents_attachment_viewer";
+
+const { useRef } = owl;
+
+export class DocumentsActivityRenderer extends ActivityRenderer {
+    setup() {
+        super.setup();
+        this.root = useRef("root");
+    }
+    /**
+     * Props for documentsInspector
+     */
+    getDocumentsInspectorProps() {
+        return {
+            selection: this.props.records.filter((rec) => rec.selected),
+            count: 0,
+            fileSize: 0,
+            archInfo: this.props.archInfo,
+            withFilePreview: !this.env.documentsView.previewStore.documentList || !this.env.documentsView.previewStore.documentList.exists(),
+        };
+    }
+}
+DocumentsActivityRenderer.template = "documents.DocumentsActivityRenderer";
+DocumentsActivityRenderer.components = {
+    ...ActivityRenderer.components,
+    DocumentsAttachmentViewer,
+    DocumentsInspector,
+};

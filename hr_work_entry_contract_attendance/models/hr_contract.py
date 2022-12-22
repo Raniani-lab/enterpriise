@@ -71,7 +71,7 @@ class HrContract(models.Model):
             resource_id: WorkIntervals(list(intervals)) for resource_id, intervals in mapped_intervals.items()
         }
 
-        work_intervals_by_resource_day = defaultdict(lambda: defaultdict(lambda: list()))
+        work_intervals_by_resource_day = defaultdict(lambda: defaultdict(list))
         for resource_id, intervals in mapped_intervals.items():
             if resource_id not in resource_ids:
                 continue

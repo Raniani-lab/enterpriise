@@ -49,6 +49,7 @@ const CONVERTED_VIEWS = [
     "form",
     "kanban",
     "list",
+    "activity",
 ];
 
 var _t = core._t;

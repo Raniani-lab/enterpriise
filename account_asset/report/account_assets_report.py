@@ -321,7 +321,7 @@ class AssetReportCustomHandler(models.AbstractModel):
                    asset.name AS asset_name,
                    asset.original_value AS asset_original_value,
                    asset.currency_id AS asset_currency_id,
-                   asset.acquisition_date AS asset_date,
+                   MIN(move.date) AS asset_date,
                    asset.disposal_date AS asset_disposal_date,
                    asset.acquisition_date AS asset_acquisition_date,
                    asset.method AS asset_method,

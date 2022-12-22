@@ -1,13 +1,13 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import json
+import psycopg2
 import datetime
 from dateutil.relativedelta import relativedelta
 from math import copysign
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
+from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_is_zero, formatLang, end_of
 
 DAYS_PER_MONTH = 30
@@ -35,6 +35,7 @@ class AccountAsset(models.Model):
         string='Status',
         copy=False,
         default='draft',
+        readonly=True,
         help="When an asset is created, the status is 'Draft'.\n"
             "If the asset is confirmed, the status goes in 'Running' and the depreciation lines can be posted in the accounting.\n"
             "The 'On Hold' status can be set manually when you want to pause the depreciation of an asset for some time.\n"
@@ -760,10 +761,14 @@ class AccountAsset(models.Model):
             asset.message_post(body=asset_name[0], tracking_value_ids=tracking_value_ids)
             for move_id in asset.original_move_line_ids.mapped('move_id'):
                 move_id.message_post(body=msg)
-            if not asset.depreciation_move_ids:
-                asset.compute_depreciation_board()
-            asset._check_depreciations()
-            asset.depreciation_move_ids.filtered(lambda move: move.state != 'posted')._post()
+            try:
+                if not asset.depreciation_move_ids:
+                    asset.compute_depreciation_board()
+                asset._check_depreciations()
+                asset.depreciation_move_ids.filtered(lambda move: move.state != 'posted')._post()
+            except psycopg2.errors.CheckViolation:
+                raise ValidationError(_("Atleast one asset (%s) couldn't be set as running because it lacks any required information", asset.name))
+
             if asset.account_asset_id.create_asset == 'no':
                 asset._post_non_deductible_tax_value()
 

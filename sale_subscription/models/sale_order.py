@@ -1416,7 +1416,7 @@ class SaleOrder(models.Model):
 
     def send_success_mail(self, tx, invoice):
         self.ensure_one()
-        if not invoice._is_ready_to_be_sent():
+        if invoice.is_move_sent or not invoice._is_ready_to_be_sent() or invoice.state != 'posted':
             return
         current_date = fields.Date.today()
         next_date = self.next_invoice_date or current_date
@@ -1448,7 +1448,7 @@ class SaleOrder(models.Model):
     @api.model
     def _process_invoices_to_send(self, account_moves, auto_commit):
         for invoice in account_moves:
-            if invoice._is_ready_to_be_sent():
+            if not invoice.is_move_sent and invoice._is_ready_to_be_sent() and invoice.state == 'posted':
                 subscription = invoice.line_ids.subscription_id
                 subscription.validate_and_send_invoice(auto_commit, invoice)
 

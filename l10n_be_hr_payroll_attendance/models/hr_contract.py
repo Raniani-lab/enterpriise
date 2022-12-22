@@ -60,5 +60,6 @@ class HrContract(models.Model):
                 overtime_hours += hours
         hours_per_day = self.resource_calendar_id.hours_per_day or self.company_id.resource_calendar_id.hours_per_day or HOURS_PER_DAY
         overtime_days = float_round(overtime_hours / hours_per_day, precision_rounding=1, rounding_method='UP')
-        new_res[('full', overtime_work_entry_type.id)] = [overtime_days, overtime_hours]
+        if overtime_hours:
+            new_res[('full', overtime_work_entry_type.id)] = [overtime_days, overtime_hours]
         return new_res

@@ -274,13 +274,14 @@ class SaleOrder(models.Model):
                 # It is increased manually by _update_next_invoice_date when necessary
                 so.next_invoice_date = so.start_date or fields.Date.today()
 
-    @api.depends('start_date', 'state', 'order_line.invoice_lines')
+    @api.depends('start_date', 'state', 'next_invoice_date')
     def _compute_last_invoice_date(self):
         for order in self:
-            if order.recurrence_id and order.state in ['sale', 'done'] and order.order_line.invoice_lines:
+            last_date = order.next_invoice_date and order.next_invoice_date - get_timedelta(order.recurrence_id.duration, order.recurrence_id.unit)
+            if order.recurrence_id and order.state in ['sale', 'done'] and last_date >= order.start_date:
                 # we use get_timedelta and not the effective invoice date because
                 # we don't want gaps. Invoicing date could be shifted because of technical issues.
-                order.last_invoice_date = order.next_invoice_date and order.next_invoice_date - get_timedelta(order.recurrence_id.duration, order.recurrence_id.unit)
+                order.last_invoice_date = last_date
             else:
                 order.last_invoice_date = False
 

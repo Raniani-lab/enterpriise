@@ -2271,3 +2271,14 @@ class TestSubscription(TestSubscriptionCommon):
 
             self.assertAlmostEqual(invoice.amount_total, total, 4,
                                    'Downpayment should not be deducted from the price anymore')
+
+    def test_upsell_with_different_currency_throws_error(self):
+        euro_currency = self.env['res.currency'].search([('name', '=', 'EUR')], limit=1)
+        pricelist_eur = self.env['product.pricelist'].create({
+            'name': 'Euro pricelist',
+            'currency_id': euro_currency.id,
+        })
+        action = self.subscription.prepare_upsell_order()
+        upsell_so = self.env['sale.order'].browse(action['res_id'])
+        with self.assertRaises(ValidationError):
+            upsell_so.pricelist_id = pricelist_eur.id

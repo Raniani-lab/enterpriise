@@ -140,6 +140,12 @@ class SaleOrder(models.Model):
          'The next invoice date of a sale order should be after its start date.'),
     ]
 
+    @api.constrains('subscription_management', 'subscription_id', 'pricelist_id')
+    def _constraint_subscription_upsell_multi_currency(self):
+        for so in self:
+            if so.subscription_management == 'upsell' and so.subscription_id.pricelist_id.currency_id != so.pricelist_id.currency_id:
+                raise ValidationError(_('You cannot upsell a subscription using a different currency.'))
+
     @api.constrains('recurrence_id', 'state', 'is_subscription')
     def _constraint_subscription_recurrence(self):
         recurring_product_orders = self.order_line.filtered(lambda l: l.product_id.recurring_invoice).order_id

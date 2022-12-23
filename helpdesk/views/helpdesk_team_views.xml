@@ -53,17 +53,16 @@
                             <field name="open_ticket_count" string="Tickets" widget="statinfo"/>
                         </button>
                         <field name="rating_count" invisible="1"/>
-                        <field name="rating_avg" invisible="1"/>
-                        <button name="action_view_team_rating" type="object" class="oe_stat_button" icon="" attrs="{'invisible': ['|', ('use_rating', '=', False), ('rating_count', '=', 0)]}" groups="helpdesk.group_use_rating">
+                        <button name="action_view_team_rating" type="object" class="oe_stat_button" icon="" attrs="{'invisible': ['|', ('use_rating', '=', False), ('rating_count', '=', 0)]}" groups="helpdesk.group_use_rating" title="Average Rating">
                             <i class="fa fa-fw o_button_icon fa-smile-o text-success" attrs="{'invisible': [('rating_avg', '&lt;', 3.66)]}" title="Satisfied"/>
                             <i class="fa fa-fw o_button_icon fa-meh-o text-warning" attrs="{'invisible': ['|', ('rating_avg', '&lt;', 2.33), ('rating_avg', '&gt;=', 3.66)]}" title="Okay"/>
                             <i class="fa fa-fw o_button_icon fa-frown-o text-danger" attrs="{'invisible': [('rating_avg', '&gt;=', 2.33)]}" title="Dissatisfied"/>
                             <div class="o_field_widget o_stat_info">
                                 <span class="o_stat_value">
-                                    <field name="rating_avg_percentage" nolabel="1" widget="percentage"/>
+                                    <field name="rating_avg" nolabel="1" widget="float" digits="[1, 1]"/> / 5
                                 </span>
                                 <span class="o_stat_text">
-                                    Satisfaction
+                                    Avg. Rating
                                 </span>
                             </div>
                         </button>
@@ -413,7 +412,7 @@
                                                         <strong class="fa fa-fw mt4 fa-meh-o text-warning fw-bolder" t-elif="record.rating_avg.raw_value &gt;= 2.33" title="Average Rating: Okay" role="img" aria-label="Neutral face"/>
                                                         <strong class="fa fa-fw mt4 fa-frown-o text-danger fw-bolder" t-else="" title="Average Rating: Dissatisfied" role="img" aria-label="Sad face"/>
                                                     </b>
-                                                    <field name="rating_avg_percentage" nolabel="1" widget="percentage"/>
+                                                    <field name="rating_avg" nolabel="1" widget="float" digits="[1, 1]"/> / 5
                                                 </span>
                                             </a>
                                         </div>

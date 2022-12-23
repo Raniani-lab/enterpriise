@@ -379,8 +379,13 @@ class HelpdeskTicket(models.Model):
 
     def name_get(self):
         result = []
+        display_partner_name = self._context.get('with_partner', False)
         for ticket in self:
-            result.append((ticket.id, "%s (#%s)" % (ticket.name, ticket.ticket_ref)))
+            name = f'{ticket.name} (#{ticket.ticket_ref})'
+            if display_partner_name:
+                if ticket.partner_name:
+                    name += f' - {ticket.partner_name}'
+            result.append((ticket.id, name))
         return result
 
     @api.model

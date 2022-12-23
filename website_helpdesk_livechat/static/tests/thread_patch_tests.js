@@ -4,7 +4,7 @@ import { click, insertText, start, startServer } from "@mail/../tests/helpers/te
 
 QUnit.module("thread (patch)");
 
-QUnit.test("[technical] /helpdesk command gets a body as kwarg", async (assert) => {
+QUnit.test("[technical] /ticket command gets a body as kwarg", async (assert) => {
     const pyEnv = await startServer();
     const channelId = pyEnv["mail.channel"].create({
         channel_type: "channel",
@@ -31,7 +31,7 @@ QUnit.test("[technical] /helpdesk command gets a body as kwarg", async (assert) 
         },
     });
     await openDiscuss(channelId);
-    await insertText(".o-mail-Composer-input", "/helpdesk something");
+    await insertText(".o-mail-Composer-input", "/ticket something");
     await click(".o-mail-Composer-send");
-    assert.verifySteps(["execute command helpdesk. body: /helpdesk something"]);
+    assert.verifySteps(["execute command helpdesk. body: /ticket something"]);
 });

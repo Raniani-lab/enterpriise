@@ -16,25 +16,25 @@ patch(Messaging.prototype, "website_helpdesk_livechat", {
             registry
                 .category("mail.channel_commands")
                 .add(
-                    "helpdesk",
+                    "ticket",
                     {
-                        help: _t("Create a new helpdesk ticket"),
+                        help: _t("Create a new helpdesk ticket (/ticket ticket title)"),
                         methodName: "execute_command_helpdesk",
                     },
                     { force: true }
                 )
                 .add(
-                    "helpdesk_search",
+                    "search_tickets",
                     {
                         force: true,
-                        help: _t("Search for a helpdesk ticket"),
+                        help: _t("Search helpdesk tickets (/search_tickets keyword)"),
                         methodName: "execute_command_helpdesk_search",
                     },
                     { force: true }
                 );
         } else {
-            registry.category("mail.channel_commands").remove("helpdesk");
-            registry.category("mail.channel_commands").remove("helpdesk_search");
+            registry.category("mail.channel_commands").remove("ticket");
+            registry.category("mail.channel_commands").remove("search_tickets");
         }
     },
 });

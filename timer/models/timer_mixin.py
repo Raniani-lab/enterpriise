@@ -22,19 +22,23 @@ class TimerMixin(models.AbstractModel):
         if operator not in ['=', '!='] or not isinstance(value, bool):
             raise NotImplementedError(_('Operation not supported'))
 
-        running_timer = self.env['timer.timer'].search([('timer_start', '!=', False), ('timer_pause', '=', False), ('res_model', '=', self._name)])
+        running_timer_query = self.env['timer.timer']._search([
+            ('timer_start', '!=', False),
+            ('timer_pause', '=', False),
+            ('res_model', '=', self._name),
+        ])
 
         if operator == '!=':
             value = not value
 
-        return [('id', 'in' if value else 'not in', running_timer.mapped('res_id'))]
+        return [('id', 'inselect' if value else 'not inselect', running_timer_query.select('res_id'))]
 
     def _search_user_timer_id(self, operator, value):
-        timers = self.env['timer.timer'].search([
+        timer_query = self.env['timer.timer']._search([
             ('id', operator, value),
             ('user_id', '=', self.env.user.id),
         ])
-        return [('id', 'in', timers.mapped('res_id'))]
+        return [('id', 'inselect', timer_query.select('res_id'))]
 
     @api.depends_context('uid')
     def _compute_user_timer_id(self):
@@ -44,11 +48,11 @@ class TimerMixin(models.AbstractModel):
             :res_model is the current model
             limit=1 by security but the search should never have more than one record
         """
-        timer_read_group = self.env['timer.timer'].read_group(
+        timer_read_group = self.env['timer.timer']._read_group(
             domain=[
                 ('user_id', '=', self.env.user.id),
                 ('res_id', 'in', self.ids),
-                ('res_model', '=', self._name)
+                ('res_model', '=', self._name),
             ],
             fields=['res_id', 'ids:array_agg(id)'],
             groupby=['res_id'])

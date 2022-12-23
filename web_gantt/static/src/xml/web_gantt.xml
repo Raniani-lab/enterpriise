@@ -17,7 +17,8 @@
                 <span class="fa fa-arrow-right"/>
             </button>
         </div>
-        <div class="btn-group o_gantt_range">
+        <div class="btn-group o_gantt_scale">
+            <!-- use ViewScaleSelector component as soon as the view is converted -->
             <t t-call="GanttView.RangeButtons"/>
         </div>
         <div t-attf-class="btn-group #{displayExpandCollapseButtons ? '' : 'd-none'}">
@@ -31,28 +32,17 @@
     </div>
 
     <t t-name="GanttView.RangeButtons">
-        <t t-if="isMobile">
-            <t t-call="GanttView.RangeButtons.Mobile"/>
-        </t>
-        <t t-else="">
-            <t t-call="GanttView.RangeButtons.Loop"/>
-        </t>
-    </t>
-
-    <t t-name="GanttView.RangeButtons.Mobile">
-        <a class="btn btn-link dropdown-toggle" href="#" data-bs-toggle="dropdown" aria-expanded="false">
-            <t t-esc="SCALES[activateScale].string"/>
-        </a>
-        <ul class="dropdown-menu" role="menu">
-            <t t-call="GanttView.RangeButtons.Loop"/>
-        </ul>
-    </t>
-
-    <t t-name="GanttView.RangeButtons.Loop">
-        <t t-foreach="allowedScales" t-as="scale">
-            <button t-attf-class="o_gantt_button_scale btn btn-secondary #{scale == activateScale ? 'active' : ''} #{isMobile ? 'dropdown-item' : ''}" type="button" t-att-data-value="scale" t-att-data-hotkey="SCALES[scale].hotkey" >
-                <t t-esc="SCALES[scale].string"/>
+        <t t-if="allowedScales.length > 1">
+            <button class="dropdown-toggle btn btn-secondary scale_button_selection text-uppercase" data-hotkey="v" data-bs-toggle="dropdown" aria-expanded="false">
+                <t t-esc="SCALES[activateScale].string"/>
             </button>
+            <ul class="dropdown-menu dropdown-menu-start list-inline">
+                <li t-foreach="allowedScales" t-as="scale" t-key="scale_index">
+                    <button t-attf-class="o_gantt_button_scale dropdown-item text-uppercase {{scale === activateScale ? 'active' : ''}}" type="button" t-att-data-name="scale" t-att-data-hotkey="SCALES[scale].hotkey">
+                        <t t-esc="SCALES[scale].string"/>
+                    </button>
+                </li>
+            </ul>
         </t>
     </t>
 

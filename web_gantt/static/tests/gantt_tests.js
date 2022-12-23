@@ -34,6 +34,11 @@ function convertUnavailability(u) {
     };
 }
 
+async function changeScale(target, scale) {
+    await testUtils.dom.click(target.$buttons.find('.dropdown-toggle'));
+    await testUtils.dom.click(target.$buttons.find(`.o_gantt_button_scale[data-name=${scale}]`));
+}
+
 async function createView(params) {
     testUtils.mock.patch(SampleServer.prototype, {
         /**
@@ -249,7 +254,7 @@ QUnit.module('LegacyViews', {
 
         assert.containsOnce(gantt, '.o_gantt_header_container',
             'should have a header');
-        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=month]'), 'active',
+        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-name=month]'), 'active',
             'month view should be activated by default');
         assert.notOk(gantt.$buttons.find('.o_gantt_button_expand_rows').is(':visible'),
             "the expand button should be invisible (only displayed if useful)");
@@ -355,7 +360,7 @@ QUnit.module('LegacyViews', {
 
         assert.containsOnce(gantt, '.o_gantt_header_container',
             'should have a header');
-        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=month]'), 'active',
+        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-name=month]'), 'active',
             'month view should by default activated');
         assert.notOk(gantt.$buttons.find('.o_gantt_button_expand_rows').is(':visible'),
             "the expand button should be invisible (only displayed if useful)");
@@ -409,7 +414,7 @@ QUnit.module('LegacyViews', {
 
         assert.containsOnce(gantt, '.o_gantt_header_container',
             'should have a header');
-        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=month]'), 'active',
+        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-name=month]'), 'active',
             'month view should by default activated');
         assert.notOk(gantt.$buttons.find('.o_gantt_button_expand_rows').is(':visible'),
             "the expand button should be invisible (only displayed if useful)");
@@ -451,7 +456,7 @@ QUnit.module('LegacyViews', {
 
         assert.containsOnce(gantt, '.o_gantt_header_container',
             'should have a header');
-        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=month]'), 'active',
+        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-name=month]'), 'active',
             'month view should by default activated');
         assert.ok(gantt.$buttons.find('.o_gantt_button_expand_rows').is(':visible'),
             "there should be an expand button");
@@ -543,7 +548,7 @@ QUnit.module('LegacyViews', {
 
         assert.containsOnce(gantt, '.o_gantt_header_container',
             'should have a header');
-        assert.hasClass(gantt.$('.o_gantt_button_scale[data-value=month]'), 'active',
+        assert.hasClass(gantt.$('.o_gantt_button_scale[data-name=month]'), 'active',
             'month view should by default activated');
         assert.notOk(gantt.$('.o_gantt_button_expand_rows').is(':visible'),
             "the expand button should be invisible (only displayed if useful)");
@@ -606,7 +611,7 @@ QUnit.module('LegacyViews', {
 
         // Header
         assert.containsOnce(gantt, ".o_gantt_header_container", "should have a header");
-        assert.hasClass(gantt.el.querySelector(".o_gantt_button_scale[data-value=month]"), "active");
+        assert.hasClass(gantt.el.querySelector(".o_gantt_button_scale[data-name=month]"), "active");
         assert.containsOnce(gantt, ".btn-group:not(.d-none) > .o_gantt_button_expand_rows", "there should be an expand button");
         assert.strictEqual(
             gantt.el.querySelector(".o_gantt_header_container > .o_gantt_row_sidebar").innerText,
@@ -754,12 +759,12 @@ QUnit.module('LegacyViews', {
         });
 
         // default (month)
-        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=month]'), 'active',
+        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-name=month]'), 'active',
             'month view should be activated by default');
 
         // switch to day view
-        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=day]'));
-        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=day]'), 'active',
+        await changeScale(gantt, "day");
+        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-name=day]'), 'active',
             'day view should be activated');
         assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), 'Thursday, December 20, 2018',
             'should contain "Thursday, December 20, 2018" in header');
@@ -769,8 +774,8 @@ QUnit.module('LegacyViews', {
             'should have a 4 pills');
 
         // switch to week view
-        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=week]'));
-        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=week]'), 'active',
+        await changeScale(gantt, "week");
+        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-name=week]'), 'active',
             'week view should be activated');
         assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '16 December 2018 - 22 December 2018',
             'should contain "16 December 2018 - 22 December 2018" in header');
@@ -780,8 +785,8 @@ QUnit.module('LegacyViews', {
             'should have a 4 pills');
 
         // switch to month view
-        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=month]'));
-        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=month]'), 'active',
+        await changeScale(gantt, "month");
+        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-name=month]'), 'active',
             'month view should be activated');
         assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), 'December 2018',
             'should contain "December 2018" in header');
@@ -791,8 +796,8 @@ QUnit.module('LegacyViews', {
             'should have a 6 pills');
 
         // switch to year view
-        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=year]'));
-        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=year]'), 'active',
+        await changeScale(gantt, "year");
+        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-name=year]'), 'active',
             'year view should be activated');
         assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '2018',
             'should contain "2018" in header');
@@ -1127,21 +1132,21 @@ QUnit.module('LegacyViews', {
 
         const content = gantt.$el.text();
 
-        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=day]'));
+        await changeScale(gantt, "day");
         assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
 
-        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=week]'));
+        await changeScale(gantt, "week");
         assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
 
-        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=month]'));
+        await changeScale(gantt, "month");
         assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
         assert.strictEqual(gantt.$el.text(), content,
             "when we return to the default scale, the content should be the same as before");
 
-        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=year]'));
+        await changeScale(gantt, "year");
         assert.hasClass(gantt, 'o_legacy_view_sample_data');
         assert.ok(gantt.$('.o_gantt_pill_wrapper').length > 0, "sample records should be displayed");
 
@@ -1309,7 +1314,7 @@ QUnit.module('LegacyViews', {
         assert.verifySteps(["start,<=,2018-12-31 22:59:59,stop,>=,2018-11-30 23:00:00"]);
 
         // switch to day view and check day navigation
-        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=day]'));
+        await changeScale(gantt, "day");
         assert.verifySteps(["start,<=,2018-12-20 22:59:59,stop,>=,2018-12-19 23:00:00"]);
 
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
@@ -1323,7 +1328,7 @@ QUnit.module('LegacyViews', {
         assert.verifySteps(["start,<=,2018-12-20 22:59:59,stop,>=,2018-12-19 23:00:00"]);
 
         // switch to week view and check week navigation
-        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=week]'));
+        await changeScale(gantt, "week");
         assert.verifySteps(["start,<=,2018-12-22 22:59:59,stop,>=,2018-12-15 23:00:00"]);
 
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
@@ -1337,7 +1342,7 @@ QUnit.module('LegacyViews', {
         assert.verifySteps(["start,<=,2018-12-22 22:59:59,stop,>=,2018-12-15 23:00:00"]);
 
         // switch to year view and check year navigation
-        await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_scale[data-value=year]'));
+        await changeScale(gantt, "year");
         assert.verifySteps(["start,<=,2018-12-31 22:59:59,stop,>=,2017-12-31 23:00:00"]);
 
         await testUtils.dom.click(gantt.$buttons.find('.o_gantt_button_prev'));
@@ -3113,17 +3118,17 @@ document.createElement("a").classList.contains
         assert.strictEqual(reloadCount, 1, 'view should have loaded')
         assert.strictEqual(unavailabilityCallCount, 1, 'view should have loaded unavailability');
 
-        await testUtils.dom.click(gantt.$('.o_gantt_button_scale[data-value=week]'));
+        await changeScale(gantt, "week");
         assert.strictEqual(reloadCount, 2, 'view should have reloaded when switching scale to week')
         assert.strictEqual(unavailabilityCallCount, 2, 'view should have reloaded when switching scale to week');
         assert.strictEqual(unavailabilityScaleArg, 'week', 'unavailability should have been called with the week scale');
 
-        await testUtils.dom.click(gantt.$('.o_gantt_button_scale[data-value=month]'));
+        await changeScale(gantt, "month");
         assert.strictEqual(reloadCount, 3, 'view should have reloaded when switching scale to month')
         assert.strictEqual(unavailabilityCallCount, 3, 'view should have reloaded when switching scale to month');
         assert.strictEqual(unavailabilityScaleArg, 'month', 'unavailability should have been called with the month scale');
 
-        await testUtils.dom.click(gantt.$('.o_gantt_button_scale[data-value=year]'));
+        await changeScale(gantt, "year");
         assert.strictEqual(reloadCount, 4, 'view should have reloaded when switching scale to year')
         assert.strictEqual(unavailabilityCallCount, 4, 'view should have reloaded when switching scale to year');
         assert.strictEqual(unavailabilityScaleArg, 'year', 'unavailability should have been called with the year scale');
@@ -3453,7 +3458,7 @@ document.createElement("a").classList.contains
             },
         });
 
-        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-value=day]'), 'active',
+        assert.hasClass(gantt.$buttons.find('.o_gantt_button_scale[data-name=day]'), 'active',
             'day view should be activated');
         assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), 'Thursday, December 20, 2018',
             'should contain "Thursday, December 20, 2018" in header');
@@ -4307,7 +4312,7 @@ document.createElement("a").classList.contains
         // switch to 'week' scale (this rpc will be delayed)
         firstReloadProm = testUtils.makeTestPromise();
         reloadProm = firstReloadProm;
-        await testUtils.dom.click(gantt.$('.o_gantt_button_scale[data-value=week]'));
+        await changeScale(gantt, "week");
 
         assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), 'December 2018',
             "should still be in 'month' scale");
@@ -4316,7 +4321,7 @@ document.createElement("a").classList.contains
 
         // switch to 'year' scale
         reloadProm = null;
-        await testUtils.dom.click(gantt.$('.o_gantt_button_scale[data-value=year]'));
+        await changeScale(gantt, "year");
 
         assert.strictEqual(gantt.$('.o_gantt_header_container > .col > .row:first-child').text().trim(), '2018',
             "should be in 'year' scale");

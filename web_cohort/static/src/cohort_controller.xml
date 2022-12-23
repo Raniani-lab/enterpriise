@@ -8,28 +8,8 @@
                 <t t-set="activeMeasures" t-value="[model.metaData.measure]"/>
             </t>
         </div>
-        <div class="btn-group" t-if="env.isSmall">
-            <Dropdown togglerClass="'btn btn-link dropdown-toggle'" menuClass="'dropdown-menu'">
-                <t t-set-slot="toggler">
-                    <t t-esc="model.intervals[model.metaData.interval]"/>
-                </t>
-                <t t-foreach="model.intervals" t-as="interval" t-key="interval">
-                    <DropdownItem class="`o_menu_item ${interval === model.metaData.interval ? 'selected' : ''}`"
-                        parentClosingMode="'none'"
-                        onSelected="() => this.onDropDownSelected({ interval })"
-                    >
-                        <t t-esc="interval_value"/>
-                    </DropdownItem>
-                </t>
-            </Dropdown>
-        </div>
-        <div class="btn-group" t-else="">
-            <button t-foreach="model.intervals" t-as="interval" t-key="interval"
-                    class="btn btn-secondary o_cohort_interval_button"
-                    t-att-class="{ active: interval === model.metaData.interval }"
-                    t-on-click="() => model.updateMetaData({ interval: interval})">
-                <t t-esc="model.intervals[interval]" />
-            </button>
+        <div class="btn-group">
+            <ViewScaleSelector scales="scales" currentScale="model.metaData.interval" setScale.bind="setScale" />
         </div>
         <div class="btn-group">
             <button class="btn btn-secondary fa fa-download o_cohort_download_button"

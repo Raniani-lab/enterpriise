@@ -7,6 +7,7 @@ import { useService } from "@web/core/utils/hooks";
 import { Layout } from "@web/search/layout";
 import { useModel } from "@web/views/model";
 import { standardViewProps } from "@web/views/standard_view_props";
+import { ViewScaleSelector } from "@web/views/view_components/view_scale_selector";
 import { useSetupView } from "@web/views/view_hook";
 
 import { Component, useRef } from "@odoo/owl";
@@ -23,6 +24,12 @@ export class CohortController extends Component {
             },
             getContext: () => this.getContext(),
         });
+    }
+
+    get scales() {
+        return Object.fromEntries(
+            Object.entries(this.model.intervals).map(([s, d]) => [s, { description: d }])
+        );
     }
 
     getContext() {
@@ -101,10 +108,12 @@ export class CohortController extends Component {
     }
 
     /**
-     * @param {Object} payload
+     * @param {String} scale
      */
-    onDropDownSelected(payload) {
-        this.model.updateMetaData(payload);
+    setScale(scale) {
+        this.model.updateMetaData({
+            interval: scale,
+        });
     }
 
     /**
@@ -117,7 +126,7 @@ export class CohortController extends Component {
 }
 
 CohortController.template = "web_cohort.CohortView";
-CohortController.components = { Dropdown, DropdownItem, Layout };
+CohortController.components = { Dropdown, DropdownItem, Layout, ViewScaleSelector };
 CohortController.props = {
     ...standardViewProps,
     Model: Function,

@@ -2,7 +2,6 @@ odoo.define('web_grid.GridController', function (require) {
 "use strict";
 
 var AbstractController = require('web.AbstractController');
-var config = require('web.config');
 var core = require('web.core');
 var utils = require('web.utils');
 var concurrency = require('web.concurrency');
@@ -67,7 +66,7 @@ var GridController = AbstractController.extend({
                 _buttons: this.navigationButtons,
                 allowCreate: this.canCreate,
             },
-            isMobile: config.device.isMobile
+            scaleValue: this.currentRange,
         }));
         this.$buttons.on('click', '.o_grid_button_add', this._onAddLine.bind(this));
         this.$buttons.on('click', '.grid_arrow_previous', this._onPaginationChange.bind(this, 'prev'));
@@ -88,6 +87,7 @@ var GridController = AbstractController.extend({
             return;
         }
         const state = this.model.get();
+        this.$buttons.find(".scale_button_selection").text(this.currentRange);
         this.$buttons.find('.o_grid_button_add').toggleClass('d-none', this.createInline && (!!state.data[0].rows.length || this.displayEmpty));
         this.$buttons.find('.grid_arrow_previous').toggleClass('d-none', !state.data[0].prev);
         this.$buttons.find('.grid_arrow_next').toggleClass('d-none', !state.data[0].next);
@@ -362,9 +362,7 @@ var GridController = AbstractController.extend({
     _onRangeChange: function (e) {
         e.stopPropagation();
         var $target = $(e.target);
-        if (config.device.isMobile) {
-            $target.closest(".dropdown-menu").prev().dropdown("toggle");
-        }
+        $target.closest(".dropdown-menu").prev().dropdown("toggle");
         if ($target.hasClass('active')) {
             return;
         }

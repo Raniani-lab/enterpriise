@@ -636,6 +636,7 @@ QUnit.module('LegacyViews', {
         assert.doesNotHaveClass(grid.$buttons.find('button.grid_arrow_range[data-name="month"]'), 'active',
             "month range is not active");
 
+        await testUtils.dom.click(grid.$buttons.find('.dropdown-toggle'));
         await testUtils.dom.click(grid.$buttons.find('button[data-name=month]'));
         assert.strictEqual(grid.$('thead th:not(.o_grid_title_header)').length, 29,
             "should have 29 columns (1 for each day + 1 for total)");
@@ -2149,6 +2150,7 @@ QUnit.module('LegacyViews', {
         await testUtils.dom.click(grid.$buttons.find('button.grid_arrow_previous'));
         assert.strictEqual(grid.model.getContext().grid_anchor, '2017-01-24', 'the grid anchor should move 7 days before the current one since we are in week range.');
         assert.strictEqual(grid.model.getContext().grid_range, 'week', 'the grid range should be "week".');
+        await testUtils.dom.click(grid.$buttons.find('.dropdown-toggle'));
         await testUtils.dom.click($monthRangeButton);
         assert.hasClass($monthRangeButton,'active', 'current range should be month one.');
         assert.strictEqual(grid.model.getContext().grid_anchor, '2017-01-31',

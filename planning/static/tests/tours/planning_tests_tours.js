@@ -125,7 +125,10 @@ tour.register('planning_shift_switching_backend', {
     trigger: 'button[name="action_switch_shift"]',
     content: "Click on the 'Switch Shift' button on the Gantt Form view modal",
 }, {
-    trigger: '.o_gantt_button_scale[data-value="day"]', 
+    trigger: '.scale_button_selection',
+    content: 'Toggle the view scale selector',
+},{
+    trigger: '.o_gantt_button_scale[data-name="day"]',
     content: "Change the gantt scale from week to day",
 }, {
     trigger: '.o_gantt_pill :contains("bert")',

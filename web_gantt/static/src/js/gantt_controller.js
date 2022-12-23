@@ -689,7 +689,7 @@ export default AbstractController.extend({
         if ($button.hasClass('active')) {
             return;
         }
-        this.update({ scale: $button.data('value') });
+        this.update({ scale: $button.data('name') });
     },
     /**
      * @private

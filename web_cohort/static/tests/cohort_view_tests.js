@@ -1,7 +1,5 @@
 /** @odoo-module **/
 
-import testUtils from "web.test_utils";
-
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import {
     click,
@@ -30,6 +28,11 @@ const serviceRegistry = registry.category("services");
 
 let serverData;
 let target;
+
+async function changeScale(target, scale) {
+    await click(target.querySelector(".o_view_scale_selector .dropdown-toggle"));
+    await click(target.querySelector(`.o_scale_button_${scale}`));
+}
 
 QUnit.module("Views", (hooks) => {
     hooks.beforeEach(() => {
@@ -147,9 +150,11 @@ QUnit.module("Views", (hooks) => {
 
         await toggleMenu(target, "Measures");
         assert.containsOnce(target, ".dropdown-menu", 1, "should have list of measures");
+
+        await click(target, ".o_view_scale_selector .scale_button_selection");
         assert.containsN(
             target,
-            ".o_cohort_interval_button",
+            ".o_view_scale_selector .dropdown-menu span",
             4,
             "should have buttons of intervals"
         );
@@ -211,7 +216,7 @@ QUnit.module("Views", (hooks) => {
         );
 
         assert.equal(
-            target.querySelector(".o_cohort_interval_button.active").textContent,
+            target.querySelector(".o_view_scale_selector button").textContent,
             "Day",
             "day should by default for interval"
         );
@@ -260,23 +265,22 @@ QUnit.module("Views", (hooks) => {
             type: "cohort",
             resModel: "subscription",
             serverData,
-            arch:
-                '<cohort string="Subscription" date_start="start" date_stop="stop" measure="recurring" interval="week" />',
+            arch: '<cohort string="Subscription" date_start="start" date_stop="stop" measure="recurring" interval="week" />',
         });
 
         await toggleMenu(target, "Measures");
-
         assert.equal(
             target.querySelector(".dropdown-menu span.selected").textContent,
             "Recurring Price",
             "should recurring for measure"
         );
+
+        await click(target.querySelector(".o_view_scale_selector .dropdown-toggle"));
         assert.equal(
-            target.querySelector(".o_cohort_interval_button.active").textContent,
+            target.querySelector(".o_view_scale_selector .active").textContent,
             "Week",
             "should week for interval"
         );
-
         assert.equal(
             target.querySelector(".table thead th:nth-child(2)").textContent,
             "Recurring Price",
@@ -288,7 +292,8 @@ QUnit.module("Views", (hooks) => {
             'should contain "Stop - By Week" in title'
         );
 
-        await testUtils.dom.click(target.querySelector(".dropdown-menu span:not(.selected)"));
+        await toggleMenu(target, "Measures");
+        await click(target.querySelector(".dropdown-menu span:not(.selected)"));
         assert.equal(
             target.querySelector(".dropdown-menu span.selected").textContent,
             "Count",
@@ -300,12 +305,7 @@ QUnit.module("Views", (hooks) => {
             'should contain "Count" in header of second column'
         );
 
-        await testUtils.dom.click(target.querySelectorAll(".o_cohort_interval_button")[2]);
-        assert.equal(
-            target.querySelector(".o_cohort_interval_button.active").textContent,
-            "Month",
-            "should active month for interval"
-        );
+        await changeScale(target, "month");
         assert.equal(
             target.querySelector(".table thead th:nth-child(3)").textContent,
             "Stop - By Month",
@@ -465,8 +465,7 @@ QUnit.module("Views", (hooks) => {
             type: "cohort",
             resModel: "lead",
             serverData,
-            arch:
-                '<cohort string="Leads" date_start="start" date_stop="stop" interval="week" mode="churn" />',
+            arch: '<cohort string="Leads" date_start="start" date_stop="stop" interval="week" mode="churn" />',
             mockRPC: function (route, args) {
                 if (args.method === "get_cohort_data") {
                     assert.strictEqual(
@@ -498,8 +497,7 @@ QUnit.module("Views", (hooks) => {
             type: "cohort",
             resModel: "attendee",
             serverData,
-            arch:
-                '<cohort string="Attendees" date_start="event_begin_date" date_stop="registration_date" interval="day" timeline="backward" mode="churn"/>',
+            arch: '<cohort string="Attendees" date_start="event_begin_date" date_stop="registration_date" interval="day" timeline="backward" mode="churn"/>',
             mockRPC: function (route, args) {
                 if (args.method === "get_cohort_data") {
                     assert.strictEqual(

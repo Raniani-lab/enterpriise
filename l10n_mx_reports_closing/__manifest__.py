@@ -3,7 +3,7 @@
 
 {
     "name": "Mexico - Month 13 Trial Balance",
-    'icon': '/l10n_mx/static/description/icon.png',
+    'countries': ['mx'],
     "summary": """
         Mexico Month 13 Trial Balance Report
     """,

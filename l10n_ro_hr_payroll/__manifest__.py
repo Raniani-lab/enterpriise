@@ -3,7 +3,7 @@
 
 {
     'name': 'Romania - Payroll',
-    'icon': '/l10n_ro/static/description/icon.png',
+    'countries': ['ro'],
     'category': 'Human Resources/Payroll',
     'version': '1.0',
     'depends': [

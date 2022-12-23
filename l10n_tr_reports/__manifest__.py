@@ -3,7 +3,7 @@
 
 {
     'name': 'Turkey - Accounting Reports',
-    'icon': '/l10n_tr/static/description/icon.png',
+    'countries': ['tr'],
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """

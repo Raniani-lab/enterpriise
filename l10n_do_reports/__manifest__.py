@@ -3,6 +3,7 @@
 
 {
     'name': 'Dominican Republic - Accounting Reports',
+    'countries': ['do'],
     'version': '1.0',
     'description': """
         Accounting reports for Dominican Republic

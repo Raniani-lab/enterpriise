@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': 'US - Accounting Reports',
-    'icon': '/l10n_us/static/description/icon.png',
+    'countries': ['us'],
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """

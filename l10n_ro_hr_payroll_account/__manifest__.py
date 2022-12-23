@@ -3,7 +3,7 @@
 
 {
     'name': 'Romania - Payroll with Accounting',
-    'icon': '/l10n_ro/static/description/icon.png',
+    'countries': ['ro'],
     'version': '1.0',
     'category': 'Human Resources/Payroll',
     'description': """

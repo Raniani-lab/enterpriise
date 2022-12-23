@@ -3,7 +3,7 @@
 
 {
     'name': 'Poland - Payroll',
-    'icon': '/l10n_pl/static/description/icon.png',
+    'countries': ['pl'],
     'category': 'Human Resources/Payroll',
     'depends': ['hr_payroll', 'hr_contract_reports', 'hr_work_entry_holidays', 'hr_payroll_holidays'],
     'version': '1.0',

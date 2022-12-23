@@ -3,7 +3,7 @@
 
 {
     'name': 'Indian Payroll',
-    'icon': '/l10n_in/static/description/icon.png',
+    'countries': ['in'],
     'category': 'Human Resources/Payroll',
     'depends': ['hr_payroll', 'l10n_in'],
     'description': """

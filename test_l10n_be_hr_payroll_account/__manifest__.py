@@ -3,7 +3,7 @@
 
 {
     'name': 'Test Belgian Payroll',
-    'icon': '/l10n_be/static/description/icon.png',
+    'countries': ['be'],
     'category': 'Human Resources',
     'summary': 'Test Belgian Payroll',
     'depends': [

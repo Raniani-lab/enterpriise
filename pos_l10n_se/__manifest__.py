@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Sweden Registered Cash Register',
+    'countries': ['se'],
     'version': '1.0',
     'category': 'Sales/Point Of Sale',
     'sequence': 6,

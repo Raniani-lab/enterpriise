@@ -3,7 +3,7 @@
 
 {
     'name': 'Keypay Australian Payroll',
-    'icon': '/l10n_au/static/description/icon.png',
+    'countries': ['au'],
     'category': 'Accounting',
     'depends': [
         'l10n_au',

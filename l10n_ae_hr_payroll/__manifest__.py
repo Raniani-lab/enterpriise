@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'U.A.E. - Payroll',
+    'countries': ['ae'],
     'author': 'Odoo PS',
     'category': 'Human Resources/Payroll',
     'description': """

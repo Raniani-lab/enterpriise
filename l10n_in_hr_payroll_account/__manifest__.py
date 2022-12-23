@@ -3,7 +3,7 @@
 
 {
     'name': 'India - Payroll with Accounting',
-    'icon': '/l10n_in/static/description/icon.png',
+    'countries': ['in'],
     'category': 'Human Resources',
     'depends': ['l10n_in_hr_payroll', 'hr_payroll_account', 'l10n_in'],
     'description': """

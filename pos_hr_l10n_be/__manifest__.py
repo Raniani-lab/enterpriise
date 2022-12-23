@@ -3,7 +3,7 @@
 
 {
     'name': "Belgian Registered Cash Register Employee module",
-    'icon': '/l10n_be/static/description/icon.png',
+    'countries': ['be'],
     'category': "Hidden",
     'summary': 'Link module between Pos Blackbox Be and Pos HR',
 

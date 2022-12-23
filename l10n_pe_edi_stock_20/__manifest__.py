@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     "name": """Peruvian - Electronic Delivery Note 2.0""",
+    'countries': ['pe'],
     'version': '0.1',
     'summary': 'Electronic Delivery Note for Peru (REST API method)',
     'category': 'Accounting/Localizations/EDI',

@@ -2,7 +2,7 @@
 
 {
     'name': "Germany - Certification for Point of Sale of type restaurant",
-
+    'countries': ['de'],
     'summary': """
 Germany TSS Regulation for restaurant
 """,

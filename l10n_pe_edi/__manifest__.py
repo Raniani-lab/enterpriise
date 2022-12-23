@@ -1,7 +1,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'EDI for Peru',
-    'icon': '/l10n_pe/static/description/icon.png',
+    'countries': ['pe'],
     'version': '0.1',
     'summary': 'Electronic Invoicing for Peru (OSE method) and UBL 2.1',
     'category': 'Accounting/Localizations/EDI',

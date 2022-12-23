@@ -3,7 +3,7 @@
 
 {
     'name': 'Belgium - Disallowed Expenses Data',
-    'icon': '/l10n_be/static/description/icon.png',
+    'countries': ['be'],
     'version': '1.1',
     'category': 'Accounting/Accounting',
     'description': """

@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Mozambique - Accounting Reports',
-    'icon': '/l10n_mz/static/description/icon.png',
+    'countries': ['mz'],
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """

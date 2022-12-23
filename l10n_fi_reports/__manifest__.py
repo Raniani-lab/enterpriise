@@ -3,7 +3,7 @@
 
 {
     'name': 'Finland - Accounting Reports',
-    'icon': '/l10n_fi/static/description/icon.png',
+    'countries': ['fi'],
     'version': '1.1',
     'description': """
 Accounting reports for Finland

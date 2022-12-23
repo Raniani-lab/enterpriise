@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Bolivia - Accounting Reports',
-    'icon': '/l10n_bo/static/description/icon.png',
+    'countries': ['bo'],
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """

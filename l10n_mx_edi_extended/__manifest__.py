@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'EDI for Mexico (Advanced Features)',
-    'icon': '/l10n_mx/static/description/icon.png',
+    'countries': ['mx'],
     'version': '0.1',
     'category': 'Hidden',
     'depends': [

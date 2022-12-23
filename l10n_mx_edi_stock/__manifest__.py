@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     "name": """Mexico - Electronic Delivery Guide""",
+    'countries': ['mx'],
     'version': '1.0',
     'category': 'Accounting/Localizations/EDI',
     'description': """

@@ -3,7 +3,7 @@
 # See LICENSE file for full copyright and licensing details.
 {
     'name': 'Lithuania - Accounting Reports',
-    'icon': '/l10n_lt/static/description/icon.png',
+    'countries': ['lt'],
     'version': '1.0.0',
     'description': """
         Accounting reports for Lithuania

@@ -5,6 +5,7 @@
     'name': 'Kenya - Payroll additionnal fields',
     'author': 'Odoo',
     'version': '1.0',
+    'countries': ['ke'],
     'category': 'Human Resources',
     'description': """
 Kenyan Payroll Rules

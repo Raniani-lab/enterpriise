@@ -3,7 +3,7 @@
 
 {
     "name": "Odoo Mexican Localization Reports",
-    'icon': '/l10n_mx/static/description/icon.png',
+    'countries': ['mx'],
     "summary": """
         Electronic accounting reports
             - COA

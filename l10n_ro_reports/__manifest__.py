@@ -3,7 +3,7 @@
 
 {
     'name': 'Romania - Accounting Reports',
-    'icon': '/l10n_ro/static/description/icon.png',
+    'countries': ['ro'],
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """

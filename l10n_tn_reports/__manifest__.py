@@ -3,7 +3,7 @@
 
 {
     'name': 'Tunisia - Accounting Reports',
-    'icon': '/l10n_tn/static/description/icon.png',
+    'countries': ['tn'],
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """

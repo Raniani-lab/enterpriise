@@ -3,7 +3,7 @@
 
 {
     'name': 'Belgium - Payroll with Accounting',
-    'icon': '/l10n_be/static/description/icon.png',
+    'countries': ['be'],
     'category': 'Human Resources',
     'depends': ['l10n_be_hr_payroll', 'hr_payroll_account', 'l10n_be'],
     'description': """

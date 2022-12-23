@@ -3,7 +3,7 @@
 
 {
     'name': 'Account Consolidation Demo Data',
-    'icon': '/l10n_be/static/description/icon.png',
+    'countries': ['be'],
     'version': '1.0',
     'category': 'Hidden',
     'sequence': 50,

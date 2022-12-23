@@ -3,7 +3,7 @@
 
 {
     'name': 'Sweden - Accounting Reports',
-    'icon': '/l10n_se/static/description/icon.png',
+    'countries': ['se'],
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'author': "XCLUDE, Linserv, Odoo SA",

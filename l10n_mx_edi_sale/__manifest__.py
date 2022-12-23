@@ -2,6 +2,7 @@
 
 {
     'name': 'CFDI 4.0 fields for sale orders',
+    'countries': ['mx'],
     'version': '1.0',
     'category': 'Accounting/Localizations/EDI',
     'depends': [

@@ -3,7 +3,7 @@
 
 {
     'name': 'French Payroll',
-    'icon': '/l10n_fr/static/description/icon.png',
+    'countries': ['fr'],
     'category': 'Human Resources/Payroll',
     'author': 'Yannick Buron (SYNERPGY)',
     'depends': ['hr_payroll', 'l10n_fr'],

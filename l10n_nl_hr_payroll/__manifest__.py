@@ -3,7 +3,7 @@
 
 {
     'name': 'Netherlands - Payroll',
-    'icon': '/l10n_nl/static/description/icon.png',
+    'countries': ['nl'],
     'category': 'Human Resources/Payroll',
     'depends': ['hr_payroll', 'hr_contract_reports', 'hr_work_entry_holidays', 'hr_payroll_holidays'],
     'version': '1.0',

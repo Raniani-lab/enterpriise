@@ -3,6 +3,7 @@
 
 {
     'name': 'Kenya - Payroll with Accounting',
+    'countries': ['ke'],
     'author': 'Odoo',
     'version': '1.0',
     'category': 'Human Resources',

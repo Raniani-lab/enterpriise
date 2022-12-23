@@ -3,6 +3,7 @@
 {
     'name': 'Mexican Localization for the Point of Sale',
     'version': '0.1',
+    'countries': ['mx'],
     'category': 'Accounting/Localizations/EDI',
     'description': """
     """,

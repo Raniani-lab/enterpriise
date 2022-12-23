@@ -3,7 +3,7 @@
 
 {
     'name': 'Denmark - Accounting Reports',
-    'icon': '/l10n_dk/static/description/icon.png',
+    'countries': ['dk'],
     'version': '1.0',
     'author': 'Odoo House ApS',
     'website': 'https://odoohouse.dk',

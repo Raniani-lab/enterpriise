@@ -2,7 +2,7 @@
  # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     "name": "1099 Reporting",
-    'icon': '/l10n_us/static/description/icon.png',
+    'countries': ['us'],
     "summary": """Easily export 1099 data for e-filing with a 3rd party.""",
     "category": "Accounting/Accounting",
     "description": """

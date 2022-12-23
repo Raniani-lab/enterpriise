@@ -3,7 +3,7 @@
 
 {
     'name': "France - FEC Import",
-    'icon': '/l10n_fr/static/description/icon.png',
+    'countries': ['fr'],
     "summary": "Import Accounting Data from FEC files",
     "description": """
         Module for the import of FEC standard files, useful for importing accounting history.

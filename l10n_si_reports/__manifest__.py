@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Slovenia - Accounting Reports',
-    'icon': '/l10n_si/static/description/icon.png',
+    'countries': ['si'],
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """ Base module for Slovenian reports """,

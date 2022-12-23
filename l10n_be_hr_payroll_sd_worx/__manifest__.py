@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 {
     'name': "Belgium - Payroll - Export to SD Worx",
-    'icon': '/l10n_be/static/description/icon.png',
+    'countries': ['be'],
 
     'summary': "Export Work Entries to SD Worx",
 

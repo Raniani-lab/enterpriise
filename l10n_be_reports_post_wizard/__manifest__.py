@@ -3,6 +3,7 @@
 
 {
     'name': 'Belgium - Accounting Reports (post wizard)',
+    'countries': ['be'],
     'version': '1.0',
     'category': 'Accounting/Localizations/Reporting',
     'description': """

@@ -3,7 +3,7 @@
 
 {
     'name': 'Belgium - Payroll - Dimona',
-    'icon': '/l10n_be/static/description/icon.png',
+    'countries': ['be'],
     'category': 'Human Resources',
     'depends': ['l10n_be_hr_payroll'],
     'external_dependencies': {

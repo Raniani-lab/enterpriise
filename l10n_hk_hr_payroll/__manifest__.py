@@ -3,7 +3,7 @@
 
 {
     'name': 'Hong Kong - Payroll',
-    'icon': '/l10n_hk/static/description/icon.png',
+    'countries': ['hk'],
     'category': 'Human Resources/Payroll',
     'depends': [
         'hr_payroll',

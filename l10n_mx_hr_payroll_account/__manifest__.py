@@ -3,7 +3,7 @@
 
 {
     'name': 'Mexico - Payroll with Accounting',
-    'icon': '/l10n_mx/static/description/icon.png',
+    'countries': ['mx'],
     'author': 'Odoo',
     'version': '1.0',
     'category': 'Human Resources',

@@ -3,7 +3,7 @@
 
 {
     'name': 'Singapore - Accounting Reports',
-    'icon': '/l10n_sg/static/description/icon.png',
+    'countries': ['sg'],
     'version': '1.1',
     'author': 'Tech Receptives',
     'category': 'Accounting/Localizations/Reporting',

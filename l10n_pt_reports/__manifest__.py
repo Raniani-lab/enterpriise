@@ -4,7 +4,7 @@
 
 {
     'name': 'Portugal - Accounting Reports',
-    'icon': '/l10n_pt/static/description/icon.png',
+    'countries': ['pt'],
     'version': '1.0',
     'description': """
 Accounting reports for Portugal

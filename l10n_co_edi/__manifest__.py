@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Electronic invoicing for Colombia with Carvajal',
-    'icon': '/l10n_co/static/description/icon.png',
+    'countries': ['co'],
     'version': '0.1',
     'category': 'Accounting/Localizations/EDI',
     'summary': 'Colombian Localization for EDI documents',

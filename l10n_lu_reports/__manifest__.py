@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Luxembourg - Accounting Reports',
-    'icon': '/l10n_lu/static/description/icon.png',
+    'countries': ['lu'],
     'version': '1.0',
     'description': """
 Accounting reports for Luxembourg

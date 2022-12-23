@@ -2,7 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 {
     'name': 'Luxembourg - Annual VAT Report 2023 update',
-    'icon': '/l10n_lu/static/description/icon.png',
+    'countries': ['lu'],
     'version': '1.0',
     'description': """
 Annual VAT report for Luxembourg - 2023 update

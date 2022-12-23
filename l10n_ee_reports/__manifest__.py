@@ -3,6 +3,7 @@
 {
     'name': 'Estonia - Accounting Reports',
     'version': '1.0',
+    'countries': ['ee'],
     'category': 'Accounting/Localizations/Reporting',
     'description': """
 Accounting Reports for Estonia

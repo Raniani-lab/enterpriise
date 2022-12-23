@@ -3,7 +3,7 @@
 
 {
     'name': 'France - Payroll with Accounting',
-    'icon': '/l10n_fr/static/description/icon.png',
+    'countries': ['fr'],
     'category': 'Human Resources',
     'depends': ['l10n_fr_hr_payroll', 'hr_payroll_account', 'l10n_fr'],
     'description': """

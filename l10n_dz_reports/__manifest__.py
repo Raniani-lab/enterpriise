@@ -3,7 +3,7 @@
 
 {
     'name': 'Algeria - Accounting Reports',
-    'icon': '/l10n_dz/static/description/icon.png',
+    'countries': ['dz'],
     'version': '0.1',
     'description': """
 Accounting reports for Algeria

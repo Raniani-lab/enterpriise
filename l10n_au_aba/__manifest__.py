@@ -3,7 +3,7 @@
 # Based on the module developped by Richard de Meester, from Willdoo IT
 {
     'name': "ABA Credit Transfer",
-    'icon': '/l10n_au/static/description/icon.png',
+    'countries': ['au'],
     'summary': """Export payments as ABA Credit Transfer files""",
     'description': """
 ABA Credit Transfer

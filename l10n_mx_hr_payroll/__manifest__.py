@@ -3,7 +3,7 @@
 
 {
     'name': 'Mexico - Payroll',
-    'icon': '/l10n_mx/static/description/icon.png',
+    'countries': ['mx'],
     'category': 'Human Resources/Payroll',
     'depends': ['hr_payroll', 'hr_contract_reports', 'hr_work_entry_holidays', 'hr_payroll_holidays'],
     'version': '1.0',

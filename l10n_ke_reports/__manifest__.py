@@ -3,6 +3,7 @@
 
 {
     'name': 'Kenya - Accounting Reports',
+    'countries': ['ke'],
     'version': '1.0',
     'description': """
 Accounting reports for Kenya

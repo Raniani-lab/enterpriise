@@ -5,7 +5,7 @@
 
 {
     'name': 'UK - Accounting Reports',
-    'icon': '/l10n_uk/static/description/icon.png',
+    'countries': ['gb'],
     'version': '1.1',
     'category': 'Accounting/Localizations/Reporting',
     'description': """

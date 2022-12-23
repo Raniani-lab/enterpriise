@@ -3,7 +3,7 @@
 
 {
     'name': 'Belgian Intrastat Declaration',
-    'icon': '/l10n_be/static/description/icon.png',
+    'countries': ['be'],
     'category': 'Accounting/Localizations/Reporting',
     'description': """
 Generates Intrastat XML report for declaration

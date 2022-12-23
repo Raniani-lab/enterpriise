@@ -3,7 +3,7 @@
 
 {
     'name': 'Hong Kong - Payroll with Accounting',
-    'icon': '/l10n_hk/static/description/icon.png',
+    'countries': ['hk'],
     'version': '1.0',
     'category': 'Human Resources/Payroll',
     'description': """

@@ -3,6 +3,7 @@
 
 {
     'name': 'Norway - Accounting Reports',
+    'countries': ['no'],
     'version': '1.1',
     'description': """
 Accounting reports for Norway

@@ -33,7 +33,7 @@ msgstr ""
 #. odoo-javascript
 #: code:addons/documents_spreadsheet_crm/data/files/pipeline_dashboard.json:0
 #, python-format
-msgid "Loss Reasons"
+msgid "Lost Reasons"
 msgstr ""
 
 #. module: documents_spreadsheet_crm

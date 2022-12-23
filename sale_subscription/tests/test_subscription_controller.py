@@ -200,7 +200,7 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
         url = self._build_url("/my/orders/%s/transaction" % subscription.id)
         res = self._make_json_rpc_request(url, data)
         self.assertEqual(res.status_code, 200)
-        subscription.transaction_ids.provider_id.support_manual_capture = True
+        subscription.transaction_ids.provider_id.support_manual_capture = 'full_only'
         subscription.transaction_ids._set_authorized()
         subscription.invoice_ids.filtered(lambda am: am.state == 'draft')._post()
         subscription.transaction_ids.token_id = self.payment_method.id

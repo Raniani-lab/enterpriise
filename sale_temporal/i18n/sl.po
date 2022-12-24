@@ -3,8 +3,12 @@
 # 	* sale_temporal
 # 
 # Translators:
-# Martin Trigaux, 2022
+# Boris Kodelja <boris@hbs.si>, 2022
+# laznikd <laznik@mentis.si>, 2022
+# Matjaz Mozetic <m.mozetic@matmoz.si>, 2022
 # matjaz k <matjaz@mentis.si>, 2022
+# Martin Trigaux, 2022
+# Tadej Lupšina <tadej@hbs.si>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:30+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: matjaz k <matjaz@mentis.si>, 2022\n"
+"Last-Translator: Tadej Lupšina <tadej@hbs.si>, 2022\n"
 "Language-Team: Slovenian (https://www.transifex.com/odoo/teams/41243/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -38,7 +42,7 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__active
 msgid "Active"
-msgstr ""
+msgstr "Aktivno"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
@@ -48,7 +52,7 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__company_id
 msgid "Company"
-msgstr ""
+msgstr "Podjetje"
 
 #. module: sale_temporal
 #: model_terms:ir.actions.act_window,help:sale_temporal.product_pricing_action
@@ -60,18 +64,18 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__create_uid
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__create_uid
 msgid "Created by"
-msgstr ""
+msgstr "Ustvaril"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__create_date
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__create_date
 msgid "Created on"
-msgstr ""
+msgstr "Ustvarjeno"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__currency_id
 msgid "Currency"
-msgstr ""
+msgstr "Valuta"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_product__product_pricing_ids
@@ -89,23 +93,23 @@ msgstr "Dan"
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__day
 msgid "Days"
-msgstr ""
+msgstr "Dni"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__description
 msgid "Description"
-msgstr ""
+msgstr "Opis"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__display_name
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Prikazani naziv"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__duration
 msgid "Duration"
-msgstr ""
+msgstr "Trajanje"
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_product__display_price
@@ -124,12 +128,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__id
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_order__internal_note
 msgid "Internal Note"
-msgstr ""
+msgstr "Interni Zaznamek"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_subscription_order_view_form
@@ -146,19 +150,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing____last_update
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Zadnjič spremenjeno"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__write_uid
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Zadnji posodobil"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__write_date
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Zadnjič posodobljeno"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_product__display_price
@@ -183,18 +187,18 @@ msgstr "Mesec"
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__month
 msgid "Months"
-msgstr ""
+msgstr "Meseci"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__name
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__name
 msgid "Name"
-msgstr ""
+msgstr "Naziv"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_subscription_order_view_form
 msgid "Notes"
-msgstr ""
+msgstr "Beležke"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
@@ -206,7 +210,7 @@ msgstr "Obdobje"
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_temporal_recurrence_view_form
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_temporal_recurrence_view_tree
 msgid "Periodicity"
-msgstr ""
+msgstr "Periodičnost"
 
 #. module: sale_temporal
 #: model:ir.actions.act_window,name:sale_temporal.sale_temporal_recurrence_action
@@ -216,13 +220,13 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__price
 msgid "Price"
-msgstr ""
+msgstr "Cena"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_product_pricelist
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__pricelist_id
 msgid "Pricelist"
-msgstr ""
+msgstr "Cenik"
 
 #. module: sale_temporal
 #: model:ir.actions.act_window,name:sale_temporal.product_pricing_action
@@ -238,7 +242,7 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_product_template
 msgid "Product"
-msgstr ""
+msgstr "Proizvod"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__product_template_id
@@ -248,22 +252,22 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Različica proizvoda"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__product_variant_ids
 msgid "Product Variants"
-msgstr ""
+msgstr "Različice proizvoda"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Products"
-msgstr ""
+msgstr "Proizvodi"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__recurrence_id
 msgid "Recurrency"
-msgstr ""
+msgstr "Ponovitve"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricelist__product_pricing_ids
@@ -283,12 +287,12 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Prodajni nalog"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_order_line
 msgid "Sales Order Line"
-msgstr ""
+msgstr "Postavka prodajnega naloga"
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_pricing__product_variant_ids
@@ -332,12 +336,12 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__unit
 msgid "Unit"
-msgstr ""
+msgstr "Enota"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Variants"
-msgstr ""
+msgstr "Različice"
 
 #. module: sale_temporal
 #. odoo-python
@@ -349,7 +353,7 @@ msgstr "Teden"
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__week
 msgid "Weeks"
-msgstr ""
+msgstr "Tedni"
 
 #. module: sale_temporal
 #. odoo-python
@@ -361,7 +365,7 @@ msgstr "Leto"
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__year
 msgid "Years"
-msgstr ""
+msgstr "Leta"
 
 #. module: sale_temporal
 #. odoo-python

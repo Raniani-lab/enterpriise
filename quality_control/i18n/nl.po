@@ -1201,7 +1201,7 @@ msgstr ""
 #: code:addons/quality_control/wizard/quality_check_wizard.py:0
 #, python-format
 msgid "You must provide a picture before validating"
-msgstr ""
+msgstr "Je moet een foto verstrekken voordat je valideert"
 
 #. module: quality_control
 #. odoo-python

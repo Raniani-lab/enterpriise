@@ -35,7 +35,7 @@ msgstr "(+1 muu)"
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointments_cards
 msgid "<i class=\"fa fa-ban me-2\"/>Unpublished"
-msgstr ""
+msgstr "Avaldamata"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_pages_kanban_view

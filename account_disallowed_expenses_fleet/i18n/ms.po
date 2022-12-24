@@ -68,7 +68,7 @@ msgstr "ID"
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_account_move_line
 msgid "Journal Item"
-msgstr ""
+msgstr "Item Jurnal"
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_disallowed_expenses_rate____last_update
@@ -99,7 +99,7 @@ msgstr ""
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_fleet_vehicle
 #: model:ir.model.fields,field_description:account_disallowed_expenses_fleet.field_fleet_disallowed_expenses_rate__vehicle_id
 msgid "Vehicle"
-msgstr ""
+msgstr "kenderaan"
 
 #. module: account_disallowed_expenses_fleet
 #: model:ir.model,name:account_disallowed_expenses_fleet.model_fleet_disallowed_expenses_rate

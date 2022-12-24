@@ -57,7 +57,7 @@ msgstr ""
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__amount
 msgid "Amount"
-msgstr ""
+msgstr "Jumlah"
 
 #. module: hr_expense_extract
 #. odoo-python
@@ -70,12 +70,12 @@ msgstr ""
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_ir_attachment
 msgid "Attachment"
-msgstr ""
+msgstr "Lampiran"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__available_payment_method_line_ids
 msgid "Available Payment Method Line"
-msgstr ""
+msgstr "Talian Kaedah Pembayaran Tersedia"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_can_show_resend_button
@@ -447,7 +447,7 @@ msgstr ""
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__to_validate
 msgid "To validate"
-msgstr ""
+msgstr "Untuk mengesahkan"
 
 #. module: hr_expense_extract
 #: model:ir.actions.act_window,name:hr_expense_extract.action_expense_sample_receipt

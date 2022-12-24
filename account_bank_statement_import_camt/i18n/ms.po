@@ -446,7 +446,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Conversion"
-msgstr ""
+msgstr "Penukaran"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1402,7 +1402,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Other"
-msgstr ""
+msgstr "Lain-lain"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

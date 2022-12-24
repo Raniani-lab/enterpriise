@@ -92,38 +92,38 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_needaction
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Tindakan Diperlukan"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__active
 msgid "Active"
-msgstr ""
+msgstr "Aktif"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_ids
 msgid "Activities"
-msgstr ""
+msgstr "Aktiviti"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Hiasan Pengecualian Aktiviti"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Keadaan Aktiviti"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "Ikon Jenis Aktiviti"
 
 #. module: mrp_plm
 #: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco_bom_change__change_type__add
 #: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco_routing_change__change_type__add
 msgid "Add"
-msgstr ""
+msgstr "Tambah"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_stage_view_form
@@ -153,12 +153,12 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_name
 msgid "Alias Name"
-msgstr ""
+msgstr "Nama Alias"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_domain
 msgid "Alias domain"
-msgstr ""
+msgstr "Domain alias"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__alias_model_id
@@ -168,7 +168,7 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.view_document_search_mrp_plm
 msgid "All"
-msgstr ""
+msgstr "Semua"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_type_dashboard_view_kanban
@@ -270,7 +270,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 #: model_terms:ir.ui.view,arch_db:mrp_plm.view_document_search_mrp_plm
 msgid "Archived"
-msgstr ""
+msgstr "Diarkibkan"
 
 #. module: mrp_plm
 #: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__effectivity__asap
@@ -280,20 +280,20 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__effectivity__date
 msgid "At Date"
-msgstr ""
+msgstr "Pada Tarikh"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_attachment_count
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Kiraan Lampiran"
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:0
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__mrp_document_ids
 #, python-format
 msgid "Attachments"
-msgstr ""
+msgstr "Lampiran"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval__awaiting_my_validation
@@ -528,7 +528,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
 #: model_terms:ir.ui.view,arch_db:mrp_plm.view_document_file_kanban_mrp_plm
 msgid "Delete"
-msgstr ""
+msgstr "Padam"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__description
@@ -582,7 +582,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__state__done
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Done"
-msgstr ""
+msgstr "Selesai"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_kanban
@@ -820,7 +820,7 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Future Activities"
-msgstr ""
+msgstr "Aktiviti Masa Depan"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__legend_done
@@ -841,7 +841,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__has_message
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Mempunyai Mesej"
 
 #. module: mrp_plm
 #: model:ir.module.category,description:mrp_plm.module_category_manufacturing_product_lifecycle_management_(plm)
@@ -1025,7 +1025,7 @@ msgstr "Kemas Kini Terakhir pada"
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "Late Activities"
-msgstr ""
+msgstr "Aktiviti Lewat"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_production__latest_bom_id
@@ -1108,7 +1108,7 @@ msgstr "Nama"
 #. module: mrp_plm
 #: model:mrp.eco.stage,name:mrp_plm.ecostage_new
 msgid "New"
-msgstr ""
+msgstr "Baru"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__new_bom_id
@@ -1158,17 +1158,17 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Tarikh Akhir Aktiviti Seterusnya"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Ringkasan Aktiviti Seterusnya"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Jenis Aktiviti Seterusnya"
 
 #. module: mrp_plm
 #: model_terms:ir.actions.act_window,help:mrp_plm.mrp_bom_action_kanban
@@ -1206,7 +1206,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_needaction_counter
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Bilangan Tindakan"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_has_error_counter
@@ -1452,7 +1452,7 @@ msgstr ""
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_view_form
 msgid "Reject"
-msgstr ""
+msgstr "Tolak"
 
 #. module: mrp_plm
 #: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco_approval__status__rejected
@@ -1604,7 +1604,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__tag_ids
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_tag_view_tree
 msgid "Tags"
-msgstr ""
+msgstr "Tag"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_stage_view_form
@@ -1687,7 +1687,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:mrp_plm.selection__mrp_eco__state__confirmed
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
 msgid "To Do"
-msgstr ""
+msgstr "Untuk Dilakukan"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
@@ -1735,7 +1735,7 @@ msgstr ""
 #. module: mrp_plm
 #: model:res.groups,name:mrp_plm.group_plm_user
 msgid "User"
-msgstr ""
+msgstr "pengguna"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_approval_template__user_ids

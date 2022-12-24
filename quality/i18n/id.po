@@ -313,7 +313,7 @@ msgstr "Terlipat"
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_follower_ids
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_follower_ids
 msgid "Followers"
-msgstr "Pengikut"
+msgstr "Follower"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__message_partner_ids
@@ -321,7 +321,7 @@ msgstr "Pengikut"
 #: model:ir.model.fields,field_description:quality.field_quality_check__message_partner_ids
 #: model:ir.model.fields,field_description:quality.field_quality_point__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "Pengikut (Rekanan)"
+msgstr "Follower (Mitra)"
 
 #. module: quality
 #: model:ir.model.fields,help:quality.field_quality_alert__activity_type_icon
@@ -521,7 +521,7 @@ msgstr "Pesan"
 #: model:ir.model.fields,field_description:quality.field_quality_alert__my_activity_date_deadline
 #: model:ir.model.fields,field_description:quality.field_quality_check__my_activity_date_deadline
 msgid "My Activity Deadline"
-msgstr ""
+msgstr "Deadline Kegiatan Saya"
 
 #. module: quality
 #: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
@@ -556,7 +556,7 @@ msgstr "Baru"
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_calendar_event_id
 #: model:ir.model.fields,field_description:quality.field_quality_check__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr ""
+msgstr "Kalender Acara Aktivitas Berikutnya"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_alert__activity_date_deadline

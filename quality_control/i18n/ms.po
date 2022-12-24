@@ -196,7 +196,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_frequency_type__all
 msgid "All"
-msgstr ""
+msgstr "Semua"
 
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__stock_move_line__check_state__pass
@@ -206,7 +206,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Archived"
-msgstr ""
+msgstr "Diarkibkan"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__average
@@ -432,7 +432,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Kumpulan Oleh"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__id
@@ -552,7 +552,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_view_form
 msgid "Miscellaneous"
-msgstr ""
+msgstr "Macam-macam"
 
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_frequency_unit__month
@@ -569,12 +569,12 @@ msgstr ""
 #: code:addons/quality_control/models/quality.py:0
 #, python-format
 msgid "New"
-msgstr ""
+msgstr "Baru"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
 msgid "Next"
-msgstr ""
+msgstr "Seterusnya"
 
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__stock_move_line__check_state__no_checks
@@ -637,7 +637,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_wizard_form_failure
 msgid "OK"
-msgstr ""
+msgstr "Okey"
 
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_check__measure_on__operation
@@ -820,7 +820,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:quality_control.view_stock_move_line_detailed_operation_tree_inherit_quality
 #, python-format
 msgid "Quality Check"
-msgstr ""
+msgstr "Pemeriksaan Kualiti"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_graph
@@ -1046,7 +1046,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_stock_move
 msgid "Stock Move"
-msgstr ""
+msgstr "Pergerakan Saham"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__move_line_id
@@ -1057,7 +1057,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_tag_view_search
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_tag_view_tree
 msgid "Tags"
-msgstr ""
+msgstr "Tag"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
@@ -1134,7 +1134,7 @@ msgstr "Unit ukuran"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
 msgid "Validate"
-msgstr ""
+msgstr "Sahkan"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__warning_message
@@ -1174,7 +1174,7 @@ msgstr ""
 #: code:addons/quality_control/wizard/quality_check_wizard.py:0
 #, python-format
 msgid "You must provide a picture before validating"
-msgstr ""
+msgstr "Anda mesti memberikan gambar sebelum mengesahkan"
 
 #. module: quality_control
 #. odoo-python

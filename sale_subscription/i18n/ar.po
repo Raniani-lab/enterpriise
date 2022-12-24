@@ -6,6 +6,7 @@
 # Mustafa Rawi <mustafa@cubexco.com>, 2022
 # Malaz Abuidris <msea@odoo.com>, 2022
 # Martin Trigaux, 2022
+# Niyas Raphy, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Niyas Raphy, 2022\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1303,7 +1304,7 @@ msgstr "احتساب النسبة بين عدد أفضل التقييمات ('ر
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.product_template_search_view_inherit_sale_subscription
 msgid "Can be Recurring"
-msgstr ""
+msgstr "يمكن أن تكون متكررة"
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -1854,7 +1855,7 @@ msgstr ""
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Go back to the subscription view"
-msgstr ""
+msgstr "ارجع إلى الاشتراك رأي"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__health__done
@@ -2799,7 +2800,7 @@ msgstr "متكررة "
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_total
 msgid "Recurring Amount"
-msgstr ""
+msgstr "المبلغ متكرر"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__recurring_rule_type
@@ -3003,14 +3004,14 @@ msgstr "البحث عن قالب "
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Select a recurrence"
-msgstr ""
+msgstr "حدد تكرار"
 
 #. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Select a recurring product"
-msgstr ""
+msgstr "حدد ملف متكرر منتج"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__user_closable

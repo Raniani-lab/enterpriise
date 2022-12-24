@@ -7,6 +7,7 @@
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # Martin Trigaux, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:30+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -329,12 +330,12 @@ msgstr "Product (%s) heeft onverenigbare waarden: %s"
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
 msgid "Time based pricing"
-msgstr ""
+msgstr "Op tijd gebaseerde prijzen"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Time based rules"
-msgstr ""
+msgstr "Op tijd gebaseerde regels"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__unit
@@ -378,6 +379,8 @@ msgid ""
 "You can not have a time-based rule for products that are not recurring or "
 "rentable."
 msgstr ""
+"Je kan geen op tijd gebaseerde regel instellen voor producten die niet "
+"terugkerend of verhuurbaar zijn."
 
 #. module: sale_temporal
 #. odoo-python

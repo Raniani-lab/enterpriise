@@ -56,7 +56,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post__account_ids
 #: model_terms:ir.ui.view,arch_db:account_budget.view_budget_post_form
 msgid "Accounts"
-msgstr ""
+msgstr "Akaun"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__percentage
@@ -66,27 +66,27 @@ msgstr ""
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Tindakan Diperlukan"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_ids
 msgid "Activities"
-msgstr ""
+msgstr "Aktiviti"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Hiasan Pengecualian Aktiviti"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Keadaan Aktiviti"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "Ikon Jenis Aktiviti"
 
 #. module: account_budget
 #: model:ir.model.fields,help:account_budget.field_crossovered_budget_lines__practical_amount
@@ -109,7 +109,7 @@ msgstr ""
 #: model:ir.model,name:account_budget.model_account_analytic_account
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__analytic_account_id
 msgid "Analytic Account"
-msgstr ""
+msgstr "Akaun Analitik"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget_lines__analytic_plan_id
@@ -124,7 +124,7 @@ msgstr ""
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Kiraan Lampiran"
 
 #. module: account_budget
 #: model:ir.model,name:account_budget.model_crossovered_budget
@@ -270,13 +270,13 @@ msgstr "Nama paparan"
 #: model:ir.model.fields.selection,name:account_budget.selection__crossovered_budget__state__done
 #: model_terms:ir.ui.view,arch_db:account_budget.crossovered_budget_view_form
 msgid "Done"
-msgstr ""
+msgstr "Selesai"
 
 #. module: account_budget
 #: model:ir.model.fields.selection,name:account_budget.selection__crossovered_budget__state__draft
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "Draft"
-msgstr ""
+msgstr "Draf"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
@@ -317,17 +317,17 @@ msgstr ""
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "Future Activities"
-msgstr ""
+msgstr "Aktiviti Masa Depan"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
 msgid "Group By"
-msgstr ""
+msgstr "Kumpulan Oleh"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Mempunyai Mesej"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_account_budget_post__id
@@ -391,7 +391,7 @@ msgstr "Kemas Kini Terakhir pada"
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_search
 msgid "Late Activities"
-msgstr ""
+msgstr "Aktiviti Lewat"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_main_attachment_id
@@ -427,17 +427,17 @@ msgstr ""
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Tarikh Akhir Aktiviti Seterusnya"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Ringkasan Aktiviti Seterusnya"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Jenis Aktiviti Seterusnya"
 
 #. module: account_budget
 #: model_terms:ir.ui.view,arch_db:account_budget.view_crossovered_budget_line_search
@@ -447,7 +447,7 @@ msgstr ""
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Bilangan Tindakan"
 
 #. module: account_budget
 #: model:ir.model.fields,field_description:account_budget.field_crossovered_budget__message_has_error_counter

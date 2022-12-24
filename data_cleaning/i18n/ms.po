@@ -36,7 +36,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:data_cleaning.view_data_cleaning_record_list
 #: model_terms:ir.ui.view,arch_db:data_cleaning.view_data_merge_model_form
 msgid "Action"
-msgstr ""
+msgstr "Tindakan"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_rule__action_display
@@ -51,13 +51,13 @@ msgstr ""
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__action
 msgid "Actions"
-msgstr ""
+msgstr "Tindakan"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_model__active
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__active
 msgid "Active"
-msgstr ""
+msgstr "Aktif"
 
 #. module: data_cleaning
 #: code:addons/data_cleaning/models/data_cleaning_rule.py:0
@@ -178,7 +178,7 @@ msgstr ""
 #. module: data_cleaning
 #: model_terms:ir.ui.view,arch_db:data_cleaning.view_data_cleaning_record_list
 msgid "Discard"
-msgstr ""
+msgstr "Buang"
 
 #. module: data_cleaning
 #: model_terms:ir.ui.view,arch_db:data_cleaning.view_data_cleaning_record_search
@@ -451,7 +451,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:data_cleaning.view_data_cleaning_record_list
 #, python-format
 msgid "Validate"
-msgstr ""
+msgstr "Sahkan"
 
 #. module: data_cleaning
 #: model:ir.model.fields.selection,name:data_cleaning.selection__data_cleaning_model__notify_frequency_period__weeks

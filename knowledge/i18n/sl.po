@@ -2,12 +2,24 @@
 # This file contains the translation of the following modules:
 # 	* knowledge
 # 
+# Translators:
+# Vida Potočnik <vida.potocnik@mentis.si>, 2022
+# laznikd <laznik@mentis.si>, 2022
+# Boris Kodelja <boris@hbs.si>, 2022
+# Grega Vavtar <grega@hbs.si>, 2022
+# Jasmina Macur <jasmina@hbs.si>, 2022
+# Martin Trigaux, 2022
+# Tadej Lupšina <tadej@hbs.si>, 2022
+# matjaz k <matjaz@mentis.si>, 2022
+# Matjaz Mozetic <m.mozetic@matmoz.si>, 2022
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
+"Last-Translator: Matjaz Mozetic <m.mozetic@matmoz.si>, 2022\n"
 "Language-Team: Slovenian (https://www.transifex.com/odoo/teams/41243/sl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -43,7 +55,7 @@ msgstr ""
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "%s (copy)"
-msgstr ""
+msgstr "%s (kopija)"
 
 #. module: knowledge
 #: code:addons/knowledge/models/knowledge_article.py:0
@@ -642,17 +654,17 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Potreben je ukrep"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__active
 msgid "Active"
-msgstr ""
+msgstr "Aktivno"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_ids
 msgid "Activities"
-msgstr ""
+msgstr "Aktivnosti"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_exception_decoration
@@ -662,7 +674,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Stanje aktivnosti"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_type_icon
@@ -726,7 +738,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Administrator"
-msgstr ""
+msgstr "Administrator"
 
 #. module: knowledge
 #. openerp-web
@@ -745,7 +757,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search_items
 msgid "Archived"
-msgstr ""
+msgstr "Arhivirano"
 
 #. module: knowledge
 #. openerp-web
@@ -796,16 +808,16 @@ msgstr ""
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
-msgid "Are you sure you want to remove you own \"Write\" access ?"
+msgid ""
+"Are you sure you want to remove your member? By leaving an article, you may "
+"lose access to it."
 msgstr ""
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
-msgid ""
-"Are you sure you want to remove your member? By leaving an article, you may "
-"lose access to it."
+msgid "Are you sure you want to remove your own \"Write\" access ?"
 msgstr ""
 
 #. module: knowledge
@@ -909,7 +921,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
 #, python-format
 msgid "Articles"
-msgstr ""
+msgstr "Članki"
 
 #. module: knowledge
 #: code:addons/knowledge/models/knowledge_article.py:0
@@ -943,7 +955,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Število prilog"
 
 #. module: knowledge
 #. openerp-web
@@ -951,7 +963,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Based on"
-msgstr ""
+msgstr "Na osnovi"
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_action
@@ -961,7 +973,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__body
 msgid "Body"
-msgstr ""
+msgstr "Vsebina"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_can_read
@@ -1008,7 +1020,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_invite_view_form
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "Prekliči"
 
 #. module: knowledge
 #: code:addons/knowledge/models/knowledge_article.py:0
@@ -1031,7 +1043,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.js:0
 #, python-format
 msgid "Categories"
-msgstr ""
+msgstr "Kategorije"
 
 #. module: knowledge
 #. openerp-web
@@ -1057,24 +1069,24 @@ msgstr ""
 #: code:addons/knowledge/static/src/macros/abstract_macro.js:0
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "Zaključi"
 
 #. module: knowledge
 #: model:ir.ui.menu,name:knowledge.knowledge_menu_configuration
 msgid "Configuration"
-msgstr ""
+msgstr "Nastavitve"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Confirmation"
-msgstr ""
+msgstr "Potrditev"
 
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Stik"
 
 #. module: knowledge
 #. openerp-web
@@ -1131,7 +1143,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
 msgid "Created by"
-msgstr ""
+msgstr "Ustvaril"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -1147,13 +1159,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
 msgid "Created on"
-msgstr ""
+msgstr "Ustvarjeno"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_mail_invite
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_trash_notification
 msgid "Dear"
-msgstr ""
+msgstr "Spoštovani"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__internal_permission
@@ -1183,7 +1195,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.xml:0
 #, python-format
 msgid "Discard"
-msgstr ""
+msgstr "Opusti"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__display_name
@@ -1192,7 +1204,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__display_name
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__display_name
 msgid "Display Name"
-msgstr ""
+msgstr "Prikazani naziv"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -1205,14 +1217,14 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "Prenesi"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/views/list_view.js:0
 #, python-format
 msgid "Duplicate"
-msgstr ""
+msgstr "Podvoji"
 
 #. module: knowledge
 #. openerp-web
@@ -1240,7 +1252,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/macros/abstract_macro.js:0
 #, python-format
 msgid "Error"
-msgstr ""
+msgstr "Napaka"
 
 #. module: knowledge
 #: code:addons/knowledge/models/knowledge_article.py:0
@@ -1279,24 +1291,24 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_favorite_view_tree
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree_favorites
 msgid "Favorites"
-msgstr ""
+msgstr "Priljubljene"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "File"
-msgstr ""
+msgstr "Datoteka"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Sledilci"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_partner_ids
 msgid "Followers (Partners)"
-msgstr ""
+msgstr "Sledilci (partnerji)"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__activity_type_icon
@@ -1318,7 +1330,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_member_view_search
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Združi po"
 
 #. module: knowledge
 #. openerp-web
@@ -1375,7 +1387,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.ui.menu,name:knowledge.knowledge_menu_home
 msgid "Home"
-msgstr ""
+msgstr "Domov"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__id
@@ -1384,12 +1396,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__id
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__id
 msgid "ID"
-msgstr ""
+msgstr "ID"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_exception_icon
 msgid "Icon"
-msgstr ""
+msgstr "Ikona"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__activity_exception_icon
@@ -1399,13 +1411,13 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__message_needaction
 msgid "If checked, new messages require your attention."
-msgstr ""
+msgstr "Če je označeno, zahtevajo nova sporočila vašo pozornost."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__message_has_error
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__message_has_sms_error
 msgid "If checked, some messages have a delivery error."
-msgstr ""
+msgstr "Če je označeno, nekatera sporočila vsebujejo napako pri dostavi."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__is_desynchronized
@@ -1512,12 +1524,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_invite_view_form
 msgid "Invite"
-msgstr ""
+msgstr "Povabi"
 
 #. module: knowledge
 #: model:ir.actions.act_window,name:knowledge.knowledge_invite_action_from_article
 msgid "Invite people"
-msgstr ""
+msgstr "Povabi znance"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_favorite__is_article_active
@@ -1532,7 +1544,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_is_follower
 msgid "Is Follower"
-msgstr ""
+msgstr "Je sledilec"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_article_item
@@ -1559,9 +1571,19 @@ msgid "Item List"
 msgstr ""
 
 #. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #: model:ir.ui.menu,name:knowledge.knowledge_menu_root
+#, python-format
 msgid "Knowledge"
-msgstr ""
+msgstr "Znanje"
 
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_knowledge_article
@@ -1607,7 +1629,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover____last_update
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite____last_update
 msgid "Last Modified on"
-msgstr ""
+msgstr "Zadnjič spremenjeno"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__write_uid
@@ -1616,7 +1638,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__write_uid
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__write_uid
 msgid "Last Updated by"
-msgstr ""
+msgstr "Zadnji posodobil"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__write_date
@@ -1625,7 +1647,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__write_date
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__write_date
 msgid "Last Updated on"
-msgstr ""
+msgstr "Zadnjič posodobljeno"
 
 #. module: knowledge
 #. openerp-web
@@ -1653,14 +1675,14 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__is_locked
 msgid "Locked"
-msgstr ""
+msgstr "Zaklenjeno"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/xml/knowledge_frontend.xml:0
 #, python-format
 msgid "Log in"
-msgstr ""
+msgstr "Prijava"
 
 #. module: knowledge
 #: code:addons/knowledge/models/knowledge_article.py:0
@@ -1673,24 +1695,32 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_main_attachment_id
 msgid "Main Attachment"
+msgstr "Glavna priponka"
+
+#. module: knowledge
+#. openerp-web
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#: code:addons/knowledge/static/src/js/wysiwyg.js:0
+#, python-format
+msgid "Media"
 msgstr ""
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_member_view_form
 msgid "Member"
-msgstr ""
+msgstr "Član"
 
 #. module: knowledge
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_member_action
 #: model:ir.ui.menu,name:knowledge.knowledge_article_member_menu
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_member_view_tree
 msgid "Members"
-msgstr ""
+msgstr "Člani"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_member_ids
 msgid "Members Information"
-msgstr ""
+msgstr "Informacije o članih"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__root_article_id
@@ -1700,12 +1730,12 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Napaka pri dostavi sporočila"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Sporočila"
 
 #. module: knowledge
 #. openerp-web
@@ -1751,14 +1781,14 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search_items
 msgid "My Favorites"
-msgstr ""
+msgstr "Moje priljubljene"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_items
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_tree_trash
 msgid "Name"
-msgstr ""
+msgstr "Naziv"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -1780,17 +1810,17 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Rok naslednje aktivnosti"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Povzetek naslednje aktivnosti"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Tip naslednje aktivnosti"
 
 #. module: knowledge
 #. openerp-web
@@ -1845,22 +1875,22 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Število aktivnosti"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_has_error_counter
 msgid "Number of errors"
-msgstr ""
+msgstr "Število napak"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr ""
+msgstr "Število sporočil, ki zahtevajo dejavnost"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__message_has_error_counter
 msgid "Number of messages with delivery error"
-msgstr ""
+msgstr "Število sporočil, ki niso bila pravilno dostavljena."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -1873,7 +1903,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.js:0
 #, python-format
 msgid "Ok"
-msgstr ""
+msgstr "V Redu"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -1895,7 +1925,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/behaviors/embedded_view_behavior/embedded_view_manager.xml:0
 #, python-format
 msgid "Open"
-msgstr ""
+msgstr "Odprto"
 
 #. module: knowledge
 #. openerp-web
@@ -1912,13 +1942,13 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__parent_path
 msgid "Parent Path"
-msgstr ""
+msgstr "Pot nadrejenega"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_member__partner_id
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_member_view_search
 msgid "Partner"
-msgstr ""
+msgstr "Partner"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_member__permission
@@ -1939,7 +1969,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_properties
 msgid "Properties"
-msgstr ""
+msgstr "Lastnosti"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -1949,7 +1979,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__partner_ids
 msgid "Recipients"
-msgstr ""
+msgstr "Prejemniki"
 
 #. module: knowledge
 #. openerp-web
@@ -1984,19 +2014,19 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog.xml:0
 #, python-format
 msgid "Rename"
-msgstr ""
+msgstr "Preimenuj"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "Odgovorni uporabnik"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Restore"
-msgstr ""
+msgstr "Obnovi"
 
 #. module: knowledge
 #. openerp-web
@@ -2025,12 +2055,12 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "Napaka pri dostavi SMS "
 
 #. module: knowledge
 #: model:ir.ui.menu,name:knowledge.knowledge_menu_article
 msgid "Search"
-msgstr ""
+msgstr "Iskanje"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_favorite_view_search
@@ -2072,7 +2102,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__category
 msgid "Section"
-msgstr ""
+msgstr "Rubrika"
 
 #. module: knowledge
 #. openerp-web
@@ -2102,14 +2132,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__sequence
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_favorite__sequence
 msgid "Sequence"
-msgstr ""
+msgstr "Zaporedje"
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__category__shared
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
 msgid "Shared"
-msgstr ""
+msgstr "Souporaba"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree_frontend
@@ -2151,6 +2181,10 @@ msgid ""
 "Today: Activity date is today\n"
 "Planned: Future activities."
 msgstr ""
+"Status na osnovi aktivnosti\n"
+"Zapadel: Rok je že prekoračen\n"
+"Danes: Datum aktivnosti je danes\n"
+"Planirano: Bodoče aktivnosti."
 
 #. module: knowledge
 #. openerp-web
@@ -2166,7 +2200,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 #, python-format
 msgid "Template"
-msgstr ""
+msgstr "Predloga"
 
 #. module: knowledge
 #. openerp-web
@@ -2258,7 +2292,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__name
 msgid "Title"
-msgstr ""
+msgstr "Naslov"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -2296,12 +2330,12 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "Vrsta dejavnosti izjeme na zapisu. "
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "Unarchive"
-msgstr ""
+msgstr "Dearhiviraj"
 
 #. module: knowledge
 #. openerp-web
@@ -2315,14 +2349,14 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid "Untitled"
-msgstr ""
+msgstr "Brez naslova"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/behaviors/articles_structure_behavior/articles_structure_behavior.xml:0
 #, python-format
 msgid "Update"
-msgstr ""
+msgstr "Posodobi"
 
 #. module: knowledge
 #. openerp-web
@@ -2358,7 +2392,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_favorite__user_id
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_favorite_view_search
 msgid "User"
-msgstr ""
+msgstr "Uporabnik"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_favorite_sequence
@@ -2385,12 +2419,12 @@ msgstr ""
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Sporočila iz spletne strani"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Kronologija komunikacij spletne strani"
 
 #. module: knowledge
 #: code:addons/knowledge/models/res_users.py:0
@@ -2614,7 +2648,7 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "or"
-msgstr ""
+msgstr "ali"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding

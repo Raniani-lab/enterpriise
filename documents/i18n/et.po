@@ -7,18 +7,18 @@
 # Maidu Targama <m.targama@gmail.com>, 2022
 # Martin Aavastik <martin@avalah.ee>, 2022
 # Algo Kärp <algokarp@gmail.com>, 2022
+# Helen Sulaoja <helen@avalah.ee>, 2022
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Egon Raamat <egon@avalah.ee>, 2022
 # Andre Roomet <andreroomet@gmail.com>, 2022
-# Helen Sulaoja <helen@avalah.ee>, 2022
 # Piia Paurson <piia@avalah.ee>, 2022
 # Triine Aavik <triine@avalah.ee>, 2022
 # Martin Trigaux, 2022
 # Rivo Zängov <eraser@eraser.ee>, 2022
-# Leaanika Randmets, 2022
 # Jana Jaakson, 2022
 # Patrick-Jordan Kiudorv, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
+# Leaanika Randmets, 2022
 # 
 msgid ""
 msgstr ""
@@ -26,7 +26,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Eneli Õigus <enelioigus@gmail.com>, 2022\n"
+"Last-Translator: Leaanika Randmets, 2022\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -39,7 +39,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid " + Add a tag"
-msgstr ""
+msgstr " + Lisa silt"
 
 #. module: documents
 #. odoo-javascript
@@ -65,7 +65,7 @@ msgstr "%s faili pole liigutatud, sest nad on teise kasutaja poolt lukustatud"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid ", expired on"
-msgstr ", aegub "
+msgstr ", aegub"
 
 #. module: documents
 #: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
@@ -78,17 +78,17 @@ msgstr ""
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2017
 msgid "2021"
-msgstr ""
+msgstr "2021"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2018
 msgid "2022"
-msgstr ""
+msgstr "2022"
 
 #. module: documents
 #: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
 msgid "<b class=\"tip_title\">Tip: Become a paperless company</b>"
-msgstr ""
+msgstr "<b class=\"tip_title\">Nõuanne: Alusta paberivaba ettevõtlusega</b>"
 
 #. module: documents
 #. odoo-python
@@ -675,7 +675,7 @@ msgstr "Võimaldab teil hallata dokumente."
 #: code:addons/documents/models/workflow.py:0
 #, python-format
 msgid "Already linked Documents"
-msgstr ""
+msgstr "Juba seotud dokumendid"
 
 #. module: documents
 #: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
@@ -683,6 +683,8 @@ msgid ""
 "An easy way to process incoming mails is to configure your scanner to send "
 "PDFs to"
 msgstr ""
+"Lihtne moodus sissetulevate meilide haldamiseks on seadistada skänner "
+"selliselt, et PDFid saadetakse"
 
 #. module: documents
 #: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
@@ -704,7 +706,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "An error occured while uploading."
-msgstr ""
+msgstr "Esines tõrge faili laadimisel"
 
 #. module: documents
 #. odoo-javascript
@@ -794,6 +796,10 @@ msgid ""
 "class=\"o_folder_description_alias\"><strong>inbox-financial</strong> email "
 "alias</span>."
 msgstr ""
+"Automatiseerige oma postkast kasutatades skanneeritud dokumente või "
+"meilidega, mis on saadetud <span "
+"class=\"o_folder_description_alias\"><strong>inbox-financial</strong> email "
+"alias</span>."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__available_rule_ids
@@ -823,7 +829,7 @@ msgstr "Brošüürid"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_mail_activity_type__folder_id
 msgid "By defining a folder, the upload activities will generate a document"
-msgstr "Faili defineerides genereevad üleslaadimise tegevused dokumendi."
+msgstr "Faili defineerides genereevad üleslaadimise tegevused dokumendi"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__can_upload
@@ -865,7 +871,7 @@ msgstr "Kontrollsumma/SHA1"
 #: code:addons/documents/models/workflow.py:0
 #, python-format
 msgid "Choose a record to link"
-msgstr ""
+msgstr "Vali, millega soovid siduda"
 
 #. module: documents
 #. odoo-javascript
@@ -924,7 +930,7 @@ msgstr "Seadistus"
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Configure Email Servers"
-msgstr ""
+msgstr "Seadista e-posti serverid"
 
 #. module: documents
 #: model:ir.model,name:documents.model_res_partner
@@ -953,7 +959,7 @@ msgstr "Lepingud"
 #: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
 #, python-format
 msgid "Control panel buttons"
-msgstr ""
+msgstr "Kontrollpaneeli nupud"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__create_model
@@ -1093,7 +1099,7 @@ msgstr "Näidatav nimi"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "Do you really want to unlink this record?"
-msgstr ""
+msgstr "Kas soovite kindlasti need dokumendid lahti siduda?"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_document
@@ -1143,7 +1149,7 @@ msgstr "Dokumendipäring: %s Üleslaadija: %s"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__has_write_access
 msgid "Document User Upload Rights"
-msgstr ""
+msgstr "Dokumendi üles laadimise kasutajaõigused"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_workflow_action
@@ -1158,7 +1164,7 @@ msgstr "Dokumendi nimekiri"
 #. module: documents
 #: model:mail.template,name:documents.mail_template_document_request
 msgid "Document: Document Request"
-msgstr ""
+msgstr "Dokument: Dokumendi taotlus"
 
 #. module: documents
 #. odoo-javascript
@@ -1345,7 +1351,7 @@ msgstr "Faili suurus"
 #: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "File is too large."
-msgstr ""
+msgstr "Fail on liiga suur."
 
 #. module: documents
 #: model:ir.model,name:documents.model_ir_binary
@@ -1475,7 +1481,7 @@ msgstr "Ikoon"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__activity_exception_icon
 msgid "Icon to indicate an exception activity."
-msgstr "Ikoon, mis näitab erandi tegevust"
+msgstr "Ikoon, mis näitab erandi tegevust."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__message_needaction
@@ -1520,7 +1526,7 @@ msgstr "Saabuvad"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__include_sub_folders
 msgid "Include Sub Folders"
-msgstr ""
+msgstr "Kaasa alamkaustad"
 
 #. module: documents
 #: model_terms:documents.folder,description:documents.documents_internal_folder
@@ -1542,7 +1548,7 @@ msgstr "Sisemine"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__is_editable_attachment
 msgid "Is Editable Attachment"
-msgstr ""
+msgstr "Muudetav manus"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__is_favorited
@@ -1558,7 +1564,7 @@ msgstr "Jälgija"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__is_shared
 msgid "Is Shared"
-msgstr ""
+msgstr "Jagatud"
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_internal_knowledge
@@ -1657,12 +1663,13 @@ msgstr ""
 #: model:ir.model.fields,help:documents.field_documents_folder__user_specific
 msgid "Limit Read Groups to the documents of which they are owner."
 msgstr ""
-"Piira dokumentide loetavuse gruppe vastavalt sellele, mille omanikud nad on."
+"Piira dokumentide lugemisgruppe vastavalt sellele, mille omanikud nad on."
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__user_specific_write
 msgid "Limit Write Groups to the documents of which they are owner."
 msgstr ""
+"Piira dokumentide kirjutamisgruppe vastavalt sellele, mille omanikud nad on."
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_link_to_record_form_view
@@ -1793,7 +1800,7 @@ msgstr "Liiguta tööalale"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
 msgid "Move to parent workspace"
-msgstr ""
+msgstr "Liiguta peamisele tööalale"
 
 #. module: documents
 #. odoo-javascript
@@ -1860,14 +1867,14 @@ msgstr "Uus grupp"
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "New Tag"
-msgstr ""
+msgstr "Uus silt"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "New Workspace"
-msgstr ""
+msgstr "Uus tööala"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_calendar_event_id
@@ -1989,7 +1996,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/helper/documents_action_helper.xml:0
 #, python-format
 msgid "Or send emails to"
-msgstr ""
+msgstr "Või saada meilid"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_knowledge_other
@@ -2026,7 +2033,7 @@ msgstr "Omanik"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
 msgid "Owner: #{document.owner_id.name}"
-msgstr ""
+msgstr "Omanik: #{document.owner_id.name}"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -2036,7 +2043,7 @@ msgstr "PDF/Dokument"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder_deletion_wizard__parent_folder_id
 msgid "Parent Folder"
-msgstr ""
+msgstr "Ülemkaust"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_parent_model_id
@@ -2074,7 +2081,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "Partial transfer"
-msgstr ""
+msgstr "Osaline üleviimine"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_share__alias_contact
@@ -2170,7 +2177,7 @@ msgstr "Taotle tegevust"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
 msgid "Request To"
-msgstr "Esita päring "
+msgstr "Esita päring"
 
 #. module: documents
 #. odoo-javascript
@@ -2277,12 +2284,12 @@ msgstr "Saatke see kiri õigusosakonda, määrates õiged sildid külge."
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_legal
 msgid "Send to Legal"
-msgstr "Saatke Õiguslikku."
+msgstr "Saada juriidilisele osakonnale kontrolliks"
 
 #. module: documents
 #: model:mail.template,description:documents.mail_template_document_request
 msgid "Sent to partner when requesting a document from them"
-msgstr ""
+msgstr "Dokumendi taotlemise saadetud partnerile"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
@@ -2295,7 +2302,7 @@ msgstr "Järjestus"
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_2018contracts
 msgid "Set As 2022 Contracts"
-msgstr ""
+msgstr "Määra 2022. lepinguteks"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__partner_id
@@ -2355,14 +2362,14 @@ msgstr "Jaga linke"
 #: code:addons/documents/models/share.py:0
 #, python-format
 msgid "Share selected files"
-msgstr ""
+msgstr "Jaga valitud failid"
 
 #. module: documents
 #. odoo-python
 #: code:addons/documents/models/share.py:0
 #, python-format
 msgid "Share selected workspace"
-msgstr ""
+msgstr "Jaga valitud tööalad"
 
 #. module: documents
 #. odoo-javascript
@@ -2462,7 +2469,7 @@ msgstr ""
 "Tegevuspõhised staatused\n"
 "Üle aja: Tähtaeg on juba möödas\n"
 "Täna: Tegevuse tähtaeg on täna\n"
-"Planeeritud: Tulevased tegevused"
+"Planeeritud: Tulevased tegevused."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__children_folder_ids
@@ -2625,7 +2632,7 @@ msgstr "Pisipilt"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__thumbnail_status
 msgid "Thumbnail Status"
-msgstr ""
+msgstr "Pisipildi staatus"
 
 #. module: documents
 #. odoo-javascript
@@ -2733,19 +2740,19 @@ msgstr "Lae dokument"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__email_drop
 msgid "Upload by Email"
-msgstr "Laadige e-mailiga üles"
+msgstr "Lae e-mailiga üles"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "Upload by email"
-msgstr ""
+msgstr "Lae e-mailiga üles"
 
 #. module: documents
 #. odoo-python
 #: code:addons/documents/models/mail_activity.py:0
 #, python-format
 msgid "Upload file request"
-msgstr ""
+msgstr "Lae üles faili päring"
 
 #. module: documents
 #: model:ir.model,name:documents.model_res_users
@@ -2810,7 +2817,7 @@ msgstr "nädala järel"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
 msgid "What do you want to do with the files in the workspace?"
-msgstr ""
+msgstr "Mida soovite teha failidega, mis on tööalal?"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.workflow_rule_action
@@ -2871,8 +2878,8 @@ msgid ""
 "You can either upload a file from your computer or copy/paste an internet "
 "link to your file."
 msgstr ""
-"Saate faili üles laadida oma arvutisse või kopeerida / kleepida veebilehe "
-"lingi oma failile"
+"Saate faili üles laadida oma arvutisse või kopeerida/kleepida veebilehe "
+"lingi oma failile."
 
 #. module: documents
 #. odoo-python
@@ -2886,14 +2893,14 @@ msgstr "Te ei saa luua korduvaid kaustu."
 #: code:addons/documents/models/document.py:0
 #, python-format
 msgid "You don't have the right to move documents to that workspace."
-msgstr ""
+msgstr "Ei ole õigusi dokumente sellele tööalale liigutada."
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/search/documents_search_panel.js:0
 #, python-format
 msgid "You don't have the rights to move documents to that workspace"
-msgstr ""
+msgstr "Ei ole õigusi dokumente sellele tööalale liigutada"
 
 #. module: documents
 #. odoo-javascript
@@ -2961,27 +2968,27 @@ msgstr "nt aruta ettepanekut"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 msgid "e.g. Finance"
-msgstr ""
+msgstr "nt. Finants"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_request_form_view
 msgid "e.g. Missing Expense"
-msgstr ""
+msgstr "nt. Kulu puudub"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_form
 msgid "e.g. Status"
-msgstr ""
+msgstr "nt- Staatus"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_form
 msgid "e.g. To Validate"
-msgstr ""
+msgstr "nt. Kinnitamiseks"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "e.g. Validate document"
-msgstr ""
+msgstr "nt. Kinnita dokumen"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
@@ -3000,33 +3007,33 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "folder_id"
-msgstr ""
+msgstr "kasuta_id"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__is_readonly_model
 msgid "is_readonly_model"
-msgstr ""
+msgstr "ainult_lugemiseks"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "name"
-msgstr "Nimi"
+msgstr "nimi"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "owner_id"
-msgstr ""
+msgstr "oamniku_id"
 
 #. module: documents
 #. odoo-javascript
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "partner_id"
-msgstr ""
+msgstr "partneri_id"
 
 #. module: documents
 #. odoo-javascript
@@ -3061,7 +3068,7 @@ msgstr "jagatud"
 #: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "status code: %s, message: %s"
-msgstr ""
+msgstr "staatuse kood: %s, sõnum: %s"
 
 #. module: documents
 #. odoo-javascript
@@ -3075,4 +3082,4 @@ msgstr "nimetu"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "url"
-msgstr ""
+msgstr "url"

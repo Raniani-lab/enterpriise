@@ -19,6 +19,7 @@
 # Farouk Jabiri, 2022
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2022
 # Ivan Espinola, 2022
+# Guspy12, 2022
 # 
 msgid ""
 msgstr ""
@@ -26,7 +27,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Ivan Espinola, 2022\n"
+"Last-Translator: Guspy12, 2022\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -1083,7 +1084,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Are you sure you want to remove your own \"Write\" access ?"
-msgstr ""
+msgstr "Esteu segur que voleu eliminar el vostre propi accés \"Escriptura\"?"
 
 #. module: knowledge
 #. openerp-web

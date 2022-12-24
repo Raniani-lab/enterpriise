@@ -246,7 +246,7 @@ msgstr "Правила дублювання"
 #: code:addons/data_merge/models/data_merge_model.py:0
 #, python-format
 msgid "Deduplication is forbidden on the model: %s"
-msgstr ""
+msgstr "У моделі заборонено дедуплікацію: %s"
 
 #. module: data_merge
 #: model:ir.model.fields.selection,name:data_merge.selection__data_merge_model__removal_mode__delete
@@ -505,7 +505,7 @@ msgstr "Прикріплення дії об'єднання"
 #: code:addons/data_merge/models/data_merge_model.py:0
 #, python-format
 msgid "Missing required PostgreSQL extension: unaccent"
-msgstr ""
+msgstr "Відсутнє обов’язкове розширення PostgreSQL: без акценту"
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__res_model_id
@@ -570,7 +570,7 @@ msgstr "Сповістити користувачів"
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "Query Failed."
-msgstr ""
+msgstr "Помилка запиту."
 
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_group__record_ids
@@ -608,7 +608,7 @@ msgstr "Записи, придатні для процесу дедупліка�
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "Records must be of the same model"
-msgstr ""
+msgstr "Записи мають бути тієї ж моделі"
 
 #. module: data_merge
 #: model:ir.model.fields,help:data_merge.field_data_merge_model__merge_threshold
@@ -670,7 +670,7 @@ msgstr "Період сповіщень повинен бути більше 0."
 #: code:addons/data_merge/models/data_merge_record.py:0
 #, python-format
 msgid "The referenced record does not exist"
-msgstr ""
+msgstr "Запис, на який посилається, не існує"
 
 #. module: data_merge
 #. odoo-javascript

@@ -88,7 +88,7 @@ msgstr ""
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.report_rental_order_document
 msgid "<strong>Shipping Address:</strong>"
-msgstr ""
+msgstr "<strong>Alamat Penghantaran:</strong>"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
@@ -98,7 +98,7 @@ msgstr ""
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_configurator_view_form
 msgid "Add"
-msgstr ""
+msgstr "Tambah"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
@@ -115,7 +115,7 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__analytic_account_id
 msgid "Analytic Account"
-msgstr ""
+msgstr "Akaun Analitik"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
@@ -484,7 +484,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_report_search_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Kumpulan Oleh"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_order_wizard__has_late_lines
@@ -1138,7 +1138,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_renting.action_rental_config_settings
 #: model:ir.ui.menu,name:sale_renting.menu_rental_settings
 msgid "Settings"
-msgstr ""
+msgstr "Tetapan"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_wizard_view_form
@@ -1297,7 +1297,7 @@ msgstr ""
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_wizard_view_form
 msgid "Validate"
-msgstr ""
+msgstr "Sahkan"
 
 #. module: sale_renting
 #: code:addons/sale_renting/models/sale_order.py:0

@@ -130,6 +130,8 @@ msgid ""
 "<i class=\"fa fa-ellipsis-v\" aria-label=\"Selection\" role=\"img\" "
 "title=\"Selection\"/>"
 msgstr ""
+"<i class=\"fa fa-ellipsis-v\" aria-label=\"Selection\" role=\"img\" "
+"title=\"Selection\"/>"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.search_template_consolidation_report_period_comparisons
@@ -160,7 +162,7 @@ msgstr ""
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_kanban
 msgid "<span role=\"separator\">View</span>"
-msgstr ""
+msgstr "<span role=\"separator\">Lihat</span>"
 
 #. module: account_consolidation
 #: model:ir.model.constraint,message:account_consolidation.constraint_consolidation_account_code_uniq
@@ -193,7 +195,7 @@ msgstr ""
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_group_tree
 msgid "Account Group"
-msgstr ""
+msgstr "Kumpulan Akaun"
 
 #. module: account_consolidation
 #: model:ir.actions.act_window,name:account_consolidation.consolidation_group_action
@@ -208,7 +210,7 @@ msgstr "Kumpulan Akaun"
 #: model:ir.actions.act_window,name:account_consolidation.account_mapping_action
 #: model:ir.actions.act_window,name:account_consolidation.account_mapping_from_period_action
 msgid "Account Mapping"
-msgstr ""
+msgstr "Pemetaan Akaun"
 
 #. module: account_consolidation
 #. odoo-python
@@ -234,17 +236,17 @@ msgstr ""
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_account_form
 msgid "Account Name"
-msgstr ""
+msgstr "Nama akaun"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.account_mapping_search
 msgid "Account with Entries"
-msgstr ""
+msgstr "Akaun dengan Entri"
 
 #. module: account_consolidation
 #: model:ir.model,name:account_consolidation.model_account_report
 msgid "Accounting Report"
-msgstr ""
+msgstr "Laporan Perakaunan"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__account_ids
@@ -253,7 +255,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form
 msgid "Accounts"
-msgstr ""
+msgstr "Akaun"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_res_company__consolidation_color
@@ -263,12 +265,12 @@ msgstr ""
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Tindakan Diperlukan"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
 msgid "Active"
-msgstr ""
+msgstr "Aktif"
 
 #. module: account_consolidation
 #. odoo-javascript
@@ -291,7 +293,7 @@ msgstr ""
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.search_template_consolidation_report_journals
 msgid "All"
-msgstr ""
+msgstr "Semua"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.account_mapping_search
@@ -302,7 +304,7 @@ msgstr ""
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal_line__amount
 msgid "Amount"
-msgstr ""
+msgstr "Jumlah"
 
 #. module: account_consolidation
 #. odoo-python
@@ -345,12 +347,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form_onboarding
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_form_onboarding
 msgid "Apply"
-msgstr ""
+msgstr "Mohon"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Kiraan Lampiran"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.line_template_consolidation_report
@@ -388,7 +390,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal__balance
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_form
 msgid "Balance"
-msgstr ""
+msgstr "Seimbang"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form_onboarding
@@ -400,7 +402,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_company_period__chart_id
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_journal__chart_id
 msgid "Chart"
-msgstr ""
+msgstr "Carta"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.chart_of_account_step
@@ -848,13 +850,13 @@ msgstr "Nama paparan"
 #: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_setup_ccoa_state__done
 #: model:ir.model.fields.selection,name:account_consolidation.selection__res_company__consolidation_setup_consolidation_state__done
 msgid "Done"
-msgstr ""
+msgstr "Selesai"
 
 #. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__consolidation_period__state__draft
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
 msgid "Draft"
-msgstr ""
+msgstr "Draf"
 
 #. module: account_consolidation
 #. odoo-python
@@ -948,7 +950,7 @@ msgstr ""
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Mempunyai Mesej"
 
 #. module: account_consolidation
 #: model:ir.model.fields.selection,name:account_consolidation.selection__consolidation_account__currency_mode__hist
@@ -1031,7 +1033,7 @@ msgstr "Jurnal"
 #: model:ir.model,name:account_consolidation.model_account_move_line
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_journal_line_form
 msgid "Journal Item"
-msgstr ""
+msgstr "Item Jurnal"
 
 #. module: account_consolidation
 #: model:ir.actions.act_window,name:account_consolidation.view_account_move_line_filter
@@ -1178,7 +1180,7 @@ msgstr ""
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Bilangan Tindakan"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_has_error_counter
@@ -1323,7 +1325,7 @@ msgstr "Urutan"
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_company_period_form
 msgid "Settings"
-msgstr ""
+msgstr "Tetapan"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.chart_of_account_step

@@ -27,8 +27,8 @@ msgstr ""
 msgid ""
 "<span>There are multiple disallowed expenses rates in this period</span>"
 msgstr ""
-"<span>Er zijn in deze periode meerdere percentages voor verworpen "
-"uitgaven</span>"
+"<span>Er zijn in deze periode meerdere tarieven voor niet toegestane "
+"kosten</span>"
 
 #. module: account_disallowed_expenses
 #: model:ir.model,name:account_disallowed_expenses.model_account_account
@@ -44,7 +44,7 @@ msgstr "Actief"
 #. module: account_disallowed_expenses
 #: model_terms:ir.actions.act_window,help:account_disallowed_expenses.action_account_disallowed_expenses_category_list
 msgid "Add a Disallowed Expenses Category"
-msgstr "Voeg verworpen uitgaven toe"
+msgstr "Voeg een niet-toegestane kostencategorie toe"
 
 #. module: account_disallowed_expenses
 #: model:ir.model.fields,field_description:account_disallowed_expenses.field_account_disallowed_expenses_rate__category_id
@@ -116,7 +116,7 @@ msgstr "Verworpen uitgaven"
 #. module: account_disallowed_expenses
 #: model:ir.model,name:account_disallowed_expenses.model_account_disallowed_expenses_report_handler
 msgid "Disallowed Expenses Custom Handler"
-msgstr "Aangepaste handler voor verworpen uitgaven"
+msgstr "Aangepaste handler voor niet-toegestane kosten"
 
 #. module: account_disallowed_expenses
 #: model:ir.model,name:account_disallowed_expenses.model_account_disallowed_expenses_rate
@@ -127,7 +127,7 @@ msgstr "Niet aftrekbaar percentage"
 #: model:account.report,name:account_disallowed_expenses.disallowed_expenses_report
 #: model:ir.actions.client,name:account_disallowed_expenses.action_account_report_de
 msgid "Disallowed Expenses Report"
-msgstr "Verworpen uitgaven rapportage"
+msgstr "Net-toegestane kostenrapportage"
 
 #. module: account_disallowed_expenses
 #: model:ir.model.constraint,message:account_disallowed_expenses.constraint_account_disallowed_expenses_category_unique_code_in_country

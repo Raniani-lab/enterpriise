@@ -120,7 +120,7 @@ msgstr "Nom a mostrar"
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_account_analytic_line__display_task
 msgid "Display Task"
-msgstr ""
+msgstr "Mostra la tasca"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__display_timer
@@ -368,7 +368,7 @@ msgstr "Tiquet per al qual estem creant una comanda de vendes"
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.report_timesheet_ticket
 msgid "Ticket:"
-msgstr ""
+msgstr "Tiquet:"
 
 #. module: helpdesk_timesheet
 #: code:addons/helpdesk_timesheet/models/project.py:0
@@ -464,6 +464,8 @@ msgstr "Suport VIP"
 msgid ""
 "You cannot link a timesheet entry to a task and a ticket at the same time."
 msgstr ""
+"No podeu enllaçar una entrada de full de temps a una tasca i un tiquet al "
+"mateix temps."
 
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.report_timesheet_ticket

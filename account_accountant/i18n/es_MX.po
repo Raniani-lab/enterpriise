@@ -138,6 +138,8 @@ msgid ""
 "<span class=\"o_form_label\" attrs=\"{'invisible': "
 "[('form_force_negative_sign', '=', False)]}\">-</span>"
 msgstr ""
+"<span class=\"o_form_label\" attrs=\"{'invisible': "
+"[('form_force_negative_sign', '=', False)]}\">-</span>"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.res_config_settings_view_form
@@ -300,7 +302,7 @@ msgstr "Cuenta analítica"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__analytic_precision
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_precision
 msgid "Analytic Precision"
-msgstr ""
+msgstr "Precisión analítica"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__use_anglo_saxon
@@ -643,7 +645,7 @@ msgstr ""
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #, python-format
 msgid "Exchange Difference: %s"
-msgstr ""
+msgstr "Diferencia de cambio: %s"
 
 #. module: account_accountant
 #. openerp-web
@@ -1994,7 +1996,7 @@ msgstr "early_payment"
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__exchange_diff
 msgid "exchange_diff"
-msgstr ""
+msgstr "exchange_diff"
 
 #. module: account_accountant
 #: model:ir.model.fields.selection,name:account_accountant.selection__bank_rec_widget_line__flag__liquidity

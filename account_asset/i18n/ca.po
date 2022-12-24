@@ -1808,7 +1808,7 @@ msgstr "Usuari responsable"
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #, python-format
 msgid "Resume"
-msgstr "Continua"
+msgstr "Reprendre"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form

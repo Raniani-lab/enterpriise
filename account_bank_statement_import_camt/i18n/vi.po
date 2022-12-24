@@ -517,7 +517,7 @@ msgstr "Credit Card Payment"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Credit Transfer with agreed Commercial Information"
-msgstr ""
+msgstr "Credit Transfer with agreed Commercial Information"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

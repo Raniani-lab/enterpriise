@@ -60,7 +60,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "<span>Disc.%</span>"
-msgstr ""
+msgstr "<span>Cakera.%</span>"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
@@ -70,7 +70,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "<strong class=\"mr16\">Subtotal</strong>"
-msgstr ""
+msgstr "<strong class=\"mr16\">jumlah kecil</strong>"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
@@ -80,7 +80,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "<strong>Total</strong>"
-msgstr ""
+msgstr "<strong>Jumlah</strong>"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
@@ -102,7 +102,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "Amount"
-msgstr ""
+msgstr "Jumlah"
 
 #. module: industry_fsm_sale
 #: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_fsm_imply_task_rate
@@ -118,7 +118,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_account_analytic_line
 msgid "Analytic Account"
-msgstr ""
+msgstr "Akaun Analitik"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_billable
@@ -270,7 +270,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
 msgid "Group By"
-msgstr ""
+msgstr "Kumpulan Oleh"
 
 #. module: industry_fsm_sale
 #: model:product.product,uom_name:industry_fsm_sale.field_service_product

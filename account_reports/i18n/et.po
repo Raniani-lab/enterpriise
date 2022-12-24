@@ -17,6 +17,7 @@
 # Piia Paurson <piia@avalah.ee>, 2022
 # Triine Aavik <triine@avalah.ee>, 2022
 # Leaanika Randmets, 2022
+# Jana Jaakson, 2022
 # 
 msgid ""
 msgstr ""
@@ -24,7 +25,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Leaanika Randmets, 2022\n"
+"Last-Translator: Jana Jaakson, 2022\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -529,6 +530,8 @@ msgid ""
 "Actions may trigger specific behavior like opening calendar view or "
 "automatically mark as done when a document is uploaded"
 msgstr ""
+"Toimingud võivad käivitada teatud tegevuse, näiteks kalendrivaate avamine "
+"või dokumendi üleslaadimisel automaatselt tehtuks märkimine"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_mail_activity
@@ -1537,7 +1540,7 @@ msgstr "Eksport"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_reports_export_wizard_format
 msgid "Export format for accounting's reports"
-msgstr ""
+msgstr "Ekspordi format raamatupidamisaruannete jaoks"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_reports_export_wizard__export_format_ids

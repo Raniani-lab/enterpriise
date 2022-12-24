@@ -22,12 +22,12 @@ msgstr ""
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__action
 msgid "Action"
-msgstr ""
+msgstr "Tindakan"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_quality_check__boxes
 msgid "Boxes"
-msgstr ""
+msgstr "Kotak"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__cancel
@@ -113,7 +113,7 @@ msgstr "Kemas Kini Terakhir pada"
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__next
 msgid "Next"
-msgstr ""
+msgstr "Seterusnya"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__pack
@@ -155,7 +155,7 @@ msgstr ""
 #. module: mrp_workorder_iot
 #: model:ir.model,name:mrp_workorder_iot.model_quality_check
 msgid "Quality Check"
-msgstr ""
+msgstr "Pemeriksaan Kualiti"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__record
@@ -195,7 +195,7 @@ msgstr ""
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__validate
 msgid "Validate"
-msgstr ""
+msgstr "Sahkan"
 
 #. module: mrp_workorder_iot
 #: model:ir.model,name:mrp_workorder_iot.model_mrp_workcenter

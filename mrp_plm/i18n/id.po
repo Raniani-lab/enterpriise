@@ -801,13 +801,13 @@ msgstr "Sembunyikan dalam tampilan kanban"
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_follower_ids
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_follower_ids
 msgid "Followers"
-msgstr "Pengikut"
+msgstr "Follower"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__message_partner_ids
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_type__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "Pengikut (Rekanan)"
+msgstr "Follower (Mitra)"
 
 #. module: mrp_plm
 #: model:ir.model.fields,help:mrp_plm.field_mrp_eco__activity_type_icon
@@ -827,12 +827,12 @@ msgstr "Kegiatan - Kegiatan Mendatang"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__legend_done
 msgid "Green Kanban Label"
-msgstr ""
+msgstr "Label Kanban Hijau"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__legend_normal
 msgid "Grey Kanban Label"
-msgstr ""
+msgstr "Label Kanban Abu-Abu"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
@@ -985,7 +985,7 @@ msgstr "Status Kanban"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__kanban_state_label
 msgid "Kanban State Label"
-msgstr ""
+msgstr "Label Status Kanban"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__legend_done
@@ -1093,7 +1093,7 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__my_activity_date_deadline
 msgid "My Activity Deadline"
-msgstr ""
+msgstr "Deadline Kegiatan Saya"
 
 #. module: mrp_plm
 #: model_terms:ir.ui.view,arch_db:mrp_plm.mrp_eco_search
@@ -1159,7 +1159,7 @@ msgstr ""
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr ""
+msgstr "Kalender Acara Aktivitas Berikutnya"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__activity_date_deadline
@@ -1458,7 +1458,7 @@ msgstr "Rekam ID Thread"
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco_stage__legend_blocked
 msgid "Red Kanban Label"
-msgstr ""
+msgstr "Label Kanban Merah"
 
 #. module: mrp_plm
 #: model:ir.model.fields,field_description:mrp_plm.field_mrp_eco__name

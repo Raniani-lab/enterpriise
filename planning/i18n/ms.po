@@ -25,7 +25,7 @@ msgstr ""
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "%s (copy)"
-msgstr ""
+msgstr "%s (Salinan)"
 
 #. module: planning
 #: model:ir.actions.report,print_report_name:planning.report_planning_slot
@@ -248,7 +248,7 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_kanban
 msgid "<i class=\"fa fa-clock-o\" role=\"img\" aria-label=\"Date\" title=\"Date\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-clock-o\" role=\"img\" aria-label=\"Date\" title=\"Date\"/>"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_kanban
@@ -473,7 +473,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:planning.field_planning_role__active
 #: model:ir.model.fields,field_description:planning.field_planning_slot_template__active
 msgid "Active"
-msgstr ""
+msgstr "Aktif"
 
 #. module: planning
 #. odoo-javascript
@@ -569,7 +569,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_form
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_search
 msgid "Archived"
-msgstr ""
+msgstr "Diarkibkan"
 
 #. module: planning
 #. odoo-javascript
@@ -805,7 +805,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_kanban
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_kanban
 msgid "Delete"
-msgstr ""
+msgstr "Padam"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__department_id
@@ -831,7 +831,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
 #: model_terms:ir.ui.view,arch_db:planning.slot_planning_select_send_view_form
 msgid "Discard"
-msgstr ""
+msgstr "Buang"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__display_name
@@ -869,7 +869,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 #, python-format
 msgid "Draft"
-msgstr ""
+msgstr "Draf"
 
 #. module: planning
 #: model_terms:digest.tip,tip_description:planning.digest_tip_planning_0
@@ -1023,7 +1023,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__allocation_type__forecast
 msgid "Forecast"
-msgstr ""
+msgstr "Ramalan"
 
 #. module: planning
 #: model:ir.model.fields.selection,name:planning.selection__planning_recurrency__repeat_type__forever
@@ -1060,7 +1060,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_slot_template_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Kumpulan Oleh"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot_template__name
@@ -1268,13 +1268,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Material"
-msgstr ""
+msgstr "bahan"
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_resources
 #: model:ir.ui.menu,name:planning.planning_menu_settings_resource
 msgid "Materials"
-msgstr ""
+msgstr "Bahan"
 
 #. module: planning
 #: model:ir.model.fields,help:planning.field_planning_slot__repeat
@@ -1681,7 +1681,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:planning.field_planning_send__employee_ids
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_search
 msgid "Resources"
-msgstr ""
+msgstr "Sumber"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__role_id
@@ -1813,7 +1813,7 @@ msgstr "Urutan"
 #: model:ir.actions.act_window,name:planning.planning_action_settings
 #: model:ir.ui.menu,name:planning.planning_menu_settings_config
 msgid "Settings"
-msgstr ""
+msgstr "Tetapan"
 
 #. module: planning
 #. odoo-python
@@ -2187,7 +2187,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:planning.field_planning_slot__user_id
 #: model:res.groups,name:planning.group_planning_user
 msgid "User"
-msgstr ""
+msgstr "pengguna"
 
 #. module: planning
 #. odoo-python

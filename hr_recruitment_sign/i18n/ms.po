@@ -61,17 +61,17 @@ msgstr ""
 #. module: hr_recruitment_sign
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_sign.hr_recruitment_sign_view
 msgid "Attach a file"
-msgstr ""
+msgstr "Lampirkan fail"
 
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__attachment_ids
 msgid "Attachment"
-msgstr ""
+msgstr "Lampiran"
 
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__partner_id
 msgid "Contact"
-msgstr ""
+msgstr "Kenalan"
 
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__cc_partner_ids
@@ -91,7 +91,7 @@ msgstr "Dicipta pada"
 #. module: hr_recruitment_sign
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_sign.hr_recruitment_sign_view
 msgid "Discard"
-msgstr ""
+msgstr "Buang"
 
 #. module: hr_recruitment_sign
 #: model:ir.model.fields,field_description:hr_recruitment_sign.field_hr_recruitment_sign_document_wizard__display_name

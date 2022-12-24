@@ -60,7 +60,7 @@ msgstr ""
 #: code:addons/sale_stock_renting/static/src/widgets/qty_at_date_widget.xml:0
 #, python-format
 msgid "Availability"
-msgstr ""
+msgstr "Ketersediaan"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_order_wizard_line__qty_available

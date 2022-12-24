@@ -165,7 +165,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_terms_conditions_setting_banner
 msgid "<i class=\"fa fa-arrow-right me-1\"/>Back to settings"
-msgstr ""
+msgstr "<i class=\"fa fa-arrow-right me-1\"/>Kembali ke tetapan"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
@@ -283,7 +283,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_terms_conditions_setting_banner
 msgid "<span>This is a preview of your Terms &amp; Conditions.</span>"
-msgstr ""
+msgstr "<span>Ini ialah pratonton Terma &amp; syarat.</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
@@ -354,7 +354,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__access_warning
 msgid "Access warning"
-msgstr ""
+msgstr "Amaran akses"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__access_via_link
@@ -366,12 +366,12 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Action"
-msgstr ""
+msgstr "Tindakan"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Tindakan Diperlukan"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__action
@@ -389,17 +389,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_request__active
 #: model:ir.model.fields,field_description:sign.field_sign_template__active
 msgid "Active"
-msgstr ""
+msgstr "Aktif"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_ids
 msgid "Activities"
-msgstr ""
+msgstr "Aktiviti"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Hiasan Pengecualian Aktiviti"
 
 #. module: sign
 #. odoo-python
@@ -412,7 +412,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Keadaan Aktiviti"
 
 #. module: sign
 #: model:ir.model,name:sign.model_mail_activity_type
@@ -422,7 +422,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "Ikon Jenis Aktiviti"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__sign_log_ids
@@ -480,7 +480,7 @@ msgstr ""
 #: code:addons/sign/controllers/portal.py:0
 #, python-format
 msgid "All"
-msgstr ""
+msgstr "Semua"
 
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_request_documents
@@ -536,7 +536,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Archived"
-msgstr ""
+msgstr "Diarkibkan"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__start_sign
@@ -546,23 +546,23 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Attach a file"
-msgstr ""
+msgstr "Lampirkan fail"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__attachment_id
 msgid "Attachment"
-msgstr ""
+msgstr "Lampiran"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Kiraan Lampiran"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__attachment_ids
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__attachment_ids
 msgid "Attachments"
-msgstr ""
+msgstr "Lampiran"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_config_settings_view_form
@@ -688,7 +688,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__checkbox
 #: model:sign.item.type,name:sign.sign_item_type_checkbox
 msgid "Checkbox"
-msgstr ""
+msgstr "Kotak semak"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_template__is_sharing
@@ -817,7 +817,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sign.field_sign_send_request_signer__partner_id
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 msgid "Contact"
-msgstr ""
+msgstr "Kenalan"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
@@ -947,7 +947,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
 msgid "Delete"
-msgstr ""
+msgstr "Padam"
 
 #. module: sign
 #. odoo-javascript
@@ -1032,7 +1032,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Document"
-msgstr ""
+msgstr "Dokumen"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
@@ -1081,7 +1081,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
 msgid "Download"
-msgstr ""
+msgstr "Muat turun"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign._doc_sign
@@ -1216,7 +1216,7 @@ msgstr ""
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "Error"
-msgstr ""
+msgstr "Ralat"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.deleted_sign_request
@@ -1383,7 +1383,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Future Activities"
-msgstr ""
+msgstr "Aktiviti Masa Depan"
 
 #. module: sign
 #. odoo-javascript
@@ -1420,7 +1420,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Kumpulan Oleh"
 
 #. module: sign
 #: model:sign.template.tag,name:sign.sign_template_tag_1
@@ -1440,7 +1440,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Mempunyai Mesej"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__has_sign_requests
@@ -1685,7 +1685,7 @@ msgstr "Kemas Kini Terakhir pada"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "Late Activities"
-msgstr ""
+msgstr "Aktiviti Lewat"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__latitude
@@ -1946,17 +1946,17 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Tarikh Akhir Aktiviti Seterusnya"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Ringkasan Aktiviti Seterusnya"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Jenis Aktiviti Seterusnya"
 
 #. module: sign
 #. odoo-javascript
@@ -2035,7 +2035,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Bilangan Tindakan"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_kanban
@@ -2183,7 +2183,7 @@ msgstr ""
 #: model:sign.item.type,placeholder:sign.sign_item_type_phone
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 msgid "Phone"
-msgstr ""
+msgstr "Telefon"
 
 #. module: sign
 #. odoo-javascript
@@ -2263,7 +2263,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_common.xml:0
 #, python-format
 msgid "Reason"
-msgstr ""
+msgstr "Sebab"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__redirect_url
@@ -2555,7 +2555,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:sign.sign_settings_action
 #: model:ir.ui.menu,name:sign.sign_item_settings_menu
 msgid "Settings"
-msgstr ""
+msgstr "Tetapan"
 
 #. module: sign
 #. odoo-javascript
@@ -2771,7 +2771,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.signer_status_wrapper
 #, python-format
 msgid "Signature"
-msgstr ""
+msgstr "Tandatangan"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_requests
@@ -3099,7 +3099,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_tree
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_view_form
 msgid "Tags"
-msgstr ""
+msgstr "Tag"
 
 #. module: sign
 #. odoo-javascript
@@ -3604,7 +3604,7 @@ msgstr ""
 #: model:ir.model,name:sign.model_res_users
 #: model:ir.model.fields,field_description:sign.field_sign_log__user_id
 msgid "User"
-msgstr ""
+msgstr "pengguna"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__token
@@ -3621,7 +3621,7 @@ msgstr ""
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Validate"
-msgstr ""
+msgstr "Sahkan"
 
 #. module: sign
 #. odoo-javascript

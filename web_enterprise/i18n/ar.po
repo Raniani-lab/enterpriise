@@ -121,6 +121,7 @@ msgid ""
 "Contact your sales representative to help you to unlink your previous "
 "database"
 msgstr ""
+"اتصل بمندوب المبيعات لديك لمساعدتك في إلغاء ربط قاعدة البيانات السابقة"
 
 #. module: web_enterprise
 #. odoo-javascript

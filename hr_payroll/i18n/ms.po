@@ -231,7 +231,7 @@ msgstr ""
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.contribution_register
 msgid "<strong>Total</strong>"
-msgstr ""
+msgstr "<strong>Jumlah</strong>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
@@ -267,14 +267,14 @@ msgstr "Perakaunan"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__message_needaction
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Tindakan Diperlukan"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_structure__active
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__active
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_salary_attachment_view_search
 msgid "Active"
-msgstr ""
+msgstr "Aktif"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__active_amount
@@ -285,25 +285,25 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_ids
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__activity_ids
 msgid "Activities"
-msgstr ""
+msgstr "Aktiviti"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_exception_decoration
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Hiasan Pengecualian Aktiviti"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_state
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Keadaan Aktiviti"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_type_icon
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "Ikon Jenis Aktiviti"
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -320,7 +320,7 @@ msgstr ""
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_form
 msgid "Add an internal note..."
-msgstr ""
+msgstr "Tambahkan nota dalaman..."
 
 #. module: hr_payroll
 #: model:ir.actions.server,name:hr_payroll.action_hr_payslip_run_generate
@@ -337,7 +337,7 @@ msgstr ""
 #: code:addons/hr_payroll/static/src/components/dashboard/payslip_batch/payslip_batch.xml:0
 #, python-format
 msgid "All"
-msgstr ""
+msgstr "Semua"
 
 #. module: hr_payroll
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_payroll_employee_payslips
@@ -362,13 +362,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_payroll.contribution_register
 #: model_terms:ir.ui.view,arch_db:hr_payroll.report_payslip
 msgid "Amount"
-msgstr ""
+msgstr "Jumlah"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_line__amount_select
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__amount_select
 msgid "Amount Type"
-msgstr ""
+msgstr "Jenis Jumlah"
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_salary_attachment__monthly_amount
@@ -422,7 +422,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payroll_structure_filter
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_rule_filter
 msgid "Archived"
-msgstr ""
+msgstr "Diarkibkan"
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -453,7 +453,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__message_attachment_count
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Kiraan Lampiran"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__attachment_name
@@ -609,7 +609,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_rule__category_id
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_rule_filter
 msgid "Category"
-msgstr ""
+msgstr "kategori"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_contract_search_inherit
@@ -1168,7 +1168,7 @@ msgstr "Penerangan"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_edit_payslip_lines_form_wizard
 msgid "Discard"
-msgstr ""
+msgstr "Buang"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__display_name
@@ -1202,7 +1202,7 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__attachment
 msgid "Document"
-msgstr ""
+msgstr "Dokumen"
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payslip__state__done
@@ -1210,7 +1210,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_filter
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_filter
 msgid "Done"
-msgstr ""
+msgstr "Selesai"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_filter
@@ -1239,7 +1239,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_work_entry_report__state__draft
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_filter
 msgid "Draft"
-msgstr ""
+msgstr "Draf"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_filter
@@ -1432,7 +1432,7 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_index__display_warning
 msgid "Error"
-msgstr ""
+msgstr "Ralat"
 
 #. module: hr_payroll
 #. odoo-python
@@ -1591,7 +1591,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_line_filter
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_rule_filter
 msgid "Group By"
-msgstr ""
+msgstr "Kumpulan Oleh"
 
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_hr_work_entry
@@ -1613,7 +1613,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__has_message
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Mempunyai Mesej"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__has_negative_net_to_report
@@ -2110,7 +2110,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payslip_run__state__draft
 #, python-format
 msgid "New"
-msgstr ""
+msgstr "Baru"
 
 #. module: hr_payroll
 #. odoo-python
@@ -2143,19 +2143,19 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_date_deadline
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Tarikh Akhir Aktiviti Seterusnya"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_summary
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Ringkasan Aktiviti Seterusnya"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__activity_type_id
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Jenis Aktiviti Seterusnya"
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_work_entry_type__round_days__no
@@ -2218,7 +2218,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip_run__message_needaction_counter
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_salary_attachment__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Bilangan Tindakan"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_worked_days_line__number_of_days
@@ -3184,7 +3184,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:hr_payroll.action_hr_payroll_configuration
 #: model:ir.ui.menu,name:hr_payroll.menu_hr_payroll_global_settings
 msgid "Settings"
-msgstr ""
+msgstr "Tetapan"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_filter
@@ -3660,7 +3660,7 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_res_users
 msgid "User"
-msgstr ""
+msgstr "pengguna"
 
 #. module: hr_payroll
 #: model:res.groups,comment:hr_payroll.group_hr_payroll_user
@@ -3682,7 +3682,7 @@ msgstr ""
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payslip_run_form
 msgid "Validate"
-msgstr ""
+msgstr "Sahkan"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_edit_payslip_lines_form_wizard

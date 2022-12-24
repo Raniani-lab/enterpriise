@@ -180,6 +180,9 @@ msgid ""
 "legal reports, and set the rules to close a fiscal year and generate opening"
 " entries."
 msgstr ""
+"Jenis Akaun digunakan untuk tujuan maklumat, untuk menjana laporan undang-"
+"undang khusus negara, dan menetapkan peraturan untuk menutup tahun fiskal "
+"dan menjana entri pembukaan."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_depreciation_id
@@ -251,7 +254,7 @@ msgstr "Perakaunan"
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_report
 msgid "Accounting Report"
-msgstr ""
+msgstr "Laporan Perakaunan"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_acquisition_date
@@ -263,37 +266,37 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__modify_action
 msgid "Action"
-msgstr ""
+msgstr "Tindakan"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Tindakan Diperlukan"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__active
 msgid "Active"
-msgstr ""
+msgstr "Aktif"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_ids
 msgid "Activities"
-msgstr ""
+msgstr "Aktiviti"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Hiasan Pengecualian Aktiviti"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Keadaan Aktiviti"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "Ikon Jenis Aktiviti"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
@@ -344,12 +347,12 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution
 msgid "Analytic"
-msgstr ""
+msgstr "Analitik"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_precision
 msgid "Analytic Precision"
-msgstr ""
+msgstr "Ketepatan Analitik"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -357,7 +360,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Archived"
-msgstr ""
+msgstr "Diarkibkan"
 
 #. module: account_asset
 #. odoo-python
@@ -373,7 +376,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 #, python-format
 msgid "Asset"
-msgstr ""
+msgstr "Aset"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
@@ -517,7 +520,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
 msgid "Asset/Revenue Recognition"
-msgstr ""
+msgstr "Pengiktirafan Aset/Hasil"
 
 #. module: account_asset
 #. odoo-python
@@ -531,7 +534,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 #, python-format
 msgid "Assets"
-msgstr ""
+msgstr "Aset"
 
 #. module: account_asset
 #: model:ir.ui.menu,name:account_asset.menu_finance_config_assets
@@ -551,7 +554,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Kiraan Lampiran"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
@@ -616,7 +619,7 @@ msgstr ""
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "Characteristics"
-msgstr ""
+msgstr "Ciri-ciri"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__children_ids
@@ -774,7 +777,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__invoice_ids
 msgid "Customer Invoice"
-msgstr ""
+msgstr "Invois Pelanggan"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__date
@@ -1104,7 +1107,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__draft
 msgid "Draft"
-msgstr ""
+msgstr "Draf"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__draft_asset_ids
@@ -1204,7 +1207,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Future Activities"
-msgstr ""
+msgstr "Aktiviti Masa Depan"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__gain_or_loss__gain
@@ -1261,7 +1264,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Mempunyai Mesej"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__id
@@ -1349,7 +1352,7 @@ msgstr "Kemasukan jurnal"
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_move_line
 msgid "Journal Item"
-msgstr ""
+msgstr "Item Jurnal"
 
 #. module: account_asset
 #. odoo-python
@@ -1388,7 +1391,7 @@ msgstr "Kemas Kini Terakhir pada"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Late Activities"
-msgstr ""
+msgstr "Aktiviti Lewat"
 
 #. module: account_asset
 #. odoo-python
@@ -1518,17 +1521,17 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Tarikh Akhir Aktiviti Seterusnya"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Ringkasan Aktiviti Seterusnya"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Jenis Aktiviti Seterusnya"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1544,7 +1547,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__create_asset__no
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__gain_or_loss__no
 msgid "No"
-msgstr ""
+msgstr "Tidak"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__none
@@ -1582,7 +1585,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Bilangan Tindakan"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_purchase_tree

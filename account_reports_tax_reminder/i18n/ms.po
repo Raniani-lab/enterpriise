@@ -27,9 +27,9 @@ msgstr "Kemasukan jurnal"
 #. module: account_reports_tax_reminder
 #: model:mail.activity.type,name:account_reports_tax_reminder.mail_activity_type_tax_report_to_be_sent
 msgid "Tax Report Ready"
-msgstr ""
+msgstr "Laporan Cukai Sedia"
 
 #. module: account_reports_tax_reminder
 #: model:mail.activity.type,summary:account_reports_tax_reminder.mail_activity_type_tax_report_to_be_sent
 msgid "Tax report is ready to be sent to the administration"
-msgstr ""
+msgstr "Laporan cukai sedia untuk dihantar kepada pentadbiran"

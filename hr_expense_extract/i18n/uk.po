@@ -3,8 +3,8 @@
 # 	* hr_expense_extract
 # 
 # Translators:
-# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022
 # Martin Trigaux, 2022
+# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -25,7 +25,7 @@ msgstr ""
 #: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
 #, python-format
 msgid "<b>Congratulations</b>, you are now an expert of Expenses."
-msgstr ""
+msgstr "<b>Вітаємо</b>, тепер ви експерт з Витрат."
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -195,7 +195,7 @@ msgstr "Витрати"
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_ocr_parse_ir_actions_server
 #: model:ir.cron,cron_name:hr_expense_extract.ir_cron_ocr_parse
 msgid "Expense OCR: Parse Expenses"
-msgstr ""
+msgstr "Витрати OCR: Розібрати витрат"
 
 #. module: hr_expense_extract
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_update_ocr_status_ir_actions_server
@@ -207,7 +207,7 @@ msgstr "OCR витрат: Оновити всі статуси"
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_ocr_validate_ir_actions_server
 #: model:ir.cron,cron_name:hr_expense_extract.ir_cron_ocr_validate
 msgid "Expense OCR: Validate Expenses"
-msgstr ""
+msgstr "Витрати OCR: Підтвердити витрати"
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_hr_expense_sheet
@@ -219,7 +219,7 @@ msgstr "Звіт про витрати"
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "Expense is being Digitized"
-msgstr ""
+msgstr "Витрата оцифровується"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_res_config_settings__expense_extract_show_ocr_option_selection
@@ -445,7 +445,7 @@ msgstr "Код статусу"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__state_processed
 msgid "Status regarding OCR status"
-msgstr ""
+msgstr "Статус відповідно до статусу OCR"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form

@@ -76,7 +76,7 @@ msgstr ""
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.create_fsm_task_view_form
 msgid "Discard"
-msgstr ""
+msgstr "Buang"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__display_name

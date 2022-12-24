@@ -484,7 +484,7 @@ msgstr "Periode verwijzing"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.js:0
 #, python-format
 msgid "Period offset applied to this source"
-msgstr ""
+msgstr "Periode verwijzing toegepast op deze bron"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -603,7 +603,7 @@ msgstr "Naam wijzigen"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.js:0
 #, python-format
 msgid "Requires a selected field"
-msgstr ""
+msgstr "Vereist een geselecteerd veld"
 
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__revision_id

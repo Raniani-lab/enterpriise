@@ -348,7 +348,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__group_ids
 msgid "Access Groups"
-msgstr ""
+msgstr "Akses Kumpulan"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
@@ -367,7 +367,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_action__action
 #, python-format
 msgid "Action"
-msgstr ""
+msgstr "Tindakan"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__name
@@ -388,7 +388,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_needaction
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Tindakan Diperlukan"
 
 #. module: documents
 #. odoo-javascript
@@ -399,18 +399,18 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 #, python-format
 msgid "Actions"
-msgstr ""
+msgstr "Tindakan"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__active
 msgid "Active"
-msgstr ""
+msgstr "Aktif"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_ids
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Activities"
-msgstr ""
+msgstr "Aktiviti"
 
 #. module: documents
 #: model:ir.model,name:documents.model_mail_activity
@@ -422,7 +422,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Hiasan Pengecualian Aktiviti"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_note
@@ -432,7 +432,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Keadaan Aktiviti"
 
 #. module: documents
 #: model:ir.model,name:documents.model_mail_activity_type
@@ -442,7 +442,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "Ikon Jenis Aktiviti"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_request_wizard__activity_type_id
@@ -455,7 +455,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:documents.selection__documents_workflow_action__action__add
 #: model_terms:ir.ui.view,arch_db:documents.documents_upload_url_view
 msgid "Add"
-msgstr ""
+msgstr "Tambah"
 
 #. module: documents
 #. odoo-javascript
@@ -510,12 +510,12 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_name
 msgid "Alias Name"
-msgstr ""
+msgstr "Nama Alias"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_domain
 msgid "Alias domain"
-msgstr ""
+msgstr "Domain alias"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_model_id
@@ -591,7 +591,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Archived"
-msgstr ""
+msgstr "Diarkibkan"
 
 #. module: documents
 #. odoo-javascript
@@ -616,7 +616,7 @@ msgstr ""
 #. module: documents
 #: model:documents.facet,name:documents.documents_marketing_assets
 msgid "Assets"
-msgstr ""
+msgstr "Aset"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -627,13 +627,13 @@ msgstr ""
 #: model:ir.model,name:documents.model_ir_attachment
 #: model:ir.model.fields,field_description:documents.field_documents_document__attachment_id
 msgid "Attachment"
-msgstr ""
+msgstr "Lampiran"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_attachment_count
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Kiraan Lampiran"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__description
@@ -715,7 +715,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_form
 msgid "Category"
-msgstr ""
+msgstr "kategori"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__checksum
@@ -794,7 +794,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__criteria_partner_id
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Contact"
-msgstr ""
+msgstr "Kenalan"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
@@ -905,7 +905,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.share_view_tree
 #, python-format
 msgid "Delete"
-msgstr ""
+msgstr "Padam"
 
 #. module: documents
 #: model:ir.actions.act_window,name:documents.documents_folder_deletion_wizard_action
@@ -932,7 +932,7 @@ msgstr "Penerangan"
 #: model_terms:ir.ui.view,arch_db:documents.folder_view_form
 #: model_terms:ir.ui.view,arch_db:documents.tag_view_form
 msgid "Discard"
-msgstr ""
+msgstr "Buang"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__display_name
@@ -961,7 +961,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 #: model_terms:ir.ui.view,arch_db:documents.documents_view_list
 msgid "Document"
-msgstr ""
+msgstr "Dokumen"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__document_count
@@ -1078,7 +1078,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:documents.selection__documents_workflow_rule__condition_type__domain
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Domain"
-msgstr ""
+msgstr "Domain"
 
 #. module: documents
 #. odoo-javascript
@@ -1087,7 +1087,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 #, python-format
 msgid "Download"
-msgstr ""
+msgstr "Muat turun"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_page
@@ -1152,7 +1152,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:documents.selection__documents_document__thumbnail_status__error
 #, python-format
 msgid "Error"
-msgstr ""
+msgstr "Ralat"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__excluded_tag_ids
@@ -1263,13 +1263,13 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Future Activities"
-msgstr ""
+msgstr "Aktiviti Masa Depan"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 #: model_terms:ir.ui.view,arch_db:documents.facet_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Kumpulan Oleh"
 
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_folder__read_group_ids
@@ -1292,7 +1292,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_document__has_message
 #: model:ir.model.fields,field_description:documents.field_documents_share__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Mempunyai Mesej"
 
 #. module: documents
 #. odoo-javascript
@@ -1464,7 +1464,7 @@ msgstr "Kemas Kini Terakhir pada"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
 msgid "Late Activities"
-msgstr ""
+msgstr "Aktiviti Lewat"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_knowledge_legal
@@ -1609,7 +1609,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 msgid "Miscellaneous"
-msgstr ""
+msgstr "Macam-macam"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_link_to_record_wizard__model_id
@@ -1688,7 +1688,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
 #, python-format
 msgid "New"
-msgstr ""
+msgstr "Baru"
 
 #. module: documents
 #. odoo-javascript
@@ -1726,17 +1726,17 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Tarikh Akhir Aktiviti Seterusnya"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Ringkasan Aktiviti Seterusnya"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Jenis Aktiviti Seterusnya"
 
 #. module: documents
 #. odoo-javascript
@@ -1779,7 +1779,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_needaction_counter
 #: model:ir.model.fields,field_description:documents.field_documents_share__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Bilangan Tindakan"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__message_has_error_counter
@@ -1840,7 +1840,7 @@ msgstr ""
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_knowledge_other
 msgid "Other"
-msgstr ""
+msgstr "Lain-lain"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__user_specific
@@ -2098,7 +2098,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__activity_option
 msgid "Schedule Activity"
-msgstr ""
+msgstr "Jadual Aktiviti"
 
 #. module: documents
 #. odoo-javascript
@@ -2162,7 +2162,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:documents.settings_action
 #: model:ir.ui.menu,name:documents.settings_menu
 msgid "Settings"
-msgstr ""
+msgstr "Tetapan"
 
 #. module: documents
 #. odoo-javascript
@@ -2357,7 +2357,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents.workflow_rule_form_view
 #, python-format
 msgid "Tags"
-msgstr ""
+msgstr "Tag"
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_internal_template
@@ -2470,7 +2470,7 @@ msgstr ""
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_tv
 msgid "To validate"
-msgstr ""
+msgstr "Untuk mengesahkan"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -2573,7 +2573,7 @@ msgstr ""
 #: model:ir.model,name:documents.model_res_users
 #: model:res.groups,name:documents.group_documents_user
 msgid "User"
-msgstr ""
+msgstr "pengguna"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_documents_vat
@@ -2588,7 +2588,7 @@ msgstr ""
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_validate
 msgid "Validate"
-msgstr ""
+msgstr "Sahkan"
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_status_validated

@@ -2197,7 +2197,7 @@ msgstr "Salari net"
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_report__net_wage
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__net_wage
 msgid "Net Wage"
-msgstr "Wage net"
+msgstr "Salari net"
 
 #. module: hr_payroll
 #. odoo-python

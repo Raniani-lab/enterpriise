@@ -30,12 +30,14 @@ msgstr ""
 #. module: stock_barcode_picking_batch
 #: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.stock_move_line_product_selector_inherit
 msgid "<i class=\"fa fa-fw fa-lg fa-truck me-3\" title=\"Transfer\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-lg fa-truck me-3\" title=\"Transfer\"/>"
 
 #. module: stock_barcode_picking_batch
 #: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.picking_view_kanban_inherit_barcode_picking_batch
 msgid "<span class=\"fa fa-external-link-square ms-1\" title=\"Open Batch Picking\"/>"
 msgstr ""
+"<span class=\"fa fa-external-link-square ms-1\" title=\"Open Batch "
+"Picking\"/>"
 
 #. module: stock_barcode_picking_batch
 #: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.stock_barcode_batch_picking_view_info

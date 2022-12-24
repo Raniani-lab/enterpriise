@@ -23,12 +23,12 @@ msgstr ""
 #: code:addons/account_asset_fleet/models/account_asset.py:0
 #, python-format
 msgid "All the lines should be from the same vehicle"
-msgstr ""
+msgstr "Semua barisan hendaklah dari kenderaan yang sama"
 
 #. module: account_asset_fleet
 #: model:ir.model,name:account_asset_fleet.model_account_asset
 msgid "Asset/Revenue Recognition"
-msgstr ""
+msgstr "Pengiktirafan Aset/Hasil"
 
 #. module: account_asset_fleet
 #: model:ir.model,name:account_asset_fleet.model_account_move
@@ -38,10 +38,10 @@ msgstr "Kemasukan jurnal"
 #. module: account_asset_fleet
 #: model:ir.model,name:account_asset_fleet.model_account_move_line
 msgid "Journal Item"
-msgstr ""
+msgstr "Item Jurnal"
 
 #. module: account_asset_fleet
 #: model:ir.model.fields,field_description:account_asset_fleet.field_account_asset__vehicle_id
 #: model_terms:ir.ui.view,arch_db:account_asset_fleet.view_account_asset_fleet_form
 msgid "Vehicle"
-msgstr ""
+msgstr "kenderaan"

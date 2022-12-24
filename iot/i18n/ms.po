@@ -101,7 +101,7 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__camera
 msgid "Camera"
-msgstr ""
+msgstr "Kamera"
 
 #. module: iot
 #. openerp-web
@@ -306,7 +306,7 @@ msgstr ""
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_search
 msgid "Group By"
-msgstr ""
+msgstr "Kumpulan Oleh"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__hdmi

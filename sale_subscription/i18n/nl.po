@@ -4,10 +4,10 @@
 # 
 # Translators:
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2022
-# Jolien De Paepe, 2022
 # Caroline Renson <car@odoo.com>, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # Martin Trigaux, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -80,6 +80,8 @@ msgid ""
 "<b>Congratulations</b>, your first subscription quotation is ready to be "
 "sent!"
 msgstr ""
+"<b>Gefeliciteerd</b>, je eerste abonnementsofferte is klaar om verzonden te "
+"worden!"
 
 #. module: sale_subscription
 #: model:mail.template,body_html:sale_subscription.mail_template_subscription_alert
@@ -1200,7 +1202,7 @@ msgstr "Toewijzen aan"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Assign a new partner to the contract"
-msgstr ""
+msgstr "Een nieuwe partner toewijzen aan het contract"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__automation_id
@@ -1242,6 +1244,8 @@ msgid ""
 "Automatic renewal succeeded. Free subscription. Next Invoice: %(inv)s. No "
 "email sent."
 msgstr ""
+"Automatische verlenging gelukt. Gratis abonnement. Volgende factuur: "
+"%(inv)s. Geen e-mail verzonden."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__website_published
@@ -1308,7 +1312,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.product_template_search_view_inherit_sale_subscription
 msgid "Can be Recurring"
-msgstr ""
+msgstr "Kan terugkerend zijn"
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -1855,14 +1859,14 @@ msgstr "Ga je gang en maak een nieuw product"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Go ahead and create a new subscription"
-msgstr ""
+msgstr "Ga je gang en maak een nieuw abonnement"
 
 #. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Go back to the subscription view"
-msgstr ""
+msgstr "Ga terug naar het abonnementsoverzicht"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__health__done
@@ -2226,14 +2230,14 @@ msgstr "Minste vertraging boodschap"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Let's add a pricing with a recurrence"
-msgstr ""
+msgstr "Laten we een terugkerende prijs toevoegen"
 
 #. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Let's configure the product price"
-msgstr ""
+msgstr "Laten we de prijs van het product configureren"
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -2627,7 +2631,7 @@ msgstr "Plannen"
 #: code:addons/sale_subscription/static/src/js/manage_form.js:0
 #, python-format
 msgid "Please provide another payment method for these subscriptions."
-msgstr ""
+msgstr "Geef een andere betaalwijze voor deze abonnementen."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__pricelist_id
@@ -2823,7 +2827,7 @@ msgstr "Herhalend"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_total
 msgid "Recurring Amount"
-msgstr ""
+msgstr "Terugkerend bedrag"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__recurring_rule_type
@@ -3027,14 +3031,14 @@ msgstr "Zoeksjabloon"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Select a recurrence"
-msgstr ""
+msgstr "Selecteer een herhaling"
 
 #. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Select a recurring product"
-msgstr ""
+msgstr "Selecteer een terugkerend product"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__user_closable
@@ -3663,6 +3667,8 @@ msgid ""
 "This payment method cannot be removed as it is currently linked to the "
 "following active subscriptions:"
 msgstr ""
+"Deze betaalwijze kan niet worden verwijderd, omdat ze momenteel geassocieerd"
+" is met de volgende actieve abonnementen:"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_stage__fold
@@ -4120,12 +4126,12 @@ msgstr "Je abonnement"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Your contrat is recurrent"
-msgstr ""
+msgstr "Je contract is terugkerend"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.payment_checkout_inherit
 msgid "Your payment details will be saved for automatic renewals."
-msgstr ""
+msgstr "Je betaalgegevens worden opgeslagen voor automatische verlengingen."
 
 #. module: sale_subscription
 #. odoo-python
@@ -4196,6 +4202,9 @@ msgid ""
 "your subscription failed. As your payment should have been made on {{ "
 "object.next_invoice_date }}, your subscription has been terminated."
 msgstr ""
+"{{ object.company_id.name }}: Onze laatste poging om een betaling voor je "
+"abonnement te verwerken is mislukt. Aangezien je betaling had moeten "
+"plaatsvinden op {{ object.next_invoice_date }}, is je abonnement beëindigd."
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_alert
@@ -4218,6 +4227,10 @@ msgid ""
 " suspended on {{ object.next_invoice_date }} unless the payment succeeds in "
 "the meantime."
 msgstr ""
+"{{ object.company_id.name }}: We kunnen een betaling voor je abonnement niet"
+" verwerken. Je abonnement {{ object.name }} is nog steeds geldig, maar wordt"
+" opgeschort op {{ object.next_invoice_date }} tenzij de betaling in de "
+"tussentijd lukt."
 
 #. module: sale_subscription
 #: model:sms.template,body:sale_subscription.sms_template_data_default_alert

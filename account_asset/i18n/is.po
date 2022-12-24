@@ -532,7 +532,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 #, python-format
 msgid "Assets"
-msgstr ""
+msgstr "Eignir"
 
 #. module: account_asset
 #: model:ir.ui.menu,name:account_asset.menu_finance_config_assets
@@ -999,7 +999,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 #, python-format
 msgid "Depreciation"
-msgstr ""
+msgstr "Afskriftir"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__account_depreciation_id
@@ -1134,7 +1134,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_tree
 #, python-format
 msgid "Expense"
-msgstr ""
+msgstr "Gjöld"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__account_depreciation_expense_id

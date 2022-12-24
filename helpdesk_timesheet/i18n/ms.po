@@ -33,7 +33,7 @@ msgstr ""
 #: model:ir.model,name:helpdesk_timesheet.model_account_analytic_line
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket__analytic_account_id
 msgid "Analytic Account"
-msgstr ""
+msgstr "Akaun Analitik"
 
 #. module: helpdesk_timesheet
 #: code:addons/helpdesk_timesheet/models/helpdesk.py:0
@@ -74,7 +74,7 @@ msgstr ""
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_create_timesheet_view_form
 msgid "Delete"
-msgstr ""
+msgstr "Padam"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_sla_report_analysis__department_id
@@ -102,7 +102,7 @@ msgstr ""
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_create_timesheet_view_form
 msgid "Discard"
-msgstr ""
+msgstr "Buang"
 
 #. module: helpdesk_timesheet
 #: model:ir.model.fields,field_description:helpdesk_timesheet.field_helpdesk_ticket_create_timesheet__display_name
@@ -251,7 +251,7 @@ msgstr ""
 #: code:addons/helpdesk_timesheet/models/helpdesk.py:0
 #, python-format
 msgid "New"
-msgstr ""
+msgstr "Baru"
 
 #. module: helpdesk_timesheet
 #: model_terms:ir.ui.view,arch_db:helpdesk_timesheet.helpdesk_ticket_view_form_inherit_helpdesk_timesheet

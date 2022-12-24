@@ -112,7 +112,7 @@ msgstr "Nama paparan"
 #. module: stock_enterprise
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__done
 msgid "Done"
-msgstr ""
+msgstr "Selesai"
 
 #. module: stock_enterprise
 #: model_terms:ir.ui.view,arch_db:stock_enterprise.stock_report_search_view
@@ -162,7 +162,7 @@ msgstr "Terakhir Diubah suai pada"
 #. module: stock_enterprise
 #: model:ir.model.fields.selection,name:stock_enterprise.selection__stock_report__state__draft
 msgid "New"
-msgstr ""
+msgstr "Baru"
 
 #. module: stock_enterprise
 #: model_terms:ir.actions.act_window,help:stock_enterprise.stock_report_dashboard_action

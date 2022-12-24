@@ -92,7 +92,7 @@ msgstr "Nom a mostrar"
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task__display_helpdesk_ticket_button
 msgid "Display Ticket"
-msgstr ""
+msgstr "Mostra el tiquet"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_team__fsm_project_id
@@ -148,7 +148,7 @@ msgstr "Última actualització el"
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_project_task__helpdesk_ticket_id
 msgid "Original Ticket"
-msgstr ""
+msgstr "Tiquet original"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__project_id
@@ -191,7 +191,7 @@ msgstr "Tasca feta"
 #: code:addons/helpdesk_fsm/wizard/create_task.py:0
 #, python-format
 msgid "Task created"
-msgstr ""
+msgstr "S'ha creat la tasca"
 
 #. module: helpdesk_fsm
 #: code:addons/helpdesk_fsm/controllers/portal.py:0

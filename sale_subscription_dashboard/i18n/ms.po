@@ -86,7 +86,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Apply"
-msgstr ""
+msgstr "Mohon"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
@@ -217,7 +217,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Document"
-msgstr ""
+msgstr "Dokumen"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -292,7 +292,7 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
 msgid "Group By"
-msgstr ""
+msgstr "Kumpulan Oleh"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -558,7 +558,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Plan"
-msgstr ""
+msgstr "Rancang"
 
 #. module: sale_subscription_dashboard
 #. openerp-web

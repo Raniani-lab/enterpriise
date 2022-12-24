@@ -66,12 +66,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
 msgid "<span class=\"ms-3\">/ month</span>"
-msgstr ""
+msgstr "<span class=\"ms-3\">/ mes</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
 msgid "<span class=\"ms-3\">/ year</span>"
-msgstr ""
+msgstr "<span class=\"ms-3\">/ año</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.res_config_settings_view_form
@@ -1556,6 +1556,8 @@ msgid ""
 "The employee does not have a valid email set in the private information. The"
 " Simulation Link won't be able to be completed."
 msgstr ""
+"El empleado no tiene un correo electrónico válido establecido en la "
+"información privada. El enlace de simulación no se podrá completar."
 
 #. module: hr_contract_salary
 #. odoo-python

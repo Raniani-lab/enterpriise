@@ -112,7 +112,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_report_view_search
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.recruitment_stage_report_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Kumpulan Oleh"
 
 #. module: hr_recruitment_reports
 #: model:ir.model.fields.selection,name:hr_recruitment_reports.selection__hr_recruitment_report__state__is_hired
@@ -276,7 +276,7 @@ msgstr "negeri"
 #. module: hr_recruitment_reports
 #: model:ir.actions.act_window,name:hr_recruitment_reports.recruitment_report_team_action
 msgid "Team Performance"
-msgstr ""
+msgstr "Prestasi Pasukan"
 
 #. module: hr_recruitment_reports
 #: model_terms:ir.ui.view,arch_db:hr_recruitment_reports.hr_recruitment_report_view_dashboard

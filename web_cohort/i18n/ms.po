@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # 	* web_cohort
 # 
+# Translators:
+# Mehjabin Farsana, 2022
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:24+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
+"Last-Translator: Mehjabin Farsana, 2022\n"
 "Language-Team: Malay (https://www.transifex.com/odoo/teams/41243/ms/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,15 +45,9 @@ msgid "Average"
 msgstr ""
 
 #. module: web_cohort
-#: code:addons/web_cohort/controllers/main.py:0
-#, python-format
-msgid "Average Value"
-msgstr ""
-
-#. module: web_cohort
 #: model:ir.model,name:web_cohort.model_base
 msgid "Base"
-msgstr ""
+msgstr "Pangkalan"
 
 #. module: web_cohort
 #: model:ir.model.fields.selection,name:web_cohort.selection__ir_actions_act_window_view__view_mode__cohort

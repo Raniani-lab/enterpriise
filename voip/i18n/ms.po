@@ -259,7 +259,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__partner_id
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__partner_id
 msgid "Contact"
-msgstr ""
+msgstr "Kenalan"
 
 #. module: voip
 #. openerp-web
@@ -334,7 +334,7 @@ msgstr "Nama paparan"
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Document"
-msgstr ""
+msgstr "Dokumen"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__no_reschedule
@@ -411,7 +411,7 @@ msgstr ""
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Group By"
-msgstr ""
+msgstr "Kumpulan Oleh"
 
 #. module: voip
 #. openerp-web
@@ -609,7 +609,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__missed
 msgid "Missed"
-msgstr ""
+msgstr "Terlepas"
 
 #. module: voip
 #: code:addons/voip/models/voip_phonecall.py:0
@@ -708,7 +708,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #, python-format
 msgid "Pending"
-msgstr ""
+msgstr "Yang belum selesai"
 
 #. module: voip
 #. openerp-web
@@ -717,7 +717,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__phone
 #, python-format
 msgid "Phone"
-msgstr ""
+msgstr "Telefon"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_partner__sanitized_phone
@@ -768,7 +768,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_config_settings__mode__prod
 msgid "Production"
-msgstr ""
+msgstr "Pengeluaran"
 
 #. module: voip
 #. openerp-web
@@ -783,7 +783,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Refresh the Panel"
-msgstr ""
+msgstr "Muat semula Panel"
 
 #. module: voip
 #. openerp-web
@@ -797,14 +797,14 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Reject"
-msgstr ""
+msgstr "Tolak"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Reject call"
-msgstr ""
+msgstr "Tolak panggilan"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__should_auto_reject_incoming_calls
@@ -843,7 +843,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #, python-format
 msgid "Remove from the queue"
-msgstr ""
+msgstr "Alih keluar dari baris gilir"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__user_id
@@ -867,14 +867,14 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__reschedule_option
 msgid "Schedule A New Activity"
-msgstr ""
+msgstr "Jadualkan Aktiviti Baharu"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Schedule Activity"
-msgstr ""
+msgstr "Jadual Aktiviti"
 
 #. module: voip
 #. openerp-web
@@ -893,7 +893,7 @@ msgstr ""
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Search Phonecalls"
-msgstr ""
+msgstr "Cari Panggilan Telefon"
 
 #. module: voip
 #. openerp-web
@@ -901,7 +901,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Send mail"
-msgstr ""
+msgstr "Hantar surat"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__sequence
@@ -1047,7 +1047,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_report__state__open
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "To Do"
-msgstr ""
+msgstr "Untuk Dilakukan"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__1d
@@ -1070,7 +1070,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model,name:voip.model_res_users
 msgid "User"
-msgstr ""
+msgstr "pengguna"
 
 #. module: voip
 #: model:ir.model,name:voip.model_res_users_settings

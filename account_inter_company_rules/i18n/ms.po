@@ -85,7 +85,7 @@ msgstr "Kemasukan jurnal"
 #. module: account_inter_company_rules
 #: model:ir.model,name:account_inter_company_rules.model_account_move_line
 msgid "Journal Item"
-msgstr ""
+msgstr "Item Jurnal"
 
 #. module: account_inter_company_rules
 #: model:ir.model.fields,help:account_inter_company_rules.field_res_company__intercompany_user_id

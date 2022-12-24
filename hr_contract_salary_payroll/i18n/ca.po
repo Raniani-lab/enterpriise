@@ -95,6 +95,8 @@ msgstr ""
 msgid ""
 "This is the gross calculated for the current month with a total of %s hours."
 msgstr ""
+"Aquest és el compte brut calculat per al mes actual amb un total de %s "
+"hores."
 
 #. module: hr_contract_salary_payroll
 #: model:ir.model.fields,field_description:hr_contract_salary_payroll.field_hr_contract_salary_resume__value_type

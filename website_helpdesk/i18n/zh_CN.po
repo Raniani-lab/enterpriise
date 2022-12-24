@@ -189,7 +189,7 @@ msgstr "帮助"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Help Center Page"
-msgstr "帮助中心页面"
+msgstr "帮助中心网页"
 
 #. module: website_helpdesk
 #: code:addons/website_helpdesk/models/website.py:0

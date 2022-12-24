@@ -5,6 +5,8 @@
 # Translators:
 # Martin Trigaux, 2022
 # Malaz Abuidris <msea@odoo.com>, 2022
+# Niyas Raphy, 2022
+# Mehjabin Farsana, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-06-09 14:09+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Malaz Abuidris <msea@odoo.com>, 2022\n"
+"Last-Translator: Mehjabin Farsana, 2022\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -379,7 +381,7 @@ msgstr "شيك مدوّر"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Clean Collection"
-msgstr ""
+msgstr "مجموعة نظيفة"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1001,7 +1003,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Guarantees"
-msgstr ""
+msgstr "ضمانات"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1103,7 +1105,7 @@ msgstr "دفتر اليومية"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Lack"
-msgstr ""
+msgstr "قلة"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1157,7 +1159,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Management Fees"
-msgstr ""
+msgstr "إدارة رسوم"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/models/account_journal.py:0
@@ -1249,7 +1251,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Non Settled"
-msgstr ""
+msgstr "غير مستقر"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1282,7 +1284,7 @@ msgstr "غير متاح"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Notice Deposits"
-msgstr ""
+msgstr "إيداعات الإخطار"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1517,7 +1519,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Precious Metal"
-msgstr ""
+msgstr "المعادن الثمينة"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1637,7 +1639,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Reset Payment"
-msgstr ""
+msgstr "إعادة الدفع"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -1726,7 +1728,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Securities"
-msgstr ""
+msgstr "ضمانات"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
@@ -2045,7 +2047,7 @@ msgstr ""
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Value Date"
-msgstr ""
+msgstr "تاريخ القيمه"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

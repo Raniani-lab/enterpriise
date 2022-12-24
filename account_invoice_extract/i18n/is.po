@@ -428,7 +428,7 @@ msgstr ""
 #. module: account_invoice_extract
 #: model:ir.model.fields,field_description:account_invoice_extract.field_res_config_settings__extract_in_invoice_digitalization_mode
 msgid "Vendor Bills"
-msgstr ""
+msgstr "Innkaupareikningar"
 
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__waiting_extraction

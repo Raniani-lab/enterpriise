@@ -292,7 +292,7 @@ msgstr "إرجاع "
 #. module: delivery_sendcloud
 #: model:ir.model.fields,field_description:delivery_sendcloud.field_sendcloud_shipping_wizard__return_carrier
 msgid "Return Carrier"
-msgstr ""
+msgstr "يعود الناقل"
 
 #. module: delivery_sendcloud
 #: model:ir.model.fields,field_description:delivery_sendcloud.field_sendcloud_shipping_wizard__return_country_ids

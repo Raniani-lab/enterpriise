@@ -3,8 +3,8 @@
 # 	* sale_subscription
 # 
 # Translators:
-# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022
 # Martin Trigaux, 2022
+# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -28,6 +28,8 @@ msgid ""
 "\n"
 "%s to %s"
 msgstr ""
+"\n"
+"%s до %s"
 
 #. module: sale_subscription
 #. odoo-python
@@ -48,7 +50,7 @@ msgstr "% Задоволених"
 #: code:addons/sale_subscription/models/sale_order_line.py:0
 #, python-format
 msgid "%(product)s - %(duration)d %(unit)s"
-msgstr ""
+msgstr "%(product)s - %(duration)d %(unit)s"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -246,7 +248,7 @@ msgstr "<i class=\"fa fa-print\"/> Друкувати"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "<i class=\"fa fa-refresh\"/> Renew"
-msgstr ""
+msgstr "<i class=\"fa fa-refresh\"/> Оновити"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -259,11 +261,13 @@ msgid ""
 "<span attrs=\"{'invisible': ['|', ('recurrence_id', '=', False), "
 "('subscription_management', '=', 'upsell')]}\">until</span>"
 msgstr ""
+"<span attrs=\"{'invisible': ['|', ('recurrence_id', '=', False), "
+"('subscription_management', '=', 'upsell')]}\">до</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 msgid "<span class=\"align-middle\">for this subscription.</span>"
-msgstr ""
+msgstr "<span class=\"align-middle\">для цієї підписки.</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
@@ -271,6 +275,8 @@ msgid ""
 "<span class=\"badge rounded-pill text-bg-danger\"><i class=\"fa fa-fw fa-"
 "remove\"/> Closed</span>"
 msgstr ""
+"<span class=\"badge rounded-pill text-bg-danger\"><i class=\"fa fa-fw fa-"
+"remove\"/> Закрито</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
@@ -278,6 +284,8 @@ msgid ""
 "<span class=\"badge rounded-pill text-bg-success\"><i class=\"fa fa-fw fa-"
 "check\"/> In Progress</span>"
 msgstr ""
+"<span class=\"badge rounded-pill text-bg-success\"><i class=\"fa fa-fw fa-"
+"check\"/> В процесі</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
@@ -285,6 +293,8 @@ msgid ""
 "<span class=\"badge rounded-pill text-bg-warning\"><i class=\"fa fa-fw fa-"
 "refresh\"/> To Renew</span>"
 msgstr ""
+"<span class=\"badge rounded-pill text-bg-warning\"><i class=\"fa fa-fw fa-"
+"refresh\"/> Оновити</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -292,6 +302,8 @@ msgid ""
 "<span groups=\"account.group_show_line_subtotals_tax_excluded\">Amount</span>\n"
 "                                                    <span groups=\"account.group_show_line_subtotals_tax_included\">Total Price</span>"
 msgstr ""
+"<span groups=\"account.group_show_line_subtotals_tax_excluded\">Сума</span>\n"
+"                                                    <span groups=\"account.group_show_line_subtotals_tax_included\">Загальна ціна</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -315,6 +327,9 @@ msgid ""
 "                            Recurrency\n"
 "                        </strong>"
 msgstr ""
+"<strong>\n"
+"                            Повторюваність\n"
+"                        </strong>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -334,7 +349,7 @@ msgstr "<strong>Наступна сума платежу:</strong>"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.report_saleorder_document
 msgid "<strong>Recurrence:</strong>"
-msgstr ""
+msgstr "<strong>Повторюваність:</strong>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -1765,27 +1780,27 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__journal_id
 msgid "Invoicing Journal"
-msgstr ""
+msgstr "Журнал виставлення рахунків"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_stage__category__paused
 msgid "Invoicing Pause"
-msgstr ""
+msgstr "Пауза виставлення рахунків"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__is_subscription
 msgid "Is Subscription"
-msgstr ""
+msgstr "Підписка"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__is_upselling
 msgid "Is Upselling"
-msgstr ""
+msgstr "Допродаж"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__is_batch
 msgid "Is a Batch"
-msgstr ""
+msgstr "Групове переміщення"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__is_invoice_cron
@@ -1858,7 +1873,7 @@ msgstr "Останнє оновлення"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__last_invoice_date
 msgid "Last invoice date"
-msgstr ""
+msgstr "Дата останнього рахунку"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -1919,13 +1934,13 @@ msgstr "Зробити примітку..."
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 msgid "MRR"
-msgstr ""
+msgstr "MRR"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.action_sale_order_log
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_log_view_graph
 msgid "MRR Analysis"
-msgstr ""
+msgstr "Аналіз MRR"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -1972,7 +1987,7 @@ msgstr "MRR після зміни"
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "MRR changes"
-msgstr ""
+msgstr "Зміни MRR"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_log__recurring_monthly
@@ -1982,7 +1997,7 @@ msgstr "MRR після застосування змін тієї конкрет
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
 msgid "MRR:"
-msgstr ""
+msgstr "MRR:"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2105,7 +2120,7 @@ msgstr "Наступний рахунок"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Next Invoice Date"
-msgstr ""
+msgstr "Дата наступного рахунку"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
@@ -2121,12 +2136,12 @@ msgstr "Немає"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.view_sales_order_filter_subscription
 msgid "Not Recurring"
-msgstr ""
+msgstr "Неповторюваний"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Not Started Yet"
-msgstr ""
+msgstr "Ще не почався"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_note
@@ -2201,7 +2216,7 @@ msgstr "Більше"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__subscription_id
 msgid "Parent Contract"
-msgstr ""
+msgstr "Батьківський контракт"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_line__parent_line_id
@@ -2227,7 +2242,7 @@ msgstr "Оплата через"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
 msgid "Payment Failure"
-msgstr ""
+msgstr "Платіж не вдався"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_payment_provider
@@ -2256,6 +2271,8 @@ msgid ""
 "Payment reminder for subscription {{ object.client_order_ref or object.name "
 "}}"
 msgstr ""
+"Нагадування про платіж для підписки {{ object.client_order_ref or "
+"object.name }}"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
@@ -2300,7 +2317,7 @@ msgstr "Ціноутворення"
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_product_pricing
 msgid "Pricing rule of temporal products"
-msgstr ""
+msgstr "Правило ціноутворення тимчасових товарів"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2376,12 +2393,12 @@ msgstr "Функція шаблону комерційної пропозиці�
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
 msgid "Quotation Template:"
-msgstr ""
+msgstr "Шаблон пропозиції:"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__subscription_template_ids
 msgid "Quotation templates"
-msgstr ""
+msgstr "Шаблони пропозиції"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_ids
@@ -2467,7 +2484,7 @@ msgstr "Повторення"
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_periods
 msgid "Recurrence periods"
-msgstr ""
+msgstr "Періоди повторення"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__is_subscription
@@ -2485,7 +2502,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__recurring_rule_type
 msgid "Recurring Rule Type"
-msgstr ""
+msgstr "Тип правила повторення"
 
 #. module: sale_subscription
 #. odoo-python
@@ -2507,12 +2524,12 @@ msgstr "Референс:"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 #, python-format
 msgid "Renew"
-msgstr ""
+msgstr "Оновити"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__renew_state
 msgid "Renew State"
-msgstr ""
+msgstr "Оновити статус"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__subscription_management__renew
@@ -2528,17 +2545,17 @@ msgstr "Дозволено відновлення"
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__subscription_management__renewal_so
 msgid "Renewal Quote"
-msgstr ""
+msgstr "Оновлення пропозиції"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__renew_state__renewed
 msgid "Renewed"
-msgstr ""
+msgstr "Оновлено"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__renew_state__renewing
 msgid "Renewing"
-msgstr ""
+msgstr "Оновлення"
 
 #. module: sale_subscription
 #: model:ir.ui.menu,name:sale_subscription.menu_sale_subscription_report
@@ -2595,22 +2612,22 @@ msgstr "Замовлення"
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_alert
 msgid "Sale Order Alert"
-msgstr ""
+msgstr "Сповіщення Замовлення на продаж"
 
 #. module: sale_subscription
 #: model:ir.actions.act_window,name:sale_subscription.action_sale_order_lines
 msgid "Sale Order Lines"
-msgstr ""
+msgstr "Рядки замовлення на продаж"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_log
 msgid "Sale Order Log"
-msgstr ""
+msgstr "Запис Замовлення на продаж"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_stage
 msgid "Sale Order Stage"
-msgstr ""
+msgstr "Етап замовлення на продаж"
 
 #. module: sale_subscription
 #: model:ir.actions.server,name:sale_subscription.ir_cron_sale_subscription_update_kpi_ir_actions_server
@@ -2694,7 +2711,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__user_closable
 msgid "Self closable"
-msgstr ""
+msgstr "Самозакриття"
 
 #. module: sale_subscription
 #: model_terms:ir.actions.act_window,help:sale_subscription.sale_subscription_action_pending
@@ -2801,7 +2818,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__show_rec_invoice_button
 msgid "Show Rec Invoice Button"
-msgstr ""
+msgstr "Показувати кнопку повторення рахунку"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__starred
@@ -2928,7 +2945,7 @@ msgstr "Аналіз підписки"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__subscription_child_ids
 msgid "Subscription Child"
-msgstr ""
+msgstr "Дочірня підписка"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_sale_order_close_reason
@@ -2960,7 +2977,7 @@ msgstr "Керування підпискою"
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_primary_form_view
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
 msgid "Subscription Plan"
-msgstr ""
+msgstr "План підписки"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_product_product__recurring_invoice
@@ -3181,7 +3198,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_line__temporal_type
 msgid "Temporal Type"
-msgstr ""
+msgstr "Тимчасовий тип"
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.email_payment_close
@@ -3677,6 +3694,8 @@ msgstr ""
 #, python-format
 msgid "You cannot save a sale order with recurring product and no recurrence."
 msgstr ""
+"Ви не можете зберегти замовлення на продаж із повторюваним товаром і без "
+"повторення."
 
 #. module: sale_subscription
 #. odoo-python
@@ -3759,7 +3778,7 @@ msgstr "Ваша підписка відключена."
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 msgid "archived product(s)"
-msgstr ""
+msgstr "заархівований товар(и)"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form

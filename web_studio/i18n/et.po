@@ -235,6 +235,8 @@ msgid ""
 "Actions may trigger specific behavior like opening calendar view or "
 "automatically mark as done when a document is uploaded"
 msgstr ""
+"Toimingud võivad käivitada teatud tegevuse, näiteks kalendrivaate avamine "
+"või dokumendi üleslaadimisel automaatselt tehtuks märkimine"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2424,7 +2426,7 @@ msgstr "Read"
 #. module: web_studio
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_request__mail_activity_id
 msgid "Linked Activity"
-msgstr ""
+msgstr "Seotud tegevus"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2636,7 +2638,7 @@ msgstr "Veel"
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Multiline Text"
-msgstr ""
+msgstr "Mitmerealine tekst"
 
 #. module: web_studio
 #. odoo-javascript

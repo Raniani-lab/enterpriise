@@ -33,4 +33,4 @@ msgstr "Planning"
 #. module: hr_payroll_planning
 #: model:ir.model.fields,field_description:hr_payroll_planning.field_hr_payslip__planning_slot_count
 msgid "Planning Slot Count"
-msgstr ""
+msgstr "Nombre de créneaux"

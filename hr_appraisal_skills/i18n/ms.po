@@ -230,7 +230,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal__skill_ids
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_skills.hr_appraisal_skill_view_form
 msgid "Skills"
-msgstr ""
+msgstr "Kemahiran"
 
 #. module: hr_appraisal_skills
 #: model:ir.ui.menu,name:hr_appraisal_skills.menu_appraisal_skills_report

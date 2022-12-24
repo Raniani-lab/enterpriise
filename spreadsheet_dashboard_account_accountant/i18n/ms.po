@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # 	* spreadsheet_dashboard_account_accountant
 # 
+# Translators:
+# Mehjabin Farsana, 2022
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:43+0000\n"
 "PO-Revision-Date: 2022-09-29 09:37+0000\n"
+"Last-Translator: Mehjabin Farsana, 2022\n"
 "Language-Team: Malay (https://www.transifex.com/odoo/teams/41243/ms/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -175,7 +179,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Accounts"
-msgstr ""
+msgstr "Akaun"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -221,7 +225,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Bank and Cash"
-msgstr ""
+msgstr "Bank dan Tunai"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -464,7 +468,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Expenses"
-msgstr ""
+msgstr "Perbelanjaan"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web

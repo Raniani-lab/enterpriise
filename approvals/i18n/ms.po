@@ -38,17 +38,17 @@ msgstr ""
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Tindakan Diperlukan"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__active
 msgid "Active"
-msgstr ""
+msgstr "Aktif"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__activity_ids
 msgid "Activities"
-msgstr ""
+msgstr "Aktiviti"
 
 #. module: approvals
 #: model:ir.model,name:approvals.model_mail_activity
@@ -58,17 +58,17 @@ msgstr ""
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Hiasan Pengecualian Aktiviti"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Keadaan Aktiviti"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "Ikon Jenis Aktiviti"
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_category__has_product
@@ -99,7 +99,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:approvals.field_approval_request__amount
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "Amount"
-msgstr ""
+msgstr "Jumlah"
 
 #. module: approvals
 #: model:ir.model.fields,help:approvals.field_approval_category__has_reference
@@ -232,7 +232,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_search
 msgid "Archived"
-msgstr ""
+msgstr "Diarkibkan"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_form
@@ -242,7 +242,7 @@ msgstr ""
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Kiraan Lampiran"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__automated_sequence
@@ -292,7 +292,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:approvals.field_approval_product_line__product_uom_category_id
 #: model:ir.model.fields,field_description:approvals.field_approval_request__category_id
 msgid "Category"
-msgstr ""
+msgstr "kategori"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__category_approver
@@ -322,7 +322,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:approvals.field_approval_request__partner_id
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "Contact"
-msgstr ""
+msgstr "Kenalan"
 
 #. module: approvals
 #: model:approval.category,name:approvals.approval_category_data_contract_approval
@@ -392,7 +392,7 @@ msgstr ""
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_request_view_kanban
 msgid "Delete"
-msgstr ""
+msgstr "Padam"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__description
@@ -414,7 +414,7 @@ msgstr "Nama paparan"
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "Document"
-msgstr ""
+msgstr "Dokumen"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__requirer_document
@@ -510,7 +510,7 @@ msgstr ""
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Mempunyai Mesej"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__has_payment_method
@@ -602,7 +602,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:approvals.field_approval_category__image
 #: model:ir.model.fields,field_description:approvals.field_approval_request__category_image
 msgid "Image"
-msgstr ""
+msgstr "Gambar"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__invalid_minimum
@@ -751,7 +751,7 @@ msgstr "Nama"
 #: model:ir.model.fields.selection,name:approvals.selection__approval_request__user_status__new
 #, python-format
 msgid "New"
-msgstr ""
+msgstr "Baru"
 
 #. module: approvals
 #: model:ir.ui.menu,name:approvals.approvals_category_menu_new
@@ -767,17 +767,17 @@ msgstr ""
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Tarikh Akhir Aktiviti Seterusnya"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Ringkasan Aktiviti Seterusnya"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Jenis Aktiviti Seterusnya"
 
 #. module: approvals
 #: model_terms:ir.actions.act_window,help:approvals.approval_request_action_all
@@ -811,7 +811,7 @@ msgstr ""
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Bilangan Tindakan"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__attachment_number
@@ -855,7 +855,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_reference__optional
 #: model:ir.model.fields.selection,name:approvals.selection__approval_category__requirer_document__optional
 msgid "Optional"
-msgstr ""
+msgstr "Pilihan"
 
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
@@ -1098,7 +1098,7 @@ msgstr "Unit ukuran"
 #: model:ir.model.fields,field_description:approvals.field_approval_category_approver__user_id
 #, python-format
 msgid "User"
-msgstr ""
+msgstr "pengguna"
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__user_status

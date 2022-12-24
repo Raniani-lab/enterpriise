@@ -409,6 +409,8 @@ msgstr "Je kunt het product van een ophaling niet wijzigen."
 #, python-format
 msgid "You cannot change the product of lines linked to stock moves."
 msgstr ""
+"Je kan het product van regels gekoppeld aan voorraadbewegingen niet "
+"wijzigen."
 
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form

@@ -65,7 +65,7 @@ msgstr "Tiquet helpdesk #%s"
 #. module: helpdesk_account
 #: model_terms:ir.ui.view,arch_db:helpdesk_account.view_account_move_reversal_inherit_helpdesk_account
 msgid "Invoices to Refund"
-msgstr ""
+msgstr "Factures de reemborsament"
 
 #. module: helpdesk_account
 #: model:ir.model,name:helpdesk_account.model_account_move
@@ -87,7 +87,7 @@ msgstr "Factura rectificativa (abonament)"
 #: code:addons/helpdesk_account/wizard/account_move_reversal.py:0
 #, python-format
 msgid "Refund created"
-msgstr ""
+msgstr "S'ha creat l'abonament"
 
 #. module: helpdesk_account
 #: model:ir.model.fields,field_description:helpdesk_account.field_account_move_reversal__helpdesk_sale_order_id

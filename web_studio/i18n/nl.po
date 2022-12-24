@@ -3093,7 +3093,7 @@ msgstr "Specifieer een veld aub."
 #: code:addons/web_studio/static/src/client_action/view_editors/kanban/kanban_editor_record.xml:0
 #, python-format
 msgid "Preview is not available"
-msgstr ""
+msgstr "Voorbeeld is niet beschikbaar"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3838,7 +3838,7 @@ msgstr "Subtotaal & Totaal"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "Subtotal & Total can only be used in these models: "
-msgstr ""
+msgstr "Subtotaal & Totaal kunnen enkel worden gebruikt op deze modellen: "
 
 #. module: web_studio
 #. odoo-javascript

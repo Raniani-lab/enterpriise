@@ -31,7 +31,7 @@ msgstr ""
 #: code:addons/documents_spreadsheet/models/spreadsheet_template.py:0
 #, python-format
 msgid "%s (copy)"
-msgstr ""
+msgstr "%s (Salinan)"
 
 #. module: documents_spreadsheet
 #. odoo-javascript
@@ -158,7 +158,7 @@ msgstr "Nama paparan"
 #: model:ir.model,name:documents_spreadsheet.model_documents_document
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_contributor__document_id
 msgid "Document"
-msgstr ""
+msgstr "Dokumen"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_res_company__documents_spreadsheet_folder_id
@@ -411,7 +411,7 @@ msgstr ""
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_contributor__user_id
 msgid "User"
-msgstr ""
+msgstr "pengguna"
 
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.res_config_settings_view_form_inherit_documents_spreadsheet

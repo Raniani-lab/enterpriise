@@ -16,6 +16,7 @@
 # marcescu, 2022
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2022
 # Farouk Jabiri, 2022
+# Ivan Espinola, 2022
 # 
 msgid ""
 msgstr ""
@@ -23,7 +24,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Farouk Jabiri, 2022\n"
+"Last-Translator: Ivan Espinola, 2022\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -77,12 +78,12 @@ msgstr ""
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
 msgid "<span class=\"ms-3\">/ month</span>"
-msgstr ""
+msgstr "<span class=\"ms-3\">/ mes</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.hr_contract_view_form
 msgid "<span class=\"ms-3\">/ year</span>"
-msgstr ""
+msgstr "<span class=\"ms-3\">/ any</span>"
 
 #. module: hr_contract_salary
 #: model_terms:ir.ui.view,arch_db:hr_contract_salary.res_config_settings_view_form
@@ -1565,6 +1566,8 @@ msgid ""
 "The employee does not have a valid email set in the private information. The"
 " Simulation Link won't be able to be completed."
 msgstr ""
+"L'empleat no té un correu electrònic vàlid establert a la informació "
+"privada. L'enllaç de simulació no es podrà completar."
 
 #. module: hr_contract_salary
 #. odoo-python

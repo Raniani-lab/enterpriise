@@ -95,7 +95,7 @@ msgstr ""
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_date
 msgid "All"
-msgstr ""
+msgstr "Semua"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_tag
@@ -119,7 +119,7 @@ msgstr ""
 #: code:addons/website_helpdesk/static/src/js/website_helpdesk_form_editor.js:0
 #, python-format
 msgid "Attachment"
-msgstr ""
+msgstr "Lampiran"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_date
@@ -144,7 +144,7 @@ msgstr ""
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.footer
 msgid "Contact Us"
-msgstr ""
+msgstr "Hubungi Kami"
 
 #. module: website_helpdesk
 #: code:addons/website_helpdesk/__init__.py:0
@@ -174,7 +174,7 @@ msgstr ""
 #: code:addons/website_helpdesk/models/website.py:0
 #, python-format
 msgid "Help"
-msgstr ""
+msgstr "Tolong"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options

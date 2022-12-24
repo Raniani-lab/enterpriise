@@ -82,7 +82,7 @@ msgstr "Penerangan"
 #. module: stock_barcode_picking_batch
 #: model_terms:ir.ui.view,arch_db:stock_barcode_picking_batch.stock_barcode_batch_picking_view_info
 msgid "Discard"
-msgstr ""
+msgstr "Buang"
 
 #. module: stock_barcode_picking_batch
 #: model:ir.model.fields,field_description:stock_barcode_picking_batch.field_stock_picking__display_batch_button

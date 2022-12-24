@@ -221,7 +221,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "<i class=\"fa fa-download\"/> Download"
-msgstr ""
+msgstr "<i class=\"fa fa-download\"/> Muat turun"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -241,7 +241,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "<i class=\"fa fa-print\"/> Print"
-msgstr ""
+msgstr "<i class=\"fa fa-print\"/> Cetak"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -296,12 +296,12 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "<span>Disc.%</span>"
-msgstr ""
+msgstr "<span>Cakera.%</span>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "<strong class=\"mr16\">Subtotal</strong>"
-msgstr ""
+msgstr "<strong class=\"mr16\">jumlah kecil</strong>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -339,7 +339,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "<strong>Subtotal</strong>"
-msgstr ""
+msgstr "<strong>jumlah kecil</strong>"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -661,7 +661,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__action
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Action"
-msgstr ""
+msgstr "Tindakan"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__help
@@ -686,7 +686,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__active
 msgid "Active"
-msgstr ""
+msgstr "Aktif"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_type_id
@@ -733,12 +733,12 @@ msgstr ""
 #: code:addons/sale_subscription/controllers/portal.py:0
 #, python-format
 msgid "All"
-msgstr ""
+msgstr "Semua"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Amount:"
-msgstr ""
+msgstr "Jumlah:"
 
 #. module: sale_subscription
 #. odoo-python
@@ -751,7 +751,7 @@ msgstr ""
 #: model:ir.model,name:sale_subscription.model_account_analytic_account
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__analytic_account_id
 msgid "Analytic Account"
-msgstr ""
+msgstr "Akaun Analitik"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__filter_domain
@@ -763,7 +763,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_template_view_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
 msgid "Archived"
-msgstr ""
+msgstr "Diarkibkan"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__archived_product_count
@@ -905,7 +905,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__category
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_stage__category
 msgid "Category"
-msgstr ""
+msgstr "kategori"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_log__amount_signed
@@ -1066,7 +1066,7 @@ msgstr ""
 #: model:ir.model,name:sale_subscription.model_res_partner
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Contact"
-msgstr ""
+msgstr "Kenalan"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_template__recurring_rule_type
@@ -1271,13 +1271,13 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Download"
-msgstr ""
+msgstr "Muat turun"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_log__category__draft
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_subscription_report__stage_category__draft
 msgid "Draft"
-msgstr ""
+msgstr "Draf"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__activity_date_deadline_range
@@ -1386,7 +1386,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Future Activities"
-msgstr ""
+msgstr "Aktiviti Masa Depan"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_stage_view_form
@@ -1432,7 +1432,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_report_search
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Kumpulan Oleh"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__groups_id
@@ -1662,7 +1662,7 @@ msgstr "Kemasukan jurnal"
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_account_move_line
 msgid "Journal Item"
-msgstr ""
+msgstr "Item Jurnal"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__kpi_1month_mrr_delta
@@ -1725,7 +1725,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Late Activities"
-msgstr ""
+msgstr "Aktiviti Lewat"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_kanban
@@ -2046,7 +2046,7 @@ msgstr ""
 #. module: sale_subscription
 #: model:sale.order.close.reason,name:sale_subscription.close_reason_5
 msgid "Other"
-msgstr ""
+msgstr "Lain-lain"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_alert_view_form
@@ -2303,7 +2303,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_close_reason__name
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_close_reason_view_form
 msgid "Reason"
-msgstr ""
+msgstr "Sebab"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__recurrence_id

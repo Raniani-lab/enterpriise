@@ -68,13 +68,13 @@ msgstr "Akaun"
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 msgid "Account Name"
-msgstr ""
+msgstr "Nama akaun"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__active
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_search
 msgid "Active"
-msgstr ""
+msgstr "Aktif"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
@@ -356,7 +356,7 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Kenalan"
 
 #. module: sale_amazon
 #. odoo-python

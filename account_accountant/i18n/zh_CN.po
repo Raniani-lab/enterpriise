@@ -288,7 +288,7 @@ msgstr "分析账户"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__analytic_precision
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_precision
 msgid "Analytic Precision"
-msgstr ""
+msgstr "分析精度"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__use_anglo_saxon

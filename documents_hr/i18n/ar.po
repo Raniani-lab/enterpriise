@@ -218,4 +218,4 @@ msgstr "مساحة العمل الافتراضية للموارد البشرية
 #. module: documents_hr
 #: model:mail.template,subject:documents_hr.mail_template_document_folder_link
 msgid "{{ object.name }}, your personal documents access link is available"
-msgstr ""
+msgstr "{{ object.name }}, صفحتك الشخصية مستندات التمكن من الرابط متاح"

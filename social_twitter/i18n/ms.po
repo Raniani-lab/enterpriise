@@ -155,7 +155,7 @@ msgstr ""
 #: code:addons/social_twitter/static/src/js/stream_post_kanban_record.js:0
 #, python-format
 msgid "Error"
-msgstr ""
+msgstr "Ralat"
 
 #. module: social_twitter
 #. openerp-web
@@ -177,7 +177,7 @@ msgstr "ID"
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_twitter_account__image
 msgid "Image"
-msgstr ""
+msgstr "Gambar"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_post__is_twitter_post_limit_exceed

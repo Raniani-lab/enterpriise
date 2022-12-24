@@ -798,13 +798,13 @@ msgstr "Віхи"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "My Department's Projects"
-msgstr ""
+msgstr "Проекти мого відділу"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.report_project_task_user_fsm_view_search
 msgid "My Department's Tasks"
-msgstr ""
+msgstr "Завдання мого відділу"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -1266,7 +1266,7 @@ msgstr "Аналіз завдань"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
 msgid "Tasks Soon in Overtime"
-msgstr ""
+msgstr "Задачі, що скоро матимуть понаднормовий час"
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -1383,6 +1383,7 @@ msgstr "Непрочитані повідомлення"
 #, python-format
 msgid "Use the breadcrumbs to return to your <b>task</b>."
 msgstr ""
+"Використовуйте ваші бредкраамбс для повернення на ваше <b>завдання</b>."
 
 #. module: industry_fsm
 #: model:res.groups,name:industry_fsm.group_fsm_user

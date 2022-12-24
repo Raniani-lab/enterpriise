@@ -50,7 +50,7 @@ msgstr "Dicipta pada"
 #. module: industry_fsm_stock
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.fsm_stock_tracking_line_view_form
 msgid "Discard"
-msgstr ""
+msgstr "Buang"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__display_name
@@ -157,7 +157,7 @@ msgstr ""
 #. module: industry_fsm_stock
 #: model:ir.model,name:industry_fsm_stock.model_stock_move
 msgid "Stock Move"
-msgstr ""
+msgstr "Pergerakan Saham"
 
 #. module: industry_fsm_stock
 #: model:ir.model,name:industry_fsm_stock.model_project_task
@@ -204,7 +204,7 @@ msgstr ""
 #. module: industry_fsm_stock
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.fsm_stock_tracking_line_view_form
 msgid "Validate"
-msgstr ""
+msgstr "Sahkan"
 
 #. module: industry_fsm_stock
 #: code:addons/industry_fsm_stock/models/product.py:0

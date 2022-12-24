@@ -814,6 +814,9 @@ msgid ""
 "eBay does not handle longer timespans. Instead use synchronize_orders which "
 "split in as many calls as needed."
 msgstr ""
+"Deze functie moet niet worden aangeroepen met een bereik van meer dan 30 "
+"dagen, omdat eBay geen langere tijdspannes verwerkt. Gebruik in plaats "
+"daarvan synchronize_orders, dat zoveel aanroepen doet als nodig."
 
 #. module: sale_ebay
 #. odoo-python

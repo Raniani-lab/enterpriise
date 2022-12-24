@@ -234,7 +234,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__amount
 msgid "Amount"
-msgstr ""
+msgstr "Jumlah"
 
 #. module: timesheet_grid
 #. odoo-python
@@ -246,7 +246,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_account_analytic_line
 msgid "Analytic Account"
-msgstr ""
+msgstr "Akaun Analitik"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -378,7 +378,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
 msgid "Delete"
-msgstr ""
+msgstr "Padam"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_merge_wizard_view_form
@@ -455,7 +455,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.project_task_create_timesheet_view_form
 msgid "Discard"
-msgstr ""
+msgstr "Buang"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_timesheet_merge_wizard__display_name
@@ -515,7 +515,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "Draft"
-msgstr ""
+msgstr "Draf"
 
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_hr_employee
@@ -1120,7 +1120,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:timesheet_grid.field_hr_employee_public__timesheet_manager_id
 #: model:ir.model.fields,field_description:timesheet_grid.field_res_users__timesheet_manager_id
 msgid "Timesheet"
-msgstr ""
+msgstr "Lembaran masa"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.view_employee_tree_inherit_timesheet
@@ -1235,7 +1235,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_res_users
 msgid "User"
-msgstr ""
+msgstr "pengguna"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,field_description:timesheet_grid.field_account_analytic_line__user_can_validate
@@ -1268,7 +1268,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_tree_user_inherited
 #, python-format
 msgid "Validate"
-msgstr ""
+msgstr "Sahkan"
 
 #. module: timesheet_grid
 #: model:ir.model.fields.selection,name:timesheet_grid.selection__account_analytic_line__validated_status__validated

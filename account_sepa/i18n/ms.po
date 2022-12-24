@@ -143,7 +143,7 @@ msgstr ""
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_account_payment_method
 msgid "Payment Methods"
-msgstr ""
+msgstr "cara bayaran"
 
 #. module: account_sepa
 #: model_terms:ir.ui.view,arch_db:account_sepa.account_journal_dashboard_kanban_view_inherited

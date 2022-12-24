@@ -117,7 +117,7 @@ msgstr "Kemasukan jurnal"
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_move_line
 msgid "Journal Item"
-msgstr ""
+msgstr "Item Jurnal"
 
 #. module: account_taxcloud
 #: model:ir.model.fields,field_description:account_taxcloud.field_product_tic_category____last_update

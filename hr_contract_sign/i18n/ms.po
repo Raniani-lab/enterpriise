@@ -48,12 +48,12 @@ msgstr ""
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 msgid "Attach a file"
-msgstr ""
+msgstr "Lampirkan fail"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__attachment_ids
 msgid "Attachment"
-msgstr ""
+msgstr "Lampiran"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__contract_id
@@ -83,7 +83,7 @@ msgstr "Dicipta pada"
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
 msgid "Discard"
-msgstr ""
+msgstr "Buang"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__display_name
@@ -305,7 +305,7 @@ msgstr ""
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_res_users
 msgid "User"
-msgstr ""
+msgstr "pengguna"
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign

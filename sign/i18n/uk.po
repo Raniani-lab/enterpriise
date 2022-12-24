@@ -73,6 +73,8 @@ msgid ""
 ")\n"
 "            has refused the document"
 msgstr ""
+")\n"
+"            відхилив документ"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
@@ -86,7 +88,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
 msgid "- <em>Canceled</em>"
-msgstr ""
+msgstr "- <em>Скасовано</em>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
@@ -123,12 +125,12 @@ msgstr "<b>ID документа:</b>"
 #: code:addons/sign/static/src/js/tours/sign.js:0
 #, python-format
 msgid "<b>Drag & drop “Signature”</b> into the bottom of the document."
-msgstr ""
+msgstr "<b>Перетягніть “Підпис”</b> вниз документу."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "<b>Gas:</b> 18,700 Pounds of CO² = 18,700*0.4536 = 8482.32 kg"
-msgstr ""
+msgstr "<b>Газ:</b> 18,700 фунтів CO² = 18,700*0.4536 = 8482.32 kg"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -143,22 +145,24 @@ msgstr "<b>Підписанти:</b>"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "<b>Solid Waste:</b> 1290 Pounds = 1290*0.4536 = 585.14 kg"
-msgstr ""
+msgstr "<b>Тверді відходи:</b> 1290 фунтів = 1290*0.4536 = 585.14 kg"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "<b>Total Energy:</b> 27 Millions BTU = 27,000,000*0.0002931 = 7.91 kWh"
 msgstr ""
+"<b>Загальна енергія:</b> 27 мільйонів BTU = 27,000,000*0.0002931 = 7.91 kWh"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "<b>Water:</b> 23,400 Gallons = 23,400*3.78541 = 88578.59 L"
-msgstr ""
+msgstr "<b>Вода:</b> 23,400 галонів = 23,400*3.78541 = 88578.59 L"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "<b>Wood Use:</b> 4 US Short Tons = 4*907.18474 = 3628.73 kg"
 msgstr ""
+"<b>Використання деревини:</b> 4 Короткі тонни США = 4*907.18474 = 3628.73 kg"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
@@ -206,17 +210,17 @@ msgstr "<i class=\"fa fa-globe\"/> Перегляд"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.signer_status_wrapper
 msgid "<small><i> Canceled </i></small>"
-msgstr ""
+msgstr "<small><i> Скасовано </i></small>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.signer_status_wrapper
 msgid "<small><i> Is Signing </i></small>"
-msgstr ""
+msgstr "<small><i> Підписується </i></small>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.signer_status_wrapper
 msgid "<small><i> Waiting Signature </i></small>"
-msgstr ""
+msgstr "<small><i> Очікування підпису </i></small>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -224,6 +228,8 @@ msgid ""
 "<small>Email Verification: The signatory has confirmed control of their "
 "email inbox by clicking on a unique link</small>"
 msgstr ""
+"<small>Підтвердження електронної пошти: підписант підтвердив контроль над "
+"своєю скринькою електронної пошти, натиснувши унікальне посилання</small>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -231,6 +237,8 @@ msgid ""
 "<small>SMS: The signatory has confirmed their control of the phone number "
 "using a unique code sent by SMS</small>"
 msgstr ""
+"<small>SMS: Підписант підтвердив контроль над номером телефону за допомогою "
+"унікального коду, надісланого SMS</small>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_portal_my_request
@@ -276,6 +284,12 @@ msgid ""
 "document when the Signature is complete. The link is private, only those "
 "that receive the link will be able to sign it.</span>"
 msgstr ""
+"<span class=\"text-muted\" attrs=\"{'invisible': [('share_link', '=', "
+"False)]}\">Спільний доступ створить копію файлу для підпису. Цей файл "
+"доступний за посиланням нижче. Кожен загальнодоступний користувач, який "
+"використовує посилання, створить документ, коли підпис буде завершено. "
+"Посилання приватне, тільки ті, хто отримав посилання, зможуть його "
+"підписати.</span>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -307,6 +321,8 @@ msgstr "<strong>Повідомлення та історія зв'язку</stro
 msgid ""
 "<strong>Warning</strong> do not forward this email to other people!<br/>"
 msgstr ""
+"<strong>Попередження</strong> не пересилайте цей електронний лист іншим "
+"людям!<br/>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_request
@@ -337,6 +353,8 @@ msgstr ""
 msgid ""
 "A non-shared sign request's should not have any signer with an empty partner"
 msgstr ""
+"Неспільний запит підпису не повинен мати жодного підписувача з порожнім "
+"партнером"
 
 #. module: sign
 #. odoo-python
@@ -345,6 +363,8 @@ msgstr ""
 msgid ""
 "A shared sign request should only have one signer with an empty partner"
 msgstr ""
+"Спільний запит на підпис має мати лише одного підписувача з порожнім "
+"партнером"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
@@ -652,7 +672,7 @@ msgstr "CC повідомлення"
 #: model:ir.model.fields,field_description:sign.field_sign_request__refusal_allowed
 #: model:ir.model.fields,field_description:sign.field_sign_send_request__refusal_allowed
 msgid "Can be refused"
-msgstr ""
+msgstr "Може бути відхиленим"
 
 #. module: sign
 #. odoo-javascript
@@ -685,7 +705,7 @@ msgstr "Центр"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.doc_sign
 msgid "Certificate <i class=\"fa fa-download\"/>"
-msgstr ""
+msgstr "Сертифікат <i class=\"fa fa-download\"/>"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -696,7 +716,7 @@ msgstr "Сертифікат для проходження<br/>"
 #: model:ir.model.fields,field_description:sign.field_sign_item_role__change_authorized
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__change_authorized
 msgid "Change Authorized"
-msgstr ""
+msgstr "Зміна авторизована"
 
 #. module: sign
 #: model:ir.model.fields.selection,name:sign.selection__sign_item_type__item_type__checkbox
@@ -707,7 +727,7 @@ msgstr "Позначення"
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_template__is_sharing
 msgid "Checked if this template has created a shared document for you"
-msgstr ""
+msgstr "Перевірено, чи цей шаблон створив для вас спільний документ"
 
 #. module: sign
 #. odoo-javascript
@@ -717,6 +737,8 @@ msgid ""
 "Click on the field to specify who should fill it in, or if it's mandatory or"
 " not."
 msgstr ""
+"Клацніть поле, щоб вказати, хто має його заповнити, чи є воно обов’язковим "
+"чи ні."
 
 #. module: sign
 #. odoo-javascript
@@ -760,7 +782,7 @@ msgstr "Компанія"
 #: model:ir.model.fields,field_description:sign.field_sign_request__communication_company_id
 #: model:ir.model.fields,field_description:sign.field_sign_request_item__communication_company_id
 msgid "Company used for communication"
-msgstr ""
+msgstr "Компанія, що використовується для комунікації"
 
 #. module: sign
 #. odoo-python
@@ -778,7 +800,7 @@ msgstr "Завершений документ"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__completed_document_attachment_ids
 msgid "Completed Documents"
-msgstr ""
+msgstr "Завершені документи"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__nb_closed
@@ -806,6 +828,8 @@ msgid ""
 "Configure the field types that can be used to sign documents (placeholder, "
 "auto-completion, ...)"
 msgstr ""
+"Налаштуйте типи полів, які можна використовувати для підпису документів "
+"(заповнювач, автозаповнення, ...)"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_duplicate_template_with_pdf_view_form
@@ -843,7 +867,7 @@ msgstr "Контакти"
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_form
 #: model_terms:ir.ui.view,arch_db:sign.sign_send_request_view_form
 msgid "Contacts in copy"
-msgstr ""
+msgstr "Контакти у копії"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_send_request__cc_partner_ids
@@ -998,7 +1022,7 @@ msgstr "Цифровий підпис"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_res_users__sign_signature_frame
 msgid "Digital Signature Frame"
-msgstr ""
+msgstr "Рамка цифрового підпису"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.res_users_view_form
@@ -1254,7 +1278,7 @@ msgstr "Скоро закінчується"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_role__auth_method
 msgid "Extra Authentication Step"
-msgstr ""
+msgstr "Крок екстра аутентифікаціх"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__favorited_ids
@@ -1361,6 +1385,8 @@ msgstr ""
 #: model:ir.model.fields,help:sign.field_sign_item_role__auth_method
 msgid "Force the signatory to identify using a second authentication method"
 msgstr ""
+"Змусьте підписанта ідентифікувати особу за допомогою другого методу "
+"автентифікації"
 
 #. module: sign
 #. odoo-javascript
@@ -3977,7 +4003,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "and:"
-msgstr ""
+msgstr "та:"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_iap_credits_banner
@@ -4050,7 +4076,7 @@ msgstr ""
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "https://c.environmentalpaper.org/"
-msgstr ""
+msgstr "https://c.environmentalpaper.org/"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
@@ -4061,7 +4087,7 @@ msgstr "ip"
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el_pdf
 msgid "like"
-msgstr ""
+msgstr "як"
 
 #. module: sign
 #: model:sign.item.type,tip:sign.sign_item_type_initial
@@ -4117,7 +4143,7 @@ msgstr "до:"
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
 msgid "we've got a list of consumption for 1000 kg of paper usage."
-msgstr ""
+msgstr "ми маємо список витрат на 1000 кг використання паперу."
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_template_mail_not_enough_credits
@@ -4133,10 +4159,10 @@ msgstr "ви"
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el_pdf
 msgid "{{green_report_el_title}}"
-msgstr ""
+msgstr "{{green_report_el_title}}"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el
 #: model_terms:ir.ui.view,arch_db:sign.green_report_el_pdf
 msgid "{{green_report_el_title}} Summary"
-msgstr ""
+msgstr "{{green_report_el_title}} Підсумок"

@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # 	* website_appointment
 # 
+# Translators:
+# Mehjabin Farsana, 2022
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:43+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
+"Last-Translator: Mehjabin Farsana, 2022\n"
 "Language-Team: Malay (https://www.transifex.com/odoo/teams/41243/ms/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -127,7 +131,7 @@ msgstr ""
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_select_operator
 msgid "Choose"
-msgstr ""
+msgstr "pilih"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_select_operator
@@ -255,7 +259,7 @@ msgstr ""
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_type_view_form
 msgid "Unpublish"
-msgstr ""
+msgstr "Nyahterbitkan"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointments_cards

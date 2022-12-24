@@ -3,9 +3,9 @@
 # 	* account_asset
 # 
 # Translators:
-# Braulio D. López Vázquez <bdl@odoo.com>, 2022
 # Patricia Gutiérrez Capetillo <pagc@odoo.com>, 2022
 # Martin Trigaux, 2022
+# Braulio D. López Vázquez <bdl@odoo.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-16 09:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Braulio D. López Vázquez <bdl@odoo.com>, 2022\n"
 "Language-Team: Spanish (Mexico) (https://www.transifex.com/odoo/teams/41243/es_MX/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -381,7 +381,7 @@ msgstr "Analítica"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_precision
 msgid "Analytic Precision"
-msgstr ""
+msgstr "Precisión analítica"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -1742,7 +1742,7 @@ msgstr "Fecha prorrateada"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Prorata Date can not be empty"
-msgstr ""
+msgstr "La fecha prorrateada no puede estar vacía"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__purchase
@@ -2036,6 +2036,8 @@ msgid ""
 "There are unposted depreciations prior to the selected operation date, "
 "please deal with them first."
 msgstr ""
+"Hay depreciaciones sin publicar anteriores a la fecha de operación "
+"seleccionada, resuélvalo primero."
 
 #. module: account_asset
 #. odoo-javascript

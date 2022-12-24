@@ -50,7 +50,7 @@ msgstr ""
 #. module: project_timesheet_forecast
 #: model:ir.model,name:project_timesheet_forecast.model_account_analytic_line
 msgid "Analytic Account"
-msgstr ""
+msgstr "Akaun Analitik"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__user_id
@@ -109,7 +109,7 @@ msgstr ""
 #. module: project_timesheet_forecast
 #: model_terms:ir.ui.view,arch_db:project_timesheet_forecast.project_timesheet_forecast_report_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Kumpulan Oleh"
 
 #. module: project_timesheet_forecast
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_project_timesheet_forecast_report_analysis__id
@@ -270,7 +270,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:project_timesheet_forecast.field_planning_slot__timesheet_ids
 #: model:ir.model.fields.selection,name:project_timesheet_forecast.selection__project_timesheet_forecast_report_analysis__line_type__timesheet
 msgid "Timesheet"
-msgstr ""
+msgstr "Lembaran masa"
 
 #. module: project_timesheet_forecast
 #: model:ir.model,name:project_timesheet_forecast.model_project_timesheet_forecast_report_analysis

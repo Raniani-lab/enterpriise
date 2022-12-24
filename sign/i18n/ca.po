@@ -3,7 +3,6 @@
 # 	* sign
 # 
 # Translators:
-# Denys Sarapulov, 2022
 # Eric Antones <eantones@users.noreply.github.com>, 2022
 # ericrolo, 2022
 # eriiikgt, 2022
@@ -3148,7 +3147,7 @@ msgstr "Estàndard "
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_view_search
 msgid "State"
-msgstr "Província"
+msgstr "Estat"
 
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__request_state
@@ -3659,7 +3658,7 @@ msgstr "Tipus d'activitat d'excepció registrada."
 #: code:addons/sign/static/src/views/common.xml:0
 #, python-format
 msgid "UPLOAD A PDF TEMPLATE"
-msgstr "Pujar una plantilla PDF"
+msgstr "PUJAR UNA PLANTILLA PDF"
 
 #. module: sign
 #. odoo-javascript
@@ -3667,7 +3666,7 @@ msgstr "Pujar una plantilla PDF"
 #: code:addons/sign/static/src/views/common.xml:0
 #, python-format
 msgid "UPLOAD A PDF TO SIGN"
-msgstr "PUJA UN PDF PER SIGNAR"
+msgstr "PUJAR UN PDF PER SIGNAR"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.sign_request_logs_user

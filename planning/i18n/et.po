@@ -841,7 +841,7 @@ msgstr "Osakond"
 #. module: planning
 #: model:ir.model,name:planning.model_hr_departure_wizard
 msgid "Departure Wizard"
-msgstr ""
+msgstr "Lahkumise wizard"
 
 #. module: planning
 #: model:planning.role,name:planning.planning_role_developer

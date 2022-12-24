@@ -240,7 +240,7 @@ msgstr ""
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "No"
-msgstr ""
+msgstr "Tidak"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.res_config_settings_view_form

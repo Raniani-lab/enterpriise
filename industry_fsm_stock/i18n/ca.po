@@ -120,7 +120,7 @@ msgstr "Lot/núm. de sèrie"
 #. module: industry_fsm_stock
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.stock_product_product_kanban_material
 msgid "Lot/Serial number"
-msgstr ""
+msgstr "Número de lot/sèrie"
 
 #. module: industry_fsm_stock
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.stock_product_product_kanban_material
@@ -231,4 +231,4 @@ msgstr "Línia de seguiment validada"
 #. module: industry_fsm_stock
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.stock_product_product_kanban_material
 msgid "View Availability"
-msgstr ""
+msgstr "Visualitza Disponibilitat"

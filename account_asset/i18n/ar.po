@@ -4,8 +4,8 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Mehjabin Farsana, 2022
 # Malaz Abuidris <msea@odoo.com>, 2022
+# Mehjabin Farsana, 2022
 # Niyas Raphy, 2022
 # 
 msgid ""
@@ -393,7 +393,7 @@ msgstr "حساب الأصل"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset Cancelled"
-msgstr ""
+msgstr "تم إلغاء الأصل"
 
 #. module: account_asset
 #. odoo-python
@@ -612,7 +612,7 @@ msgstr "إلغاء"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Cancel Asset"
-msgstr ""
+msgstr "ألغى أصل"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__cancelled
@@ -1321,7 +1321,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__informational_text
 msgid "Informational Text"
-msgstr ""
+msgstr "نص إعلامي"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__invoice_line_ids
@@ -1416,7 +1416,7 @@ msgstr "خطي "
 #: model:ir.model.fields,field_description:account_asset.field_account_move__linked_asset_type
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__linked_asset_type
 msgid "Linked Asset Type"
-msgstr ""
+msgstr "مرتبط أصل اكتب"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__asset_modify__gain_or_loss__loss
@@ -1628,7 +1628,7 @@ msgstr "عدد الأصول التي تم إنشاؤها لزيادة قيمة �
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_number_days
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_number_days
 msgid "Number of days"
-msgstr ""
+msgstr "عدد الأيام"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__total_depreciation_entries_count
@@ -1731,7 +1731,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_move_line__asset_ids
 msgid "Related Assets"
-msgstr ""
+msgstr "المرتبطة أصول"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form

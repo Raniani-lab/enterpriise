@@ -151,6 +151,9 @@ msgid ""
 " selected employee(s) based on the dates and credit note specified on "
 "Payslips Run.</span>"
 msgstr ""
+"<span nolabel=\"1\" colspan=\"2\">Este asistente generará recibos de nómina "
+"para todos los empleados seleccionados, según las fechas y notas de crédito "
+"que se especificaron en la ejecución de los recibos.</span>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_index_form_view
@@ -2271,6 +2274,8 @@ msgid ""
 "Note a description of your parameter, when it's used, how is it computed, "
 "what's the source, ..."
 msgstr ""
+"Anota una descripción de su parámetro, cuándo se utiliza, cómo se calcula, "
+"cuál es su origen, etc."
 
 #. module: hr_payroll
 #. odoo-python
@@ -3247,6 +3252,8 @@ msgid ""
 "Set a specific department if you wish to select all the employees from this "
 "department (and subdepartments) at once."
 msgstr ""
+"Establece un departamento específico si desea seleccionar todos los "
+"empleados de este departamento (y subdepartamentos) a la vez."
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_by_employees
@@ -3256,6 +3263,10 @@ msgid ""
 "generated for all the selected employees, based on their contracts "
 "configuration."
 msgstr ""
+"Establece una estructura específica si desea generar un recibo de nómina "
+"adicional (por ejemplo, aguinaldo). Si deja este campo vacío, se generará un"
+" recibo de nómina regular para todos los empleados seleccionados, según la "
+"configuración de sus contratos."
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -3528,6 +3539,8 @@ msgid ""
 "There's no contract set on payslip %s for %s. Check that there is at least a"
 " contract set on the employee form."
 msgstr ""
+"No hay un contrato establecido en el recibo de nómina %s para %s. Compruebe "
+"que hay por lo menos un contrato establecido en el formulario de empleado."
 
 #. module: hr_payroll
 #. odoo-python

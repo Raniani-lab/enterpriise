@@ -67,39 +67,39 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_media__message_needaction
 #: model:ir.model.fields,field_description:social.field_social_post__message_needaction
 msgid "Action Needed"
-msgstr ""
+msgstr "Tindakan Diperlukan"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__active
 msgid "Active"
-msgstr ""
+msgstr "Aktif"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_ids
 msgid "Activities"
-msgstr ""
+msgstr "Aktiviti"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_exception_decoration
 msgid "Activity Exception Decoration"
-msgstr ""
+msgstr "Hiasan Pengecualian Aktiviti"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_state
 msgid "Activity State"
-msgstr ""
+msgstr "Keadaan Aktiviti"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_type_icon
 msgid "Activity Type Icon"
-msgstr ""
+msgstr "Ikon Jenis Aktiviti"
 
 #. module: social
 #. odoo-javascript
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Add"
-msgstr ""
+msgstr "Tambah"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.utm_campaign_view_form
@@ -147,7 +147,7 @@ msgstr ""
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_account_view_search
 msgid "Archived"
-msgstr ""
+msgstr "Diarkibkan"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__has_active_accounts
@@ -165,7 +165,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_media__message_attachment_count
 #: model:ir.model.fields,field_description:social.field_social_post__message_attachment_count
 msgid "Attachment Count"
-msgstr ""
+msgstr "Kiraan Lampiran"
 
 #. module: social
 #. odoo-javascript
@@ -228,7 +228,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:social.action_view_utm_campaigns
 #: model:ir.ui.menu,name:social.menu_social_campaign
 msgid "Campaigns"
-msgstr ""
+msgstr "Kempen"
 
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_view_utm_campaigns
@@ -432,7 +432,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_post__state__draft
 msgid "Draft"
-msgstr ""
+msgstr "Draf"
 
 #. module: social
 #. odoo-python
@@ -561,7 +561,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social.social_stream_post_view_search
 #: model_terms:ir.ui.view,arch_db:social.social_stream_view_search
 msgid "Group By"
-msgstr ""
+msgstr "Kumpulan Oleh"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__social_account_handle
@@ -584,7 +584,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_media__has_message
 #: model:ir.model.fields,field_description:social.field_social_post__has_message
 msgid "Has Message"
-msgstr ""
+msgstr "Mempunyai Mesej"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__has_trends
@@ -632,7 +632,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_account__image
 #: model:ir.model.fields,field_description:social.field_social_media__image
 msgid "Image"
-msgstr ""
+msgstr "Gambar"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post_image__image_url
@@ -875,7 +875,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_post__media_ids
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_kanban
 msgid "Media"
-msgstr ""
+msgstr "Media"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_account__media_type
@@ -976,7 +976,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "Seterusnya"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_calendar_event_id
@@ -986,17 +986,17 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_date_deadline
 msgid "Next Activity Deadline"
-msgstr ""
+msgstr "Tarikh Akhir Aktiviti Seterusnya"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_summary
 msgid "Next Activity Summary"
-msgstr ""
+msgstr "Ringkasan Aktiviti Seterusnya"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_type_id
 msgid "Next Activity Type"
-msgstr ""
+msgstr "Jenis Aktiviti Seterusnya"
 
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_account
@@ -1031,7 +1031,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_media__message_needaction_counter
 #: model:ir.model.fields,field_description:social.field_social_post__message_needaction_counter
 msgid "Number of Actions"
-msgstr ""
+msgstr "Bilangan Tindakan"
 
 #. module: social
 #. odoo-javascript
@@ -1354,7 +1354,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:social.action_social_global_settings
 #: model:ir.ui.menu,name:social.menu_social_global_settings
 msgid "Settings"
-msgstr ""
+msgstr "Tetapan"
 
 #. module: social
 #: model:ir.model,name:social.model_social_account

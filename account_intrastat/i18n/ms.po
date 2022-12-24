@@ -64,13 +64,13 @@ msgstr ""
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.view_intrastat_code_search
 msgid "Active"
-msgstr ""
+msgstr "Aktif"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_intrastat_type
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
 msgid "All"
-msgstr ""
+msgstr "Semua"
 
 #. module: account_intrastat
 #: code:addons/account_intrastat/models/account_intrastat_report.py:0
@@ -281,7 +281,7 @@ msgstr "Kemasukan jurnal"
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_account_move_line
 msgid "Journal Item"
-msgstr ""
+msgstr "Item Jurnal"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat

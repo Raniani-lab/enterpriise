@@ -176,7 +176,7 @@ msgstr ""
 #. module: website_twitter_wall
 #: model:ir.model.fields.selection,name:website_twitter_wall.selection__website_twitter_wall__mode__mixed
 msgid "Mixed"
-msgstr ""
+msgstr "Campuran"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__mode

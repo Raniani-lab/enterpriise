@@ -57,6 +57,7 @@ msgstr "A combination of the spreadsheet and the user already exist"
 msgid ""
 "Any user will be able to create a new spreadsheet based on this template."
 msgstr ""
+"Any user will be able to create a new spreadsheet based on this template."
 
 #. module: documents_spreadsheet
 #: model_terms:documents.folder,description:documents_spreadsheet.documents_spreadsheet_folder

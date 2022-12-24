@@ -24,7 +24,7 @@ msgstr ""
 #: code:addons/account_followup/models/account_followup.py:0
 #, python-format
 msgid "%s (copy)"
-msgstr ""
+msgstr "%s (Salinan)"
 
 #. module: account_followup
 #. odoo-python
@@ -52,12 +52,12 @@ msgstr ""
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line1
 msgid "15 Days"
-msgstr ""
+msgstr "15 hari"
 
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line2
 msgid "30 Days"
-msgstr ""
+msgstr "30 hari"
 
 #. module: account_followup
 #: model:account_followup.followup.line,name:account_followup.demo_followup_line3
@@ -199,7 +199,7 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_chart_template
 msgid "Account Chart Template"
-msgstr ""
+msgstr "Templat Carta Akaun"
 
 #. module: account_followup
 #: model:ir.model.fields.selection,name:account_followup.selection__account_followup_followup_line__activity_default_responsible_type__account_manager
@@ -216,7 +216,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
 msgid "Actions"
-msgstr ""
+msgstr "Tindakan"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_followup_line_form
@@ -237,12 +237,12 @@ msgstr ""
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.template_followup_report
 msgid "Add a note"
-msgstr ""
+msgstr "Tambah Nota"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
 msgid "Add contacts to notify..."
-msgstr ""
+msgstr "Tambahkan kenalan untuk memberitahu..."
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__type
@@ -264,7 +264,7 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_manual_reminder__attachment_ids
 msgid "Attachment"
-msgstr ""
+msgstr "Lampiran"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__auto_execute
@@ -294,7 +294,7 @@ msgstr ""
 #: code:addons/account_followup/models/account_followup_report.py:0
 #, python-format
 msgid "Communication"
-msgstr ""
+msgstr "Komunikasi"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__company_id
@@ -304,7 +304,7 @@ msgstr "Syarikat"
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Kenalan"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
@@ -569,7 +569,7 @@ msgstr ""
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_search_view
 msgid "Group By"
-msgstr ""
+msgstr "Kumpulan Oleh"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__id
@@ -612,7 +612,7 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model,name:account_followup.model_account_move_line
 msgid "Journal Item"
-msgstr ""
+msgstr "Item Jurnal"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.manual_reminder_view_form
@@ -821,7 +821,7 @@ msgstr ""
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_followup_followup_line__create_activity
 msgid "Schedule Activity"
-msgstr ""
+msgstr "Jadual Aktiviti"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.view_account_followup_line_filter

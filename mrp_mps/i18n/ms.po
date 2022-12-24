@@ -39,7 +39,7 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/components/line.xml:0
 #, python-format
 msgid "Actual"
-msgstr ""
+msgstr "sebenarnya"
 
 #. module: mrp_mps
 #. openerp-web
@@ -196,7 +196,7 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/search/mrp_mps_control_panel.js:0
 #, python-format
 msgid "Delete"
-msgstr ""
+msgstr "Padam"
 
 #. module: mrp_mps
 #. openerp-web

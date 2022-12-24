@@ -3,8 +3,8 @@
 # 	* sale_temporal
 # 
 # Translators:
-# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022
 # Martin Trigaux, 2022
+# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:30+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -54,7 +54,7 @@ msgstr "Компанія"
 #: model_terms:ir.actions.act_window,help:sale_temporal.product_pricing_action
 #: model_terms:ir.actions.act_window,help:sale_temporal.sale_temporal_recurrence_action
 msgid "Create a new recurrence"
-msgstr ""
+msgstr "Свторити нове повторення"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__create_uid
@@ -77,7 +77,7 @@ msgstr "Валюта"
 #: model:ir.model.fields,field_description:sale_temporal.field_product_product__product_pricing_ids
 #: model:ir.model.fields,field_description:sale_temporal.field_product_template__product_pricing_ids
 msgid "Custom Pricings"
-msgstr ""
+msgstr "Кастомні ціни"
 
 #. module: sale_temporal
 #. odoo-python
@@ -111,7 +111,7 @@ msgstr "Тривалість"
 #: model:ir.model.fields,help:sale_temporal.field_product_product__display_price
 #: model:ir.model.fields,help:sale_temporal.field_product_template__display_price
 msgid "First leasing pricing of the product"
-msgstr ""
+msgstr "Перше лізингове ціноутворення товару"
 
 #. module: sale_temporal
 #. odoo-python
@@ -134,13 +134,13 @@ msgstr "Внутрішня примітка"
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_subscription_order_view_form
 msgid "Internal notes"
-msgstr ""
+msgstr "Внутрішні примітки"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_product__is_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_template__is_temporal
 msgid "Is Temporal"
-msgstr ""
+msgstr "Тимчасовий"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing____last_update
@@ -164,7 +164,7 @@ msgstr "Останнє оновлення"
 #: model:ir.model.fields,field_description:sale_temporal.field_product_product__display_price
 #: model:ir.model.fields,field_description:sale_temporal.field_product_template__display_price
 msgid "Leasing price"
-msgstr ""
+msgstr "Лізингова ціна"
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_sale_temporal_recurrence__duration
@@ -172,6 +172,8 @@ msgid ""
 "Minimum duration before this rule is applied. If set to 0, it represents a "
 "fixed temporal price."
 msgstr ""
+"Мінімальна тривалість до застосування цього правила. Якщо встановлено "
+"значення 0, це означає фіксовану часову ціну."
 
 #. module: sale_temporal
 #. odoo-python
@@ -233,7 +235,7 @@ msgstr "Ціни"
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_product_pricing
 msgid "Pricing rule of temporal products"
-msgstr ""
+msgstr "Правило ціноутворення тимчасових товарів"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_product_template
@@ -268,17 +270,17 @@ msgstr "Повторення"
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricelist__product_pricing_ids
 msgid "Recurring Price Rules"
-msgstr ""
+msgstr "Правила ціни повторення"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 msgid "Recurring Pricelist Rules"
-msgstr ""
+msgstr "Правила прайслиста повторення"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_temporal_recurrence
 msgid "Sale temporal Recurrence"
-msgstr ""
+msgstr "Тимчасове повторення продажу"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_order
@@ -296,6 +298,9 @@ msgid ""
 "Select Variants of the Product for which this rule applies. Leave empty if "
 "this rule applies for any variant of this template."
 msgstr ""
+"Виберіть варіанти товару, щодо якого застосовується це правило. Залиште "
+"порожнім, якщо це правило застосовується до будь-якого варіанту цього "
+"шаблону."
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_pricing__product_template_id
@@ -305,7 +310,7 @@ msgstr "Оберіть товари, на які будуть застосову
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_order_line__temporal_type
 msgid "Temporal Type"
-msgstr ""
+msgstr "Тимчасовий тип"
 
 #. module: sale_temporal
 #: model:ir.model.constraint,message:sale_temporal.constraint_sale_temporal_recurrence_temporal_recurrence_duration
@@ -317,7 +322,7 @@ msgstr "Тривалість ціноутворення має бути біль
 #: code:addons/sale_temporal/models/product_template.py:0
 #, python-format
 msgid "The product (%s) has incompatible values: %s"
-msgstr ""
+msgstr "Товар (%s) має необчислювальні значення: %s"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
@@ -380,6 +385,8 @@ msgid ""
 "You cannot have multiple pricing for the same variant, recurrence and "
 "pricelist"
 msgstr ""
+"Ви не можете мати кілька цін для того самого варіанту, повторення та прайс-"
+"листа"
 
 #. module: sale_temporal
 #. odoo-python
@@ -387,4 +394,4 @@ msgstr ""
 #: code:addons/sale_temporal/models/product_pricing.py:0
 #, python-format
 msgid "all variants"
-msgstr ""
+msgstr "усі варіанти"

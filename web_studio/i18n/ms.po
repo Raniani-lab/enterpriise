@@ -164,7 +164,7 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_res_groups
 msgid "Access Groups"
-msgstr ""
+msgstr "Akses Kumpulan"
 
 #. module: web_studio
 #. odoo-javascript
@@ -187,7 +187,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
 msgid "Action"
-msgstr ""
+msgstr "Tindakan"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_act_window
@@ -237,7 +237,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
 #, python-format
 msgid "Active"
-msgstr ""
+msgstr "Aktif"
 
 #. module: web_studio
 #. odoo-javascript
@@ -265,7 +265,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Add"
-msgstr ""
+msgstr "Tambah"
 
 #. module: web_studio
 #. odoo-javascript
@@ -508,7 +508,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
 #, python-format
 msgid "Archived"
-msgstr ""
+msgstr "Diarkibkan"
 
 #. module: web_studio
 #. odoo-javascript
@@ -658,7 +658,7 @@ msgstr ""
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_base
 msgid "Base"
-msgstr ""
+msgstr "Pangkalan"
 
 #. module: web_studio
 #. odoo-javascript
@@ -808,7 +808,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Checkbox"
-msgstr ""
+msgstr "Kotak semak"
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_model_data__studio
@@ -1036,7 +1036,7 @@ msgstr ""
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "Contact"
-msgstr ""
+msgstr "Kenalan"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1384,7 +1384,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 #, python-format
 msgid "Delete"
-msgstr ""
+msgstr "Padam"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1503,14 +1503,14 @@ msgstr ""
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__domain
 #, python-format
 msgid "Domain"
-msgstr ""
+msgstr "Domain"
 
 #. module: web_studio
 #. odoo-python
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "Done"
-msgstr ""
+msgstr "Selesai"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1707,7 +1707,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/common/abstract_editor_manager.js:0
 #, python-format
 msgid "Error"
-msgstr ""
+msgstr "Ralat"
 
 #. module: web_studio
 #. odoo-javascript
@@ -1993,7 +1993,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
 #, python-format
 msgid "Group By"
-msgstr ""
+msgstr "Kumpulan Oleh"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2212,7 +2212,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Image"
-msgstr ""
+msgstr "Gambar"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2614,7 +2614,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/sidebar_common.xml:0
 #, python-format
 msgid "More"
-msgstr ""
+msgstr "Lagi"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2682,7 +2682,7 @@ msgstr "Nama"
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "New"
-msgstr ""
+msgstr "Baru"
 
 #. module: web_studio
 #. odoo-python
@@ -2759,7 +2759,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.xml:0
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "Seterusnya"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2775,7 +2775,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "No"
-msgstr ""
+msgstr "Tidak"
 
 #. module: web_studio
 #. odoo-python
@@ -2897,7 +2897,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Optional"
-msgstr ""
+msgstr "Pilihan"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2918,7 +2918,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Other"
-msgstr ""
+msgstr "Lain-lain"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
@@ -2957,7 +2957,7 @@ msgstr ""
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "Phone"
-msgstr ""
+msgstr "Telefon"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3160,7 +3160,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/approval_component.xml:0
 #, python-format
 msgid "Reject"
-msgstr ""
+msgstr "Tolak"
 
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
@@ -3547,7 +3547,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Signature"
-msgstr ""
+msgstr "Tandatangan"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3805,7 +3805,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/js/views/view_components.js:0
 #, python-format
 msgid "Tags"
-msgstr ""
+msgstr "Tag"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4196,7 +4196,7 @@ msgstr ""
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
 msgid "User"
-msgstr ""
+msgstr "pengguna"
 
 #. module: web_studio
 #. odoo-javascript

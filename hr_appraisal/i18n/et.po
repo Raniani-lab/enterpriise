@@ -720,7 +720,7 @@ msgstr "Osakond"
 #. module: hr_appraisal
 #: model:ir.model,name:hr_appraisal.model_hr_departure_wizard
 msgid "Departure Wizard"
-msgstr ""
+msgstr "Lahkumise wizard"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal_goal__description
@@ -1636,7 +1636,7 @@ msgstr "Kasutaja"
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_request_appraisal__user_body
 msgid "User Contents"
-msgstr ""
+msgstr "Kasutaja sisu"
 
 #. module: hr_appraisal
 #: model:ir.model.fields,field_description:hr_appraisal.field_hr_appraisal__waiting_feedback

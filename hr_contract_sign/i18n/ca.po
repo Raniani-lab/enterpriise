@@ -38,7 +38,7 @@ msgstr "%s i %s són els signataris."
 #: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
 #, python-format
 msgid "%s does not have a work email set."
-msgstr ""
+msgstr "%s no té definit un correu electrònic de treball."
 
 #. module: hr_contract_sign
 #: code:addons/hr_contract_sign/wizard/hr_contract_sign_document_wizard.py:0
@@ -109,7 +109,7 @@ msgstr "Signatura del document"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__sign_template_id
 msgid "Document to sign"
-msgstr ""
+msgstr "Document a signar"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__sign_template_ids
@@ -176,7 +176,7 @@ msgstr "ID"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__is_signature_request
 msgid "Is Signature Request"
-msgstr ""
+msgstr "És una sol·licitud de signatura"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard____last_update

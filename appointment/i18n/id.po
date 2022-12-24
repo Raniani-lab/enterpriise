@@ -592,7 +592,7 @@ msgstr "Jawaban"
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_tree
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_type_view_form
 msgid "Answer Breakdown"
-msgstr ""
+msgstr "Menguraikan Jawaban"
 
 #. module: appointment
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_answer_input_view_form
@@ -920,7 +920,7 @@ msgstr "Dikonfirmasi"
 #. module: appointment
 #: model:onboarding.onboarding.step,button_text:appointment.appointment_onboarding_configure_calendar_provider_step
 msgid "Connect"
-msgstr ""
+msgstr "Connect"
 
 #. module: appointment
 #. odoo-python
@@ -1126,7 +1126,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__message_follower_ids
 msgid "Followers"
-msgstr "Pengikut"
+msgstr "Follower"
 
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_slot__weekday__5
@@ -1674,7 +1674,7 @@ msgstr "Pertanyaan"
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer_input__question_type
 #: model:ir.model.fields,field_description:appointment.field_appointment_question__question_type
 msgid "Question Type"
-msgstr ""
+msgstr "Tipe Pertanyaan"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__question_ids

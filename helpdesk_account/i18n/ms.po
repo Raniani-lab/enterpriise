@@ -22,7 +22,7 @@ msgstr ""
 #. module: helpdesk_account
 #: model:ir.model,name:helpdesk_account.model_account_move_reversal
 msgid "Account Move Reversal"
-msgstr ""
+msgstr "Pembalikan Pergerakan Akaun"
 
 #. module: helpdesk_account
 #: code:addons/helpdesk_account/controllers/portal.py:0

@@ -893,7 +893,7 @@ msgstr "Establecer una nueva imagen"
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.mrp_routing_workcenter_tree_view_inherited
 msgid "Show Instructions"
-msgstr ""
+msgstr "Mostrar instrucciones"
 
 #. module: mrp_workorder
 #: model_terms:ir.ui.view,arch_db:mrp_workorder.res_config_settings_view_form
@@ -1194,7 +1194,7 @@ msgstr "Página de hoja de trabajo"
 #: code:addons/mrp_workorder/static/src/components/summary_step.xml:0
 #, python-format
 msgid "Wow, you made the Top 5!"
-msgstr ""
+msgstr "¡Guau, alcanzó a los mejores 5!"
 
 #. module: mrp_workorder
 #. odoo-python

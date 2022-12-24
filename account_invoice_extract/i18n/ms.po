@@ -58,6 +58,8 @@ msgid ""
 "<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
 "specific.\"/>"
 msgstr ""
+"<span class=\"fa fa-lg fa-building-o\" title=\"Values set here are company-"
+"specific.\"/>"
 
 #. module: account_invoice_extract
 #: model:mail.template,name:account_invoice_extract.account_invoice_extract_no_credit
@@ -83,7 +85,7 @@ msgstr ""
 #. module: account_invoice_extract
 #: model:ir.model,name:account_invoice_extract.model_ir_attachment
 msgid "Attachment"
-msgstr ""
+msgstr "Lampiran"
 
 #. module: account_invoice_extract
 #. odoo-python
@@ -411,7 +413,7 @@ msgstr ""
 #. module: account_invoice_extract
 #: model:ir.model.fields.selection,name:account_invoice_extract.selection__account_move__extract_state__to_validate
 msgid "To validate"
-msgstr ""
+msgstr "Untuk mengesahkan"
 
 #. module: account_invoice_extract
 #. odoo-python

@@ -414,7 +414,7 @@ msgstr "Akaun"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_chart_template
 msgid "Account Chart Template"
-msgstr ""
+msgstr "Templat Carta Akaun"
 
 #. module: account_reports
 #. odoo-python
@@ -457,12 +457,12 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report
 msgid "Accounting Report"
-msgstr ""
+msgstr "Laporan Perakaunan"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_report_line
 msgid "Accounting Report Line"
-msgstr ""
+msgstr "Barisan Laporan Perakaunan"
 
 #. module: account_reports
 #: model:ir.actions.act_window,name:account_reports.action_account_report_tree
@@ -477,7 +477,7 @@ msgstr ""
 #: code:addons/account_reports/static/src/js/account_reports.js:0
 #, python-format
 msgid "Accounts"
-msgstr ""
+msgstr "Akaun"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_form
@@ -499,7 +499,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_mail_activity_type__category
 msgid "Action"
-msgstr ""
+msgstr "Tindakan"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_mail_activity_type__category
@@ -523,7 +523,7 @@ msgstr ""
 #: code:addons/account_reports/static/src/js/account_reports.js:0
 #, python-format
 msgid "Add a note"
-msgstr ""
+msgstr "Tambah Nota"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_res_company__totals_below_sections
@@ -607,7 +607,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_fiscal_position_choser
 msgid "All"
-msgstr ""
+msgstr "Semua"
 
 #. module: account_reports
 #. odoo-python
@@ -641,7 +641,7 @@ msgstr ""
 #: model:account.report.column,name:account_reports.account_financial_report_ec_sales_amount
 #: model:account.report.column,name:account_reports.bank_reconciliation_report_amount
 msgid "Amount"
-msgstr ""
+msgstr "Jumlah"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.aged_payable_report_amount_currency
@@ -700,7 +700,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_comparison
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "Apply"
-msgstr ""
+msgstr "Mohon"
 
 #. module: account_reports
 #. odoo-python
@@ -713,7 +713,7 @@ msgstr ""
 #: model:account.report.column,name:account_reports.aged_payable_report_period0
 #: model:account.report.column,name:account_reports.aged_receivable_report_period0
 msgid "At Date"
-msgstr ""
+msgstr "Pada Tarikh"
 
 #. module: account_reports
 #. odoo-python
@@ -756,7 +756,7 @@ msgstr ""
 #: model:account.report.column,name:account_reports.profit_and_loss_column
 #, python-format
 msgid "Balance"
-msgstr ""
+msgstr "Seimbang"
 
 #. module: account_reports
 #: model:account.report,name:account_reports.balance_sheet
@@ -764,7 +764,7 @@ msgstr ""
 #: model:ir.actions.client,name:account_reports.action_account_report_bs
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_balance_sheet
 msgid "Balance Sheet"
-msgstr ""
+msgstr "Penyata imbangan"
 
 #. module: account_reports
 #: model:account.report.column,name:account_reports.multicurrency_revaluation_report_balance_current
@@ -845,7 +845,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template_journal_audit_report
 #, python-format
 msgid "Base Amount"
-msgstr ""
+msgstr "Jumlah Asas"
 
 #. module: account_reports
 #. odoo-python
@@ -1038,7 +1038,7 @@ msgstr ""
 #. module: account_reports
 #: model:account.report.column,name:account_reports.general_ledger_report_communication
 msgid "Communication"
-msgstr ""
+msgstr "Komunikasi"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_res_company
@@ -1098,7 +1098,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_res_partner
 msgid "Contact"
-msgstr ""
+msgstr "Kenalan"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_cost_sales0
@@ -1322,7 +1322,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_horizontal_group_rule__domain
 msgid "Domain"
-msgstr ""
+msgstr "Domain"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_fiscal_position_choser
@@ -1502,7 +1502,7 @@ msgstr ""
 #: model:account.report.line,name:account_reports.account_financial_report_expense0
 #: model:account.report.line,name:account_reports.account_financial_report_less_expenses0
 msgid "Expenses"
-msgstr ""
+msgstr "Perbelanjaan"
 
 #. module: account_reports
 #. odoo-python
@@ -1691,7 +1691,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_account_report_search
 msgid "Group By"
-msgstr ""
+msgstr "Kumpulan Oleh"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
@@ -1930,7 +1930,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_move_line
 msgid "Journal Item"
-msgstr ""
+msgstr "Item Jurnal"
 
 #. module: account_reports
 #. odoo-python
@@ -2798,7 +2798,7 @@ msgstr ""
 #: code:addons/account_reports/static/src/js/account_reports.js:0
 #, python-format
 msgid "Tags"
-msgstr ""
+msgstr "Tag"
 
 #. module: account_reports
 #. odoo-python

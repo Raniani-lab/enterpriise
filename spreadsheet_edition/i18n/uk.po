@@ -37,28 +37,28 @@ msgstr "Додайте новий фільтр..."
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.js:0
 #, python-format
 msgid "After next"
-msgstr ""
+msgstr "Після настпуного"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/list/side_panels/listing_all_side_panel.js:0
 #, python-format
 msgid "Are you sure you want to delete this list ?"
-msgstr ""
+msgstr "Ви впевнені, що хочете видалити цей список?"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_list_side_panel.js:0
 #, python-format
 msgid "Are you sure you want to delete this pivot ?"
-msgstr ""
+msgstr "Ви впевнені, що хочете видалити цю зведену таблицю?"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Automatically filter on the current period"
-msgstr ""
+msgstr "Автоматичний фільтр на поточний період"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -73,14 +73,14 @@ msgstr "Назад"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.js:0
 #, python-format
 msgid "Before previous"
-msgstr ""
+msgstr "Перед попереднім"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_panel.xml:0
 #, python-format
 msgid "Blank spreadsheet"
-msgstr ""
+msgstr "Порожня електронна таблиця"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -97,12 +97,12 @@ msgstr "Скасувати"
 #: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
 #, python-format
 msgid "Clear history"
-msgstr ""
+msgstr "Очистити історію"
 
 #. module: spreadsheet_edition
 #: model:ir.model,name:spreadsheet_edition.model_spreadsheet_collaborative_mixin
 msgid "Collaboration on spreadsheets"
-msgstr ""
+msgstr "Спільна робота в електронній таблиці"
 
 #. module: spreadsheet_edition
 #: model:ir.model,name:spreadsheet_edition.model_spreadsheet_revision
@@ -159,7 +159,7 @@ msgstr "Дата"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Date field"
-msgstr ""
+msgstr "Поле дати"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -237,14 +237,14 @@ msgstr "Редагувати"
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.xml:0
 #, python-format
 msgid "Edit domain"
-msgstr ""
+msgstr "Редагувати домен"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Field matching"
-msgstr ""
+msgstr "Співставлення полів"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -356,7 +356,7 @@ msgstr "Пов'язати меню в електронній таблиці"
 #: code:addons/spreadsheet_edition/static/src/bundle/chart/odoo_menu/chart_panel.xml:0
 #, python-format
 msgid "Link to Odoo menu"
-msgstr ""
+msgstr "З'єднати з меню Odoo"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -384,7 +384,7 @@ msgstr "Зробити копію"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Match this filter to a field for each data source"
-msgstr ""
+msgstr "Зіставте цей фільтр із полем для кожного джерела даних"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -422,7 +422,7 @@ msgstr "Місяць"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "Name of the %s:"
-msgstr ""
+msgstr "Назва %s:"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -457,7 +457,7 @@ msgstr "Наступний"
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_panel.xml:0
 #, python-format
 msgid "No preview"
-msgstr ""
+msgstr "Немає перегляду"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -476,7 +476,7 @@ msgstr "Батьківська ревізія"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/components/filter_field_offset.xml:0
 #, python-format
 msgid "Period offset"
-msgstr ""
+msgstr "Зміщення періоду"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -517,7 +517,7 @@ msgstr "Чверть"
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_collaborative_mixin__raw
 msgid "Raw"
-msgstr ""
+msgstr "Рядок"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -544,7 +544,7 @@ msgstr "Запис #"
 #. module: spreadsheet_edition
 #: model:ir.model.fields,field_description:spreadsheet_edition.field_spreadsheet_revision__res_id
 msgid "Record id"
-msgstr ""
+msgstr "id запису"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -566,7 +566,7 @@ msgstr "Оновити значення"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Related model"
-msgstr ""
+msgstr "Пов'язана модель"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -580,7 +580,7 @@ msgstr "Відношення"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/filter_editor_side_panel.js:0
 #, python-format
 msgid "Relative Period"
-msgstr ""
+msgstr "Відносний період"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -622,7 +622,7 @@ msgstr "Зберегти"
 #: code:addons/spreadsheet_edition/static/src/bundle/o_spreadsheet/menu_item_registry.js:0
 #, python-format
 msgid "Save as template"
-msgstr ""
+msgstr "Зберегти як шаблон"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -652,14 +652,14 @@ msgstr "Пошук..."
 #: code:addons/spreadsheet_edition/static/src/bundle/list/index.js:0
 #, python-format
 msgid "See list properties"
-msgstr ""
+msgstr "Переглянути властивості списку"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/index.js:0
 #, python-format
 msgid "See pivot properties"
-msgstr ""
+msgstr "Переглянути властивості зведеної таблиці"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -673,7 +673,7 @@ msgstr "Оберіть меню..."
 #: code:addons/spreadsheet_edition/static/src/assets/components/spreadsheet_selector_dialog/spreadsheet_selector_dialog.js:0
 #, python-format
 msgid "Select a spreadsheet to insert your %s."
-msgstr ""
+msgstr "Виберіть електронну таблицю, щоб вставити свою %s."
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -694,7 +694,7 @@ msgstr "Виберіть кількість записів для вставле
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/index.js:0
 #, python-format
 msgid "Set as filter"
-msgstr ""
+msgstr "Встановити як фільтр"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -754,7 +754,7 @@ msgstr "Текст"
 #: code:addons/spreadsheet_edition/static/src/bundle/global_filters/global_filter_side_panel.xml:0
 #, python-format
 msgid "Time range"
-msgstr ""
+msgstr "Часовий діапазон"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
@@ -785,14 +785,14 @@ msgstr "Рік"
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.js:0
 #, python-format
 msgid "ascending"
-msgstr ""
+msgstr "висхідний"
 
 #. module: spreadsheet_edition
 #. odoo-javascript
 #: code:addons/spreadsheet_edition/static/src/bundle/pivot/side_panels/pivot_details_side_panel.js:0
 #, python-format
 msgid "descending"
-msgstr ""
+msgstr "нисхідний"
 
 #. module: spreadsheet_edition
 #. odoo-javascript

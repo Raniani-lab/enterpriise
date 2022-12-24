@@ -1985,7 +1985,7 @@ msgstr "أحسنت! لإضافة <b>حقول</b> أكثر، عد لاختيار 
 #: model:mail.activity.type,name:web_studio.mail_activity_data_approve
 #, python-format
 msgid "Grant Approval"
-msgstr ""
+msgstr "الموافقة على المنحة"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3071,7 +3071,7 @@ msgstr "يرجى تحديد حقل. "
 #: code:addons/web_studio/static/src/client_action/view_editors/kanban/kanban_editor_record.xml:0
 #, python-format
 msgid "Preview is not available"
-msgstr ""
+msgstr "المعاينة غير متاحة"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4394,7 +4394,7 @@ msgstr "ما إذا كانت القاعدة يمكن الموافقة عليها
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_ir_model__abstract
 msgid "Whether this model is abstract"
-msgstr ""
+msgstr "ما إذا كان هذا النموذج مجرد"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4510,7 +4510,7 @@ msgstr "أنت تحب فقط كسر الأشياء، أليس كذلك؟ "
 #: code:addons/web_studio/static/src/legacy/js/common/new_field_dialog.js:0
 #, python-format
 msgid "You must have at least one option set"
-msgstr ""
+msgstr "يجب أن تمتلك على الاقل مجموعة خيار واحد"
 
 #. module: web_studio
 #. odoo-javascript

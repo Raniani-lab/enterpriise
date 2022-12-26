@@ -23,7 +23,7 @@ registry.category("web_tour.tours").add('helpdesk_tour', {
 }, {
     trigger: '.o-kanban-button-new',
     extra_trigger: '.o_helpdesk_ticket_kanban_view',
-    content: _t('Let\'s create your first <b>ticket</b>.'),
+    content: markup(_t('Let\'s create your first <b>ticket</b>.')),
     position: 'bottom',
     width: 200,
 }, {

@@ -12,6 +12,7 @@
                     <field name="wage" type="measure"/>
                     <field name="count_new_employee" type="measure"/>
                     <field name="count_employee_exit" type="measure"/>
+                    <field name="employee_count" invisible="1"/>
                 </pivot>
             </field>
         </record>
@@ -23,6 +24,7 @@
                 <graph string="Employees Analysis" type="line" sample="1" js_class="contract_employee_report_graph">
                     <field name="date"/>
                     <field name="count_new_employee" type="measure"/>
+                    <field name="employee_count" type="measure"/>
                 </graph>
             </field>
         </record>

@@ -16,6 +16,7 @@ class HrContractEmployeeReport(models.Model):
     company_id = fields.Many2one('res.company', 'Company', readonly=True)
     department_id = fields.Many2one('hr.department', 'Department', readonly=True)
 
+    employee_count = fields.Integer('# Employees')
     count_employee_exit = fields.Integer('# Departure Employee', readonly=True)
     count_new_employee = fields.Integer('# New Employees', readonly=True)
     age_sum = fields.Float('Duration Contract', group_operator="sum", readonly=True)
@@ -34,6 +35,7 @@ class HrContractEmployeeReport(models.Model):
             c.id as id,
             c.id as contract_id,
             e.id as employee_id,
+            1 as employee_count,
             e.company_id as company_id,
             e.departure_reason_id as departure_reason_id,
             e.department_id as department_id,

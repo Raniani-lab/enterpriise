@@ -32,7 +32,7 @@
                             <div class="ribbon ribbon-top-right" attrs="{'invisible': [('active', '=', True)]}">
                                 <span class="bg-danger">Archived</span>
                             </div>
-                            <div class="col-lg-2 col-sm-6 col-11 py-0 my-auto">
+                            <div class="col-lg-3 col-sm-6 col-11 py-0 my-auto">
                                 <div class="d-flex text-large">
                                     <span class="d-inline-block text-truncate fw-normal text-large o_appointment_kanban_ungrouped_name"
                                           t-att-title="record.name.value">
@@ -61,7 +61,7 @@
                             </div>
                             <div class="col-lg-4 col-md-8 col-12 p-0 my-auto">
                                 <div class="d-sm-flex o_kanban_record_meetings_button">
-                                    <div class="d-flex col-sm-5 px-3 px-lg-1">
+                                    <div class="d-flex justify-content-lg-end col-sm-5 px-3 px-lg-1">
                                         <div class="my-auto p-0">
                                             <button name="action_calendar_meetings" type="object"
                                                     class="o_appointment_text_button o_appointment_text_big_nb text-primary fw-bold">
@@ -74,7 +74,7 @@
                                                 Meetings<br/>scheduled</button>
                                         </div>
                                     </div>
-                                    <div class="d-flex col-sm-7 ms-auto px-3 ps-lg-3">
+                                    <div class="d-flex justify-content-lg-end col-sm-7 ms-auto px-3 ps-lg-3">
                                         <div class="my-auto p-0">
                                             <button name="action_calendar_events_reporting" type="object"
                                                     class="o_appointment_text_button o_appointment_text_big_nb text-primary fw-bold">
@@ -89,10 +89,10 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="o_kanban_ungrouped_action_buttons col-12 col-lg-3 py-0 pe-2 ps-md-2 my-md-auto my-2 d-none d-md-flex flex-wrap justify-content-lg-end"> <!--justify-content-lg-end-->
+                            <div class="o_kanban_ungrouped_action_buttons col-12 col-lg-2 py-0 pe-2 ps-md-2 my-md-auto my-2 d-none d-md-flex flex-wrap justify-content-lg-end">
                                 <field name="active" invisible="1"/>
                                 <button name="action_customer_preview" string="Preview" type="object"
-                                        class="btn btn-secondary border me-3 text-nowrap" attrs="{'invisible': [('active', '=', False)]}">
+                                        class="btn btn-secondary border me-2 text-nowrap" attrs="{'invisible': [('active', '=', False)]}">
                                     Preview
                                 </button>
                                 <button name="action_share_invite" string="Share" type="object" class="btn btn-secondary border"

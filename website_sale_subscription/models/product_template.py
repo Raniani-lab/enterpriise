@@ -91,6 +91,7 @@ class ProductTemplate(models.Model):
             parent_combination=parent_combination, only_template=only_template
         )
 
+        pricelist = pricelist or self.product_pricing_ids[:1].pricelist_id
         if self.recurring_invoice:
             product = self.env['product.product'].browse(combination_info['product_id'])
             combination_info.update(self._get_first_suitable_pricing_values(pricelist, product))
@@ -102,6 +103,9 @@ class ProductTemplate(models.Model):
     def _search_render_results_prices(self, mapping, combination_info):
         if not combination_info['is_subscription']:
             return super()._search_render_results_prices(mapping, combination_info)
+
+        if not combination_info['is_recurrence_possible']:
+            return '', 0
 
         return self.env['ir.ui.view']._render_template(
             'website_sale_subscription.subscription_search_result_price',

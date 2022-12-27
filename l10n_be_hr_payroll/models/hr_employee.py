@@ -51,6 +51,8 @@ Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, 
     certificate = fields.Selection(selection_add=[('civil_engineer', 'Master: Civil Engineering')])
     l10n_be_scale_seniority = fields.Integer(string="Seniority at Hiring", groups="hr.group_hr_user", tracking=True)
 
+    # The attestation for the year of the first contract date
+    first_contract_year_n = fields.Char(compute='_compute_first_contract_year')
     l10n_be_holiday_pay_to_recover_n = fields.Float(
         string="Simple Holiday Pay to Recover (N)", tracking=True, groups="hr_payroll.group_hr_payroll_user",
         help="Amount of the holiday pay paid by the previous employer to recover.")
@@ -61,7 +63,14 @@ Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, 
         string="Recovered Simple Holiday Pay (N)", tracking=True,
         compute='_compute_l10n_be_holiday_pay_recovered', groups="hr_payroll.group_hr_payroll_user",
         help="Amount of the holiday pay paid by the previous employer already recovered.")
+    double_pay_line_n_ids = fields.Many2many(
+        'l10n.be.double.pay.recovery.line', 'double_pay_n_rel' 'employee_id', 'double_pay_line_n_ids',
+        compute='_compute_from_double_pay_line_ids', readonly=False,
+        inverse='_inverse_double_pay_line_n_ids',
+        string='Previous Occupations (N)', groups="hr_payroll.group_hr_payroll_user")
 
+    # The attestation for the previous year of the first contract date
+    first_contract_year_n1 = fields.Char(compute='_compute_first_contract_year')
     l10n_be_holiday_pay_to_recover_n1 = fields.Float(
         string="Simple Holiday Pay to Recover (N-1)", tracking=True, groups="hr_payroll.group_hr_payroll_user",
         help="Amount of the holiday pay paid by the previous employer to recover.")
@@ -72,6 +81,12 @@ Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, 
         string="Recovered Simple Holiday Pay (N-1)", tracking=True,
         compute='_compute_l10n_be_holiday_pay_recovered', groups="hr_payroll.group_hr_payroll_user",
         help="Amount of the holiday pay paid by the previous employer already recovered.")
+    double_pay_line_n1_ids = fields.Many2many(
+        'l10n.be.double.pay.recovery.line', 'double_pay_n1_rel' 'employee_id', 'double_pay_line_n1_ids',
+        compute='_compute_from_double_pay_line_ids', readonly=False,
+        inverse='_inverse_double_pay_line_n1_ids',
+        string='Previous Occupations (N-1)', groups="hr_payroll.group_hr_payroll_user")
+    first_contract_year = fields.Integer(compute='_compute_first_contract_year')
     double_pay_line_ids = fields.One2many(
         'l10n.be.double.pay.recovery.line', 'employee_id',
         string='Previous Occupations', groups="hr_payroll.group_hr_payroll_user")
@@ -95,6 +110,35 @@ Source: Opinion on the indexation of the amounts set in Article 1, paragraph 4, 
                 validation_error_message.append(_("Count of disabled dependent people/children must be less or equal to the number of dependent people/children."))
             if validation_error_message:
                 raise ValidationError("\n".join(validation_error_message))
+
+    @api.depends('first_contract_date')
+    def _compute_first_contract_year(self):
+        current_year = fields.Datetime.today().date().year
+        for employee in self:
+            year = employee.first_contract_date.year if employee.first_contract_date else current_year
+            employee.first_contract_year = year
+            employee.first_contract_year_n = year
+            employee.first_contract_year_n1 = year - 1
+
+    def _compute_from_double_pay_line_ids(self):
+        for employee in self:
+            year = employee.first_contract_year
+            employee.double_pay_line_n_ids = employee.double_pay_line_ids.filtered(lambda d: d.year == year)
+            employee.double_pay_line_n1_ids = employee.double_pay_line_ids.filtered(lambda d: d.year == year - 1)
+
+    def _inverse_double_pay_line_n_ids(self):
+        for employee in self:
+            year = employee.first_contract_year
+            to_be_deleted = employee.double_pay_line_ids.filtered(lambda d: d.year == year) - employee.double_pay_line_n_ids
+            employee.double_pay_line_ids.filtered(lambda d: d.id in to_be_deleted.ids).unlink()
+            employee.double_pay_line_ids |= employee.double_pay_line_n_ids
+
+    def _inverse_double_pay_line_n1_ids(self):
+        for employee in self:
+            year = employee.first_contract_year
+            to_be_deleted = employee.double_pay_line_ids.filtered(lambda d: d.year == year - 1) - employee.double_pay_line_n1_ids
+            employee.double_pay_line_ids.filtered(lambda d: d.id in to_be_deleted.ids).unlink()
+            employee.double_pay_line_ids |= employee.double_pay_line_n1_ids
 
     def _compute_l10n_be_holiday_pay_recovered(self):
         payslips = self.env['hr.payslip'].search([

@@ -54,45 +54,92 @@
                 <field name="l10n_be_scale_seniority" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}"/>
             </field>
             <group name="application_group" position="before">
-                <strong class="o_horizontal_separator" colspan="2" id="previous_employer_title" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}" groups="hr_payroll.group_hr_payroll_user">Previous Employer</strong>
-                <group attrs="{'invisible': [('company_country_code', '!=', 'BE')]}" groups="hr_payroll.group_hr_payroll_user">
-                    <label for="l10n_be_holiday_pay_to_recover_n"/>
-                    <div class="o_row">
-                        <field name="l10n_be_holiday_pay_to_recover_n" nolabel="1"/>
-                        <span>€</span>
-                    </div>
-                    <label for="l10n_be_holiday_pay_number_of_days_n"/>
-                    <div class="o_row">
-                        <field name="l10n_be_holiday_pay_number_of_days_n" nolabel="1"/>
-                        <span>days</span>
-                    </div>
-                    <label for="l10n_be_holiday_pay_recovered_n"/>
-                    <div class="o_row">
-                        <field name="l10n_be_holiday_pay_recovered_n" nolabel="1"/>
-                        <span>€</span>
-                    </div>
-                </group>
-                <group attrs="{'invisible': [('company_country_code', '!=', 'BE')]}" groups="hr_payroll.group_hr_payroll_user">
-                    <label for="l10n_be_holiday_pay_to_recover_n1"/>
-                    <div class="o_row">
-                        <field name="l10n_be_holiday_pay_to_recover_n1" nolabel="1"/>
-                        <span>€</span>
-                    </div>
-                    <label for="l10n_be_holiday_pay_number_of_days_n1"/>
-                    <div class="o_row">
-                        <field name="l10n_be_holiday_pay_number_of_days_n1" nolabel="1"/>
-                        <span>days</span>
-                    </div>
-                    <label for="l10n_be_holiday_pay_recovered_n1"/>
-                    <div class="o_row">
-                        <field name="l10n_be_holiday_pay_recovered_n1" nolabel="1"/>
-                        <span>€</span>
-                    </div>
-                </group>
-                <group id="recovery_pay_lines" class="mt-3" colspan="2" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}" groups="hr_payroll.group_hr_payroll_user">
-                    <strong class="o_horizontal_separator" colspan="2">Previous Occupations</strong>
-                    <field name="double_pay_line_ids" colspan="2" nolabel="1"/>
-                </group>
+                <notebook groups="hr_payroll.group_hr_payroll_user">
+                    <page name="Attestation (N-1)">
+                        <strong class="o_horizontal_separator o_row" colspan="2" id="previous_employer_title" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}">
+                            Holiday Attest <span style="width: 30px !important;"><field name="first_contract_year_n1"/></span> - Simple Holiday Pay from previous employer to recover in <span style="width: 30px !important;"><field name="first_contract_year_n"/></span>
+                        </strong>
+                        <group attrs="{'invisible': [('company_country_code', '!=', 'BE')]}" groups="hr_payroll.group_hr_payroll_user">
+                            <label for="l10n_be_holiday_pay_to_recover_n1" string="Amount to recover"/>
+                            <div class="o_row" style="width: 20% !important;">
+                                <field name="l10n_be_holiday_pay_to_recover_n1" nolabel="1"/>
+                                <span>€</span>
+                            </div>
+                            <label for="l10n_be_holiday_pay_number_of_days_n1" string="Number of days"/>
+                            <div class="o_row" style="width: 20% !important;">
+                                <field name="l10n_be_holiday_pay_number_of_days_n1" nolabel="1"/>
+                                <span>days</span>
+                            </div>
+                            <label for="l10n_be_holiday_pay_recovered_n1" string="Recovered Amount"/>
+                            <div class="o_row" style="width: 20% !important;">
+                                <field name="l10n_be_holiday_pay_recovered_n1" nolabel="1"/>
+                                <span>€</span>
+                            </div>
+                        </group>
+                        <field name="first_contract_year" invisible="1"/>
+                        <field name="double_pay_line_ids" invisible="1"/>
+                        <group id="recovery_pay_lines_n1" class="mt-3" colspan="2" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}">
+                            <strong class="o_horizontal_separator o_row" colspan="2">
+                                    Holiday Attest <span style="width: 30px !important;"><field name="first_contract_year_n1"/></span> - Previous occupation for Double Holiday Pay Recovery in <span style="width: 30px !important;"><field name="first_contract_year_n"/></span>
+                            </strong>
+                            <field name="double_pay_line_n1_ids"
+                                   widget="double_pay"
+                                   context="{'default_year':first_contract_year_n1, 'default_employee_id': id}"
+                                   domain="[('year', '=', first_contract_year_n1)]"
+                                   colspan="2" nolabel="1" force_save="1">
+                                <tree editable="bottom">
+                                    <field name="months_count"/>
+                                    <field name="amount"/>
+                                    <field name="occupation_rate"/>
+                                    <field name="employee_id" invisible="1"/>
+                                    <field name="year" invisible="1"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+
+                    <page name="Attestation (N)">
+                        <strong class="o_horizontal_separator o_row" colspan="2" id="previous_employer_title" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}">
+                            Holiday Attest <span style="width: 30px !important;"><field name="first_contract_year_n"/></span> - Simple Holiday Pay from previous employer to recover in <span style="width: 30px !important;"><field name="first_contract_year_n"/></span>
+                        </strong>
+                        <group attrs="{'invisible': [('company_country_code', '!=', 'BE')]}">
+                            <label for="l10n_be_holiday_pay_to_recover_n" string="Amount to recover"/>
+                            <div class="o_row" style="width: 20% !important;" colspan="1">
+                                <field name="l10n_be_holiday_pay_to_recover_n" colspan="1" nolabel="1"/>
+                                <span>€</span>
+                            </div>
+                            <label for="l10n_be_holiday_pay_number_of_days_n" string="Number of days"/>
+                            <div class="o_row" style="width: 20% !important;">
+                                <field name="l10n_be_holiday_pay_number_of_days_n" nolabel="1"/>
+                                <span>days</span>
+                            </div>
+                            <label for="l10n_be_holiday_pay_recovered_n" string="Recovered Amount"/>
+                            <div class="o_row" style="width: 20% !important;">
+                                <field name="l10n_be_holiday_pay_recovered_n" nolabel="1"/>
+                                <span>€</span>
+                            </div>
+                        </group>
+                        <group id="recovery_pay_lines_n" class="mt-3" colspan="2" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}">
+                            <strong class="o_horizontal_separator o_row" colspan="2">
+                                Holiday Attest <span style="width: 30px !important;"><field name="first_contract_year_n"/></span> - Previous occupation for Double Holiday Pay Recovery in <span style="width: 30px !important;"><field name="first_contract_year_n"/></span>
+                            </strong>
+                            <field name="double_pay_line_n_ids"
+                                   widget="double_pay"
+                                   force_save="1"
+                                   context="{'default_year':first_contract_year, 'default_employee_id': id}"
+                                   domain="[('year', '=', first_contract_year)]"
+                                   colspan="2" nolabel="1">
+                                <tree editable="bottom">
+                                    <field name="months_count"/>
+                                    <field name="amount"/>
+                                    <field name="occupation_rate"/>
+                                    <field name="employee_id" invisible="1"/>
+                                    <field name="year" invisible="1"/>
+                                </tree>
+                            </field>
+                        </group>
+                    </page>
+                </notebook>
             </group>
         </field>
     </record>

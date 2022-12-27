@@ -17,3 +17,4 @@ class L10nBeDoublePayRecoveryLineWizard(models.Model):
     currency_id = fields.Many2one(related='company_id.currency_id')
     months_count = fields.Float(string="# Months")
     company_calendar = fields.Many2one(related='company_id.resource_calendar_id')
+    year = fields.Integer()

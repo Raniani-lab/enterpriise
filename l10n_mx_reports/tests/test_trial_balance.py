@@ -87,12 +87,12 @@ class TestL10nMXTrialBalanceReport(TestAccountReportsCommon):
         """
         expected_coa_xml = b"""<?xml version='1.0' encoding='utf-8'?>
         <catalogocuentas:Catalogo xmlns:catalogocuentas="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/CatalogoCuentas" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/CatalogoCuentas http://www.sat.gob.mx/esquemas/ContabilidadE/1_3/CatalogoCuentas/CatalogoCuentas_1_3.xsd" Version="1.3" RFC="EKU9003173C9" Mes="01" Anio="2021">
-            <catalogocuentas:Ctas CodAgrup="201" NumCta="201" Desc="Proveedores" Nivel="1" Natur="A"/>
-            <catalogocuentas:Ctas CodAgrup="201.01" NumCta="201.01" Desc="Proveedores nacionales" Nivel="2" Natur="A"/>
-            <catalogocuentas:Ctas CodAgrup="401" NumCta="401" Desc="Ingresos" Nivel="1" Natur="A"/>
-            <catalogocuentas:Ctas CodAgrup="401.01" NumCta="401.01" Desc="Ventas y/o servicios gravados a la tasa general" Nivel="2" Natur="A"/>
-            <catalogocuentas:Ctas CodAgrup="601" NumCta="601" Desc="Gastos generales" Nivel="1" Natur="D"/>
-            <catalogocuentas:Ctas CodAgrup="601.84" NumCta="601.84" Desc="Otros gastos generales" Nivel="2" Natur="D"/>
+            <catalogocuentas:Ctas CodAgrup="201" NumCta="201" Desc="Suppliers" Nivel="1" Natur="A"/>
+            <catalogocuentas:Ctas CodAgrup="201.01" NumCta="201.01" Desc="National suppliers" Nivel="2" Natur="A"/>
+            <catalogocuentas:Ctas CodAgrup="401" NumCta="401" Desc="Income" Nivel="1" Natur="A"/>
+            <catalogocuentas:Ctas CodAgrup="401.01" NumCta="401.01" Desc="Sales and/or services taxed at the general rate" Nivel="2" Natur="A"/>
+            <catalogocuentas:Ctas CodAgrup="601" NumCta="601" Desc="Overheads" Nivel="1" Natur="D"/>
+            <catalogocuentas:Ctas CodAgrup="601.84" NumCta="601.84" Desc="Other overheads" Nivel="2" Natur="D"/>
         </catalogocuentas:Catalogo>
         """
 
@@ -154,9 +154,9 @@ class TestL10nMXTrialBalanceReport(TestAccountReportsCommon):
             self.report._get_lines(options),
             [   0,                                                            1,         2,         3,       4,        5,         6],
             [
-                ('201.01.01 Proveedores nacionales',                          1000.0,    '',        75.0,    '',       1075.0,    ''),
-                ('401.01.01 Ventas y/o servicios gravados a la tasa general', '',        '',        '',      325.0,    '',        325.0),
-                ('601.84.01 Otros gastos generales',                          '',        '',        250.0,   '',       250.0,     ''),
+                ('201.01.01 National suppliers',                              1000.0,    '',        75.0,    '',       1075.0,    ''),
+                ('401.01.01 Sales and/or services taxed at the general rate', '',        '',        '',      325.0,    '',        325.0),
+                ('601.84.01 Other overheads',                                 '',        '',        250.0,   '',       250.0,     ''),
                 ('999999 Undistributed Profits/Losses',                       '',        1000.0,    '',      '',       '',        1000.0),
                 ('Total',                                                     1000.0,    1000.0,    325.0,   325.0,    1325.0,    1325.0),
             ],
@@ -168,18 +168,18 @@ class TestL10nMXTrialBalanceReport(TestAccountReportsCommon):
             self.report._get_lines(options),
             [   0,                                                            1,         2,         3,       4,        5,         6],
             [
-                ('2 Pasivos',                                                 1000.0,    '',        75.0,    '',       1075.0,    ''),
-                ('201 Proveedores',                                           1000.0,    '',        75.0,    '',       1075.0,    ''),
-                ('201.01 Proveedores nacionales',                             1000.0,    '',        75.0,    '',       1075.0,    ''),
-                ('201.01.01 Proveedores nacionales',                          1000.0,    '',        75.0,    '',       1075.0,    ''),
-                ('4 Ingresos',                                                '',        '',        '',      325.0,    '',        325.0),
-                ('401 Ingresos',                                              '',        '',        '',      325.0,    '',        325.0),
-                ('401.01 Ventas y/o servicios gravados a la tasa general',    '',        '',        '',      325.0,    '',        325.0),
-                ('401.01.01 Ventas y/o servicios gravados a la tasa general', '',        '',        '',      325.0,    '',        325.0),
-                ('6 Gastos',                                                  '',        '',        250.0,   '',       250.0,     ''),
-                ('601 Gastos generales',                                      '',        '',        250.0,   '',       250.0,     ''),
-                ('601.84 Otros gastos generales',                             '',        '',        250.0,   '',       250.0,     ''),
-                ('601.84.01 Otros gastos generales',                          '',        '',        250.0,   '',       250.0,     ''),
+                ('2 Passive',                                                 1000.0,    '',        75.0,    '',       1075.0,    ''),
+                ('201 Suppliers',                                             1000.0,    '',        75.0,    '',       1075.0,    ''),
+                ('201.01 National suppliers',                                 1000.0,    '',        75.0,    '',       1075.0,    ''),
+                ('201.01.01 National suppliers',                              1000.0,    '',        75.0,    '',       1075.0,    ''),
+                ('4 Income',                                                  '',        '',        '',      325.0,    '',        325.0),
+                ('401 Income',                                                '',        '',        '',      325.0,    '',        325.0),
+                ('401.01 Sales and/or services taxed at the general rate',    '',        '',        '',      325.0,    '',        325.0),
+                ('401.01.01 Sales and/or services taxed at the general rate', '',        '',        '',      325.0,    '',        325.0),
+                ('6 Expenditure',                                             '',        '',        250.0,   '',       250.0,     ''),
+                ('601 Overheads',                                             '',        '',        250.0,   '',       250.0,     ''),
+                ('601.84 Other overheads',                                    '',        '',        250.0,   '',       250.0,     ''),
+                ('601.84.01 Other overheads',                                 '',        '',        250.0,   '',       250.0,     ''),
                 ('(No Group)',                                                '',        1000.0,    '',      '',       '',        1000.0),
                 ('999999 Undistributed Profits/Losses',                       '',        1000.0,    '',      '',       '',        1000.0),
                 ('Total',                                                     1000.0,    1000.0,    325.0,   325.0,    1325.0,    1325.0),

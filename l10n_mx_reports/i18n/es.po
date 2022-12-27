@@ -36,13 +36,13 @@ msgstr " 85 - Otros"
 #: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #, python-format
 msgid "Accounts with too much tags"
-msgstr ""
+msgstr "Cuentas con demasiadas etiquetas"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #, python-format
 msgid "Accounts without tag"
-msgstr ""
+msgstr "Cuentas sin etiqueta"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,help:l10n_mx_reports.field_res_country__demonym
@@ -52,13 +52,13 @@ msgstr "Adjetivo para relación entre una persona y un país."
 #. module: l10n_mx_reports
 #: model:ir.model,name:l10n_mx_reports.model_ir_attachment
 msgid "Attachment"
-msgstr ""
+msgstr "Adjunto"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #, python-format
 msgid "COA SAT (XML)"
-msgstr ""
+msgstr "COA SAT (XML)"
 
 #. module: l10n_mx_reports
 #: model:ir.model,name:l10n_mx_reports.model_res_partner
@@ -99,7 +99,7 @@ msgstr "DIOT"
 #: code:addons/l10n_mx_reports/models/account_diot.py:0
 #, python-format
 msgid "DIOT (txt)"
-msgstr ""
+msgstr "DIOT (txt)"
 
 #. module: l10n_mx_reports
 #: model_terms:ir.ui.view,arch_db:l10n_mx_reports.res_partner_account_diot_form_oml
@@ -116,7 +116,7 @@ msgstr "DPIVA"
 #: code:addons/l10n_mx_reports/models/account_diot.py:0
 #, python-format
 msgid "DPIVA (txt)"
-msgstr ""
+msgstr "DPIVA (txt)"
 
 #. module: l10n_mx_reports
 #: model:ir.model.fields,field_description:l10n_mx_reports.field_res_country__demonym
@@ -176,12 +176,12 @@ msgstr "Tipo de Tercero"
 #: model:ir.cron,cron_name:l10n_mx_reports.ir_cron_load_xsd_file
 #: model:ir.cron,name:l10n_mx_reports.ir_cron_load_xsd_file
 msgid "Load XSD File (Mexican reports)"
-msgstr ""
+msgstr "Cargar archivo XSD (informes mexicanos)"
 
 #. module: l10n_mx_reports
 #: model:ir.model,name:l10n_mx_reports.model_l10n_mx_report_handler
 msgid "Mexican Account Report Custom Handler"
-msgstr ""
+msgstr "Manejador personalizado de informes de cuentas mexicanas"
 
 #. module: l10n_mx_reports
 #: model:ir.ui.menu,name:l10n_mx_reports.account_reports_legal_mexican_statements_menu
@@ -192,7 +192,7 @@ msgstr "México"
 #: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #, python-format
 msgid "Missing Debit or Credit balance account tag in database."
-msgstr ""
+msgstr "Falta la etiqueta de cuenta de saldo deudor o acreedor en la base de datos."
 
 #. module: l10n_mx_reports
 #: model:account.report.column,name:l10n_mx_reports.diot_report_partner_nationality
@@ -213,7 +213,7 @@ msgstr ""
 #: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #, python-format
 msgid "Only Mexican company can generate SAT report."
-msgstr ""
+msgstr "Sólo empresa mexicana puede generar informe del SAT."
 
 #. module: l10n_mx_reports
 #: model:account.report.column,name:l10n_mx_reports.diot_report_paid_0
@@ -244,30 +244,30 @@ msgstr "Pagado 8 % - No acreditable"
 #: code:addons/l10n_mx_reports/models/account_diot.py:0
 #, python-format
 msgid "Partner missing informations"
-msgstr ""
+msgstr "Información que falta a los socios"
 
 #. module: l10n_mx_reports
 #: model:account.report.column,name:l10n_mx_reports.diot_report_refunds
 msgid "Refunds"
-msgstr ""
+msgstr "Reembolsos"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #, python-format
 msgid "SAT (XML)"
-msgstr ""
+msgstr "SAT (XML)"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/account_diot.py:0
 #, python-format
 msgid "See the list of partners"
-msgstr ""
+msgstr "Ver la lista de socios"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/trial_balance.py:0
 #, python-format
 msgid "Show list"
-msgstr ""
+msgstr "Mostrar lista"
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/trial_balance.py:0
@@ -275,7 +275,7 @@ msgstr ""
 msgid ""
 "Some account prefixes used in your trial balance use both Debit and Credit "
 "balance account tags. This is not allowed."
-msgstr ""
+msgstr "Algunos prefijos de cuenta utilizados en su balance de sumas y saldos utilizan a la vez etiquetas de cuenta de saldo deudor y acreedor. Esto no está permitido."
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/trial_balance.py:0
@@ -283,7 +283,7 @@ msgstr ""
 msgid ""
 "Some accounts present in your trial balance don't have a Debit or a Credit "
 "balance account tag."
-msgstr ""
+msgstr "Algunas cuentas presentes en su balance de sumas y saldos no tienen una etiqueta de cuenta deudora o acreedora de saldo."
 
 #. module: l10n_mx_reports
 #: code:addons/l10n_mx_reports/models/account_diot.py:0
@@ -291,7 +291,7 @@ msgstr ""
 msgid ""
 "The report cannot be generated because some partners are missing a valid RFC "
 "or type of operation"
-msgstr ""
+msgstr "El informe no se puede generar porque a algunos interlocutores les falta un RFC válido o tipo de operación"
 
 #. module: l10n_mx_reports
 #: model:ir.ui.menu,name:l10n_mx_reports.menu_action_account_report_diot
@@ -301,7 +301,7 @@ msgstr "Transacciones con terceros [DIOT]"
 #. module: l10n_mx_reports
 #: model:ir.model,name:l10n_mx_reports.model_account_trial_balance_report_handler
 msgid "Trial Balance Custom Handler"
-msgstr ""
+msgstr "Balance de Sumas y Saldos Gestor Personalizado"
 
 #. module: l10n_mx_reports
 #: model:account.report.column,name:l10n_mx_reports.diot_operation_type
@@ -327,7 +327,7 @@ msgstr "Retenido"
 #: code:addons/l10n_mx_reports/models/account_diot.py:0
 #, python-format
 msgid "You can only export one period at a time with this file format!"
-msgstr ""
+msgstr "Con este formato de archivo sólo se puede exportar un periodo cada vez."
 
 #~ msgid ""
 #~ "\n"

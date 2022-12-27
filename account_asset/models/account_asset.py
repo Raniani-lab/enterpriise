@@ -294,13 +294,12 @@ class AccountAsset(models.Model):
     def _compute_non_deductible_tax_value(self):
         for record in self:
             record.non_deductible_tax_value = 0.0
-            move_lines = record.original_move_line_ids
-            non_deductible_tax_value = sum(move_lines.mapped('non_deductible_tax_value'))
-            if non_deductible_tax_value:
-                account = move_lines.account_id
-                auto_create_multi = account.create_asset != 'no' and account.multiple_assets_per_line
-                quantity = move_lines.quantity if auto_create_multi else 1
-                record.non_deductible_tax_value = record.currency_id.round(non_deductible_tax_value / quantity)
+            for line in record.original_move_line_ids:
+                if line.non_deductible_tax_value:
+                    account = line.account_id
+                    auto_create_multi = account.create_asset != 'no' and account.multiple_assets_per_line
+                    quantity = line.quantity if auto_create_multi else 1
+                    record.non_deductible_tax_value += record.currency_id.round(line.non_deductible_tax_value / quantity)
 
     @api.depends('depreciation_move_ids.state', 'parent_id')
     def _compute_counts(self):

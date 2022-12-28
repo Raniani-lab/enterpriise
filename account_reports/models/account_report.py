@@ -2481,8 +2481,7 @@ class AccountReport(models.Model):
         params = [tuple(tags.ids)] + where_params + tail_params
         self._cr.execute(sql, params)
 
-        empty_val = [] if current_groupby else {'result': 0, 'has_sublines': False}
-        rslt = {formula_expr: empty_val for formula_expr in formulas_dict.items()}
+        rslt = {formula_expr: [] if current_groupby else {'result': 0, 'has_sublines': False} for formula_expr in formulas_dict.items()}
         for query_res in self._cr.dictfetchall():
 
             formula = query_res['formula']

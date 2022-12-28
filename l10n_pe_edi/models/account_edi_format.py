@@ -353,6 +353,10 @@ class AccountEdiFormat(models.Model):
 
         values['tax_details'] = invoice._prepare_edi_tax_details()
         values['tax_details_grouped'] = invoice._prepare_edi_tax_details(grouping_key_generator=grouping_key_generator)
+        values['isc_tax_amount'] = abs(sum([
+            line.amount_currency
+            for line in invoice.line_ids.filtered(lambda l: l.tax_line_id.tax_group_id.l10n_pe_edi_code == 'ISC')
+        ]))
 
         return values
 

@@ -300,6 +300,20 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                 // Force save if changes have been made before loading the new record
                 await this._saveIfDirty();
 
+                const scrollView = document.querySelector('.o_scroll_view_lg');
+                if (scrollView) {
+                    // hide the flicker
+                    scrollView.style.visibility = 'hidden';
+                    // Scroll up if we have a desktop screen
+                    scrollView.scrollTop = 0;
+                }
+
+                const mobileScrollView = document.querySelector('.o_knowledge_main_view');
+                if (mobileScrollView) {
+                    // Scroll up if we have a mobile screen
+                    mobileScrollView.scrollTop = 0;
+                }
+
                 // load the new record
                 try {
                     await this.props.record.model.load({
@@ -310,6 +324,11 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                         await this.orm.call('knowledge.article', 'action_home_page', [false]),
                         {stackPosition: 'replaceCurrentAction'}
                     );
+                }
+
+                if (scrollView) {
+                    // Show loaded document
+                    scrollView.style.visibility = 'visible';
                 }
 
             }

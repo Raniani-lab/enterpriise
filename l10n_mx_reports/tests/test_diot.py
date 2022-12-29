@@ -71,7 +71,7 @@ class TestDiot(TestAccountReportsCommon):
 
         self.assertTrue(all(m.payment_state in ('paid', 'in_payment') for m in moves))
 
-        diot_report = self.env.ref('l10n_mx_reports.diot_report')
+        diot_report = self.env.ref('l10n_mx.diot_report')
 
         options = self._generate_options(diot_report, fields.Date.from_string('2022-01-01'), fields.Date.from_string('2022-12-31'))
         options['unfold_all'] = True
@@ -81,7 +81,7 @@ class TestDiot(TestAccountReportsCommon):
             # 3rd p code, op type code,      vat number,   country,nationality,  16%, 16% non-cred,   8%, 8% non-cred, 16% imp, 0% paid, exempt, withheld, refund
             [       1,               2,               3,         4,          5,    6,            7,    8,           9,      10,      11,     12,       13,     14],
             [
-                (  "",              "",              "",        "",         "", 30.0,           "", 32.0,          "",      "",    28.0,     "",    -1.27,  120.0),
+                (  "",              "",              "",        "",         "", 30.0,           "", 32.0,          "",      "",    28.0,     "",    -1.26,  120.0),
 
                 ("04",            "85", "XAXX010101000",      "MX",  "Mexican", 15.0,           "", 16.0,          "",      "",    14.0,     "",    -0.63,   60.0),
                 (  "",              "",              "",        "",         "",   "",           "",   "",          "",      "",      "",     "",       "",   22.0),
@@ -117,7 +117,7 @@ class TestDiot(TestAccountReportsCommon):
                 (  "",              "",              "",        "",         "",   "",           "",   "",          "",      "",      "",     "",     0.40,     ""),
                 ("05",            "85",              "",      "US", "American", 15.0,           "", 16.0,          "",      "",    14.0,     "",    -0.63,   60.0),
 
-                (  "",              "",              "",        "",         "", 30.0,           "", 32.0,          "",      "",    28.0,     "",    -1.27,  120.0),
+                (  "",              "",              "",        "",         "", 30.0,           "", 32.0,          "",      "",    28.0,     "",    -1.26,  120.0),
             ],
             options,
         )

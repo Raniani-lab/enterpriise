@@ -376,7 +376,9 @@ class HrContractSalary(main.HrContractSalary):
             # If the chosen existing car is already taken by someone else (for example if the
             # window was open for a long time)
             if new_contract.transport_mode_car and not new_contract.new_car:
-                available_cars_domain = new_contract._get_available_vehicles_domain(new_contract.employee_id.address_home_id)
+                # In case in the car was reserved for the applicant
+                partner_ids = request.env['hr.applicant'].sudo().browse(kw.get('applicant_id')).exists().partner_id | new_contract.employee_id.address_home_id
+                available_cars_domain = new_contract._get_available_vehicles_domain(partner_ids)
                 if new_contract.car_id not in request.env['fleet.vehicle'].sudo().search(available_cars_domain):
                     return {'error': True, 'error_msg': _("Sorry, the selected car has been selected by someone else. Please refresh and try again.")}
 

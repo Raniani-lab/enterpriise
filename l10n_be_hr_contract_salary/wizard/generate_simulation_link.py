@@ -13,9 +13,31 @@ class GenerateSimulationLink(models.TransientModel):
 
     new_car = fields.Boolean(string="Force New Cars List", help="The employee will be able to choose a new car even if the maximum number of used cars available is reached.")
     show_new_car = fields.Boolean(compute='_compute_show_new_car')
-    car_id = fields.Many2one('fleet.vehicle', string='Default Vehicle', domain="[('vehicle_type', '=', 'car')]", help="Default employee's company car. If left empty, the default value will be the employee's current car.")
+    car_id = fields.Many2one('fleet.vehicle', string='Default Vehicle', compute='_compute_car_id', readonly=False, domain="[('vehicle_type', '=', 'car')]", help="Default employee's company car. If left empty, the default value will be the employee's current car.")
     l10n_be_canteen_cost = fields.Float(
         string="Canteen Cost", compute='_compute_from_contract_id', store=True, readonly=False)
+
+    @api.depends('applicant_id.partner_id', 'employee_id.partner_id')
+    def _compute_car_id(self):
+        model = self.env.context.get('active_model')
+        for wizard in self:
+            partner = self.env['res.partner']
+            car = self.env['fleet.vehicle']
+            if model == 'hr.contract':
+                if wizard.employee_id:
+                    partner |= wizard.employee_id.address_home_id
+                    # In case the car was reserved for an applicant, while
+                    # the simulation link is sent for the corresponding employee
+                    if wizard.employee_id.applicant_id:
+                        partner |= wizard.employee_id.applicant_id.partner_id
+            elif model == 'hr.applicant':
+                partner |= wizard.applicant_id.partner_id if wizard.applicant_id else False
+            if partner:
+                car = self.env['fleet.vehicle'].search([
+                    ('future_driver_id', 'in', partner.ids),
+                    ('driver_id', '=', False),
+                ], limit=1)
+            wizard.car_id = car if car else False
 
     def _get_url_triggers(self):
         res = super()._get_url_triggers()

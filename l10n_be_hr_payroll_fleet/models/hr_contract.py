@@ -9,7 +9,7 @@ class HrContract(models.Model):
     _inherit = 'hr.contract'
 
     @api.model
-    def _get_available_vehicles_domain(self, driver_id=None, vehicle_type='car'):
+    def _get_available_vehicles_domain(self, driver_ids=None, vehicle_type='car'):
         domain = expression.AND([
             expression.OR([
                 [('company_id', '=', False)],
@@ -19,13 +19,13 @@ class HrContract(models.Model):
                 expression.AND([
                     expression.OR([
                         [('future_driver_id', '=', False)],
-                        [('future_driver_id', '=', driver_id.id if driver_id else False)],
+                        [('future_driver_id', 'in', driver_ids.ids if driver_ids else [])],
                     ]),
                     [('model_id.vehicle_type', '=', vehicle_type)],
                 ]),
                 expression.OR([
                     [('driver_id', '=', False)],
-                    [('driver_id', '=', driver_id.id if driver_id else False)],
+                    [('driver_id', 'in', driver_ids.ids if driver_ids else [])],
                     [('plan_to_change_car', '=', True)] if vehicle_type == 'car' else [('plan_to_change_bike', '=', True)]
                 ])
             ]),

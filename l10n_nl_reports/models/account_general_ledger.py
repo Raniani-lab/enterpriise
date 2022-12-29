@@ -210,7 +210,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
                         # XAF XSD has maximum 50 characters for customer/supplier name
                         'partner_name': (row['partner_name']
                                          or row['partner_commercial_company_name']
-                                         or row['partner_commercial_partner_id']
+                                         or str(row['partner_commercial_partner_id'])
                                          or ('id: ' + str(row['partner_id'])))[:50],
                         'partner_is_company': row['partner_is_company'],
                         'partner_phone': row['partner_phone'],

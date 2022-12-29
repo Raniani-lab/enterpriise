@@ -23,15 +23,15 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
 
     test_content = """
         JournalCode\tJournalLib\tEcritureNum\tEcritureDate\tCompteNum\tCompteLib\tCompAuxNum\tCompAuxLib\tPieceRef\tPieceDate\tEcritureLib\tDebit\tCredit\tEcritureLet\tDateLet\tValidDate\tMontantdevise\tIdevise
-        ACH\tACHATS\tACH000001\t20180808\t62270000\tFRAIS D'ACTES ET CONTENTIEUX\t\t\t1\t20180808\tACOMPTE FORMALITES ENTREPRISE\t500,00\t0,00\t\t\t20190725\t\t
-        ACH\tACHATS\tACH000001\t20180808\t44566000\tTVA SUR AUTRES BIEN ET SERVICE\t\t\t1\t20180808\tACOMPTE FORMALITES ENTREPRISE\t100,00\t0,00\tAA\t\t20190725\t\t
-        ACH\tACHATS\tACH000001\t20180808\t45500000\tCPT COURANTS DE L ASSOCIE\t\t\t1\t20180808\tACOMPTE FORMALITES ENTREPRISE\t0,00\t600,00\t\t\t20190725\t\t
-        ACH\tACHATS\tACH000002\t20180808\t61320000\tLOCATIONS PARTNER 01\t\t\t2\t20180808\tDOMICILIATION\t300,00\t0,00\t\t\t20190725\t\t
-        ACH\tACHATS\tACH000002\t20180808\t44566000\tTVA SUR AUTRES BIEN ET SERVICE\t\t\t2\t20180808\tDOMICILIATION\t60,00\t0,00\tAA\t\t20190725\t\t
-        ACH\tACHATS\tACH000002\t20180808\t45500000\tCPT COURANTS DE L ASSOCIE\t\t\t2\t20180808\tDOMICILIATION\t0,00\t360,00\t\t\t20190725\t\t
-        ACH\tACHATS\tACH000003\t20180910\t61320000\tLOCATIONS PARTNER 01\t\t\t3\t20180910\tPARTNER 01\t41,50\t0,00\t\t\t20190725\t\t
-        ACH\tACHATS\tACH000003\t20180910\t44566000\tTVA SUR AUTRES BIEN ET SERVICE\t\t\t3\t20180910\tPARTNER 01\t8,30\t0,00\tAA\t\t20190725\t\t
-        ACH\tACHATS\tACH000003\t20180910\t40100000\tFOURNISSEURS DIVERS\tPARTNER01\tPARTNER 01\t3\t20180910\tPARTNER 01\t0,00\t49,80\tAA\t\t20190725\t\t
+        ACH\tACHATS\tACH000001\t20180808\t62270000\tLegal costs and litigation\t\t\t1\t20180808\tADVANCE PAYMENT COMPANY FORMALITIES\t500,00\t0,00\t\t\t20190725\t\t
+        ACH\tACHATS\tACH000001\t20180808\t44566000\tVat on other goods and services\t\t\t1\t20180808\tADVANCE PAYMENT COMPANY FORMALITIES\t100,00\t0,00\tAA\t\t20190725\t\t
+        ACH\tACHATS\tACH000001\t20180808\t45500000\tAssociate's current account\t\t\t1\t20180808\tADVANCE PAYMENT COMPANY FORMALITIES\t0,00\t600,00\t\t\t20190725\t\t
+        ACH\tACHATS\tACH000002\t20180808\t61320000\tPartner rentals 01\t\t\t2\t20180808\tDOMICILIATION\t300,00\t0,00\t\t\t20190725\t\t
+        ACH\tACHATS\tACH000002\t20180808\t44566000\tVat on other goods and services\t\t\t2\t20180808\tDOMICILIATION\t60,00\t0,00\tAA\t\t20190725\t\t
+        ACH\tACHATS\tACH000002\t20180808\t45500000\tAssociate's current account\t\t\t2\t20180808\tDOMICILIATION\t0,00\t360,00\t\t\t20190725\t\t
+        ACH\tACHATS\tACH000003\t20180910\t61320000\tPartner rentals 01\t\t\t3\t20180910\tPARTNER 01\t41,50\t0,00\t\t\t20190725\t\t
+        ACH\tACHATS\tACH000003\t20180910\t44566000\tVat on other goods and services\t\t\t3\t20180910\tPARTNER 01\t8,30\t0,00\tAA\t\t20190725\t\t
+        ACH\tACHATS\tACH000003\t20180910\t40100000\tSuppliers\tPARTNER01\tPARTNER 01\t3\t20180910\tPARTNER 01\t0,00\t49,80\tAA\t\t20190725\t\t
     """
 
     # ----------------------------------------
@@ -157,15 +157,15 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
         accounts = self.env['account.account'].search(domain, order='code')
 
         expected_values = [{
-            'name': 'FOURNISSEURS DIVERS',
+            'name': 'Suppliers',
             'account_type': 'liability_payable',
             'reconcile': True
         }, {
-            'name': 'TVA déductible sur autres biens et services',
+            'name': 'Deductible VAT on other goods and services',
             'account_type': 'asset_current',
             'reconcile': False,
         }, {
-            'name': 'Frais d\'actes et de contentieux',
+            'name': 'Legal and litigation fees',
             'account_type': 'expense',
             'reconcile': False,
         }, ]
@@ -238,9 +238,9 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
         move_lines = self.env['account.move.line'].search(domain, order='move_name, id')
         columns = ['name', 'credit', 'debit', 'fec_matching_number']
         lines = [
-            ('ACOMPTE FORMALITES ENTREPRISE', 0.00, 500.00, False),
-            ('ACOMPTE FORMALITES ENTREPRISE', 0.00, 100.00, 'AA'),
-            ('ACOMPTE FORMALITES ENTREPRISE', 600.00, 0.00, False),
+            ('ADVANCE PAYMENT COMPANY FORMALITIES', 0.00, 500.00, False),
+            ('ADVANCE PAYMENT COMPANY FORMALITIES', 0.00, 100.00, 'AA'),
+            ('ADVANCE PAYMENT COMPANY FORMALITIES', 600.00, 0.00, False),
             ('DOMICILIATION', 0.00, 300.00, False),
             ('DOMICILIATION', 0.00, 60.00, 'AA'),
             ('DOMICILIATION', 360.00, 0.00, False),
@@ -331,9 +331,9 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
         self.assertEqual(
             move_lines.mapped(lambda line: (line.move_name, line.name)),
             [
-                ('ACH/20180808', 'ACOMPTE FORMALITES ENTREPRISE'),
-                ('ACH/20180808', 'ACOMPTE FORMALITES ENTREPRISE'),
-                ('ACH/20180808', 'ACOMPTE FORMALITES ENTREPRISE'),
+                ('ACH/20180808', 'ADVANCE PAYMENT COMPANY FORMALITIES'),
+                ('ACH/20180808', 'ADVANCE PAYMENT COMPANY FORMALITIES'),
+                ('ACH/20180808', 'ADVANCE PAYMENT COMPANY FORMALITIES'),
                 ('ACH/20180808', 'DOMICILIATION'),
                 ('ACH/20180808', 'DOMICILIATION'),
                 ('ACH/20180808', 'DOMICILIATION'),
@@ -353,9 +353,9 @@ class AccountTestFecImport(AccountTestInvoicingCommon):
         self.assertEqual(
             move_lines.mapped(lambda line: (line.move_name, line.name)),
             [
-                ('ACH/201808', 'ACOMPTE FORMALITES ENTREPRISE'),
-                ('ACH/201808', 'ACOMPTE FORMALITES ENTREPRISE'),
-                ('ACH/201808', 'ACOMPTE FORMALITES ENTREPRISE'),
+                ('ACH/201808', 'ADVANCE PAYMENT COMPANY FORMALITIES'),
+                ('ACH/201808', 'ADVANCE PAYMENT COMPANY FORMALITIES'),
+                ('ACH/201808', 'ADVANCE PAYMENT COMPANY FORMALITIES'),
                 ('ACH/201808', 'DOMICILIATION'),
                 ('ACH/201808', 'DOMICILIATION'),
                 ('ACH/201808', 'DOMICILIATION'),

@@ -65,7 +65,7 @@ class TestBilanComptable(TestAccountReportsCommon):
             #   Name                        Balance
             [   0,                          3],
             [
-                ('Disponibilités',          100.0),
+                ('Availability',          100.0),
             ],
         )
 
@@ -89,6 +89,6 @@ class TestBilanComptable(TestAccountReportsCommon):
             #   Name                                                            Balance
             [   0,                                                              3],
             [
-                ('Emprunts et dettes auprès des établissements de crédit',      200.0),
+                ('Borrowings and debts with credit institutions',      200.0),
             ],
         )

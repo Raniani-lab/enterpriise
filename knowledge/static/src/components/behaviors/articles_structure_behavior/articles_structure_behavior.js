@@ -72,6 +72,7 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
             onPatched(() => {
                 this.editor.idSet(this.props.anchor);
                 this.editor.observerActive(`knowledge_article_structure_id_${this.observerId}`);
+                this.props.record.save();
             });
         }
     }

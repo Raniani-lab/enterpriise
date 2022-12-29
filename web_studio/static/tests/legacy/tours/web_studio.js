@@ -15,6 +15,7 @@ tour.register('web_studio_tests_tour', {
 }, [{
     // open studio
     trigger: '.o_main_navbar .o_web_studio_navbar_item',
+    extra_trigger: ".o_home_menu_background",
 }, {
     trigger: '.o_web_studio_new_app',
 }, {
@@ -55,7 +56,7 @@ tour.register('web_studio_tests_tour', {
     timeout: 60000, /* previous step reloads registry, etc. - could take a long time */
 }, {
     trigger: '.o_main_navbar .o_web_studio_navbar_item',
-    extra_trigger: '.o_home_menu',
+    extra_trigger: '.o_home_menu_background',
 }, {
     // open the app creator and leave it
     trigger: '.o_web_studio_new_app',
@@ -575,6 +576,7 @@ tour.register('web_studio_new_report_tour', {
 }, [{
     // open studio
     trigger: '.o_main_navbar .o_web_studio_navbar_item',
+    extra_trigger: ".o_home_menu_background",
 }, {
     // click on the created app
     trigger: '.o_app[data-menu-xmlid*="studio"]:first',
@@ -719,6 +721,7 @@ tour.register('web_studio_new_report_basic_layout_tour', {
 }, [{
     // open studio
     trigger: '.o_main_navbar .o_web_studio_navbar_item',
+    extra_trigger: ".o_home_menu_background",
 }, {
     // click on the created app
     trigger: '.o_app[data-menu-xmlid*="studio"]:first',
@@ -1028,6 +1031,7 @@ tour.register("web_studio_create_app_with_pipeline_and_user_assignment", {
 }, [{
     // open studio
     trigger: '.o_main_navbar .o_web_studio_navbar_item',
+    extra_trigger: ".o_home_menu_background",
 }, {
     trigger: '.o_web_studio_new_app',
 }, {
@@ -1069,6 +1073,7 @@ tour.register('web_studio_alter_field_existing_in_multiple_views_tour', {
 }, [{
     // open studio
     trigger: '.o_main_navbar .o_web_studio_navbar_item a',
+    extra_trigger: ".o_home_menu_background",
 }, {
     trigger: '.o_web_studio_new_app',
 }, {

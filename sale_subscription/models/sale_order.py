@@ -795,7 +795,6 @@ class SaleOrder(models.Model):
             "views": [[self.env.ref('sale_subscription.sale_order_view_tree_subscription').id, "tree"],
                       [self.env.ref('sale_subscription.sale_subscription_primary_form_view').id, "form"],
                       [False, "kanban"], [False, "calendar"], [False, "pivot"], [False, "graph"]],
-            "context": {"create": False},
         }
 
     def open_subscription_history(self):
@@ -804,6 +803,10 @@ class SaleOrder(models.Model):
         origin_order_id = self.origin_order_id.id or self.id
         action['name'] = "History"
         action['domain'] = ['|', ('id', '=', origin_order_id), ('origin_order_id', '=', origin_order_id)]
+        action['context'] = {
+            **action.get('context', {}),
+            'create': False,
+        }
         return action
 
     def action_open_subscriptions(self):

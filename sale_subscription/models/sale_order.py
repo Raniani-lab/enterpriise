@@ -764,6 +764,7 @@ class SaleOrder(models.Model):
         action['name'] = _('Upsell') if subscription_management == 'upsell' else _('Renew')
         action['views'] = [(self.env.ref('sale_subscription.sale_subscription_primary_form_view').id, 'form')]
         action['res_id'] = order.id
+        action['context']['create'] = True
         return action
 
     def _get_order_digest(self, origin='', template='sale_subscription.sale_order_digest', lang=None):

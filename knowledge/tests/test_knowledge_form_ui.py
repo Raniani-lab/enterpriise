@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from datetime import timedelta
 from odoo import fields
 from odoo.tests.common import tagged, HttpCase
 
@@ -12,13 +13,30 @@ class TestKnowledgeUI(HttpCase):
     def setUpClass(cls):
         super(TestKnowledgeUI, cls).setUpClass()
         # remove existing articles to ease tour management
-        cls.env['knowledge.article'].search([]).unlink()
+        cls.env['knowledge.article'].with_context(active_test=False).search([]).unlink()
 
     def test_knowledge_main_flow(self):
+
+        # Patching 'now' to allow checking the order of trashed articles, as
+        # they are sorted using their deletion date which is based on the
+        # 'write_date' field
+        self.patch(self.env.cr, 'now', lambda: fields.Datetime.now() - timedelta(days=1))
+        article_1 = self.env['knowledge.article'].create({
+            'name': 'Article 1',
+            'active': False,
+            'to_delete': True,
+        })
+        article_1.flush_recordset()
+
         # as the knowledge.article#_resequence method is based on write date
         # force the write_date to be correctly computed
         # otherwise it always returns the same value as we are in a single transaction
         self.patch(self.env.cr, 'now', fields.Datetime.now)
+        self.env['knowledge.article'].create({
+            'name': 'Article 2',
+            'active': False,
+            'to_delete': True,
+        })
 
         self.start_tour('/web', 'knowledge_main_flow_tour', login='admin', step_delay=100)
 

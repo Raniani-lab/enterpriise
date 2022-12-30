@@ -387,7 +387,7 @@
         <field name="model">knowledge.article</field>
         <field name="priority">100</field>
         <field name="arch" type="xml">
-            <tree create="0" default_order="deletion_date desc"
+            <tree create="0" default_order="write_date desc"
                   js_class="knowledge_article_view_tree">
                 <field name="display_name" string="Name"/>
                 <field name="is_user_favorite" widget="boolean_favorite" nolabel="1"

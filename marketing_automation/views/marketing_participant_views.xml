@@ -17,7 +17,8 @@
                         <span class="o_form_label">Record</span>
                         <field name="is_test" invisible="1"/>
                         <h1>
-                            <field name="resource_ref" required="1" options="{'hide_model': True}"/>
+                            <field name="resource_ref" required="1" class="o_field_highlight"
+                                placeholder="Pick a record..." options="{'hide_model': True}"/>
                         </h1>
                     </div>
                     <group>
@@ -49,8 +50,8 @@
                                 <field name="mailing_trace_status"/>
                                 <field name="links_click_datetime"/>
                                 <templates>
-                                    <div t-name="kanban-box" t-if="!record.parent_id.raw_value || props.displayChildren">
-                                        <div class="o_ma_body">
+                                    <div t-name="kanban-box">
+                                        <div class="o_ma_body position-relative" t-att-data-record-id="record.id.raw_value">
                                             <div class="o_ma_timeline text-center">
                                                 <t t-if="record.schedule_date.value">
                                                     <field name="schedule_date" />
@@ -119,22 +120,6 @@
                                                         <i class="fa fa-times" />
                                                     </button>
                                                 </div>
-                                            </div>
-                                            <t t-set="children" t-value="props.record.data.children"/>
-                                            <div class="o_hierarchy_children" t-if="children and children.length !== 0">
-                                                <t t-foreach="children" t-as="record" t-key="record.data.id">
-                                                    <HierarchyKanbanRecord
-                                                        displayChildren="true"
-                                                        archInfo="props.archInfo"
-                                                        canResequence="props.canResequence"
-                                                        forceGlobalClick="props.forceGlobalClick"
-                                                        list="props.list"
-                                                        openRecord="props.openRecord"
-                                                        is_readonly="props.readonly"
-                                                        record="record"
-                                                        templates="props.templates"
-                                                    />
-                                                </t>
                                             </div>
                                         </div>
                                     </div>

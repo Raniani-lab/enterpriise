@@ -51,22 +51,26 @@
             padding: 0px 0px 0px 100px;
             margin: 0px 0px 0px 0px;
             background-color: transparent;
-            // Timeline Border
-            &:before {
-                content: '';
-                display: block;
-                @include o-position-absolute;
-                height: 100%;
+            .o_ma_body_wrapper {
+                padding-left: 133px;
                 margin-left: 8px;
                 border-left: 1px dashed $o-ma-border-color;
             }
             // Record with all children
             .o_ma_body {
+                // Timeline Border
+                &:before {
+                    content: '';
+                    display: block;
+                    @include o-position-absolute($bottom: 0px);
+                    height: 100%;
+                    border-left: 1px dashed $o-ma-border-color;
+                }
                 margin-left: 8px;
                 padding-top: 20px;
                 // Timeline Pill: Display time
                 .o_ma_timeline {
-                    @include o-position-absolute($top: 32px, $left: 6px);
+                    @include o-position-absolute($top: 32px, $left: -102px);
                     width: 90px;
                     padding: 3px 0px;
                     border-radius: 3px;
@@ -102,13 +106,6 @@
                         border: 2px solid $o-brand-primary;
                         border-radius: 10px;
                         background: $o-ma-hierarchy-background;
-                    }
-                }
-                // Contain children
-                .o_hierarchy_children {
-                    margin-left: 25px;
-                    & > div:last-child:before {
-                        height: 40px;
                     }
                 }
             }

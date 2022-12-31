@@ -36,12 +36,12 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.xml:0
 #, python-format
 msgid "\" under:"
-msgstr ""
+msgstr "\" під:"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__favorite_count
 msgid "#Is Favorite"
-msgstr ""
+msgstr "К-сть улюблених"
 
 #. module: knowledge
 #: code:addons/knowledge/models/knowledge_article.py:0
@@ -55,18 +55,18 @@ msgstr "%s (копія)"
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "%s has been sent to Trash"
-msgstr ""
+msgstr "%s надіслано до смітника"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_mail_invite
 msgid ".<br/><br/>"
-msgstr ""
+msgstr ".<br/><br/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
 msgid "<i class=\"fa fa-circle-o-notch fa-2x fa-spin\" title=\"loader\" role=\"img\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-circle-o-notch fa-2x fa-spin\" title=\"loader\" role=\"img\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -149,17 +149,17 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.articles_template_name
 msgid "<i class=\"fa fa-fw fa-plus\" title=\"Create a nested article\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-plus\" title=\"Create a nested article\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree
 msgid "<i class=\"fa fa-fw fa-plus\" title=\"Create a new article in workspace\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-plus\" title=\"Create a new article in workspace\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree
 msgid "<i class=\"fa fa-fw fa-plus\" title=\"Create a new private article\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-fw fa-plus\" title=\"Create a new private article\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -181,12 +181,12 @@ msgstr "<i class=\"fa fa-share-alt me-1\"/>Поділитися"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_kanban
 msgid "<i class=\"fa fa-star\" title=\"Remove from favorites\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-star\" title=\"Remove from favorites\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_kanban
 msgid "<i class=\"fa fa-star-o\" title=\"Add to favorites\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-star-o\" title=\"Add to favorites\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -208,6 +208,8 @@ msgid ""
 "<i class=\"fa fa-w fa-info-circle\"/> All external users you selected won't "
 "be added to the members."
 msgstr ""
+"<i class=\"fa fa-w fa-info-circle\"/> Усі зовнішні користувачі, яких ви "
+"вибрали, не будуть додані до учасників."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_invite_view_form
@@ -215,11 +217,13 @@ msgid ""
 "<i class=\"fa fa-w fa-info-circle\"/> External users cannot write on "
 "Articles and will be granted read access instead."
 msgstr ""
+"<i class=\"fa fa-w fa-info-circle\"/> Зовнішні користувачі не можуть писати "
+"в статтях, натомість їм буде надано доступ для читання."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<i class=\"oi oi-search pe-2\" title=\"search\"/>"
-msgstr ""
+msgstr "<i class=\"oi oi-search pe-2\" title=\"search\"/>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
@@ -236,17 +240,17 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree
 msgid "<i>There are no Articles in your Workspace.</i>"
-msgstr ""
+msgstr "<i>У вашій папці немає статей.</i>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree
 msgid "<i>You do not have any private Articles.</i>"
-msgstr ""
+msgstr "<i>У вас немає приватних статей.</i>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "<span class=\"mx-1\">-</span>"
-msgstr ""
+msgstr "<span class=\"mx-1\">-</span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -256,6 +260,10 @@ msgid ""
 "                    (/<span style=\"font-style: italic;\">checklist</span>)\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    Додайте чекліст\n"
+"                    (/<span style=\"font-style: italic;\">checklist</span>)\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -265,6 +273,10 @@ msgid ""
 "                    (/<span style=\"font-style: italic;\">separator</span>)\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    Додайте роздільник\n"
+"                    (/<span style=\"font-style: italic;\">separator</span>)\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -275,6 +287,11 @@ msgid ""
 "                    to convert a text into a title\n"
 "                </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"                    Використовуйте\n"
+"                    /<span style=\"font-style: italic;\">heading</span>\n"
+"                    щоб конвертувати текст у заголовок\n"
+"                </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
@@ -307,6 +324,17 @@ msgid ""
 "            (<span style=\"font-style: italic;\">Drafts, Todo lists, ...</span>)\n"
 "        </span>"
 msgstr ""
+"<span style=\"font-size: 14px;\">\n"
+"            <span style=\"font-weight: bolder;\">\n"
+"                <font class=\"text-o-color-2\">Приватний</font>\n"
+"            </span>\n"
+"        </span>\n"
+"        <span style=\"font-size: 14px;\">\n"
+"            — Це\n"
+"            <span style=\"font-weight: bolder;\"><font class=\"text-o-color-2\">ваша річ</font></span>,\n"
+"            яку ви тримаєте для себе\n"
+"            (<span style=\"font-style: italic;\">Чернетка, Список Зробити, ...</span>)\n"
+"        </span>"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding

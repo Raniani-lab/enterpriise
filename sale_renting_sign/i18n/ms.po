@@ -32,12 +32,12 @@ msgstr ""
 #. module: sale_renting_sign
 #: model_terms:ir.ui.view,arch_db:sale_renting_sign.rental_sign_wizard_view_form
 msgid "Cancel"
-msgstr ""
+msgstr "Batal"
 
 #. module: sale_renting_sign
 #: model:ir.model,name:sale_renting_sign.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Syarikat"
 
 #. module: sale_renting_sign
 #: model:ir.model,name:sale_renting_sign.model_res_config_settings
@@ -110,7 +110,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_renting_sign.field_sign_request__sale_order_id
 #: model:ir.model.fields,field_description:sale_renting_sign.field_sign_send_request__sale_order_id
 msgid "Sales Order"
-msgstr ""
+msgstr "Pesanan Jualan"
 
 #. module: sale_renting_sign
 #: model:ir.model.fields,help:sale_renting_sign.field_res_config_settings__rental_sign_tmpl_id

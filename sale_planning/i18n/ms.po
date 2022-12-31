@@ -221,7 +221,7 @@ msgstr ""
 #. module: sale_planning
 #: model:ir.model,name:sale_planning.model_product_template
 msgid "Product"
-msgstr ""
+msgstr "Produk"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_analysis_report__role_product_ids
@@ -236,7 +236,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_slot_view_form_inherit_sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_slot_view_search_inherit_sale_planning
 msgid "Sales Order"
-msgstr ""
+msgstr "Pesanan Jualan"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_analysis_report__sale_line_id
@@ -277,13 +277,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_analysis_report_view_search
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_slot_view_search_inherit_sale_planning
 msgid "Service"
-msgstr ""
+msgstr "Perkhidmatan"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_role__product_ids
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__role_product_ids
 msgid "Services"
-msgstr ""
+msgstr "Perkhidmatan"
 
 #. module: sale_planning
 #: code:addons/sale_planning/controllers/main.py:0

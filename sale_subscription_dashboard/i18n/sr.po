@@ -414,7 +414,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Monthly Recurring Revenue"
-msgstr ""
+msgstr "Mesečni ponavljajući prihod"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -422,14 +422,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Monthly Recurring Revenue :"
-msgstr ""
+msgstr "Mesečni ponavljajući prihod :"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Monthly Recurring Revenue Growth"
-msgstr ""
+msgstr "Rast mesečnog ponavljajućeg prihoda"
 
 #. module: sale_subscription_dashboard
 #. openerp-web

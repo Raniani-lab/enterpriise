@@ -211,12 +211,12 @@ msgstr "Diarkibkan"
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_point__average
 msgid "Average"
-msgstr ""
+msgstr "Purata"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
 msgid "Cancel"
-msgstr ""
+msgstr "Batal"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__check_ids
@@ -254,7 +254,7 @@ msgstr ""
 #: model:ir.ui.menu,name:quality_control.menu_quality_configuration
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_alert_team_dashboard_view_kanban
 msgid "Configuration"
-msgstr ""
+msgstr "Konfigurasi"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_wizard_form_failure
@@ -409,7 +409,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "Failed"
-msgstr ""
+msgstr "Gagal"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__failure_message
@@ -447,7 +447,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "In Progress"
-msgstr ""
+msgstr "Sedang Berlangsung"
 
 #. module: quality_control
 #: model:ir.model.fields,help:quality_control.field_quality_check__move_line_id
@@ -658,7 +658,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_dashboard
 msgid "Overview"
-msgstr ""
+msgstr "Gambaran keseluruhan"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
@@ -668,7 +668,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 msgid "Partner"
-msgstr ""
+msgstr "Rakan kongsi"
 
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_check__measure_success__pass
@@ -701,7 +701,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__picture
 msgid "Picture"
-msgstr ""
+msgstr "Gambar"
 
 #. module: quality_control
 #. odoo-python
@@ -723,7 +723,7 @@ msgstr ""
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.view_quality_check_wizard
 msgid "Previous"
-msgstr ""
+msgstr "Sebelumnya"
 
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_product_template
@@ -732,7 +732,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_on__product
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "Product"
-msgstr ""
+msgstr "Produk"
 
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_stock_move_line
@@ -748,7 +748,7 @@ msgstr ""
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Varian Produk"
 
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.quality_control_menu_product_variant
@@ -759,12 +759,12 @@ msgstr ""
 #: model:ir.ui.menu,name:quality_control.quality_control_menu_product
 #: model:ir.ui.menu,name:quality_control.quality_product_menu_product_template
 msgid "Products"
-msgstr ""
+msgstr "Produk"
 
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_root
 msgid "Quality"
-msgstr ""
+msgstr "Kualiti"
 
 #. module: quality_control
 #. odoo-python
@@ -965,7 +965,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_check__measure_on__move_line
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_point__measure_on__move_line
 msgid "Quantity"
-msgstr ""
+msgstr "Kuantiti"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__qty_tested
@@ -1004,12 +1004,12 @@ msgstr ""
 #. module: quality_control
 #: model:ir.ui.menu,name:quality_control.menu_quality_reporting
 msgid "Reporting"
-msgstr ""
+msgstr "Pelaporan"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_search
 msgid "Responsible"
-msgstr ""
+msgstr "Bertanggungjawab"
 
 #. module: quality_control
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__show_lot_text
@@ -1041,7 +1041,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__quality_state
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_search
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_stock_move
@@ -1101,7 +1101,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality_control.field_quality_alert__title
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__title
 msgid "Title"
-msgstr ""
+msgstr "Tajuk"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_point_view_form_inherit_quality_control
@@ -1112,13 +1112,13 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality_control.field_quality_check__product_tracking
 #: model:ir.model.fields,field_description:quality_control.field_quality_check_wizard__product_tracking
 msgid "Tracking"
-msgstr ""
+msgstr "Penjejakan"
 
 #. module: quality_control
 #: model:ir.model,name:quality_control.model_stock_picking
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_tree
 msgid "Transfer"
-msgstr ""
+msgstr "Pemindahan"
 
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form

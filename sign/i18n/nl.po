@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
+# Camille Dantinne <cmd@odoo.com>, 2022
 # Jolien De Paepe, 2022
 # 
 msgid ""
@@ -638,7 +639,7 @@ msgstr "Geautoriseerde gebruikers:"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_item_type__auto_field
 msgid "Auto-fill Partner Field"
-msgstr "Relatieveld automatisch invullen"
+msgstr "Partnerveld automatisch invullen"
 
 #. module: sign
 #: model_terms:ir.ui.view,arch_db:sign.green_savings_report
@@ -1387,7 +1388,7 @@ msgstr "Volgers"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "Volgers (Relaties)"
+msgstr "Volgers (Partners)"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_request__activity_type_icon
@@ -2248,7 +2249,7 @@ msgstr "Deelnemers"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_log__partner_id
 msgid "Partner"
-msgstr "Relatie"
+msgstr "Partner"
 
 #. module: sign
 #. odoo-javascript
@@ -4016,7 +4017,7 @@ msgstr "Hier vind je documenten die op je handtekening wachten."
 #: code:addons/sign/static/src/js/common/document_signable.js:0
 #, python-format
 msgid "You will receive a copy of the signed document by mail."
-msgstr "Je ontvangt per post een kopie van het ondertekende document."
+msgstr "Je ontvangt per e-mail een kopie van het ondertekende document."
 
 #. module: sign
 #: model_terms:ir.actions.act_window,help:sign.sign_request_action

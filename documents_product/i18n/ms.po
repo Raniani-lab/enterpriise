@@ -45,7 +45,7 @@ msgstr ""
 #. module: documents_product
 #: model:ir.model,name:documents_product.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Syarikat"
 
 #. module: documents_product
 #: model:ir.model,name:documents_product.model_res_config_settings
@@ -55,7 +55,7 @@ msgstr ""
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_documents_workflow_rule__create_model
 msgid "Create"
-msgstr ""
+msgstr "Buat"
 
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_sheet_tag
@@ -96,18 +96,18 @@ msgstr ""
 #: model:ir.model,name:documents_product.model_product_template
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__documents_product_settings
 msgid "Product"
-msgstr ""
+msgstr "Produk"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_tags
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__product_tags
 msgid "Product Tags"
-msgstr ""
+msgstr "Tag Produk"
 
 #. module: documents_product
 #: model:ir.model,name:documents_product.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Varian Produk"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_folder
@@ -122,7 +122,7 @@ msgstr ""
 #. module: documents_product
 #: model:documents.folder,name:documents_product.documents_product_folder
 msgid "Products"
-msgstr ""
+msgstr "Produk"
 
 #. module: documents_product
 #: model:documents.tag,name:documents_product.documents_product_specs_tag

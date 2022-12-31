@@ -26,14 +26,14 @@ msgstr ""
 #: code:addons/delivery_sendcloud/models/sendcloud_service.py:0
 #, python-format
 msgid "%(partner_name)s email required"
-msgstr ""
+msgstr "%(partner_name)s потрібен email"
 
 #. module: delivery_sendcloud
 #. odoo-python
 #: code:addons/delivery_sendcloud/models/sendcloud_service.py:0
 #, python-format
 msgid "%(partner_name)s phone required"
-msgstr ""
+msgstr "%(partner_name)s потрібен телефон"
 
 #. module: delivery_sendcloud
 #: model_terms:ir.ui.view,arch_db:delivery_sendcloud.view_delivery_carrier_form
@@ -146,6 +146,8 @@ msgid ""
 "Depending your Sendcloud account type, through rules you can define the shipping method to use depending on different conditions like destination, weight, value, etc. \n"
 "                                                     Rules can override shipping product selected in odoo"
 msgstr ""
+"Залежно від типу вашого облікового запису Sendcloud за допомогою правил ви можете визначити спосіб доставки, який використовуватиметься залежно від різних умов, таких як пункт призначення, вага, вартість тощо. \n"
+"                                                     Правила можуть перекривати товар доставки, вибраний в odoo"
 
 #. module: delivery_sendcloud
 #: model:ir.model.fields,field_description:delivery_sendcloud.field_sendcloud_shipping_product__display_name
@@ -161,6 +163,8 @@ msgid ""
 "Ensure picking has shipping weight, if using packages, each package should "
 "have a shipping weight"
 msgstr ""
+"Переконайтеся, що комплектування має вагу транспортування, якщо "
+"використовуються упаковки, кожна упаковка має мати вагу транспортування"
 
 #. module: delivery_sendcloud
 #: model:ir.model.fields,field_description:delivery_sendcloud.field_sendcloud_shipping_product__sendcloud_id
@@ -438,7 +442,7 @@ msgstr ""
 #: code:addons/delivery_sendcloud/models/sendcloud_service.py:0
 #, python-format
 msgid "Something went wrong, parcel not returned from Sendcloud"
-msgstr ""
+msgstr "Щось пішло не так, посилка не повернулася від Sendcloud"
 
 #. module: delivery_sendcloud
 #. odoo-python
@@ -497,6 +501,8 @@ msgid ""
 "There are no shipping products available, please activate carriers in your "
 "account"
 msgstr ""
+"Немає доступних товарів для доставки, активуйте перевізників у своєму "
+"обліковому записі"
 
 #. module: delivery_sendcloud
 #. odoo-python

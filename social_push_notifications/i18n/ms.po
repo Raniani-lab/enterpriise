@@ -154,7 +154,7 @@ msgstr "ID"
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "Icon"
-msgstr ""
+msgstr "Ikon"
 
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.social_post_template_view_form
@@ -179,7 +179,7 @@ msgstr ""
 #. module: social_push_notifications
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_media__media_type
 msgid "Media Type"
-msgstr ""
+msgstr "Jenis media"
 
 #. module: social_push_notifications
 #: code:addons/social_push_notifications/models/social_live_post.py:0
@@ -366,22 +366,22 @@ msgstr ""
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_social_account
 msgid "Social Account"
-msgstr ""
+msgstr "Akaun Sosial"
 
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_social_live_post
 msgid "Social Live Post"
-msgstr ""
+msgstr "Siaran Langsung Sosial"
 
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_social_media
 msgid "Social Media"
-msgstr ""
+msgstr "Media Sosial"
 
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_social_post
 msgid "Social Post"
-msgstr ""
+msgstr "Siaran Sosial"
 
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_social_post_template
@@ -419,7 +419,7 @@ msgstr ""
 #. module: social_push_notifications
 #: model_terms:ir.ui.view,arch_db:social_push_notifications.res_config_settings_view_form
 msgid "Title"
-msgstr ""
+msgstr "Tajuk"
 
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_utm_campaign
@@ -454,7 +454,7 @@ msgstr ""
 #. module: social_push_notifications
 #: model:ir.ui.menu,name:social_push_notifications.social_visitor
 msgid "Visitors"
-msgstr ""
+msgstr "Pelawat"
 
 #. module: social_push_notifications
 #: code:addons/social_push_notifications/controllers/main.py:0
@@ -472,7 +472,7 @@ msgstr ""
 #: model:ir.model,name:social_push_notifications.model_website
 #: model:ir.model.fields,field_description:social_push_notifications.field_social_account__website_id
 msgid "Website"
-msgstr ""
+msgstr "laman web"
 
 #. module: social_push_notifications
 #: model:ir.model,name:social_push_notifications.model_website_visitor

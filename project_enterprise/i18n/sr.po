@@ -352,7 +352,7 @@ msgstr "Ulica"
 #: model:ir.model,name:project_enterprise.model_project_task
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_line_wizard__task_id
 msgid "Task"
-msgstr ""
+msgstr "Zadatak"
 
 #. module: project_enterprise
 #: model:ir.model,name:project_enterprise.model_project_task_confirm_schedule_line_wizard

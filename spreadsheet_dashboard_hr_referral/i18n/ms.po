@@ -51,14 +51,14 @@ msgstr "Syarikat"
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Current"
-msgstr ""
+msgstr "Semasa"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Date"
-msgstr ""
+msgstr "Tarikh"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -114,7 +114,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Medium"
-msgstr ""
+msgstr "Sederhana"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -171,7 +171,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Sebelumnya"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
@@ -270,14 +270,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Source"
-msgstr ""
+msgstr "Sumber"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Stage"
-msgstr ""
+msgstr "Pentas"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web

@@ -107,7 +107,7 @@ msgstr "Korak"
 #. module: mrp_workorder_plm
 #: model:ir.model.fields,field_description:mrp_workorder_plm.field_mrp_eco_routing_change__test_type
 msgid "Step Type"
-msgstr ""
+msgstr "Vrsta koraka"
 
 #. module: mrp_workorder_plm
 #: model:mrp.eco.stage,name:mrp_workorder_plm.ecostage_validated

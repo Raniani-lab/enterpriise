@@ -30,7 +30,7 @@ msgstr ""
 #: model:mrp.eco.stage,legend_blocked:mrp_workorder_plm.ecostage_progress
 #: model:mrp.eco.stage,legend_blocked:mrp_workorder_plm.ecostage_validated
 msgid "Blocked"
-msgstr ""
+msgstr "Disekat"
 
 #. module: mrp_workorder_plm
 #: model:ir.model.fields,help:mrp_workorder_plm.field_mrp_eco_routing_change__test_type
@@ -59,7 +59,7 @@ msgstr ""
 #: model:mrp.eco.stage,legend_normal:mrp_workorder_plm.ecostage_validated
 #: model:mrp.eco.stage,name:mrp_workorder_plm.ecostage_progress
 msgid "In Progress"
-msgstr ""
+msgstr "Sedang Berlangsung"
 
 #. module: mrp_workorder_plm
 #: model:mrp.eco.stage,name:mrp_workorder_plm.ecostage_new
@@ -94,12 +94,12 @@ msgstr ""
 #: model:mrp.eco.stage,legend_done:mrp_workorder_plm.ecostage_progress
 #: model:mrp.eco.stage,legend_done:mrp_workorder_plm.ecostage_validated
 msgid "Ready"
-msgstr ""
+msgstr "Sedia"
 
 #. module: mrp_workorder_plm
 #: model:ir.model.fields,field_description:mrp_workorder_plm.field_mrp_eco_routing_change__step
 msgid "Step"
-msgstr ""
+msgstr "Langkah"
 
 #. module: mrp_workorder_plm
 #: model:ir.model.fields,field_description:mrp_workorder_plm.field_mrp_eco_routing_change__test_type

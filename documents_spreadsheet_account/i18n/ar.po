@@ -22,12 +22,12 @@ msgstr ""
 #. module: documents_spreadsheet_account
 #: model:spreadsheet.template,name:documents_spreadsheet_account.spreadsheet_template_monthly_budget
 msgid "Budget Report (Monthly)"
-msgstr ""
+msgstr "ميزانية التقرير (شهريا)"
 
 #. module: documents_spreadsheet_account
 #: model:spreadsheet.template,name:documents_spreadsheet_account.spreadsheet_template_quarterly_budget
 msgid "Budget Report (Quarterly)"
-msgstr ""
+msgstr "ميزانية التقرير(ربعي)"
 
 #. module: documents_spreadsheet_account
 #: model:spreadsheet.template,name:documents_spreadsheet_account.spreadsheet_template_sales_commission

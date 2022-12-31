@@ -82,14 +82,14 @@ msgstr "Semua"
 #: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
 #, python-format
 msgid "CLEAR"
-msgstr ""
+msgstr "JELAS"
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/legacy/js/views/view_dialogs.js:0
 #, python-format
 msgid "Clear"
-msgstr ""
+msgstr "Jelas"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -104,7 +104,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/promote_studio_dialog/promote_studio_dialog.xml:0
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "Tutup"
 
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_res_partner
@@ -205,7 +205,7 @@ msgstr ""
 #. module: web_enterprise
 #: model:ir.model,name:web_enterprise.model_ir_ui_menu
 msgid "Menu"
-msgstr ""
+msgstr "Menu"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -219,7 +219,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/home_menu/home_menu.xml:0
 #, python-format
 msgid "No result"
-msgstr ""
+msgstr "Tiada keputusan"
 
 #. module: web_enterprise
 #. odoo-javascript
@@ -409,7 +409,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/legacy/xml/control_panel.xml:0
 #, python-format
 msgid "Today"
-msgstr ""
+msgstr "Hari ini"
 
 #. module: web_enterprise
 #. odoo-javascript

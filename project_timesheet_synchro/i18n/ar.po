@@ -6,6 +6,7 @@
 # Malaz Abuidris <msea@odoo.com>, 2022
 # Martin Trigaux, 2022
 # Mehjabin Farsana, 2022
+# Niyas Raphy, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Mehjabin Farsana, 2022\n"
+"Last-Translator: Niyas Raphy, 2022\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -332,7 +333,7 @@ msgstr "لا توجد مهمة "
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "No task selected"
-msgstr ""
+msgstr "لم المهمة المحدد"
 
 #. module: project_timesheet_synchro
 #. openerp-web

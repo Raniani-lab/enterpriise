@@ -5,8 +5,8 @@
 # Translators:
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2022
 # Martin Trigaux, 2022
-# Jolien De Paepe, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-11-25 09:15+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -289,20 +289,20 @@ msgstr "Bedrag in valuta"
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_distribution
 #, python-format
 msgid "Analytic"
-msgstr "Kostenplaats"
+msgstr "Analytisch"
 
 #. module: account_accountant
 #. openerp-web
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_form_lines_widget.js:0
 #, python-format
 msgid "Analytic Account"
-msgstr "Kostenplaats"
+msgstr "Analytische rekening"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__analytic_precision
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__analytic_precision
 msgid "Analytic Precision"
-msgstr "Kostenplaatsnauwkeurigheid"
+msgstr "Analytische nauwkeurigheid"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_res_config_settings__use_anglo_saxon
@@ -658,7 +658,7 @@ msgstr "Externe link"
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Filter on account, label, partner, amount,..."
-msgstr "Filter op rekening, label, relatie, bedrag,...."
+msgstr "Filter op rekening, label, partner, bedrag,...."
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_fiscal_year
@@ -751,32 +751,32 @@ msgstr "Formulier Naam"
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_id
 msgid "Form Partner"
-msgstr "Formulier Relatie"
+msgstr "Partnerformulier"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_currency_id
 msgid "Form Partner Currency"
-msgstr "Formulier Relatievaluta"
+msgstr "Formulier partnervaluta"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_payable_account_id
 msgid "Form Partner Payable Account"
-msgstr "Formulier Relatie crediteurenrekening"
+msgstr "Formulier Partner crediteurenrekening"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_payable_amount
 msgid "Form Partner Payable Amount"
-msgstr "Formulier Relatie te betalen bedrag"
+msgstr "Formulier Partner te betalen bedrag"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_receivable_account_id
 msgid "Form Partner Receivable Account"
-msgstr "Formulier Relatie debiteurenrekening"
+msgstr "Formulier Partner debiteurenrekening"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_partner_receivable_amount
 msgid "Form Partner Receivable Amount"
-msgstr "Formulier Relatie te ontvangen bedrag"
+msgstr "Formulier Partner te ontvangen bedrag"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__form_single_currency_mode
@@ -1297,7 +1297,7 @@ msgstr "Betaald"
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
 #, python-format
 msgid "Partner"
-msgstr "Relatie"
+msgstr "Partner"
 
 #. module: account_accountant
 #. openerp-web
@@ -1507,7 +1507,7 @@ msgstr "Opslaan & nieuw"
 #: code:addons/account_accountant/static/src/js/reconciliation/reconciliation_renderer.js:0
 #, python-format
 msgid "Select Partner"
-msgstr "Relatie selecteren"
+msgstr "Partner selecteren"
 
 #. module: account_accountant
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__selected_aml_ids
@@ -1912,7 +1912,7 @@ msgid ""
 "You cannot reconcile the payable and receivable accounts of multiple "
 "partners together at the same time."
 msgstr ""
-"Je kunt de te betalen en te ontvangen rekeningen van meerdere relaties niet "
+"Je kunt de te betalen en te ontvangen rekeningen van meerdere partners niet "
 "tegelijkertijd afletteren."
 
 #. module: account_accountant

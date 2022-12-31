@@ -60,7 +60,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_studio.default_form_field_name
 #: model_terms:ir.ui.view,arch_db:website_studio.default_form_page
 msgid "Submit"
-msgstr ""
+msgstr "Hantar"
 
 #. module: website_studio
 #. openerp-web
@@ -74,7 +74,7 @@ msgstr ""
 #: code:addons/website_studio/static/src/js/editor_menu.js:0
 #, python-format
 msgid "Website"
-msgstr ""
+msgstr "laman web"
 
 #. module: website_studio
 #: model:ir.actions.client,name:website_studio.action_web_studio_form

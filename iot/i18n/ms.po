@@ -151,7 +151,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "Tutup"
 
 #. module: iot
 #. openerp-web
@@ -226,7 +226,7 @@ msgstr "Dicipta pada"
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__device
 msgid "Device"
-msgstr ""
+msgstr "Peranti"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__device_count
@@ -591,12 +591,12 @@ msgstr ""
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__connection__serial
 msgid "Serial"
-msgstr ""
+msgstr "Bersiri"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_device__connected
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #. module: iot
 #. openerp-web

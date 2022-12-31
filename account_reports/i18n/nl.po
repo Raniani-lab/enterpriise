@@ -283,7 +283,7 @@ msgid ""
 "aria-label=\"Partner ledger is normal\" title=\"Partner ledger is normal\"/>"
 msgstr ""
 "<span class=\"fa fa-circle color-transparent trust-partner\" role=\"img\" "
-"aria-label=\"Relatie grootboek is normaal\" title=\"Relatie grootboek is "
+"aria-label=\"Partner grootboek is normaal\" title=\"Partner grootboek is "
 "normaal\"/>"
 
 #. module: account_reports
@@ -321,17 +321,17 @@ msgstr "<span class=\"fa fa-filter\"/> Mogelijkheden:"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
 msgid "<span class=\"fa fa-folder-open\"/> Analytic Filter"
-msgstr "<span class=\"fa fa-folder-open\"/> Kostenplaatsfilter"
+msgstr "<span class=\"fa fa-folder-open\"/> Analytische filter"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_analytic
 msgid "<span class=\"fa fa-folder-open\"/> Analytic Group By"
-msgstr "<span class=\"fa fa-folder-open\"/> Groepeer op kostenplaats"
+msgstr "<span class=\"fa fa-folder-open\"/> Groepeer op analytische rekening"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_partner
 msgid "<span class=\"fa fa-folder-open\"/> Partners"
-msgstr "<span class=\"fa fa-folder-open\"/> Relaties"
+msgstr "<span class=\"fa fa-folder-open\"/> Partners"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_tax_unit
@@ -413,7 +413,7 @@ msgstr ""
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.sales_report_main_template
 msgid "<span>Some partners are missing a VAT number.</span>"
-msgstr "<span>Bij sommige relaties ontbreekt een btw-nummer.</span>"
+msgstr "<span>Bij sommige partners ontbreekt een btw-nummer.</span>"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.template_tax_report
@@ -542,7 +542,7 @@ msgstr "Boekhoudkundige rapportages"
 #: code:addons/account_reports/static/src/js/account_reports.js:0
 #, python-format
 msgid "Accounts"
-msgstr "Kostenplaatsen"
+msgstr "Rekeningen"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_form
@@ -632,7 +632,7 @@ msgstr "Geavanceerd"
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_aged_partner_balance_report_handler
 msgid "Aged Partner Balance Custom Handler"
-msgstr "Aangepaste handler voor oud relatiesaldo"
+msgstr "Aangepaste handler voor oud partnersaldo"
 
 #. module: account_reports
 #: model:account.report,name:account_reports.aged_payable_report
@@ -735,17 +735,17 @@ msgstr "Bedrag in valuta: %s"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Analytic Accounts:"
-msgstr "Kostenplaatsen:"
+msgstr "Analytische rekeningen"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__filter_analytic_groupby
 msgid "Analytic Group By"
-msgstr "Groepeer op kostenplaats"
+msgstr "Groepeer op analytische rekening"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Analytic Plans:"
-msgstr "Kostenplaatsplannen:"
+msgstr "Analytische plannen:"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -753,8 +753,8 @@ msgid ""
 "Analytic filters will include analytic items without accounting "
 "correspondence"
 msgstr ""
-"Kostenplaatsfilters zullen kostenplaatsitems bevatten zonder boekhoudkundige"
-" correspondentie"
+"Analytische filters zullen analytische boekingen bevatten zonder "
+"boekhoudkundige correspondentie"
 
 #. module: account_reports
 #. odoo-javascript
@@ -1876,7 +1876,7 @@ msgstr "Inclusief"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "Include Analytic Simulations"
-msgstr "Omvat kostenplaatssimulaties"
+msgstr "Omvat analytische simulaties"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
@@ -1903,7 +1903,7 @@ msgstr "Inclusief ongeboekte boekingen"
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 msgid "Including Analytic Simulations"
-msgstr "inclusief kostenplaatssimulaties"
+msgstr "Omvat analytische simulaties"
 
 #. module: account_reports
 #. odoo-python
@@ -2465,12 +2465,12 @@ msgstr "Bovenliggende wizard"
 #. module: account_reports
 #: model:account.report.column,name:account_reports.general_ledger_report_partner_name
 msgid "Partner"
-msgstr "Relatie"
+msgstr "Partner"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Partner Categories:"
-msgstr "Relatiecategorieën:"
+msgstr "Partnercategorieën:"
 
 #. module: account_reports
 #. odoo-python
@@ -2498,12 +2498,12 @@ msgstr "Klant/leverancier rapportages"
 #: code:addons/account_reports/static/src/js/account_reports.js:0
 #, python-format
 msgid "Partners"
-msgstr "Relaties"
+msgstr "Partners"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.filter_info_template
 msgid "Partners:"
-msgstr "Relaties:"
+msgstr "Partners:"
 
 #. module: account_reports
 #. odoo-python
@@ -3325,7 +3325,7 @@ msgstr "Onbekend"
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "Unknown Partner"
-msgstr "Onbekende relatie"
+msgstr "Onbekende partner"
 
 #. module: account_reports
 #. odoo-python
@@ -3399,7 +3399,7 @@ msgstr "Boeking bekijken"
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "View Partner"
-msgstr "Bekijk relatie"
+msgstr "Bekijk partner"
 
 #. module: account_reports
 #. odoo-python

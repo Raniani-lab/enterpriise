@@ -172,7 +172,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Account type"
-msgstr ""
+msgstr "Jenis Akaun"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -186,7 +186,7 @@ msgstr "Akaun"
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Aggregate"
-msgstr ""
+msgstr "Agregat"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -195,14 +195,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Average creditors days"
-msgstr ""
+msgstr "Purata hari pemiutang"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Average debtor days"
-msgstr ""
+msgstr "Purata hari penghutang"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -210,7 +210,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Average debtors days"
-msgstr ""
+msgstr "Purata hari penghutang"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -218,7 +218,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Balance sheet"
-msgstr ""
+msgstr "Penyata imbangan"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -248,7 +248,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Cash"
-msgstr ""
+msgstr "Tunai"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -317,7 +317,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Cost of Revenue"
-msgstr ""
+msgstr "Kos Hasil"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -325,21 +325,21 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "Cost of revenue"
-msgstr ""
+msgstr "Kos Hasil "
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Credit Card"
-msgstr ""
+msgstr "Kad kredit"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Current Assets"
-msgstr ""
+msgstr "Aset Semasa"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -360,7 +360,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Current assets"
-msgstr ""
+msgstr "Aset semasa"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -818,7 +818,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Receivable"
-msgstr ""
+msgstr "Boleh diterima"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -856,7 +856,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Revenue"
-msgstr ""
+msgstr "Hasil"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -878,7 +878,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Start date"
-msgstr ""
+msgstr "Tarikh mula"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -963,7 +963,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "Year"
-msgstr ""
+msgstr "Tahun"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -984,7 +984,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "current assets"
-msgstr ""
+msgstr "aset semasa"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -1027,7 +1027,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/accounting_dashboard.json:0
 #, python-format
 msgid "last period"
-msgstr ""
+msgstr "tempoh terakhir"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web
@@ -1122,7 +1122,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_account_accountant/data/files/benchmark_dashboard.json:0
 #, python-format
 msgid "receivable"
-msgstr ""
+msgstr "boleh diterima"
 
 #. module: spreadsheet_dashboard_account_accountant
 #. openerp-web

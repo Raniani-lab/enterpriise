@@ -4,10 +4,9 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Emily Jia <eji@odoo.com>, 2022
 # 稀饭~~ <wangwhai@qq.com>, 2022
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -15,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Raymond Yu <cl_yu@hotmail.com>, 2022\n"
+"Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -53,7 +52,7 @@ msgid ""
 "- Other: Other address for the company (e.g. subsidiary, ...)"
 msgstr ""
 "- 联系人：用于整理给定公司的员工（如CEO和CFO等）。\n"
-"- 发票地址：所有发票的首选地址。当您为此公司的订单开具发票时，默认选中此选项。\n"
+"- 结算地址：所有结算的首选地址。当您为此公司的订单开具结算时，默认选中此选项。\n"
 "- 交货地址：所有交货的首选地址。交付属于此公司的订单时默认选中此选项。\n"
 "- 私人地址：私人地址仅对授权用户可见，且包含敏感信息（员工住址...…）。\n"
 "- 其他地址：公司的其他地址（如子公司...…）"
@@ -257,7 +256,7 @@ msgstr ""
 "                        请采取适当措施，以便在接下来的8天内进行此付款。\n"
 "                    </p>\n"
 "                    <p>\n"
-"                        如果出现我们不知道的发票支付问题，请随时联系我们的会计部门，以便我们快速解决问题。\n"
+"                        如果出现我们不知道的结算支付问题，请随时联系我们的会计部门，以便我们快速解决问题。\n"
 "                    </p>\n"
 "                    <p>\n"
 "                        到期付款的详细信息打印在下面。\n"
@@ -496,7 +495,7 @@ msgstr ""
 msgid ""
 "Dear client, we kindly remind you that you still have unpaid invoices. "
 "Please check them and take appropriate action. %s"
-msgstr "尊敬的%s客户，我们恳请您，您仍然有未付的发票。请检查它们并采取适当的措施。"
+msgstr "尊敬的%s客户，我们恳请您，您仍然有未付的结算。请检查它们并采取适当的措施。"
 
 #. module: account_followup
 #: model_terms:ir.actions.act_window,help:account_followup.action_account_followup_line_definition_form
@@ -518,7 +517,7 @@ msgid ""
 msgstr ""
 "确定将分配给活动的人员：\n"
 "- 后续负责（默认）\n"
-"- 销售人员：发票上定义的销售人员\n"
+"- 销售人员：结算上定义的销售人员\n"
 "- 客户经理：客户定义的销售人员"
 
 #. module: account_followup
@@ -698,7 +697,7 @@ msgstr "需要动作"
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_form_view
 msgid "Invoice No."
-msgstr "发票编号"
+msgstr "结算编号"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_account_move_line__invoice_date
@@ -1014,7 +1013,7 @@ msgid ""
 "The number of days after the due date of the invoice to wait before sending "
 "the reminder. Can be negative if you want to send the reminder before the "
 "invoice due date."
-msgstr "发票到期日后在发送提醒之前要等待的天数。如果要在发票到期日之前发送提醒，则可能为负数。"
+msgstr "结算到期日后在发送提醒之前要等待的天数。如果要在结算到期日之前发送提醒，则可能为负数。"
 
 #. module: account_followup
 #: model_terms:ir.ui.view,arch_db:account_followup.customer_statements_tree_view
@@ -1049,13 +1048,13 @@ msgstr "逾期 总计"
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__unpaid_invoice_ids
 #: model:ir.model.fields,field_description:account_followup.field_res_users__unpaid_invoice_ids
 msgid "Unpaid Invoice"
-msgstr "未付发票"
+msgstr "未付结算"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__unpaid_invoices_count
 #: model:ir.model.fields,field_description:account_followup.field_res_users__unpaid_invoices_count
 msgid "Unpaid Invoices Count"
-msgstr "未付发票计数"
+msgstr "未付结算计数"
 
 #. module: account_followup
 #: model:ir.model.fields,field_description:account_followup.field_res_partner__unreconciled_aml_ids

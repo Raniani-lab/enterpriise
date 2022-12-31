@@ -47,13 +47,13 @@ msgstr ""
 #. module: crm_enterprise
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_view_map
 msgid "Customer"
-msgstr ""
+msgstr "Pelanggan"
 
 #. module: crm_enterprise
 #: model:ir.actions.act_window,name:crm_enterprise.crm_lead_action_dashboard
 #: model:ir.ui.menu,name:crm_enterprise.crm_enterprise_dashboard_menu
 msgid "Dashboard"
-msgstr ""
+msgstr "Papan pemuka"
 
 #. module: crm_enterprise
 #: model:ir.model.fields,field_description:crm_enterprise.field_crm_lead__days_to_convert
@@ -124,7 +124,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_lead_dashboard_view
 #: model_terms:ir.ui.view,arch_db:crm_enterprise.crm_opportunity_view_dashboard
 msgid "Medium"
-msgstr ""
+msgstr "Sederhana"
 
 #. module: crm_enterprise
 #: model_terms:ir.actions.act_window,help:crm_enterprise.crm_lead_action_dashboard

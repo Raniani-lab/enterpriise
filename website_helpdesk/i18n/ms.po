@@ -205,13 +205,13 @@ msgstr ""
 #: code:addons/website_helpdesk/controllers/main.py:0
 #, python-format
 msgid "Last Month"
-msgstr ""
+msgstr "Bulan lepas"
 
 #. module: website_helpdesk
 #: code:addons/website_helpdesk/controllers/main.py:0
 #, python-format
 msgid "Last Week"
-msgstr ""
+msgstr "Minggu lepas"
 
 #. module: website_helpdesk
 #: code:addons/website_helpdesk/controllers/main.py:0
@@ -243,13 +243,13 @@ msgstr ""
 #: code:addons/website_helpdesk/static/src/js/website_helpdesk_form_editor.js:0
 #, python-format
 msgid "Subject"
-msgstr ""
+msgstr "Subjek"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submit_form
 msgid "Submit"
-msgstr ""
+msgstr "Hantar"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
@@ -298,7 +298,7 @@ msgstr ""
 #: model:ir.model,name:website_helpdesk.model_website
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_id
 msgid "Website"
-msgstr ""
+msgstr "laman web"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_menu_id

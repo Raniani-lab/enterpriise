@@ -121,7 +121,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Country"
-msgstr ""
+msgstr "Negara"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -129,7 +129,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Current"
-msgstr ""
+msgstr "Semasa"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -226,7 +226,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Medium"
-msgstr ""
+msgstr "Sederhana"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -270,7 +270,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Sebelumnya"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -301,7 +301,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Revenue"
-msgstr ""
+msgstr "Hasil"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -311,7 +311,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Sales Team"
-msgstr ""
+msgstr "Pasukan jualan"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -322,7 +322,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Salesperson"
-msgstr ""
+msgstr "Jurujual"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -332,7 +332,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Source"
-msgstr ""
+msgstr "Sumber"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -340,7 +340,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Stage"
-msgstr ""
+msgstr "Pentas"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -529,7 +529,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "last period"
-msgstr ""
+msgstr "tempoh terakhir"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -546,7 +546,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "since last period"
-msgstr ""
+msgstr "sejak period lepas"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web

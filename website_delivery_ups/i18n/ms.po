@@ -54,7 +54,7 @@ msgstr ""
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "Cancel"
-msgstr ""
+msgstr "Batal"
 
 #. module: website_delivery_ups
 #: model:ir.model.fields.selection,name:website_delivery_ups.selection__payment_provider__custom_mode__cash_on_delivery
@@ -64,7 +64,7 @@ msgstr ""
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog
 msgid "Close"
-msgstr ""
+msgstr "Tutup"
 
 #. module: website_delivery_ups
 #: model:ir.model.fields,field_description:website_delivery_ups.field_payment_provider__custom_mode
@@ -79,7 +79,7 @@ msgstr ""
 #. module: website_delivery_ups
 #: model:ir.model,name:website_delivery_ups.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Pesanan Jualan"
 
 #. module: website_delivery_ups
 #: model_terms:ir.ui.view,arch_db:website_delivery_ups.ups_bill_my_account_dialog

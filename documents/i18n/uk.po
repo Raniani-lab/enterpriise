@@ -52,7 +52,7 @@ msgstr ""
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.public_page_layout
 msgid ", expired on"
-msgstr ", протерміновано на"
+msgstr ", термін дії до"
 
 #. module: documents
 #: model_terms:digest.tip,tip_description:documents.digest_tip_documents_0
@@ -174,6 +174,8 @@ msgid ""
 "<i class=\"fa fa-lock oe_inline\" title=\"Locked\" attrs=\"{'invisible': "
 "[('lock_uid', '=', False)]}\"/>"
 msgstr ""
+"<i class=\"fa fa-lock oe_inline\" title=\"Locked\" attrs=\"{'invisible': "
+"[('lock_uid', '=', False)]}\"/>"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -452,7 +454,7 @@ msgstr ""
 #: model:ir.model.fields,help:documents.field_documents_folder__parent_folder_id
 #: model:ir.model.fields,help:documents.field_documents_folder_deletion_wizard__parent_folder_id
 msgid "A workspace will inherit the tags of its parent workspace"
-msgstr "Папка успадкує теги своєї батьківської робочої області"
+msgstr "Папка успадкує теги своєї батьківської папки"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
@@ -688,7 +690,7 @@ msgstr ""
 "Простий спосіб для обробки вхідних листів - це налаштувати ваш сканер для "
 "відправлення PDF у вашу пошту папки. Відскановані документи будуть "
 "з'являтися автоматично у вашій папці. Потім обробіть ваші документи групою "
-"через інструмент розпиття: запустіть визначені користувачем дії, надішліть "
+"через інструмент розбиття: запустіть визначені користувачем дії, надішліть "
 "запит на підпис, конвертуйте рахунки постачальників за допомогою штучного "
 "інтелекту тощо."
 
@@ -736,7 +738,7 @@ msgstr "Ви впевнені, що хочете видалити цей зап�
 msgid ""
 "As this PDF contains multiple documents, let's split and process in bulk."
 msgstr ""
-"Оскільки цей PDF містить кілька документі, давайте розділимо їх і обробимо "
+"Оскільки цей PDF містить кілька документів, давайте розділимо їх і обробимо "
 "групою."
 
 #. module: documents
@@ -1158,7 +1160,7 @@ msgstr "Список документів"
 #. module: documents
 #: model:mail.template,name:documents.mail_template_document_request
 msgid "Document: Document Request"
-msgstr ""
+msgstr "Документ: Запит на документ"
 
 #. module: documents
 #. odoo-javascript
@@ -1398,7 +1400,7 @@ msgstr "Підписники (Партнери)"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
-msgstr "Іконка зі шрифтом Font awesome, напр. fa-tasks"
+msgstr "Іконка з чудовим шрифтом, напр. fa-tasks"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.document_view_search
@@ -2130,7 +2132,7 @@ msgstr "Запис"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__alias_force_thread_id
 msgid "Record Thread ID"
-msgstr "Записати тему ID"
+msgstr "ID запису теми"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__domain_folder_id
@@ -2290,7 +2292,7 @@ msgstr "Надіслати до Юридичних"
 #. module: documents
 #: model:mail.template,description:documents.mail_template_document_request
 msgid "Sent to partner when requesting a document from them"
-msgstr ""
+msgstr "Надсилається партнеру під час запиту на документ"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_facet__sequence
@@ -2849,7 +2851,7 @@ msgstr "Папка"
 #: model:ir.actions.act_window,name:documents.folder_action
 #: model:ir.ui.menu,name:documents.folder_menu
 msgid "Workspaces"
-msgstr "Робочі області"
+msgstr "Папки"
 
 #. module: documents
 #. odoo-javascript

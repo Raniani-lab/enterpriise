@@ -60,7 +60,7 @@ msgstr ""
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Syarikat"
 
 #. module: account_sepa
 #: model:ir.model,name:account_sepa.model_res_config_settings

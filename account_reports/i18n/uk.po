@@ -2297,7 +2297,7 @@ msgstr "Чисті активи"
 #: code:addons/account_reports/models/account_cash_flow_report.py:0
 #, python-format
 msgid "Net increase in cash and cash equivalents"
-msgstr "Чистий прибуток та їх еквівалент"
+msgstr "Чистий грошовий потік"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_executivesummary_npmargin0

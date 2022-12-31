@@ -98,7 +98,7 @@ msgstr ""
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_revoke_youtube_view_form
 msgid "Cancel"
-msgstr ""
+msgstr "Batal"
 
 #. module: social_youtube
 #: model:social.stream.type,name:social_youtube.stream_type_youtube_channel_videos
@@ -111,7 +111,7 @@ msgstr ""
 #: code:addons/social_youtube/static/src/xml/social_youtube_templates.xml:0
 #, python-format
 msgid "Clear"
-msgstr ""
+msgstr "Jelas"
 
 #. module: social_youtube
 #: code:addons/social_youtube/models/social_stream_post.py:0
@@ -233,7 +233,7 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_media__media_type
 msgid "Media Type"
-msgstr ""
+msgstr "Jenis media"
 
 #. module: social_youtube
 #. openerp-web
@@ -357,22 +357,22 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_account
 msgid "Social Account"
-msgstr ""
+msgstr "Akaun Sosial"
 
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_live_post
 msgid "Social Live Post"
-msgstr ""
+msgstr "Siaran Langsung Sosial"
 
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_media
 msgid "Social Media"
-msgstr ""
+msgstr "Media Sosial"
 
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_post
 msgid "Social Post"
-msgstr ""
+msgstr "Siaran Sosial"
 
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_post_template

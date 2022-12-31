@@ -23,7 +23,7 @@ msgstr ""
 #: model:project.task,legend_blocked:helpdesk_fsm.helpdesk_fsm_task_1
 #: model:project.task,legend_blocked:helpdesk_fsm.helpdesk_fsm_task_2
 msgid "Blocked"
-msgstr ""
+msgstr "Disekat"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__company_id
@@ -71,7 +71,7 @@ msgstr "Dicipta pada"
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__partner_id
 msgid "Customer"
-msgstr ""
+msgstr "Pelanggan"
 
 #. module: helpdesk_fsm
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.create_fsm_task_view_form
@@ -122,7 +122,7 @@ msgstr "ID"
 #: model:project.task,legend_normal:helpdesk_fsm.helpdesk_fsm_task_1
 #: model:project.task,legend_normal:helpdesk_fsm.helpdesk_fsm_task_2
 msgid "In Progress"
-msgstr ""
+msgstr "Sedang Berlangsung"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task____last_update
@@ -148,7 +148,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__project_id
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_team_view_form
 msgid "Project"
-msgstr ""
+msgstr "Projek"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,help:helpdesk_fsm.field_helpdesk_create_fsm_task__project_id
@@ -159,7 +159,7 @@ msgstr ""
 #: model:project.task,legend_done:helpdesk_fsm.helpdesk_fsm_task_1
 #: model:project.task,legend_done:helpdesk_fsm.helpdesk_fsm_task_2
 msgid "Ready"
-msgstr ""
+msgstr "Sedia"
 
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__helpdesk_ticket_id
@@ -171,7 +171,7 @@ msgstr ""
 #: model:ir.model,name:helpdesk_fsm.model_project_task
 #, python-format
 msgid "Task"
-msgstr ""
+msgstr "Tugasan"
 
 #. module: helpdesk_fsm
 #: model:mail.message.subtype,description:helpdesk_fsm.mt_team_ticket_task_done
@@ -227,4 +227,4 @@ msgstr ""
 #. module: helpdesk_fsm
 #: model:ir.model.fields,field_description:helpdesk_fsm.field_helpdesk_create_fsm_task__name
 msgid "Title"
-msgstr ""
+msgstr "Tajuk"

@@ -67,14 +67,14 @@ msgstr ""
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Create"
-msgstr ""
+msgstr "Buat"
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/js/gantt_view.js:0
 #, python-format
 msgid "Day"
-msgstr ""
+msgstr "Hari"
 
 #. module: web_gantt
 #. openerp-web
@@ -201,7 +201,7 @@ msgstr ""
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Sebelumnya"
 
 #. module: web_gantt
 #: code:addons/web_gantt/models/models.py:0
@@ -230,7 +230,7 @@ msgstr ""
 #: code:addons/web_gantt/static/src/xml/web_gantt.xml:0
 #, python-format
 msgid "Today"
-msgstr ""
+msgstr "Hari ini"
 
 #. module: web_gantt
 #. openerp-web
@@ -242,21 +242,21 @@ msgstr ""
 #. module: web_gantt
 #: model:ir.model,name:web_gantt.model_ir_ui_view
 msgid "View"
-msgstr ""
+msgstr "Lihat"
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/js/gantt_view.js:0
 #, python-format
 msgid "Week"
-msgstr ""
+msgstr "Minggu"
 
 #. module: web_gantt
 #. openerp-web
 #: code:addons/web_gantt/static/src/js/gantt_view.js:0
 #, python-format
 msgid "Year"
-msgstr ""
+msgstr "Tahun"
 
 #. module: web_gantt
 #: code:addons/web_gantt/models/models.py:0

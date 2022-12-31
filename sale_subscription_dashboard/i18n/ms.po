@@ -116,7 +116,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Companies"
-msgstr ""
+msgstr "Syarikat"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -132,7 +132,7 @@ msgstr "Syarikat"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Current"
-msgstr ""
+msgstr "Semasa"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -174,7 +174,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Date"
-msgstr ""
+msgstr "Tarikh"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -339,7 +339,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Last Month"
-msgstr ""
+msgstr "Bulan lepas"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -391,7 +391,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Loading..."
-msgstr ""
+msgstr "Memuatkan..."
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -544,7 +544,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Partner"
-msgstr ""
+msgstr "Rakan kongsi"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -628,14 +628,14 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #: model:ir.model,name:sale_subscription_dashboard.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Pesanan Jualan"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Sales Team"
-msgstr ""
+msgstr "Pasukan jualan"
 
 #. module: sale_subscription_dashboard
 #: model:ir.actions.client,name:sale_subscription_dashboard.action_subscription_dashboard_report_salesman
@@ -756,7 +756,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Template"
-msgstr ""
+msgstr "Templat"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -840,7 +840,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:0
 #, python-format
 msgid "Unknown error"
-msgstr ""
+msgstr "Ralat tidak diketahui"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -856,7 +856,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "Amaran"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0

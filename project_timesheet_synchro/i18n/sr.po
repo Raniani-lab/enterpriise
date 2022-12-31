@@ -491,7 +491,7 @@ msgstr "Registrujte se"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Statistics"
-msgstr ""
+msgstr "Statistike"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -535,7 +535,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Task"
-msgstr ""
+msgstr "Zadatak"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -582,7 +582,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "This Week"
-msgstr ""
+msgstr "Ove nedelje"
 
 #. module: project_timesheet_synchro
 #. openerp-web

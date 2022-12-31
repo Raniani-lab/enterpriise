@@ -2365,7 +2365,7 @@ msgstr "Visszatöltés"
 #: code:addons/knowledge/static/src/js/knowledge_renderers.js:0
 #, python-format
 msgid "Untitled"
-msgstr ""
+msgstr "Névtelen"
 
 #. module: knowledge
 #. openerp-web

@@ -37,7 +37,7 @@ msgstr ""
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
 msgid "Date"
-msgstr ""
+msgstr "Tarikh"
 
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
@@ -58,7 +58,7 @@ msgstr ""
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
 msgid "Product"
-msgstr ""
+msgstr "Produk"
 
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_quality_check
@@ -102,7 +102,7 @@ msgstr ""
 #. module: quality_control_worksheet
 #: model_terms:ir.ui.view,arch_db:quality_control_worksheet.report_custom_x_quality_check_worksheet_template_1
 msgid "Responsible"
-msgstr ""
+msgstr "Bertanggungjawab"
 
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_point__worksheet_success_conditions
@@ -112,7 +112,7 @@ msgstr ""
 #. module: quality_control_worksheet
 #: model:ir.model.fields,field_description:quality_control_worksheet.field_quality_point__worksheet_template_id
 msgid "Template"
-msgstr ""
+msgstr "Templat"
 
 #. module: quality_control_worksheet
 #: model:ir.model,name:quality_control_worksheet.model_quality_check_wizard

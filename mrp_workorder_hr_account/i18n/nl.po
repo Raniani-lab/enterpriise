@@ -23,7 +23,7 @@ msgstr ""
 #. module: mrp_workorder_hr_account
 #: model:ir.model,name:mrp_workorder_hr_account.model_account_analytic_line
 msgid "Analytic Account"
-msgstr "Kostenplaats"
+msgstr "Analytische rekening"
 
 #. module: mrp_workorder_hr_account
 #: model:ir.model.fields,help:mrp_workorder_hr_account.field_account_analytic_line__employee_id
@@ -41,7 +41,7 @@ msgstr "Werknemer"
 #. module: mrp_workorder_hr_account
 #: model:ir.model.fields,field_description:mrp_workorder_hr_account.field_mrp_workorder__employee_analytic_account_line_ids
 msgid "Employee Analytic Account Line"
-msgstr "Werknemer kostenplaatsregel"
+msgstr "Werknemer analytische regel"
 
 #. module: mrp_workorder_hr_account
 #: model:ir.model,name:mrp_workorder_hr_account.model_report_mrp_account_enterprise_mrp_cost_structure

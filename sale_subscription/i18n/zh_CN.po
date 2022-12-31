@@ -6,9 +6,9 @@
 # Emily Jia <eji@odoo.com>, 2022
 # 稀饭~~ <wangwhai@qq.com>, 2022
 # digitalliuzg8888, 2022
-# Jeffery CHEN <jeffery9@gmail.com>, 2022
 # Raymond Yu <cl_yu@hotmail.com>, 2022
 # Martin Trigaux, 2022
+# Jeffery CHEN Fan <jeffery9@gmail.com>, 2022
 # 
 msgid ""
 msgstr ""
@@ -16,7 +16,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Jeffery CHEN Fan <jeffery9@gmail.com>, 2022\n"
 "Language-Team: Chinese (China) (https://www.transifex.com/odoo/teams/41243/zh_CN/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -318,10 +318,10 @@ msgstr ""
 "                    <br/><br/>\n"
 "                    这是您的订阅\n"
 "                    <t t-if=\"object.name\">\n"
-"                        发票 <span style=\"font-weight:bold;\" t-out=\"object.name or ''\">办公室清洁服务</span>\n"
+"                        结算 <span style=\"font-weight:bold;\" t-out=\"object.name or ''\">办公室清洁服务</span>\n"
 "                    </t>\n"
 "                    <t t-else=\"\">\n"
-"                        发票\n"
+"                        结算\n"
 "                    </t>\n"
 "                    <t t-if=\"object.invoice_origin\">\n"
 "                        (参考: <t t-out=\"object.invoice_origin or ''\">INVOICE_ORIGIN</t>)\n"
@@ -329,7 +329,7 @@ msgstr ""
 "                    总额 <span style=\"font-weight:bold;\" t-out=\"format_amount(object.amount_total, object.currency_id) or ''\">$ 10.00</span>\n"
 "                    来自 <t t-out=\"object.company_id.name or ''\">您的公司</t>.\n"
 "                    <t t-if=\"object.payment_state in ('paid', 'in_payment')\">\n"
-"                        该发票已经支付.\n"
+"                        该结算已经支付.\n"
 "                    </t>\n"
 "                    <t t-else=\"\">\n"
 "                        请尽早汇款。\n"
@@ -614,7 +614,7 @@ msgstr ""
 "                        通过在 <t t-out=\"ctx.get('total_amount') or ''\">100</t> <t t-out=\"ctx.get('currency_name') or ''\">$</t> 收取<t t-out=\"ctx.get('payment_token') or ''\">PAYMENT_TOKEN</t>.\n"
 "                    </t>\n"
 "                    <br/><br/>\n"
-"                    附近请见您的发票\n"
+"                    附近请见您的结算\n"
 "                    <t t-if=\"ctx.get('next_date')\">\n"
 "                        您的下一期结算单将在 <t t-out=\"format_date(ctx.get('next_date')) or ''\">05/05/2021</t>发出.\n"
 "                    </t>\n"
@@ -1215,7 +1215,7 @@ msgid ""
 " Contract set to: In Progress, Next Invoice: %(inv)s. Email sent to "
 "customer."
 msgstr ""
-"自动付款成功。付款参考： %(ref)s. 金额： %(amount)s.合同设置为：进行中，下一张发票：%(inv)s。发送给客户的电子邮件。"
+"自动付款成功。付款参考： %(ref)s. 金额： %(amount)s.合同设置为：进行中，下一张结算：%(inv)s。发送给客户的电子邮件。"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__payment_exception
@@ -2085,7 +2085,7 @@ msgstr "是一个批次"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__is_invoice_cron
 msgid "Is a Subscription invoiced in cron"
-msgstr "订阅是否在 cron 中开具发票"
+msgstr "订阅是否在 cron 中开具结算"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_account_move
@@ -2153,7 +2153,7 @@ msgstr "最后更新时间"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__last_invoice_date
 msgid "Last invoice date"
-msgstr "最后发票日期"
+msgstr "最后结算日期"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
@@ -2302,7 +2302,7 @@ msgstr "管理付款方式需要根据客户订单登录。"
 msgid ""
 "Manual payment succeeded. Payment reference: %s; Amount: %(amount)s. Invoice"
 " %(invoice)s"
-msgstr "人工付款成功。付款参考：%s;金额：%(amount)s。发票%(invoice)s"
+msgstr "人工付款成功。付款参考：%s;金额：%(amount)s。结算%(invoice)s"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order_alert__action__set_to_renew
@@ -2398,7 +2398,7 @@ msgstr "下一个结算单"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_view_search
 msgid "Next Invoice Date"
-msgstr "下一个发票日期"
+msgstr "下一个结算日期"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
@@ -3028,12 +3028,12 @@ msgstr "发送为（SMS）"
 #: model:mail.template,description:sale_subscription.email_payment_success
 msgid ""
 "Sent automatically with subscription invoice when payment is successful"
-msgstr "支付成功后与订阅发票一起自动发送"
+msgstr "支付成功后与订阅结算一起自动发送"
 
 #. module: sale_subscription
 #: model:mail.template,description:sale_subscription.mail_template_subscription_invoice
 msgid "Sent manually to customers with the invoice in attachment"
-msgstr "手动发送给客户，发票附件中"
+msgstr "手动发送给客户，结算附件中"
 
 #. module: sale_subscription
 #: model:mail.template,description:sale_subscription.email_payment_close
@@ -3086,7 +3086,7 @@ msgstr "设置一个值使得这个动作在给定模型的菜单中可用。"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__show_rec_invoice_button
 msgid "Show Rec Invoice Button"
-msgstr "显示“记录发票”按钮"
+msgstr "显示“记录结算”按钮"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__starred
@@ -3334,7 +3334,7 @@ msgstr "订阅:支付提醒"
 #. module: sale_subscription
 #: model:mail.template,name:sale_subscription.email_payment_success
 msgid "Subscription: Payment Success And Invoice"
-msgstr "订阅：支付成功和发票"
+msgstr "订阅：支付成功和结算"
 
 #. module: sale_subscription
 #: model:sms.template,name:sale_subscription.sms_template_data_payment_failure
@@ -3354,7 +3354,7 @@ msgstr "订阅:要求评价"
 #. module: sale_subscription
 #: model:mail.template,name:sale_subscription.mail_template_subscription_invoice
 msgid "Subscription: Subscription Invoice"
-msgstr "订阅：订阅发票"
+msgstr "订阅：订阅结算"
 
 #. module: sale_subscription
 #. odoo-python
@@ -3507,7 +3507,7 @@ msgstr "通过网站访问单据的完整URL。"
 #. module: sale_subscription
 #: model:ir.model.constraint,message:sale_subscription.constraint_sale_order_check_start_date_lower_next_invoice_date
 msgid "The next invoice date of a sale order should be after its start date."
-msgstr "销售订单的下一个发票日期应在其开始日期之后。"
+msgstr "销售订单的下一个结算日期应在其开始日期之后。"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order__next_invoice_date
@@ -3917,7 +3917,7 @@ msgstr "年"
 msgid ""
 "You can not upsell a subscription that has not been invoiced yet. Please, "
 "update directly the %s contract or invoice it first."
-msgstr "您不能追加销售尚未开具发票的订阅。请直接更新%s合同或先开具发票。"
+msgstr "您不能追加销售尚未开具结算的订阅。请直接更新%s合同或先开具结算。"
 
 #. module: sale_subscription
 #. odoo-python

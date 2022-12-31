@@ -1258,7 +1258,7 @@ msgstr "Kan schrijven"
 #: code:addons/knowledge/models/knowledge_article_member.py:0
 #, python-format
 msgid "Can not update the article or partner of a member."
-msgstr "Kan het artikel of de relatie van een lid niet bijwerken."
+msgstr "Kan het artikel of partner relatie van een lid niet bijwerken."
 
 #. module: knowledge
 #: code:addons/knowledge/models/knowledge_article_favorite.py:0
@@ -2792,7 +2792,7 @@ msgstr "Werkruimte"
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_member_unique_article_partner
 msgid "You already added this partner on this article."
-msgstr "Je hebt deze relatie al toegevoegd aan dit artikel."
+msgstr "Je hebt deze partner al toegevoegd aan dit artikel."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend

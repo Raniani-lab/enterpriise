@@ -511,7 +511,7 @@ msgstr ""
 #. module: data_merge
 #: model:ir.model,name:data_merge.model_ir_model
 msgid "Models"
-msgstr ""
+msgstr "Model"
 
 #. module: data_merge
 #: model:ir.model.fields.selection,name:data_merge.selection__data_merge_model__notify_frequency_period__months
@@ -604,7 +604,7 @@ msgstr ""
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_record_search
 msgid "Rule"
-msgstr ""
+msgstr "Peraturan"
 
 #. module: data_merge
 #: model_terms:ir.ui.view,arch_db:data_merge.view_data_merge_model_form

@@ -617,7 +617,7 @@ msgstr ""
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_finance_afv
 msgid "Ask for Validation"
-msgstr ""
+msgstr "Zatražite validaciju"
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_marketing_assets
@@ -1065,7 +1065,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder
 msgid "Documents Workspace"
-msgstr ""
+msgstr "Dokumenta radni prostor"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_mixin
@@ -1422,7 +1422,7 @@ msgstr "Je Pratilac"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__is_shared
 msgid "Is Shared"
-msgstr ""
+msgstr "Je podeljeno"
 
 #. module: documents
 #: model:documents.facet,name:documents.documents_internal_knowledge
@@ -1587,7 +1587,7 @@ msgstr "Glavni prilog"
 #. module: documents
 #: model:documents.workflow.rule,name:documents.documents_rule_internal_mad
 msgid "Mark As Draft"
-msgstr ""
+msgstr "Označi kao Priprema"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__remove_activities
@@ -2256,7 +2256,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__document_ids
 msgid "Shared Documents"
-msgstr ""
+msgstr "Deljena dokumenta"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__tag_ids
@@ -2499,7 +2499,7 @@ msgstr ""
 #: model:documents.tag,name:documents.documents_finance_status_tc
 #: model:documents.tag,name:documents.documents_internal_status_tc
 msgid "To Validate"
-msgstr ""
+msgstr "Za potvrditi"
 
 #. module: documents
 #: model:mail.activity.type,name:documents.mail_documents_activity_data_tv

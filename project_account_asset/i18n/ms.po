@@ -33,4 +33,4 @@ msgstr "Aset"
 #. module: project_account_asset
 #: model:ir.model,name:project_account_asset.model_project_project
 msgid "Project"
-msgstr ""
+msgstr "Projek"

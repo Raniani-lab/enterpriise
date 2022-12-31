@@ -647,7 +647,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model,name:planning.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Syarikat"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__company_id
@@ -675,7 +675,7 @@ msgstr ""
 #. module: planning
 #: model:ir.ui.menu,name:planning.planning_menu_settings
 msgid "Configuration"
-msgstr ""
+msgstr "Konfigurasi"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__confirm_delete
@@ -729,7 +729,7 @@ msgstr "Dicipta pada"
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form
 msgid "Date"
-msgstr ""
+msgstr "Tarikh"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_planning__date_end
@@ -902,7 +902,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_kanban
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_kanban
 msgid "Edit"
-msgstr ""
+msgstr "Sunting"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -931,7 +931,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:planning.field_planning_slot__employee_id
 #: model:ir.model.fields,field_description:planning.field_slot_planning_select_send__employee_ids
 msgid "Employee"
-msgstr ""
+msgstr "Pekerja"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.hr_employee_view_form_simplified
@@ -1209,7 +1209,7 @@ msgstr "Kemas Kini Terakhir pada"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Last Week"
-msgstr ""
+msgstr "Minggu lepas"
 
 #. module: planning
 #. odoo-javascript
@@ -1588,7 +1588,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 #, python-format
 msgid "Published"
-msgstr ""
+msgstr "Diterbitkan"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_res_company__planning_generation_interval
@@ -1658,7 +1658,7 @@ msgstr ""
 #. module: planning
 #: model:ir.ui.menu,name:planning.planning_menu_reporting
 msgid "Reporting"
-msgstr ""
+msgstr "Pelaporan"
 
 #. module: planning
 #: model:ir.actions.server,name:planning.model_planning_slot_action_reset_to_draft
@@ -1746,7 +1746,7 @@ msgstr ""
 #: model:ir.ui.menu,name:planning.planning_menu_schedule
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_gantt
 msgid "Schedule"
-msgstr ""
+msgstr "Jadual"
 
 #. module: planning
 #: model:ir.actions.act_window,name:planning.planning_action_schedule_by_resource
@@ -1914,7 +1914,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__state
 #: model:ir.model.fields,field_description:planning.field_planning_slot__state
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_planning__end_datetime
@@ -2148,17 +2148,17 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_analysis_report_view_search
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Today"
-msgstr ""
+msgstr "Hari ini"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Tomorrow"
-msgstr ""
+msgstr "Esok"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "Total"
-msgstr ""
+msgstr "Jumlah"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles

@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Gunther Clauwaert <gclauwae@hotmail.com>, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # Jolien De Paepe, 2022
 # 
@@ -73,7 +72,7 @@ msgstr "Per verkooporder"
 #: model:product.product,name:sale_planning.developer_product
 #: model:product.template,name:sale_planning.developer_product_product_template
 msgid "Developer (Plan services)"
-msgstr "Developer (Plan diensten)"
+msgstr "Developer (Diesten plannen)"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__end_datetime
@@ -97,7 +96,7 @@ msgstr "Uren"
 #: model:product.product,name:sale_planning.technical_maintainance_product
 #: model:product.template,name:sale_planning.technical_maintainance_product_product_template
 msgid "IT Technical Maintenance (Plan services)"
-msgstr "IT Technisch Onderhoud (Plan diensten)"
+msgstr "IT Technisch Onderhoud (Diensten plannen)"
 
 #. module: sale_planning
 #: model:planning.role,name:sale_planning.planning_role_technician
@@ -165,7 +164,7 @@ msgstr ""
 #: code:addons/sale_planning/static/src/xml/planning_gantt.xml:0
 #, python-format
 msgid "Plan Orders"
-msgstr "Plan orders"
+msgstr "Orders plannen"
 
 #. module: sale_planning
 #: model:ir.model.fields,field_description:sale_planning.field_planning_slot__sale_line_plannable
@@ -351,7 +350,8 @@ msgid ""
 "This Sale Order Item doesn't have a target value of planned hours. Planned "
 "hours :"
 msgstr ""
-"Dit Sale Order Item heeft geen doelwaarde van geplande uren. Geplande uren :"
+"Dit verkooporderitem heeft geen doelwaarde van geplande uren. Geplande uren "
+":"
 
 #. module: sale_planning
 #. openerp-web
@@ -366,7 +366,7 @@ msgstr ""
 #. module: sale_planning
 #: model_terms:ir.ui.view,arch_db:sale_planning.planning_view_form_in_gantt_inherit_sale_planning
 msgid "Unschedule"
-msgstr "Afmelden"
+msgstr "Ontplannen"
 
 #. module: sale_planning
 #: code:addons/sale_planning/models/sale_order.py:0

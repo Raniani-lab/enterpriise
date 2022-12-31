@@ -778,7 +778,7 @@ msgstr ""
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_request__completion_date
 msgid "Completion Date"
-msgstr ""
+msgstr "Datum završetka"
 
 #. module: sign
 #: model:ir.model,name:sign.model_res_config_settings
@@ -917,7 +917,7 @@ msgstr "URK korisničkog portala"
 #. module: sign
 #: model:ir.ui.menu,name:sign.sign_template_menu
 msgid "Dashboard"
-msgstr ""
+msgstr "Kontrolna tabla"
 
 #. module: sign
 #. odoo-javascript
@@ -2272,7 +2272,7 @@ msgstr "Razlog"
 #. module: sign
 #: model:ir.model.fields,field_description:sign.field_sign_template__redirect_url
 msgid "Redirect Link"
-msgstr ""
+msgstr "Link preusmerenja"
 
 #. module: sign
 #. odoo-javascript
@@ -3115,7 +3115,7 @@ msgstr "Oznake"
 #: code:addons/sign/static/src/xml/sign_backend.xml:0
 #, python-format
 msgid "Tags:"
-msgstr ""
+msgstr "Oznake:"
 
 #. module: sign
 #: model:ir.model.fields,help:sign.field_sign_item_type__auto_field

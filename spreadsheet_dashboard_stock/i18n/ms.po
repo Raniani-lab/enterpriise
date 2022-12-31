@@ -61,7 +61,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Current"
-msgstr ""
+msgstr "Semasa"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -101,7 +101,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Partner"
-msgstr ""
+msgstr "Rakan kongsi"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -116,7 +116,7 @@ msgstr "Tempoh"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Sebelumnya"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -124,7 +124,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Product"
-msgstr ""
+msgstr "Produk"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -141,7 +141,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Quantity"
-msgstr ""
+msgstr "Kuantiti"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -205,7 +205,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Warehouse"
-msgstr ""
+msgstr "Gudang"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -220,14 +220,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "last period"
-msgstr ""
+msgstr "tempoh terakhir"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "since last period"
-msgstr ""
+msgstr "sejak period lepas"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web

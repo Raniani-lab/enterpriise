@@ -522,7 +522,7 @@ msgstr ""
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Please wait"
-msgstr ""
+msgstr "Molimo sačekajte"
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__printer

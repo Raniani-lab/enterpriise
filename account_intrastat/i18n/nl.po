@@ -59,7 +59,7 @@ msgstr "<span class=\"fa fa-filter\"/> Mogelijkheden:"
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.search_template_vat
 msgid "<span class=\"fa fa-filter\"/> Partners:"
-msgstr "<span class=\"fa fa-filter\"/> Relaties:"
+msgstr "<span class=\"fa fa-filter\"/> Partners:"
 
 #. module: account_intrastat
 #: model_terms:ir.ui.view,arch_db:account_intrastat.account_move_line_tree_view_account_intrastat_transaction_codes
@@ -302,7 +302,7 @@ msgstr "Oorsprong land"
 #. module: account_intrastat
 #: model:account.report.column,name:account_intrastat.intrastat_report_column_partner_vat
 msgid "Partner VAT"
-msgstr "BTW relatie"
+msgstr "BTW Partner"
 
 #. module: account_intrastat
 #: model:ir.model,name:account_intrastat.model_product_template

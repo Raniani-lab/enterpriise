@@ -56,7 +56,7 @@ msgstr ""
 #. module: documents_hr_recruitment
 #: model:ir.model,name:documents_hr_recruitment.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Syarikat"
 
 #. module: documents_hr_recruitment
 #: model:ir.model,name:documents_hr_recruitment.model_res_config_settings
@@ -66,7 +66,7 @@ msgstr ""
 #. module: documents_hr_recruitment
 #: model:ir.model.fields,field_description:documents_hr_recruitment.field_documents_workflow_rule__create_model
 msgid "Create"
-msgstr ""
+msgstr "Buat"
 
 #. module: documents_hr_recruitment
 #: model:documents.workflow.rule,name:documents_hr_recruitment.documents_applicant_rule
@@ -134,7 +134,7 @@ msgstr ""
 #. module: documents_hr_recruitment
 #: model:documents.facet,name:documents_hr_recruitment.documents_recruitment_documents_facet
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #. module: documents_hr_recruitment
 #: model_terms:ir.ui.view,arch_db:documents_hr_recruitment.res_config_settings_view_form

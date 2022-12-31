@@ -42,7 +42,7 @@ msgstr ""
 #: code:addons/web_cohort/static/src/cohort_renderer.xml:0
 #, python-format
 msgid "Average"
-msgstr ""
+msgstr "Purata"
 
 #. module: web_cohort
 #: model:ir.model,name:web_cohort.model_base
@@ -80,7 +80,7 @@ msgstr ""
 #: code:addons/web_cohort/static/src/cohort_model.js:0
 #, python-format
 msgid "Day"
-msgstr ""
+msgstr "Hari"
 
 #. module: web_cohort
 #. openerp-web
@@ -113,7 +113,7 @@ msgstr ""
 #. module: web_cohort
 #: model:ir.model,name:web_cohort.model_ir_ui_view
 msgid "View"
-msgstr ""
+msgstr "Lihat"
 
 #. module: web_cohort
 #: model:ir.model.fields,field_description:web_cohort.field_ir_actions_act_window_view__view_mode
@@ -126,11 +126,11 @@ msgstr ""
 #: code:addons/web_cohort/static/src/cohort_model.js:0
 #, python-format
 msgid "Week"
-msgstr ""
+msgstr "Minggu"
 
 #. module: web_cohort
 #. openerp-web
 #: code:addons/web_cohort/static/src/cohort_model.js:0
 #, python-format
 msgid "Year"
-msgstr ""
+msgstr "Tahun"

@@ -4,7 +4,6 @@
 # 
 # Translators:
 # Netta Waizer, 2022
-# NoaFarkash, 2022
 # דודי מלכה <Dudimalka6@gmail.com>, 2022
 # Lilach Gilliam <lilach.gilliam@gmail.com>, 2022
 # Yihya Hugirat <hugirat@gmail.com>, 2022
@@ -12,6 +11,8 @@
 # ExcaliberX <excaliberx@gmail.com>, 2022
 # Martin Trigaux, 2022
 # Ha Ketem <haketem@gmail.com>, 2022
+# Sagi Ahiel, 2022
+# NoaFarkash, 2022
 # 
 msgid ""
 msgstr ""
@@ -19,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Ha Ketem <haketem@gmail.com>, 2022\n"
+"Last-Translator: NoaFarkash, 2022\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -338,7 +339,7 @@ msgstr "התרחשה שגיאה"
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.authorization_error
 msgid "An error occurred while linking your account with Amazon."
-msgstr ""
+msgstr "קרתה שגיאה בזמן קישור החשבון לאמזון"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__available_marketplace_ids
@@ -627,7 +628,7 @@ msgstr "כמות הזמנות"
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 msgid "Order Follow-up"
-msgstr ""
+msgstr "מעקב הזמנה"
 
 #. module: sale_amazon
 #. odoo-python

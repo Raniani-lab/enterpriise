@@ -74,4 +74,4 @@ msgstr ""
 #: code:addons/documents_spreadsheet_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Year"
-msgstr ""
+msgstr "Tahun"

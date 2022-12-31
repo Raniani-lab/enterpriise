@@ -68,7 +68,7 @@ msgstr "Toevoegen"
 #. module: project_timesheet_synchro
 #: model:ir.model,name:project_timesheet_synchro.model_account_analytic_line
 msgid "Analytic Account"
-msgstr "Kostenplaats"
+msgstr "Analytische rekening"
 
 #. module: project_timesheet_synchro
 #. openerp-web

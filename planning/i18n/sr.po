@@ -1025,7 +1025,7 @@ msgstr ""
 #. module: planning
 #: model:ir.model.fields.selection,name:planning.selection__planning_slot__allocation_type__forecast
 msgid "Forecast"
-msgstr ""
+msgstr "Prognoza"
 
 #. module: planning
 #: model:ir.model.fields.selection,name:planning.selection__planning_recurrency__repeat_type__forever
@@ -1554,7 +1554,7 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.brand_promotion
 msgid "Plans"
-msgstr ""
+msgstr "Planovi"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__previous_template_id
@@ -1649,7 +1649,7 @@ msgstr "Ponavljaj dok"
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__repeat_interval
 msgid "Repeat every"
-msgstr ""
+msgstr "Ponovi svakih"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_recurrency__repeat_number
@@ -2115,7 +2115,7 @@ msgstr ""
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "This Week"
-msgstr ""
+msgstr "Ove nedelje"
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.period_report_template
@@ -2258,7 +2258,7 @@ msgstr "Godine"
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_search
 msgid "Yesterday"
-msgstr ""
+msgstr "Juče"
 
 #. module: planning
 #. odoo-python

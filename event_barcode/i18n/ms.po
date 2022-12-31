@@ -64,7 +64,7 @@ msgstr ""
 #: code:addons/event_barcode/static/src/js/event_barcode.js:0
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "Tutup"
 
 #. module: event_barcode
 #. openerp-web
@@ -227,14 +227,14 @@ msgstr ""
 #: code:addons/event_barcode/static/src/js/event_barcode.js:0
 #, python-format
 msgid "View"
-msgstr ""
+msgstr "Lihat"
 
 #. module: event_barcode
 #. openerp-web
 #: code:addons/event_barcode/static/src/js/event_barcode.js:0
 #, python-format
 msgid "Warning"
-msgstr ""
+msgstr "Amaran"
 
 #. module: event_barcode
 #. openerp-web

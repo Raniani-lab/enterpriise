@@ -189,7 +189,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "Batal"
 
 #. module: voip
 #. openerp-web
@@ -240,7 +240,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Close"
-msgstr ""
+msgstr "Tutup"
 
 #. module: voip
 #: model:ir.model,name:voip.model_res_config_settings
@@ -252,7 +252,7 @@ msgstr ""
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "Connecting..."
-msgstr ""
+msgstr "Menyambung..."
 
 #. module: voip
 #: model:ir.model,name:voip.model_res_partner
@@ -266,7 +266,7 @@ msgstr "Kenalan"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Contacts"
-msgstr ""
+msgstr "Kenalan"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__create_uid
@@ -291,18 +291,18 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Customer"
-msgstr ""
+msgstr "Pelanggan"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__call_date
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Date"
-msgstr ""
+msgstr "Tarikh"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_config_settings__mode__demo
 msgid "Demo"
-msgstr ""
+msgstr "Demo"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_users_settings__how_to_call_on_mobile__phone
@@ -312,7 +312,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__direction
 msgid "Direction"
-msgstr ""
+msgstr "Arah"
 
 #. module: voip
 #. openerp-web
@@ -363,7 +363,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Edit"
-msgstr ""
+msgstr "Sunting"
 
 #. module: voip
 #. openerp-web
@@ -604,7 +604,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Mark as done"
-msgstr ""
+msgstr "Tanda sebagai selesai"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__missed
@@ -730,7 +730,7 @@ msgstr ""
 #: code:addons/voip/static/src/components/activity/activity.xml:0
 #, python-format
 msgid "Phone:"
-msgstr ""
+msgstr "Telefon:"
 
 #. module: voip
 #. openerp-web
@@ -815,7 +815,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__rejected
 msgid "Rejected"
-msgstr ""
+msgstr "Ditolak"
 
 #. module: voip
 #: code:addons/voip/models/voip_phonecall.py:0
@@ -850,7 +850,7 @@ msgstr "Alih keluar dari baris gilir"
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__user_id
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
 msgid "Responsible"
-msgstr ""
+msgstr "Bertanggungjawab"
 
 #. module: voip
 #. openerp-web
@@ -888,7 +888,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Search"
-msgstr ""
+msgstr "Cari"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
@@ -931,12 +931,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__state
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_report__state
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__summary
 msgid "Summary"
-msgstr ""
+msgstr "Ringkasan"
 
 #. module: voip
 #: model:ir.model,name:voip.model_ir_config_parameter
@@ -1052,7 +1052,7 @@ msgstr "Untuk Dilakukan"
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__1d
 msgid "Tomorrow"
-msgstr ""
+msgstr "Esok"
 
 #. module: voip
 #. openerp-web
@@ -1060,7 +1060,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Transfer"
-msgstr ""
+msgstr "Pemindahan"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter

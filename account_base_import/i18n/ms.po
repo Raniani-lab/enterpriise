@@ -130,7 +130,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 #, python-format
 msgid "Import"
-msgstr ""
+msgstr "Import"
 
 #. module: account_base_import
 #. odoo-javascript

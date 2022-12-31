@@ -42,7 +42,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:spreadsheet_dashboard_documents.spreadsheet_document_to_dashboard_view_form
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "Batal"
 
 #. module: spreadsheet_dashboard_documents
 #. openerp-web
@@ -54,7 +54,7 @@ msgstr ""
 #. module: spreadsheet_dashboard_documents
 #: model_terms:ir.ui.view,arch_db:spreadsheet_dashboard_documents.spreadsheet_document_to_dashboard_view_form
 msgid "Create"
-msgstr ""
+msgstr "Buat"
 
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model,name:spreadsheet_dashboard_documents.model_spreadsheet_document_to_dashboard
@@ -121,4 +121,4 @@ msgstr ""
 #. module: spreadsheet_dashboard_documents
 #: model:ir.model,name:spreadsheet_dashboard_documents.model_spreadsheet_dashboard
 msgid "Spreadsheet Dashboard"
-msgstr ""
+msgstr "Papan Pemuka Hamparan"

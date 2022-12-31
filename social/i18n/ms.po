@@ -248,7 +248,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "Batal"
 
 #. module: social
 #. odoo-javascript
@@ -296,7 +296,7 @@ msgstr ""
 #. module: social
 #: model:ir.ui.menu,name:social.menu_social_configuration
 msgid "Configuration"
-msgstr ""
+msgstr "Konfigurasi"
 
 #. module: social
 #. odoo-javascript
@@ -332,12 +332,12 @@ msgstr ""
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_view_utm_campaigns
 msgid "Create a Campaign"
-msgstr ""
+msgstr "Buat Kempen"
 
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_post
 msgid "Create a Post"
-msgstr ""
+msgstr "Buat Siaran"
 
 #. module: social
 #. odoo-python
@@ -392,12 +392,12 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Delete Comment"
-msgstr ""
+msgstr "Padam Komen"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.res_config_settings_view_form
 msgid "Demo Mode"
-msgstr ""
+msgstr "Tetapi juga keluar"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__media_description
@@ -491,7 +491,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:social.selection__social_live_post__state__failed
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_kanban
 msgid "Failed"
-msgstr ""
+msgstr "Gagal"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_live_post__failure_reason
@@ -521,7 +521,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_media__message_follower_ids
 #: model:ir.model.fields,field_description:social.field_social_post__message_follower_ids
 msgid "Followers"
-msgstr ""
+msgstr "Pengikut"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__message_partner_ids
@@ -607,7 +607,7 @@ msgstr "ID"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_exception_icon
 msgid "Icon"
-msgstr ""
+msgstr "Ikon"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__activity_exception_icon
@@ -857,7 +857,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_media__message_main_attachment_id
 #: model:ir.model.fields,field_description:social.field_social_post__message_main_attachment_id
 msgid "Main Attachment"
-msgstr ""
+msgstr "Lampiran Utama"
 
 #. module: social
 #. odoo-javascript
@@ -881,7 +881,7 @@ msgstr "Media"
 #: model:ir.model.fields,field_description:social.field_social_account__media_type
 #: model:ir.model.fields,field_description:social.field_social_media__media_type
 msgid "Media Type"
-msgstr ""
+msgstr "Jenis media"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_live_post__message
@@ -895,7 +895,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_media__message_has_error
 #: model:ir.model.fields,field_description:social.field_social_post__message_has_error
 msgid "Message Delivery error"
-msgstr ""
+msgstr "Ralat Penyampaian Mesej"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__message_length
@@ -922,7 +922,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_media__message_ids
 #: model:ir.model.fields,field_description:social.field_social_post__message_ids
 msgid "Messages"
-msgstr ""
+msgstr "Mesej"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_live_post__state
@@ -962,7 +962,7 @@ msgstr "Nama"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "New Post"
-msgstr ""
+msgstr "Jawatan Baru"
 
 #. module: social
 #. odoo-javascript
@@ -981,7 +981,7 @@ msgstr "Seterusnya"
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_calendar_event_id
 msgid "Next Activity Calendar Event"
-msgstr ""
+msgstr "Acara Kalendar Aktiviti Seterusnya"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_date_deadline
@@ -1139,7 +1139,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
 #, python-format
 msgid "Post"
-msgstr ""
+msgstr "Jawatan"
 
 #. module: social
 #. odoo-javascript
@@ -1149,7 +1149,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social.social_stream_post_view_kanban
 #, python-format
 msgid "Post Image"
-msgstr ""
+msgstr "Siarkan Imej"
 
 #. module: social
 #. odoo-javascript
@@ -1175,7 +1175,7 @@ msgstr ""
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
 msgid "Post Now"
-msgstr ""
+msgstr "Hantar Sekarang"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_stream_post__post_link
@@ -1236,7 +1236,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Sebelumnya"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__post_method
@@ -1246,22 +1246,22 @@ msgstr ""
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_search
 msgid "Published By"
-msgstr ""
+msgstr "Diterbitkan Oleh"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__published_date
 msgid "Published Date"
-msgstr ""
+msgstr "Tarikh Diterbitkan"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post__published_date
 msgid "Published date"
-msgstr ""
+msgstr "Tarikh diterbitkan"
 
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_live_post__state__ready
 msgid "Ready"
-msgstr ""
+msgstr "Sedia"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream_post__media_type
@@ -1283,12 +1283,12 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Reply"
-msgstr ""
+msgstr "Balas"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_user_id
 msgid "Responsible User"
-msgstr ""
+msgstr "Pengguna Bertanggungjawab"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_live_post_view_form
@@ -1300,12 +1300,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_media__message_has_sms_error
 #: model:ir.model.fields,field_description:social.field_social_post__message_has_sms_error
 msgid "SMS Delivery error"
-msgstr ""
+msgstr "Ralat Penghantaran SMS"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
 msgid "Schedule"
-msgstr ""
+msgstr "Jadual"
 
 #. module: social
 #: model:ir.model.fields.selection,name:social.selection__social_post__post_method__scheduled
@@ -1362,7 +1362,7 @@ msgstr "Tetapan"
 #: model:ir.model.fields,field_description:social.field_social_stream__account_id
 #: model_terms:ir.ui.view,arch_db:social.social_account_view_form
 msgid "Social Account"
-msgstr ""
+msgstr "Akaun Sosial"
 
 #. module: social
 #: model:ir.actions.act_window,name:social.action_social_account
@@ -1372,12 +1372,12 @@ msgstr ""
 #: model:ir.ui.menu,name:social.menu_social_account
 #: model_terms:ir.ui.view,arch_db:social.social_account_view_list
 msgid "Social Accounts"
-msgstr ""
+msgstr "Akaun Sosial"
 
 #. module: social
 #: model:ir.model,name:social.model_social_live_post
 msgid "Social Live Post"
-msgstr ""
+msgstr "Siaran Langsung Sosial"
 
 #. module: social
 #: model:res.groups,name:social.group_social_manager
@@ -1403,7 +1403,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social.utm_campaign_view_form
 #, python-format
 msgid "Social Media"
-msgstr ""
+msgstr "Media Sosial"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_utm_campaign__social_posts_count
@@ -1415,7 +1415,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_live_post__post_id
 #: model_terms:ir.ui.view,arch_db:social.social_live_post_view_form
 msgid "Social Post"
-msgstr ""
+msgstr "Siaran Sosial"
 
 #. module: social
 #: model:ir.model,name:social.model_social_post_template
@@ -1482,7 +1482,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__source_id
 msgid "Source"
-msgstr ""
+msgstr "Sumber"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__live_posts_by_media
@@ -1500,7 +1500,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:social.field_social_live_post__state
 #: model:ir.model.fields,field_description:social.field_social_post__state
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__activity_state
@@ -1572,7 +1572,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Synchronize"
-msgstr ""
+msgstr "Segerakkan"
 
 #. module: social
 #. odoo-python
@@ -1637,7 +1637,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream__name
 msgid "Title"
-msgstr ""
+msgstr "Tajuk"
 
 #. module: social
 #. odoo-javascript
@@ -1654,7 +1654,7 @@ msgstr "taip"
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__activity_exception_decoration
 msgid "Type of the exception activity on record."
-msgstr ""
+msgstr "Jenis aktiviti pengecualian dalam rekod."
 
 #. module: social
 #: model:ir.model,name:social.model_utm_campaign
@@ -1678,7 +1678,7 @@ msgstr ""
 #: code:addons/social/models/social_post.py:0
 #, python-format
 msgid "Unknown error"
-msgstr ""
+msgstr "Ralat tidak diketahui"
 
 #. module: social
 #. odoo-python
@@ -1708,24 +1708,24 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "View"
-msgstr ""
+msgstr "Lihat"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_media__website_message_ids
 #: model:ir.model.fields,field_description:social.field_social_post__website_message_ids
 msgid "Website Messages"
-msgstr ""
+msgstr "Mesej Laman Web"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_media__website_message_ids
 #: model:ir.model.fields,help:social.field_social_post__website_message_ids
 msgid "Website communication history"
-msgstr ""
+msgstr "Sejarah komunikasi laman web"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__post_method
 msgid "When"
-msgstr ""
+msgstr "Bila"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__published_date

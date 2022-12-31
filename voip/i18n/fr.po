@@ -1182,13 +1182,13 @@ msgstr "Environnement VoIP"
 #: model:ir.model.fields,field_description:voip.field_res_users__voip_secret
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__voip_secret
 msgid "VoIP secret"
-msgstr "Secret VoIP"
+msgstr "Mot de passe VoIP"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__voip_username
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__voip_username
 msgid "VoIP username / Extension number"
-msgstr "Nom d'utilisateur VoIP / Numéro de poste"
+msgstr "Nom d'utilisateur VoIP / Numéro d'extension"
 
 #. module: voip
 #. openerp-web

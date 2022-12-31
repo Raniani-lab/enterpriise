@@ -73,7 +73,7 @@ msgstr "Gearchiveerd"
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_commission_rule__is_capped
 msgid "Capped"
-msgstr "Afgedekt"
+msgstr "Plafond"
 
 #. module: partner_commission
 #: model:ir.model.fields.selection,name:partner_commission.selection__purchase_order__purchase_type__commission
@@ -219,7 +219,7 @@ msgstr "Laatst bijgewerkt door"
 #: model:ir.model.fields,field_description:partner_commission.field_commission_plan__write_date
 #: model:ir.model.fields,field_description:partner_commission.field_commission_rule__write_date
 msgid "Last Updated on"
-msgstr "Laatst geupdate op"
+msgstr "Laatst bjigewerkt op"
 
 #. module: partner_commission
 #: model:ir.model,name:partner_commission.model_crm_lead
@@ -274,12 +274,12 @@ msgstr "Partnercommissie: bevestig inkooporders"
 #. module: partner_commission
 #: model:ir.model,name:partner_commission.model_res_partner_grade
 msgid "Partner Grade"
-msgstr "Rang relatie"
+msgstr "Partner rang"
 
 #. module: partner_commission
 #: model_terms:ir.ui.view,arch_db:partner_commission.res_config_settings_view_form
 msgid "Partners Commissions"
-msgstr "Parners commissies"
+msgstr "Partners commissies"
 
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_commission_rule__pricelist_id
@@ -289,7 +289,7 @@ msgstr "Prijslijst"
 #. module: partner_commission
 #: model:ir.model.fields.selection,name:partner_commission.selection__purchase_order__purchase_type__procurement
 msgid "Procurement"
-msgstr "Aanvullen"
+msgstr "Aankoop"
 
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_commission_rule__product_id

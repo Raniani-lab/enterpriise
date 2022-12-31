@@ -54,14 +54,14 @@ msgstr "Trenutni"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "KPI"
-msgstr ""
+msgstr "KPI"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Manufacturing Orders"
-msgstr ""
+msgstr "Nalozi za proizvodnj"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web

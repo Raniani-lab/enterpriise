@@ -30,7 +30,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_run_sepa_view_form
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_sepa_view_form
 msgid "Cancel"
-msgstr ""
+msgstr "Batal"
 
 #. module: hr_payroll_account_sepa
 #: model_terms:ir.ui.view,arch_db:hr_payroll_account_sepa.hr_payslip_run_sepa_view_form
@@ -71,7 +71,7 @@ msgstr "Nama paparan"
 #. module: hr_payroll_account_sepa
 #: model:ir.model,name:hr_payroll_account_sepa.model_hr_employee
 msgid "Employee"
-msgstr ""
+msgstr "Pekerja"
 
 #. module: hr_payroll_account_sepa
 #: code:addons/hr_payroll_account_sepa/models/hr_payslip.py:0

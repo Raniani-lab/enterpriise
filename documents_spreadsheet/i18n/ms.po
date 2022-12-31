@@ -85,7 +85,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.save_spreadsheet_template_view_form
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "Batal"
 
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.res_config_settings_view_form_inherit_documents_spreadsheet
@@ -95,7 +95,7 @@ msgstr ""
 #. module: documents_spreadsheet
 #: model:ir.model,name:documents_spreadsheet.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Syarikat"
 
 #. module: documents_spreadsheet
 #: model:ir.model,name:documents_spreadsheet.model_res_config_settings
@@ -118,7 +118,7 @@ msgstr ""
 #: code:addons/documents_spreadsheet/static/src/spreadsheet_template/template_dialog.xml:0
 #, python-format
 msgid "Create"
-msgstr ""
+msgstr "Buat"
 
 #. module: documents_spreadsheet
 #. odoo-javascript
@@ -145,7 +145,7 @@ msgstr "Dicipta pada"
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_save_spreadsheet_template__data
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_template__data
 msgid "Data"
-msgstr ""
+msgstr "Data"
 
 #. module: documents_spreadsheet
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_save_spreadsheet_template__display_name
@@ -169,7 +169,7 @@ msgstr ""
 #. module: documents_spreadsheet
 #: model_terms:ir.ui.view,arch_db:documents_spreadsheet.spreadsheet_template_view_tree
 msgid "Edit"
-msgstr ""
+msgstr "Sunting"
 
 #. module: documents_spreadsheet
 #: model_terms:documents.folder,description:documents_spreadsheet.documents_spreadsheet_folder
@@ -392,7 +392,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_save_spreadsheet_template__thumbnail
 #: model:ir.model.fields,field_description:documents_spreadsheet.field_spreadsheet_template__thumbnail
 msgid "Thumbnail"
-msgstr ""
+msgstr "Gambar kecil"
 
 #. module: documents_spreadsheet
 #. odoo-javascript

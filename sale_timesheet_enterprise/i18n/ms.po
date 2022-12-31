@@ -88,7 +88,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
 #, python-format
 msgid "Invoice"
-msgstr ""
+msgstr "Invois"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_account_move_line
@@ -156,7 +156,7 @@ msgstr ""
 #. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_project_task
 msgid "Task"
-msgstr ""
+msgstr "Tugasan"
 
 #. module: sale_timesheet_enterprise
 #: code:addons/sale_timesheet_enterprise/models/project_task.py:0
@@ -184,7 +184,7 @@ msgstr ""
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_grid_by_billing_rate
 msgid "Timesheets"
-msgstr ""
+msgstr "Lembaran masa"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_config_settings__invoiced_timesheet
@@ -216,7 +216,7 @@ msgstr ""
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_grid_by_billing_rate
 msgid "Week"
-msgstr ""
+msgstr "Minggu"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_res_config_settings__invoiced_timesheet

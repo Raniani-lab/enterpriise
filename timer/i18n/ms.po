@@ -121,7 +121,7 @@ msgstr ""
 #: code:addons/timer/static/src/js/timer_toggle_button.js:0
 #, python-format
 msgid "Stop"
-msgstr ""
+msgstr "Berhenti"
 
 #. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_mixin__timer_pause

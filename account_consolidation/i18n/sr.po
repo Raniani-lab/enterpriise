@@ -801,7 +801,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:account_consolidation.consolidation_period_action
 #: model:ir.ui.menu,name:account_consolidation.menu_consolidation_home
 msgid "Dashboard"
-msgstr ""
+msgstr "Kontrolna tabla"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__dashboard_sections

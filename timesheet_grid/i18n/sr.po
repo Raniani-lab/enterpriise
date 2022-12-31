@@ -734,13 +734,13 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "My Projects"
-msgstr ""
+msgstr "Moji projekti"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.timesheet_view_search
 msgid "My Tasks"
-msgstr ""
+msgstr "Moji zadaci"
 
 #. module: timesheet_grid
 #: model_terms:ir.ui.view,arch_db:timesheet_grid.hr_timesheet_report_search_grid
@@ -1010,7 +1010,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:timesheet_grid.field_project_task_create_timesheet__task_id
 #, python-format
 msgid "Task"
-msgstr ""
+msgstr "Zadatak"
 
 #. module: timesheet_grid
 #: model:ir.model.fields,help:timesheet_grid.field_project_task_create_timesheet__task_id
@@ -1218,7 +1218,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.ui.menu,name:timesheet_grid.menu_timesheet_grid_validate
 msgid "To Validate"
-msgstr ""
+msgstr "Za potvrditi"
 
 #. module: timesheet_grid
 #. odoo-javascript

@@ -208,7 +208,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_type_view_kanban
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_type_view_search
 msgid "Published"
-msgstr ""
+msgstr "Diterbitkan"
 
 #. module: website_appointment
 #: model:ir.model.fields,field_description:website_appointment.field_appointment_type__is_seo_optimized
@@ -218,7 +218,7 @@ msgstr ""
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_select_operator
 msgid "Schedule"
-msgstr ""
+msgstr "Jadual"
 
 #. module: website_appointment
 #: model_terms:ir.ui.view,arch_db:website_appointment.appointment_validated
@@ -287,7 +287,7 @@ msgstr ""
 #. module: website_appointment
 #: model:ir.model,name:website_appointment.model_website
 msgid "Website"
-msgstr ""
+msgstr "laman web"
 
 #. module: website_appointment
 #: model:ir.model.fields,field_description:website_appointment.field_appointment_type__website_url

@@ -54,7 +54,7 @@ msgstr ""
 #. module: sale_loyalty_taxcloud
 #: model:ir.model,name:sale_loyalty_taxcloud.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Pesanan Jualan"
 
 #. module: sale_loyalty_taxcloud
 #: model:ir.model,name:sale_loyalty_taxcloud.model_sale_order_line

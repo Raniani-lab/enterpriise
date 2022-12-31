@@ -688,7 +688,7 @@ msgstr "Gedeeltelijke overdrachtstest"
 #. module: quality_control
 #: model_terms:ir.ui.view,arch_db:quality_control.quality_check_view_form
 msgid "Partner"
-msgstr "Relatie"
+msgstr "Partner"
 
 #. module: quality_control
 #: model:ir.model.fields.selection,name:quality_control.selection__quality_check__measure_success__pass

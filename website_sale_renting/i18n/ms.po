@@ -174,12 +174,12 @@ msgstr ""
 #: code:addons/website_sale_renting/static/src/js/website_sale_renting_daterangepicker.js:0
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "Batal"
 
 #. module: website_sale_renting
 #: model:ir.model,name:website_sale_renting.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Syarikat"
 
 #. module: website_sale_renting
 #: model:ir.model,name:website_sale_renting.model_res_config_settings
@@ -201,7 +201,7 @@ msgstr ""
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.s_rental_search_options
 msgid "Day"
-msgstr ""
+msgstr "Hari"
 
 #. module: website_sale_renting
 #: model:ir.model.fields.selection,name:website_sale_renting.selection__res_company__renting_minimal_time_unit__day
@@ -227,7 +227,7 @@ msgstr ""
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.s_rental_search_options
 msgid "Hour"
-msgstr ""
+msgstr "Jam"
 
 #. module: website_sale_renting
 #: model:ir.model.fields.selection,name:website_sale_renting.selection__res_company__renting_minimal_time_unit__hour
@@ -277,12 +277,12 @@ msgstr ""
 #. module: website_sale_renting
 #: model:ir.model,name:website_sale_renting.model_product_template
 msgid "Product"
-msgstr ""
+msgstr "Produk"
 
 #. module: website_sale_renting
 #: model:ir.model,name:website_sale_renting.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Varian Produk"
 
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.res_config_settings_view_form
@@ -292,7 +292,7 @@ msgstr ""
 #. module: website_sale_renting
 #: model:ir.model,name:website_sale_renting.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Pesanan Jualan"
 
 #. module: website_sale_renting
 #: model:ir.model,name:website_sale_renting.model_sale_order_line
@@ -310,7 +310,7 @@ msgstr ""
 #: code:addons/website_sale_renting/static/src/js/website_sale_renting_daterangepicker.js:0
 #, python-format
 msgid "Search"
-msgstr ""
+msgstr "Cari"
 
 #. module: website_sale_renting
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_company__renting_forbidden_sun
@@ -353,7 +353,7 @@ msgstr ""
 #. module: website_sale_renting
 #: model_terms:ir.ui.view,arch_db:website_sale_renting.rental_product
 msgid "Total"
-msgstr ""
+msgstr "Jumlah"
 
 #. module: website_sale_renting
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_company__renting_forbidden_tue
@@ -364,7 +364,7 @@ msgstr ""
 #. module: website_sale_renting
 #: model:ir.model,name:website_sale_renting.model_website
 msgid "Website"
-msgstr ""
+msgstr "laman web"
 
 #. module: website_sale_renting
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_company__renting_forbidden_wed

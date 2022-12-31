@@ -32,4 +32,4 @@ msgstr "Item Jurnal"
 #. module: sale_loyalty_taxcloud_delivery
 #: model:ir.model,name:sale_loyalty_taxcloud_delivery.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Pesanan Jualan"

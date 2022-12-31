@@ -76,7 +76,7 @@ msgstr ""
 #. module: documents_hr
 #: model:ir.model,name:documents_hr.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Syarikat"
 
 #. module: documents_hr
 #: model:ir.model,name:documents_hr.model_res_config_settings
@@ -121,7 +121,7 @@ msgstr ""
 #. module: documents_hr
 #: model:ir.model,name:documents_hr.model_hr_employee
 msgid "Employee"
-msgstr ""
+msgstr "Pekerja"
 
 #. module: documents_hr
 #: code:addons/documents_hr/models/hr_employee.py:0

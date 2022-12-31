@@ -27,7 +27,7 @@ msgstr "Akaun Analitik"
 #. module: timesheet_grid_holidays
 #: model:ir.model,name:timesheet_grid_holidays.model_hr_employee
 msgid "Employee"
-msgstr ""
+msgstr "Pekerja"
 
 #. module: timesheet_grid_holidays
 #: model:ir.model,name:timesheet_grid_holidays.model_hr_timesheet_merge_wizard

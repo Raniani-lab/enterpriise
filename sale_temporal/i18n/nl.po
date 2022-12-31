@@ -325,7 +325,7 @@ msgstr ""
 #: code:addons/sale_temporal/models/product_template.py:0
 #, python-format
 msgid "The product (%s) has incompatible values: %s"
-msgstr "Product (%s) heeft onverenigbare waarden: %s"
+msgstr "Het product (%s) heeft onverenigbare waarden: %s"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing

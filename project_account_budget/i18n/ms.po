@@ -105,14 +105,14 @@ msgstr ""
 #. module: project_account_budget
 #: model:ir.model,name:project_account_budget.model_project_project
 msgid "Project"
-msgstr ""
+msgstr "Projek"
 
 #. module: project_account_budget
 #. odoo-javascript
 #: code:addons/project_account_budget/static/src/components/project_right_side_panel/project_right_side_panel.xml:0
 #, python-format
 msgid "Total"
-msgstr ""
+msgstr "Jumlah"
 
 #. module: project_account_budget
 #: model:ir.model.fields,field_description:project_account_budget.field_project_project__total_planned_amount

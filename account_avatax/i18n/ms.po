@@ -222,7 +222,7 @@ msgstr ""
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.avatax_validate_address_view_form
 msgid "Cancel"
-msgstr ""
+msgstr "Batal"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__city
@@ -250,7 +250,7 @@ msgstr ""
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Syarikat"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_exemption__company_id
@@ -281,7 +281,7 @@ msgstr "Kenalan"
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__country_id
 #: model_terms:ir.ui.view,arch_db:account_avatax.avatax_validate_address_view_form
 msgid "Country"
-msgstr ""
+msgstr "Negara"
 
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_exemption__create_uid
@@ -449,7 +449,7 @@ msgstr ""
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__partner_id
 msgid "Partner"
-msgstr ""
+msgstr "Rakan kongsi"
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/account_avatax.py:0
@@ -460,17 +460,17 @@ msgstr ""
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_product_template
 msgid "Product"
-msgstr ""
+msgstr "Produk"
 
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_product_category
 msgid "Product Category"
-msgstr ""
+msgstr "Kategori Produk"
 
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Varian Produk"
 
 #. module: account_avatax
 #: model:ir.model.fields.selection,name:account_avatax.selection__res_company__avalara_environment__production

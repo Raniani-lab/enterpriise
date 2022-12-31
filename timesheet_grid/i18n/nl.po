@@ -405,7 +405,7 @@ msgstr ""
 #. module: timesheet_grid
 #: model:ir.model,name:timesheet_grid.model_account_analytic_line
 msgid "Analytic Account"
-msgstr "Kostenplaats"
+msgstr "Analytische rekening"
 
 #. module: timesheet_grid
 #. odoo-javascript
@@ -1122,7 +1122,7 @@ msgstr ""
 #: model:ir.model.fields,help:timesheet_grid.field_account_analytic_line__is_timesheet
 msgid "Set if this analytic line represents a line of timesheet."
 msgstr ""
-"Ingesteld als deze kostenplaatsregel een regel van een urenstaat voorstelt."
+"Ingesteld als deze analytsiche regel een regel van een urenstaat voorstelt."
 
 #. module: timesheet_grid
 #: model:mail.template,description:timesheet_grid.mail_template_timesheet_reminder_user

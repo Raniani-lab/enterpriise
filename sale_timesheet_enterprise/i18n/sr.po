@@ -157,7 +157,7 @@ msgstr ""
 #. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_project_task
 msgid "Task"
-msgstr ""
+msgstr "Zadatak"
 
 #. module: sale_timesheet_enterprise
 #: code:addons/sale_timesheet_enterprise/models/project_task.py:0

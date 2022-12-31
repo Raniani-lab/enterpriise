@@ -89,7 +89,7 @@ msgstr ""
 #. module: quality_mrp_workorder
 #: model:ir.model,name:quality_mrp_workorder.model_product_template
 msgid "Product"
-msgstr ""
+msgstr "Produk"
 
 #. module: quality_mrp_workorder
 #: model:ir.model,name:quality_mrp_workorder.model_stock_move_line
@@ -99,7 +99,7 @@ msgstr ""
 #. module: quality_mrp_workorder
 #: model:ir.model,name:quality_mrp_workorder.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Varian Produk"
 
 #. module: quality_mrp_workorder
 #: model:ir.model,name:quality_mrp_workorder.model_mrp_production
@@ -159,7 +159,7 @@ msgstr "Sahkan"
 #. module: quality_mrp_workorder
 #: model:ir.model,name:quality_mrp_workorder.model_mrp_workorder
 msgid "Work Order"
-msgstr ""
+msgstr "Arahan Kerja"
 
 #. module: quality_mrp_workorder
 #: code:addons/quality_mrp_workorder/models/mrp_workorder.py:0

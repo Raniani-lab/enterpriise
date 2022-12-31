@@ -82,7 +82,7 @@ msgstr ""
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Syarikat"
 
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_res_config_settings
@@ -207,7 +207,7 @@ msgstr ""
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_product_template
 msgid "Product"
-msgstr ""
+msgstr "Produk"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__product_uom_id
@@ -217,7 +217,7 @@ msgstr ""
 #. module: sale_stock_renting
 #: model:ir.model,name:sale_stock_renting.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Varian Produk"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__qty_available_during_period
@@ -348,7 +348,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__tracking
 #: model:ir.model.fields,field_description:sale_stock_renting.field_sale_order_line__tracking
 msgid "Tracking"
-msgstr ""
+msgstr "Penjejakan"
 
 #. module: sale_stock_renting
 #. odoo-python
@@ -375,7 +375,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__warehouse_id
 #: model:ir.model.fields,field_description:sale_stock_renting.field_sale_rental_schedule__warehouse_id
 msgid "Warehouse"
-msgstr ""
+msgstr "Gudang"
 
 #. module: sale_stock_renting
 #. odoo-python
@@ -394,7 +394,7 @@ msgstr ""
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.res_config_settings_inherit_view_form
 msgid "hours"
-msgstr ""
+msgstr "jam"
 
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.product_template_inherit_view_form_stock_rental

@@ -55,7 +55,7 @@ msgstr "kategori"
 #. module: documents_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_workflow_rule__create_model
 msgid "Create"
-msgstr ""
+msgstr "Buat"
 
 #. module: documents_project
 #: model:documents.workflow.rule,name:documents_project.documents_project_rule
@@ -147,7 +147,7 @@ msgstr ""
 #: model:ir.model,name:documents_project.model_project_project
 #: model:ir.model.fields,field_description:documents_project.field_documents_folder__project_ids
 msgid "Project"
-msgstr ""
+msgstr "Projek"
 
 #. module: documents_project
 #: model:documents.folder,name:documents_project.documents_project_folder
@@ -168,13 +168,13 @@ msgstr ""
 #. module: documents_project
 #: model:documents.facet,name:documents_project.documents_project_status
 msgid "Status"
-msgstr ""
+msgstr "Status"
 
 #. module: documents_project
 #: model:ir.model,name:documents_project.model_project_task
 #: model:ir.model.fields.selection,name:documents_project.selection__documents_workflow_rule__create_model__project_task
 msgid "Task"
-msgstr ""
+msgstr "Tugasan"
 
 #. module: documents_project
 #: code:addons/documents_project/models/workflow.py:0

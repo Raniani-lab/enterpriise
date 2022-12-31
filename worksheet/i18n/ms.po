@@ -61,7 +61,7 @@ msgstr ""
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__company_ids
 msgid "Companies"
-msgstr ""
+msgstr "Syarikat"
 
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__create_uid

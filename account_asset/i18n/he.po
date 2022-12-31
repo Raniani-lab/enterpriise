@@ -9,18 +9,18 @@
 # Fishfur A Banter <fishfurbanter@gmail.com>, 2022
 # david danilov, 2022
 # Ofir Blum <ofir.blum@gmail.com>, 2022
-# Sagi Ahiel, 2022
 # Moshe Flam <pashute@gmail.com>, 2022
 # דודי מלכה <Dudimalka6@gmail.com>, 2022
 # yotam linder <linder@laylinetech.com>, 2022
 # Yihya Hugirat <hugirat@gmail.com>, 2022
 # Martin Trigaux, 2022
 # ZVI BLONDER <ZVIBLONDER@gmail.com>, 2022
-# NoaFarkash, 2022
 # Ha Ketem <haketem@gmail.com>, 2022
 # Lilach Gilliam <lilach.gilliam@gmail.com>, 2022
 # ExcaliberX <excaliberx@gmail.com>, 2022
 # Roy Sayag, 2022
+# Sagi Ahiel, 2022
+# NoaFarkash, 2022
 # 
 msgid ""
 msgstr ""
@@ -28,7 +28,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-16 09:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Roy Sayag, 2022\n"
+"Last-Translator: NoaFarkash, 2022\n"
 "Language-Team: Hebrew (https://www.transifex.com/odoo/teams/41243/he/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -317,7 +317,7 @@ msgstr "סוג פעילות"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 msgid "Add an internal note"
-msgstr ""
+msgstr "הוסף הערה פנימית"
 
 #. module: account_asset
 #. odoo-python
@@ -2078,7 +2078,7 @@ msgstr "הערך הועלה עבור: %(asset)s"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Warning for the Original Value of %s"
-msgstr ""
+msgstr "אזהרה לגבי הערך המקורי של %s"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__website_message_ids

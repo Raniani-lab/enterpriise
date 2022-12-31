@@ -142,7 +142,7 @@ msgstr ""
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__country_id
 msgid "Country"
-msgstr ""
+msgstr "Negara"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_model__create_uid
@@ -161,7 +161,7 @@ msgstr "Dicipta pada"
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__current_value
 msgid "Current"
-msgstr ""
+msgstr "Semasa"
 
 #. module: data_cleaning
 #: model:ir.actions.server,name:data_cleaning.ir_cron_clean_records_ir_actions_server
@@ -196,7 +196,7 @@ msgstr "Nama paparan"
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__field_id
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_rule__field_id
 msgid "Field"
-msgstr ""
+msgstr "Padang"
 
 #. module: data_cleaning
 #: model:ir.ui.menu,name:data_cleaning.menu_data_cleaning_config_rules_cleaning
@@ -365,7 +365,7 @@ msgstr ""
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_record__rule_ids
 msgid "Rule"
-msgstr ""
+msgstr "Peraturan"
 
 #. module: data_cleaning
 #: model:ir.model.fields,field_description:data_cleaning.field_data_cleaning_model__rule_ids

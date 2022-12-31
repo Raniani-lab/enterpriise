@@ -70,7 +70,7 @@ msgid ""
 "<span class=\"s_website_form_label_content\">Your Email</span>\n"
 "                                            <span class=\"s_website_form_mark\"> *</span>"
 msgstr ""
-"<span class=\"s_website_form_label_content\">Jouw e-mail</span>\n"
+"<span class=\"s_website_form_label_content\">Je e-mail</span>\n"
 "                                            <span class=\"s_website_form_mark\"> *</span>"
 
 #. module: website_helpdesk
@@ -80,7 +80,7 @@ msgid ""
 "<span class=\"s_website_form_label_content\">Your Name</span>\n"
 "                                            <span class=\"s_website_form_mark\"> *</span>"
 msgstr ""
-"<span class=\"s_website_form_label_content\">Jouw naam</span>\n"
+"<span class=\"s_website_form_label_content\">Je naam</span>\n"
 "                                            <span class=\"s_website_form_mark\"> *</span>"
 
 #. module: website_helpdesk
@@ -219,7 +219,7 @@ msgstr "Is gepubliceerd"
 #: code:addons/website_helpdesk/controllers/main.py:0
 #, python-format
 msgid "Last Month"
-msgstr " Vorige maand"
+msgstr "Vorige maand"
 
 #. module: website_helpdesk
 #: code:addons/website_helpdesk/controllers/main.py:0
@@ -231,7 +231,7 @@ msgstr "Vorige week"
 #: code:addons/website_helpdesk/controllers/main.py:0
 #, python-format
 msgid "Last Year"
-msgstr "Vorige jaar"
+msgstr "Vorig jaar"
 
 #. module: website_helpdesk
 #. openerp-web
@@ -263,7 +263,7 @@ msgstr "Onderwerp"
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submit_form
 msgid "Submit"
-msgstr "Verstuur"
+msgstr "Indienen"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
@@ -274,7 +274,7 @@ msgstr "Ticket indienen"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Tags Filter"
-msgstr "Tagsfilter"
+msgstr "Labelfilter"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submited
@@ -299,7 +299,7 @@ msgstr "Het teambedrijf en het websitebedrijf moeten overeenkomen"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Type Filter"
-msgstr "Typ Filter"
+msgstr "Filtertype"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__feature_form_url

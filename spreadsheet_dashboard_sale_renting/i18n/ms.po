@@ -32,7 +32,7 @@ msgstr "kategori"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Current"
-msgstr ""
+msgstr "Semasa"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
@@ -40,7 +40,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Customer"
-msgstr ""
+msgstr "Pelanggan"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
@@ -78,7 +78,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Orders"
-msgstr ""
+msgstr "Pesanan"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
@@ -100,7 +100,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Previous"
-msgstr ""
+msgstr "Sebelumnya"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
@@ -108,14 +108,14 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Product"
-msgstr ""
+msgstr "Produk"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Product Category"
-msgstr ""
+msgstr "Kategori Produk"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
@@ -123,7 +123,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Quotations"
-msgstr ""
+msgstr "Sebutharga"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
@@ -177,7 +177,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Revenue"
-msgstr ""
+msgstr "Hasil"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
@@ -185,7 +185,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Salesperson"
-msgstr ""
+msgstr "Jurujual"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
@@ -236,4 +236,4 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "since last period"
-msgstr ""
+msgstr "sejak period lepas"

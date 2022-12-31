@@ -32,7 +32,7 @@ msgstr ""
 #. module: sale_renting_crm
 #: model_terms:ir.ui.view,arch_db:sale_renting_crm.crm_lead_rental_view_form
 msgid "Cancel"
-msgstr ""
+msgstr "Batal"
 
 #. module: sale_renting_crm
 #: model_terms:ir.ui.view,arch_db:sale_renting_crm.crm_lead_rental_view_form
@@ -67,7 +67,7 @@ msgstr "Dicipta pada"
 #. module: sale_renting_crm
 #: model:ir.model.fields,field_description:sale_renting_crm.field_crm_lead_rental__partner_id
 msgid "Customer"
-msgstr ""
+msgstr "Pelanggan"
 
 #. module: sale_renting_crm
 #: model:ir.model.fields,field_description:sale_renting_crm.field_crm_lead_rental__display_name
@@ -151,7 +151,7 @@ msgstr ""
 #. module: sale_renting_crm
 #: model:ir.model,name:sale_renting_crm.model_sale_order
 msgid "Sales Order"
-msgstr ""
+msgstr "Pesanan Jualan"
 
 #. module: sale_renting_crm
 #: model:ir.model.fields,field_description:sale_renting_crm.field_crm_lead__rental_amount_total

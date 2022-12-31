@@ -83,7 +83,7 @@ msgstr "<span>Resource</span>"
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "<span>Scraps</span>"
-msgstr "<span>Afkeuringen</span>"
+msgstr "<span>Afval</span>"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
@@ -118,7 +118,7 @@ msgstr "<strong>Totale bewerkingskosten</strong>"
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "<strong>Total Cost of Scraps</strong>"
-msgstr "<strong>Totale kosten afkeuringen</strong>"
+msgstr "<strong>Totale kosten van afval</strong>"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
@@ -235,12 +235,12 @@ msgstr "Valuta"
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__display_name
 msgid "Display Name"
-msgstr "Schermnaam"
+msgstr "Weergavenaam"
 
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__unit_duration
 msgid "Duration of Operations / Unit"
-msgstr "Duur van bewerkingen / Eenheid"
+msgstr "Duur van Bewerkingen / Eenheid"
 
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__date_finished
@@ -335,7 +335,7 @@ msgstr "Hoeveelheid geproduceerd"
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "Some of the Manufacturing Order(s) selected are not done yet"
 msgstr ""
-"Enkele van de geselecteerde productie order(s) geselecteerd zijn nog niet "
+"Enkele van de geselecteerde productieorder(s) geselecteerd zijn nog niet "
 "voltooid"
 
 #. module: mrp_account_enterprise
@@ -395,7 +395,7 @@ msgstr "Totale duur (minuten) van bewerkingen voor productieorder"
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,help:mrp_account_enterprise.field_mrp_report__qty_produced
 msgid "Total quantity produced in product's UoM"
-msgstr "Totale geproduceerde hoeveelheid in UoM . van het product"
+msgstr "Totale geproduceerde hoeveelheid in de maateenheid van het product"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure

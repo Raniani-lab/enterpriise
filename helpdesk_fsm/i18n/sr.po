@@ -174,7 +174,7 @@ msgstr ""
 #: model:ir.model,name:helpdesk_fsm.model_project_task
 #, python-format
 msgid "Task"
-msgstr ""
+msgstr "Zadatak"
 
 #. module: helpdesk_fsm
 #: model:mail.message.subtype,description:helpdesk_fsm.mt_team_ticket_task_done
@@ -197,7 +197,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:helpdesk_fsm.helpdesk_ticket_view_form
 #, python-format
 msgid "Tasks"
-msgstr ""
+msgstr "Zadaci"
 
 #. module: helpdesk_fsm
 #: code:addons/helpdesk_fsm/wizard/create_task.py:0

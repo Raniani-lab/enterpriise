@@ -123,7 +123,7 @@ msgstr "Heeft regels met getraceerde producten"
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_res_company__rental_loc_id
 msgid "In rent"
-msgstr "Verhuurt"
+msgstr "Verhuurd"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_sale_rental_schedule__is_available
@@ -208,7 +208,8 @@ msgstr ""
 #: code:addons/sale_stock_renting/wizard/rental_processing.py:0
 #, python-format
 msgid "Please specify the serial numbers returned for the tracked products."
-msgstr "Geeft de serienummers op van de retour gebrachte producten."
+msgstr ""
+"Geef de serienummers op die voor de gevolgde producten zijn teruggestuurd."
 
 #. module: sale_stock_renting
 #: model:product.template,name:sale_stock_renting.rental_stock_product_1_product_template
@@ -234,7 +235,7 @@ msgstr "Productvariant"
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__qty_available_during_period
 msgid "Quantity available for given period (Stock - In Rent)"
 msgstr ""
-"Beschikbare hoeveelheid voor een bepaalde periode  (voorraad - in huur)"
+"Beschikbare hoeveelheid voor een bepaalde periode (voorraad - verhuurd)"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__rentable_qty
@@ -244,7 +245,7 @@ msgstr "Beschikbare hoeveelheid voor een bepaalde periode"
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__rented_qty_during_period
 msgid "Quantity reserved"
-msgstr "Hoeveelheid gereserveerd"
+msgstr "Gereserveerde hoeveelheid"
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,help:sale_stock_renting.field_rental_wizard__rented_qty_during_period
@@ -321,7 +322,7 @@ msgstr "Serienummer"
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.rental_order_wizard_view_form
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.report_rental_order_document
 msgid "Serial Numbers"
-msgstr "Partijnummers"
+msgstr "Serienummers"
 
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.rental_configurator_view_form
@@ -336,7 +337,7 @@ msgstr "Serienummers beschikbaar in voorraad"
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_wizard__rented_lot_ids
 msgid "Serials in rent for given period"
-msgstr "Serienummers verhuurt voor opgegeven periode"
+msgstr "Verhuurde serienummers voor opgegeven periode"
 
 #. module: sale_stock_renting
 #: model_terms:ir.ui.view,arch_db:sale_stock_renting.rental_configurator_view_form
@@ -347,7 +348,7 @@ msgstr "Voorraad"
 #: model:ir.model.fields,help:sale_stock_renting.field_product_product__preparation_time
 #: model:ir.model.fields,help:sale_stock_renting.field_product_template__preparation_time
 msgid "Temporarily make this product unavailable before pickup."
-msgstr "Maak dit product tijdelijk onbeschikbaar om op te halen."
+msgstr "Maak dit product tijdelijk onbeschikbaar voor afhaling."
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,help:sale_stock_renting.field_res_company__rental_loc_id
@@ -357,8 +358,8 @@ msgid ""
 "company assets."
 msgstr ""
 "Deze technische locatie dient als voorraad voor producten die momenteel "
-"verhuurt zijn. Deze locatie is intern omdat producten welke  verhuurt zijn, "
-"nog steeds als bedrijfsmiddelen worden beschouwd."
+"worden verhuurd. Deze locatie is intern omdat producten in verhuur nog "
+"steeds als bedrijfsmiddelen worden beschouwd."
 
 #. module: sale_stock_renting
 #: model:ir.model.fields,field_description:sale_stock_renting.field_rental_order_wizard_line__tracking
@@ -427,4 +428,4 @@ msgstr "uren voor orders"
 #: code:addons/sale_stock_renting/static/src/widgets/qty_at_date_widget.xml:0
 #, python-format
 msgid "to"
-msgstr "t/m"
+msgstr "tot"

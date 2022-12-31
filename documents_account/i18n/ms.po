@@ -108,7 +108,7 @@ msgstr ""
 #. module: documents_account
 #: model:ir.model,name:documents_account.model_res_company
 msgid "Companies"
-msgstr ""
+msgstr "Syarikat"
 
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_account_folder_setting__company_id
@@ -123,7 +123,7 @@ msgstr ""
 #. module: documents_account
 #: model:ir.model.fields,field_description:documents_account.field_documents_workflow_rule__create_model
 msgid "Create"
-msgstr ""
+msgstr "Buat"
 
 #. module: documents_account
 #: model:documents.workflow.rule,name:documents_account.vendor_bill_rule_financial

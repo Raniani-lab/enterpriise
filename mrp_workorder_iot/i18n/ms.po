@@ -32,7 +32,7 @@ msgstr "Kotak"
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__cancel
 msgid "Cancel"
-msgstr ""
+msgstr "Batal"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__clomo
@@ -57,7 +57,7 @@ msgstr "Dicipta pada"
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__device_id
 msgid "Device"
-msgstr ""
+msgstr "Peranti"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__display_name
@@ -135,7 +135,7 @@ msgstr ""
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__prev
 msgid "Previous"
-msgstr ""
+msgstr "Sebelumnya"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__print-slip
@@ -165,7 +165,7 @@ msgstr ""
 #. module: mrp_workorder_iot
 #: model:ir.model.fields.selection,name:mrp_workorder_iot.selection__iot_trigger__action__scrap
 msgid "Scrap"
-msgstr ""
+msgstr "Sekerap"
 
 #. module: mrp_workorder_iot
 #: model:ir.model.fields,field_description:mrp_workorder_iot.field_iot_trigger__sequence

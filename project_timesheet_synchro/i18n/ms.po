@@ -90,7 +90,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "Batal"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -418,7 +418,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Project"
-msgstr ""
+msgstr "Projek"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -490,7 +490,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Statistics"
-msgstr ""
+msgstr "Perangkaan"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -520,7 +520,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Synchronize"
-msgstr ""
+msgstr "Segerakkan"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -534,7 +534,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Task"
-msgstr ""
+msgstr "Tugasan"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -619,7 +619,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Today"
-msgstr ""
+msgstr "Hari ini"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -664,7 +664,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Week"
-msgstr ""
+msgstr "Minggu"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -754,7 +754,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "minutes"
-msgstr ""
+msgstr "minit"
 
 #. module: project_timesheet_synchro
 #. openerp-web

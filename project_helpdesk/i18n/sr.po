@@ -31,7 +31,7 @@ msgstr "Otkaži"
 #: model_terms:ir.ui.view,arch_db:project_helpdesk.helpdesk_ticket_convert_to_task_wizard_view_form
 #: model_terms:ir.ui.view,arch_db:project_helpdesk.project_task_convert_to_ticket_wizard_view_form
 msgid "Convert"
-msgstr ""
+msgstr "Konvertuj"
 
 #. module: project_helpdesk
 #: model:ir.model,name:project_helpdesk.model_helpdesk_ticket_convert_wizard
@@ -57,7 +57,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:project_helpdesk.project_task_convert_to_ticket_wizard_view_form
 #, python-format
 msgid "Convert to Ticket"
-msgstr ""
+msgstr "Konvertuj u tiket"
 
 #. module: project_helpdesk
 #: code:addons/project_helpdesk/wizard/helpdesk_ticket_convert_wizard.py:0
@@ -138,7 +138,7 @@ msgstr "Nivo"
 #. module: project_helpdesk
 #: model:ir.model,name:project_helpdesk.model_project_task
 msgid "Task"
-msgstr ""
+msgstr "Zadatak"
 
 #. module: project_helpdesk
 #: model:ir.model.fields,field_description:project_helpdesk.field_project_task_convert_wizard__team_id

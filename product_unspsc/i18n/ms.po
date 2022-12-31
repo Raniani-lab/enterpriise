@@ -83,7 +83,7 @@ msgstr "Nama"
 #: model:ir.model,name:product_unspsc.model_product_template
 #: model:ir.model.fields.selection,name:product_unspsc.selection__product_unspsc_code__applies_to__product
 msgid "Product"
-msgstr ""
+msgstr "Produk"
 
 #. module: product_unspsc
 #: model:ir.model,name:product_unspsc.model_uom_uom

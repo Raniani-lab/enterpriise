@@ -3,9 +3,9 @@
 # 	* hr_expense_extract
 # 
 # Translators:
-# Jolien De Paepe, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # Martin Trigaux, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -35,7 +35,7 @@ msgid ""
 "                        Buy credits"
 msgstr ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
-"                        Koop credits"
+"                        Credits kopen"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -85,7 +85,7 @@ msgstr "Bijlage"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__available_payment_method_line_ids
 msgid "Available Payment Method Line"
-msgstr "Beschikbare betalingsmethoderegel:"
+msgstr "Beschikbare betalingsmethoderegel"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_can_show_resend_button
@@ -190,7 +190,7 @@ msgstr "Foutmelding"
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__sheet_id
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__expense_id
 msgid "Expense"
-msgstr "Declaratie"
+msgstr "Onkosten"
 
 #. module: hr_expense_extract
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_ocr_parse_ir_actions_server
@@ -213,7 +213,7 @@ msgstr "Onkosten OCR: Onkosten goedkeuren"
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_hr_expense_sheet
 msgid "Expense Report"
-msgstr "Declaratierapport"
+msgstr "Onkostenrapport"
 
 #. module: hr_expense_extract
 #. odoo-python
@@ -225,7 +225,7 @@ msgstr "De onkosten worden gedigitaliseerd"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_res_config_settings__expense_extract_show_ocr_option_selection
 msgid "Expense processing option"
-msgstr "Declararie-verwerkingsoptie"
+msgstr "Onkostenverwerkingsoptie"
 
 #. module: hr_expense_extract
 #. odoo-python
@@ -259,12 +259,12 @@ msgstr "Gegenereerde kost"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__hide_partial
 msgid "Hide Partial"
-msgstr "Verberg gedeeltelijk."
+msgstr "Gedeeltelijk verbergen"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__hide_payment_method_line
 msgid "Hide Payment Method Line"
-msgstr "Regel betalingsmethode verbergen"
+msgstr "Betalingsmethoderegel verbergen"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_receipt__id
@@ -307,7 +307,7 @@ msgstr "Laatst bijgewerkt door"
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__write_date
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__write_date
 msgid "Last Updated on"
-msgstr "Laatst geupdate op"
+msgstr "Laatst bijgewerkt op"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.expense_sample_receipt_view_form
@@ -316,7 +316,7 @@ msgid ""
 " Artificial Intelligence."
 msgstr ""
 "Laten we een voorbeeldbon proberen om de geautomatiseerde verwerking van "
-"declaraties met kunstmatige intelligentie te testen."
+"onkosten met kunstmatige intelligentie te testen."
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,help:hr_expense_extract.field_expense_sample_register__payment_method_line_id
@@ -329,11 +329,11 @@ msgid ""
 "SEPA Direct Debit: Get paid in the SEPA zone thanks to a mandate your partner will have granted to you. Module account_sepa is necessary.\n"
 msgstr ""
 "Handmatig: Betaal of word betaald met elke methode buiten Odoo.\n"
-"Payment Providers: Elke Payment Provider heeft zijn eigen Betaalmethode. Vraag een transactie op/naar een kaart aan dankzij een betalingstoken dat door de partner is opgeslagen bij online aankopen of abonnementen.\n"
+"Betaalproviders: Elke betaalprovider heeft zijn eigen betaalmethode. Vraag een transactie op/naar een kaart aan dankzij een betalingstoken dat door de partner is opgeslagen bij online aankopen of abonnementen.\n"
 "Cheque: Betaal rekeningen met een cheque en print deze vanuit Odoo.\n"
 "Batchstorting: Verzamel meerdere klantcheques tegelijk en genereer een batchstorting en dien deze in bij je bank. Module account_batch_payment is noodzakelijk.\n"
-"SEPA Credit Transfer: Betaal in de SEPA-zone door een SEPA Credit Transfer-bestand in te dienen bij je bank. Module account_sepa is noodzakelijk.\n"
-"SEPA Direct Debit: Krijg betaald in de SEPA-zone dankzij een mandaat dat je partner je hebt gegeven. Module account_sepa is noodzakelijk.\n"
+"SEPA Credit Transfer: Betaal in de SEPA-zone door een SEPA Credit Transfer-bestand in te dienen bij je bank. De module account_sepa is noodzakelijk.\n"
+"SEPA Direct Debit: Word betaald in de SEPA-zone dankzij een mandaat dat je partner je hebt gegeven. De module account_sepa is noodzakelijk.\n"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__expense_sample_register__partial_mode__paid
@@ -360,7 +360,7 @@ msgstr "Geen extractie aangevraagd"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__not_enough_credit
 msgid "Not enough credit"
-msgstr "Onvoldoende credit"
+msgstr "Onvoldoende credits"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__date
@@ -385,26 +385,26 @@ msgstr "Betaling registreren"
 #. module: hr_expense_extract
 #: model:ir.actions.act_window,name:hr_expense_extract.action_expense_sample_register
 msgid "Register Sample Payment"
-msgstr "Registreer een voorbeeldbetaling."
+msgstr "Registreer een voorbeeldbetaling"
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_expense_sample_register
 msgid "Register Sample Payments"
-msgstr "Registreer voorbeeldbetalingen."
+msgstr "Registreer voorbeeldbetalingen"
 
 #. module: hr_expense_extract
 #. odoo-javascript
 #: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
 #, python-format
 msgid "Report this expense to your manager for validation."
-msgstr "Rapporteer deze declaratie aan je manager voor goedkeuring."
+msgstr "Rapporteer deze uitgave aan je manager voor goedkeuring."
 
 #. module: hr_expense_extract
 #. odoo-python
 #: code:addons/hr_expense_extract/wizard/expense_sample_receipt.py:0
 #, python-format
 msgid "Sample Employee"
-msgstr "Voorbeeld werknemer"
+msgstr "Voorbeeldwerknemer"
 
 #. module: hr_expense_extract
 #. odoo-python
@@ -422,7 +422,7 @@ msgstr "Verzenden voor digitalisering"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_res_company__expense_extract_show_ocr_option_selection
 msgid "Send mode on expense attachments"
-msgstr "Verstuur modus op onkostendeclaratie bijlagen"
+msgstr "Verzendmodus op onkostenbijlagen"
 
 #. module: hr_expense_extract
 #. odoo-python
@@ -473,12 +473,12 @@ msgstr "Te bevestigen"
 #: model:ir.actions.act_window,name:hr_expense_extract.action_expense_sample_receipt
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.expense_sample_receipt_view_form
 msgid "Try Sample Receipt"
-msgstr "Probeer een voorbeeldbon."
+msgstr "Probeer een voorbeeldbon"
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_expense_sample_receipt
 msgid "Try Sample Receipts"
-msgstr "Probeer voorbeeldbonnen."
+msgstr "Probeer voorbeeldbonnen"
 
 #. module: hr_expense_extract
 #. odoo-javascript
@@ -497,7 +497,7 @@ msgstr "Niet ondersteund bestandsformaat"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__waiting_extraction
 msgid "Waiting extraction"
-msgstr "Wacht op extractie"
+msgstr "Wachten op extractie"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__waiting_upload
@@ -507,7 +507,7 @@ msgstr "Wachten op uploaden"
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__waiting_validation
 msgid "Waiting validation"
-msgstr "Wacht op validatie"
+msgstr "Wachten op validatie"
 
 #. module: hr_expense_extract
 #. odoo-javascript
@@ -521,24 +521,24 @@ msgstr ""
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__word_page
 msgid "Word Page"
-msgstr "Woord pagina"
+msgstr "Word pagina"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense_extract_words__word_text
 msgid "Word Text"
-msgstr "Woord tekst"
+msgstr "Word tekst"
 
 #. module: hr_expense_extract
 #. odoo-python
 #: code:addons/hr_expense_extract/models/hr_expense.py:0
 #, python-format
 msgid "You cannot send a expense that is not in draft state!"
-msgstr "Je kunt geen declaraties verzenden die niet in conceptstaat is!"
+msgstr "Je kunt geen onkosten verzenden die niet in conceptstaat is!"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
 msgid "You don't have enough credit to extract data from your expense."
-msgstr "Je hebt niet genoeg krediet om gegevens uit je declaratie te halen."
+msgstr "Je hebt niet genoeg credits om gegevens uit je onkosten te halen."
 
 #. module: hr_expense_extract
 #. odoo-python
@@ -554,7 +554,7 @@ msgstr ""
 #: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
 #, python-format
 msgid "Your manager will have to approve (or refuse) your expense reports."
-msgstr "Jouw manager moet je declaraties goedkeuren (of afwijzen)."
+msgstr "Jouw manager moet je onkosten goedkeuren (of afwijzen)."
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__hr_expense__extract_state__extract_not_ready

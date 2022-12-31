@@ -365,8 +365,8 @@ msgid ""
 "domain</i>"
 msgstr ""
 "<i class=\"fa fa-lightbulb-o\" role=\"img\"/> Activez la fonctionnalité de "
-"<i>Serveurs de messagerie externe</i> dans les <i>Paramètres généraux</i> et"
-" indiquez un <i>alias de domaine</i>"
+"<i>Serveurs de messagerie personnalisés</i> dans les <i>Paramètres "
+"généraux</i> et indiquez un <i>alias de domaine</i>"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form
@@ -1426,8 +1426,8 @@ msgstr "Insatisfait"
 #, python-format
 msgid "Do not have access, skip this data for user's digest email"
 msgstr ""
-"Accès non disponible, ne pas tenir compte de cette donnée dans l'email "
-"récapitulatif envoyé à l'utilisateur"
+"Accès non disponible, ne pas tenir compte de cette donnée dans le digest "
+"d'emails envoyé à l'utilisateur"
 
 #. module: helpdesk
 #: model_terms:ir.ui.view,arch_db:helpdesk.helpdesk_team_view_form

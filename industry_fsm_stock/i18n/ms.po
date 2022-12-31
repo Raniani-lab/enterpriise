@@ -27,7 +27,7 @@ msgstr ""
 #. module: industry_fsm_stock
 #: model_terms:ir.ui.view,arch_db:industry_fsm_stock.fsm_stock_tracking_line_view_form
 msgid "Close"
-msgstr ""
+msgstr "Tutup"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__company_id
@@ -122,17 +122,17 @@ msgstr ""
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__product_id
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking_line__product_id
 msgid "Product"
-msgstr ""
+msgstr "Produk"
 
 #. module: industry_fsm_stock
 #: model:ir.model,name:industry_fsm_stock.model_product_product
 msgid "Product Variant"
-msgstr ""
+msgstr "Varian Produk"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking_line__quantity
 msgid "Quantity"
-msgstr ""
+msgstr "Kuantiti"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_product_product__quantity_decreasable
@@ -163,7 +163,7 @@ msgstr "Pergerakan Saham"
 #: model:ir.model,name:industry_fsm_stock.model_project_task
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__task_id
 msgid "Task"
-msgstr ""
+msgstr "Tugasan"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__fsm_done
@@ -188,7 +188,7 @@ msgstr ""
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__tracking
 msgid "Tracking"
-msgstr ""
+msgstr "Penjejakan"
 
 #. module: industry_fsm_stock
 #: model:ir.model.fields,field_description:industry_fsm_stock.field_fsm_stock_tracking__tracking_line_ids

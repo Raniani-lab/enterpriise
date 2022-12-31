@@ -4,6 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
+# Wolfgang Taferner, 2022
 # 
 msgid ""
 msgstr ""
@@ -11,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Wolfgang Taferner, 2022\n"
 "Language-Team: German (https://www.transifex.com/odoo/teams/41243/de/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -130,7 +131,9 @@ msgstr "(t-if=\""
 msgid ""
 "<div><p>The <strong>%s</strong> property is only applied to records matching"
 " this filter.</p></div>"
-msgstr "<div><p><strong/></p></div>"
+msgstr ""
+"<div><p>The <strong>%s</strong> property is only applied to records matching"
+" this filter.</p></div>"
 
 #. module: web_studio
 #. odoo-python
@@ -836,7 +839,7 @@ msgstr "Bild ändern"
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "Change the <b>background</b>, make it yours."
-msgstr "<b/>"
+msgstr "Change the <b>background</b>, make it yours."
 
 #. module: web_studio
 #. odoo-javascript
@@ -1569,7 +1572,7 @@ msgstr "Erledigt"
 #, python-format
 msgid ""
 "Drag & drop <b>another field</b>. Let’s try with a <i>selection field</i>."
-msgstr "<b/><i/>"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -1989,7 +1992,7 @@ msgstr "Weiter so, fast geschafft!"
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "Good job! To add more <b>fields</b>, come back to the <i>Add tab</i>."
-msgstr "<b/><i/>"
+msgstr ""
 
 #. module: web_studio
 #. odoo-python
@@ -2138,7 +2141,7 @@ msgstr "Hilfe Tooltip"
 msgid ""
 "Here, you can <b>name</b> your field (e.g. Book reference, ISBN, Internal "
 "Note, etc.)."
-msgstr "<b/>"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -2193,14 +2196,14 @@ msgstr "Stunde"
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "How do you want to <b>name</b> your app? Library, Academy, …?"
-msgstr "<b/>"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "How do you want to name your first <b>menu</b>? My books, My courses?"
-msgstr "<b/>"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -2215,7 +2218,7 @@ msgstr "HTML"
 #, python-format
 msgid ""
 "I bet you can <b>build an app</b> in 5 minutes. Ready for the challenge?"
-msgstr "<b/>"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -2438,7 +2441,7 @@ msgstr "Zuletzt aktualisiert am"
 msgid ""
 "Let’s check the result. Close Odoo Studio to get an <b>overview of your "
 "app</b>."
-msgstr "<b/>"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -2832,7 +2835,7 @@ msgstr "Weiter"
 msgid ""
 "Nicely done! Let’s build your screen now; <b>drag</b> a <i>text field</i> "
 "and <b>drop</b> it in your view, on the right."
-msgstr "<b/><i/><b/>"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -2893,7 +2896,7 @@ msgstr "Notizen"
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "Now you’re on your own. Enjoy your <b>super power</b>."
-msgstr "<b/>"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -3585,7 +3588,7 @@ msgstr "Kosten oder Preise für Datensätze bestimmen"
 msgid ""
 "Set an <b>email alias</b>. Then, try to send an email to this address; it "
 "will create a document automatically for you. Pretty cool, huh?"
-msgstr "<b/>"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -4227,7 +4230,7 @@ msgstr "Titel Block"
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "To <b>customize a field</b>, click on its <i>label</i>."
-msgstr "<b/><i/>"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -4388,14 +4391,14 @@ msgstr "Auf Genehmigung warten"
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "Want more fun? Let’s create more <b>views</b>."
-msgstr "<b/>"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "Want to customize the background? Let’s activate <b>Odoo Studio</b>."
-msgstr "<b/>"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript
@@ -4423,7 +4426,7 @@ msgstr "Willkommen bei"
 #: code:addons/web_studio/static/src/tours/web_studio.js:0
 #, python-format
 msgid "What about a <b>Kanban view</b>?"
-msgstr "<b/>"
+msgstr ""
 
 #. module: web_studio
 #: model:ir.model.fields,help:web_studio.field_studio_approval_rule__can_validate
@@ -4464,7 +4467,7 @@ msgstr "Breite"
 msgid ""
 "Wow, nice! And I’m sure you can make it even better! Use this icon to open "
 "<b>Odoo Studio</b> and customize any screen."
-msgstr "<b/>"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript

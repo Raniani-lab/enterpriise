@@ -49,7 +49,7 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/components/popup.xml:0
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "Batal"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -68,13 +68,13 @@ msgstr "Teruskan"
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter_productivity__total_cost
 msgid "Cost"
-msgstr ""
+msgstr "Kos"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__currency_id
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter_productivity__currency_id
 msgid "Currency"
-msgstr ""
+msgstr "Mata wang"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -85,12 +85,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_quality_check__employee_id
 #, python-format
 msgid "Employee"
-msgstr ""
+msgstr "Pekerja"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_routing_workcenter__employee_ratio
 msgid "Employee Capacity"
-msgstr ""
+msgstr "Kapasiti Pekerja"
 
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workcenter__employee_costs_hour
@@ -163,14 +163,14 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/views/list/mrp_workorder_list_controller.js:0
 #, python-format
 msgid "Select Employee"
-msgstr ""
+msgstr "Pilih Pekerja"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
 #: code:addons/mrp_workorder_hr/static/src/components/working_employee_popup.xml:0
 #, python-format
 msgid "Stop"
-msgstr ""
+msgstr "Berhenti"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript
@@ -193,7 +193,7 @@ msgstr "Penggunaan Pusat Kerja"
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_workorder
 msgid "Work Order"
-msgstr ""
+msgstr "Arahan Kerja"
 
 #. module: mrp_workorder_hr
 #: model:ir.model,name:mrp_workorder_hr.model_mrp_workcenter_productivity
@@ -203,7 +203,7 @@ msgstr ""
 #. module: mrp_workorder_hr
 #: model:ir.model.fields,field_description:mrp_workorder_hr.field_mrp_workorder__employee_ids
 msgid "Working Employees"
-msgstr ""
+msgstr "Pekerja Bekerja"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript

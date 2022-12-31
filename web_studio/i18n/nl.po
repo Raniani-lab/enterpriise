@@ -3023,7 +3023,7 @@ msgstr "Bovenliggend menu"
 #: code:addons/web_studio/models/ir_ui_view.py:0
 #, python-format
 msgid "Partner"
-msgstr "Relatie"
+msgstr "Partner"
 
 #. module: web_studio
 #. odoo-python
@@ -4496,7 +4496,7 @@ msgstr "Jaar"
 #: code:addons/web_studio/static/src/legacy/js/reports/sidebar_components/report_building_blocks.js:0
 #, python-format
 msgid "You can only display a user or a partner"
-msgstr "Je kunt alleen een gebruiker of een relatie tonen"
+msgstr "Je kunt alleen een gebruiker of een partner tonen"
 
 #. module: web_studio
 #. odoo-python

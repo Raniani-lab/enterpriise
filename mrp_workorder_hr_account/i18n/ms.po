@@ -33,7 +33,7 @@ msgstr ""
 #. module: mrp_workorder_hr_account
 #: model:ir.model.fields,field_description:mrp_workorder_hr_account.field_account_analytic_line__employee_id
 msgid "Employee"
-msgstr ""
+msgstr "Pekerja"
 
 #. module: mrp_workorder_hr_account
 #: model:ir.model.fields,field_description:mrp_workorder_hr_account.field_mrp_workorder__employee_analytic_account_line_ids
@@ -53,7 +53,7 @@ msgstr "Penggunaan Pusat Kerja"
 #. module: mrp_workorder_hr_account
 #: model:ir.model,name:mrp_workorder_hr_account.model_mrp_workorder
 msgid "Work Order"
-msgstr ""
+msgstr "Arahan Kerja"
 
 #. module: mrp_workorder_hr_account
 #: model:ir.model,name:mrp_workorder_hr_account.model_mrp_workcenter_productivity

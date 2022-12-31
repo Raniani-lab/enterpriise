@@ -5,8 +5,8 @@
 # Translators:
 # Martin Trigaux, 2022
 # Yenthe Van Ginneken <yenthespam@gmail.com>, 2022
-# Jolien De Paepe, 2022
 # Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
+# Jolien De Paepe, 2022
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2022\n"
+"Last-Translator: Jolien De Paepe, 2022\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -123,7 +123,7 @@ msgstr "Soort interventie"
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_task_worksheet_template_3
 msgid "Manufacturer"
-msgstr "Leverancier"
+msgstr "Fabrikant"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_task_worksheet_template_3
@@ -158,7 +158,7 @@ msgstr "Plan je taken en wijs ze toe aan je werknemers."
 #. module: industry_fsm_report
 #: model:ir.actions.server,name:industry_fsm_report.action_fsm_task_send_report
 msgid "Send Report"
-msgstr "Verzend rapport"
+msgstr "Rapport verzenden"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_task_worksheet_template_3
@@ -178,7 +178,7 @@ msgstr "Taak herhaling"
 #. module: industry_fsm_report
 #: model:ir.model,name:industry_fsm_report.model_report_industry_fsm_worksheet_custom
 msgid "Task Worksheet Custom Report"
-msgstr "Taak aangepaste werkbon"
+msgstr "Taak werkbon aangepast rapport"
 
 #. module: industry_fsm_report
 #: model_terms:ir.ui.view,arch_db:industry_fsm_report.report_custom_x_project_task_worksheet_template_3
@@ -194,7 +194,7 @@ msgstr "Werkbon"
 #. module: industry_fsm_report
 #: model:ir.model.fields,field_description:industry_fsm_report.field_project_task__worksheet_count
 msgid "Worksheet Count"
-msgstr "Werkbon aantal"
+msgstr "Aantal werkbonnen"
 
 #. module: industry_fsm_report
 #: model:ir.model,name:industry_fsm_report.model_worksheet_template

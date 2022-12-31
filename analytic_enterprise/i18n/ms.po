@@ -37,4 +37,4 @@ msgstr ""
 #. module: analytic_enterprise
 #: model_terms:ir.ui.view,arch_db:analytic_enterprise.account_analytic_line_report_view_grid
 msgid "Year"
-msgstr ""
+msgstr "Tahun"

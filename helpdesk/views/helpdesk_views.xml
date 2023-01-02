@@ -555,6 +555,7 @@
                 <field name="write_date" optional="hide" readonly="1"/>
                 <field name="ticket_type_id" options="{'no_create_edit': True}" optional="hide"/>
                 <field name="tag_ids" optional="hide" widget="many2many_tags" options="{'color_field': 'color'}"/>
+                <field name="properties"/>
                 <field name="rating_last_text" string="Rating" decoration-danger="rating_last_text == 'ko'"
                     decoration-warning="rating_last_text == 'ok'" decoration-success="rating_last_text == 'top'"
                     attrs="{'invisible': [('rating_last_text', '=', 'none')]}"

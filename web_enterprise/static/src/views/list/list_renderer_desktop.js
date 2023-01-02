@@ -22,7 +22,7 @@ export const patchListRendererDesktop = {
     },
 
     get displayOptionalFields() {
-        return this.isStudioEditable || this.getOptionalFields.length;
+        return this.isStudioEditable || this._super();
     },
 
     /**

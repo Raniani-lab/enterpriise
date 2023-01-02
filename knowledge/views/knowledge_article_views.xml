@@ -248,6 +248,8 @@
                 <field name="root_article_id" optional="hide"/>
                 <field name="last_edition_uid" widget="many2one_avatar_user" optional="hide"/>
                 <field name="last_edition_date" string="Last Edit Date" optional="hide"/>
+                <field name="parent_id" invisible="1"/>
+                <field name="article_properties"/>
             </tree>
         </field>
     </record>

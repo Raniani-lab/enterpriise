@@ -13,8 +13,6 @@ const {
     onWillUnmount,
     useState } = owl;
 
-let observerId = 0;
-
 /**
  * This component will have the responsibility to load the embedded view lazily
  * when it becomes visible on screen. The component will also have the responsibility
@@ -28,7 +26,6 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
             waiting: true,
             error: false
         });
-        this.observerId = observerId++;
 
         onMounted(() => {
             const { anchor } = this.props;
@@ -75,23 +72,6 @@ export class EmbeddedViewBehavior extends AbstractBehavior {
             act_window: action,
             context: context
         });
-    }
-
-    // Hooks:
-
-    onEmbeddedViewLoadStart () {
-        if (!this.props.readonly) {
-            const editor = this.props.wysiwyg.odooEditor;
-            editor.observerUnactive(`knowledge_embedded_view_id_${this.observerId}`);
-        }
-    }
-
-    onEmbeddedViewLoadEnd () {
-        if (!this.props.readonly) {
-            const editor = this.props.wysiwyg.odooEditor;
-            editor.idSet(this.props.anchor);
-            editor.observerActive(`knowledge_embedded_view_id_${this.observerId}`);
-        }
     }
 
     /**

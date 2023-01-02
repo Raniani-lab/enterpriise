@@ -15,7 +15,6 @@ export class FileBehavior extends AbstractBehavior {
     setup() {
         super.setup();
         this.dialogService = useService('dialog');
-        this.knowledgeCommandsService = useService('knowledgeCommandsService');
         this.rpcService = useService('rpc');
         this.uiService = useService('ui');
         this.targetRecordInfo = this.knowledgeCommandsService.getCommandsRecordInfo();

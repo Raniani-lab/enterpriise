@@ -18,7 +18,6 @@ export class TemplateBehavior extends AbstractBehavior {
     setup() {
         super.setup();
         this.dialogService = useService("dialog");
-        this.knowledgeCommandsService = useService("knowledgeCommandsService");
         this.popoverService = useService("popover");
         this.uiService = useService("ui");
         this.copyToClipboardButton = useRef("copyToClipboardButton");

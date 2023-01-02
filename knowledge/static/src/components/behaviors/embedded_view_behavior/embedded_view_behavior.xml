@@ -24,8 +24,6 @@
                 action="props.act_window"
                 context="props.context"
                 viewType="props.view_type"
-                onLoadStart.bind="onEmbeddedViewLoadStart"
-                onLoadEnd.bind="onEmbeddedViewLoadEnd"
                 setTitle.bind="setTitle"
                 getTitle.bind="getTitle"
                 readonly="props.readonly"

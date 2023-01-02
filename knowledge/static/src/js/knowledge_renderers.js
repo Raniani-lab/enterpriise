@@ -94,15 +94,20 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             };
             this.tree.el.addEventListener('click', listener);
 
-            /**
-             * Show/hide the Share Panel (invite, update members permissions, ...)
-             * Done on events of BS dropdown instead of onClick because user might
-             * click on another dropdown toggle button, which would not fire the
-             * click on toggle Share Panel itself. This leads to an inconsistent
-             * state between the display and the state, which is solved by correctly
-             * using dropdown events.
-             */
-            const buttonSharePanel = this.root.el.querySelector('#dropdown_share_panel');
+            return () => {
+                this.tree.el.removeEventListener('click', listener);
+            };
+        }, () => []);
+
+        /**
+         * Show/hide the Share Panel (invite, update members permissions, ...)
+         * Done on events of BS dropdown instead of onClick because user might
+         * click on another dropdown toggle button, which would not fire the
+         * click on toggle Share Panel itself. This leads to an inconsistent
+         * state between the display and the state, which is solved by correctly
+         * using dropdown events.
+        */
+        useEffect((buttonSharePanel) => {
             if (buttonSharePanel) {
                 buttonSharePanel.addEventListener(
                     // Prevent hiding the dropdown when the invite modal is shown
@@ -120,11 +125,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                     () => this.state.displaySharePanel = false
                 );
             }
-
-            return () => {
-                this.tree.el.removeEventListener('click', listener);
-            };
-        }, () => []);
+        }, () => [document.querySelector('#dropdown_share_panel')]);
 
         onMounted(() => {
             this._renderTree(this.resId, '/knowledge/tree_panel');

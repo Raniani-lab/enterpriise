@@ -163,6 +163,7 @@ class TestDashboard(TransactionCase):
             elif section['id'] == 'employees':
                 employees = section
         self.assertTrue(all([employer_cost, employees]))
+        contract_1_last_year = contracts[0].date_start.year == today.year - 1
         contract_3_this_year = contracts[2].date_start.year == today.year
 
         # Check employees monthly
@@ -174,14 +175,18 @@ class TestDashboard(TransactionCase):
 
         # Check yearly
         employees_stat = employees['data']['yearly']
-        self.assertEqual(employees_stat[0]['value'], 0)
+        self.assertEqual(employees_stat[0]['value'], 1 if contract_1_last_year else 0)
         self.assertEqual(employees_stat[1]['value'], 3 if contract_3_this_year else 2)
         self.assertEqual(employees_stat[2]['value'], 3)
-
 
     def test_dashboard_stat_end_of_year(self):
         # Tests the dashboard again but at the end of a year
         with freeze_time(date(2021, 12, 1)):
+            self.test_dashboard_stats()
+
+    def test_dashboard_stat_start_of_year(self):
+        # Tests the dashboard again but at the start of a year
+        with freeze_time(date(2021, 1, 1)):
             self.test_dashboard_stats()
 
     def test_dashboard_no_english_language_access(self):

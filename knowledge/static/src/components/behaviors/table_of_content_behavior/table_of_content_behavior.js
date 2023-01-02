@@ -3,18 +3,13 @@
 import { AbstractBehavior } from "@knowledge/components/behaviors/abstract_behavior/abstract_behavior";
 import { HEADINGS, fetchValidHeadings } from "@knowledge/js/tools/knowledge_tools";
 import {
-    onPatched,
-    onWillPatch,
     onWillStart,
     useEffect,
     useState } from "@odoo/owl";
 
-let observerId = 0;
-
 export class TableOfContentBehavior extends AbstractBehavior {
     setup () {
         super.setup();
-        this.observerId = observerId++;
         this.state = useState({
             toc: []
         });
@@ -37,13 +32,6 @@ export class TableOfContentBehavior extends AbstractBehavior {
                     observer.disconnect();
                     this.props.anchor.removeEventListener('drop', onDrop);
                 };
-            });
-            onWillPatch(() => {
-                this.editor.observerUnactive(`knowledge_toc_update_id_${this.observerId}`);
-            });
-            onPatched(() => {
-                this.editor.idSet(this.props.anchor);
-                this.editor.observerActive(`knowledge_toc_update_id_${this.observerId}`);
             });
         }
 

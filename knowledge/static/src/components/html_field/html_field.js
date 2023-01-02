@@ -161,6 +161,9 @@ const HtmlFieldPatch = {
                     }
                 }
                 anchor.replaceChildren();
+                if (!this.props.readonly && this.wysiwyg && this.wysiwyg.odooEditor) {
+                    this.wysiwyg.odooEditor.observerActive('injectBehavior');
+                }
                 const config = (({env, dev, translatableAttributes, translateFn}) => {
                     return {env, dev, translatableAttributes, translateFn};
                 })(this.__owl__.app);
@@ -172,8 +175,6 @@ const HtmlFieldPatch = {
                 this.behaviorApps.add(anchor.oKnowledgeBehavior);
                 await anchor.oKnowledgeBehavior.mount(anchor);
                 if (!this.props.readonly && this.wysiwyg && this.wysiwyg.odooEditor) {
-                    this.wysiwyg.odooEditor.idSet(anchor);
-                    this.wysiwyg.odooEditor.observerActive('injectBehavior');
                     if (behaviorData.setCursor && anchor.oKnowledgeBehavior.root.component.setCursor) {
                         anchor.oKnowledgeBehavior.root.component.setCursor();
                     }

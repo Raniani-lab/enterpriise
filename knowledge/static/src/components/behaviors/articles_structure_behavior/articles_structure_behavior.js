@@ -9,9 +9,7 @@ import {
     useState,
     onMounted,
     onPatched,
-    onWillPatch } from "@odoo/owl";
-
-let observerId = 0;
+ } from "@odoo/owl";
 
 /**
  * It creates a listing of children of this article.
@@ -25,7 +23,6 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
         super.setup();
         this.rpc = useService('rpc');
         this.actionService = useService('action');
-        this.observerId = observerId++;
 
         if (this.props.content) {
             this.state = useState({
@@ -63,24 +60,11 @@ export class ArticlesStructureBehavior extends AbstractBehavior {
                 this.props.anchor.removeEventListener('drop', onDrop);
             };
         });
-
         if (!this.props.readonly) {
-            onWillPatch(() => {
-                this.editor.observerUnactive(`knowledge_article_structure_id_${this.observerId}`);
-            });
             onPatched(() => {
-                this.editor.idSet(this.props.anchor);
-                this.editor.observerActive(`knowledge_article_structure_id_${this.observerId}`);
                 this.props.record.save();
             });
         }
-    }
-
-    /**
-     * @returns {OdooEditor}
-     */
-    get editor () {
-        return this.props.wysiwyg.odooEditor;
     }
 
     /**

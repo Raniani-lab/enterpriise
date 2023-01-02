@@ -954,7 +954,7 @@
     <record id="helpdesk_ticket_action_close_analysis" model="ir.actions.act_window">
         <field name="name">Closed Tickets Analysis</field>
         <field name="res_model">helpdesk.ticket</field>
-        <field name="view_mode">tree,pivot,graph</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
         <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
         <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(hours=12)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
         <field name="context">{

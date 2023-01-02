@@ -9,12 +9,6 @@ const _t = core._t;
 
 const PosIoTChrome = (Chrome) =>
     class extends Chrome {
-        get lastTransactionStatusButtonIsShown() {
-            return this.env.pos.payment_methods.some(
-                (pm) => pm.use_payment_terminal === "worldline"
-            );
-        }
-
         __showScreen() {
             if (
                 this.mainScreen.name === "PaymentScreen" &&

@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0+e\n"
+"Project-Id-Version: Odoo Server 16.1alpha1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-09 09:29+0000\n"
-"PO-Revision-Date: 2022-11-09 09:29+0000\n"
+"POT-Creation-Date: 2023-01-02 12:47+0000\n"
+"PO-Revision-Date: 2023-01-02 12:47+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,12 +16,14 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: l10n_nl_reports
+#. odoo-python
 #: code:addons/l10n_nl_reports/models/account_general_ledger.py:0
 #, python-format
 msgid "- Country"
 msgstr ""
 
 #. module: l10n_nl_reports
+#. odoo-python
 #: code:addons/l10n_nl_reports/models/account_general_ledger.py:0
 #, python-format
 msgid "- VAT number"
@@ -29,42 +31,12 @@ msgstr ""
 
 #. module: l10n_nl_reports
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_assets
-msgid "ACTIVA"
+msgid "ACTIVE"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_depr_balance
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_depr
-msgid "Afschrijving"
-msgstr ""
-
-#. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_idep_balance
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_idep
-msgid "Afschrijving immateriële vaste activa"
-msgstr ""
-
-#. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_mdep_balance
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_mdep
-msgid "Afschrijving materiële vaste activa"
-msgstr ""
-
-#. module: l10n_nl_reports
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_premium
-msgid "Agio"
-msgstr ""
-
-#. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_gcost_balance
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_gcost
-msgid "Algemene beheerkosten"
-msgstr ""
-
-#. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_gen_balance
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_gen
-msgid "Algemene kosten"
+msgid "Amortisation of intangible assets"
 msgstr ""
 
 #. module: l10n_nl_reports
@@ -80,53 +52,83 @@ msgstr ""
 
 #. module: l10n_nl_reports
 #: model:account.report,name:l10n_nl_reports.account_financial_report_bs
-msgid "Balans"
+msgid "Balance sheet"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_taxes_balance
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_taxes
-msgid "Belastingen"
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_l
+msgid "CLAIMS"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_profit_balance
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_profit
-msgid "Bruto-omzetresultaat"
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_current
+msgid "CURRENT ASSETS"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_bs_cred_balance
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_cash
+msgid "Cash at bank and in hand"
+msgstr ""
+
+#. module: l10n_nl_reports
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_pcost
+msgid "Cost"
+msgstr ""
+
+#. module: l10n_nl_reports
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_cogs
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_sale
+msgid "Cost of sales"
+msgstr ""
+
+#. module: l10n_nl_reports
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_cred
-msgid "Crediteuren"
+msgid "Creditors"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_distr_balance
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_curr_year_earnings
+msgid "Current Year Profit"
+msgstr ""
+
+#. module: l10n_nl_reports
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_depr
+msgid "Depreciation"
+msgstr ""
+
+#. module: l10n_nl_reports
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_mdep
+msgid "Depreciation of property, plant and equipment"
+msgstr ""
+
+#. module: l10n_nl_reports
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_distr
-msgid "Distributiekosten"
+msgid "Distribution costs"
 msgstr ""
 
 #. module: l10n_nl_reports
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_eq
-msgid "EIGEN VERMOGEN"
+msgid "EQUITY"
+msgstr ""
+
+#. module: l10n_nl_reports
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_err
+msgid "Error account"
+msgstr ""
+
+#. module: l10n_nl_reports
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_fixed
+msgid "FIXED ASSETS"
 msgstr ""
 
 #. module: l10n_nl_reports
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_fin
-msgid "Financiële Vaste Active"
+msgid "Financial Fixed Active"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_fres_balance
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_fres
-msgid "Financiële resultaat"
-msgstr ""
-
-#. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_err_balance
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_err
-msgid "Foutenrekening"
+msgid "Financial result"
 msgstr ""
 
 #. module: l10n_nl_reports
@@ -135,55 +137,43 @@ msgid "General Ledger Custom Handler"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_cap
-msgid "Gestort en Opgevraagd Kapitaal"
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_gen
+msgid "General expenses"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_revaluation_res
-msgid "Herwaarderingsreserve"
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_gcost
+msgid "General management costs"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_bs_curr_year_earnings_balance
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_curr_year_earnings
-msgid "Huidig Jaar Winst"
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_profit
+msgid "Gross sales result"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_hous_balance
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_hous
-msgid "Huisvestingskosten"
+msgid "Housing costs"
 msgstr ""
 
 #. module: l10n_nl_reports
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_immat
-msgid "Immateriële Vaste Active"
+msgid "Intangible Fixed Asset"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_off_balance
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_off
-msgid "Kantoorkosten"
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_intl
+msgid "Interest and other financial charges"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_bs_sh_debt_balance
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_2_1_1_1
+msgid "Interest income"
+msgstr ""
+
+#. module: l10n_nl_reports
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_sh_debt
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_short_debt
 msgid "Kortlopende Schulden"
-msgstr ""
-
-#. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_pcost_balance
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_pcost
-msgid "Kosten"
-msgstr ""
-
-#. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_cogs_balance
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_cogs
-msgid "Kostprijs van de omzet"
 msgstr ""
 
 #. module: l10n_nl_reports
@@ -192,37 +182,23 @@ msgid "L10N Nl Report Xaf Userid"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_bs_long_debt_balance
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_long_debt
-msgid "Langlopende Schulden"
-msgstr ""
-
-#. module: l10n_nl_reports
 #: model_terms:ir.ui.view,arch_db:l10n_nl_reports.xaf_audit_file
 msgid "Last write"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_cash
-msgid "Liquide Middelen"
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_legal_res
+msgid "Legal and Statutory Reserves"
 msgstr ""
 
 #. module: l10n_nl_reports
 #: model:ir.actions.server,name:l10n_nl_reports.ir_cron_load_xsd_file_ir_actions_server
-#: model:ir.cron,cron_name:l10n_nl_reports.ir_cron_load_xsd_file
-#: model:ir.cron,name:l10n_nl_reports.ir_cron_load_xsd_file
 msgid "Load XSD File (Dutch reports)"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_sala_balance
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_sala
-msgid "Lonen en salarissen"
-msgstr ""
-
-#. module: l10n_nl_reports
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_mat
-msgid "Materiële Vaste Active"
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_long_debt
+msgid "Long-term liabilities"
 msgstr ""
 
 #. module: l10n_nl_reports
@@ -231,15 +207,13 @@ msgid "NL Profit And Loss"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_net_balance
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_net
-msgid "Netto-omzet"
+msgid "Net sales"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_ebitda_balance
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_ebitda
-msgid "Netto-omzetresultaat"
+msgid "Net sales result"
 msgstr ""
 
 #. module: l10n_nl_reports
@@ -248,92 +222,130 @@ msgid "Odoo"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_bs_undist_profit_balance
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_bs_undist_profit_balance_account_codes
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_bs_undist_profit_balance_aggregate
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_undist_profit
-msgid "Onverdeelde Winst"
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_off
+msgid "Office costs"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_otcb_balance
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_otcb
-msgid "Overige Lasten En Opbrengsten"
+msgid "Other Expenses And Revenues"
 msgstr ""
 
 #. module: l10n_nl_reports
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_other_res
-msgid "Overige Reserves"
+msgid "Other Reserves"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_oth_balance
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_oth
-msgid "Overige bedrijfsopbrengsten"
+msgid "Other operating income"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_opc_balance
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_opc
-msgid "Overige personeelskosten"
+msgid "Other personnel costs"
 msgstr ""
 
 #. module: l10n_nl_reports
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_leq
-msgid "PASSIVA"
+msgid "PASSIVE"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_pens_balance
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_cap
+msgid "Paid-up and Called-up Capital"
+msgstr ""
+
+#. module: l10n_nl_reports
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_pens
-msgid "Pensioenlasten"
+msgid "Pension charges"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_2_1_1_1_balance
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_2_1_1_1
-msgid "Rente baten"
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_premium
+msgid "Premium"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_intl_balance
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_intl
-msgid "Rente en overige financiële lasten"
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_prev_years_earnings
+msgid "Previous Years Profit"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_resnb_balance
+#: model:account.report,name:l10n_nl_reports.account_financial_report_pnl
+msgid "Profit and loss report"
+msgstr ""
+
+#. module: l10n_nl_reports
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_mat
+msgid "Property, plant and equipment"
+msgstr ""
+
+#. module: l10n_nl_reports
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_provisions
+msgid "Provisions"
+msgstr ""
+
+#. module: l10n_nl_reports
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_claims
+msgid "Receivables"
+msgstr ""
+
+#. module: l10n_nl_reports
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_resnb
-msgid "Resultaat Na Belastingen"
+msgid "Result After Taxes"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_resvb_balance
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_resvb
-msgid "Resultaat Voor Belastingen"
+msgid "Result Before tax"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_reso_balance
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_reso
-msgid "Resultaat overige activa"
+msgid "Result other assets"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_l
-msgid "SCHULDEN"
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_revaluation_res
+msgid "Revaluation reserve"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_soc_balance
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_short_debt
+msgid "Short-term Liabilities"
+msgstr ""
+
+#. module: l10n_nl_reports
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_soc
-msgid "Sociale lasten"
+msgid "Social charges"
 msgstr ""
 
 #. module: l10n_nl_reports
+#. odoo-python
 #: code:addons/l10n_nl_reports/models/account_general_ledger.py:0
 #, python-format
 msgid "Some fields must be specified on the company:"
+msgstr ""
+
+#. module: l10n_nl_reports
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_stock
+msgid "Stocks"
+msgstr ""
+
+#. module: l10n_nl_reports
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_taxes
+msgid "Taxes"
+msgstr ""
+
+#. module: l10n_nl_reports
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_trans
+msgid "Transport costs"
+msgstr ""
+
+#. module: l10n_nl_reports
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_undist_profit
+msgid "Undistributed Profit"
 msgstr ""
 
 #. module: l10n_nl_reports
@@ -342,67 +354,12 @@ msgid "User"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: code:addons/l10n_nl_reports/models/account_general_ledger.py:0
-#, python-format
-msgid "There is no data to export."
+#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_sala
+msgid "Wages and salaries"
 msgstr ""
 
 #. module: l10n_nl_reports
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_fixed
-msgid "VASTE ACTIVA"
-msgstr ""
-
-#. module: l10n_nl_reports
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_current
-msgid "VLOTTENDE ACTIVA"
-msgstr ""
-
-#. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_sale_balance
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_sale
-msgid "Verkoopkosten"
-msgstr ""
-
-#. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_pnl_trans_balance
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_pnl_trans
-msgid "Vervoerskosten"
-msgstr ""
-
-#. module: l10n_nl_reports
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_bs_prev_years_earnings_balance
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_bs_prev_years_earnings_balance_aggregate
-#: model:account.report.expression,report_line_name:l10n_nl_reports.account_financial_report_bs_prev_years_earnings_balance_domain
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_prev_years_earnings
-msgid "Voorgaande Jaren Winst"
-msgstr ""
-
-#. module: l10n_nl_reports
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_stock
-msgid "Voorraden"
-msgstr ""
-
-#. module: l10n_nl_reports
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_provisions
-msgid "Voorzieningen"
-msgstr ""
-
-#. module: l10n_nl_reports
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_claims
-msgid "Vorderingen"
-msgstr ""
-
-#. module: l10n_nl_reports
-#: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_legal_res
-msgid "Wettelijke en Statutaire Reserves"
-msgstr ""
-
-#. module: l10n_nl_reports
-#: model:account.report,name:l10n_nl_reports.account_financial_report_pnl
-msgid "Winst-en-verliesrekening"
-msgstr ""
-
-#. module: l10n_nl_reports
+#. odoo-python
 #: code:addons/l10n_nl_reports/models/account_general_ledger.py:0
 #: code:addons/l10n_nl_reports/models/account_general_ledger.py:0
 #, python-format

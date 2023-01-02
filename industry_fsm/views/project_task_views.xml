@@ -145,8 +145,32 @@
                 <field name="is_fsm" invisible="1"/>
                 <field name="allow_worksheets" invisible="1"/>
                 <field name="partner_id" attrs="{'required': [('is_fsm', '=', True)], 'invisible': [('is_fsm', '=', False)]}" widget="res_partner_many2one" context="{'res_partner_search_mode': 'customer'}"/>
-                <field name="project_id" attrs="{'invisible': [('is_fsm', '=', False)]}" domain="[('is_fsm', '=', True)]"/>
             </field>
+        </field>
+    </record>
+
+    <!-- Quick create for the kanban view in Project when the user selects a project in the main view of project app -->
+    <record id="quick_create_task_in_project" model="ir.ui.view">
+        <field name="name">project.task.quick_create_in_project.view.form.inherit</field>
+        <field name="model">project.task</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="quick_create_task_form_fsm"/>
+        <field name="arch" type="xml">
+            <xpath expr="//field[@name='project_id']" position="replace">
+                <field name="project_id" attrs="{'invisible': [('is_fsm', '=', False)]}" domain="[('is_fsm', '=', True)]"/>
+            </xpath>
+        </field>
+    </record>
+
+    <record id="project_task_in_project_view_kanban" model="ir.ui.view">
+        <field name="name">project.task.in.project.kanban</field>
+        <field name="model">project.task</field>
+        <field name="mode">primary</field>
+        <field name="inherit_id" ref="project_enterprise.view_task_kanban_inherited"/>
+        <field name="arch" type="xml">
+            <xpath expr="//kanban" position="attributes">
+                <attribute name="quick_create_view">industry_fsm.quick_create_task_in_project</attribute>
+            </xpath>
         </field>
     </record>
 
@@ -197,5 +221,9 @@
                 </sheet>
             </form>
         </field>
+    </record>
+
+    <record id="project.project_task_kanban_action_view" model="ir.actions.act_window.view">
+        <field name="view_id" ref="industry_fsm.project_task_in_project_view_kanban"/>
     </record>
 </odoo>

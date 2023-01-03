@@ -75,6 +75,10 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             # Count the total number of lines to be used in the batching
             self.env.cr.execute(f"SELECT COUNT(*) FROM {tables} WHERE {where_clause}", where_params)
             count = self.env.cr.fetchone()[0]
+
+            if count == 0:
+                raise UserError(_("There is no data to export."))
+
             batch_size = self.env['ir.config_parameter'].sudo().get_param('l10n_nl_reports.general_ledger_batch_size', 10**4)
             # Create a list to store the query results during the batching
             res_list = []
@@ -355,9 +359,9 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             'opening_lines': opening_lines,
             'company': company,
             'account_data': sorted(vals_dict['account_data'].values(), key=(lambda d: d['account_code'])),
-            'partner_data': list(vals_dict['partner_data'].values()),
+            'partner_data': list(vals_dict.get('partner_data', {}).values()),
             'journal_data': list(vals_dict['journal_data'].values()),
-            'tax_data': list(vals_dict['tax_data'].values()),
+            'tax_data': list(vals_dict.get('tax_data', {}).values()),
             'periods': periods,
             'fiscal_year': date_from[0:4],
             'date_from': date_from,

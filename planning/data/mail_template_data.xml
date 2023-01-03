@@ -33,13 +33,13 @@
                             <th style="padding: 5px;text-align: left;">Role</th>
                             <td style="padding: 5px;" t-out="object.role_id.name or ''">Bartender</td>
                         </tr>
-                        <tr t-if="hasattr(object, 'sale_line_id') and object.sale_line_id">
-                            <th style="padding: 5px;text-align: left;">Sale Order Item</th>
-                            <td style="padding: 5px;" t-out="object.sudo().sale_line_id.name or ''"></td>
-                        </tr>
                         <tr t-if="hasattr(object, 'project_id') and object.project_id">
                             <th style="padding: 5px;text-align: left;">Project</th>
                             <td style="padding: 5px;" t-out="object.sudo().project_id.name or ''">Gathering</td>
+                        </tr>
+                        <tr t-if="hasattr(object, 'sale_line_id') and object.sale_line_id">
+                            <th style="padding: 5px; text-align: left;">Sale Order Item</th>
+                            <td style="padding: 5px;" t-out="object.sudo().sale_line_id.name or ''"></td>
                         </tr>
                         <tr t-if="hasattr(object, 'name') and object.name">
                             <th style="padding: 5px;text-align: left;">Note</th>
@@ -138,13 +138,13 @@
                             <th style="padding: 5px;text-align: left;">Role</th>
                             <td style="padding: 5px;" t-out="object.role_id.name or ''">Bartender</td>
                         </tr>
-                        <tr t-if="hasattr(object, 'sale_line_id') and object.sale_line_id">
-                            <th style="padding: 5px;text-align: left;">Sale Order Item</th>
-                            <td style="padding: 5px;" t-out="object.sudo().sale_line_id.name or ''"></td>
-                        </tr>
                         <tr t-if="hasattr(object, 'project_id') and object.project_id">
                             <th style="padding: 5px;text-align: left;">Project</th>
                             <td style="padding: 5px;" t-out="object.sudo().project_id.name or ''">Gathering</td>
+                        </tr>
+                        <tr t-if="hasattr(object, 'sale_line_id') and object.sale_line_id">
+                            <th style="padding: 5px; text-align: left;">Sale Order Item</th>
+                            <td style="padding: 5px;" t-out="object.sudo().sale_line_id.name or ''"></td>
                         </tr>
                         <tr t-if="hasattr(object, 'name') and object.name">
                             <th style="padding: 5px;text-align: left;">Note</th>

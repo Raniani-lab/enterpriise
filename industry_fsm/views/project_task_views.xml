@@ -106,7 +106,8 @@
                 <attribute name="domain">[
                     ('active', '=', True),
                     ('company_id', '=', company_id),
-                    ('is_fsm', '=?', context.get('fsm_mode'))
+                    ('is_fsm', '=?', context.get('fsm_mode')),
+                    ('is_internal_project', '=', False),
                 ]</attribute>
             </field>
             <xpath expr="//group/field[@name='project_id']" position="attributes">
@@ -117,7 +118,8 @@
                 <attribute name="domain">[
                     ('active', '=', True),
                     ('company_id', '=', company_id),
-                    ('is_fsm', '=?', context.get('fsm_mode'))
+                    ('is_fsm', '=?', context.get('fsm_mode')),
+                    ('is_internal_project', '=', False),
                 ]</attribute>
             </xpath>
             <field name="partner_phone" position="attributes">

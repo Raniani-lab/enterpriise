@@ -330,7 +330,8 @@ class TestTimerButtons(TestFsmFlowSaleCommon):
         self.task._fsm_ensure_sale_order()
 
         self.product_material.with_context(fsm_task_id=self.task.id).fsm_add_quantity()
-        self.task.sale_order_id.action_confirm()
+        if self.task.sale_order_id.state != 'sale':
+            self.task.sale_order_id.action_confirm()
 
         # SO is to invoice, but the task is not fsm_done
         self.assertFalse(self.task.display_create_invoice_primary)

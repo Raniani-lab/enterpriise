@@ -1,6 +1,6 @@
-/** @odoo-module */
-
-import tour from 'web_tour.tour';
+/** @odoo-module **/
+import { registry } from "@web/core/registry";
+import { stepUtils } from "@web_tour/tour_service/tour_utils";
 
 const StepToFSMProductsKanbanWithFavoritesFilterSteps = [
     {
@@ -35,13 +35,11 @@ const AddTrackingLineAndValidateSteps = [
         content: 'Enter the lot number',
         trigger: 'div[name="tracking_line_ids"] tr.o_data_row.o_selected_row div[name="lot_id"] input[type="text"]',
         extra_trigger: 'div[role="dialog"]',
-        run: function (actions) {
-            actions.text('Lot_1', this.$anchor);
-        },
+        run: 'text Lot_1',
     },
     {
         content: 'Select Lot_1',
-        trigger: "ul.ui-menu .ui-menu-item > a:contains(Lot_1)",
+        trigger: ".o-autocomplete--dropdown-menu li:contains(Lot_1)",
         auto: true,
         in_modal: false,
     },
@@ -64,11 +62,11 @@ const AddTrackingLineAndValidateSteps = [
  *   column is displayed with the warehouse of the move implied by the line. The records that implies
  *   moves from another warehouse than the current user's default one are muted and readonly.
  */
-tour.register('industry_fsm_stock_test_tour', {
+registry.category("web_tour.tours").add('industry_fsm_stock_test_tour', {
     test: true,
-    url: '/web',
-}, [
-    tour.stepUtils.showAppsMenuItem(),
+    url: "/web",
+    steps: () => [
+    stepUtils.showAppsMenuItem(),
     ...StepToFSMProductsKanbanWithFavoritesFilterSteps,
     {
         content: 'Add quantity to the first product (no lot)',
@@ -97,15 +95,9 @@ tour.register('industry_fsm_stock_test_tour', {
         trigger: 'div.o_user_menu span[data-menu="settings"]',
     },
     {
-        content: 'Edit the profile page',
-        trigger: 'div[role="toolbar"] button.o_form_button_edit',
-    },
-    {
         content: 'Change the default warehouse to WH B',
         trigger: 'div[name="property_warehouse_id"] input[type="text"]',
-        run: function (actions) {
-            actions.text('WH B', this.$anchor);
-        },
+        run: 'text WH B',
     },
     {
         content: 'Select WH B',
@@ -114,17 +106,13 @@ tour.register('industry_fsm_stock_test_tour', {
         in_modal: false,
     },
     {
-        content: 'Save the profile page',
-        trigger: 'div[role="toolbar"] button.o_form_button_save',
-    },
-    {
         content: 'Go back to app switcher',
         trigger: 'nav.o_main_navbar a.o_menu_toggle',
     },
     ...StepToFSMProductsKanbanWithFavoritesFilterSteps,
     {
         content: 'Check that is it not possible to reduce the quantity of the first product (no lot)',
-        trigger: '.o_kanban_record button[name="fsm_remove_quantity"][disabled]',
+        trigger: '.o_kanban_record:first-child:has(button[name="fsm_remove_quantity"][disabled])',
     },
     {
         content: 'Add quantity to the first product (lot)',
@@ -155,4 +143,4 @@ tour.register('industry_fsm_stock_test_tour', {
         content: "Check that the previous entry which is in the same warehouse than the user's default one is not muted and editable",
         trigger: 'div[name="tracking_line_ids"] table tbody tr:nth-of-type(2):not(.text-muted) td[name="quantity"]:not(.o_readonly_modifier)',
     },
-]);
+]});

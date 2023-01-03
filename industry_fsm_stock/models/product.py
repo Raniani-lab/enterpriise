@@ -4,8 +4,7 @@
 from collections import defaultdict
 
 from odoo import api, fields, models, _
-from odoo.exceptions import UserError
-
+from odoo.exceptions import UserError, AccessError
 
 class ProductProduct(models.Model):
     _inherit = 'product.product'
@@ -39,35 +38,43 @@ class ProductProduct(models.Model):
         task_id = self.env.context.get('fsm_task_id')
         if not task_id:
             self.quantity_decreasable = True
+            self.quantity_decreasable_sum = 0
             return
 
         task = self.env['project.task'].browse(task_id)
         if not task:
             self.quantity_decreasable = False
+            self.quantity_decreasable_sum = 0
             return
         elif task.sale_order_id.sudo().state in ['draft', 'sent']:
             self.quantity_decreasable = True
             return
 
-        moves_read_group = self.env['stock.move'].sudo().read_group([
-            ('sale_line_id.order_id', '=', task.sale_order_id.id),
-            ('sale_line_id.task_id', '=', task.id),
-            ('product_id', 'in', self.ids),
-            ('warehouse_id', '=', self.env.user._get_default_warehouse_id().id),
-            ('state', 'not in', ['done', 'cancel'])],
-            ['product_uom_qty'],
-            ['product_id'])
-        move_per_product = {move['product_id'][0]: move['product_uom_qty'] for move in moves_read_group}
+        moves_read_group = self.env['stock.move'].sudo()._read_group(
+            [
+                ('sale_line_id.order_id', '=', task.sale_order_id.id),
+                ('sale_line_id.task_id', '=', task.id),
+                ('product_id', 'in', self.ids),
+                ('warehouse_id', '=', self.env.user._get_default_warehouse_id().id),
+                ('state', 'not in', ['done', 'cancel']),
+            ],
+            ['product_id'],
+            ['product_uom_qty:sum'],
+        )
+        move_per_product = {product.id: product_uom_qty for product, product_uom_qty in moves_read_group}
 
         # If no move line can be found, look into the SOL in case one line has no move and could be used to decrease the qty
-        sale_lines_read_group = self.env['sale.order.line'].sudo().read_group([
-            ('order_id', '=', task.sale_order_id.id),
-            ('task_id', '=', task.id),
-            ('product_id', 'in', self.ids),
-            ('move_ids', '=', False)],
-            ['product_uom_qty', 'qty_delivered'],
-            ['product_id'])
-        product_uom_qty_per_product = {line['product_id'][0]: line['product_uom_qty'] - line['qty_delivered'] for line in sale_lines_read_group if line['product_uom_qty'] > line['qty_delivered']}
+        sale_lines_read_group = self.env['sale.order.line'].sudo()._read_group(
+            [
+                ('order_id', '=', task.sale_order_id.id),
+                ('task_id', '=', task.id),
+                ('product_id', 'in', self.ids),
+                ('move_ids', '=', False),
+            ],
+            ['product_id'],
+            ['product_uom_qty:sum', 'qty_delivered:sum'],
+        )
+        product_uom_qty_per_product = {product.id: product_uom_qty - qty_delivered for product, product_uom_qty, qty_delivered in sale_lines_read_group if product_uom_qty > qty_delivered}
 
         for product in self:
             product.quantity_decreasable_sum = move_per_product.get(product.id, product_uom_qty_per_product.get(product.id, 0))
@@ -77,21 +84,25 @@ class ProductProduct(models.Model):
         super(ProductProduct, self.with_context(industry_fsm_stock_set_quantity=True))._inverse_fsm_quantity()
 
     def write(self, vals):
-        new_fsm_quantity = vals.get('fsm_quantity')
-        if new_fsm_quantity and any(product.fsm_quantity - new_fsm_quantity > product.quantity_decreasable_sum for product in self):
+        if 'fsm_quantity' in vals and any(product.fsm_quantity - vals['fsm_quantity'] > product.quantity_decreasable_sum for product in self):
             raise UserError(_('The ordered quantity cannot be decreased below the amount already delivered. Instead, create a return in your inventory.'))
         return super().write(vals)
 
-    def action_assign_serial(self):
+    def action_assign_serial(self, from_onchange=False):
         """ Opens a wizard to assign SN's name on each move lines.
         """
         self.ensure_one()
         if self.tracking == 'none':
             return False
+        # If the wizard is triggered from the menu, an error should not be raised, the wizard will be in readonly instead.
+        if from_onchange and not self.env.user.has_group('stock.group_stock_user'):
+            raise AccessError(_("Adding or updating this product is restricted due to its tracked status. Your current access rights do not allow you to perform these actions. "
+            "Please contact your administrator to request the necessary permissions."))
 
         task_id = self.env.context.get('fsm_task_id')
         task = self.env['project.task'].browse(task_id)
-        sale_lines = self.env['sale.order.line'].search([
+        # project user with no sale rights should be able to change material quantities
+        sale_lines = self.env['sale.order.line'].sudo().search([
             ('order_id', '=', task.sale_order_id.id), ('task_id', '=', task.id), ('product_id', '=', self.id), ('product_uom_qty', '>', 0)])
         tracking_line_ids = [(0, 0, {
             'lot_id': line.fsm_lot_id.id,
@@ -99,7 +110,7 @@ class ProductProduct(models.Model):
             'product_id': self.id,
             'sale_order_line_id': line.id,
             'company_id': task.sale_order_id.company_id.id,
-        }) for line in sale_lines.filtered(lambda sl: sl.product_uom_qty - sl.qty_delivered and not task.fsm_done)]
+        }) for line in sale_lines.filtered(lambda sl: sl.product_uom_qty - sl.qty_delivered)]
 
         lot_done_dict = defaultdict(int)
         for move_line in sale_lines.move_ids.filtered(lambda m: m.state == 'done').move_line_ids:

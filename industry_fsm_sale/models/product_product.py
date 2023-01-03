@@ -142,14 +142,14 @@ class ProductProduct(models.Model):
             return False
         # ensure that the task is linked to a sale order
         task._fsm_ensure_sale_order()
-        wizard_product_lot = self.action_assign_serial()
+        wizard_product_lot = self.action_assign_serial(from_onchange=True)
         if wizard_product_lot:
             return wizard_product_lot
         self.fsm_quantity = float_round(quantity, precision_rounding=self.uom_id.rounding)
         return True
 
     # Is override by fsm_stock to manage lot
-    def action_assign_serial(self):
+    def action_assign_serial(self, from_onchange=False):
         return False
 
     def fsm_add_quantity(self):

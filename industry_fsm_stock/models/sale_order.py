@@ -37,14 +37,22 @@ class SaleOrderLine(models.Model):
                         qty_done_diff = move.product_uom_qty - qty_done_in_move_lines
                         if qty_done_diff == 0:
                             continue
-                        if qty_done_diff > 0:
-                            move.move_line_ids[-1].qty_done += qty_done_diff
-                        else:
+                        if qty_done_diff > 0:  # qty was added to the sale_line
+                            move_line = move.move_line_ids[-1]
+                            if not move_line.lot_id:
+                                move_line.lot_id = sol_to_treat.fsm_lot_id
+                            if move_line.lot_id == sol_to_treat.fsm_lot_id:
+                                move_line.qty_done += qty_done_diff
+                        else:  # qty was removed from the sale_line
                             for move_line in move.move_line_ids:
-                                if move_line.qty_done > 0:
+                                if not move_line.lot_id:
+                                    move_line.lot_id = sol_to_treat.fsm_lot_id
+                                if move_line.qty_done > 0 and move_line.lot_id == sol_to_treat.fsm_lot_id:
                                     new_line_qty = max(0, move_line.qty_done + qty_done_diff)
                                     qty_done_diff += move_line.qty_done - new_line_qty
                                     move_line.qty_done = new_line_qty
+                                    if not move_line.lot_id:
+                                        move_line.lot_id = sol_to_treat.fsm_lot_id
                                     if qty_done_diff == 0:
                                         break
                 else:

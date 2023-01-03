@@ -1150,14 +1150,14 @@ QUnit.module('ViewEditorManager', {
         await testUtils.fields.editAndTrigger(vem.$('.o_web_studio_sidebar').find('select[name="aggregate"]'), 'sum', ['change']);
         assert.strictEqual(vem.$('tfoot tr td.o_list_number').text(), "8",
             "total should be '8'");
-        assert.strictEqual(vem.$('tfoot tr td.o_list_number').data('tooltip'), "Sum of Croissant",
+        assert.strictEqual(vem.$('tfoot tr td.o_list_number span').data('tooltip'), "Sum of Croissant",
             "title should be 'Sum of Croissant'");
 
         // select 'avg' aggregate function
         await testUtils.fields.editAndTrigger(vem.$('.o_web_studio_sidebar').find('select[name="aggregate"]'), 'avg', ['change']);
         assert.strictEqual(vem.$('tfoot tr td.o_list_number').text(), "4",
             "total should be '4'");
-        assert.strictEqual(vem.$('tfoot tr td.o_list_number').data('tooltip'), "Average of Croissant",
+        assert.strictEqual(vem.$('tfoot tr td.o_list_number span').data('tooltip'), "Average of Croissant",
             "title should be 'Avg of Croissant'");
 
         // select '' aggregate function

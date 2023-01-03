@@ -6214,6 +6214,47 @@ QUnit.module('ViewEditorManager', {
         delete fieldRegistry.map.withDependencies;
     });
 
+    QUnit.test("entering x2many with view widget", async (assert) => {
+        class MyWidget extends owl.Component {}
+        MyWidget.template = owl.xml`<div class="myWidget" />`;
+        registry.category("view_widgets").add("myWidget", MyWidget);
+
+        serverData.models.coucou.records[0] = {
+            id: 1,
+            display_name: "coucou1",
+            product_ids: [1],
+        }
+        serverData.models.product.records[0] = {
+            id: 1,
+            display_name: "people say",
+        };
+
+        const action = serverData.actions["studio.coucou_action"];
+        action.res_id = 1;
+        action.views = [[1, "form"]];
+        action.res_model = "coucou";
+        serverData.views["coucou,1,form"] = /*xml */`<form>
+            <sheet>
+                <field name='display_name'/>
+                <field name='product_ids'>
+                    <tree><widget name="myWidget"/></tree>
+                </field>
+            </sheet>
+        </form>`;
+        const webClient = await createEnterpriseWebClient({ serverData, legacyParams: {withLegacyMockServer: true}});
+        await doAction(webClient, "studio.coucou_action");
+        await openStudio(target);
+
+        assert.containsOnce(target, ".o_web_studio_form_view_editor");
+        assert.containsOnce(target, ".myWidget");
+
+        await click(target, ".o_web_studio_view_renderer .o_field_one2many");
+        await click(target, ".o_web_studio_view_renderer .o_field_one2many .o_web_studio_editX2Many[data-type='list']");
+        await legacyExtraNextTick();
+        assert.containsOnce(target, ".o_web_studio_list_view_editor");
+        assert.containsOnce(target, ".myWidget");
+    });
+
     QUnit.test('edit one2many list view with tree_view_ref context key', async function (assert) {
         assert.expect(6);
 

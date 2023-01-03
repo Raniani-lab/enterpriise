@@ -5,7 +5,7 @@
         <t t-set="currentFolder" t-value="getCurrentFolder()"/>
         <div class="o_documents_inspector h-100">
             <t t-set="nbPreviews" t-value="props.selection.length"/>
-            <div t-if="props.withFilePreview" class="o_documents_inspector_preview d-flex flex-row flex-wrap align-items-center justify-content-center position-relative">
+            <div t-if="props.withFilePreview || nbPreviews === 0" class="o_documents_inspector_preview d-flex flex-row flex-wrap align-items-center justify-content-center position-relative">
                 <div t-if="nbPreviews === 0">
                     <t t-if="currentFolder">
                         <div class="o_inspector_folder_description">

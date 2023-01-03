@@ -11,7 +11,7 @@
                     <div class ="content-group">
                         <label for="map_box_token" string="Token"/>
                         <field name ="map_box_token"/>
-                        <div class ="text-rigth" style="position:relative;">
+                        <div class="text-end" style="position:relative;">
                             <a class="oe_link"  href="https://www.mapbox.com/" target="_blank">
                                 <i class="fa fa-arrow-right"/>
                                 Get token

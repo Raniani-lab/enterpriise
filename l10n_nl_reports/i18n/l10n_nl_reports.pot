@@ -342,6 +342,12 @@ msgid "User"
 msgstr ""
 
 #. module: l10n_nl_reports
+#: code:addons/l10n_nl_reports/models/account_general_ledger.py:0
+#, python-format
+msgid "There is no data to export."
+msgstr ""
+
+#. module: l10n_nl_reports
 #: model:account.report.line,name:l10n_nl_reports.account_financial_report_bs_fixed
 msgid "VASTE ACTIVA"
 msgstr ""

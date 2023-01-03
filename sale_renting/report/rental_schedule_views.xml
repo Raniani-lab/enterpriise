@@ -74,7 +74,7 @@
                             <strong>Return — </strong> <t t-out="userTimezoneStopDate.format('L LT')"/>
                         </div>
                         <div>
-                            <strong>Status — </strong> <t t-field="report_line_status"/>
+                            <strong>Status — </strong>
                             <t t-if="late">
                                 Late
                                 <t t-if="report_line_status == 'reserved'">

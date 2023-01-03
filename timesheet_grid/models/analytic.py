@@ -648,59 +648,8 @@ class AnalyticLine(models.Model):
         return [('date', '=', day)]
 
     def _group_expand_project_ids(self, projects, domain, order):
-        """ Group expand by project_ids in grid view
-
-            This group expand allow to add some record grouped by project,
-            where the current user (= the current employee) has been
-            timesheeted in the past 7 days.
-
-            We keep the actual domain and modify it to enforce its validity
-            concerning the dates, while keeping the restrictions about other
-            fields.
-            Example: Filter timesheet from my team this week:
-            [['project_id', '!=', False],
-             '|',
-                 ['employee_id.timesheet_manager_id', '=', 2],
-                 '|',
-                     ['employee_id.parent_id.user_id', '=', 2],
-                     '|',
-                         ['project_id.user_id', '=', 2],
-                         ['user_id', '=', 2]]
-             '&',
-                 ['date', '>=', '2020-06-01'],
-                 ['date', '<=', '2020-06-07']
-
-            Becomes:
-            [('project_id', '!=', False),
-             ('date', '>=', datetime.date(2020, 5, 28)),
-             ('date', '<=', '2020-06-04'),
-             ['project_id', '!=', False],
-             '|',
-                 ['employee_id.timesheet_manager_id', '=', 2],
-                 '|',
-                    ['employee_id.parent_id.user_id', '=', 2],
-                    '|',
-                        ['project_id.user_id', '=', 2],
-                        ['user_id', '=', 2]]
-             '&',
-                 ['date', '>=', '1970-01-01'],
-                 ['date', '<=', '2250-01-01']
-        """
-
-        domain_search = []
-        # We force the date rules to be always met
-        for rule in domain:
-            if len(rule) == 3 and rule[0] == 'date':
-                name, operator, _rule = rule
-                if operator == '=':
-                    operator = '<='
-                domain_search.append((name, operator, '2250-01-01' if operator in ['<', '<='] else '1970-01-01'))
-            else:
-                domain_search.append(rule)
-
-        grid_anchor, last_week = self._get_last_week()
-        domain_search = expression.AND([[('date', '>=', last_week), ('date', '<=', grid_anchor)], domain_search])
-        return self.search(domain_search).project_id
+        # deprecated, will be removed in master
+        return self.env['project.project']
 
     def _group_expand_employee_ids(self, employees, domain, order):
         """ Group expand by employee_ids in grid view

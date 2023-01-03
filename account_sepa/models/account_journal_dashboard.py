@@ -25,9 +25,14 @@ class account_journal(models.Model):
             'type': 'ir.actions.act_window',
             'view_mode': 'list,form,graph',
             'res_model': 'account.payment',
+            'domain': [
+                ('payment_method_line_id.code', '=', 'sepa_ct'),
+                ('state', '=', 'posted'),
+                ('is_move_sent', '=', False),
+                ('is_matched', '=', False),
+            ],
             'context': dict(
                 self.env.context,
-                search_default_sepa_to_send=1,
                 journal_id=self.id,
                 default_journal_id=self.id,
                 search_default_journal_id=self.id,

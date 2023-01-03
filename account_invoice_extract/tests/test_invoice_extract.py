@@ -317,7 +317,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, account_invoice_extract_com
         usd_currency = self.env['res.currency'].with_context({'active_test': False}).search([('name', '=', 'USD')])
         (cad_currency | usd_currency).active = True
 
-        test_user = self.env.ref('base.user_root')
+        test_user = self.env.user
         test_user.groups_id = [(3, self.env.ref('base.group_multi_currency').id)]
         self.assertEqual(test_user.currency_id, usd_currency)
 

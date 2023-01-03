@@ -1148,10 +1148,10 @@
 
     <record id="helpdesk_ticket_action_success" model="ir.actions.act_window">
         <field name="name">Success Rate Analysis</field>
-        <field name="res_model">helpdesk.ticket.report.analysis</field>
-        <field name="view_mode">tree,pivot,graph</field>
+        <field name="res_model">helpdesk.ticket</field>
+        <field name="view_mode">tree,form,pivot,graph</field>
         <field name="domain" eval="[('close_date', '>=', (DateTime.today() - relativedelta(hours=12)).strftime('%Y-%m-%d %H:%M:%S'))]"/>
-        <field name="search_view_id" ref="helpdesk.helpdesk_ticket_report_analysis_view_search"/>
+        <field name="search_view_id" ref="helpdesk_tickets_view_search"/>
         <field name="context">{
             'search_default_is_close': True,
             'search_default_my_ticket': True,
@@ -1169,19 +1169,19 @@
     <record id="helpdesk_ticket_action_success_tree" model="ir.actions.act_window.view">
         <field name="sequence" eval="16"/>
         <field name="view_mode">tree</field>
-        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_list_analysis"/>
+        <field name="view_id" ref="helpdesk_tickets_view_tree"/>
         <field name="act_window_id" ref="helpdesk_ticket_action_success"/>
     </record>
     <record id="helpdesk_ticket_action_success_graph" model="ir.actions.act_window.view">
         <field name="sequence" eval="25"/>
         <field name="view_mode">graph</field>
-        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_graph_7days_analysis_inherit_dashboard"/>
+        <field name="view_id" ref="helpdesk_ticket_action_close_analysis_graph_inherit_dashboard"/>
         <field name="act_window_id" ref="helpdesk_ticket_action_success"/>
     </record>
     <record id="helpdesk_ticket_action_success_pivot" model="ir.actions.act_window.view">
         <field name="sequence" eval="18"/>
         <field name="view_mode">pivot</field>
-        <field name="view_id" ref="helpdesk.helpdesk_ticket_view_pivot_analysis_success_inherit_dashboard"/>
+        <field name="view_id" ref="helpdesk_ticket_action_close_analysis_pivot_inherit_dashboard"/>
         <field name="act_window_id" ref="helpdesk_ticket_action_success"/>
     </record>
 

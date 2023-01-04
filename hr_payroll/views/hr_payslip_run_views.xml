@@ -65,9 +65,10 @@
         <field name="name">hr.payslip.run.form</field>
         <field name="model">hr.payslip.run</field>
         <field name="arch" type="xml">
-            <form string="Payslips Batches">
+            <form string="Payslips Batches" js_class="hr_payslip_batch_form">
             <header>
                 <button name="%(action_hr_payslip_by_employees)d" type="action" states="draft" string="Generate Payslips" class="oe_highlight"/>
+                <widget name="add_payslips" string="Add Payslips" attrs="{'invisible': ['|', ('state', 'not in', ['draft', 'verify']), ('payslip_count', '>', 0)]}"/>
                 <button name="action_validate" type="object" string="Validate" states="verify" class="oe_highlight" context="{'payslip_generate_pdf': True}"/>
                 <button string="Mark as paid" name="action_paid" type="object" states="close" class="oe_highlight"/>
                 <button string="Set to Draft" name="action_draft" type="object" states="verify,close"/>
@@ -117,7 +118,7 @@
     </record>
 
     <record id="action_hr_payslip_run_generate" model="ir.actions.server">
-        <field name="name">Add payslips</field>
+        <field name="name">Generate Payslips</field>
         <field name="model_id" ref="model_hr_payslip_run"/>
         <field name="binding_model_id" ref="model_hr_payslip_run"/>
         <field name="binding_view_types">form</field>

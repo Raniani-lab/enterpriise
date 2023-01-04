@@ -322,14 +322,20 @@ class AppointmentType(models.Model):
                                      )
                                 )
             )
+            # localized end time for the entire slot on that day
+            local_slot_end = appt_tz.localize(
+                day.replace(hour=0, minute=0, second=0) +
+                timedelta(hours=slot._convert_end_hour_24_format())
+            )
             # Adapt local start to not append slot in the past for today
             if local_start.date() == ref_tz_apt_type.date():
                 while local_start < ref_tz_apt_type + relativedelta(hours=self.min_schedule_hours):
                     local_start += relativedelta(hours=self.appointment_duration)
             local_end = local_start + relativedelta(hours=self.appointment_duration)
 
-            n_slot = int((slot._convert_end_hour_24_format() - (local_start.hour + local_start.minute / 60.0)) /
-                         self.appointment_duration)
+            # if local_start >= local_slot_end, no slot will be appended
+            end_start_delta = ((local_slot_end - local_start).total_seconds() / 3600)
+            n_slot = int(end_start_delta / self.appointment_duration)
             for _ in range(n_slot):
                 slots.append({
                     self.appointment_tz: (

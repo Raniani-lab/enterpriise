@@ -259,6 +259,66 @@ class AppointmentTest(AppointmentCommon):
         )
 
     @users('apt_manager')
+    def test_generate_slots_recurring_start_hour_day_overflow(self):
+        """ Generates recurring slots, make sure we don't overshoot the current day and generate meaningless slots """
+        slots = [{
+            'weekday': '1',
+            'start_hour': 9.0,
+            'end_hour': 10.0,
+        }, {
+            'weekday': '1',
+            'start_hour': 10.0,
+            'end_hour': 11.0,
+        }, {
+            'weekday': '1',
+            'start_hour': 15.0,
+            'end_hour': 16.0,
+        }, {
+            'weekday': '2',
+            'start_hour': 9.0,
+            'end_hour': 17.0,
+        },]
+        apt_type = self.env['appointment.type'].create({
+            'appointment_duration': 1.0,
+            'appointment_tz': 'Europe/Brussels',
+            'category': 'website',
+            'name': 'Overflow Appointment',
+            'max_schedule_days': 8,
+            'min_schedule_hours': 12.0,
+            'slot_ids': [(0, 0, slot) for slot in slots],
+            'staff_user_ids': [self.env.user.id],
+        })
+
+        # Check around the 11AM(Brussels) mark, or 15:30PM(Kolkata)
+        # If we add 12 for the minimum schedule hour it's past 11PM
+        # Past 11 the appointment duration will put us past the current day
+        brussels_tz = pytz.timezone('Europe/Brussels')
+        for hour, minute in [[h, m] for h in [2, 9, 10, 11, 12] for m in [0, 1, 59]]:
+            time = brussels_tz.localize(self.reference_monday.replace(hour=hour, minute=minute))
+            with freeze_time(time):
+                slots = apt_type._get_appointment_slots('Asia/Kolkata')
+            self.assertSlots(
+                slots,
+                [{'name_formated': 'February 2022',
+                  'month_date': datetime(2022, 2, 1),
+                  'weeks_count': 5,  # 31/01 -> 28/02 (06/03)
+                 }
+                ],
+                {'enddate': date(2022, 3, 5),
+                 'startdate': self.reference_now_monthweekstart,
+                 'slots_day_specific': { # +4 instead of +4.5 because the test method only accounts for the absolute hour
+                    time.date(): [{'start': 15 + 4, 'end': 16 + 4}] if hour == 2 else [], # min_schedule_hours is too large
+                    (time + timedelta(days=1)).date(): [{'start': start + 4, 'end': start + 5} for start in range(9, 17)],
+                    (time + timedelta(days=7)).date(): [{'start': start + 4, 'end': start + 5} for start in range(9, 11)] + [{'start': 15 + 4, 'end': 16 + 4}],
+                    (time + timedelta(days=8)).date(): [{'start': start + 4, 'end': start + 5} for start in range(9, 17)],
+                 },
+                 'slots_start_hours': [],
+                 'slots_startdate': time.date(),
+                 'slots_weekdays_nowork': range(2, 7)
+                },
+            )
+
+    @users('apt_manager')
     def test_generate_slots_recurring_UTC(self):
         """ Generates recurring slots, check begin and end slot boundaries. Force
         UTC results event if everything is Europe/Brussels based. """

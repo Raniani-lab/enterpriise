@@ -244,7 +244,7 @@
                       barchart_total="1"
                       create_inline="1"
                       display_empty="1">
-                    <field name="project_id" type="row" section="1"/>
+                    <field name="project_id" type="row"/>
                     <field name="task_id" type="row"/>
                     <field name="date" type="col">
                         <range name="day" string="Day" span="day" step="day"/>
@@ -253,35 +253,6 @@
                     </field>
                     <field name="unit_amount" type="measure" widget="timesheet_uom"/>
                 </grid>
-            </field>
-        </record>
-        <record id="timesheet_view_grid_by_project_readonly" model="ir.ui.view">
-            <field name="name">account.analytic.line.grid.project.readonly</field>
-            <field name="model">account.analytic.line</field>
-            <field name="inherit_id" ref="timesheet_view_grid_by_project"/>
-            <field name="mode">primary</field>
-            <field name="arch" type="xml">
-                <xpath expr="/grid" position="attributes">
-                    <attribute name="create">false</attribute>
-                    <attribute name="edit">false</attribute>
-                </xpath>
-                <xpath expr="//field[@name='project_id']" position="replace">
-                    <field name="project_id" type="row"/>
-                </xpath>
-                <!-- group view by only project instead of (project, task) -->
-                <xpath expr="//field[@name='task_id']" position="replace"/>
-            </field>
-        </record>
-
-        <record id="timesheet_view_grid_by_project_no_section" model="ir.ui.view">
-            <field name="name">account.analytic.line.grid.project.no.section</field>
-            <field name="model">account.analytic.line</field>
-            <field name="inherit_id" ref="timesheet_view_grid_by_project"/>
-            <field name="mode">primary</field>
-            <field name="arch" type="xml">
-                <xpath expr="//field[@name='project_id']" position="replace">
-                    <field name="project_id" type="row"/>
-                </xpath>
             </field>
         </record>
 
@@ -348,31 +319,6 @@
                 </xpath>
             </field>
         </record>
-
-        <record id="timesheet_view_grid_by_task_readonly" model="ir.ui.view">
-            <field name="name">account.analytic.line.grid.task</field>
-            <field name="model">account.analytic.line</field>
-            <field name="inherit_id" eval="False"/>
-            <field name="arch" type="xml">
-                <grid string="Timesheets"
-                      create="false"
-                      edit="false"
-                      js_class="timesheet_grid"
-                      barchart_total="1"
-                      create_inline="1"
-                      display_empty="1">
-                    <field name="project_id" type="row" section="1"/>
-                    <field name="task_id" type="row"/>
-                    <field name="date" type="col">
-                        <range name="day" string="Day" span="day" step="day"/>
-                        <range name="week" string="Week" span="week" step="day"/>
-                        <range name="month" string="Month" span="month" step="day"/>
-                    </field>
-                    <field name="unit_amount" type="measure" widget="timesheet_uom"/>
-                </grid>
-            </field>
-        </record>
-
 
         <record id="timesheet_view_search" model="ir.ui.view">
             <field name="name">account.analytic.search</field>
@@ -641,7 +587,7 @@
         <record id="timesheet_action_view_form_employee_grid" model="ir.actions.act_window.view">
             <field name="sequence" eval="2"/>
             <field name="view_mode">grid</field>
-            <field name="view_id" ref="timesheet_grid.timesheet_view_grid_by_project_no_section"/>
+            <field name="view_id" ref="timesheet_grid.timesheet_view_grid_by_project"/>
             <field name="act_window_id" ref="hr_timesheet.timesheet_action_from_employee"/>
         </record>
 

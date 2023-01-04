@@ -35,7 +35,6 @@ class AnalyticLine(models.Model):
         compute='_compute_is_timesheet', search='_search_is_timesheet',
         help="Set if this analytic line represents a line of timesheet.")
 
-    project_id = fields.Many2one(group_expand="_group_expand_project_ids")
     duration_unit_amount = fields.Float(related="unit_amount", readonly=True, string="Timesheet Init Amount")
     unit_amount_validate = fields.Float(related="unit_amount", readonly=True, string="Timesheet Unit Time")
 
@@ -647,10 +646,6 @@ class AnalyticLine(models.Model):
         # span is always daily and value is an iso range
         day = column_value.split('/')[0]
         return [('date', '=', day)]
-
-    def _group_expand_project_ids(self, projects, domain, order):
-        # deprecated, will be removed in master
-        return self.env['project.project']
 
     def _group_expand_employee_ids(self, employees, domain, order):
         """ Group expand by employee_ids in grid view

@@ -103,7 +103,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # The amount is the same, no message under the 'amount' field.
         self.assert_form_extra_text_value(wizard.form_extra_text, False)
 
-        wizard.button_validate(async_action=False)
+        wizard.button_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326
             {'account_id': st_line.journal_id.default_account_id.id,    'amount_currency': 1200.0,      'currency_id': self.company_data['currency'].id,    'balance': 1200.0,  'reconciled': False},
@@ -184,7 +184,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(wizard, [{'state': 'valid'}])
 
         # Reconcile
-        wizard.button_validate(async_action=False)
+        wizard.button_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326
             {'account_id': st_line.journal_id.default_account_id.id,    'amount_currency': 1200.0,      'currency_id': self.company_data['currency'].id,    'balance': 1200.0,  'reconciled': False},
@@ -227,7 +227,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # The amount is the same, no message under the 'amount' field.
         self.assert_form_extra_text_value(wizard.form_extra_text, False)
 
-        wizard.button_validate(async_action=False)
+        wizard.button_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326
             {'account_id': st_line.journal_id.default_account_id.id,    'amount_currency': 1200.0,      'currency_id': self.company_data['currency'].id,    'balance': 1200.0,  'reconciled': False},
@@ -307,7 +307,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(wizard, [{'state': 'valid'}])
 
         # Reconcile
-        wizard.button_validate(async_action=False)
+        wizard.button_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326
             {'account_id': st_line.journal_id.default_account_id.id,    'amount_currency': 1200.0,      'currency_id': self.company_data['currency'].id,    'balance': 1200.0,  'reconciled': False},
@@ -349,7 +349,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # The amount is the same, no message under the 'amount' field.
         self.assert_form_extra_text_value(wizard.form_extra_text, False)
 
-        wizard.button_validate(async_action=False)
+        wizard.button_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326
             {'account_id': st_line.journal_id.default_account_id.id,    'amount_currency': 1200.0,      'currency_id': self.company_data['currency'].id,    'balance': 1200.0,  'reconciled': False},
@@ -430,7 +430,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(wizard, [{'state': 'valid'}])
 
         # Reconcile
-        wizard.button_validate(async_action=False)
+        wizard.button_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326
             {'account_id': st_line.journal_id.default_account_id.id,    'amount_currency': 1200.0,      'currency_id': self.company_data['currency'].id,    'balance': 1200.0,  'reconciled': False},
@@ -471,7 +471,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         # The amount is the same, no message under the 'amount' field.
         self.assert_form_extra_text_value(wizard.form_extra_text, False)
 
-        wizard.button_validate(async_action=False)
+        wizard.button_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326
             {'account_id': st_line.journal_id.default_account_id.id,    'amount_currency': 1800.0,      'currency_id': self.company_data['currency'].id,    'balance': 1800.0,  'reconciled': False},
@@ -549,7 +549,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(wizard, [{'state': 'valid'}])
 
         # Reconcile
-        wizard.button_validate(async_action=False)
+        wizard.button_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326
             {'account_id': st_line.journal_id.default_account_id.id,    'amount_currency': 1800.0,      'currency_id': self.company_data['currency'].id,    'balance': 1800.0,  'reconciled': False},
@@ -571,7 +571,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(wizard, [{'state': 'valid'}])
 
         # Validate and check the statement line.
-        wizard.button_validate(async_action=False)
+        wizard.button_validate()
         self.assertRecordValues(st_line, [{'partner_id': self.partner_a.id}])
         liquidity_line, _suspense_line, other_line = st_line._seek_for_lines()
         account = self.partner_a.property_account_receivable_id
@@ -590,7 +590,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             invoice_line_ids=[{'price_unit': 1000.0}],
         )
         wizard._action_add_new_amls(inv_line)
-        wizard.button_validate(async_action=False)
+        wizard.button_validate()
         liquidity_line, _suspense_line, other_line = st_line._seek_for_lines()
         self.assertRecordValues(st_line, [{'partner_id': partner.id}])
         self.assertRecordValues(liquidity_line + other_line, [
@@ -615,7 +615,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             invoice_line_ids=[{'price_unit': 300.0}],
         )
         wizard._action_add_new_amls(inv_line1 + inv_line2)
-        wizard.button_validate(async_action=False)
+        wizard.button_validate()
         liquidity_line, _suspense_line, other_line = st_line._seek_for_lines()
         self.assertRecordValues(st_line, [{'partner_id': False}])
         self.assertRecordValues(liquidity_line + other_line, [
@@ -663,7 +663,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(wizard, [{'state': 'valid'}])
 
         # Validate and check the statement line.
-        wizard.button_validate(async_action=False)
+        wizard.button_validate()
         liquidity_line, _suspense_line, other_line = st_line._seek_for_lines()
         self.assertRecordValues(liquidity_line + other_line, [
             # pylint: disable=C0326
@@ -864,7 +864,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         self.assertRecordValues(wizard, [{'state': 'valid'}])
 
         # Validate and check the statement line.
-        wizard.button_validate(async_action=False)
+        wizard.button_validate()
         self.assertRecordValues(st_line.line_ids, [
             # pylint: disable=C0326
             {'balance': 1000.0},

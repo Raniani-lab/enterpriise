@@ -107,7 +107,7 @@ class BankRecWidget(models.Model):
                 selected_batch_payment_ids = [
                     x.id
                     for x in batch_payments
-                    if batch_payment_x_amls[x] == set(available_amls_in_batch_payments[x.id])
+                    if batch_payment_x_amls[x] == set(available_amls_in_batch_payments.get(x.id, []))
                 ]
             else:
                 selected_batch_payment_ids = []
@@ -118,14 +118,18 @@ class BankRecWidget(models.Model):
     # ONCHANGE METHODS
     # -------------------------------------------------------------------------
 
-    def _process_todo_command(self, command_name, args):
+    def _process_todo_command(self, command_name, command_args):
         # EXTENDS account_accountant
         if command_name == 'add_new_batch_payment':
-            batch_payment_id = int(args[0])
-            aml = self.env['account.batch.payment'].browse(batch_payment_id)
-            self._action_add_new_batch_payments(aml)
+            batch_payment_id = int(command_args[0])
+            batch_payment = self.env['account.batch.payment'].browse(batch_payment_id)
+            self._action_add_new_batch_payments(batch_payment)
+        elif command_name == 'remove_new_batch_payment':
+            aml_id = int(command_args[0])
+            batch_payment = self.env['account.batch.payment'].browse(aml_id)
+            self._action_remove_new_batch_payments(batch_payment)
         else:
-            super()._process_todo_command(command_name, args)
+            super()._process_todo_command(command_name, command_args)
 
     # -------------------------------------------------------------------------
     # LINES_WIDGET METHODS
@@ -155,10 +159,14 @@ class BankRecWidget(models.Model):
                     amls |= liquidity_lines.filtered_domain(amls_domain)
         self._action_add_new_amls(amls, allow_partial=False)
 
-    def button_validate(self, async_action=True):
+    def _action_remove_new_batch_payments(self, batch_payments):
+        self.ensure_one()
+        for line in self.line_ids.filtered(lambda x: x.flag == 'new_aml' and x.source_batch_payment_id in batch_payments):
+            self._action_remove_line(line.index)
+
+    def button_validate(self, async_action=False):
         # EXTENDS account_accountant
         # Open the 'account.batch.payment.rejection' wizard if needed.
-        super().button_validate(async_action=async_action)
 
         payments_with_batch = self.line_ids\
             .filtered(lambda x: x.flag == 'new_aml' and x.source_batch_payment_id)\
@@ -173,8 +181,13 @@ class BankRecWidget(models.Model):
                     'target': 'new',
                     'context': {
                         'default_in_reconcile_payment_ids': [Command.set(payments_with_batch.ids)],
-                        'default_next_action_todo': self.next_action_todo,
                     },
                 },
                 self.env,
             )
+        else:
+            super().button_validate(async_action=async_action)
+
+    def button_validate_no_batch_payment_wizard(self):
+        """ Execute 'button_validate' without the batch payment rejection wizard. """
+        return super().button_validate()

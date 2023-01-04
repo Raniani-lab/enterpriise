@@ -319,6 +319,7 @@ class BankRecWidget(models.Model):
 
     @api.depends(
         'form_index',
+        'state',
         'line_ids.account_id',
         'line_ids.date',
         'line_ids.name',
@@ -676,6 +677,7 @@ class BankRecWidget(models.Model):
                 self.invalidate_model(fnames=['partner_id'])
                 self._action_reset_wizard()
                 self._action_focus_liquidity_line(field_clicked='name')
+                self.next_action_todo = {'type': 'refresh_liquidity'}
             else:
                 self._lines_widget_form_turn_auto_balance_into_manual_line(line)
                 line.name = self.form_name
@@ -687,6 +689,7 @@ class BankRecWidget(models.Model):
             self.st_line_id.date = self.form_date
             self._action_reset_wizard()
             self._action_focus_liquidity_line(field_clicked='date')
+            self.next_action_todo = {'type': 'refresh_liquidity'}
 
     @api.onchange('form_account_id')
     def _onchange_form_account_id(self):
@@ -715,6 +718,7 @@ class BankRecWidget(models.Model):
             self.invalidate_model(fnames=['partner_id'])
             self._action_reset_wizard()
             self._action_focus_liquidity_line(field_clicked='partner_id')
+            self.next_action_todo = {'type': 'refresh_liquidity'}
             return
 
         self._lines_widget_form_turn_auto_balance_into_manual_line(line)
@@ -807,6 +811,7 @@ class BankRecWidget(models.Model):
             self.st_line_id.amount = self.form_amount_currency
             self._action_reset_wizard()
             self._action_focus_liquidity_line(field_clicked='amount_currency')
+            self.next_action_todo = {'type': 'refresh_liquidity_balance'}
             return
 
         self._lines_widget_form_turn_auto_balance_into_manual_line(line)
@@ -869,6 +874,7 @@ class BankRecWidget(models.Model):
             self.st_line_id.amount = self.form_balance
             self._action_reset_wizard()
             self._action_focus_liquidity_line(field_clicked='debit')
+            self.next_action_todo = {'type': 'refresh_liquidity_balance'}
             return
 
         self._lines_widget_form_turn_auto_balance_into_manual_line(line)
@@ -1489,8 +1495,6 @@ class BankRecWidget(models.Model):
         self.form_tax_ids = [Command.set(line.tax_ids.ids)]
         self.form_amount_currency = balance_sign * line.amount_currency
         self.form_balance = balance_sign * line.balance
-        if field_clicked:
-            self.next_action_todo = {'type': 'focus', 'field': field_clicked[0]}
 
     def _action_remove_line(self, line_index):
         self.ensure_one()
@@ -1562,9 +1566,12 @@ class BankRecWidget(models.Model):
     def _action_unselect_reconcile_model(self, reco_model):
         self.ensure_one()
 
-    def button_validate(self, async_action=True):
+    def button_validate(self, async_action=False):
         self.ensure_one()
-        assert self.state == 'valid'
+
+        if self.state != 'valid':
+            self.next_action_todo = {'type': 'move_to_next'}
+            return
 
         partners = (self.line_ids.filtered(lambda x: x.flag != 'liquidity')).partner_id
         partner_id_to_set = partners.id if len(partners) == 1 else None
@@ -1593,28 +1600,22 @@ class BankRecWidget(models.Model):
             if line.flag == 'new_aml':
                 to_reconcile.append((i, line.source_aml_id.id))
 
-        action_todo = {
-            'type': 'rpc',
-            'method': 'js_action_reconcile_st_line',
-            'st_line_id': self.st_line_id.id,
-            'params': {
+        self.js_action_reconcile_st_line(
+            self.st_line_id.id,
+            {
                 'command_list': line_ids_create_command_list,
                 'to_reconcile': to_reconcile,
                 'partner_id': partner_id_to_set,
             },
-        }
-
-        if async_action:
-            self.next_action_todo = action_todo
-        else:
-            self.js_action_reconcile_st_line(action_todo['st_line_id'], action_todo['params'])
+        )
+        self.next_action_todo = {'type': 'reconcile_st_line'}
 
     def button_to_check(self, async_action=True):
         self.ensure_one()
         if self.state == 'valid':
             self.button_validate(async_action=async_action)
         else:
-            self.next_action_todo = {'type': 'move_to_next', 'st_line_id': self.st_line_id.id}
+            self.next_action_todo = {'type': 'move_to_next'}
         self.st_line_id.move_id.to_check = True
         self.invalidate_recordset(fnames=['to_check'])
 
@@ -1622,16 +1623,21 @@ class BankRecWidget(models.Model):
         self.ensure_one()
         self.st_line_id.move_id.to_check = False
         if self.st_line_is_reconciled:
-            self.next_action_todo = {'type': 'move_to_next', 'st_line_id': self.st_line_id.id}
+            self.next_action_todo = {'type': 'move_to_next'}
+        else:
+            self.next_action_todo = {'type': 'refresh_statement_line'}
         self.invalidate_recordset(fnames=['to_check'])
 
     def button_reset(self):
         self.ensure_one()
-        assert self.state == 'reconciled'
-        self.st_line_id.action_undo_reconciliation()
 
-        self._ensure_loaded_lines()
-        self._action_trigger_matching_rules()
+        if self.state == 'reconciled':
+            self.st_line_id.action_undo_reconciliation()
+
+            self._ensure_loaded_lines()
+            self._action_trigger_matching_rules()
+
+        self.next_action_todo = {'type': 'reset_form'}
 
     def button_form_apply_suggestion(self):
         self.ensure_one()
@@ -1706,6 +1712,7 @@ class BankRecWidget(models.Model):
             })
         return action
 
+    @api.model
     def js_action_reconcile_st_line(self, st_line_id, params):
         st_line = self.env['account.bank.statement.line'].browse(st_line_id)
 

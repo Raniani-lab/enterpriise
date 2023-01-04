@@ -537,7 +537,19 @@ registry.category("web_tour.tours").add('test_barcode_batch_delivery_1', {test: 
         },
     },
     { trigger: '.o_validate_page' },
-    { trigger: '.btn-primary[name="process_cancel_backorder"]' },
+    // Should display the backorder's dialog, checks its content.
+    {
+        trigger: '.o_barcode_backorder_dialog',
+        run: function() {
+            const backorderLines = document.querySelectorAll(".o_barcode_backorder_product_row");
+            helper.assert(backorderLines.length, 1);
+            const backorderLine = backorderLines[0];
+            helper.assert(backorderLine.querySelector('[name="product"]').innerText, "product5");
+            helper.assert(backorderLine.querySelector('[name="qty-done"]').innerText, "0");
+            helper.assert(backorderLine.querySelector('[name="reserved-qty"]').innerText, "4");
+        }
+    },
+    { trigger: '.o_barcode_backorder_dialog .btn.btn-primary' },
     { trigger: '.o_notification.border-success' },
 ]});
 

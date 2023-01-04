@@ -477,11 +477,15 @@ export default class BarcodeModel extends EventBus {
 
     async validate() {
         await this.save();
+        const context = {
+            display_detailed_backorder: true,
+            skip_backorder: true,
+        };
         const action = await this.orm.call(
             this.resModel,
             this.validateMethod,
             [this.recordIds],
-            { context: { display_detailed_backorder: true } },
+            { context },
         );
         const options = {
             on_close: ev => this._closeValidate(ev)

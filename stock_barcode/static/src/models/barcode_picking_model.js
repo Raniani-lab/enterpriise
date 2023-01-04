@@ -1,13 +1,14 @@
 /** @odoo-module **/
 
 import BarcodeModel from '@stock_barcode/models/barcode_model';
-import {_t, _lt} from "web.core";
+import { BackorderDialog } from '../components/backorder_dialog';
+import { _t, _lt } from "web.core";
 import { sprintf } from '@web/core/utils/strings';
 import { session } from '@web/session';
 
 export default class BarcodePickingModel extends BarcodeModel {
-    constructor(params) {
-        super(...arguments);
+    constructor(resModel, resId, services) {
+        super(resModel, resId, services);
         this.lineModel = 'stock.move.line';
         this.validateMessage = _t("The transfer has been validated");
         this.validateMethod = 'button_validate';
@@ -670,6 +671,41 @@ export default class BarcodePickingModel extends BarcodeModel {
             this.currentState.lines.some(line => this._lineNeedsToBePacked(line))) {
             return this.notification(_t("All products need to be packed"), { type: "danger" });
         }
+        if (this.config.create_backorder === 'ask') {
+            // If there are some uncompleted lines, displays the backorder dialog.
+            const uncompletedLines = [];
+            const alreadyChecked = [];
+            let atLeastOneLinePartiallyProcessed = false;
+            for (let line of this.currentState.lines) {
+                line = this._getParentLine(line) || line;
+                if (alreadyChecked.includes(line.virtual_id) || !line.reserved_uom_qty) {
+                    continue;
+                }
+                // Keeps track of already checked lines to avoid to check multiple times grouped lines.
+                alreadyChecked.push(line.virtual_id);
+                let qtyDone = line.qty_done;
+                if (qtyDone < line.reserved_uom_qty) {
+                    // Checks if another move line shares the same move id and adds its quantity done in that case.
+                    qtyDone += this.currentState.lines.reduce((additionalQtyDone, otherLine) => {
+                        return otherLine.product_id.id === line.product_id.id
+                            && otherLine.move_id === line.move_id
+                            && !otherLine.reserved_uom_qty ?
+                            additionalQtyDone + otherLine.qty_done : additionalQtyDone
+                    }, 0);
+                    if (qtyDone < line.reserved_uom_qty) { // Quantity done still insufficient.
+                        uncompletedLines.push(line);
+                    }
+                }
+                atLeastOneLinePartiallyProcessed = atLeastOneLinePartiallyProcessed || (qtyDone > 0);
+            }
+            if (atLeastOneLinePartiallyProcessed && uncompletedLines.length) {
+                return this.dialogService.add(BackorderDialog, {
+                    displayUoM: this.groups.group_uom,
+                    uncompletedLines,
+                    onApply: () => super.validate(),
+                });
+            }
+        }
         return await super.validate();
     }
 
@@ -894,6 +930,10 @@ export default class BarcodePickingModel extends BarcodeModel {
 
     _getNewLineDefaultValues(fieldsParams) {
         const defaultValues = super._getNewLineDefaultValues(...arguments);
+        if (this.selectedLine && !fieldsParams.move_id &&
+            this.selectedLine.product_id.id === fieldsParams.product_id?.id) {
+            defaultValues.move_id = this.selectedLine.move_id;
+        }
         return Object.assign(defaultValues, {
             location_dest_id: this._defaultDestLocation(),
             reserved_uom_qty: false,

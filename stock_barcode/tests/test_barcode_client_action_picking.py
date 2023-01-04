@@ -601,6 +601,49 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
             self.start_tour(url, 'test_delivery_reserved_3', login='admin', timeout=180)
             self.assertEqual(self.call_count, 0)
 
+    def test_delivery_reserved_4_backorder(self):
+        """ Checks the backorders are correctly created when all quantity isn't processed and the
+        confirmation's dialog is shown at the right time with the right informations.
+        """
+        self.clean_access_rights()
+        product3 = self.env['product.product'].create({
+            'name': 'product3',
+            'type': 'product',
+            'categ_id': self.env.ref('product.product_category_all').id,
+            'barcode': 'product3',
+        })
+        # Creates a delivery with three different products.
+        delivery = self.env['stock.picking'].create({
+            'picking_type_id': self.picking_type_out.id,
+        })
+        common_vals = {
+            'location_dest_id': self.stock_location.id,
+            'location_id': self.stock_location.id,
+            'name': 'test_delivery_reserved_4_backorder',
+            'picking_id': delivery.id,
+            'product_uom_qty': 4,
+        }
+        self.env['stock.move'].create(dict(common_vals, product_id=self.product1.id))
+        self.env['stock.move'].create(dict(common_vals, product_id=self.product2.id))
+        self.env['stock.move'].create(dict(common_vals, product_id=product3.id))
+        # Adds quantity on hand for the delivery, but not to fulfill it.
+        self.env['stock.quant']._update_available_quantity(self.product1, self.stock_location, 4)
+        self.env['stock.quant']._update_available_quantity(self.product2, self.stock_location, 2)
+        # Confirms and reserves the delivery, then process it.
+        delivery.action_confirm()
+        delivery.action_assign()
+        url = self._get_client_action_url(delivery.id)
+        self.start_tour(url, 'test_delivery_reserved_4_backorder', login='admin', timeout=180)
+
+        # The delivery should have a backorder with two moves.
+        self.assertEqual(len(delivery.backorder_ids), 1)
+        backorder = delivery.backorder_ids
+        self.assertEqual(len(backorder.move_ids), 2)
+        self.assertRecordValues(backorder.move_ids, [
+            {'product_uom_qty': 4, 'quantity_done': 0, 'product_id': self.product2.id},
+            {'product_uom_qty': 4, 'quantity_done': 0, 'product_id': product3.id},
+        ])
+
     def test_delivery_from_scratch_1(self):
         """ Scan unreserved lots on a delivery order.
         """

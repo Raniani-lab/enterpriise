@@ -319,6 +319,7 @@ class StockPickingType(models.Model):
             'barcode_validation_after_dest_location': self.barcode_validation_after_dest_location,
             'barcode_validation_all_product_packed': self.barcode_validation_all_product_packed,
             'barcode_validation_full': not self.restrict_scan_product and self.barcode_validation_full,  # Forced to be False when scanning a product is mandatory.
+            'create_backorder': self.create_backorder,
             'restrict_scan_product': self.restrict_scan_product,
             # Selection fields converted into boolean.
             'restrict_scan_tracking_number': self.restrict_scan_tracking_number == 'mandatory',

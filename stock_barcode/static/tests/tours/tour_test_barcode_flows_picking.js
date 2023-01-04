@@ -781,6 +781,76 @@ registry.category("web_tour.tours").add('test_delivery_reserved_3', {test: true,
     },
 ]});
 
+registry.category("web_tour.tours").add("test_delivery_reserved_4_backorder", { test: true, steps: [
+    {
+        trigger: ".o_barcode_client_action",
+        run: function() {
+            // The picking has 3 moves but only 2 barcode lines because the move for product3
+            // has no reservation, so no move line, so no barcode line neither.
+            helper.assertLinesCount(2);
+            helper.assertLineQty(0, "0 / 4"); // 4 demand, 4 reserved.
+            helper.assertLineQty(1, "0 / 2"); // 4 demand but only 2 reserved.
+        }
+    },
+    // Tries to validate immediatly -> Should open the immediate transfer wizard.
+    { trigger: ".o_validate_page" },
+    {
+        extra_trigger: ".modal-header h4:contains('Immediate Transfer?')",
+        trigger: "button.btn-secondary[special='cancel']", // Closes the wizard.
+    },
+    // Scans product1 then tries to validate again -> Should display the backorder dialog.
+    { trigger: ".o_barcode_client_action", run: "scan product1" },
+    {
+        extra_trigger: ".o_barcode_line.o_selected",
+        trigger: ".o_validate_page",
+    },
+    {
+        trigger: ".modal-content.o_barcode_backorder_dialog",
+        run: function() {
+            const incompleteLines = document.querySelectorAll(".o_barcode_backorder_product_row");
+            helper.assert(incompleteLines.length, 2);
+            const [line1, line2] = incompleteLines;
+            helper.assert(line1.querySelector("[name='qty-done']").innerText, "1");
+            helper.assert(line1.querySelector("[name='reserved-qty']").innerText, "4");
+            helper.assert(line1.querySelector("[name='backorder-qty']").innerText, "3");
+            helper.assert(line2.querySelector("[name='qty-done']").innerText, "0");
+            helper.assert(line2.querySelector("[name='reserved-qty']").innerText, "2");
+            helper.assert(line2.querySelector("[name='backorder-qty']").innerText, "2");
+        },
+    },
+    { trigger: ".modal-dialog button.btn-secondary" }, // Cancel -> Stay on the delivery.
+    // Scans 3 more times product1 to complete the line then clicks on validate again.
+    { trigger: ".o_barcode_client_action", run: "scan product1" },
+    { trigger: ".o_barcode_client_action", run: "scan product1" },
+    { trigger: ".o_barcode_client_action", run: "scan product1" },
+    {
+        extra_trigger: ".o_barcode_line.o_selected.o_line_completed",
+        trigger: ".o_validate_page",
+    },
+    {
+        trigger: ".modal-content.o_barcode_backorder_dialog",
+        run: function() {
+            const incompleteLines = document.querySelectorAll(".o_barcode_backorder_product_row");
+            helper.assert(incompleteLines.length, 1);
+            const [incompleteLine] = incompleteLines;
+            helper.assert(incompleteLine.querySelector("[name='qty-done']").innerText, "0");
+            helper.assert(incompleteLine.querySelector("[name='reserved-qty']").innerText, "2");
+            helper.assert(incompleteLine.querySelector("[name='backorder-qty']").innerText, "2");
+        },
+    },
+    { trigger: ".modal-dialog button.btn-primary" }, // Validate -> Should create a backorder.
+    {
+        trigger: ".o_notification",
+        run: function() {
+            const backorderLink = document.querySelector(".o_notification_content a");
+            helper.assert(
+                backorderLink.innerText.includes("WH/OUT/"), true,
+                "The notification should contain a link to the created backorder."
+            );
+        },
+    }
+]});
+
 registry.category("web_tour.tours").add('test_delivery_using_buttons', {test: true, steps: [
     {
         trigger: '.o_barcode_client_action',

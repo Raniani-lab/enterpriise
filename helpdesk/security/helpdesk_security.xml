@@ -71,7 +71,7 @@
                                             ('company_id', 'in', company_ids),
                                         ]</field>
         </record>
-        <record model="ir.rule">
+        <record id="helpdesk_team_company_rule" model="ir.rule">
             <field name="name">Team: multi-company</field>
             <field name="model_id" ref="model_helpdesk_team"/>
             <field name="domain_force">['|',

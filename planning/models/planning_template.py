@@ -47,13 +47,12 @@ class PlanningTemplate(models.Model):
             if not 0 <= shift_template.start_time < 24:
                 raise ValidationError(_('The start hour must be greater or equal to 0 and lower than 24.'))
             start_time = time(hour=int(shift_template.start_time), minute=round(math.modf(shift_template.start_time)[0] / (1 / 60.0)))
-            duration = shift_template._get_duration()
-            end_time = datetime.combine(date.today(), start_time) + duration
             start_datetime = user_tz.localize(datetime.combine(today, start_time))
             shift_template.duration_days, shift_template.end_time = self._get_company_work_duration_data(calendar, start_datetime, shift_template.duration)
+            end_time = time(hour=int(shift_template.end_time))
             shift_template.name = '%s - %s %s' % (
                 format_time(shift_template.env, start_time, time_format='short').replace(':00 ', ' '),
-                format_time(shift_template.env, end_time.time(), time_format='short').replace(':00 ', ' '),
+                format_time(shift_template.env, end_time, time_format='short').replace(':00 ', ' '),
                 _('(%s days span)') % (shift_template.duration_days) if shift_template.duration_days > 1 else ''
             )
 

@@ -5,6 +5,7 @@
         <field name="name">project.sharing.project.task.view.kanban.inherit</field>
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.project_sharing_project_task_view_kanban"/>
+        <field name="priority">700</field>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='child_text']" position="after">
                 <field name="is_fsm"/>

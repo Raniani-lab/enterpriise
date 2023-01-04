@@ -20,7 +20,7 @@
                 <attribute name="name">portal_progress</attribute>
                 <attribute name="string">Progress</attribute>
             </xpath>
-            <xpath expr="//page[@id='timesheets_tab']//field[@name='progress']" position="attributes">
+            <xpath expr="//div[hasclass('text-nowrap')]//field[@name='progress']" position="attributes">
                 <attribute name="name">portal_progress</attribute>
                 <attribute name="string">Progress</attribute>
             </xpath>

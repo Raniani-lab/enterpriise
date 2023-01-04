@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import _, fields, models
+from odoo import _, api, fields, models
 
 from odoo.addons.sale_timesheet_enterprise.models.sale import DEFAULT_INVOICED_TIMESHEET
 
@@ -28,6 +28,7 @@ class ProjectTask(models.Model):
     def SELF_READABLE_FIELDS(self):
         return super().SELF_READABLE_FIELDS | set(PROJECT_TASK_READABLE_FIELDS_TO_MAP.values()) - set(PROJECT_TASK_READABLE_FIELDS_TO_MAP.keys())
 
+    @api.depends('planned_hours')
     def _compute_project_sharing_timesheets(self):
         is_portal_user = self.user_has_groups('base.group_portal')
         timesheets_per_task = None

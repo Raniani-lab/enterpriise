@@ -5,6 +5,7 @@
         <field name="name">project.sharing.project.task.view.form.inherit</field>
         <field name="model">project.task</field>
         <field name="inherit_id" ref="project.project_sharing_project_task_view_form"/>
+        <field name="priority">800</field>
         <field name="arch" type="xml">
             <xpath expr="//header" position="after">
                 <div class="text-center alert alert-primary" role="alert" attrs="{'invisible': ['|', ('warning_message', '=', False), ('warning_message', '=', '')]}">

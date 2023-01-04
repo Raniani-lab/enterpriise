@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
-from odoo.addons.iap_extract.models.extract_mixin import SUCCESS
 from odoo.addons.iap_extract.tests.test_extract_mixin import TestExtractMixin
 from odoo.tests import tagged
 from odoo.tests.common import Form
@@ -91,7 +90,7 @@ class TestInvoiceExtractPurchase(AccountTestInvoicingCommon, TestExtractMixin):
                     },
                 ],
             }],
-            'status_code': SUCCESS,
+            'status': 'success',
         }
 
     def test_match_po_by_name(self):

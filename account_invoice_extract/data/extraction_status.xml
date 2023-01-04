@@ -45,7 +45,7 @@
                         Refresh
                     </button>
                 </div>
-                <field name="extract_status_code" invisible="1" options="{'format': false}"/>
+                <field name="extract_status" invisible="1" options="{'format': false}"/>
                 <div role="status" class="alert alert-info mb8 text-center" name="extraction_status"
                      attrs="{'invisible':['|',
                             ('extract_can_show_banners', '=', False),

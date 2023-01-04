@@ -1,5 +1,4 @@
 from odoo.addons.hr_expense.tests.common import TestExpenseCommon
-from odoo.addons.iap_extract.models.extract_mixin import ERROR_NOT_ENOUGH_CREDIT, NOT_READY, SUCCESS
 from odoo.addons.iap_extract.tests.test_extract_mixin import TestExtractMixin
 from odoo.tests import tagged
 from odoo.tools import float_compare
@@ -27,7 +26,7 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
 
     def get_default_extract_response(self):
         return {
-            'status_code': SUCCESS,
+            'status': 'success',
             'results': [{
                 'description': {'selected_value': {'content': 'food', 'words': []}},
                 'total': {'selected_value': {'content': 99.99, 'words': []}},
@@ -119,15 +118,15 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
         # test that upon not enough credit error, the retry button is provided
         self.env.company.expense_extract_show_ocr_option_selection = 'auto_send'
 
-        with self._mock_iap_extract({'status_code': ERROR_NOT_ENOUGH_CREDIT}):
+        with self._mock_iap_extract({'status': 'error_no_credit'}):
             self.expense.message_post(attachment_ids=[self.attachment.id])
 
         self.assertFalse(self.expense.extract_can_show_send_button)
 
     def test_status_not_ready(self):
-        # test the NOT_READY ocr status effects
+        # test the 'processing' ocr status effects
         self.env.company.expense_extract_show_ocr_option_selection = 'auto_send'
-        status_response = {'status_code': NOT_READY}
+        status_response = {'status': 'processing'}
 
         with self._mock_iap_extract(status_response):
             self.expense._check_ocr_status()
@@ -146,7 +145,7 @@ class TestExpenseExtractProcess(TestExpenseCommon, TestExtractMixin):
 
         self.assertEqual(self.expense.extract_state, 'waiting_validation')
 
-        with self._mock_iap_extract({'status_code': SUCCESS}):
+        with self._mock_iap_extract({'status': 'success'}):
             self.expense.action_submit_expenses()
 
         self.assertEqual(self.expense.extract_state, 'done')

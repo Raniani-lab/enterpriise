@@ -12,40 +12,22 @@ from odoo.exceptions import AccessError, UserError
 
 _logger = logging.getLogger(__name__)
 
-# list of result id that can be sent by iap-extract
-SUCCESS = 0
-NOT_READY = 1
-ERROR_INTERNAL = 2
-ERROR_NOT_ENOUGH_CREDIT = 3
-ERROR_DOCUMENT_NOT_FOUND = 4
-ERROR_NO_DOCUMENT_NAME = 5
-ERROR_UNSUPPORTED_IMAGE_FORMAT = 6
-ERROR_FILE_NAMES_NOT_MATCHING = 7
-ERROR_NO_CONNECTION = 8
-ERROR_SERVER_IN_MAINTENANCE = 9
-ERROR_PASSWORD_PROTECTED = 10
-ERROR_TOO_MANY_PAGES = 11
-ERROR_INVALID_ACCOUNT_TOKEN = 12
-ERROR_UNSUPPORTED_IMAGE_SIZE = 14
-ERROR_NO_PAGE_COUNT = 15
-ERROR_CONVERSION_PDF2IMAGE = 16
-
 ERROR_MESSAGES = {
-    ERROR_INTERNAL: _lt("An error occurred"),
-    ERROR_DOCUMENT_NOT_FOUND: _lt("The document could not be found"),
-    ERROR_NO_DOCUMENT_NAME: _lt("No document name provided"),
-    ERROR_UNSUPPORTED_IMAGE_FORMAT: _lt("Unsupported image format"),
-    ERROR_FILE_NAMES_NOT_MATCHING: _lt("You must send the same quantity of documents and file names"),
-    ERROR_NO_CONNECTION: _lt("Server not available. Please retry later"),
-    ERROR_SERVER_IN_MAINTENANCE: _lt("Server is currently under maintenance. Please retry later"),
-    ERROR_PASSWORD_PROTECTED: _lt("Your PDF file is protected by a password. The OCR can't extract data from it"),
-    ERROR_TOO_MANY_PAGES: _lt("Your invoice is too heavy to be processed by the OCR. "
-                              "Try to reduce the number of pages and avoid pages with too many text"),
-    ERROR_INVALID_ACCOUNT_TOKEN: _lt("The 'invoice_ocr' IAP account token is invalid. "
-                                     "Please delete it to let Odoo generate a new one or fill it with a valid token."),
-    ERROR_UNSUPPORTED_IMAGE_SIZE: _lt("The document has been rejected because it is too small"),
-    ERROR_NO_PAGE_COUNT: _lt("Invalid PDF (Unable to get page count)"),
-    ERROR_CONVERSION_PDF2IMAGE: _lt("Invalid PDF (Conversion error)"),
+    'error_internal': _lt("An error occurred"),
+    'error_document_not_found': _lt("The document could not be found"),
+    'error_unsupported_format': _lt("Unsupported image format"),
+    'error_no_connection': _lt("Server not available. Please retry later"),
+    'error_maintenance': _lt("Server is currently under maintenance. Please retry later"),
+    'error_password_protected': _lt("Your PDF file is protected by a password. The OCR can't extract data from it"),
+    'error_too_many_pages': _lt(
+        "Your invoice is too heavy to be processed by the OCR. "
+        "Try to reduce the number of pages and avoid pages with too many text"),
+    'error_invalid_account_token': _lt(
+        "The 'invoice_ocr' IAP account token is invalid. "
+        "Please delete it to let Odoo generate a new one or fill it with a valid token."),
+    'error_unsupported_size': _lt("The document has been rejected because it is too small"),
+    'error_no_page_count': _lt("Invalid PDF (Unable to get page count)"),
+    'error_pdf_conversion_to_images': _lt("Invalid PDF (Conversion error)"),
 }
 
 
@@ -67,21 +49,21 @@ class ExtractMixin(models.AbstractModel):
             ('done', 'Completed flow'),
         ],
         'Extract state', default='no_extract_requested', required=True, copy=False)
-    extract_status_code = fields.Integer('Status code', copy=False)
+    extract_status = fields.Char('Extract status', copy=False)
     extract_error_message = fields.Text('Error message', compute='_compute_error_message')
     extract_remote_id = fields.Integer('Id of the request to IAP-OCR', default='-1', copy=False, readonly=True)
     extract_can_show_send_button = fields.Boolean('Can show the ocr send button', compute='_compute_show_send_button')
     is_in_extractable_state = fields.Boolean(compute='_compute_is_in_extractable_state', store=True)
     extract_state_processed = fields.Boolean(compute='_compute_extract_state_processed', store=True)
 
-    @api.depends('extract_status_code')
+    @api.depends('extract_status')
     def _compute_error_message(self):
         for record in self:
-            if record.extract_status_code in (SUCCESS, NOT_READY):
+            if record.extract_status in ('success', 'processing'):
                 record.extract_error_message = ''
             else:
                 record.extract_error_message = ERROR_MESSAGES.get(
-                    record.extract_status_code, ERROR_MESSAGES[ERROR_INTERNAL]
+                    record.extract_status, ERROR_MESSAGES['error_internal']
                 )
 
     @api.depends('extract_state')
@@ -206,7 +188,7 @@ class ExtractMixin(models.AbstractModel):
             self.env['iap.account'].get_credits('invoice_ocr')
             if not account_token.account_token:
                 self.extract_state = 'error_status'
-                self.extract_status_code = ERROR_INVALID_ACCOUNT_TOKEN
+                self.extract_status = 'error_invalid_account_token'
                 return
 
             user_infos = {
@@ -222,14 +204,14 @@ class ExtractMixin(models.AbstractModel):
             }
             try:
                 result = self._contact_iap_extract('parse', params=params)
-                self.extract_status_code = result['status_code']
-                if result['status_code'] == SUCCESS:
+                self.extract_status = result['status']
+                if result['status'] == 'success':
                     self.extract_state = 'waiting_extraction'
                     self.extract_remote_id = result['document_id']
                     if self.env['ir.config_parameter'].sudo().get_param("iap_extract.already_notified", True):
                         self.env['ir.config_parameter'].sudo().set_param("iap_extract.already_notified", False)
                     self._retry_ocr_success_callback()
-                elif result['status_code'] == ERROR_NOT_ENOUGH_CREDIT:
+                elif result['status'] == 'error_no_credit':
                     self.send_no_credit_notification()
                     self.extract_state = 'not_enough_credit'
                 else:
@@ -238,7 +220,7 @@ class ExtractMixin(models.AbstractModel):
 
             except AccessError:
                 self.extract_state = 'error_status'
-                self.extract_status_code = ERROR_NO_CONNECTION
+                self.extract_status = 'error_no_connection'
 
     def send_no_credit_notification(self):
         """
@@ -277,12 +259,12 @@ class ExtractMixin(models.AbstractModel):
         """ Contact iap to get the actual status of the ocr request. This function returns the OCR results if any. """
         self.ensure_one()
         result = self._contact_iap_extract('get_result', params={'document_id': self.extract_remote_id})
-        self.extract_status_code = result['status_code']
+        self.extract_status = result['status']
         ocr_results = None
-        if result['status_code'] == SUCCESS:
+        if result['status'] == 'success':
             self.extract_state = 'waiting_validation'
             ocr_results = result['results'][0]
-        elif result['status_code'] == NOT_READY:
+        elif result['status'] == 'processing':
             self.extract_state = 'extract_not_ready'
         else:
             self.extract_state = 'error_status'

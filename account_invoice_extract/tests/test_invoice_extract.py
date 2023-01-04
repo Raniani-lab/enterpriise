@@ -8,7 +8,6 @@ import textwrap
 from odoo import fields
 
 from odoo.addons.account.tests.common import AccountTestInvoicingCommon
-from odoo.addons.iap_extract.models.extract_mixin import SUCCESS, NOT_READY, ERROR_INTERNAL
 from odoo.addons.iap_extract.tests.test_extract_mixin import TestExtractMixin
 from odoo.tests import tagged
 from odoo.modules.module import get_module_resource
@@ -89,7 +88,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
                     },
                 ],
             }],
-            'status_code': SUCCESS,
+            'status': 'success',
         }
 
     def _get_email_for_journal_alias(self, attachment=b'My attachment', attach_content_type='application/octet-stream', message_id='some_msg_id'):
@@ -128,7 +127,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
                 invoice._check_ocr_status()
 
             self.assertEqual(invoice.extract_state, 'waiting_validation')
-            self.assertEqual(invoice.extract_status_code, SUCCESS)
+            self.assertEqual(invoice.extract_status, 'success')
             self.assertEqual(invoice.amount_total, 330)
             self.assertEqual(invoice.amount_untaxed, 300)
             self.assertEqual(invoice.amount_tax, 30)
@@ -434,24 +433,24 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
     def test_server_error(self):
         # test that the extract state is set to 'error' if the OCR returned an error
         invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
-        extract_response = {'status_code': ERROR_INTERNAL}
+        extract_response = {'status': 'error_internal'}
 
         with self._mock_iap_extract(extract_response, {}):
             invoice._check_ocr_status()
 
         self.assertEqual(invoice.extract_state, 'error_status')
-        self.assertEqual(invoice.extract_status_code, ERROR_INTERNAL)
+        self.assertEqual(invoice.extract_status, 'error_internal')
 
     def test_server_not_ready(self):
         # test that the extract state is set to 'not_ready' if the OCR didn't finish to process the invoice
         invoice = self.env['account.move'].create({'move_type': 'in_invoice', 'extract_state': 'waiting_extraction'})
-        extract_response = {'status_code': NOT_READY}
+        extract_response = {'status': 'processing'}
 
         with self._mock_iap_extract(extract_response, {}):
             invoice._check_ocr_status()
 
         self.assertEqual(invoice.extract_state, 'extract_not_ready')
-        self.assertEqual(invoice.extract_status_code, NOT_READY)
+        self.assertEqual(invoice.extract_status, 'processing')
 
     def test_preupdate_other_waiting_invoices(self):
         # test that when we update an invoice, other invoices waiting for extraction are updated as well
@@ -509,7 +508,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
             'partner_gid': False, 'city': 'Namur', 'bank_ids': [], 'zip': '2110', 'street': 'OCR street'}}):
             invoice._check_ocr_status()
 
-        with self._mock_iap_extract({'status_code': SUCCESS}, {}):
+        with self._mock_iap_extract({'status': 'success'}, {}):
             invoice.action_post()
 
         self.assertEqual(invoice.extract_state, 'done')
@@ -556,7 +555,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
             'datas': base64.b64encode(b'My attachment'),
         })
 
-        with self._mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+        with self._mock_iap_extract({'status': 'success', 'document_id': 1}, {}):
             invoice.message_post(attachment_ids=[test_attachment.id])
 
         self.assertEqual(invoice.extract_state, 'waiting_extraction')
@@ -572,7 +571,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
             'res_id': invoice.id,
         })
 
-        with self._mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+        with self._mock_iap_extract({'status': 'success', 'document_id': 1}, {}):
             test_attachment.register_as_main_attachment()
 
         self.assertEqual(invoice.extract_state, 'waiting_extraction')
@@ -584,7 +583,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
             'name': "an attachment",
             'datas': base64.b64encode(b'My attachment'),
         })
-        with self._mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+        with self._mock_iap_extract({'status': 'success', 'document_id': 1}, {}):
             action = self.env['account.journal'].with_context(default_move_type='out_invoice').create_document_from_attachment(test_attachment.id)
 
         self.assertEqual(self.env['account.move'].browse(action['res_id']).extract_state, 'waiting_extraction')
@@ -593,7 +592,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
         # test that a customer invoice is automatically sent to the OCR server when sent via email alias and the option is enabled
         self.env.company.extract_out_invoice_digitalization_mode = 'auto_send'
         mail = self._get_email_for_journal_alias()
-        with self._mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+        with self._mock_iap_extract({'status': 'success', 'document_id': 1}, {}):
             invoice = self.env['account.move'].browse(self.env['mail.thread'].message_process('account.move', mail))
         self.assertEqual(invoice.extract_state, 'waiting_extraction')
 
@@ -604,7 +603,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
 
         # attachment is not pdf -> do not extract
         mail = self._get_email_for_journal_alias(message_id='message_1')
-        with self._mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+        with self._mock_iap_extract({'status': 'success', 'document_id': 1}, {}):
             invoice = self.env['account.move'].browse(self.env['mail.thread'].message_process('account.move', mail))
         self.assertEqual(invoice.extract_state, 'no_extract_requested')
 
@@ -616,7 +615,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
             attach_content_type='application/pdf',
             message_id='message_2'
         )
-        with self._mock_iap_extract({'status_code': SUCCESS, 'document_id': 2}, {}):
+        with self._mock_iap_extract({'status': 'success', 'document_id': 2}, {}):
             invoice = self.env['account.move'].browse(self.env['mail.thread'].message_process('account.move', mail))
         self.assertEqual(invoice.extract_state, 'waiting_extraction')
 
@@ -629,7 +628,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
             'datas': base64.b64encode(b'My attachment'),
         })
 
-        with self._mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+        with self._mock_iap_extract({'status': 'success', 'document_id': 1}, {}):
             invoice.message_post(attachment_ids=[test_attachment.id])
 
         self.assertEqual(invoice.extract_state, 'no_extract_requested')
@@ -645,7 +644,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
             'res_id': invoice.id,
         })
 
-        with self._mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+        with self._mock_iap_extract({'status': 'success', 'document_id': 1}, {}):
             test_attachment.register_as_main_attachment()
 
         self.assertEqual(invoice.extract_state, 'no_extract_requested')
@@ -662,7 +661,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
                 'datas': base64.b64encode(b'My attachment'),
             })
 
-            with self._mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+            with self._mock_iap_extract({'status': 'success', 'document_id': 1}, {}):
                 invoice.message_post(attachment_ids=[test_attachment.id])
 
             self.assertEqual(invoice.extract_state, 'no_extract_requested')
@@ -676,7 +675,7 @@ class TestInvoiceExtract(AccountTestInvoicingCommon, TestExtractMixin):
                 'res_id': invoice.id,
             })
 
-            with self._mock_iap_extract({'status_code': SUCCESS, 'document_id': 1}, {}):
+            with self._mock_iap_extract({'status': 'success', 'document_id': 1}, {}):
                 test_attachment.register_as_main_attachment()
 
             self.assertEqual(invoice.extract_state, 'no_extract_requested')

@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo.addons.hr.tests.common import TestHrCommon
-from odoo.addons.iap_extract.models.extract_mixin import ERROR_NOT_ENOUGH_CREDIT, NOT_READY, SUCCESS
 from odoo.addons.iap_extract.tests.test_extract_mixin import TestExtractMixin
 
 
@@ -20,7 +19,7 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
 
     def get_default_extract_response(self):
         return {
-            'status_code': SUCCESS,
+            'status': 'success',
             'results': [{
                 'name': {'selected_value': {'content': 'Johnny Doe'}, 'words': []},
                 'email': {'selected_value': {'content': 'john@doe.com'}, 'words': []},
@@ -96,15 +95,15 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
         # test that upon not enough credit error, the retry button is provided
         self.env.company.recruitment_extract_show_ocr_option_selection = 'auto_send'
 
-        with self._mock_iap_extract({'status_code': ERROR_NOT_ENOUGH_CREDIT}):
+        with self._mock_iap_extract({'status': 'error_no_credit'}):
             self.applicant.message_post(attachment_ids=[self.attachment.id])
 
         self.assertFalse(self.applicant.extract_can_show_send_button)
 
     def test_status_not_ready(self):
-        # test the NOT_READY ocr status effects
+        # test the 'processing' ocr status effects
         self.env.company.recruitment_extract_show_ocr_option_selection = 'auto_send'
-        status_response = {'status_code': NOT_READY}
+        status_response = {'status': 'processing'}
 
         with self._mock_iap_extract(status_response):
             self.applicant._check_ocr_status()
@@ -123,7 +122,7 @@ class TestRecruitmentExtractProcess(TestHrCommon, TestExtractMixin):
         self.assertEqual(self.applicant.extract_state, 'waiting_validation')
 
         hired_stages = self.env['hr.recruitment.stage'].search([('hired_stage', '=', True)])
-        with self._mock_iap_extract({'status_code': SUCCESS}):
+        with self._mock_iap_extract({'status': 'success'}):
             self.applicant.write({'stage_id': hired_stages[0].id})
 
         self.assertEqual(self.applicant.extract_state, 'done')

@@ -36,7 +36,7 @@
                         Refresh
                     </button>
                 </div>
-                <field name="extract_status_code" invisible="1"/>
+                <field name="extract_status" invisible="1"/>
                 <div role="status" class="alert alert-info mb8 text-center"
                      attrs="{'invisible':['|',
                             ('state', 'not in', ['draft']),
@@ -71,7 +71,7 @@
         <field name="arch" type="xml">
             <xpath expr="//graph" position="inside">
                 <field name="extract_remote_id" invisible="1"/>
-                <field name="extract_status_code" invisible="1"/>
+                <field name="extract_status" invisible="1"/>
             </xpath>
         </field>
     </record>

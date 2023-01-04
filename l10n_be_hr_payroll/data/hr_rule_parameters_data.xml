@@ -1166,5 +1166,43 @@
             <field name="rule_parameter_id" ref="rule_parameter_cp200_bik_laptop"/>
             <field name="date_from" eval="datetime(2020, 1, 1).date()"/>
         </record>
+
+        <record id="rule_parameter_cp200_representation_fees_threshold" model="hr.rule.parameter">
+            <field name="name">CP200: Representation Fees Threshold</field>
+            <field name="code">cp200_representation_fees_threshold</field>
+            <field name="country_id" ref="base.be"/>
+            <field name="description">
+Only part of the representation costs are pro-rated because certain costs are fully
+covered for the company (teleworking costs, mobile phone, internet, etc., namely:
+
+2021
+====
+
+- 144.31 € (Tax, since 2021 - coronavirus)
+- 30 € (internet)
+- 25 € (phone)
+- 80 € (car management fees)
+= Total € 279.31
+
+2023
+====
+
+- 148.73 € (Tax, since 2021 - coronavirus)
+- 30 € (internet)
+- 25 € (phone)
+- 80 € (car management fees)
+= Total € 283.73
+            </field>
+        </record>
+        <record id="rule_parameter_cp200_representation_fees_threshold_2016" model="hr.rule.parameter.value">
+            <field name="parameter_value">279.31</field>
+            <field name="rule_parameter_id" ref="rule_parameter_cp200_representation_fees_threshold"/>
+            <field name="date_from" eval="datetime(2016, 1, 1).date()"/>
+        </record>
+        <record id="rule_parameter_cp200_representation_fees_threshold_2023" model="hr.rule.parameter.value">
+            <field name="parameter_value">283.73</field>
+            <field name="rule_parameter_id" ref="rule_parameter_cp200_representation_fees_threshold"/>
+            <field name="date_from" eval="datetime(2023, 1, 1).date()"/>
+        </record>
     </data>
 </odoo>

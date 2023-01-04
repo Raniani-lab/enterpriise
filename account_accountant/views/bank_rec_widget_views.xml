@@ -99,6 +99,7 @@
                     <field name="partner_bank_id" invisible="1"/>
                     <field name="currency_id" invisible="1"/>
                     <field name="foreign_currency_id" invisible="1"/>
+                    <field name="statement_line_id" invisible="1"/>
                     <templates>
                         <t t-name="kanban-box">
                             <div t-if="!record.statement_complete.raw_value"
@@ -177,7 +178,6 @@
                       decoration-muted="state == 'draft'"
                       default_order="internal_index desc">
                     <!--Invisible fields-->
-                    <field name="id" invisible="1"/>
                     <field name="statement_complete" invisible="1"/>
                     <field name="statement_valid" invisible="1"/>
                     <field name="state" invisible="1"/>
@@ -230,20 +230,8 @@
                                 'st_line_journal_id':journal_id}"
                            decoration-danger="statement_complete == False or statement_valid == False"
                     />
-                    <button class="btn btn-sm btn-secondary"
-                            title="Match"
-                            type="object"
-                            name="action_open_recon_st_line"
-                            string="Match"
-                            attrs="{'invisible':['|', ('id', '=', False), ('is_reconciled', '=', True)]}">
-                    </button>
-                    <button class="btn btn-sm btn-secondary"
-                            title="View"
-                            type="object"
-                            name="action_open_recon_st_line"
-                            string="View"
-                            attrs="{'invisible':['|', ('id', '=', False), ('is_reconciled', '=', False)]}">
-                    </button>
+                    <field name="id" widget="bank_rec_widget_view_switcher"
+                           attrs="{'invisible':[('id', '=', False), ('is_reconciled', '=', True)]}"/>
                 </tree>
             </field>
         </record>

@@ -590,6 +590,11 @@
             <field name="rule_parameter_id" ref="rule_parameter_work_bonus_reference_wage_low"/>
             <field name="date_from" eval="datetime(2022, 11, 1).date()"/>
         </record>
+        <record id="rule_parameter_value_work_bonus_reference_wage_low_dec_2022" model="hr.rule.parameter.value">
+            <field name="parameter_value">2013.63</field>
+            <field name="rule_parameter_id" ref="rule_parameter_work_bonus_reference_wage_low"/>
+            <field name="date_from" eval="datetime(2022, 12, 1).date()"/>
+        </record>
 
         <record id="rule_parameter_work_bonus_reference_wage_high" model="hr.rule.parameter">
             <field name="name">Work Bonus: High Reference Wage</field>
@@ -636,6 +641,11 @@
             <field name="rule_parameter_id" ref="rule_parameter_work_bonus_reference_wage_high"/>
             <field name="date_from" eval="datetime(2022, 11, 1).date()"/>
         </record>
+        <record id="rule_parameter_value_work_bonus_reference_wage_high_dec_2022" model="hr.rule.parameter.value">
+            <field name="parameter_value">3082.66</field>
+            <field name="rule_parameter_id" ref="rule_parameter_work_bonus_reference_wage_high"/>
+            <field name="date_from" eval="datetime(2022, 12, 1).date()"/>
+        </record>
 
         <record id="rule_parameter_work_bonus_basic_amount" model="hr.rule.parameter">
             <field name="name">Work Bonus: Basic Amount</field>
@@ -681,6 +691,11 @@
             <field name="parameter_value">242.46</field>
             <field name="rule_parameter_id" ref="rule_parameter_work_bonus_basic_amount"/>
             <field name="date_from" eval="datetime(2022, 11, 1).date()"/>
+        </record>
+        <record id="rule_parameter_value_work_bonus_basic_amount_dec_2022" model="hr.rule.parameter.value">
+            <field name="parameter_value">247.31</field>
+            <field name="rule_parameter_id" ref="rule_parameter_work_bonus_basic_amount"/>
+            <field name="date_from" eval="datetime(2022, 12, 1).date()"/>
         </record>
 
         <record id="rule_parameter_work_bonus_coeff" model="hr.rule.parameter">
@@ -829,6 +844,24 @@
             <field name="rule_parameter_id" ref="rule_parameter_holiday_pay_rates"/>
             <field name="date_from" eval="datetime(2019, 1, 1).date()"/>
         </record>
+        <record id="rule_parameter_holiday_pay_rates_2022" model="hr.rule.parameter.value">
+            <field name="parameter_value">
+[
+    (    0.00,       8845.00,  0.00),
+    ( 8845.01,      11330.00, 19.17),
+    (11330.01,      14400.00, 21.20),
+    (14400.01,      17270.00, 26.25),
+    (17270.01,      19550.00, 31.30),
+    (19550.01,      21830.00, 34.33),
+    (21830.01,      26390.00, 36.34),
+    (26390.01,      28710.00, 39.37),
+    (28710.01,      38020.00, 42.39),
+    (38020.01,      49650.00, 47.44),
+    (49650.00,  999999999.00, 53.50)
+]</field>
+            <field name="rule_parameter_id" ref="rule_parameter_holiday_pay_rates"/>
+            <field name="date_from" eval="datetime(2022, 1, 1).date()"/>
+        </record>
 
         <record id="rule_parameter_exceptional_allowances_rates" model="hr.rule.parameter">
             <field name="name">Exceptional Allowances: Withholding Taxes Rates</field>
@@ -852,6 +885,24 @@
 ]</field>
             <field name="rule_parameter_id" ref="rule_parameter_exceptional_allowances_rates"/>
             <field name="date_from" eval="datetime(2019, 1, 1).date()"/>
+        </record>
+        <record id="rule_parameter_exceptional_allowances_rates_2022" model="hr.rule.parameter.value">
+            <field name="parameter_value">
+[
+    (    0.00,       8845.00,  0.00),
+    ( 8845.01,      11330.00, 23.22),
+    (11330.01,      14400.00, 25.23),
+    (14400.01,      17270.00, 30.28),
+    (17270.01,      19550.00, 35.33),
+    (19550.01,      21830.00, 38.36),
+    (21830.01,      26390.00, 40.38),
+    (26390.01,      28710.00, 43.41),
+    (28710.01,      38020.00, 46.44),
+    (38020.01,      49650.00, 51.48),
+    (49650.00,  999999999.00, 53.50)
+]</field>
+            <field name="rule_parameter_id" ref="rule_parameter_exceptional_allowances_rates"/>
+            <field name="date_from" eval="datetime(2022, 1, 1).date()"/>
         </record>
 
         <!-- Holiday Pay - PP Exoneration -->
@@ -878,6 +929,24 @@
             <field name="rule_parameter_id" ref="rule_parameter_holiday_pay_exoneration"/>
             <field name="date_from" eval="datetime(2019, 1, 1).date()"/>
         </record>
+        <record id="rule_parameter_holiday_pay_exoneration_2022" model="hr.rule.parameter.value">
+            <field name="parameter_value">{
+    1: 14272.00,
+    2: 17680.00,
+    3: 23060.00,
+    4: 29060.00,
+    5: 35060.00,
+    6: 41060.00,
+    7: 47060.00,
+    8: 53060.00,
+    9: 59060.00,
+    10: 65060.00,
+    11: 71060.00,
+    12: 77060.00,
+}</field>
+            <field name="rule_parameter_id" ref="rule_parameter_holiday_pay_exoneration"/>
+            <field name="date_from" eval="datetime(2022, 1, 1).date()"/>
+        </record>
 
         <!-- Holiday Pay - PP rate reduction -->
         <record id="rule_parameter_holiday_pay_rate_reduction" model="hr.rule.parameter">
@@ -895,6 +964,17 @@
 }</field>
             <field name="rule_parameter_id" ref="rule_parameter_holiday_pay_rate_reduction"/>
             <field name="date_from" eval="datetime(2019, 1, 1).date()"/>
+        </record>
+        <record id="rule_parameter_holiday_pay_rate_reduction_2022" model="hr.rule.parameter.value">
+            <field name="parameter_value">{
+    1: (7.5, 23990.00),
+    2: (20.0, 23990.00),
+    3: (35.0, 26390.00),
+    4: (55.0, 31190.00),
+    5: (75.0, 33590.00),
+}</field>
+            <field name="rule_parameter_id" ref="rule_parameter_holiday_pay_rate_reduction"/>
+            <field name="date_from" eval="datetime(2022, 1, 1).date()"/>
         </record>
 
         <!-- ONSS Restructuring -->

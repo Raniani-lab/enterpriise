@@ -2,19 +2,22 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from datetime import timedelta
+import os
+from unittest import skipIf
 from odoo import fields
 from odoo.tests.common import tagged, HttpCase
 
 
-@tagged('post_install', '-at_install', 'knowledge', 'knowledge_tour')
-class TestKnowledgeUI(HttpCase):
+class TestKnowledgeUICommon(HttpCase):
     allow_end_on_form = True
     @classmethod
     def setUpClass(cls):
-        super(TestKnowledgeUI, cls).setUpClass()
+        super(TestKnowledgeUICommon, cls).setUpClass()
         # remove existing articles to ease tour management
         cls.env['knowledge.article'].with_context(active_test=False).search([]).unlink()
 
+@tagged('post_install', '-at_install', 'knowledge', 'knowledge_tour')
+class TestKnowledgeUI(TestKnowledgeUICommon):
     def test_knowledge_main_flow(self):
 
         # Patching 'now' to allow checking the order of trashed articles, as
@@ -91,3 +94,28 @@ class TestKnowledgeUI(HttpCase):
         """This tour will check that the emojis of the form view are properly updated
            when the user picks an emoji from an emoji picker."""
         self.start_tour('/web', 'knowledge_pick_emoji_tour', login='admin', step_delay=100)
+
+    def test_knowledge_cover_selector(self):
+        """Check the behaviour of the cover selector when unsplash credentials
+        are not set.
+        """
+        self.start_tour('/web', 'knowledge_cover_selector_tour', login='admin')
+
+@tagged('external', 'post_install', '-at_install')
+@skipIf(not os.getenv("UNSPLASH_APP_ID") or not os.getenv("UNSPLASH_ACCESS_KEY"), "no unsplash credentials")
+class TestKnowledgeUIWithUnsplash(TestKnowledgeUICommon):
+    @classmethod
+    def setUpClass(cls):
+        super(TestKnowledgeUIWithUnsplash, cls).setUpClass()
+
+        cls.UNSPLASH_APP_ID = os.getenv("UNSPLASH_APP_ID")
+        cls.UNSPLASH_ACCESS_KEY = os.getenv("UNSPLASH_ACCESS_KEY")
+
+        cls.env["ir.config_parameter"].set_param("unsplash.app_id", cls.UNSPLASH_APP_ID)
+        cls.env["ir.config_parameter"].set_param("unsplash.access_key", cls.UNSPLASH_ACCESS_KEY)
+
+    def test_knowledge_cover_selector_unsplash(self):
+        """Check the behaviour of the cover selector when unsplash credentials
+        are set.
+        """
+        self.start_tour('/web', 'knowledge_random_cover_tour', login='demo')

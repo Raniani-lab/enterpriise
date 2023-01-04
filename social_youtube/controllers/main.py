@@ -139,6 +139,7 @@ class SocialYoutubeController(SocialController):
             base_values = {
                 'active': True,
                 'name': channel['snippet']['title'],
+                'social_account_handle': channel['snippet'].get('customUrl', '').lstrip('@'),
                 'youtube_access_token': access_token,
                 'youtube_refresh_token': refresh_token,
                 'youtube_token_expiration_date': fields.Datetime.now() + timedelta(seconds=int(expires_in)),

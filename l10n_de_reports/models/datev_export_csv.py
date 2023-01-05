@@ -192,7 +192,8 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             account = partner.property_account_receivable_id if account.account_type == 'asset_receivable' else partner.property_account_payable_id
             fname = "property_account_receivable_id"         if account.account_type == 'asset_receivable' else "property_account_payable_id"
             prop = self.env['ir.property']._get(fname, "res.partner", partner.id)
-            if prop == account:
+            force_datev_id = self.env['ir.config_parameter'].sudo().get_param('l10n_de.force_datev_id', False)
+            if not force_datev_id and prop == account:
                 return str(account.code).ljust(len_param - 1, '0') if account else ''
             return self._l10n_de_datev_get_account_identifier(account, partner)
         return str(account.code).ljust(len_param - 1, '0') if account else ''

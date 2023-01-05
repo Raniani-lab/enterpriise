@@ -14,7 +14,8 @@ class GenerateSimulationLink(models.TransientModel):
     new_car = fields.Boolean(string="Force New Cars List", help="The employee will be able to choose a new car even if the maximum number of used cars available is reached.")
     show_new_car = fields.Boolean(compute='_compute_show_new_car')
     car_id = fields.Many2one('fleet.vehicle', string='Default Vehicle', domain="[('vehicle_type', '=', 'car')]", help="Default employee's company car. If left empty, the default value will be the employee's current car.")
-    l10n_be_canteen_cost = fields.Float(string="Canteen Cost")
+    l10n_be_canteen_cost = fields.Float(
+        string="Canteen Cost", compute='_compute_from_contract_id', store=True, readonly=False)
 
     def _get_url_triggers(self):
         res = super()._get_url_triggers()
@@ -24,3 +25,8 @@ class GenerateSimulationLink(models.TransientModel):
     def _compute_show_new_car(self):
         for wizard in self:
             wizard.show_new_car = wizard.contract_id.available_cars_amount >= wizard.contract_id.max_unused_cars
+
+    def _compute_from_contract_id(self):
+        super()._compute_from_contract_id()
+        for wizard in self:
+            wizard.l10n_be_canteen_cost = wizard.contract_id.l10n_be_canteen_cost

@@ -306,7 +306,7 @@ class DHLProvider():
                 "Weight": carrier._dhl_convert_weight(line.product_id.weight, carrier.dhl_package_weight_unit),
                 "WeightUnit": carrier.dhl_package_weight_unit,
             }
-            item.ManufactureCountryCode = line.product_id.country_of_origin or line.picking_id.picking_type_id.warehouse_id.partner_id.country_id.code
+            item.ManufactureCountryCode = line.product_id.country_of_origin.code or line.picking_id.picking_type_id.warehouse_id.partner_id.country_id.code
             export_lines.append(item)
 
         export_declaration = self.factory.ExportDeclaration()

@@ -145,9 +145,7 @@ export const studioService = {
                         viewType = currentController.view.type;
                         controllerState = Object.assign({}, currentController.getLocalState());
                         const { resIds } = currentController.getGlobalState() || {};
-                        if (resIds) {
-                            controllerState.resIds = resIds;
-                        }
+                        controllerState.resIds = resIds || [controllerState.resId];
                     }
                 }
                 if (!_isStudioEditable(action)) {

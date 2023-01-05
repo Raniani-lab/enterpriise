@@ -520,24 +520,30 @@ QUnit.module("Studio", (hooks) => {
         await createEnterpriseWebClient({ serverData });
         // open app Ponies (act window action)
         await click(target.querySelector(".o_app[data-menu-xmlid=app_2]"));
-
         assert.containsOnce(target, ".o_list_view");
-
-        await click(target.querySelector(".o_data_row .o_data_cell"));
-
+        // Dont'pick the first record for testing
+        await click(target.querySelectorAll(".o_data_row .o_data_cell")[1]);
+        assert.strictEqual(
+            target.querySelector(".o_form_view .o_field_widget[name=name] input").value,
+            "Applejack"
+        );
         assert.containsOnce(target, ".o_form_view");
 
         await openStudio(target);
-
+        assert.strictEqual(
+            target.querySelector(
+                ".o_form_view .o_field_widget[data-studio-xpath='/form[1]/field[1]'] span"
+            ).textContent,
+            "Applejack"
+        )
         assert.containsOnce(target, ".o_web_studio_client_action .o_web_studio_form_view_editor");
 
         await leaveStudio(target);
-
         assert.containsOnce(target, ".o_form_view");
         assert.containsOnce(target, ".o_form_view .o_field_widget[name=name] input");
         assert.strictEqual(
             target.querySelector(".o_form_view .o_field_widget[name=name] input").value,
-            "Twilight Sparkle"
+            "Applejack"
         );
     });
 

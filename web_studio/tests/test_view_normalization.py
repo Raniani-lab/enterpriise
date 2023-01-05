@@ -1275,11 +1275,11 @@ class TestViewNormalization(TransactionCase):
         self.view = self.base_view.create({
             'arch_base':
             '''
-              <data>
+              <form>
                 <!-- hello -->
                 <div />
                 <!-- world -->
-              </data>
+              </form>
             ''',
             'model': 'res.partner',
             'type': 'form'})
@@ -1296,7 +1296,7 @@ class TestViewNormalization(TransactionCase):
             ''',
             '''
               <data>
-                <xpath expr="//data[1]/div[1]" position="before">
+                <xpath expr="//form[1]/div[1]" position="before">
                   <!-- , -->
                   <div name="studio_div_302a40"/>
                 </xpath>
@@ -1308,9 +1308,9 @@ class TestViewNormalization(TransactionCase):
         self.view = self.base_view.create({
             'arch_base':
             '''
-              <data>
+              <form>
                 <group name="o2m_field"/>
-              </data>
+              </form>
             ''',
             'model': 'res.partner',
             'type': 'form'})

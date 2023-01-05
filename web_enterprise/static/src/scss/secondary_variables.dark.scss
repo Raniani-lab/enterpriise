@@ -10,12 +10,12 @@ $o-colors-secondary: ()!default;
 $o-colors-complete-first: saturate(mix(#134E5E , $o-black, 70%), 80%) !default;
 
 @each $-color in $o-colors-original {
-    $-adjusted: saturate(mix($-color, $o-black, 70%), 80%);
+    $-adjusted: saturate(mix($-color, $o-black, 50%), 80%);
     $o-colors: append($o-colors, $-adjusted);
 }
 
 @each $-color in $o-colors-secondary-original {
-    $-adjusted: saturate(mix($-color, $o-black, 70%), 80%);
+    $-adjusted: saturate(mix($-color, $o-black, 50%), 80%);
     $o-colors-secondary: append($o-colors-secondary, $-adjusted);
 }
 

@@ -278,7 +278,7 @@ Content-Transfer-Encoding: quoted-printable
 
         helpdesk_ticket0_id = self.env['mail.thread'].message_process('helpdesk.ticket', new_message0)
         helpdesk_ticket1_id = self.env['mail.thread'].message_process('helpdesk.ticket', new_message1)
-
+        self.env.cr.flush()  # trigger pre-commit
         helpdesk_ticket0 = self.env['helpdesk.ticket'].browse(helpdesk_ticket0_id)
         helpdesk_ticket1 = self.env['helpdesk.ticket'].browse(helpdesk_ticket1_id)
 

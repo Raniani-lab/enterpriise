@@ -81,6 +81,7 @@ class AccountJournal(models.Model):
             }
             move = self.env['account.move'].create(move_vals)
             move.message_post(attachment_ids=[attachment.id])
+            attachment.write({'res_model': 'account.move', 'res_id': move.id})
             moves += move
 
         action_vals = {

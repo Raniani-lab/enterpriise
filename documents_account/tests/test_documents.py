@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 
 import base64
+
+from odoo.exceptions import RedirectWarning
 from odoo.tests.common import tagged, TransactionCase
 
 GIF = b"R0lGODdhAQABAIAAAP///////ywAAAAAAQABAAACAkQBADs="
@@ -203,3 +205,13 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
         self.assertEqual(move.partner_id, partner_1)
         move.partner_id = partner_2
         self.assertEqual(self.document_txt.partner_id, partner_2)
+
+    def test_workflow_create_misc_entry(self):
+        misc_entry_action = self.env.ref('documents_account.misc_entry_rule').apply_actions([self.document_txt.id, self.document_gif.id])
+        move = self.env['account.move'].browse(self.document_txt.res_id)
+        self.assertEqual(misc_entry_action.get('res_model'), 'account.move')
+        self.assertEqual(move.move_type, 'entry')
+
+    def test_workflow_create_bank_statement_raise(self):
+        with self.assertRaises(RedirectWarning): # Could not make sense of the given file.
+            self.env.ref('documents_account.bank_statement_rule').apply_actions([self.document_txt.id, self.document_gif.id])

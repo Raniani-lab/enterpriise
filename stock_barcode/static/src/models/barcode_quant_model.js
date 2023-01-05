@@ -22,7 +22,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
         const linesToApply = this.pageLines.filter(line => line.inventory_quantity_set);
         if (linesToApply.length === 0) {
             const message = _t("There is nothing to apply in this page.");
-            return this.notification.add(message, { type: 'warning' });
+            return this.notification(message, { type: "warning" });
         }
         const action = await this.orm.call('stock.quant', 'action_validate',
             [linesToApply.map(quant => quant.id)]
@@ -31,7 +31,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
             if (res && res.special) { // Do nothing if come from a discarded wizard.
                 return this.trigger('refresh');
             }
-            this.notification.add(_t("The inventory adjustment has been validated"), { type: 'success' });
+            this.notification(_t("The inventory adjustment has been validated"), { type: "success" });
             this.trigger('history-back');
         };
         if (action && action.res_model) {
@@ -279,7 +279,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
             const productName = (product.default_code ? `[${product.default_code}] ` : '') + product.display_name;
             const message = sprintf(
                 _t("%s can't be inventoried. Only storable products can be inventoried."), productName);
-            this.notification.add(message, { type: 'warning' });
+            this.notification(message, { type: "warning" });
             return false;
         }
         const domain = [
@@ -400,7 +400,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
                 packageType.name, currentLine.package_id.name
             );
             barcodeData.stopped = true;
-            return this.notification.add(message, { type: 'success' });
+            return this.notification(message, { type: "success" });
         }
         if (!recPackage) {
             if (currentLine && !currentLine.package_id) {
@@ -521,7 +521,7 @@ export default class BarcodeQuantModel extends BarcodeModel {
                         _t("Scanned quantity uses %s as Unit of Measure, but this UoM is not compatible with the product's one (%s)."),
                         args.uom.name, productUOM.name
                     );
-                    return this.notification.add(message, { title: _t("Wrong Unit of Measure"), type: 'warning' });
+                    return this.notification(message, { title: _t("Wrong Unit of Measure"), type: "warning" });
                 } else if (args.uom.id !== productUOM.id) {
                     // Compatible but not the same UoM => Need a conversion.
                     args.inventory_quantity = (args.inventory_quantity / args.uom.factor) * productUOM.factor;

@@ -177,7 +177,7 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
     }
 
     _cancelNotification() {
-        this.notification.add(_t("The batch picking has been cancelled"));
+        this.notification(_t("The batch picking has been cancelled"));
     }
 
     _canOverrideTrackingNumber(line) {

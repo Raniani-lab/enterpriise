@@ -609,13 +609,11 @@ export default class BarcodePickingModel extends BarcodeModel {
     async validate() {
         if (this.config.restrict_scan_dest_location == 'mandatory' &&
             !this.lastScanned.destLocation && this.selectedLine) {
-            this.playErrorSound();
-            return this.notification.add(_t("Destination location must be scanned"), { type: 'danger' });
+            return this.notification(_t("Destination location must be scanned"), { type: "danger" });
         }
         if (this.config.lines_need_to_be_packed &&
             this.currentState.lines.some(line => this._lineNeedsToBePacked(line))) {
-            this.playErrorSound();
-            return this.notification.add(_t("All products need to be packed"), { type: 'danger' });
+            return this.notification(_t("All products need to be packed"), { type: "danger" });
         }
         return await super.validate();
     }
@@ -660,7 +658,7 @@ export default class BarcodePickingModel extends BarcodeModel {
     }
 
     _cancelNotification() {
-        this.notification.add(_t("The transfer has been cancelled"));
+        this.notification(_t("The transfer has been cancelled"));
     }
 
     _checkBarcode(barcodeData) {
@@ -725,7 +723,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         const record = await this.orm.read(this.resModel, [this.record.id], ["state"]);
         if (record[0].state === 'done') {
             // If all is OK, displays a notification and goes back to the previous page.
-            this.notification.add(this.validateMessage, { type: 'success' });
+            this.notification(this.validateMessage, { type: "success" });
             this.trigger('history-back');
         }
     }
@@ -988,8 +986,7 @@ export default class BarcodePickingModel extends BarcodeModel {
                 if (packageLine.qty_done) {
                     this.lastScanned.packageId = packageLine.package_id.id;
                     const message = _t("This package is already scanned.");
-                    this.playErrorSound();
-                    this.notification.add(message, { type: 'danger' });
+                    this.notification(message, { type: "danger" });
                     return this.trigger('update');
                 }
                 for (const line of packageLine.lines) {
@@ -1084,7 +1081,7 @@ export default class BarcodePickingModel extends BarcodeModel {
         if (!line || !line.qty_done) {
             barcodeData.stopped = true;
             const message = _t("You can't apply a package type. First, scan product or select a line");
-            return this.notification.add(message, { type: 'warning' });
+            return this.notification(message, { type: "warning" });
         }
         const resultPackage = line.result_package_id;
         if (!resultPackage) { // No package on the line => Do a put in pack.
@@ -1103,7 +1100,7 @@ export default class BarcodePickingModel extends BarcodeModel {
                 _t("Package type %s was correctly applied to the package %s"),
                 packageType.name, resultPackage.name
             );
-            this.notification.add(message, { type: 'success' });
+            this.notification(message, { type: "success" });
             this.trigger('refresh');
         }
     }
@@ -1111,8 +1108,7 @@ export default class BarcodePickingModel extends BarcodeModel {
     async _putInPack(additionalContext = {}) {
         const context = Object.assign({ barcode_view: true }, additionalContext);
         if (!this.groups.group_tracking_lot) {
-            this.playErrorSound();
-            return this.notification.add(
+            return this.notification(
                 _t("To use packages, enable 'Packages' in the settings"),
                 { type: 'danger'}
             );
@@ -1185,8 +1181,7 @@ export default class BarcodePickingModel extends BarcodeModel {
                         _t("Scanned quantity uses %s as Unit of Measure, but this UoM is not compatible with the line's one (%s)."),
                         args.uom.name, lineUOM.name
                     );
-                    this.playErrorSound();
-                    return this.notification.add(message, { title: _t("Wrong Unit of Measure"), type: 'danger' });
+                    return this.notification(message, { title: _t("Wrong Unit of Measure"), type: "danger" });
                 } else if (args.uom.id !== lineUOM.id) {
                     // Compatible but not the same UoM => Need a conversion.
                     args.qty_done = (args.qty_done / args.uom.factor) * lineUOM.factor;

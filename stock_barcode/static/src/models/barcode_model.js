@@ -18,7 +18,7 @@ export default class BarcodeModel extends EventBus {
         this.dialogService = useService('dialog');
         this.orm = services.orm;
         this.rpc = services.rpc;
-        this.notification = services.notification;
+        this.notificationService = services.notification;
         this.resId = resId;
         this.resModel = resModel;
         this.unfoldLineKey = false;
@@ -350,6 +350,18 @@ export default class BarcodeModel extends EventBus {
         return foundLine;
     }
 
+    /**
+     * Calls the notification service and plays a sound if the notification's type is "warning".
+     * @param {String} message
+     * @param {Object} options
+     */
+    notification(message, options={}) {
+        if (options.type === "danger") {
+            this.playErrorSound();
+        }
+        return this.notificationService.add(message, options);
+    }
+
     playErrorSound() {
         this.errorSound.currentTime = 0;
         this.errorSound.play();
@@ -452,7 +464,7 @@ export default class BarcodeModel extends EventBus {
                 continue;
             }
             if (lotName === l.lot_name || (l.lot_id && lotName === l.lot_id.name)) {
-                this.notification.add(_t("This serial number is already used."), { type: 'warning' });
+                this.notification(_t("This serial number is already used."), { type: "warning" });
                 return Promise.reject();
             }
         }
@@ -495,7 +507,7 @@ export default class BarcodeModel extends EventBus {
     async _closeValidate(ev) {
         if (ev === undefined) {
             // If all is OK, displays a notification and goes back to the previous page.
-            this.notification.add(this.validateMessage, { type: 'success' });
+            this.notification(this.validateMessage, { type: "success" });
             this.trigger('history-back');
         }
     }
@@ -553,8 +565,7 @@ export default class BarcodeModel extends EventBus {
                     _t("Scanned quantity uses %s as Unit of Measure, but this UoM is not compatible with the product's one (%s)."),
                     paramsUOM.name, productUOM.name
                 );
-                this.playErrorSound();
-                this.notification.add(message, { title: _t("Wrong Unit of Measure"), type: 'danger'});
+                this.notification(message, { title: _t("Wrong Unit of Measure"), type: "danger" });
                 return false;
             }
         }
@@ -765,7 +776,7 @@ export default class BarcodeModel extends EventBus {
             const message = sprintf(
                 _t("Barcode scan is ambiguous with several model: %s. Use the most likely."),
                 Array.from(recordByData.keys()));
-            this.notification.add(message, { type: 'warning' });
+            this.notification(message, { type: "warning" });
         }
 
         if (this.groups.group_stock_multi_locations) {
@@ -828,7 +839,7 @@ export default class BarcodeModel extends EventBus {
         await this.save();
         const options = this._getPrintOptions();
         if (options.warning) {
-            return this.notification.add(options.warning, { type: 'warning' });
+            return this.notification(options.warning, { type: "warning" });
         }
         if (!action && method) {
             action = await this.orm.call(
@@ -877,7 +888,7 @@ export default class BarcodeModel extends EventBus {
                 result.match = true;
             } else {
                 const message = _t("An unexisting package type was scanned. This part of the barcode can't be processed.");
-                this.notification.add(message, { type: 'warning' });
+                this.notification(message, { type: "warning" });
             }
         } else if (rule.type === 'product') {
             const product = await this.cache.getRecordByBarcode(value, 'product.product');
@@ -946,8 +957,7 @@ export default class BarcodeModel extends EventBus {
         // Depending of the configuration, the user can be forced to scan a specific barcode type.
         const check = this._checkBarcode(barcodeData);
         if (check.error) {
-            this.playErrorSound();
-            return this.notification.add(check.message, { title: check.title, type: "danger" });
+            return this.notification(check.message, { title: check.title, type: "danger" });
         }
 
         if (barcodeData.packaging) {
@@ -1010,8 +1020,7 @@ export default class BarcodeModel extends EventBus {
                     barcodeData.error = _t("You are expected to scan one or more products.");
                 }
             }
-            this.playErrorSound();
-            return this.notification.add(barcodeData.error, { type: 'danger' });
+            return this.notification(barcodeData.error, { type: "danger" });
         }
         if (barcodeData.weight) { // the encoded weight is based on the product's UoM
             barcodeData.uom = this.cache.getRecord('uom.uom', product.uom_id);
@@ -1023,7 +1032,7 @@ export default class BarcodeModel extends EventBus {
             barcodeData.quantity = barcodeData.quantity || 1;
             if (product.tracking === 'serial' && barcodeData.quantity > 1 && (barcodeData.lot || barcodeData.lotName)) {
                 barcodeData.quantity = 1;
-                this.notification.add(
+                this.notification(
                     _t(`A product tracked by serial numbers can't have multiple quantities for the same serial number.`),
                     { type: 'danger' }
                 );
@@ -1040,8 +1049,7 @@ export default class BarcodeModel extends EventBus {
             for (const line of this.currentState.lines) {
                 if (line.product_id.tracking === 'serial' && this.getQtyDone(line) !== 0 &&
                     ((line.lot_id && line.lot_id.name) || line.lot_name) === lotName) {
-                    this.playErrorSound();
-                    return this.notification.add(
+                    return this.notification(
                         _t("The scanned serial number is already used."),
                         { type: 'danger' }
                     );

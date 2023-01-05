@@ -39,7 +39,7 @@ patch(BarcodePickingModel.prototype, 'stock_barcode_mrp_subcontracting', {
         const moveId = line && line.move_id || false;
         return this._getActionRecordComponents(moveId).then(
             res => this.trigger('do-action', res),
-            error => this.notification.add(error)
+            error => this.notification(error)
         );
     },
 

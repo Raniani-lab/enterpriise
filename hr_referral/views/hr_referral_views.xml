@@ -28,7 +28,7 @@
                 <field name="stage_id"/>
                 <field name="applicant_id"/>
                 <field name="hr_referral_reward_id"/>
-                <field name="company_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
     </record>
@@ -41,7 +41,7 @@
                 <field name="ref_user_id"/>
                 <field name="points"/>
                 <field name="hr_referral_reward_id"/>
-                <field name="company_id"/>
+                <field name="company_id" groups="base.group_multi_company"/>
             </tree>
         </field>
     </record>
@@ -56,7 +56,7 @@
                         <group name="main_details">
                             <field name="ref_user_id"/>
                             <field name="points"/>
-                            <field name="company_id"/>
+                            <field name="company_id" groups="base.group_multi_company"/>
                         </group>
                         <group name="configuration_details">
                             <field name="hr_referral_reward_id" attrs="{'invisible': [('hr_referral_reward_id', '=', False)]}"/>

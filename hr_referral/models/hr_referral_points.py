@@ -5,7 +5,6 @@
 from odoo import fields, models
 
 
-
 class HrReferralPoints(models.Model):
     _name = 'hr.referral.points'
     _description = 'Points line for referrals'
@@ -17,4 +16,4 @@ class HrReferralPoints(models.Model):
     points = fields.Integer('Points')
     stage_id = fields.Many2one('hr.recruitment.stage', 'Stage')
     sequence_stage = fields.Integer('Sequence of stage', related='stage_id.sequence')
-    company_id = fields.Many2one('res.company', 'Company', required=True)
+    company_id = fields.Many2one('res.company', 'Company', required=True, default=lambda self: self.env.company)

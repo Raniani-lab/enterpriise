@@ -4,7 +4,7 @@
 {
     'name': 'Iap Extract',
     'version': '1.0',
-    'category': 'Human Resources/Expenses',
+    'category': 'Hidden/Tools',
     'summary': 'Common module for requesting data from the extract server',
     'depends': ['base', 'mail'],
     'data': [

@@ -14,7 +14,7 @@ odoo.define('hr_recruitment_sign.tour', function (require) {
             },
             {
                 content: "Go on applications",
-                trigger: '.dropdown-toggle[title="Applications"]',
+                trigger: '.dropdown-toggle[data-menu-xmlid="hr_recruitment.menu_crm_case_categ0_act_job"]',
                 run: 'click',
             },
             {

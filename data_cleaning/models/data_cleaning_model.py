@@ -5,7 +5,7 @@ import ast
 from dateutil.relativedelta import relativedelta
 from psycopg2 import sql
 
-from odoo import models, api, fields
+from odoo import models, api, fields, _
 from odoo.tools import split_every
 
 # When cleaning_mode = automatic, _clean_records calls action_validate.
@@ -207,12 +207,17 @@ class DataCleaningModel(models.Model):
             self.env['mail.thread'].with_context(mail_notify_author=True).message_notify(
                 body=self.env['ir.qweb']._render(
                     'data_cleaning.notification',
-                    dict(records_count=records_count,
-                         res_model_label=self.res_model_id.name,
-                         cleaning_model_id=self.id,
-                         menu_id=menu_id)
+                    dict(
+                        records_count=records_count,
+                        res_model_label=self.res_model_id.name,
+                        cleaning_model_id=self.id,
+                        menu_id=menu_id
+                    )
                 ),
+                model=self._name,
                 partner_ids=partner_ids,
+                res_id=self.id,
+                subject=_('Data to Clean'),
             )
 
     ############

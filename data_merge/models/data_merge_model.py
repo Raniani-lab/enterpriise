@@ -153,14 +153,17 @@ class DataMergeModel(models.Model):
             self.env['mail.thread'].with_context(mail_notify_author=True).sudo().message_notify(
                 body=self.env['ir.qweb']._render(
                     'data_merge.data_merge_duplicate',
-                    dict(num_records=num_records,
-                         res_model_label=self.res_model_id.name,
-                         model_id=self.id,
-                         menu_id=menu_id)
-                    ),
+                    dict(
+                        num_records=num_records,
+                        res_model_label=self.res_model_id.name,
+                        model_id=self.id,
+                        menu_id=menu_id
+                    )
+                ),
+                model=self._name,
                 partner_ids=partner_ids,
-                model='data_merge.model',
                 res_id=self.id,
+                subject=_('Duplicates to Merge'),
             )
 
     def _cron_find_duplicates(self):

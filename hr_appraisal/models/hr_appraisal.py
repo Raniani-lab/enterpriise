@@ -298,10 +298,11 @@ class HrAppraisal(models.Model):
             vals['date_close'] = current_date
             self._appraisal_plan_post()
             body = _("The appraisal's status has been set to Done by %s", self.env.user.name)
-            self.env['mail.thread'].message_notify(
-                subject=_("Appraisal reopened"),
+            appraisal.message_notify(
                 body=body,
-                partner_ids=appraisal.message_partner_ids.ids)
+                subject=_("Appraisal reopened"),
+                partner_ids=appraisal.message_partner_ids.ids,
+            )
             appraisal.message_post(body=body)
         if 'state' in vals and vals['state'] == 'cancel':
             self.meeting_ids.unlink()

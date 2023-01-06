@@ -35,7 +35,7 @@ class JournalReportCustomHandler(models.AbstractModel):
             if column['expression_label'] in ['name', 'account', 'label']:
                 column['class'] = 'o_account_report_line_ellipsis'
             elif column['expression_label'] == 'additional_col_2':
-                column['class'] = 'text-right'
+                column['class'] = 'text-end'
         # Initialise the custom options for this report.
         custom_filters = {
             'sort_by_date': False,
@@ -253,13 +253,13 @@ class JournalReportCustomHandler(models.AbstractModel):
             # The system needs to always have the same column amount. This is hacky, but it works.
             if journal_type in ['sale', 'purchase']:
                 columns.extend([
-                    {'name': _('Taxes'), 'class': 'text-left'},
+                    {'name': _('Taxes'), 'class': 'text-start'},
                     {'name': _('Tax Grids')},
                 ])
             elif journal_type == 'bank':
                 columns.extend([
                     {'name': _('Balance'), 'class': 'number'},
-                    {'name': ''} if not has_multicurrency else {'name': _('Amount In Currency'), 'class': 'text-right number'},
+                    {'name': ''} if not has_multicurrency else {'name': _('Amount In Currency'), 'class': 'text-end number'},
                 ])
             else:
                 columns.extend([
@@ -561,7 +561,7 @@ class JournalReportCustomHandler(models.AbstractModel):
                 tax_val = _('B: %s', report.format_value(values['tax_base_amount'], blank_if_zero=False, figure_type='monetary'))
             values['tax_grids'] = values['tax_grids']
             additional_col = [
-                {'name': tax_val, 'class': 'text-left'},
+                {'name': tax_val, 'class': 'text-start'},
                 {'name': ', '.join(values['tax_grids'])},
             ]
         elif values['journal_type'] == 'bank':

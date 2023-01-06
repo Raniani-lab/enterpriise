@@ -304,6 +304,13 @@ class TestSubscriptionCommon(TestSaleCommon):
         tx = tx_obj.create(values)
         return tx
 
+    def _mock_subscription_do_payment_rejected(self, payment_method, invoice):
+        tx = self._mock_subscription_do_payment(payment_method, invoice)
+        tx.state = "pending"
+        tx._set_error("Payment declined")
+        tx.env.cr.flush()  # simulate commit after sucessfull `_do_payment()`
+        return tx
+
     # Mocking for 'test_auto_payment_with_token'
     # Otherwise the whole sending mail process will be triggered
     # And we are not here to test that flow, and it is a heavy one

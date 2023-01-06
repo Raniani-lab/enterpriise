@@ -831,11 +831,8 @@ class SaleOrder(models.Model):
                 "This subscription is renewed in %s with a change of plan.", renew._get_html_link()
             )
             parent.message_post(body=renew_msg_body)
-            parent.write({
-                'state': 'done',
-                'end_date': parent.next_invoice_date,
-                'subscription_state': '5_renewed'
-            })
+            parent.end_date = parent.next_invoice_date
+            parent.set_close()
             # TODO fix : This can create hole that are not taken into account by progress_sub upselling
             start_date = renew.start_date or parent.next_invoice_date
             renew.write({'date_order': today, 'start_date': start_date})
@@ -1054,24 +1051,32 @@ class SaleOrder(models.Model):
         renewed_orders = self.env['sale.order']
         closed_orders = self.env['sale.order']
         for order in self:
-            if not order.is_subscription:
-                continue
-            elif order.subscription_child_ids.filtered(lambda s: s.subscription_state in SUBSCRIPTION_PROGRESS_STATE):
+            if order.subscription_child_ids.filtered(lambda s: s.subscription_state in SUBSCRIPTION_PROGRESS_STATE):
                 renewed_orders += order
             else:
                 closed_orders += order
         closed_orders.write({'subscription_state': '6_churn'})
-        renewed_orders.write({'subscription_state': '5_renewed'})
+        renewed_orders.write({'subscription_state': '5_renewed', 'state': 'done'})
 
-    def set_close(self):
-        renew_close_reason = self.env.ref('sale_subscription.close_reason_renew', raise_if_not_found=False)
+    def set_close(self, close_reason_id=None):
         self._set_closed_state()
         today = fields.Date.context_today(self)
         values = {'end_date': today}
-        self.update(values)
-        if renew_close_reason:
-            for sub in self.filtered(lambda s: s.subscription_state == '5_renewed'):
-                sub.update({'close_reason_id': renew_close_reason.id})
+        if close_reason_id:
+            values['close_reason_id'] = close_reason_id
+            self.update(values)
+        else:
+            renew_close_reason_id = self.env.ref('sale_subscription.close_reason_renew').id
+            end_of_contract_reason_id = self.env.ref('sale_subscription.close_reason_end_of_contract').id
+            close_reason_unknown_id = self.env.ref('sale_subscription.close_reason_unknown').id
+            for sub in self:
+                if sub.subscription_state == "5_renewed":
+                    close_reason_id = renew_close_reason_id
+                elif sub.end_date and sub.end_date <= today:
+                    close_reason_id = end_of_contract_reason_id
+                else:
+                    close_reason_id = close_reason_unknown_id
+                sub.write({'close_reason_id': close_reason_id})
         return True
 
     def set_open(self):
@@ -1273,7 +1278,7 @@ class SaleOrder(models.Model):
             self.message_post(body=msg_body)
             subscription_values = {'payment_exception': False}
             # close the contract as needed
-            self.set_close()
+            self.set_close(close_reason_id=self.env.ref('sale_subscription.close_reason_auto_close_limit_reached').id)
         else:
             msg_body = _('Automatic payment failed. No email sent this time. Error: %s', transaction and transaction.state_message or _('No valid Payment Method'))
 
@@ -1622,17 +1627,26 @@ class SaleOrder(models.Model):
         expired_ids = [r['so_id'] for r in expired_result]
         subscriptions_close |= self.env['sale.order'].browse(unpaid_ids) | self.env['sale.order'].browse(expired_ids)
         auto_commit = not bool(config['test_enable'] or config['test_file'])
+        expired_close_reason = self.env.ref('sale_subscription.close_reason_auto_close_limit_reached')
+        unpaid_close_reason = self.env.ref('sale_subscription.close_reason_unpaid_subscription')
         for batched_to_close in split_every(30, subscriptions_close.ids, self.env['sale.order'].browse):
-            batched_to_close.set_close()
+            unpaid_so = self.env['sale.order']
+            expired_so = self.env['sale.order']
             for so in batched_to_close:
                 if so.id in unpaid_ids:
+                    unpaid_so |= so
                     account_move = self.env['account.move'].browse(unpaid_results[so.id])
                     so.message_post(
                         body=_("The last invoice (%s) of this subscription is unpaid after the due date.",
                                account_move._get_html_link()),
                         partner_ids=so.team_user_id.partner_id.ids,
                         message_type='email')
+                elif so.id in expired_ids:
+                    expired_so |= so
 
+            unpaid_so.set_close(close_reason_id=unpaid_close_reason)
+            expired_so.set_close(close_reason_id=expired_close_reason)
+            (batched_to_close - unpaid_so - expired_so).set_close()
             if auto_commit:
                 self.env.cr.commit()
         return dict(closed=subscriptions_close.ids)

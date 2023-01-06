@@ -10,7 +10,7 @@ from odoo.addons.sale_subscription.models.sale_order import SaleOrder
 from odoo.tests import Form, tagged
 from odoo.tools import mute_logger
 from odoo import fields, Command
-from odoo.exceptions import ValidationError, UserError
+from odoo.exceptions import AccessError, ValidationError, UserError
 
 
 @tagged('post_install', '-at_install')
@@ -2375,8 +2375,7 @@ class TestSubscription(TestSubscriptionCommon):
             self.flush_tracking()
         with freeze_time("2023-03-05"):
             close_reason_id = self.env.ref('sale_subscription.close_reason_1').id
-            (sub | sub_mrr_change).close_reason_id = close_reason_id
-            (sub | sub_mrr_change).set_close()
+            (sub | sub_mrr_change).set_close(close_reason_id=close_reason_id)
             self.flush_tracking()
             # We change the quantity after cloing to see what happens to the logs when we reopen
             sub_mrr_change.order_line.product_uom_qty = 6
@@ -2533,3 +2532,32 @@ class TestSubscription(TestSubscriptionCommon):
                              [('3_transfer', datetime.date(2023, 4, 29), 200, 200, other_currency),
                               ('1_expansion', datetime.date(2023, 4, 29), 400, 600, other_currency)
                               ])
+    def test_protected_close_reason(self):
+        close_reason = self.env['sale.order.close.reason'].create({
+            'name': 'Super close reason',
+            'is_protected': True,
+        })
+
+        with self.assertRaises(AccessError):
+            close_reason.unlink()
+
+    def test_close_reason_end_of_contract(self):
+        sub = self.subscription
+        end_date = datetime.date(2022, 6, 20)
+        sub.end_date = end_date
+        with freeze_time(end_date):
+            sub._create_recurring_invoice()
+        self.assertEqual(sub.close_reason_id.id, self.env.ref('sale_subscription.close_reason_end_of_contract').id)
+
+    def test_close_reason_automatic_renewal_failed(self):
+        sub = self.subscription
+        sub.sale_order_template_id.auto_close_limit = 1
+        start_date = datetime.date(2022, 6, 20)
+        sub.start_date = start_date
+        sub.payment_token_id = self.payment_method.id
+        sub.action_confirm()
+
+        with freeze_time(start_date + relativedelta(days=sub.sale_order_template_id.auto_close_limit)):
+            with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._do_payment', wraps=self._mock_subscription_do_payment_rejected):
+                sub._create_recurring_invoice()
+        self.assertEqual(sub.close_reason_id.id, self.env.ref('sale_subscription.close_reason_auto_close_limit_reached').id)

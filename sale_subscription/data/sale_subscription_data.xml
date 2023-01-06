@@ -21,12 +21,38 @@
         <field name="name">Other</field>
     </record>
 
-    <record id="close_reason_renew" model="sale.order.close.reason">
-        <field name="name">The subscription was renewed with a new plan.</field>
-        <field name="visible_in_portal" eval="False"/>
-    </record>
-
     <data noupdate="1">
+        <!-- Protected close reasons -->
+        <record id="close_reason_renew" model="sale.order.close.reason">
+            <field name="name">The subscription was renewed with a new plan</field>
+            <field name="visible_in_portal" eval="False"/>
+            <field name="is_protected" eval="True"/>
+        </record>
+
+        <record id="close_reason_end_of_contract" model="sale.order.close.reason">
+            <field name="name">End of contract</field>
+            <field name="visible_in_portal" eval="False"/>
+            <field name="is_protected" eval="True"/>
+        </record>
+
+        <record id="close_reason_auto_close_limit_reached" model="sale.order.close.reason">
+            <field name="name">Automatic renewal failed</field>
+            <field name="visible_in_portal" eval="False"/>
+            <field name="is_protected" eval="True"/>
+        </record>
+
+        <record id="close_reason_unpaid_subscription" model="sale.order.close.reason">
+            <field name="name">Unpaid subscription</field>
+            <field name="visible_in_portal" eval="False"/>
+            <field name="is_protected" eval="True"/>
+        </record>
+
+        <record id="close_reason_unknown" model="sale.order.close.reason">
+            <field name="name">Unknown</field>
+            <field name="visible_in_portal" eval="False"/>
+            <field name="is_protected" eval="True"/>
+        </record>
+
         <!-- Subtypes -->
         <record id="subtype_state_change" model="mail.message.subtype">
             <field name="name">State Change</field>

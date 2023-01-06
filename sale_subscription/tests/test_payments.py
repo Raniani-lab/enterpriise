@@ -290,14 +290,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
         })
         self.subscription.action_confirm()
 
-        def _mock_subscription_do_payment_rejected(payment_method, invoice):
-            tx = self._mock_subscription_do_payment(payment_method, invoice)
-            tx.state = "pending"
-            tx._set_error("Payment declined")
-            tx.env.cr.flush()  # simulate commit after sucessfull `_do_payment()`
-            return tx
-
-        with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._do_payment', wraps=_mock_subscription_do_payment_rejected),\
+        with patch('odoo.addons.sale_subscription.models.sale_order.SaleOrder._do_payment', wraps=self._mock_subscription_do_payment_rejected),\
              self.mock_mail_gateway():
             self.subscription._create_recurring_invoice()
 
@@ -416,6 +409,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
             self.env['sale.order'].sudo()._cron_subscription_expiration()
             self.assertEqual(account_moves.mapped('payment_state'), ['partial', 'not_paid', 'not_paid', 'not_paid'])
             self.assertEqual(all_subs.mapped('subscription_state'), ['3_progress', '6_churn', '6_churn', '6_churn'])
+            self.assertEqual(sub3.close_reason_id.id, self.env.ref("sale_subscription.close_reason_unpaid_subscription").id)
             self.assertEqual(sub0.subscription_state, '3_progress')
 
         with freeze_time("2023-01-07"):
@@ -458,6 +452,7 @@ class TestSubscriptionPayments(PaymentCommon, TestSubscriptionCommon, MockEmail)
         with freeze_time("2025-01-07"):
             self.env['sale.order'].sudo()._cron_subscription_expiration()
             self.assertEqual(sub.subscription_state, '6_churn')
+            self.assertEqual(sub.close_reason_id.id, self.env.ref("sale_subscription.close_reason_auto_close_limit_reached").id)
 
     def test_partial_payment(self):
         subscription = self.subscription

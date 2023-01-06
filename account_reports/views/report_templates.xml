@@ -440,7 +440,7 @@
 
     <template id="search_template_date_filter">
         <button type="button" class="o-no-caret btn btn-secondary dropdown-toggle" data-bs-toggle="dropdown">
-            <span class="fa fa-calendar" title="Dates" role="img" aria-label="Dates"/>
+            <span class="fa fa-fw fa-calendar" title="Dates" role="img" aria-label="Dates"/>
             <t t-if="options['date'].get('string') and options['date'].get('filter') != 'custom'"><t t-out="options['date']['string']"/></t>
             <t t-if="options['date'].get('filter') == 'custom'">
                 <t t-if="options['date']['mode'] == 'single'">Date: <span class="js_format_date"><t t-out="options['date']['date_to']"/></span></t>

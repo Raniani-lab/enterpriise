@@ -49,7 +49,7 @@ class PlanningTemplate(models.Model):
             start_time = time(hour=int(shift_template.start_time), minute=round(math.modf(shift_template.start_time)[0] / (1 / 60.0)))
             start_datetime = user_tz.localize(datetime.combine(today, start_time))
             shift_template.duration_days, shift_template.end_time = self._get_company_work_duration_data(calendar, start_datetime, shift_template.duration)
-            end_time = time(hour=int(shift_template.end_time))
+            end_time = time(hour=int(shift_template.end_time), minute=round(math.modf(shift_template.end_time)[0] / (1 / 60.0)))
             shift_template.name = '%s - %s %s' % (
                 format_time(shift_template.env, start_time, time_format='short').replace(':00 ', ' '),
                 format_time(shift_template.env, end_time, time_format='short').replace(':00 ', ' '),

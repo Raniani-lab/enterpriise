@@ -338,67 +338,6 @@ class L10nInGSTReturnPeriod(models.Model):
         action['domain'] = domain
         return action
 
-    def create_return_period(self, raise_exception=False, past_month=0):
-        def _find_or_create_period(start_date, end_date, periodicity, vat_unit, main_company_id):
-            available_period = self.search([
-                ("tax_unit_id", "=", vat_unit.id),
-                ("start_date", "=", start_date),
-                ("end_date", "=", end_date),
-                ("periodicity", "=", periodicity),
-                ("company_id", "=", main_company_id.id)])
-            if not available_period:
-                available_period = self.sudo().create(
-                    {
-                        "tax_unit_id": vat_unit.id,
-                        "start_date": start_date,
-                        "end_date": end_date,
-                        "periodicity": periodicity,
-                        "company_id": main_company_id.id
-                    }
-                )
-            other_same_period = self.search([
-                ('id', 'not in', available_period.ids),
-                ("start_date", "=", start_date),
-                ("end_date", "=", end_date),
-                '|',
-                    ("company_id", "=", company.id),
-                    ("company_id", "=", main_company_id.id)])
-            other_same_period.sudo().unlink()
-
-        today_date = fields.Date.today() - relativedelta.relativedelta(months=past_month)
-        this_month_start, this_month_end = date_utils.get_month(today_date)
-        this_quarter_start, this_quarter_end = date_utils.get_quarter(today_date)
-        for company in self.env["res.company"].search([
-            ('partner_id.country_id.code', '=', "IN"),
-            ('chart_template_id', '=', self.env.ref("l10n_in.indian_chart_template_standard").id)]):
-            vat_unit = company.account_tax_unit_ids.filtered(lambda l: l.country_id.code == 'IN')
-            if vat_unit and len(vat_unit) > 1:
-                message = _(
-                    "GST return period is not created for company %s(%s) "
-                    "because there are more then one vat unit for country India.",
-                    company.name,
-                    company.id,
-                )
-                _logger.warning(message)
-                if raise_exception:
-                    raise UserError(message)
-                continue
-            main_company_id = vat_unit.main_company_id or company
-            tax_periodicity = main_company_id.account_tax_periodicity
-            if tax_periodicity not in ('trimester', 'monthly'):
-                message = _("GST return period is not created for company %s(%s) "
-                    "because tax return periodicity is not monthly or quarterly", company.name, company.id)
-                _logger.warning(message)
-                if raise_exception:
-                    raise UserError(message)
-                continue
-            start_date = tax_periodicity == "trimester" and this_quarter_start or this_month_start
-            end_date = tax_periodicity == "trimester" and this_quarter_end or this_month_end
-            _find_or_create_period(start_date, end_date, tax_periodicity, vat_unit, main_company_id)
-
-    def _cron_create_return_period(self, past_month=0):
-        self.create_return_period(past_month=past_month)
-
     def _cron_refresh_gst_token(self):
         # If Token is already expired than we can't refresh it.
         companies = self.env['res.company'].search([('vat', '!=', False),

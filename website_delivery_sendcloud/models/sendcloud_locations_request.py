@@ -8,11 +8,13 @@ LOCATION_URL = "https://servicepoints.sendcloud.sc/api/v2/"
 
 class SendcloudLocationsRequest(SendCloud):
 
-    def get_close_locations(self, partner_address, distance):
-
+    def get_close_locations(self, partner_address, distance, carrier):
+        if carrier == 'sendcloud':
+            carrier = ''
         params = {"country": partner_address.country_code,
                   "address": partner_address.street + "," + partner_address.zip + " " + partner_address.city,
-                  "radius": distance}
+                  "radius": distance,
+                  "carrier": carrier}
         request = self._send_request('service-points', params=params, route=LOCATION_URL)
         location = set()
         return_data = []

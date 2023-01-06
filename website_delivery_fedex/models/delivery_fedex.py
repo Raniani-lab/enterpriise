@@ -1,7 +1,6 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-import json
 from odoo import fields, models
 from .fedex_locations_request import FEDEXLocationsRequest
 
@@ -13,11 +12,7 @@ class ProviderFedex(models.Model):
         categ_length_id = (self.env.ref("uom.uom_categ_length")).id
         miles_id = (self.env.ref("uom.product_uom_mile")).id
         km_id = (self.env.ref("uom.product_uom_km")).id
-        if categ_length_id:
-            if miles_id or km_id:
-                return ['&', ('category_id.id', '=', categ_length_id), ('id', 'in', [miles_id, km_id])]
-            return ['&', ('category_id.id', '=', categ_length_id), ('name', 'in', ['km', 'mi'])]
-        return []
+        return ['&', ('category_id.id', '=', categ_length_id), ('id', 'in', [miles_id, km_id])]
 
     fedex_use_locations = fields.Boolean(string='Use Fedex Locations', help='Allows the ecommerce user to choose a pick-up point as delivery address.')
     fedex_locations_radius_value = fields.Integer(string='Locations Radius', help='Maximum locations distance radius.', default=15, required=True)
@@ -39,6 +34,12 @@ class ProviderFedex(models.Model):
         for location in locations:
             address = location['LocationDetail']['LocationContactAndAddress']['Address']
             location['address'] = address['StreetLines'][0] + ", " + address['City'] + " (" + address['PostalCode'] + ")"
+            location["pick_up_point_name"] = location['LocationDetail']['LocationContactAndAddress']['Contact']['CompanyName'] if location['LocationDetail']['LocationContactAndAddress']['Contact'] else location['LocationDetail']['LocationTypeForDisplay']
+            location["pick_up_point_address"] = address['StreetLines'][0]
+            location["pick_up_point_state"] = address['StateOrProvinceCode']
+            location["pick_up_point_postal_code"] = address['PostalCode']
+            location["pick_up_point_town"] = address['City']
+            location["pick_up_point_country"] = address['CountryCode']
         return locations
 
     def _fedex_update_srm(self, srm, request_type, order=None, picking=None):
@@ -47,7 +48,7 @@ class ProviderFedex(models.Model):
         if picking:
             order = picking.sale_id
         if order and order.access_point_address:
-            fedex_location = json.loads(order.access_point_address) if order.access_point_address else False
+            fedex_location = order.access_point_address if order.access_point_address else False
             fedex_loc_details = fedex_location.get('LocationDetail', {})
 
             hold_at_loc = srm.factory.HoldAtLocationDetail()

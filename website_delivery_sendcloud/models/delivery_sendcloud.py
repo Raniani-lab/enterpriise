@@ -41,10 +41,16 @@ class ProviderSendcloud(models.Model):
     def _sendcloud_get_close_locations(self, partner_address):
         superself = self.sudo()
         distance = int(self.sendcloud_locations_radius_unit._compute_quantity(self.sendcloud_locations_radius_value, self.env['uom.uom'].search([('name', '=', 'm')])))
-
         slr = SendcloudLocationsRequest(superself.sendcloud_public_key, superself.sendcloud_secret_key, self.log_xml)
 
-        locations = slr.get_close_locations(partner_address, distance)
+        locations = slr.get_close_locations(partner_address, distance, self.sendcloud_shipping_id.carrier)
+
         for location in locations:
             location["address"] = location["street"] + ', ' + location["city"] + ' (' + location["postal_code"] + ')'
+            location["pick_up_point_name"] = location["name"]
+            location["pick_up_point_address"] = location["street"]
+            location["pick_up_point_postal_code"] = location["postal_code"]
+            location["pick_up_point_town"] = location["city"]
+            location["pick_up_point_country"] = location["country"]
+            location["pick_up_point_state"] = None
         return locations

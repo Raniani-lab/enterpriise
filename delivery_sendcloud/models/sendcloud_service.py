@@ -3,7 +3,6 @@
 import re
 import math
 import requests
-import json
 from werkzeug.urls import url_join
 
 
@@ -96,20 +95,18 @@ class SendCloud:
             # get warehouse for each picking and get the sender address to use for shipment
             sender_id = self._get_pick_sender_address(picking)
         parcels = self._prepare_parcel(picking, sender_id, is_return)
-        data = {
-            'parcels': parcels
-        }
-
-        parameters = {
-            'errors': 'verbose-carrier',
-        }
 
         # the id of the access_point needs to be passed as parameter following Sendcloud API's
         if picking.sale_id.access_point_address:
-            data = json.loads(picking.sale_id.order_line[0].order_id.access_point_address)
-            access_point_id = data['id']
-            parameters['to_service_point'] = access_point_id
+            for parcel in parcels:
+                parcel['to_service_point'] = picking.sale_id.access_point_address['id']
 
+        data = {
+            'parcels': parcels
+        }
+        parameters = {
+            'errors': 'verbose-carrier',
+        }
         res = self._send_request('parcels', 'post', data, params=parameters)
         res_parcels = res.get('parcels')
         if not res_parcels:

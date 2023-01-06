@@ -19,24 +19,12 @@ def _mock_call():
         responses = {
             'get': {
                 'service-points': [{
-                    'id': 11238037,
-                    'code': '637432',
-                    'is_active': True,
-                    'shop_type': '16',
-                    'extra_data': {'shop_type': '16'},
                     'name': 'STATION AVIA',
                     'street': 'CHAUSSÉE DE NAMUR 67',
                     'house_number': '',
                     'postal_code': '1367',
                     'city': 'RAMILLIES',
-                    'latitude': '50.634530',
-                    'longitude': '4.864700',
-                    'email': '', 'phone': '',
-                    'homepage': '', 'carrier':
-                    'bpost', 'country': 'BE',
-                    'formatted_opening_times': {'0': ['07:00 - 18:30'], '1': ['07:00 - 18:30'], '2': ['07:00 - 18:30'], '3': ['07:00 - 18:30'], '4': ['08:00 - 14:00', '15:00 - 18:00'], '5': ['09:00 - 16:00'], '6': []},
-                    'open_tomorrow': True,
-                    'open_upcoming_week': True,
+                    'country': 'BE',
                     'distance': 765}],
             },
             'post': {
@@ -139,5 +127,21 @@ class TestWebsiteDeliverySendcloudLocationsController(TransactionCase):
             self.assertEqual({}, WebsiteSaleDelivery.get_access_point(self))
             with _mock_call():
                 close_locations = WebsiteSaleDelivery.get_close_locations(self)
-                self.assertNotEqual({}, WebsiteSaleDelivery.set_access_point(self, access_point_encoded=close_locations["partner_address"]))
-                self.assertEqual('Rue des Bourlottes 9  1367 NL', self.order.access_point_address)
+                self.assertNotEqual({}, WebsiteSaleDelivery.set_access_point(self, access_point_encoded=json.dumps(close_locations['close_locations'][0])))
+                self.assertEqual({
+                    'name': 'STATION AVIA',
+                    'street': 'CHAUSSÉE DE NAMUR 67',
+                    'house_number': '',
+                    'postal_code': '1367',
+                    'city': 'RAMILLIES',
+                    'country': 'BE',
+                    'distance': 0.765,
+                    'address': 'CHAUSSÉE DE NAMUR 67, RAMILLIES (1367)',
+                    'pick_up_point_name': 'STATION AVIA',
+                    'pick_up_point_address': 'CHAUSSÉE DE NAMUR 67',
+                    'pick_up_point_postal_code': '1367',
+                    'pick_up_point_town': 'RAMILLIES',
+                    'pick_up_point_country': 'BE',
+                    'pick_up_point_state': None,
+                    'address_stringified': '{"name": "STATION AVIA", "street": "CHAUSS\\u00c9E DE NAMUR 67", "house_number": "", "postal_code": "1367", "city": "RAMILLIES", "country": "BE", "distance": 0.765, "address": "CHAUSS\\u00c9E DE NAMUR 67, RAMILLIES (1367)", "pick_up_point_name": "STATION AVIA", "pick_up_point_address": "CHAUSS\\u00c9E DE NAMUR 67", "pick_up_point_postal_code": "1367", "pick_up_point_town": "RAMILLIES", "pick_up_point_country": "BE", "pick_up_point_state": null}',
+                }, self.order.access_point_address)

@@ -5,8 +5,8 @@
 # Translators:
 # Martin Trigaux, 2022
 # Cécile Collart <cco@odoo.com>, 2022
-# Jolien De Paepe, 2022
 # Camille Dantinne <cmd@odoo.com>, 2022
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Camille Dantinne <cmd@odoo.com>, 2022\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -117,7 +117,7 @@ msgstr "Frais supplémentaires pour les retours tardifs"
 #: model:ir.model.fields,help:sale_renting.field_product_template__rent_ok
 #: model:ir.model.fields,help:sale_renting.field_sale_order_line__is_product_rentable
 msgid "Allow renting of this product."
-msgstr "Autoriser la location de cet article. "
+msgstr "Autoriser la location de ce produit. "
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__analytic_account_id
@@ -139,7 +139,7 @@ msgstr "Demander au client de signer le document sur place."
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "At first, let's create some products to rent."
-msgstr "Dans un premier temps, créons des articles à louer."
+msgstr "Dans un premier temps, créons des produits à louer."
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__pricing_id
@@ -187,7 +187,7 @@ msgstr "Cliquez ici pour enregistrer la remise"
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Click here to set up your first rental product."
-msgstr "Cliquez ici pour configurer votre premier article de location."
+msgstr "Cliquez ici pour configurer votre premier produit de location."
 
 #. module: sale_renting
 #. openerp-web
@@ -228,7 +228,7 @@ msgstr "Configuration"
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_rental_wizard
 msgid "Configure the rental of a product"
-msgstr "Configurer la location d'un article"
+msgstr "Configurer la location d'un produit"
 
 #. module: sale_renting
 #. openerp-web
@@ -275,7 +275,7 @@ msgstr "Créer une nouvelle location"
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_product_template_action
 msgid "Create a new rental product!"
-msgstr "Créez un nouveau article de location !"
+msgstr "Créez un nouveau produit de location !"
 
 #. module: sale_renting
 #. openerp-web
@@ -379,7 +379,7 @@ msgstr "Jours"
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_res_config_settings__extra_product
 msgid "Delay Product"
-msgstr "Retarder l'article"
+msgstr "Retarder le produit"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__description
@@ -422,7 +422,7 @@ msgstr "Ligne de location modifiée"
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Enter the product name."
-msgstr "Entrer le nom de l'article."
+msgstr "Entrer le nom du produit."
 
 #. module: sale_renting
 #. openerp-web
@@ -656,7 +656,7 @@ msgid ""
 "No rental price is defined on the product.\n"
 "The price used is the sales price."
 msgstr ""
-"Aucun prix de location n'est défini sur cet article\n"
+"Aucun prix de location n'est défini sur ce produit\n"
 "Le prix utilisé sera le prix de vente."
 
 #. module: sale_renting
@@ -739,7 +739,7 @@ msgstr "Par heure"
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_rental_order_wizard
 msgid "Pick-up/Return products"
-msgstr "Enlever/Retourner articles"
+msgstr "Enlever/Retourner produits"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_gantt
@@ -831,7 +831,7 @@ msgstr "Tarification"
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
 msgid "Product"
-msgstr "Article"
+msgstr "Produit"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__categ_id
@@ -839,23 +839,23 @@ msgstr "Article"
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_report_search_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Product Category"
-msgstr "Catégorie d'article"
+msgstr "Catégorie de produit"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__product_name
 msgid "Product Reference"
-msgstr "Référence d'article"
+msgstr "Référence de produit"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__product_tmpl_id
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_schedule__product_tmpl_id
 msgid "Product Template"
-msgstr "Modèle d'article"
+msgstr "Modèle de produit"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_product_product
 msgid "Product Variant"
-msgstr "Variante d'article"
+msgstr "Variante de produit"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
@@ -865,13 +865,13 @@ msgstr "Produit pour faire payer le temps supplémentaire"
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__product_id
 msgid "Product to rent (has to be rentable)"
-msgstr "Article à louer (doit être louable)"
+msgstr "Produit à louer (doit être louable)"
 
 #. module: sale_renting
 #: model:ir.actions.act_window,name:sale_renting.rental_product_template_action
 #: model:ir.ui.menu,name:sale_renting.menu_rental_products
 msgid "Products"
-msgstr "Articles"
+msgstr "Produits"
 
 #. module: sale_renting
 #: model:product.product,name:sale_renting.rental_product_1
@@ -933,7 +933,7 @@ msgstr "RETOUR"
 #. module: sale_renting
 #: model:ir.actions.act_window,name:sale_renting.rental_configurator_action
 msgid "Rent a product"
-msgstr "Louer un article "
+msgstr "Louer un produit "
 
 #. module: sale_renting
 #: model:ir.model.fields.selection,name:sale_renting.selection__sale_order_line__temporal_type__rental
@@ -1120,7 +1120,7 @@ msgstr "Vendeur"
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Save the product."
-msgstr "Sauvegarder l'article."
+msgstr "Sauvegarder le produit."
 
 #. module: sale_renting
 #. openerp-web
@@ -1147,7 +1147,7 @@ msgstr "Locations prévues"
 #: code:addons/sale_renting/static/src/js/tours/rental.js:0
 #, python-format
 msgid "Select your rental product."
-msgstr "Sélectionnez votre article de location."
+msgstr "Sélectionnez votre produit de location."
 
 #. module: sale_renting
 #: model:ir.actions.act_window,name:sale_renting.action_rental_config_settings
@@ -1209,12 +1209,12 @@ msgstr ""
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_res_company__extra_product
 msgid "The product is used to add the cost to the sales order"
-msgstr "L'article est utilisé pour ajouter le coût au bon de commande"
+msgstr "Le produit est utilisé pour ajouter le coût au bon de commande"
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_sale_order_line__is_late
 msgid "The products haven't been returned in time"
-msgstr "Les articles n'ont pas été retournés à temps"
+msgstr "Les produits n'ont pas été retournés à temps"
 
 #. module: sale_renting
 #. openerp-web
@@ -1236,8 +1236,8 @@ msgid ""
 "can change this value for existing products directly on the product itself."
 msgstr ""
 "C'est le coût additionnel journalier mis par défaut sur les nouveaux "
-"articles créés. Vous pouvez changer cette valeur sur les articles existants "
-"directement depuis l'article lui-même."
+"produits créés. Vous pouvez changer cette valeur sur les produits existants "
+"directement depuis le produit lui-même."
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_res_config_settings__extra_hour
@@ -1245,9 +1245,9 @@ msgid ""
 "This is the default extra cost per hour set on newly created products. You "
 "can change this value for existing products directly on the product itself."
 msgstr ""
-"C'est le coût additionnel horaire mis par défaut sur les nouveaux articles "
-"créés. Vous pouvez changer cette valeur pour les articles existants "
-"directement depuis l'article lui-même."
+"C'est le coût additionnel horaire mis par défaut sur les nouveaux produits "
+"créés. Vous pouvez changer cette valeur pour les produits existants "
+"directement depuis le produit lui-même."
 
 #. module: sale_renting
 #: model:ir.model.fields,help:sale_renting.field_rental_wizard__unit_price
@@ -1262,7 +1262,7 @@ msgstr ""
 #: model:ir.model.fields,help:sale_renting.field_res_config_settings__extra_product
 msgid "This product will be used to add fines in the Rental Order."
 msgstr ""
-"Cet article sera utilisé pour ajouter des amendes dans la commande de "
+"Ce produit sera utilisé pour ajouter des amendes dans la commande de "
 "location."
 
 #. module: sale_renting
@@ -1271,8 +1271,8 @@ msgid ""
 "Those values are applied to any new rental product and can be changed on "
 "product forms."
 msgstr ""
-"Ces valeurs sont appliquées sur tous les nouveaux articles de location et "
-"peuvent être changées sur les fiches articles."
+"Ces valeurs sont appliquées sur tous les nouveaux produits de location et "
+"peuvent être changées sur les fiches produits."
 
 #. module: sale_renting
 #: model:ir.ui.menu,name:sale_renting.rental_orders_today
@@ -1294,7 +1294,7 @@ msgstr "A retourner"
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_view_tree
 msgid "Total Tax Included"
-msgstr "Total taxes incluses"
+msgstr "Total, toutes taxes comprises"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_rental_wizard__duration_unit
@@ -1354,7 +1354,7 @@ msgid ""
 "Want to <b>rent products</b>? \n"
 " Let's discover Odoo Rental App."
 msgstr ""
-"Voulez-vous <b>louer des articles</b>? \n"
+"Voulez-vous <b>louer des produits</b>? \n"
 " Découvrez l'appli Odoo Location"
 
 #. module: sale_renting
@@ -1373,8 +1373,8 @@ msgid ""
 "You can also create additional products or services to sell by checking *Can"
 " be Sold* in the product form (e.g. insurance)."
 msgstr ""
-"Vous pouvez aussi créer des articles ou services additionnels à vendre en "
-"cochant \"Peut être vendu\" dans la fiche article (ex: assurance)."
+"Vous pouvez aussi créer des produits ou services additionnels à vendre en "
+"cochant \"Peut être vendu\" dans la fiche produit (ex: assurance)."
 
 #. module: sale_renting
 #: model_terms:ir.actions.act_window,help:sale_renting.rental_order_today_pickup_action

@@ -5,7 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Cécile Collart <cco@odoo.com>, 2022
-# Jolien De Paepe, 2022
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:24+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Jolien De Paepe, 2022\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -184,9 +184,9 @@ msgid ""
 "The product must belong to the selected category.\n"
 "Use several rules if you need to match multiple products within a category."
 msgstr ""
-"Si défini, la règle ne s'applique pas à la catégorie entière mais seulement à l'article donné.\n"
-"L'article doit appartenir à la catégorie sélectionnée.\n"
-"Utilisez plusieurs règles si vous avez besoin d'associer plusieurs articles dans une catégorie."
+"Si défini, la règle ne s'applique pas à la catégorie entière mais seulement au produit donné.\n"
+"Le produit doit appartenir à la catégorie sélectionnée.\n"
+"Utilisez plusieurs règles si vous avez besoin d'associer plusieurs produits dans une catégorie."
 
 #. module: partner_commission
 #: model:ir.model.fields,help:partner_commission.field_purchase_order__invoice_commission_count
@@ -293,7 +293,7 @@ msgstr "Approvisionnement"
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_commission_rule__product_id
 msgid "Product"
-msgstr "Article"
+msgstr "Produit"
 
 #. module: partner_commission
 #: code:addons/partner_commission/models/commission_plan.py:0
@@ -304,7 +304,7 @@ msgstr "Produit %s n'appartient pas à cette catégorie %s"
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_commission_rule__category_id
 msgid "Product Category"
-msgstr "Catégorie d'article"
+msgstr "Catégorie de produit"
 
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_commission_plan__product_id

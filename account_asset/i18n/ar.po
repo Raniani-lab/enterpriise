@@ -7,6 +7,7 @@
 # Malaz Abuidris <msea@odoo.com>, 2022
 # Mehjabin Farsana, 2022
 # Niyas Raphy, 2022
+# Hassan Najm <hassannjm@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-16 09:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: Niyas Raphy, 2022\n"
+"Last-Translator: Hassan Najm <hassannjm@gmail.com>, 2023\n"
 "Language-Team: Arabic (https://www.transifex.com/odoo/teams/41243/ar/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -27,7 +28,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid " (%s of %s)"
-msgstr ""
+msgstr " (%s من %s)"
 
 #. module: account_asset
 #. odoo-python
@@ -86,7 +87,7 @@ msgstr "%s سنة "
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "%s: Depreciation"
-msgstr ""
+msgstr "%s: الإهلاك"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -112,7 +113,7 @@ msgstr "تم إنشاء إيرادات مؤجلة لهذه الحركة: "
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "A depreciation entry will be posted on and including the date %s."
-msgstr ""
+msgstr "سيتم ترحيل قيد الإهلاك في التاريخ المتضمن %s."
 
 #. module: account_asset
 #. odoo-python
@@ -148,7 +149,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "A document linked to %s has been deleted: %s"
-msgstr ""
+msgstr "المستند المرتبط بـ %s تم حذفه : %s"
 
 #. module: account_asset
 #. odoo-python
@@ -421,7 +422,7 @@ msgstr "اسم عرض مُعرِّف الأصل "
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_lifetime_days
 msgid "Asset Lifetime Days"
-msgstr ""
+msgstr "أيام عمر الأصل"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__asset_model
@@ -459,7 +460,7 @@ msgstr "خيارات الأصل "
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_paused_days
 msgid "Asset Paused Days"
-msgstr ""
+msgstr "أيام توقف الأصل مؤقتاً"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset_report_handler
@@ -513,7 +514,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset sold. %s"
-msgstr ""
+msgstr "بيع الأصل. %s"
 
 #. module: account_asset
 #. odoo-python
@@ -685,7 +686,7 @@ msgstr "تأكيد"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__constant_periods
 msgid "Constant Periods"
-msgstr ""
+msgstr "فترات ثابتة"
 
 #. module: account_asset
 #: model:ir.actions.server,name:account_asset.action_account_aml_to_asset
@@ -1246,7 +1247,7 @@ msgstr "الزيادة الإجمالية "
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__account_asset_id
 msgid "Gross Increase Account"
-msgstr ""
+msgstr "حساب الزيادة الإجمالية"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__gross_increase_value
@@ -1720,7 +1721,7 @@ msgstr "شراء: الأصل"
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Re-evaluate"
-msgstr ""
+msgstr "إعادة التقييم"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1741,7 +1742,7 @@ msgstr "النفقات ذات الصلة "
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__related_purchase_value
 msgid "Related Purchase Value"
-msgstr ""
+msgstr "قيمة الشراء ذات الصلة"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form

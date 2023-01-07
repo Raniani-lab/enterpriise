@@ -5,7 +5,7 @@
 # Translators:
 # Bohdan Lisnenko, 2022
 # Martin Trigaux, 2022
-# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022
+# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2023
 # 
 msgid ""
 msgstr ""
@@ -13,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022\n"
+"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2023\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -726,7 +726,7 @@ msgstr "Іконка типу дії"
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Add a table of content."
-msgstr ""
+msgstr "Додати таблицю вмісту."
 
 #. module: knowledge
 #. openerp-web
@@ -741,23 +741,25 @@ msgid ""
 "Add articles in your list of favorites by clicking on the <i class=\"fa fa-"
 "star-o\"></i> next to the article name."
 msgstr ""
+"Додайте статті у свій список вибраного, натиснувши на <i class=\"fa fa-"
+"star-o\"></i> назву наступної статті."
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/behaviors/table_of_content_behavior/table_of_content_behavior.xml:0
 #, python-format
 msgid "Add headings in this Article to create a Table of Content"
-msgstr ""
+msgstr "Додайте заголовки до цієї статті, щоб створити зміст"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_invite_view_form
 msgid "Add people or email addresses"
-msgstr ""
+msgstr "Додайте людей чи email адреси"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "Add people or email addresses..."
-msgstr ""
+msgstr "Додайте людей чи email адреси..."
 
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_member_action
@@ -765,6 +767,8 @@ msgid ""
 "Adding members allows you to share Articles while granting specific access "
 "rights<br>(can write, can read, ...)."
 msgstr ""
+"Додавання учасників дозволяє вам ділитися статтями, надаючи певні права "
+"доступу<br>(може писати, може читати, ...)."
 
 #. module: knowledge
 #. openerp-web
@@ -785,14 +789,14 @@ msgstr "Адміністратор"
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "Advanced Search"
-msgstr ""
+msgstr "Розширений пошук"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Archive Article"
-msgstr ""
+msgstr "Архівувати статтю"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search_items
@@ -816,6 +820,8 @@ msgid ""
 "Are you sure you want to leave this private article? By doing so, the "
 "article and all its descendants will be archived."
 msgstr ""
+"Ви впевнені, що бажаєте залишити цю приватну статтю? При цьому стаття та всі"
+" її дочірні статті будуть заархівовані."
 
 #. module: knowledge
 #. openerp-web
@@ -852,6 +858,8 @@ msgid ""
 "Are you sure you want to remove your member? By leaving an article, you may "
 "lose access to it."
 msgstr ""
+"Ви впевнені, що хочете видалити свого учасника? Залишивши статтю, ви можете "
+"втратити до неї доступ."
 
 #. module: knowledge
 #. openerp-web
@@ -868,6 +876,8 @@ msgid ""
 "Are you sure you want to restore access? This means this article will now "
 "inherit any access set on its parent articles."
 msgstr ""
+"Ви впевнені, що бажаєте відновити доступ? Це означає, що тепер ця стаття "
+"успадкує будь-який доступ, набір батьківських статей."
 
 #. module: knowledge
 #. openerp-web
@@ -877,6 +887,8 @@ msgid ""
 "Are you sure you want to restrict this role and restrict access ? This "
 "article will no longer inherit access settings from the parent page."
 msgstr ""
+"Ви впевнені, що бажаєте обмежити цю роль і доступ? Ця стаття більше не "
+"успадковуватиме налаштування доступу від батьківської сторінки."
 
 #. module: knowledge
 #. openerp-web
@@ -886,6 +898,8 @@ msgid ""
 "Are you sure you want to set the internal permission to \"none\" ? If you "
 "do, you will no longer have access to the article."
 msgstr ""
+"Ви впевнені, що бажаєте встановити внутрішній дозвіл на \"немає\"? Якщо ви "
+"це зробите, ви більше не матимете доступу до статті."
 
 #. module: knowledge
 #. openerp-web
@@ -895,6 +909,8 @@ msgid ""
 "Are you sure you want to set your permission to \"none\"? If you do, you "
 "will no longer have access to the article."
 msgstr ""
+"Ви впевнені, що бажаєте встановити дозвіл на \"немає\"? Якщо ви це зробите, "
+"ви більше не матимете доступу до статті."
 
 #. module: knowledge
 #. openerp-web
@@ -915,6 +931,8 @@ msgid ""
 "Article '%s' should always have a writer: inherit write permission, or have "
 "a member with write access"
 msgstr ""
+"Статті '%s' слід завжди мати автора: успадкувати дозвіл на запис або мати "
+"учасника з доступом на запис"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__article_properties_definition
@@ -970,7 +988,7 @@ msgstr "Статті"
 #, python-format
 msgid ""
 "Articles %s cannot be updated as this would create a recursive hierarchy."
-msgstr ""
+msgstr "Статті %s не можна оновити, оскільки це створить рекурсивну ієрархію."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_cover__article_ids
@@ -982,7 +1000,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "As a reader, you can't leave a Workspace article"
-msgstr ""
+msgstr "Як читач ви не можете залишити статтю папки"
 
 #. module: knowledge
 #. openerp-web
@@ -990,7 +1008,7 @@ msgstr ""
 #, python-format
 msgid ""
 "As an administrator, you can always modify this article and its members."
-msgstr ""
+msgstr "Як адміністратор ви завжди можете змінити цю статтю і її членів."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_attachment_count
@@ -1008,7 +1026,7 @@ msgstr "Базується на"
 #. module: knowledge
 #: model_terms:ir.actions.act_window,help:knowledge.knowledge_article_action
 msgid "Be the first one to unleash the power of Knowledge !"
-msgstr ""
+msgstr "Будьте першим, хто розкриє силу Бази знань!"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__body
@@ -1029,13 +1047,13 @@ msgstr "Може писати"
 #: code:addons/knowledge/models/knowledge_article_member.py:0
 #, python-format
 msgid "Can not update the article or partner of a member."
-msgstr ""
+msgstr "Неможливо оновити статтю або партнера учасника."
 
 #. module: knowledge
 #: code:addons/knowledge/models/knowledge_article_favorite.py:0
 #, python-format
 msgid "Can not update the article or user of a favorite."
-msgstr ""
+msgstr "Неможливо оновити статтю або користувача до вибраної."
 
 #. module: knowledge
 #: model:ir.model.fields.selection,name:knowledge.selection__knowledge_article__inherited_permission__read
@@ -1069,6 +1087,8 @@ msgid ""
 "Cannot create an article under article %(parent_name)s which is a non-"
 "private parent"
 msgstr ""
+"Неможливо створити статтю під статтею %(parent_name)s яка є неприватною "
+"батьківською"
 
 #. module: knowledge
 #: code:addons/knowledge/models/knowledge_article.py:0
@@ -1077,6 +1097,8 @@ msgid ""
 "Cannot move %(article_name)s as a root of the 'shared' section since access "
 "rights can not be inferred without a parent."
 msgstr ""
+"Неможливо перемістити %(article_name)s як корінь розділу 'shared', оскільки "
+"права доступу не можуть бути визначені без батьківського елемента."
 
 #. module: knowledge
 #. openerp-web
@@ -1910,12 +1932,12 @@ msgstr "Немає доступу"
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "No article found."
-msgstr ""
+msgstr "Не знайдено статті."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "No article yet."
-msgstr ""
+msgstr "Ще немає статей."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_needaction_counter
@@ -1940,7 +1962,7 @@ msgstr "Кількість повідомлень з помилковою дст
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Odoo Survival Guide"
-msgstr ""
+msgstr "Керівництво з виживання Odoo"
 
 #. module: knowledge
 #. openerp-web
@@ -1953,7 +1975,7 @@ msgstr "Гаразд"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "Onboarding.pdf"
-msgstr ""
+msgstr "Onboarding.pdf"
 
 #. module: knowledge
 #. openerp-web
@@ -1963,6 +1985,8 @@ msgid ""
 "Oops, the file %s could not be found. Please replace this file box by a new "
 "one to re-upload the file."
 msgstr ""
+"Упс, файл %s не можливо знайти. Будь ласка, замініть це вікно файлу на нове,"
+" щоб повторно завантажити файл."
 
 #. module: knowledge
 #. openerp-web
@@ -1982,7 +2006,7 @@ msgstr "Контур"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__parent_id
 msgid "Parent Article"
-msgstr ""
+msgstr "Батьківська стаття"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__parent_path
@@ -1999,7 +2023,7 @@ msgstr "Партнер"
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article_member__permission
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_invite__permission
 msgid "Permission"
-msgstr ""
+msgstr "Дозвіл"
 
 #. module: knowledge
 #. openerp-web
@@ -2038,19 +2062,19 @@ msgstr "Оновити"
 #: code:addons/knowledge/static/src/components/knowledge_emoji_picker_remove_action_view/knowledge_emoji_picker_remove_action_view.xml:0
 #, python-format
 msgid "Remove Icon"
-msgstr ""
+msgstr "Іконка вилучення"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "Remove Member"
-msgstr ""
+msgstr "Вилучити учасника"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "Remove from Trash"
-msgstr ""
+msgstr "Вилучити зі смітника"
 
 #. module: knowledge
 #. openerp-web
@@ -2078,24 +2102,24 @@ msgstr "Відновлення"
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Restore Access"
-msgstr ""
+msgstr "Відновити доступ"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.js:0
 #, python-format
 msgid "Restrict Access"
-msgstr ""
+msgstr "Обмежити доступ"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_desync_on_root
 msgid "Root articles cannot be desynchronized."
-msgstr ""
+msgstr "Кореневі статті неможливо десинхронізувати."
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_permission_on_root
 msgid "Root articles must have internal permission."
-msgstr ""
+msgstr "Кореневі статті повинні мати внутрішній дозвіл."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__message_has_sms_error
@@ -2110,39 +2134,39 @@ msgstr "Пошук"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_favorite_view_search
 msgid "Search Favorites"
-msgstr ""
+msgstr "Пошук збережених"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/xml/chatter_topbar.xml:0
 #, python-format
 msgid "Search Knowledge Articles"
-msgstr ""
+msgstr "Пошук статей бази знань"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_member_view_search
 msgid "Search Members"
-msgstr ""
+msgstr "Пошук учасників"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/move_article_dialog/move_article_dialog.xml:0
 #, python-format
 msgid "Search an Article to use as Parent"
-msgstr ""
+msgstr "Пошук статті, щоб використовувати як батьківську"
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
 msgid "Search an article..."
-msgstr ""
+msgstr "Пошук статті..."
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/webclient/commands/knowledge_providers.js:0
 #, python-format
 msgid "Search for an article..."
-msgstr ""
+msgstr "Пошук статті..."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__category
@@ -2171,7 +2195,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
 msgid "Send as Message"
-msgstr ""
+msgstr "Надіслати повідомлення"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__sequence
@@ -2189,27 +2213,27 @@ msgstr "Поділилися"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_tree_frontend
 msgid "Shared with you"
-msgstr ""
+msgstr "Поділилися з вами"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Show all nested articles."
-msgstr ""
+msgstr "Показати всі вкладені статті."
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Show the first level of nested articles."
-msgstr ""
+msgstr "Показати перший рівень вкладених статей."
 
 #. module: knowledge
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "Some articles have been sent to Trash"
-msgstr ""
+msgstr "Деякі статті відправлено в кошик"
 
 #. module: knowledge
 #. openerp-web
@@ -2236,7 +2260,7 @@ msgstr ""
 #: code:addons/knowledge/static/src/js/wysiwyg.js:0
 #, python-format
 msgid "Table Of Content"
-msgstr ""
+msgstr "Зміст"
 
 #. module: knowledge
 #. openerp-web
@@ -2252,13 +2276,13 @@ msgstr "Шаблон "
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.js:0
 #, python-format
 msgid "Template copied to clipboard."
-msgstr ""
+msgstr "Шаблон скопійовано в буфер обміну."
 
 #. module: knowledge
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "The article '%s' needs at least one member with 'Write' access."
-msgstr ""
+msgstr "Статті '%s' потрібен принаймні один учасник із правами запису."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
@@ -2266,6 +2290,8 @@ msgid ""
 "The article you are trying the read has either been removed or you do not "
 "have access to it."
 msgstr ""
+"Статтю, яку ви намагаєтеся прочитати, видалено, або ви не маєте до неї "
+"доступу."
 
 #. module: knowledge
 #: code:addons/knowledge/models/knowledge_article_member.py:0
@@ -2274,6 +2300,8 @@ msgid ""
 "The external user %(user_name)s cannot have a 'write' permission on article "
 "%(article_name)s"
 msgstr ""
+"Зовнішній користувач %(user_name)s не може мати дозвіл на запис до статті "
+"%(article_name)s"
 
 #. module: knowledge
 #. openerp-web
@@ -2283,25 +2311,29 @@ msgid ""
 "The operation was interrupted because the page or the record changed. Please"
 " try again later."
 msgstr ""
+"Операцію було перервано через зміну сторінки або запису. Будь-ласка "
+"спробуйте пізніше."
 
 #. module: knowledge
 #: code:addons/knowledge/controllers/main.py:0
 #: code:addons/knowledge/controllers/main.py:0
 #, python-format
 msgid "The selected member does not exists or has been already deleted."
-msgstr ""
+msgstr "Вибраний учасник не існує або вже видалений."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__sequence
 msgid ""
 "The sequence is computed only among the articles that have the same parent."
 msgstr ""
+"Послідовність обчислюється лише серед статей, які мають ту ж батьківську "
+"статтю."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__root_article_id
 msgid ""
 "The subject is the title of the highest parent in the article hierarchy."
-msgstr ""
+msgstr "Тема — це назва найвищої батьківської в ієрархії статті."
 
 #. module: knowledge
 #. openerp-web
@@ -2318,14 +2350,14 @@ msgstr ""
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_form
 msgid "This article is archived."
-msgstr ""
+msgstr "Ця стаття заархівована."
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/behaviors/article_behavior/article_behavior.js:0
 #, python-format
 msgid "This article was deleted or you don't have the rights to access it."
-msgstr ""
+msgstr "Ця стаття була видалена, або у вас немає прав доступу до неї."
 
 #. module: knowledge
 #. openerp-web
@@ -2342,35 +2374,35 @@ msgstr "Заголовок"
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding
 msgid "To be sure to stay updated, follow us on"
-msgstr ""
+msgstr "Щоб завжди бути в курсі новин, слідкуйте за нами"
 
 #. module: knowledge
 #: model:ir.actions.act_window,name:knowledge.knowledge_article_action_trashed
 msgid "Trash"
-msgstr ""
+msgstr "Смітник"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__to_delete
 #: model:ir.ui.menu,name:knowledge.knowledge_article_menu_trashed
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_search
 msgid "Trashed"
-msgstr ""
+msgstr "У смітнику"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_check_trash
 msgid "Trashed articles must be archived."
-msgstr ""
+msgstr "Статті у смітнику потрібно архівувати."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_view_frontend
 msgid "Try Odoo"
-msgstr ""
+msgstr "Спробуйте Odoo"
 
 #. module: knowledge
 #: code:addons/knowledge/models/knowledge_article.py:0
 #, python-format
 msgid "Trying to remove wrong member."
-msgstr ""
+msgstr "Спробуйте вилучити невірний номер."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__activity_exception_decoration
@@ -2408,7 +2440,7 @@ msgstr "Оновити"
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
 msgid "Use as"
-msgstr ""
+msgstr "Використовувати як"
 
 #. module: knowledge
 #. openerp-web
@@ -2416,14 +2448,14 @@ msgstr ""
 #: code:addons/knowledge/static/src/components/behaviors/file_behavior/file_behavior.xml:0
 #, python-format
 msgid "Use as Attachment"
-msgstr ""
+msgstr "Використовувати як прикріплення"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/behaviors/template_behavior/template_behavior.xml:0
 #, python-format
 msgid "Use as Description"
-msgstr ""
+msgstr "Використовувати як опис"
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__category
@@ -2431,6 +2463,8 @@ msgid ""
 "Used to categozie articles in UI, depending on their main permission "
 "definitions."
 msgstr ""
+"Використовується для категоризації статей в інтерфейсі користувача залежно "
+"від їхніх основних визначень дозволів."
 
 #. module: knowledge
 #: model:ir.model,name:knowledge.model_res_users
@@ -2442,24 +2476,24 @@ msgstr "Користувач"
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_favorite_sequence
 msgid "User Favorite Sequence"
-msgstr ""
+msgstr "Збережена послідовність користувача"
 
 #. module: knowledge
 #. openerp-web
 #: code:addons/knowledge/static/src/components/permission_panel/permission_panel.xml:0
 #, python-format
 msgid "User Permission"
-msgstr ""
+msgstr "Користувацький дозвіл"
 
 #. module: knowledge
 #: model:ir.model.constraint,message:knowledge.constraint_knowledge_article_favorite_unique_article_user
 msgid "User already has this article in favorites."
-msgstr ""
+msgstr "У користувача вже є ця стаття у збереженнях."
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__user_permission
 msgid "User permission"
-msgstr ""
+msgstr "Користувацький дозвіл"
 
 #. module: knowledge
 #: model:ir.model.fields,field_description:knowledge.field_knowledge_article__website_message_ids
@@ -2475,7 +2509,7 @@ msgstr "Історія бесіди на сайті"
 #: code:addons/knowledge/models/res_users.py:0
 #, python-format
 msgid "Welcome %s"
-msgstr ""
+msgstr "Вітаємо %s"
 
 #. module: knowledge
 #. openerp-web
@@ -2490,6 +2524,8 @@ msgid ""
 "When locked, users cannot write on the body or change the title, even if "
 "they have write access on the article."
 msgstr ""
+"Якщо заблоковано, користувачі не можуть писати в тілі або змінювати "
+"заголовок, навіть якщо вони мають право на запис у статті."
 
 #. module: knowledge
 #: model:ir.model.fields,help:knowledge.field_knowledge_article__to_delete
@@ -2506,6 +2542,8 @@ msgid ""
 "When set, the article body will take the full width available on the article"
 " page. Otherwise, the body will have large horizontal margins."
 msgstr ""
+"Якщо встановлено, текст статті займатиме всю ширину, доступну на сторінці "
+"статті. Інакше тіло матиме великі горизонтальні поля."
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_user_onboarding

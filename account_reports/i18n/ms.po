@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Niyas Raphy, 2022
-# Mehjabin Farsana, 2022
+# Mehjabin Farsana, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Mehjabin Farsana, 2022\n"
+"Last-Translator: Mehjabin Farsana, 2023\n"
 "Language-Team: Malay (https://www.transifex.com/odoo/teams/41243/ms/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -511,7 +511,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_mail_activity
 msgid "Activity"
-msgstr ""
+msgstr "Aktiviti"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_mail_activity_type
@@ -1081,7 +1081,7 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_res_config_settings
 msgid "Config Settings"
-msgstr ""
+msgstr "Tetapan Konfigurasi"
 
 #. module: account_reports
 #. odoo-python
@@ -2045,7 +2045,7 @@ msgstr "Kemas Kini Terakhir pada"
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report_footnote__line
 msgid "Line"
-msgstr ""
+msgstr "Talian"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_report__line_template
@@ -2330,7 +2330,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_expression_form
 #: model_terms:ir.ui.view,arch_db:account_reports.account_report_form
 msgid "Options"
-msgstr ""
+msgstr "Pilihan"
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_other_income0
@@ -2961,13 +2961,14 @@ msgstr ""
 #: model:ir.model.fields,help:account_reports.field_account_tax_unit__vat
 msgid "The identifier to be used when submitting a report for this unit."
 msgstr ""
+"Pengecam yang akan digunakan semasa menyerahkan laporan untuk unit ini."
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_tax.py:0
 #, python-format
 msgid "The main company of a tax unit has to be part of it."
-msgstr ""
+msgstr "Syarikat utama unit cukai perlu menjadi sebahagian daripadanya."
 
 #. module: account_reports
 #. odoo-python
@@ -2980,32 +2981,32 @@ msgstr ""
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_res_company__account_tax_unit_ids
 msgid "The tax units this company belongs to."
-msgstr ""
+msgstr "Unit cukai milik syarikat ini."
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.main_template
 msgid "There are"
-msgstr ""
+msgstr "Disana ada"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.bank_reconciliation_report_main_template
 msgid "There are some"
-msgstr ""
+msgstr "Ada sesetengah"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "This Financial Year"
-msgstr ""
+msgstr "Tahun Kewangan ini"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "This Month"
-msgstr ""
+msgstr "Bulan ini"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_date_filter
 msgid "This Quarter"
-msgstr ""
+msgstr "Suku Tahun ini"
 
 #. module: account_reports
 #. odoo-python
@@ -3037,6 +3038,7 @@ msgstr ""
 msgid ""
 "This allows you to choose the position of totals in your financial reports."
 msgstr ""
+"Ini membolehkan anda memilih kedudukan jumlah dalam laporan kewangan anda."
 
 #. module: account_reports
 #. odoo-python
@@ -3075,7 +3077,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Trade Partners"
-msgstr ""
+msgstr "Rakan Kongsi Perdagangan"
 
 #. module: account_reports
 #. odoo-python
@@ -3085,6 +3087,8 @@ msgid ""
 "Transactions that were entered into Odoo, but not yet reconciled (Payments "
 "triggered by invoices/bills or manually)"
 msgstr ""
+"Transaksi yang telah dimasukkan ke dalam Odoo, tetapi belum diselaraskan "
+"(Pembayaran yang dicetuskan oleh invois/bil atau secara manual)"
 
 #. module: account_reports
 #. odoo-python
@@ -3094,6 +3098,8 @@ msgid ""
 "Transactions(+) that were entered into Odoo, but not yet reconciled "
 "(Payments triggered by invoices/refunds or manually)"
 msgstr ""
+"Transaksi(+) yang telah dimasukkan ke dalam Odoo, tetapi belum diselaraskan "
+"(Pembayaran yang dicetuskan oleh invois/bayaran balik atau secara manual)"
 
 #. module: account_reports
 #. odoo-python
@@ -3103,25 +3109,27 @@ msgid ""
 "Transactions(-) that were entered into Odoo, but not yet reconciled "
 "(Payments triggered by bills/credit notes or manually)"
 msgstr ""
+"Transaksi(-) yang telah dimasukkan ke dalam Odoo, tetapi belum diselaraskan "
+"(Pembayaran yang dicetuskan oleh bil/nota kredit atau secara manual)"
 
 #. module: account_reports
 #: model:account.report,name:account_reports.trial_balance_report
 #: model:ir.actions.client,name:account_reports.action_account_report_coa
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_coa
 msgid "Trial Balance"
-msgstr ""
+msgstr "Imbangan duga"
 
 #. module: account_reports
 #: model:ir.model,name:account_reports.model_account_trial_balance_report_handler
 msgid "Trial Balance Custom Handler"
-msgstr ""
+msgstr "Pengendali Tersuai Imbangan Duga"
 
 #. module: account_reports
 #. odoo-python
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "Triangular"
-msgstr ""
+msgstr "segi tiga"
 
 #. module: account_reports
 #. odoo-python
@@ -3137,7 +3145,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Trying to expand a line without an expansion function."
-msgstr ""
+msgstr "Cuba mengembangkan baris tanpa fungsi pengembangan."
 
 #. module: account_reports
 #. odoo-python
@@ -3145,6 +3153,8 @@ msgstr ""
 #, python-format
 msgid "Trying to expand groupby results on lines without a groupby value."
 msgstr ""
+"Cuba untuk mengembangkan hasil kumpulan mengikut baris tanpa nilai kumpulan "
+"mengikut."
 
 #. module: account_reports
 #. odoo-python
@@ -3155,11 +3165,13 @@ msgid ""
 "Trying to use the journal line expand function on a line that is not linked "
 "to a journal."
 msgstr ""
+"Cuba menggunakan fungsi kembangkan baris jurnal pada baris yang tidak "
+"dipautkan ke jurnal."
 
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_unaffected_earnings0
 msgid "Unallocated Earnings"
-msgstr ""
+msgstr "Pendapatan Tidak Diperuntukkan"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -3171,12 +3183,12 @@ msgstr "Terbongkar"
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options_journal_audit_report
 msgid "Unfold All"
-msgstr ""
+msgstr "Buka Semua"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.line_template
 msgid "Unfolded"
-msgstr ""
+msgstr "Dibuka"
 
 #. module: account_reports
 #. odoo-python
@@ -3185,7 +3197,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "Unknown"
-msgstr ""
+msgstr "Tidak diketahui"
 
 #. module: account_reports
 #. odoo-python
@@ -3193,7 +3205,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "Unknown Partner"
-msgstr ""
+msgstr "Rakan Kongsi Tidak Dikenali"
 
 #. module: account_reports
 #. odoo-python
@@ -3214,7 +3226,7 @@ msgstr ""
 #: model:ir.actions.client,name:account_reports.action_account_report_multicurrency_revaluation
 #: model:ir.ui.menu,name:account_reports.menu_action_account_report_multicurrency_revaluation
 msgid "Unrealized Currency Gains/Losses"
-msgstr ""
+msgstr "Keuntungan/Kerugian Mata Wang Tidak Direalisasikan"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.search_template_extra_options
@@ -3224,12 +3236,12 @@ msgstr "Tidak berdamai"
 #. module: account_reports
 #: model:account.report.column,name:account_reports.account_financial_report_ec_sales_vat
 msgid "VAT Number"
-msgstr ""
+msgstr "Nombor VAT"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.view_company_form
 msgid "VAT Units"
-msgstr ""
+msgstr "Unit VAT"
 
 #. module: account_reports
 #. odoo-python
@@ -3243,14 +3255,14 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "View Bank Statement"
-msgstr ""
+msgstr "Lihat Penyata Bank"
 
 #. module: account_reports
 #. odoo-javascript
 #: code:addons/account_reports/static/src/xml/account_report_template.xml:0
 #, python-format
 msgid "View Carryover Lines"
-msgstr ""
+msgstr "Lihat Talian Pengangkutan"
 
 #. module: account_reports
 #. odoo-python
@@ -3259,7 +3271,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "View Journal Entry"
-msgstr ""
+msgstr "Lihat Entri Jurnal"
 
 #. module: account_reports
 #. odoo-python
@@ -3267,7 +3279,7 @@ msgstr ""
 #: code:addons/account_reports/models/account_sales_report.py:0
 #, python-format
 msgid "View Partner"
-msgstr ""
+msgstr "Lihat Rakan Kongsi"
 
 #. module: account_reports
 #. odoo-python
@@ -3275,13 +3287,14 @@ msgstr ""
 #: code:addons/account_reports/models/account_report.py:0
 #, python-format
 msgid "View Payment"
-msgstr ""
+msgstr "Lihat Pembayaran"
 
 #. module: account_reports
 #: model_terms:ir.ui.view,arch_db:account_reports.res_config_settings_view_form
 msgid ""
 "When ticked, totals and subtotals appear below the sections of the report"
 msgstr ""
+"Apabila ditanda, jumlah dan subjumlah muncul di bawah bahagian laporan"
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_res_company__totals_below_sections
@@ -3289,6 +3302,7 @@ msgstr ""
 msgid ""
 "When ticked, totals and subtotals appear below the sections of the report."
 msgstr ""
+"Apabila ditanda, jumlah dan subjumlah muncul di bawah bahagian laporan."
 
 #. module: account_reports
 #: model:ir.model.fields,help:account_reports.field_account_account__exclude_provision_currency_ids

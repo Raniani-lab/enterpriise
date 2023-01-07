@@ -5,9 +5,9 @@
 # Translators:
 # Tivisse <yti@odoo.com>, 2022
 # Cécile Collart <cco@odoo.com>, 2022
-# Jolien De Paepe, 2022
 # Alexandra Jubert, 2022
 # Martin Trigaux, 2022
+# Jolien De Paepe, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:24+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Jolien De Paepe, 2023\n"
 "Language-Team: French (https://www.transifex.com/odoo/teams/41243/fr/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -53,8 +53,8 @@ msgid ""
 msgstr ""
 "<p class=\"o_view_nocontent_smiling_face\">Aucun produit trouvé. Créons-en un !\n"
 "</p><p>\n"
-"Gardez une trace des articles que vous utilisez pour accomplir vos tâches et facturez vos clients pour les marchandises.\n"
-"Astuce : grâce aux kits, vous pouvez ajouter plusieurs articles à la fois.\n"
+"Gardez une trace des produits que vous utilisez pour accomplir vos tâches et facturez vos clients pour les marchandises.\n"
+"Astuce : grâce aux kits, vous pouvez ajouter plusieurs produits à la fois.\n"
 "</p><p>\n"
 "Lorsque votre tâche est marquée comme faite, votre stock sera mis à jour automatiquement. Choisissez simplement un entrepôt \n"
 "dans votre profil d'où tirer le stock.\n"
@@ -81,7 +81,7 @@ msgstr "<span>Rem.(%)</span>"
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
 msgid "<span>Products</span>"
-msgstr "<span>Articles</span>"
+msgstr "<span>Produits</span>"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
@@ -115,7 +115,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
 msgid "Added Products"
-msgstr "Articles ajoutés"
+msgstr "Produits ajoutés"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
@@ -164,7 +164,7 @@ msgstr ""
 #: code:addons/industry_fsm_sale/models/project_task.py:0
 #, python-format
 msgid "Choose Products"
-msgstr "Choisissez des Articles"
+msgstr "Choisissez des Produits"
 
 #. module: industry_fsm_sale
 #. openerp-web
@@ -439,27 +439,27 @@ msgstr "Liste de prix"
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_product_product_kanban_material
 msgid "Product"
-msgstr "Article"
+msgstr "Produit"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
 msgid "Product Category"
-msgstr "Catégorie d'article"
+msgstr "Catégorie de produit"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
 msgid "Product Template"
-msgstr "Modèle d'article"
+msgstr "Modèle de produit"
 
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.product_search_form_view_inherit_fsm_sale
 msgid "Product Type"
-msgstr "Type d'article"
+msgstr "Type de produit"
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_product_product
 msgid "Product Variant"
-msgstr "Variante d'article"
+msgstr "Variante de produit"
 
 #. module: industry_fsm_sale
 #: model:ir.actions.act_window,name:industry_fsm_sale.product_action_fsm
@@ -468,7 +468,7 @@ msgstr "Variante d'article"
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.project_sharing_project_task_inherit_view_form
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.view_task_form2_inherit
 msgid "Products"
-msgstr "Articles"
+msgstr "Produits"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_material
@@ -641,7 +641,7 @@ msgid ""
 "The timesheet product is required when the fsm project can be billed and "
 "timesheets are allowed."
 msgstr ""
-"L'article feuille de temps est requis lorsque le projet service sur site "
+"Le produit feuille de temps est requis lorsque le projet service sur site "
 "peut être facturé et que les feuilles de temps sont autorisées."
 
 #. module: industry_fsm_sale

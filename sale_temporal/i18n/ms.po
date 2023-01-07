@@ -3,7 +3,7 @@
 # 	* sale_temporal
 # 
 # Translators:
-# Mehjabin Farsana, 2022
+# Mehjabin Farsana, 2023
 # 
 msgid ""
 msgstr ""
@@ -11,7 +11,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:30+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Mehjabin Farsana, 2022\n"
+"Last-Translator: Mehjabin Farsana, 2023\n"
 "Language-Team: Malay (https://www.transifex.com/odoo/teams/41243/ms/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -88,7 +88,7 @@ msgstr "Hari"
 #. module: sale_temporal
 #: model:ir.model.fields.selection,name:sale_temporal.selection__sale_temporal_recurrence__unit__day
 msgid "Days"
-msgstr ""
+msgstr "Hari"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__description
@@ -104,7 +104,7 @@ msgstr "Nama paparan"
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__duration
 msgid "Duration"
-msgstr ""
+msgstr "Tempoh"
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_product__display_price
@@ -128,7 +128,7 @@ msgstr "ID"
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_order__internal_note
 msgid "Internal Note"
-msgstr ""
+msgstr "Nota Dalaman"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_subscription_order_view_form
@@ -193,7 +193,7 @@ msgstr "Nama"
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_subscription_order_view_form
 msgid "Notes"
-msgstr ""
+msgstr "Nota"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
@@ -215,13 +215,13 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__price
 msgid "Price"
-msgstr ""
+msgstr "Harga"
 
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_product_pricelist
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__pricelist_id
 msgid "Pricelist"
-msgstr ""
+msgstr "Senarai harga"
 
 #. module: sale_temporal
 #: model:ir.actions.act_window,name:sale_temporal.product_pricing_action
@@ -287,7 +287,7 @@ msgstr "Pesanan Jualan"
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_sale_order_line
 msgid "Sales Order Line"
-msgstr ""
+msgstr "Barisan Pesanan Jualan"
 
 #. module: sale_temporal
 #: model:ir.model.fields,help:sale_temporal.field_product_pricing__product_variant_ids

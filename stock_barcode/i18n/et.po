@@ -4,18 +4,18 @@
 # 
 # Translators:
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
+# Algo Kärp <algokarp@gmail.com>, 2022
 # Egon Raamat <egon@avalah.ee>, 2022
 # Rivo Zängov <eraser@eraser.ee>, 2022
 # Martin Aavastik <martin@avalah.ee>, 2022
 # Martin Trigaux, 2022
-# Algo Kärp <algokarp@gmail.com>, 2022
 # Triine Aavik <triine@avalah.ee>, 2022
 # Piia Paurson <piia@avalah.ee>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Patrick-Jordan Kiudorv, 2022
 # Jana Jaakson, 2022
 # Anna, 2022
-# Leaanika Randmets, 2022
+# Leaanika Randmets, 2023
 # 
 msgid ""
 msgstr ""
@@ -23,7 +23,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Leaanika Randmets, 2022\n"
+"Last-Translator: Leaanika Randmets, 2023\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -310,18 +310,18 @@ msgstr "Tühista toiming"
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_barcode_cancel_operation_view
 msgid "Cancel operation"
-msgstr ""
+msgstr "Tühista toiming"
 
 #. module: stock_barcode
 #: code:addons/stock_barcode/models/stock_picking.py:0
 #, python-format
 msgid "Cancel this operation ?"
-msgstr ""
+msgstr "Tühista see toiming?"
 
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_move_line__is_completed
 msgid "Check if the quantity done matches the demand"
-msgstr ""
+msgstr "Kontrollige, kas tehtud kogus vastab nõutud kogusele"
 
 #. module: stock_barcode
 #. openerp-web
@@ -415,7 +415,7 @@ msgstr "Pakk"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Destination location must be scanned"
-msgstr ""
+msgstr "Sihtkoht peab olema skanneeritud"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
@@ -462,7 +462,7 @@ msgstr "Ära tühista"
 #: code:addons/stock_barcode/static/src/main_menu.js:0
 #, python-format
 msgid "Don't show this message again"
-msgstr "Ärge näodake seda sõnumit uuesti."
+msgstr "Ärge näidake seda sõnumit uuesti"
 
 #. module: stock_barcode
 #. openerp-web
@@ -601,7 +601,7 @@ msgstr "Loobu"
 #. module: stock_barcode
 #: model:ir.model.fields,help:stock_barcode.field_stock_picking_type__restrict_scan_product
 msgid "Line's product must be scanned before the line can be edited"
-msgstr ""
+msgstr "Rea toode peab olema skaneeritud, enne kui rea saab redigeerida"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
@@ -624,7 +624,7 @@ msgstr "Partii/seerianumber"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Mandatory Destination Location"
-msgstr ""
+msgstr "Kohustuslik sihtkoht"
 
 #. module: stock_barcode
 #: model:ir.model.fields.selection,name:stock_barcode.selection__stock_picking_type__restrict_scan_source_location__mandatory
@@ -638,7 +638,7 @@ msgstr "Kohustuslik skaneerimine"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Mandatory Source Location"
-msgstr ""
+msgstr "Kohustuslik lähtekoht"
 
 #. module: stock_barcode
 #: model:ir.model.fields.selection,name:stock_barcode.selection__stock_picking_type__restrict_put_in_pack__no
@@ -780,7 +780,7 @@ msgstr "Laolehe tüüp"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Please scan destination location for %s before scanning other product"
-msgstr ""
+msgstr "Palun skaneerige sihtkoha %s enne muu toote skaneerimist"
 
 #. module: stock_barcode
 #. openerp-web
@@ -858,7 +858,7 @@ msgstr "Toote pakend"
 #. module: stock_barcode
 #: model:ir.model.fields,field_description:stock_barcode.field_stock_move_line__product_stock_quant_ids
 msgid "Product Stock Quant"
-msgstr ""
+msgstr "Toote lao kogus"
 
 #. module: stock_barcode
 #: model:ir.model,name:stock_barcode.model_uom_uom
@@ -939,14 +939,14 @@ msgstr "Skaneeri partiinumber"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a lot number or a packages then the destination location"
-msgstr ""
+msgstr "Skaneeri partiinumber või pakk ja seejärel sihtkoht"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a lot number then the destination location"
-msgstr ""
+msgstr "Skaneeri partiinumber ja seejärel sihtkoht"
 
 #. module: stock_barcode
 #. openerp-web
@@ -960,21 +960,21 @@ msgstr "Skaneeri pakk"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a package or put in pack"
-msgstr ""
+msgstr "Skaneeri pakk või paki"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a package or the destination location"
-msgstr ""
+msgstr "Skaneeri pakk või sihtkoht"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a package, the destination location or another product"
-msgstr ""
+msgstr "Skaneerige pakki, sihtkoha või muud toodet"
 
 #. module: stock_barcode
 #. openerp-web
@@ -989,21 +989,21 @@ msgstr "Skaneeri toode"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product before scanning a tracking number"
-msgstr ""
+msgstr "Skaneeri esmalt toode ja seejärel seerianumber"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product from %s"
-msgstr ""
+msgstr "Skaneeri toode %s"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan a product in %s or scan another location"
-msgstr ""
+msgstr "Skaneeri tooded %s või skaneeri teine asukoht"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1016,42 +1016,42 @@ msgstr "Skaneeri toode või pakk"
 #: code:addons/stock_barcode/models/stock_picking.py:0
 #, python-format
 msgid "Scan a product or a package to filter the transfers."
-msgstr ""
+msgstr "Skaneeri toode või pakk, et filtreerida siirdeid."
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product or another package"
-msgstr ""
+msgstr "Skaneeri toode või teine pakk"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product or the destination location."
-msgstr ""
+msgstr "Skaneeri toode või sihtkoht."
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product then the destination location"
-msgstr ""
+msgstr "Skaneeri toode ning seejärel sihtkoht"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product, a package or the destination location"
-msgstr ""
+msgstr "Skaneeri toode, pakk või sihtkoht"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a product, a package or the destination location."
-msgstr ""
+msgstr "Skaneeri toode, pakk või sihtkoht."
 
 #. module: stock_barcode
 #. openerp-web
@@ -1072,28 +1072,28 @@ msgstr "Skaneerige seerianumber või pakk"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a serial number or a package then the destination location"
-msgstr ""
+msgstr "Skaneerige seerianumber või pakend, seejärel sihtkoht"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan a serial number then the destination location"
-msgstr ""
+msgstr "Skaneeri seerianumber ja seejärel sihtkoht"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/kanban/stock_barcode_kanban_renderer.xml:0
 #, python-format
 msgid "Scan a transfer or a product to filter your records"
-msgstr ""
+msgstr "Skaneeri siire või toode, et filtreerida kirjeid"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/kanban/stock_barcode_kanban_renderer.xml:0
 #, python-format
 msgid "Scan a transfer, a product or a package to filter your records"
-msgstr ""
+msgstr "Skaneeri siire, toode või pakk, et filtreerida kirjeid"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1115,7 +1115,7 @@ msgstr "Skaneeri järgmine seerianumber"
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan lot numbers for product %s to change their quantity"
-msgstr ""
+msgstr "Skaneeri partiinumbrid tootel %s koguse muutmiseks"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1136,7 +1136,7 @@ msgstr "Skaneeri veel partiinumbreid või pakk"
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Scan more products in %s or scan another location"
-msgstr ""
+msgstr "Skaneeri veel tooteid %s või skaneeri teine asukoht"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1150,7 +1150,7 @@ msgstr "Skaneeri veel tooteid või pakk"
 #: code:addons/stock_barcode/static/src/models/barcode_model.js:0
 #, python-format
 msgid "Scan more products, or scan a new source location"
-msgstr "Skaneerige veel tooteid või skaneerige uus lähtekoht "
+msgstr "Skaneerige veel tooteid või skaneerige uus lähtekoht"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1173,7 +1173,7 @@ msgstr "Skaneeri toote %s seerianumber, et muuta kogust"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan the destination location"
-msgstr ""
+msgstr "Skaneeri sihtkoht"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1187,14 +1187,14 @@ msgstr "Skaneeri pakk %s"
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan the source location"
-msgstr ""
+msgstr "Skaneeri lähtekoht"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "Scan the source location or a package"
-msgstr ""
+msgstr "Skaneeri lähtekoht või pakk"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1210,7 +1210,7 @@ msgstr "Skaneerige lähtekoht või skaneerige toode"
 msgid ""
 "Scanned product %s is not reserved for this transfer. Are you sure you want "
 "to add it?"
-msgstr ""
+msgstr "Skaneeritud toode %s ei ole reserveeritud selle"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1229,6 +1229,8 @@ msgid ""
 "Scanned quantity uses %s as Unit of Measure, but this UoM is not compatible "
 "with the line's one (%s)."
 msgstr ""
+"Skaneeritud kogus kasutab %s mõõtühikuks, kuid see mõõtühik ei ühildu rea "
+"mõõtühikuga(%s)."
 
 #. module: stock_barcode
 #. openerp-web
@@ -1239,6 +1241,8 @@ msgid ""
 "Scanned quantity uses %s as Unit of Measure, but this UoM is not compatible "
 "with the product's one (%s)."
 msgstr ""
+"Skaneeritud kogus kasutab %s mõõtühikuks, kuid see mõõtühik ei ühildu toote "
+"mõõtühikuga(%s)."
 
 #. module: stock_barcode
 #. openerp-web
@@ -1316,7 +1320,7 @@ msgstr "Inventuur on kinnitatud"
 #: code:addons/stock_barcode/static/src/models/barcode_model.js:0
 #, python-format
 msgid "The scanned serial number is already used."
-msgstr "Skaneeritud seerianumber on juba kasutusel"
+msgstr "Skaneeritud seerianumber on juba kasutusel."
 
 #. module: stock_barcode
 #. openerp-web
@@ -1337,7 +1341,7 @@ msgstr "Ülekanne on kinnitatud"
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "There is nothing to apply in this page."
-msgstr ""
+msgstr "Sellel lehel ei ole midagi taotleda."
 
 #. module: stock_barcode
 #. openerp-web
@@ -1456,7 +1460,7 @@ msgstr ""
 #: code:addons/stock_barcode/static/src/models/barcode_quant_model.js:0
 #, python-format
 msgid "Wrong Unit of Measure"
-msgstr ""
+msgstr "Vale mõõtühik"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1479,7 +1483,7 @@ msgstr "Teil on tarvis veel skaneerida üks või enam toodet."
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "You are supposed to scan %s or another source location"
-msgstr ""
+msgstr "Te peaksite skaneerima %s või teise lähtekoha"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1491,21 +1495,21 @@ msgstr ""
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation
 msgid "You have processed less products than the initial demand:"
-msgstr ""
+msgstr "Te olete töödelnud vähem tooteid kui esialgselt nõutud oli:"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "You must scan a package or put in pack"
-msgstr ""
+msgstr "Te peate skaneerima paki või pakkima"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/models/barcode_picking_model.js:0
 #, python-format
 msgid "You must scan a product"
-msgstr ""
+msgstr "Te peate skaneerima toote"
 
 #. module: stock_barcode
 #. openerp-web
@@ -1519,20 +1523,20 @@ msgstr "laokäsklused"
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "document"
-msgstr "dokument"
+msgstr "dokument,"
 
 #. module: stock_barcode
 #: model:product.product,uom_name:stock_barcode.product_custom_cabinet_usa
 #: model:product.template,uom_name:stock_barcode.product_custom_cabinet_usa_product_template
 msgid "ft³"
-msgstr ""
+msgstr "ft³"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "location"
-msgstr "asukoht"
+msgstr "asukoht,"
 
 #. module: stock_barcode
 #: model:product.product,uom_name:stock_barcode.product_custom_cabinet_metric
@@ -1561,14 +1565,14 @@ msgstr "tegevuse tüüp,"
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "package"
-msgstr "pakid"
+msgstr "pakk,"
 
 #. module: stock_barcode
 #. openerp-web
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "product"
-msgstr "toode"
+msgstr "toode,"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_backorder_confirmation
@@ -1615,7 +1619,7 @@ msgstr "et luua uus siire."
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "to know its content."
-msgstr "et teada sisu."
+msgstr "et teada paki sisu."
 
 #. module: stock_barcode
 #. openerp-web
@@ -1629,4 +1633,4 @@ msgstr "et seda avada."
 #: code:addons/stock_barcode/static/src/main_menu.xml:0
 #, python-format
 msgid "to show its location and quantity."
-msgstr "et näidata asukohta ja kogust."
+msgstr "et kuvada asukohta ja kogust."

@@ -35,6 +35,11 @@ class AccountMove(models.Model):
             }
         )
 
+    def action_open_bank_reconciliation_widget_statement(self):
+        return self.statement_line_id._action_open_bank_reconciliation_widget(
+            extra_domain=[('statement_id', 'in', self.statement_id.ids)],
+        )
+
     def action_open_business_doc(self):
         if self.statement_line_id:
             return self.action_open_bank_reconciliation_widget()

@@ -42,6 +42,13 @@
                 <field name="inalterable_hash" groups="base.group_no_one"/>
             </xpath>
             <xpath expr="//div[@name='button_box']" position="inside">
+                <button name="action_open_bank_reconciliation_widget_statement"
+                        class="oe_stat_button"
+                        icon="fa-bars"
+                        type="object"
+                        attrs="{'invisible': ['|', ('statement_id', '=', False), ('state', '=', 'cancel')]}"
+                        string="Bank Statement">
+                </button>
                 <button name="action_open_bank_reconciliation_widget"
                         class="oe_stat_button"
                         icon="fa-bars"

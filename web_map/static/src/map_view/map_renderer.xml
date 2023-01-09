@@ -2,7 +2,13 @@
 <templates id="template" xml:space="preserve">
 
     <t t-name="web_map.MapRenderer" owl="1">
-        <div class="o-map-renderer row g-0 h-100">
+        <t t-if="env.isSmall">
+            <div class="row g-0 o-sm-pin-list-container" t-att-class="{ 'h-100': expendedPinList }">
+                <t t-call="web_map.MapRenderer.PinListContainer"/>
+            </div>
+        </t>
+        <div class="o-map-renderer row g-0"
+             t-att-class="{ 'd-none': expendedPinList }">
             <t t-if="props.model.data.routingError">
                 <t t-call="web_map.MapRenderer.RountingUnavailable"/>
             </t>
@@ -13,7 +19,9 @@
                 <t t-call="web_map.MapRenderer.FetchingCoordinates"/>
             </t>
             <div class="o-map-renderer--container h-100 col col-md-10" t-ref="mapContainer"/>
-            <t t-call="web_map.MapRenderer.PinListContainer"/>
+            <t t-if="!env.isSmall">
+                <t t-call="web_map.MapRenderer.PinListContainer"/>
+            </t>
         </div>
     </t>
 
@@ -35,20 +43,25 @@
     </t>
 
     <t t-name="web_map.MapRenderer.PinListContainer" owl="1">
-        <div class="o-map-renderer--pin-list-container d-none d-md-block col-2 bg-view border-start cursor-default">
+        <div class="o-map-renderer--pin-list-container col-12 col-md-2 bg-view border-start cursor-default h-100">
             <t t-if="!props.model.metaData.hideTitle">
-                <header class="o-map-renderer--pin-list-header o_pin_list_header text-uppercase px-0 py-2">
+                <header class="o-map-renderer--pin-list-header o_pin_list_header text-uppercase px-0 py-md-2 d-flex align-items-baseline"
+                        t-on-click="togglePinList">
                     <i class="fa fa-list me-2 text-odoo"/>
-                    <span class="fs-6 fw-bold" t-out="props.model.metaData.panelTitle"/>
+                    <span class="fs-6 fw-bold text-truncate" t-out="props.model.metaData.panelTitle"/>
+                    <i t-if="env.isSmall" class="fa float-end ms-auto" t-att-class="{
+                        'fa-caret-down': expendedPinList,
+                        'fa-caret-left': !expendedPinList
+                    }"/>
                 </header>
             </t>
-            <t t-if="props.model.data.isGrouped">
+            <t t-if="canDisplayPinList and props.model.data.isGrouped">
                 <t t-foreach="props.model.data.recordGroups" t-as="groupId" t-key="groupId">
                     <div class="o-map-renderer--pin-list-group mb-1">
                         <t t-set="group" t-value="props.model.data.recordGroups[groupId]"/>
                         <div class="o-map-renderer--pin-list-group-header d-flex align-items-baseline"
                              t-on-click="() => this.toggleGroup(groupId)">
-                            <i t-attf-class="fa fa-caret-{{ state.closedGroupIds.includes(groupId) ? 'right' : 'down' }} me-3"/>
+                            <i t-attf-class="fa fa-caret-{{ state.closedGroupIds.includes(groupId) ? 'right' : 'down' }}"/>
                             <span class="ms-1" t-att-style="'color:' + getGroupColor(groupId)">
                                 <t t-call="web_map.pinSVG">
                                     <t t-set="numbering" t-value="props.model.metaData.numbering" />
@@ -65,7 +78,7 @@
                     </div>
                 </t>
             </t>
-            <t t-else="">
+            <t t-elif="canDisplayPinList">
                 <t t-call="web_map.MapRenderer.PinList">
                     <t t-set="records" t-value="props.model.data.records"/>
                 </t>

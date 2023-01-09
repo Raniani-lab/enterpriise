@@ -5,6 +5,10 @@ $map-number-font-size: 19px;
 $map-marker-color: #2c8397;
 
 .o-map-renderer {
+    height: 100%;
+    @include media-breakpoint-down(md) {
+        height: calc(100% - #{$o-navbar-height});
+    }
     &--popup-table {
         &-content-name {
             line-height: $map-table-row-padding;
@@ -29,6 +33,7 @@ $map-marker-color: #2c8397;
         &-group {
 
             &-header {
+                height: $o-navbar-height;
                 color: $headings-color;
             }
 
@@ -121,6 +126,11 @@ $map-marker-color: #2c8397;
         &:hover {
             color: $link-hover-color;
         }
+    }
+}
+.o-sm-pin-list-container {
+    @include media-breakpoint-down(md) {
+        height: $o-navbar-height;
     }
 }
 

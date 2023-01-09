@@ -3,6 +3,7 @@
 /*global L*/
 
 import { renderToString } from "@web/core/utils/render";
+import { delay } from "web.concurrency";
 
 import { Component, onWillUnmount, onWillUpdateProps, useEffect, useRef, useState } from "@odoo/owl";
 
@@ -40,6 +41,7 @@ export class MapRenderer extends Component {
         this.mapContainerRef = useRef("mapContainer");
         this.state = useState({
             closedGroupIds: [],
+            expendedPinList: false,
         });
         this.nextId = 1;
 
@@ -360,7 +362,10 @@ export class MapRenderer extends Component {
      *
      * @param {Object} record
      */
-    centerAndOpenPin(record) {
+    async centerAndOpenPin(record) {
+        this.state.expendedPinList = false;
+        // wait the next owl render to avoid marker popup create => destroy
+        await delay(0);
         const popup = this.createMarkerPopup({
             record: record,
             ids: [record.id],
@@ -384,6 +389,18 @@ export class MapRenderer extends Component {
         } else {
             this.state.closedGroupIds.push(id);
         }
+    }
+
+    togglePinList() {
+        this.state.expendedPinList = !this.state.expendedPinList;
+    }
+
+    get expendedPinList() {
+        return this.env.isSmall ? this.state.expendedPinList : false;
+    }
+
+    get canDisplayPinList() {
+        return !this.env.isSmall || this.expendedPinList;
     }
 }
 

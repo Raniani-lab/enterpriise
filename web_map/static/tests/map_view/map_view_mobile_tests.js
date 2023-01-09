@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { createWebClient, getActionManagerServerData, doAction } from "@web/../tests/webclient/helpers";
-import { getFixture } from "@web/../tests/helpers/utils";
+import { click, getFixture } from "@web/../tests/helpers/utils";
 
 let serverData;
 let target;
@@ -70,4 +70,30 @@ QUnit.test("uses a Map(first mobile-friendly) view by default", async function (
     assert.containsNone(target, '.o_kanban_view');
     assert.containsOnce(target, '.o_map_view');
 
+});
+
+QUnit.test("use pin list container on mobile", async function (assert) {
+    const webClient = await createWebClient({ serverData });
+    await doAction(webClient, 1);
+
+    assert.containsOnce(target, ".o_pin_list_header .fa.fa-caret-left");
+    assert.containsNone(target, ".o_pin_list_header .fa.fa-caret-down");
+
+    await click(target, ".o_pin_list_header");
+    assert.containsOnce(
+        target,
+        ".o-sm-pin-list-container.h-100",
+        "There should extend the pin list container"
+    );
+    assert.containsOnce(target, ".o_pin_list_header .fa.fa-caret-down");
+    assert.containsNone(target, ".o_pin_list_header .fa.fa-caret-left");
+
+    await click(target, ".o_pin_list_header");
+    assert.containsOnce(target, ".o_pin_list_header .fa.fa-caret-left");
+    assert.containsNone(target, ".o_pin_list_header .fa.fa-caret-down");
+    assert.containsNone(
+        target,
+        ".o-sm-pin-list-container.h-100",
+        "There should collapse the pin list container"
+    );
 });

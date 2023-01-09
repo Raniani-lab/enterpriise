@@ -76,7 +76,7 @@
                 <field name="display_task" invisible="1"/>
                 <field name="helpdesk_ticket_id" string="Ticket"
                     attrs="{'invisible': [('display_task', '=', True)], 'readonly': [('readonly_timesheet', '=', True)]}"
-                    groups="helpdesk_timesheet.group_use_helpdesk_timesheet"/>
+                    options="{'no_open': True}" groups="helpdesk_timesheet.group_use_helpdesk_timesheet"/>
             </xpath>
             <xpath expr="//field[@name='task_id']" position="attributes">
                 <attribute name="attrs">{'invisible': [('display_task', '!=', True)], 'readonly': [('readonly_timesheet', '=', True)]}</attribute>
@@ -98,7 +98,7 @@
                 <field name="display_task" invisible="1"/>
                 <field name="helpdesk_ticket_id" string="Ticket"
                     attrs="{'invisible': [('display_task', '=', True)], 'readonly': [('readonly_timesheet', '=', True)]}"
-                    groups="helpdesk_timesheet.group_use_helpdesk_timesheet"/>
+                    options="{'no_open': True}" groups="helpdesk_timesheet.group_use_helpdesk_timesheet"/>
             </xpath>
             <xpath expr="//field[@name='task_id']" position="attributes">
                 <attribute name="attrs">{'invisible': [('display_task', '!=', True)], 'readonly': [('readonly_timesheet', '=', True)]}</attribute>

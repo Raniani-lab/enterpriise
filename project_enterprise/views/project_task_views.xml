@@ -122,6 +122,18 @@
         </field>
     </record>
 
+    <record id="view_task_gantt_inherit_all_task" model="ir.ui.view">
+        <field name="name">project.task.all.gantt</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project_task_view_gantt"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <xpath expr="//gantt" position="attributes">
+                <attribute name="color">project_id</attribute>
+            </xpath>
+        </field>
+    </record>
+
     <!-- Adding dependency gantt view to Project -->
     <record id="project_task_dependency_view_gantt" model="ir.ui.view">
         <field name="name">project.task.dependency.view.gantt</field>
@@ -132,6 +144,7 @@
             <xpath expr="//gantt" position="attributes">
                 <attribute name="dependency_field">depend_on_ids</attribute>
                 <attribute name="dependency_inverted_field">dependent_ids</attribute>
+                <attribute name="color">stage_id</attribute>
             </xpath>
             <xpath expr="//div[@name='project_id']" position="replace"/>
         </field>
@@ -181,6 +194,7 @@
         <field name="sequence" eval="30"/>
         <field name="view_mode">gantt</field>
         <field name="act_window_id" ref="project.action_view_my_task"/>
+        <field name="view_id" ref="view_task_gantt_inherit_all_task"/>
     </record>
 
     <record id="project.action_view_all_task" model="ir.actions.act_window">
@@ -192,6 +206,7 @@
         <field name="sequence" eval="40"/>
         <field name="view_mode">gantt</field>
         <field name="act_window_id" ref="project.action_view_all_task"/>
+        <field name="view_id" ref="view_task_gantt_inherit_all_task"/>
     </record>
 
     <!-- Set map view and gantt view -->

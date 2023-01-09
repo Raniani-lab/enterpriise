@@ -24,7 +24,7 @@
                     attrs="{'column_invisible': ['|', ('parent.use_helpdesk_sale_timesheet', '=', False), ('parent.partner_id', '=', False)], 'readonly': [('readonly_timesheet', '=', True)]}"
                     domain="[('is_service', '=', True), ('order_partner_id', 'child_of', parent.commercial_partner_id), ('is_expense', '=', False), ('state', 'in', ['sale', 'done'])]"
                     context="{'with_remaining_hours': True, 'with_price_unit': True}"
-                    optional="show" options="{'no_create': True}"/>
+                    optional="hide" options="{'no_create': True, 'no_open': True}"/>
             </xpath>
             <xpath expr="//field[@name='project_id']" position="before">
                 <field name="use_helpdesk_sale_timesheet" invisible="1"/>

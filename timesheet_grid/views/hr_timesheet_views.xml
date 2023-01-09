@@ -182,7 +182,7 @@
                                 <field name="company_id" invisible="1"/>
                                 <field name="validated" invisible="1"/>
                                 <field name="timer_start" invisible="1"/>
-                                <field name="project_id" required="1" options="{'no_create_edit': True}" class="o_timesheet_tour_project_name" attrs="{'readonly': [('id', '!=', False), ('readonly_timesheet', '=', True)]}"/>
+                                <field name="project_id" required="1" options="{'no_create_edit': True, 'no_open': True}" class="o_timesheet_tour_project_name" attrs="{'readonly': [('id', '!=', False), ('readonly_timesheet', '=', True)]}"/>
                                 <field name="task_id" options="{'no_create_edit': True}" context="{'default_project_id': project_id}" class="o_timesheet_tour_task_name" attrs="{'readonly': [('id', '!=', False), ('readonly_timesheet', '=', True)]}" widget="task_with_hours"/>
                                 <field name="user_id" invisible="1" groups="hr_timesheet.group_hr_timesheet_approver"/>
                             </group>

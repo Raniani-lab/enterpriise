@@ -34,6 +34,7 @@ export default class BarcodeModel extends EventBus {
     }
 
     setData(data) {
+        this.actionId = data.actionId;
         this.cache = new LazyBarcodeCache(data.data.records, { rpc: this.rpc });
         const nomenclature = this.cache.getRecord('barcode.nomenclature', data.data.nomenclature_id);
         nomenclature.rules = [];

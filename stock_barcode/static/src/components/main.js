@@ -50,6 +50,7 @@ class MainComponent extends Component {
                 '/stock_barcode/get_barcode_data',
                 { model: this.resModel, res_id: this.resId }
             );
+            barcodeData.actionId = this.props.actionId;
             this.groups = barcodeData.groups;
             this.env.model.setData(barcodeData);
             this.state.displayNote = Boolean(this.env.model.record.note);

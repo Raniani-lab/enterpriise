@@ -3,8 +3,9 @@
 import BarcodeModel from '@stock_barcode/models/barcode_model';
 import { BackorderDialog } from '../components/backorder_dialog';
 import { _t, _lt } from "web.core";
-import { sprintf } from '@web/core/utils/strings';
+import { escape, sprintf } from '@web/core/utils/strings';
 import { session } from '@web/session';
+import { markup } from '@odoo/owl';
 
 export default class BarcodePickingModel extends BarcodeModel {
     constructor(resModel, resId, services) {
@@ -144,6 +145,10 @@ export default class BarcodePickingModel extends BarcodeModel {
             this.updateLine(line, {qty_done: qty});
             this.trigger('update');
         });
+    }
+
+    get backordersDomain() {
+        return [["backorder_id", "=", this.resId]];
     }
 
     get barcodeInfo() {
@@ -813,6 +818,24 @@ export default class BarcodePickingModel extends BarcodeModel {
     async _closeValidate(ev) {
         const record = await this.orm.read(this.resModel, [this.record.id], ["state"]);
         if (record[0].state === 'done') {
+            // Checks if the picking generated a backorder. Updates the picking's data if it's the case.
+            const backorders = await this.orm.searchRead(
+                "stock.picking",
+                this.backordersDomain,
+                ["display_name", "id"]);
+            if (backorders.length) {
+                const phrase = backorders.length === 1 ?
+                    _t("Following backorder was created:") :
+                    _t("Following backorders were created:");
+                const backorderLinks = backorders.map(bo => {
+                    return `<a href="#action=${this.actionId}&active_id=${bo.id}">${escape(bo.display_name)}</a>`
+                });
+                this.validateMessage = `<div>
+                    <p>${escape(this.validateMessage)}<br>${escape(phrase)}</p>
+                    ${backorderLinks.join("<br>")}
+                </div>`;
+                this.validateMessage = markup(this.validateMessage);
+            }
             // If all is OK, displays a notification and goes back to the previous page.
             this.notification(this.validateMessage, { type: "success" });
             this.trigger('history-back');

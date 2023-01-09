@@ -49,6 +49,10 @@ export default class BarcodePickingBatchModel extends BarcodePickingModel {
             !this.currentState.lines.some(line => line.product_id.id === product.id);
     }
 
+    get backordersDomain() {
+        return [["backorder_id", "in", this.record.picking_ids]];
+    }
+
     get barcodeInfo() {
         const barcodeInfo = {};
         if ((this.needPickings || this.needPickingType) && !this._allowedPickings.length) {

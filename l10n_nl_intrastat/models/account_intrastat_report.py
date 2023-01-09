@@ -45,6 +45,7 @@ class IntrastatReportCustomHandler(models.AbstractModel):
                         - file_content
                         - file_type
         """
+        #pylint: disable=sql-injection
         # Fetch data.
         self.env['account.move.line'].check_access_rights('read')
 

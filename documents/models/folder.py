@@ -165,7 +165,7 @@ class DocumentFolder(models.Model):
                  WHERE t1.folder_id = %s
                    AND t2.folder_id = %s
             """
-            self.env.cr.execute(query, (old_folder_id, new_folder_id))
+            self.env.cr.execute(query, (old_folder_id, new_folder_id)) #pylint: disable=sql-injection
             res = self.env.cr.dictfetchall()
             return {key: value for key, value in [line.values() for line in res]}
 

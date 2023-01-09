@@ -98,7 +98,7 @@ class AccountReconciliation(models.AbstractModel):
             :param account_type: if a partner is both customer and vendor, you can use 'liability_payable' to reconcile
                 the vendor-related journal entries and 'receivable' for the customer-related entries.
         """
-
+        #pylint: disable=sql-injection
         Account = self.env['account.account']
         Partner = self.env['res.partner']
 

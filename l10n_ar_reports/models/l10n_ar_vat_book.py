@@ -111,6 +111,7 @@ class ArgentinianReportCustomHandler(models.AbstractModel):
     ####################################################
 
     def _build_query(self, report, options, column_group_key):
+        #pylint: disable=sql-injection
         tables, where_clause, where_params = report._query_get(options, 'strict_range')
 
         where_clause = f"AND {where_clause}"

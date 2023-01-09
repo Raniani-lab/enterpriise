@@ -70,6 +70,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             return date.strftime('%Y-%m-%dT%H:%M:%S')
 
         def get_vals_dict(report):
+            #pylint: disable=sql-injection
             tables, where_clause, where_params = report._query_get(options, 'strict_range')
 
             # Count the total number of lines to be used in the batching

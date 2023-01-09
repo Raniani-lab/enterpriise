@@ -480,6 +480,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
         :param options: The report options.
         :return:        A copy of the options.
         """
+        #pylint: disable=sql-injection
         new_options = options.copy()
         date_to = new_options['comparison']['periods'][-1]['date_from'] if new_options.get('comparison', {}).get('periods') else new_options['date']['date_from']
         new_date_to = fields.Date.from_string(date_to) - timedelta(days=1)

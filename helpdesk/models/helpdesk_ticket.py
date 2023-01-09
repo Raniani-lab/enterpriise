@@ -851,6 +851,22 @@ class HelpdeskTicket(models.Model):
             pass
         return recipients
 
+    def _get_customer_information(self):
+        email_normalized_to_values = super()._get_customer_information()
+        Partner = self.env['res.partner']
+
+        for record in self.filtered('partner_email'):
+            email_normalized = tools.email_normalize(record.partner_email)
+            if not email_normalized:
+                continue
+            values = email_normalized_to_values.setdefault(email_normalized, {})
+            values.update({
+                'name': record.partner_name or (
+                        Partner._parse_partner_name(record.partner_email)[0] or record.partner_email),
+                'phone': record.partner_phone,
+            })
+        return email_normalized_to_values
+
     def _ticket_email_split(self, msg):
         email_list = tools.email_split((msg.get('to') or '') + ',' + (msg.get('cc') or ''))
         # check left-part is not already an alias

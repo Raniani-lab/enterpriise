@@ -28,7 +28,8 @@ class HelpdeskCommon(TransactionCase):
             'name': 'Helpdesk Manager',
             'login': 'hm',
             'email': 'hm@example.com',
-            'groups_id': [(6, 0, [cls.env.ref('helpdesk.group_helpdesk_manager').id])],
+            'groups_id': [(6, 0, [cls.env.ref('helpdesk.group_helpdesk_manager').id,
+                                  cls.env.ref('base.group_partner_manager').id])],
             'tz': 'Europe/Brussels',
         })
         cls.helpdesk_user = Users.create({

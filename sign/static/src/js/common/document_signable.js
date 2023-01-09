@@ -1810,6 +1810,28 @@ export const SignableDocument = Document.extend({
     });
   },
 
+  getSignatureValueFromElement($el, type) {
+    const types = {
+      "text": () => {
+        const textValue = $el.text() && $el.text().trim() ? $el.text() : false;
+        const value  = $el.val() && $el.val().trim() ? $el.val() : $el.find("input").val() || false;
+        return value || textValue;
+      },
+      "initial": () => $el.data("signature"),
+      "signature": () => $el.data("signature"),
+      "textarea": () => this.textareaApplyLineBreak($el[0]),
+      "selection": () => $el.val() && $el.val().trim() ? $el.val() : false,
+      "checkbox": () => {
+        if ($el[0].checked) {
+          return "on"
+        } else {
+          return $el.data("required") ? false : "off";
+        }
+      }
+    };
+    return type in types ? types[type]() : types["text"]();
+  },
+
   /**
    * Gets the signature values dictionary from the iframeWidget.configuration
    * Gets the added sign items that were added in edit while signing
@@ -1826,37 +1848,10 @@ export const SignableDocument = Document.extend({
         if (resp > 0 && resp !== this.iframeWidget.role) {
           continue;
         }
-        let value;
-        /*open inputs*/
-        if ($elem.prop('nodeName').toLowerCase() === 'input' || $elem.find("input").length) {
-            value =
-              $elem.val() && $elem.val().trim()
-                ? $elem.val()
-                : $elem.find("input").val() || false;
-        } else {
-        /*Already prefilled*/
-            value =
-              $elem.text() && $elem.text().trim() ? $elem.text() : false;
-        }
 
-        let frameValue = false;
-        let frameHash = false;
+        const value = this.getSignatureValueFromElement($elem, $elem.data('typeData').item_type);
+        const [frameValue, frameHash] = $elem.data("signature") ? [$elem.data("frame"), $elem.data('frameHash')] : [false, false];
 
-        if ($elem.data("signature")) {
-          value = $elem.data("signature");
-          frameValue = $elem.data("frame");
-          frameHash = $elem.data('frameHash');
-        }
-        if ($elem[0].type === "checkbox") {
-          value = false;
-          if ($elem[0].checked) {
-            value = "on";
-          } else {
-            if (!$elem.data("required")) value = "off";
-          }
-        } else if ($elem[0].type === "textarea") {
-          value = this.textareaApplyLineBreak($elem[0]);
-        }
         if (!value) {
           if ($elem.data("required")) {
             return [{}, {}];

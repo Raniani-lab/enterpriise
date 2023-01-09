@@ -3102,12 +3102,16 @@ class AccountReport(models.Model):
         ctx = {
             'search_default_group_by_account': 1,
             'search_default_posted': 0 if options.get('all_entries') else 1,
-            'search_default_date_between': 1,
             'date_from': options.get('date').get('date_from'),
             'date_to': options.get('date').get('date_to'),
             'search_default_journal_id': params.get('journal_id', False),
             'expand': 1,
         }
+
+        if options['date'].get('date_from'):
+            ctx['search_default_date_between'] = 1
+        else:
+            ctx['search_default_date_before'] = 1
 
         journal_type = params.get('journal_type')
         if journal_type:

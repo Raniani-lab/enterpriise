@@ -243,7 +243,8 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
 
     def open_journal_items(self, options, params):
         params['view_ref'] = 'account.view_move_line_tree_grouped_partner'
-        action = self.env['account.report'].open_journal_items(options=options, params=params)
+        options_for_audit = {**options, 'date': {**options['date'], 'date_from': None}}
+        action = self.env['account.report'].open_journal_items(options=options_for_audit, params=params)
         action.get('context', {}).update({'search_default_group_by_account': 0, 'search_default_group_by_partner': 1})
         return action
 

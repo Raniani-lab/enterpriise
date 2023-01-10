@@ -801,7 +801,7 @@ class SaleOrder(models.Model):
         self.ensure_one()
         action = self._get_associated_so_action()
         origin_order_id = self.origin_order_id.id or self.id
-        action['name'] = "History"
+        action['name'] = _("History")
         action['domain'] = ['|', ('id', '=', origin_order_id), ('origin_order_id', '=', origin_order_id)]
         action['context'] = {
             **action.get('context', {}),
@@ -1151,21 +1151,19 @@ class SaleOrder(models.Model):
             close_mail_template.with_context(email_context).send_mail(self.id)
             _logger.debug("Sending Contract Closure Mail to %s for contract %s and closing contract",
                           self.partner_id.email, self.id)
-            msg_body = 'Automatic payment failed after multiple attempts. Contract closed automatically.'
+            msg_body = _("Automatic payment failed after multiple attempts. Contract closed automatically.")
             self.message_post(body=msg_body)
             subscription_values = {'end_date': current_date, 'payment_exception': False}
             # close the contract as needed
             self.set_close()
         else:
-            msg_body = 'Automatic payment failed. Contract set to "To Renew". No email sent this time. Error: %s' % (
-                    transaction and transaction.state_message or 'No valid Payment Method')
+            msg_body = _('Automatic payment failed. Contract set to "To Renew". No email sent this time. Error: %s', transaction and transaction.state_message or _('No valid Payment Method'))
 
             if (fields.Date.today() - self.next_invoice_date).days in [2, 7, 14]:
                 email_context.update({'date_close': date_close})
                 reminder_mail_template.with_context(email_context).send_mail(self.id)
                 _logger.debug("Sending Payment Failure Mail to %s for contract %s and setting contract to pending", self.partner_id.email, self.id)
-                msg_body = 'Automatic payment failed. Contract set to "To Renew". Email sent to customer. Error: %s' % (
-                        transaction and transaction.state_message or 'No Payment Method')
+                msg_body = _('Automatic payment failed. Contract set to "To Renew". Email sent to customer. Error: %s', transaction and transaction.state_message or _('No Payment Method'))
             self.message_post(body=msg_body)
             subscription_values = {'to_renew': True, 'payment_exception': False, 'is_batch': True}
         subscription_values.update(self._update_subscription_payment_failure_values())
@@ -1387,7 +1385,7 @@ class SaleOrder(models.Model):
                     # execute payment
                     if payment_token:
                         if not payment_token.partner_id.country_id:
-                            msg_body = 'Automatic payment failed. Contract set to "To Renew". No country specified on payment_token\'s partner'
+                            msg_body = _('Automatic payment failed. Contract set to "To Renew". No country specified on payment_token\'s partner')
                             order.message_post(body=msg_body)
                             order.with_context(mail_notrack=True).write(automatic_values)
                             invoice.unlink()

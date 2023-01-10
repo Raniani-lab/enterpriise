@@ -2,7 +2,7 @@
 
 import { PosGlobalState, Order } from "@point_of_sale/js/models";
 import { uuidv4 } from "@point_of_sale/js/utils";
-import { convertFromEpoch } from "@l10n_de_pos_cert/src/js/utils";
+import { convertFromEpoch } from "@l10n_de_pos_cert/js/utils";
 import { TaxError } from "@l10n_de_pos_cert/js/errors";
 import utils from "web.utils";
 const round_di = utils.round_decimals;

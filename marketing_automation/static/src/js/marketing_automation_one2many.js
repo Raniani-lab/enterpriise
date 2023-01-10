@@ -232,9 +232,9 @@ export class HierarchyKanbanRenderer extends KanbanRenderer {
             `
             <t t-name="kanban-box">
                 <t t-set="currentDepth" t-value="currentDepth ? currentDepth + 1 : 1"/>
-                <div t-if="this.props.record.depth - currentDepth + 1 > 0" class="o_ma_body_wrapper"
-                    t-call="{{ this.templates['kanban-box'] }}"/>
-                <t t-else="" t-call="{{ this.templates.root }}"/>
+                <div t-if="__comp__.props.record.depth - currentDepth + 1 > 0" class="o_ma_body_wrapper"
+                    t-call="{{ __comp__.templates['kanban-box'] }}"/>
+                <t t-else="" t-call="{{ __comp__.templates.root }}"/>
             </t>
             `,
         );

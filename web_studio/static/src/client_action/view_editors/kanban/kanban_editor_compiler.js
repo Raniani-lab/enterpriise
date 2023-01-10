@@ -132,7 +132,7 @@ export class KanbanEditorCompiler extends KanbanCompiler {
                 if (node.classList.contains("oe_kanban_avatar")) {
                     compiled.setAttribute(
                         "t-on-click",
-                        `(ev) => this.env.config.onNodeClicked({
+                        `(ev) => __comp__.env.config.onNodeClicked({
                             xpath: "${xpath}",
                             target: ev.target
                         })`
@@ -142,12 +142,12 @@ export class KanbanEditorCompiler extends KanbanCompiler {
                 if (node.tagName === "field" && !isComponentNode(compiled)) {
                     compiled.setAttribute(
                         "t-on-click",
-                        `(ev) => this.env.config.onNodeClicked({xpath: "${xpath}", target: ev.target})`
+                        `(ev) => __comp__.env.config.onNodeClicked({xpath: "${xpath}", target: ev.target})`
                     );
                     compiled.classList.add("o-web-studio-editor--element-clickable");
 
                     const fieldName = node.getAttribute("name");
-                    const isEmptyExpr = `this.isFieldValueEmpty(record["${fieldName}"].value)`;
+                    const isEmptyExpr = `__comp__.isFieldValueEmpty(record["${fieldName}"].value)`;
 
                     // Set empty class
                     const tattfClassEmpty = `{{ ${isEmptyExpr} ? "o_web_studio_widget_empty" : "" }}`;
@@ -163,7 +163,7 @@ export class KanbanEditorCompiler extends KanbanCompiler {
                     const tOut = compiled.getAttribute("t-out");
                     compiled.setAttribute(
                         "t-out",
-                        `${isEmptyExpr} ? this.props.record.activeFields["${fieldName}"].string : ${tOut}`
+                        `${isEmptyExpr} ? __comp__.props.record.activeFields["${fieldName}"].string : ${tOut}`
                     );
                 }
                 if (node.tagName === "field" || node.tagName === "widget") {
@@ -188,7 +188,7 @@ export class KanbanEditorCompiler extends KanbanCompiler {
             compiled.querySelector(".o_kanban_record_body") || compiled.querySelector("div");
         const tagsHook = createElement("span", {
             class: "o_web_studio_add_kanban_tags",
-            "t-on-click": `() => this.onAddTagsWidget({
+            "t-on-click": `() => __comp__.onAddTagsWidget({
                 xpath: "${parentElement.getAttribute("studioXpath")}"
             })`,
         });
@@ -213,7 +213,7 @@ export class KanbanEditorCompiler extends KanbanCompiler {
             {
                 class: "o_web_studio_add_dropdown o_dropdown_kanban dropdown",
                 style: "z-index: 1;",
-                "t-on-click": "() => this.onAddDropdown()",
+                "t-on-click": "() => __comp__.onAddDropdown()",
             }
         );
         parentElement.appendChild(dropdownHook);
@@ -224,7 +224,7 @@ export class KanbanEditorCompiler extends KanbanCompiler {
         const priorityHook = createElement("div", {
             class: "o_web_studio_add_priority oe_kanban_bottom_left align-self-start flex-grow-0",
             style: "z-index: 1;",
-            "t-on-click": "() => this.onAddPriority()",
+            "t-on-click": "() => __comp__.onAddPriority()",
         });
         priorityHook.textContent = _lt("Add a priority");
         parentElement.appendChild(priorityHook);
@@ -236,7 +236,7 @@ export class KanbanEditorCompiler extends KanbanCompiler {
         const avatarHook = createElement("div", {
             class: "o_web_studio_add_kanban_image oe_kanban_bottom_right pe-auto",
             style: "z-index: 1;",
-            "t-on-click": "() => this.onAddAvatar()",
+            "t-on-click": "() => __comp__.onAddAvatar()",
         });
         avatarHook.textContent = _lt("Add an avatar");
         parentElement.appendChild(avatarHook);

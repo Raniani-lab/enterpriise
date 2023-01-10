@@ -117,8 +117,8 @@ export function applyInvisible(invisible, compiled, params) {
     let isVisileExpr;
     // If invisible is dynamic (via Domain), pass a props or apply the studio class.
     if (typeof invisible !== "boolean") {
-        const recordExpr = params.recordExpr || "this.props.record";
-        isVisileExpr = `!this.evalDomainFromRecord(${recordExpr},${JSON.stringify(invisible)})`;
+        const recordExpr = params.recordExpr || "__comp__.props.record";
+        isVisileExpr = `!__comp__.evalDomainFromRecord(${recordExpr},${JSON.stringify(invisible)})`;
         if (isComponentNode(compiled)) {
             compiled.setAttribute("studioIsVisible", isVisileExpr);
         } else {
@@ -133,7 +133,7 @@ export function applyInvisible(invisible, compiled, params) {
     }
 
     // Finally, put a t-if on the node that accounts for the parameter in the config.
-    const studioShowExpr = `this.env.config.studioShowInvisible`;
+    const studioShowExpr = `__comp__.env.config.studioShowInvisible`;
     isVisileExpr = isVisileExpr ? `(${isVisileExpr} or ${studioShowExpr})` : studioShowExpr;
     if (compiled.hasAttribute("t-if")) {
         const formerTif = compiled.getAttribute("t-if");

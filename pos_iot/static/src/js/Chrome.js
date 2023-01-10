@@ -11,7 +11,7 @@ const _t = core._t;
 patch(Chrome.prototype, "pos_iot.Chrome", {
     __showScreen() {
         if (
-            this.mainScreen.name === "PaymentScreen" &&
+            this.pos.mainScreen.name === "PaymentScreen" &&
             this.env.pos
                 .get_order()
                 .paymentlines.some(

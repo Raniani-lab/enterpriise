@@ -201,7 +201,7 @@ class HrContractSalary(main.HrContractSalary):
             #     ],
             #     'other_category': ...
             # }
-            model_categories = (available.model_id.category_id | can_be_requested.category_id)
+            model_categories = (available.category_id | available.model_id.category_id | can_be_requested.category_id)
             model_categories_ids = model_categories.sorted(key=lambda c: (c.sequence, c.id)).ids
             model_categories_ids.append(0) # Case when no category
             result = OrderedDict()
@@ -209,9 +209,21 @@ class HrContractSalary(main.HrContractSalary):
                 category_id = model_categories.filtered(lambda c: c.id == category)
                 car_values = []
                 if not only_new:
-                    cars = available.filtered_domain([
-                        ('model_id.category_id', '=', category),
-                    ])
+                    if not category:  # "No Category"
+                        domain = [
+                            ('category_id', '=', False),
+                            ('model_id.category_id', '=', False),
+                        ]
+                    else:
+                        domain = [
+                            '|',
+                                ('category_id', '=', category),
+                                '&',
+                                    ('category_id', '=', False),
+                                    ('model_id.category_id', '=', category),
+                        ]
+
+                    cars = available.filtered_domain(domain)
                     car_values.extend([(
                         'old-%s' % (car.id),
                         '%s/%s \u2022 %s € \u2022 %s%s%s' % (

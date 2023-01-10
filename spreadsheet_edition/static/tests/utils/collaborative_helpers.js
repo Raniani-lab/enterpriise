@@ -60,7 +60,7 @@ export async function setupCollaborativeEnv(serverData) {
     const network = new MockSpreadsheetCollaborativeChannel();
     const model = new Model();
     const alice = new Model(model.exportData(), {
-        external: {
+        custom: {
             env,
             dataSources: new DataSources(env.services.orm),
         },
@@ -68,7 +68,7 @@ export async function setupCollaborativeEnv(serverData) {
         client: { id: "alice", name: "Alice" },
     });
     const bob = new Model(model.exportData(), {
-        external: {
+        custom: {
             dataSources: new DataSources(env.services.orm),
             env,
         },
@@ -76,7 +76,7 @@ export async function setupCollaborativeEnv(serverData) {
         client: { id: "bob", name: "Bob" },
     });
     const charlie = new Model(model.exportData(), {
-        external: {
+        custom: {
             dataSources: new DataSources(env.services.orm),
             env,
         },

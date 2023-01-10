@@ -1,6 +1,10 @@
 /** @odoo-module **/
 
 /**
+ * @typedef {import("@web/core/orm_service").ORM} ORM
+ */
+
+/**
  *
  * Upload files on the server and link the files to a record as attachment.
  *
@@ -9,10 +13,18 @@
  *
  */
 export class RecordFileStore {
-    constructor(resModel, resId, http) {
+    /**
+     *
+     * @param {string} resModel
+     * @param {number} resId
+     * @param {*} http
+     * @param {ORM} orm
+     */
+    constructor(resModel, resId, http, orm) {
         this.resModel = resModel;
         this.resId = resId;
         this.http = http;
+        this.orm = orm;
     }
 
     /**
@@ -28,5 +40,17 @@ export class RecordFileStore {
         };
         const fileData = JSON.parse(await this.http.post(route, params, "text"))[0];
         return "/web/image/" + fileData.id;
+    }
+
+    /**
+     * @param {string} path
+     * @returns {Promise<void>}
+     */
+    async delete(path) {
+        const attachmentId = path.split("/").pop();
+        if (Number.isNaN(attachmentId)) {
+            throw new Error("Invalid path: " + path);
+        }
+        await this.orm.unlink("ir.attachment", [parseInt(attachmentId)]);
     }
 }

@@ -29,7 +29,7 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
         });
 
         this.spreadsheetCollaborative = useService("spreadsheet_collaborative");
-        this.fileStore = new RecordFileStore("documents.document", this.resId, this.http);
+        this.fileStore = new RecordFileStore("documents.document", this.resId, this.http, this.orm);
     }
 
     async onWillStart() {

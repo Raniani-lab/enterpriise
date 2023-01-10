@@ -43,6 +43,7 @@ topbarMenuRegistry.addChild("clear_history", ["file"], {
     isVisible: (env) => env.debug,
     action: (env) => {
         env.model.session.snapshot(env.model.exportData());
+        env.model.garbageCollectExternalResources();
         window.location.reload();
     },
 });

@@ -24,9 +24,9 @@ export function insertPivot(pivotData) {
     };
     return async (model) => {
         const dataSourceId = uuidGenerator.uuidv4();
-        model.config.external.dataSources.add(dataSourceId, PivotDataSource, definition);
-        await model.config.external.dataSources.load(dataSourceId);
-        const pivotDataSource = model.config.external.dataSources.get(dataSourceId);
+        model.config.custom.dataSources.add(dataSourceId, PivotDataSource, definition);
+        await model.config.custom.dataSources.load(dataSourceId);
+        const pivotDataSource = model.config.custom.dataSources.get(dataSourceId);
         // Add an empty sheet in the case of an existing spreadsheet.
         if (!this.isEmptySpreadsheet) {
             const sheetId = uuidGenerator.uuidv4();

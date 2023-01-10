@@ -35,11 +35,11 @@ export function insertList({ list, threshold, fields, name }) {
     };
     return async (model) => {
         const dataSourceId = uuidGenerator.uuidv4();
-        model.config.external.dataSources.add(dataSourceId, ListDataSource, {
+        model.config.custom.dataSources.add(dataSourceId, ListDataSource, {
             ...definition,
             limit: threshold,
         });
-        await model.config.external.dataSources.load(dataSourceId);
+        await model.config.custom.dataSources.load(dataSourceId);
         if (!this.isEmptySpreadsheet) {
             const sheetId = uuidGenerator.uuidv4();
             const sheetIdFrom = model.getters.getActiveSheetId();

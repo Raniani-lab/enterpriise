@@ -35,7 +35,12 @@ class DashboardEditAction extends AbstractSpreadsheetAction {
 
         /** @type {SpreadsheetCollaborativeService} */
         this.spreadsheetCollaborative = useService("spreadsheet_collaborative");
-        this.fileStore = new RecordFileStore("spreadsheet.dashboard", this.resId, this.http);
+        this.fileStore = new RecordFileStore(
+            "spreadsheet.dashboard",
+            this.resId,
+            this.http,
+            this.orm
+        );
     }
 
     async onWillStart() {

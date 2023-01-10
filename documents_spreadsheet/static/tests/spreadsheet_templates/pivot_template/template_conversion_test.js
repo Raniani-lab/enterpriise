@@ -40,7 +40,7 @@ QUnit.module("documents_spreadsheet > pivot_templates", {}, function () {
         async function (assert) {
             const { model: m1 } = await createSpreadsheetWithPivot();
             const model = new Model(m1.exportData(), {
-                external: { dataSources: new DataSources(m1.config.external.dataSources._orm) },
+                custom: { dataSources: new DataSources(m1.config.custom.dataSources._orm) },
             });
             assert.deepEqual(model.dispatch("CONVERT_PIVOT_TO_TEMPLATE").reasons, [
                 CommandResult.PivotCacheNotLoaded,

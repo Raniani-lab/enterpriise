@@ -29,7 +29,7 @@ async function getPivotReady(model) {
         },
         name: "Partner",
     };
-    const dataSource = model.config.external.dataSources.create(PivotDataSource, definition);
+    const dataSource = model.config.custom.dataSources.create(PivotDataSource, definition);
     await dataSource.load();
     return { definition, dataSource };
 }
@@ -54,7 +54,7 @@ function insertPreloadedPivot(model, params) {
         measures,
     };
     const dataSourceId = params.dataSourceId || "data";
-    model.config.external.dataSources._dataSources[dataSourceId] = dataSource;
+    model.config.custom.dataSources._dataSources[dataSourceId] = dataSource;
     model.dispatch("INSERT_PIVOT", {
         sheetId,
         col: params.anchor ? params.anchor[0] : 0,
@@ -176,7 +176,7 @@ QUnit.test("Add two pivots concurrently", async (assert) => {
     assert.spreadsheetIsSynchronized(
         [alice, bob, charlie],
         (user) =>
-            Object.values(user.config.external.dataSources._dataSources).filter(
+            Object.values(user.config.custom.dataSources._dataSources).filter(
                 (ds) => ds instanceof PivotDataSource
             ).length,
         2

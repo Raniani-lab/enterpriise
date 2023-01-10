@@ -36,7 +36,6 @@ export default class SpreadsheetComponent extends LegacyComponent {
             raiseError: this.raiseError.bind(this),
             editText: this.editText.bind(this),
             askConfirmation: this.askConfirmation.bind(this),
-            loadCurrencies: this.loadCurrencies.bind(this),
         });
 
         useSetupAction({
@@ -62,7 +61,11 @@ export default class SpreadsheetComponent extends LegacyComponent {
         this.model = new Model(
             migrate(this.props.data),
             {
-                external: { env: this.env, orm: this.orm, dataSources },
+                custom: { env: this.env, orm: this.orm, dataSources },
+                external: {
+                    fileStore: this.props.fileStore,
+                    loadCurrencies: this.loadCurrencies.bind(this),
+                },
                 transportService: this.props.transportService,
                 client: {
                     id: uuidGenerator.uuidv4(),

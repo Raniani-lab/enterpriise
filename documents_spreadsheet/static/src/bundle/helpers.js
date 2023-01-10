@@ -15,9 +15,9 @@ const Model = spreadsheet.Model;
  */
 export async function convertFromSpreadsheetTemplate(orm, data) {
     const model = new Model(migrate(data), {
-        external: { dataSources: new DataSources(orm) },
+        custom: { dataSources: new DataSources(orm) },
     });
-    await model.config.external.dataSources.waitForAllLoaded();
+    await model.config.custom.dataSources.waitForAllLoaded();
     const proms = [];
     for (const pivotId of model.getters.getPivotIds()) {
         proms.push(model.getters.getPivotDataSource(pivotId).prepareForTemplateGeneration());

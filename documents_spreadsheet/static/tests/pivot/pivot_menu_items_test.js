@@ -317,7 +317,7 @@ QUnit.module(
                     ...webClient.env,
                     model,
                     services: {
-                        ...model.config.external.env.services,
+                        ...model.config.custom.env.services,
                         action: {
                             doAction: (params) => {
                                 assert.step(params.res_model);

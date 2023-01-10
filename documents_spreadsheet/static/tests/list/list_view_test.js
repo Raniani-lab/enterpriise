@@ -208,7 +208,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
             ...webClient.env,
             model,
             services: {
-                ...model.config.external.env.services,
+                ...model.config.custom.env.services,
                 action: {
                     doAction: (params) => {
                         assert.step(params.res_model);
@@ -244,7 +244,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
             const env = {
                 ...webClient.env,
                 model,
-                services: model.config.external.env.services,
+                services: model.config.custom.env.services,
             };
             setCellContent(model, "A1", "test");
             setCellContent(model, "A2", `=ODOO.LIST("1","1","foo")`);

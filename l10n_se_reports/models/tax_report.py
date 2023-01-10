@@ -7,17 +7,27 @@ from lxml.objectify import fromstring
 DOCTYPE = '<!DOCTYPE eSKDUpload PUBLIC "-//Skatteverket, Sweden//DTD Skatteverket eSKDUpload-DTD Version 6.0//SV" "https://www1.skatteverket.se/demoeskd/eSKDUpload_6p0.dtd">'
 
 
-class AccountGenericTaxReport(models.Model):
-    _inherit = 'account.report'
-    def l10n_se_reports_tax_report_init_custom_options(self, options, previous_options=None):
-        options.setdefault('buttons', []).extend((
-            {'name': _('XML'), 'sequence': 30, 'action': 'file_export',
-             'action_param': 'l10n_se_export_tax_report_to_xml', 'file_export_type': _('XML')},
-            {'name': _('Closing Entry'), 'action': 'action_periodic_vat_entries', 'sequence': 80},
-        ))
+class SwedishTaxReportCustomHandler(models.AbstractModel):
+    _name = 'l10n_se.tax.report.handler'
+    _inherit = 'account.generic.tax.report.handler'
+    _description = 'Swedish Tax Report Custom Handler'
+
+    def _dynamic_lines_generator(self, report, options, all_column_groups_expression_totals):
+        return []
+
+    def _custom_options_initializer(self, report, options, previous_options=None):
+        super()._custom_options_initializer(report, options, previous_options=previous_options)
+        options['buttons'].append({
+            'name': _('XML'),
+            'sequence': 30,
+            'action': 'export_file',
+            'action_param': 'l10n_se_export_tax_report_to_xml',
+            'file_export_type': _('XML'),
+        })
 
     def l10n_se_export_tax_report_to_xml(self, options):
-        report_lines = self._get_lines(options)
+        report = self.env['account.report'].browse(options['report_id'])
+        report_lines = report._get_lines(options)
         export_template = 'l10n_se_reports.tax_export_xml'
         colname_to_idx = {col['expression_label']: idx for idx, col in enumerate(options.get('columns', []))}
         lines_mapping = {
@@ -26,7 +36,7 @@ class AccountGenericTaxReport(models.Model):
         template_context = {}
         for record in self.env['account.report.line'].browse(lines_mapping.keys()):
             template_context[record.code] = lines_mapping[record.id]
-        template_context['org_number'] = self._get_sender_company_for_export(options).org_number
+        template_context['org_number'] = report._get_sender_company_for_export(options).org_number
         template_context['period'] = (options['date']['date_to'][:4] + options['date']['date_to'][5:7])
         template_context['comment'] = ''
 
@@ -35,7 +45,7 @@ class AccountGenericTaxReport(models.Model):
         tree = fromstring(doc)
 
         return {
-            'file_name': self.get_default_report_filename('xml'),
+            'file_name': report.get_default_report_filename('xml'),
             'file_content': etree.tostring(tree, pretty_print=True, xml_declaration=True, encoding='ISO-8859-1', doctype=DOCTYPE),
             'file_type': 'xml',
         }

@@ -5343,13 +5343,13 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'DEDUCTION': -20.0,
             'REIMBURSEMENT': 50.0,
             'NET': 1270.18,
-            'ONSSEMPLOYERBASIC': 284.82,
+            'ONSSEMPLOYERBASIC': 284.71,
             'ONSSEMPLOYERCPAE': 2.62,
-            'ONSSEMPLOYERFFE': 0.8,
+            'ONSSEMPLOYERFFE': 1.48,
             'ONSSEMPLOYERMFFE': 1.14,
             'ONSSEMPLOYERRESTREINT': 19.23,
             'ONSSEMPLOYERUNEMP': 1.14,
-            'ONSSEMPLOYER': 309.74,
+            'ONSSEMPLOYER': 310.31,
         }
         self._validate_payslip(self.holiday_pay_2020, payslip_results)
 
@@ -5379,16 +5379,16 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertEqual(len(self.holiday_pay_2019.line_ids), 32)
         payslip_results = {
             'BASIC_PAY_SIMPLE': 2508.58,
-            'SIMPLE_PAY_DECEMBER': 0.0,
+            'SIMPLE_PAY_DECEMBER': 0,
             'PAY_SIMPLE': 2508.58,
             'DOUBLE_BASIC': 2965.37,
-            'EUROPEAN': 0.0,
-            'DHALREADYPAID': 0.0,
-            'DOUBLE_PAY_DECEMBER': 0.0,
+            'EUROPEAN': 0,
+            'DHALREADYPAID': 0,
+            'DOUBLE_PAY_DECEMBER': 0,
             'PAY DOUBLE': 2965.37,
             'CDHBASIC': 379.39,
-            'CDHALREADYPAID': 0.0,
-            'COMP_DOUBLE_PAY_DECEMBER': 0.0,
+            'CDHALREADYPAID': 0,
+            'COMP_DOUBLE_PAY_DECEMBER': 0,
             'PAY DOUBLE COMPLEMENTARY': 379.39,
             'BASIC': 5853.34,
             'ONSS1': -327.87,
@@ -5403,13 +5403,13 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'DEDUCTION': -20.0,
             'REIMBURSEMENT': 50.0,
             'NET': 3270.79,
-            'ONSSEMPLOYERBASIC': 627.9,
+            'ONSSEMPLOYERBASIC': 627.65,
             'ONSSEMPLOYERCPAE': 5.77,
-            'ONSSEMPLOYERFFE': 1.76,
+            'ONSSEMPLOYERFFE': 3.26,
             'ONSSEMPLOYERMFFE': 2.51,
             'ONSSEMPLOYERRESTREINT': 42.4,
             'ONSSEMPLOYERUNEMP': 2.51,
-            'ONSSEMPLOYER': 682.83,
+            'ONSSEMPLOYER': 684.09,
         }
         self._validate_payslip(self.holiday_pay_2019, payslip_results)
 
@@ -5500,13 +5500,13 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'PROF_TAX': -725.08,
             'PPTOTAL': 725.08,
             'NET': 1270.18,
-            'ONSSEMPLOYERBASIC': 284.82,
+            'ONSSEMPLOYERBASIC': 284.71,
             'ONSSEMPLOYERCPAE': 2.62,
-            'ONSSEMPLOYERFFE': 0.8,
+            'ONSSEMPLOYERFFE': 1.48,
             'ONSSEMPLOYERMFFE': 1.14,
             'ONSSEMPLOYERRESTREINT': 19.23,
             'ONSSEMPLOYERUNEMP': 1.14,
-            'ONSSEMPLOYER': 309.74,
+            'ONSSEMPLOYER': 310.31,
         }
         self._validate_payslip(self.holiday_pay_2020, payslip_results)
 
@@ -5515,16 +5515,16 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         self.assertEqual(len(self.holiday_pay_2019.line_ids), 27)
         payslip_results = {
             'BASIC_PAY_SIMPLE': 2508.58,
-            'SIMPLE_PAY_DECEMBER': 0.0,
+            'SIMPLE_PAY_DECEMBER': 0,
             'PAY_SIMPLE': 2508.58,
             'DOUBLE_BASIC': 2965.37,
             'EUROPEAN': -1384.62,
-            'DHALREADYPAID': 0.0,
-            'DOUBLE_PAY_DECEMBER': 0.0,
+            'DHALREADYPAID': 0,
+            'DOUBLE_PAY_DECEMBER': 0,
             'PAY DOUBLE': 1580.75,
             'CDHBASIC': 202.24,
-            'CDHALREADYPAID': 0.0,
-            'COMP_DOUBLE_PAY_DECEMBER': 0.0,
+            'CDHALREADYPAID': 0,
+            'COMP_DOUBLE_PAY_DECEMBER': 0,
             'PAY DOUBLE COMPLEMENTARY': 202.24,
             'BASIC': 4291.57,
             'ONSS1': -327.87,
@@ -5534,13 +5534,13 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
             'PROF_TAX': -1365.33,
             'PPTOTAL': 1365.33,
             'NET': 2391.77,
-            'ONSSEMPLOYERBASIC': 627.9,
-            'ONSSEMPLOYERFFE': 1.76,
+            'ONSSEMPLOYERBASIC': 627.65,
+            'ONSSEMPLOYERFFE': 3.26,
             'ONSSEMPLOYERMFFE': 2.51,
             'ONSSEMPLOYERCPAE': 5.77,
             'ONSSEMPLOYERRESTREINT': 42.4,
             'ONSSEMPLOYERUNEMP': 2.51,
-            'ONSSEMPLOYER': 682.83,
+            'ONSSEMPLOYER': 684.09,
         }
         self._validate_payslip(self.holiday_pay_2019, payslip_results)
 

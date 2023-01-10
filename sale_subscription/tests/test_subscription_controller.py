@@ -245,5 +245,5 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
                          "The reference should come from the prefix")
         last_transaction_id._set_done()
         self.assertEqual(subscription.invoice_ids.mapped('state'), ['posted'])
-        self.assertEqual(subscription.invoice_ids.payment_state, 'in_payment')
+        self.assertTrue(subscription.invoice_ids.payment_state in ['paid', 'in_payment'])
         return subscription

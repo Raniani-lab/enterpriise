@@ -232,6 +232,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * Copy the current article in private section and open it.
      */
     async copyArticleAsPrivate() {
+        await this._saveIfDirty();
         const articleId = await this.orm.call(
             "knowledge.article",
             "action_make_private_copy",
@@ -297,9 +298,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                 });
 
                 // Force save if changes have been made before loading the new record
-                if (this.props.record.isDirty) {
-                    await this.props.record.save();
-                }
+                await this._saveIfDirty();
 
                 // load the new record
                 try {
@@ -432,9 +431,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      */
     async _confirmMoveArticle(articleId, position, onSuccess, onReject) {
         // Force save if changes have been made before the move to.
-        if (this.props.record.isDirty) {
-            await this.props.record.save();
-        }
+        await this._saveIfDirty();
         try {
             const result = await this.orm.call(
                 'knowledge.article',
@@ -613,9 +610,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         let unfoldedFavoriteArticlesIds = localStorage.getItem('knowledge.unfolded.favorite.ids');
         unfoldedFavoriteArticlesIds = unfoldedFavoriteArticlesIds ? unfoldedFavoriteArticlesIds.split(";").map(Number) : false;
         // Force save article if it's dirty to keep up to date the article data before rendering the tree
-        if (this.props.record.isDirty) {
-            await this.props.record.save();
-        }
+        await this._saveIfDirty();
         try {
             const htmlTree = await this.rpc(route,
                 {
@@ -653,6 +648,12 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      */
     _resizeNameInput(name) {
         this.root.el.querySelector('.o_breadcrumb_article_name_container > span').innerText = name;
+    }
+
+    async _saveIfDirty() {
+        if (this.props.record.isDirty) {
+            await this.props.record.save();
+        }
     }
 
     /**

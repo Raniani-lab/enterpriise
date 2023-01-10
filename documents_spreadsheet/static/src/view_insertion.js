@@ -4,4 +4,4 @@ import { registry } from "@web/core/registry";
 
 registry
     .category("spreadsheet_view_insertion_groups")
-    .add("documents.group_documents_manager", "documents.group_documents_manager");
+    .add("documents.group_documents_user", "documents.group_documents_user");

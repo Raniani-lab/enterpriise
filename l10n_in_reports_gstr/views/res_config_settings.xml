@@ -26,16 +26,14 @@
                                 <div class="mt16 row">
                                     <label for="l10n_in_gstr_gst_username" string="GST Username" class="col-3 col-lg-4 o_light_label"/>
                                     <field name="l10n_in_gstr_gst_username" nolabel="1"/>
+                                </div>
+                                <div class="row" title="if OTP is verified then the token will expire in 6 hours if you activate this it will refresh the token before expiring until the duration you set in GST Portal.">
                                     <label for="l10n_in_gstr_gst_auto_refresh_token" string="Refresh Token" class="col-3 col-lg-4 o_light_label"/>
                                     <field name="l10n_in_gstr_gst_auto_refresh_token" nolabel="1"/>
-                                        <div class="text-muted">
-                                            Only check if you want auto refresh token.
-                                        </div>
+                                </div>
+                                <div class="row">
                                     <label for="l10n_in_gstr_gst_production_env" string="Production Environment" class="col-3 col-lg-4 o_light_label"/>
                                     <field name="l10n_in_gstr_gst_production_env" nolabel="1"/>
-                                        <div class="text-muted">
-                                            Only check if you are in production.
-                                        </div>
                                 </div>
                             </div>
                             <div class='mt8'>

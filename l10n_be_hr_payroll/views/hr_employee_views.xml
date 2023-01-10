@@ -56,7 +56,7 @@
             <field name="study_school" position="after">
                 <field name="l10n_be_scale_seniority" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}"/>
             </field>
-            <group name="payroll_group" position="after">
+            <group name="application_group" position="before">
                 <strong class="o_horizontal_separator" colspan="2" id="previous_employer_title" attrs="{'invisible': [('company_country_code', '!=', 'BE')]}" groups="hr_payroll.group_hr_payroll_user">Previous Employer</strong>
                 <group attrs="{'invisible': [('company_country_code', '!=', 'BE')]}" groups="hr_payroll.group_hr_payroll_user">
                     <label for="l10n_be_holiday_pay_to_recover_n"/>

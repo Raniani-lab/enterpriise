@@ -365,6 +365,12 @@ class TestSubscription(TestSubscriptionCommon):
     def test_upsell_via_so(self):
         # Test the upsell flow using an intermediary upsell quote.
         self.sub_product_tmpl.product_pricing_ids = [(5, 0, 0)]
+        self.subscription_tmpl.sale_order_template_option_ids = [Command.create({
+            'name': "Option 1",
+            'product_id': self.product5.id,
+            'quantity': 1,
+            'uom_id': self.product5.uom_id.id,
+        })]
         self.product_tmpl_2.product_pricing_ids = [(5, 0, 0)]
         self.env['product.pricing'].create({'recurrence_id': self.recurrence_month.id, 'product_template_id': self.sub_product_tmpl.id, 'price': 42})
         self.env['product.pricing'].create({'recurrence_id': self.recurrence_month.id, 'product_template_id': self.product_tmpl_2.id, 'price': 420})

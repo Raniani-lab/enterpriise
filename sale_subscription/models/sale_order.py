@@ -960,7 +960,7 @@ class SaleOrder(models.Model):
         option_lines_data = [fields.Command.clear()]
         option_lines_data += [
             fields.Command.create(
-                self._compute_option_data_for_template_change(option)
+                option._prepare_option_line_values()
             )
             for option in self.sale_order_template_id.sale_order_template_option_ids
         ]

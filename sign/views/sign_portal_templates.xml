@@ -106,28 +106,24 @@
                                 </div>
                                 <div>
                                     <t t-foreach="my_sign_item.sign_request_id.request_item_ids" t-as="sign">
-                                        <div t-if="sign.state == 'sent'" class="_status clearfix" t-att-data-id="sign.id">
-                                            <b><t t-esc="sign.partner_id.name if sign.partner_id else 'Public user'"/></b>
-                                            <t t-if="sign.role_id"><t t-esc="' - ' + sign.role_id.name"/></t> - <em>Waiting Signature</em>
-                                            <em t-if="not sign.is_mail_sent"><br/>(the email access has not been sent)</em>
-                                        </div>
-                                    </t>
-                                    <t t-foreach="my_sign_item.sign_request_id.request_item_ids" t-as="sign">
-                                        <div t-if="sign.state == 'canceled'" class="_status clearfix" t-att-data-id="sign.id">
-                                           <b> <t t-esc="sign.partner_id.name"/></b><t t-if="sign.role_id">
-                                            <t t-esc="' - ' + sign.role_id.name"/></t> - <em>Canceled</em>
-                                        </div>
-                                    </t>
-                                    <t t-foreach="my_sign_item.sign_request_id.request_item_ids" t-as="sign">
-                                        <div t-if="sign.state == 'refused'" class="_status clearfix" t-att-data-id="sign.id">
-                                           <b> <t t-esc="sign.partner_id.name"/></b><t t-if="sign.role_id">
-                                            <t t-esc="' - ' + sign.role_id.name"/></t> - <em>Refused on <span t-field="sign.signing_date"></span></em>
-                                        </div>
-                                    </t>
-                                    <t t-foreach="my_sign_item.sign_request_id.request_item_ids" t-as="sign">
-                                        <div t-if="sign.state == 'completed'" class="_status clearfix"><b>
-                                            <t t-esc="sign.partner_id.name"/></b><t t-if="sign.role_id">
-                                            <t t-esc="' - ' + sign.role_id.name"/></t> - <em>Signed on <span t-field="sign.signing_date"></span></em>
+                                        <div class="_status clearfix" t-att-data-id="sign.id">
+                                            <t t-if="sign.state == 'sent'">
+                                                <b><t t-esc="sign.partner_id.name if sign.partner_id else 'Public user'"/></b>
+                                                <t t-if="sign.role_id"><t t-esc="' - ' + sign.role_id.name"/></t> - <em>Waiting Signature</em>
+                                                <em t-if="not sign.is_mail_sent"><br/>(the email access has not been sent)</em>
+                                            </t>
+                                            <t t-if="sign.state == 'canceled'">
+                                                <b><t t-esc="sign.partner_id.name"/></b>
+                                                <t t-if="sign.role_id"><t t-esc="' - ' + sign.role_id.name"/></t> - <em>Canceled</em>
+                                            </t>
+                                            <t t-if="sign.state == 'refused'">
+                                                <b><t t-esc="sign.partner_id.name"/></b>
+                                                <t t-if="sign.role_id"><t t-esc="' - ' + sign.role_id.name"/></t> - <em>Refused on <span t-field="sign.signing_date"></span></em>
+                                            </t>
+                                            <t t-if="sign.state == 'completed'">
+                                                <b><t t-esc="sign.partner_id.name"/></b>
+                                                <t t-if="sign.role_id"><t t-esc="' - ' + sign.role_id.name"/></t> - <em>Signed on <span t-field="sign.signing_date"></span></em>
+                                            </t>
                                         </div>
                                     </t>
                                 </div>

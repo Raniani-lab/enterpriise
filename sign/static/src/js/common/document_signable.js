@@ -840,7 +840,7 @@ export const ThankYouDialog = Dialog.extend({
     return EncryptedDialog;
   },
 
-  init: function (parent, RedirectURL, RedirectURLText, requestID, accessToken, options) {
+  init: function (parent, options) {
     options = options || {};
     options.title = options.title || _t("Thank You !");
     options.subtitle = options.subtitle || _t("Your signature has been saved.");
@@ -848,52 +848,127 @@ export const ThankYouDialog = Dialog.extend({
     options.size = options.size || "medium";
     options.technical = false;
     options.buttons = [];
-    options.suggestSignUp = (session.user_id === false);
-    if (RedirectURL) {
+    this.parent = parent;
+    this.suggestSignUp = (session.user_id === false);
+
+    let url = parent.RedirectURL;
+    if (url) {
       // check if url contains http:// or https://
-      if (!/^(f|ht)tps?:\/\//i.test(RedirectURL)) {
-        RedirectURL = "http://" + RedirectURL;
+      if (!/^(f|ht)tps?:\/\//i.test(url)) {
+        url = "http://" + url;
       }
       options.buttons.push({
-        text: RedirectURLText,
+        text: parent.RedirectURLText,
         classes: "btn-primary",
         click: function (e) {
-          window.location.replace(RedirectURL);
+          window.location.replace(url);
         },
       });
     } else {
-      const openDocumentButton = {
+      /*
+        Buttons, in this order (right to left):
+        if suggestSignUp
+        - "View Document"
+        - "Sign Up for free"
+        else
+        - "View Document"
+        - "Close"
+        - "Sign Next Document" or hidden
+      */
+      options.buttons.push({
         text: _t("View Document"),
-        classes: (options.suggestSignUp ? "btn-secondary" : "btn-primary"),
+        classes: "btn-secondary",
         click: this.viewDocument,
-      };
-      options.buttons.push(openDocumentButton);
-      if (options.suggestSignUp) {
-        const signUpButton = {
+      });
+      if (this.suggestSignUp) {
+        options.message += " You can safely close this window.";
+        options.buttons.push({
           text: _t("Sign Up for free"),
-          classes: "btn-primary",
+          classes: "btn-secondary",
           click: function () {
-            window.open('https://www.odoo.com/trial?selected_app=sign&utm_source=db&utm_medium=sign', '_blank');
+            window.open("https://www.odoo.com/trial?selected_app=sign&utm_source=db&utm_medium=sign", "_blank");
           },
-        };
-        options.buttons.push(signUpButton);
+        });
+      } else {
+        options.buttons.push({
+          text: _t("Close"),
+          classes: "btn-secondary",
+          click: function () {
+            if (session.is_frontend) {
+              window.location.replace("/my/signatures");
+            } else {
+              this.do_action("sign.sign_template_action", {
+                clear_breadcrumbs: true,
+              });
+            }
+          },
+        });
+        if (!session.is_frontend) {
+          options.buttons.push({
+            text: _t("Sign Next Document"),
+            classes: "d-none btn-secondary",
+            click: function () {
+              this._rpc({
+                model: "sign.request",
+                method: "go_to_document",
+                args: [this.next_document.sign_request_id[0]],
+              }).then(action => {
+                this.do_action(action, { clear_breadcrumbs: true });
+              });
+            },
+          });
+        }
       }
     }
     this.options = options;
     this.has_next_document = false;
-    this.RedirectURL = RedirectURL;
-    this.requestID = requestID;
-    this.accessToken = accessToken;
 
     this._super(parent, options);
 
     this._rpc({
-      route: "/sign/encrypted/" + requestID,
+      route: "/sign/encrypted/" + parent.requestID,
     }).then((response) => {
       if (response === true) {
-        new (this.get_passworddialog_class())(this, requestID).open();
+        new (this.get_passworddialog_class())(this, parent.requestID).open();
       }
     });
+  },
+
+  willStart: async function () {
+    const _super = this._super;
+
+    if (!this.suggestSignUp && !session.is_website_user && !session.is_frontend) {
+      const result = await this._rpc({
+        model: "sign.request.item",
+        method: "search_read",
+        domain: [
+          "&",
+          ["partner_id", "=", session.partner_id],
+          ["state", "=", "sent"],
+        ],
+        fields: ["sign_request_id"],
+        orderBy: [{ name: "create_date", desc: true }],
+      });
+      if (result && result.length) {
+        this.has_next_document = true;
+        this.next_document = result.reduce((prev, curr) => {
+          return Math.abs(curr.sign_request_id[0] - this.parent.requestID) <=
+            Math.abs(prev.sign_request_id[0] - this.parent.requestID)
+            ? curr
+            : prev;
+        });
+        const nextBtn = this.options.buttons.filter(btn => btn.text === _t("Sign Next Document"))[0];
+        this.replaceClass(nextBtn, "d-none", "");
+      }
+    }
+
+    // Of the buttons actually visible, the leftmost one should be primary and the rest should remain secondary
+    const firstButton = [...this.options.buttons].reverse().find(btn => !btn.classes.includes("d-none"));
+    if (firstButton) {
+      this.replaceClass(firstButton, "btn-secondary", "btn-primary");
+    }
+
+    return _super.apply(this, arguments);
   },
 
   /**
@@ -908,12 +983,23 @@ export const ThankYouDialog = Dialog.extend({
   },
 
   viewDocument: function () {
-    const protocol = window.location.protocol;
-    const port = window.location.port;
-    const hostname = window.location.hostname;
-    const address = `${protocol}//${hostname}:${port}/sign/document/${this.requestID}/${this.accessToken}`;
-    window.location.replace(address);
-  }
+    window.location.replace(this.makeURI("/sign/document", this.parent.requestID, this.parent.accessToken));
+  },
+
+  replaceClass: function (button, oldClass, newClass) {
+    // Helper function for adding, replacing, or removing a button's class.
+    let classes = button.classes.split(" ");
+    if (oldClass) classes = classes.filter(cls => cls !== oldClass);
+    if (newClass) classes.push(newClass);
+    button.classes = classes.join(" ");
+  },
+
+  makeURI: function (base, requestID, token, suffix, params) {
+    // Helper function for constructing a URI.
+    suffix = suffix || "";
+    params = params ? "?" + (new URLSearchParams(params).toString()) : "";
+    return `${base}/${requestID}/${token}${suffix}${params}`;
+  },
 });
 
 const NextDirectSignDialog = Dialog.extend({
@@ -926,7 +1012,6 @@ const NextDirectSignDialog = Dialog.extend({
   init: function (parent, RedirectURL, requestID, options) {
     this.token_list = parent.token_list || {};
     this.name_list = parent.name_list || {};
-    this.requestID = parent.requestID;
     this.create_uid = parent.create_uid;
     this.state = parent.state;
 
@@ -953,7 +1038,6 @@ const NextDirectSignDialog = Dialog.extend({
       },
     ]),
       (this.options = options);
-    this.RedirectURL = "RedirectURL";
     this.requestID = requestID;
     this._super(parent, options);
   },
@@ -1805,14 +1889,7 @@ export const SignableDocument = Document.extend({
   },
 
   openThankYouDialog(nextSign) {
-    new (this.get_thankyoudialog_class())(
-      this,
-      this.RedirectURL,
-      this.RedirectURLText,
-      this.requestID,
-      this.accessToken,
-      { nextSign }
-    ).open();
+    new (this.get_thankyoudialog_class())(this, { nextSign }).open();
   },
   /**
    * Opens an error dialog
@@ -1872,7 +1949,7 @@ export const SignableDocument = Document.extend({
         );
       }
       this.iframeWidget.disableItems();
-      (new (this.get_thankyoudialog_class())(this, this.RedirectURL, this.RedirectURLText, this.requestID, this.accessToken, {
+      (new (this.get_thankyoudialog_class())(this, {
         'nextSign': 0,
         'subtitle': _t("The document has been refused"),
         'message': _t("We'll send an email to warn other contacts in copy & signers with the reason you provided."),

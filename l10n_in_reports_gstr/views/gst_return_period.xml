@@ -77,7 +77,7 @@
                                 <li attrs="{'invisible': [('gstr1_status', 'not in', ['waiting_for_status'])]}">Then, Push to GSTN and <button name="button_check_gstr1_status" type="object" class="btn btn-link p-0" string="Check Status"/>
                                 </li>
 
-                                <li attrs="{'invisible': [('gstr1_status', '!=', 'sent')]}">Then, Push to GSTIN and Check Status
+                                <li attrs="{'invisible': [('gstr1_status', '!=', 'sent')]}">Then, <button name="button_send_gstr1" type="object" class="btn btn-link p-0" string="Re-Push to GSTN"/> and Check Status
                                 </li>
 
                                 <li attrs="{'invisible': [('gstr1_status', '!=', 'sent')]}"><button name="button_gstr1_filed" type="object" class="btn btn-link p-0" string="Mark as Filed"/>
@@ -138,7 +138,7 @@
                         </div>
                     </div>
                         
-                    <h2 class="border-bottom border-dark mt16">3. Submit GSTR-3
+                    <h2 class="border-bottom border-dark mt16">3. GSTR-3
                         <div class="float-end text-white">
                             <field name="gstr3b_status" class="badge bg-secondary" attrs="{'invisible':[('gstr3b_status', '!=', 'not_filed')]}" nolabel="1"/>
                             <field name="gstr3b_status" class="badge bg-success" attrs="{'invisible':[('gstr3b_status', '!=', 'filed')]}" nolabel="1"/>

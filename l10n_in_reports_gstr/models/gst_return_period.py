@@ -47,7 +47,7 @@ class L10nInGSTReturnPeriod(models.Model):
     def _default_quarterly(self):
         today_date = fields.Date.context_today(self)
         this_quarter = date_utils.get_quarter(today_date)
-        default_date = this_quarter
+        default_date = this_quarter[0]
         if this_quarter and this_quarter[0].month == today_date.month and today_date.day <= 10:
             default_date = fields.Date.context_today(self) - relativedelta.relativedelta(months=3)
         return default_date.strftime('%m')
@@ -1477,7 +1477,7 @@ class L10nInGSTReturnPeriod(models.Model):
                         })
                         checked_bills += matched_bills
                 else:
-                    partner = 'vat' in gstr2b_bill and self.env['res.partner'].search([('vat', '=', gstr2b_bill['vat'])], limit=1)
+                    partner = 'vat' in gstr2b_bill and self.env['res.partner'].search([('vat', '=', gstr2b_bill['vat']), ('company_id', 'in', (False, self.company_id.id))], limit=1)
                     journal = self.env['account.journal'].search([('type', '=', 'purchase'), ('company_id', '=', self.company_id.id)])
                     create_vals.append({
                         "move_type": gstr2b_bill.get('bill_type') == 'credit_note' and "in_refund" or "in_invoice",

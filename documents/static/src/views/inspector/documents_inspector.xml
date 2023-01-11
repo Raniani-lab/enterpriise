@@ -123,7 +123,7 @@
                 <t t-if="records[0].data.active">
                     <!-- groups does not work here -->
                     <button t-if="currentFolder.id" class="btn fa fa-share-alt o_inspector_button o_inspector_share" title="Share this selection" groups="documents.group_documents_user"
-                        t-on-click.stop.prevent="onShare" t-att-disabled="editDisabled"/>
+                        t-on-click.stop.prevent="onShare"/>
                     <t t-if="nbPreviews === 1">
                         <button t-if="records[0].data.type !== 'url'" class="btn fa fa-retweet o_inspector_button o_inspector_replace" title="Replace" t-on-click.stop.prevent="() => this.documentsReplaceInput.el.click()" t-att-disabled="editDisabled || locked"/>
                         <input type="file" t-ref="replaceFileInput" class="o_inspector_replace_input o_input_file o_hidden" t-on-change.stop="onReplace"/>

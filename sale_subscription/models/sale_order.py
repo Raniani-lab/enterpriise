@@ -824,7 +824,7 @@ class SaleOrder(models.Model):
 
     def set_close(self):
         today = fields.Date.context_today(self)
-        renew_close_reason_id = self.env.ref('sale_subscription.close_reason_renew').id
+        renew_close_reason = self.env.ref('sale_subscription.close_reason_renew', raise_if_not_found=False)
         self._set_closed_state()
         for sub in self:
             values = {}
@@ -832,9 +832,9 @@ class SaleOrder(models.Model):
                 values['end_date'] = today
             renew = sub.subscription_child_ids.filtered(
                 lambda so: so.subscription_management == 'renew' and so.state in ['sale', 'done'] and so.date_order and so.date_order.date() >= sub.end_date)
-            if renew:
+            if renew and renew_close_reason:
                 # The subscription has been renewed. We set a close_reason to avoid consider it as a simple churn.
-                values['close_reason_id'] = renew_close_reason_id
+                values['close_reason_id'] = renew_close_reason.id
             sub.write(values)
         return True
 

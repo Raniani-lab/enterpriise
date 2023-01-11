@@ -12,8 +12,7 @@
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'hr_gantt/static/src/js/**/*',
-            'hr_gantt/static/src/xml/**/*',
+            'hr_gantt/static/src/**/*',
         ],
         'web.qunit_suite_tests': [
             'hr_gantt/static/tests/**/*',

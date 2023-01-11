@@ -17,8 +17,8 @@ from werkzeug.urls import url_encode, url_join
 
 class SocialInstagramController(SocialController):
 
-    @fragment_to_query_string
     @http.route('/social_instagram/callback', type='http', auth='user')
+    @fragment_to_query_string
     def social_instagram_callback(self, access_token=None, extended_access_token=None, **kw):
         if not request.env.user.has_group('social.group_social_manager'):
             return request.render('social.social_http_error_view',

@@ -154,7 +154,7 @@ Wysiwyg.include({
             }, {
                 category: _t('Knowledge'),
                 name: _t('Index'),
-                priority: 40,
+                priority: 60,
                 description: _t('Show the first level of nested articles'),
                 fontawesome: 'fa-list',
                 callback: () => {
@@ -163,7 +163,7 @@ Wysiwyg.include({
             }, {
                 category: _t('Knowledge'),
                 name: _t('Outline'),
-                priority: 40,
+                priority: 60,
                 description: _t('Show all nested articles'),
                 fontawesome: 'fa-list',
                 callback: () => {

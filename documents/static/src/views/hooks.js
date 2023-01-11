@@ -98,6 +98,10 @@ export function useDocumentView(helpers) {
             const folder = env.searchModel.getSelectedFolder();
             return !folder.id || !folder.has_write_access;
         },
+        hasShareDocuments: () => {
+            const folder = env.searchModel.getSelectedFolder();
+            return !folder.id
+        },
         // Listeners
         onClickDocumentsRequest: () => {
             action.doAction("documents.action_request_form", {

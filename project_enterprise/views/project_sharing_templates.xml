@@ -8,11 +8,6 @@
                 <!-- Chrome, Firefox OS and Opera -->
                 <meta name="theme-color" content="#875A7B"/>
                 <link rel="icon" sizes="192x192" href="/web_enterprise/static/img/mobile-icons/android-192x192.png"/>
-
-                <!-- iOS Safari -->
-                <meta name="apple-mobile-web-app-capable" content="yes"/>
-                <meta name="apple-mobile-web-app-status-bar-style" content="black"/>
-                <link rel="apple-touch-icon" href="/web_enterprise/static/img/mobile-icons/apple-152x152.png"/>
             </t>
             <t t-set="head" t-value="head_project_sharing_enterprise + (head or '')" />
         </xpath>

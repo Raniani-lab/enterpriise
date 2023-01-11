@@ -41,5 +41,9 @@
         'web.assets_tests': [
             'mrp_workorder/static/tests/tours/**/*',
         ],
+        'web.qunit_suite_tests': [
+            'mrp_workorder/static/tests/**/*',
+            ('remove', 'mrp_workorder/static/tests/tours/**/*'),
+        ],
     }
 }

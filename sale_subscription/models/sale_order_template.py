@@ -58,7 +58,7 @@ class SaleOrderTemplate(models.Model):
 
 class SaleOrderTemplateLine(models.Model):
     _name = "sale.order.template.line"
-    _inherit = ['sale.order.template.line']
+    _inherit = 'sale.order.template.line'
 
     recurring_invoice = fields.Boolean(related='product_id.recurring_invoice')
     recurrence_id = fields.Many2one(related="sale_order_template_id.recurrence_id")
@@ -69,6 +69,11 @@ class SaleOrderTemplateLine(models.Model):
         action = self.env['ir.actions.actions']._for_xml_id('sale_temporal.product_pricing_action')
         action['domain'] = [('product_template_id', 'in', self.product_id.product_tmpl_id.ids),
                             ('recurrence_id', '=', self.recurrence_id.id)]
+        action['context'] = {
+            'default_product_template_id': self.product_id.product_tmpl_id.id,
+            'default_product_variant_ids': self.product_id.ids if self.product_id.product_tmpl_id.product_variant_count > 1 else False,  # We don't want to show the generic variant if there is only one
+            'default_recurrence_id': self.recurrence_id.id,
+        }
         return action
 
 

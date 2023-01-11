@@ -13,14 +13,17 @@
             <record id="account_financial_report_l10n_fr_bilan_column00" model="account.report.column">
                 <field name="name">Gross</field>
                 <field name="expression_label">brut</field>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="account_financial_report_l10n_fr_bilan_column01" model="account.report.column">
                 <field name="name">Amort. &amp; Prov</field>
                 <field name="expression_label">amort</field>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="account_financial_report_l10n_fr_bilan_column02" model="account.report.column">
                 <field name="name">Net</field>
                 <field name="expression_label">net</field>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
         </field>
         <field name="line_ids">

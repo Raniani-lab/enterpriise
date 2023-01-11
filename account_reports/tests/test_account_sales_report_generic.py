@@ -4,7 +4,6 @@
 
 from odoo.addons.account_reports.tests.account_sales_report_common import AccountSalesReportCommon
 from odoo.tests import tagged
-from odoo.tools.misc import NON_BREAKING_SPACE
 from freezegun import freeze_time
 
 
@@ -86,8 +85,9 @@ class AccountSalesReportTest(AccountSalesReportCommon):
             #   Partner                country code,            VAT Number,              Amount
             [   0,                     1,                       2,                       3],
             [
-                (self.partner_a.name,  self.partner_a.vat[:2],  self.partner_a.vat[2:],  f'${NON_BREAKING_SPACE}1,000.00'),
-                (self.partner_b.name,  self.partner_b.vat[:2],  self.partner_b.vat[2:],  f'${NON_BREAKING_SPACE}600.00'),
-                ('Total',              '',                      '',                      f'${NON_BREAKING_SPACE}1,600.00'),
+                (self.partner_a.name,  self.partner_a.vat[:2],  self.partner_a.vat[2:],  '1,000.00'),
+                (self.partner_b.name,  self.partner_b.vat[:2],  self.partner_b.vat[2:],  '600.00'),
+                ('Total',              '',                      '',                      '1,600.00'),
             ],
+            options,
         )

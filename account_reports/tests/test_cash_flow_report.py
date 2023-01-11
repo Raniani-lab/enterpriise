@@ -119,7 +119,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                           600.0],
             ['Cash out',                                                             ''],
             ['Cash and cash equivalents, closing balance',                        600.0],
-        ])
+        ], options)
 
         # This move should not appear since it does not use a bank or cash account
         receivable_move = self.env['account.move'].create({
@@ -151,7 +151,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                           600.0],
             ['Cash out',                                                             ''],
             ['Cash and cash equivalents, closing balance',                        600.0],
-        ])
+        ], options)
 
     def test_cash_flow_column_groups(self):
         self.report.filter_period_comparison = True
@@ -227,7 +227,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                    30.0,       15.0],
             ['Cash out',                                                     '',         ''],
             ['Cash and cash equivalents, closing balance',                345.0,      115.0],
-        ])
+        ], options)
 
     def test_cash_flow_multi_company_multi_currency_unfolding(self):
         options = self._generate_options(self.report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2017-01-01'))
@@ -287,7 +287,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash and cash equivalents, closing balance',                          115.0],
             ['101404 Bank',                                                         115.0],
             ['Total Cash and cash equivalents, closing balance',                    115.0],
-        ])
+        ], options)
 
     def test_cash_flow_tricky_case_1(self):
         ''' Test how the cash flow report is involved:
@@ -345,7 +345,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                              30.0],
             ['Cash out',                                                               ''],
             ['Cash and cash equivalents, closing balance',                          230.0],
-        ])
+        ], options)
 
         # Second payment (also 20% but will produce two partials, one on each receivable line).
         payment_2 = self.env['account.move'].create({
@@ -379,7 +379,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                              60.0],
             ['Cash out',                                                               ''],
             ['Cash and cash equivalents, closing balance',                          460.0],
-        ])
+        ], options)
 
         # Third payment (residual invoice amount + 1000.0).
         payment_3 = self.env['account.move'].create({
@@ -413,7 +413,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                             150.0],
             ['Cash out',                                                               ''],
             ['Cash and cash equivalents, closing balance',                         2150.0],
-        ])
+        ], options)
 
         # Second invoice.
         invoice_2 = self.env['account.move'].create({
@@ -448,7 +448,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                             150.0],
             ['Cash out',                                                               ''],
             ['Cash and cash equivalents, closing balance',                         2150.0],
-        ])
+        ], options)
 
         options['date']['date_to'] = '2018-01-01'
 
@@ -470,7 +470,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                             150.0],
             ['Cash out',                                                               ''],
             ['Cash and cash equivalents, closing balance',                         2150.0],
-        ])
+        ], options)
 
     def test_cash_flow_tricky_case_2(self):
         ''' Test how the cash flow report is involved:
@@ -510,7 +510,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                           250.0],
             ['Cash out',                                                             ''],
             ['Cash and cash equivalents, closing balance',                       -300.0],
-        ])
+        ], options)
 
         # Misc. move to be reconciled at 800 / (1000 + 3000) = 20%.
 
@@ -546,7 +546,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                           650.0],
             ['Cash out',                                                             ''],
             ['Cash and cash equivalents, closing balance',                       -300.0],
-        ])
+        ], options)
 
         # Second liquidity move.
 
@@ -582,7 +582,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                           725.0],
             ['Cash out',                                                             ''],
             ['Cash and cash equivalents, closing balance',                      -3300.0],
-        ])
+        ], options)
 
         # This should not change the report.
         self._reconcile_on((liquidity_move_1 + liquidity_move_2).line_ids, self.account_receivable_3)
@@ -605,7 +605,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                           725.0],
             ['Cash out',                                                             ''],
             ['Cash and cash equivalents, closing balance',                      -3300.0],
-        ])
+        ], options)
 
     def test_cash_flow_tricky_case_3(self):
         ''' Test how the cash flow report is involved:
@@ -667,7 +667,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                             500.0],
             ['Cash out',                                                               ''],
             ['Cash and cash equivalents, closing balance',                         1000.0],
-        ])
+        ], options)
 
         options = self._generate_options(self.report, fields.Date.from_string('2016-01-01'), fields.Date.from_string('2016-02-01'))
 
@@ -689,7 +689,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                             500.0],
             ['Cash out',                                                               ''],
             ['Cash and cash equivalents, closing balance',                          500.0],
-        ])
+        ], options)
 
     def test_cash_flow_tricky_case_4(self):
         ''' The difficulty of this case is the liquidity move will pay the misc move at 1000 / 3000 = 1/3.
@@ -741,7 +741,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                                ''],
             ['Cash out',                                                          -1000.0],
             ['Cash and cash equivalents, closing balance',                        -1000.0],
-        ])
+        ], options)
 
     def test_cash_flow_tricky_case_5(self):
         ''' Same as test_cash_flow_tricky_case_4 in credit.'''
@@ -791,7 +791,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                            1000.0],
             ['Cash out',                                                               ''],
             ['Cash and cash equivalents, closing balance',                         1000.0],
-        ])
+        ], options)
 
     def test_cash_flow_tricky_case_6(self):
         ''' Test the additional lines on liquidity moves (e.g. bank fees) are well reported. '''
@@ -867,7 +867,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                                ''],
             ['Cash out',                                                          -2000.0],
             ['Cash and cash equivalents, closing balance',                             ''],
-        ])
+        ], options)
 
     def test_cash_flow_tricky_case_7(self):
         ''' Test cross reconciliation between liquidity moves with additional lines when the liquidity account
@@ -920,7 +920,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                                ''],
             ['Cash out',                                                           -500.0],
             ['Cash and cash equivalents, closing balance',                         1500.0],
-        ])
+        ], options)
 
     def test_cash_flow_tricky_case_8(self):
         ''' Difficulties on this test are:
@@ -977,7 +977,7 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                             400.0],
             ['Cash out',                                                               ''],
             ['Cash and cash equivalents, closing balance',                         -100.0],
-        ])
+        ], options)
 
     def test_cash_flow_tricky_case_9(self):
         ''' Same as test_cash_flow_tricky_case_8 with reversed debit/credit.'''
@@ -1029,4 +1029,4 @@ class TestCashFlowReport(TestAccountReportsCommon):
             ['Cash in',                                                                ''],
             ['Cash out',                                                           -400.0],
             ['Cash and cash equivalents, closing balance',                          100.0],
-        ])
+        ], options)

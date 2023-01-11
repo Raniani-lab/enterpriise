@@ -859,6 +859,10 @@ class AccountReport(models.Model):
             line_id = self._get_generic_line_id('account.group', account_group.id if account_group else 0, parent_line_id=parent_id)
             unfolded = line_id in options.get('unfolded_lines') or unfold_all
             name = account_group.display_name if account_group else _('(No Group)')
+            columns = []
+            for column_total, column in zip(column_totals, options['columns']):
+                figure_type = column.get('figure_type')
+                columns.append({'name': self.format_value(column_total, figure_type=figure_type), 'no_format': column_total})
             return {
                 'id': line_id,
                 'name': name,
@@ -867,7 +871,7 @@ class AccountReport(models.Model):
                 'unfolded': unfolded,
                 'level': level,
                 'parent_id': parent_id,
-                'columns': [{'name': self.format_value(total, figure_type='monetary'), 'no_format': total} for total in column_totals]
+                'columns': columns
             }
 
         def compute_group_totals(line, group=None):
@@ -1972,7 +1976,7 @@ class AccountReport(models.Model):
                 rounding_opt_match = re.search(r"\Wrounding\W*=\W*(?P<rounding>\d+)", column_expression.subformula)
                 if rounding_opt_match:
                     rounding = int(rounding_opt_match.group('rounding'))
-                elif figure_type == 'monetary':
+                elif figure_type in ('monetary', 'monetary_without_symbol'):
                     rounding = self.env.company.currency_id.rounding
 
                 if 'editable' in column_expression.subformula:
@@ -2009,7 +2013,7 @@ class AccountReport(models.Model):
                 'has_sublines': column_has_sublines,
                 'report_line_id': line.id,
                 'class': 'number' if isinstance(column_value, (int, float)) else '',
-                'is_zero': column_value is None or (figure_type in ('float', 'integer', 'monetary') and self.is_zero(column_value, figure_type=figure_type, **formatter_params)),
+                'is_zero': column_value is None or (figure_type in ('float', 'integer', 'monetary', 'monetary_without_symbol') and self.is_zero(column_value, figure_type=figure_type, **formatter_params)),
             }
 
             if info_popup_data:
@@ -3789,6 +3793,9 @@ class AccountReport(models.Model):
         elif figure_type == 'integer':
             currency = None
             digits = 0
+        elif figure_type == 'monetary_without_symbol':  # Keep the rounding of the currency, but do not display the symbol.
+            digits = (currency or self.env.company.currency_id).decimal_places
+            currency = None
         elif figure_type in ('date', 'datetime'):
             return format_date(self.env, value)
         else:
@@ -3812,7 +3819,7 @@ class AccountReport(models.Model):
 
     @api.model
     def is_zero(self, amount, currency=False, figure_type=None, digits=1):
-        if figure_type == 'monetary':
+        if figure_type in ('monetary', 'monetary_without_symbol'):
             currency = currency or self.env.company.currency_id
             return currency.is_zero(amount)
 
@@ -4477,7 +4484,7 @@ class AccountReportLine(models.Model):
         # Put similar grouping keys from different totals/periods together, so that we don't display multiple
         # lines for the same grouping key
 
-        figure_types_defaulting_to_0 = {'monetary', 'percentage', 'integer', 'float'}
+        figure_types_defaulting_to_0 = {'monetary', 'monetary_without_symbol', 'percentage', 'integer', 'float'}
 
         default_value_per_expr_label = {
             col_opt['expression_label']: 0 if col_opt['figure_type'] in figure_types_defaulting_to_0 else None

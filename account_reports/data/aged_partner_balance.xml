@@ -76,36 +76,43 @@
                 <field name="name">At Date</field>
                 <field name="expression_label">period0</field>
                 <field name="sortable" eval="True"/>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="aged_receivable_report_period1" model="account.report.column">
                 <field name="name">1-30</field>
                 <field name="expression_label">period1</field>
                 <field name="sortable" eval="True"/>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="aged_receivable_report_period2" model="account.report.column">
                 <field name="name">31-60</field>
                 <field name="expression_label">period2</field>
                 <field name="sortable" eval="True"/>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="aged_receivable_report_period3" model="account.report.column">
                 <field name="name">61-90</field>
                 <field name="expression_label">period3</field>
                 <field name="sortable" eval="True"/>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="aged_receivable_report_period4" model="account.report.column">
                 <field name="name">91-120</field>
                 <field name="expression_label">period4</field>
                 <field name="sortable" eval="True"/>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="aged_receivable_report_period5" model="account.report.column">
                 <field name="name">Older</field>
                 <field name="expression_label">period5</field>
                 <field name="sortable" eval="True"/>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="aged_receivable_report_total" model="account.report.column">
                 <field name="name">Total</field>
                 <field name="expression_label">total</field>
                 <field name="sortable" eval="True"/>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
         </field>
         <field name="line_ids">
@@ -240,36 +247,43 @@
                 <field name="name">At Date</field>
                 <field name="expression_label">period0</field>
                 <field name="sortable" eval="True"/>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="aged_payable_report_period1" model="account.report.column">
                 <field name="name">1-30</field>
                 <field name="expression_label">period1</field>
                 <field name="sortable" eval="True"/>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="aged_payable_report_period2" model="account.report.column">
                 <field name="name">31-60</field>
                 <field name="expression_label">period2</field>
                 <field name="sortable" eval="True"/>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="aged_payable_report_period3" model="account.report.column">
                 <field name="name">61-90</field>
                 <field name="expression_label">period3</field>
                 <field name="sortable" eval="True"/>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="aged_payable_report_period4" model="account.report.column">
                 <field name="name">91-120</field>
                 <field name="expression_label">period4</field>
                 <field name="sortable" eval="True"/>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="aged_payable_report_period5" model="account.report.column">
                 <field name="name">Older</field>
                 <field name="expression_label">period5</field>
                 <field name="sortable" eval="True"/>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="aged_payable_report_total" model="account.report.column">
                 <field name="name">Total</field>
                 <field name="expression_label">total</field>
                 <field name="sortable" eval="True"/>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
         </field>
         <field name="line_ids">

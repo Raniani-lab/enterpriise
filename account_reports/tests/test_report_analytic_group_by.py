@@ -89,6 +89,7 @@ class TestFinancialReport(TestAccountReportsCommon):
                 ['Depreciation',         '',           ''],
                 ['Total Expenses',       '',           ''],
             ],
+            options,
             currency_map={
                 1: {'currency': self.env.company.currency_id},
                 2: {'currency': self.env.company.currency_id},

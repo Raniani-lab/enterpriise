@@ -630,7 +630,7 @@ class GeneralLedgerCustomHandler(models.AbstractModel):
             if col_value is None:
                 line_columns.append({})
             else:
-                formatted_value = report.format_value(col_value, blank_if_zero=False, figure_type='monetary')
+                formatted_value = report.format_value(col_value, blank_if_zero=False, figure_type=column.get('figure_type', 'monetary'))
                 line_columns.append({
                     'name': formatted_value,
                     'no_format': col_value,

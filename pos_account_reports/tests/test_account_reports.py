@@ -175,4 +175,5 @@ class POSTestTaxReport(TestAccountReportsCommon):
                 (self.pos_tax_report_line_refund_base.name,         40),
                 (self.pos_tax_report_line_refund_tax.name,          4),
             ],
+            report_opt,
         )

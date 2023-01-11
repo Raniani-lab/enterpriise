@@ -9,22 +9,27 @@
             <record id="account_report_gstr1_base_column" model="account.report.column">
                 <field name="name">Base</field>
                 <field name="expression_label">tax_base</field>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="account_report_gstr1_cgst_column" model="account.report.column">
                 <field name="name">CGST</field>
                 <field name="expression_label">tax_cgst</field>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="account_report_gstr1_sgst_column" model="account.report.column">
                 <field name="name">SGST</field>
                 <field name="expression_label">tax_sgst</field>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="account_report_gstr1_igst_column" model="account.report.column">
                 <field name="name">IGST</field>
                 <field name="expression_label">tax_igst</field>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
             <record id="account_report_gstr1_cess_column" model="account.report.column">
                 <field name="name">CESS</field>
                 <field name="expression_label">tax_cess</field>
+                <field name="figure_type">monetary_without_symbol</field>
             </record>
         </field>
         <field name="line_ids">

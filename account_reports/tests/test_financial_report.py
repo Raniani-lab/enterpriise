@@ -200,7 +200,9 @@ class TestFinancialReport(TestAccountReportsCommon):
                 ('Invisible Partner A line', 1150.0),
                 ('Invisible Partner B line', -1675.0),
                 ('Total of Invisible lines', -525.0),
-            ])
+            ],
+            options,
+        )
 
     def test_financial_report_strict_empty_range_on_report_lines_with_no_parent_id(self):
         """ Tests that lines with no parent can be correctly filtered by date range with no invoices"""
@@ -216,7 +218,9 @@ class TestFinancialReport(TestAccountReportsCommon):
                 ('Invisible Partner A line',  ''),
                 ('Invisible Partner B line',  ''),
                 ('Total of Invisible lines',  ''),
-            ])
+            ],
+            options,
+        )
 
     @freeze_time("2016-06-06")
     def test_balance_sheet_today_current_year_earnings(self):
@@ -274,6 +278,7 @@ class TestFinancialReport(TestAccountReportsCommon):
 
                 ('LIABILITIES + EQUITY',                        110.0),
             ],
+            options,
         )
 
     @freeze_time("2016-05-05")
@@ -339,6 +344,7 @@ class TestFinancialReport(TestAccountReportsCommon):
             #   Name                                            Balance
             [   0,                                              1],
             expected_result,
+            options,
         )
         # Custom
         options['date']['filter'] = 'custom'
@@ -348,6 +354,7 @@ class TestFinancialReport(TestAccountReportsCommon):
             #   Name                                            Balance
             [   0,                                              1],
             expected_result,
+            options,
         )
 
     def test_financial_report_single_company(self):
@@ -396,6 +403,7 @@ class TestFinancialReport(TestAccountReportsCommon):
 
                 ('LIABILITIES + EQUITY',                          50.0),
             ],
+            options,
         )
 
         unfolded_lines = self.report._get_unfolded_lines(lines, line_id)
@@ -408,6 +416,7 @@ class TestFinancialReport(TestAccountReportsCommon):
                 ('code2 account2',                              -1300.0),
                 ('Total Bank and Cash Accounts',                -1300.0),
             ],
+            options,
         )
 
     def test_financial_report_multi_company_currency(self):
@@ -456,6 +465,7 @@ class TestFinancialReport(TestAccountReportsCommon):
 
                 ('LIABILITIES + EQUITY',                          50.0),
             ],
+            options,
         )
 
         unfolded_lines = self.report._get_unfolded_lines(lines, line_id)
@@ -469,6 +479,7 @@ class TestFinancialReport(TestAccountReportsCommon):
                 ('code2 account2',                             -1300.0),
                 ('Total Bank and Cash Accounts',               -3300.0),
             ],
+            options,
         )
 
     def test_financial_report_comparison(self):
@@ -582,6 +593,7 @@ class TestFinancialReport(TestAccountReportsCommon):
 
                 ('LIABILITIES + EQUITY',                    '',                  '',                 '',                -200.0,              '',                 '',                 '',                 ''),
             ],
+            options,
         )
 
     def test_hide_if_zero_with_no_formulas(self):
@@ -691,7 +703,8 @@ class TestFinancialReport(TestAccountReportsCommon):
                 ("Title",                           '',      '',      ''),
                 ("report_line_1",                  3.0,     3.0,      ''),
                 ("report_line_2",                 -4.0,    -3.0,      ''),
-            ]
+            ],
+            options,
         )
 
         move = self.env['account.move'].create({
@@ -715,9 +728,10 @@ class TestFinancialReport(TestAccountReportsCommon):
                 ("Title",                           '',      '',      ''),
                 ("report_line_1",                   '',     3.0,      ''),
                 ("report_line_2",                   '',    -3.0,      ''),
-            ]
+            ],
+            options,
         )
 
         # Removing the comparison should hide the lines, as they will be 0 in every considered period (the current one)
         options = self._update_comparison_filter(options, report, 'previous_period', 0)
-        self.assertLinesValues(report._get_lines(options), [0, 1, 2, 3], [])
+        self.assertLinesValues(report._get_lines(options), [0, 1, 2, 3], [], options)

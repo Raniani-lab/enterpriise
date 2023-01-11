@@ -102,6 +102,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
                 ('Unknown Partner',                     200.0,          200.0,          0.0),
                 ('Total',                               21550.0,        21550.0,        0.0),
             ],
+            options,
         )
 
         options['unfolded_lines'] = [self.report._get_generic_line_id('res.partner', self.partner_a.id)]
@@ -124,6 +125,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
                 ('Unknown Partner',                     200.0,          200.0,          0.0),
                 ('Total',                               21550.0,        21550.0,        0.0),
             ],
+            options,
         )
 
     def test_partner_ledger_load_more(self):
@@ -151,6 +153,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
                 ('Unknown Partner',                     200.0,          200.0,          0.0),
                 ('Total',                               21550.0,        21550.0,        0.0),
             ],
+            options,
         )
 
         load_more_1 = self.report._expand_unfoldable_line('_report_expand_unfoldable_line_partner_ledger',
@@ -167,6 +170,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
                 ('01/01/2017',                          5000.0,         '',             14150.0),
                 ('Load more...',                        '',             '',             ''),
             ],
+            options,
         )
 
         load_more_2 = self.report._expand_unfoldable_line('_report_expand_unfoldable_line_partner_ledger',
@@ -181,6 +185,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
             [
                 ('01/01/2017',                          6000.0,         '',             20150.0),
             ],
+            options,
         )
 
     def test_partner_ledger_filter_account_types(self):
@@ -205,6 +210,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
                 ('Unknown Partner',                     200.0,          200.0,          0.0),
                 ('Total',                               15200.0,        21550.0,        -6350.0),
             ],
+            options,
         )
 
     def test_partner_ledger_filter_partners(self):
@@ -221,6 +227,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
                 ('partner_c',                           '',             21350.0,        -21350.0),
                 ('Total',                               20150.0,        21350.0,        -1200.0),
             ],
+            options,
         )
 
     def test_partner_ledger_filter_partner_categories(self):
@@ -237,6 +244,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
                 ('partner_b',                           1200.0,         '',             1200.0),
                 ('Total',                               21350.0,        0.0,            21350.0),
             ],
+            options,
         )
 
     def test_partner_ledger_unknown_partner(self):
@@ -265,6 +273,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
                 ('Unknown Partner',                     200.0,          1200.0,         -1000.0),
                 ('Total',                               21550.0,        22550.0,        -1000.0),
             ],
+            options,
         )
 
         debit_line = self.move_2017_1.line_ids.filtered(lambda line: line.debit == 4000.0)
@@ -282,6 +291,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
                 ('Unknown Partner',                     1200.0,         1200.0,         0.0),
                 ('Total',                               22550.0,        23550.0,        -1000.0),
             ],
+            options,
         )
 
         # Unfold 'partner_a'
@@ -306,6 +316,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
                 ('Unknown Partner',                     1200.0,         1200.0,         0.0),
                 ('Total',                               22550.0,        23550.0,        -1000.0),
             ],
+            options,
         )
 
         # Unfold 'Unknown Partner'
@@ -327,6 +338,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
                 ('Total Unknown Partner',               1200.0,         1200.0,         0.0),
                 ('Total',                               22550.0,        23550.0,        -1000.0),
             ],
+            options,
         )
 
         # Change the dates to exclude the reconciliation max date: situation is back to the beginning
@@ -342,6 +354,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
                 ('partner_c',                           '',             21350.0,        -21350.0),
                 ('Total',                               21350.0,        21350.0,        0.0),
             ],
+            options,
         )
 
         # Change the dates to have a date_from > to the reconciliation max date and check the initial balances are correct
@@ -358,4 +371,5 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
                 ('Unknown Partner',                     1000.0,         1000.0,         0.0),
                 ('Total',                               22350.0,        23350.0,        -1000.0),
             ],
+            options,
         )

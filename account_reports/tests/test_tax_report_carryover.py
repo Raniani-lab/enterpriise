@@ -109,6 +109,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             [
                 ('Test carryover',                      ''),
             ],
+            options,
         )
 
         # There should be a carryover pop-up of value -1000.0
@@ -127,6 +128,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             [
                 ('Test carryover',                      ''),
             ],
+            options,
         )
 
         info_popup_data = json.loads(lines[0]['columns'][0]['info_popup_data'])
@@ -224,6 +226,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             [
                 ('Test carryover',                      1000.0),
             ],
+            options,
         )
 
         # There should be no carryover pop-up
@@ -243,6 +246,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             [
                 ('Test carryover',                      ''),
             ],
+            options,
         )
 
         # There should be a carryover pop-up
@@ -263,6 +267,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             [
                 ('Test carryover',                      2000.0),
             ],
+            options,
         )
 
         # There should be no carryover pop-up
@@ -280,6 +285,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             [
                 ('Test carryover',                      ''),
             ],
+            options,
         )
 
         # There should be no carryover pop-up
@@ -298,6 +304,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             [
                 ('Test carryover',                      ''),
             ],
+            options,
         )
 
         self.assertTrue('info_popup_data' not in lines_company_1[0]['columns'][0].keys())
@@ -314,6 +321,7 @@ class TestTaxReportCarryover(TestAccountReportsCommon):
             [
                 ('Test carryover',                      ''),
             ],
+            options,
         )
 
         # There should be no carryover pop-up

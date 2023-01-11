@@ -109,6 +109,7 @@ class TestF29Reports(TestAccountReportsCommon):
                 ('PPM',                                                                   ''),
                 ('Total de Impuesto Periodo (Negativo: Saldo a Favor de la Compañía)', -38.0),
             ],
+            options,
         )
 
     @freeze_time('2022-12-31')
@@ -175,6 +176,7 @@ class TestF29Reports(TestAccountReportsCommon):
                 ('PPM',                                                                250.0),  # PPM rate 25% of 1000
                 ('Total de Impuesto Periodo (Negativo: Saldo a Favor de la Compañía)', 212.0),  # 250 - 38
             ],
+            options,
         )
         fpp_rate.write({'value': 20})
         ppm_rate.write({'value': 30})
@@ -223,4 +225,5 @@ class TestF29Reports(TestAccountReportsCommon):
                 ('PPM',                                                                300.0),  # PPM rate 30% of 1000
                 ('Total de Impuesto Periodo (Negativo: Saldo a Favor de la Compañía)', 262.0),  # 300 - 38
             ],
+            options,
         )

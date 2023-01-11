@@ -126,16 +126,17 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
                 # Check name.
                 self.assertEqual(column['name'], self._convert_str_to_date(column['name'], expected_header[i]))
 
-    def assertLinesValues(self, lines, columns, expected_values, currency_map=None, ignore_folded=True):
+    def assertLinesValues(self, lines, columns, expected_values, report_options=None, currency_map=None, ignore_folded=True):
         ''' Helper to compare the lines returned by the _get_lines method
         with some expected results.
         :param lines:               See _get_lines.
         :param columns:             The columns index.
         :param expected_values:     A list of iterables.
+        :param report_options:      The options of the report currently being tested.
         :param currency_map:        A map mapping each column_index to some extra options to test the lines:
             - currency:             The currency to be applied on the column.
             - currency_code_index:  The index of the column containing the currency code.
-        :param ignore_folded:          Will not filter folded lines when True.
+        :param ignore_folded:       Will not filter folded lines when True.
         '''
         if currency_map is None:
             currency_map = {}
@@ -173,7 +174,11 @@ class TestAccountReportsCommon(AccountTestInvoicingCommon):
                     used_currency = self.env.company.currency_id
 
                 if type(expected_value) in (int, float) and type(current_value) == str:
-                    expected_value = formatLang(self.env, expected_value, currency_obj=used_currency)
+                    column_figure_type = report_options and report_options['columns'][index-1].get('figure_type')
+                    if column_figure_type == 'monetary_without_symbol':
+                        expected_value = formatLang(self.env, expected_value, digits=used_currency.decimal_places)
+                    else:
+                        expected_value = formatLang(self.env, expected_value, currency_obj=used_currency)
 
                 compared_values[0].append(current_value)
                 compared_values[1].append(expected_value)

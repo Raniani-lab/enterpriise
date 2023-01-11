@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates xml:space="preserve">
+
+    <t t-name="planning.PlanningGanttRenderer.RowHeader" t-inherit="web_gantt.GanttRenderer.RowHeader" owl="1">
+        <xpath expr="//t[@t-esc='row.name']" position="replace">
+            <t t-if="row.progressBar and row.progressBar.is_material_resource">
+                <div class="o_material_resource d-inline-flex flex-shrink-0 align-items-center justify-content-center me-1 rounded-circle bg-200">
+                    <i class="fa fa-wrench"/>
+                </div>
+            </t>
+            <Avatar t-if="hasAvatar(row)" t-props="getAvatarProps(row)"/>
+            <t t-else="" t-esc="row.name"/>
+        </xpath>
+    </t>
+
+</templates>

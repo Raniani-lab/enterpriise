@@ -12,17 +12,20 @@ planningTestTour.steps.splice(salePlanningStartStepIndex + 1, 0, {
     }, {
         trigger: ".o_gantt_cell.o_gantt_hoverable",
         content: "Click on magnify icon to see list of sale order",
-        run: function (actions) {
-            const magnifyIcon = this.$anchor[0].querySelector('.o_gantt_cell_plan');
-            magnifyIcon.style.visibility = 'visible';
-            magnifyIcon.click();
+        run: function () {
+            this.$anchor[0].dispatchEvent(new MouseEvent("mousemove", { bubbles: true }));
         },
-    }, {
+    },
+    {
+        trigger: ".o_gantt_cells .o_gantt_cell_plan",
+        run: 'click',
+    },
+    {
         trigger: "tr.o_data_row td[data-tooltip='Developer']",
         content: "Select the slot and plan orders",
         run: 'click',
     }, {
-        trigger: ".o_gantt_pill p:contains(Developer)",
+        trigger: ".o_gantt_pill span:contains(Developer)",
         content: "Check the naming format when SO is selected from magnify icon",
         run: function () {}
     }

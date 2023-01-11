@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<templates xml:space="preserve">
+
+    <t t-name="planning.PlanningGanttView.Buttons" t-inherit="web_gantt.GanttView.Buttons" owl="1">
+        <xpath expr="//div" position="inside">
+            <div class="btn-group gap-1">
+                <button t-if="model.metaData.canCreate and model.metaData.scale.id === 'week'"
+                    class="o_gantt_button_copy_previous_week btn btn-primary"
+                    title="Copy previous week"
+                    data-hotkey="c"
+                    t-on-click="onClickCopyPrevious"
+                    >
+                    Copy previous week
+                </button>
+                <button t-if="model.metaData.canEdit"
+                    class="o_gantt_button_send_all btn btn-primary"
+                    title="Send schedule"
+                    data-hotkey="w"
+                    t-on-click="onClickPublish"
+                    >
+                    Publish
+                </button>
+            </div>
+        </xpath>
+    </t>
+
+</templates>

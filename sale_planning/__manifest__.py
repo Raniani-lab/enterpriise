@@ -32,8 +32,6 @@
     ],
     'assets': {
         'web.assets_backend': [
-            'sale_planning/static/src/js/backend/**/*',
-            'sale_planning/static/src/xml/**/*',
             'sale_planning/static/src/views/**/*',
         ],
         'web.assets_frontend': [

@@ -95,7 +95,6 @@
         <field name="model">planning.slot</field>
         <field name="arch" type="xml">
             <gantt position="attributes">
-                <attribute name="js_class">forecast_timesheet</attribute>
                 <attribute name="progress_bar">resource_id,project_id</attribute>
                 <attribute name="progress">percentage_hours</attribute>
             </gantt>

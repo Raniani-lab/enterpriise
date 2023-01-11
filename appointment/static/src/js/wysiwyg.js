@@ -35,7 +35,7 @@ Wysiwyg.include({
                         mode: "edit",
                         insertLink: (url) => {
                             const link = parseHTML('<a>Schedule an Appointment</a>');
-                            link.href = url;
+                            link.childNodes[0].setAttribute('href', url);
                             this.focus();
                             restoreSelection();
                             this.odooEditor.execCommand('insert', link);
@@ -51,7 +51,7 @@ Wysiwyg.include({
                 fontawesome: 'fa-calendar',
                 callback: () => {
                     const link = parseHTML('<a>Our Appointment Types</a>');
-                    link.href = `${window.location.origin}/appointment`;
+                    link.childNodes[0].setAttribute('href', `${window.location.origin}/appointment`);
                     this.odooEditor.execCommand('insert', link);
                 },
             },

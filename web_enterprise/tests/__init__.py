@@ -2,3 +2,4 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 from . import test_enterprise
 from . import test_partner
+from . import test_webmanifest

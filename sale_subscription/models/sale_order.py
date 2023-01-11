@@ -1023,7 +1023,7 @@ class SaleOrder(models.Model):
             ref=transaction._get_html_link(title=transaction.reference), amount=transaction.amount, inv=self.next_invoice_date)
         self.message_post(body=msg_body)
         if invoice.state != 'posted':
-            invoice._post()
+            invoice.with_context(ocr_trigger_delta=15)._post()
         invoice.is_move_sent = True
         self.send_success_mail(transaction, invoice)
 
@@ -1565,7 +1565,8 @@ class SaleOrder(models.Model):
             'mail_notify_force_send': False,
             'no_new_invoice': True}}
         _logger.debug("Sending Invoice Mail to %s for subscription %s", self.partner_id.email, self.id)
-        # ARJ TODO master: take the invoice template in the settings
+        if auto_commit:
+            self.env.cr.commit()
         invoice.with_context(email_context).message_post_with_template(
                 self.sale_order_template_id.invoice_mail_template_id.id, auto_commit=auto_commit)
         invoice.is_move_sent = True

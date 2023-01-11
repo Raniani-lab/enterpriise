@@ -10,6 +10,7 @@ from odoo.tools.misc import clean_context
 import logging
 import re
 import json
+from dateutil.relativedelta import relativedelta
 
 _logger = logging.getLogger(__name__)
 
@@ -432,7 +433,8 @@ class AccountMove(models.Model):
         # On the validation of an invoice, send the different corrected fields to iap to improve the ocr algorithm.
         posted = super()._post(soft)
         self.extract_state = 'to_validate'
-        self.env.ref('account_invoice_extract.ir_cron_ocr_validate')._trigger()
+        ocr_trigger_datetime = fields.Datetime.now() + relativedelta(minutes=self.env.context.get('ocr_trigger_delta', 0))
+        self.env.ref('account_invoice_extract.ir_cron_ocr_validate')._trigger(at=ocr_trigger_datetime)
         return posted
 
     def get_boxes(self):

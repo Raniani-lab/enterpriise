@@ -1582,3 +1582,59 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             {'flag': 'early_payment',   'amount_currency': 590.40,      'balance': 99.6,       'account_id': early_pay_acc.id},
             {'flag': 'early_payment',   'amount_currency': 0.0,         'balance': 48.00,      'account_id': foreign_exch_acc.id},
         ])
+
+    def test_multi_currencies_with_custom_rate(self):
+        self.company_data['default_journal_bank'].currency_id = self.currency_data['currency']
+        st_line = self._create_st_line(1200.0) # rate 1:2
+        self.assertRecordValues(st_line.move_id.line_ids, [
+            # pylint: disable=C0326
+            {'amount_currency': 1200.0,     'balance': 600.0},
+            {'amount_currency': -1200.0,    'balance': -600.0},
+        ])
+
+        # invoice with currency_data and rate 1:2
+        invoice_line1 = self._create_invoice_line(
+            'out_invoice',
+            currency_id=self.currency_data['currency'],
+            invoice_date='2017-01-01',
+            invoice_line_ids=[{'price_unit': 300.0}], # = 150 USD
+        )
+
+        # Remove all rates.
+        self.currency_data['rates'].unlink()
+
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',       'amount_currency': 1200.0,  'balance': 600.0},
+            {'flag': 'auto_balance',    'amount_currency': -1200.0, 'balance': -600.0},
+        ])
+
+        # invoice with currency_data_2 and rate 1:6
+        invoice_line2 = self._create_invoice_line(
+            'out_invoice',
+            currency_id=self.currency_data_2['currency'],
+            invoice_date='2016-01-01',
+            invoice_line_ids=[{'price_unit': 600.0}], # = 100 USD
+        )
+        # invoice with currency_data_2 and rate 1:4
+        invoice_line3 = self._create_invoice_line(
+            'out_invoice',
+            currency_id=self.currency_data_2['currency'],
+            invoice_date='2017-01-01',
+            invoice_line_ids=[{'price_unit': 400.0}], # = 100 USD
+        )
+
+        # Remove all rates.
+        self.currency_data_2['rates'].unlink()
+
+        # Ensure no conversion rate has been made.
+        wizard._action_add_new_amls(invoice_line1 + invoice_line2 + invoice_line3)
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',       'amount_currency': 1200.0,  'balance': 600.0},
+            {'flag': 'new_aml',         'amount_currency': -300.0,  'balance': -150.0},
+            {'flag': 'new_aml',         'amount_currency': -600.0,  'balance': -100.0},
+            {'flag': 'new_aml',         'amount_currency': -400.0,  'balance': -100.0},
+            {'flag': 'auto_balance',    'amount_currency': -500.0,  'balance': -250.0},
+        ])

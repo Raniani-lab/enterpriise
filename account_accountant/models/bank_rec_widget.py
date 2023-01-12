@@ -958,29 +958,23 @@ class BankRecWidget(models.Model):
         st_line = self.st_line_id
 
         # Compute the current open balance.
-        lines = self.line_ids.filtered(lambda x: x.flag not in ('auto_balance', 'liquidity'))
-        open_balance = -sum(lines.mapped('balance'))
-        open_amount_currency = -sum(lines.mapped('amount_currency'))
-        currencies = set(lines.currency_id)
+        transaction_amount, transaction_currency, journal_amount, _journal_currency, company_amount, _company_currency \
+            = self.st_line_id._get_accounting_amounts_and_currencies()
+        open_amount_currency = -transaction_amount
+        open_balance = -company_amount
+        for line in self.line_ids:
+            if line.flag in ('liquidity', 'auto_balance'):
+                continue
 
-        # Special handle for the liquidity line to avoid rounding issues with conversion rates.
-        default_st_line_vals_list = st_line._prepare_move_line_default_vals()
-        open_balance -= default_st_line_vals_list[0]['debit'] - default_st_line_vals_list[0]['credit']
-        if currencies == {self.company_currency_id}:
-            open_amount_currency -= default_st_line_vals_list[0]['amount_currency']
-            currencies.add(self.company_currency_id)
-        elif currencies == {self.journal_currency_id}:
-            open_amount_currency -= default_st_line_vals_list[0]['amount_currency']
-            currencies.add(self.journal_currency_id)
-        else:
-            open_amount_currency += default_st_line_vals_list[1]['amount_currency']
-            currencies.add(self.transaction_currency_id)
-
-        same_currency = currencies == {self.transaction_currency_id}
-
-        if not same_currency:
-            open_amount_currency = self.st_line_id\
-                ._prepare_counterpart_amounts_using_st_line_rate(self.company_currency_id, open_balance, open_balance)['amount_currency']
+            open_balance -= line.balance
+            if line.currency_id == self.transaction_currency_id:
+                open_amount_currency -= line.amount_currency
+            elif line.currency_id == self.journal_currency_id:
+                open_amount_currency -= transaction_currency\
+                    .round(line.amount_currency * abs(transaction_amount / journal_amount))
+            else:
+                open_amount_currency -= transaction_currency\
+                    .round(line.balance * abs(transaction_amount / company_amount))
 
         # Create a new auto-balance line.
         if self.partner_id:

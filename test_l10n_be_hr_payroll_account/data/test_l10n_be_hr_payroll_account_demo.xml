@@ -1587,7 +1587,6 @@
     <record id="resource_calendar_4_5_wednesday_off" model="resource.calendar">
         <field name="name">30.4 Hours/Week : Wednesday Off</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="hours_per_day">7.6</field>
         <field name="full_time_required_hours">38</field>
         <field name="attendance_ids"
             eval="[(5, 0, 0),
@@ -2839,7 +2838,6 @@
     <record id="resource_calendar_1_5_monday_student" model="resource.calendar">
         <field name="name">Clemence Student Calendar</field>
         <field name="company_id" ref="l10n_be_hr_payroll.res_company_be"/>
-        <field name="hours_per_day">7.6</field>
         <field name="attendance_ids"
             eval="[(5, 0, 0),
                 (0, 0, {'name': 'Monday Morning', 'dayofweek': '0', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),

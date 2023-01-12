@@ -178,7 +178,6 @@ class TestPayslipContractBase(TestPayslipBase):
                 (0, 0, {'name': 'Friday Evening', 'dayofweek': '4', 'hour_from': 13, 'hour_to': 16, 'day_period': 'afternoon'})
             ]
         })
-        cls.calendar_35h._onchange_hours_per_day() # update hours/day
 
         cls.calendar_2_weeks = cls.env['resource.calendar'].create({
             'name': 'Week 1: 30 Hours - Week 2: 16 Hours',
@@ -194,7 +193,6 @@ class TestPayslipContractBase(TestPayslipBase):
                 (0, 0, {'name': 'Odd week', 'dayofweek': '0', 'sequence': '25', 'hour_from': 0, 'day_period': 'morning', 'week_type': '1', 'hour_to': 0, 'display_type': 'line_section'}),
             ]
         })
-        cls.calendar_2_weeks._onchange_hours_per_day() # update hours/day
 
         cls.richard_emp.resource_calendar_id = cls.calendar_richard
         cls.jules_emp.resource_calendar_id = cls.calendar_2_weeks
@@ -209,7 +207,6 @@ class TestPayslipContractBase(TestPayslipBase):
                 (0, 0, {'name': 'Thursday Evening', 'dayofweek': '3', 'hour_from': 13.5, 'hour_to': 15.5, 'day_period': 'afternoon'}),
             ]
         })
-        cls.calendar_16h._onchange_hours_per_day() # update hours/day
 
         cls.calendar_38h_friday_light = cls.env['resource.calendar'].create({
             'name': '38 calendar Friday light',
@@ -225,7 +222,6 @@ class TestPayslipContractBase(TestPayslipBase):
                 (0, 0, {'name': 'Friday Morning', 'dayofweek': '4', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
             ]
         })
-        cls.calendar_38h_friday_light._onchange_hours_per_day() # update hours/day
 
         # This contract ends at the 15th of the month
         cls.contract_cdd = cls.env['hr.contract'].create({ # Fixed term contract

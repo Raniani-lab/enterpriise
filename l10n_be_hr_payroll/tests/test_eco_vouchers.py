@@ -34,7 +34,6 @@ class TestEcoVouchers(TransactionCase):
         full_time_calendar = self.env['resource.calendar'].create([{
             'name': "Test Calendar : 38 Hours/Week",
             'company_id': self.env.company.id,
-            'hours_per_day': 7.6,
             'tz': "Europe/Brussels",
             'two_weeks_calendar': False,
             'hours_per_week': 38.0,
@@ -64,7 +63,6 @@ class TestEcoVouchers(TransactionCase):
         part_time_calendar_3_5 = self.env['resource.calendar'].create([{
             'name': "Test Calendar: 3/5 Tuesday/Wednesday Off",
             'company_id': self.env.company.id,
-            'hours_per_day': 7.6,
             'tz': "Europe/Brussels",
             'two_weeks_calendar': False,
             'hours_per_week': 22.8,

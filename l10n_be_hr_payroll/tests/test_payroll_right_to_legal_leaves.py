@@ -39,7 +39,6 @@ class TestPayrollRightToLegalLeaves(TestPayrollCommon):
                 (0, 0, {'name': 'Friday Morning', 'dayofweek': '4', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
             ]
         })
-        cls.resource_calendar_24_hours_per_week_5_days_per_week._onchange_hours_per_day()
 
         cls.resource_calendar_24_hours_per_week_4_days_per_week = cls.resource_calendar.copy({
             'name': 'Calendar 24 Hours/Week',
@@ -55,7 +54,6 @@ class TestPayrollRightToLegalLeaves(TestPayrollCommon):
                 (0, 0, {'name': 'Thursday Afternoon', 'dayofweek': '3', 'hour_from': 13, 'hour_to': 15, 'day_period': 'afternoon'}),
             ]
         })
-        cls.resource_calendar_24_hours_per_week_4_days_per_week._onchange_hours_per_day()
 
         cls.resource_calendar_20_hours_per_week = cls.resource_calendar.copy({
             'name': 'Calendar 20 Hours/Week',
@@ -68,7 +66,6 @@ class TestPayrollRightToLegalLeaves(TestPayrollCommon):
                 (0, 0, {'name': 'Friday Morning', 'dayofweek': '4', 'hour_from': 8, 'hour_to': 12, 'day_period': 'morning'}),
             ]
         })
-        cls.resource_calendar_20_hours_per_week._onchange_hours_per_day()
 
     def test_credit_time_for_employee_test_example1(self):
         """

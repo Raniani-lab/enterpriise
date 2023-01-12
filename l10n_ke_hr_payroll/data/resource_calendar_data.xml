@@ -4,7 +4,6 @@
         <record id="resource_calendar_std_45h" model="resource.calendar">
             <field name="name">Standard 45 hours/week</field>
             <field name="company_id" ref="base.main_company"/>
-            <field name="hours_per_day">9</field>
             <field name="full_time_required_hours">45</field>
             <field name="attendance_ids"
                 eval="[(5, 0, 0),

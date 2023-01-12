@@ -65,7 +65,7 @@
                         <record id="account_financial_report_pnl_pcost_balance" model="account.report.expression">
                             <field name="label">balance</field>
                             <field name="engine">aggregation</field>
-                            <field name="formula">NL_SALE.balance + NL_GCOST.balance + NL_ERR.balance</field>
+                            <field name="formula">NL_SALE.balance + NL_DISTR.balance + NL_TRANS.balance + NL_SALA.balance + NL_SOC.balance + NL_OPC.balance + NL_PENS.balance + NL_HOUS.balance + NL_OFF.balance + NL_GEN.balance + NL_ERR.balance</field>
                             <field name="date_scope">normal</field>
                         </record>
                     </field>
@@ -85,153 +85,139 @@
                                 </record>
                             </field>
                         </record>
-                        <record id="account_financial_report_pnl_gcost" model="account.report.line">
-                            <field name="name">General management costs</field>
-                            <field name="code">NL_GCOST</field>
+                        <record id="account_financial_report_pnl_distr" model="account.report.line">
+                            <field name="name">Distribution costs</field>
+                            <field name="code">NL_DISTR</field>
+                            <field name="groupby">account_id</field>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="foldable" eval="True"/>
                             <field name="expression_ids">
-                                <record id="account_financial_report_pnl_gcost_balance" model="account.report.expression">
+                                <record id="account_financial_report_pnl_distr_balance" model="account.report.expression">
                                     <field name="label">balance</field>
-                                    <field name="engine">aggregation</field>
-                                    <field name="formula">NL_DISTR.balance + NL_TRANS.balance + NL_SALA.balance + NL_SOC.balance + NL_OPC.balance + NL_PENS.balance + NL_HOUS.balance + NL_OFF.balance + NL_GEN.balance</field>
+                                    <field name="engine">account_codes</field>
+                                    <field name="formula">457</field>
                                     <field name="date_scope">normal</field>
                                 </record>
                             </field>
-                            <field name="children_ids">
-                                <record id="account_financial_report_pnl_distr" model="account.report.line">
-                                    <field name="name">Distribution costs</field>
-                                    <field name="code">NL_DISTR</field>
-                                    <field name="groupby">account_id</field>
-                                    <field name="hide_if_zero" eval="True"/>
-                                    <field name="foldable" eval="True"/>
-                                    <field name="expression_ids">
-                                        <record id="account_financial_report_pnl_distr_balance" model="account.report.expression">
-                                            <field name="label">balance</field>
-                                            <field name="engine">account_codes</field>
-                                            <field name="formula">457</field>
-                                            <field name="date_scope">normal</field>
-                                        </record>
-                                    </field>
+                        </record>
+                        <record id="account_financial_report_pnl_trans" model="account.report.line">
+                            <field name="name">Transport costs</field>
+                            <field name="code">NL_TRANS</field>
+                            <field name="groupby">account_id</field>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="foldable" eval="True"/>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_pnl_trans_balance" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">account_codes</field>
+                                    <field name="formula">44</field>
+                                    <field name="date_scope">normal</field>
                                 </record>
-                                <record id="account_financial_report_pnl_trans" model="account.report.line">
-                                    <field name="name">Transport costs</field>
-                                    <field name="code">NL_TRANS</field>
-                                    <field name="groupby">account_id</field>
-                                    <field name="hide_if_zero" eval="True"/>
-                                    <field name="foldable" eval="True"/>
-                                    <field name="expression_ids">
-                                        <record id="account_financial_report_pnl_trans_balance" model="account.report.expression">
-                                            <field name="label">balance</field>
-                                            <field name="engine">account_codes</field>
-                                            <field name="formula">44</field>
-                                            <field name="date_scope">normal</field>
-                                        </record>
-                                    </field>
+                            </field>
+                        </record>
+                        <record id="account_financial_report_pnl_sala" model="account.report.line">
+                            <field name="name">Wages and salaries</field>
+                            <field name="code">NL_SALA</field>
+                            <field name="groupby">account_id</field>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="foldable" eval="True"/>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_pnl_sala_balance" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">account_codes</field>
+                                    <field name="formula">4016 + 400 + 4010 + 4015</field>
+                                    <field name="date_scope">normal</field>
                                 </record>
-                                <record id="account_financial_report_pnl_sala" model="account.report.line">
-                                    <field name="name">Wages and salaries</field>
-                                    <field name="code">NL_SALA</field>
-                                    <field name="groupby">account_id</field>
-                                    <field name="hide_if_zero" eval="True"/>
-                                    <field name="foldable" eval="True"/>
-                                    <field name="expression_ids">
-                                        <record id="account_financial_report_pnl_sala_balance" model="account.report.expression">
-                                            <field name="label">balance</field>
-                                            <field name="engine">account_codes</field>
-                                            <field name="formula">4016 + 400 + 4010 + 4015</field>
-                                            <field name="date_scope">normal</field>
-                                        </record>
-                                    </field>
+                            </field>
+                        </record>
+                        <record id="account_financial_report_pnl_soc" model="account.report.line">
+                            <field name="name">Social charges</field>
+                            <field name="code">NL_SOC</field>
+                            <field name="groupby">account_id</field>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="foldable" eval="True"/>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_pnl_soc_balance" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">account_codes</field>
+                                    <field name="formula">4012 + 403</field>
+                                    <field name="date_scope">normal</field>
                                 </record>
-                                <record id="account_financial_report_pnl_soc" model="account.report.line">
-                                    <field name="name">Social charges</field>
-                                    <field name="code">NL_SOC</field>
-                                    <field name="groupby">account_id</field>
-                                    <field name="hide_if_zero" eval="True"/>
-                                    <field name="foldable" eval="True"/>
-                                    <field name="expression_ids">
-                                        <record id="account_financial_report_pnl_soc_balance" model="account.report.expression">
-                                            <field name="label">balance</field>
-                                            <field name="engine">account_codes</field>
-                                            <field name="formula">4012 + 403</field>
-                                            <field name="date_scope">normal</field>
-                                        </record>
-                                    </field>
+                            </field>
+                        </record>
+                        <record id="account_financial_report_pnl_opc" model="account.report.line">
+                            <field name="name">Other personnel costs</field>
+                            <field name="code">NL_OPC</field>
+                            <field name="groupby">account_id</field>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="foldable" eval="True"/>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_pnl_opc_balance" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">account_codes</field>
+                                    <field name="formula">402 + 4044 + 4017 + 409 + 4019 + 4045 + 4018</field>
+                                    <field name="date_scope">normal</field>
                                 </record>
-                                <record id="account_financial_report_pnl_opc" model="account.report.line">
-                                    <field name="name">Other personnel costs</field>
-                                    <field name="code">NL_OPC</field>
-                                    <field name="groupby">account_id</field>
-                                    <field name="hide_if_zero" eval="True"/>
-                                    <field name="foldable" eval="True"/>
-                                    <field name="expression_ids">
-                                        <record id="account_financial_report_pnl_opc_balance" model="account.report.expression">
-                                            <field name="label">balance</field>
-                                            <field name="engine">account_codes</field>
-                                            <field name="formula">402 + 4044 + 4017 + 409 + 4019 + 4045 + 4018</field>
-                                            <field name="date_scope">normal</field>
-                                        </record>
-                                    </field>
+                            </field>
+                        </record>
+                        <record id="account_financial_report_pnl_pens" model="account.report.line">
+                            <field name="name">Pension charges</field>
+                            <field name="code">NL_PENS</field>
+                            <field name="groupby">account_id</field>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="foldable" eval="True"/>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_pnl_pens_balance" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">account_codes</field>
+                                    <field name="formula">4011</field>
+                                    <field name="date_scope">normal</field>
                                 </record>
-                                <record id="account_financial_report_pnl_pens" model="account.report.line">
-                                    <field name="name">Pension charges</field>
-                                    <field name="code">NL_PENS</field>
-                                    <field name="groupby">account_id</field>
-                                    <field name="hide_if_zero" eval="True"/>
-                                    <field name="foldable" eval="True"/>
-                                    <field name="expression_ids">
-                                        <record id="account_financial_report_pnl_pens_balance" model="account.report.expression">
-                                            <field name="label">balance</field>
-                                            <field name="engine">account_codes</field>
-                                            <field name="formula">4011</field>
-                                            <field name="date_scope">normal</field>
-                                        </record>
-                                    </field>
+                            </field>
+                        </record>
+                        <record id="account_financial_report_pnl_hous" model="account.report.line">
+                            <field name="name">Housing costs</field>
+                            <field name="code">NL_HOUS</field>
+                            <field name="groupby">account_id</field>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="foldable" eval="True"/>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_pnl_hous_balance" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">account_codes</field>
+                                    <field name="formula">436 + 42 + 41</field>
+                                    <field name="date_scope">normal</field>
                                 </record>
-                                <record id="account_financial_report_pnl_hous" model="account.report.line">
-                                    <field name="name">Housing costs</field>
-                                    <field name="code">NL_HOUS</field>
-                                    <field name="groupby">account_id</field>
-                                    <field name="hide_if_zero" eval="True"/>
-                                    <field name="foldable" eval="True"/>
-                                    <field name="expression_ids">
-                                        <record id="account_financial_report_pnl_hous_balance" model="account.report.expression">
-                                            <field name="label">balance</field>
-                                            <field name="engine">account_codes</field>
-                                            <field name="formula">436 + 42 + 41</field>
-                                            <field name="date_scope">normal</field>
-                                        </record>
-                                    </field>
+                            </field>
+                        </record>
+                        <record id="account_financial_report_pnl_off" model="account.report.line">
+                            <field name="name">Office costs</field>
+                            <field name="code">NL_OFF</field>
+                            <field name="groupby">account_id</field>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="foldable" eval="True"/>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_pnl_off_balance" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">domain</field>
+                                    <field name="formula" eval="['|', ('account_id.code', '=like', '4040%'), '|', ('account_id.code', '=like', '4041%'), '|', ('account_id.code', '=like', '4042%'), '|', ('account_id.code', '=like', '4043%'), '&amp;', ('account_id.code', '=like', '43%'), '&amp;', ('account_id.code', 'not like', '4305%'), ('account_id.code', 'not like', '436%')]"/>
+                                    <field name="date_scope">normal</field>
+                                    <field name="subformula">sum</field>
                                 </record>
-                                <record id="account_financial_report_pnl_off" model="account.report.line">
-                                    <field name="name">Office costs</field>
-                                    <field name="code">NL_OFF</field>
-                                    <field name="groupby">account_id</field>
-                                    <field name="hide_if_zero" eval="True"/>
-                                    <field name="foldable" eval="True"/>
-                                    <field name="expression_ids">
-                                        <record id="account_financial_report_pnl_off_balance" model="account.report.expression">
-                                            <field name="label">balance</field>
-                                            <field name="engine">domain</field>
-                                            <field name="formula" eval="['|', ('account_id.code', '=like', '4040%'), '|', ('account_id.code', '=like', '4041%'), '|', ('account_id.code', '=like', '4042%'), '|', ('account_id.code', '=like', '4043%'), '&amp;', ('account_id.code', '=like', '43%'), '&amp;', ('account_id.code', 'not like', '4305%'), ('account_id.code', 'not like', '436%')]"/>
-                                            <field name="date_scope">normal</field>
-                                            <field name="subformula">sum</field>
-                                        </record>
-                                    </field>
-                                </record>
-                                <record id="account_financial_report_pnl_gen" model="account.report.line">
-                                    <field name="name">General expenses</field>
-                                    <field name="code">NL_GEN</field>
-                                    <field name="groupby">account_id</field>
-                                    <field name="hide_if_zero" eval="True"/>
-                                    <field name="foldable" eval="True"/>
-                                    <field name="expression_ids">
-                                        <record id="account_financial_report_pnl_gen_balance" model="account.report.expression">
-                                            <field name="label">balance</field>
-                                            <field name="engine">account_codes</field>
-                                            <field name="formula">4305 + 46 + 91</field>
-                                            <field name="date_scope">normal</field>
-                                        </record>
-                                    </field>
+                            </field>
+                        </record>
+                        <record id="account_financial_report_pnl_gen" model="account.report.line">
+                            <field name="name">General expenses</field>
+                            <field name="code">NL_GEN</field>
+                            <field name="groupby">account_id</field>
+                            <field name="hide_if_zero" eval="True"/>
+                            <field name="foldable" eval="True"/>
+                            <field name="expression_ids">
+                                <record id="account_financial_report_pnl_gen_balance" model="account.report.expression">
+                                    <field name="label">balance</field>
+                                    <field name="engine">account_codes</field>
+                                    <field name="formula">4305 + 46 + 91</field>
+                                    <field name="date_scope">normal</field>
                                 </record>
                             </field>
                         </record>

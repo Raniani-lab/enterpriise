@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from psycopg2 import IntegrityError, OperationalError
+
 from odoo.addons.iap.tools import iap_tools
 from odoo import api, fields, models, _
 from odoo.exceptions import AccessError, UserError
@@ -289,8 +291,12 @@ class HrExpense(models.Model):
     @api.model
     def _cron_parse(self):
         for rec in self.search([('extract_state', '=', 'waiting_upload')]):
-            rec.retry_ocr()
-            rec.env.cr.commit()
+            try:
+                with self.env.cr.savepoint():
+                    rec.retry_ocr()
+                self.env.cr.commit()
+            except (IntegrityError, OperationalError) as e:
+                _logger.error("Couldn't upload %s with id %d: %s", rec._name, rec.id, str(e))
 
     def retry_ocr(self):
         """Retry to contact iap to submit the first attachment in the chatter"""

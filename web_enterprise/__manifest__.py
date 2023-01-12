@@ -12,7 +12,7 @@ Odoo Enterprise Web Client.
 This module modifies the web addon to provide Enterprise design and responsiveness.
         """,
     'depends': ['web', 'base_setup'],
-    'auto_install': True,
+    'auto_install': ['web'],
     'data': [
         'views/partner_view.xml',
         'views/res_config_settings_views.xml',

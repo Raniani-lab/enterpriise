@@ -428,8 +428,8 @@ tour.register('account_accountant_bank_rec_widget_ui',
         },
         {
             content: "No Lines Displayed and right div is empty",
-            extra_trigger: ".o_bank_rec_right_div:empty",
-            trigger: ".o_view_nocontent_empty_folder",
+            extra_trigger: ".o_bank_rec_right_div .bank_rec_tutorial",
+            trigger: ".o_view_nocontent_smiling_face",
             run: () => {}
         },
         // Test the next st line is always selected when Not Matched Filter is active

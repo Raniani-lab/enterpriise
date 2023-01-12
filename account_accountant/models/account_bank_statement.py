@@ -55,6 +55,14 @@ class AccountBankStatementLine(models.Model):
             'view_mode': 'kanban,list' if kanban_first else 'list,kanban',
             'views': views if kanban_first else views[::-1],
             'domain': [('state', '!=', 'cancel')] + (extra_domain or []),
+            'help': _("""
+                <p class="o_view_nocontent_smiling_face">
+                    All done!
+                </p>
+                <p>
+                    Create new transactions, or make sure that there is no active filter in the search bar.
+                </p>
+            """),
         }
 
     def action_open_recon_st_line(self):

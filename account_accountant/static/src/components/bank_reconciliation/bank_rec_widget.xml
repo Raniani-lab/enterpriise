@@ -10,6 +10,7 @@
                 <t t-if="state.selectedStLineId">
                     <View t-props="this.prepareFormProps()" t-key="state.selectedStLineId"/>
                 </t>
+                <BankRecTutorial t-else="" t-props="tutorialProps"/>
             </div>
         </xpath>
     </t>

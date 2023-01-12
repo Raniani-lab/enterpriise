@@ -12,13 +12,11 @@ from odoo.addons.iap import jsonrpc
 from odoo.exceptions import UserError, AccessError, ValidationError, RedirectWarning
 from odoo.tools import date_utils, get_lang, html_escape
 from odoo.tools.misc import format_date
+from odoo.addons.l10n_in_edi.models.account_edi_format import DEFAULT_IAP_ENDPOINT, DEFAULT_IAP_TEST_ENDPOINT
 
 import logging
 
 _logger = logging.getLogger(__name__)
-
-DEFAULT_IAP_ENDPOINT = "https://l10n-in-edi.api.odoo.com"
-DEFAULT_IAP_TEST_ENDPOINT = "https://in-report-sanbox.odoo.com"
 
 
 class L10nInGSTReturnPeriod(models.Model):

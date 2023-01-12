@@ -3,7 +3,7 @@
 
 from markupsafe import Markup
 
-from odoo.tests.common import tagged, HttpCase
+from odoo.tests.common import tagged, users, HttpCase
 
 
 @tagged('post_install', '-at_install', 'knowledge', 'knowledge_tour')
@@ -50,8 +50,12 @@ class TestKnowledgeEditorCommands(HttpCase):
         """Test the /toc command in the editor"""
         self.start_tour('/web', 'knowledge_table_of_content_command_tour', login='admin', step_delay=100)
 
+    @users('admin')
     def test_knowledge_template_command_tour(self):
         """Test the /template command in the editor"""
+        partner_ids = self.env['res.partner'].create({'name': 'HelloWorldPartner', 'email': 'helloworld@part.ner'}).ids
+        article = self.env['knowledge.article'].search([('name', '=', 'EditorCommandsArticle')])[0]
+        article.message_subscribe(partner_ids)
         self.start_tour('/web', 'knowledge_template_command_tour', login='admin', step_delay=100)
 
     def test_knowledge_template_command_paste_tour(self):

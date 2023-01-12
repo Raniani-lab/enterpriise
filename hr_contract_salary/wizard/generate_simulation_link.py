@@ -23,12 +23,10 @@ class GenerateSimulationLink(models.TransientModel):
             contract_id = self.env.context.get('active_id')
             contract = self.env['hr.contract'].sudo().browse(contract_id)
             result['employee_job_id'] = contract.job_id or contract.default_contract_id.job_id
+            result['contract_id'] = contract_id
             if contract.employee_id:
                 result['employee_id'] = contract.employee_id.id
                 result['employee_contract_id'] = contract_id
-                result['contract_id'] = contract_id
-            elif contract.job_id and contract.job_id.default_contract_id:
-                result['contract_id'] = contract.job_id.default_contract_id.id or False
         elif model == 'hr.applicant':
             applicant_id = self.env.context.get('active_id')
             applicant = self.env['hr.applicant'].sudo().browse(applicant_id)
@@ -133,9 +131,7 @@ class GenerateSimulationLink(models.TransientModel):
             model = self.env.context.get('active_model')
             if model == 'hr.contract':
                 if wizard.employee_job_id != wizard.employee_contract_id.job_id:
-                    wizard.contract_id = wizard.contract_id\
-                        or wizard.employee_contract_id.default_contract_id\
-                        or wizard.employee_contract_id
+                    wizard.contract_id = wizard.employee_job_id.default_contract_id or wizard.employee_contract_id
                 else:
                     wizard.contract_id = wizard.employee_contract_id or wizard.employee_contract_id.default_contract_id
             elif model == 'hr.applicant':

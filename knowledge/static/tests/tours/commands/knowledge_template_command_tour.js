@@ -55,6 +55,6 @@ tour.register('knowledge_template_command_tour', {
     trigger: '.o_knowledge_behavior_type_template button[title="Use as Description"]',
     run: 'click',
 }, { // check that the content of the template was inserted as description
-    trigger: '.o_form_sheet .o_field_html p:contains("Hello world")',
+    trigger: '.o_form_sheet .o_field_html .odoo-editor-editable p:first-child:contains("Hello world")',
     run: () => {},
 }]);

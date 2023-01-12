@@ -4,7 +4,6 @@
 import uuid
 
 from odoo import api, fields, models
-from odoo.fields import Date
 
 from werkzeug.urls import url_encode
 
@@ -65,17 +64,6 @@ class GenerateSimulationLink(models.TransientModel):
     @api.onchange('contract_id')
     def _onchange_contract_id(self):
         self.final_yearly_costs = self.contract_id.final_yearly_costs
-
-    @api.depends('employee_job_id')
-    def _compute_warning_message(self):
-        for wizard in self:
-            current_job = wizard.employee_contract_id.job_id
-            new_job = wizard.employee_job_id
-
-            if (not current_job or current_job.id != new_job.id) and not new_job.default_contract_id:
-                wizard.display_warning_message = True
-            else:
-                wizard.display_warning_message = False
 
     @api.depends('employee_job_id')
     def _compute_warning_message(self):

@@ -314,7 +314,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
         self.report.load_more_limit = 2
 
         options = self._generate_options(self.report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
-        options['unfolded_lines'] = [f'-account.account-{self.company_data["default_account_revenue"].id}']
+        options['unfolded_lines'] = [self.env['account.report']._get_generic_line_id('account.account', self.company_data["default_account_revenue"].id)]
 
         report_lines = self.report._get_lines(options)
 
@@ -427,7 +427,7 @@ class TestGeneralLedgerReport(TestAccountReportsCommon, odoo.tests.HttpCase):
 
         # Init options.
         options = self._generate_options(self.report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
-        options['unfolded_lines'] = [f'-account.account-{foreign_curr_account.id}']
+        options['unfolded_lines'] = [self.env['account.report']._get_generic_line_id('account.account', foreign_curr_account.id)]
 
         self.assertLinesValues(
             self.report._get_lines(options),

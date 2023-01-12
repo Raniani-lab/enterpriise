@@ -104,7 +104,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
             ],
         )
 
-        options['unfolded_lines'] = [f'-res.partner-{self.partner_a.id}']
+        options['unfolded_lines'] = [self.report._get_generic_line_id('res.partner', self.partner_a.id)]
 
         self.assertLinesValues(
             self.report._get_lines(options),
@@ -131,7 +131,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
         self.report.load_more_limit = 2
 
         options = self._generate_options(self.report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
-        options['unfolded_lines'] = [f'-res.partner-{self.partner_a.id}']
+        options['unfolded_lines'] = [self.report._get_generic_line_id('res.partner', self.partner_a.id)]
 
         report_lines = self.report._get_lines(options)
 
@@ -188,7 +188,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
         When filtering on receivable accounts (i.e. trade_receivable and/or non_trade_receivable), partner_b should disappear from the report.
         '''
         options = self._generate_options(self.report, fields.Date.from_string('2017-01-01'), fields.Date.from_string('2017-12-31'))
-        options['unfolded_lines'] = [f'-res.partner-{self.partner_a.id}']
+        options['unfolded_lines'] = [self.report._get_generic_line_id('res.partner', self.partner_a.id)]
         options = self._update_multi_selector_filter(options, 'account_type', ['non_trade_receivable', 'trade_receivable'])
 
         self.assertLinesValues(
@@ -285,7 +285,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
         )
 
         # Unfold 'partner_a'
-        options['unfolded_lines'] = [f'-res.partner-{self.partner_a.id}']
+        options['unfolded_lines'] = [self.report._get_generic_line_id('res.partner', self.partner_a.id)]
 
         self.assertLinesValues(
             self.report._get_lines(options),
@@ -309,7 +309,7 @@ class TestPartnerLedgerReport(TestAccountReportsCommon):
         )
 
         # Unfold 'Unknown Partner'
-        options['unfolded_lines'] = ['no_partner--']
+        options['unfolded_lines'] = [self.report._get_generic_line_id(None, None, markup='no_partner')]
 
         self.assertLinesValues(
             self.report._get_lines(options),

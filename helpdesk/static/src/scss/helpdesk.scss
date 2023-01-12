@@ -18,6 +18,12 @@
     .o_helpdesk_banner .ribbon::before, .o_helpdesk_banner .ribbon::after {
         display: none;
     }
+    .o_helpdesk_banner {
+        span.o_recruitment_purple {
+            left: -25px;
+            top: 38px;
+        }
+    }
     
     .o_helpdesk_banner_table {
         border-spacing: map-get($spacers, 1);

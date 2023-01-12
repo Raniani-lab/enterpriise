@@ -75,6 +75,7 @@ export class TemplateBehavior extends AbstractBehavior {
             breadcrumbs: this.targetRecordInfo.breadcrumbs,
             data: {
                 fieldName: this.targetRecordInfo.fieldInfo.name,
+                pageName: this.targetRecordInfo.fieldInfo.pageName,
                 dataTransfer: dataTransfer,
             },
             services: {

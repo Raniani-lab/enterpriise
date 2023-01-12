@@ -4193,6 +4193,40 @@ QUnit.module("documents", {}, function () {
 
             QUnit.module("Upload");
 
+            QUnit.test("documents: upload with default tags", async function (assert) {
+                const file = await testUtils.file.createFile({
+                    name: 'text.txt',
+                    content: 'hello, world',
+                    contentType: 'text/plain',
+                });
+
+                const mockedXHRs = [];
+                this.patchDocumentXHR(mockedXHRs, (data) => {
+                    assert.strictEqual(data.get("tag_ids"), "1,2");
+                    assert.step('xhrSend')
+                });
+
+                await createDocumentsView({
+                    type: "kanban",
+                    resModel: 'documents.document',
+                    arch: `
+                    <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                        <div draggable="true" class="oe_kanban_global_area">
+                            <field name="name"/>
+                        </div>
+                    </t></templates></kanban>`,
+                    context: {
+                        default_tag_ids: [1,2],
+                    },
+                });
+
+                testUtils.file.dragoverFile($(target.querySelector(".o_kanban_renderer")), file);
+                await nextTick();
+                testUtils.file.dropFile($(target.querySelector('.o_documents_drop_over_zone')), file);
+                await nextTick();
+                assert.verifySteps(['xhrSend']);
+            });
+
             QUnit.test("documents: upload with context", async function (assert) {
                 assert.expect(4);
 

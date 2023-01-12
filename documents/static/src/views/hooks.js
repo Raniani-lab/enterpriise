@@ -434,6 +434,9 @@ function useDocumentsViewFileUpload() {
                 if (recordId) {
                     formData.append("document_id", recordId);
                 }
+                if (!tagIds.length && context?.default_tag_ids) {
+                    tagIds = context.default_tag_ids;
+                }
                 formData.append("tag_ids", tagIds);
                 if (context) {
                     for (const key of [

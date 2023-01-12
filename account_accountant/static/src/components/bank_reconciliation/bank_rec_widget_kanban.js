@@ -117,7 +117,7 @@ export class BankRecKanbanController extends KanbanController {
                 }
 
                 // Select a statement line.
-                if(stLineIdToRestore){
+                if (stLineIdToRestore && this.records.find((stLine) => stLine.data.id === stLineIdToRestore)) {
                     this.mountStLineInEdit(stLineIdToRestore);
                 } else {
                     this.mountStLineInEdit(this.getNextAvailableStLineId());

@@ -351,11 +351,12 @@ class ResCompany(models.Model):
         xmlstr = etree.fromstring(response.content)
         data = xml2json_from_elementtree(xmlstr)
         node = data['children'][2]['children'][0]
+        xmldate = fields.Date.to_date(node['attrs']['time'])
         available_currency_names = available_currencies.mapped('name')
-        rslt = {x['attrs']['currency']:(float(x['attrs']['rate']), fields.Date.today()) for x in node['children'] if x['attrs']['currency'] in available_currency_names}
+        rslt = {x['attrs']['currency']:(float(x['attrs']['rate']), xmldate) for x in node['children'] if x['attrs']['currency'] in available_currency_names}
 
         if rslt and 'EUR' in available_currency_names:
-            rslt['EUR'] = (1.0, fields.Date.today())
+            rslt['EUR'] = (1.0, xmldate)
 
         return rslt
 

@@ -257,7 +257,7 @@ class MrpProductionWorkcenterLine(models.Model):
     def button_start(self):
         res = super().button_start()
         for check in self.check_ids:
-            if check.component_tracking == 'serial' and check.component_id:
+            if check.component_id:
                 check._update_component_quantity()
         return res
 

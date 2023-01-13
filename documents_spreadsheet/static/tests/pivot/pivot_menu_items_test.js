@@ -28,7 +28,6 @@ import {
 
 const { toCartesian, toZone } = spreadsheet.helpers;
 const { cellMenuRegistry, topbarMenuRegistry } = spreadsheet.registries;
-const { getMenuChildren } = spreadsheet.helpers;
 import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 
 let target;
@@ -277,15 +276,15 @@ QUnit.module(
                     "The 'Pivots' menu should be in the dom"
                 );
 
-                const root = topbarMenuRegistry.getAll().find((item) => item.id === "data");
-                const children = getMenuChildren(root, env);
-                assert.ok(children.find((c) => c.name === "(#1) Partners by Foo"));
-                assert.ok(children.find((c) => c.name === "(#2) Partner Pivot"));
-                // // bottom children
-                assert.ok(children.find((c) => c.name === "Refresh all data"));
-                assert.ok(children.find((c) => c.name === "Re-insert pivot"));
-                assert.ok(children.find((c) => c.name === "Insert pivot cell"));
-                assert.ok(children.find((c) => c.name === "Re-insert list"));
+                const root = topbarMenuRegistry.getMenuItems().find((item) => item.id === "data");
+                const children = root.children(env);
+                assert.ok(children.find((c) => c.name(env) === "(#1) Partners by Foo"));
+                assert.ok(children.find((c) => c.name(env) === "(#2) Partner Pivot"));
+                // bottom children
+                assert.ok(children.find((c) => c.name(env) === "Refresh all data"));
+                assert.ok(children.find((c) => c.name(env) === "Re-insert pivot"));
+                assert.ok(children.find((c) => c.name(env) === "Insert pivot cell"));
+                assert.ok(children.find((c) => c.name(env) === "Re-insert list"));
             }
         );
 

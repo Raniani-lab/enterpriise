@@ -37,7 +37,9 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
         assert.strictEqual(getCellValue(model, "B3"), "");
         assert.strictEqual(getCellValue(model, "B4"), 121);
         selectCell(model, "A3");
-        const root = cellMenuRegistry.getAll().find((item) => item.id === "use_global_filter");
+        const root = cellMenuRegistry
+            .getMenuItems()
+            .find((item) => item.id === "use_global_filter");
         assert.strictEqual(root.isVisible(env), true);
         await root.action(env);
         await nextTick();
@@ -72,7 +74,9 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
                 { pivot: { 1: { chain: "product_id", type: "many2one" } } }
             );
             selectCell(model, "B3");
-            const root = cellMenuRegistry.getAll().find((item) => item.id === "use_global_filter");
+            const root = cellMenuRegistry
+                .getMenuItems()
+                .find((item) => item.id === "use_global_filter");
             assert.strictEqual(root.isVisible(env), true);
         }
     );
@@ -98,7 +102,9 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
             { pivot: { 1: { chain: "product_id", type: "many2one" } } }
         );
         selectCell(model, "B3");
-        const root = cellMenuRegistry.getAll().find((item) => item.id === "use_global_filter");
+        const root = cellMenuRegistry
+            .getMenuItems()
+            .find((item) => item.id === "use_global_filter");
         assert.strictEqual(root.isVisible(env), true);
     });
 
@@ -123,7 +129,9 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
             { pivot: { 1: { chain: "product_id", type: "many2one" } } }
         );
         selectCell(model, "B3");
-        const root = cellMenuRegistry.getAll().find((item) => item.id === "use_global_filter");
+        const root = cellMenuRegistry
+            .getMenuItems()
+            .find((item) => item.id === "use_global_filter");
         assert.strictEqual(root.isVisible(env), false);
     });
 
@@ -145,7 +153,9 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
                 },
             });
             selectCell(model, "B3");
-            const root = cellMenuRegistry.getAll().find((item) => item.id === "use_global_filter");
+            const root = cellMenuRegistry
+                .getMenuItems()
+                .find((item) => item.id === "use_global_filter");
             assert.strictEqual(root.isVisible(env), false);
         }
     );
@@ -156,7 +166,9 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
             const { env, model } = await createSpreadsheetWithPivot();
             selectCell(model, "A1");
             setCellContent(model, "A1", "=1");
-            const root = cellMenuRegistry.getAll().find((item) => item.id === "use_global_filter");
+            const root = cellMenuRegistry
+                .getMenuItems()
+                .find((item) => item.id === "use_global_filter");
             assert.strictEqual(root.isVisible(env), false);
         }
     );
@@ -179,7 +191,9 @@ QUnit.module("spreadsheet_edition > Global filters model", {}, () => {
                 }
             );
             selectCell(model, "A30");
-            const root = cellMenuRegistry.getAll().find((item) => item.id === "use_global_filter");
+            const root = cellMenuRegistry
+                .getMenuItems()
+                .find((item) => item.id === "use_global_filter");
             assert.strictEqual(root.isVisible(env), false);
         }
     );

@@ -9,6 +9,7 @@ import { createSpreadsheet, createSpreadsheetTemplate } from "../spreadsheet_tes
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { base64ToJson } from "@spreadsheet_edition/bundle/helpers";
 import { getBasicData } from "@spreadsheet/../tests/utils/data";
+import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 import { createSpreadsheetFromPivotView } from "../utils/pivot_helpers";
 import { setCellContent } from "@spreadsheet/../tests/utils/commands";
 
@@ -55,9 +56,7 @@ QUnit.module("documents_spreadsheet > template menu", {}, () => {
                 }
             },
         });
-        const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
-        const makeACopy = file.children.find((item) => item.id === "make_copy");
-        makeACopy.action(env);
+        await doMenuAction(topbarMenuRegistry, ["file", "make_copy"], env);
         await nextTick();
         assert.verifySteps(["template_copied", "redirect"]);
     });
@@ -119,9 +118,7 @@ QUnit.module("documents_spreadsheet > template menu", {}, () => {
             },
         });
         setCellContent(model, "A11", "😃");
-        const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
-        const saveAsTemplate = file.children.find((item) => item.id === "save_as_template");
-        saveAsTemplate.action(env);
+        await doMenuAction(topbarMenuRegistry, ["file", "save_as_template"], env);
         await nextTick();
         assert.verifySteps(["create_template_wizard"]);
     });
@@ -170,9 +167,7 @@ QUnit.module("documents_spreadsheet > template menu", {}, () => {
         const input = $(target).find(".breadcrumb-item input");
         await fields.editInput(input, "My spreadsheet");
         await dom.triggerEvent(input, "change");
-        const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
-        const saveAsTemplate = file.children.find((item) => item.id === "save_as_template");
-        saveAsTemplate.action(env);
+        await doMenuAction(topbarMenuRegistry, ["file", "save_as_template"], env);
         await nextTick();
         assert.verifySteps(["create_template_wizard"]);
     });
@@ -217,9 +212,7 @@ QUnit.module("documents_spreadsheet > template menu", {}, () => {
                 }
             },
         });
-        const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
-        const makeACopy = file.children.find((item) => item.id === "make_copy");
-        makeACopy.action(env);
+        await doMenuAction(topbarMenuRegistry, ["file", "make_copy"], env);
         await nextTick();
         assert.verifySteps(["template_copied", "redirect"]);
     });

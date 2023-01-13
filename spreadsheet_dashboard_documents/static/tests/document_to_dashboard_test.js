@@ -5,6 +5,7 @@ import { createSpreadsheet } from "@documents_spreadsheet/../tests/spreadsheet_t
 import { registry } from "@web/core/registry";
 import { actionService } from "@web/webclient/actions/action_service";
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
+import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 import { setCellContent } from "@spreadsheet/../tests/utils/commands";
 
 const { topbarMenuRegistry } = spreadsheet.registries;
@@ -57,9 +58,7 @@ QUnit.test("open wizard action", async (assert) => {
     };
     registry.category("services").add("action", fakeActionService, { force: true });
     const { env } = await createSpreadsheet({ serverData, spreadsheetId: 2 });
-    const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
-    const addToDashboard = file.children.find((item) => item.id === "add_document_to_dashboard");
-    await addToDashboard.action(env);
+    await doMenuAction(topbarMenuRegistry, ["file", "add_document_to_dashboard"], env);
     assert.verifySteps(["open_wizard_action"]);
 });
 
@@ -68,9 +67,7 @@ QUnit.test("document's data is saved when opening wizard", async (assert) => {
     registry.category("services").add("actionMain", actionService);
     const { env, model } = await createSpreadsheet({ serverData, spreadsheetId: 2 });
     setCellContent(model, "A1", "a cell updated");
-    const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
-    const addToDashboard = file.children.find((item) => item.id === "add_document_to_dashboard");
-    await addToDashboard.action(env);
+    await doMenuAction(topbarMenuRegistry, ["file", "add_document_to_dashboard"], env);
     const data = JSON.parse(serverData.models["documents.document"].records[1].raw);
     assert.strictEqual(data.sheets[0].cells.A1.content, "a cell updated");
 });

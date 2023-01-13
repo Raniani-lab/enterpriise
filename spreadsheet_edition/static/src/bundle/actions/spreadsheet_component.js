@@ -316,9 +316,12 @@ export default class SpreadsheetComponent extends LegacyComponent {
      *
      * @param {string} content Content to display
      */
-    raiseError(content) {
+    raiseError(content, callback) {
         this.dialogContent = content;
-        this.confirmDialog = this.closeDialog;
+        this.confirmDialog = () => {
+            this.closeDialog();
+            callback?.();
+        };
         this.state.dialog.isDisplayed = true;
     }
 

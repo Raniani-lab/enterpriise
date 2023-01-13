@@ -2,10 +2,10 @@
 
 import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
+import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 import { click, mockDownload, nextTick } from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 
-const { getMenuChildren } = spreadsheet.helpers;
 const { topbarMenuRegistry } = spreadsheet.registries;
 
 QUnit.module("documents_spreadsheet > Topbar Menu Items", {}, function () {
@@ -24,9 +24,7 @@ QUnit.module("documents_spreadsheet > Topbar Menu Items", {}, function () {
                 }
             },
         });
-        const file = topbarMenuRegistry.getAll().find((item) => item.id === "file");
-        const newSpreadsheet = file.children.find((item) => item.id === "new_sheet");
-        newSpreadsheet.action(env);
+        await doMenuAction(topbarMenuRegistry, ["file", "new_sheet"], env);
         assert.verifySteps(["action_open_new_spreadsheet"]);
     });
 
@@ -90,15 +88,11 @@ QUnit.module("documents_spreadsheet > Topbar Menu Items", {}, function () {
             },
         });
         assert.verifySteps([]);
-        const root = topbarMenuRegistry.getAll().find((item) => item.id === "format");
-        const numbers = getMenuChildren(root, env).find((item) => item.id === "format_number");
-        const customCurrencies = getMenuChildren(numbers, env).find(
-            (item) => item.id === "format_custom_currency"
-        );
-        await customCurrencies.action(env);
+        const menuPath = ["format", "format_number", "format_custom_currency"];
+        await doMenuAction(topbarMenuRegistry, menuPath, env);
         await nextTick();
         await click(document.querySelector(".o-sidePanelClose"));
-        await customCurrencies.action(env);
+        await doMenuAction(topbarMenuRegistry, menuPath, env);
         await nextTick();
         assert.verifySteps(["currencies-loaded"]);
     });

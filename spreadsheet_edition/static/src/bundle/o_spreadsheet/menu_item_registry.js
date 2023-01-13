@@ -5,7 +5,6 @@ import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { REINSERT_LIST_CHILDREN } from "../list/list_actions";
 import { INSERT_PIVOT_CELL_CHILDREN, REINSERT_PIVOT_CHILDREN } from "../pivot/pivot_actions";
 const { topbarMenuRegistry } = spreadsheet.registries;
-const { createFullMenuItem } = spreadsheet.helpers;
 
 //--------------------------------------------------------------------------
 // Spreadsheet context menu items
@@ -50,20 +49,20 @@ topbarMenuRegistry.addChild("clear_history", ["file"], {
 
 topbarMenuRegistry.addChild("data_sources_data", ["data"], (env) => {
     const pivots = env.model.getters.getPivotIds();
-    const children = pivots.map((pivotId, index) =>
-        createFullMenuItem(`item_pivot_${pivotId}`, {
-            name: env.model.getters.getPivotDisplayName(pivotId),
-            sequence: 100 + index,
-            action: (env) => {
-                env.model.dispatch("SELECT_PIVOT", { pivotId: pivotId });
-                env.openSidePanel("PIVOT_PROPERTIES_PANEL", {});
-            },
-            icon: "fa fa-table",
-            separator: index === env.model.getters.getPivotIds().length - 1,
-        })
-    );
+    const children = pivots.map((pivotId, index) => ({
+        id: `item_pivot_${pivotId}`,
+        name: env.model.getters.getPivotDisplayName(pivotId),
+        sequence: 100 + index,
+        action: (env) => {
+            env.model.dispatch("SELECT_PIVOT", { pivotId: pivotId });
+            env.openSidePanel("PIVOT_PROPERTIES_PANEL", {});
+        },
+        icon: "fa fa-table",
+        separator: index === env.model.getters.getPivotIds().length - 1,
+    }));
     const lists = env.model.getters.getListIds().map((listId, index) => {
-        return createFullMenuItem(`item_list_${listId}`, {
+        return {
+            id: `item_list_${listId}`,
             name: env.model.getters.getListDisplayName(listId),
             sequence: 100 + index + pivots.length,
             action: (env) => {
@@ -72,34 +71,38 @@ topbarMenuRegistry.addChild("data_sources_data", ["data"], (env) => {
             },
             icon: "fa fa-list",
             separator: index === env.model.getters.getListIds().length - 1,
-        });
+        };
     });
     return children.concat(lists).concat([
-        createFullMenuItem(`refresh_all_data`, {
+        {
+            id: "refresh_all_data",
             name: _t("Refresh all data"),
             sequence: 1000,
             action: (env) => {
                 env.model.dispatch("REFRESH_ALL_DATA_SOURCES");
             },
             separator: true,
-        }),
-        createFullMenuItem(`reinsert_pivot`, {
+        },
+        {
+            id: "reinsert_pivot",
             name: _t("Re-insert pivot"),
             sequence: 1010,
             children: [REINSERT_PIVOT_CHILDREN],
             isVisible: (env) => env.model.getters.getPivotIds().length,
-        }),
-        createFullMenuItem(`insert_pivot_cell`, {
+        },
+        {
+            id: "insert_pivot_cell",
             name: _t("Insert pivot cell"),
             sequence: 1020,
             children: [INSERT_PIVOT_CELL_CHILDREN],
             isVisible: (env) => env.model.getters.getPivotIds().length,
-        }),
-        createFullMenuItem(`reinsert_list`, {
+        },
+        {
+            id: "reinsert_list",
             name: _t("Re-insert list"),
             sequence: 1021,
             children: [REINSERT_LIST_CHILDREN],
             isVisible: (env) => env.model.getters.getListIds().length,
-        }),
+        },
     ]);
 });

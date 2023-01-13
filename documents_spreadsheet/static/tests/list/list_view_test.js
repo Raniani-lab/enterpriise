@@ -16,7 +16,6 @@ import { dom } from "web.test_utils";
 import { doMenuAction } from "@spreadsheet/../tests/utils/ui";
 import { session } from "@web/session";
 
-const { getMenuChildren } = spreadsheet.helpers;
 const { topbarMenuRegistry, cellMenuRegistry } = spreadsheet.registries;
 const { toZone } = spreadsheet.helpers;
 
@@ -58,10 +57,7 @@ QUnit.module("document_spreadsheet > list view", {}, () => {
     QUnit.test("Open list properties properties", async function (assert) {
         const { model, env } = await createSpreadsheetFromListView();
 
-        const dataRoot = topbarMenuRegistry.getAll().find((item) => item.id === "data");
-        const children = getMenuChildren(dataRoot, env);
-        const openProperties = children.find((item) => item.id === "item_list_1");
-        openProperties.action(env);
+        await doMenuAction(topbarMenuRegistry, ["data", "item_list_1"], env);
         await nextTick();
         const target = getFixture();
         let title = $(target).find(".o-sidePanelTitle")[0].innerText;

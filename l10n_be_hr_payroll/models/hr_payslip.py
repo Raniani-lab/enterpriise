@@ -751,7 +751,10 @@ def compute_withholding_taxes(payslip, categories, worked_days, inputs):
 
     taxable_amount = categories.GROSS  # Base imposable
 
-    lower_bound = taxable_amount - taxable_amount % 15
+    if payslip.date_from.year < 2023:
+        lower_bound = taxable_amount - taxable_amount % 15
+    else:
+        lower_bound = taxable_amount
 
     # yearly_gross_revenue = Revenu Annuel Brut
     yearly_gross_revenue = lower_bound * 12.0

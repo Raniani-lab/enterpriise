@@ -5,16 +5,10 @@
         <field name="model">res.config.settings</field>
         <field name="inherit_id" ref="account.res_config_settings_view_form"/>
         <field name="arch" type="xml">
-            <div data-key="account" position="inside">
-                <h2 attrs="{'invisible': [('country_code', '!=', 'IN')]}">Indian GST Service</h2>
-                <div class='row mt16 o_settings_container' name="l10n_in_gst_iap" attrs="{'invisible': [('country_code', '!=', 'IN')]}">
-                    <div class="col-12 col-lg-7 o_setting_box" id="gsp_setting">
-                        <div class="o_setting_right_pane">
-                            <t class="o_form_label">Indian GST </t>
-                            <span class="fa fa-lg fa-building-o" title="Values set here are company-specific." aria-label="Values set here are company-specific." groups="base.group_multi_company" role="img"/>
-                            <div class="text-muted">
-                                Setup GST Service for this company
-                            </div>
+            <app name="account" position="inside">
+                <block title="Indian GST Service" attrs="{'invisible': [('country_code', '!=', 'IN')]}">
+                    <setting id="l10n_in_gst_iap" string="Indian GST" help="Setup GST Service for this company" company_dependent="1">
+                        <div id="gsp_setting">
                             <div class="text-warning" attrs="{'invisible': [('l10n_in_gstr_gst_username','in', (False,''))]}">
                                 Click on Send OTP to create token and varify username.
                                 <br/>
@@ -42,9 +36,9 @@
                                 <button name="l10n_in_gstr_gst_send_otp" icon="fa-arrow-right" type="object" string=" Send OTP" class="btn-link"/>
                             </div>
                         </div>
-                    </div>
-                </div>
-            </div>
+                    </setting>
+                </block>
+            </app>
         </field>
     </record>
 

@@ -4,6 +4,7 @@ import { StreamPostComment } from '@social/js/stream_post_comment';
 
 import { patch } from '@web/core/utils/patch';
 import { useService } from "@web/core/utils/hooks";
+import { serializeDateTime } from "@web/core/l10n/dates";
 
 patch(StreamPostComment.prototype, 'stream_post_comment_crm', {
     setup() {
@@ -34,7 +35,7 @@ patch(StreamPostComment.prototype, 'stream_post_comment_crm', {
                 default_post_content: this._formatPost(this.comment.message),
                 // expected datetime format by the server
                 // as social comments are not stored as records, we need to do some manual formatting
-                default_post_datetime: moment(this.comment.created_time).format('YYYY-MM-DD HH:mm:ss'),
+                default_post_datetime: serializeDateTime(this.commentCreatedTime),
                 default_post_link: this.originalPost.post_link.raw_value
             }
         });

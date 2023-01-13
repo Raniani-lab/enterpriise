@@ -47,4 +47,13 @@ export class StreamPostCommentTwitter extends StreamPostComment {
         return this.env._t('tweet');
     }
 
+    /**
+     * Twitter API v2 uses ISO 8601 format, and v1.1 uses custom format
+     *
+     * @returns {DateTime}
+     */
+    get commentCreatedTime() {
+        const createdTime = super.commentCreatedTime;
+        return !createdTime.invalid ? createdTime : luxon.DateTime.fromFormat(this.comment.created_time, {format: 'EEE MMM d HH:mm:ss ZZZ yyyy'});
+    }
 }

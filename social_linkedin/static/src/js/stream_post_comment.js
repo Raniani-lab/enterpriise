@@ -58,4 +58,13 @@ export class StreamPostCommentLinkedin extends StreamPostComment {
         return false;
     }
 
+    /**
+     * Linkedin stores the created time in milliseconds (number)
+     *
+     * @returns {DateTime}
+     */
+    get commentCreatedTime() {
+        const createdTime = super.commentCreatedTime;
+        return !createdTime.invalid ? createdTime : luxon.DateTime.fromMillis(this.comment.created_time);
+    }
 }

@@ -145,6 +145,12 @@ export class StreamPostComment extends Component {
         return StreamPostCommentsReply;
     }
 
+    /**
+     * @returns {DateTime} luxon DateTime representation of the created time
+     */
+    get commentCreatedTime() {
+        return luxon.DateTime.fromISO(this.comment.created_time);
+    }
 }
 
 patch(StreamPostComment.prototype, 'social_post_formatter_mixin', SocialPostFormatterMixin);

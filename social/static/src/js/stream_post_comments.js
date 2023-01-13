@@ -6,7 +6,6 @@ import { StreamPostCommentsReply } from './stream_post_comments_reply';
 import { StreamPostCommentList } from './stream_post_comment_list';
 
 import { Dialog } from '@web/core/dialog/dialog';
-import { formatDateTime } from '@web/core/l10n/dates';
 import { patch } from '@web/core/utils/patch';
 import { useService } from '@web/core/utils/hooks';
 
@@ -64,10 +63,6 @@ export class StreamPostComments extends Component {
 
     _formatCommentStreamPost(message) {
         return markup(this._formatPost(message));
-    }
-
-    _formatDateTime(date) {
-        return formatDateTime(moment(date));
     }
 
     get bodyClass() {

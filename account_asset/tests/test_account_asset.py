@@ -60,6 +60,26 @@ class TestAccountAsset(TestAccountReportsCommon):
             with asset_form.depreciation_move_ids.edit(i) as line_edit:
                 line_edit.asset_remaining_value
 
+    def test_account_asset_no_tax(self):
+        self.account_asset_model_fixedassets.account_depreciation_expense_id.tax_ids = self.tax_purchase_a
+        CEO_car = self.env['account.asset'].with_context(asset_type='purchase').create({
+            'salvage_value': 2000.0,
+            'state': 'open',
+            'method_period': '12',
+            'method_number': 5,
+            'name': "CEO's Car",
+            'original_value': 12000.0,
+            'model_id': self.account_asset_model_fixedassets.id,
+        })
+        CEO_car._onchange_model_id()
+        CEO_car.prorata_computation_type = 'constant_periods'
+        CEO_car.method_number = 5
+
+        # In order to test the process of Account Asset, I perform a action to confirm Account Asset.
+        CEO_car.validate()
+
+        self.assertFalse(any(CEO_car.depreciation_move_ids.line_ids.mapped('tax_line_id')))
+
     def test_00_account_asset(self):
         """Test the lifecycle of an asset"""
         CEO_car = self.env['account.asset'].with_context(asset_type='purchase').create({

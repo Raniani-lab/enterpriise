@@ -363,6 +363,11 @@ class AccountMoveLine(models.Model):
     asset_ids = fields.Many2many('account.asset', 'asset_move_line_rel', 'line_id', 'asset_id', string='Related Assets', copy=False)
     non_deductible_tax_value = fields.Monetary(compute='_compute_non_deductible_tax_value', currency_field='company_currency_id')
 
+    def _get_computed_taxes(self):
+        if self.move_id.asset_id:
+            return self.tax_ids
+        return super()._get_computed_taxes()
+
     def _turn_as_asset(self, asset_type, view_name, view):
         ctx = self.env.context.copy()
         ctx.update({

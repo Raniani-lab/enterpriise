@@ -291,36 +291,48 @@ class QualityCheck(models.Model):
                 check.component_uom_id = check.move_id.product_uom
 
     def action_print(self):
-        if self.product_id.uom_id.category_id == self.env.ref('uom.product_uom_categ_unit'):
-            qty = int(self.workorder_id.qty_producing)
-        else:
-            qty = 1
-
         quality_point_id = self.point_id
         report_type = quality_point_id.test_report_type
 
         if self.product_id.tracking == 'none':
-            xml_id = 'product.action_open_label_layout'
-            wizard_action = self.env['ir.actions.act_window']._for_xml_id(xml_id)
-            wizard_action['context'] = {'default_product_ids': self.product_id.ids}
-            if report_type == 'zpl':
-                wizard_action['context']['default_print_format'] = 'zpl'
-            res = wizard_action
+            res = self._get_product_label_action(report_type)
         else:
             if self.workorder_id.finished_lot_id:
-                if report_type == 'zpl':
-                    xml_id = 'stock.label_lot_template'
-                else:
-                    xml_id = 'stock.action_report_lot_label'
-                res = self.env.ref(xml_id).report_action([self.workorder_id.finished_lot_id.id] * qty)
+                res = self._get_lot_label_action(report_type)
             else:
                 raise UserError(_('You did not set a lot/serial number for '
                                 'the final product'))
 
-        res['id'] = self.env.ref(xml_id).id
-
         # The button goes immediately to the next step
         self._next()
+        return res
+
+    def _get_print_qty(self):
+        if self.product_id.uom_id.category_id == self.env.ref('uom.product_uom_categ_unit'):
+            qty = int(self.workorder_id.qty_producing)
+        else:
+            qty = 1
+        return qty
+
+    def _get_product_label_action(self, report_type):
+        self.ensure_one()
+        xml_id = 'product.action_open_label_layout'
+        wizard_action = self.env['ir.actions.act_window']._for_xml_id(xml_id)
+        wizard_action['context'] = {'default_product_ids': self.product_id.ids}
+        if report_type == 'zpl':
+            wizard_action['context']['default_print_format'] = 'zpl'
+        wizard_action['id'] = self.env.ref(xml_id).id
+        return wizard_action
+
+    def _get_lot_label_action(self, report_type):
+        qty = self._get_print_qty()
+
+        if report_type == 'zpl':
+            xml_id = 'stock.label_lot_template'
+        else:
+            xml_id = 'stock.action_report_lot_label'
+        res = self.env.ref(xml_id).report_action([self.workorder_id.finished_lot_id.id] * qty)
+        res['id'] = self.env.ref(xml_id).id
         return res
 
     def action_next(self):

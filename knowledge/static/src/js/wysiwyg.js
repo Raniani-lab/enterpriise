@@ -289,7 +289,8 @@ Wysiwyg.include({
                 const nameNode = document.createTextNode(article.display_name);
                 articleLinkBlock.appendChild(nameNode);
                 this._notifyNewBehavior(articleLinkBlock, restoreSelection);
-            }
+            },
+            parentArticleId: this.options.recordInfo.res_model === 'knowledge.article' ? this.options.recordInfo.res_id : undefined
         });
     },
     /**

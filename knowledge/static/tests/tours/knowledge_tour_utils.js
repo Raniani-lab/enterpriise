@@ -93,11 +93,11 @@ export function appendArticleLink(htmlFieldContainerSelector, articleName, offse
         run: 'click',
         in_modal: false,
     }, { // select an article in the list
-        trigger: `.select2-results > .select2-result:contains(${articleName})`,
+        trigger: `.o_select_menu_item:contains(${articleName})`,
         run: 'click',
         in_modal: false,
     }, { // wait for the choice to be registered
-        trigger: `.select2-chosen:contains(${articleName})`,
+        trigger: `.o_select_menu_toggler_slot:contains(${articleName})`,
         run: () => {},
     }, { // click on the "Insert Link" button
         trigger: '.modal-dialog:contains(Link an Article) .modal-footer button.btn-primary',

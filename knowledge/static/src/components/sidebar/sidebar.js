@@ -278,6 +278,30 @@ export class KnowledgeSidebar extends Component {
                 }
             }
         });
+        this.env.bus.addEventListener("knowledge.sidebar.insertNewArticle", async ({ detail }) => {
+            if (this.getArticle(detail.articleId)) {
+                // Article already in the sidebar
+                return;
+            }
+            const parent = detail.parentId ? this.getArticle(detail.parentId) : false;
+            const newArticle = {
+                id: detail.articleId,
+                name: detail.name,
+                icon: detail.icon,
+                parent_id: parent ? parent.id : false,
+                category: parent ? parent.category : false,
+                is_locked: false,
+                user_can_write: true,
+                is_article_item: false,
+                is_user_favorite: false,
+                child_ids: [],
+            };
+            this.state.articles[newArticle.id] = newArticle;
+            await this.insertArticle(newArticle, {
+                parentId: newArticle.parent_id,
+                category: parent ? parent.category : false
+            });
+        });
     }
 
     /**

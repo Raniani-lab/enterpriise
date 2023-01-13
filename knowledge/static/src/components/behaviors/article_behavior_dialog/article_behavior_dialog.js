@@ -2,129 +2,100 @@
 
 import { useService } from '@web/core/utils/hooks';
 import { Dialog } from '@web/core/dialog/dialog';
-import { Component, onMounted, useRef } from '@odoo/owl';
+import { SelectMenu } from '@web/core/select_menu/select_menu';
+import { DropdownItem } from '@web/core/dropdown/dropdown_item';
+import { Component, useEffect, onWillStart, useRef, useState } from '@odoo/owl';
+import { sprintf } from "@web/core/utils/strings";
 
 export class ArticleSelectionBehaviorDialog extends Component {
+
+    static template = 'knowledge.ArticleSelectionBehaviorDialog';
+    static components = { Dialog, DropdownItem, SelectMenu };
+    static props = {
+        articleSelected: Function,
+        close: Function,
+        confirmLabel: String,
+        title: String,
+        parentArticleId: { type: Number, optional: true },
+    };
+
+
     /**
      * @override
      */
     setup() {
         super.setup();
         this.orm = useService('orm');
-        this.input = useRef('input');
-        onMounted(() => {
-            this.initSelect2();
-            // see "focus" method of select2 lib for details about setTimeout
-            window.setTimeout(() => {
-                this.getInput().select2('open');
-                document.querySelector('.o_knowledge_select2 .select2-focusser').focus(); // auto-focus
-            }, 0);
+        this.userService = useService('user');
+        this.placeholderLabel = this.env._t('Choose an Article...');
+        this.toggler = useRef('togglerRef');
+        this.state = useState({
+            selectedArticleName: false,
+            knowledgeArticles: [],
+            createLabel: ''
+        });
+
+        //autofocus
+        useEffect((toggler) => {
+            toggler.click();
+        }, () => [this.toggler.el]);
+
+        onWillStart(async () => {
+            await this.fetchArticles();
+            this.state.isInternalUser = await this.userService.hasGroup('base.group_user');
         });
     }
 
-    /**
-    * @returns {JQuery}
-    */
-    getInput() {
-        return $(this.input.el);
+    async createKnowledgeArticle(label) {
+        const articleId = await this.orm.call(
+            'knowledge.article',
+            'article_create',
+            [],
+            {title: label, parent_id: this.props.parentArticleId}
+        );
+        this.props.articleSelected({articleId: articleId, displayName: `📄 ${label}`});
+        this.props.close();
+        if (this.props.parentArticleId) {
+            this.env.bus.trigger('knowledge.sidebar.insertNewArticle', {
+                articleId: articleId,
+                name: label,
+                icon: '📄',
+                parentId: this.props.parentArticleId,
+            });
+        }
     }
 
-    onArticleSelected() {
-        const $input = $(this.input.el);
-        if (!$input.select2('data')){
-            return;
+    async fetchArticles(searchValue) {
+        this.state.createLabel = sprintf(this.env._t('Create "%s"'), searchValue);
+        const domain = [['user_has_access', '=', true]];
+        if (searchValue) {
+            domain.push(['name', '=ilike', `%${searchValue}%`]);
         }
-        const articleId = $input.select2('data').id;
-        const displayName = $input.select2('data').display_name;
+        const knowledgeArticles = await this.orm.searchRead(
+            'knowledge.article',
+            domain,
+            ['id', 'display_name', 'root_article_id'], {
+                limit: 20
+            });
+        this.state.knowledgeArticles = knowledgeArticles.map(({ id, display_name, root_article_id }) => {
+            return {
+                value: {
+                    articleId: id,
+                    rootArticleName:  root_article_id[0] !== id ? root_article_id[1] : ''
+                },
+                label: display_name
+            };
+        });
+    }
 
-        this.props.articleSelected({articleId: articleId, displayName: displayName});
+    async selectArticle(value) {
+        this.selectedArticle = this.state.knowledgeArticles.find(knowledgeArticle => knowledgeArticle.value.articleId === value.articleId);
+        this.state.selectedArticleName = this.selectedArticle.label;
+    }
+
+    confirmArticleSelection() {
+        this.props.articleSelected({articleId: this.selectedArticle.value.articleId, displayName: this.selectedArticle.label});
         this.props.close();
     }
 
-    initSelect2() {
-        const $input = this.getInput();
-        $input.select2({
-            containerCssClass: 'o_knowledge_select2',
-            dropdownCssClass: 'o_knowledge_select2',
-            ajax: {
-                /**
-                 * @param {String} term
-                 * @returns {Object}
-                 */
-                data: term => {
-                    return { term };
-                },
-                quietMillis: 500,
-                /**
-                 * @param {Object} params - parameters
-                 */
-                transport: async params => {
-                    const { term } = params.data;
-                    let domain = [['user_has_access', "=", true]];
-                    if (term) {
-                        domain.push(['name', '=ilike', `%${term}%`]);
-                    }
-                    const results = await this.orm.call(
-                        'knowledge.article',
-                        'search_read',
-                        [],
-                        {
-                            fields: ['id', 'display_name', 'root_article_id'],
-                            domain: domain,
-                            limit: 50,
-                        },
-                    );
-                    params.success({ results });
-                },
-                /**
-                 * @param {Object} data
-                 * @returns {Object}
-                 */
-                processResults: data => {
-                    return {
-                        results: data.results.map(record => {
-                            return {
-                                id: record.id,
-                                display_name: record.display_name,
-                                subject: record.root_article_id[1],
-                            };
-                        })
-                    };
-                },
-            },
-            /**
-             * @param {Object} data
-             * @param {JQuery} container
-             * @param {Function} escapeMarkup
-             */
-            formatSelection: (data, container, escapeMarkup) => {
-                return escapeMarkup(data.display_name);
-            },
-            /**
-             * @param {Object} result
-             * @param {JQuery} container
-             * @param {Object} query
-             * @param {Function} escapeMarkup
-             */
-            formatResult: (result, container, query, escapeMarkup) => {
-                const { display_name, subject } = result;
-                const markup = [];
-                window.Select2.util.markMatch(display_name, query.term, markup, escapeMarkup);
-                if (subject !== display_name) {
-                    markup.push(`<span class="text-ellipsis small">  -  ${escapeMarkup(subject)}</span>`);
-                }
-                return markup.join('');
-            },
-        });
-    }
-
 }
-
-ArticleSelectionBehaviorDialog.template = 'knowledge.wysiwyg_article_selection_modal';
-ArticleSelectionBehaviorDialog.components = { Dialog };
-ArticleSelectionBehaviorDialog.props = {
-    articleSelected: Function,
-    close: Function,
-    confirmLabel: String,
-    title: String,
-};

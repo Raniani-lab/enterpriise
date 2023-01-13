@@ -176,7 +176,7 @@ class KnowledgeTopbar extends Component {
      */
     async onMoveArticleClick() {
         await this.env._saveIfDirty();
-        this.dialog.add(MoveArticleDialog, {record: this.props.record});
+        this.dialog.add(MoveArticleDialog, {knowledgeArticleRecord: this.props.record});
     }
 
     /**

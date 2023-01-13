@@ -169,21 +169,17 @@ registry.category("web_tour.tours").add('knowledge_main_flow_tour', {
 }, {
     trigger: '.o_breadcrumb_article_name > input',
     run: 'text Article to be moved',  // modify the article name
-}, {
+}, {// move article
     trigger: 'a#dropdown_tools_panel',
     run: 'click'
 }, {
     trigger: '.btn-move',
     run: 'click',
 }, {
-    trigger: '.select2-chosen',
-    in_modal: false
-}, {
-    trigger: '.select2-results-dept-1 > .select2-result-label:contains("Article 3")',
+    trigger: '.o_select_menu_item:contains("Article 3")',
     run: 'click',
-    in_modal: false
 }, {
-    trigger: '.select2-chosen:contains("Article 3")',
+    trigger: '.o_select_menu_toggler_slot:contains("Article 3")',
     run: () => {},
 }, {
     trigger: '.modal-content .btn-primary:contains("Move Article")',

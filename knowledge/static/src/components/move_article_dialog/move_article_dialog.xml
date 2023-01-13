@@ -2,15 +2,44 @@
 <templates xml:space="preserve">
     <t t-name="knowledge.MoveArticleDialog" owl="1">
         <Dialog size="size" title="title">
-            <t t-if="props.record.data.display_name">
-                Move "<span t-out="props.record.data.display_name" class="fw-bold"/>" under:
+            <t t-if="props.knowledgeArticleRecord.data.display_name">
+                <t t-out="this.moveArticleLabel"/>
             </t>
             <t t-else="">
                 Move the untitled article under:
             </t>
-            <input t-ref="input" class="form-control" type="hidden" placeholder="Search an Article to use as Parent"/>
+            <SelectMenu
+                togglerClass="'o_knowledge_select_menu'"
+                class="'o_knowledge_select_menu'"
+                onInput.bind="fetchValues"
+                onSelect.bind="selectArticle"
+                groups="state.selectionDisplayGroups"
+            >
+                <span class="fw-lighter" t-ref="togglerRef">
+                    <img
+                        t-if="state.selectedParentArticle.value and state.selectedParentArticle.value.parentArticleId === 'private'"
+                        class="small rounded-circle me-1"
+                        t-att-src="this.loggedUserPicture"
+                    />
+                    <t t-out="state.selectedParentArticle.label || this.placeholderLabel"/>
+                </span>
+                <t t-set-slot="choice" t-slot-scope="choice">
+                    <span>
+                        <img
+                            t-if="choice.data.value and choice.data.value.parentArticleId === 'private'"
+                            class="small rounded me-1"
+                            t-att-src="this.loggedUserPicture"
+                        />
+                        <t t-out="choice.data.label"/>
+                        <span t-if="choice.data.value and choice.data.value.rootArticleName" class="text-muted small">
+                            - <t t-out="choice.data.value.rootArticleName"/>
+                        </span>
+                    </span>
+                </t>
+
+            </SelectMenu>
             <t t-set-slot="footer" owl="1">
-                <button class="btn btn-primary" t-on-click="_onMoveArticleClick">
+                <button t-attf-class="btn btn-primary #{!this.state.selectedParentArticle ? 'disabled' : ''}" t-on-click="confirmArticleMove">
                     Move Article
                 </button>
                 <button class="btn btn-secondary" t-on-click="props.close">

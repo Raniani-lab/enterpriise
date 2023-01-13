@@ -102,7 +102,7 @@ class KnowledgeController(http.Controller):
         """
         unfolded_articles_ids = set(unfolded_articles_ids or [])
         unfolded_favorite_articles_ids = set(unfolded_favorite_articles_ids or [])
-        existing_ids = self._article_ids_exists(unfolded_articles_ids & unfolded_favorite_articles_ids)
+        existing_ids = self._article_ids_exists(unfolded_articles_ids | unfolded_favorite_articles_ids)
         unfolded_articles_ids = unfolded_articles_ids & existing_ids
         unfolded_favorite_articles_ids = unfolded_favorite_articles_ids & existing_ids
 
@@ -184,6 +184,34 @@ class KnowledgeController(http.Controller):
             unfolded_articles_ids=unfolded_articles_ids,
             unfolded_favorite_articles_ids=unfolded_favorite_articles_ids
         )
+
+    @http.route('/knowledge/tree_panel/portal/search', type='json', auth='public')
+    def get_tree_panel_portal_search(self, search_term, active_article_id=False):
+        """ Frontend access for left panel when making a search.
+            Renders articles based on search term and ordered alphabetically.
+
+            The tree is completely flattened (no sections nor child articles) to avoid noise
+            (unnecessary parents display when children are matching) and redondancy (duplicated articles
+            because of the favorite tree).
+
+            :param int active_article_id: used to highlight the given article_id in the template;
+            :param string search_term: user search term to filter the articles on;
+        """
+
+        # Get all the visible articles based on the search term
+        all_visible_articles = request.env['knowledge.article'].search(
+            expression.AND([[('is_article_item', '=', False)], [('name', 'ilike', search_term)]]),
+            order='name',
+        )
+
+        values = {
+            "search_tree": True, # Display the flatenned tree instead of the basic tree with sections
+            "active_article_id": active_article_id,
+            'portal_readonly_mode': not request.env.user.has_group('base.group_user'),
+            'articles': all_visible_articles,
+        }
+
+        return request.env['ir.qweb']._render('knowledge.knowledge_article_tree_frontend', values)
 
     @http.route('/knowledge/tree_panel/children', type='json', auth='user')
     def get_tree_panel_children(self, parent_id):

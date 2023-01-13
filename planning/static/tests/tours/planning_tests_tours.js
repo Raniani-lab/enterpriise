@@ -127,9 +127,10 @@ tour.register('planning_shift_switching_backend', {
 }, {
     trigger: '.scale_button_selection',
     content: 'Toggle the view scale selector',
-},{
-    trigger: '.o_gantt_button_scale[data-name="day"]',
-    content: "Change the gantt scale from week to day",
+}, {
+    trigger: 'div.o_gantt_scale > button.scale_button_selection',
+    content: 'Click on the dropdown button to change the scale of the gantt view',
+    extra_trigger: 'div.o_gantt_scale .o_gantt_button_scale[data-name="day"]',
 }, {
     trigger: '.o_gantt_pill :contains("bert")',
     content: "Click on the unwanted shift in the gantt view again",

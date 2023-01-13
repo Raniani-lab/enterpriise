@@ -71,7 +71,7 @@
         </t>
     </t>
     <t t-name="sign.template">
-        <div class="o_sign_template_header_wrapper px-4 py-2 align-items-center d-flex">
+        <div class="o_sign_template_header_wrapper px-4 py-2 align-items-center d-md-flex">
             <div class="o_sign_template_header_document_name align-items-center d-flex me-auto">
                 <span t-if="!widget.has_sign_requests" class="fa fa-pencil me-2" title="Edit template name" role="img" aria-label="Edit template name"/>
                 <input type="text" class="o_sign_template_name_input o_input" t-att-value="widget.sign_template.display_name"/>

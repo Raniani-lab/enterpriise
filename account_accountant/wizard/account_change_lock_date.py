@@ -12,16 +12,16 @@ class AccountChangeLockDate(models.TransientModel):
     period_lock_date = fields.Date(
         string='Journal Entries Lock Date',
         default=lambda self: self.env.company.period_lock_date,
-        help='Prevents Journal entries creation prior to the defined date. Except for Accountants users.')
+        help='Prevents Journal entries creation up to the defined date inclusive. Except for Accountant users.')
     fiscalyear_lock_date = fields.Date(
         string='All Users Lock Date',
         default=lambda self: self.env.company.fiscalyear_lock_date,
-        help='Prevents Journal Entry creation or modification prior to the defined date for all users. '
+        help='Prevents Journal Entry creation or modification up to the defined date inclusive for all users. '
              'As a closed period, all accounting operations are prohibited.')
     tax_lock_date = fields.Date(
         string="Tax Return Lock Date",
         default=lambda self: self.env.company.tax_lock_date,
-        help='Prevents Tax Returns modification prior to the defined date (Journal Entries involving taxes). '
+        help='Prevents Tax Returns modification up to the defined date inclusive (Journal Entries involving taxes). '
              'The Tax Return Lock Date is automatically set when the corresponding Journal Entry is posted.')
 
     def _prepare_lock_date_values(self):

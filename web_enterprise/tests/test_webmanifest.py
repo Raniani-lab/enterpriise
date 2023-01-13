@@ -13,6 +13,7 @@ class WebManifestRoutesTest(HttpCase):
         """
         This route returns a well formed backend's WebManifest
         """
+        self.authenticate("admin", "admin")
         response = self.url_open("/web/manifest.webmanifest")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers["Content-Type"], "application/manifest+json")
@@ -28,11 +29,18 @@ class WebManifestRoutesTest(HttpCase):
             {'src': '/web_enterprise/static/img/odoo-icon-192x192.png', 'sizes': '192x192', 'type': 'image/png'},
             {'src': '/web_enterprise/static/img/odoo-icon-512x512.png', 'sizes': '512x512', 'type': 'image/png'}
         ])
+        self.assertGreaterEqual(len(data["shortcuts"]), 0)
+        for shortcut in data["shortcuts"]:
+            self.assertGreater(len(shortcut["name"]), 0)
+            self.assertGreater(len(shortcut["description"]), 0)
+            self.assertGreater(len(shortcut["icons"]), 0)
+            self.assertTrue(shortcut["url"].startswith("/web#menu_id="))
 
     def test_serviceworker(self):
         """
         This route returns a JavaScript's ServiceWorker
         """
+        self.authenticate("admin", "admin")
         response = self.url_open("/web/service-worker.js")
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.headers["Content-Type"], "text/javascript")

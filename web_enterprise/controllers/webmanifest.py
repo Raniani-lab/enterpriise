@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
+import mimetypes
 
 from odoo import http
 from odoo.http import request
@@ -10,7 +11,31 @@ from odoo.tools import ustr
 
 class WebManifest(http.Controller):
 
-    @http.route('/web/manifest.webmanifest', type='http', auth='public', methods=['GET'])
+    def _get_shortcuts(self):
+        module_names = ['mail', 'crm', 'project', 'note']
+        module_ids = request.env['ir.module.module'].search([('state', '=', 'installed'), ('name', 'in', module_names)])\
+                                                    .sorted(key=lambda r: module_names.index(r["name"]))
+        menu_roots = request.env['ir.ui.menu'].get_user_roots()
+        datas = request.env['ir.model.data'].sudo().search([('model', '=', 'ir.ui.menu'),
+                                                         ('res_id', 'in', menu_roots.ids),
+                                                         ('module', 'in', module_names)])
+        shortcuts = []
+        for module in module_ids:
+            data = datas.filtered(lambda res: res.module == module.name)
+            if data:
+                shortcuts.append({
+                    'name': module.display_name,
+                    'url': '/web#menu_id=%s' % data.mapped('res_id')[0],
+                    'description': module.summary,
+                    'icons': [{
+                        'sizes': '140x140',
+                        'src': module.icon,
+                        'type': mimetypes.guess_type(module.icon)[0] or 'image/png'
+                    }]
+                })
+        return shortcuts
+
+    @http.route('/web/manifest.webmanifest', type='http', auth='user', methods=['GET'])
     def webmanifest(self):
         """ Returns a WebManifest describing the metadata associated with a web application.
         Using this metadata, user agents can provide developers with means to create user
@@ -32,13 +57,14 @@ class WebManifest(http.Controller):
             'sizes': size,
             'type': 'image/png',
         } for size in icon_sizes]
+        manifest['shortcuts'] = self._get_shortcuts()
         body = json.dumps(manifest, default=ustr)
         response = request.make_response(body, [
             ('Content-Type', 'application/manifest+json'),
         ])
         return response
 
-    @http.route('/web/service-worker.js', type='http', auth='public', methods=['GET'])
+    @http.route('/web/service-worker.js', type='http', auth='user', methods=['GET'])
     def service_worker(self):
         """ Returns a ServiceWorker javascript file scoped for the backend (aka. '/web')
         """

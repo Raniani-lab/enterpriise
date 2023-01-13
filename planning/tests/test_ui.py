@@ -1,9 +1,10 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo.tests import HttpCase, tagged
 from datetime import datetime
-from odoo.tests import new_test_user
+from dateutil.relativedelta import relativedelta
+
+from odoo.tests import HttpCase, new_test_user, tagged
 
 @tagged('-at_install', 'post_install')
 class TestUi(HttpCase):
@@ -51,8 +52,8 @@ class TestUi(HttpCase):
             }
         ])
         test_slot = self.env['planning.slot'].create({
-            'start_datetime': datetime.now().replace(hour=23, minute=50, second=0),
-            'end_datetime': datetime.now().replace(hour=23, minute=55, second=0),
+            'start_datetime': datetime.now() + relativedelta(days=1),
+            'end_datetime': datetime.now() + relativedelta(days=1, hours=1),
             'state': 'published',
             'resource_id': employee_bert.resource_id.id,
         })

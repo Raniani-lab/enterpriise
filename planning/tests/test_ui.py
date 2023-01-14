@@ -52,8 +52,8 @@ class TestUi(HttpCase):
             }
         ])
         test_slot = self.env['planning.slot'].create({
-            'start_datetime': datetime.now() + relativedelta(days=1),
-            'end_datetime': datetime.now() + relativedelta(days=1, hours=1),
+            'start_datetime': datetime.now(),
+            'end_datetime': datetime.now() + relativedelta(hours=1),
             'state': 'published',
             'resource_id': employee_bert.resource_id.id,
         })

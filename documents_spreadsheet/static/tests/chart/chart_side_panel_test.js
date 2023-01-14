@@ -51,9 +51,9 @@ QUnit.module("documents_spreadsheet > chart side panel", { beforeEach, afterEach
             assert.strictEqual(options.length, 5);
             assert.strictEqual(options[0].value, "bar");
             assert.strictEqual(options[1].value, "line");
-            assert.strictEqual(options[2].value, "gauge");
-            assert.strictEqual(options[3].value, "pie");
-            assert.strictEqual(options[4].value, "scorecard");
+            assert.strictEqual(options[2].value, "pie");
+            assert.strictEqual(options[3].value, "scorecard");
+            assert.strictEqual(options[4].value, "gauge");
         }
     );
 

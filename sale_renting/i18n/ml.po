@@ -815,7 +815,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
 msgid "Product"
-msgstr "ഉൽപ്പന്നം"
+msgstr ""
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__categ_id
@@ -855,7 +855,7 @@ msgstr ""
 #: model:ir.actions.act_window,name:sale_renting.rental_product_template_action
 #: model:ir.ui.menu,name:sale_renting.menu_rental_products
 msgid "Products"
-msgstr "ഉൽപ്പന്നങ്ങൾ"
+msgstr "പ്രോഡക്ടസ് "
 
 #. module: sale_renting
 #: model:product.product,name:sale_renting.rental_product_1

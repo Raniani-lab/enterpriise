@@ -797,7 +797,7 @@ msgstr ""
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_share__can_upload
 msgid "Can Upload"
-msgstr ""
+msgstr "Dapat Mengunggah"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.documents_folder_deletion_wizard_view_form
@@ -1232,7 +1232,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/search/documents_search_panel.xml:0
 #, python-format
 msgid "Edit"
-msgstr "Sunting"
+msgstr "Edit"
 
 #. module: documents
 #. odoo-javascript
@@ -1858,7 +1858,7 @@ msgstr "Tidak ada dokumen yang dipilih"
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
 msgid "No limit"
-msgstr ""
+msgstr "Tanpa batas"
 
 #. module: documents
 #: model_terms:ir.actions.act_window,help:documents.share_action

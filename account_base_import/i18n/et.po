@@ -143,21 +143,21 @@ msgstr "Impordi"
 #: model:ir.actions.client,name:account_base_import.action_account_import
 #, python-format
 msgid "Import Chart of Accounts"
-msgstr ""
+msgstr "Impordi kontoplaan"
 
 #. module: account_base_import
 #. odoo-javascript
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Import CoA"
-msgstr ""
+msgstr "Impordi CoA"
 
 #. module: account_base_import
 #. odoo-javascript
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Import Contacts"
-msgstr ""
+msgstr "Impordi kontaktid"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -166,19 +166,19 @@ msgstr ""
 #: model:ir.actions.client,name:account_base_import.action_account_move_line_import
 #, python-format
 msgid "Import Journal Items"
-msgstr ""
+msgstr "Impordi andmike kanderead"
 
 #. module: account_base_import
 #: model:ir.actions.client,name:account_base_import.action_partner_import
 msgid "Import Partners"
-msgstr ""
+msgstr "Impordi partnereid"
 
 #. module: account_base_import
 #. odoo-javascript
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Import contacts"
-msgstr ""
+msgstr "Impordi kontaktid"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -186,13 +186,14 @@ msgstr ""
 #, python-format
 msgid "Import customers or suppliers (partners) and their contacts using a"
 msgstr ""
+"Importige kliente või tarnijaid (partnereid) ja nende kontakte, kasutades"
 
 #. module: account_base_import
 #. odoo-javascript
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Import the Chart of Accounts and initial balances using a"
-msgstr ""
+msgstr "Importige kontoplaan ja algsaldod, kasutades"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -242,7 +243,7 @@ msgstr "Manuaalne ülevaade"
 #: code:addons/account_base_import/models/account_account.py:0
 #, python-format
 msgid "The import file must contain the 'code' column"
-msgstr ""
+msgstr "Impordifailis peab sisalduma veerg nimega \"kood\". "
 
 #. module: account_base_import
 #. odoo-javascript
@@ -259,7 +260,7 @@ msgstr ""
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Use predefined format to import your data faster."
-msgstr ""
+msgstr "Andmete kiiremaks importimiseks kasutage eelmääratletud formaati. "
 
 #. module: account_base_import
 #. odoo-javascript
@@ -273,7 +274,7 @@ msgstr ""
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Winbooks"
-msgstr ""
+msgstr "Winbooks"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -298,7 +299,7 @@ msgstr "või"
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "template."
-msgstr ""
+msgstr "mall."
 
 #. module: account_base_import
 #. odoo-javascript

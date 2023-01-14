@@ -6,7 +6,7 @@
 # Martin Trigaux, 2022
 # Duy BQ <duybq86@gmail.com>, 2022
 # Dung Nguyen Thi <dungnt@trobz.com>, 2022
-# Thi Huong Nguyen, 2022
+# Thi Huong Nguyen, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Thi Huong Nguyen, 2022\n"
+"Last-Translator: Thi Huong Nguyen, 2023\n"
 "Language-Team: Vietnamese (https://www.transifex.com/odoo/teams/41243/vi/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -465,8 +465,8 @@ msgid ""
 "Display tasks in the Field Service module and allow planning with start/end "
 "dates."
 msgstr ""
-"Hiển thị các nhiệm vụ trong module Lĩnh vực Dịch vụ và cho phép lập kế hoạch"
-" với ngày bắt đầu / kết thúc."
+"Hiển thị các nhiệm vụ trong module Dịch vụ Hiện trường và cho phép lập kế "
+"hoạch với ngày bắt đầu / kết thúc."
 
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_task_view_search_fsm
@@ -522,7 +522,7 @@ msgstr "Phân tích nhiệm vụ FSM"
 #: model_terms:ir.ui.view,arch_db:industry_fsm.res_config_settings_view_form
 #, python-format
 msgid "Field Service"
-msgstr "Lĩnh vực dịch vụ"
+msgstr "Dịch vụ Hiện trường"
 
 #. module: industry_fsm
 #: model:mail.template,name:industry_fsm.mail_template_data_intervention_details
@@ -737,7 +737,7 @@ msgstr "Dòng"
 #. module: industry_fsm
 #: model_terms:ir.ui.view,arch_db:industry_fsm.project_view_form_inherit
 msgid "Manage tasks in the Field Service module"
-msgstr "Quản lý tác vụ trong module Lĩnh vực Dịch vụ"
+msgstr "Quản lý tác vụ trong module Dịch vụ Hiện trường"
 
 #. module: industry_fsm
 #: model:ir.actions.act_window,name:industry_fsm.project_task_action_fsm_map

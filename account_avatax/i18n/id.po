@@ -644,7 +644,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address__zip
 #: model_terms:ir.ui.view,arch_db:account_avatax.avatax_validate_address_view_form
 msgid "Zip Code"
-msgstr ""
+msgstr "Kode Pos"
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/product.py:0

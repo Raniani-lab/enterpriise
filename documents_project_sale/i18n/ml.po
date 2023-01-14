@@ -2,16 +2,12 @@
 # This file contains the translation of the following modules:
 # 	* documents_project_sale
 # 
-# Translators:
-# Niyas Raphy, 2023
-# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:42+0000\n"
 "PO-Revision-Date: 2022-09-23 08:33+0000\n"
-"Last-Translator: Niyas Raphy, 2023\n"
 "Language-Team: Malayalam (https://www.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -76,7 +72,7 @@ msgstr ""
 #. module: documents_project_sale
 #: model:ir.model,name:documents_project_sale.model_product_template
 msgid "Product"
-msgstr "ഉൽപ്പന്നം"
+msgstr ""
 
 #. module: documents_project_sale
 #: model:project.task,legend_done:documents_project_sale.sale_order_1_task_1

@@ -509,7 +509,7 @@ msgstr "Fabrication"
 #. module: account_avatax
 #: model:ir.model.fields.selection,name:account_avatax.selection__res_company__avalara_environment__sandbox
 msgid "Sandbox"
-msgstr "Bac à sable"
+msgstr "Sandbox"
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.avatax_validate_address_view_form

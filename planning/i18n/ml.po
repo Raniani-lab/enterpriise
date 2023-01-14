@@ -804,7 +804,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_kanban
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_kanban
 msgid "Delete"
-msgstr "ഇല്ലാതാക്കുക"
+msgstr "ഡിലീറ്റ്"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__department_id
@@ -2186,7 +2186,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:planning.field_planning_slot__user_id
 #: model:res.groups,name:planning.group_planning_user
 msgid "User"
-msgstr "ഉപയോക്താവ്"
+msgstr ""
 
 #. module: planning
 #. odoo-python

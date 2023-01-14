@@ -22,8 +22,8 @@
 # Cristian Cruz, 2022
 # Óscar Fonseca <tecnico@extreme-micro.com>, 2022
 # Guspy12, 2022
-# Josep Anton Belchi, 2022
-# Ivan Espinola, 2022
+# jabelchi, 2022
+# Ivan Espinola, 2023
 # 
 msgid ""
 msgstr ""
@@ -31,7 +31,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Ivan Espinola, 2022\n"
+"Last-Translator: Ivan Espinola, 2023\n"
 "Language-Team: Catalan (https://www.transifex.com/odoo/teams/41243/ca/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -96,6 +96,7 @@ msgid ""
 "<b>Congratulations</b>, your first subscription quotation is ready to be "
 "sent!"
 msgstr ""
+"<b>Felicitats</b>, el vostre primer pressupost esta llest per ser enviat!"
 
 #. module: sale_subscription
 #: model:mail.template,body_html:sale_subscription.mail_template_subscription_alert
@@ -218,11 +219,11 @@ msgid ""
 "        "
 msgstr ""
 "<div style=\"background:#F0F0F0;color:#515166;padding:10px 0px;font-family:Arial,Helvetica,sans-serif;font-size:14px;\">\n"
-"            <t t-set=\"accesstoken\" t-value=\"object.rating_get_access_token()\"/>\n"
+"            <t t-set=\"accesstoken\" t-value=\"object.ratinggetaccesstoken()\"/>\n"
 "                <table style=\"width:600px;margin:5px auto;\">\n"
 "                    <tbody>\n"
 "                        <tr><td>\n"
-"                            <a href=\"/\"><img src=\"/web/binary/company_logo\" style=\"vertical-align:baseline;max-width:100px;\"/></a>\n"
+"                            <a href=\"/\"><img src=\"/web/binary/companylogo\" style=\"vertical-align:baseline;max-width:100px;\"/></a>\n"
 "                        </td><td style=\"text-align:right;vertical-align:middle;\">\n"
 "                                Enquesta de satisfacció\n"
 "                        </td></tr>\n"
@@ -233,7 +234,7 @@ msgstr ""
 "                        <tr><td style=\"padding:15px 20px 10px 20px;\">\n"
 "                            <p>Hola,</p>\n"
 "                            <p>Preneu-vos un moment per valorar els nostres serveis relacionats amb la vostra subscripció \"<strong t-out=\"object.name or ''\">Office Clean Service\"</strong>\"\n"
-"                               assignat a <strong t-out=\"object.rating_get_operator().name or ''\">Mitchell Admin</strong>.</p>\n"
+"                               assignat a <strong t-out=\"object.ratinggetoperator().name or ''\">Mitchell Admin</strong>.</p>\n"
 "                            <p>Agraïm els vostres comentaris. Ens ajuda a millorar contínuament.</p>\n"
 "                        </td></tr>\n"
 "                        <tr><td style=\"padding:10px 20px\">\n"
@@ -251,17 +252,17 @@ msgstr ""
 "                                        <table style=\"width:100%;text-align:center;\">\n"
 "                                            <tr>\n"
 "                                                <td>\n"
-"                                                    <a t-attf-href=\"/rate/{{ access_token }}/5\">\n"
+"                                                    <a t-attf-href=\"/rate/{{ accesstoken }}/5\">\n"
 "                                                        <img alt=\"Satisfied\" src=\"/rating/static/src/img/rating5.png\" title=\"Satisfied\"/>\n"
 "                                                    </a>\n"
 "                                                </td>\n"
 "                                                <td>\n"
-"                                                    <a t-attf-href=\"/rate/{{ access_token }}/3\">\n"
+"                                                    <a t-attf-href=\"/rate/{{ accesstoken }}/3\">\n"
 "                                                        <img alt=\"Okay\" src=\"/rating/static/src/img/rating3.png\" title=\"Okay\"/>\n"
 "                                                    </a>\n"
 "                                                </td>\n"
 "                                                <td>\n"
-"                                                    <a t-attf-href=\"/rate/{{ access_token }}/1\">\n"
+"                                                    <a t-attf-href=\"/rate/{{ accesstoken }}/1\">\n"
 "                                                        <img alt=\"Dissatisfied\" src=\"/rating/static/src/img/rating1.png\" title=\"Dissatisfied\"/>\n"
 "                                                    </a>\n"
 "                                                </td>\n"
@@ -271,13 +272,13 @@ msgstr ""
 "                                </tr>\n"
 "                            </table>\n"
 "                        </td></tr>\n"
-"                        <tr><td style=\"padding:15px 20px 10px 20px;\" t-out=\"object.user_id.signature or ''\">--<br/>Mitchell Admin</td></tr>\n"
+"                        <tr><td style=\"padding:15px 20px 10px 20px;\" t-out=\"object.userid.signature or ''\">--<br/>Mitchell Admin</td></tr>\n"
 "                    </tbody>\n"
 "                </table>\n"
 "                <table style=\"width:600px;margin:auto;text-align:center;font-size:12px;\">\n"
 "                    <tbody>\n"
 "                        <tr><td style=\"padding-top:10px;color:#afafaf;\">\n"
-"                            <p>Correu electrònic enviat automàticament per <a target=\"_blank\" href=\"https://www.odoo.com/app/subscriptions\" style=\"color:#875A7B;text-decoration:none;\">Subscripció Odoo</a> per <a t-att-href=\"object.company_id.website\" style=\"color:#875A7B;text-decoration:none;\" t-out=\"object.company_id.name or ''\">La vostraCompanyia</a></p>\n"
+"                            <p>Correu electrònic enviat automàticament per <a target=\"blank\" href=\"https://www.odoo.com/app/subscriptions\" style=\"color:#875A7B;text-decoration:none;\">Subscripció Odoo</a> per <a t-att-href=\"object.companyid.website\" style=\"color:#875A7B;text-decoration:none;\" t-out=\"object.companyid.name or ''\">La vostraCompanyia</a></p>\n"
 "                        </td></tr>\n"
 "                    </tbody>\n"
 "                </table>\n"
@@ -603,9 +604,9 @@ msgstr ""
 "        <td align=\"center\" style=\"min-width: 590px;\">\n"
 "            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
 "                <tr><td valign=\"middle\">\n"
-"                    <t t-set=\"company\" t-value=\"object.company_id or object.invoice_user_id.company_id or user.company_id\"/>\n"
+"                    <t t-set=\"company\" t-value=\"object.companyid or object.invoiceuserid.companyid or user.companyid\"/>\n"
 "                    <span style=\"font-size: 10px;\">La vostra subscripció</span><br/>\n"
-"                    <span style=\"font-size: 20px; font-weight: bold;\" t-out=\"ctx.get('code', ctx.get('subscription_name')) or 'Document'\">Document</span>\n"
+"                    <span style=\"font-size: 20px; font-weight: bold;\" t-out=\"ctx.get('code', ctx.get('subscriptionname')) or 'Document'\">Document</span>\n"
 "                </td></tr>\n"
 "                <tr><td valign=\"middle\" align=\"right\">\n"
 "                    <img t-attf-src=\"/logo.png?company={{ company.id }}\" style=\"padding: 0px; margin: 0px; height: auto; width: 80px;\" t-att-alt=\"company.name\"/>\n"
@@ -621,18 +622,18 @@ msgstr ""
 "        <td align=\"center\" style=\"min-width: 590px;\">\n"
 "            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
 "                <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
-"                    Benvolguts <t t-out=\"object.partner_id.name or ''\">Brandon Freeman</t>,<br/><br/>\n"
-"                    La vostra subscripció (codi<t t-out=\"ctx.get('subscription_name') or ''\"></t>\n"
+"                    Benvolguts <t t-out=\"object.partnerid.name or ''\">Brandon Freeman</t>,<br/><br/>\n"
+"                    La vostra subscripció (codi<t t-out=\"ctx.get('subscriptionname') or ''\"></t>\n"
 "                    <t t-if=\"ctx.get('code')\">\n"
 "                    , Referència: <t t-out=\"ctx.get('code')\"/>\n"
 "                    </t>) acaba de renovar-se\n"
-"                    <t t-if=\"ctx.get('total_amount') and ctx.get('payment_token')\">\n"
-"                        via un pagament de <t t-out=\"ctx.get('total_amount') or ''\">100</t> <t t-out=\"ctx.get('currency_name') or ''\">$</t> cobrat en <t t-out=\"ctx.get('payment_token') or ''\">PAYMENTTOKEN</t>.\n"
+"                    <t t-if=\"ctx.get('totalamount') and ctx.get('paymenttoken')\">\n"
+"                        via un pagament de <t t-out=\"ctx.get('totalamount') or ''\">100</t> <t t-out=\"ctx.get('currencyname') or ''\">$</t> cobrat en <t t-out=\"ctx.get('paymenttoken') or ''\">PAYMENTTOKEN</t>.\n"
 "                    </t>\n"
 "                    <br/><br/>\n"
 "                    Trobareu adjuntada la factura.\n"
-"                    <t t-if=\"ctx.get('next_date')\">\n"
-"                        La pròxima factura serà el <t t-out=\"formatdate(ctx.get('next_date')) or ''\">05/05/2021</t>.\n"
+"                    <t t-if=\"ctx.get('nextdate')\">\n"
+"                        La pròxima factura serà el <t t-out=\"formatdate(ctx.get('nextdate')) or ''\">05/05/2021</t>.\n"
 "                    </t>\n"
 "                    <br/><br/>\n"
 "                    Si té alguna pregunta, no dubti a contactar amb nosaltres.\n"
@@ -661,10 +662,10 @@ msgstr ""
 "                        <t t-out=\"company.phone or ''\">+1 650-123-4567</t>  \n"
 "                    </t>\n"
 "                    <t t-if=\"company.email\">\n"
-"                        <a t-attf-href=\"'mailto:%s' % {{ company.email }}\" style=\"text-decoration:none; color: #454748;\" t-out=\"company.email or ''\">info@yourcompany.com</a>  \n"
+"                        <a t-attf-href=\"'mailto:%s' % {{ company.email }}\" style=\"text-decoration:none; color: #454748;\" t-out=\"company.email or ''\">info.yourcompany.com</a>  \n"
 "                    </t>\n"
 "                    <t t-if=\"company.website\">\n"
-"                        <a t-attf-href=\"'%s' % {{ company.website }}\" style=\"text-decoration:none; color: #454748;\" t-out=\"company.website or ''\">http://www.example.com</a>\n"
+"                        <a t-attf-href=\"'%s' % {{ company.website }}\" style=\"text-decoration:none; color: #454748;\" t-out=\"company.website or ''\">http://www.exemple.com</a>\n"
 "                    </t>\n"
 "                </td></tr>\n"
 "            </table>\n"
@@ -677,7 +678,7 @@ msgstr ""
 "<tr><td align=\"center\" style=\"min-width: 590px;\">\n"
 "    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;\">\n"
 "      <tr><td style=\"text-align: center; font-size: 13px;\">\n"
-"        Funciona amb <a target=\"_blank\" href=\"https://www.odoo.com?utm_source=db&amp;utm_medium=mail\" style=\"color: #875A7B;\">Odoo</a>\n"
+"        Funciona amb <a target=\"blank\" href=\"https://www.odoo.com?utmsource=dbamp;utmmedium=mail\" style=\"color: #875A7B;\">Odoo</a>\n"
 "      </td></tr>\n"
 "    </table>\n"
 "</td></tr>\n"
@@ -782,7 +783,7 @@ msgstr ""
 "        <td align=\"center\" style=\"min-width: 590px;\">\n"
 "            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
 "                <tr><td valign=\"middle\">\n"
-"                    <t t-set=\"company\" t-value=\"object.company_id or object.userid.company_id or user.company_id\"/>\n"
+"                    <t t-set=\"company\" t-value=\"object.companyid or object.userid.companyid or user.companyid\"/>\n"
 "                    <span style=\"font-size: 10px;\">La vostra subscripció</span><br/>\n"
 "                    <span style=\"font-size: 20px; font-weight: bold;\" t-out=\"object.name or ''\">Servei de neteja d'oficina</span>\n"
 "                </td></tr>\n"
@@ -800,11 +801,11 @@ msgstr ""
 "        <td align=\"center\" style=\"min-width: 590px;\">\n"
 "            <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: white; padding: 0px 8px 0px 8px; border-collapse:separate;\">\n"
 "                <tr><td valign=\"top\" style=\"font-size: 13px;\">\n"
-"                    Hola <t t-out=\"object.partneri_d.name or ''\">Brandon Freeman</t>,<br/><br/>\n"
-"                    <t t-if=\"ctx.get('payment_token') and ctx.get('total_amount')\">\n"
+"                    Hola <t t-out=\"object.partnerid.name or ''\">Brandon Freeman</t>,<br/><br/>\n"
+"                    <t t-if=\"ctx.get('paymenttoken') and ctx.get('totalamount')\">\n"
 "                        El nostre últim intent de processar un pagament per a la vostra subscripció utilitzant el vostre mètode de pagament\n"
-"                        <t t-out=\"ctx.get('payment_token') or ''\">TOKEN</t>\n"
-"                        per a <t t-out=\"ctx['total_amount'] or ''\">100</t> <t t-out=\"ctx.get('currency') or ''\">$</t> ha fallat.\n"
+"                        <t t-out=\"ctx.get('paymenttoken') or ''\">TOKEN</t>\n"
+"                        per a <t t-out=\"ctx['totalamount'] or ''\">100</t> <t t-out=\"ctx.get('currency') or ''\">$</t> ha fallat.\n"
 "                        <t t-if=\"ctx.get('error')\">\n"
 "                            El banc o la institució de crèdit ha donat els següents detalls sobre el problema: <pre t-out=\"ctx['error'] or ''\"/>.\n"
 "                        </t>\n"
@@ -813,7 +814,7 @@ msgstr ""
 "                        El nostre intent final de processar un pagament per la vostra subscripció ha fallat perquè no tenim cap mètode de pagament registrat per a vós.\n"
 "                    </t>\n"
 "                    <br/><br/>\n"
-"                    Com que el pagament s'hauria d'haver fet fa <strong><t t-out=\"ctx.get('auto_close_limit') or ''\">5</t> dies fa</strong>, la subscripció s'ha finalitzat.\n"
+"                    Com que el pagament s'hauria d'haver fet fa <strong><t t-out=\"ctx.get('autocloselimit') or ''\">5</t> dies fa</strong>, la subscripció s'ha finalitzat.\n"
 "                    Si voleu resoldre aquest problema, no dubteu a contactar amb nosaltres.<br/><br/>\n"
 "                    Gràcies per triar <t t-out=\"company.name or ''\">YourCompany</t>!\n"
 "                    <div t-if=\"user.signature\">\n"
@@ -839,10 +840,10 @@ msgstr ""
 "                        <t t-out=\"company.phone or ''\">+1 650-123-4567</t>  \n"
 "                    </t>\n"
 "                    <t t-if=\"company.email\">\n"
-"                        <a t-attf-href=\"'mailto:%s' % {{ company.email }}\" style=\"text-decoration:none; color: #454748;\" t-out=\"company.email or ''\">info@yourcompany.com</a>  \n"
+"                        <a t-attf-href=\"'mailto:%s' % {{ company.email }}\" style=\"text-decoration:none; color: #454748;\" t-out=\"company.email or ''\">info.yourcompany.com</a>  \n"
 "                    </t>\n"
 "                    <t t-if=\"company.website\">\n"
-"                        <a t-attf-href=\"'%s' % {{ company.website }}\" style=\"text-decoration:none; color: #454748;\" t-out=\"company.website or ''\">http://www.example.com</a>\n"
+"                        <a t-attf-href=\"'%s' % {{ company.website }}\" style=\"text-decoration:none; color: #454748;\" t-out=\"company.website or ''\">http://www.exemple.com</a>\n"
 "                    </t>\n"
 "                </td></tr>\n"
 "            </table>\n"
@@ -855,7 +856,7 @@ msgstr ""
 "<tr><td align=\"center\" style=\"min-width: 590px;\">\n"
 "    <table border=\"0\" cellpadding=\"0\" cellspacing=\"0\" width=\"590\" style=\"min-width: 590px; background-color: #F1F1F1; color: #454748; padding: 8px; border-collapse:separate;\">\n"
 "      <tr><td style=\"text-align: center; font-size: 13px;\">\n"
-"        Funciona amb <a target=\"_blank\" href=\"https://www.odoo.com?utm_source=db&amp;utm_medium=mail\" style=\"color: #875A7B;\">Odoo</a>\n"
+"        Funciona amb <a target=\"blank\" href=\"https://www.odoo.com?utmsource=dbamp;utmmedium=mail\" style=\"color: #875A7B;\">Odoo</a>\n"
 "      </td></tr>\n"
 "    </table>\n"
 "</td></tr>\n"
@@ -1079,7 +1080,7 @@ msgstr ""
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "A renewal quotation %s has been created"
-msgstr "S'ha creat un pressupost de renovació %s"
+msgstr "S'ha creat una cita de renovació %s"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__action
@@ -1169,7 +1170,7 @@ msgstr "Import:"
 #: code:addons/sale_subscription/models/sale_order.py:0
 #, python-format
 msgid "An upsell quotation %s has been created"
-msgstr "S'ha creat un pressupost de venda actualitzada %s"
+msgstr "S'ha creat una cita de venda actualitzada %s"
 
 #. module: sale_subscription
 #: model:ir.model,name:sale_subscription.model_account_analytic_account
@@ -1209,7 +1210,7 @@ msgstr "Assigna a"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Assign a new partner to the contract"
-msgstr ""
+msgstr "Assigna un nou soci al contracte"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__automation_id
@@ -1251,6 +1252,8 @@ msgid ""
 "Automatic renewal succeeded. Free subscription. Next Invoice: %(inv)s. No "
 "email sent."
 msgstr ""
+"Renovació automàtica correcta. Subscripció gratuïta. Factura "
+"següent:%(inv)s. No s'ha enviat cap correu electrònic."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__website_published
@@ -1317,7 +1320,7 @@ msgstr ""
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.product_template_search_view_inherit_sale_subscription
 msgid "Can be Recurring"
-msgstr ""
+msgstr "Pot ser recurrent"
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -1388,7 +1391,7 @@ msgid ""
 msgstr ""
 "Trieu el mètode per enviar SMS:\n"
 "SMS: SMS massiu\n"
-"Publica com a missatge: registra al document\n"
+"Envia com a missatge: registra al document\n"
 "Publica com a nota: SMS massiu amb arxius"
 
 #. module: sale_subscription
@@ -1866,14 +1869,14 @@ msgstr "Avançar i crear un nou producte"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Go ahead and create a new subscription"
-msgstr ""
+msgstr "Endavant i crea una nova subscripció"
 
 #. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Go back to the subscription view"
-msgstr ""
+msgstr "Torna a la vista de subscripció"
 
 #. module: sale_subscription
 #: model:ir.model.fields.selection,name:sale_subscription.selection__sale_order__health__done
@@ -2235,14 +2238,14 @@ msgstr "Missatge de mínim retard"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Let's add a pricing with a recurrence"
-msgstr ""
+msgstr "Afegim un preu amb recurrència"
 
 #. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Let's configure the product price"
-msgstr ""
+msgstr "Configurem el preu del producte"
 
 #. module: sale_subscription
 #. odoo-javascript
@@ -2337,7 +2340,7 @@ msgstr "Gestionar mètode de pagament"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
 msgid "Manage Payment Methods"
-msgstr "Gestionar formes de pagament"
+msgstr "Gestioneu formes de pagament"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.subscription
@@ -2636,6 +2639,7 @@ msgstr "Plans"
 #, python-format
 msgid "Please provide another payment method for these subscriptions."
 msgstr ""
+"Proporcioneu un altre mètode de pagament per a aquestes subscripcions."
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__pricelist_id
@@ -2727,12 +2731,12 @@ msgstr "Opció de plantilla de pressupostos"
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_order_digest
 msgid "Quotation Template:"
-msgstr "Plantilla de pressupost:"
+msgstr "Plantilla de citació:"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_alert__subscription_template_ids
 msgid "Quotation templates"
-msgstr "Plantilles de pressupostos"
+msgstr "Plantilles de citació"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order__rating_ids
@@ -2831,7 +2835,7 @@ msgstr "Recurrent"
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_subscription_report__recurring_total
 msgid "Recurring Amount"
-msgstr ""
+msgstr "Import recurrent"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__recurring_rule_type
@@ -3033,14 +3037,14 @@ msgstr "Cerca una plantilla"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Select a recurrence"
-msgstr ""
+msgstr "Seleccioneu una recurrència"
 
 #. module: sale_subscription
 #. odoo-javascript
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Select a recurring product"
-msgstr ""
+msgstr "Seleccioneu un producte periòdic"
 
 #. module: sale_subscription
 #: model:ir.model.fields,field_description:sale_subscription.field_sale_order_template__user_closable
@@ -3053,7 +3057,7 @@ msgid ""
 "Send a renewal quotation to the customer.\n"
 "            When it is confirmed, the subscription is running again."
 msgstr ""
-"Envia un pressupost de renovació al client.\n"
+"Envia una cita de renovació al client.\n"
 "            Quan es confirma, la subscripció s'està executant de nou."
 
 #. module: sale_subscription
@@ -3671,6 +3675,8 @@ msgid ""
 "This payment method cannot be removed as it is currently linked to the "
 "following active subscriptions:"
 msgstr ""
+"Aquest mètode de pagament no es pot eliminar ja que actualment està enllaçat"
+" a les següents subscripcions actives:"
 
 #. module: sale_subscription
 #: model:ir.model.fields,help:sale_subscription.field_sale_order_stage__fold
@@ -4071,7 +4077,7 @@ msgid ""
 "subscriptions. Please create a new quotation."
 msgstr ""
 "No podeu establir l'esborrany d'una cita cancel·lada vinculada a les "
-"subscripcions facturades. Creeu un pressupost nou."
+"subscripcions facturades. Creeu una cita nova."
 
 #. module: sale_subscription
 #: model:ir.model.constraint,message:sale_subscription.constraint_sale_order_sale_subscription_stage_coherence
@@ -4079,8 +4085,8 @@ msgid ""
 "You cannot set to draft a confirmed subscription. Please create a new "
 "quotation"
 msgstr ""
-"No podeu establir l'esborrany d'una subscripció confirmada. Creeu un "
-"pressupost nou"
+"No podeu establir l'esborrany d'una subscripció confirmada. Creeu una cita "
+"nova"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.portal_my_subscriptions
@@ -4126,12 +4132,13 @@ msgstr "El vostre pla"
 #: code:addons/sale_subscription/static/src/js/tours/sale_subscription.js:0
 #, python-format
 msgid "Your contrat is recurrent"
-msgstr ""
+msgstr "El vostre contrat és recurrent"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.payment_checkout_inherit
 msgid "Your payment details will be saved for automatic renewals."
 msgstr ""
+"Els detalls del pagament es desaran per a les renovacions automàtiques"
 
 #. module: sale_subscription
 #. odoo-python
@@ -4148,7 +4155,7 @@ msgstr "La subscripció està tancada."
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_order_view_form
 msgid "archived product(s)"
-msgstr "producte(s) arxivats"
+msgstr "producte(s) arxivat(s)"
 
 #. module: sale_subscription
 #: model_terms:ir.ui.view,arch_db:sale_subscription.sale_subscription_template_view_form
@@ -4202,6 +4209,9 @@ msgid ""
 "your subscription failed. As your payment should have been made on {{ "
 "object.next_invoice_date }}, your subscription has been terminated."
 msgstr ""
+"{{ object.company_id.name }}: Ha fallat el nostre últim intent de processar "
+"un pagament per la vostra subscripció. Com que el pagament s'hauria d'haver "
+"fet a {{ object.next_invoice_data }}, la subscripció s'ha finalitzat."
 
 #. module: sale_subscription
 #: model:mail.template,subject:sale_subscription.mail_template_subscription_alert
@@ -4224,6 +4234,10 @@ msgid ""
 " suspended on {{ object.next_invoice_date }} unless the payment succeeds in "
 "the meantime."
 msgstr ""
+"{{ object.company_id.name }}: No hem pogut processar un pagament per la "
+"vostra subscripció. La vostra subscripció {{ object.name }} encara és vàlida"
+" però se suspendrà a {{ object.next_invoice_data }} si el pagament no té "
+"èxit mentrestant."
 
 #. module: sale_subscription
 #: model:sms.template,body:sale_subscription.sms_template_data_default_alert

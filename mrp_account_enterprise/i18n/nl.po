@@ -128,17 +128,17 @@ msgstr "<strong>Totale productiekosten</strong>"
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_report_pivot_view
 msgid "Average Component Cost / Unit"
-msgstr "Gemiddelde kosten van onderdelen / eenheid"
+msgstr "Gemiddelde kosten van onderdelen / stuk"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_report_pivot_view
 msgid "Average Operation Cost / Unit"
-msgstr "Gemiddelde bedrijfskosten / Eenheid"
+msgstr "Gemiddelde bedrijfskosten / stuk"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_report_pivot_view
 msgid "Average Total Cost / Unit"
-msgstr "Gemiddelde totale kosten / Eenheid"
+msgstr "Gemiddelde totale kosten / stuk"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
@@ -158,7 +158,7 @@ msgstr "Bedrijf"
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__unit_component_cost
 msgid "Component Cost / Unit"
-msgstr "Kosten onderdelen / Eenheid"
+msgstr "Kosten onderdelen / stuk"
 
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,help:mrp_account_enterprise.field_mrp_report__unit_component_cost
@@ -171,7 +171,7 @@ msgstr ""
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__unit_cost
 msgid "Cost / Unit"
-msgstr "Kosten / Eenheid"
+msgstr "Kosten / stuk"
 
 #. module: mrp_account_enterprise
 #: model:ir.actions.report,name:mrp_account_enterprise.action_cost_struct_mrp_production
@@ -204,7 +204,7 @@ msgstr "Kosten van onderdelen"
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "Cost of Components per unit (in"
-msgstr "Kosten van onderdelen per eenheid (in"
+msgstr "Kosten van onderdelen per stuk (in"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
@@ -214,7 +214,7 @@ msgstr "Bewerkingskosten"
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "Cost of Operations per unit (in"
-msgstr "Bedrijfskosten per eenheid (in"
+msgstr "Bedrijfskosten per stuk (in"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
@@ -225,7 +225,7 @@ msgstr "Kosten van afval"
 #: model:ir.model.fields,help:mrp_account_enterprise.field_mrp_report__unit_cost
 msgid "Cost per unit produced (in product UoM) of manufacturing order"
 msgstr ""
-"Kosten per geproduceerde eenheid (in productmaateenheid) van productieorder"
+"Kosten per geproduceerd stuk (in productmaateenheid) van productieorder"
 
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__currency_id
@@ -240,7 +240,7 @@ msgstr "Weergavenaam"
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__unit_duration
 msgid "Duration of Operations / Unit"
-msgstr "Duur van Bewerkingen / Eenheid"
+msgstr "Duur van Bewerkingen / stuk"
 
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__date_finished
@@ -289,13 +289,13 @@ msgstr "Nog geen gegevens!"
 msgid ""
 "Operation cost per unit produced (in product UoM) of manufacturing order"
 msgstr ""
-"Bedrijfskosten per geproduceerde eenheid (in productmaateenheid) van "
+"Bedrijfskosten per geproduceerd stuk (in productmaateenheid) van "
 "productieorder"
 
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,help:mrp_account_enterprise.field_mrp_report__unit_duration
 msgid "Operation duration (minutes) per unit produced of manufacturing order"
-msgstr "Bedrijfsduur (minuten) per geproduceerde eenheid van productieorder"
+msgstr "Bedrijfsduur (minuten) per geproduceerd stuk van productieorder"
 
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_report_pivot_view
@@ -351,7 +351,7 @@ msgstr "Totale kosten"
 #. module: mrp_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_account_enterprise.mrp_cost_structure
 msgid "Total Cost per unit (in"
-msgstr "Totale kosten per eenheid (in"
+msgstr "Totale kosten per stuk (in"
 
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__duration
@@ -366,7 +366,7 @@ msgstr "Totale bedrijfskosten:"
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,field_description:mrp_account_enterprise.field_mrp_report__unit_operation_cost
 msgid "Total Operation Cost / Unit"
-msgstr "Totale bedrijfskosten / Eenheid"
+msgstr "Totale bedrijfskosten / stuk"
 
 #. module: mrp_account_enterprise
 #: model:ir.model.fields,help:mrp_account_enterprise.field_mrp_report__component_cost

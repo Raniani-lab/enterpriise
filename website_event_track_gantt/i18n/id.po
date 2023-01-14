@@ -45,7 +45,7 @@ msgstr "Hapus"
 #. module: website_event_track_gantt
 #: model_terms:ir.ui.view,arch_db:website_event_track_gantt.event_track_view_form_in_gantt
 msgid "Discard"
-msgstr "Abaikan"
+msgstr "Buang"
 
 #. module: website_event_track_gantt
 #: model:ir.model,name:website_event_track_gantt.model_event_event

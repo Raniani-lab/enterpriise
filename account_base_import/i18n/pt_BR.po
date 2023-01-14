@@ -5,6 +5,7 @@
 # Translators:
 # Luis Felipe Miléo <mileo@kmee.com.br>, 2022
 # Martin Trigaux, 2022
+# Ruani Lazzarotto <ruanilazzarotto@gmail.com>, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Martin Trigaux, 2022\n"
+"Last-Translator: Ruani Lazzarotto <ruanilazzarotto@gmail.com>, 2023\n"
 "Language-Team: Portuguese (Brazil) (https://www.transifex.com/odoo/teams/41243/pt_BR/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -23,12 +24,12 @@ msgstr ""
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 msgid "<span class=\"o_form_label\">Initial Setup</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">Configuração Inicial</span>"
 
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 msgid "<span class=\"text-muted\">(end of year balances)</span>"
-msgstr ""
+msgstr "<span class=\"text-muted\">(saldos de final de ano)</span>"
 
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
@@ -153,7 +154,7 @@ msgstr ""
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Import Contacts"
-msgstr ""
+msgstr "Importar Contatos"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -167,14 +168,14 @@ msgstr ""
 #. module: account_base_import
 #: model:ir.actions.client,name:account_base_import.action_partner_import
 msgid "Import Partners"
-msgstr ""
+msgstr "Importar Parceiros"
 
 #. module: account_base_import
 #. odoo-javascript
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Import contacts"
-msgstr ""
+msgstr "Importar contatos"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -195,7 +196,7 @@ msgstr ""
 #: code:addons/account_base_import/static/src/js/account_import_guide.js:0
 #, python-format
 msgid "Install a module"
-msgstr ""
+msgstr "Instalar um módulo"
 
 #. module: account_base_import
 #: model:ir.model,name:account_base_import.model_account_move_line
@@ -231,14 +232,14 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 #, python-format
 msgid "Review Manually"
-msgstr ""
+msgstr "Revisar Manualmente"
 
 #. module: account_base_import
 #. odoo-python
 #: code:addons/account_base_import/models/account_account.py:0
 #, python-format
 msgid "The import file must contain the 'code' column"
-msgstr ""
+msgstr "O arquivo de importação deve conter a coluna 'código'"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -255,7 +256,7 @@ msgstr ""
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Use predefined format to import your data faster."
-msgstr ""
+msgstr "Use o formato predefinido para importar seus dados mais rapidamente."
 
 #. module: account_base_import
 #. odoo-javascript

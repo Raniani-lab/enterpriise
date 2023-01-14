@@ -27,7 +27,7 @@ msgid ""
 "A shipment cannot have a KGS/IN or LBS/CM as its unit of measurements. "
 "Configure it from the delivery method."
 msgstr ""
-"Een zending kan geen KGS/IN of LBS/CM als meeteenheid hebben. Configureer "
+"Een zending kan geen KGS/IN of LBS/CM als maateenheid hebben. Configureer "
 "het vanuit de verzendwijze."
 
 #. module: delivery_ups

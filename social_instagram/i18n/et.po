@@ -30,12 +30,12 @@ msgstr ""
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
 
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-heart me-1\" title=\"Likes\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-heart me-1\" title=\"Likes\"/>"
 
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.instagram_preview
@@ -71,12 +71,12 @@ msgstr ""
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.res_config_settings_view_form
 msgid "App ID"
-msgstr ""
+msgstr "Rakenduse ID"
 
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.res_config_settings_view_form
 msgid "App Secret"
-msgstr ""
+msgstr "App Secret"
 
 #. module: social_instagram
 #. openerp-web
@@ -84,7 +84,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social_instagram.social_stream_post_view_kanban
 #, python-format
 msgid "Author Image"
-msgstr ""
+msgstr "Autori pilt"
 
 #. module: social_instagram
 #: model:ir.model.fields,help:social_instagram.field_res_config_settings__instagram_use_own_account
@@ -229,7 +229,7 @@ msgstr "Meeldimised"
 #. module: social_instagram
 #: model:ir.model.fields,field_description:social_instagram.field_social_media__media_type
 msgid "Media Type"
-msgstr ""
+msgstr "Meedia tüüp"
 
 #. module: social_instagram
 #: code:addons/social_instagram/controllers/main.py:0
@@ -252,7 +252,7 @@ msgstr ""
 #. module: social_instagram
 #: model_terms:ir.ui.view,arch_db:social_instagram.instagram_preview
 msgid "Post Image"
-msgstr ""
+msgstr "Postita pilt"
 
 #. module: social_instagram
 #: model:ir.model,name:social_instagram.model_social_account
@@ -277,7 +277,7 @@ msgstr "Sotsiaalmeedia postitus"
 #. module: social_instagram
 #: model:ir.model,name:social_instagram.model_social_post_template
 msgid "Social Post Template"
-msgstr ""
+msgstr "Postituse mall"
 
 #. module: social_instagram
 #: model:ir.model,name:social_instagram.model_social_stream
@@ -300,13 +300,13 @@ msgstr ""
 #: code:addons/social_instagram/controllers/main.py:0
 #, python-format
 msgid "There was a authentication issue during your request."
-msgstr ""
+msgstr "Päringu ajal ilmnes autoriseerimisprobleem. "
 
 #. module: social_instagram
 #: code:addons/social_instagram/controllers/main.py:0
 #, python-format
 msgid "Unauthorized. Please contact your administrator."
-msgstr ""
+msgstr "Autoriseerimata. Palun võtke ühendust oma administraatoriga."
 
 #. module: social_instagram
 #: model:ir.model.fields,field_description:social_instagram.field_res_config_settings__instagram_use_own_account
@@ -330,7 +330,7 @@ msgstr ""
 #: code:addons/social_instagram/models/social_media.py:0
 #, python-format
 msgid "You don't have an active subscription. Please buy one here: %s"
-msgstr ""
+msgstr "Teil pole aktiivset tellimust. Palun osta üks siit: %s"
 
 #. module: social_instagram
 #: code:addons/social_instagram/models/social_post.py:0

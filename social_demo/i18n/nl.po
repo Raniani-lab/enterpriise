@@ -126,7 +126,7 @@ msgstr "UTM Campagne"
 #: model:product.template,uom_name:social_demo.product_product_4c_product_template
 #: model:product.template,uom_name:social_demo.product_product_4d_product_template
 msgid "Units"
-msgstr "Eenheden"
+msgstr "Stuks"
 
 #. module: social_demo
 #. openerp-web

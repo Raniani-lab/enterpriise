@@ -196,7 +196,7 @@ msgstr ""
 #: code:addons/mrp_mps/static/src/search/mrp_mps_control_panel.js:0
 #, python-format
 msgid "Delete"
-msgstr "ഇല്ലാതാക്കുക"
+msgstr "ഡിലീറ്റ്"
 
 #. module: mrp_mps
 #. openerp-web
@@ -435,7 +435,7 @@ msgstr ""
 #: model:ir.model,name:mrp_mps.model_product_template
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__product_id
 msgid "Product"
-msgstr "ഉൽപ്പന്നം"
+msgstr ""
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__product_category_id

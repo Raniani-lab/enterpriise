@@ -98,9 +98,9 @@ msgid ""
 "                                                to which this account has access will be\n"
 "                                                synchronized and automatically made available."
 msgstr ""
-"Après validation des informations d'identification, les places de marché\n"
-"                                                auquel ce compte a accès sera\n"
-"                                                synchronisé et automatiquement mis à disposition."
+"Après validation des informations d'identification, les marketplaces\n"
+"                                                auxquelles ce compte a accès seront\n"
+"                                                synchronisées et automatiquement mises à disposition."
 
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_amazon_account
@@ -135,14 +135,14 @@ msgstr "Localisation d'amazon"
 #: model:ir.model,name:sale_amazon.model_amazon_marketplace
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_marketplace_view_form
 msgid "Amazon Marketplace"
-msgstr "Le marché d'amazon"
+msgstr "Amazon Marketplace"
 
 #. module: sale_amazon
 #: model:ir.actions.act_window,name:sale_amazon.list_amazon_marketplace_action
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_marketplace_view_tree
 #: model_terms:ir.ui.view,arch_db:sale_amazon.res_config_settings_view_form
 msgid "Amazon Marketplaces"
-msgstr "Les marchés de amazon"
+msgstr "Marketplaces Amazon"
 
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_amazon_offer
@@ -190,7 +190,7 @@ msgstr "Les comptes Amazon correspondent aux comptes Amazon \"Seller Central\"."
 #: code:addons/sale_amazon/models/amazon_marketplace.py:0
 #, python-format
 msgid "Amazon marketplaces cannot be deleted."
-msgstr "Les marchés amazon ne peuvent pas être supprimés."
+msgstr "Les marketplaces amazon ne peuvent pas être supprimées."
 
 #. module: sale_amazon
 #. odoo-python
@@ -343,7 +343,7 @@ msgstr "Amazon : synchronisation des commandes"
 #: model:ir.actions.server,name:sale_amazon.ir_cron_sync_amazon_pickings_ir_actions_server
 #: model:ir.cron,cron_name:sale_amazon.ir_cron_sync_amazon_pickings
 msgid "Amazon: sync pickings"
-msgstr "Amazon: sélections de synchronisation"
+msgstr "Amazon: synchronisation des transferts"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.authorization_error
@@ -359,7 +359,7 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__available_marketplace_ids
 msgid "Available Marketplaces"
-msgstr "Les marchés disponibles"
+msgstr "Les marketplaces disponibles"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.authorization_error
@@ -529,8 +529,8 @@ msgid ""
 "                                         synchronize and add them to the "
 "current sync marketplaces"
 msgstr ""
-"Si ce compte a obtenu l'accès à de aux marchés, synchronisez-les et ajoutez-"
-"les aux synchronisations du marché actuelles."
+"Si ce compte a obtenu l'accès à de nouvelles marketplaces, synchronisez-les "
+"et ajoutez-les aux synchronisations des marketplaces actuelles."
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_search
@@ -600,12 +600,12 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer__marketplace_id
 msgid "Marketplace"
-msgstr "La marché"
+msgstr "Marketplace"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 msgid "Marketplaces"
-msgstr "Les marchés"
+msgstr "Marketplaces"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__name
@@ -642,7 +642,7 @@ msgstr "Nos offres"
 #: code:addons/sale_amazon/models/amazon_account.py:0
 #, python-format
 msgid "Only available marketplaces can be selected"
-msgstr "Seuls les marchés disponibles peuvent être sélectionnés"
+msgstr "Seuls les marketplaces disponibles peuvent être sélectionnées"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__order_count
@@ -720,7 +720,7 @@ msgstr "SKU"
 #. module: sale_amazon
 #: model:ir.model.constraint,message:sale_amazon.constraint_amazon_offer_unique_sku
 msgid "SKU must be unique for a given account and marketplace."
-msgstr "Le SKU doit être unique pour un compte et un marché donnés."
+msgstr "Le SKU doit être unique pour un compte et une marketplace donnés."
 
 #. module: sale_amazon
 #: model:ir.model,name:sale_amazon.model_sale_order
@@ -749,7 +749,7 @@ msgid ""
 "Select the marketplace on which your seller account\n"
 "                                                was originally created."
 msgstr ""
-"Sélectionnez la place de marché sur laquelle votre compte vendeur\n"
+"Sélectionnez la marketplace sur laquelle votre compte vendeur\n"
 "                                             a été créé à l'origine."
 
 #. module: sale_amazon
@@ -765,7 +765,7 @@ msgstr "Clé vendeur"
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__base_marketplace_id
 msgid "Sign-up Marketplace"
-msgstr "Marché d'inscription"
+msgstr "Marketplace d'inscription"
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__location_id
@@ -783,17 +783,17 @@ msgstr "Mise à jour réussie des marketplaces disponibles pour ce compte !"
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__active_marketplace_ids
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_offer__active_marketplace_ids
 msgid "Sync Marketplaces"
-msgstr "Synchroniser les places de marché"
+msgstr "Synchroniser les marketplaces"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 msgid "Sync Orders"
-msgstr "Sync des commandes"
+msgstr "Synchroniser les commandes"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 msgid "Sync Pickings"
-msgstr "Synchroniser les sélections"
+msgstr "Synchroniser les transferts"
 
 #. module: sale_amazon
 #: model:mail.template,subject:sale_amazon.order_sync_failure
@@ -814,8 +814,8 @@ msgid ""
 "The Amazon region of the marketplace. Please refer to the Selling Partner "
 "API documentation to find the correct region."
 msgstr ""
-"La région Amazon du marketplace. Veuillez vous référer à la documentation de"
-" l'API Selling Partner pour trouver la bonne région."
+"La région Amazon de la marketplace. Veuillez vous référer à la documentation"
+" de l'API Selling Partner pour trouver la bonne région."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_sale_order_line__amazon_item_ref
@@ -825,7 +825,7 @@ msgstr "La référence de l'article défini par Amazon"
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_marketplace__api_ref
 msgid "The Amazon-defined marketplace reference."
-msgstr "La référence de marché définie par Amazon."
+msgstr "La référence de marketplace définie par Amazon."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_sale_order__amazon_order_ref
@@ -898,18 +898,18 @@ msgstr ""
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_offer__marketplace_id
 msgid "The marketplace of this offer."
-msgstr "La place de marché de cette offre."
+msgstr "La marketplace de cette offre."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__available_marketplace_ids
 msgid "The marketplaces this account has access to."
-msgstr "Les marchés auxquels ce compte a accès."
+msgstr "Les marketplaces auxquelles ce compte a accès."
 
 #. module: sale_amazon
 #: model:ir.model.fields,help:sale_amazon.field_amazon_account__active_marketplace_ids
 #: model:ir.model.fields,help:sale_amazon.field_amazon_offer__active_marketplace_ids
 msgid "The marketplaces this account sells on."
-msgstr "Les marchés sur lesquels ce compte se vend."
+msgstr "Les marketplaces sur lesquelles ce compte se vend."
 
 #. module: sale_amazon
 #: model:ir.model.fields,field_description:sale_amazon.field_amazon_account__aws_credentials_expiry
@@ -946,7 +946,7 @@ msgid ""
 "The original sign-up marketplace of this account. Used for authentication "
 "only."
 msgstr ""
-"Marché d'inscription d'origine de ce compte. Utilisé uniquement pour "
+"Marketplace d'inscription d'origine de ce compte. Utilisée uniquement pour "
 "l'authentification."
 
 #. module: sale_amazon
@@ -1003,7 +1003,8 @@ msgstr "Nom du compte défini par l'utilisateur."
 #: model:ir.model.constraint,message:sale_amazon.constraint_amazon_marketplace_unique_api_ref
 msgid "There can only exist one marketplace for a given API Identifier."
 msgstr ""
-"Il ne peut exister qu'un seul marché pour un identificateur d'API donné."
+"Il ne peut exister qu'une seul marketplace pour un identificateur d'API "
+"donné."
 
 #. module: sale_amazon
 #: model:ir.model.constraint,message:sale_amazon.constraint_sale_order_unique_amazon_order_ref
@@ -1044,7 +1045,7 @@ msgstr "Dissocier le compte"
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_account_view_form
 msgid "Update Available Marketplaces"
-msgstr "Mettre à jour les places de marché disponibles"
+msgstr "Mettre à jour les marketplaces disponibles"
 
 #. module: sale_amazon
 #: model_terms:ir.ui.view,arch_db:sale_amazon.amazon_offer_view_tree
@@ -1097,7 +1098,7 @@ msgid ""
 "You first need to set the marketplaces to synchronize for the Amazon account"
 " %s."
 msgstr ""
-"Vous devez d'abord définir le marketplaces à synchroniser pour le compte "
+"Vous devez d'abord définir les marketplaces à synchroniser pour le compte "
 "Amazon %s."
 
 #. module: sale_amazon

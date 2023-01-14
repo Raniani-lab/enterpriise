@@ -509,7 +509,7 @@ msgstr ""
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_payment_provider__code
 msgid "The technical code of this payment provider."
-msgstr ""
+msgstr "Antud makseteenuse pakkuja tehniline kood."
 
 #. module: payment_sepa_direct_debit
 #: code:addons/payment_sepa_direct_debit/models/payment_transaction.py:0
@@ -558,7 +558,7 @@ msgstr "Verified"
 #: code:addons/payment_sepa_direct_debit/static/src/js/payment_form.js:0
 #, python-format
 msgid "We are not able to process your payment."
-msgstr ""
+msgstr "Me ei saa teie makset töödelda."
 
 #. module: payment_sepa_direct_debit
 #: model:ir.model.fields,help:payment_sepa_direct_debit.field_payment_provider__sdd_signature_required

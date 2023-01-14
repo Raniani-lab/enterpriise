@@ -460,7 +460,7 @@ msgstr ""
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_product_template
 msgid "Product"
-msgstr "ഉൽപ്പന്നം"
+msgstr ""
 
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_product_category

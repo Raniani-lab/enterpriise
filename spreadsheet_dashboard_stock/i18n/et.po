@@ -182,7 +182,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Locations"
-msgstr ""
+msgstr "Populaarsed asukohad"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web

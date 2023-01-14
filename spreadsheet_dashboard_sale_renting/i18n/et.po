@@ -70,7 +70,7 @@ msgstr "KPI"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Ordered"
-msgstr ""
+msgstr "Tellitud"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
@@ -198,14 +198,14 @@ msgstr "Müügiesindaja"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Customers"
-msgstr ""
+msgstr "Parimad kliendid"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Product Categories"
-msgstr ""
+msgstr "Parimad tootekategooriad"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
@@ -219,7 +219,7 @@ msgstr "Parimad tooted"
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Top Salespeople"
-msgstr ""
+msgstr "Parimad müügiesindajad"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web

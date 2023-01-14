@@ -60,12 +60,12 @@ msgstr "Hal lain lagi yang ingin ditambahkan?"
 #: model:ir.actions.act_window,name:website_helpdesk_livechat.helpdesk_im_livechat_canned_response_action
 #: model:ir.ui.menu,name:website_helpdesk_livechat.helpdesk_team_canned_response_menu
 msgid "Canned Responses"
-msgstr "Canned Response"
+msgstr "Tanggapan Otomatis"
 
 #. module: website_helpdesk_livechat
 #: model_terms:ir.ui.view,arch_db:website_helpdesk_livechat.im_livechat_canned_response_view_search
 msgid "Canned Responses Search"
-msgstr "Pencarian Canned Response"
+msgstr "Pencarian Tanggapan Otomatis"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_chatbot_script
@@ -87,13 +87,13 @@ msgstr "Buat Tiket"
 #: code:addons/website_helpdesk_livechat/static/src/models/messaging_initializer.js:0
 #, python-format
 msgid "Create a new helpdesk ticket"
-msgstr "Buat sebuah tiket helpdesk baru"
+msgstr "Buat tiket helpdesk baru"
 
 #. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
 #, python-format
 msgid "Created a new ticket: %s"
-msgstr "Membuat tiket baru: %s"
+msgstr "Tiket baru dibuat: %s"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model,name:website_helpdesk_livechat.model_mail_channel
@@ -103,7 +103,7 @@ msgstr "Channel Diskusi"
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_dispatch
 msgid "First, what is the nature of your issue?"
-msgstr ""
+msgstr "Pertama, masalah ini mengenai apa?"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,field_description:website_helpdesk_livechat.field_chatbot_script__ticket_count
@@ -113,7 +113,7 @@ msgstr "Jumlah Tiket yang Dibuat"
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_administrative_customer_ref_yes
 msgid "Great, that will make our lives easier."
-msgstr ""
+msgstr "Bagus, itu akan memudahkan hidup kita."
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script,title:website_helpdesk_livechat.chatbot_script_helpdesk_bot
@@ -129,27 +129,28 @@ msgstr "Tim Helpdesk"
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_welcome
 msgid "Here we go, help is on the way!"
-msgstr ""
+msgstr "Harap menunggu, bantuan sedang jalan!"
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.answer,name:website_helpdesk_livechat.chatbot_script_helpdesk_step_dispatch_answer_technical
 msgid "I have a technical issue"
-msgstr ""
+msgstr "Saya memiliki masalah teknis"
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.answer,name:website_helpdesk_livechat.chatbot_script_helpdesk_step_dispatch_answer_administrative
 msgid "I have an administrative question"
-msgstr ""
+msgstr "Saya memiliki pertanyaan administrati"
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_administrative_customer_ref_no
 msgid "It's OK, we can also find your contract by other means."
 msgstr ""
+"Tidak apa-apa, kita juga dapat menemukan kontrak Anda melalui cara lain."
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_email
 msgid "Just a last thing, can we please have your email address?"
-msgstr ""
+msgstr "Satu hal terakhir, apakah kami boleh meminta alamat email Anda?"
 
 #. module: website_helpdesk_livechat
 #: model:ir.model.fields,field_description:website_helpdesk_livechat.field_helpdesk_team__feature_livechat_channel_id
@@ -164,7 +165,7 @@ msgstr "Tidak"
 #. module: website_helpdesk_livechat
 #: model_terms:ir.actions.act_window,help:website_helpdesk_livechat.helpdesk_im_livechat_canned_response_action
 msgid "No canned reponses found. Let's create one!"
-msgstr "Tidak ada canned response yang ditemukan. Ayo kita buat!"
+msgstr "Tidak ada tanggapan otomatis yang ditemukan. Ayo kita buat!"
 
 #. module: website_helpdesk_livechat
 #: code:addons/website_helpdesk_livechat/models/helpdesk.py:0
@@ -257,7 +258,7 @@ msgstr ""
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.step,message:website_helpdesk_livechat.chatbot_script_helpdesk_step_administrative_issue
 msgid "We're all set. Now, what is your issue?"
-msgstr ""
+msgstr "Semuanya sudah siap. Sekarang, apa masalah Anda?"
 
 #. module: website_helpdesk_livechat
 #: model_terms:ir.actions.act_window,help:website_helpdesk_livechat.helpdesk_im_livechat_canned_response_action
@@ -266,10 +267,10 @@ msgid ""
 "responses into your messages. These shortcuts are replaced directly in your "
 "messages so that you can still make changes before sending them."
 msgstr ""
-"Dengan canned response, Anda dapat mengetik <i>:shortcuts</i> untuk "
-"menuliskan pesan yang ditulis terlebih dahulu untuk digunakan sebagai "
-"tanggapan dalam pesan-pesan Anda. Shortcut ini dapat diganti langsung di "
-"pesan-pesan Anda supaya Anda dapat merubah sebelum menggunakan."
+"Dengan tanggapan otomatis, Anda dapat mengetik <i>:shortcuts</i> untuk "
+"memuat pesan yang disiapkan sebelumnya di pesan-pesan Anda. Shortcuts "
+"tersebut lalu akan muncul di pesan Anda, supaya Anda masih dapat merubahnya "
+"sebelum dikirim."
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.answer,name:website_helpdesk_livechat.chatbot_script_helpdesk_step_administrative_customer_ref_answer_yes

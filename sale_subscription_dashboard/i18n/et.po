@@ -12,6 +12,7 @@
 # Egon Raamat <egon@avalah.ee>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Jana Jaakson, 2022
+# Anna, 2023
 # 
 msgid ""
 msgstr ""
@@ -19,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Jana Jaakson, 2022\n"
+"Last-Translator: Anna, 2023\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -71,7 +72,7 @@ msgstr "30 päeva tagasi"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "<i>There is no invoice during this period.</i>"
-msgstr ""
+msgstr "<i>Antud perioodis ei ole ühtegi arvet.</i>"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
@@ -152,7 +153,7 @@ msgstr "Hetke MRR"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "Current MRR ("
-msgstr ""
+msgstr "Hetke MRR ("
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -160,7 +161,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/js/sale_subscription_dashboard.js:0
 #, python-format
 msgid "Current Value: "
-msgstr ""
+msgstr "Praegune väärtus"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -173,7 +174,7 @@ msgstr "Kohandatud"
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Customer Churn"
-msgstr ""
+msgstr "Kliendi kaotus"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -308,7 +309,7 @@ msgstr "Grupeeri"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Growth Type:"
-msgstr ""
+msgstr "Kasvu tüüp:"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -323,7 +324,7 @@ msgstr "Sisse"
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_pivot
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
 msgid "Invoice Line Entries Analysis"
-msgstr ""
+msgstr "Arve rea kirjete analüüs"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/revenue_kpis_dashboard.py:0
@@ -430,7 +431,7 @@ msgstr "igakuine korduv tulu"
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Monthly Recurring Revenue :"
-msgstr ""
+msgstr "Igakuine korduv tulu"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -458,7 +459,7 @@ msgstr "NRR"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "NRR ("
-msgstr ""
+msgstr "NRR ("
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -494,7 +495,7 @@ msgstr "Ettevõtet pole valitud."
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Non Recurring invoices"
-msgstr ""
+msgstr "Mittekorduvad arved"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
@@ -508,13 +509,13 @@ msgstr "Mittekorduvad tulud"
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Non-Recurring Revenue :"
-msgstr ""
+msgstr "Mittekorduvad tulud"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Number of contracts"
-msgstr ""
+msgstr "Lepingute arv"
 
 #. module: sale_subscription_dashboard
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
@@ -525,7 +526,7 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.move_line_entries_report_search
 msgid "OUT invoices"
-msgstr ""
+msgstr "OUT arved"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -545,7 +546,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "PRINT PREVIEW"
-msgstr ""
+msgstr "Printimise eelvaade"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -580,7 +581,7 @@ msgstr "Eelmine MRR"
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "Previous MRR ("
-msgstr ""
+msgstr "Eelmine MRR ("
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -588,7 +589,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Projection Time:"
-msgstr ""
+msgstr "Projektsiooni aeg:"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -614,14 +615,14 @@ msgstr "Tulu Churn"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Revenue Churn:"
-msgstr ""
+msgstr "Tulude vähenemine:"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Revenue Growth:"
-msgstr ""
+msgstr "Tulude kasv:"
 
 #. module: sale_subscription_dashboard
 #: model:ir.actions.client,name:sale_subscription_dashboard.action_subscription_dashboard_report_main
@@ -633,7 +634,7 @@ msgstr "Tulu KPId"
 #: code:addons/sale_subscription_dashboard/controllers/stat_types.py:0
 #, python-format
 msgid "Revenue per Subscription"
-msgstr ""
+msgstr "Tulu iga tellimuse kohta"
 
 #. module: sale_subscription_dashboard
 #: model:ir.model,name:sale_subscription_dashboard.model_sale_order
@@ -657,7 +658,7 @@ msgstr "Müügiesindaja töölaud"
 #: code:addons/sale_subscription_dashboard/models/sale_order.py:0
 #, python-format
 msgid "Salesperson report"
-msgstr ""
+msgstr "Müügiesindaja aruanne"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -709,7 +710,7 @@ msgstr "Tellimus"
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 #, python-format
 msgid "Subscription Modifications"
-msgstr ""
+msgstr "Tellimuse muudatused"
 
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
@@ -751,7 +752,7 @@ msgstr ""
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "Subscriptions Growth:"
-msgstr ""
+msgstr "Tellimuste kasv:"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -891,7 +892,7 @@ msgstr ""
 #. module: sale_subscription_dashboard
 #: model_terms:ir.ui.view,arch_db:sale_subscription_dashboard.sales_men_pdf_template
 msgid "graphic"
-msgstr ""
+msgstr "graafiline"
 
 #. module: sale_subscription_dashboard
 #. openerp-web
@@ -913,7 +914,7 @@ msgstr "kuud koos"
 #: code:addons/sale_subscription_dashboard/static/src/xml/sale_subscription_dashboard.xml:0
 #, python-format
 msgid "subscription growth and"
-msgstr ""
+msgstr "tellimuste kasv ja"
 
 #. module: sale_subscription_dashboard
 #. openerp-web

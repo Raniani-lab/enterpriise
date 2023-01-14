@@ -437,7 +437,7 @@ msgstr ""
 #: model:ir.model,name:project_enterprise.model_res_users
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task_confirm_schedule_wizard__user_id
 msgid "User"
-msgstr "ഉപയോക്താവ്"
+msgstr ""
 
 #. module: project_enterprise
 #: model:ir.model.fields,field_description:project_enterprise.field_project_task__user_names

@@ -202,7 +202,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Customers"
-msgstr ""
+msgstr "Parimad kliendid"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web

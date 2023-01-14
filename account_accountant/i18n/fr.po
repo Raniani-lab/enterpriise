@@ -398,7 +398,7 @@ msgstr "Choisissez une ligne pour prévisualiser ses pièces jointes."
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #, python-format
 msgid "Choose counterpart or Create Write-off"
-msgstr "Choisissez la contrepartie ou créez un Write-off"
+msgstr "Choisissez la contrepartie ou créez une écriture d'annulation"
 
 #. module: account_accountant
 #: model_terms:ir.actions.act_window,help:account_accountant.actions_account_fiscal_year
@@ -582,7 +582,7 @@ msgstr "Récapitulatif"
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_form_bank_rec_widget
 msgid "Discard"
-msgstr "Annuler"
+msgstr "Ignorer"
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_rec_widget_form
@@ -936,8 +936,8 @@ msgstr "Est lettré"
 msgid ""
 "It is mandatory to specify an account and a journal to create a write-off."
 msgstr ""
-"Il est obligatoire de spécifier un compte et un journal pour créer un Write-"
-"off."
+"Il est obligatoire de spécifier un compte et un journal pour créer une "
+"écriture d'annulation."
 
 #. module: account_accountant
 #: model_terms:ir.ui.view,arch_db:account_accountant.account_journal_dashboard_kanban_view
@@ -1873,7 +1873,7 @@ msgstr "Assistant de la devise de l'entreprise "
 #: code:addons/account_accountant/models/reconciliation_widget.py:0
 #, python-format
 msgid "Write-Off"
-msgstr "Write-off"
+msgstr "Écriture d'annulation"
 
 #. module: account_accountant
 #. openerp-web

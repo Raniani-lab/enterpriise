@@ -1351,7 +1351,7 @@ msgstr ""
 #. module: industry_fsm
 #: model:res.groups,name:industry_fsm.group_fsm_user
 msgid "User"
-msgstr "ഉപയോക്താവ്"
+msgstr ""
 
 #. module: industry_fsm
 #. openerp-web

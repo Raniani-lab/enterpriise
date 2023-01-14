@@ -118,7 +118,7 @@ msgstr "WBK import"
 #. module: account_winbooks_import
 #: model:ir.model.fields,field_description:account_winbooks_import.field_account_winbooks_import_wizard__only_open
 msgid "Import only open years"
-msgstr ""
+msgstr "Impordi ainult avatud aastad"
 
 #. module: account_winbooks_import
 #: model:ir.model,name:account_winbooks_import.model_account_move_line
@@ -148,7 +148,7 @@ msgstr "Viimati uuendatud"
 #. module: account_winbooks_import
 #: model:ir.model.fields,help:account_winbooks_import.field_account_move_line__winbooks_matching_number
 msgid "Matching number that was used in Winbooks"
-msgstr ""
+msgstr "Sobitamise number, mida kasutati Winbooks'is."
 
 #. module: account_winbooks_import
 #: model:ir.model.fields.selection,name:account_winbooks_import.selection__res_company__account_onboarding_winbooks_state__not_done

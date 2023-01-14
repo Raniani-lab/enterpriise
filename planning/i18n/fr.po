@@ -305,7 +305,7 @@ msgstr ""
 "                            <td style=\"padding: 5px;\" t-out=\"ctx.get('end_datetime') or ''\">05/31/2021 16:00:00</td>\n"
 "                        </tr>\n"
 "                        <tr t-if=\"object.role_id\">\n"
-"                            <th style=\"padding: 5px;text-align: left;\">Rôle</th>\n"
+"                            <th style=\"padding: 5px;text-align: left;\">Fonction</th>\n"
 "                            <td style=\"padding: 5px;\" t-out=\"object.role_id.name or ''\">Barman</td>\n"
 "                        </tr>\n"
 "                        <tr t-if=\"hasattr(object, 'sale_line_id') and object.sale_line_id\">\n"
@@ -411,12 +411,12 @@ msgstr "<i class=\"fa fa-long-arrow-right\" title=\"Arrow\"/>"
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "<i class=\"fa small fa-minus\"></i> Role: Bartender"
-msgstr "<i class=\"fa small fa-minus\"></i> Rôle : Barman"
+msgstr "<i class=\"fa small fa-minus\"></i> Fonction : Barman"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
 msgid "<i class=\"fa small fa-minus\"></i> Role: Waiter"
-msgstr "<i class=\"fa small fa-minus\"></i> Rôle : Serveur"
+msgstr "<i class=\"fa small fa-minus\"></i> Fonction : Serveur"
 
 #. module: planning
 #: model_terms:ir.actions.act_window,help:planning.planning_action_roles
@@ -716,8 +716,8 @@ msgid ""
 "Analyze the allocation of your resources across roles, projects, and sales "
 "orders, and estimate future needs."
 msgstr ""
-"Analysez l'allocation de vos ressources entre les rôles, les projets et les "
-"commandes client, et estimez les besoins futurs."
+"Analysez l'allocation de vos ressources entre les fonctions, les projets et "
+"les commandes client, et estimez les besoins futurs."
 
 #. module: planning
 #: model_terms:ir.ui.view,arch_db:planning.planning_role_view_form
@@ -1005,7 +1005,7 @@ msgstr "Développeur"
 #: model_terms:ir.ui.view,arch_db:planning.planning_view_form_in_gantt
 #: model_terms:ir.ui.view,arch_db:planning.slot_planning_select_send_view_form
 msgid "Discard"
-msgstr "Annuler"
+msgstr "Ignorer"
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_analysis_report__display_name

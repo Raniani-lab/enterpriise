@@ -1070,7 +1070,7 @@ msgstr ""
 #. module: voip
 #: model:ir.model,name:voip.model_res_users
 msgid "User"
-msgstr "ഉപയോക്താവ്"
+msgstr ""
 
 #. module: voip
 #: model:ir.model,name:voip.model_res_users_settings

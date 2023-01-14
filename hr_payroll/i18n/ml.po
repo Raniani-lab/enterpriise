@@ -3659,7 +3659,7 @@ msgstr ""
 #. module: hr_payroll
 #: model:ir.model,name:hr_payroll.model_res_users
 msgid "User"
-msgstr "ഉപയോക്താവ്"
+msgstr ""
 
 #. module: hr_payroll
 #: model:res.groups,comment:hr_payroll.group_hr_payroll_user

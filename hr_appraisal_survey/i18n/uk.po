@@ -4,7 +4,7 @@
 # 
 # Translators:
 # Martin Trigaux, 2022
-# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022
+# Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +12,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2022\n"
+"Last-Translator: Alina Lisnenko <alina.lisnenko@erp.co.ua>, 2023\n"
 "Language-Team: Ukrainian (https://www.transifex.com/odoo/teams/41243/uk/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -129,6 +129,26 @@ msgid ""
 "            </ul>\n"
 "        "
 msgstr ""
+"<h2>Загальна мета оцінювання працівників</h2>\n"
+"            <ul>\n"
+"                <li>Ініціювати чітке та відкрите повідомлення про очікування продуктивності</li>\n"
+"                <li>Допомагати працівникам у професійному зростанні, через виявлення сильних сторін та можливостей для розвитку</li>\n"
+"            </ul>\n"
+"\n"
+"            <h2>На початку періоду оцінювання</h2>\n"
+"            <ul>\n"
+"                <li>Спільна відповідальність працівника та керівника (оцінювача) полягає в тому, щоб скласти здійсненний план роботи на наступний рік, включаючи основні обов’язки працівника та відповідні контрольні показники, за якими будуть оцінюватися результати.</li>\n"
+"                <li>Критичні або ключові елементи продуктивності та потреб у професійному розвитку (якщо такі є) також слід зазначити на цьому етапі</li>\n"
+"            </ul>\n"
+"\n"
+"            <h2>Після закінчення періоду оцінювання</h2>\n"
+"            <ul>\n"
+"                <li>Співробітник відповідатиме за заповнення проекту форми оцінювання як інструменту самооцінки та відправної точки для оцінки керівника. За кожним критерієм працівник може додати приклади досягнень. Після заповнення форми працівник надсилає її своєму керівнику.</li>\n"
+"                <li>Головним обов’язком керівника є збір необхідної інформації з відповідних джерел зворотного зв’язку (внутрішні та/або зовнішні клієнти, колеги).</li>\n"
+"                <li>Керівник синтезує та об’єднує всі вхідні дані в завершену оцінку. Мотивація оцінки пояснюється в спеціальних полях.</li>\n"
+"                <li>Працівник може за бажанням запропонувати коментарі чи пояснення щодо завершеного огляду.</li>\n"
+"            </ul>\n"
+"        "
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view
@@ -161,6 +181,8 @@ msgid ""
 "<p>Identify professional, performance, or project objectives you recommend "
 "for employee’s continued career development over the coming year.</p>"
 msgstr ""
+"<p>Визначте професійні, результативні або проектні цілі, які ви рекомендуєте"
+" для подальшого розвитку кар’єри співробітника протягом наступного року.</p>"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,description:hr_appraisal_survey.appraisal_3
@@ -175,6 +197,15 @@ msgid ""
 "            </ol>\n"
 "        "
 msgstr ""
+"<p>Оцінювач повинен оцінити основні робочі досягнення та продуктивність працівника відповідно до наведеного нижче показника:</p>\n"
+"            <ol>\n"
+"                <li> Значно перевищує стандарти та очікування, необхідні для посади</li>\n"
+"                <li> Перевершує стандарти та очікування</li>\n"
+"                <li> Відповідайте стандартам і очікуванням</li>\n"
+"                <li> Не відповідав стандартам і очікуванням</li>\n"
+"                <li> Значно нижче стандартів і очікувань</li>\n"
+"            </ol>\n"
+"        "
 
 #. module: hr_appraisal_survey
 #: model:survey.survey,description:hr_appraisal_survey.appraisal_feedback_template
@@ -314,7 +345,7 @@ msgstr "Оцінювання"
 #. module: hr_appraisal_survey
 #: model:mail.template,name:hr_appraisal_survey.mail_template_appraisal_ask_feedback
 msgid "Appraisal: Ask Feedback"
-msgstr ""
+msgstr "Оцінювання: Надіслати запит про відгук"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,title:hr_appraisal_survey.appraisal_1_5
@@ -453,7 +484,7 @@ msgstr "Шаблон за замовчуванням"
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_2_2
 msgid "Delegation: Ability to efficiently assign tasks to other people"
-msgstr "Делегація: можливість ефективно призначати завдання іншим людям"
+msgstr "Делегування: можливість ефективно призначати завдання іншим людям"
 
 #. module: hr_appraisal_survey
 #: model:ir.model,name:hr_appraisal_survey.model_hr_department
@@ -721,7 +752,7 @@ msgstr "Розіслати опитування"
 #. module: hr_appraisal_survey
 #: model:mail.template,description:hr_appraisal_survey.mail_template_appraisal_ask_feedback
 msgid "Sent to employees to gather appraisal feedback"
-msgstr ""
+msgstr "Надіслано працівникам для отримання відгуків про оцінку"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.y_360_5_4

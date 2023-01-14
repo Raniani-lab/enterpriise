@@ -114,7 +114,7 @@ msgstr "Sjabloon"
 #. module: documents_project_sale
 #: model:product.template,uom_name:documents_project_sale.product_1
 msgid "Units"
-msgstr "Eenheden"
+msgstr "Stuks"
 
 #. module: documents_project_sale
 #: model:ir.model.fields,field_description:documents_project_sale.field_product_product__template_folder_id

@@ -33,12 +33,12 @@ msgstr ""
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-thumbs-up me-1\" title=\"Likes\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-thumbs-up me-1\" title=\"Likes\"/>"
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_live_post__facebook_post_id
@@ -49,17 +49,17 @@ msgstr ""
 #: code:addons/social_facebook/models/social_stream_post.py:0
 #, python-format
 msgid "An error occurred."
-msgstr ""
+msgstr "Ilmnes viga"
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.res_config_settings_view_form
 msgid "App ID"
-msgstr ""
+msgstr "Rakenduse ID"
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.res_config_settings_view_form
 msgid "App Secret"
-msgstr ""
+msgstr "App Secret"
 
 #. module: social_facebook
 #. openerp-web
@@ -67,7 +67,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social_facebook.social_stream_post_view_kanban
 #, python-format
 msgid "Author Image"
-msgstr ""
+msgstr "Autori pilt"
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_res_config_settings__facebook_use_own_account
@@ -188,7 +188,7 @@ msgstr "Meeldimised"
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_media__media_type
 msgid "Media Type"
-msgstr ""
+msgstr "Meedia tüüp"
 
 #. module: social_facebook
 #: model:social.stream.type,name:social_facebook.stream_type_page_mentions
@@ -203,7 +203,7 @@ msgstr ""
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.facebook_preview
 msgid "Post Image"
-msgstr ""
+msgstr "Postita pilt"
 
 #. module: social_facebook
 #: code:addons/social_facebook/models/social_stream_post.py:0
@@ -255,7 +255,7 @@ msgstr "Sotsiaalmeedia postitus"
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_post_template
 msgid "Social Post Template"
-msgstr ""
+msgstr "Postituse mall"
 
 #. module: social_facebook
 #: model:ir.model,name:social_facebook.model_social_stream
@@ -271,7 +271,7 @@ msgstr "Sotsiaalmeedia striiming postitus"
 #: code:addons/social_facebook/controllers/main.py:0
 #, python-format
 msgid "There is no page linked to this account"
-msgstr ""
+msgstr "Selle kontoga pole lingitud ühtegi lehte"
 
 #. module: social_facebook
 #: code:addons/social_facebook/controllers/main.py:0
@@ -324,7 +324,7 @@ msgstr ""
 #: code:addons/social_facebook/models/social_media.py:0
 #, python-format
 msgid "You don't have an active subscription. Please buy one here: %s"
-msgstr ""
+msgstr "Teil pole aktiivset tellimust. Palun osta üks siit: %s"
 
 #. module: social_facebook
 #: model_terms:ir.ui.view,arch_db:social_facebook.social_stream_post_view_kanban

@@ -42,12 +42,12 @@ msgstr ""
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-comments me-1\" title=\"Comments\"/>"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-thumbs-up me-1\" title=\"Likes\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-thumbs-up me-1\" title=\"Likes\"/>"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.youtube_preview
@@ -82,7 +82,7 @@ msgstr "Konto"
 #: code:addons/social_youtube/models/social_stream_post.py:0
 #, python-format
 msgid "An error occurred."
-msgstr ""
+msgstr "Ilmnes viga"
 
 #. module: social_youtube
 #: code:addons/social_youtube/controllers/main.py:0
@@ -96,7 +96,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_stream_post_view_kanban
 #, python-format
 msgid "Author Image"
-msgstr ""
+msgstr "Autori pilt"
 
 #. module: social_youtube
 #: model_terms:ir.ui.view,arch_db:social_youtube.social_account_view_form
@@ -241,7 +241,7 @@ msgstr "Meeldimised"
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_media__media_type
 msgid "Media Type"
-msgstr ""
+msgstr "Meedia tüüp"
 
 #. module: social_youtube
 #. openerp-web
@@ -289,7 +289,7 @@ msgstr "Privaatne"
 #: code:addons/social_youtube/static/src/js/social_youtube_upload_field.js:0
 #, python-format
 msgid "Processing..."
-msgstr ""
+msgstr "Töötlemises.."
 
 #. module: social_youtube
 #: model:ir.model.fields.selection,name:social_youtube.selection__social_post__youtube_video_privacy__public
@@ -300,7 +300,7 @@ msgstr "Avalik"
 #: code:addons/social_youtube/controllers/main.py:0
 #, python-format
 msgid "Reason:"
-msgstr ""
+msgstr "Põhjus:"
 
 #. module: social_youtube
 #: model:ir.model.fields,help:social_youtube.field_social_account__youtube_refresh_token
@@ -385,7 +385,7 @@ msgstr "Sotsiaalmeedia postitus"
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_post_template
 msgid "Social Post Template"
-msgstr ""
+msgstr "Postituse mall"
 
 #. module: social_youtube
 #: model:ir.model,name:social_youtube.model_social_stream
@@ -446,7 +446,7 @@ msgstr ""
 #: code:addons/social_youtube/controllers/main.py:0
 #, python-format
 msgid "Unauthorized. Please contact your administrator."
-msgstr ""
+msgstr "Autoriseerimata. Palun võtke ühendust oma administraatoriga."
 
 #. module: social_youtube
 #: code:addons/social_youtube/wizard/social_account_revoke_youtube.py:0
@@ -552,7 +552,7 @@ msgstr ""
 #: code:addons/social_youtube/models/social_media.py:0
 #, python-format
 msgid "You don't have an active subscription. Please buy one here: %s"
-msgstr ""
+msgstr "Teil pole aktiivset tellimust. Palun osta üks siit: %s"
 
 #. module: social_youtube
 #: code:addons/social_youtube/models/social_post.py:0
@@ -670,7 +670,7 @@ msgstr ""
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_video
 msgid "YouTube Video"
-msgstr ""
+msgstr "YouTube Video"
 
 #. module: social_youtube
 #: model:ir.model.fields,field_description:social_youtube.field_social_post__youtube_description

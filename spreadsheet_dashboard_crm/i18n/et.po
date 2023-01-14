@@ -392,7 +392,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Countries"
-msgstr ""
+msgstr "Populaarsed riigid"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -422,7 +422,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Sales Teams"
-msgstr ""
+msgstr "Parimad müügimeeskonnad"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -430,7 +430,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/pipeline_dashboard.json:0
 #, python-format
 msgid "Top Salespeople"
-msgstr ""
+msgstr "Parimad müügiesindajad"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web
@@ -445,7 +445,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_crm/data/files/leads_dashboard.json:0
 #, python-format
 msgid "Top Tags"
-msgstr ""
+msgstr "Populaarsed sildid"
 
 #. module: spreadsheet_dashboard_crm
 #. openerp-web

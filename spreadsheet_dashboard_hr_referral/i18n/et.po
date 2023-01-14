@@ -262,7 +262,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_referral/data/files/recruitment_dashboard.json:0
 #, python-format
 msgid "Referral Rate"
-msgstr ""
+msgstr "Soovituste määr"
 
 #. module: spreadsheet_dashboard_hr_referral
 #. openerp-web

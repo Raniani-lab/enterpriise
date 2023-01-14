@@ -48,7 +48,7 @@ msgstr "Penawaran"
 #. module: social_sale
 #: model_terms:ir.ui.view,arch_db:social_sale.social_post_view_form
 msgid "Revenues"
-msgstr ""
+msgstr "Pendapatan"
 
 #. module: social_sale
 #: model:ir.model,name:social_sale.model_social_post

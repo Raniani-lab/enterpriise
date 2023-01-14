@@ -1057,7 +1057,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:appointment.appointment_invite_view_form_insert_link
 #, python-format
 msgid "Discard"
-msgstr "Abaikan"
+msgstr "Buang"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_answer__display_name
@@ -1877,7 +1877,7 @@ msgstr ""
 #: code:addons/appointment/models/appointment_type.py:0
 #, python-format
 msgid "Share Link"
-msgstr ""
+msgstr "Bagikan Link"
 
 #. module: appointment
 #: model:ir.actions.act_window,name:appointment.appointment_invite_action
@@ -2193,7 +2193,7 @@ msgstr ""
 #. module: appointment
 #: model:ir.model.fields.selection,name:appointment.selection__appointment_type__category__website
 msgid "Website"
-msgstr "Situs web"
+msgstr "Website"
 
 #. module: appointment
 #: model:ir.model.fields,field_description:appointment.field_appointment_type__website_message_ids

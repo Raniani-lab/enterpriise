@@ -11,7 +11,8 @@
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Martin Trigaux, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
-# Jana Jaakson, 2022
+# Anna, 2023
+# Jana Jaakson, 2023
 # 
 msgid ""
 msgstr ""
@@ -19,7 +20,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:49+0000\n"
 "PO-Revision-Date: 2022-09-22 05:48+0000\n"
-"Last-Translator: Jana Jaakson, 2022\n"
+"Last-Translator: Jana Jaakson, 2023\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -117,7 +118,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Could not find server. Please check that the url you entered is correct."
-msgstr ""
+msgstr "Serverit ei leitud. Kontrollige, kas sisestatud URL on õige."
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -128,6 +129,7 @@ msgstr ""
 msgid ""
 "Could not login. Please check that the information you entered is correct."
 msgstr ""
+"Sisse logimine ebaõnnestus. Kontrollige, kas sisestatud teave on õige."
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -138,6 +140,9 @@ msgid ""
 "connection, that the server address and database name you entered is valid, "
 "and that the server is online."
 msgstr ""
+"Serveriga ei õnnestunud ühendust saada. Kontrollige, kas Teil on toimiv "
+"internetiühendus, kas sisestatud serveri aadress ja andmebaasi nimi on õiged"
+" ning kas server on võrgus."
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -150,6 +155,9 @@ msgid ""
 "connection, that the server address you entered is valid, and that the "
 "server is online."
 msgstr ""
+"Serveriga ei õnnestunud ühendust saada. Kontrollige, kas Teil on "
+"internetiühendus, kas sisestatud serveri aadress on kehtiv ja kas server on "
+"võrgus."
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -326,7 +334,7 @@ msgstr "Järgmine nädal pole saadaval"
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "No default project"
-msgstr ""
+msgstr "Vaikimisi projekti pole"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -340,7 +348,7 @@ msgstr "Ülesannet pole"
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "No task selected"
-msgstr ""
+msgstr "Ülesannet pole valitud"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -356,7 +364,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "Odoo login failed"
-msgstr ""
+msgstr "Sisselogimine Odoosse ebaõnnestus"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -560,6 +568,9 @@ msgid ""
 "been released. You or your system administrator should consider retrieving "
 "it as soon as possible."
 msgstr ""
+"Teie Odoo serveri kood ei ole ajakohane ja uuendatud versioonid on saadaval."
+" Teie või süsteemihaldur peaksite kaaluma selle võimalikult kiiret "
+"allalaadimist."
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -569,6 +580,8 @@ msgid ""
 "The server does not support timesheet synchronization. It requires Odoo "
 "Enterprise Edition version 9 or newer."
 msgstr ""
+"Server ei toeta ajaarvestuse sünkroonimist. See nõuab Odoo Enterprise "
+"Editioni versiooni 9 või kõige uuemat versiooni."
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -579,6 +592,9 @@ msgid ""
 "your administrator in order to install the module \"Synchronization with the"
 " external timesheet application\""
 msgstr ""
+"Server ei toeta ajaarvestuse sünkroonimist. Mooduli \"Sünkroonimine valise "
+"ajaarvestuse rakendusega\" installimiseks peaksite võtma ühendust oma "
+"administraatoriga"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -631,6 +647,8 @@ msgid ""
 "Timesheet Synchronization is available in Odoo Enterprise Edition. You "
 "should consider upgrading your Odoo version if you would like to use it."
 msgstr ""
+"Ajaarvestuse sünkroonimine on saadaval Odoo Enterprise Editionis. Kui "
+"soovite seda kasutada, peaksite kaaluma oma Odoo versiooni uuendamist."
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -653,7 +671,7 @@ msgstr "Tänane plaan"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Toggle action"
-msgstr ""
+msgstr "Lülita toiming sisse"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -699,7 +717,7 @@ msgstr "Töö kokkuvõte"
 #: code:addons/project_timesheet_synchro/static/src/js/project_timesheet.js:0
 #, python-format
 msgid "Working time per week"
-msgstr ""
+msgstr "Tööaeg nädalas"
 
 #. module: project_timesheet_synchro
 #. openerp-web

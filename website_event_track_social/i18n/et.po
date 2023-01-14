@@ -27,6 +27,8 @@ msgid ""
 "<span attrs=\"{'invisible': [('push_reminder', '!=', True)]}\">minutes "
 "before start</span>"
 msgstr ""
+"<span attrs=\"{'invisible': [('push_reminder', '!=', True)]}\">minutit enne "
+"algust</span>"
 
 #. module: website_event_track_social
 #: model:ir.model.fields,help:website_event_track_social.field_event_track__push_reminder
@@ -110,10 +112,10 @@ msgstr "Veebilehe Külastaja"
 #: code:addons/website_event_track_social/models/event_track.py:0
 #, python-format
 msgid "Your favorite track '%s' will start in %s minutes!"
-msgstr ""
+msgstr "Teie lemmik jälgimine '%s' algab %s mõne minuti pärast!"
 
 #. module: website_event_track_social
 #: code:addons/website_event_track_social/models/event_track.py:0
 #, python-format
 msgid "Your track is about to start!"
-msgstr ""
+msgstr "Teie jälgimine on kohe algamas!"

@@ -1383,7 +1383,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.act_report_xml_view_kanban
 #, python-format
 msgid "Delete"
-msgstr "ഇല്ലാതാക്കുക"
+msgstr "ഡിലീറ്റ്"
 
 #. module: web_studio
 #. odoo-javascript
@@ -4195,7 +4195,7 @@ msgstr ""
 #. module: web_studio
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
 msgid "User"
-msgstr "ഉപയോക്താവ്"
+msgstr ""
 
 #. module: web_studio
 #. odoo-javascript

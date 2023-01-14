@@ -15,6 +15,7 @@
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Rivo Zängov <eraser@eraser.ee>, 2022
 # Jana Jaakson, 2023
+# Anna, 2023
 # Leaanika Randmets, 2023
 # 
 msgid ""
@@ -41,7 +42,7 @@ msgstr "Juhtumite arv"
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "%(number of missed calls)s missed calls"
-msgstr ""
+msgstr "%(vastamata kõnede arv) vastamata kõne"
 
 #. module: voip
 #. openerp-web
@@ -104,6 +105,8 @@ msgid ""
 "An error occured involving the audio recording device "
 "(%(errorName)s):</br>%(errorMessage)s"
 msgstr ""
+"Seoses helisalvestusseadmega ilmnes viga "
+"(%(errorName)s):</br>%(errorMessage)s"
 
 #. module: voip
 #. openerp-web
@@ -229,6 +232,10 @@ msgid ""
 " runs over HTTPS and that your browser is not set to deny access to media "
 "devices."
 msgstr ""
+"Helisalvestusseadmele ei ole juurdepääsu. Kui olete keelanud juurdepääsu oma"
+" mikrofonile, andke juurdepääs ja proovige uuesti. Muul juhul veenduge, et "
+"see veebisait töötaks HTTPS-i kaudu ja brauseril on juurdepääsu "
+"meediumiseadmetele."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__how_to_call_on_mobile
@@ -240,6 +247,10 @@ msgid ""
 "            • Ask: Always ask whether the softphone or the device's phone must be used\n"
 "        "
 msgstr ""
+"Valige mobiilirakenduse kasutamisel helistamiseks kasutatav meetod:\n"
+"• VoIP: kasutage alati Odoo tarkvara\n"
+"• Seadme telefon: kasutage alati seadme telefoni\n"
+"• Küsi: küsige alati, kas kasutada tuleb tarkvara telefoni või seadme telefoni"
 
 #. module: voip
 #. openerp-web
@@ -445,7 +456,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_res_users__how_to_call_on_mobile
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__how_to_call_on_mobile
 msgid "How to place calls on mobile"
-msgstr ""
+msgstr "Kuidas mobiiliga helistada"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__id
@@ -469,6 +480,9 @@ msgid ""
 "device number\". Use this option to place the call in Odoo but handle it "
 "from another device - e.g. your desk phone."
 msgstr ""
+"Kui see on lubatud, suunatakse Odoost helistamisel kõne \"Välise seadme "
+"numbrile\". Kasutage seda valikut, et helistada Odoost, kuid saate käsitleda"
+" seda teisest seadmest – nt. teie lauatelefon."
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_users__external_device_number
@@ -477,6 +491,8 @@ msgid ""
 "If the \"Call from another device\" option is enabled, calls placed in Odoo "
 "will be transfered to this phone number."
 msgstr ""
+"Kui valik \"Helista teisest seadmest\" on lubatud, suunatakse Odoosse tehtud"
+" kõned sellele telefoninumbrile."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__7d
@@ -589,29 +605,29 @@ msgstr "Seotud tegevus"
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__mail_message_id
 msgid "Linked Chatter Message"
-msgstr ""
+msgstr "Seotud sõnum logis"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity__voip_phonecall_id
 msgid "Linked Voip Phonecall"
-msgstr ""
+msgstr "Seotud Voip telefonikõne"
 
 #. module: voip
 #: model_terms:ir.actions.act_window,help:voip.voip_phonecall_view
 msgid "Log the summary of a phonecall"
-msgstr ""
+msgstr "Logige telefonikõne kokkuvõte"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__phonecall_id
 msgid "Logged Phonecall"
-msgstr ""
+msgstr "Logitud telefonikõne"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "Make a call using:"
-msgstr ""
+msgstr "Tehke kõne kasutades:"
 
 #. module: voip
 #. openerp-web
@@ -630,7 +646,7 @@ msgstr "Vastamata"
 #: code:addons/voip/models/voip_phonecall.py:0
 #, python-format
 msgid "Missed Call from %s"
-msgstr ""
+msgstr "Vastamata kõne %s"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_mail_activity__mobile
@@ -657,7 +673,7 @@ msgstr "Mobiiltelefon:"
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Mute"
-msgstr ""
+msgstr "Vaigista"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter
@@ -669,7 +685,7 @@ msgstr "Minu kõned"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Next activities"
-msgstr ""
+msgstr "Järgmised tegevused"
 
 #. module: voip
 #. openerp-web
@@ -679,6 +695,7 @@ msgid ""
 "No audio recording device available. The application requires a microphone "
 "in order to be used."
 msgstr ""
+"Helisalvestusseade pole saadaval. Rakenduse kasutamiseks on vaja mikrofoni."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__pending
@@ -753,7 +770,7 @@ msgstr "Telefon:"
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Phonecall details"
-msgstr ""
+msgstr "Telefonikõne detailid"
 
 #. module: voip
 #: model:ir.actions.act_window,name:voip.voip_phonecall_view
@@ -769,7 +786,7 @@ msgstr "Telefonikõned"
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "Please accept the use of the microphone."
-msgstr ""
+msgstr "Nõustuge mikrofoni kasutamisega."
 
 #. module: voip
 #. openerp-web
@@ -779,6 +796,8 @@ msgid ""
 "Please try again later. If the problem persists, you may want to ask an "
 "administrator to check the configuration."
 msgstr ""
+"Palun proovige hiljem uuesti. Kui probleem püsib, paluge administraatoril "
+"seadistusi kontrollida."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__res_config_settings__mode__prod
@@ -790,7 +809,7 @@ msgstr "Tootmine"
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Recent"
-msgstr ""
+msgstr "Hiljutine"
 
 #. module: voip
 #. openerp-web
@@ -805,7 +824,7 @@ msgstr "Värskenda paneeli"
 #: code:addons/voip/static/src/models/registerer.js:0
 #, python-format
 msgid "Registration rejected: %(statusCode)s %(reasonPhrase)s."
-msgstr ""
+msgstr "Registreerimine tagasi lükatud: %(statusCode)s%(reasonPhrase)s."
 
 #. module: voip
 #. openerp-web
@@ -819,13 +838,13 @@ msgstr "Keeldu"
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Reject call"
-msgstr ""
+msgstr "Keeldu kõnest"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__should_auto_reject_incoming_calls
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__should_auto_reject_incoming_calls
 msgid "Reject incoming calls"
-msgstr ""
+msgstr "Keeldu sissetulevatest kõnedest"
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__rejected
@@ -836,21 +855,21 @@ msgstr "Tagasi lükatud"
 #: code:addons/voip/models/voip_phonecall.py:0
 #, python-format
 msgid "Rejected Incoming Call from %s"
-msgstr ""
+msgstr "Keeldu sissetulevad kõned %s"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "Remember ?"
-msgstr ""
+msgstr "Kas mäletad?"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/models/call_queue_switch_view.js:0
 #, python-format
 msgid "Remove from Call Queue"
-msgstr ""
+msgstr "Eemalda kõne järjekorrast"
 
 #. module: voip
 #. openerp-web
@@ -858,7 +877,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call.xml:0
 #, python-format
 msgid "Remove from the queue"
-msgstr ""
+msgstr "Eemalda järjekorrast"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__user_id
@@ -872,12 +891,12 @@ msgstr "Vastutaja"
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Ringing..."
-msgstr ""
+msgstr "Kutsub..."
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.res_config_settings_view_form
 msgid "Schedule &amp; make calls from your database"
-msgstr ""
+msgstr "Planeerige ja tehke kõnesid oma andmebaasist"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__reschedule_option
@@ -896,7 +915,7 @@ msgstr "Planeeri tegevus"
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Schedule Next"
-msgstr ""
+msgstr "Planeeri järgmine"
 
 #. module: voip
 #. openerp-web
@@ -930,17 +949,19 @@ msgid ""
 "Some documents cannot be added to the call queue as they do not have a phone"
 " number set: %(record_names)s"
 msgstr ""
+"Mõnda dokumenti ei saa kõnejärjekorda lisada, kuna neile pole määratud telefoninumbrit:\n"
+"%(record_names)s"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall_log_wizard__reschedule_date
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall_log_wizard__reschedule_option__custom
 msgid "Specific Date"
-msgstr ""
+msgstr "Kindel kuupäev"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__start_time
 msgid "Start time"
-msgstr ""
+msgstr "Algusaeg"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__state
@@ -963,12 +984,12 @@ msgstr "Süsteemi parameeter"
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Take call"
-msgstr ""
+msgstr "Võta kõne"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__pbx_ip
 msgid "The IP address of your PBX Server"
-msgstr ""
+msgstr "PBX Serveri IP aadress"
 
 #. module: voip
 #: model:ir.model.fields,help:voip.field_res_config_settings__wsServer
@@ -980,7 +1001,7 @@ msgstr "Teie WebSocket'i URL"
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "The connection cannot be made.</br> Please check your configuration."
-msgstr ""
+msgstr "Ühendust ei saa luua. </br> Palun kontrollige seadistusi."
 
 #. module: voip
 #. openerp-web
@@ -1013,14 +1034,14 @@ msgstr ""
 #: code:addons/voip/static/src/js/user_agent.js:0
 #, python-format
 msgid "The person you try to contact is currently unavailable."
-msgstr ""
+msgstr "Isik, kellega proovite ühendust võtta, pole praegu saadaval."
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "The phonecall has no number"
-msgstr ""
+msgstr "Telefonikõnel puudub number"
 
 #. module: voip
 #. openerp-web
@@ -1056,6 +1077,7 @@ msgid ""
 "The websocket connection with the server has been lost. Please try to "
 "refresh the page."
 msgstr ""
+"Websocketi ühendus serveriga on katkenud. Palun proovige lehte värskendada."
 
 #. module: voip
 #: model:ir.model.fields.selection,name:voip.selection__voip_phonecall__state__open
@@ -1095,22 +1117,22 @@ msgstr "Kasutaja seaded"
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall
 msgid "VOIP Phonecall"
-msgstr ""
+msgstr "VOIP telefonikõne"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall_log_wizard
 msgid "VOIP Phonecall log Wizard"
-msgstr ""
+msgstr "VOIP telefonikõne logi Wizard"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_phonecall_report
 msgid "VOIP Phonecalls by user report"
-msgstr ""
+msgstr "VOIP telefonikõned kasutaja järgi"
 
 #. module: voip
 #: model:ir.model,name:voip.model_voip_queue_mixin
 msgid "VOIP Queue support"
-msgstr ""
+msgstr "VOIP järjekorra tugi"
 
 #. module: voip
 #. openerp-web
@@ -1120,36 +1142,36 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:voip.res_users_view_form_preferences
 #, python-format
 msgid "VoIP"
-msgstr ""
+msgstr "VoIP"
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.voip_res_users_settings_view_form
 msgid "VoIP Configuration"
-msgstr ""
+msgstr "VoIP seadistused"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__mode
 msgid "VoIP Environment"
-msgstr ""
+msgstr "VoIP keskkond"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__voip_secret
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__voip_secret
 msgid "VoIP secret"
-msgstr ""
+msgstr "VoIP secret"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_users__voip_username
 #: model:ir.model.fields,field_description:voip.field_res_users_settings__voip_username
 msgid "VoIP username / Extension number"
-msgstr ""
+msgstr "VoIP kasutajanimi / laienduse number"
 
 #. module: voip
 #. openerp-web
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "Voip"
-msgstr ""
+msgstr "Voip"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_config_settings__wsServer
@@ -1161,7 +1183,7 @@ msgstr "WebSocket"
 #: code:addons/voip/static/src/js/dialing_panel.js:0
 #, python-format
 msgid "You are already in a call"
-msgstr ""
+msgstr "Olete juba kõnes"
 
 #. module: voip
 #. openerp-web
@@ -1171,6 +1193,8 @@ msgid ""
 "You must allow the access to the microphone on your device. Otherwise, the "
 "VoIP call receiver will not hear you."
 msgstr ""
+"Peate lubama juurdepääsu oma seadme mikrofonile. Vastasel juhul ei kuule "
+"VoIP-kõne vastuvõtja teid."
 
 #. module: voip
 #. openerp-web
@@ -1179,7 +1203,7 @@ msgstr ""
 #, python-format
 msgid ""
 "Your browser could not support WebRTC. Please check your configuration."
-msgstr ""
+msgstr "Teie brauser ei toeta WebRTC-d. Kontrollige oma konfiguratsiooni."
 
 #. module: voip
 #. openerp-web
@@ -1188,6 +1212,8 @@ msgstr ""
 msgid ""
 "Your credentials are not correctly set. Please contact your administrator."
 msgstr ""
+"Teie mandaadid pole õigesti seadistatud. Võtke ühendust oma "
+"administraatoriga."
 
 #. module: voip
 #. openerp-web

@@ -33,14 +33,14 @@ msgstr "Beschikbare tijd (min)t"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Average Cost / Unit"
-msgstr "Gemiddelde kosten / eenheid"
+msgstr "Gemiddelde kosten / Stuk"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Average cost / unitt"
-msgstr "Gemiddelde kosten / eenheid"
+msgstr "Gemiddelde kosten / Stuk"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web

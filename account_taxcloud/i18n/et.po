@@ -92,6 +92,8 @@ msgid ""
 "Enable <b>Detect Automatically</b> to automatically use TaxCloud when "
 "selling to American customers."
 msgstr ""
+"Luba <b>Automaatne tuvastamine</b>, TaxCloudi automaatseks kasutamiseks kuid"
+" müüd Ameerika klientidele. "
 
 #. module: account_taxcloud
 #: model:ir.model,name:account_taxcloud.model_account_fiscal_position

@@ -105,8 +105,8 @@ msgid ""
 "Tracks that are 'default favorited' can be blacklisted and the visitor is "
 "removed from push reminders."
 msgstr ""
-"Tracks die 'standaard favoriet' zijn, kunnen op de zwarte lijst worden gezet"
-" en de bezoeker wordt verwijderd uit pushherinneringen."
+"Tracks die 'standaard favoriet' zijn, kunnen geblacklist worden en de "
+"bezoeker wordt verwijderd uit pushherinneringen."
 
 #. module: website_event_track_social
 #: model:ir.model,name:website_event_track_social.model_website_visitor

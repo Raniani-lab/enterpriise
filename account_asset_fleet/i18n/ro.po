@@ -34,7 +34,7 @@ msgstr "Activ/Recunoaștere venituri"
 #. module: account_asset_fleet
 #: model:ir.model,name:account_asset_fleet.model_account_move
 msgid "Journal Entry"
-msgstr "Notă contabilă"
+msgstr "Înregistrare jurnal "
 
 #. module: account_asset_fleet
 #: model:ir.model,name:account_asset_fleet.model_account_move_line

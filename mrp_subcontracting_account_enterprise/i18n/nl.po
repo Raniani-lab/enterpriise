@@ -48,7 +48,7 @@ msgstr "<strong>Totale kosten van uitbesteding</strong>"
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_report_pivot_view_inherit_subcontracting
 msgid "Average Subcontracting Cost / Unit"
-msgstr "Gemiddelde Uitbestedingskost / Eenheid"
+msgstr "Gemiddelde Uitbestedingskost / Stuk"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
@@ -58,7 +58,7 @@ msgstr "Uitbestedingskosten"
 #. module: mrp_subcontracting_account_enterprise
 #: model_terms:ir.ui.view,arch_db:mrp_subcontracting_account_enterprise.mrp_cost_structure_subcontracting
 msgid "Cost of Subcontracting per unit (in"
-msgstr "Uitbestedingskosten per eenheid (in"
+msgstr "Uitbestedingskosten per stuk (in"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model,name:mrp_subcontracting_account_enterprise.model_report_mrp_account_enterprise_mrp_cost_structure
@@ -76,7 +76,7 @@ msgid ""
 "Subcontracting cost per unit produced (in product UoM) of manufacturing "
 "order"
 msgstr ""
-"Uitbestedingskosten per geproduceerde eenheid (in productmaateenheid) van "
+"Uitbestedingskosten per geproduceerd stuk (in productmaateenheid) van "
 "productieorder"
 
 #. module: mrp_subcontracting_account_enterprise
@@ -92,7 +92,7 @@ msgstr "Totale uitbestedingskosten"
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,field_description:mrp_subcontracting_account_enterprise.field_mrp_report__unit_subcontracting_cost
 msgid "Total Subcontracting Cost / Unit"
-msgstr "Totale uitbestedingskosten / Eenheid"
+msgstr "Totale uitbestedingskosten / Stuk"
 
 #. module: mrp_subcontracting_account_enterprise
 #: model:ir.model.fields,help:mrp_subcontracting_account_enterprise.field_mrp_report__total_cost

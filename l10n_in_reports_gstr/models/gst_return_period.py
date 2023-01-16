@@ -286,7 +286,7 @@ class L10nInGSTReturnPeriod(models.Model):
         msg = ""
         if not company.vat:
             raise UserError(_("Please set company GSTIN"))
-        if not company.l10n_in_gstr_gst_username:
+        if not company.sudo().l10n_in_gstr_gst_username:
             msg = _("First setup GST user name and validate using OTP from configuration")
         if not company._is_l10n_in_gstr_token_valid():
             msg = _("The NIC portal connection has expired. To re-initiate the connection, you can send an OTP request From configuration.")
@@ -1673,7 +1673,7 @@ class L10nInGSTReturnPeriod(models.Model):
             params = {}
         params.update(
             {
-                "username": company.l10n_in_gstr_gst_username,
+                "username": company.sudo().l10n_in_gstr_gst_username,
                 "gstin": company.vat,
                 "account_token": iap_service.account_token,
                 'dbuuid': self.env["ir.config_parameter"].sudo().get_param("database.uuid"),
@@ -1702,14 +1702,14 @@ class L10nInGSTReturnPeriod(models.Model):
         return self._request(url="/iap/l10n_in_reports/1/authentication/authtoken", params=params, company=company)
 
     def _refresh_token_request(self, company):
-        params = {"auth_token": company.l10n_in_gstr_gst_token}
+        params = {"auth_token": company.sudo().l10n_in_gstr_gst_token}
         return self._request(
             url="/iap/l10n_in_reports/1/authentication/refreshtoken", params=params, company=company)
 
     def _send_gstr1(self, company, month_year, json_payload):
         params = {
             "ret_period": month_year,
-            "auth_token": company.l10n_in_gstr_gst_token,
+            "auth_token": company.sudo().l10n_in_gstr_gst_token,
             "json_payload": json_payload,
         }
         return self._request(url="/iap/l10n_in_reports/1/gstr1/retsave", params=params, company=company)
@@ -1717,7 +1717,7 @@ class L10nInGSTReturnPeriod(models.Model):
     def _get_gstr_status(self, company, month_year, reference_id):
         params = {
             "ret_period": month_year,
-            "auth_token": company.l10n_in_gstr_gst_token,
+            "auth_token": company.sudo().l10n_in_gstr_gst_token,
             "reference_id": reference_id,
         }
         return self._request(url="/iap/l10n_in_reports/1/retstatus", params=params, company=company)
@@ -1725,7 +1725,7 @@ class L10nInGSTReturnPeriod(models.Model):
     def _get_gstr2b_data(self, company, month_year, file_number=None):
         params = {
             "ret_period": month_year,
-            "auth_token": company.l10n_in_gstr_gst_token,
+            "auth_token": company.sudo().l10n_in_gstr_gst_token,
             "file_number": file_number,
         }
         return self._request(url="/iap/l10n_in_reports/1/gstr2b/all", params=params, company=company)

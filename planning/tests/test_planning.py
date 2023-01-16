@@ -6,6 +6,7 @@ from freezegun import freeze_time
 from odoo.exceptions import UserError
 
 from odoo import fields
+from odoo.exceptions import ValidationError
 from odoo.tests.common import Form
 from odoo.tests import new_test_user
 
@@ -336,3 +337,13 @@ class TestPlanning(TestCommonPlanning, MockEmail):
             None,
             author=joseph_user.partner_id,
         )
+
+    def test_name_long_duration(self):
+        """ Set an absurdly high duration to ensure we validate it and get an error """
+        template_slot = self.env['planning.slot.template'].create({
+            'start_time': 9,
+            'duration': 100000,
+        })
+        with self.assertRaises(ValidationError):
+            # only try to get the name, this triggers its compute
+            template_slot.name

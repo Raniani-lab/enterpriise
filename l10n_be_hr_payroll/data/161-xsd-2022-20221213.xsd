@@ -9,7 +9,7 @@
                                                                                                                                     <xs:simpleType name="v0002_inkomstenjaar">
                 <xs:annotation>
                     <xs:documentation>
-                        année des revenus (2021)
+                        année des revenus (2022)
 			
 			
 			
@@ -37,7 +37,7 @@
                                 <xs:simpleType name="v0011_aanmaakdatum">
                 <xs:annotation>
                     <xs:documentation>
-                        date de création du fichier 'JJ-MM-AAAA' (> 1/1/2022)
+                        date de création du fichier 'JJ-MM-AAAA' (> 1/1/2023)
 			
 			
 			
@@ -388,7 +388,7 @@
                                                                         <xs:simpleType name="a1002_inkomstenjaar">
                 <xs:annotation>
                     <xs:documentation>
-                        année des revenus (2021)
+                        année des revenus (2022)
 			
 			
 			
@@ -861,6 +861,20 @@
                     </xs:restriction>
             </xs:simpleType>
 
+                                <xs:simpleType name="a1039_foreignvat">
+                <xs:annotation>
+                    <xs:documentation>
+                        
+			
+			
+			
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:restriction base="xs:string">
+                                                            <!-- <xs:maxLength value="368"/> -->
+                    </xs:restriction>
+            </xs:simpleType>
+
                                 <xs:simpleType name="r8002_inkomstenjaar">
                 <xs:annotation>
                     <xs:documentation>
@@ -992,7 +1006,7 @@
                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                     <xs:simpleType name="f2002_inkomstenjaar">
                     <xs:annotation>
                         <xs:documentation>
-                            année des revenus (2021)
+                            année des revenus (2022)
 			Tooltip Année des revenus
 			Tooltip inkomstenjaar
 			Tooltip Einkommensjahr
@@ -1615,7 +1629,7 @@
                         </xs:documentation>
                     </xs:annotation>
                     <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="82"/> -->
+                                                                <!-- <xs:maxLength value="41"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
@@ -1647,24 +1661,10 @@
                         </xs:restriction>
                 </xs:simpleType>
 
-                                                <xs:simpleType name="f10_2031_compensationwithstandards">
+                                                <xs:simpleType name="f10_2031_associationactivity">
                     <xs:annotation>
                         <xs:documentation>
                             zone 2.31 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="1"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
-                                                <xs:simpleType name="f10_2033_compensationwithdocuments">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.33 (zone non définie)
 			
 			
 			
@@ -2169,9 +2169,9 @@
                     <xs:annotation>
                         <xs:documentation>
                             zone 2.82 (zone non définie)
-			Concerne des avantages découlant des options sur actions attribuées en 2021.
-			Betreffende de voordelen die voortkomen uit opties op aandelen toegekend in 2021.
-			Betrifft aus in 2021 zugeteilten Optionen auf Aktien hervorrührende Vorteile.
+			Concerne des avantages découlant des options sur actions attribuées en 2022.
+			Betreffende de voordelen die voortkomen uit opties op aandelen toegekend in 2022.
+			Betrifft aus in 2022 zugeteilten Optionen auf Aktien hervorrührende Vorteile.
                         </xs:documentation>
                     </xs:annotation>
                     <xs:restriction base="xs:string">
@@ -2183,9 +2183,9 @@
                     <xs:annotation>
                         <xs:documentation>
                             zone 2.83 (zone non définie)
-			Concerne des avantages imposables en 2021 et qui proviennent d'options sur actions attribuées de 1999 à 2020
-			Betreft de in 2021 belastbare voordelen die voortkomen uit opties op aandelen toegekend van 1999 tot 2020
-			Betrifft in 2021 besteuerbaren Vorteile die sich ergeben aus Optionen auf Aktien die von 1999 bis 2020 zugeteilt wurden
+			Concerne des avantages imposables en 2022 et qui proviennent d'options sur actions attribuées de 1999 à 2021
+			Betreft de in 2022 belastbare voordelen die voortkomen uit opties op aandelen toegekend van 1999 tot 2021
+			Betrifft in 2022 besteuerbaren Vorteile die sich ergeben aus Optionen auf Aktien die von 1999 bis 2021 zugeteilt wurden
                         </xs:documentation>
                     </xs:annotation>
                     <xs:restriction base="xs:string">
@@ -2515,7 +2515,7 @@
                         </xs:restriction>
                 </xs:simpleType>
 
-                                                <xs:simpleType name="f10_2118_amountovertime180secondsemester">
+                                                <xs:simpleType name="f10_2118_overtimehours180">
                     <xs:annotation>
                         <xs:documentation>
                             zone 2.118 (zone non définie)
@@ -2669,6 +2669,20 @@
                         </xs:restriction>
                 </xs:simpleType>
 
+                                                <xs:simpleType name="f10_2129_exemptincomesubjecttoprogressivity">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.129 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
                                                 <xs:simpleType name="f10_2130_privatepc">
                     <xs:annotation>
                         <xs:documentation>
@@ -2697,7 +2711,7 @@
                         </xs:restriction>
                 </xs:simpleType>
 
-                                                <xs:simpleType name="f10_2132_amountovertime180firstsemester">
+                                                <xs:simpleType name="f10_2132_horeca">
                     <xs:annotation>
                         <xs:documentation>
                             
@@ -2781,21 +2795,7 @@
                         </xs:restriction>
                 </xs:simpleType>
 
-                                                <xs:simpleType name="f10_2138_chequesofconsumptions">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.138 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="11"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
-                                                <xs:simpleType name="f10_2141_occasionalworkhoreca">
+                                                <xs:simpleType name="f10_2141_total">
                     <xs:annotation>
                         <xs:documentation>
                             
@@ -2809,7 +2809,7 @@
                         </xs:restriction>
                 </xs:simpleType>
 
-                                                <xs:simpleType name="f10_2142_aantaloveruren180">
+                                                <xs:simpleType name="f10_2142_totalovertimehours180">
                     <xs:annotation>
                         <xs:documentation>
                             
@@ -2921,10 +2921,38 @@
                         </xs:restriction>
                 </xs:simpleType>
 
+                                                <xs:simpleType name="f10_2176_overtimehours180">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.176 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
                                                 <xs:simpleType name="f10_2177_winstpremies">
                     <xs:annotation>
                         <xs:documentation>
                             zone 2.177 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f10_2178_pensioner">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.178 (zone non définie)
 			
 			
 			
@@ -3173,10 +3201,122 @@
                         </xs:restriction>
                 </xs:simpleType>
 
+                                                <xs:simpleType name="f10_2197_covidovertimeremuneration2022">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.197 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
                                                 <xs:simpleType name="f10_2198_coronabonus">
                     <xs:annotation>
                         <xs:documentation>
                             zone 2.198 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f10_2199_covidovertimehours2022">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.199 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f10_2200_compensationwithstandards">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.200 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f10_2201_compensationwithdocuments">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.201 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f10_2202_amount">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.202 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f10_2203_amount">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.203 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f10_2204_repaidsums">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.204 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f10_2205_recuperation">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.205 (zone non définie)
 			
 			
 			
@@ -3705,6 +3845,20 @@
                         </xs:restriction>
                 </xs:simpleType>
 
+                                                <xs:simpleType name="f11_2205_recuperation">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.205 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
                                                             <xs:simpleType name="f12_2030_invalid">
                     <xs:annotation>
                         <xs:documentation>
@@ -3873,10 +4027,24 @@
                         </xs:restriction>
                 </xs:simpleType>
 
-                                                            <xs:simpleType name="f13_2030_onderbrokenwerkzaa">
+                                                <xs:simpleType name="f12_2205_recuperation">
                     <xs:annotation>
                         <xs:documentation>
-                            zone 2.30 (zone non définie)
+                            zone 2.205 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                            <xs:simpleType name="f13_2031_repaymentneo">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.31 (zone non définie)
 			
 			
 			
@@ -4279,6 +4447,20 @@
                         </xs:restriction>
                 </xs:simpleType>
 
+                                                <xs:simpleType name="f13_2205_recuperation">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.205 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
                                                             <xs:simpleType name="f14_2035_verantwoordingsstukken">
                     <xs:annotation>
                         <xs:documentation>
@@ -4517,6 +4699,20 @@
                         </xs:restriction>
                 </xs:simpleType>
 
+                                                <xs:simpleType name="f14_2205_recuperation">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.205 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
                                                             <xs:simpleType name="f15_2035_verantwoordingsstukken">
                     <xs:annotation>
                         <xs:documentation>
@@ -4699,6 +4895,20 @@
                         </xs:restriction>
                 </xs:simpleType>
 
+                                                <xs:simpleType name="f15_2205_recuperation">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.205 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
                                                             <xs:simpleType name="f16_2035_verantwoordingsstukken">
                     <xs:annotation>
                         <xs:documentation>
@@ -4878,6 +5088,20 @@
                     </xs:annotation>
                     <xs:restriction base="xs:string">
                                                                 <!-- <xs:maxLength value="27"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f16_2205_recuperation">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.205 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
@@ -5329,6 +5553,20 @@
                         </xs:restriction>
                 </xs:simpleType>
 
+                                                <xs:simpleType name="f17_2205_recuperation">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.205 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
                                                             <xs:simpleType name="f18_2034_ex">
                     <xs:annotation>
                         <xs:documentation>
@@ -5763,21 +6001,21 @@
                         </xs:restriction>
                 </xs:simpleType>
 
-                                                            <xs:simpleType name="f20_2030_compensationwithstandards">
+                                                <xs:simpleType name="f18_2205_recuperation">
                     <xs:annotation>
                         <xs:documentation>
-                            zone 2.30 (zone non définie)
+                            zone 2.205 (zone non définie)
 			
 			
 			
                         </xs:documentation>
                     </xs:annotation>
                     <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="1"/> -->
+                                                                <!-- <xs:maxLength value="11"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
-                                                <xs:simpleType name="f20_2031_stopzettingexploitatie">
+                                                            <xs:simpleType name="f20_2031_stopzettingexploitatie">
                     <xs:annotation>
                         <xs:documentation>
                             zone 2.31 (zone non définie)
@@ -5809,20 +6047,6 @@
                     <xs:annotation>
                         <xs:documentation>
                             zone 2.33 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="1"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
-                                                <xs:simpleType name="f20_2034_compensationwithdocuments">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.34 (zone non définie)
 			
 			
 			
@@ -6159,9 +6383,9 @@
                     <xs:annotation>
                         <xs:documentation>
                             zone 2.79 (zone non définie)
-			Concerne des avantages découlant des options sur actions attribuées en 2021
-			Betreft de voordelen die voortkomen uit opties op aandelen toegekend in 2021
-			Betrifft aus in 2021 zugeteilten Optionen auf Aktien hervorrührende Vorteile.
+			Concerne des avantages découlant des options sur actions attribuées en 2022
+			Betreft de voordelen die voortkomen uit opties op aandelen toegekend in 2022
+			Betrifft aus in 2022 zugeteilten Optionen auf Aktien hervorrührende Vorteile.
                         </xs:documentation>
                     </xs:annotation>
                     <xs:restriction base="xs:string">
@@ -6173,9 +6397,9 @@
                     <xs:annotation>
                         <xs:documentation>
                             zone 2.80 (zone non définie)
-			Concerne des avantages imposables en 2021 et qui proviennent d'options sur actions attribuées de 1999 à 2020
-			Betreft de in 2021 belastbare voordelen die voortkomen uit opties op aandelen toegekend van 1999 tot 2020
-			Betrifft in 2021 besteuerbaren Vorteile aus van 1999 bis 2020 zugeteilten Optionen auf Aktien.
+			Concerne des avantages imposables en 2022 et qui proviennent d'options sur actions attribuées de 1999 à 2021
+			Betreft de in 2022 belastbare voordelen die voortkomen uit opties op aandelen toegekend van 1999 tot 2021
+			Betrifft in 2022 besteuerbaren Vorteile aus van 1999 bis 2021 zugeteilten Optionen auf Aktien.
                         </xs:documentation>
                     </xs:annotation>
                     <xs:restriction base="xs:string">
@@ -6435,20 +6659,6 @@
                         </xs:restriction>
                 </xs:simpleType>
 
-                                                <xs:simpleType name="f20_2138_chequesofconsumptions">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.138 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="11"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
                                                 <xs:simpleType name="f20_2181_remunerationetrang">
                     <xs:annotation>
                         <xs:documentation>
@@ -6659,6 +6869,20 @@
                         </xs:restriction>
                 </xs:simpleType>
 
+                                                <xs:simpleType name="f20_2197_covidovertimeremuneration2022">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.197 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
                                                 <xs:simpleType name="f20_2198_coronabonus">
                     <xs:annotation>
                         <xs:documentation>
@@ -6673,21 +6897,105 @@
                         </xs:restriction>
                 </xs:simpleType>
 
-                                                            <xs:simpleType name="f25_2030_fiches10or20bonus">
+                                                <xs:simpleType name="f20_2199_covidovertimehours2022">
                     <xs:annotation>
                         <xs:documentation>
-                            zone 2.30 (zone non définie)
+                            zone 2.199 (zone non définie)
 			
 			
 			
                         </xs:documentation>
                     </xs:annotation>
                     <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="1"/> -->
+                                                                <!-- <xs:maxLength value="11"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
-                                                <xs:simpleType name="f25_2040_brutnetrecovery">
+                                                <xs:simpleType name="f20_2200_compensationwithstandards">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.200 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f20_2201_compensationwithdocuments">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.201 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f20_2202_amount">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.202 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f20_2203_amount">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.203 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f20_2204_repaidsums">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.204 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f20_2205_recuperation">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.205 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                            <xs:simpleType name="f25_2040_brutnetrecovery">
                     <xs:annotation>
                         <xs:documentation>
                             zone 2.40 (zone non définie)
@@ -6869,20 +7177,6 @@
                         </xs:restriction>
                 </xs:simpleType>
 
-                                                <xs:simpleType name="f25_2066_workbonusamount">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.66 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="11"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
                                                 <xs:simpleType name="f25_2089_jaarvanbetaling">
                     <xs:annotation>
                         <xs:documentation>
@@ -6908,6 +7202,146 @@
                     </xs:annotation>
                     <xs:restriction base="xs:string">
                                                                 <!-- <xs:maxLength value="27"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                            <xs:simpleType name="f27_2059_totaalcontrole">
+                    <xs:annotation>
+                        <xs:documentation>
+                            total de contrôle (total des zones 2.60 à 2.88 y compris)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="13"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f27_2060_beloning">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.60 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f27_2061_onkosten">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.61 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f27_2062_bedrijfsvoorheffing">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.62 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f27_2099_sector">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.99 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="83"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f27_2109_fiscaalidentificat">
+                    <xs:annotation>
+                        <xs:documentation>
+                            numéro d'identification fiscale (en abrégé NIF) attribué aux bénéficiaires des revenus non-résidents)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="27"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f27_2167_overuren">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.167 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="6"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f27_2168_overuren">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.168 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="6"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f27_2169_overuren">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.169 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="6"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f27_2170_overuren">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.170 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="6"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
@@ -7215,7 +7649,7 @@
                         </xs:documentation>
                     </xs:annotation>
                     <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="15"/> -->
+                                                                <!-- <xs:maxLength value="83"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
@@ -7831,7 +8265,7 @@
                         </xs:documentation>
                     </xs:annotation>
                     <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="82"/> -->
+                                                                <!-- <xs:maxLength value="41"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
@@ -7930,6 +8364,20 @@
                     </xs:annotation>
                     <xs:restriction base="xs:string">
                                                                 <!-- <xs:maxLength value="100"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f29_2205_recuperation">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.205 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
@@ -8433,7 +8881,7 @@
                         </xs:documentation>
                     </xs:annotation>
                     <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="8"/> -->
+                                                                <!-- <xs:maxLength value="11"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
@@ -8511,6 +8959,20 @@
                     <xs:annotation>
                         <xs:documentation>
                             zone 2.117 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f30_2205_recuperation">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.205 (zone non définie)
 			
 			
 			
@@ -8661,6 +9123,34 @@
                         </xs:restriction>
                 </xs:simpleType>
 
+                                                <xs:simpleType name="f45_2032_nilpaidgrossincomea">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.32 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="1"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f45_2033_nilpaidgrossincomeb">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.33 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="1"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
                                                 <xs:simpleType name="f45_2059_totaalcontrole">
                     <xs:annotation>
                         <xs:documentation>
@@ -8675,38 +9165,10 @@
                         </xs:restriction>
                 </xs:simpleType>
 
-                                                <xs:simpleType name="f45_2060_brutoinkomsten">
+                                                <xs:simpleType name="f45_2060_grossincomeb">
                     <xs:annotation>
                         <xs:documentation>
                             zone 2.60 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="11"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
-                                                <xs:simpleType name="f45_2061_forfaitairekosten">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.61 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="11"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
-                                                <xs:simpleType name="f45_2062_werkelijkekosten">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.62 (zone non définie)
 			
 			
 			
@@ -8721,6 +9183,48 @@
                     <xs:annotation>
                         <xs:documentation>
                             zone 2.63 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f45_2064_grossincomea">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.64 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f45_2065_actuallypaidgrossincomea">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.65 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f45_2066_actuallypaidgrossincomeb">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.66 (zone non définie)
 			
 			
 			
@@ -9189,7 +9693,7 @@
                         </xs:documentation>
                     </xs:annotation>
                     <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="82"/> -->
+                                                                <!-- <xs:maxLength value="41"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
@@ -10579,7 +11083,7 @@
                         </xs:restriction>
                 </xs:simpleType>
 
-                                                                                                                                                                <xs:simpleType name="f62_2030_finalitylifeins">
+                                                                                                                                                                                    <xs:simpleType name="f62_2030_finalitylifeins">
                     <xs:annotation>
                         <xs:documentation>
                             zone 2.30 (zone non définie)
@@ -11149,7 +11653,7 @@
                         </xs:documentation>
                     </xs:annotation>
                     <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="82"/> -->
+                                                                <!-- <xs:maxLength value="41"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
@@ -11485,7 +11989,7 @@
                         </xs:documentation>
                     </xs:annotation>
                     <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="82"/> -->
+                                                                <!-- <xs:maxLength value="41"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
@@ -11821,7 +12325,7 @@
                         </xs:documentation>
                     </xs:annotation>
                     <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="82"/> -->
+                                                                <!-- <xs:maxLength value="41"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
@@ -12431,6 +12935,34 @@
                     <xs:annotation>
                         <xs:documentation>
                             zone 2.67 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f80_2068_totaalwijkwerkenneg">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.68 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="11"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f80_2069_rub363negatiefsaldo">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.69 (zone non définie)
 			
 			
 			
@@ -13319,7 +13851,7 @@
                         </xs:documentation>
                     </xs:annotation>
                     <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="82"/> -->
+                                                                <!-- <xs:maxLength value="41"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
@@ -13725,7 +14257,7 @@
                         </xs:documentation>
                     </xs:annotation>
                     <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="82"/> -->
+                                                                <!-- <xs:maxLength value="41"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
@@ -13921,7 +14453,7 @@
                         </xs:documentation>
                     </xs:annotation>
                     <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="82"/> -->
+                                                                <!-- <xs:maxLength value="41"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
@@ -13939,7 +14471,7 @@
                         </xs:restriction>
                 </xs:simpleType>
 
-                                                <xs:simpleType name="f86_2109_certifiermunicipality">
+                                                <xs:simpleType name="f86_2109_certifiercbenumber">
                     <xs:annotation>
                         <xs:documentation>
                             numéro d'identification fiscale (en abrégé NIF) attribué aux bénéficiaires des revenus non-résidents)
@@ -14355,7 +14887,7 @@
                         </xs:documentation>
                     </xs:annotation>
                     <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="82"/> -->
+                                                                <!-- <xs:maxLength value="41"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
@@ -14565,7 +15097,7 @@
                         </xs:documentation>
                     </xs:annotation>
                     <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="82"/> -->
+                                                                <!-- <xs:maxLength value="41"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
@@ -14667,49 +15199,7 @@
                         </xs:restriction>
                 </xs:simpleType>
 
-                                                            <xs:simpleType name="f91_2030_aardpersoon">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.30 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="1"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
-                                                <xs:simpleType name="f91_2031_vervreemderofverwerver">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.31 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="1"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
-                                                <xs:simpleType name="f91_2045_goednummer">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.45 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="20"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
-                                                <xs:simpleType name="f91_2055_datumakte">
+                                                            <xs:simpleType name="f91_2055_paymentdate">
                     <xs:annotation>
                         <xs:documentation>
                             zone 2.55 (date non définie - forme : JJ-MM-AAAA)
@@ -14720,6 +15210,20 @@
                     </xs:annotation>
                     <xs:restriction base="xs:string">
                                                                         <!-- <xs:maxLength value="10"/> -->
+                        </xs:restriction>
+                </xs:simpleType>
+
+                                                <xs:simpleType name="f91_2057_paymentpertainingyear">
+                    <xs:annotation>
+                        <xs:documentation>
+                            zone 2.57 (zone non définie)
+			
+			
+			
+                        </xs:documentation>
+                    </xs:annotation>
+                    <xs:restriction base="xs:string">
+                                                                <!-- <xs:maxLength value="8"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
@@ -14737,7 +15241,7 @@
                         </xs:restriction>
                 </xs:simpleType>
 
-                                                <xs:simpleType name="f91_2060_ki">
+                                                <xs:simpleType name="f91_2060_energybonus">
                     <xs:annotation>
                         <xs:documentation>
                             zone 2.60 (zone non définie)
@@ -14748,160 +15252,6 @@
                     </xs:annotation>
                     <xs:restriction base="xs:string">
                                                                 <!-- <xs:maxLength value="11"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
-                                                <xs:simpleType name="f91_2061_verkoopprijs">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.61 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="11"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
-                                                <xs:simpleType name="f91_2062_meerwaarde">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.62 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="11"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
-                                                <xs:simpleType name="f91_2089_verkoopofverdeling">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.89 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="4"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
-                                                <xs:simpleType name="f91_2090_aardgoed">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.90 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="4"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
-                                                <xs:simpleType name="f91_2099_zakelijkerechten">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.99 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="42"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
-                                                <xs:simpleType name="f91_2102_goedligging">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.102 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="41"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
-                                                <xs:simpleType name="f91_2103_goedgemeente">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.103 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="32"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
-                                                <xs:simpleType name="f91_2104_goedpostcode">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.104 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="4"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
-                                                <xs:simpleType name="f91_2107_notarisgemeente">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.107 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="32"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
-                                                <xs:simpleType name="f91_2108_notarispostcode">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.108 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="4"/> -->
-                        </xs:restriction>
-                </xs:simpleType>
-
-                                                <xs:simpleType name="f91_2139_notarisnaam">
-                    <xs:annotation>
-                        <xs:documentation>
-                            zone 2.139 (zone non définie)
-			
-			
-			
-                        </xs:documentation>
-                    </xs:annotation>
-                    <xs:restriction base="xs:string">
-                                                                <!-- <xs:maxLength value="132"/> -->
                         </xs:restriction>
                 </xs:simpleType>
 
@@ -15880,6 +16230,46 @@
             <!-- <xs:maxLength value="10"/> -->
         </xs:restriction>
     </xs:simpleType>
+    <xs:complexType name="f61_2211_multiplecoronavirusmonthextensions">
+        <xs:annotation>
+            <xs:documentation>
+                zone 2.211 (zone non définie)
+
+
+
+            </xs:documentation>
+        </xs:annotation>
+        <xs:sequence>
+            <xs:element name="f61_refinancedcontract" type="f61_refinancedcontract" minOccurs="0" maxOccurs="1"/>
+            <xs:element name="f61_monthsextension" type="f61_monthsextension" minOccurs="0" maxOccurs="1"/>
+        </xs:sequence>
+    </xs:complexType>
+    <xs:simpleType name="f61_refinancedcontract">
+        <xs:annotation>
+            <xs:documentation>
+                zone  (zone non définie)
+
+
+
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+
+        </xs:restriction>
+    </xs:simpleType>
+    <xs:simpleType name="f61_monthsextension">
+        <xs:annotation>
+            <xs:documentation>
+                zone  (zone non définie)
+
+
+
+            </xs:documentation>
+        </xs:annotation>
+        <xs:restriction base="xs:string">
+
+        </xs:restriction>
+    </xs:simpleType>
 
     <xs:complexType name="f62_2150_recipientifdead">
         <xs:annotation>
@@ -16019,8 +16409,7 @@
                     <xs:extension base="Fiche">
                         <xs:sequence>
                                                                                                 <xs:element name="f10_2030_onderbrokenwerkzaa" type="f10_2030_onderbrokenwerkzaa"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f10_2031_compensationwithstandards" type="f10_2031_compensationwithstandards"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f10_2033_compensationwithdocuments" type="f10_2033_compensationwithdocuments"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f10_2031_associationactivity" type="f10_2031_associationactivity"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2034_ex" type="f10_2034_ex"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2035_verantwoordingsstukken" type="f10_2035_verantwoordingsstukken"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2036_inwonersdeenfr" type="f10_2036_inwonersdeenfr"  minOccurs="0"   maxOccurs="1" />
@@ -16081,7 +16470,7 @@
                                                                                                                                 <xs:element name="f10_2115_bonus" type="f10_2115_bonus"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2116_badweatherstamps" type="f10_2116_badweatherstamps"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2117_nonrecurrentadvantages" type="f10_2117_nonrecurrentadvantages"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f10_2118_amountovertime180secondsemester" type="f10_2118_amountovertime180secondsemester"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f10_2118_overtimehours180" type="f10_2118_overtimehours180"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2119_sportremuneration" type="f10_2119_sportremuneration"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2120_sportvacancysavings" type="f10_2120_sportvacancysavings"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2121_sportoutdated" type="f10_2121_sportoutdated"  minOccurs="0"   maxOccurs="1" />
@@ -16092,17 +16481,17 @@
                                                                                                                                 <xs:element name="f10_2126_managerindemnificationofretraction" type="f10_2126_managerindemnificationofretraction"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2127_nonrecurrentadvantagesoutdated" type="f10_2127_nonrecurrentadvantagesoutdated"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2128_vrijaanvullendpensioenwerknemers" type="f10_2128_vrijaanvullendpensioenwerknemers"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f10_2129_exemptincomesubjecttoprogressivity" type="f10_2129_exemptincomesubjecttoprogressivity"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2130_privatepc" type="f10_2130_privatepc"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2131_bedrijfsvoorheffingvanwerkgever" type="f10_2131_bedrijfsvoorheffingvanwerkgever"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f10_2132_amountovertime180firstsemester" type="f10_2132_amountovertime180firstsemester"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f10_2132_horeca" type="f10_2132_horeca"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2133_bedrijfsvoorheffingbuitenlvenverbondenwerkgever" type="f10_2133_bedrijfsvoorheffingbuitenlvenverbondenwerkgever"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2134_totaalbedragmobiliteitsbudget" type="f10_2134_totaalbedragmobiliteitsbudget"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2135_amountpaidforvolontarysuplementaryhourscovid" type="f10_2135_amountpaidforvolontarysuplementaryhourscovid"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2136_amountcontractofstudent" type="f10_2136_amountcontractofstudent"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2137_amountstudent2020oruntilthirdquarter2021" type="f10_2137_amountstudent2020oruntilthirdquarter2021"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f10_2138_chequesofconsumptions" type="f10_2138_chequesofconsumptions"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f10_2141_occasionalworkhoreca" type="f10_2141_occasionalworkhoreca"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f10_2142_aantaloveruren180" type="f10_2142_aantaloveruren180"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f10_2141_total" type="f10_2141_total"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f10_2142_totalovertimehours180" type="f10_2142_totalovertimehours180"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2143_bedragoveruren360horeca" type="f10_2143_bedragoveruren360horeca"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2165_achterstalloveruren360horeca" type="f10_2165_achterstalloveruren360horeca"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2166_flexi_job" type="f10_2166_flexi_job"  minOccurs="0"   maxOccurs="1" />
@@ -16110,7 +16499,9 @@
                                                                                                                                 <xs:element name="f10_2168_achterstallaantaloveruren300horeca" type="f10_2168_achterstallaantaloveruren300horeca"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2169_aantaloveruren360horeca" type="f10_2169_aantaloveruren360horeca"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2170_achterstallaantaloveruren360horeca" type="f10_2170_achterstallaantaloveruren360horeca"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f10_2176_overtimehours180" type="f10_2176_overtimehours180"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2177_winstpremies" type="f10_2177_winstpremies"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f10_2178_pensioner" type="f10_2178_pensioner"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2179_startersjob" type="f10_2179_startersjob"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2180_onkostenbrandweerenambulanciers" type="f10_2180_onkostenbrandweerenambulanciers"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2181_remunerationetrang" type="f10_2181_remunerationetrang"  minOccurs="0"   maxOccurs="1" />
@@ -16128,7 +16519,15 @@
                                                                                                                                 <xs:element name="f10_2194_covidovertimehourstotal" type="f10_2194_covidovertimehourstotal"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2195_covidovertimehours2020" type="f10_2195_covidovertimehours2020"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2196_covidovertimeremuneration2020" type="f10_2196_covidovertimeremuneration2020"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f10_2197_covidovertimeremuneration2022" type="f10_2197_covidovertimeremuneration2022"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f10_2198_coronabonus" type="f10_2198_coronabonus"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f10_2199_covidovertimehours2022" type="f10_2199_covidovertimehours2022"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f10_2200_compensationwithstandards" type="f10_2200_compensationwithstandards"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f10_2201_compensationwithdocuments" type="f10_2201_compensationwithdocuments"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f10_2202_amount" type="f10_2202_amount"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f10_2203_amount" type="f10_2203_amount"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f10_2204_repaidsums" type="f10_2204_repaidsums"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f10_2205_recuperation" type="f10_2205_recuperation"  minOccurs="0"   maxOccurs="1" />
                                                                                     </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -16182,6 +16581,7 @@
                                                                                                                                 <xs:element name="f11_2100_contractofbrevet" type="f11_2100_contractofbrevet"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f11_2103_pensioennummer" type="f11_2103_pensioennummer"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f11_2109_fiscaalidentificat" type="f11_2109_fiscaalidentificat"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f11_2205_recuperation" type="f11_2205_recuperation"  minOccurs="0"   maxOccurs="1" />
                                                                                     </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -16210,6 +16610,7 @@
                                                                                                                                 <xs:element name="f12_2089_aantaldagen" type="f12_2089_aantaldagen"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f12_2099_referentienummerui" type="f12_2099_referentienummerui"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f12_2109_fiscaalidentificat" type="f12_2109_fiscaalidentificat"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f12_2205_recuperation" type="f12_2205_recuperation"  minOccurs="0"   maxOccurs="1" />
                                                                                     </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -16226,7 +16627,7 @@
                 <xs:complexContent>
                     <xs:extension base="Fiche">
                         <xs:sequence>
-                                                                                                <xs:element name="f13_2030_onderbrokenwerkzaa" type="f13_2030_onderbrokenwerkzaa"  minOccurs="0"   maxOccurs="1" />
+                                                                                                <xs:element name="f13_2031_repaymentneo" type="f13_2031_repaymentneo"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f13_2035_verantwoordingsstukken" type="f13_2035_verantwoordingsstukken"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f13_2059_totaalcontrole" type="f13_2059_totaalcontrole"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f13_2060_bedrag" type="f13_2060_bedrag"  minOccurs="0"   maxOccurs="1" />
@@ -16255,6 +16656,7 @@
                                                                                                                                 <xs:element name="f13_2103_kasvrijaanvullendpensioen" type="f13_2103_kasvrijaanvullendpensioen"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f13_2109_fiscaalidentificat" type="f13_2109_fiscaalidentificat"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f13_2128_vrijaanvullendpensioenwerknemers" type="f13_2128_vrijaanvullendpensioenwerknemers"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f13_2205_recuperation" type="f13_2205_recuperation"  minOccurs="0"   maxOccurs="1" />
                                                                                     </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -16288,6 +16690,7 @@
                                                                                                                                 <xs:element name="f14_2070_decembercompensation" type="f14_2070_decembercompensation"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f14_2099_contract" type="f14_2099_contract"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f14_2109_fiscaalidentificat" type="f14_2109_fiscaalidentificat"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f14_2205_recuperation" type="f14_2205_recuperation"  minOccurs="0"   maxOccurs="1" />
                                                                                     </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -16317,6 +16720,7 @@
                                                                                                                                 <xs:element name="f15_2068_bedrijfsvoorheffingspaartax" type="f15_2068_bedrijfsvoorheffingspaartax"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f15_2099_rekeningofpolis" type="f15_2099_rekeningofpolis"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f15_2109_fiscaalidentificat" type="f15_2109_fiscaalidentificat"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f15_2205_recuperation" type="f15_2205_recuperation"  minOccurs="0"   maxOccurs="1" />
                                                                                     </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -16346,6 +16750,7 @@
                                                                                                                                 <xs:element name="f16_2099_contract" type="f16_2099_contract"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f16_2108_percentage" type="f16_2108_percentage"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f16_2109_fiscaalidentificat" type="f16_2109_fiscaalidentificat"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f16_2205_recuperation" type="f16_2205_recuperation"  minOccurs="0"   maxOccurs="1" />
                                                                                     </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -16394,6 +16799,7 @@
                                                                                                                                 <xs:element name="f17_2103_kasvrijaanvullendpensioen" type="f17_2103_kasvrijaanvullendpensioen"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f17_2109_identificatie_nif" type="f17_2109_identificatie_nif"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f17_2128_vrijaanvullendpensioenwerknemers" type="f17_2128_vrijaanvullendpensioenwerknemers"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f17_2205_recuperation" type="f17_2205_recuperation"  minOccurs="0"   maxOccurs="1" />
                                                                                     </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -16441,6 +16847,7 @@
                                                                                                                                 <xs:element name="f18_2103_kasvrijaanvullendpensioen" type="f18_2103_kasvrijaanvullendpensioen"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f18_2109_fiscaalidentificat" type="f18_2109_fiscaalidentificat"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f18_2128_vrijaanvullendpensioenwerknemers" type="f18_2128_vrijaanvullendpensioenwerknemers"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f18_2205_recuperation" type="f18_2205_recuperation"  minOccurs="0"   maxOccurs="1" />
                                                                                     </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -16457,11 +16864,9 @@
                 <xs:complexContent>
                     <xs:extension base="Fiche">
                         <xs:sequence>
-                                                                                                <xs:element name="f20_2030_compensationwithstandards" type="f20_2030_compensationwithstandards"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f20_2031_stopzettingexploitatie" type="f20_2031_stopzettingexploitatie"  minOccurs="0"   maxOccurs="1" />
+                                                                                                <xs:element name="f20_2031_stopzettingexploitatie" type="f20_2031_stopzettingexploitatie"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f20_2032_ex" type="f20_2032_ex"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f20_2033_optiebuitvennoots" type="f20_2033_optiebuitvennoots"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f20_2034_compensationwithdocuments" type="f20_2034_compensationwithdocuments"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f20_2035_verantwoordingsstukken" type="f20_2035_verantwoordingsstukken"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f20_2045_rsz" type="f20_2045_rsz"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f20_2055_datumvanindienstt" type="f20_2055_datumvanindienstt"  minOccurs="0"   maxOccurs="1" />
@@ -16505,7 +16910,6 @@
                                                                                                                                 <xs:element name="f20_2131_bedrijfsvoorheffingvanwerkgever" type="f20_2131_bedrijfsvoorheffingvanwerkgever"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f20_2133_bedrijfsvoorheffingbuitenlvenverbondenwerkgever" type="f20_2133_bedrijfsvoorheffingbuitenlvenverbondenwerkgever"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f20_2134_totaalbedragmobiliteitsbudget" type="f20_2134_totaalbedragmobiliteitsbudget"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f20_2138_chequesofconsumptions" type="f20_2138_chequesofconsumptions"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f20_2181_remunerationetrang" type="f20_2181_remunerationetrang"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f20_2182_aandelenetrang" type="f20_2182_aandelenetrang"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f20_2183_bonuspremieoaandelenoptiesetrang" type="f20_2183_bonuspremieoaandelenoptiesetrang"  minOccurs="0"   maxOccurs="1" />
@@ -16521,7 +16925,15 @@
                                                                                                                                 <xs:element name="f20_2194_covidovertimehourstotal" type="f20_2194_covidovertimehourstotal"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f20_2195_covidovertimehours2020" type="f20_2195_covidovertimehours2020"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f20_2196_covidovertimeremuneration2020" type="f20_2196_covidovertimeremuneration2020"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f20_2197_covidovertimeremuneration2022" type="f20_2197_covidovertimeremuneration2022"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f20_2198_coronabonus" type="f20_2198_coronabonus"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f20_2199_covidovertimehours2022" type="f20_2199_covidovertimehours2022"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f20_2200_compensationwithstandards" type="f20_2200_compensationwithstandards"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f20_2201_compensationwithdocuments" type="f20_2201_compensationwithdocuments"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f20_2202_amount" type="f20_2202_amount"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f20_2203_amount" type="f20_2203_amount"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f20_2204_repaidsums" type="f20_2204_repaidsums"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f20_2205_recuperation" type="f20_2205_recuperation"  minOccurs="0"   maxOccurs="1" />
                                                                                     </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -16538,8 +16950,7 @@
                 <xs:complexContent>
                     <xs:extension base="Fiche">
                         <xs:sequence>
-                                                                                                <xs:element name="f25_2030_fiches10or20bonus" type="f25_2030_fiches10or20bonus"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f25_2040_brutnetrecovery" type="f25_2040_brutnetrecovery"  minOccurs="0"   maxOccurs="1" />
+                                                                                                <xs:element name="f25_2040_brutnetrecovery" type="f25_2040_brutnetrecovery"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f25_2045_kwalificatie" type="f25_2045_kwalificatie"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f25_2046_kwalificatie" type="f25_2046_kwalificatie"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f25_2047_kwalificatie" type="f25_2047_kwalificatie"  minOccurs="0"   maxOccurs="1" />
@@ -16552,9 +16963,34 @@
                                                                                                                                 <xs:element name="f25_2063_bedrag" type="f25_2063_bedrag"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f25_2064_bedrag" type="f25_2064_bedrag"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f25_2065_bedrijfsvoorheffing" type="f25_2065_bedrijfsvoorheffing"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f25_2066_workbonusamount" type="f25_2066_workbonusamount"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f25_2089_jaarvanbetaling" type="f25_2089_jaarvanbetaling"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f25_2109_fiscaalidentificat" type="f25_2109_fiscaalidentificat"  minOccurs="0"   maxOccurs="1" />
+                                                                                    </xs:sequence>
+                    </xs:extension>
+                </xs:complexContent>
+            </xs:complexType>
+        
+                        <xs:complexType name="Fiche28127">
+                <xs:annotation>
+                    <xs:documentation>
+                        Revenus des activités d'association
+			inkomsten uit verenigingsactiviteiten
+			inkomsten uit verenigingsactiviteiten
+                    </xs:documentation>
+                </xs:annotation>
+                <xs:complexContent>
+                    <xs:extension base="Fiche">
+                        <xs:sequence>
+                                                                                                <xs:element name="f27_2059_totaalcontrole" type="f27_2059_totaalcontrole"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f27_2060_beloning" type="f27_2060_beloning"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f27_2061_onkosten" type="f27_2061_onkosten"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f27_2062_bedrijfsvoorheffing" type="f27_2062_bedrijfsvoorheffing"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f27_2099_sector" type="f27_2099_sector"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f27_2109_fiscaalidentificat" type="f27_2109_fiscaalidentificat"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f27_2167_overuren" type="f27_2167_overuren"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f27_2168_overuren" type="f27_2168_overuren"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f27_2169_overuren" type="f27_2169_overuren"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f27_2170_overuren" type="f27_2170_overuren"  minOccurs="0"   maxOccurs="1" />
                                                                                     </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -16660,6 +17096,7 @@
                                                                                                                                 <xs:element name="f29_2153_precision3" type="f29_2153_precision3"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f29_2154_precision4" type="f29_2154_precision4"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f29_2155_precision5" type="f29_2155_precision5"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f29_2205_recuperation" type="f29_2205_recuperation"  minOccurs="0"   maxOccurs="1" />
                                                                                     </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -16718,6 +17155,7 @@
                                                                                                                                 <xs:element name="f30_2115_sportunlimitedotherremuneration" type="f30_2115_sportunlimitedotherremuneration"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f30_2116_sportmorethan30daysprofit" type="f30_2116_sportmorethan30daysprofit"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f30_2117_managerprofit" type="f30_2117_managerprofit"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f30_2205_recuperation" type="f30_2205_recuperation"  minOccurs="0"   maxOccurs="1" />
                                                                                     </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -16760,11 +17198,14 @@
                         <xs:sequence>
                                                                                                 <xs:element name="f45_2030_aardpersoon" type="f45_2030_aardpersoon"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f45_2031_verantwoordingsstukken" type="f45_2031_verantwoordingsstukken"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f45_2032_nilpaidgrossincomea" type="f45_2032_nilpaidgrossincomea"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f45_2033_nilpaidgrossincomeb" type="f45_2033_nilpaidgrossincomeb"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f45_2059_totaalcontrole" type="f45_2059_totaalcontrole"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f45_2060_brutoinkomsten" type="f45_2060_brutoinkomsten"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f45_2061_forfaitairekosten" type="f45_2061_forfaitairekosten"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f45_2062_werkelijkekosten" type="f45_2062_werkelijkekosten"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f45_2060_grossincomeb" type="f45_2060_grossincomeb"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f45_2063_roerendevoorheffing" type="f45_2063_roerendevoorheffing"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f45_2064_grossincomea" type="f45_2064_grossincomea"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f45_2065_actuallypaidgrossincomea" type="f45_2065_actuallypaidgrossincomea"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f45_2066_actuallypaidgrossincomeb" type="f45_2066_actuallypaidgrossincomeb"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f45_2099_comment" type="f45_2099_comment"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f45_2109_fiscaalidentificat" type="f45_2109_fiscaalidentificat"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f45_2110_kbonbr" type="f45_2110_kbonbr"  minOccurs="0"   maxOccurs="1" />
@@ -16832,7 +17273,7 @@
                     <xs:documentation>
                         Indemnités parlementaires
 			Parlementaire vergoedingen
-			Indemnités parlementaires
+			Parlamentarische Entschädigungen
                     </xs:documentation>
                 </xs:annotation>
                 <xs:complexContent>
@@ -16983,6 +17424,7 @@
                                                                                                                                 <xs:element name="f61_2152_othercontractors" type="f61_2152_othercontractors"  minOccurs="0"   maxOccurs="50" />
                                                                                                                                 <xs:element name="f61_2159_modifdateend" type="f61_2159_modifdateend"  minOccurs="0"   maxOccurs="50" />
                                                                                                                                 <xs:element name="f61_2160_modifmodifmortgage" type="f61_2160_modifmodifmortgage"  minOccurs="0"   maxOccurs="50" />
+                                                                                                                                <xs:element name="f61_2211_multiplecoronavirusmonthextensions" type="f61_2211_multiplecoronavirusmonthextensions"  minOccurs="0"   maxOccurs="50" />
                                                                                     </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -17261,6 +17703,8 @@
                                                                                                                                 <xs:element name="f80_2065_totaalterugbetaaldewijkwerken" type="f80_2065_totaalterugbetaaldewijkwerken"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f80_2066_totaalwijkwerken" type="f80_2066_totaalwijkwerken"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f80_2067_totaalrub363" type="f80_2067_totaalrub363"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f80_2068_totaalwijkwerkenneg" type="f80_2068_totaalwijkwerkenneg"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f80_2069_rub363negatiefsaldo" type="f80_2069_rub363negatiefsaldo"  minOccurs="0"   maxOccurs="1" />
                                                                                     </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -17464,7 +17908,7 @@
                                                                                                                                 <xs:element name="f86_2102_childaddress" type="f86_2102_childaddress"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f86_2106_childname" type="f86_2106_childname"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f86_2107_childfirstname" type="f86_2107_childfirstname"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f86_2109_certifiermunicipality" type="f86_2109_certifiermunicipality"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f86_2109_certifiercbenumber" type="f86_2109_certifiercbenumber"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f86_2110_numberofday1" type="f86_2110_numberofday1"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f86_2111_dailytariff1" type="f86_2111_dailytariff1"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f86_2113_numberofday2" type="f86_2113_numberofday2"  minOccurs="0"   maxOccurs="1" />
@@ -17588,31 +18032,18 @@
                         <xs:complexType name="Fiche28191">
                 <xs:annotation>
                     <xs:documentation>
-                        Renseignements des ventes des biens immobiliers
-			Inlichtingen verkopen onroerende goederen
-			Erkundigungen der Verkäufe von Immobilien
+                        Primes énergie
+			Energiepremies
+			Energiepremies
                     </xs:documentation>
                 </xs:annotation>
                 <xs:complexContent>
                     <xs:extension base="Fiche">
                         <xs:sequence>
-                                                                                                <xs:element name="f91_2030_aardpersoon" type="f91_2030_aardpersoon"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f91_2031_vervreemderofverwerver" type="f91_2031_vervreemderofverwerver"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f91_2045_goednummer" type="f91_2045_goednummer"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f91_2055_datumakte" type="f91_2055_datumakte"  minOccurs="0"   maxOccurs="1" />
+                                                                                                <xs:element name="f91_2055_paymentdate" type="f91_2055_paymentdate"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f91_2057_paymentpertainingyear" type="f91_2057_paymentpertainingyear"  minOccurs="0"   maxOccurs="1" />
                                                                                                                                 <xs:element name="f91_2059_totaalcontrole" type="f91_2059_totaalcontrole"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f91_2060_ki" type="f91_2060_ki"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f91_2061_verkoopprijs" type="f91_2061_verkoopprijs"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f91_2062_meerwaarde" type="f91_2062_meerwaarde"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f91_2089_verkoopofverdeling" type="f91_2089_verkoopofverdeling"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f91_2090_aardgoed" type="f91_2090_aardgoed"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f91_2099_zakelijkerechten" type="f91_2099_zakelijkerechten"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f91_2102_goedligging" type="f91_2102_goedligging"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f91_2103_goedgemeente" type="f91_2103_goedgemeente"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f91_2104_goedpostcode" type="f91_2104_goedpostcode"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f91_2107_notarisgemeente" type="f91_2107_notarisgemeente"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f91_2108_notarispostcode" type="f91_2108_notarispostcode"  minOccurs="0"   maxOccurs="1" />
-                                                                                                                                <xs:element name="f91_2139_notarisnaam" type="f91_2139_notarisnaam"  minOccurs="0"   maxOccurs="1" />
+                                                                                                                                <xs:element name="f91_2060_energybonus" type="f91_2060_energybonus"  minOccurs="0"   maxOccurs="1" />
                                                                                     </xs:sequence>
                     </xs:extension>
                 </xs:complexContent>
@@ -17852,6 +18283,15 @@
                 </xs:annotation>
                 <xs:sequence>
                     <xs:element maxOccurs="unbounded" name="Fiche28125" type="Fiche28125"/>
+                </xs:sequence>
+            </xs:complexType>
+        
+                        <xs:complexType name="Opgave32527">
+                <xs:annotation>
+                    <xs:documentation/>
+                </xs:annotation>
+                <xs:sequence>
+                    <xs:element maxOccurs="unbounded" name="Fiche28127" type="Fiche28127"/>
                 </xs:sequence>
             </xs:complexType>
         
@@ -18191,6 +18631,7 @@
                                                                                 <xs:element name="Opgave32518" type="Opgave32518"/>
                                                                                 <xs:element name="Opgave32520" type="Opgave32520"/>
                                                                                 <xs:element name="Opgave32525" type="Opgave32525"/>
+                                                                                <xs:element name="Opgave32527" type="Opgave32527"/>
                                                                                 <xs:element name="Opgave32528" type="Opgave32528"/>
                                                                                 <xs:element name="Opgave32529" type="Opgave32529"/>
                                                                                 <xs:element name="Opgave32530" type="Opgave32530"/>
@@ -18273,8 +18714,9 @@
                                                                 <xs:element name="a1036_taalde" type="a1036_taalde"  minOccurs="0" maxOccurs="1" />
                                                                 <xs:element name="a1037_nationaalnr" type="a1037_nationaalnr"  minOccurs="0" maxOccurs="1" />
                                                                 <xs:element name="a1038_emailadres" type="a1038_emailadres"  minOccurs="0" maxOccurs="1" />
+                                                                <xs:element name="a1039_foreignvat" type="a1039_foreignvat"  minOccurs="0" maxOccurs="1" />
                                                                                                                                                                                                                                                                                                                                                                                                                                                                             <xs:element name="Opgaven" type="Opgaven"/>
-                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                    <xs:element name="r8002_inkomstenjaar" type="r8002_inkomstenjaar"  minOccurs="1" maxOccurs="1" />
+                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                                <xs:element name="r8002_inkomstenjaar" type="r8002_inkomstenjaar"  minOccurs="1" maxOccurs="1" />
                                                                 <xs:element name="r8003_gewestelijkedirectie" type="r8003_gewestelijkedirectie"  minOccurs="0" maxOccurs="1" />
                                                                 <xs:element name="r8004_ontvangkantoor" type="r8004_ontvangkantoor"  minOccurs="0" maxOccurs="1" />
                                                                 <xs:element name="r8005_registratienummer" type="r8005_registratienummer"  minOccurs="0" maxOccurs="1" />

@@ -48,12 +48,9 @@
                             </div>
                         </div>
                     </setting>
-                    <setting string="eBay Marketplace Account Deletion/Closure Notifications">
-                        <div class="text-muted">
-                            eBay requires supporting customer account deletion/closure notifications.
-                            Please follow the <a href="https://www.odoo.com/r/MEb">eBay documentation</a>
-                            to setup this mechanism.
-                        </div>
+                    <setting string="eBay Marketplace Account Deletion/Closure Notifications"
+                             help="eBay requires supporting customer account deletion/closure notifications."
+                             documentation="/applications/sales/sales/ebay_connector/setup.html#accept-account-deletion-notifications">
                         <label for="ebay_account_deletion_endpoint"/>
                         <field name="ebay_account_deletion_endpoint" widget="CopyClipboardChar"/>
                         <label for="ebay_verification_token"/>

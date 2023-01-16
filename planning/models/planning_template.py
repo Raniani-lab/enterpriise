@@ -68,6 +68,8 @@ class PlanningTemplate(models.Model):
             Returns a tuple (duration, end_time) expressed as days and as hours.
         """
         end_datetime = calendar.plan_hours(duration, start_datetime, compute_leaves=True)
+        if end_datetime is False:
+            raise ValidationError(_('The duration is too long.'))
         if duration == 0 and start_datetime.hour == 0:
             end_datetime = end_datetime.replace(hour=0)
         return (

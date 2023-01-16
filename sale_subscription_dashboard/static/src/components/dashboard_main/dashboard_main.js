@@ -16,11 +16,7 @@ export class SaleSubscriptionDashboardMain extends SaleSubscriptionDashboardAbst
     async fetchData() {
         const data = await this.rpc(
             '/sale_subscription_dashboard/fetch_data',
-            {
-                params: { context: this.user.context },
-            }, {
-                silent: true,
-            },
+            {}, { silent: true },
         );
         const { dates_ranges: dateRanges, ...stateData} = data;
         Object.assign(this.state, stateData);

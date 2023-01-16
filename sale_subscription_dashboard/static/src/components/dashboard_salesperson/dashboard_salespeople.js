@@ -81,7 +81,7 @@ export class SaleSubscriptionDashboardSalespeople extends SaleSubscriptionDashbo
         }, true);
 
         if (!this.state.selected_salespeople.length || !allSelectedSalespeopleAvailable) {
-            this.state.selected_salespeople = result.default_salesman || result.salesman_ids[0] || [];
+            this.state.selected_salespeople = result.default_salesman || result.salesman_ids.slice(0, 1);
         }
         this.state.currency_id = result.currency_id;
         this.migrationDate = DateTime.fromISO(result.migration_date);

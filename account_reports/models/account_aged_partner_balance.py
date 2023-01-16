@@ -154,7 +154,7 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
 
             SELECT
                 {select_from_groupby}
-                %s * SUM(account_move_line.amount_currency) AS amount_currency,
+                %s * SUM(account_move_line.amount_residual_currency) AS amount_currency,
                 ARRAY_AGG(DISTINCT account_move_line.partner_id) AS partner_id,
                 ARRAY_AGG(account_move_line.payment_id) AS payment_id,
                 ARRAY_AGG(DISTINCT COALESCE(account_move_line.date_maturity, account_move_line.date)) AS report_date,

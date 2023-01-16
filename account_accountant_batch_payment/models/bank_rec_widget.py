@@ -38,7 +38,10 @@ class BankRecWidget(models.Model):
                     ARRAY_AGG(account_move_line.id) AS aml_ids
                 FROM {tables}
                 JOIN account_payment pay ON pay.id = account_move_line.payment_id
+                JOIN account_batch_payment batch ON batch.id = pay.batch_payment_id
                 WHERE {where_clause}
+                    AND pay.batch_payment_id IS NOT NULL
+                    AND batch.state != 'reconciled'
                 GROUP BY pay.batch_payment_id
             ''',
             where_params,
@@ -83,7 +86,7 @@ class BankRecWidget(models.Model):
                 dynamic_filter['domain'] = str(dynamic_filter['domain'])
 
             # Collect the available batch payments.
-            available_amls_in_batch_payments = self._fetch_available_amls_in_batch_payments()
+            available_amls_in_batch_payments = wizard._fetch_available_amls_in_batch_payments()
 
             wizard.batch_payments_widget = {
                 'domain': [('id', 'in', list(available_amls_in_batch_payments.keys()))],
@@ -103,7 +106,7 @@ class BankRecWidget(models.Model):
 
             if batch_payment_x_amls:
                 batch_payments = wizard.line_ids.source_batch_payment_id
-                available_amls_in_batch_payments = self._fetch_available_amls_in_batch_payments(batch_payments=batch_payments)
+                available_amls_in_batch_payments = wizard._fetch_available_amls_in_batch_payments(batch_payments=batch_payments)
                 selected_batch_payment_ids = [
                     x.id
                     for x in batch_payments

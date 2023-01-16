@@ -28,7 +28,8 @@ SUPPORTED_PATHS = (
     "xl/pivotTables/",
     "xl/tables/",
     "xl/theme/",
-    "xl/worksheets/"
+    "xl/worksheets/",
+    "xl/media",
 )
 
 
@@ -193,7 +194,7 @@ class Document(models.Model):
 
         self.ensure_one()
 
-        unzipped = self._unzip_xlsx()
+        unzipped, attachments = self._unzip_xlsx()
 
         doc = self.copy({
             "handler": "spreadsheet",
@@ -201,6 +202,9 @@ class Document(models.Model):
             "name": self.name.rstrip(".xlsx"),
             "spreadsheet_data": json.dumps(unzipped)
         })
+
+        for attachment in attachments:
+            attachment.write({'res_id': doc.id})
 
         if archive_source:
             self.action_archive()
@@ -215,7 +219,7 @@ class Document(models.Model):
 
         if self.mimetype == "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet":
             try:
-                spreadsheet_data = self._unzip_xlsx()
+                spreadsheet_data = self._unzip_xlsx()[0]
             except XSLXReadUserError:
                 # No need to raise for this, just return that we don't know
                 return None
@@ -261,8 +265,9 @@ class Document(models.Model):
                 raise XSLXReadUserError(_("The xlsx file is corrupted"))
 
             unzipped = {}
+            attachments = []
             for info in input_zip.infolist():
-                if not info.filename.endswith((".xml", ".xml.rels")) or \
+                if not (info.filename.endswith((".xml", ".xml.rels")) or "media/image" in info.filename) or\
                         not info.filename.startswith(SUPPORTED_PATHS):
                     # Don't extract files others than xmls or unsupported xmls
                     continue
@@ -271,12 +276,30 @@ class Document(models.Model):
                 if unzipped_size > 50 * 1000 * 1000:  # 50MB
                     raise XSLXReadUserError(_("The xlsx file is too big"))
 
-                unzipped[info.filename] = input_zip.read(info.filename).decode()
-        return unzipped
+                if info.filename.endswith((".xml", ".xml.rels")):
+                    unzipped[info.filename] = input_zip.read(info.filename).decode()
+                elif "media/image" in info.filename:
+                    image_file = input_zip.read(info.filename)
+                    attachment = self._upload_image_file(image_file, info.filename)
+                    attachments.append(attachment)
+                    unzipped[info.filename] = {
+                        "imageSrc": "/web/image/" + str(attachment.id),
+                    }
+        return unzipped, attachments
+
+    def _upload_image_file(self, image_file, filename):
+        attachment_model = self.env['ir.attachment']
+        attachment = attachment_model.create({
+            'name': filename,
+            'datas': base64.encodebytes(image_file),
+            'res_model': "documents.document",
+        })
+        attachment._post_add_create()
+        return attachment
 
     @api.autovacuum
     def _gc_spreadsheet(self):
-        yesterday = datetime.datetime.utcnow()-datetime.timedelta(days=1)
+        yesterday = datetime.datetime.utcnow() - datetime.timedelta(days=1)
         domain = [
             ('handler', '=', 'spreadsheet'),
             ('create_date', '<', yesterday),
@@ -284,7 +307,6 @@ class Document(models.Model):
             ('spreadsheet_snapshot', '=', False)
         ]
         self.search(domain).action_archive()
-
 
 class XSLXReadUserError(UserError):
     pass

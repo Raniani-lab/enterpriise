@@ -10,6 +10,7 @@ from odoo.tools.misc import format_datetime, format_date, partition as tools_par
 from collections.abc import Iterable
 
 from datetime import datetime, date
+from psycopg2.extensions import quote_ident
 import psycopg2
 import itertools
 import ast
@@ -65,6 +66,11 @@ class DataMergeRecord(models.Model):
         """
         if operator not in ALLOWED_COMPANY_OPERATORS:
             raise NotImplementedError()
+        def domain_is_true(operator, value):
+            # Return whether a domain leaf (False, operator, value) evaluates to True.
+            return (operator in ('not like', 'not like') or (operator in ('=', 'ilike', 'like') and not value) or (operator == '!=' and value)
+                    or (isinstance(value, Iterable) and ((operator == 'in' and False in value) or (operator == 'not in' and False not in value))))
+
         # Initial select id query to apply ir.rules and build Query object.
         query = self.env['data_merge.record'].with_context(active_test=False)._search([])
         self._cr.execute("""SELECT DISTINCT res_model_name FROM data_merge_record""")
@@ -80,8 +86,7 @@ class DataMergeRecord(models.Model):
         if res_model_names_wo_company_field:
             no_company_field_query_part = """(res_model_name IN %s AND %s)"""
             # Check if we should return all records for res_model_names without a company_id field.
-            if (operator in ('not ilike', 'not like') or (operator in ('=', 'ilike', 'like') and not value) or (operator == '!=' and value)
-                    or (isinstance(value, Iterable) and ((operator == 'in' and False in value) or (operator == 'not in' and False not in value)))):
+            if domain_is_true(operator, value):
                 no_company_field_query_params += [tuple(res_model_names_wo_company_field), True]
             else:
                 no_company_field_query_params += [tuple(res_model_names_wo_company_field), False]
@@ -101,11 +106,31 @@ class DataMergeRecord(models.Model):
                 # Optimization when _search returns [].
                 if not res_model_query:
                     continue
+                # Where conditions for res_model_name with company_id fields. Two possibilities.
+                # -> the corresponding record still exists in the database, use _search above on corresponding table.
+                # -> the corresponding record has been deleted. In that case, perform the same check as res_model_name without company_id field.
                 where_conditions.append("""
-                    (data_merge_record.res_model_name = %s AND data_merge_record.res_id IN ({}))
-                    """.format(res_model_query)
+                    (
+                        data_merge_record.res_model_name = %s
+                        AND (
+                            data_merge_record.res_id IN ({res_model_query})
+                            OR (
+                                data_merge_record.res_id IN (
+                                    SELECT res_id FROM data_merge_record
+                                    WHERE res_model_name = %s
+                                    AND NOT EXISTS (
+                                        SELECT 1
+                                        FROM {table} res_model
+                                        WHERE res_id = res_model.id
+                                    )
+                                )
+                                AND %s
+                            )
+                        )
+                    )
+                    """.format(res_model_query=res_model_query, table=quote_ident(self.env[res_model_name]._table, self._cr._obj))
                 )
-                company_field_query_params.extend([res_model_name] + res_model_query_params)
+                company_field_query_params.extend([res_model_name] + res_model_query_params + [res_model_name] + [domain_is_true(operator, value)])
             company_field_query_part = company_field_query_part.format(" OR ".join(where_conditions))
         query.add_where(
             subquery.format(no_company_field_query_part or "FALSE", company_field_query_part or "FALSE"),

@@ -173,7 +173,7 @@ tour.register('account_accountant_bank_rec_widget_ui',
         },
         {
             content: "AML Search Filter has been reset",
-            trigger: ".o_list_view .o_facet_value:last-child:contains('Payable')",
+            trigger: ".o_list_view .o_facet_value:last-child:contains('Receivable')",
             run: () => {},
         },
         // Test statement line selection when using the pager

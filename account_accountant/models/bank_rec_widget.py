@@ -507,9 +507,10 @@ class BankRecWidget(models.Model):
                     ('payment_id.partner_type', '=', 'customer'),
                 ],
                 'no_separator': True,
+                'is_default': st_line.amount >= 0.0,
             })
             dynamic_filters.append({
-                'name': 'receivable_matching',
+                'name': 'payable_matching',
                 'description': _("Payable"),
                 'domain': [
                     '|',
@@ -522,6 +523,7 @@ class BankRecWidget(models.Model):
                     ('account_id', 'in', tuple(account_ids)),
                     ('payment_id.partner_type', '=', 'supplier'),
                 ],
+                'is_default': st_line.amount < 0.0,
             })
 
             # Stringify the domain.

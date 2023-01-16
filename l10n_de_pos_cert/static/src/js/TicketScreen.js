@@ -1,37 +1,33 @@
 /** @odoo-module */
 
-import TicketScreen from "@point_of_sale/js/Screens/TicketScreen/TicketScreen";
-import Registries from "@point_of_sale/js/Registries";
+import { TicketScreen } from "@point_of_sale/js/Screens/TicketScreen/TicketScreen";
+import { patch } from "@web/core/utils/patch";
 
-const PosDeTicketScreen = (TicketScreen) =>
-    class extends TicketScreen {
-        // @Override
-        async _onBeforeDeleteOrder(order) {
-            try {
-                if (this.env.pos.isCountryGermanyAndFiskaly() && order.isTransactionStarted()) {
-                    await order.cancelTransaction();
-                }
-                return super._onBeforeDeleteOrder(...arguments);
-            } catch (error) {
-                this._triggerFiskalyError(error);
-                return false;
+patch(TicketScreen.prototype, "l10n_de_pos_cert.TicketScreen", {
+    // @Override
+    async _onBeforeDeleteOrder(order) {
+        const _super = this._super;
+        try {
+            if (this.env.pos.isCountryGermanyAndFiskaly() && order.isTransactionStarted()) {
+                await order.cancelTransaction();
             }
+            return _super(...arguments);
+        } catch (error) {
+            this._triggerFiskalyError(error);
+            return false;
         }
-        _triggerFiskalyError(error) {
-            const message = {
-                noInternet: this.env._t(
-                    "Check the internet connection then try to validate or cancel the order. " +
-                        "Do not delete your browsing, cookies and cache data in the meantime !"
-                ),
-                unknown: this.env._t(
-                    "An unknown error has occurred ! Try to validate this order or cancel it again. " +
-                        "Please contact Odoo for more information."
-                ),
-            };
-            this.trigger("fiskaly-error", { error, message });
-        }
-    };
-
-Registries.Component.extend(TicketScreen, PosDeTicketScreen);
-
-export default TicketScreen;
+    },
+    _triggerFiskalyError(error) {
+        const message = {
+            noInternet: this.env._t(
+                "Check the internet connection then try to validate or cancel the order. " +
+                    "Do not delete your browsing, cookies and cache data in the meantime !"
+            ),
+            unknown: this.env._t(
+                "An unknown error has occurred ! Try to validate this order or cancel it again. " +
+                    "Please contact Odoo for more information."
+            ),
+        };
+        this.trigger("fiskaly-error", { error, message });
+    },
+});

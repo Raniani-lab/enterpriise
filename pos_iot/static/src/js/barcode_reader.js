@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import BarcodeReader from "@point_of_sale/js/barcode_reader";
+import { BarcodeReader } from "@point_of_sale/js/barcode_reader";
 
 BarcodeReader.include({
     connect_to_proxy: function () {

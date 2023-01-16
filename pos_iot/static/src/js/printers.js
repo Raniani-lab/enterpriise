@@ -3,7 +3,7 @@
 import { PrinterMixin } from "@point_of_sale/js/printers";
 import DeviceProxy from "iot.DeviceProxy";
 
-var PrinterProxy = DeviceProxy.extend(PrinterMixin, {
+export const PrinterProxy = DeviceProxy.extend(PrinterMixin, {
     init: function (parent, device, pos) {
         PrinterMixin.init.call(this, pos);
         this._super(parent, device);
@@ -21,5 +21,3 @@ var PrinterProxy = DeviceProxy.extend(PrinterMixin, {
         });
     },
 });
-
-export default PrinterProxy;

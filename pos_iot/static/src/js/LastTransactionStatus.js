@@ -1,9 +1,9 @@
 /** @odoo-module */
 import core from "web.core";
-import AbstractAwaitablePopup from "@point_of_sale/js/Popups/AbstractAwaitablePopup";
-import PosComponent from "@point_of_sale/js/PosComponent";
-import Registries from "@point_of_sale/js/Registries";
+import { AbstractAwaitablePopup } from "@point_of_sale/js/Popups/AbstractAwaitablePopup";
+import { PosComponent } from "@point_of_sale/js/PosComponent";
 import { Gui } from "@point_of_sale/js/Gui";
+import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
 
 const { useState } = owl;
 const _t = core._t;
@@ -15,6 +15,8 @@ const _t = core._t;
  * Worldline payment terminal and opens a popup to display the result.
  */
 export class LastTransactionStatusButton extends PosComponent {
+    static template = "LastTransactionStatusButton";
+
     setup() {
         this.state = useState({ pending: false });
     }
@@ -31,7 +33,7 @@ export class LastTransactionStatusButton extends PosComponent {
                 this.env.pos.get_order().selected_paymentline.payment_status
             )
         ) {
-            Gui.showPopup("ErrorPopup", {
+            Gui.showPopup(ErrorPopup, {
                 title: _t("Electronic payment in progress"),
                 body: _t(
                     "You cannot check the status of the last transaction when a payment in in progress."
@@ -54,11 +56,9 @@ export class LastTransactionStatusButton extends PosComponent {
 
     _onLastTransactionStatus(data) {
         this.state.pending = false;
-        Gui.showPopup("LastTransactionPopup", data.value);
+        Gui.showPopup(LastTransactionPopup, data.value);
     }
 }
-LastTransactionStatusButton.template = "LastTransactionStatusButton";
-Registries.Component.add(LastTransactionStatusButton);
 
 /**
  * Last Transaction Popup
@@ -66,7 +66,7 @@ Registries.Component.add(LastTransactionStatusButton);
  * Displays the result of the last transaction processed by the connected
  * Worldline payment terminal
  */
-export class LastTransactionPopup extends AbstractAwaitablePopup {}
-LastTransactionPopup.template = "LastTransactionPopup";
-LastTransactionPopup.defaultProps = { cancelKey: false };
-Registries.Component.add(LastTransactionPopup);
+export class LastTransactionPopup extends AbstractAwaitablePopup {
+    static template = "LastTransactionPopup";
+    static defaultProps = { cancelKey: false };
+}

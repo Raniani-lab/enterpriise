@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import PosDB from "@point_of_sale/js/db";
+import { PosDB } from "@point_of_sale/js/db";
 PosDB.include({
     update_partners: function (partnersWithUpdatedFields) {
         for (const updatedFields of partnersWithUpdatedFields) {

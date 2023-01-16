@@ -1,25 +1,21 @@
 /** @odoo-module */
-import PrintBillButton from "@pos_restaurant/js/Screens/ProductScreen/ControlButtons/PrintBillButton";
-import Registries from "@point_of_sale/js/Registries";
+import { PrintBillButton } from "@pos_restaurant/js/Screens/ProductScreen/ControlButtons/PrintBillButton";
+import { patch } from "@web/core/utils/patch";
 
-const PosSwedenPrintBillButton = (PrintBillButton) =>
-    class extends PrintBillButton {
-        async onClick() {
-            const order = this.env.pos.get_order();
-            if (this.env.pos.useBlackBoxSweden()) {
-                order.isProfo = true;
-                order.receipt_type = "profo";
-                const sequence = await this.env.pos.get_profo_order_sequence_number();
-                order.sequence_number = sequence;
+patch(PrintBillButton.prototype, "pos_l10n_se.PrintBillButton", {
+    async onClick() {
+        const _super = this._super;
+        const order = this.env.pos.get_order();
+        if (this.env.pos.useBlackBoxSweden()) {
+            order.isProfo = true;
+            order.receipt_type = "profo";
+            const sequence = await this.env.pos.get_profo_order_sequence_number();
+            order.sequence_number = sequence;
 
-                await this.env.pos.push_single_order(order);
-                order.receipt_type = false;
-            }
-            await super.onClick();
-            order.isProfo = false;
+            await this.env.pos.push_single_order(order);
+            order.receipt_type = false;
         }
-    };
-
-Registries.Component.extend(PrintBillButton, PosSwedenPrintBillButton);
-
-export default PosSwedenPrintBillButton;
+        await _super();
+        order.isProfo = false;
+    },
+});

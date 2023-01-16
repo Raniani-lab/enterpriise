@@ -5,12 +5,13 @@ import core from "web.core";
 import { IoTLongpolling } from "@iot/iot_longpolling";
 import { patch } from "@web/core/utils/patch";
 import { Gui } from "@point_of_sale/js/Gui";
+import { IoTErrorPopup } from "./IoTErrorPopup";
 
 var _t = core._t;
 
 patch(IoTLongpolling.prototype, "pos_iot.IotLongpolling", {
     _doWarnFail: function (url) {
-        Gui.showPopup("IoTErrorPopup", {
+        Gui.showPopup(IoTErrorPopup, {
             title: _t("Connection to IoT Box failed"),
             url: url,
         });
@@ -42,5 +43,3 @@ patch(IoTLongpolling.prototype, "pos_iot.IotLongpolling", {
         return res;
     },
 });
-
-export default IoTLongpolling;

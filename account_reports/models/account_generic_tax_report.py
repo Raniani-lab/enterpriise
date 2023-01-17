@@ -245,14 +245,16 @@ class AccountTaxReportHandler(models.AbstractModel):
             rep_ln_in = self.env['account.tax.repartition.line'].search([
                 ('account_id.deprecated', '=', False),
                 ('repartition_type', '=', 'tax'),
+                ('document_type', '=', 'invoice'),
                 ('company_id', '=', company.id),
-                ('invoice_tax_id.type_tax_use', '=', 'purchase')
+                ('tax_id.type_tax_use', '=', 'purchase')
             ], limit=1)
             rep_ln_out = self.env['account.tax.repartition.line'].search([
                 ('account_id.deprecated', '=', False),
                 ('repartition_type', '=', 'tax'),
+                ('document_type', '=', 'invoice'),
                 ('company_id', '=', company.id),
-                ('invoice_tax_id.type_tax_use', '=', 'sale')
+                ('tax_id.type_tax_use', '=', 'sale')
             ], limit=1)
 
             if rep_ln_out.account_id and rep_ln_in.account_id:
@@ -693,7 +695,7 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
             self._cr.execute(f'''
                 SELECT
                     {select_clause_str},
-                    trl.refund_tax_id IS NOT NULL AS is_refund,
+                    trl.document_type = 'refund' AS is_refund,
                     SUM(tdr.base_amount) AS base_amount,
                     SUM(tdr.tax_amount) AS tax_amount
                 FROM ({tax_details_query}) AS tdr
@@ -704,7 +706,7 @@ class GenericTaxReportCustomHandler(models.AbstractModel):
                     AND src_tax.type_tax_use IN ('sale', 'purchase')
                 JOIN account_account account ON account.id = tdr.base_account_id
                 WHERE tdr.tax_exigible
-                GROUP BY tdr.tax_repartition_line_id, trl.refund_tax_id, {groupby_query_str}
+                GROUP BY tdr.tax_repartition_line_id, trl.document_type, {groupby_query_str}
                 ORDER BY src_tax.sequence, src_tax.id, tax.sequence, tax.id
             ''', tax_details_params)
 

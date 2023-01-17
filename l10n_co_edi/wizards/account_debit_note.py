@@ -24,9 +24,9 @@ class AccountDebitNote(models.TransientModel):
         return [[5]]
 
     def _get_repartition_line(self, line):
-        if line.tax_repartition_line_id.refund_tax_id:
+        if line.tax_repartition_line_id.document_type == 'refund':
             # for credit notes (refund) as originating document, we need to get the opposite repartition line
-            return line.tax_repartition_line_id.refund_tax_id.invoice_repartition_line_ids.filtered(
+            return line.tax_repartition_line_id.tax_id.invoice_repartition_line_ids.filtered(
                 lambda x: x.repartition_type == line.tax_repartition_line_id.repartition_type)
         # otherwise, the repartition line is the same as the originating doc (invoice for example)
         return line.tax_repartition_line_id

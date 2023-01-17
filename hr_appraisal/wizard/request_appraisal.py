@@ -17,8 +17,6 @@ class RequestAppraisal(models.TransientModel):
 
     @api.model
     def default_get(self, fields):
-        if not self.env.user.email:
-            raise UserError(_("Unable to post message, please configure the sender's email address."))
         result = super(RequestAppraisal, self).default_get(fields)
         if not set(fields) & set(['employee_id', 'template_id', 'recipient_ids']):
             return result
@@ -60,10 +58,6 @@ class RequestAppraisal(models.TransientModel):
 
     appraisal_id = fields.Many2one('hr.appraisal', required=True)
     user_body = fields.Html('User Contents')
-    email_from = fields.Char(
-        'From', required=True,
-        default=lambda self: self.env.user.email_formatted,
-    )
     author_id = fields.Many2one(
         'res.partner', 'Author', required=True,
         default=lambda self: self.env.user.partner_id.id,
@@ -121,7 +115,6 @@ class RequestAppraisal(models.TransientModel):
             email(s), rendering any template patterns on the fly if needed """
         self.ensure_one()
         appraisal = self.appraisal_id
-        appraisal.message_subscribe(partner_ids=self.recipient_ids.ids)
 
         ctx = {
             'url': '/mail/view?model=%s&res_id=%s' % ('hr.appraisal', appraisal.id),
@@ -130,13 +123,14 @@ class RequestAppraisal(models.TransientModel):
         subject = context_self._render_field('subject', appraisal.ids)[appraisal.id]
         body = context_self._render_field('body', appraisal.ids)[appraisal.id]
 
-        appraisal.message_post(
-            subject=subject,
+        appraisal.with_context(mail_post_autofollow=True).message_post(
+            author_id=self.author_id.id,
             body=body,
-            message_type='comment',
-            email_from=self.author_id.email,
             email_layout_xmlid='mail.mail_notification_light',
-            partner_ids=self.recipient_ids.ids)
+            message_type='comment',
+            partner_ids=self.recipient_ids.ids,
+            subject=subject,
+        )
 
         return {
             'view_mode': 'form',

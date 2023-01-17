@@ -894,7 +894,6 @@
         <field name="context" eval="{
             'default_composition_mode': 'mass_mail',
             'default_partner_to': '{{ object.partner_id.id or \'\' }}',
-            'default_use_template': False,
         }"/>
         <field name="binding_model_id" ref="helpdesk.model_helpdesk_ticket"/>
         <field name="binding_view_types">list</field>

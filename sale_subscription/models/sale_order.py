@@ -1519,12 +1519,15 @@ class SaleOrder(models.Model):
             'code': self.client_order_ref or self.name,
             'currency': self.pricelist_id.currency_id.name,
             'date_end': self.end_date,
-            'mail_notify_force_send': False,
             'no_new_invoice': True}}
         _logger.debug("Sending Invoice Mail to %s for subscription %s", self.partner_id.email, self.id)
         # ARJ TODO master: take the invoice template in the settings
-        invoice.with_context(email_context).message_post_with_template(
-                self.sale_order_template_id.invoice_mail_template_id.id, auto_commit=not (config['test_enable'] and modules.module.current_test))
+        if self.sale_order_template_id.invoice_mail_template_id:
+            invoice.with_context(email_context).message_post_with_source(
+                self.sale_order_template_id.invoice_mail_template_id,
+                force_send=False,
+                subtype_xmlid='mail.mt_comment',
+            )
         invoice.is_move_sent = True
 
     def _send_subscription_rating_mail(self, force_send=False):
@@ -1594,12 +1597,12 @@ class SaleOrder(models.Model):
                 invoice.write({'ref': tx.reference, 'payment_reference': tx.reference})
                 # Only update the invoice date if there is already one invoice for the lines and when the so is not done
                 # locked contract are finished or renewed
-                invoice.message_post_with_view(
+                invoice.message_post_with_source(
                     'mail.message_origin_link',
-                    values={'self': invoice, 'origin': self},
-                    subtype_id=self.env.ref('mail.mt_note').id
+                    render_values={'self': invoice, 'origin': self},
+                    subtype_xmlid='mail.mt_note',
                 )
-                tx.invoice_ids = invoice.id,
+                tx.invoice_ids = invoice.id
             self.set_open()
             return True
         return False

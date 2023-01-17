@@ -420,11 +420,9 @@ class Task(models.Model):
             'context': {
                 'default_composition_mode': 'mass_mail' if len(tasks_with_report.ids) > 1 else 'comment',
                 'default_model': 'project.task',
-                'default_res_id': tasks_with_report.ids[0],
-                'default_use_template': bool(template_id),
+                'default_res_ids': tasks_with_report.ids,
                 'default_template_id': template_id,
                 'fsm_mark_as_sent': True,
-                'active_ids': tasks_with_report.ids,
             },
         }
 

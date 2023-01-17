@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
-from odoo import api, fields, models
+from odoo import fields, models
 
 
 class MailComposeMessage(models.TransientModel):
@@ -9,22 +9,23 @@ class MailComposeMessage(models.TransientModel):
 
     marketing_activity_id = fields.Many2one('marketing.activity', string='Marketing Activity')
 
-    def get_mail_values(self, res_ids):
+    def _prepare_mail_values_mailing_traces(self, mail_values_all):
         """ Override method to link mail automation activity with mail statistics"""
-        res = super(MailComposeMessage, self).get_mail_values(res_ids)
+        trace_values_all = super()._prepare_mail_values_mailing_traces(mail_values_all)
 
-        if self.composition_mode == 'mass_mail' and (self.mass_mailing_name or self.mass_mailing_id) and self.marketing_activity_id:
-            # retrieve trace linked to recipient
-            traces = self.env['marketing.trace'].search([('activity_id', '=', self.marketing_activity_id.id), ('res_id', 'in', res_ids)])
-            traces_mapping = dict((trace.res_id, trace.id) for trace in traces)
+        # skip update if no marketing activity is linked to the mailing
+        if not self.marketing_activity_id:
+            return trace_values_all
 
-            # update statistics creation done in mass_mailing to include link between stat and trace
-            for res_id in res_ids:
-                mail_values = res[res_id]
-                traces_command = mail_values.get('mailing_trace_ids')  # [(0, 0, stat_vals)]
-                if traces_command and len(traces_command[0]) == 3:
-                    statistics_dict = traces_command[0][2]
-                    if traces_mapping.get(res_id):
-                        statistics_dict['marketing_trace_id'] = traces_mapping[res_id]
+        # retrieve trace linked to recipient
+        traces = self.env['marketing.trace'].search([
+            ('activity_id', '=', self.marketing_activity_id.id),
+            ('res_id', 'in', list(trace_values_all.keys()))
+        ])
+        traces_mapping = dict((trace.res_id, trace.id) for trace in traces)
 
-        return res
+        # update statistics creation done in mass_mailing to include link between stat and trace
+        for res_id, trace_values in trace_values_all.items():
+            trace_values['marketing_trace_id'] = traces_mapping[res_id]
+
+        return trace_values_all

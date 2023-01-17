@@ -78,7 +78,7 @@ class TestHrAppraisalRequest(TransactionCase):
         request.action_invite()
         message_ids = appraisal.message_ids - rest_message_ids
         self.assertEqual(len(message_ids), 1, "Request mail has not been posted")
-        self.assertEqual(message_ids.email_from, self.manager_user.email, "The mail of a sender wrong")
+        self.assertEqual(message_ids.email_from, self.manager_user.email_formatted, "The mail of a sender wrong")
         self.assertTrue("<p>My awesome message</p>" in message_ids.body)
 
     def test_employee_simple_request(self):

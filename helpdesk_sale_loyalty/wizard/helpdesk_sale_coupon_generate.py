@@ -28,9 +28,10 @@ class HelpdeskSaleCouponGenerate(models.TransientModel):
         coupon = self.env['loyalty.card'].sudo().create(vals)
         self.ticket_id.coupon_ids |= coupon
         view = self.env.ref('helpdesk_sale_loyalty.loyalty_card_view_form_helpdesk_sale_loyalty', raise_if_not_found=False)
-        self.ticket_id.message_post_with_view(
-            'helpdesk.ticket_conversion_link', values={'created_record': coupon, 'message': _('Coupon created')},
-            subtype_id=self.env.ref('mail.mt_note').id, author_id=self.env.user.partner_id.id
+        self.ticket_id.message_post_with_source(
+            'helpdesk.ticket_conversion_link',
+            render_values={'created_record': coupon, 'message': _('Coupon created')},
+            subtype_xmlid='mail.mt_note',
         )
         return {
             'type': 'ir.actions.act_window',

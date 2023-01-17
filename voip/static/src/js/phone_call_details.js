@@ -288,11 +288,10 @@ const PhoneCallDetails = Widget.extend({
                 views: [[false, 'form']],
                 target: 'new',
                 context: {
-                    default_res_id: this.activityResId,
+                    default_res_ids: [this.activityResId],
                     default_model: this._activityResModel,
                     default_partner_ids: this.partnerId ? [this.partnerId] : [],
                     default_composition_mode: 'comment',
-                    default_use_template: true,
                 },
             });
         } else if (this.partnerId) {
@@ -302,11 +301,10 @@ const PhoneCallDetails = Widget.extend({
                 views: [[false, 'form']],
                 target: 'new',
                 context: {
-                    default_res_id: this.partnerId,
+                    default_res_ids: [this.partnerId],
                     default_model: 'res.partner',
                     default_partner_ids: [this.partnerId],
                     default_composition_mode: 'comment',
-                    default_use_template: true,
                 },
             });
         }

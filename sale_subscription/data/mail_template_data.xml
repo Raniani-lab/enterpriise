@@ -299,8 +299,7 @@
 </td></tr>
 </table>
         </field>
-        <field name="report_template" ref="account.account_invoices" />
-        <field name="report_name">Invoice_{{ ctx.get('code', ctx.get('subscription_name')) }}_{{ format_date(ctx.get('previous_date')) }}</field>
+        <field name="report_template_ids" eval="[(4, ref('account.account_invoices'))]"/>
         <field name="lang">{{ object.partner_id.lang }}</field>
         <field name="auto_delete" eval="True"/>
     </record>
@@ -463,8 +462,7 @@
                 </p>
             </div>
         </field>
-        <field name="report_template" ref="account.account_invoices"/>
-        <field name="report_name">Invoice_{{ (object.name or '').replace('/','_') }}{{ object.state == 'draft' and '_draft' or '' }}</field>
+        <field name="report_template_ids" eval="[(4, ref('account.account_invoices'))]"/>
         <field name="lang">{{ object.partner_id.lang }}</field>
         <field name="auto_delete" eval="True"/>
     </record>

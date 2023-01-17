@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from markupsafe import Markup
+
 from odoo import api, fields, models, _, Command
 
 
@@ -190,12 +192,15 @@ class HrContractSignDocumentWizard(models.TransientModel):
             else:
                 signatories_text = _('Only %s has to sign.', employee.display_name)
             record_to_post = self.contract_id if self.contract_id.employee_id == employee else employee
-            # YTI TODO: Use message_post_with_view
             record_to_post.message_post(
-                body=_('%s requested a new signature on the following documents:<br/><ul>%s</ul>%s') % (
-                    self.env.user.display_name,
-                    '\n'.join('<li>%s</li>' % name for name in self.sign_template_ids.mapped('name')),
-                    signatories_text))
+                body=Markup(
+                    _('%(user_name)s requested a new signature on the following documents:<br/><ul>%(documents)s</ul>%(signatories_text)s')
+                ) % {
+                    'user_name': self.env.user.display_name,
+                    'documents': '\n'.join(Markup('<li>%s</li>') % name for name in self.sign_template_ids.mapped('name')),
+                    'signatories_text': signatories_text
+                }
+            )
 
         if len(sign_requests) == 1 and self.env.user.id == self.responsible_id.id:
             return sign_requests.go_to_document()

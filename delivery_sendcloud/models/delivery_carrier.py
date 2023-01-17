@@ -84,11 +84,12 @@ class DeliveryCarrier(models.Model):
             parcels = sendcloud.send_shipment(pick)
             # fetch the ids, tracking numbers and url for each parcel
             parcel_ids, parcel_tracking_numbers, doc_ids = self._prepare_track_message_docs(pick, parcels, sendcloud)
-            pick.message_post_with_view(
-                'delivery_sendcloud.sendcloud_label_tracking', values={'type': 'Shipment', 'parcels': parcels},
-                subtype_id=self.env.ref('mail.mt_note').id, author_id=self.env.user.partner_id.id, attachment_ids=doc_ids
+            pick.message_post_with_source(
+                'delivery_sendcloud.sendcloud_label_tracking',
+                render_values={'type': 'Shipment', 'parcels': parcels},
+                subtype_xmlid='mail.mt_note',
+                attachment_ids=doc_ids,
             )
-            # pick.message_post(body=logmessage, attachments=docs)
             parcel_ids = ','.join(parcel_ids)
             pick.sendcloud_parcel_ref = parcel_ids
             try:
@@ -137,9 +138,11 @@ class DeliveryCarrier(models.Model):
         parcel_ids, _, doc_ids = self._prepare_track_message_docs(picking, parcels, sendcloud)
         parcel_ids = ','.join(parcel_ids)
         # Add Tracking info and docs in chatter
-        picking.message_post_with_view(
-            'delivery_sendcloud.sendcloud_label_tracking', values={'type': 'Return', 'parcels': parcels},
-            subtype_id=self.env.ref('mail.mt_note').id, author_id=self.env.user.partner_id.id, attachment_ids=doc_ids
+        picking.message_post_with_source(
+            'delivery_sendcloud.sendcloud_label_tracking',
+            render_values={'type': 'Return', 'parcels': parcels},
+            subtype_xmlid='mail.mt_note',
+            attachment_ids=doc_ids
         )
         # if picking is not a return means we are pregenerating the return label on delivery
         # thus we save the returned parcel id in a seperate field

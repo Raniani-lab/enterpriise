@@ -46,8 +46,7 @@
                 Best regards,<br/><br/>
             </p>
         </field>
-        <field name="report_template" ref="task_custom_report"/>
-        <field name="report_name">Worksheet {{ object.name }}{{ (' - ' + object.partner_id.name) if object.partner_id else '' }}.pdf</field>
+        <field name="report_template_ids" eval="[(4, ref('industry_fsm.task_custom_report'))]"/>
         <field name="lang">{{ object.partner_id.lang }}</field>
     </record>
 </odoo>

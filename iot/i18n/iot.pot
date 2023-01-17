@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server saas~16.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-27 15:40+0000\n"
-"PO-Revision-Date: 2022-09-27 15:40+0000\n"
+"POT-Creation-Date: 2023-01-17 10:15+0000\n"
+"PO-Revision-Date: 2023-01-17 10:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -52,14 +52,14 @@ msgid "Add IoT Box wizard"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Are you sure you want to reboot the IoT box?"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Are you sure you want to restart Odoo on the IoT box?"
@@ -86,48 +86,40 @@ msgid "Bluetooth"
 msgstr ""
 
 #. module: iot
-#. openerp-web
-#: code:addons/iot/static/src/views/box_kanban_view.xml:0
-#: code:addons/iot/static/src/views/box_list_view.xml:0
-#, python-format
-msgid "CONNECT"
-msgstr ""
-
-#. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__camera
 msgid "Camera"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/views/iot_device_form.js:0
 #, python-format
 msgid "Check if the device is still connected"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/iot_report_action.js:0
 #, python-format
 msgid "Check if the printer is still connected"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid "Click here to open your IoT Homepage"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid "Click on Advanced/Show Details/Details/More information"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid ""
@@ -141,7 +133,7 @@ msgid "Click on the"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #: model_terms:ir.ui.view,arch_db:iot.view_add_iot_box
 #, python-format
@@ -149,7 +141,7 @@ msgid "Close"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid "Close this window and try again"
@@ -162,10 +154,8 @@ msgid "Company"
 msgstr ""
 
 #. module: iot
-#. openerp-web
-#: code:addons/iot/static/src/views/box_kanban_view.xml:0
-#: code:addons/iot/static/src/views/box_list_view.xml:0
-#, python-format
+#: model_terms:ir.ui.view,arch_db:iot.iot_box_view_kanban
+#: model_terms:ir.ui.view,arch_db:iot.iot_box_view_list
 msgid "Connect"
 msgstr ""
 
@@ -182,21 +172,21 @@ msgid "Connection"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/iot_connection_error_dialog.js:0
 #, python-format
 msgid "Connection to IoT Box failed"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/views/iot_device_form.js:0
 #, python-format
 msgid "Connection to device failed"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/iot_report_action.js:0
 #, python-format
 msgid "Connection to printer failed"
@@ -273,21 +263,21 @@ msgid "Domain Address"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/view_widgets/iot_download_logs.xml:0
 #, python-format
 msgid "Download Logs"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/view_widgets/iot_download_logs.xml:0
 #, python-format
 msgid "Download logs"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid "Firefox only : Click on Confirm Security Exception"
@@ -337,7 +327,7 @@ msgid "If device is connected to the IoT Box"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid ""
@@ -395,14 +385,6 @@ msgid "Keyboard Layout"
 msgstr ""
 
 #. module: iot
-#: model:ir.model.fields,field_description:iot.field_add_iot_box____last_update
-#: model:ir.model.fields,field_description:iot.field_iot_box____last_update
-#: model:ir.model.fields,field_description:iot.field_iot_device____last_update
-#: model:ir.model.fields,field_description:iot.field_iot_keyboard_layout____last_update
-msgid "Last Modified on"
-msgstr ""
-
-#. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_form
 msgid "Last Sent Value"
 msgstr ""
@@ -424,7 +406,7 @@ msgid "Last Updated on"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Last restarting process hasn't finished yet"
@@ -473,7 +455,7 @@ msgid "No IoT Box found !"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid "Odoo cannot reach the IoT Box."
@@ -495,7 +477,7 @@ msgid "Payment Terminal"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid ""
@@ -504,14 +486,14 @@ msgid ""
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid "Please check if the IoT Box is still connected."
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
@@ -524,7 +506,7 @@ msgid "Printer"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/iot_report_action.js:0
 #, python-format
 msgid "Printer "
@@ -556,7 +538,7 @@ msgid "Reports"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
@@ -565,14 +547,14 @@ msgid "Restart Failed"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Restart finished"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Restarting"
@@ -594,20 +576,21 @@ msgid "Status"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Success"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/iot_report_action.js:0
 #, python-format
 msgid "Successfully sent to printer!"
 msgstr ""
 
 #. module: iot
+#. odoo-python
 #: code:addons/iot/wizard/add_iot_box.py:0
 #, python-format
 msgid ""
@@ -626,7 +609,7 @@ msgid "There is no device connected to your IoT Boxes"
 msgstr ""
 
 #. module: iot
-#. openerp-web
+#. odoo-javascript
 #: code:addons/iot/static/src/view_widgets/iot_restart_odoo.js:0
 #, python-format
 msgid "Timed out"
@@ -670,6 +653,7 @@ msgid "Variant"
 msgstr ""
 
 #. module: iot
+#. odoo-python
 #: code:addons/iot/wizard/add_iot_box.py:0
 #, python-format
 msgid "We had troubles pairing your IoT Box. Please try again later."

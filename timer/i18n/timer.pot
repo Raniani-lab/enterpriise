@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.4alpha1+e\n"
+"Project-Id-Version: Odoo Server saas~16.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-04-21 08:56+0000\n"
-"PO-Revision-Date: 2022-04-21 08:56+0000\n"
+"POT-Creation-Date: 2023-01-17 10:15+0000\n"
+"PO-Revision-Date: 2023-01-17 10:15+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -62,11 +62,6 @@ msgid "Is Timer Running"
 msgstr ""
 
 #. module: timer
-#: model:ir.model.fields,field_description:timer.field_timer_timer____last_update
-msgid "Last Modified on"
-msgstr ""
-
-#. module: timer
 #: model:ir.model.fields,field_description:timer.field_timer_timer__write_uid
 msgid "Last Updated by"
 msgstr ""
@@ -82,13 +77,14 @@ msgid "Only one timer occurrence by model, record and user"
 msgstr ""
 
 #. module: timer
+#. odoo-python
 #: code:addons/timer/models/timer_mixin.py:0
 #, python-format
 msgid "Operation not supported"
 msgstr ""
 
 #. module: timer
-#. openerp-web
+#. odoo-javascript
 #: code:addons/timer/static/src/js/timer_toggle_button.js:0
 #, python-format
 msgid "Play"
@@ -105,14 +101,16 @@ msgid "Res Model"
 msgstr ""
 
 #. module: timer
-#. openerp-web
+#. odoo-javascript
+#: code:addons/timer/static/src/component/timer_toggle_button/timer_toggle_button.js:0
 #: code:addons/timer/static/src/js/timer_toggle_button.js:0
 #, python-format
 msgid "Start"
 msgstr ""
 
 #. module: timer
-#. openerp-web
+#. odoo-javascript
+#: code:addons/timer/static/src/component/timer_toggle_button/timer_toggle_button.js:0
 #: code:addons/timer/static/src/js/timer_toggle_button.js:0
 #: code:addons/timer/static/src/js/timer_toggle_button.js:0
 #, python-format

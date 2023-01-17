@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server saas~16.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:48+0000\n"
-"PO-Revision-Date: 2022-09-20 09:48+0000\n"
+"POT-Creation-Date: 2023-01-17 10:16+0000\n"
+"PO-Revision-Date: 2023-01-17 10:16+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -16,6 +16,7 @@ msgstr ""
 "Plural-Forms: \n"
 
 #. module: account_avatax
+#. odoo-python
 #: code:addons/account_avatax/models/account_avatax.py:0
 #, python-format
 msgid "%(response)s"
@@ -25,47 +26,42 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
 msgid ""
 "<i class=\"fa fa-fw fa-arrow-right\"/>\n"
-"                                    How to Get Credentials"
+"                                How to Get Credentials"
 msgstr ""
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
 msgid ""
 "<i title=\"Go to Avatax portal\" role=\"img\" aria-label=\"Go to Avatax portal\" class=\"fa fa-external-link-square fa-fw\"/>\n"
-"                                    Avatax portal"
+"                                Avatax portal"
 msgstr ""
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
 msgid ""
 "<i title=\"Show logs\" role=\"img\" aria-label=\"Show logs\" class=\"fa fa-file-text-o\"/>\n"
-"                                    Show logs"
+"                                Show logs"
 msgstr ""
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
 msgid ""
 "<i title=\"Start logging for 30 minutes\" role=\"img\" aria-label=\"Start logging for 30 minutes\" class=\"fa fa-file-text-o\"/>\n"
-"                                    Start logging for 30 minutes"
+"                                Start logging for 30 minutes"
 msgstr ""
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
 msgid ""
 "<i title=\"Sync Parameters\" role=\"img\" aria-label=\"Sync Parameters\" class=\"fa fa-refresh\"/>\n"
-"                                    Sync Parameters"
+"                                Sync Parameters"
 msgstr ""
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
 msgid ""
 "<i title=\"Test connection\" role=\"img\" aria-label=\"Test connection\" class=\"fa fa-plug fa-fw\"/>\n"
-"                                    Test connection"
-msgstr ""
-
-#. module: account_avatax
-#: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
-msgid "<span class=\"o_form_label\">AvaTax</span>"
+"                                Test connection"
 msgstr ""
 
 #. module: account_avatax
@@ -94,6 +90,7 @@ msgid "Address Validation"
 msgstr ""
 
 #. module: account_avatax
+#. odoo-python
 #: code:addons/account_avatax/wizard/avatax_validate_address.py:0
 #, python-format
 msgid "Address validation is only supported for North American addresses."
@@ -102,6 +99,11 @@ msgstr ""
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
 msgid "Automatically compute tax rates"
+msgstr ""
+
+#. module: account_avatax
+#: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
+msgid "AvaTax"
 msgstr ""
 
 #. module: account_avatax
@@ -300,6 +302,7 @@ msgid "Customer Code set in Avalara for this partner."
 msgstr ""
 
 #. module: account_avatax
+#. odoo-python
 #: code:addons/account_avatax/models/account_avatax.py:0
 #, python-format
 msgid ""
@@ -331,10 +334,11 @@ msgstr ""
 
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_payment_link_wizard
-msgid "Generate Sales Payment Link"
+msgid "Generate Payment Link"
 msgstr ""
 
 #. module: account_avatax
+#. odoo-python
 #: code:addons/account_avatax/models/account_avatax.py:0
 #, python-format
 msgid "Go to the configuration panel"
@@ -363,13 +367,6 @@ msgstr ""
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_account_move
 msgid "Journal Entry"
-msgstr ""
-
-#. module: account_avatax
-#: model:ir.model.fields,field_description:account_avatax.field_avatax_exemption____last_update
-#: model:ir.model.fields,field_description:account_avatax.field_avatax_validate_address____last_update
-#: model:ir.model.fields,field_description:account_avatax.field_product_avatax_category____last_update
-msgid "Last Modified on"
 msgstr ""
 
 #. module: account_avatax
@@ -402,6 +399,7 @@ msgid "Name"
 msgstr ""
 
 #. module: account_avatax
+#. odoo-python
 #: code:addons/account_avatax/models/account_avatax.py:0
 #, python-format
 msgid ""
@@ -410,12 +408,14 @@ msgid ""
 msgstr ""
 
 #. module: account_avatax
+#. odoo-python
 #: code:addons/account_avatax/models/res_company.py:0
 #, python-format
 msgid "Odoo could not fetch the exemption codes of %(company)s"
 msgstr ""
 
 #. module: account_avatax
+#. odoo-python
 #: code:addons/account_avatax/models/account_avatax.py:0
 #, python-format
 msgid ""
@@ -424,12 +424,14 @@ msgid ""
 msgstr ""
 
 #. module: account_avatax
+#. odoo-python
 #: code:addons/account_avatax/wizard/avatax_validate_address.py:0
 #, python-format
 msgid "Odoo could not validate the address of %(partner)s with Avalara."
 msgstr ""
 
 #. module: account_avatax
+#. odoo-python
 #: code:addons/account_avatax/models/account_avatax.py:0
 #, python-format
 msgid ""
@@ -448,6 +450,7 @@ msgid "Partner"
 msgstr ""
 
 #. module: account_avatax
+#. odoo-python
 #: code:addons/account_avatax/models/account_avatax.py:0
 #, python-format
 msgid "Please add your AvaTax credentials"
@@ -484,12 +487,14 @@ msgid "Save Validated"
 msgstr ""
 
 #. module: account_avatax
+#. odoo-python
 #: code:addons/account_avatax/models/account_avatax_unique_code.py:0
 #, python-format
 msgid "Search operation not supported"
 msgstr ""
 
 #. module: account_avatax
+#. odoo-python
 #: code:addons/account_avatax/models/res_company.py:0
 #, python-format
 msgid ""
@@ -532,6 +537,7 @@ msgid ""
 msgstr ""
 
 #. module: account_avatax
+#. odoo-python
 #: code:addons/account_avatax/models/account_avatax.py:0
 #, python-format
 msgid ""
@@ -588,6 +594,7 @@ msgid "Validate"
 msgstr ""
 
 #. module: account_avatax
+#. odoo-python
 #: code:addons/account_avatax/models/res_partner.py:0
 #, python-format
 msgid "Validate address of %s"
@@ -642,6 +649,7 @@ msgid "Zip Code"
 msgstr ""
 
 #. module: account_avatax
+#. odoo-python
 #: code:addons/account_avatax/models/product.py:0
 #, python-format
 msgid "[%s] %s"

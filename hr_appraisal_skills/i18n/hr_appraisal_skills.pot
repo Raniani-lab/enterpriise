@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server saas~16.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:50+0000\n"
-"PO-Revision-Date: 2022-09-20 09:50+0000\n"
+"POT-Creation-Date: 2023-01-17 10:16+0000\n"
+"PO-Revision-Date: 2023-01-17 10:16+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -24,7 +24,7 @@ msgid ""
 msgstr ""
 
 #. module: hr_appraisal_skills
-#. openerp-web
+#. odoo-javascript
 #: code:addons/hr_appraisal_skills/static/src/js/appraisal_skills_one2many.xml:0
 #, python-format
 msgid "Add new skills"
@@ -146,11 +146,6 @@ msgstr ""
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill__justification
 #: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill_report__justification
 msgid "Justification"
-msgstr ""
-
-#. module: hr_appraisal_skills
-#: model:ir.model.fields,field_description:hr_appraisal_skills.field_hr_appraisal_skill____last_update
-msgid "Last Modified on"
 msgstr ""
 
 #. module: hr_appraisal_skills

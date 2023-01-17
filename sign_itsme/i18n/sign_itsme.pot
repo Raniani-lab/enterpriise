@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 16.0beta+e\n"
+"Project-Id-Version: Odoo Server saas~16.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-27 15:42+0000\n"
-"PO-Revision-Date: 2022-09-27 15:42+0000\n"
+"POT-Creation-Date: 2023-01-17 10:16+0000\n"
+"PO-Revision-Date: 2023-01-17 10:16+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -22,7 +22,7 @@ msgid ""
 msgstr ""
 
 #. module: sign_itsme
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sign_itsme/static/src/js/document_signable.js:0
 #, python-format
 msgid "Confirm your identity"
@@ -44,14 +44,14 @@ msgid "Force the signatory to identify using a second authentication method"
 msgstr ""
 
 #. module: sign_itsme
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sign_itsme/static/src/xml/templates.xml:0
 #, python-format
 msgid "Go Back"
 msgstr ""
 
 #. module: sign_itsme
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sign_itsme/static/src/xml/templates.xml:0
 #, python-format
 msgid "Identify with itsme"
@@ -63,13 +63,14 @@ msgid "Name"
 msgstr ""
 
 #. module: sign_itsme
-#. openerp-web
+#. odoo-javascript
 #: code:addons/sign_itsme/static/src/xml/templates.xml:0
 #, python-format
 msgid "Please confirm your identity to finalize your signature."
 msgstr ""
 
 #. module: sign_itsme
+#. odoo-python
 #: code:addons/sign_itsme/models/sign_request_item.py:0
 #, python-format
 msgid "Sign request item is not validated yet."
@@ -91,6 +92,7 @@ msgid "Via itsme®"
 msgstr ""
 
 #. module: sign_itsme
+#. odoo-python
 #: code:addons/sign_itsme/controllers/main.py:0
 #, python-format
 msgid "itsme® IAP service could not be found."

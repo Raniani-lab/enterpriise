@@ -4,10 +4,10 @@
 #
 msgid ""
 msgstr ""
-"Project-Id-Version: Odoo Server 15.5alpha1+e\n"
+"Project-Id-Version: Odoo Server saas~16.1+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-09-20 09:48+0000\n"
-"PO-Revision-Date: 2022-09-20 09:48+0000\n"
+"POT-Creation-Date: 2023-01-17 10:16+0000\n"
+"PO-Revision-Date: 2023-01-17 10:16+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -68,12 +68,14 @@ msgid "Activity Type Icon"
 msgstr ""
 
 #. module: account_batch_payment
+#. odoo-python
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid "All payments in the batch must belong to the same company."
 msgstr ""
 
 #. module: account_batch_payment
+#. odoo-python
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid "All payments in the batch must share the same payment method."
@@ -138,6 +140,7 @@ msgid "Batch Deposit Report"
 msgstr ""
 
 #. module: account_batch_payment
+#. odoo-python
 #: code:addons/account_batch_payment/models/account_payment.py:0
 #: model:ir.model,name:account_batch_payment.model_account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_error_wizard__batch_payment_id
@@ -180,6 +183,7 @@ msgid "Batch payments error reporting wizard line"
 msgstr ""
 
 #. module: account_batch_payment
+#. odoo-python
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid "Cannot validate an empty batch. Please add some payments to it first."
@@ -201,6 +205,12 @@ msgid "Company Currency"
 msgstr ""
 
 #. module: account_batch_payment
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_account_payment_tree_inherit_account_batch_payment
+msgid "Create Batch"
+msgstr ""
+
+#. module: account_batch_payment
+#. odoo-python
 #: code:addons/account_batch_payment/models/account_journal.py:0
 #, python-format
 msgid "Create Batch Payment"
@@ -361,13 +371,6 @@ msgid "Icon to indicate an exception activity."
 msgstr ""
 
 #. module: account_batch_payment
-#: code:addons/account_batch_payment/models/account_batch_payment.py:0
-#: code:addons/account_batch_payment/models/account_batch_payment.py:0
-#, python-format
-msgid "Id: %s"
-msgstr ""
-
-#. module: account_batch_payment
 #: model:ir.model.fields,help:account_batch_payment.field_account_batch_payment__message_needaction
 msgid "If checked, new messages require your attention."
 msgstr ""
@@ -384,6 +387,7 @@ msgid "Inbound"
 msgstr ""
 
 #. module: account_batch_payment
+#. odoo-python
 #: code:addons/account_batch_payment/models/account_journal.py:0
 #, python-format
 msgid "Inbound Batch Payments Sequence"
@@ -405,13 +409,6 @@ msgid "Journal"
 msgstr ""
 
 #. module: account_batch_payment
-#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_error_wizard____last_update
-#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_error_wizard_line____last_update
-#: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment____last_update
-msgid "Last Modified on"
-msgstr ""
-
-#. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_error_wizard__write_uid
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_error_wizard_line__write_uid
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__write_uid
@@ -423,6 +420,11 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_error_wizard_line__write_date
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__write_date
 msgid "Last Updated on"
+msgstr ""
+
+#. module: account_batch_payment
+#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
+msgid "Leave empty to generate automatically..."
 msgstr ""
 
 #. module: account_batch_payment
@@ -526,6 +528,7 @@ msgid "Outbound"
 msgstr ""
 
 #. module: account_batch_payment
+#. odoo-python
 #: code:addons/account_batch_payment/models/account_journal.py:0
 #, python-format
 msgid "Outbound Batch Payments Sequence"
@@ -560,12 +563,14 @@ msgid "Payments"
 msgstr ""
 
 #. module: account_batch_payment
+#. odoo-python
 #: code:addons/account_batch_payment/wizard/batch_error.py:0
 #, python-format
 msgid "Payments in Error"
 msgstr ""
 
 #. module: account_batch_payment
+#. odoo-python
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid "Payments must be posted to be added to a batch."
@@ -622,6 +627,7 @@ msgid "Sent"
 msgstr ""
 
 #. module: account_batch_payment
+#. odoo-python
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid "Set payments state to \"posted\"."
@@ -643,18 +649,21 @@ msgid "Show Remove Options"
 msgstr ""
 
 #. module: account_batch_payment
+#. odoo-python
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid "Some payments have already been matched with a bank statement."
 msgstr ""
 
 #. module: account_batch_payment
+#. odoo-python
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid "Some payments have already been sent."
 msgstr ""
 
 #. module: account_batch_payment
+#. odoo-python
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid "Some recipient accounts do not allow out payments."
@@ -681,6 +690,7 @@ msgid "TOTAL"
 msgstr ""
 
 #. module: account_batch_payment
+#. odoo-python
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid ""
@@ -698,6 +708,7 @@ msgid "The batch could not be validated"
 msgstr ""
 
 #. module: account_batch_payment
+#. odoo-python
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid ""
@@ -705,6 +716,7 @@ msgid ""
 msgstr ""
 
 #. module: account_batch_payment
+#. odoo-python
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid "The batch must have the same type as the payments it contains."
@@ -718,6 +730,7 @@ msgid ""
 msgstr ""
 
 #. module: account_batch_payment
+#. odoo-python
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
 msgid ""
@@ -790,24 +803,15 @@ msgid ""
 msgstr ""
 
 #. module: account_batch_payment
+#. odoo-python
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
-msgid ""
-"You cannot add payments that are not posted.\n"
-"Payments:\n"
-"%s"
+msgid "You cannot add payments that are not posted."
 msgstr ""
 
 #. module: account_batch_payment
+#. odoo-python
 #: code:addons/account_batch_payment/models/account_batch_payment.py:0
 #, python-format
-msgid ""
-"You cannot add payments with zero amount in a Batch Payment.\n"
-"Payments:\n"
-"%s"
-msgstr ""
-
-#. module: account_batch_payment
-#: model_terms:ir.ui.view,arch_db:account_batch_payment.view_batch_payment_form
-msgid "auto ..."
+msgid "You cannot add payments with zero amount in a Batch Payment."
 msgstr ""

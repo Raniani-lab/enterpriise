@@ -264,7 +264,7 @@ class Tablet extends Component {
         await this.getState();
     }
 
-    _onBarcodeScanned(barcode) {
+    async _onBarcodeScanned(barcode) {
         if (barcode.startsWith('O-BTN.') || barcode.startsWith('O-CMD.')) {
             // Do nothing. It's already handled by the barcode service.
             return;

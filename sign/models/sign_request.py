@@ -617,7 +617,7 @@ class SignRequest(models.Model):
         pdf_content, __ = self.env["ir.actions.report"].with_user(public_user).sudo()._render_qweb_pdf(
             'sign.action_sign_request_print_logs',
             self.ids,
-            data={'format_date': format_date}
+            data={'format_date': format_date, 'company_id': self.communication_company_id}
         )
         attachment_log = self.env['ir.attachment'].create({
             'name': "Certificate of completion - %s.pdf" % time.strftime('%Y-%m-%d - %H:%M:%S'),

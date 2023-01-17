@@ -27,6 +27,10 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
                 break
         options['order_column'] = (previous_options or {}).get('order_column') or default_order_column
 
+        # 'Unfold All' is not automatic when printing those reports if not line is unfolded ; it can only be explicitly enabled from the UI.
+        # This is done to prevent performance issues when printing large data.
+        options['unfold_all'] = previous_options.get('unfold_all', False)
+
     def _custom_line_postprocessor(self, report, options, lines):
         partner_lines_map = {}
 

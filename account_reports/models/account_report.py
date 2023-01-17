@@ -857,7 +857,7 @@ class AccountReport(models.Model):
 
         def create_hierarchy_line(account_group, column_totals, level, parent_id):
             line_id = self._get_generic_line_id('account.group', account_group.id if account_group else 0, parent_line_id=parent_id)
-            unfolded = line_id in options.get('unfolded_lines') or unfold_all
+            unfolded = line_id in options.get('unfolded_lines') or options['unfold_all']
             name = account_group.display_name if account_group else _('(No Group)')
             return {
                 'id': line_id,
@@ -922,7 +922,6 @@ class AccountReport(models.Model):
                     if child_group not in treated_child_groups
                 ] + to_treat
 
-        unfold_all = self.env.context.get('print_mode') and len(options.get('unfolded_lines')) == 0 or options.get('unfold_all')
         new_lines, account_lines, total_lines = [], [], []
         parent_line_id = account_id = None
         current_level = 0
@@ -1127,10 +1126,12 @@ class AccountReport(models.Model):
     # OPTIONS: UNFOLD ALL
     ####################################################
     def _init_options_unfold_all(self, options, previous_options=None):
-        if self.filter_unfold_all and previous_options:
-            options['unfold_all'] = (previous_options or {}).get('unfold_all', False)
-        else:
-            options['unfold_all'] = False # Disables the filter in the UI
+        unfold_all = self._context.get('print_mode') and not options.get('unfolded_lines')
+
+        if not unfold_all and self.filter_unfold_all and previous_options:
+            unfold_all = (previous_options or {}).get('unfold_all', False)
+
+        options['unfold_all'] = unfold_all
 
     ####################################################
     # OPTIONS: HORIZONTAL GROUP
@@ -1854,7 +1855,7 @@ class AccountReport(models.Model):
         custom_unfold_all_batch_data = None
 
         # If it's possible to batch unfold and we're unfolding all lines, compute the batch, so that individual expansions are more efficient
-        if (self._context.get('print_mode') or options.get('unfold_all')) and self.custom_handler_model_id:
+        if options['unfold_all'] and self.custom_handler_model_id:
             lines_to_expand_by_function = {}
             for line_dict in lines:
                 if line_need_expansion(line_dict):
@@ -1899,7 +1900,7 @@ class AccountReport(models.Model):
             'name': line.name,
             'groupby': line.groupby,
             'unfoldable': line.foldable and (any(col['has_sublines'] for col in columns) or bool(line.children_ids)),
-            'unfolded': bool((not line.foldable and (line.children_ids or line.groupby)) or line_id in options.get('unfolded_lines', {})) or options.get('unfold_all'),
+            'unfolded': bool((not line.foldable and (line.children_ids or line.groupby)) or line_id in options.get('unfolded_lines', {})) or options['unfold_all'],
             'columns': columns,
             'level': line.hierarchy_level,
             'page_break': line.print_on_new_page,
@@ -3895,7 +3896,8 @@ class AccountReport(models.Model):
         }
 
         print_mode_self = self.with_context(print_mode=True)
-        body_html = print_mode_self.get_html(options, print_mode_self._get_lines(options))
+        print_options = print_mode_self._get_options(previous_options=options)
+        body_html = print_mode_self.get_html(print_options, self._filter_out_folded_children(print_mode_self._get_lines(print_options)))
         body = self.env['ir.ui.view']._render_template(
             "account_reports.print_template",
             values=dict(rcontext, body_html=body_html),
@@ -3904,7 +3906,7 @@ class AccountReport(models.Model):
         footer = self.env['ir.actions.report']._render_template("web.minimal_layout", values=dict(rcontext, subst=True, body=markupsafe.Markup(footer.decode())))
 
         landscape = False
-        if len(options['columns']) * len(options['column_groups']) > 5:
+        if len(print_options['columns']) * len(print_options['column_groups']) > 5:
             landscape = True
 
         file_content = self.env['ir.actions.report']._run_wkhtmltopdf(
@@ -3922,6 +3924,20 @@ class AccountReport(models.Model):
             'file_content': file_content,
             'file_type': 'pdf',
         }
+
+    def _filter_out_folded_children(self, lines):
+        """ Returns a list containing all the lines of the provided list that need to be displayed when printing,
+        hence removing the children whose parent is folded (especially useful to remove total lines).
+        """
+        rslt = []
+        folded_lines = set()
+        for line in lines:
+            if not line.get('unfolded'):
+                folded_lines.add(line['id'])
+
+            if 'parent_id' not in line or line['parent_id'] not in folded_lines:
+                rslt.append(line)
+        return rslt
 
     def export_to_xlsx(self, options, response=None):
         def write_with_colspan(sheet, x, y, value, colspan, style):
@@ -3956,12 +3972,14 @@ class AccountReport(models.Model):
 
         y_offset = 0
         x_offset = 1 # 1 and not 0 to leave space for the line name
-        lines = self.with_context(no_format=True, print_mode=True, prefetch_fields=False)._get_lines(options)
+        print_mode_self = self.with_context(no_format=True, print_mode=True, prefetch_fields=False)
+        print_options = print_mode_self._get_options(previous_options=options)
+        lines = self._filter_out_folded_children(print_mode_self._get_lines(print_options))
 
         # Add headers.
         # For this, iterate in the same way as done in main_table_header template
-        column_headers_render_data = self._get_column_headers_render_data(options)
-        for header_level_index, header_level in enumerate(options['column_headers']):
+        column_headers_render_data = self._get_column_headers_render_data(print_options)
+        for header_level_index, header_level in enumerate(print_options['column_headers']):
             for header_to_render in header_level * column_headers_render_data['level_repetitions'][header_level_index]:
                 colspan = header_to_render.get('colspan', column_headers_render_data['level_colspan'][header_level_index])
                 write_with_colspan(sheet, x_offset, y_offset, header_to_render.get('name', ''), colspan, title_style)
@@ -3976,14 +3994,14 @@ class AccountReport(models.Model):
         y_offset += 1
         x_offset = 1
 
-        for column in options['columns']:
+        for column in print_options['columns']:
             colspan = column.get('colspan', 1)
             write_with_colspan(sheet, x_offset, y_offset, column.get('name', ''), colspan, title_style)
             x_offset += colspan
         y_offset += 1
 
-        if options.get('order_column'):
-            lines = self._sort_lines(lines, options)
+        if print_options.get('order_column'):
+            lines = self._sort_lines(lines, print_options)
 
         # Add lines.
         for y in range(0, len(lines)):
@@ -4510,7 +4528,6 @@ class AccountReportLine(models.Model):
         groupby_model = groupby_data['current_groupby_model']
         next_groupby = groupby_data['next_groupby']
         current_groupby = groupby_data['current_groupby']
-        unfold_all = self.env.context.get('print_mode') and not options.get('unfolded_lines') or options.get('unfold_all')
         group_lines_by_keys = {}
         for grouping_key, group_totals in aggregated_group_totals.items():
             # For this, we emulate a dict formatted like the result of _compute_expression_totals_for_each_column_group, so that we can call
@@ -4520,7 +4537,7 @@ class AccountReportLine(models.Model):
                 # 'name' key will be set later, so that we can browse all the records of this expansion at once (in case we're dealing with records)
                 'id': line_id,
                 'unfoldable': bool(next_groupby),
-                'unfolded': unfold_all or line_id in options.get('unfolded_lines', {}),
+                'unfolded': options['unfold_all'] or line_id in options.get('unfolded_lines', {}),
                 'groupby': next_groupby,
                 'columns': self.report_id._build_static_line_columns(self, options, group_totals),
                 'level': self.hierarchy_level + 2 * (len(sub_groupby_domain) + 1) + (group_indent - 1),

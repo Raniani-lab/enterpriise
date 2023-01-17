@@ -1070,9 +1070,12 @@ class Planning(models.Model):
         new_slot_values = slots_to_copy._copy_slots(date_start_copy, date_end_copy, relativedelta(days=7))
         slots_to_copy.write({'was_copied': True})
         if new_slot_values:
-            self.create(new_slot_values)
-            return True
+            return [self.create(new_slot_values).ids, slots_to_copy.ids]
         return False
+
+    def action_rollback_copy_previous_week(self, copied_slot_ids):
+        self.browse(copied_slot_ids).was_copied = False
+        self.unlink()
 
     # ----------------------------------------------------
     # Sending Shifts

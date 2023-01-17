@@ -36,16 +36,37 @@ export function usePlanningActions({
                 domain,
             ]);
             if (result) {
-                const message = env._t(
-                    "The shifts from the previous week have successfully been copied."
-                );
-                notifications.add(
+                const notificationRemove = notifications.add(
                     markup(
-                        `<i class="fa fa-fw fa-check"></i><span class="ms-1">${escape(
-                            message
-                        )}</span>`
+                        `<i class="fa fa-fw fa-check"></i><span class="ms-1">${escape(env._t(
+                            "The shifts from the previous week have successfully been copied."
+                        ))}</span>`
                     ),
-                    { type: "success" }
+                    {
+                        type: "success",
+                        sticky: true,
+                        buttons: [{
+                            name: 'Undo',
+                            icon: 'fa-undo',
+                            onClick: async () => {
+                                await orm.call(
+                                    resModel,
+                                    'action_rollback_copy_previous_week',
+                                    result,
+                                );
+                                await reload();
+                                notifications.add(
+                                    markup(
+                                        `<i class="fa fa-fw fa-check"></i><span class="ms-1">${escape(env._t(
+                                            "The shifts that had been copied from the previous week have successfully been removed."
+                                        ))}</span>`
+                                    ),
+                                    { type: 'success' },
+                                );
+                                notificationRemove();
+                            },
+                        }],
+                    }
                 );
                 return reload();
             } else {

@@ -15,8 +15,8 @@ class AccountAnalyticLine(models.Model):
 
     def _group_expand_employee_ids(self, employees, domain, order):
         res = super()._group_expand_employee_ids(employees, domain, order)
-        employee = self.env.user.employee_id  if self._context.get('my_timesheet_display_timer') else False
-        if not employee:
+        employee = self.env.user.employee_id
+        if not employee or any(isinstance(term, (list, tuple)) and term[0] == 'employee_id' for term in domain):
             return res
 
         slot_count = self.env['planning.slot'].search_count(

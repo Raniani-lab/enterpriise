@@ -69,7 +69,7 @@
                 </p>
                 <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_file">
                     <div class="o_knowledge_file_image" data-prop-name="fileImage">
-                        <a href="/knowledge/static/src/img/fleet_icon.png?download=true" title="Car_Catalog.png" data-mimetype="image/png" class="o_image"></a>
+                        <a href="/knowledge/static/src/demo/fleet_icon.png?download=true" title="Car_Catalog.png" data-mimetype="image/png" class="o_image"></a>
                     </div>
                     <div class="o_knowledge_file_description">
                         <div class="o_knowledge_file_name" data-prop-name="fileName">Car_Catalog.png</div>
@@ -233,10 +233,17 @@
                             </li>
                             <li class="oe-nested">
                                 <ul>
-                                    <li>Background</li>
-                                    <li>Size</li>
-                                    <li>Estimated Revenues</li>
-                                    <li>Pain Points</li>
+                                    <li>Background: </li>
+                                    <li>Size: </li>
+                                    <li>Estimated Revenues: </li>
+                                    <li>
+                                        Pain Points (<span style="font-style: italic;">tick the relevant ones</span>)
+                                        <ul class="o_checklist">
+                                            <li>Inconsistent customer experience</li>
+                                            <li>Complicated buying process</li>
+                                            <li>Costing too much money</li>
+                                        </ul>
+                                    </li>
                                 </ul>
                             </li>
                             <li>
@@ -244,9 +251,9 @@
                             </li>
                             <li class="oe-nested">
                                 <ul>
-                                    <li>Job Position</li>
-                                    <li>Email</li>
-                                    <li>Phone</li>
+                                    <li>Job Position: </li>
+                                    <li>Email: </li>
+                                    <li>Phone: </li>
                                 </ul>
                             </li>
                         </ol>

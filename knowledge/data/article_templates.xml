@@ -98,10 +98,13 @@
     <li class="oe-nested">
         <ul>
             <li>
-                <span style="font-size: 14px;">From your document, find this article by clicking on the book icon in the chatter.</span>
+                <span style="font-size: 14px;">From any Odoo document, find this article by clicking on the 📗 icon in the chatter.</span>
             </li>
             <li>
                 <span style="font-size: 14px;">You can use the template as a description, a message or simply copy it to your clipboard!</span>
+            </li>
+            <li>
+                <span style="font-size: 14px;">Not sure how to do it? <a href="https://www.youtube.com/watch?v=r_r8rl73asE">See how it works <i class="fa fa-youtube-play"/></a>.</span>
             </li>
         </ul>
     </li>
@@ -142,7 +145,7 @@
 </ul>
 <div class="o_knowledge_behavior_anchor o_knowledge_behavior_type_file">
     <div class="o_knowledge_file_image" data-prop-name="fileImage">
-        <a href="https://www.odoo.com/web/content/31413934?download=true" title="Onboarding.pdf" data-mimetype="application/pdf" class="o_image"></a>
+        <a href="/knowledge/static/src/demo/Onboarding.pdf?download=true" title="Onboarding.pdf" data-mimetype="application/pdf" class="o_image"></a>
     </div>
     <div class="o_knowledge_file_description">
         <div class="o_knowledge_file_name" data-prop-name="fileName">Odoo Survival Guide</div>

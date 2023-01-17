@@ -299,12 +299,12 @@
                                                     <!-- Icon and Cover buttons -->
                                                     <div class="o_knowledge_icon_cover_buttons text-muted d-print-none py-1"
                                                          attrs="{'invisible': [('active', '=', False)]}">
-                                                        <a role="button" t-on-click="addIcon"
+                                                        <a role="button" t-on-mousedown="addIcon"
                                                            attrs="{'invisible': ['|', '|', ('user_can_write', '=', False), ('is_locked', '=', True), ('icon', '!=', False)]}"
                                                            class="btn btn-light text-capitalize me-2 ps-1 o_knowledge_add_icon o_knowledge_option_button">
                                                             <i class="fa fa-fw fa-lg fa-smile-o" title="Add icon"/> Add icon
                                                         </a>
-                                                        <a role="button" t-on-click="addCover"
+                                                        <a role="button" t-on-mousedown="addCover"
                                                            attrs="{'invisible': ['|', '|', ('user_can_write', '=', False), ('is_locked', '=', True), ('cover_image_id', '!=', False)]}"
                                                            class="btn btn-light text-capitalize me-2 ps-1 o_knowledge_add_cover o_knowledge_option_button">
                                                             <i class="fa fa-fw fa-lg fa-picture-o" title="Add cover"/> Add cover

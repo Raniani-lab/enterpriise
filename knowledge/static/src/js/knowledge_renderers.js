@@ -161,7 +161,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             state: this.state,
             actionService: this.actionService,
             addCover: (ev) => this.addCover(ev),
-            addIcon: () => this.addIcon(),
+            addIcon: (ev) => this.addIcon(ev),
             addProperties: (ev) => this.addProperties(ev),
             convertToArticle: () => this.setIsArticleItem(false),
             convertToItem: () => this.setIsArticleItem(true),
@@ -189,6 +189,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * @param {Event} event
      */
     async addCover(event) {
+        event.preventDefault();
         // Disable button to prevent multiple calls
         event.target.classList.add('disabled');
         if (this.props.record.data.name === this.env._t('Untitled')) {
@@ -214,8 +215,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
 
     /**
      * Add a random icon to the article.
+     * @param {Event} event
      */
-    addIcon() {
+    addIcon(event) {
+        event.preventDefault();
         const icon = this.messaging.knowledge.randomEmojis[Math.floor(Math.random() * this.messaging.knowledge.randomEmojis.length)].codepoints;
         this._renderEmoji(icon, this.resId);
     }

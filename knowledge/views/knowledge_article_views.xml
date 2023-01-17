@@ -448,7 +448,7 @@
                         <div class="oe_kanban_global_click">
                             <div class="o_knowledge_kanban_card d-flex flex-column">
                                 <div class="d-flex align-items-center">
-                                    <div class="flex-grow-1 lead">
+                                    <div class="flex-grow-1 lead text-truncate">
                                         <field name="display_name"/>
                                     </div>
                                     <!-- When the user does not have 'write' access on an article, the user will not be
@@ -465,7 +465,7 @@
                                         <i class="fa fa-star-o" title="Add to favorites"/>
                                     </a>
                                 </div>
-                                <div class="flex-grow-1 text-muted">
+                                <div class="text-muted text-truncate">
                                     <field name="parent_id"/>
                                 </div>
                             </div>
@@ -493,12 +493,10 @@
                     <t t-name="kanban-box">
                         <div class="oe_kanban_global_click">
                             <div class="o_knowledge_kanban_card d-flex flex-column">
-                                <div class="d-flex flex-column align-items-start">
-                                    <div class="flex-grow-1 lead text-truncate">
-                                        <field name="display_name"/>
-                                    </div>
-                                    <field name="article_properties" widget="properties"/>
+                                <div class="lead text-truncate">
+                                    <field name="display_name"/>
                                 </div>
+                                <field name="article_properties" widget="properties"/>
                             </div>
                         </div>
                     </t>

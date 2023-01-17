@@ -363,10 +363,9 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         ml_vals['lot_id'] = self.lot_id2.id
         self.env['stock.move.line'].create(ml_vals)
 
-        # When we validate the picking manually, we create a backorder.
-        backorder_wizard_dict = self.task.sale_order_id.picking_ids.button_validate()
-        backorder_wizard = Form(self.env[backorder_wizard_dict['res_model']].with_context(backorder_wizard_dict['context'])).save()
-        backorder_wizard.process()
+        # When we validate the picking manually, a backorder is created.
+        self.task.sale_order_id.picking_ids.button_validate()
+        self.assertEqual(len(self.task.sale_order_id.picking_ids.backorder_ids), 1)
 
         wizard = self.product_lot.with_context({'fsm_task_id': self.task.id}).action_assign_serial()
         wizard_id = self.env['fsm.stock.tracking'].browse(wizard['res_id'])
@@ -742,7 +741,9 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         self.assertEqual(4, sale_order_lines[3].qty_delivered, "quantity delivered must be set to 4")
         self.assertEqual(0, sale_order_lines[4].qty_delivered, "quantity delivered must not change, since its task is not yet marked as done")
         self.assertEqual(0, sale_order_lines[5].qty_delivered, "quantity delivered must not change, since its task is not yet marked as done")
-        self.assertEqual('confirmed', sale_order.picking_ids[0].state, "state must not change as some products have yet to be send")
+        self.assertEqual('done', sale_order.picking_ids[0].state, "delivery's state must be done as a backorder with the remaining qty was created")
+        self.assertEqual('confirmed', sale_order.picking_ids[1].state, "a backorder should be created as some products have yet to be send")
+        self.assertEqual(sale_order.picking_ids[1].backorder_id.id, sale_order.picking_ids[0].id)
 
         # 8. task 1: mark as done
         task_sol_1.with_user(self.project_user).action_fsm_validate()
@@ -755,7 +756,8 @@ class TestFsmFlowStock(TestFsmFlowSaleCommon):
         self.assertEqual(4, sale_order_lines[3].qty_delivered, "marking the next task as done must not change the precedent validation")
         self.assertEqual(1, sale_order_lines[4].qty_delivered, "quantity delivered must be set to 1")
         self.assertEqual(3, sale_order_lines[5].qty_delivered, "quantity delivered must be set to 3")
-        self.assertEqual('done', sale_order.picking_ids[0].state, "all products have been sent, the delivery must be mark as done")
+        self.assertEqual('done', sale_order.picking_ids[0].state)
+        self.assertEqual('done', sale_order.picking_ids[1].state, "all products have been sent, the delivery's backorder must be mark as done")
 
     def _add_product_to_fsm_task(self, product, lot, task, qty):
         wizard = product.with_context(fsm_task_id=task.id).action_assign_serial()

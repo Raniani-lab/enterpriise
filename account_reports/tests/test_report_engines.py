@@ -743,8 +743,16 @@ class TestReportEngines(TestAccountReportsCommon):
             name='test7', code='test7',
         )
 
+        # Test exponential notation
+        test9 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation(
+                '(test1.tax_tags + (2 * test1.domain) + 100.0 + 1.752e-17) / (9999.account_codes)'
+            ),
+            name='test9', code='test9',
+        )
+
         report = self._create_report(
-            [test1, test2_1, test2_2, test2_3, test2_4, test3_1, test3_2, test3_3, test4_1, test4_2, test5, test6, test7],
+            [test1, test2_1, test2_2, test2_3, test2_4, test3_1, test3_2, test3_3, test4_1, test4_2, test5, test6, test7, test9],
             country_id=self.fake_country.id,
         )
 
@@ -777,6 +785,7 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('9999',               3500.0),
                 ('test6',                 1.0),
                 ('test7',            100000.0),
+                ('test9',                 1.0),
             ],
         )
 

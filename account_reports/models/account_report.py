@@ -2269,6 +2269,13 @@ class AccountReport(models.Model):
                 result = result[key]
             return result
 
+        def _check_is_float(to_test):
+            try:
+                float(to_test)
+                return True
+            except ValueError:
+                return False
+
         evaluation_dict = {}
         for expression, expression_res in other_expressions_totals.items():
             if expression.report_line_id.code:
@@ -2288,14 +2295,12 @@ class AccountReport(models.Model):
 
         rslt = {}
         to_treat = [(formula, formula) for formula in formulas_dict.keys()] # Formed like [(expanded formula, original unexpanded formula)]
-        term_separator_regex = r'[ ()+/*-]'
-        term_replacement_regex = r"(^|(?<=" + term_separator_regex + r"))%s((?="+ term_separator_regex + r")|$)"
+        term_separator_regex = r'(?<!\de)[+-]|[ ()/*]'
+        term_replacement_regex = r"(^|(?<=[ ()+/*-]))%s((?=[ ()+/*-])|$)"
         while to_treat:
             formula, unexpanded_formula = to_treat.pop(0)
-
             # Evaluate the formula
-            terms_to_eval = [term for term in re.split(term_separator_regex, formula) if not re.match(r'^[0-9.]*$', term)]
-
+            terms_to_eval = [term for term in re.split(term_separator_regex, formula) if term and not _check_is_float(term)]
             if terms_to_eval:
                 # The formula can't be evaluated as-is. Replace the terms by their value or formula,
                 # and enqueue the formula back; it'll be tried anew later in the loop.

@@ -1322,7 +1322,7 @@ class SaleOrder(models.Model):
                         if auto_commit:
                             self.env.cr.commit()
                     # if no transaction or failure, log error, rollback and remove invoice
-                    if transaction and transaction.state != 'done':
+                    if transaction and not transaction.renewal_allowed:
                         if auto_commit:
                             # prevent rollback during tests
                             self.env.cr.rollback()

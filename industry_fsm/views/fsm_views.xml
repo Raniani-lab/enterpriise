@@ -8,7 +8,6 @@
         <field name="mode">primary</field>
         <field name="arch" type="xml">
             <tree position="attributes">
-                <attribute name="js_class"/>
                 <attribute name="default_order">planned_date_begin</attribute>
             </tree>
             <tree position="inside">

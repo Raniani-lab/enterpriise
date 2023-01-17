@@ -1393,7 +1393,7 @@ class SaleOrder(models.Model):
                         self._subscription_post_success_payment(invoice, transaction)
                         self._subscription_commit_cursor(auto_commit)
                     # if no transaction or failure, log error, rollback and remove invoice
-                    if transaction and transaction.state != 'done':
+                    if transaction and not transaction.renewal_allowed:
                         self._subscription_rollback_cursor(auto_commit)
                         order._handle_subscription_payment_failure(invoice, transaction, email_context)
                         existing_invoices -= invoice  # It will be unlinked in the call above

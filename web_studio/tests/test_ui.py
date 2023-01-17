@@ -360,3 +360,24 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
                </xpath>
             </data>
         """)
+
+    def test_element_group_in_sidebar(self):
+        group = self.env["res.groups"].create({
+            "name": "Test Group",
+            "users": [Command.link(2)]
+        })
+        groupXmlId = self.env["ir.model.data"].create({
+            "name": "test_group",
+            "model": "res.groups",
+            "module": "web_studio",
+            "res_id": group.id,
+        })
+
+        self.testView.write({
+            "arch": '''
+                <form>
+                    <field name="display_name" groups="{group}" />
+                </form>
+            '''.format(group=groupXmlId.complete_name)
+        })
+        self.start_tour("/web?debug=tests", 'test_element_group_in_sidebar', login="admin", timeout=600000)

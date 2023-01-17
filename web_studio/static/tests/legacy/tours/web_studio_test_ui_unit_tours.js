@@ -291,3 +291,35 @@ tour.register(
         }
     ]
 );
+
+tour.register(
+    "test_element_group_in_sidebar",
+    {
+        test: true,
+        sequence: 260,
+    },
+    [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            trigger: ".o_form_view .o_form_editable",
+        },
+        {
+            trigger: ".o_web_studio_navbar_item a",
+        },
+        {
+            extra_trigger: ".o_web_studio_form_view_editor .o_field_widget[name='display_name']",
+            trigger: ".o_web_studio_form_view_editor .o_field_widget[name='display_name']",
+        },
+        {
+            trigger: ".o_field_many2manytags[name='groups'] .badge",
+            run() {
+                const tag = document.querySelector(".o_field_many2manytags[name='groups'] .badge");
+                if (!tag || !tag.textContent.includes("Test Group")) {
+                    throw new Error("The groups should be displayed in the sidebar");
+                }
+            },
+        },
+    ]
+);

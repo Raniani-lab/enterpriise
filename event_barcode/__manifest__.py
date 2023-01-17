@@ -21,9 +21,7 @@ the registration is confirmed.
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'event_barcode/static/src/js/event_barcode.js',
-            'event_barcode/static/src/scss/event_barcode.scss',
-            'event_barcode/static/src/xml/**/*',
+            'event_barcode/static/src/**/*',
         ],
         'web.report_assets_common': [
             '/event_barcode/static/src/scss/event_foldable_badge_report.scss',

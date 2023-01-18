@@ -1,6 +1,7 @@
 /** @odoo-module */
 
 import { busService } from "@bus/services/bus_service";
+import { busParametersService } from "@bus/bus_parameters_service";
 import { multiTabService } from "@bus/multi_tab_service";
 
 import { makeFakeUserService, fakeCookieService } from "@web/../tests/helpers/mock_services";
@@ -147,6 +148,7 @@ QUnit.module(
                 },
             };
             registry.category("services").add("multi_tab", multiTabService);
+            registry.category("services").add("bus.parameters", busParametersService);
             registry.category("services").add("bus_service", busService);
         },
     },

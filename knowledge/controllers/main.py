@@ -71,17 +71,20 @@ class KnowledgeController(http.Controller):
             request.env.ref('knowledge.knowledge_menu_root').id
         ))
 
-    def _redirect_to_portal_view(self, article, hide_side_bar=False):
+    def _check_sidebar_display(self):
         # exclude private articles as they are not used in the side panel.
-        root_articles_count = request.env["knowledge.article"].search_count(
+        return request.env["knowledge.article"].search_count(
             [("parent_id", "=", False), ("category", "!=", "private")],
             limit=1,
-        )
+        ) > 0
 
+    def _redirect_to_portal_view(self, article, hide_side_bar=False):
+        show_sidebar = False if hide_side_bar else self._check_sidebar_display()
+            
         return request.render('knowledge.knowledge_article_view_frontend', {
             'article': article,
             'portal_readonly_mode': True,  # used to bypass access check (to speed up loading)
-            'show_sidebar': not hide_side_bar and bool(root_articles_count)
+            'show_sidebar': show_sidebar
         })
 
     # ------------------------

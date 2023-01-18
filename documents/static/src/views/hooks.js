@@ -261,6 +261,7 @@ function useDocumentsViewFilePreviewer({ getSelectedDocumentsElements, isRecordP
                 if (component.root.el) {
                     component.root.el.querySelector(".o_documents_view").classList.remove("overflow-hidden");
                 }
+                component.render(true);
             },
             onSelectDocument: (record) => {
                 for (const rec of component.model.root.selection) {

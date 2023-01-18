@@ -877,10 +877,10 @@ class AccountReport(models.Model):
                 in zip(hierarchy[group]['totals'], line['columns'])
             ]
 
-        def render_lines(account_groups, current_level):
+        def render_lines(account_groups, current_level, parent_line_id, skip_no_group=True):
             to_treat = [(current_level, parent_line_id, group) for group in account_groups.sorted()]
 
-            if None in hierarchy:
+            if None in hierarchy and not skip_no_group:
                 to_treat.append((current_level, None, None))
 
             while to_treat:
@@ -892,9 +892,8 @@ class AccountReport(models.Model):
 
                 for account_line in group_data['lines']:
                     for child_group in group_data['child_groups']:
-                        child_group_data = hierarchy[child_group]
-                        if child_group_data['lines'] and account_line['name'] > child_group_data['lines'][0]['name']:
-                            render_lines(child_group, current_level + 1)
+                        if child_group not in treated_child_groups and child_group['code_prefix_end'] < account_line['name']:
+                            render_lines(child_group, hierarchy_line['level'] + 1, hierarchy_line['id'])
                             treated_child_groups += child_group
 
                     markup, model, account_id = self._parse_line_id(account_line['id'])[-1]
@@ -971,14 +970,17 @@ class AccountReport(models.Model):
             # This line is not impacted by the hierarchy and is simply added as is.
             # We also reinitialize the account-related variables.
             else:
-                render_lines(root_account_groups, current_level)
                 new_lines.append(line)
                 parent_line_id = account_id = None
                 current_level = 0
                 account_line_children_map = defaultdict(list)
                 root_account_groups = self.env['account.group']
+                account_groups = self.env['account.group']
 
-        render_lines(root_account_groups, current_level)
+        if res_model != 'account.account':
+            parent_line_id = None
+
+        render_lines(root_account_groups, current_level, parent_line_id, skip_no_group=False)
 
         return new_lines + total_lines
 

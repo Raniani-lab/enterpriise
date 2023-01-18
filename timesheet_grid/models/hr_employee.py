@@ -92,6 +92,8 @@ class Employee(models.Model):
         # Get the current user
         current_employee = self.env.user.employee_id
 
+        if not current_employee:
+            return result
         # Change the type of the date from date to datetime and add UTC as the timezone time standard
         datetime_min = datetime.combine(date_start_date, time.min).replace(tzinfo=UTC)
         datetime_max = datetime.combine(date_stop_date, time.max).replace(tzinfo=UTC)

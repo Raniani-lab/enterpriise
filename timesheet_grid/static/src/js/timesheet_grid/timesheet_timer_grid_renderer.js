@@ -279,11 +279,14 @@ odoo.define('timesheet_grid.TimerGridRenderer', function (require) {
          * @returns {Number} the overtime value (can be positive, negative or zero)
          */
         _overtimeValue(columnIndex) {
-            const dateKey = this.props.timesheetData[columnIndex]['date'];
+            const overtimeRecord = this.props.timesheetData[columnIndex];
+            if (!overtimeRecord) {
+                return 0;
+            }
+            const dateKey = overtimeRecord.date;
             if (!this._considerOvertime(dateKey, moment())) {
                 return 0;
             }
-            const overtimeRecord = this.props.timesheetData[columnIndex]
             const value = this.props.totals.columns[columnIndex] - overtimeRecord['total_hours'];
 
             return value;

@@ -108,7 +108,7 @@
                     <field name="figure_type">none</field>
                 </record>
                 <record id="intrastat_report_column_product_origin_country" model="account.report.column">
-                    <field name="name">Origin Country</field>
+                    <field name="name">Origin</field>
                     <field name="expression_label">intrastat_product_origin_country_name</field>
                     <field name="figure_type">none</field>
                 </record>

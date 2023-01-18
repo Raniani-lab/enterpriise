@@ -244,6 +244,8 @@ Wysiwyg.include({
                 }))[0];
                 dialog.close();
                 restoreSelection();
+                const nameNode = document.createTextNode(article.display_name);
+                articleLinkBlock.appendChild(nameNode);
                 const [anchor] = this.odooEditor.execCommand('insert', articleLinkBlock);
                 this._notifyNewBehavior(anchor);
             }

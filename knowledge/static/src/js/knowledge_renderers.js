@@ -178,6 +178,8 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             _renderTree: (activeArticleId, route) => this._renderTree(activeArticleId, route),
             _resizeNameInput: (name) => this._resizeNameInput(name),
             _showEmojiPicker: (ev) => this._showEmojiPicker(ev),
+            __comp__: this, // used by the compiler
+            this: this, // used by the arch directly
         };
     }
 

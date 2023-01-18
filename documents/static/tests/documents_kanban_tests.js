@@ -3146,11 +3146,6 @@ QUnit.module('documents_kanban_tests.js', {
                 <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
                     <div draggable="true" class="oe_kanban_global_area o_documents_attachment" data-id="${documentsDocumentId1}">
                         <field name="name"/>
-                        <t t-set="fileUpload" t-value="getFileUpload(props.record)"/>
-                        <i t-if="!fileUpload" class="fa fa-circle-thin o_record_selector" title="Select document"/>
-                        <t t-else="">
-                            <div class="o_file_upload_progress_bar"/>
-                        </t>
                     </div>
                 </t></templates></kanban>`,
         });

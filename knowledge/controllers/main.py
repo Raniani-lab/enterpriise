@@ -80,7 +80,6 @@ class KnowledgeController(http.Controller):
 
     def _redirect_to_portal_view(self, article, hide_side_bar=False):
         show_sidebar = False if hide_side_bar else self._check_sidebar_display()
-            
         return request.render('knowledge.knowledge_article_view_frontend', {
             'article': article,
             'portal_readonly_mode': True,  # used to bypass access check (to speed up loading)
@@ -91,7 +90,7 @@ class KnowledgeController(http.Controller):
     # Articles tree generation
     # ------------------------
 
-    def _prepare_articles_tree_html(self, template, active_article_id, unfolded_articles_ids=False, unfolded_favorite_articles_ids=False):
+    def _prepare_articles_tree_html_values(self, active_article_id, unfolded_articles_ids=False, unfolded_favorite_articles_ids=False):
         """ Prepares all the info needed to render the article tree view side panel
         and returns the rendered given template with those values.
 
@@ -167,26 +166,26 @@ class KnowledgeController(http.Controller):
             "favorites_sudo": favorites_sudo,
         }
 
-        return request.env['ir.qweb']._render(template, values)
+        return values
 
     @http.route('/knowledge/tree_panel', type='json', auth='user')
     def get_tree_panel_all(self, active_article_id=False, unfolded_articles_ids=False, unfolded_favorite_articles_ids=False):
-        return self._prepare_articles_tree_html(
-            'knowledge.knowledge_article_tree',
+        template_values = self._prepare_articles_tree_html_values(
             active_article_id,
             unfolded_articles_ids=unfolded_articles_ids,
             unfolded_favorite_articles_ids=unfolded_favorite_articles_ids,
         )
+        return request.env['ir.qweb']._render('knowledge.knowledge_article_tree', template_values)
 
     @http.route('/knowledge/tree_panel/portal', type='json', auth='public')
     def get_tree_panel_portal(self, active_article_id=False, unfolded_articles_ids=False, unfolded_favorite_articles_ids=False):
         """ Frontend access for left panel. """
-        return self._prepare_articles_tree_html(
-            'knowledge.knowledge_article_tree_frontend',
+        template_values = self._prepare_articles_tree_html_values(
             active_article_id,
             unfolded_articles_ids=unfolded_articles_ids,
             unfolded_favorite_articles_ids=unfolded_favorite_articles_ids
         )
+        return request.env['ir.qweb']._render('knowledge.knowledge_article_tree_frontend', template_values)
 
     @http.route('/knowledge/tree_panel/portal/search', type='json', auth='public')
     def get_tree_panel_portal_search(self, search_term, active_article_id=False):

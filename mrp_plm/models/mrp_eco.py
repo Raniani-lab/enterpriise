@@ -249,6 +249,8 @@ class MrpEco(models.Model):
         'Show Apply Change', compute='_compute_allow_apply_change')
 
     product_tmpl_id = fields.Many2one('product.template', "Product", check_company=True)
+    production_id = fields.Many2one(
+        'mrp.production', string='Manufacturing Orders', readonly=True, copy=False)
     type = fields.Selection(selection=_get_type_selection, string='Apply on',
         default='bom', required=True)
     bom_id = fields.Many2one(
@@ -651,11 +653,15 @@ class MrpEco(models.Model):
         IrAttachment = self.env['ir.attachment']
         for eco in self:
             if eco.type == 'bom':
-                eco.new_bom_id = eco.bom_id.sudo().copy(default={
-                    'version': eco.bom_id.version + 1,
-                    'active': False,
-                    'previous_bom_id': eco.bom_id.id,
-                })
+                if eco.production_id:
+                    # This ECO was generated from a MO. Uses it MO as base for the revision.
+                    eco.new_bom_id = eco.production_id._create_revision_bom()
+                if not eco.new_bom_id:
+                    eco.new_bom_id = eco.bom_id.sudo().copy(default={
+                        'version': eco.bom_id.version + 1,
+                        'active': False,
+                        'previous_bom_id': eco.bom_id.id,
+                    })
                 attachments = IrAttachment.search([('res_model', '=', 'mrp.bom'),
                                                    ('res_id', '=', eco.bom_id.id)])
             else:
@@ -749,6 +755,12 @@ class MrpEco(models.Model):
             'limit': 80,
             'context': context,
         }
+
+    def action_open_production(self):
+        self.ensure_one()
+        action = self.env['ir.actions.act_window']._for_xml_id('mrp.action_mrp_production_form')
+        action["res_id"] = self.production_id.id
+        return action
 
     def open_new_bom(self):
         self.ensure_one()

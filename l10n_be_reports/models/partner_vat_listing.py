@@ -343,9 +343,9 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
 
         data_begin = Markup("""<?xml version="1.0" encoding="ISO-8859-1"?>
 <ns2:ClientListingConsignment xmlns="http://www.minfin.fgov.be/InputCommon" xmlns:ns2="http://www.minfin.fgov.be/ClientListingConsignment" ClientListingsNbr="1">
+    %(representative_node)s
     <ns2:ClientListing SequenceNumber="1" ClientsNbr="%(seq)s" DeclarantReference="%(dnum)s"
         TurnOverSum="%(sum_turnover).2f" VATAmountSum="%(sum_tax).2f">
-        %(representative_node)s
         <ns2:Declarant>
             <VATNumber>%(SenderId)s</VATNumber>
             <Name>%(comp_name)s</Name>

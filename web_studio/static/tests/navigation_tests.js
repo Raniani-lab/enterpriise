@@ -535,7 +535,7 @@ QUnit.module("Studio", (hooks) => {
                 ".o_form_view .o_field_widget[data-studio-xpath='/form[1]/field[1]'] span"
             ).textContent,
             "Applejack"
-        )
+        );
         assert.containsOnce(target, ".o_web_studio_client_action .o_web_studio_form_view_editor");
 
         await leaveStudio(target);
@@ -721,19 +721,19 @@ QUnit.module("Studio", (hooks) => {
         await click(target.querySelector(".o_app[data-menu-xmlid=app_43]"));
         assert.containsOnce(target, ".o_kanban_view");
         assert.verifySteps([
-            `web_search_read: {"limit":40,"offset":0,"order":"","count_limit":10001,"context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"bin_size":true},"domain":[],"fields":["display_name"]}`,
+            `web_search_read: {"limit":40,"offset":0,"order":"","context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"bin_size":true},"count_limit":10001,"domain":[],"fields":["display_name"]}`,
         ]);
 
         await toggleFilterMenu(target);
         await toggleMenuItem(target, "Apple");
         assert.verifySteps([
-            `web_search_read: {"limit":40,"offset":0,"order":"","count_limit":10001,"context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"bin_size":true},"domain":[["name","ilike","Apple"]],"fields":["display_name"]}`,
+            `web_search_read: {"limit":40,"offset":0,"order":"","context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"bin_size":true},"count_limit":10001,"domain":[["name","ilike","Apple"]],"fields":["display_name"]}`,
         ]);
 
         await openStudio(target);
         assert.containsOnce(target, ".o_web_studio_kanban_view_editor");
         assert.verifySteps([
-            `web_search_read: {"limit":1,"offset":0,"order":"","count_limit":10001,"context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"studio":1,"bin_size":true},"domain":[["name","ilike","Apple"]],"fields":["display_name"]}`,
+            `web_search_read: {"limit":1,"offset":0,"order":"","context":{"lang":"en","uid":7,"tz":"taht","allowed_company_ids":[1],"studio":1,"bin_size":true},"count_limit":10001,"domain":[["name","ilike","Apple"]],"fields":["display_name"]}`,
         ]);
         assert.strictEqual(target.querySelector(".o_kanban_record").textContent, "Applejack");
     });

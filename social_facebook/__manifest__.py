@@ -27,6 +27,9 @@
             'social_facebook/static/src/scss/social_facebook.scss',
             'social_facebook/static/src/xml/**/*',
         ],
+        'web.dark_mode_assets_backend': [
+            'social_facebook/static/src/scss/social_facebook.dark.scss',
+        ],
         'web.qunit_suite_tests': [
             'social_facebook/static/src/js/tests/**/*',
         ],

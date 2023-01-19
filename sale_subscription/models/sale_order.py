@@ -306,7 +306,7 @@ class SaleOrder(models.Model):
     def _compute_origin_order_id(self):
         for order in self:
             if (order.is_subscription or order.subscription_management == 'upsell') and not order.origin_order_id:
-                order.origin_order_id = order.subscription_id or order.id
+                order.origin_order_id = order.subscription_id and order.subscription_id.origin_order_id or order.id
 
     @api.model
     def _read_group_stage_ids(self, stages, domain, order):

@@ -47,7 +47,7 @@ class HelpdeskTeam(models.Model):
     active = fields.Boolean(default=True)
     company_id = fields.Many2one('res.company', string='Company', required=True, default=lambda self: self.env.company)
     sequence = fields.Integer("Sequence", default=10)
-    color = fields.Integer('Color Index', default=1)
+    color = fields.Integer('Color Index', default=0)
     ticket_properties = fields.PropertiesDefinition('Ticket Properties')
 
     stage_ids = fields.Many2many(

@@ -71,7 +71,7 @@
                                 </div>
                             </li>
                             <li t-if="display_close" class="list-group-item flex-grow-1">
-                                <a role="button" data-bs-toggle="modal" data-bs-target="#wc-modal-close" href="#">Close Subscription</a>
+                                <a role="button" data-bs-toggle="modal" data-bs-target="#wc-modal-close-init" href="#">Close Subscription</a>
                             </li>
                             <li t-if="subscription.user_id" class="list-group-item flex-grow-1">
                                 <div class="small mb-1"><strong class="text-muted">Subscription Manager:</strong></div>
@@ -100,7 +100,7 @@
                                 <div class="col-12 col-lg flex-grow-0 text-lg-end mb-1 mb-lg-0">
                                     <span t-if="subscription.stage_category == 'progress' and not subscription.to_renew" class="badge rounded-pill text-bg-success"><i class="fa fa-fw fa-check"/> In Progress</span>
                                     <span t-if="subscription.to_renew and subscription.stage_category == 'progress'" class="badge rounded-pill text-bg-warning"><i class="fa fa-fw fa-refresh"/> To Renew</span>
-                                    <span t-if="subscription.stage_category == 'closed'" class="badge rounded-pill badge-default"><i class="fa fa-fw fa-remove"/> Closed</span>
+                                    <span t-if="subscription.stage_category == 'closed'" class="badge rounded-pill text-bg-danger"><i class="fa fa-fw fa-remove"/> Closed</span>
                                 </div>
                             </div>
                         </div>
@@ -336,34 +336,80 @@
                     </div>
                 </div>
 
-                <!-- ======  MODAL: Close Subscription ====== -->
-                <div role="dialog" class="modal fade" id="wc-modal-close" t-if="display_close" aria-hidden="true">
+                <!-- ======  MODAL: Close Subscription Initialization ====== -->
+                <div role="dialog" class="modal fade" id="wc-modal-close-init" t-if="display_close" aria-hidden="true">
                     <div class="modal-dialog">
                         <div class="modal-content">
                             <header class="modal-header">
-                                <h4 class="modal-title">Close Subscription</h4>
+                                <h4 class="modal-title">
+                                    Close Subscription <span t-field="subscription.display_name" class="text-primary"/>
+                                </h4>
                             </header>
                             <form method="post" t-attf-action="/my/subscription/#{subscription.id}/close?access_token=#{subscription.access_token}">
                                 <input class="d-none" name="csrf_token" t-att-value="request.csrf_token()"/>
                                 <main class="modal-body">
-                                    <p>If you confirm, your subscription will be closed right away. Your current invoicing period is valid until <span t-field="subscription.next_invoice_date"/>.</p>
-                                    <p>We always listen to our customer. Could you specify the reason for cancelling your subscription?</p>
-                                    <div class="mb-3">
-                                        <select class="form-select" name="close_reason_id">
-                                            <t t-foreach="close_reasons" t-as="close_reason">
-                                                <option  t-att-value="close_reason.id" t-esc="close_reason.name"/>
-                                            </t>
-                                        </select>
-                                    </div>
-                                    <div class="mb-3">
-                                        <textarea class="form-control" name="closing_text" style="width: 100%;" rows="4"></textarea>
-                                    </div>
+                                    <p class="fst-italic text-muted">You are about to permanently close a subscription that is valid until <span t-field="subscription.next_invoice_date"/>.</p>
+                                    <h1>We are sorry to see you go.</h1>
+                                    <p>Tell us, why are you leaving?</p>
+                                    <t t-if="any(reason.visible_in_portal for reason in close_reasons)">
+                                        <div class="mb-3">
+                                            <select id="subscription-close-select" class="form-select" name="close_reason_id">
+                                                <option value="">Choose a reason...</option>
+                                                <t t-foreach="close_reasons" t-as="close_reason">
+                                                    <t t-if="close_reason.visible_in_portal">
+                                                        <option t-att-value="close_reason.id" t-att-data-retention="not (close_reason.empty_retention_message or close_reason.retention_button_text == False or close_reason.retention_button_link == False)" t-out="close_reason.name"/>
+                                                    </t>
+                                                </t>
+                                            </select>
+                                        </div>
+                                    </t>
+                                    <t t-else="">
+                                        <div class="mb-3">
+                                            <textarea class="form-control" name="closing_text" style="width: 100%;" rows="4"></textarea>
+                                        </div>
+                                    </t>
                                 </main>
                                 <footer class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                                    <button class="btn btn-primary contract-submit">Confirm</button>
+                                    <a role="button" data-bs-toggle="modal" data-bs-target="#wc-modal-close-retain" href="#" class="btn btn-primary subscription-close-init-retain d-none">Submit</a>
+                                    <button t-attf-class="btn btn-primary subscription-close-init-noretain subscription-close-finish {{ 'd-none' if any(reason.visible_in_portal for reason in close_reasons) else '' }}">Submit</button>
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Discard, I want to stay</button>
                                 </footer>
                             </form>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- ====== MODAL: Close Subscription Retention ====== -->
+                <div role="dialog" class="modal fade" id="wc-modal-close-retain" t-if="display_close" aria-hidden="true">
+                    <div class="modal-dialog">
+                        <div class="modal-content">
+                            <header class="modal-header">
+                                <h4 class="modal-title">
+                                    Close Subscription <span t-field="subscription.display_name" class="text-primary"/>
+                                </h4>
+                            </header>
+                            <main class="modal-body">
+                                <p class="fst-italic text-muted">You are about to permanently close a subscription that is valid until <span t-field="subscription.next_invoice_date"/>.</p>
+                                <t t-foreach="close_reasons" t-as="close_reason">
+                                    <t t-if="close_reason.visible_in_portal and not (close_reason.empty_retention_message or close_reason.retention_button_text == False or close_reason.retention_button_link == False)">
+                                        <div t-att-data-id="close_reason.id" class="subscription-close-message" t-field="close_reason.retention_message"></div>
+                                    </t>
+                                </t>
+                            </main>
+                            <footer class="modal-footer">
+                                <t t-foreach="close_reasons" t-as="close_reason">
+                                    <t t-if="close_reason.visible_in_portal and not (close_reason.empty_retention_message or close_reason.retention_button_text == False or close_reason.retention_button_link == False)">
+                                        <a
+                                            t-att-data-id="close_reason.id"
+                                            role="button"
+                                            t-att-href="close_reason.retention_button_link"
+                                            class="btn btn-primary subscription-close-link"
+                                            t-field="close_reason.retention_button_text"
+                                        ></a>
+                                    </t>
+                                </t>
+                                <button class="btn btn-secondary subscription-close-finish">No thanks, close my account</button>
+                            </footer>
                         </div>
                     </div>
                 </div>

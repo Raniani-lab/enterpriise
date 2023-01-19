@@ -203,13 +203,14 @@ class CustomerPortal(payment_portal.PaymentPortal):
         if redirection:
             return redirection
         if order_sudo.sale_order_template_id.user_closable:
-            close_reason = request.env['sale.order.close.reason'].browse(int(kw.get('close_reason_id')))
-            order_sudo.close_reason_id = close_reason
+            if kw.get('close_reason_id'):
+                close_reason = request.env['sale.order.close.reason'].browse(int(kw.get('close_reason_id')))
+                order_sudo.close_reason_id = close_reason
             if kw.get('closing_text'):
                 order_sudo.message_post(body=_('Closing text: %s', kw.get('closing_text')))
             order_sudo.set_close()
             order_sudo.end_date = datetime.date.today().strftime('%Y-%m-%d')
-        return request.redirect('/my/home')
+        return request.redirect(f'/my/subscription/{order_id}/{access_token}')
 
     @http.route(['/my/subscription/<int:order_id>/renew'], type='http', methods=["GET"], auth="public", website=True)
     def renew_subscription(self, order_id, access_token=None, **kw):

@@ -1,6 +1,16 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <odoo>
     <data noupdate="1">
+        <!-- Standard Closing Reason -->
+        <record id="close_reason_1" model="sale.order.close.reason">
+            <field name="retention_message" type="html">
+                <h1>We are sorry to hear that.</h1>
+                <p>We don't want you to leave us like this.</p>
+                <p>Before closing your subscription, we'd like to offer you to schedule a call with Marc Demo, your account manager.</p>
+            </field>
+            <field name="retention_button_text">Contact Marc</field>
+            <field name="retention_button_link">mailto:mark.brown23@example.com?subject=Close contract: too expensive</field>
+        </record>
 
         <!-- Recurring products -->
         <record id="product_office_cleaning" model="product.product">
@@ -80,6 +90,7 @@
             <field name="recurring_rule_boundary">limited</field>
             <field name="recurring_rule_count">6</field>
             <field name="recurring_rule_type">year</field>
+            <field name="user_closable" eval="True"/>
         </record>
 
         <record id="montly_template_line" model="sale.order.template.line">

@@ -2,7 +2,7 @@
 <odoo>
 
     <!-- View Subscriptions Close Reason wizard -->
-    <record id="sale_subscription_close_reason_view_form" model="ir.ui.view">
+    <record id="sale_subscription_close_reason_wizard_view_form" model="ir.ui.view">
         <field name="name">sale.subscription.close.reason.form</field>
         <field name="model">sale.subscription.close.reason.wizard</field>
         <field name="arch" type="xml">
@@ -24,7 +24,7 @@
         <field name="type">ir.actions.act_window</field>
         <field name="res_model">sale.subscription.close.reason.wizard</field>
         <field name="view_mode">form</field>
-        <field name="view_id" ref="sale_subscription_close_reason_view_form"/>
+        <field name="view_id" ref="sale_subscription_close_reason_wizard_view_form"/>
         <field name="target">new</field>
     </record>
 

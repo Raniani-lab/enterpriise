@@ -188,7 +188,7 @@ class TestSubscriptionDashboard(HttpCase):
                 {
                     "params": {
                         "stat_type": "mrr",
-                        "start_date": start_date,
+                        "start_date": end_date,
                         "end_date": end_date,
                         "filters": {},
                     },
@@ -196,4 +196,4 @@ class TestSubscriptionDashboard(HttpCase):
             ),
             headers={"Content-Type": "application/json"},
         )
-        self.assertEqual(res.json()['result'], value)
+        self.assertEqual(res.json()['result'][0][1], value)

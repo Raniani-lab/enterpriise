@@ -2,6 +2,8 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from dateutil.relativedelta import relativedelta
+from datetime import date
+
 from odoo.http import request
 
 
@@ -16,11 +18,13 @@ def currency_rate_table(date):
 
 
 def get_dates_datapoints(dates):
+    assert all(isinstance(d, date) for d in dates)
     query = 'VALUES %s' % ','.join(f"(DATE '{date}')" for date in dates)
     return request.cr.mogrify(query).decode(request.env.cr.connection.encoding)
 
 
 def get_churn_dates_datapoints(dates):
+    assert all(isinstance(d, date) for d in dates)
     query = 'VALUES %s' % ','.join(f"(DATE '{date + relativedelta(months=-1)}', DATE '{date}')" for date in dates)
     return request.cr.mogrify(query).decode(request.env.cr.connection.encoding)
 

@@ -7,8 +7,10 @@ from datetime import timedelta, datetime
 from dateutil.relativedelta import relativedelta
 
 from odoo import Command, fields, models, api, _, _lt
+from odoo.osv import expression
 from odoo.exceptions import UserError
 from odoo.tools import topological_sort
+from odoo.addons.resource.models.utils import filter_domain_leaf
 
 from odoo.addons.resource.models.utils import Intervals, sum_intervals, string_to_datetime
 
@@ -34,6 +36,7 @@ class Task(models.Model):
 
     # User names in popovers
     user_names = fields.Char(compute='_compute_user_names')
+    user_ids = fields.Many2many(group_expand="_group_expand_user_ids")
 
     _sql_constraints = [
         ('planned_dates_check', "CHECK ((planned_date_begin <= planned_date_end))", "The planned start date must be before the planned end date."),
@@ -301,6 +304,32 @@ class Task(models.Model):
                 })
 
         return res
+
+    @api.model
+    def _group_expand_user_ids(self, users, domain, order):
+        """ Group expand by user_ids in gantt view :
+            all users which have and open task in this project
+        """
+        start_date = self._context.get('gantt_start_date')
+        scale = self._context.get('gantt_scale')
+        if not (start_date and scale):
+            return self.env['res.users']
+
+        last_start_date = fields.Datetime.from_string(start_date) - relativedelta(**{f"{scale}s": 1})
+        domain = filter_domain_leaf(domain, lambda field: field not in ['planned_date_begin', 'planned_date_end'])
+        domain_expand = [
+            ('planned_date_begin', '>=', last_start_date),
+            ('planned_date_end', '<=', start_date)
+        ]
+        project_id = self._context.get('default_project_id')
+        if project_id:
+            domain_expand = expression.OR([[
+                ('project_id', '=', project_id),
+                ('is_closed', '=', False),
+                ('planned_date_begin', '=', False),
+                ('planned_date_end', '=', False),
+            ], domain_expand])
+        return self.search(expression.AND([domain_expand, domain])).user_ids
 
     # -------------------------------------
     # Business Methods : Smart Scheduling

@@ -93,7 +93,7 @@ export class TaskGanttRenderer extends GanttRenderer {
     openPlanDialogCallback(res) {
         if (res) {
             if (res.action) {
-                this.actionService(res.action);
+                this.actionService.doAction(res.action);
             } else if (res.warnings) {
                 for (const warning of res.warnings) {
                     this.notificationService.add(warning, {

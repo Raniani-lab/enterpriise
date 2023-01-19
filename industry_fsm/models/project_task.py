@@ -69,7 +69,7 @@ class Task(models.Model):
     fsm_done = fields.Boolean("Task Done", compute='_compute_fsm_done', readonly=False, store=True, copy=False)
     partner_id = fields.Many2one(group_expand='_read_group_partner_id')
     project_id = fields.Many2one(group_expand='_read_group_project_id')
-    user_ids = fields.Many2many(group_expand='_read_group_user_ids')
+    user_ids = fields.Many2many(group_expand='_group_expand_user_ids')
     # Use to count conditions between : time, worksheet and materials
     # If 2 over 3 are enabled for the project, the required count = 2
     # If 1 over 3 is met (enabled + encoded), the satisfied count = 2
@@ -253,7 +253,8 @@ class Task(models.Model):
         return filter_domain
 
     @api.model
-    def _read_group_user_ids(self, users, domain, order):
+    def _group_expand_user_ids(self, users, domain, order):
+        res = super()._group_expand_user_ids(users, domain, order)
         if self.env.context.get('fsm_mode'):
             recently_created_tasks = self.env['project.task'].search([
                 ('create_date', '>', datetime.now() - timedelta(days=30)),
@@ -261,8 +262,8 @@ class Task(models.Model):
                 ('user_ids', '!=', False)
             ])
             search_domain = ['&', ('company_id', 'in', self.env.companies.ids), '|', '|', ('id', 'in', users.ids), ('groups_id', 'in', self.env.ref('industry_fsm.group_fsm_user').id), ('id', 'in', recently_created_tasks.mapped('user_ids.id'))]
-            return users.search(search_domain, order=order)
-        return users
+            res |= users.search(search_domain, order=order)
+        return res
 
     def _compute_fsm_done(self):
         closed_tasks = self.filtered('is_closed')

@@ -91,6 +91,13 @@ export class TaskGanttModel extends GanttModel {
      * @override
      */
     async _fetchData(metaData) {
+        const startDate = serializeDateTime(metaData.startDate);
+        const scale = metaData.scale.id;
+        this.searchParams.context = {
+            ...this.searchParams.context,
+            gantt_start_date: startDate,
+            gantt_scale: scale,
+        };
         const proms = [super._fetchData(...arguments)];
         const milestones = [];
         if (!this.orm.isSample && !this.env.isSmall) {
@@ -99,7 +106,7 @@ export class TaskGanttModel extends GanttModel {
                     task_domain: this.searchParams.domain,
                     milestone_domain: [
                         ["deadline", "<=", serializeDateTime(metaData.stopDate)],
-                        ["deadline", ">=", serializeDateTime(metaData.startDate)],
+                        ["deadline", ">=", startDate],
                     ],
                     fields: [
                         "name",

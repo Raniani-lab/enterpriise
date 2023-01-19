@@ -144,6 +144,10 @@ class TestAccountFollowupReports(TestAccountReportsCommon):
 
         self.assertEqual(invoice_attachments, sent_attachments)
 
+        attachaments_domain = [('attachment_ids', '=', attachment.id) for attachment in invoice_attachments]
+        mail = self.env['mail.mail'].search([('recipient_ids', '=', self.partner_a.id)] + attachaments_domain)
+        self.assertTrue(mail, "A payment reminder email should have been sent.")
+
     def test_followup_invoice_no_amount(self):
         # Init options.
         report = self.env['account.followup.report']

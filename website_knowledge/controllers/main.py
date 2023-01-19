@@ -62,7 +62,7 @@ class KnowledgeWebsiteController(KnowledgeController):
         )
         if request.env.user.has_group('base.group_user'):
             return values
-        
+
         published_workspace_articles = values['workspace_articles'].filtered(lambda a: a.website_published)
         values.update({
             'shared_articles': values['workspace_articles'] - published_workspace_articles |

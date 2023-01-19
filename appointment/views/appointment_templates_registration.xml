@@ -10,7 +10,7 @@
                 <div class="oe_structure container o_appointment mb16">
                     <t t-set="is_chosen_assign_method" t-value="appointment_type.assign_method == 'chosen'"/>
                     <h1 class="o_page_header mt32">
-                        Schedule <span class="text-primary" t-out="appointment_type.name"/> Appointment
+                        Schedule <span class="text-primary" t-out="appointment_type.name"/>
                         <span t-if="is_chosen_assign_method and not (staff_user.name in appointment_type.name)">
                             with <span class="text-primary" t-out="staff_user.name"/>
                         </span>

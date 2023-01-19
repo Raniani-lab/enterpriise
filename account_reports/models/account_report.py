@@ -893,7 +893,7 @@ class AccountReport(models.Model):
                 for account_line in group_data['lines']:
                     for child_group in group_data['child_groups']:
                         child_group_data = hierarchy[child_group]
-                        if account_line['name'] > child_group_data['lines'][0]['name']:
+                        if child_group_data['lines'] and account_line['name'] > child_group_data['lines'][0]['name']:
                             render_lines(child_group, current_level + 1)
                             treated_child_groups += child_group
 

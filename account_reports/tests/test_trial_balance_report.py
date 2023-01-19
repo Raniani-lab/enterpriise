@@ -2,7 +2,7 @@
 # pylint: disable=C0326
 from .common import TestAccountReportsCommon
 
-from odoo import fields
+from odoo import fields, Command
 from odoo.tests import tagged
 
 @tagged('post_install', '-at_install')
@@ -237,5 +237,65 @@ class TestTrialBalanceReport(TestAccountReportsCommon):
                 ('600000 Expenses',                     '',             '',             200.0,          '',             '',             21000.0,        '',             20800.0),
                 ('600000 Expenses',                     '',             '',             '',             '',             200.0,          '',             200.0,          ''),
                 ('Total',                              0.0,            0.0,             350.0,          350.0,          21200.0,        21200.0,        21050.0,        21050.0),
+            ],
+        )
+
+    def test_trial_balance_account_group_with_hole(self):
+        """
+        Let's say you have the following account groups: 10, 101, 1012
+        If you have entries for group 10 and 1012 but none for 101,
+        the trial balance report should work correctly
+
+        - 10  --> has entries
+          - 101 --> NO ENTRIES
+            - 1012 --> has entries
+
+        """
+
+        test_journal = self.env['account.journal'].create({
+            'name': 'test journal',
+            'code': 'TJ',
+            'type': 'general',
+        })
+
+        self.env['account.group'].create([
+            {'name': 'Group_10', 'code_prefix_start': '10', 'code_prefix_end': '10'},
+            {'name': 'Group_101', 'code_prefix_start': '101', 'code_prefix_end': '101'},
+            {'name': 'Group_1012', 'code_prefix_start': '1012', 'code_prefix_end': '1012'},
+        ])
+
+        # Create the accounts.
+        account_a, account_a1 = self.env['account.account'].create([
+            {'code': '100000', 'name': 'Account A', 'account_type': 'asset_current'},
+            {'code': '101200', 'name': 'Account A1', 'account_type': 'asset_current'},
+        ])
+
+        move = self.env['account.move'].create({
+            'move_type': 'entry',
+            'date': fields.Date.from_string('2017-06-01'),
+            'journal_id': test_journal.id,
+            'line_ids': [
+                Command.create({'debit': 100.0,     'credit': 0.0,      'name': 'account_a_1',     'account_id': account_a.id}),
+                Command.create({'debit': 0.0,       'credit': 100.0,    'name': 'account_a_2',     'account_id': account_a.id}),
+                Command.create({'debit': 200.0,     'credit': 0.0,      'name': 'account_a1_1',    'account_id': account_a1.id}),
+                Command.create({'debit': 0.0,       'credit': 200.0,    'name': 'account_a1_2',    'account_id': account_a1.id}),
+            ],
+        })
+        move.action_post()
+
+        options = self._generate_options(self.report, fields.Date.from_string('2017-06-01'), fields.Date.from_string('2017-06-01'))
+        options = self._update_multi_selector_filter(options, 'journals', test_journal.ids)
+        options['unfold_all'] = True
+
+        self.assertLinesValues(
+            self.report._get_lines(options),
+            [   0,                                     1,              2,               3,              4,              5,              6],
+            [
+                ['10 Group_10',                        '',             '',              300.0,          300.0,          '',             ''],
+                ['100000 Account A',                   '',             '',              100.0,          100.0,          '',             ''],
+                ['101 Group_101',                      '',             '',              200.0,          200.0,          '',             ''],
+                ['1012 Group_1012',                    '',             '',              200.0,          200.0,          '',             ''],
+                ['101200 Account A1',                  '',             '',              200.0,          200.0,          '',             ''],
+                ['Total',                              0.0,            0.0,             300.0,          300.0,          0.0,            0.0]
             ],
         )

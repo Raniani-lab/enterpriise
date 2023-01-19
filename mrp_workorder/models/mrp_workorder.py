@@ -545,6 +545,7 @@ class MrpProductionWorkcenterLine(models.Model):
             raise UserError(_('You still need to do the quality checks!'))
         last30op = self.env['mrp.workorder'].search_read([
             ('operation_id', '=', self.operation_id.id),
+            ('state', '=', 'done'),
             ('date_finished', '>', fields.datetime.today() - relativedelta(days=30)),
         ], ['duration', 'qty_produced'])
         last30op = sorted([item['duration'] / item['qty_produced'] for item in last30op])
@@ -580,15 +581,15 @@ class MrpProductionWorkcenterLine(models.Model):
         workorders = self.env['mrp.workorder'].search([
             ('workcenter_id', 'in', res_ids),
             ('state', 'not in', ['done', 'cancel']),
-            ('date_planned_start', '<=', stop.replace(tzinfo=None)),
-            ('date_planned_finished', '>=', start.replace(tzinfo=None)),
+            ('date_start', '<=', stop.replace(tzinfo=None)),
+            ('date_finished', '>=', start.replace(tzinfo=None)),
         ])
         planned_hours = defaultdict(float)
         workcenters_work_intervals, dummy = workcenters.resource_id._get_valid_work_intervals(start, stop)
         for workorder in workorders:
-            max_start = max(start, utc.localize(workorder.date_planned_start))
-            min_end = min(stop, utc.localize(workorder.date_planned_finished))
-            interval = Intervals([(max_start, min_end, self.env['resource.calendar.attendance'])])
+            max_start = max(start, utc.localize(workorder.date_start))
+            min_finished = min(stop, utc.localize(workorder.date_finished))
+            interval = Intervals([(max_start, min_finished, self.env['resource.calendar.attendance'])])
             work_intervals = interval & workcenters_work_intervals[workorder.workcenter_id.resource_id.id]
             planned_hours[workorder.workcenter_id] += sum_intervals(work_intervals)
         work_hours = {

@@ -157,7 +157,7 @@ class JournalReportCustomHandler(models.AbstractModel):
             # These can be fetched using any column groups or lines for this move.
             first_move_line = move_line_vals_list[0]
             general_line_vals = next(col_group_val for col_group_val in first_move_line.values())
-            if report.load_more_limit and len(move_line_vals_list) + len(lines) > report.load_more_limit:
+            if report.load_more_limit and len(move_line_vals_list) + len(lines) > report.load_more_limit and not self._context.get('print_mode'):
                 # This element won't generate a line now, but we use it to know that we'll need to add a load_more line.
                 has_more_lines = True
                 break
@@ -643,7 +643,10 @@ class JournalReportCustomHandler(models.AbstractModel):
             sort_by_date = options_group.get('sort_by_date')
             params.append(column_group_key)
             params += where_params
-            params += [report.load_more_limit + 1, offset]
+
+            limit_to_load = report.load_more_limit + 1 if report.load_more_limit and not self._context.get('print_mode') else None
+
+            params += [limit_to_load, offset]
             queries.append(f"""
                 SELECT
                     %s AS column_group_key,

@@ -184,28 +184,12 @@
             <xpath  expr="//group[@name='group_documents_analytics']" position="after">
                 <group name="group_field_service" string="Field Service" col="1" class="row mt16 o_settings_container col-lg-6">
                     <div>
-                        <div class="o_setting_box" groups="base.group_no_one">
-                            <div class="o_setting_left_pane">
-                                <field name="is_fsm"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="is_fsm"/>
-                                <div class="text-muted" id="allow_billable_setting">
-                                    Manage tasks in the Field Service module
-                                </div>
-                            </div>
-                        </div>
-                        <div class="o_setting_box mt-4" id="industry_fsm">
-                            <div class="o_setting_left_pane">
-                                <field name="allow_worksheets"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="allow_worksheets"/>
-                                <div class="text-muted" id="allow_billable_setting">
-                                    Create reports to be signed off by your customers
-                                </div>
-                            </div>
-                        </div>
+                        <setting help="Manage tasks in the Field Service module" groups="base.group_no_one">
+                            <field name="is_fsm"/>
+                        </setting>
+                        <setting help="Create reports to be signed off by your customers" id="industry_fsm">
+                            <field name="allow_worksheets"/>
+                        </setting>
                      </div>
                 </group>
             </xpath>

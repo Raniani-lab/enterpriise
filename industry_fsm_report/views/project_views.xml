@@ -110,22 +110,14 @@
         <field name="model">project.project</field>
         <field name="inherit_id" ref="industry_fsm.project_view_form_inherit"/>
         <field name="arch" type="xml">
-            <xpath expr="//div[@id='industry_fsm']" position="replace">
-                <div class="o_setting_box mt-4" id="industry_fsm">
-                    <div class="o_setting_left_pane">
-                        <field name="allow_worksheets"/>
+            <xpath expr="//setting[@id='industry_fsm']" position="replace">
+                <setting help="Create reports to be signed off by your customers" id="industry_fsm">
+                    <field name="allow_worksheets"/>
+                    <div class="mt-3 d-flex" attrs="{'invisible': [('allow_worksheets', '=', False)]}">
+                        <label for="worksheet_template_id" string="Worksheet Template"/>
+                        <field name="worksheet_template_id" class="oe_inline" context="{'default_res_model': 'project.task'}"/>
                     </div>
-                    <div class="o_setting_right_pane">
-                        <label for="allow_worksheets"/>
-                        <div class="text-muted" id="allow_billable_setting">
-                            Create reports to be signed off by your customers
-                        </div>
-                        <div class="mt-3 d-flex" attrs="{'invisible': [('allow_worksheets', '=', False)]}">
-                            <label for="worksheet_template_id" string="Worksheet Template"/>
-                            <field name="worksheet_template_id" class="oe_inline" context="{'default_res_model': 'project.task'}"/>
-                        </div>
-                    </div>
-                </div>
+                </setting>
             </xpath>
         </field>
     </record>

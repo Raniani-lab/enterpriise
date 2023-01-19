@@ -26,17 +26,9 @@
         <field name="priority">32</field>
         <field name="arch" type="xml">
             <xpath expr="//div[hasclass('o_settings_container')]" position="inside">
-                <div class="col-lg-6 o_setting_box" groups="planning.group_planning_user">
-                    <div class="o_setting_left_pane">
-                        <field name="allow_forecast"/>
-                    </div>
-                    <div class="o_setting_right_pane">
-                        <label for="allow_forecast"/>
-                        <div class="text-muted" id="allow_forecast_setting">
-                            Plan your resources on project tasks
-                        </div>
-                    </div>
-                </div>
+                <setting help="Plan your resources on project tasks" groups="planning.group_planning_user">
+                    <field name="allow_forecast"/>
+                </setting>
             </xpath>
         </field>
     </record>
@@ -51,17 +43,9 @@
                 <attribute name="invisible">0</attribute>
             </xpath>
             <xpath expr="//group[@name='group_time_managment']" position="inside">
-                <div class="o_setting_box mt-4" groups="planning.group_planning_user" colspan="2">
-                    <div class="o_setting_left_pane">
-                        <field name="allow_forecast"/>
-                    </div>
-                    <div class="o_setting_right_pane">
-                        <label for="allow_forecast"/>
-                        <div class="text-muted" id="allow_forecast_setting">
-                            Plan your resources for this project
-                        </div>
-                    </div>
-                </div>
+                <setting help="Plan your resources for this project" groups="planning.group_planning_user">
+                    <field name="allow_forecast"/>
+                </setting>
             </xpath>
         </field>
     </record>

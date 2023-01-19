@@ -28,30 +28,14 @@
             </xpath>
             <xpath expr="//group[@name='group_sales_invoicing']/div" position="inside">
                 <field name="is_fsm" invisible="1"/>
-                <div class="o_setting_box mt-4">
-                    <div class="o_setting_left_pane">
-                        <field name="allow_material"/>
-                    </div>
-                    <div class="o_setting_right_pane">
-                        <label for="allow_material"/>
-                        <div class="text-muted" id="allow_billable_setting">
-                            Track the material used to complete tasks
-                        </div>
-                    </div>
-                </div>
+                <setting help="Track the material used to complete tasks">
+                    <field name="allow_material"/>
+                </setting>
             </xpath>
             <xpath expr="//group[@name='group_sales_invoicing']/div" position="inside">
-                <div class="o_setting_box mt-4"  groups="industry_fsm.group_fsm_quotation_from_task">
-                    <div class="o_setting_left_pane">
-                        <field name="allow_quotations"/>
-                    </div>
-                    <div class="o_setting_right_pane">
-                        <label for="allow_quotations"/>
-                        <div class="text-muted" id="allow_billable_setting">
-                            Create new quotations directly from tasks
-                        </div>
-                    </div>
-                </div>
+                <setting help="Create new quotations directly from tasks" groups="industry_fsm.group_fsm_quotation_from_task">
+                    <field name="allow_quotations"/>
+                </setting>
             </xpath>
             <xpath expr="//page[@name='billing_employee_rate']" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', '|', '&amp;', ('allow_timesheets', '=', False), ('is_fsm', '=', True), ('allow_billable', '=', False), '&amp;', ('partner_id', '=', False), ('is_fsm', '=', False)]}</attribute>

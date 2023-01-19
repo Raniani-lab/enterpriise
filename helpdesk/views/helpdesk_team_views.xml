@@ -83,364 +83,211 @@
                     <field name="company_id" groups="base.group_multi_company" required="1" nolabel="1" context="{'create': False}"/>
                     <h2>Assignment &amp; Visibility</h2>
                     <div class="row mt16 o_settings_container" id="productivity">
-                        <div class="col-lg-6 o_setting_box">
-                            <div class="o_setting_right_pane">
-                                <label for="privacy_visibility"/>
-                                <div class="text-muted">
-                                    Users to whom this team will be visible
-                                </div>
-                                <div>
-                                    <field name="privacy_visibility" class="mt16 o_light_label" widget="radio"/>
-                                </div>
-                                <div>
-                                    <span colspan="2" class="text-muted" attrs="{'invisible':[('access_instruction_message', '=', '')]}">
-                                        <i class="fa fa-lightbulb-o"/>&amp;nbsp;<field class="align-top d-inline" name="access_instruction_message" nolabel="1"/>
-                                    </span>
-                                </div>
-                                <div>
-                                    <span colspan="2" class="text-muted" attrs="{'invisible':[('privacy_visibility_warning', '=', '')]}">
-                                        <i class="fa fa-warning"/>&amp;nbsp;<field class="align-top d-inline" name="privacy_visibility_warning" nolabel="1"/>
-                                    </span>
-                                </div>
+                        <setting help="Users to whom this team will be visible">
+                            <field name="privacy_visibility" class="mt16 o_light_label" widget="radio"/>
+                            <div>
+                                <span colspan="2" class="text-muted" attrs="{'invisible':[('access_instruction_message', '=', '')]}">
+                                    <i class="fa fa-lightbulb-o"/>&amp;nbsp;<field class="align-top d-inline" name="access_instruction_message" nolabel="1"/>
+                                </span>
                             </div>
-                        </div>
+                            <div>
+                                <span colspan="2" class="text-muted" attrs="{'invisible':[('privacy_visibility_warning', '=', '')]}">
+                                    <i class="fa fa-warning"/>&amp;nbsp;<field class="align-top d-inline" name="privacy_visibility_warning" nolabel="1"/>
+                                </span>
+                            </div>
+                        </setting>
                         <div class="col-lg-6">
-                            <div class="o_setting_box">
-                                <div class="o_setting_right_pane">
-                                    <label for="message_partner_ids"/>
-                                    <div class="text-muted">
-                                        Receive notifications whenever tickets are created, rated or discussed on in this team
-                                    </div>
-                                    <div class="mt16">
-                                        <span><b>Followers </b></span>
-                                        <field name="message_partner_ids" string="Follow All Team's Tickets" widget="many2many_tags_email" domain="[('type', '!=', 'private')]"/>
+                            <setting>
+                                <label for="message_partner_ids"/>
+                                <div class="text-muted">
+                                    Receive notifications whenever tickets are created, rated or discussed on in this team
+                                </div>
+                                <div class="mt16">
+                                    <span><b>Followers </b></span>
+                                    <field name="message_partner_ids" string="Follow All Team's Tickets" widget="many2many_tags_email" domain="[('type', '!=', 'private')]"/>
+                                </div>
+                            </setting>
+                            <setting help="Automate the assignment of new tickets to the right people, and make sure all tickets are being handled">
+                                <field name="auto_assignment"/>
+                                <div attrs="{'invisible': [('auto_assignment', '=', False)]}" class="mt16">
+                                    <field name="assign_method" class="o_light_label" widget="radio"/>
+                                    <div>
+                                        <field name="member_ids" widget="many2many_avatar_user"
+                                        class="mt16" placeholder="Add team members..." options="{'no_quick_create': True}"/>
                                     </div>
                                 </div>
-                            </div>
-                            <div class="o_setting_box">
-                                <div class="o_setting_left_pane">
-                                    <field name="auto_assignment"/>
-                                </div>
-                                <div class="o_setting_right_pane">
-                                    <label for="auto_assignment"/>
-                                    <div class="text-muted">
-                                        Automate the assignment of new tickets to the right people, and make sure all tickets are being handled
-                                    </div>
-                                    <div attrs="{'invisible': [('auto_assignment', '=', False)]}" class="mt16">
-                                        <field name="assign_method" class="o_light_label" widget="radio"/>
-                                        <div>
-                                            <field name="member_ids" widget="many2many_avatar_user"
-                                            class="mt16" placeholder="Add team members..." options="{'no_quick_create': True}"/>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
+                            </setting>
                         </div>
                     </div>
                     <h2>Channels</h2>
                     <div class="row mt16 o_settings_container" id="channels">
-                        <div class="col-lg-6 o_setting_box" id="alias_channels">
-                            <div class="o_setting_left_pane">
-                                <field name="use_alias"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="use_alias"/>
-                                <div class="text-muted">
-                                    Create tickets by sending an email to an alias
+                        <setting id="alias_channels" help="Create tickets by sending an email to an alias">
+                            <field name="use_alias"/>
+                            <div attrs="{'invisible': [('use_alias','=',False)]}" class="mt16">
+                                <div class="oe_edit_only" attrs="{'invisible': [('alias_domain', '=', False)]}">
+                                    <strong>Alias </strong>
+                                    <field name="alias_name" class="w-25"/>@<field name="alias_domain" class="oe_inline" readonly="1"/>
                                 </div>
-                                <div attrs="{'invisible': [('use_alias','=',False)]}" class="mt16">
-                                    <div class="oe_edit_only" attrs="{'invisible': [('alias_domain', '=', False)]}">
-                                        <strong>Alias </strong>
-                                        <field name="alias_name" class="w-25"/>@<field name="alias_domain" class="oe_inline" readonly="1"/>
-                                    </div>
-                                    <p class="oe_read_only" attrs="{'invisible': [('alias_domain', '=', False)]}">
-                                    <strong>Alias </strong><field name="alias_id" class="oe_read_only oe_inline" required="False"/>
-                                    </p>
-                                    <field name="has_external_mail_server" invisible="1"/>
-                                    <p class="text-muted" attrs="{'invisible': ['|', ('alias_domain', '!=', False), ('has_external_mail_server', '!=', False)]}">
-                                        <i class="fa fa-lightbulb-o" role='img'/> Enable the <i>Custom Email Servers</i> feature in the <i>General Settings</i> and indicate an <i>alias domain</i>
-                                    </p>
-                                    <p attrs="{'invisible': [('alias_domain', '!=', False)]}">
-                                        <button name="%(base_setup.action_general_configuration)d" type="action" string="Configure a custom domain" icon="fa-arrow-right" class="btn-link"/>
-                                    </p>
-                                </div>
+                                <p class="oe_read_only" attrs="{'invisible': [('alias_domain', '=', False)]}">
+                                <strong>Alias </strong><field name="alias_id" class="oe_read_only oe_inline" required="False"/>
+                                </p>
+                                <field name="has_external_mail_server" invisible="1"/>
+                                <p class="text-muted" attrs="{'invisible': ['|', ('alias_domain', '!=', False), ('has_external_mail_server', '!=', False)]}">
+                                    <i class="fa fa-lightbulb-o" role='img'/> Enable the <i>Custom Email Servers</i> feature in the <i>General Settings</i> and indicate an <i>alias domain</i>
+                                </p>
+                                <p attrs="{'invisible': [('alias_domain', '!=', False)]}">
+                                    <button name="%(base_setup.action_general_configuration)d" type="action" string="Configure a custom domain" icon="fa-arrow-right" class="btn-link"/>
+                                </p>
                             </div>
-                        </div>
-                        <div class="col-lg-6 o_setting_box">
-                            <div class="o_setting_left_pane">
-                                <field name="use_website_helpdesk_livechat"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="use_website_helpdesk_livechat"/>
-                                <div class="text-muted">
-                                    Get in touch with your website visitors
-                                </div>
-                                <div id="im_livechat" attrs="{'invisible': [('use_website_helpdesk_livechat','=',False)]}">
-                                    <div class="text-warning mb4 mt16">
-                                        Save this page and refresh to activate the feature.
-                                    </div>
+                        </setting>
+                        <setting help="Get in touch with your website visitors">
+                            <field name="use_website_helpdesk_livechat"/>
+                            <div id="im_livechat" attrs="{'invisible': [('use_website_helpdesk_livechat','=',False)]}">
+                                <div class="text-warning mb4 mt16">
+                                    Save this page and refresh to activate the feature.
                                 </div>
                             </div>
-                        </div>
+                        </setting>
                     </div>
                     <div class="row mt32 o_settings_container" id="website_form_channel">
-                        <div class="col-lg-6 o_setting_box">
-                            <div class="o_setting_left_pane">
-                                <field name="use_website_helpdesk_form"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="use_website_helpdesk_form"/>
-                                <div class="text-muted mb-4">
-                                    Get tickets through an online form
-                                </div>
-                            </div>
-                        </div>
+                        <setting help="Get tickets through an online form">
+                            <field name="use_website_helpdesk_form"/>
+                        </setting>
                     </div>
                     <h2 class="mt32">Track &amp; Bill Time</h2>
                     <div class="row mt16 o_settings_container">
-                        <div class="col-lg-6 o_setting_box" id="timesheet">
-                            <div class="o_setting_left_pane">
-                                <field name="use_helpdesk_timesheet"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="use_helpdesk_timesheet"/>
-                                <a href="https://www.odoo.com/documentation/master/applications/services/helpdesk/timesheet_and_invoice/invoice_time.html" title="Documentation" class="o_doc_link" target="_blank"></a>
-                                <div class="text-muted">
-                                    Track the time spent on tickets
-                                </div>
-                                <div id='helpdesk_timesheet' attrs="{'invisible': [('use_helpdesk_timesheet', '=', False)]}">
-                                    <div class="text-warning mb4 mt16">
-                                        Save this page and refresh to activate the feature
-                                    </div>
+                        <setting id="timesheet"
+                                 help="Track the time spent on tickets"
+                                 documentation="/applications/services/helpdesk/timesheet_and_invoice/invoice_time.html">
+                            <field name="use_helpdesk_timesheet"/>
+                            <div id='helpdesk_timesheet' attrs="{'invisible': [('use_helpdesk_timesheet', '=', False)]}">
+                                <div class="text-warning mb4 mt16">
+                                    Save this page and refresh to activate the feature
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6 o_setting_box" id="sale_timesheet">
-                            <div class="o_setting_left_pane">
-                                <field name="use_helpdesk_sale_timesheet"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="use_helpdesk_sale_timesheet"/>
-                                <a href="https://www.odoo.com/documentation/master/applications/services/helpdesk/timesheet_and_invoice/reinvoice_from_project.html" title="Documentation" class="o_doc_link" target="_blank"></a>
-                                <div class="text-muted">
-                                    Bill the time spent on your tickets to your customers
-                                </div>
-                                <div id='helpdesk_sale_timesheet' attrs="{'invisible': [('use_helpdesk_sale_timesheet', '=', False)]}">
-                                    <div class="text-warning mb4 mt16">
-                                        Save this page and refresh to activate the feature
-                                    </div>
+                        </setting>
+                        <setting id="sale_timesheet"
+                                 help="Bill the time spent on your tickets to your customers"
+                                 documentation="/applications/services/helpdesk/timesheet_and_invoice/reinvoice_from_project.html">
+                            <field name="use_helpdesk_sale_timesheet"/>
+                            <div id='helpdesk_sale_timesheet' attrs="{'invisible': [('use_helpdesk_sale_timesheet', '=', False)]}">
+                                <div class="text-warning mb4 mt16">
+                                    Save this page and refresh to activate the feature
                                 </div>
                             </div>
-                        </div>
+                        </setting>
                     </div>
                     <h2>Performance</h2>
                     <div class="row mt16 o_settings_container">
-                        <div class="col-lg-6 o_setting_box" id="sla">
-                            <div class="o_setting_left_pane">
-                                <field name="use_sla"/>
+                        <setting id="sla"
+                                  help="Make sure tickets are handled on time"
+                                  documentation="/applications/services/helpdesk/overview/getting_started.html">
+                            <field name="use_sla"/>
+                            <div class="mt16" attrs="{'invisible': [('use_sla', '=', False)]}">
+                                <label for="resource_calendar_id"/>
+                                <field name="resource_calendar_id" attrs="{'required': [('use_sla', '=', True)]}"/>
                             </div>
-                            <div class="o_setting_right_pane">
-                                <label for="use_sla"/>
-                                <a href="https://www.odoo.com/documentation/master/applications/services/helpdesk/overview/getting_started.html" title="Documentation" class="o_doc_link" target="_blank"></a>
-                                <div class="text-muted">
-                                    Make sure tickets are handled on time
-
-                                </div>
-                                <div class="mt16" attrs="{'invisible': [('use_sla', '=', False)]}">
-                                    <label for="resource_calendar_id"/>
-                                    <field name="resource_calendar_id" attrs="{'required': [('use_sla', '=', True)]}"/>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="col-lg-6 o_setting_box" id="rating">
-                            <div class="o_setting_left_pane">
-                                <field name="use_rating"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="use_rating"/>
-                                <div class="text-muted">
-                                   Track customer satisfaction on tickets
-                                </div>
-                                <div id="use_rating" attrs="{'invisible': [('use_rating', '=', False)]}">
-                                    <field name="portal_show_rating" class="oe_inline"/>
-                                    <label for="portal_show_rating" string="Publish this team's ratings on your website"/>
-                                    <div class="mt-3">
-                                        <button name="%(helpdesk.helpdesk_stage_action)d" type="action" string="Set an Email Template on Stages" icon="fa-arrow-right" class="btn-link" context="{'search_default_team_ids': name}"/>
-                                    </div>
+                        </setting>
+                        <setting id="rating" help="Track customer satisfaction on tickets">
+                            <field name="use_rating"/>
+                            <div id="use_rating" attrs="{'invisible': [('use_rating', '=', False)]}">
+                                <field name="portal_show_rating" class="oe_inline"/>
+                                <label for="portal_show_rating" string="Publish this team's ratings on your website"/>
+                                <div class="mt-3">
+                                    <button name="%(helpdesk.helpdesk_stage_action)d" type="action" string="Set an Email Template on Stages" icon="fa-arrow-right" class="btn-link" context="{'search_default_team_ids': name}"/>
                                 </div>
                             </div>
-                        </div>
+                        </setting>
                     </div>
                     <h2>Self-Service</h2>
                     <div class="row mt16 o_settings_container" id="self-Service">
-                        <div class="col-lg-6 o_setting_box">
-                            <div class="o_setting_left_pane">
-                                <field name="use_website_helpdesk_knowledge"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="use_website_helpdesk_knowledge"/>
-                                <div class="text-muted">
-                                    Centralize, manage, share and grow your knowledge library
-                                </div>
-                                <div id="use_website_helpdesk_knowledge" attrs="{'invisible': [('use_website_helpdesk_knowledge', '=', False)]}">
-                                    <div class="text-warning mb4 mt16">
-                                        Save this page and refresh to activate the feature.
-                                    </div>
+                        <setting help="Centralize, manage, share and grow your knowledge library">
+                            <field name="use_website_helpdesk_knowledge"/>
+                            <div id="use_website_helpdesk_knowledge" attrs="{'invisible': [('use_website_helpdesk_knowledge', '=', False)]}">
+                                <div class="text-warning mb4 mt16">
+                                    Save this page and refresh to activate the feature.
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6 o_setting_box">
-                            <div class="o_setting_left_pane">
-                                <field name="use_website_helpdesk_forum"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="use_website_helpdesk_forum"/>
-                                <div class="text-muted">
-                                    Let your customers answer each other's questions on a forum
-                                </div>
-                                <div id="use_website_helpdesk_forum" attrs="{'invisible': [('use_website_helpdesk_forum', '=', False)]}">
-                                    <div class="text-warning mb4 mt16">
-                                        Save this page and refresh to activate the feature.
-                                    </div>
+                        </setting>
+                        <setting help="Let your customers answer each other's questions on a forum">
+                            <field name="use_website_helpdesk_forum"/>
+                            <div id="use_website_helpdesk_forum" attrs="{'invisible': [('use_website_helpdesk_forum', '=', False)]}">
+                                <div class="text-warning mb4 mt16">
+                                    Save this page and refresh to activate the feature.
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6 o_setting_box">
-                            <div class="o_setting_left_pane">
-                                <field name="use_website_helpdesk_slides"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="use_website_helpdesk_slides" string="eLearning"/>
-                                <div class="text-muted">
-                                    Share presentations and videos, and organize them into courses
-                                </div>
-                                <div id="use_website_helpdesk_slides" attrs="{'invisible': [('use_website_helpdesk_slides', '=', False)]}">
-                                    <div class="text-warning mb4 mt16" id="o_slide_option">
-                                        Save this page and refresh to activate the feature.
-                                    </div>
+                        </setting>
+                        <setting help="Share presentations and videos, and organize them into courses">
+                            <field name="use_website_helpdesk_slides"/>
+                            <div id="use_website_helpdesk_slides" attrs="{'invisible': [('use_website_helpdesk_slides', '=', False)]}">
+                                <div class="text-warning mb4 mt16" id="o_slide_option">
+                                    Save this page and refresh to activate the feature.
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6 o_setting_box">
-                            <div class="o_setting_left_pane">
-                                <field name="auto_close_ticket"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="auto_close_ticket"/>
-                                <div class="text-muted">
-                                    Close inactive tickets automatically
+                        </setting>
+                        <setting help="Close inactive tickets automatically">
+                            <field name="auto_close_ticket"/>
+                            <div class="content-group" attrs="{'invisible': [('auto_close_ticket', '=', False)]}">
+                                <field name="stage_ids" invisible="1"/>
+                                <div class="mt16">
+                                    <label for="to_stage_id"/>
+                                    <field name="to_stage_id" class="ms-2 oe_inline" attrs="{'required': [('auto_close_ticket', '=', True)]}" context="{'default_team_id': active_id}"/>
                                 </div>
-                                <div class="content-group" attrs="{'invisible': [('auto_close_ticket', '=', False)]}">
-                                    <field name="stage_ids" invisible="1"/>
-                                    <div class="mt16">
-                                        <label for="to_stage_id"/>
-                                        <field name="to_stage_id" class="ms-2 oe_inline" attrs="{'required': [('auto_close_ticket', '=', True)]}" context="{'default_team_id': active_id}"/>
-                                    </div>
-                                    <div class="mt8">
-                                        <strong>After</strong><field name="auto_close_day" class="mx-2 oe_inline text-center" required="1"/><span>days of inactivity</span>
-                                    </div>
-                                    <div class="mt8">
-                                        <label for="from_stage_ids"/>
-                                        <field name="from_stage_ids" widget="many2many_tags" class="ms-2 oe_inline" context="{'default_team_id': active_id}"/>
-                                    </div>
+                                <div class="mt8">
+                                    <strong>After</strong><field name="auto_close_day" class="mx-2 oe_inline text-center" required="1"/><span>days of inactivity</span>
+                                </div>
+                                <div class="mt8">
+                                    <label for="from_stage_ids"/>
+                                    <field name="from_stage_ids" widget="many2many_tags" class="ms-2 oe_inline" context="{'default_team_id': active_id}"/>
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6 o_setting_box">
-                            <div class="o_setting_left_pane">
-                                <field name="allow_portal_ticket_closing"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="allow_portal_ticket_closing"/>
-                                <a href="https://www.odoo.com/documentation/master/applications/services/helpdesk/advanced/close_tickets.html" title="Documentation" class="o_doc_link" target="_blank"></a>
-                                <div class="text-muted">
-                                    Allow your customers to close their own tickets
-                                </div>
-                            </div>
-                        </div>
+                        </setting>
+                        <setting help="Allow your customers to close their own tickets" documentation="/applications/services/helpdesk/advanced/close_tickets.html">
+                            <field name="allow_portal_ticket_closing"/>
+                        </setting>
                     </div>
                     <h2>After-Sales <a href="https://www.odoo.com/documentation/master/applications/services/helpdesk/advanced/after_sales.html" title="Documentation" class="o_doc_link" target="_blank"></a></h2>
                     <div class="row mt32 o_settings_container" id="after-sales">
-                        <div class="col-lg-6 o_setting_box">
-                            <div class="o_setting_left_pane">
-                                <field name="use_credit_notes"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="use_credit_notes"/>
-                                <div class="text-muted">
-                                    Issue credits notes
-                                </div>
-                                <div id="use_credit_notes" attrs="{'invisible': [('use_credit_notes', '=', False)]}">
-                                    <div class="text-warning mb4 mt16">
-                                        Save this page and refresh to activate the feature.
-                                    </div>
+                        <setting help="Issue credits notes">
+                            <field name="use_credit_notes"/>
+                            <div id="use_credit_notes" attrs="{'invisible': [('use_credit_notes', '=', False)]}">
+                                <div class="text-warning mb4 mt16">
+                                    Save this page and refresh to activate the feature.
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6 o_setting_box">
-                            <div class="o_setting_left_pane">
-                                <field name="use_coupons"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="use_coupons"/>
-                                <div class="text-muted">
-                                    Grant discounts or free products
-                                </div>
-                                <div id="use_coupons" attrs="{'invisible': [('use_coupons', '=', False)]}">
-                                    <div class="text-warning mb4 mt16">
-                                        Save this page and refresh to activate the feature.
-                                    </div>
+                        </setting>
+                        <setting help="Grant discounts or free products">
+                            <field name="use_coupons"/>
+                            <div id="use_coupons" attrs="{'invisible': [('use_coupons', '=', False)]}">
+                                <div class="text-warning mb4 mt16">
+                                    Save this page and refresh to activate the feature.
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6 o_setting_box">
-                            <div class="o_setting_left_pane">
-                                <field name="use_product_returns"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="use_product_returns"/>
-                                <div class="text-muted">
-                                    Return faulty products
-                                </div>
-                                <div id="use_product_returns" attrs="{'invisible': [('use_product_returns', '=', False)]}">
-                                    <div class="text-warning mb4 mt16">
-                                        Save this page and refresh to activate the feature.
-                                    </div>
+                        </setting>
+                        <setting help="Return faulty products">
+                            <field name="use_product_returns"/>
+                            <div id="use_product_returns" attrs="{'invisible': [('use_product_returns', '=', False)]}">
+                                <div class="text-warning mb4 mt16">
+                                    Save this page and refresh to activate the feature.
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6 o_setting_box">
-                            <div class="o_setting_left_pane">
-                                <field name="use_product_repairs"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="use_product_repairs"/>
-                                <div class="text-muted">
-                                    Send broken products for repair
-                                </div>
-                                <div id="use_product_repairs" attrs="{'invisible': [('use_product_repairs', '=', False)]}">
-                                    <div class="text-warning mb4 mt16">
-                                        Save this page and refresh to activate the feature.
-                                    </div>
+                        </setting>
+                        <setting help="Send broken products for repair">
+                            <field name="use_product_repairs"/>
+                            <div id="use_product_repairs" attrs="{'invisible': [('use_product_repairs', '=', False)]}">
+                                <div class="text-warning mb4 mt16">
+                                    Save this page and refresh to activate the feature.
                                 </div>
                             </div>
-                        </div>
-                        <div class="col-lg-6 o_setting_box">
-                            <div class="o_setting_left_pane">
-                                <field name="use_fsm"/>
-                            </div>
-                            <div class="o_setting_right_pane">
-                                <label for="use_fsm"/>
-                                <div class="text-muted">
-                                    Plan onsite interventions
-                                </div>
-                                <div id="field_service" attrs="{'invisible': [('use_fsm', '=', False)]}">
-                                    <div class="text-warning mb4 mt16">
-                                        Save this page and refresh to activate the feature.
-                                    </div>
+                        </setting>
+                        <setting help="Plan onsite interventions">
+                            <field name="use_fsm"/>
+                            <div id="field_service" attrs="{'invisible': [('use_fsm', '=', False)]}">
+                                <div class="text-warning mb4 mt16">
+                                    Save this page and refresh to activate the feature.
                                 </div>
                             </div>
-                        </div>
+                        </setting>
                     </div>
                 </sheet>
             </form>

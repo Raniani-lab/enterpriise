@@ -11,8 +11,8 @@
                     <field name="description"/>
                     <field name="country_id"/>
                     <field name="supplementary_unit"/>
-                    <field name="start_date" width="1" optional="hide"/>
-                    <field name="expiry_date" width="1" optional="hide"/>
+                    <field name="start_date" optional="hide"/>
+                    <field name="expiry_date" optional="hide"/>
                 </tree>
             </field>
         </record>

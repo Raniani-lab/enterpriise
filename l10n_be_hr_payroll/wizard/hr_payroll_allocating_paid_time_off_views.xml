@@ -39,11 +39,11 @@
         <field name="model">hr.payroll.alloc.employee</field>
         <field name="arch" type="xml">
             <tree string="Employee" editable="bottom" create="false" delete="true">
-                <field name="employee_id" width="2"/>
-                <field name="paid_time_off" string="For The Period" width="1"/>
+                <field name="employee_id"/>
+                <field name="paid_time_off" string="For The Period"/>
                 <field name="contract_next_year_id" invisible="1" />
-                <field name="resource_calendar_id" width="2"/>
-                <field name="paid_time_off_to_allocate" string="To Allocate" width="1"/>
+                <field name="resource_calendar_id"/>
+                <field name="paid_time_off_to_allocate" string="To Allocate"/>
             </tree>
         </field>
     </record>

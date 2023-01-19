@@ -278,9 +278,10 @@ class AccountMoveLine(models.Model):
                 if predicted_account_id and predicted_account_id != self.account_id.id:
                     self.account_id = predicted_account_id
 
-                # Predict taxes
-                predicted_tax_ids = self._predict_taxes()
-                if predicted_tax_ids == [None]:
-                    predicted_tax_ids = []
-                if predicted_tax_ids is not False and set(predicted_tax_ids) != set(self.tax_ids.ids):
-                    self.tax_ids = self.env['account.tax'].browse(predicted_tax_ids)
+                if not self.tax_ids:
+                    # Predict taxes
+                    predicted_tax_ids = self._predict_taxes()
+                    if predicted_tax_ids == [None]:
+                        predicted_tax_ids = []
+                    if predicted_tax_ids is not False and set(predicted_tax_ids) != set(self.tax_ids.ids):
+                        self.tax_ids = self.env['account.tax'].browse(predicted_tax_ids)

@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from collections import defaultdict
 import json
 
 from odoo import fields, models, _, api
@@ -72,37 +73,74 @@ class Project(models.Model):
     def _get_budget_items(self, with_action=True):
         self.ensure_one()
         if not self.analytic_account_id:
-            return {}
-        budget_line_read_group = self.env['crossovered.budget.lines'].sudo()._read_group(
-            [('analytic_account_id', '=', self.analytic_account_id.id), ('crossovered_budget_id', '!=', False), ('crossovered_budget_id.state', 'not in', ['draft', 'cancel'])],
-            ['general_budget_id', 'planned_amount', 'practical_amount', 'ids:array_agg(id)'],
-            ['general_budget_id'],
+            return
+        budget_lines = self.env['crossovered.budget.lines'].sudo()._read_group(
+            [
+                ('analytic_account_id', '=', self.analytic_account_id.id),
+                ('crossovered_budget_id', '!=', False),
+                ('crossovered_budget_id.state', 'not in', ['draft', 'cancel']),
+            ],
+            ['general_budget_id', 'crossovered_budget_id', 'planned_amount', 'practical_amount', 'ids:array_agg(id)'],
+            ['general_budget_id', 'crossovered_budget_id'],
+            lazy=False
         )
-        budget_data = []
         total_allocated = total_spent = 0.0
         can_see_budget_items = with_action and self.user_has_groups('account.group_account_readonly,analytic.group_analytic_accounting')
-        for res in budget_line_read_group:
-            name = res['general_budget_id'] and res['general_budget_id'][1]
-            allocated = res['planned_amount']
-            spent = res['practical_amount']
+        budget_data_per_budget = defaultdict(
+            lambda: {
+                'allocated': 0,
+                'spent': 0,
+                **({
+                    'ids': [],
+                    'budgets': [],
+                } if can_see_budget_items else {})
+            }
+        )
+
+        for budget_line in budget_lines:
+            general_budget = budget_line['general_budget_id']
+            allocated = budget_line['planned_amount']
+            spent = budget_line['practical_amount']
+
+            budget_data = budget_data_per_budget[general_budget]
+            budget_data['id'] = general_budget and general_budget[0]
+            budget_data['name'] = general_budget and general_budget[1]
+            budget_data['allocated'] += allocated
+            budget_data['spent'] += spent
             total_allocated += allocated
             total_spent += spent
-            budget_item = {
-                'name': name,
-                'allocated': allocated,
-                'spent': spent,
-                'progress': allocated and (spent - allocated) / abs(allocated),
-            }
-            if res['ids'] and can_see_budget_items:
-                budget_item['action'] = {'name': 'action_view_budget_lines', 'type': 'object', 'args': [json.dumps([('id', 'in', res['ids'])])]}
-            budget_data.append(budget_item)
+
+            if can_see_budget_items:
+                budget_item = {
+                    'id': budget_line['crossovered_budget_id'][0],
+                    'name': budget_line['crossovered_budget_id'][1],
+                    'allocated': allocated,
+                    'spent': spent,
+                    'progress': allocated and (spent - allocated) / abs(allocated),
+                }
+                budget_data['budgets'].append(budget_item)
+                budget_data['ids'] += budget_line['ids']
+
+
+        budget_data_per_budget = list(budget_data_per_budget.values())
+        if can_see_budget_items:
+            for budget_data in budget_data_per_budget:
+                if len(budget_data['budgets']) == 1:
+                    budget_data['budgets'].clear()
+                budget_data['action'] = {
+                    'name': 'action_view_budget_lines',
+                    'type': 'object',
+                    'domain': json.dumps([('id', 'in', budget_data.pop('ids'))]),
+                }
+
         can_add_budget = with_action and self.user_has_groups('account.group_account_user')
         budget_items = {
-            'data': budget_data,
+            'data': budget_data_per_budget,
             'total': {
                 'allocated': total_allocated,
                 'spent': total_spent,
-                'progress': total_allocated and (total_spent - total_allocated) / abs(total_allocated)},
+                'progress': total_allocated and (total_spent - total_allocated) / abs(total_allocated),
+            },
             'can_add_budget': can_add_budget,
         }
         if can_add_budget:

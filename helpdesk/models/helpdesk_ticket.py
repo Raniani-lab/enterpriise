@@ -738,7 +738,7 @@ class HelpdeskTicket(models.Model):
                 self.search([
                     ('partner_id', '=', False),
                     ('partner_email', '=', new_partner.email),
-                    ('stage_id.fold', '=', False)]).write({'partner_id': new_partner.id})
+                ]).write({'partner_id': new_partner.id})
         # use the sanitized body of the email from the message thread to populate the ticket's description
         if not self.description and message.subtype_id == self._creation_subtype() and self.partner_id == message.author_id:
             self.description = message.body
@@ -747,7 +747,8 @@ class HelpdeskTicket(models.Model):
     def _track_template(self, changes):
         res = super(HelpdeskTicket, self)._track_template(changes)
         ticket = self[0]
-        if 'stage_id' in changes and ticket.stage_id.template_id:
+        if 'stage_id' in changes and ticket.stage_id.template_id and ticket.partner_email and (
+            not self.env.user.partner_id or not ticket.partner_id or ticket.partner_id != self.env.user.partner_id):
             res['stage_id'] = (ticket.stage_id.template_id, {
                 'auto_delete_keep_log': False,
                 'subtype_id': self.env['ir.model.data']._xmlid_to_res_id('mail.mt_note'),

@@ -10,6 +10,7 @@ from collections import defaultdict
 
 from odoo import tools, models, fields, api, _
 from odoo.addons.resource.models.utils import make_aware
+from odoo.addons.resource.models.utils import filter_domain_leaf
 from odoo.exceptions import UserError, AccessError
 from odoo.osv import expression
 
@@ -423,22 +424,13 @@ class AnalyticLine(models.Model):
                  ['date', '>=', '1970-01-01'],
                  ['date', '<=', '2250-01-01']
         """
-        domain_search = []
-        for rule in domain:
-            if len(rule) == 3 and rule[0] == 'date':
-                name, operator, _rule = rule
-                if operator == '=':
-                    operator = '<='
-                domain_search.append((name, operator, '2250-01-01' if operator in ['<', '<='] else '1970-01-01'))
-            else:
-                domain_search.append(rule)
-
         grid_anchor, last_week = self._get_last_week()
         domain_search = expression.AND([
             [('project_id', '!=', False),
              ('date', '>=', last_week),
              ('date', '<=', grid_anchor)
-            ], domain_search])
+            ], filter_domain_leaf(domain, lambda field: field != 'date')
+        ])
 
         group_order = self.env['hr.employee']._order
         if order == group_order:

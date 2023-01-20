@@ -1,14 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
   <t t-name="spreadsheet_edition.IrMenuSelector" owl="1">
-      <MenuSelectorWidgetAdapter
-        class="'o-ir-menu-selector'"
-        Component="StandaloneMany2OneField"
-        menuId="props.menuId"
-        availableMenuIds="availableMenuIds"
-        onValueChanged="props.onValueChanged"
-        autoFocus="props.autoFocus"
-      />
+      <div class="o-ir-menu-selector" t-ref="menuSelectorRef">
+        <Many2XAutocomplete t-props="many2XAutocompleteProps"/>
+      </div>
   </t>
 
     <t t-name="spreadsheet_edition.IrMenuSelectorDialog" owl="1">

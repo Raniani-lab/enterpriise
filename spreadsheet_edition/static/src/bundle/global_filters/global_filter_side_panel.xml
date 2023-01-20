@@ -8,8 +8,6 @@
             t-on-click="toggleDropdown"></div>
     </div>
 
-    <div t-name="spreadsheet_edition.StandaloneMany2OneField"/>
-
     <div t-name="spreadsheet_edition.GlobalFiltersSidePanel" class="o_spreadsheet_global_filters_side_panel" owl="1">
         <div class="o_side_panel_section pivot_filter_section" t-foreach="filters" t-as="filter" t-key="'filter_' + filter_index">
             <div class="pivot_filter">

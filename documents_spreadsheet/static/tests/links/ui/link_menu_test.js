@@ -5,7 +5,13 @@ import spreadsheet from "@spreadsheet/o_spreadsheet/o_spreadsheet_extended";
 import { spreadsheetLinkMenuCellService } from "@spreadsheet/ir_ui_menu/index";
 import { registry } from "@web/core/registry";
 import { createSpreadsheet } from "../../spreadsheet_test_utils";
-import { click, getFixture, legacyExtraNextTick, nextTick, patchWithCleanup } from "@web/../tests/helpers/utils";
+import {
+    click,
+    getFixture,
+    legacyExtraNextTick,
+    nextTick,
+    patchWithCleanup,
+} from "@web/../tests/helpers/utils";
 import { getCell } from "@spreadsheet/../tests/utils/getters";
 import { setCellContent, setSelection } from "@spreadsheet/../tests/utils/commands";
 import { getMenuServerData } from "@spreadsheet/../tests/links/menu_data_utils";
@@ -49,7 +55,7 @@ function beforeEach() {
     patchWithCleanup(Grid.prototype, {
         setup() {
             this._super();
-            this.hoveredCell = {col : 0, row : 0};
+            this.hoveredCell = { col: 0, row: 0 };
         },
     });
 }
@@ -57,7 +63,7 @@ function beforeEach() {
 QUnit.module("spreadsheet > menu link ui", { beforeEach }, () => {
     QUnit.test("insert a new ir menu link", async function (assert) {
         const { model } = await openMenuSelector();
-        await click(target, ".o_field_many2one input");
+        await click(target, ".o-ir-menu-selector input");
         assert.ok(target.querySelector("button.o-confirm").disabled);
         await click(document.querySelectorAll(".ui-menu-item")[0]);
         await click(document, "button.o-confirm");
@@ -102,7 +108,7 @@ QUnit.module("spreadsheet > menu link ui", { beforeEach }, () => {
             env.services.menu.getAll().map((menu) => menu.id),
             [1, 2, "root"]
         );
-        await click(target, ".o_field_many2one input");
+        await click(target, ".o-ir-menu-selector input");
         assert.verifySteps(["fetch_menus"]);
     });
 
@@ -110,7 +116,7 @@ QUnit.module("spreadsheet > menu link ui", { beforeEach }, () => {
         "insert a new ir menu link when the menu does not have an xml id",
         async function (assert) {
             const { model } = await openMenuSelector();
-            await click(target, ".o_field_many2one input");
+            await click(target, ".o-ir-menu-selector input");
             assert.ok(target.querySelector("button.o-confirm").disabled);
             const item = document.querySelectorAll(".ui-menu-item")[1];
             // don't ask why it's needed and why it only works with a jquery event >:(
@@ -145,7 +151,7 @@ QUnit.module("spreadsheet > menu link ui", { beforeEach }, () => {
 
     QUnit.test("cancel ir.menu selection", async function (assert) {
         await openMenuSelector();
-        await click(target, ".o_field_many2one input");
+        await click(target, ".o-ir-menu-selector input");
         await click(document.querySelectorAll(".ui-menu-item")[0]);
         assert.containsOnce(target, ".o-ir-menu-selector");
         await click(target, ".modal-footer button.o-cancel");
@@ -158,7 +164,7 @@ QUnit.module("spreadsheet > menu link ui", { beforeEach }, () => {
         await openMenuSelector(this.serverData);
         assert.equal(
             document.activeElement,
-            target.querySelector(".o_field_many2one input"),
+            target.querySelector(".o-ir-menu-selector input"),
             "the input should be focused"
         );
     });

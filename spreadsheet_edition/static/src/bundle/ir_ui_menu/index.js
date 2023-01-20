@@ -9,7 +9,7 @@ import {
     buildViewLink,
     buildIrMenuXmlLink,
 } from "@spreadsheet/ir_ui_menu/odoo_menu_link_cell";
-import { IrMenuSelectorDialog } from "@spreadsheet_edition/assets/components/ir_menu_selector/ir_menu_selector";
+import { IrMenuSelectorDialog } from "@spreadsheet_edition/bundle/ir_menu_selector/ir_menu_selector";
 
 const { markdownLink } = spreadsheet.links;
 const { linkMenuRegistry } = spreadsheet.registries;

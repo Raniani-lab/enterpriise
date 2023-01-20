@@ -831,7 +831,7 @@ class AccountAsset(models.Model):
                 asset._message_log(body=msg)
             else:
                 asset._message_log(body=_('Asset Cancelled'))
-            asset.depreciation_move_ids.filtered(lambda m: m.state == 'draft').unlink()
+            asset.depreciation_move_ids.filtered(lambda m: m.state == 'draft').with_context(force_delete=True).unlink()
             asset.asset_paused_days = 0
             asset.write({'state': 'cancelled'})
 

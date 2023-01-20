@@ -2,14 +2,13 @@
 
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { FormRenderer } from '@web/views/form/form_renderer';
-import { KnowledgeCoverDialog } from '@knowledge/components/cover_selector/knowledge_cover_dialog';
 import KnowledgeTreePanelMixin from '@knowledge/js/tools/tree_panel_mixin';
 import { patch } from "@web/core/utils/patch";
 import MoveArticleDialog from "@knowledge/components/move_article_dialog/move_article_dialog";
 import PermissionPanel from '@knowledge/components/permission_panel/permission_panel';
 import { sprintf } from '@web/core/utils/strings';
 import { useService } from "@web/core/utils/hooks";
-import { onMounted, onPatched, onWillDestroy, useEffect, useRef, useState, xml } from "@odoo/owl";
+import { onMounted, onPatched, onWillDestroy, useChildSubEnv, useEffect, useRef, useState, xml } from "@odoo/owl";
 
 export class KnowledgeArticleFormRenderer extends FormRenderer {
 
@@ -50,6 +49,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         this._onRemoveEmoji = this._onRemoveEmoji.bind(this);
         
         this.sidebarSize = localStorage.getItem('knowledgeArticleSidebarSize');
+
+        useChildSubEnv({
+            renameArticle: this._rename.bind(this),
+        });
 
         onPatched(() => {
             // Handle Add property button
@@ -165,14 +168,12 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
             root: this.root,
             state: this.state,
             actionService: this.actionService,
-            addCover: (ev) => this.addCover(ev),
             addIcon: (ev) => this.addIcon(ev),
             addProperties: (ev) => this.addProperties(ev),
             convertToArticle: () => this.setIsArticleItem(false),
             convertToItem: () => this.setIsArticleItem(true),
             copyArticleAsPrivate: () => this.copyArticleAsPrivate(),
             createArticle: (category, targetParentId) => this.createArticle(category, targetParentId),
-            onChangeCoverClick: () => this.onChangeCoverClick(),
             onMoveArticleClick: () => this.onMoveArticleClick(),
             resizeSidebar: (el) => this.resizeSidebar(el),
             toggleChatter: () => this.toggleChatter(),
@@ -188,35 +189,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         };
     }
 
-    /**
-     * Adds a random cover using unsplash. If unsplash throws an error (service
-     * down/keys unset), opens the cover selector instead.
-     * @param {Event} event
-     */
-    async addCover(event) {
-        event.preventDefault();
-        // Disable button to prevent multiple calls
-        event.target.classList.add('disabled');
-        if (this.props.record.data.name === this.env._t('Untitled')) {
-            // Rename the article if there is a title in the body
-            await this._rename(this._getFallbackTitle());
-        }
-        const articleName = this.props.record.data.name;
-        try {
-            const res = await this.rpc(`/knowledge/article/${this.resId}/add_random_cover`, {
-                query: articleName === this.env._t('Untitled') ? '' : articleName,
-                orientation: 'landscape',
-            });
-            if (res.cover_id) {
-                await this.props.record.update({cover_image_id: [res.cover_id]});
-            } else {
-                this.openCoverSelector();
-            }
-        } catch {
-            this.openCoverSelector();
-        }
-        event.target.classList.remove('disabled');
-    }
 
     /**
      * Add a random icon to the article.
@@ -348,15 +320,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
         }
     }
 
-    openCoverSelector() {
-        const articleName = this.props.record.data.name;
-        this.dialog.add(KnowledgeCoverDialog, {
-            articleCoverId: this.props.record.data.cover_image_id[0],
-            articleName: articleName === this.env._t('Untitled') ? '' : articleName,
-            save: async (id) => this.props.record.update({cover_image_id: [id]})
-        });
-    }
-
     get resId() {
         return this.props.record.resId;
     }
@@ -413,13 +376,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     // Handlers
     //--------------------------------------------------------------------------
 
-    async onChangeCoverClick() {
-        if (this.props.record.data.name === this.env._t('Untitled')) {
-            // Rename the article if there is a title in the body
-            await this._rename(this._getFallbackTitle());
-        }
-        this.openCoverSelector();
-    }
     /**
      * Show the Dialog allowing to move the current article.
      */
@@ -445,7 +401,7 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
     _onNameClick(event) {
         const name = event.target.value;
         if (name === 'Untitled' || name === this.env._t('Untitled')) {
-            this._rename('');
+            this._rename();
         }
     }
 
@@ -593,13 +549,10 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * @param {string} name - Target Name
      */
     async _rename(name) {
-        if (name === '') {
+        if (!name) {
             name = this._getFallbackTitle();
-            // await here will cause the main flow tour to fail
-            this.props.record.update({'name': name});
-        } else if (name !== this.props.record.data.name) {
-            await this.props.record.update({'name': name});
         }
+        await this.props.record.update({'name': name});
         this._resizeNameInput(name);
         // ADSC: Remove when tree component
         // Updates the name in the sidebar

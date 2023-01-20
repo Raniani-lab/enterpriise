@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<templates>
+    <t t-name="knowledge.KnowledgeCover" owl="1">
+        <div t-if="props.record.data.cover_image_url" class="o_knowledge_cover position-relative" t-ref="root">
+            <div class="o_knowledge_cover_image" t-ref="image">  
+                <img t-att-src="props.record.data.cover_image_url" alt="cover"/> 
+            </div>
+            <span class="o_knowledge_edit_cover_buttons position-absolute bottom-0 end-0 mb-2 me-3 text-muted d-print-none"
+                t-if="showButtons">
+                <a role="button" t-on-click="changeCover"
+                   class="btn btn-light text-capitalize me-3 o_knowledge_change_cover o_knowledge_option_button">
+                    <i class="fa fa-fw fa-lg fa-picture-o" title="Change cover"/> Change cover
+                </a>
+                <a role="button" t-on-click="removeCover"
+                   class="btn btn-light text-capitalize o_knowledge_remove_cover o_knowledge_option_button">
+                    <i class="fa fa-fw fa-lg fa-trash-o" title="Remove cover"/> Remove cover
+                </a>
+            </span>
+        </div>
+    </t>
+</templates>

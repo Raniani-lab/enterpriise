@@ -67,7 +67,7 @@ registry.category("web_tour.tours").add('knowledge_cover_selector_tour', {
 }, {
     // Check cover has been removed from the article and create another article
     trigger: '.o_knowledge_header .btn-create',
-    extra_trigger: '.o_knowledge_cover:not(:has(.o_knowledge_cover_image))',
+    extra_trigger: '.o_widget_knowledge_cover:not(:has(.o_knowledge_cover))',
 }, {
     // Change the name of the article
     trigger: '.o_breadcrumb_article_name > input',
@@ -124,6 +124,6 @@ registry.category("web_tour.tours").add('knowledge_cover_selector_tour', {
     // been deleted
     trigger: '.o_knowledge_aside .o_article_name:contains("odoo")',
 }, {
-    trigger: '.o_knowledge_cover:not(:has(.o_knowledge_cover_image))',
+    trigger: '.o_widget_knowledge_cover:not(:has(.o_knowledge_cover))',
     extra_trigger: '.o_article_active:contains("odoo")',
 }]});

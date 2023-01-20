@@ -1022,6 +1022,8 @@ export default class BarcodeModel extends EventBus {
                 }
             }
             return this.notification(barcodeData.error, { type: "danger" });
+        } else if (barcodeData.lot && barcodeData.lot.product_id !== product.id) {
+            delete barcodeData.lot; // The product was scanned alongside another product's lot.
         }
         if (barcodeData.weight) { // the encoded weight is based on the product's UoM
             barcodeData.uom = this.cache.getRecord('uom.uom', product.uom_id);

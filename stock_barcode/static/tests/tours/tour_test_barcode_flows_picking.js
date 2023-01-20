@@ -1163,6 +1163,16 @@ registry.category("web_tour.tours").add('test_delivery_from_scratch_with_lots_1'
     ...stepUtils.discardBarcodeForm(),
 ]});
 
+registry.category("web_tour.tours").add('test_delivery_from_scratch_with_incompatible_lot', {test: true, steps: [
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan 0000000001',
+    },
+    stepUtils.confirmAddingUnreservedProduct(),
+    { trigger: '.o_barcode_line:first-child .o_edit' },
+    ...stepUtils.discardBarcodeForm(),
+]});
+
 registry.category("web_tour.tours").add('test_delivery_from_scratch_with_common_lots_name', {test: true, steps: [
     {
         trigger: '.o_barcode_client_action',

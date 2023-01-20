@@ -10,7 +10,7 @@ from collections import defaultdict
 class ApprovalRequest(models.Model):
     _name = 'approval.request'
     _description = 'Approval Request'
-    _inherit = ['mail.thread', 'mail.activity.mixin']
+    _inherit = ['mail.thread.main.attachment', 'mail.activity.mixin']
     _order = 'name'
     _mail_post_access = 'read'
 

@@ -1171,8 +1171,22 @@ class BankRecWidget(models.Model):
 
         all_aml_lines = self.line_ids.filtered(lambda x: x.flag == 'new_aml')
         if all_aml_lines:
-            # == Check for a partial reconciliation ==
             last_line = all_aml_lines[-1]
+
+            # Cleanup the existing partials if not on the last line.
+            line_ids_commands = []
+            for aml_line in all_aml_lines:
+                is_partial = aml_line.display_stroked_amount_currency or aml_line.display_stroked_balance
+                if is_partial:
+                    line_ids_commands.append(Command.update(aml_line.id, {
+                        'amount_currency': aml_line.source_amount_currency,
+                        'balance': aml_line.source_balance,
+                    }))
+            if line_ids_commands:
+                self.line_ids = line_ids_commands
+                self._lines_widget_recompute_exchange_diff()
+
+            # Check for a partial reconciliation.
             partial_amounts = self._lines_widget_check_partial_amount(last_line)
 
             if partial_amounts:
@@ -1399,7 +1413,21 @@ class BankRecWidget(models.Model):
                 'balance': exchange_diff_balance,
             }))
 
-        self.line_ids = line_ids_commands
+        if line_ids_commands:
+            self.line_ids = line_ids_commands
+
+            # Reorder to put each exchange line right after the corresponding new_aml.
+            new_lines = self.env['bank.rec.widget.line']
+            for line in self.line_ids:
+                if line.flag == 'exchange_diff':
+                    continue
+
+                new_lines |= line
+                if line.flag == 'new_aml':
+                    exchange_diff = self.line_ids\
+                        .filtered(lambda x: x.flag == 'exchange_diff' and x.source_aml_id == line.source_aml_id)
+                    new_lines |= exchange_diff
+            self.line_ids = new_lines
 
     def _lines_widget_prepare_reco_model_write_off_vals(self, reco_model, write_off_vals):
         self.ensure_one()

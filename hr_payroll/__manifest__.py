@@ -55,9 +55,7 @@
     'demo': ['data/hr_payroll_demo.xml'],
     'assets': {
         'web.assets_backend': [
-            'hr_payroll/static/src/**/*.js',
-            'hr_payroll/static/src/**/*.scss',
-            'hr_payroll/static/src/**/*.xml',
+            'hr_payroll/static/src/**/*',
         ],
         'web.assets_tests': [
             'hr_payroll/static/tests/**/*.js',

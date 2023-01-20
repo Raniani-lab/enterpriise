@@ -4518,16 +4518,22 @@ class AccountReportLine(models.Model):
             col_opt['expression_label']: 0 if col_opt['figure_type'] in figure_types_defaulting_to_0 else None
             for col_opt in options['columns']
         }
-        aggregated_group_totals = {} # in the form {grouping key : [{expression: value} for each period]}
+
+        # Gather default value for each expression, in case it has no value for a given grouping key
+        default_value_per_expression = {}
+        for expression in self.expression_ids:
+            if expression.figure_type:
+                default_value = 0 if expression.figure_type in figure_types_defaulting_to_0 else None
+            else:
+                default_value = default_value_per_expr_label.get(expression.label)
+
+            default_value_per_expression[expression] = {'value': default_value}
+
+        # Build each group's result
+        aggregated_group_totals = defaultdict(lambda: defaultdict(default_value_per_expression.copy))
         for column_group_key, expression_totals in all_column_groups_expression_totals.items():
             for expression in self.expression_ids:
                 for grouping_key, result in expression_totals[expression]['value']:
-                    if expression.figure_type:
-                        default_value = 0 if expression.figure_type in default_value_per_expr_label else None
-                    else:
-                        default_value = default_value_per_expr_label.get(expression.label)
-
-                    aggregated_group_totals.setdefault(grouping_key, {key: defaultdict(lambda: {'value': default_value}) for key in all_column_groups_expression_totals})
                     aggregated_group_totals[grouping_key][column_group_key][expression] = {'value': result}
 
         # Generate groupby lines

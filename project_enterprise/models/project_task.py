@@ -64,7 +64,7 @@ class Task(models.Model):
             'planned_date_end': False
         })
 
-    @api.depends('stage_id')
+    @api.depends('is_closed')
     def _compute_display_warning_dependency_in_gantt(self):
         for task in self:
             task.display_warning_dependency_in_gantt = not task.is_closed

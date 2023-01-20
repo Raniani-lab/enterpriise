@@ -85,16 +85,11 @@ class TestPlanningOverlap(TestProjectCommon):
         self.assertIn(self.task_2, search_result)
 
     def test_same_user_done_overlap(self):
-        stage_done = self.env['project.task.type'].create({
-            'name': 'Stage Done',
-            'fold': True,
-        })
-        self.project_pigs.type_ids = stage_done
         self.task_2.write({
             'user_ids': self.user_projectuser,
             'planned_date_begin': self.tomorrow + relativedelta(hour=9),
             'planned_date_end': self.tomorrow + relativedelta(hour=11),
-            'stage_id': stage_done.id,
+            'state': '1_done',
         })
 
         self.assertFalse(self.task_1.planning_overlap)

@@ -36,15 +36,28 @@ class Task(models.Model):
         }
 
     def write(self, vals):
-        previous_states = None
+        previous_states_fsm_done = None
+        previous_states_state = None
         if 'fsm_done' in vals:
-            previous_states = {task: task.fsm_done for task in self}
+            previous_states_fsm_done = {task: task.fsm_done for task in self}
+        if 'state' in vals:
+            previous_states_state = {task: task.state for task in self}
         res = super().write(vals)
         if 'fsm_done' in vals:
             tracked_tasks = self.filtered(
-                lambda t: t.fsm_done and t.helpdesk_ticket_id.use_fsm and previous_states[t] != t.fsm_done)
+                lambda t: t.fsm_done and t.helpdesk_ticket_id.use_fsm and previous_states_fsm_done[t] != t.fsm_done)
             subtype = self.env.ref('helpdesk_fsm.mt_ticket_task_done')
             for task in tracked_tasks:
+                task.helpdesk_ticket_id.sudo().message_post(
+                    body=task._get_html_link(),
+                    subtype_id=subtype.id,
+                )
+            return res
+        if vals.get('state', False) in ['1_done', '1_canceled']:
+            tracked_tasks = self.filtered(
+                lambda t: t.helpdesk_ticket_id.use_fsm and previous_states_state[t] != t.state)
+            for task in tracked_tasks:
+                subtype = self.env.ref('helpdesk_fsm.mt_ticket_task_{}'.format(task.state[2:]))
                 task.helpdesk_ticket_id.sudo().message_post(
                     body=task._get_html_link(),
                     subtype_id=subtype.id,

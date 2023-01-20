@@ -327,7 +327,7 @@ class Task(models.Model):
         for task in self:
             # determine closed stage for task
             closed_stage = closed_stage_by_project.get(self.project_id.id)
-            values = {'fsm_done': True}
+            values = {'fsm_done': True, 'state': '1_done'}
             if closed_stage:
                 values['stage_id'] = closed_stage.id
 

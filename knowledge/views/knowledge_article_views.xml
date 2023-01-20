@@ -3,7 +3,7 @@
     <record id="knowledge_article_action_trashed" model="ir.actions.act_window">
         <field name="name">Trash</field>
         <field name="res_model">knowledge.article</field>
-        <field name="view_mode">tree,form</field>
+        <field name="view_mode">tree,form,kanban</field>
         <field name="context">{'search_default_filter_trashed':1}</field>
     </record>
 

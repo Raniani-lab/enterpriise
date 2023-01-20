@@ -1265,14 +1265,14 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             # pylint: disable=C0326
             {'flag': 'liquidity',       'amount_currency': 4095.0,      'balance': 4095.0,      'account_id': liquidity_acc.id},
             {'flag': 'new_aml',         'amount_currency': -1656.0,     'balance': -276.0,      'account_id': receivable_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -3312.0,     'balance': -552.0,      'account_id': receivable_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -6624.0,     'balance': -1104.0,     'account_id': receivable_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -4968.0,     'balance': -828.0,      'account_id': receivable_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -165.6,      'balance': -41.4,       'account_id': receivable_acc.id},
             {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -138.05,     'account_id': income_exchange_account.id},
+            {'flag': 'new_aml',         'amount_currency': -3312.0,     'balance': -552.0,      'account_id': receivable_acc.id},
             {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -276.11,     'account_id': income_exchange_account.id},
+            {'flag': 'new_aml',         'amount_currency': -6624.0,     'balance': -1104.0,     'account_id': receivable_acc.id},
             {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -552.22,     'account_id': income_exchange_account.id},
+            {'flag': 'new_aml',         'amount_currency': -4968.0,     'balance': -828.0,      'account_id': receivable_acc.id},
             {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -414.16,     'account_id': income_exchange_account.id},
+            {'flag': 'new_aml',         'amount_currency': -165.6,      'balance': -41.4,       'account_id': receivable_acc.id},
             {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -0.01,       'account_id': income_exchange_account.id},
             {'flag': 'auto_balance',    'amount_currency': 347.76,      'balance': 86.95,       'account_id': suspense_acc.id},
         ])
@@ -1283,16 +1283,16 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             # pylint: disable=C0326
             {'flag': 'liquidity',       'amount_currency': 4095.0,      'balance': 4095.0,      'account_id': liquidity_acc.id},
             {'flag': 'new_aml',         'amount_currency': -1656.0,     'balance': -276.0,      'account_id': receivable_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -3312.0,     'balance': -552.0,      'account_id': receivable_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -6624.0,     'balance': -1104.0,     'account_id': receivable_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -4968.0,     'balance': -828.0,      'account_id': receivable_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -165.6,      'balance': -41.4,       'account_id': receivable_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -331.2,      'balance': -82.8,       'account_id': receivable_acc.id},
             {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -138.05,     'account_id': income_exchange_account.id},
+            {'flag': 'new_aml',         'amount_currency': -3312.0,     'balance': -552.0,      'account_id': receivable_acc.id},
             {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -276.11,     'account_id': income_exchange_account.id},
+            {'flag': 'new_aml',         'amount_currency': -6624.0,     'balance': -1104.0,     'account_id': receivable_acc.id},
             {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -552.22,     'account_id': income_exchange_account.id},
+            {'flag': 'new_aml',         'amount_currency': -4968.0,     'balance': -828.0,      'account_id': receivable_acc.id},
             {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -414.16,     'account_id': income_exchange_account.id},
+            {'flag': 'new_aml',         'amount_currency': -165.6,      'balance': -41.4,       'account_id': receivable_acc.id},
             {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -0.01,       'account_id': income_exchange_account.id},
+            {'flag': 'new_aml',         'amount_currency': -331.2,      'balance': -82.8,       'account_id': receivable_acc.id},
             {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -0.01,       'account_id': income_exchange_account.id},
             {'flag': 'early_payment',   'amount_currency': 590.4,       'balance': 99.6,        'account_id': early_pay_acc.id},
             {'flag': 'early_payment',   'amount_currency': 88.56,       'balance': 14.94,       'account_id': tax_acc.id},
@@ -1447,16 +1447,16 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             # pylint: disable=C0326
             {'flag': 'liquidity',       'amount_currency': 4110.0,      'balance': 4110.0,      'account_id': liquidity_acc.id},
             {'flag': 'new_aml',         'amount_currency': -1656.0,     'balance': -276.0,      'account_id': receivable_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -3312.0,     'balance': -552.0,      'account_id': receivable_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -6624.0,     'balance': -1104.0,     'account_id': receivable_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -4968.0,     'balance': -828.0,      'account_id': receivable_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -165.6,      'balance': -41.4,       'account_id': receivable_acc.id},
-            {'flag': 'new_aml',         'amount_currency': -331.2,      'balance': -82.8,       'account_id': receivable_acc.id},
             {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -137.34,     'account_id': income_exchange_account.id},
+            {'flag': 'new_aml',         'amount_currency': -3312.0,     'balance': -552.0,      'account_id': receivable_acc.id},
             {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -274.67,     'account_id': income_exchange_account.id},
+            {'flag': 'new_aml',         'amount_currency': -6624.0,     'balance': -1104.0,     'account_id': receivable_acc.id},
             {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -549.34,     'account_id': income_exchange_account.id},
+            {'flag': 'new_aml',         'amount_currency': -4968.0,     'balance': -828.0,      'account_id': receivable_acc.id},
             {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -412.01,     'account_id': income_exchange_account.id},
+            {'flag': 'new_aml',         'amount_currency': -165.6,      'balance': -41.4,       'account_id': receivable_acc.id},
             {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': 0.07,        'account_id': expense_exchange_account.id},
+            {'flag': 'new_aml',         'amount_currency': -331.2,      'balance': -82.8,       'account_id': receivable_acc.id},
             {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': 0.13,        'account_id': expense_exchange_account.id},
             {'flag': 'early_payment',   'amount_currency': 590.4,       'balance': 99.6,        'account_id': early_pay_acc.id},
             {'flag': 'early_payment',   'amount_currency': 0.0,         'balance': 47.76,       'account_id': foreign_exch_acc.id},
@@ -1608,15 +1608,15 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             # pylint: disable=C0326
             {'flag': 'liquidity',       'amount_currency': 4088.79,     'balance': 4088.79,    'account_id': liquidity_acc.id},
             {'flag': 'new_aml',         'amount_currency': -1645.2,     'balance': -274.2,     'account_id': receivable_acc.id},
+            {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -137.1,     'account_id': income_exchange_account.id},
             {'flag': 'new_aml',         'amount_currency': -3290.4,     'balance': -548.4,     'account_id': receivable_acc.id},
+            {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -274.2,     'account_id': income_exchange_account.id},
             {'flag': 'new_aml',         'amount_currency': -6580.8,     'balance': -1096.8,    'account_id': receivable_acc.id},
+            {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -548.4,     'account_id': income_exchange_account.id},
             {'flag': 'new_aml',         'amount_currency': -4935.6,     'balance': -822.6,     'account_id': receivable_acc.id},
+            {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -411.3,     'account_id': income_exchange_account.id},
             {'flag': 'new_aml',         'amount_currency': -164.52,     'balance': -41.13,     'account_id': receivable_acc.id},
             {'flag': 'new_aml',         'amount_currency': -329.04,     'balance': -82.26,     'account_id': receivable_acc.id},
-            {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -137.1,     'account_id': income_exchange_account.id},
-            {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -274.2,     'account_id': income_exchange_account.id},
-            {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -548.4,     'account_id': income_exchange_account.id},
-            {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -411.3,     'account_id': income_exchange_account.id},
             {'flag': 'early_payment',   'amount_currency': 590.40,      'balance': 99.6,       'account_id': early_pay_acc.id},
             {'flag': 'early_payment',   'amount_currency': 0.0,         'balance': 48.00,      'account_id': foreign_exch_acc.id},
         ])
@@ -1675,4 +1675,58 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             {'flag': 'new_aml',         'amount_currency': -600.0,  'balance': -100.0},
             {'flag': 'new_aml',         'amount_currency': -400.0,  'balance': -100.0},
             {'flag': 'auto_balance',    'amount_currency': -500.0,  'balance': -250.0},
+        ])
+
+    def test_partial_reconciliation_suggestion_with_mixed_invoice_and_refund(self):
+        """ Test the partial reconciliation suggestion is well recomputed when adding another
+        line. For example, when adding 2 invoices having an higher amount then a refund. In that
+        case, the partial on the second invoice should be removed since the difference is filled
+        by the newly added refund.
+        """
+        st_line = self._create_st_line(
+            1800.0,
+            date='2017-01-01',
+            foreign_currency_id=self.currency_data['currency'].id,
+            amount_currency=3600.0,
+        )
+
+        inv1 = self._create_invoice_line(
+            'out_invoice',
+            currency_id=self.currency_data['currency'],
+            invoice_date='2016-01-01',
+            invoice_line_ids=[{'price_unit': 2400.0}],
+        )
+        inv2 = self._create_invoice_line(
+            'out_invoice',
+            currency_id=self.currency_data['currency'],
+            invoice_date='2016-01-01',
+            invoice_line_ids=[{'price_unit': 2400.0}],
+        )
+        refund = self._create_invoice_line(
+            'out_refund',
+            currency_id=self.currency_data['currency'],
+            invoice_date='2016-01-01',
+            invoice_line_ids=[{'price_unit': 1200.0}],
+        )
+
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+        wizard._action_add_new_amls(inv1 + inv2)
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',       'amount_currency': 1800.0,  'balance': 1800.0},
+            {'flag': 'new_aml',         'amount_currency': -2400.0, 'balance': -800.0},
+            {'flag': 'exchange_diff',   'amount_currency': 0.0,     'balance': -400.0},
+            {'flag': 'new_aml',         'amount_currency': -1200.0, 'balance': -400.0},
+            {'flag': 'exchange_diff',   'amount_currency': 0.0,     'balance': -200.0},
+        ])
+        wizard._action_add_new_amls(refund)
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',       'amount_currency': 1800.0,  'balance': 1800.0},
+            {'flag': 'new_aml',         'amount_currency': -2400.0, 'balance': -800.0},
+            {'flag': 'exchange_diff',   'amount_currency': 0.0,     'balance': -400.0},
+            {'flag': 'new_aml',         'amount_currency': -2400.0, 'balance': -800.0},
+            {'flag': 'exchange_diff',   'amount_currency': 0.0,     'balance': -400.0},
+            {'flag': 'new_aml',         'amount_currency': 1200.0,  'balance': 400.0},
+            {'flag': 'exchange_diff',   'amount_currency': 0.0,     'balance': 200.0},
         ])

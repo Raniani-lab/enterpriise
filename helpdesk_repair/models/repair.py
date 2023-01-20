@@ -43,12 +43,12 @@ class Repair(models.Model):
             )
         return orders
 
-    def action_repair_done(self):
-        """repair.action_repair_done() calls stock_move.create() which,
+    def _action_repair_confirm(self):
+        """repair.action_repair_confirm() apply changes on move_ids which,
         if default_lot_id is still in the context, will give all stock_move_lines.lot_id this value.
         We want to avoid that, as the components of the repair do not have the same lot_id, if any,
         so it leads to an exception.
         """
         context = dict(self.env.context)
         context.pop('default_lot_id', None)
-        return super(Repair, self.with_context(context)).action_repair_done()
+        return super(Repair, self.with_context(context))._action_repair_confirm()

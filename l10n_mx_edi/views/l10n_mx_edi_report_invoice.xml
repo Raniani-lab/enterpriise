@@ -90,7 +90,7 @@
             </t>
         </xpath>
 
-        <xpath expr="//p[@name='note']" position="after">
+        <xpath expr="//div[@name='comment']" position="after">
             <t t-if="is_cfdi_signed">
                 <div class="row" id='complement'>
                     <div t-if="cfdi_vals.get('sello')" class="barcode col-3">

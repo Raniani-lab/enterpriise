@@ -1165,6 +1165,16 @@ tour.register('test_delivery_from_scratch_with_lots_1', {test: true}, [
     ...tour.stepUtils.discardBarcodeForm(),
 ]);
 
+tour.register('test_delivery_from_scratch_with_incompatible_lot', {test: true}, [
+    {
+        trigger: '.o_barcode_client_action',
+        run: 'scan 0000000001',
+    },
+    tour.stepUtils.confirmAddingUnreservedProduct(),
+    { trigger: '.o_barcode_line:first-child .o_edit' },
+    ...tour.stepUtils.discardBarcodeForm(),
+]);
+
 tour.register('test_delivery_from_scratch_with_common_lots_name', {test: true}, [
     {
         trigger: '.o_barcode_client_action',

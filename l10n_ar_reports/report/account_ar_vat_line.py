@@ -12,6 +12,7 @@ class AccountArVatLine(models.Model):
 
     _name = "account.ar.vat.line"
     _description = "VAT line for Analysis in Argentinean Localization"
+    _rec_name = 'move_name'
     _auto = False
     _order = 'invoice_date asc, move_name asc, id asc'
 

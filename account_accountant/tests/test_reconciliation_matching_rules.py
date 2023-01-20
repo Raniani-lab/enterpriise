@@ -852,6 +852,18 @@ class TestReconciliationMatchingRules(AccountTestInvoicingCommon):
         # Matching is back thanks to "coincoin".
         self.assertEqual(st_line._retrieve_partner(), self.partner_1)
 
+        # More complex matching to match something from bank sync data.
+        # Note: the indentation is done with multiple \n to mimic the bank sync behavior. Keep them for this test!
+        rule.partner_mapping_line_ids.narration_regex = ".*coincoin.*"
+        st_line.narration = """
+            {
+                "informations": "coincoin turlututu tsoin tsoin",
+            }
+        """
+
+        # Same check with json data into the narration field.
+        self.assertEqual(st_line._retrieve_partner(), self.partner_1)
+
     def test_match_multi_currencies(self):
         ''' Ensure the matching of candidates is made using the right statement line currency.
 

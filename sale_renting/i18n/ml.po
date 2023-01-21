@@ -205,7 +205,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_report_search_view
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 msgid "Company"
-msgstr ""
+msgstr "കമ്പനി"
 
 #. module: sale_renting
 #: model:ir.model,name:sale_renting.model_res_config_settings
@@ -815,7 +815,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_schedule_view_search
 #: model_terms:ir.ui.view,arch_db:sale_renting.res_config_settings_view_form
 msgid "Product"
-msgstr ""
+msgstr "പ്രോഡക്റ്റ്"
 
 #. module: sale_renting
 #: model:ir.model.fields,field_description:sale_renting.field_sale_rental_report__categ_id
@@ -1291,7 +1291,7 @@ msgstr ""
 #: model:product.template,uom_name:sale_renting.rental_product_1_product_template
 #: model:product.template,uom_name:sale_renting.rental_product_2_product_template
 msgid "Units"
-msgstr ""
+msgstr "യൂണിറ്സ്"
 
 #. module: sale_renting
 #: model_terms:ir.ui.view,arch_db:sale_renting.rental_order_wizard_view_form

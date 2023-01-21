@@ -647,7 +647,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__company_id
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__company_id
 msgid "Company"
-msgstr ""
+msgstr "കമ്പനി"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__prorata_computation_type

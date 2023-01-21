@@ -266,6 +266,9 @@ msgid ""
 "responses into your messages. These shortcuts are replaced directly in your "
 "messages so that you can still make changes before sending them."
 msgstr ""
+"Salvestatud vastustega saate kirjutada <i>:shortcuts</i>, et sisestada "
+"eelnevalt valmis kirjutatud vastuseid. Lühikood asendatakse otse sõnumis "
+"ning seda on võimalik enne saatmist veel muuta."
 
 #. module: website_helpdesk_livechat
 #: model:chatbot.script.answer,name:website_helpdesk_livechat.chatbot_script_helpdesk_step_administrative_customer_ref_answer_yes

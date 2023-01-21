@@ -141,7 +141,7 @@ msgstr ""
 #: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid "Click on Advanced/Show Details/Details/More information"
-msgstr ""
+msgstr "Klõpsake Täpsemalt/Näita detaile/Detailid/Rohkem infot"
 
 #. module: iot
 #. openerp-web
@@ -150,7 +150,7 @@ msgstr ""
 msgid ""
 "Click on Proceed to .../Add Exception/Visit this website/Go on to the "
 "webpage"
-msgstr ""
+msgstr "Klõpsake Jätka/Lisa erand/Külasta veebilehte/Mine veebilehele"
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_box_action
@@ -254,7 +254,7 @@ msgstr ""
 #. module: iot
 #: model_terms:ir.ui.view,arch_db:iot.iot_device_view_kanban
 msgid "Device type is #{record.type.raw_value}"
-msgstr ""
+msgstr "Seadme tüüp on #{record.type.raw_value}"
 
 #. module: iot
 #: model:ir.actions.act_window,name:iot.iot_device_action
@@ -308,7 +308,7 @@ msgstr "Laadi alla logid"
 #: code:addons/iot/static/src/iot_connection_error_dialog.xml:0
 #, python-format
 msgid "Firefox only : Click on Confirm Security Exception"
-msgstr ""
+msgstr "Ainult Firefox'i puhul : Vajuta \"Kinnita turvaerand\""
 
 #. module: iot
 #: model:ir.model.fields.selection,name:iot.selection__iot_device__type__fiscal_data_module
@@ -360,6 +360,8 @@ msgstr ""
 msgid ""
 "If you are on a secure server (HTTPS) check if you accepted the certificate:"
 msgstr ""
+"Kui kasutate turvalist serverit (HTTPS), siis palun kontrollige, kas "
+"sektifikaat on aksepteeritud:"
 
 #. module: iot
 #: model:ir.model.fields,field_description:iot.field_iot_box__version
@@ -631,6 +633,8 @@ msgid ""
 "The pairing code you provided was not found in our system. Please check that"
 " you entered it correctly."
 msgstr ""
+"Teie sisestatud sidumiskood ei ole leitav meie süsteemis. Kontrollige, kas "
+"sisestasite selle õigesti."
 
 #. module: iot
 #: model_terms:ir.actions.act_window,help:iot.iot_device_action_search_iot_box

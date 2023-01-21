@@ -401,7 +401,7 @@ msgstr "Sotsiaalmeedia striiming postitus"
 #: code:addons/social_youtube/models/social_post.py:0
 #, python-format
 msgid "The 'message' field is required for post ID %s"
-msgstr ""
+msgstr "Postituse ID jaoks on 'message' väli nõutud %s"
 
 #. module: social_youtube
 #. openerp-web

@@ -677,7 +677,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/hooks.js:0
 #, python-format
 msgid "An error occured while uploading."
-msgstr ""
+msgstr "업로드 중에 오류가 발생했습니다."
 
 #. module: documents
 #. odoo-javascript

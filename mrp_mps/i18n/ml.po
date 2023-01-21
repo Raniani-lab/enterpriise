@@ -141,7 +141,7 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__company_id
 msgid "Company"
-msgstr ""
+msgstr "കമ്പനി"
 
 #. module: mrp_mps
 #: model:ir.model,name:mrp_mps.model_res_config_settings
@@ -395,7 +395,7 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields.selection,name:mrp_mps.selection__res_company__manufacturing_period__month
 msgid "Monthly"
-msgstr ""
+msgstr "മന്ത്‌ലി"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_mps_forecast_details__move_ids
@@ -435,7 +435,7 @@ msgstr ""
 #: model:ir.model,name:mrp_mps.model_product_template
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__product_id
 msgid "Product"
-msgstr ""
+msgstr "പ്രോഡക്റ്റ്"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_production_schedule__product_category_id
@@ -704,7 +704,7 @@ msgstr ""
 #. module: mrp_mps
 #: model:ir.model.fields.selection,name:mrp_mps.selection__res_company__manufacturing_period__week
 msgid "Weekly"
-msgstr ""
+msgstr "വീക്‌ലി"
 
 #. module: mrp_mps
 #. openerp-web

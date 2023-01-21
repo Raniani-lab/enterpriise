@@ -241,7 +241,7 @@ msgstr ""
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_twitter_account__name
 msgid "Name"
-msgstr ""
+msgstr "പേര്"
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream.py:0

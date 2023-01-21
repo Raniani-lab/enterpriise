@@ -89,7 +89,7 @@ msgstr ""
 #. module: quality_mrp_workorder
 #: model:ir.model,name:quality_mrp_workorder.model_product_template
 msgid "Product"
-msgstr ""
+msgstr "പ്രോഡക്റ്റ്"
 
 #. module: quality_mrp_workorder
 #: model:ir.model,name:quality_mrp_workorder.model_stock_move_line

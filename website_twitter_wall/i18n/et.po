@@ -101,7 +101,7 @@ msgstr "Vähendage suumi taset"
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 #, python-format
 msgid "Delete this tweet"
-msgstr "Kustuta see säuts"
+msgstr "Kustuta see postitus"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__description
@@ -121,7 +121,7 @@ msgstr "Välju täisekraanilt"
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Hey! No tweet found"
-msgstr "Hei! Ühtegi säutsu ei leitud"
+msgstr "Hei! Ühtegi Twitter'i postitust ei leitud"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__id
@@ -191,7 +191,7 @@ msgstr "Segatud"
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__mode
 msgid "Most recent tweets, most popular tweets, or both"
-msgstr "Viimased säutsud, kõige populaarsemad säutsud või mõlemad"
+msgstr "Viimased postitused, kõige populaarsemad postitused või mõlemad"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__name
@@ -269,6 +269,7 @@ msgstr "Üksik vaade"
 msgid ""
 "The Twitter authentication failed. Please check your API key and secret."
 msgstr ""
+"Twitter'i autentimine ebaõnnestus. Kontrollige enda API võtit ja secret'it."
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,help:website_twitter_wall.field_website_twitter_wall__website_url
@@ -281,13 +282,15 @@ msgid ""
 "The search criteria to get the tweets you want. You can use the Twitter query operators.\n"
 "You can also use the special \"favorites:screen_name\" operator to get the favorited tweets of \"screen_name\"."
 msgstr ""
+"Otsingukriteeriumid soovitud Twitter'i postituste leidmiseks. Võib kasutada Twitter'i päringuoperaatoreid..\n"
+"Saate kasutada ka \"favorites:screen_name\" operaatorit, et saada \"screen_name\" lemmik postitusi. "
 
 #. module: website_twitter_wall
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:0
 #, python-format
 msgid "The tweets search failed. Check your credentials and access token"
 msgstr ""
-"Säutsude otsing ebaõnnestus. Kontrollige enda volitusi ja juurdepääsuvõtit"
+"Postituste otsing ebaõnnestus. Kontrollige enda volitusi ja juurdepääsuvõtit"
 
 #. module: website_twitter_wall
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
@@ -298,12 +301,12 @@ msgstr "Vaade kolmest veerust"
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__total_tweets
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.twitter_wall_view
 msgid "Total Tweets"
-msgstr "Säutse kokku"
+msgstr "Twitter'i postitusi kokku"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_tweet__tweet_html
 msgid "Tweet Html"
-msgstr "Säutsu HTML"
+msgstr "Postituse HTML"
 
 #. module: website_twitter_wall
 #: code:addons/website_twitter_wall/models/website_twitter_wall.py:0
@@ -315,7 +318,7 @@ msgstr "Säutsu HTML"
 #: model_terms:ir.ui.view,arch_db:website_twitter_wall.website_twitter_wall_view_form
 #, python-format
 msgid "Tweets"
-msgstr "Säutsud"
+msgstr "Twitter'i postitused"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__api_key
@@ -345,7 +348,7 @@ msgstr "Vaade kahest veerust"
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__mode
 msgid "Type of tweets"
-msgstr "Säutsude tüüp"
+msgstr "Postituste tüübid"
 
 #. module: website_twitter_wall
 #: model:ir.model.fields,field_description:website_twitter_wall.field_website_twitter_wall__website_published

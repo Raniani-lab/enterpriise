@@ -2,12 +2,16 @@
 # This file contains the translation of the following modules:
 # 	* partner_commission
 # 
+# Translators:
+# Niyas Raphy, 2023
+# 
 msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0beta+e\n"
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:24+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
+"Last-Translator: Niyas Raphy, 2023\n"
 "Language-Team: Malayalam (https://www.transifex.com/odoo/teams/41243/ml/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -108,7 +112,7 @@ msgstr ""
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_commission_plan__company_id
 msgid "Company"
-msgstr ""
+msgstr "കമ്പനി"
 
 #. module: partner_commission
 #: model:ir.model,name:partner_commission.model_res_config_settings
@@ -234,12 +238,12 @@ msgstr ""
 #. module: partner_commission
 #: model:ir.model.fields.selection,name:partner_commission.selection__res_company__commission_automatic_po_frequency__monthly
 msgid "Monthly"
-msgstr ""
+msgstr "മന്ത്‌ലി"
 
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_commission_plan__name
 msgid "Name"
-msgstr ""
+msgstr "പേര്"
 
 #. module: partner_commission
 #: model:res.groups,name:partner_commission.group_commission_user
@@ -276,7 +280,7 @@ msgstr ""
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_commission_rule__product_id
 msgid "Product"
-msgstr ""
+msgstr "പ്രോഡക്റ്റ്"
 
 #. module: partner_commission
 #: code:addons/partner_commission/models/commission_plan.py:0
@@ -312,7 +316,7 @@ msgstr ""
 #. module: partner_commission
 #: model:ir.model.fields,field_description:partner_commission.field_commission_rule__rate
 msgid "Rate"
-msgstr ""
+msgstr "റേറ്റ് "
 
 #. module: partner_commission
 #: model:ir.model.constraint,message:partner_commission.constraint_commission_rule_check_rate
@@ -398,12 +402,12 @@ msgstr ""
 #: model:product.product,uom_name:partner_commission.product_commission
 #: model:product.template,uom_name:partner_commission.product_commission_product_template
 msgid "Units"
-msgstr ""
+msgstr "യൂണിറ്സ്"
 
 #. module: partner_commission
 #: model:ir.model.fields.selection,name:partner_commission.selection__res_company__commission_automatic_po_frequency__weekly
 msgid "Weekly"
-msgstr ""
+msgstr "വീക്‌ലി"
 
 #. module: partner_commission
 #: model:ir.model.fields,help:partner_commission.field_commission_rule__is_capped

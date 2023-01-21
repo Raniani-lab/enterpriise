@@ -396,7 +396,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_accountant.field_account_fiscal_year__company_id
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget__company_id
 msgid "Company"
-msgstr ""
+msgstr "കമ്പനി"
 
 #. module: account_accountant
 #: model:ir.model,name:account_accountant.model_res_config_settings
@@ -1124,7 +1124,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_accountant.field_account_fiscal_year__name
 #: model:ir.model.fields,field_description:account_accountant.field_bank_rec_widget_line__name
 msgid "Name"
-msgstr ""
+msgstr "പേര്"
 
 #. module: account_accountant
 #. openerp-web

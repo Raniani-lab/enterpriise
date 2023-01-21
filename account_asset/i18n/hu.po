@@ -5,12 +5,11 @@
 # Translators:
 # Tibor Kőnig <konig.tibor@evitalit.hu>, 2022
 # Krisztián Juhász <juhasz.krisztian@josafar.hu>, 2022
-# Tamás Dombos, 2022
 # Tamás Németh <ntomasz81@gmail.com>, 2022
-# gezza <geza.nagy@oregional.hu>, 2022
 # Martin Trigaux, 2022
 # Ákos Nagy <akos.nagy@oregional.hu>, 2022
 # krnkris, 2022
+# gezza <geza.nagy@oregional.hu>, 2023
 # 
 msgid ""
 msgstr ""
@@ -18,7 +17,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-16 09:00+0000\n"
 "PO-Revision-Date: 2022-09-22 05:44+0000\n"
-"Last-Translator: krnkris, 2022\n"
+"Last-Translator: gezza <geza.nagy@oregional.hu>, 2023\n"
 "Language-Team: Hungarian (https://www.transifex.com/odoo/teams/41243/hu/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -31,7 +30,7 @@ msgstr ""
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid " (%s of %s)"
-msgstr ""
+msgstr " (%s / %s)"
 
 #. module: account_asset
 #. odoo-python
@@ -43,17 +42,17 @@ msgstr " (másolat)"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__total_depreciation_entries_count
 msgid "# Depreciation Entries"
-msgstr ""
+msgstr "# Értékcsökkenési tétel"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__gross_increase_count
 msgid "# Gross Increases"
-msgstr ""
+msgstr "# Bruttó növekmények"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__depreciation_entries_count
 msgid "# Posted Depreciation Entries"
-msgstr ""
+msgstr "# Könyvelt értékcsökkenési tétel"
 
 #. module: account_asset
 #. odoo-python
@@ -76,21 +75,21 @@ msgstr ""
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "%s m"
-msgstr ""
+msgstr "%s hó"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "%s y"
-msgstr ""
+msgstr "%s év"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_move.py:0
 #, python-format
 msgid "%s: Depreciation"
-msgstr ""
+msgstr "%s: Értékcsökkenés"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -178,7 +177,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_account
 msgid "Account"
-msgstr "Számla"
+msgstr "Főkönyvi számla"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_type
@@ -188,15 +187,15 @@ msgid ""
 " entries."
 msgstr ""
 "A főkönyi számla típus információs célokra használható, országspecifikus "
-"törvényekhez kapcsolódó egyedi kimutatások létrehozásához, a nyitó tételek "
+"törvényekhez kapcsolódó egyedi riportok létrehozásához, a nyitó tételek "
 "létrehozásához, valamint az üzleti évet záró szabályok beállításához."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_depreciation_id
 msgid "Account used in the depreciation entries, to decrease the asset value."
 msgstr ""
-"Értékcsökkenés tételekhez használt Főkönyvi számla, a vagyoni eszközök "
-"értékének csökkentésére."
+"Értékcsökkenés tételekhez használt főkönyvi számla, az eszköz értékének "
+"csökkentésére."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__account_depreciation_expense_id
@@ -204,8 +203,8 @@ msgid ""
 "Account used in the periodical entries, to record a part of the asset as "
 "expense."
 msgstr ""
-"Időszakos tételekhez használt Főkönyvi számla, például a vagyoni eszközök "
-"egy részének adatbejegyzése."
+"Időszakos tételekhez használt főkönyvi számla, például az eszköz egy "
+"részének kiadásként történő rögzítéséhez."
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -232,8 +231,7 @@ msgstr ""
 msgid ""
 "Account used to record the purchase of the asset at its original price."
 msgstr ""
-"Vagyoni eszközök eredeti áron történt megvételének adatbejegyzéséhez "
-"használt Főkönyvi számla."
+"Főkönyvi számla az eszköz eredeti áron történt beszerzésének rögzítéséhez."
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_asset_modify__gain_account_id
@@ -267,24 +265,24 @@ msgstr "Könyvelés"
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_report
 msgid "Accounting Report"
-msgstr "Könyvelési kimutatás"
+msgstr "Könyvelési riport"
 
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_acquisition_date
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__acquisition_date
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_kanban
 msgid "Acquisition Date"
-msgstr "Beszerzés dátuma"
+msgstr "Akvizíció dátuma"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__modify_action
 msgid "Action"
-msgstr "Művelet"
+msgstr "Akció"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_needaction
 msgid "Action Needed"
-msgstr "Művelet szükséges"
+msgstr "Akció szükséges"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__active
@@ -360,12 +358,12 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_distribution
 msgid "Analytic"
-msgstr "Analitikus"
+msgstr "Analitika"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__analytic_precision
 msgid "Analytic Precision"
-msgstr ""
+msgstr "Analitkiai pontosság"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -389,19 +387,19 @@ msgstr "Archivált"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 #, python-format
 msgid "Asset"
-msgstr "Vagyontárgy"
+msgstr "Eszköz"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Asset Account"
-msgstr "Vagyontárgy számla"
+msgstr "Eszköz számla"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset Cancelled"
-msgstr ""
+msgstr "Eszköz visszavonva"
 
 #. module: account_asset
 #. odoo-python
@@ -440,39 +438,39 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Asset Model"
-msgstr ""
+msgstr "Eszköz modell"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Asset Model name"
-msgstr ""
+msgstr "Eszköz modell név"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_asset_model_form
 #: model:ir.ui.menu,name:account_asset.menu_action_account_asset_model_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_purchase_tree
 msgid "Asset Models"
-msgstr ""
+msgstr "Eszköz modellek"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__name
 msgid "Asset Name"
-msgstr "Vagyontárgy neve"
+msgstr "Eszköz neve"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Asset Options"
-msgstr ""
+msgstr "Eszköz opciók"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__asset_paused_days
 msgid "Asset Paused Days"
-msgstr ""
+msgstr "Eszköz leállított napok"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset_report_handler
 msgid "Asset Report Custom Handler"
-msgstr ""
+msgstr "Eszköz riport egyedi kezelő"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__asset_type
@@ -481,59 +479,59 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_asset_type
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_asset_type
 msgid "Asset Type"
-msgstr "Vagyontárgy típus"
+msgstr "Eszköz típus"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_bank_statement_line__asset_value_change
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_value_change
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_value_change
 msgid "Asset Value Change"
-msgstr ""
+msgstr "Eszköz érték változás"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Asset Values"
-msgstr ""
+msgstr "Eszköz értékek"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset created"
-msgstr "Vagyontárgy létrehozva"
+msgstr "Eszköz létrehozva"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset disposed. %s"
-msgstr ""
+msgstr "Eszköz kivezetve. %s"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset paused. %s"
-msgstr ""
+msgstr "Eszköz leállítva. %s"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Asset sold. %s"
-msgstr ""
+msgstr "Eszköz eladva. %s"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/wizard/asset_modify.py:0
 #, python-format
 msgid "Asset unpaused. %s"
-msgstr ""
+msgstr "Eszköz folytatva. %s"
 
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_asset
 msgid "Asset/Revenue Recognition"
-msgstr "Vagyontárgy/Bevétel aktiválás"
+msgstr "Eszköz/Bevétel aktiválás"
 
 #. module: account_asset
 #. odoo-python
@@ -547,22 +545,22 @@ msgstr "Vagyontárgy/Bevétel aktiválás"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_form_asset_inherit
 #, python-format
 msgid "Assets"
-msgstr "Vagyontárgyak"
+msgstr "Eszközök"
 
 #. module: account_asset
 #: model:ir.ui.menu,name:account_asset.menu_finance_config_assets
 msgid "Assets and Revenues"
-msgstr "Vagyontárgyak és bevételek"
+msgstr "Eszözök és Bevételek"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Assets in closed state"
-msgstr "Lezárt állapotú vagyontárgyak"
+msgstr "Lezárt állapotú eszközök"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
 msgid "Assets in draft and open states"
-msgstr "Tervezet vagy nyitott állapotú vagyontárgyak"
+msgstr "Tervezet vagy nyitott állapotú eszközök"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_attachment_count
@@ -572,17 +570,17 @@ msgstr "Mellékletek száma"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Automate Asset"
-msgstr ""
+msgstr "Eszköz automatizálása"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Automate Deferred Expense"
-msgstr ""
+msgstr "Halasztott kiadás automatizálása"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Automate Deferred Revenue"
-msgstr ""
+msgstr "Halasztott bevétel automatizálása"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
@@ -592,12 +590,12 @@ msgstr "Automatizálás"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__daily_computation
 msgid "Based on days per period"
-msgstr ""
+msgstr "Periódus napjai alapján"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Bills"
-msgstr "Számlák"
+msgstr "Szállítói számlák"
 
 #. module: account_asset
 #. odoo-python
@@ -605,12 +603,12 @@ msgstr "Számlák"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__book_value
 #, python-format
 msgid "Book Value"
-msgstr ""
+msgstr "Könyv szerinti érték"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__can_create_asset
 msgid "Can Create Asset"
-msgstr ""
+msgstr "Eszköz létrehozható"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
@@ -620,12 +618,12 @@ msgstr "Mégse"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Cancel Asset"
-msgstr ""
+msgstr "Eszköz visszavonása"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__cancelled
 msgid "Cancelled"
-msgstr "Törölve"
+msgstr "Visszavonva"
 
 #. module: account_asset
 #. odoo-python
@@ -673,7 +671,7 @@ msgstr "Számítás"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Compute Depreciation"
-msgstr "Értékcsökkenés számítás"
+msgstr "Értékcsökkenés számítása"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -693,14 +691,14 @@ msgstr "Megerősítés"
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__prorata_computation_type__constant_periods
 msgid "Constant Periods"
-msgstr ""
+msgstr "Állandó periódusok"
 
 #. module: account_asset
 #: model:ir.actions.server,name:account_asset.action_account_aml_to_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_account__create_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_move_line_tree
 msgid "Create Asset"
-msgstr "Vagyontárgy létrehozása"
+msgstr "Eszköz létrehozása"
 
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_account__create_asset__validate
@@ -715,12 +713,12 @@ msgstr "Létrehozás tervezetként"
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_asset_form
 msgid "Create new asset"
-msgstr ""
+msgstr "Új eszköz létrehozása"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_asset_model_form
 msgid "Create new asset model"
-msgstr ""
+msgstr "Új eszköz modell létrehozása"
 
 #. module: account_asset
 #: model_terms:ir.actions.act_window,help:account_asset.action_account_expense_form
@@ -785,7 +783,7 @@ msgstr "Jelenlegi"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Current Values"
-msgstr ""
+msgstr "Jelenlegi értékek"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__invoice_ids
@@ -810,7 +808,7 @@ msgstr ""
 #: code:addons/account_asset/report/account_assets_report.py:0
 #, python-format
 msgid "Dec. then Straight"
-msgstr ""
+msgstr "Csökk. majd egyenes"
 
 #. module: account_asset
 #. odoo-python
@@ -818,7 +816,7 @@ msgstr ""
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__method__degressive
 #, python-format
 msgid "Declining"
-msgstr ""
+msgstr "Csökkenő"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__method_progress_factor
@@ -913,7 +911,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_revenue_model_search
 msgid "Deferred Revenue Account"
-msgstr "Késleltetett bevételi számla"
+msgstr "Elhatárolt bevétel főkönyvi számla"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
@@ -945,14 +943,14 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "Deferred Revenue name"
-msgstr "Késleltetett bevétel neve"
+msgstr "Elhatárolt bevétel neve"
 
 #. module: account_asset
 #: model:ir.actions.act_window,name:account_asset.action_account_revenue_form
 #: model:ir.ui.menu,name:account_asset.menu_action_account_revenue_recognition
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_sale_tree
 msgid "Deferred Revenues"
-msgstr "Késleltetett bevételek"
+msgstr "Elhatárolt bevételek"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
@@ -990,7 +988,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__value_residual
 msgid "Depreciable Amount"
-msgstr ""
+msgstr "Értékcsökkenthető összeg"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__value_residual
@@ -998,12 +996,12 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_account_move__asset_remaining_value
 #: model:ir.model.fields,field_description:account_asset.field_account_payment__asset_remaining_value
 msgid "Depreciable Value"
-msgstr ""
+msgstr "Értékcsökkenthető érték"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Depreciated Amount"
-msgstr ""
+msgstr "Értékcsökkentett összeg"
 
 #. module: account_asset
 #. odoo-python
@@ -1021,7 +1019,7 @@ msgstr "Értékcsökkenés"
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__account_depreciation_id
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
 msgid "Depreciation Account"
-msgstr "Értékcsökkenés összege"
+msgstr "Értékcsökkenés főkönyvi számla"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -1037,19 +1035,19 @@ msgstr "Értékcsökkenés dátuma"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__depreciation_move_ids
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Depreciation Lines"
-msgstr "Értékcsökkenés sorai"
+msgstr "Értékcsökkenés sorok"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
 msgid "Depreciation Method"
-msgstr "Költségcsökkentés módszere"
+msgstr "Értékcsökkentés módszer"
 
 #. module: account_asset
 #: model:account.report,name:account_asset.assets_report
 #: model:ir.actions.client,name:account_asset.action_account_report_assets
 #: model:ir.ui.menu,name:account_asset.menu_action_account_report_assets
 msgid "Depreciation Schedule"
-msgstr ""
+msgstr "Értékcsökkenés ütemezés"
 
 #. module: account_asset
 #. odoo-python
@@ -1100,14 +1098,14 @@ msgstr ""
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Disposal Move"
-msgstr "Vagyoni eszköz mozgatása megsemmisítésre"
+msgstr "Kivezetési mozgás"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "Disposal Moves"
-msgstr "Vagyoni eszközök mozgatása megsemmisítésre"
+msgstr "Kivezetési mozgások"
 
 #. module: account_asset
 #. odoo-python
@@ -1140,7 +1138,7 @@ msgstr "Időtartam"
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_duration_rate
 msgid "Duration / Rate"
-msgstr ""
+msgstr "Időtartam / Ráta"
 
 #. module: account_asset
 #. odoo-python
@@ -1149,7 +1147,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_tree
 #, python-format
 msgid "Expense"
-msgstr "Költség"
+msgstr "Kiadás"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__account_depreciation_expense_id
@@ -1159,7 +1157,7 @@ msgstr "Költség"
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_search
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_expense_model_search
 msgid "Expense Account"
-msgstr "Költség főkönyvi számla"
+msgstr "Kiadás főkönyvi számla"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -1169,12 +1167,12 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Expense Date"
-msgstr "Készpénzes kiadás dátuma"
+msgstr "Kiadás dátuma"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
 msgid "Expense Lines"
-msgstr "Költségtételek"
+msgstr "Kiadás sorok"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
@@ -1189,7 +1187,7 @@ msgstr ""
 #. module: account_asset
 #: model:account.report.column,name:account_asset.assets_report_first_depreciation
 msgid "First Depreciation"
-msgstr ""
+msgstr "Első értékcsökkenés"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__account_asset_id
@@ -1340,7 +1338,7 @@ msgstr "Követő"
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__salvage_value
 msgid "It is the amount you plan to have that you cannot depreciate."
-msgstr "Az az érték, melynek értékét terv szerint már nem tudja csökkenteni."
+msgstr "Az az érték, melyett terv szerint már nem lehet csökkenteni."
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__journal_id
@@ -1366,7 +1364,7 @@ msgstr "Könyvelési tétel"
 #. module: account_asset
 #: model:ir.model,name:account_asset.model_account_move_line
 msgid "Journal Item"
-msgstr "Könyvelési tételsor"
+msgstr "Könyvelési tétel"
 
 #. module: account_asset
 #. odoo-python
@@ -1374,7 +1372,7 @@ msgstr "Könyvelési tételsor"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__original_move_line_ids
 #, python-format
 msgid "Journal Items"
-msgstr "Könyvelési tételsorok"
+msgstr "Könyvelési tételek"
 
 #. module: account_asset
 #. odoo-python
@@ -1388,7 +1386,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:account_asset.field_account_asset____last_update
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify____last_update
 msgid "Last Modified on"
-msgstr "Legutóbb frissítve"
+msgstr "Módosítva"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__write_uid
@@ -1400,7 +1398,7 @@ msgstr "Frissítette"
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__write_date
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__write_date
 msgid "Last Updated on"
-msgstr "Frissítve ekkor"
+msgstr "Frissítve"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_search
@@ -1440,7 +1438,7 @@ msgstr "Fő melléklet"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_form_asset_inherit
 msgid "Manage Items"
-msgstr "Elemek kezelése"
+msgstr "Tételek kezelése"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_has_error
@@ -1468,7 +1466,7 @@ msgstr "Modell"
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 msgid "Modify"
-msgstr "Módosít"
+msgstr "Módosítás"
 
 #. module: account_asset
 #. odoo-python
@@ -1540,7 +1538,7 @@ msgstr "Következő tevékenység határideje"
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_summary
 msgid "Next Activity Summary"
-msgstr "Következő tevékenység összegzés"
+msgstr "Következő tevékenység összegzése"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__activity_type_id
@@ -1599,18 +1597,18 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_needaction_counter
 msgid "Number of Actions"
-msgstr "Műveletek száma"
+msgstr "Akciók száma"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_purchase_tree
 msgid "Number of Depreciations"
-msgstr "Értékcsökkentések száma"
+msgstr "Értékcsökkenések száma"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__method_period
 #: model:ir.model.fields,field_description:account_asset.field_asset_modify__method_period
 msgid "Number of Months in a Period"
-msgstr "Hónapok száma az időszakban"
+msgstr "Hónapok száma a periódusban"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_expense_tree
@@ -1644,7 +1642,7 @@ msgstr "Hibák száma"
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_needaction_counter
 msgid "Number of messages which requires an action"
-msgstr "Üzenetek száma, melyek műveletet igényelnek"
+msgstr "Üzenetek száma, melyek akciót igényelnek"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__message_has_error_counter
@@ -1692,7 +1690,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_purchase_tree
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_model_sale_tree
 msgid "Period length"
-msgstr "Időszak hossza"
+msgstr "Periódus hossza"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -1714,7 +1712,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__asset_type__purchase
 msgid "Purchase: Asset"
-msgstr "Beszerzés: vagyontárgy"
+msgstr "Beszerzés: eszköz"
 
 #. module: account_asset
 #. odoo-python
@@ -1833,7 +1831,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields.selection,name:account_asset.selection__account_asset__state__open
 msgid "Running"
-msgstr "Érvényes"
+msgstr "Futó"
 
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__message_has_sms_error
@@ -1875,7 +1873,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:account_asset.asset_modify_form
 #, python-format
 msgid "Sell"
-msgstr "Elad"
+msgstr "Eladás"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_form
@@ -1911,7 +1909,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__state
 msgid "Status"
-msgstr "Állapot"
+msgstr "Státusz"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__activity_state
@@ -2081,7 +2079,7 @@ msgstr ""
 #. module: account_asset
 #: model:ir.model.fields,field_description:account_asset.field_account_asset__website_message_ids
 msgid "Website Messages"
-msgstr "Honlap üzenetek"
+msgstr "Weboldal üzenetek"
 
 #. module: account_asset
 #: model:ir.model.fields,help:account_asset.field_account_asset__website_message_ids
@@ -2194,7 +2192,7 @@ msgstr ""
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_revenue_form
 msgid "e.g. Annual Subscription"
-msgstr ""
+msgstr "pld: Éves előfizetés"
 
 #. module: account_asset
 #: model_terms:ir.ui.view,arch_db:account_asset.view_account_asset_expense_form
@@ -2211,11 +2209,11 @@ msgstr "pl.: Laptop iBook"
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "entries"
-msgstr ""
+msgstr "tételek"
 
 #. module: account_asset
 #. odoo-python
 #: code:addons/account_asset/models/account_asset.py:0
 #, python-format
 msgid "entry"
-msgstr ""
+msgstr "tétel"

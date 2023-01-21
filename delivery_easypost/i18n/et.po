@@ -426,6 +426,8 @@ msgid ""
 "The estimated shipping price cannot be computed because the weight is missing for the following product(s): \n"
 " %s"
 msgstr ""
+"Hinnangulist saatmishinda ei saa arvutada, kuna järgmistel toodetel puudub kaal: \n"
+" %s"
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:0

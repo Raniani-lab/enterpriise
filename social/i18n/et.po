@@ -49,7 +49,7 @@ msgstr "%s (maksimaalselt %s tähemärki)"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid ", you must first link a social media."
-msgstr ", esmalt peaksid linkida sotsiaalmeedia konto. "
+msgstr ", peaksid esmalt linkima sotsiaalmeedia konto. "
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.social_http_error_view
@@ -125,12 +125,12 @@ msgstr "Lisa postitus"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Add a Stream"
-msgstr "Lisage voog"
+msgstr "Lisa voog"
 
 #. module: social
 #: model_terms:ir.actions.act_window,help:social.action_social_stream_post
 msgid "Add a stream"
-msgstr "Lisage voog"
+msgstr "Lisa voog"
 
 #. module: social
 #. odoo-javascript
@@ -269,7 +269,7 @@ msgstr "Tühista"
 #: code:addons/social/static/src/js/tours/social.js:0
 #, python-format
 msgid "Choose which <b>account</b> you would like to link first."
-msgstr ""
+msgstr "Vali millist <b>kontot</b> soovid kõigepealt lisada. "
 
 #. module: social
 #. odoo-javascript
@@ -1099,7 +1099,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,help:social.field_social_account__stories
 msgid "Number of stories created from your posts (Shares, Re-tweets, ...)."
-msgstr ""
+msgstr "Teie postitusest loodud story'ide arv (jagamised jne)"
 
 #. module: social
 #. odoo-javascript
@@ -1599,7 +1599,7 @@ msgstr "Sünkroniseeri"
 #: code:addons/social/models/social_post_template.py:0
 #, python-format
 msgid "The 'message' field is required for post ID %s"
-msgstr ""
+msgstr "Postituse ID jaoks on 'message' väli nõutud %s"
 
 #. module: social
 #: model:ir.model.fields,help:social.field_social_post__account_ids
@@ -1664,7 +1664,7 @@ msgstr "Tiitel"
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "To add a stream"
-msgstr ""
+msgstr "Voo lisamiseks"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_stream__stream_type_id

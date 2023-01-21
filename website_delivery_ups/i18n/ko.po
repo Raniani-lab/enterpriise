@@ -110,14 +110,14 @@ msgstr ""
 #. module: website_delivery_ups
 #: model_terms:payment.provider,auth_msg:website_delivery_ups.payment_provider_ups_cod
 msgid "Your payment has been authorized."
-msgstr "귀하의 결제가 승인되었습니다."
+msgstr "결제가 승인되었습니다."
 
 #. module: website_delivery_ups
 #: model_terms:payment.provider,cancel_msg:website_delivery_ups.payment_provider_ups_cod
 msgid "Your payment has been cancelled."
-msgstr "귀하의 결제가 취소되었습니다."
+msgstr "결제가 취소되었습니다."
 
 #. module: website_delivery_ups
 #: model_terms:payment.provider,done_msg:website_delivery_ups.payment_provider_ups_cod
 msgid "Your payment has been successfully processed. Thank you!"
-msgstr "귀하의 결제가 성공적으로 처리되었습니다. 감사합니다."
+msgstr "성공적으로 결제가 완료되었습니다. 감사합니다."

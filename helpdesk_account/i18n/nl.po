@@ -61,7 +61,7 @@ msgstr "Helpdeskticket #%s"
 #. module: helpdesk_account
 #: model_terms:ir.ui.view,arch_db:helpdesk_account.view_account_move_reversal_inherit_helpdesk_account
 msgid "Invoices to Refund"
-msgstr "Terug te betalen facturen"
+msgstr "Facturen te crediteren"
 
 #. module: helpdesk_account
 #: model:ir.model,name:helpdesk_account.model_account_move

@@ -5,6 +5,7 @@
 # Translators:
 # Martin Trigaux, 2022
 # Jolien De Paepe, 2022
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # 
 msgid ""
 msgstr ""
@@ -12,7 +13,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Jolien De Paepe, 2022\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -400,7 +401,7 @@ msgstr "Einddatum"
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_res_partner__sdd_mandate_ids
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_res_users__sdd_mandate_ids
 msgid "Every mandate belonging to this partner."
-msgstr "Elk mandaat van deze partner"
+msgstr "Elk mandaat van deze relatie"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__message_follower_ids
@@ -410,7 +411,7 @@ msgstr "Volgers"
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "Volgers (Partners)"
+msgstr "Volgers (Relaties)"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__activity_type_icon
@@ -716,7 +717,7 @@ msgstr "Oeps! Geen geldige SEPA-machtiging voor deze klant."
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.account_sdd_res_partner_view
 msgid "Open this partner's mandates"
-msgstr "Open de mandaten van deze partner"
+msgstr "Open de mandaten van deze relatie"
 
 #. module: account_sepa_direct_debit
 #: model_terms:ir.ui.view,arch_db:account_sepa_direct_debit.sdd_account_payment_form
@@ -1099,7 +1100,7 @@ msgstr ""
 msgid ""
 "Trying to register a payment on a mandate belonging to a different partner."
 msgstr ""
-"Proberen een betaling te registreren op een mandaat van een andere partner."
+"Proberen een betaling te registreren op een mandaat van een andere relatie."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,help:account_sepa_direct_debit.field_sdd_mandate__activity_exception_decoration
@@ -1115,7 +1116,7 @@ msgid ""
 "a SEPA Direct Debit payment."
 msgstr ""
 "Kan betaling %(betaling) r niet boeken omdat er op de datum %(date)s geen "
-"bruikbaar mandaat beschikbaar is voor partner %(partner)r. Maak er een aan "
+"bruikbaar mandaat beschikbaar is voor relatie %(relatie)r. Maak er een aan "
 "voordat je een SEPA-incasso-betaling codeert."
 
 #. module: account_sepa_direct_debit

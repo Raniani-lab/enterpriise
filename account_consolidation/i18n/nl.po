@@ -5,8 +5,8 @@
 # Translators:
 # Martin Trigaux, 2022
 # Gunther Clauwaert <gclauwae@hotmail.com>, 2022
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # Jolien De Paepe, 2022
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # 
 msgid ""
 msgstr ""
@@ -14,7 +14,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Jolien De Paepe, 2022\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -934,7 +934,7 @@ msgstr "Volgers"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_partner_ids
 msgid "Followers (Partners)"
-msgstr "Volgers (Partners)"
+msgstr "Volgers (Relaties)"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_account__full_name
@@ -1177,9 +1177,9 @@ msgid ""
 " for this company or that you have access right to see the accounts of this "
 "company."
 msgstr ""
-"Er zijn geen rekeningen gevonden. Zorg ervoor dat je een rekeningschema voor"
-" dit bedrijf heeft geïnstalleerd of dat je toegang heeft tot de rekeningen "
-"van dit bedrijf."
+"Er zijn geen rekeningen gevonden. Zorg ervoor dat je een grootboekschema "
+"voor dit bedrijf heeft geïnstalleerd of dat je toegang heeft tot de "
+"rekeningen van dit bedrijf."
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.account_mapping_search
@@ -1227,8 +1227,8 @@ msgstr "Aantal berichten met leveringsfout"
 msgid ""
 "Only one entry by account should be created for a generated journal entry !"
 msgstr ""
-"Voor een gegenereerde journaalpost mag slechts één boeking per rekening "
-"worden gemaakt!"
+"Er mag slechts één boeking per rekening worden aangemaakt voor een "
+"gegenereerde boeking!"
 
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_period_search
@@ -1329,7 +1329,7 @@ msgstr "Terugzetten naar concept"
 #. module: account_consolidation
 #: model_terms:ir.ui.view,arch_db:account_consolidation.consolidation_chart_form
 msgid "Review Chart Of Accounts"
-msgstr "Controleer het rekeningschema"
+msgstr "Controleer het grootboekschema"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_consolidation_period__message_has_sms_error
@@ -1416,7 +1416,7 @@ msgstr "Status van het rekening consolidatie dashboard onboarding-paneel"
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_res_company__consolidation_setup_ccoa_state
 msgid "State Of The Onboarding Consolidated Chart Of Account Step"
-msgstr "Status van de onboarding geconsolideerde rekeningschemastap"
+msgstr "Status van de onboarding geconsolideerde grootboekschemastap"
 
 #. module: account_consolidation
 #: model:ir.model.fields,field_description:account_consolidation.field_res_company__consolidation_setup_consolidation_state

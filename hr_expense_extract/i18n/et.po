@@ -10,8 +10,8 @@
 # Martin Trigaux, 2022
 # Piia Paurson <piia@avalah.ee>, 2022
 # Triine Aavik <triine@avalah.ee>, 2022
-# Jana Jaakson, 2022
 # Anna, 2023
+# Jana Jaakson, 2023
 # 
 msgid ""
 msgstr ""
@@ -19,7 +19,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Anna, 2023\n"
+"Last-Translator: Jana Jaakson, 2023\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,7 +41,7 @@ msgid ""
 "                        Buy credits"
 msgstr ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
-"                        Osta punkte"
+"                        Osta krediiti"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -50,7 +50,7 @@ msgid ""
 "                        Refresh"
 msgstr ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
-"                        Uuenda"
+"                        Värskenda"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -59,7 +59,7 @@ msgid ""
 "                        Resend For Digitization"
 msgstr ""
 "<i class=\"fa fa-fw o_button_icon fa-arrow-right\"/>\n"
-"                        Saatke uuesti digitaliseerimiseks"
+"                        Saada Digitaliseerimisse"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.hr_expense_extract_view_form
@@ -67,8 +67,7 @@ msgid ""
 "All fields will be automated by Artificial Intelligence, it might take 5 "
 "seconds."
 msgstr ""
-"Tehisintellekt automatiseerib kõiki välju, tavaliselt kulub selleks 5 "
-"sekundit."
+"Kõik väljad automatiseerib tehisintellekt, selleks võib kuluda 5 sekundit."
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__amount
@@ -96,12 +95,12 @@ msgstr "Maksemeetodi rida saadaval"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_can_show_resend_button
 msgid "Can show the ocr resend button"
-msgstr "Võib näidata ocr uuesti saatmise nuppu"
+msgstr "Saab näidata OCR-i uuesti saatmise nuppu"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_can_show_send_button
 msgid "Can show the ocr send button"
-msgstr "Võib näidata ocr saatmise nuppu"
+msgstr "Saab näidata OCR-i saatmise nuppu"
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.expense_sample_register_view_form
@@ -113,12 +112,12 @@ msgstr "Tühista"
 #: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
 #, python-format
 msgid "Choose a receipt."
-msgstr ""
+msgstr "Vali saaja."
 
 #. module: hr_expense_extract
 #: model_terms:ir.ui.view,arch_db:hr_expense_extract.expense_sample_receipt_view_form
 msgid "Choose a receipt:"
-msgstr ""
+msgstr "Vali saaja:"
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_res_company
@@ -202,19 +201,19 @@ msgstr "Kulu"
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_ocr_parse_ir_actions_server
 #: model:ir.cron,cron_name:hr_expense_extract.ir_cron_ocr_parse
 msgid "Expense OCR: Parse Expenses"
-msgstr ""
+msgstr "OCR kulu: Parse Expenses"
 
 #. module: hr_expense_extract
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_update_ocr_status_ir_actions_server
 #: model:ir.cron,cron_name:hr_expense_extract.ir_cron_update_ocr_status
 msgid "Expense OCR: Update All Status"
-msgstr ""
+msgstr "OCR kulu: värskenda staatus"
 
 #. module: hr_expense_extract
 #: model:ir.actions.server,name:hr_expense_extract.ir_cron_ocr_validate_ir_actions_server
 #: model:ir.cron,cron_name:hr_expense_extract.ir_cron_ocr_validate
 msgid "Expense OCR: Validate Expenses"
-msgstr ""
+msgstr "OCR kulu: kinnita kulutused"
 
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_hr_expense_sheet
@@ -243,7 +242,7 @@ msgstr "Kuluaruanne saadetud"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_word_ids
 msgid "Extract Word"
-msgstr "Võta välja Word"
+msgstr "Väljavõte Wordi failist"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_state
@@ -253,7 +252,7 @@ msgstr "Väljavõtte olek"
 #. module: hr_expense_extract
 #: model:ir.model,name:hr_expense_extract.model_hr_expense_extract_words
 msgid "Extracted words from expense scan"
-msgstr ""
+msgstr "Kulude skaneerimisest väljavõetud sõnad"
 
 #. module: hr_expense_extract
 #. odoo-python
@@ -282,7 +281,7 @@ msgstr "ID"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_remote_id
 msgid "Id of the request to IAP-OCR"
-msgstr ""
+msgstr "IAP-OCR-i päringu ID"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_expense_sample_register__journal_id
@@ -321,6 +320,8 @@ msgid ""
 "Let's try a sample receipt to test the automated processing of expenses with"
 " Artificial Intelligence."
 msgstr ""
+"Proovime kviitungi näidist, et testida tehisintellektiga kulude "
+"automatiseeritud töötlemist."
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,help:hr_expense_extract.field_expense_sample_register__payment_method_line_id
@@ -332,6 +333,12 @@ msgid ""
 "SEPA Credit Transfer: Pay in the SEPA zone by submitting a SEPA Credit Transfer file to your bank. Module account_sepa is necessary.\n"
 "SEPA Direct Debit: Get paid in the SEPA zone thanks to a mandate your partner will have granted to you. Module account_sepa is necessary.\n"
 msgstr ""
+"Manual: Pay or Get paid by any method outside of Odoo.\n"
+"Payment Providers: Each payment provider has its own Payment Method. Request a transaction on/to a card thanks to a payment token saved by the partner when buying or subscribing online.\n"
+"Check: Pay bills by check and print it from Odoo.\n"
+"Batch Deposit: Collect several customer checks at once generating and submitting a batch deposit to your bank. Module account_batch_payment is necessary.\n"
+"SEPA Credit Transfer: Pay in the SEPA zone by submitting a SEPA Credit Transfer file to your bank. Module account_sepa is necessary.\n"
+"SEPA Direct Debit: Get paid in the SEPA zone thanks to a mandate your partner will have granted to you. Module account_sepa is necessary.\n"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields.selection,name:hr_expense_extract.selection__expense_sample_register__partial_mode__paid
@@ -420,7 +427,7 @@ msgstr "Saatke digitaliseerimiseks"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_res_company__expense_extract_show_ocr_option_selection
 msgid "Send mode on expense attachments"
-msgstr ""
+msgstr "Lisatud kulutuste saatmisrežiim"
 
 #. module: hr_expense_extract
 #. odoo-python
@@ -439,7 +446,7 @@ msgstr "Server ei ole hetkel saadaval. Palun proovige hiljem uuesti"
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__extract_status_code
 msgid "Status code"
-msgstr "Oleku kood"
+msgstr "Olekukood"
 
 #. module: hr_expense_extract
 #: model:ir.model.fields,field_description:hr_expense_extract.field_hr_expense__state_processed
@@ -483,7 +490,7 @@ msgstr "Proovi kulukviitungi näidiseid"
 #: code:addons/hr_expense_extract/static/src/js/tours/expense_tour.js:0
 #, python-format
 msgid "Try the AI with a sample receipt."
-msgstr ""
+msgstr "Proovige AI kviitungi näidisega."
 
 #. module: hr_expense_extract
 #. odoo-python

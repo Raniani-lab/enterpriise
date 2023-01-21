@@ -381,14 +381,14 @@ msgstr "이전 데이터베이스에서 구독을 연결 해제하기 위한 지
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "This database has expired. "
-msgstr "데이터베이스가 만료되었습니다."
+msgstr "데이터베이스가 만료되었습니다. "
 
 #. module: web_enterprise
 #. odoo-javascript
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "This database will expire in %s. "
-msgstr "데이터베이스가 %s 후 만료됩니다."
+msgstr "데이터베이스가 %s 후 만료됩니다. "
 
 #. module: web_enterprise
 #. odoo-javascript

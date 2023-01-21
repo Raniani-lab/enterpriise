@@ -4,10 +4,10 @@
 # 
 # Translators:
 # 04a2cd0fd6ee22172c36ea91f27a38c5_60041bf, 2022
-# Erwin van der Ploeg <erwin@odooexperts.nl>, 2022
 # Jinjiu Liu, 2022
 # Martin Trigaux, 2022
 # Jolien De Paepe, 2023
+# Erwin van der Ploeg <erwin@odooexperts.nl>, 2023
 # 
 msgid ""
 msgstr ""
@@ -15,7 +15,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:28+0000\n"
 "PO-Revision-Date: 2022-09-22 05:45+0000\n"
-"Last-Translator: Jolien De Paepe, 2023\n"
+"Last-Translator: Erwin van der Ploeg <erwin@odooexperts.nl>, 2023\n"
 "Language-Team: Dutch (https://www.transifex.com/odoo/teams/41243/nl/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -774,7 +774,7 @@ msgstr "Afspraaksoorten"
 #: code:addons/appointment/models/calendar_event.py:0
 #, python-format
 msgid "Appointment canceled by: %(partners)s"
-msgstr "Afspraak geannuleerd door: %(partners)s"
+msgstr "Afspraak geannuleerd door: %(relaties)s"
 
 #. module: appointment
 #: model:mail.template,name:appointment.appointment_booked_mail_template
@@ -2166,7 +2166,7 @@ msgid ""
 "This option toggles the display of avatars of the staff members during the frontend appointment process.\n"
 "        When choosing amongst several users, a selection screen will also be used, if website is installed."
 msgstr ""
-"Deze optie schakelt de weergave van avatars van de medewerkers tijdens het frontend-afspraakproces in.\n"
+"Deze optie schakelt de weergave van avatars van de werknemers tijdens het frontend-afspraakproces in.\n"
 "        Bij het kiezen uit meerdere gebruikers zal ook een selectiescherm worden gebruikt, als de website is geïnstalleerd."
 
 #. module: appointment

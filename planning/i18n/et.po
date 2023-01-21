@@ -2133,7 +2133,7 @@ msgstr ""
 #: code:addons/planning/models/planning.py:0
 #, python-format
 msgid "This Progress Bar is not implemented."
-msgstr ""
+msgstr "Antud edenemisriba ei rakendatud. "
 
 #. module: planning
 #: model:ir.model.fields,field_description:planning.field_planning_slot__was_copied

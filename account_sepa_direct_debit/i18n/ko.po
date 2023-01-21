@@ -602,7 +602,7 @@ msgstr "다음 업무 유형"
 #. module: account_sepa_direct_debit
 #: model_terms:ir.actions.act_window,help:account_sepa_direct_debit.action_sdd_payments_to_collect
 msgid "No direct debit payment to collect"
-msgstr "자동 이체로 결제 할 수 없음"
+msgstr "결제할 자동이체 내용 없음"
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__message_needaction_counter
@@ -617,8 +617,8 @@ msgid ""
 "mandate and still needs their XML file to be generated and sent to the bank "
 "to debit the customer's account."
 msgstr ""
-"이 위임장에 대해 징수 할 자동 이체 결제 건수, 즉 이 위임장으로 인해 생성 및 전기된 지불 건수는 고객의 계정에서 자동 이체되도록 "
-"XML 파일을 생성하여 은행으로 보내야 합니다."
+"이 권한에 의해 결제될 직불 결제 건의 수로서, 다시 말해 해당 권한 덕분에 생성되어 전기된 결제건의 수를 의미하나, 고객의 계정에서 "
+"직접 이체될 수 있도록 하기 위해서는 XML 파일을 생성하여 은행으로 전송하여야 합니다."
 
 #. module: account_sepa_direct_debit
 #: model:ir.model.fields,field_description:account_sepa_direct_debit.field_sdd_mandate__message_has_error_counter

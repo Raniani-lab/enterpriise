@@ -24,7 +24,7 @@ msgstr ""
 #. module: website_event_track_gantt
 #: model_terms:ir.ui.view,arch_db:website_event_track_gantt.event_track_view_gantt
 msgid "<strong>Proposed By — </strong>"
-msgstr "<strong>Proposé Par — </strong>"
+msgstr "<strong>Proposé par — </strong>"
 
 #. module: website_event_track_gantt
 #: model_terms:ir.ui.view,arch_db:website_event_track_gantt.event_track_view_gantt

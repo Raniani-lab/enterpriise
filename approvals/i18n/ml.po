@@ -310,7 +310,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:approvals.field_approval_product_line__company_id
 #: model:ir.model.fields,field_description:approvals.field_approval_request__company_id
 msgid "Company"
-msgstr ""
+msgstr "കമ്പനി"
 
 #. module: approvals
 #: model:ir.ui.menu,name:approvals.approvals_menu_config
@@ -742,7 +742,7 @@ msgstr ""
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__name
 msgid "Name"
-msgstr ""
+msgstr "പേര്"
 
 #. module: approvals
 #: code:addons/approvals/models/approval_category.py:0
@@ -885,7 +885,7 @@ msgstr ""
 #. module: approvals
 #: model_terms:ir.ui.view,arch_db:approvals.approval_category_view_form
 msgid "Product"
-msgstr ""
+msgstr "പ്രോഡക്റ്റ്"
 
 #. module: approvals
 #: model:ir.model,name:approvals.model_approval_product_line

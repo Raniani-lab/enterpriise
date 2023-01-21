@@ -255,7 +255,7 @@ msgstr ""
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_exemption__company_id
 msgid "Company"
-msgstr ""
+msgstr "കമ്പനി"
 
 #. module: account_avatax
 #: model_terms:ir.ui.view,arch_db:account_avatax.res_config_settings_view_form
@@ -403,7 +403,7 @@ msgstr ""
 #. module: account_avatax
 #: model:ir.model.fields,field_description:account_avatax.field_avatax_exemption__name
 msgid "Name"
-msgstr ""
+msgstr "പേര്"
 
 #. module: account_avatax
 #: code:addons/account_avatax/models/account_avatax.py:0
@@ -460,7 +460,7 @@ msgstr ""
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_product_template
 msgid "Product"
-msgstr ""
+msgstr "പ്രോഡക്റ്റ്"
 
 #. module: account_avatax
 #: model:ir.model,name:account_avatax.model_product_category

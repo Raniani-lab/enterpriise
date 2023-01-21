@@ -762,7 +762,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_document__company_id
 #: model:ir.model.fields,field_description:documents.field_documents_folder__company_id
 msgid "Company"
-msgstr ""
+msgstr "കമ്പനി"
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__condition_type
@@ -1674,7 +1674,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:documents.field_documents_tag__name
 #: model_terms:ir.ui.view,arch_db:documents.document_view_form
 msgid "Name"
-msgstr ""
+msgstr "പേര്"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form

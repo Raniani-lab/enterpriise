@@ -235,7 +235,7 @@ msgstr "Meedia tüüp"
 #: code:addons/social_instagram/controllers/main.py:0
 #, python-format
 msgid "No Instagram accounts linked with your Facebook page"
-msgstr ""
+msgstr "Teie Facebooki lehega pole lingitud Instagrami kontot"
 
 #. module: social_instagram
 #: code:addons/social_instagram/models/social_post.py:0

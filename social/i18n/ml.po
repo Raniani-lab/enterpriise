@@ -285,7 +285,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_search
 #: model_terms:ir.ui.view,arch_db:social.social_stream_view_search
 msgid "Company"
-msgstr ""
+msgstr "കമ്പനി"
 
 #. module: social
 #: model:ir.model,name:social.model_res_config_settings
@@ -953,7 +953,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social.social_account_view_form
 #: model_terms:ir.ui.view,arch_db:social.social_account_view_search
 msgid "Name"
-msgstr ""
+msgstr "പേര്"
 
 #. module: social
 #. odoo-javascript

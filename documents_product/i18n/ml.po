@@ -93,7 +93,7 @@ msgstr ""
 #: model:ir.model,name:documents_product.model_product_template
 #: model:ir.model.fields,field_description:documents_product.field_res_config_settings__documents_product_settings
 msgid "Product"
-msgstr ""
+msgstr "പ്രോഡക്റ്റ്"
 
 #. module: documents_product
 #: model:ir.model.fields,field_description:documents_product.field_res_company__product_tags

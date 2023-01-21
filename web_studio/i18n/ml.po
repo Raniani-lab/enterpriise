@@ -962,7 +962,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.js:0
 #, python-format
 msgid "Company"
-msgstr ""
+msgstr "കമ്പനി"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2674,7 +2674,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:web_studio.field_studio_approval_rule__name
 #, python-format
 msgid "Name"
-msgstr ""
+msgstr "പേര്"
 
 #. module: web_studio
 #. odoo-python

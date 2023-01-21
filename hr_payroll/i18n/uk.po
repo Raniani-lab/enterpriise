@@ -151,6 +151,9 @@ msgid ""
 " selected employee(s) based on the dates and credit note specified on "
 "Payslips Run.</span>"
 msgstr ""
+"<span nolabel=\"1\" colspan=\"2\">Цей майстер створить платіжні відомості "
+"для всіх вибраних співробітників на основі дат і сторно, вказаних у Запуску "
+"розрахункових листів.</span>"
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_index_form_view
@@ -578,7 +581,7 @@ msgstr "Групові розрахунки"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_res_config_settings__module_l10n_be_hr_payroll
 msgid "Belgium Payroll"
-msgstr "Більгійська зарплатня"
+msgstr "Бельгійська зарплата"
 
 #. module: hr_payroll
 #: model:ir.model.fields.selection,name:hr_payroll.selection__hr_payroll_structure__schedule_pay__bi-monthly
@@ -1558,7 +1561,7 @@ msgstr "Підписники (Партнери)"
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip__activity_type_icon
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip_run__activity_type_icon
 msgid "Font awesome icon e.g. fa-tasks"
-msgstr "Іконка зі шрифтом Font awesome, напр. fa-tasks"
+msgstr "Іконка з чудовим шрифтом, напр. fa-tasks"
 
 #. module: hr_payroll
 #: model:ir.model.fields,help:hr_payroll.field_hr_payslip_line__amount_percentage
@@ -1724,7 +1727,7 @@ msgstr "Години на тиждень"
 #. module: hr_payroll
 #: model:hr.salary.rule,name:hr_payroll.hr_salary_rule_houserentallowance1
 msgid "House Rent Allowance"
-msgstr "Знижка на будинок"
+msgstr "Знижка на оренду будинку"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__id
@@ -1891,8 +1894,8 @@ msgid ""
 " basic salary per product can defined in expression like: result = "
 "inputs.SALEURO.amount * contract.wage * 0.01."
 msgstr ""
-"Вираховується в обчисленні. Напр., правило для продавця, що має 1%% комісію "
-"базової зарплатина товар, може визначатися у виразі, такому як: result = "
+"Вираховується в обчисленні. Напр., правило для продавця, що має 1% комісії "
+"базової зарплати на товар, може визначатися у виразі, такому як: result = "
 "inputs.SALEURO.amount * contract.wage * 0.01."
 
 #. module: hr_payroll
@@ -2276,6 +2279,8 @@ msgid ""
 "Note a description of your parameter, when it's used, how is it computed, "
 "what's the source, ..."
 msgstr ""
+"Зверніть увагу на опис вашого параметра, коли він використовується, як він "
+"обчислюється, яке джерело, ..."
 
 #. module: hr_payroll
 #. odoo-python
@@ -3216,7 +3221,7 @@ msgstr "Пошук правил розрахунку"
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.hr_payroll_structure_type_view_search
 msgid "Search Structure Type"
-msgstr "Тип структури пошуку"
+msgstr "Пошук типу структури"
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -3235,6 +3240,7 @@ msgstr "Раз на півроку"
 #: model:mail.template,description:hr_payroll.mail_template_new_payslip
 msgid "Sent to employee to notify them about their new payslip"
 msgstr ""
+"Надіслано працівнику, щоб повідомити його про новий розрахунковий лист"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payroll_edit_payslip_line__sequence
@@ -3252,6 +3258,8 @@ msgid ""
 "Set a specific department if you wish to select all the employees from this "
 "department (and subdepartments) at once."
 msgstr ""
+"Встановіть окремий відділ, якщо ви хочете вибрати всіх співробітників цього "
+"відділу (і підвідділів) одночасно."
 
 #. module: hr_payroll
 #: model_terms:ir.ui.view,arch_db:hr_payroll.view_hr_payslip_by_employees
@@ -3261,6 +3269,10 @@ msgid ""
 "generated for all the selected employees, based on their contracts "
 "configuration."
 msgstr ""
+"Встановіть конкретну структуру, якщо ви бажаєте зробити додаткову платіжну "
+"відомість (наприклад: премія наприкінці року). Якщо залишити це поле "
+"порожнім, для всіх вибраних працівників буде створено звичайний "
+"розрахунковий лист відповідно до конфігурації їхніх контрактів."
 
 #. module: hr_payroll
 #. odoo-javascript
@@ -3319,7 +3331,7 @@ msgstr "Початкова дата"
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_work_entry_report__state
 msgid "State"
-msgstr "Область"
+msgstr "Статус"
 
 #. module: hr_payroll
 #: model:ir.model.fields,field_description:hr_payroll.field_hr_payslip__state
@@ -3533,13 +3545,15 @@ msgid ""
 "There's no contract set on payslip %s for %s. Check that there is at least a"
 " contract set on the employee form."
 msgstr ""
+"На розрахуноковому листі %s не встановлено жодного контракту для %s. "
+"Переконайтеся, що на картці співробітнка є принаймні контракт."
 
 #. module: hr_payroll
 #. odoo-python
 #: code:addons/hr_payroll/models/hr_payslip.py:0
 #, python-format
 msgid "This action is forbidden on validated payslips."
-msgstr "Ця діє заборонена на дійсних розрахункових листах."
+msgstr "Ця дія заборонена на дійсних розрахункових листах."
 
 #. module: hr_payroll
 #. odoo-python

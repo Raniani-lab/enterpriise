@@ -43,7 +43,7 @@ msgstr "<span class=\"o_stat_text\">Checks Qualité</span>"
 #. module: quality_mrp
 #: model_terms:ir.ui.view,arch_db:quality_mrp.worksheet_page
 msgid "<strong>Manufacturing Order : </strong>"
-msgstr "<strong>Ordre de Production : </strong>"
+msgstr "<strong>Ordre de fabrication : </strong>"
 
 #. module: quality_mrp
 #: model:ir.model.fields,field_description:quality_mrp.field_mrp_production__quality_alert_ids

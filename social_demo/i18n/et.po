@@ -109,7 +109,7 @@ msgstr "Sotsiaalmeedia striiming postitus"
 #. module: social_demo
 #: model:social.stream,name:social_demo.social_stream_twitter_account
 msgid "Tweets of: My Company"
-msgstr "Säutsud: Minu ettevõte"
+msgstr "Twitter'i postitused: Minu firma"
 
 #. module: social_demo
 #: model:ir.model,name:social_demo.model_utm_campaign

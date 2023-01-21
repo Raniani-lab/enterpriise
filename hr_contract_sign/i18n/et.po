@@ -44,7 +44,7 @@ msgstr "%s töö e-mail ei ole veel seadistatud."
 #, python-format
 msgid ""
 "%s requested a new signature on the following documents:<br/><ul>%s</ul>%s"
-msgstr ""
+msgstr "%s uus allkiri nõutud järgmistele dokumentidele:<br/><ul>%s</ul>%s"
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_contract_sign_view_form
@@ -232,12 +232,12 @@ msgstr "Valikuline sõnum"
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_plan_wizard
 msgid "Plan Wizard"
-msgstr "Plaani Wizard"
+msgstr "Plan Wizard"
 
 #. module: hr_contract_sign
 #: model:ir.model,name:hr_contract_sign.model_hr_plan_activity_type
 msgid "Plan activity type"
-msgstr "Plaani tegevuse tüüp"
+msgstr "Tegevusplaani tüüp"
 
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_contract_sign_document_wizard__possible_template_ids
@@ -259,7 +259,7 @@ msgstr "Vastutaja"
 #. module: hr_contract_sign
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_plan_activity_type__responsible_count
 msgid "Responsible Count"
-msgstr ""
+msgstr "Vastutajate arv"
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
@@ -271,7 +271,7 @@ msgstr "Saada"
 #: model:ir.model.fields,field_description:hr_contract_sign.field_hr_employee__sign_request_count
 #: model:ir.model.fields,field_description:hr_contract_sign.field_res_users__sign_request_count
 msgid "Sign Request Count"
-msgstr ""
+msgstr "Allkirjataotluste arv"
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.view_hr_contract_sign
@@ -331,6 +331,8 @@ msgstr "Kirjuta e-mail või otsi kontakti..."
 msgid ""
 "You can't delete a contract linked to a signed document, archive it instead."
 msgstr ""
+"Allkirjastatud dokumendiga seotud lepingut ei saa kustutada, selle asemel "
+"arhiivida."
 
 #. module: hr_contract_sign
 #: model_terms:ir.ui.view,arch_db:hr_contract_sign.hr_contract_history_view_form

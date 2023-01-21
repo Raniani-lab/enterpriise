@@ -75,6 +75,8 @@ msgid ""
 "Check this if you want to use your personal Facebook Developer Account "
 "instead of the provided one."
 msgstr ""
+"Märgi see valik, enda isiklikku Facebook'i arendaja kontot pakutud konto "
+"asemel."
 
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_social_stream_post__facebook_comments_count
@@ -289,7 +291,7 @@ msgstr "Tundmatu"
 #. module: social_facebook
 #: model:ir.model.fields,field_description:social_facebook.field_res_config_settings__facebook_use_own_account
 msgid "Use your own Facebook Account"
-msgstr ""
+msgstr "Kasutage enda Facebook'i kontot"
 
 #. module: social_facebook
 #: model:ir.model.fields,help:social_facebook.field_social_media__media_type

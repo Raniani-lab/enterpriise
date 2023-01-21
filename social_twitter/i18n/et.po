@@ -29,7 +29,7 @@ msgstr ""
 #: code:addons/social_twitter/models/social_post_template.py:0
 #, python-format
 msgid "%s / %s characters to fit in a Tweet"
-msgstr ""
+msgstr "%s / %s tähemärki Twitter'i postituse mahutamiseks"
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.twitter_preview
@@ -57,16 +57,18 @@ msgid ""
 "<i class=\"fa fa-pencil me-1\" title=\"Quote a tweet\"/>\n"
 "                                    <span>Quote Tweet</span>"
 msgstr ""
+"<i class=\"fa fa-pencil me-1\" title=\"Quote a tweet\"/>\n"
+"                                    <span>Tsiteeri postitus</span>"
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 msgid "<i class=\"fa fa-retweet me-1\" title=\"Retweet a tweet\"/>"
-msgstr ""
+msgstr "<i class=\"fa fa-retweet me-1\" title=\"Retweet a tweet\"/>"
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 msgid "<span class=\"fst-italic\">Empty tweet</span>"
-msgstr ""
+msgstr "<span class=\"fst-italic\">Tühi postitus</span>"
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.twitter_preview
@@ -77,7 +79,7 @@ msgstr ""
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "A retweet already exists"
-msgstr ""
+msgstr "Postitus on juba jagatud"
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
@@ -224,7 +226,7 @@ msgstr "Meeldimised"
 msgid ""
 "Looks like this Tweet is a duplicate. Edit its content and try posting "
 "again."
-msgstr ""
+msgstr "Tundub, et postitust on dubleeritud. Muuda sisu ja proovi uuesti."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream.py:0
@@ -272,27 +274,27 @@ msgstr "Postita pilt"
 #: code:addons/social_twitter/static/src/js/stream_post_kanban_record.js:0
 #, python-format
 msgid "Quote a Tweet"
-msgstr ""
+msgstr "Tsiteeri postitust"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_quoted_tweet_author_link
 msgid "Quoted tweet author Link"
-msgstr ""
+msgstr "Tsiteeritud postituse autori link"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_quoted_tweet_author_name
 msgid "Quoted tweet author Name"
-msgstr ""
+msgstr "Tsiteeritud postituse autori nimi"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_quoted_tweet_message
 msgid "Quoted tweet message"
-msgstr ""
+msgstr "Tsiteeritud postituse sõnum"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_quoted_tweet_profile_image_url
 msgid "Quoted tweet profile image URL"
-msgstr ""
+msgstr "Tsiteeritud postituse profiilipildi URL"
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
@@ -302,24 +304,24 @@ msgstr ""
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_retweet_count
 msgid "Re-tweets"
-msgstr ""
+msgstr "Jagatud postitused"
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 msgid "Retweet"
-msgstr ""
+msgstr "Jaga postitust"
 
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 msgid "Retweet or Quote"
-msgstr ""
+msgstr "Jaga postitust või tsiteeri"
 
 #. module: social_twitter
 #. openerp-web
 #: code:addons/social_twitter/static/src/xml/social_twitter_templates.xml:0
 #, python-format
 msgid "Retweets"
-msgstr ""
+msgstr "Postituse jagamised"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream__twitter_searched_keyword
@@ -388,7 +390,7 @@ msgstr ""
 #: code:addons/social_twitter/models/social_stream_post.py:0
 #, python-format
 msgid "The tweet is empty. Add a message and try posting again."
-msgstr ""
+msgstr "Postitus on tühi. Lisage sõnum ja proovige uuesti."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_media.py:0
@@ -401,7 +403,7 @@ msgstr ""
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_follow
 msgid "Tweets of"
-msgstr ""
+msgstr "Postitused"
 
 #. module: social_twitter
 #: model:ir.model.fields.selection,name:social_twitter.selection__social_media__media_type__twitter
@@ -417,7 +419,7 @@ msgstr ""
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_can_retweet
 msgid "Twitter Can Retweet"
-msgstr ""
+msgstr "Twitter'is saab jagada"
 
 #. module: social_twitter
 #. openerp-web
@@ -494,12 +496,12 @@ msgstr ""
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_quoted_tweet_id_str
 msgid "Twitter Quoted Tweet ID"
-msgstr ""
+msgstr "Twitter'i tsiteeritud postituse ID"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_retweeted_tweet_id_str
 msgid "Twitter Retweet ID"
-msgstr ""
+msgstr "Twitter'i jagatud postituse ID"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_screen_name
@@ -509,7 +511,7 @@ msgstr ""
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_stream_post__twitter_tweet_id
 msgid "Twitter Tweet ID"
-msgstr ""
+msgstr "Twitter'i postituse ID"
 
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_account__twitter_user_id
@@ -536,7 +538,7 @@ msgstr ""
 #. module: social_twitter
 #: model:ir.model.fields,field_description:social_twitter.field_social_live_post__twitter_tweet_id
 msgid "Twitter tweet id"
-msgstr ""
+msgstr "Twitter'i postituse ID"
 
 #. module: social_twitter
 #: code:addons/social_twitter/controllers/main.py:0
@@ -547,7 +549,7 @@ msgstr "Autoriseerimata. Palun võtke ühendust oma administraatoriga."
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_post_view_kanban
 msgid "Undo Retweet"
-msgstr ""
+msgstr "Tühista jagamine"
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0
@@ -593,11 +595,13 @@ msgid ""
 "You can comment only three times a tweet as it may be considered as spamming"
 " by Twitter"
 msgstr ""
+"Saate postitust kommenteerida ainult kolm korda, kuna Twitter võib seda "
+"pidada spämmiks"
 
 #. module: social_twitter
 #: model:ir.model.constraint,message:social_twitter.constraint_social_stream_post_tweet_uniq
 msgid "You can not store two times the same tweet on the same stream!"
-msgstr ""
+msgstr "Te ei saa kaks korda sama postitust samasse voogu salvestada!"
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream.py:0
@@ -624,11 +628,11 @@ msgstr ""
 #. module: social_twitter
 #: model_terms:ir.ui.view,arch_db:social_twitter.social_stream_view_form
 msgid "e.g. #odoo"
-msgstr ""
+msgstr "nt. #odoo"
 
 #. module: social_twitter
 #. openerp-web
 #: code:addons/social_twitter/static/src/js/stream_post_comment.js:0
 #, python-format
 msgid "tweet"
-msgstr ""
+msgstr "Twitter'i postitus"

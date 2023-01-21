@@ -1321,7 +1321,7 @@ msgstr ""
 #: code:addons/appointment/controllers/portal.py:0
 #, python-format
 msgid "Name"
-msgstr ""
+msgstr "പേര്"
 
 #. module: appointment
 #. odoo-javascript

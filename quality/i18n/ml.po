@@ -181,7 +181,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__company_id
 #: model:ir.model.fields,field_description:quality.field_quality_point__company_id
 msgid "Company"
-msgstr ""
+msgstr "കമ്പനി"
 
 #. module: quality
 #: model:quality.alert.stage,name:quality.quality_alert_stage_1
@@ -528,7 +528,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_point_test_type__name
 #: model:ir.model.fields,field_description:quality.field_quality_reason__name
 msgid "Name"
-msgstr ""
+msgstr "പേര്"
 
 #. module: quality
 #: code:addons/quality/models/quality.py:0
@@ -723,7 +723,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:quality.field_quality_check__product_id
 #: model_terms:ir.ui.view,arch_db:quality.quality_alert_view_search
 msgid "Product"
-msgstr ""
+msgstr "പ്രോഡക്റ്റ്"
 
 #. module: quality
 #: model:ir.model.fields,field_description:quality.field_quality_point__product_category_ids

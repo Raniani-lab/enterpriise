@@ -10,6 +10,7 @@
 # Triine Aavik <triine@avalah.ee>, 2022
 # Algo Kärp <algokarp@gmail.com>, 2022
 # Anna, 2023
+# Jana Jaakson, 2023
 # 
 msgid ""
 msgstr ""
@@ -17,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-23 08:22+0000\n"
 "PO-Revision-Date: 2022-09-22 05:47+0000\n"
-"Last-Translator: Anna, 2023\n"
+"Last-Translator: Jana Jaakson, 2023\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -92,12 +93,14 @@ msgid ""
 "Not enough attendance work entries to report the time off %s. Please make "
 "the operation manually"
 msgstr ""
+"Puudumise %s esitamiseks pole piisavalt piisavalt päevi välja teenitud. "
+"Tehke toiming käsitsi"
 
 #. module: hr_payroll_holidays
 #: code:addons/hr_payroll_holidays/models/hr_leave.py:0
 #, python-format
 msgid "Only an employee time off to defer can be reported to next month"
-msgstr ""
+msgstr "Only an employee time off to defer can be reported to next month"
 
 #. module: hr_payroll_holidays
 #: model:ir.model,name:hr_payroll_holidays.model_hr_payslip
@@ -118,12 +121,12 @@ msgstr "Loo tööaeg manuaalselt %s"
 #. module: hr_payroll_holidays
 #: model_terms:ir.ui.view,arch_db:hr_payroll_holidays.res_config_settings_view_form
 msgid "Postpone time off after payslip validation"
-msgstr ""
+msgstr "Lükake puudumine pärast palgalehe kinnitamist edasi"
 
 #. module: hr_payroll_holidays
 #: model_terms:ir.ui.view,arch_db:hr_payroll_holidays.hr_leave_view_form_inherit
 msgid "Report to Next Month"
-msgstr ""
+msgstr "Report to Next Month"
 
 #. module: hr_payroll_holidays
 #: model_terms:ir.ui.view,arch_db:hr_payroll_holidays.res_config_settings_view_form
@@ -137,6 +140,8 @@ msgid ""
 "The next month work entries are not generated yet or are validated already "
 "for time off %s"
 msgstr ""
+"Järgmise kuu töökirjeid pole veel loodud või need on juba %s puudumisteks "
+"kinnitatud"
 
 #. module: hr_payroll_holidays
 #: code:addons/hr_payroll_holidays/models/hr_leave.py:0
@@ -145,6 +150,8 @@ msgid ""
 "The selected period is covered by a validated payslip. You can't create a "
 "time off for that period."
 msgstr ""
+"Valitud perioodi katab kinnitatud palgaleht. Selle perioodi jaoks ei saa te "
+"puudumise avaldust teha."
 
 #. module: hr_payroll_holidays
 #: code:addons/hr_payroll_holidays/models/hr_leave.py:0
@@ -152,13 +159,13 @@ msgstr ""
 msgid ""
 "The time off %s can not be reported because it is defined over more than 2 "
 "months"
-msgstr ""
+msgstr "Puudumist %s ei saa esitada kuna see on pikem kui 2 kuud"
 
 #. module: hr_payroll_holidays
 #: code:addons/hr_payroll_holidays/models/hr_leave.py:0
 #, python-format
 msgid "There is no work entries linked to this time off to report"
-msgstr ""
+msgstr "Selle puudumisega ei ole seotud ühtegi töökirjet, millest teatada"
 
 #. module: hr_payroll_holidays
 #: code:addons/hr_payroll_holidays/models/hr_payslip.py:0
@@ -168,6 +175,9 @@ msgid ""
 "\n"
 " %s"
 msgstr ""
+"Nendel töötajatel on jäänud alles kasutamata puhkepäevi:\n"
+"\n"
+"  %s"
 
 #. module: hr_payroll_holidays
 #: model:ir.actions.act_window,name:hr_payroll_holidays.hr_leave_work_entry_action
@@ -180,18 +190,18 @@ msgstr "Puudumised"
 #: code:addons/hr_payroll_holidays/models/hr_payslip.py:0
 #, python-format
 msgid "Time Off To Defer"
-msgstr ""
+msgstr "Aeg edasi lükata"
 
 #. module: hr_payroll_holidays
 #: code:addons/hr_payroll_holidays/models/hr_payslip.py:0
 #, python-format
 msgid "Time Off Without Joined Document"
-msgstr ""
+msgstr "Puudumised ilma seotud dokumendita"
 
 #. module: hr_payroll_holidays
 #: model:ir.actions.act_window,name:hr_payroll_holidays.hr_leave_action_open_to_defer
 msgid "Time Off to Defer"
-msgstr ""
+msgstr "Time Off To Defer"
 
 #. module: hr_payroll_holidays
 #: model:ir.ui.menu,name:hr_payroll_holidays.menu_work_entry_leave_to_approve

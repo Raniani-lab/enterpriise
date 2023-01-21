@@ -140,7 +140,7 @@ msgid ""
 "Invalid bank account for the following employees:\n"
 "%s"
 msgstr ""
-"Недійсний банківський рахунок настурних співробітників:\n"
+"Недійсний банківський рахунок наступних співробітників:\n"
 "%s"
 
 #. module: hr_payroll_account_sepa

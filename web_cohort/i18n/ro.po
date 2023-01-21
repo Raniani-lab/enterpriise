@@ -55,7 +55,7 @@ msgstr "Baza"
 #: model:ir.model.fields.selection,name:web_cohort.selection__ir_actions_act_window_view__view_mode__cohort
 #: model:ir.model.fields.selection,name:web_cohort.selection__ir_ui_view__type__cohort
 msgid "Cohort"
-msgstr ""
+msgstr "Cohortă"
 
 #. module: web_cohort
 #: code:addons/web_cohort/controllers/main.py:0

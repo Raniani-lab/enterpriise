@@ -812,7 +812,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_move_line_product_selector
 #: model_terms:ir.ui.view,arch_db:stock_barcode.stock_quant_barcode
 msgid "Product"
-msgstr ""
+msgstr "പ്രോഡക്റ്റ്"
 
 #. module: stock_barcode
 #: model:ir.actions.act_window,name:stock_barcode.product_action_barcodes
@@ -1389,7 +1389,7 @@ msgstr ""
 #: model:product.product,uom_name:stock_barcode.product_cable_management_box_2
 #: model:product.template,uom_name:stock_barcode.product_cable_management_box_2_product_template
 msgid "Units"
-msgstr ""
+msgstr "യൂണിറ്സ്"
 
 #. module: stock_barcode
 #: model_terms:ir.ui.view,arch_db:stock_barcode.view_stock_quant_tree

@@ -117,7 +117,7 @@ msgstr ""
 #. module: data_merge
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__company_id
 msgid "Company"
-msgstr ""
+msgstr "കമ്പനി"
 
 #. module: data_merge
 #: model_terms:ir.actions.act_window,help:data_merge.action_data_merge_record
@@ -522,7 +522,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_model__name
 #: model:ir.model.fields,field_description:data_merge.field_data_merge_record__name
 msgid "Name"
-msgstr ""
+msgstr "പേര്"
 
 #. module: data_merge
 #. odoo-python

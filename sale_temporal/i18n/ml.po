@@ -47,7 +47,7 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__company_id
 msgid "Company"
-msgstr ""
+msgstr "കമ്പനി"
 
 #. module: sale_temporal
 #: model_terms:ir.actions.act_window,help:sale_temporal.product_pricing_action
@@ -188,7 +188,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__name
 #: model:ir.model.fields,field_description:sale_temporal.field_sale_temporal_recurrence__name
 msgid "Name"
-msgstr ""
+msgstr "പേര്"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_subscription_order_view_form
@@ -237,7 +237,7 @@ msgstr ""
 #. module: sale_temporal
 #: model:ir.model,name:sale_temporal.model_product_template
 msgid "Product"
-msgstr ""
+msgstr "പ്രോഡക്റ്റ്"
 
 #. module: sale_temporal
 #: model:ir.model.fields,field_description:sale_temporal.field_product_pricing__product_template_id

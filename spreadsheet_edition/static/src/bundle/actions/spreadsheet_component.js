@@ -19,6 +19,11 @@ const { Spreadsheet, Model } = spreadsheet;
 
 const tags = new Set();
 
+/**
+ * @typedef {Object} User
+ * @property {string} User.name
+ * @property {string} User.id
+ */
 export default class SpreadsheetComponent extends LegacyComponent {
     setup() {
         this.orm = useService("orm");
@@ -114,7 +119,7 @@ export default class SpreadsheetComponent extends LegacyComponent {
                 if (this.props.spreadsheetSyncStatus) {
                     this.props.spreadsheetSyncStatus({
                         synced: this.model.getters.isFullySynchronized(),
-                        numberOfConnectedUsers: this.getConnectedUsers(),
+                        connectedUsers: this.getConnectedUsers(),
                     });
                 }
             });
@@ -126,12 +131,20 @@ export default class SpreadsheetComponent extends LegacyComponent {
     /**
      * Return the number of connected users. If one user has more than
      * one open tab, it's only counted once.
-     * @return {number}
+     * @return {Array<User>}
      */
     getConnectedUsers() {
-        return new Set(
-            [...this.model.getters.getConnectedClients().values()].map((client) => client.userId)
-        ).size;
+        const connectedUsers = [];
+        for (const client of this.model.getters.getConnectedClients()) {
+            if (!connectedUsers.some((user) => user.id === client.userId)) {
+                connectedUsers.push({
+                    id: client.userId,
+                    name: client.name,
+                });
+            }
+        }
+
+        return connectedUsers;
     }
 
     /**

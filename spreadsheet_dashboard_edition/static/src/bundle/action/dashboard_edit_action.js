@@ -7,12 +7,13 @@ import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadshee
 import { SpreadsheetControlPanel } from "@spreadsheet_edition/bundle/actions/control_panel/spreadsheet_control_panel";
 import { useService } from "@web/core/utils/hooks";
 import { RecordFileStore } from "@spreadsheet_edition/bundle/image/record_file_store";
+import { session } from "@web/session";
 
 /**
  * @typedef {import("@spreadsheet_edition/bundle/actions/abstract_spreadsheet_action").SpreadsheetRecord} SpreadsheetRecord
  *
  * @typedef State
- * @property {number} numberOfConnectedUsers
+ * @property {Array} connectedUsers
  * @property {boolean} isSynced
  *
  * @typedef {import("@spreadsheet_edition/bundle/o_spreadsheet/collaborative/spreadsheet_collaborative_service").SpreadsheetCollaborativeService} SpreadsheetCollaborativeService
@@ -25,7 +26,7 @@ export class DashboardEditAction extends AbstractSpreadsheetAction {
         super.setup();
         /** @type {State} */
         this.collaborativeState = useState({
-            numberOfConnectedUsers: 1,
+            connectedUsers: [{ name: session.username, id: session.id }],
             isSynced: true,
         });
         useSubEnv({
@@ -78,11 +79,11 @@ export class DashboardEditAction extends AbstractSpreadsheetAction {
     /**
      * Updates the control panel with the sync status of spreadsheet
      *
-     * @param {{ synced: boolean, numberOfConnectedUsers: number }}
+     * @param {{ synced: boolean, connectedUsers: Array<any> }}
      */
-    _onSpreadsheetSyncStatus({ synced, numberOfConnectedUsers }) {
+    _onSpreadsheetSyncStatus({ synced, connectedUsers }) {
         this.collaborativeState.isSynced = synced;
-        this.collaborativeState.numberOfConnectedUsers = numberOfConnectedUsers;
+        this.collaborativeState.connectedUsers = connectedUsers;
     }
 
     async _onSpreadSheetNameChanged(detail) {

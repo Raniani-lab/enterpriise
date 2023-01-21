@@ -2,6 +2,7 @@
 import { registry } from "@web/core/registry";
 import { download } from "@web/core/network/download";
 import { useService } from "@web/core/utils/hooks";
+import { session } from "@web/session";
 
 import SpreadsheetComponent from "@spreadsheet_edition/bundle/actions/spreadsheet_component";
 import { SpreadsheetName } from "@spreadsheet_edition/bundle/actions/control_panel/spreadsheet_name";
@@ -20,9 +21,8 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
         this.orm = useService("orm");
         this.actionService = useService("action");
         this.notificationMessage = this.env._t("New spreadsheet created in Documents");
-
         this.state = useState({
-            numberOfConnectedUsers: 1,
+            connectedUsers: [{ name: session.username, id: session.uid }],
             isSynced: true,
             isFavorited: false,
             spreadsheetName: UNTITLED_SPREADSHEET_NAME,
@@ -94,9 +94,9 @@ export class SpreadsheetAction extends AbstractSpreadsheetAction {
      *
      * @param {Object}
      */
-    _onSpreadsheetSyncStatus({ synced, numberOfConnectedUsers }) {
+    _onSpreadsheetSyncStatus({ synced, connectedUsers }) {
         this.state.isSynced = synced;
-        this.state.numberOfConnectedUsers = numberOfConnectedUsers;
+        this.state.connectedUsers = connectedUsers;
     }
 
     /**

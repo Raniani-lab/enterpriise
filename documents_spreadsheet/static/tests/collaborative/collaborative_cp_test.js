@@ -15,6 +15,14 @@ import {
  * @returns {HTMLElement}
  */
 function getConnectedUsersEl(target) {
+    return target.querySelector(".o_spreadsheet_number_users");
+}
+
+/**
+ * @param {HTMLElement} target
+ * @returns {HTMLElement}
+ */
+function getConnectedUsersElImage(target) {
     return target.querySelector(".o_spreadsheet_number_users i");
 }
 
@@ -57,7 +65,7 @@ QUnit.module(
                 "It should display one connected user"
             );
             assert.hasClass(
-                getConnectedUsersEl(target),
+                getConnectedUsersElImage(target),
                 "fa-user",
                 "It should display the fa-user icon"
             );
@@ -69,7 +77,7 @@ QUnit.module(
                 "It should display two connected users"
             );
             assert.hasClass(
-                getConnectedUsersEl(target),
+                getConnectedUsersElImage(target),
                 "fa-users",
                 "It should display the fa-users icon"
             );

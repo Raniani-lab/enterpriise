@@ -8,7 +8,7 @@
         onFavoriteToggled.bind="_onSpreadSheetFavoriteToggled"
         isFavorited="state.isFavorited"
         isSpreadsheetSynced="state.isSynced"
-        numberOfConnectedUsers="state.numberOfConnectedUsers"
+        connectedUsers="state.connectedUsers"
         onSpreadsheetNameChanged.bind="_onSpreadSheetNameChanged"
     />
     <SpreadsheetComponent

@@ -6,7 +6,7 @@
             spreadsheetName="state.spreadsheetName"
             isReadonly="isReadonly"
             isSpreadsheetSynced="collaborativeState.isSynced"
-            numberOfConnectedUsers="collaborativeState.numberOfConnectedUsers"
+            connectedUsers="collaborativeState.connectedUsers"
             onSpreadsheetNameChanged.bind="_onSpreadSheetNameChanged" />
         <SpreadsheetComponent
             name="state.spreadsheetName"

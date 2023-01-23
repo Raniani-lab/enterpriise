@@ -323,7 +323,7 @@
                     <sheet>
                         <group>
                             <field name="company_id"/>
-                            <field name="period_id" invisible="context.get('from_analysis_period', False)"/>
+                            <field name="period_id"/>
                         </group>
                         <notebook>
                             <page string="Settings" name="settings">

@@ -3601,6 +3601,7 @@ class AccountReport(models.Model):
             'report': self,
             'report_summary': report_manager.summary,
             'report_company_name': self.env.company.name,
+            'report_title': self.name,
             'options': options,
             'context': self.env.context,
             'model': self,

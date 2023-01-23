@@ -446,7 +446,7 @@
         <field name="name">planning.role.tree</field>
         <field name="model">planning.role</field>
         <field name="arch" type="xml">
-            <tree string="Planning Role List" editable="bottom" multi_edit="1" js_class="legacy_list">
+            <tree string="Planning Role List" editable="bottom" multi_edit="1">
                 <field name="sequence" widget="handle"/>
                 <field name="name"/>
                 <field name="resource_ids" widget="many2many_tags" optional="show" context="{'form_view_ref': 'planning.resource_resource_form_tags_view_inherit', 'show_job_title': True}"/>

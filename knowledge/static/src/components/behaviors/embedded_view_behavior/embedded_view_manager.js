@@ -8,7 +8,6 @@ import { useService } from "@web/core/utils/hooks";
 
 const {
     Component,
-    onMounted,
     onWillStart,
     useSubEnv } = owl;
 
@@ -62,7 +61,6 @@ export class EmbeddedViewManager extends Component {
             __getGlobalState__: this.__getGlobalState__,
         });
         onWillStart(this.onWillStart.bind(this));
-        onMounted(this.onMounted.bind(this));
     }
 
     /**
@@ -131,11 +129,6 @@ export class EmbeddedViewManager extends Component {
         this.EmbeddedView = View;
         this.EmbeddedViewProps = ViewProps;
         this.action = action;
-        this.props.onLoadStart();
-    }
-
-    onMounted () {
-        this.props.onLoadEnd();
     }
 
     /**
@@ -173,8 +166,6 @@ EmbeddedViewManager.props = {
     action: { type: Object },
     context: { type: Object },
     viewType: { type: String },
-    onLoadStart: { type: Function },
-    onLoadEnd: { type: Function },
     setTitle: { type: Function },
     getTitle: { type: Function },
     readonly: { type: Boolean },

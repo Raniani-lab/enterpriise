@@ -21,7 +21,7 @@ tour.register('helpdesk_pick_file_as_attachment_from_knowledge', {
     trigger: '.o_knowledge_behavior_type_file .o_knowledge_toolbar_button_text:contains("Use as Attachment")',
     run: 'click',
 }, { // check that the file is added to the attachments
-    trigger: '.o_AttachmentBox .o_AttachmentImage',
+    trigger: '.o_AttachmentBox .o_AttachmentCard:contains("Onboarding")',
 }]);
 
 tour.register('helpdesk_pick_file_as_message_attachment_from_knowledge', {
@@ -41,6 +41,9 @@ tour.register('helpdesk_pick_file_as_message_attachment_from_knowledge', {
 }, { // click on the "Use as Attachment" button located in the toolbar of the file block
     trigger: '.o_knowledge_behavior_type_file .o_knowledge_toolbar_button_text:contains("Send as Message")',
     run: 'click',
+}, { // wait for the file to be uploaded
+    trigger: '.o_Chatter_composer .o_AttachmentCard i.fa-check',
+    run: () => {},
 }, { // check that the file is added to the attachment of the message
-    trigger: '.o_Chatter_composer .o_AttachmentImage',
+    trigger: '.o_Chatter_composer .o_AttachmentList .o_AttachmentCard:contains("Onboarding")',
 }]);

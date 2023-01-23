@@ -192,13 +192,9 @@
         <t t-foreach="lines" t-as="line">
             <t t-set="trclass" t-value="'o_account_reports_default_style'"/>
             <t t-set="domainClass" t-value="'o_account_reports_domain_line_2 account_report_line_name'"/>
-            <t t-if="not line.get('caret_options')">
-                <t t-if="line.get('level') != None">
-                    <t t-set="trclass" t-value="'o_account_searchable_line o_account_reports_level'+str(line['level'])"/>
-                </t>
-            </t>
-            <t t-if="line.get('caret_options')">
-                <t t-if="line.get('level')">
+            <t t-if="line.get('level') != None">
+                <t t-set="trclass" t-value="'o_account_searchable_line o_account_reports_level'+str(line['level'])"/>
+                <t t-if="line.get('caret_options')">
                     <t t-set="domainClass" t-value="'o_account_reports_domain_line_' + str(line['level']) + ' account_report_line_name'"/>
                 </t>
             </t>
@@ -374,7 +370,7 @@
             <div class="o_account_reports_page o_account_reports_no_print">
 
                 <div class="o_account_reports_header">
-                    <div class="print_only"><h2><t t-out="report_title"></t></h2></div>
+                    <div class="print_only"><h2><strong><t t-out="report_title"></t></strong></h2></div>
                     <t t-call="account_reports.filter_info_template"/>
                 </div>
                 <div class="o_account_reports_summary"/>

@@ -598,6 +598,7 @@ class HrPayslip(models.Model):
         return {
             'float_round': float_round,
             'float_compare': float_compare,
+            "relativedelta": relativedelta,
         }
 
     def _get_localdict(self):

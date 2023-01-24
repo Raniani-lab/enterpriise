@@ -22,7 +22,7 @@ class HrExpenseSheet(models.Model):
                 subtype_id=self.env['ir.model.data']._xmlid_to_res_id('mail.mt_note'),
             )
 
-    def reset_expense_sheets(self):
-        res = super().reset_expense_sheets()
+    def action_reset_approval_expense_sheets(self):
+        res = super().action_reset_approval_expense_sheets()
         self.sudo().write({'refund_in_payslip': False})
         return res

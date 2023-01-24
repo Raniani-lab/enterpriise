@@ -193,14 +193,35 @@ class HrExpense(models.Model):
                     time.sleep(1)
                     record._check_ocr_status()
 
+
 class HrExpenseSheet(models.Model):
     _inherit = ['hr.expense.sheet']
 
+    def _is_expense_sample(self):
+        samples = set(self.mapped('expense_line_ids.sample'))
+        if len(samples) > 1:
+            raise UserError(_("You can't mix sample expenses and regular ones"))
+        return samples.pop() # True / False
+
+    @api.ondelete(at_uninstall=False)
+    def _unlink_except_posted_or_paid(self):
+        super(HrExpenseSheet, self.filtered(lambda exp: not exp._is_expense_sample()))._unlink_except_posted_or_paid()
+
     def action_register_payment(self):
-        samples = self.mapped('expense_line_ids.sample')
-        if samples.count(True):
+        if self._is_expense_sample():
+            # using the real wizard is not possible as it check
+            # lots of stuffs on the account.move.line
             action = self.env['ir.actions.actions']._for_xml_id('hr_expense_extract.action_expense_sample_register')
             action['context'] = {'active_id': self.id}
             return action
 
         return super().action_register_payment()
+
+    def action_sheet_move_create(self):
+        if self._is_expense_sample():
+            self.set_to_posted()
+            if self.payment_mode == 'company_account':
+                self.set_to_paid()
+            return
+
+        return super().action_sheet_move_create()

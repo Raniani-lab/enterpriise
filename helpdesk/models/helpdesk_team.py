@@ -696,9 +696,8 @@ class HelpdeskTeam(models.Model):
             :param is_ticket_closed: Boolean if True, then we want to see the tickets closed in last 7 days
             :returns dict containing the params to update into the action.
         """
-        is_ticket_closed_domain_operator = '|' if is_ticket_closed else '&'
         domain = [
-            is_ticket_closed_domain_operator,
+            '&',
             ('stage_id.fold', '=', is_ticket_closed),
             ('team_id', 'in', self.ids),
         ]

@@ -494,7 +494,7 @@ var accountReportsWidget = AbstractAction.extend({
     },
     _onChangeExpectedDate: function (event) {
         var self = this;
-        var split_target = $(event.target).attr('data-id').split("-");
+        var split_target = $(event.target).attr('data-id').split("~");
         var targetID = parseInt(split_target[split_target.length - 1]);
         var $content = $(QWeb.render("paymentDateForm", {target_id: targetID}));
         var moveLineID = parseInt($content.find("#target_id").val());

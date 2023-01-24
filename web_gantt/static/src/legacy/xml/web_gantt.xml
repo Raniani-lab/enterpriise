@@ -46,7 +46,7 @@
         </t>
     </t>
 
-    <div t-name="GanttView" class="o_gantt_view">
+    <div t-name="GanttView" class="o_legacy_gantt_view">
         <div class="o_gantt_view_container container-fluid p-0">
             <div class="row g-0 o_gantt_header_container position-sticky bg-view">
                 <div class="col-md-2 col-3 position-relative o_gantt_row_sidebar text-center" t-if="widget.state.groupedBy.length">
@@ -235,7 +235,8 @@
     <div t-name="gantt-popover">
         <ul class="p-0 mb-0 list-unstyled d-flex flex-row">
             <li class="d-flex flex-column pe-2">
-                <strong>Name:</strong>
+                <strong>
+                    Name:</strong>
                 <strong>Start:</strong>
                 <strong>Stop:</strong>
             </li>

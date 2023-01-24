@@ -3,7 +3,7 @@
 import { Domain } from '@web/core/domain';
 import { removeDomainLeaf } from '@web_gantt/legacy/js/gantt_controller';
 
-QUnit.module('WebGantt > RemoveDomainLeaf');
+QUnit.module('LegacyViews > GanttView (legacy) > RemoveDomainLeaf');
 
 QUnit.test('Remove leaf in domain.', function (assert) {
     let domain = [

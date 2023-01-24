@@ -9,6 +9,8 @@ var GanttRow = require('web_gantt.GanttRow');
 const SampleServer = require('web.SampleServer');
 const session = require("web.session");
 var testUtils = require('web.test_utils');
+const { registry } = require('@web/core/registry');
+const legacyViewRegistry = require('web.view_registry');
 const { createWebClient, doAction } = require('@web/../tests/webclient/helpers');
 const { registerCleanup } = require("@web/../tests/helpers/cleanup");
 const { click, editInput, getFixture, patchTimeZone, patchWithCleanup } = require('@web/../tests/helpers/utils');
@@ -101,6 +103,9 @@ function getPillItemWidth($el) {
 
 QUnit.module('LegacyViews', {
     beforeEach: function () {
+        registry.category("views").remove("gantt"); // remove new gantt from registry
+        legacyViewRegistry.add("gantt", GanttView); // add legacy gantt -> will be wrapped and added to new registry
+
         // Avoid animation to not have to wait until the tooltip is removed
         this.initialPopoverDefaultAnimation = Popover.Default.animation;
         Popover.Default.animation = false;
@@ -920,7 +925,7 @@ QUnit.module('LegacyViews', {
         await testUtils.dom.click($(target).find('.o_cp_bottom_right .o_switch_view.o_gantt'));
         await nextTick();
 
-        assert.containsOnce(target, '.o_gantt_view');
+        assert.containsOnce(target, '.o_legacy_gantt_view');
 
         // the gantt view should be still in sample mode
         assert.hasClass($(target).find('.o_view_controller'), 'o_legacy_view_sample_data');
@@ -3317,7 +3322,7 @@ document.createElement("a").classList.contains
         await prepareWowlFormViewDialogs({ models: this.data, views });
 
         const $firstPill = gantt.$('.o_gantt_pill:nth(0)');
-        let $secondPill = gantt.$('.o_gantt_pill:nth(1)');
+        const $secondPill = gantt.$('.o_gantt_pill:nth(1)');
 
         // enable the drag feature
         await testUtils.dom.triggerMouseEvent($secondPill, 'mouseover');

@@ -104,7 +104,7 @@ registry.category("web_tour.tours").add('project_enterprise_tour', {
                 console.error("Not able to select progressbar");
             }
         }
-    }, ...openProjectUpdateAndReturnToTasks("Gantt", "o_gantt_view"), {
+    }, ...openProjectUpdateAndReturnToTasks("Gantt", "o_legacy_gantt_view"), {
         trigger: '.o_switch_view.o_map',
         content: 'Open Map View',
     }, ...openProjectUpdateAndReturnToTasks("Map", "o_map_view"),

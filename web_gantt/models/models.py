@@ -193,61 +193,41 @@ class Base(models.AbstractModel):
             * start_date = 01/01/2000, end_date = 01/07/2000, scale = 'week',
               rows = [{
                 groupedBy: ["project_id", "user_id", "stage_id"],
-                records: [1, 4, 2],
-                name: "My Awesome Project",
                 resId: 8,
                 rows: [{
                     groupedBy: ["user_id", "stage_id"],
-                    records: [1, 2],
-                    name: "Marcel",
                     resId: 18,
                     rows: [{
                         groupedBy: ["stage_id"],
-                        records: [2],
-                        name: "To Do",
                         resId: 3,
                         rows: []
                     }, {
                         groupedBy: ["stage_id"],
-                        records: [1],
-                        name: "Done",
                         resId: 9,
                         rows: []
                     }]
                 }, {
                     groupedBy: ["user_id", "stage_id"],
-                    records: [4],
-                    name: "Gilbert",
                     resId: 22,
                     rows: [{
                         groupedBy: ["stage_id"],
-                        records: [4],
-                        name: "Done",
                         resId: 9,
                         rows: []
                     }]
                 }]
             }, {
                 groupedBy: ["project_id", "user_id", "stage_id"],
-                records: [3, 5, 7],
-                name: "My Other Project",
                 resId: 9,
                 rows: [{
                     groupedBy: ["user_id", "stage_id"],
-                    records: [3, 5, 7],
-                    name: "Undefined User",
                     resId: None,
                     rows: [{
                         groupedBy: ["stage_id"],
-                        records: [3, 5, 7],
-                        name: "To Do",
                         resId: 3,
                         rows: []
                     }]
             }, {
                 groupedBy: ["project_id", "user_id", "stage_id"],
-                records: [],
-                name: "My group_expanded Project",
                 resId: 27,
                 rows: []
             }]
@@ -271,8 +251,6 @@ class Base(models.AbstractModel):
               { ...
                 {
                     groupedBy: ["stage_id"],
-                    records: [2],
-                    name: "To Do",
                     resId: 3,
                     rows: []
                     unavailabilities: [{

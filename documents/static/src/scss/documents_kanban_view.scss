@@ -15,6 +15,9 @@
 
 .o_content {
     .o_documents_kanban_view {
+        --KanbanRecord-padding-v: 0;
+        --KanbanRecord-padding-h: 0;
+
         overflow: auto;
         transition: background 0.3s;
         height: 100%;

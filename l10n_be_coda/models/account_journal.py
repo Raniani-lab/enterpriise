@@ -732,6 +732,11 @@ class AccountJournal(models.Model):
                                 line['counterpartyNumber'] = False
                         except ValueError:
                             pass
+                        if (
+                            line.get('transaction_family', '') in ('01', '02', '41')  # Credit transfer
+                            and line.get('transaction_code', '') == '07'  # Collective transfer
+                        ):
+                            line['counterpartyNumber'] = False
                         if line['counterpartyNumber']:
                             note.append(_('Counter Party Account') + ': ' + line['counterpartyNumber'])
                     else:

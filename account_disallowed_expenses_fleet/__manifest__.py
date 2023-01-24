@@ -5,7 +5,7 @@
     'category': 'Accounting/Accounting',
     'summary': 'Manage disallowed expenses with fleets',
     'version': '1.0',
-    'depends': ['account_fleet', 'account_disallowed_expenses'],
+    'depends': ['account_accountant_fleet', 'account_disallowed_expenses'],
     'data': [
         'security/ir.model.access.csv',
         'data/account_disallowed_expenses_fleet_report.xml',

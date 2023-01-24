@@ -1198,21 +1198,10 @@ class BankRecWidget(models.Model):
         line_ids_create_command_list = []
 
         for i, line in enumerate(self.line_ids):
-            line_ids_create_command_list.append(Command.create({
-                'name': line.name,
-                'sequence': i,
-                'account_id': line.account_id.id,
-                'partner_id': partner_to_set.id if line.flag in ('liquidity', 'auto_balance') else line.partner_id.id,
-                'currency_id': line.currency_id.id,
-                'amount_currency': line.amount_currency,
-                'balance': line.debit - line.credit,
-                'reconcile_model_id': line.reconcile_model_id.id,
-                'analytic_distribution': line.analytic_distribution,
-                'tax_repartition_line_id': line.tax_repartition_line_id.id,
-                'tax_ids': [Command.set(line.tax_ids.ids)],
-                'tax_tag_ids': [Command.set(line.tax_tag_ids.ids)],
-                'group_tax_id': line.group_tax_id.id,
-            }))
+            line_ids_create_command_list.append(Command.create(line._get_aml_values(
+                sequence=i,
+                partner_id=partner_to_set.id if line.flag in ('liquidity', 'auto_balance') else line.partner_id.id,
+            )))
 
             if line.flag == 'new_aml':
                 to_reconcile.append((i, line.source_aml_id.id))

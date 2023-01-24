@@ -172,7 +172,7 @@
                                                 t-out="formatDateField(line.data.date)"/>
                                         </t>
                                     </t>
-                                    <t t-if="column[0] === 'taxes'">
+                                    <t t-if="column[0] === 'taxes'" name="col_taxes">
                                         <td class="o_data_cell o_field_cell o_field_widget o_field_many2many_tags"
                                             field="tax_ids">
                                             <div class="o_field_tags d-inline-flex flex-wrap mw-100">

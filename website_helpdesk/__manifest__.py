@@ -25,7 +25,7 @@
             'website_helpdesk/static/**/*',
             ('remove', 'website_helpdesk/static/src/js/website_helpdesk_form_editor.js'),
         ],
-        'website.assets_editor':[
+        'website.assets_wysiwyg': [
             'website_helpdesk/static/src/js/website_helpdesk_form_editor.js',
         ],
     }

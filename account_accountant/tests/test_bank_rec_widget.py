@@ -970,8 +970,12 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
 
     def test_auto_reconcile_cron(self):
         self.env['account.reconcile.model'].search([('company_id', '=', self.company_data['company'].id)]).unlink()
+        cron = self.env.ref('account_accountant.auto_reconcile_bank_statement_line')
+        self.env['ir.cron.trigger'].search([('cron_id', '=', cron.id)]).unlink()
 
         st_line = self._create_st_line(1234.0, partner_id=self.partner_a.id, date='2017-01-01')
+        self.assertEqual(len(self.env['ir.cron.trigger'].search([('cron_id', '=', cron.id)])), 1)
+
         self._create_invoice_line(
             'out_invoice',
             invoice_date='2017-01-01',
@@ -989,6 +993,7 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         with freeze_time('2017-01-01'):
             self.env['account.bank.statement.line']._cron_try_auto_reconcile_statement_lines()
         self.assertRecordValues(st_line, [{'is_reconciled': False, 'cron_last_check': False}])
+        self.assertEqual(len(self.env['ir.cron.trigger'].search([('cron_id', '=', cron.id)])), 1)
 
         rule.auto_reconcile = True
 
@@ -996,19 +1001,23 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
         with freeze_time('2017-06-01'):
             self.env['account.bank.statement.line']._cron_try_auto_reconcile_statement_lines()
         self.assertRecordValues(st_line, [{'is_reconciled': False, 'cron_last_check': False}])
+        self.assertEqual(len(self.env['ir.cron.trigger'].search([('cron_id', '=', cron.id)])), 1)
 
         # The CRON will auto-reconcile the line.
         with freeze_time('2017-01-02'):
             self.env['account.bank.statement.line']._cron_try_auto_reconcile_statement_lines()
         self.assertRecordValues(st_line, [{'is_reconciled': True, 'cron_last_check': fields.Datetime.from_string('2017-01-02 00:00:00')}])
+        self.assertEqual(len(self.env['ir.cron.trigger'].search([('cron_id', '=', cron.id)])), 1)
 
         st_line1 = self._create_st_line(1234.0, partner_id=self.partner_a.id, date='2018-01-01')
+        self.assertEqual(len(self.env['ir.cron.trigger'].search([('cron_id', '=', cron.id)])), 2)
         self._create_invoice_line(
             'out_invoice',
             invoice_date='2018-01-01',
             invoice_line_ids=[{'price_unit': 1234.0}],
         )
         st_line2 = self._create_st_line(1234.0, partner_id=self.partner_a.id, date='2018-01-01')
+        self.assertEqual(len(self.env['ir.cron.trigger'].search([('cron_id', '=', cron.id)])), 3)
         self._create_invoice_line(
             'out_invoice',
             invoice_date='2018-01-01',
@@ -1027,11 +1036,40 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             {'is_reconciled': False, 'cron_last_check': fields.Datetime.from_string('2017-12-31 00:00:00')},
             {'is_reconciled': True, 'cron_last_check': fields.Datetime.from_string('2018-01-02 00:00:00')},
         ])
+        self.assertEqual(len(self.env['ir.cron.trigger'].search([('cron_id', '=', cron.id)])), 4)
 
         with freeze_time('2018-01-03'):
             self.env['account.bank.statement.line']._cron_try_auto_reconcile_statement_lines(batch_size=1)
 
         self.assertRecordValues(st_line1, [{'is_reconciled': True, 'cron_last_check': fields.Datetime.from_string('2018-01-03 00:00:00')}])
+        self.assertEqual(len(self.env['ir.cron.trigger'].search([('cron_id', '=', cron.id)])), 4)
+
+        st_line3 = self._create_st_line(1234.0, date='2018-01-01')
+        self.assertEqual(len(self.env['ir.cron.trigger'].search([('cron_id', '=', cron.id)])), 5)
+        self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2018-01-01',
+            invoice_line_ids=[{'price_unit': 1234.0}],
+        )
+        st_line4 = self._create_st_line(1234.0, date='2018-01-01')
+        self.assertEqual(len(self.env['ir.cron.trigger'].search([('cron_id', '=', cron.id)])), 6)
+        self._create_invoice_line(
+            'out_invoice',
+            invoice_date='2018-01-01',
+            invoice_line_ids=[{'price_unit': 1234.0}],
+        )
+
+        # Make sure the CRON is no longer applicable.
+        rule.match_partner = True
+        rule.match_partner_ids = [Command.set(self.partner_a.ids)]
+        with freeze_time('2018-01-01'):
+            self.env['account.bank.statement.line']._cron_try_auto_reconcile_statement_lines(batch_size=1)
+
+        self.assertRecordValues(st_line3 + st_line4, [
+            {'is_reconciled': False, 'cron_last_check': fields.Datetime.from_string('2018-01-01 00:00:00')},
+            {'is_reconciled': False, 'cron_last_check': False},
+        ])
+        self.assertEqual(len(self.env['ir.cron.trigger'].search([('cron_id', '=', cron.id)])), 7)
 
     def test_duplicate_amls_constraint(self):
         st_line = self._create_st_line(1000.0)

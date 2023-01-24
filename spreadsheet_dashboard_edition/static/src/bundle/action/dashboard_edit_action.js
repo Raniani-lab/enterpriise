@@ -20,7 +20,7 @@ import { RecordFileStore } from "@spreadsheet_edition/bundle/image/record_file_s
 
 const { useState, Component, useSubEnv } = owl;
 
-class DashboardEditAction extends AbstractSpreadsheetAction {
+export class DashboardEditAction extends AbstractSpreadsheetAction {
     setup() {
         super.setup();
         /** @type {State} */
@@ -68,7 +68,7 @@ class DashboardEditAction extends AbstractSpreadsheetAction {
      * @param {SpreadsheetRecord} record
      */
     _initializeWith(record) {
-        this.spreadsheetData = record.spreadsheet_data;
+        this.spreadsheetData = record.data;
         this.stateUpdateMessages = record.revisions;
         this.snapshotRequested = record.snapshot_requested;
         this.state.spreadsheetName = record.name;

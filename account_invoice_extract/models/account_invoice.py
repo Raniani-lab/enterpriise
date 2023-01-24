@@ -115,37 +115,12 @@ class AccountMove(models.Model):
         # If not from email alias, only auto extract for purchase moves
         return self.is_purchase_document()
 
-    def _ocr_create_document_from_attachment(self, attachment, journal=None):
-        invoice_vals = {'journal_id': journal.id} if journal else {}
-        invoice = self.env['account.move'].create(invoice_vals)
-        invoice.message_main_attachment_id = attachment
-        invoice.action_manual_send_for_digitization()
-        return invoice
-
-    def _ocr_update_invoice_from_attachment(self, attachment, invoice):
-        invoice.action_manual_send_for_digitization()
-        return invoice
-
-    def _get_create_document_from_attachment_decoders(self):
-        # OVERRIDE
-        res = super()._get_create_document_from_attachment_decoders()
-        if self._check_digitalization_mode(self.env.company, self._context.get('default_move_type'), 'auto_send'):
-            res.append((20, self._ocr_create_document_from_attachment))
-        return res
-
     def _get_ocr_module_name(self):
         return 'account_invoice_extract'
 
     def _get_ocr_option_can_extract(self):
         self.ensure_one()
         return not self._check_digitalization_mode(self.company_id, self.move_type, 'no_send')
-
-    def _get_update_invoice_from_attachment_decoders(self, invoice):
-        # OVERRIDE
-        res = super()._get_update_invoice_from_attachment_decoders(invoice)
-        if invoice._needs_auto_extract():
-            res.append((20, self._ocr_update_invoice_from_attachment))
-        return res
 
     def _get_validation_domain(self):
         base_domain = super()._get_validation_domain()
@@ -828,3 +803,26 @@ class AccountMove(models.Model):
                 float_compare(abs(tax_amount_rounding_error), threshold, precision_digits=2) <= 0
             ):
                 self._check_total_amount(total_ocr)
+
+    # -------------------------------------------------------------------------
+    # EDI
+    # -------------------------------------------------------------------------
+
+    @api.model
+    def _import_invoice_ocr(self, invoice, file_data, new=False):
+        invoice.message_main_attachment_id = file_data['attachment']
+        invoice.action_manual_send_for_digitization()
+        return True
+
+    def _get_edi_decoder(self, file_data, new=False):
+        # EXTENDS 'account'
+        self.ensure_one()
+        if file_data['type'] in ('pdf', 'binary'):
+            if new:
+                if self._check_digitalization_mode(self.company_id, self.move_type, 'auto_send'):
+                    return self._import_invoice_ocr
+            else:
+                if self._needs_auto_extract():
+                    return self._import_invoice_ocr
+
+        return super()._get_edi_decoder(file_data, new=new)

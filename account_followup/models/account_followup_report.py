@@ -346,7 +346,6 @@ Best Regards,
                 partner.with_context(mail_post_autofollow=True, lang=partner.lang or self.env.user.lang).message_post(
                     partner_ids=[to_send_partner.id],
                     body=body_html,
-                    email_from=email,
                     subject=self._get_email_subject(options),
                     subtype_id=self.env.ref('mail.mt_note').id,
                     model_description=_('payment reminder'),

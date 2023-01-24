@@ -110,7 +110,7 @@
                                 <div attrs="{'invisible': [('auto_assignment', '=', False)]}" class="mt16">
                                     <field name="assign_method" class="o_light_label" widget="radio"/>
                                     <div>
-                                        <field name="member_ids" widget="many2many_avatar_user"
+                                        <field name="member_ids" widget="many2many_avatar_user" attrs="{'required': [('auto_assignment', '=', True)]}"
                                         class="mt16" placeholder="Add team members..." options="{'no_quick_create': True}"/>
                                     </div>
                                 </div>

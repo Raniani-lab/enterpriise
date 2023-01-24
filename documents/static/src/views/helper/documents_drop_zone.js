@@ -3,6 +3,10 @@
 const { Component, useEffect, useState } = owl;
 
 export class DocumentsDropZone extends Component {
+    static props = [
+        "parentRoot", // Parent's root element, used to know the zone to use.
+    ];
+
     setup() {
         this.state = useState({
             dragOver: false,

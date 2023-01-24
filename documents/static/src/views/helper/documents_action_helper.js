@@ -5,6 +5,10 @@ import { useService } from "@web/core/utils/hooks";
 const { Component, onWillStart, onWillUpdateProps, useState } = owl;
 
 export class DocumentsActionHelper extends Component {
+    static props = [
+        "noContentHelp", // Markup Object
+    ];
+
     setup() {
         this.orm = useService("orm");
         this.hasShareReadAccessRights = undefined;

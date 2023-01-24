@@ -55,6 +55,14 @@ export const inspectorFields = [
 ];
 
 export class DocumentsInspector extends Component {
+    static props = [
+        "archInfo", // Archinfo of the view
+        "count", // Current number of records displayed in the view
+        "fileSize", // Total size of (in MB) of records displayed in the view
+        "selection", // Array of records
+        "withFilePreview?", // Boolean, whether to display the thumbnails in the inspector or not
+    ];
+
     setup() {
         this.orm = useService("orm");
         this.action = useService("action");

@@ -19,7 +19,15 @@ const { Component, onWillStart, useState } = owl;
  * SearchPanel to be used in the documents kanban/list views.
  */
 
-export class DocumentsSearchPanelItemSettingsPopover extends Component {}
+export class DocumentsSearchPanelItemSettingsPopover extends Component {
+    static props = [
+        "close", // Function, close the popover
+        "createChildEnabled", // Whether we have the option to create a new child or not
+        "onCreateChild", // Function, create new child
+        "onDelete", // Function, delete element
+        "onEdit", // Function, edit element
+    ];
+}
 DocumentsSearchPanelItemSettingsPopover.template = "documents.DocumentsSearchPanelItemSettingsPopover";
 
 export class DocumentsSearchPanel extends SearchPanel {

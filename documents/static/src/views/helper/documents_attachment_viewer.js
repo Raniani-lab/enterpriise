@@ -6,6 +6,10 @@ import { getMessagingComponent } from "@mail/utils/messaging_component";
 const { Component, useEffect, useRef, useState } = owl;
 
 export class DocumentsAttachmentViewer extends Component {
+    static props = [
+        "parentRoot", // Parent's root element, used to know the zone to use.
+    ];
+
     setup() {
         this.root = useRef("root");
         this.state = useState({

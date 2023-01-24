@@ -494,9 +494,9 @@ var accountReportsWidget = AbstractAction.extend({
     },
     _onChangeExpectedDate: function (event) {
         var self = this;
-        var split_target = $(event.target).attr('data-id').split("-");
+        var split_target = $(event.target).attr('data-id').split("~");
         var targetID = parseInt(split_target[split_target.length - 1]);
-        var split_parent = $(event.target).attr('parent-id').split("-");
+        var split_parent = $(event.target).attr('parent-id').split("~");
         var parentID = parseInt(split_parent[split_parent.length - 1]);
         var $content = $(QWeb.render("paymentDateForm", {target_id: targetID}));
         var paymentDatePicker = new datepicker.DateWidget(this);

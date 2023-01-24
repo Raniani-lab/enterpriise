@@ -13,6 +13,7 @@ import { voiceMessageService } from "@mail/discuss/voice_message/common/voice_me
 import {
     createDocumentsView as originalCreateDocumentsView,
     createDocumentsViewWithMessaging,
+    getEnrichedSearchArch,
 } from "./documents_test_utils";
 import { registry } from "@web/core/registry";
 import { getOrigin } from "@web/core/utils/urls";
@@ -25,7 +26,10 @@ import {
     pagerNext,
     pagerPrevious,
 } from "@web/../tests/search/helpers";
-
+import {
+    createWebClient,
+    loadState,
+} from "@web/../tests/webclient/helpers";
 import testUtils from "@web/../tests/legacy/helpers/test_utils";
 import {
     click as legacyClick,
@@ -4143,6 +4147,60 @@ QUnit.module("documents", {}, function () {
                 }
             );
 
+            QUnit.test("SearchPanel: updates the route", async function (assert) {
+                const kanban = await createDocumentsView({
+                    type: "kanban",
+                    resModel: "documents.document",
+                    arch: `
+                        <kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                            <div draggable="true" class="oe_kanban_global_area">
+                                <i class="fa fa-circle-thin o_record_selector"/>
+                                <field name="name"/>
+                            </div>
+                        </t></templates></kanban>`,
+                });
+
+                assert.strictEqual(kanban.env.services.router.current.hash.folder_id, 1);
+
+                await legacyClick(target, ".o_search_panel_category_value:nth-of-type(3) header");
+                assert.strictEqual(kanban.env.services.router.current.hash.folder_id, 2);
+
+                await legacyClick(target, ".o_search_panel_category_value:nth-of-type(1) header");
+                assert.strictEqual(kanban.env.services.router.current.hash.folder_id, "");
+            });
+
+            QUnit.test("SearchPanel: update route updates active folder", async function (assert) {
+                const views = {
+                    "documents.document,false,kanban":
+                    `<kanban js_class="documents_kanban"><templates><t t-name="kanban-box">
+                        <div draggable="true" class="oe_kanban_global_area">
+                            <i class="fa fa-circle-thin o_record_selector"/>
+                            <field name="name"/>
+                        </div>
+                    </t></templates></kanban>`,
+                    "documents.document,false,search": getEnrichedSearchArch(),
+                };
+                const actions = {
+                    "documents.document_kanban_view": {
+                        id: 1,
+                        name: "document_kanban_view",
+                        res_model: "documents.document",
+                        type: "ir.actions.act_window",
+                        views: [[false, "kanban"]],
+                    }
+                }
+                const webClient = await createWebClient({ serverData : { views, actions } });
+                await loadState(webClient, { action: "documents.document_kanban_view" });
+                await nextTick();
+
+                assert.strictEqual(webClient.router.current.hash.folder_id, 1);
+                await loadState(webClient, Object.assign({}, webClient.router.current.hash, { folder_id: 2 }));
+                await nextTick();
+
+                assert.strictEqual(webClient.router.current.hash.folder_id, 2);
+                assert.containsOnce(target, ".o_search_panel_category_value[title='Workspace2'] > header.active");
+            });
+
             QUnit.module("Upload");
 
             QUnit.test("documents: upload with default tags", async function (assert) {
@@ -4721,7 +4779,7 @@ QUnit.module("documents", {}, function () {
             });
 
             QUnit.test("store and retrieve active category value", async function (assert) {
-                assert.expect(8);
+                assert.expect(9);
 
                 let expectedActiveId = 3;
                 const storageKey = "searchpanel_documents.document_folder_id";
@@ -4782,6 +4840,7 @@ QUnit.module("documents", {}, function () {
                 assert.verifySteps([
                     "storage set 3", // Manual set for initial value
                     "storage get 3",
+                    "storage set 3",
                     "storage set 2", // Set on toggle
                 ]);
             });

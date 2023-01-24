@@ -3,16 +3,46 @@
 import { _t } from "@web/core/l10n/translation";
 import { SearchModel } from "@web/search/search_model";
 import { browser } from "@web/core/browser/browser";
+import { parseHash } from "@web/core/browser/router_service";
+import { useSetupAction } from "@web/webclient/actions/action_hook";
 
 // Helpers
 const isFolderCategory = (s) => s.type === "category" && s.fieldName === "folder_id";
 const isTagFilter = (s) => s.type === "filter" && s.fieldName === "tag_ids";
 
 export class DocumentsSearchModel extends SearchModel {
+
+    setup(services) {
+        super.setup(services);
+        useSetupAction({
+            beforeLeave: () => {
+                this._updateRouteState({ folder_id: undefined, tag_ids: undefined }, false);
+            },
+        });
+    }
+
     async load(config) {
         await super.load(...arguments);
         this.deletionDelay = await this.orm.call("documents.document", "get_deletion_delay", [[]]);
+
+        const urlHash = parseHash(browser.location.hash);
+        const folderId = urlHash.folder_id || this.getSelectedFolderId();
+        const tagIds = urlHash.tag_ids;
+
+        if (folderId) {
+            const folderSection = this.getSections(isFolderCategory)[0];
+            if (folderSection) {
+                this.toggleCategoryValue(folderSection.id, folderId);
+            }
+        }
+        if (tagIds) {
+            const tagSection = this.getSections(isTagFilter)[0];
+            if (tagSection) {
+                this.toggleFilterValues(tagSection.id, String(tagIds).split(",").map(Number));
+            }
+        }
     }
+
     //---------------------------------------------------------------------
     // Actions / Getters
     //---------------------------------------------------------------------
@@ -72,6 +102,7 @@ export class DocumentsSearchModel extends SearchModel {
 
     /**
      * Overridden to write the new value in the local storage.
+     * And to write the folder_id in the url.
      * @override
      */
     toggleCategoryValue(sectionId, valueId) {
@@ -79,6 +110,22 @@ export class DocumentsSearchModel extends SearchModel {
         const { fieldName } = this.sections.get(sectionId);
         const storageKey = this._getStorageKey(fieldName);
         browser.localStorage.setItem(storageKey, valueId);
+
+        if (fieldName === "folder_id") {
+            this._updateRouteState({ folder_id: valueId, tag_ids: undefined }, true);
+        }
+    }
+
+    /**
+     * Overriden to write the tag_ids in the url.
+     * @override
+     */
+    toggleFilterValues(sectionId, valueIds, forceTo = null) {
+        super.toggleFilterValues(...arguments);
+        const { fieldName } = this.sections.get(sectionId);
+        if (fieldName === "tag_ids") {
+            this._updateRouteState({ tag_ids: this.getSelectedTagIds() }, true);
+        }
     }
 
     /**
@@ -225,4 +272,9 @@ export class DocumentsSearchModel extends SearchModel {
     _shouldWaitForData() {
         return true;
     }
+
+    _updateRouteState(state, lock) {
+        this.env.services.router.pushState(state, { lock: lock });
+    }
+
 }

@@ -1053,13 +1053,21 @@ class BankRecWidget(models.Model):
 
         auto_balance = auto_balance_line_vals['balance']
         current_balance = line.balance + exchange_diff_line.balance
-        has_enough_comp_debit = auto_balance < 0.0 and current_balance > 0.0 and current_balance > -auto_balance
-        has_enough_comp_credit = auto_balance > 0.0 and current_balance < 0.0 and -current_balance > auto_balance
+        has_enough_comp_debit = self.company_currency_id.compare_amounts(auto_balance, 0) < 0 \
+                                and self.company_currency_id.compare_amounts(current_balance, 0) > 0 \
+                                and self.company_currency_id.compare_amounts(current_balance, -auto_balance) > 0
+        has_enough_comp_credit = self.company_currency_id.compare_amounts(auto_balance, 0) > 0 \
+                                and self.company_currency_id.compare_amounts(current_balance, 0) < 0 \
+                                and self.company_currency_id.compare_amounts(-current_balance, auto_balance) > 0
 
         auto_amount_currency = auto_balance_line_vals['amount_currency']
         current_amount_currency = line.amount_currency
-        has_enough_curr_debit = auto_amount_currency < 0.0 and current_amount_currency > 0.0 and current_amount_currency > -auto_amount_currency
-        has_enough_curr_credit = auto_amount_currency > 0.0 and current_amount_currency < 0.0 and -current_amount_currency > auto_amount_currency
+        has_enough_curr_debit = line.currency_id.compare_amounts(auto_amount_currency, 0) < 0 \
+                                and line.currency_id.compare_amounts(current_amount_currency, 0) > 0 \
+                                and line.currency_id.compare_amounts(current_amount_currency, -auto_amount_currency) > 0
+        has_enough_curr_credit = line.currency_id.compare_amounts(auto_amount_currency, 0) > 0 \
+                                and line.currency_id.compare_amounts(current_amount_currency, 0) < 0 \
+                                and line.currency_id.compare_amounts(-current_amount_currency, auto_amount_currency) > 0
 
         if line.currency_id == self.transaction_currency_id:
             if has_enough_curr_debit or has_enough_curr_credit:

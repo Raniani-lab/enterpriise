@@ -561,6 +561,69 @@ class TestBankRecWidget(TestBankRecWidgetCommon):
             'amount_residual': 10800.0,
         }])
 
+    def test_validation_new_aml_multi_currencies_exchange_diff_custom_rates(self):
+        self.company_data['default_journal_bank'].currency_id = self.currency_data['currency']
+
+        self.env['res.currency.rate'].create([
+            {
+                'name': '2017-02-01',
+                'rate': 1.0683,
+                'currency_id': self.currency_data['currency'].id,
+                'company_id': self.env.company.id,
+            },
+            {
+                'name': '2017-03-01',
+                'rate': 1.0812,
+                'currency_id': self.currency_data['currency'].id,
+                'company_id': self.env.company.id,
+            },
+        ])
+
+        # 960.14 curr1 = 888.03 comp_curr
+        st_line = self._create_st_line(
+            -960.14,
+            date='2017-03-01',
+        )
+        # 112.7 curr1 == 105.49 comp_curr
+        inv_line1 = self._create_invoice_line(
+            'in_invoice',
+            currency_id=self.currency_data['currency'],
+            invoice_date='2017-02-01',
+            invoice_line_ids=[{'price_unit': 112.7}],
+        )
+        # 847.44 curr1 == 793.26 comp_curr
+        inv_line2 = self._create_invoice_line(
+            'in_invoice',
+            currency_id=self.currency_data['currency'],
+            invoice_date='2017-02-01',
+            invoice_line_ids=[{'price_unit': 847.44}],
+        )
+
+        wizard = self.env['bank.rec.widget'].with_context(default_st_line_id=st_line.id).new({})
+        wizard._action_add_new_amls(inv_line1)
+        wizard._action_add_new_amls(inv_line2)
+
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',       'amount_currency': -960.14,     'balance': -888.03},
+            {'flag': 'new_aml',         'amount_currency': 112.7,       'balance': 105.49},
+            {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -1.25},
+            {'flag': 'new_aml',         'amount_currency': 847.44,      'balance': 793.26},
+            {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -9.47},
+        ])
+        wizard._action_remove_new_amls(inv_line1 + inv_line2)
+        wizard._action_add_new_amls(inv_line2)
+        wizard._action_add_new_amls(inv_line1)
+
+        self.assertRecordValues(wizard.line_ids, [
+            # pylint: disable=C0326
+            {'flag': 'liquidity',       'amount_currency': -960.14,     'balance': -888.03},
+            {'flag': 'new_aml',         'amount_currency': 847.44,      'balance': 793.26},
+            {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -9.47},
+            {'flag': 'new_aml',         'amount_currency': 112.7,       'balance': 105.49},
+            {'flag': 'exchange_diff',   'amount_currency': 0.0,         'balance': -1.25},
+        ])
+
     def test_validation_with_partner(self):
         partner = self.partner_a.copy()
 

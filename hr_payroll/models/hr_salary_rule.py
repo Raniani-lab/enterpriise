@@ -162,7 +162,7 @@ result = rules.NET > categories.NET * 0.10''',
                     'name': field_name,
                     'model': model.name,
                     'model_id': model.id,
-                    'field_description': rule.name,
+                    'field_description': '%s: %s' % (rule.struct_id.country_id.code or 'XX', rule.name),
                     'ttype': 'float',
                 })
         if fields_vals_list:

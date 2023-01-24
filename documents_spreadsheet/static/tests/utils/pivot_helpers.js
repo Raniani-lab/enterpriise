@@ -15,7 +15,7 @@ import {
     getSpreadsheetActionEnv,
     getSpreadsheetActionModel,
     prepareWebClientForSpreadsheet,
-} from "./webclient_helpers";
+} from "@spreadsheet_edition/../tests/utils/webclient_helpers";
 import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 
 /** @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model */
@@ -42,15 +42,19 @@ export async function spawnPivotViewForSpreadsheet(params = {}) {
         },
     });
 
-    await doAction(webClient, {
-        name: "pivot view",
-        res_model: params.model || "partner",
-        type: "ir.actions.act_window",
-        views: [[false, "pivot"]],
-        domain: params.domain,
-    }, {
-        additionalContext: params.additionalContext || {},
-    });
+    await doAction(
+        webClient,
+        {
+            name: "pivot view",
+            res_model: params.model || "partner",
+            type: "ir.actions.act_window",
+            views: [[false, "pivot"]],
+            domain: params.domain,
+        },
+        {
+            additionalContext: params.additionalContext || {},
+        }
+    );
     return webClient;
 }
 

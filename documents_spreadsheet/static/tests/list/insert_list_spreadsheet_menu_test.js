@@ -11,7 +11,7 @@ import {
     triggerEvent,
 } from "@web/../tests/helpers/utils";
 import { toggleFavoriteMenu } from "@web/../tests/search/helpers";
-import { getSpreadsheetActionModel } from "../utils/webclient_helpers";
+import { getSpreadsheetActionModel } from "@spreadsheet_edition/../tests/utils/webclient_helpers";
 
 let target;
 QUnit.module(

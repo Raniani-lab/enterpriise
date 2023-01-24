@@ -15,7 +15,7 @@ import {
     getSpreadsheetActionEnv,
     getSpreadsheetActionModel,
     prepareWebClientForSpreadsheet,
-} from "./webclient_helpers";
+} from "@spreadsheet_edition/../tests/utils/webclient_helpers";
 import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 
 /** @typedef {import("@spreadsheet/o_spreadsheet/o_spreadsheet").Model} Model */

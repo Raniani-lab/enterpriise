@@ -26,7 +26,7 @@ import { getBasicData, getBasicServerData } from "@spreadsheet/../tests/utils/da
 import {
     getSpreadsheetActionModel,
     prepareWebClientForSpreadsheet,
-} from "../../utils/webclient_helpers";
+} from "@spreadsheet_edition/../tests/utils/webclient_helpers";
 import {
     getCell,
     getCellContent,

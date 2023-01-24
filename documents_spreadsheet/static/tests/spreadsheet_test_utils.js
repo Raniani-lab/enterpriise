@@ -11,7 +11,7 @@ import {
     getSpreadsheetActionEnv,
     getSpreadsheetActionModel,
     prepareWebClientForSpreadsheet,
-} from "./utils/webclient_helpers";
+} from "@spreadsheet_edition/../tests/utils/webclient_helpers";
 
 /**
  * @typedef {import("@spreadsheet/../tests/utils/data").ServerData} ServerData

@@ -13,7 +13,7 @@ import {
     getSpreadsheetActionEnv,
     getSpreadsheetActionModel,
     prepareWebClientForSpreadsheet,
-} from "./webclient_helpers";
+} from "@spreadsheet_edition/../tests/utils/webclient_helpers";
 import { SpreadsheetAction } from "../../src/bundle/actions/spreadsheet_action";
 import { waitForDataSourcesLoaded } from "@spreadsheet/../tests/utils/model";
 
@@ -47,7 +47,7 @@ export async function spawnListViewForSpreadsheet(params = {}) {
 
     /** sort the view by field */
     const target = getFixture();
-    for (let order of params.orderBy || []) {
+    for (const order of params.orderBy || []) {
         const selector = `thead th.o_column_sortable[data-name='${order.name}']`;
         await click(target.querySelector(selector));
         if (order.asc === false) {

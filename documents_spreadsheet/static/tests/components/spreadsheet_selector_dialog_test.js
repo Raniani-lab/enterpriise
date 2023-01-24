@@ -11,7 +11,7 @@ import {
     triggerEvent,
 } from "@web/../tests/helpers/utils";
 import { getBasicServerData } from "@spreadsheet/../tests/utils/data";
-import { prepareWebClientForSpreadsheet } from "../utils/webclient_helpers";
+import { prepareWebClientForSpreadsheet } from "@spreadsheet_edition/../tests/utils/webclient_helpers";
 import { notificationService } from "@web/core/notifications/notification_service";
 import { registry } from "@web/core/registry";
 import { actionService } from "@web/webclient/actions/action_service";

@@ -2,7 +2,7 @@
 
 import { createWebClient, doAction } from "@web/../tests/webclient/helpers";
 import { getBasicData } from "@spreadsheet/../tests/utils/data";
-import { prepareWebClientForSpreadsheet } from "../utils/webclient_helpers";
+import { prepareWebClientForSpreadsheet } from "@spreadsheet_edition/../tests/utils/webclient_helpers";
 import { getFixture, nextTick, click } from "@web/../tests/helpers/utils";
 import { createSpreadsheet } from "../spreadsheet_test_utils";
 import { selectCell } from "@spreadsheet/../tests/utils/commands";

@@ -11,7 +11,7 @@ import {
     createSpreadsheetFromGraphView,
     spawnGraphViewForSpreadsheet,
 } from "../utils/chart_helpers";
-import { getSpreadsheetActionModel } from "../utils/webclient_helpers";
+import { getSpreadsheetActionModel } from "@spreadsheet_edition/../tests/utils/webclient_helpers";
 
 function beforeEach() {
     patch(GraphController.prototype, "graph_spreadsheet", patchGraphSpreadsheet);

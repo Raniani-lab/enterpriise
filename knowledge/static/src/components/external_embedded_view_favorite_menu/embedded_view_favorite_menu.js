@@ -3,8 +3,8 @@
 import { DropdownItem } from "@web/core/dropdown/dropdown_item";
 import { registry } from "@web/core/registry";
 import { supportedEmbeddedViews } from "@knowledge/components/external_embedded_view_insertion/views_renderers_patches";
+import { Component } from "@odoo/owl";
 
-const { Component } = owl;
 const favoriteMenuRegistry = registry.category("favoriteMenu");
 
 export class InsertEmbeddedViewMenu extends Component {

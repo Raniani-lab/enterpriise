@@ -6,19 +6,16 @@ import { browser } from "@web/core/browser/browser";
 import { SendAsMessageMacro, UseAsDescriptionMacro } from "@knowledge/macros/template_macros";
 import { Tooltip } from "@web/core/tooltip/tooltip";
 import { useService } from "@web/core/utils/hooks";
-
-const {
-    markup,
+import {
     useRef,
     onMounted,
-    onWillUnmount } = owl;
+    onWillUnmount } from "@odoo/owl";
 
 
 export class TemplateBehavior extends AbstractBehavior {
     setup() {
         super.setup();
         this.dialogService = useService("dialog");
-        this.knowledgeCommandsService = useService("knowledgeCommandsService");
         this.popoverService = useService("popover");
         this.uiService = useService("ui");
         this.copyToClipboardButton = useRef("copyToClipboardButton");
@@ -42,9 +39,6 @@ export class TemplateBehavior extends AbstractBehavior {
             }
         });
         this.targetRecordInfo = this.knowledgeCommandsService.getCommandsRecordInfo();
-        if (this.props.content) {
-            this.props.content = markup(this.props.content);
-        }
     }
     showTooltip() {
         const closeTooltip = this.popoverService.add(this.copyToClipboardButton.el, Tooltip, {
@@ -75,6 +69,7 @@ export class TemplateBehavior extends AbstractBehavior {
             breadcrumbs: this.targetRecordInfo.breadcrumbs,
             data: {
                 fieldName: this.targetRecordInfo.fieldInfo.name,
+                pageName: this.targetRecordInfo.fieldInfo.pageName,
                 dataTransfer: dataTransfer,
             },
             services: {
@@ -120,5 +115,5 @@ export class TemplateBehavior extends AbstractBehavior {
 TemplateBehavior.template = "knowledge.TemplateBehavior";
 TemplateBehavior.props = {
     ...AbstractBehavior.props,
-    content: { type: String, optional: true },
+    content: { type: Object, optional: true },
 };

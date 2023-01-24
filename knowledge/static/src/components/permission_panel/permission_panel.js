@@ -5,8 +5,8 @@ import { ConfirmationDialog, AlertDialog } from "@web/core/confirmation_dialog/c
 import { _lt } from "@web/core/l10n/translation";
 import { _t } from 'web.core';
 import { useService } from '@web/core/utils/hooks';
+import { Component, onWillStart, useState } from "@odoo/owl";
 
-const { Component, onWillStart, useState } = owl;
 const permissionLevel = {'none': 0, 'read': 1, 'write': 2}
 const restrictMessage = _lt("Are you sure you want to restrict this role and restrict access ? "
 + "This article will no longer inherit access settings from the parent page.");

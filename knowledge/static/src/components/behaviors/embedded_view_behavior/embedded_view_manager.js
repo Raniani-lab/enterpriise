@@ -5,12 +5,10 @@ import { getDefaultConfig, View } from "@web/views/view";
 import { PromptEmbeddedViewNameDialog } from "@knowledge/components/prompt_embedded_view_name_dialog/prompt_embedded_view_name_dialog";
 import { useOwnDebugContext } from "@web/core/debug/debug_context";
 import { useService } from "@web/core/utils/hooks";
-
-const {
+import {
     Component,
-    onMounted,
     onWillStart,
-    useSubEnv } = owl;
+    useSubEnv } from "@odoo/owl";
 
 const EMBEDDED_VIEW_LIMITS = {
     kanban: 20,
@@ -62,7 +60,6 @@ export class EmbeddedViewManager extends Component {
             __getGlobalState__: this.__getGlobalState__,
         });
         onWillStart(this.onWillStart.bind(this));
-        onMounted(this.onMounted.bind(this));
     }
 
     /**
@@ -131,11 +128,6 @@ export class EmbeddedViewManager extends Component {
         this.EmbeddedView = View;
         this.EmbeddedViewProps = ViewProps;
         this.action = action;
-        this.props.onLoadStart();
-    }
-
-    onMounted () {
-        this.props.onLoadEnd();
     }
 
     /**
@@ -173,8 +165,6 @@ EmbeddedViewManager.props = {
     action: { type: Object },
     context: { type: Object },
     viewType: { type: String },
-    onLoadStart: { type: Function },
-    onLoadEnd: { type: Function },
     setTitle: { type: Function },
     getTitle: { type: Function },
     readonly: { type: Boolean },

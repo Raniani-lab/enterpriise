@@ -5,6 +5,7 @@ import { KnowledgePlugin } from "@knowledge/js/knowledge_plugin";
 import { patch } from "@web/core/utils/patch";
 import { templates } from "@web/core/assets";
 import { useService } from "@web/core/utils/hooks";
+import { decodeDataBehaviorProps } from "@knowledge/js/knowledge_utils";
 
 // Behaviors:
 
@@ -15,14 +16,14 @@ import { EmbeddedViewBehavior } from "@knowledge/components/behaviors/embedded_v
 import { TemplateBehavior } from "@knowledge/components/behaviors/template_behavior/template_behavior";
 import { TableOfContentBehavior } from "@knowledge/components/behaviors/table_of_content_behavior/table_of_content_behavior";
 import { ViewLinkBehavior } from "@knowledge/components/behaviors/view_link_behavior/view_link_behavior";
-
-const {
+import {
     App,
+    markup,
     onMounted,
     onPatched,
     onWillDestroy,
     onWillUnmount,
-} = owl;
+} from "@odoo/owl";
 
 const behaviorTypes = {
     o_knowledge_behavior_type_article: {
@@ -51,7 +52,7 @@ const behaviorTypes = {
 const HtmlFieldPatch = {
     setup() {
         this._super(...arguments);
-        this.behaviorAnchors = new Set();
+        this.behaviorApps = new Set();
         this.bindedDelayedRefreshBehaviors = this.delayedRefreshBehaviors.bind(this);
         this.uiService = useService('ui');
         onWillUnmount(() => {
@@ -68,11 +69,8 @@ const HtmlFieldPatch = {
             this.updateBehaviors();
         });
         onWillDestroy(() => {
-            for (const anchor of Array.from(this.behaviorAnchors)) {
-                if (anchor.oKnowledgeBehavior) {
-                    anchor.oKnowledgeBehavior.destroy();
-                    delete anchor.oKnowledgeBehavior;
-                }
+            for (const app of Array.from(this.behaviorApps)) {
+                app.destroy();
             }
         });
     },
@@ -140,7 +138,6 @@ const HtmlFieldPatch = {
                 }
                 // parse html to get all data-behavior-props content nodes
                 const props = {
-                    ...behaviorData.props,
                     readonly: this.props.readonly,
                     anchor: anchor,
                     wysiwyg: this.wysiwyg,
@@ -150,7 +147,7 @@ const HtmlFieldPatch = {
                 let behaviorProps = {};
                 if (anchor.hasAttribute("data-behavior-props")) {
                     try {
-                        behaviorProps = JSON.parse(anchor.dataset.behaviorProps);
+                        behaviorProps = decodeDataBehaviorProps(anchor.dataset.behaviorProps);
                     } catch {}
                 }
                 for (const prop in behaviorProps) {
@@ -161,10 +158,14 @@ const HtmlFieldPatch = {
                 const propNodes = anchor.querySelectorAll("[data-prop-name]");
                 for (const node of propNodes) {
                     if (node.dataset.propName in Behavior.props) {
-                        props[node.dataset.propName] = node.innerHTML;
+                        // safe because sanitized by the editor and backend
+                        props[node.dataset.propName] = markup(node.innerHTML);
                     }
                 }
                 anchor.replaceChildren();
+                if (!this.props.readonly && this.wysiwyg && this.wysiwyg.odooEditor) {
+                    this.wysiwyg.odooEditor.observerActive('injectBehavior');
+                }
                 const config = (({env, dev, translatableAttributes, translateFn}) => {
                     return {env, dev, translatableAttributes, translateFn};
                 })(this.__owl__.app);
@@ -173,10 +174,9 @@ const HtmlFieldPatch = {
                     templates: templates,
                     props,
                 });
+                this.behaviorApps.add(anchor.oKnowledgeBehavior);
                 await anchor.oKnowledgeBehavior.mount(anchor);
                 if (!this.props.readonly && this.wysiwyg && this.wysiwyg.odooEditor) {
-                    this.wysiwyg.odooEditor.idSet(anchor);
-                    this.wysiwyg.odooEditor.observerActive('injectBehavior');
                     if (behaviorData.setCursor && anchor.oKnowledgeBehavior.root.component.setCursor) {
                         anchor.oKnowledgeBehavior.root.component.setCursor();
                     }
@@ -216,7 +216,6 @@ const HtmlFieldPatch = {
      * @param {HTMLElement} target
      */
     _scanFieldForBehaviors(behaviorsData, target) {
-        const anchors = new Set();
         const types = new Set(Object.getOwnPropertyNames(this.behaviorTypes));
         const anchorNodes = target.querySelectorAll('.o_knowledge_behavior_anchor');
         const anchorNodesSet = new Set(anchorNodes);
@@ -233,18 +232,8 @@ const HtmlFieldPatch = {
                     anchor: anchor,
                     behaviorType: type,
                 });
-                anchors.add(anchor);
             }
         }
-        // difference between the stored set and the computed one
-        const differenceAnchors = new Set([...this.behaviorAnchors].filter(anchor => !anchors.has(anchor)));
-        // remove obsolete behaviors
-        differenceAnchors.forEach(anchor => {
-            if (anchor.oKnowledgeBehavior) {
-                anchor.oKnowledgeBehavior.destroy();
-                delete anchor.oKnowledgeBehavior;
-            }
-        });
     },
 };
 

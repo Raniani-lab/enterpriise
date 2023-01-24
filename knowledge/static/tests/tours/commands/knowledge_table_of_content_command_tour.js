@@ -21,7 +21,7 @@ tour.register('knowledge_table_of_content_command_tour', {
 }, { // wait for the block to appear in the editor
     trigger: '.o_knowledge_behavior_type_toc',
 }, { // insert a few titles in the editor
-    trigger: '.odoo-editor-editable > p',
+    trigger: '.odoo-editor-editable',
     run: function () {
         const $anchor = $(this.$anchor[0]);
         $anchor.append([

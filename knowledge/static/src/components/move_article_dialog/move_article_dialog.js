@@ -2,7 +2,7 @@
 
 import { Dialog } from '@web/core/dialog/dialog';
 import { useService } from "@web/core/utils/hooks";
-const { Component, useRef, onMounted } = owl;
+import { Component, useRef, onMounted } from "@odoo/owl";
 import { _t } from 'web.core';
 
 class MoveArticleDialog extends Component {

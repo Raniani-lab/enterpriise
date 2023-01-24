@@ -6,8 +6,7 @@ import { registry } from "@web/core/registry";
 import { HotkeyCommandItem } from "@web/core/commands/default_providers";
 import { splitCommandName } from "@web/core/commands/command_palette";
 import { sprintf } from '@web/core/utils/strings';
-
-const { Component } = owl;
+import { Component } from "@odoo/owl";
 
 // Articles command
 class KnowledgeCommand extends Component {}

@@ -9,8 +9,7 @@ import MoveArticleDialog from "@knowledge/components/move_article_dialog/move_ar
 import PermissionPanel from '@knowledge/components/permission_panel/permission_panel';
 import { sprintf } from '@web/core/utils/strings';
 import { useService } from "@web/core/utils/hooks";
-
-const { onMounted, onPatched, useEffect, useRef, useState, xml } = owl;
+import { onMounted, onPatched, useEffect, useRef, useState, xml } from "@odoo/owl";
 
 export class KnowledgeArticleFormRenderer extends FormRenderer {
 

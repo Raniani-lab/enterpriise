@@ -6,9 +6,9 @@ import { patch, unpatch } from "@web/core/utils/patch";
 import { makeFakeMessagingServiceForKnowledge } from "@knowledge/../tests/mock_services";
 import { makeView, setupViewRegistries } from "@web/../tests/views/helpers";
 import { registry } from "@web/core/registry";
+import { onMounted } from "@odoo/owl";
 
 const serviceRegistry = registry.category("services");
-const { onMounted } = owl;
 
 const articlesStructureSearch = {
     records: [

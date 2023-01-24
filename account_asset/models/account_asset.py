@@ -225,7 +225,7 @@ class AccountAsset(models.Model):
     @api.depends('acquisition_date', 'company_id', 'prorata_computation_type')
     def _compute_prorata_date(self):
         for asset in self:
-            if asset.prorata_computation_type == 'none':
+            if asset.prorata_computation_type == 'none' and asset.acquisition_date:
                 fiscalyear_date = asset.company_id.compute_fiscalyear_dates(asset.acquisition_date).get('date_from')
                 asset.prorata_date = fiscalyear_date
             else:

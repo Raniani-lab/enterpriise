@@ -618,7 +618,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                                     <accID>130010</accID>
                                     <docRef>/</docRef>
                                     <effDate>2019-01-01</effDate>
-                                    <desc></desc>
+                                    <desc>installment #1</desc>
                                     <amnt>348.48</amnt>
                                     <amntTp>C</amntTp>
                                     <custSupID>___ignore___</custSupID>
@@ -632,7 +632,7 @@ class TestNlXafExport(TestAccountReportsCommon):
                                     <accID>130010</accID>
                                     <docRef>/</docRef>
                                     <effDate>2019-01-01</effDate>
-                                    <desc></desc>
+                                    <desc>installment #2</desc>
                                     <amnt>813.12</amnt>
                                     <amntTp>C</amntTp>
                                     <custSupID>___ignore___</custSupID>

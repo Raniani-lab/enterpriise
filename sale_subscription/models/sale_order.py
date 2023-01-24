@@ -1269,7 +1269,7 @@ class SaleOrder(models.Model):
                 order_already_invoiced |= order
         if order_already_invoiced:
             order_error = ", ".join(order_already_invoiced.mapped('name'))
-            raise ValidationError(_("The following recurring orders have draft invoices. Please Confirm them or cancel them"
+            raise ValidationError(_("The following recurring orders have draft invoices. Please Confirm them or cancel them "
                                     "before creating new invoices. %s.", order_error))
         invoices = super()._create_invoices(grouped=grouped, final=final, date=date)
         return invoices

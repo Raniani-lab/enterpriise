@@ -157,6 +157,11 @@ class SpanishTaxReportCustomHandler(models.AbstractModel):
         date_from = datetime.strptime(options['date']['date_from'], "%Y-%m-%d")
         date_to = datetime.strptime(options['date']['date_to'], "%Y-%m-%d")
 
+        if 'original_date_to' in options:
+            # This means `date_to` was modified, which will interfere with the period calculation here. Use the original
+            # value instead.
+            date_to = datetime.strptime(options['original_date_to'], "%Y-%m-%d")
+
         if not date_from.year == date_to.year:
             raise UserError(_("Cannot generate a BOE file for two different years"))
 
@@ -1277,6 +1282,8 @@ class SpanishMod349TaxReportCustomHandler(models.AbstractModel):
             if period[-1] == 'T':
                 options = options.copy()
                 end_date = datetime.strptime(options['date']['date_to'], '%Y-%m-%d')
+                # Note the original value so we can still check it later (like in _get_mod_period_and_year)
+                options['original_date_to'] = options['date']['date_to']
                 options['date']['date_to'] = (end_date + relativedelta(day=31, months=-1)).strftime('%Y-%m-%d')
             else:
                 raise UserError(_("You cannot generate a BOE file for the first two months of a trimester if only one month is selected!"))

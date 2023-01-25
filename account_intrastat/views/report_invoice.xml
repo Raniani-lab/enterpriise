@@ -5,10 +5,10 @@
         <xpath expr="//t[@t-set='display_discount']" position="after">
             <t t-set="display_origin" t-value="any(l.intrastat_product_origin_country_id for l in o.invoice_line_ids)"/>
         </xpath>
-        <xpath expr="//th[3]" position="before">
+        <xpath expr="//th[@name='th_priceunit']" position="before">
             <th class="text-end" t-if="display_origin">Origin</th>
         </xpath>
-        <xpath expr="//td[3]" position="before">
+        <xpath expr="//td//span[@t-field='line.price_unit']/.." position="before">
             <td class="text-end" t-if="display_origin">
                 <span t-field="line.intrastat_product_origin_country_id"/>
             </td>

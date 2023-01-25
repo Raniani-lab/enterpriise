@@ -29,10 +29,10 @@ registry.category("web_tour.tours").add('knowledge_random_cover_tour', {
 }, {
     // Check that a cover has been added, and make the change cover button visible
     trigger: '.o_knowledge_cover .o_knowledge_cover_image',
-    run: () => makeVisible('.o_knowledge_change_cover'),
+    run: () => makeVisible('.o_knowledge_replace_cover'),
 }, {
     // Click on change cover button
-    trigger: '.o_knowledge_change_cover',
+    trigger: '.o_knowledge_replace_cover',
 }, {
     // Check that the cover selector has been opened, that no unsplash images can be
     // loaded as the article has no name and close the cover selector
@@ -59,10 +59,10 @@ registry.category("web_tour.tours").add('knowledge_random_cover_tour', {
 }, {
     // Check that a cover has been added and make the change cover button visible
     trigger: '.o_knowledge_cover .o_knowledge_cover_image',
-    run: () => makeVisible('.o_knowledge_change_cover'),
+    run: () => makeVisible('.o_knowledge_replace_cover'),
 }, {
     // Click on change cover button
-    trigger: '.o_knowledge_change_cover',
+    trigger: '.o_knowledge_replace_cover',
 }, {
     // Check that the cover selector has been opened, that other unsplash
     // images can be loaded and close the cover selector

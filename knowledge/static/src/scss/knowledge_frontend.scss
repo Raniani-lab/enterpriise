@@ -34,17 +34,6 @@
         margin-left: auto;
         margin-right: auto;
     }
-
-    .o_knowledge_cover_image {
-        width: 100%;
-        img {
-            width: 100%;
-            height: 30vh;
-            min-height: 150px;
-            object-fit: cover;
-            object-position: 50% 50%;
-        }
-    }
     .o_knowledge_cover_image + .o_knowledge_icon {
         margin-top: -70px;
     }

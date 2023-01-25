@@ -35,6 +35,7 @@ class Article(models.Model):
     icon = fields.Char(string='Emoji')
     cover_image_id = fields.Many2one("knowledge.cover", string='Article cover')
     cover_image_url = fields.Char(related="cover_image_id.attachment_url", string="Cover url")
+    cover_image_position = fields.Float(string="Cover vertical offset")
     is_locked = fields.Boolean(
         string='Locked',
         help="When locked, users cannot write on the body or change the title, "
@@ -831,6 +832,7 @@ class Article(models.Model):
             })],
             "body": self.body,
             "cover_image_id": self.cover_image_id.id,
+            "cover_image_position": self.cover_image_position,
             "full_width": False,
             "name": _("%s (copy)", self.name),
             "icon": self.icon,

@@ -70,7 +70,7 @@ class AccountAsset(models.Model):
         ],
         string="Computation",
         readonly=True, states={'draft': [('readonly', False)], 'model': [('readonly', False)]},
-        required=True, default='none',
+        required=True, default='constant_periods',
     )
     prorata_date = fields.Date(  # the starting date of the depreciations
         string='Prorata Date',
@@ -394,7 +394,6 @@ class AccountAsset(models.Model):
     def _onchange_type(self):
         if self.state != 'model':
             if self.asset_type == 'sale':
-                self.prorata_computation_type = 'daily_computation'
                 self.method_period = '1'
             else:
                 self.method_period = '12'

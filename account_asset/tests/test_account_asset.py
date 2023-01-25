@@ -688,6 +688,7 @@ class TestAccountAsset(TestAccountReportsCommon):
             'account_depreciation_id': self.company_data['default_account_assets'].copy().id,
             'account_depreciation_expense_id': revenue_account.id,
             'journal_id': self.company_data['default_journal_misc'].id,
+            'prorata_computation_type': 'none',
         })
 
         CEO_car.validate()
@@ -789,6 +790,7 @@ class TestAccountAsset(TestAccountReportsCommon):
         asset_form.account_depreciation_id = self.company_data['default_account_assets']
         asset_form.account_depreciation_expense_id = self.company_data['default_account_expense']
         asset_form.journal_id = self.company_data['default_journal_misc']
+        asset_form.prorata_computation_type = 'none'
         asset = asset_form.save()
         asset.validate()
 
@@ -1927,6 +1929,7 @@ class TestAccountAsset(TestAccountReportsCommon):
                 'acquisition_date': fields.Date.from_string('2020-07-01'),
                 'original_value': original_value,
                 'method': 'linear',
+                'prorata_computation_type': 'none',
             }
             for account_id, name, original_value in [
                 (account_a.id, 'ZenBook', 1250),

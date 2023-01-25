@@ -88,7 +88,7 @@ class DeliveryCarrier(models.Model):
                 'delivery_sendcloud.sendcloud_label_tracking',
                 render_values={'type': 'Shipment', 'parcels': parcels},
                 subtype_xmlid='mail.mt_note',
-                attachment_ids=doc_ids,
+                attachment_ids=doc_ids.ids,
             )
             parcel_ids = ','.join(parcel_ids)
             pick.sendcloud_parcel_ref = parcel_ids

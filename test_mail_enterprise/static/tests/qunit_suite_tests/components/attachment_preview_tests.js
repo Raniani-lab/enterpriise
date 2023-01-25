@@ -12,17 +12,17 @@ import {
 import testUtils, { file } from 'web.test_utils';
 const { createFile, inputFiles } = file;
 
-QUnit.module('mail_enterprise', {}, function () {
+QUnit.module('test_mail_enterprise', {}, function () {
 QUnit.module('attachment_preview_tests.js', {}, function () {
 
     QUnit.test('Should not have attachment preview for still uploading attachment', async function (assert) {
         assert.expect(2);
 
         const pyEnv = await startServer();
-        const resPartnerId1 = pyEnv['res.partner'].create({});
+        const recordId = pyEnv['mail.test.simple.main.attachment'].create({});
         const views = {
-            'res.partner,false,form':
-                '<form string="Partners">' +
+            'mail.test.simple.main.attachment,false,form':
+                '<form string="Test document">' +
                     '<sheet>' +
                         '<field name="name"/>' +
                     '</sheet>' +
@@ -45,8 +45,8 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             serverData: { views },
         });
         await openFormView({
-            res_id: resPartnerId1,
-            res_model: 'res.partner',
+            res_id: recordId,
+            res_model: 'mail.test.simple.main.attachment',
         });
 
         await afterNextRender(() =>
@@ -66,20 +66,20 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         assert.expect(9);
 
         const pyEnv = await startServer();
-        const resPartnerId1 = pyEnv['res.partner'].create({});
+        const recordId = pyEnv['mail.test.simple.main.attachment'].create({});
         const irAttachmentId1 = pyEnv['ir.attachment'].create({
             mimetype: 'image/jpeg',
-            res_id: resPartnerId1,
-            res_model: 'res.partner',
+            res_id: recordId,
+            res_model: 'mail.test.simple.main.attachment',
         });
         pyEnv['mail.message'].create({
             attachment_ids: [irAttachmentId1],
-            model: 'res.partner',
-            res_id: resPartnerId1,
+            model: 'mail.test.simple.main.attachment',
+            res_id: recordId,
         });
         const views = {
-            'res.partner,false,form':
-                '<form string="Partners">' +
+            'mail.test.simple.main.attachment,false,form':
+                '<form string="Test document">' +
                     '<sheet>' +
                         '<field name="name"/>' +
                     '</sheet>' +
@@ -100,8 +100,8 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             serverData: { views },
         });
         await openFormView({
-            res_id: resPartnerId1,
-            res_model: 'res.partner',
+            res_id: recordId,
+            res_model: 'mail.test.simple.main.attachment',
         });
 
         assert.containsOnce(document.body, '.o_attachment_preview_img > img',
@@ -151,41 +151,41 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
 
             const pyEnv = await startServer();
 
-            const resPartnerId1 = pyEnv['res.partner'].create({
+            const recordId1 = pyEnv['mail.test.simple.main.attachment'].create({
                 display_name: 'first partner',
                 message_attachment_count: 2
             });
 
             const irAttachmentId1 = pyEnv['ir.attachment'].create({
                 mimetype: 'image/jpeg',
-                res_id: resPartnerId1,
-                res_model: 'res.partner',
+                res_id: recordId1,
+                res_model: 'mail.test.simple.main.attachment',
             });
             pyEnv['mail.message'].create({
                 attachment_ids: [irAttachmentId1],
-                model: 'res.partner',
-                res_id: resPartnerId1,
+                model: 'mail.test.simple.main.attachment',
+                res_id: recordId1,
             });
 
             const irAttachmentId2 = pyEnv['ir.attachment'].create({
                 mimetype: 'application/pdf',
-                res_id: resPartnerId1,
-                res_model: 'res.partner',
+                res_id: recordId1,
+                res_model: 'mail.test.simple.main.attachment',
             });
             pyEnv['mail.message'].create({
                 attachment_ids: [irAttachmentId2],
-                model: 'res.partner',
-                res_id: resPartnerId1,
+                model: 'mail.test.simple.main.attachment',
+                res_id: recordId1,
             });
 
-            const resPartnerId2 = pyEnv['res.partner'].create({
+            const recordId2 = pyEnv['mail.test.simple.main.attachment'].create({
                 display_name: 'second partner',
                 message_attachment_count: 0
             });
 
             const views = {
-                'res.partner,false,form':
-                    `<form string="Partners">
+                'mail.test.simple.main.attachment,false,form':
+                    `<form string="Test document">
                         <sheet>
                             <field name="name"/>
                         </sheet>
@@ -206,12 +206,12 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             });
             await openFormView(
                 {
-                    res_id: resPartnerId1,
-                    res_model: 'res.partner',
+                    res_id: recordId1,
+                    res_model: 'mail.test.simple.main.attachment',
                 },
                 {
                     props: {
-                        resIds: [resPartnerId1, resPartnerId2],
+                        resIds: [recordId1, recordId2],
                     },
                 },
             );
@@ -237,8 +237,8 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         assert.expect(2);
 
         const views = {
-            'res.partner,false,form':
-                '<form string="Partners">' +
+            'mail.test.simple.main.attachment,false,form':
+                '<form string="Test document">' +
                     '<sheet>' +
                         '<field name="name"/>' +
                     '</sheet>' +
@@ -253,7 +253,7 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             serverData: { views },
         });
         await openFormView({
-            res_model: 'res.partner',
+            res_model: 'mail.test.simple.main.attachment',
         }, {
             waitUntilDataLoaded: false,
             waitUntilMessagesLoaded: false,
@@ -269,20 +269,20 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
         assert.expect(2);
 
         const pyEnv = await startServer();
-        const resPartnerId1 = pyEnv['res.partner'].create({});
-        const irAttachmentId1 = pyEnv['ir.attachment'].create({
+        const recordId = pyEnv['mail.test.simple.main.attachment'].create({});
+        const irAttachmentId = pyEnv['ir.attachment'].create({
             mimetype: 'image/jpeg',
-            res_id: resPartnerId1,
-            res_model: 'res.partner',
+            res_id: recordId,
+            res_model: 'mail.test.simple.main.attachment',
         });
         pyEnv['mail.message'].create({
-            attachment_ids: [irAttachmentId1],
-            model: 'res.partner',
-            res_id: resPartnerId1,
+            attachment_ids: [irAttachmentId],
+            model: 'mail.test.simple.main.attachment',
+            res_id: recordId,
         });
         const views = {
-            'res.partner,false,form':
-                '<form string="Partners">' +
+            'mail.test.simple.main.attachment,false,form':
+                '<form string="Test document">' +
                     '<sheet>' +
                         '<field name="name"/>' +
                     '</sheet>' +
@@ -297,8 +297,8 @@ QUnit.module('attachment_preview_tests.js', {}, function () {
             serverData: { views },
         });
         await openFormView({
-            res_id: resPartnerId1,
-            res_model: 'res.partner',
+            res_id: recordId,
+            res_model: 'mail.test.simple.main.attachment',
         });
         assert.containsNone(document.body, '.o_attachment_preview', "there should be nothing previewed");
         assert.containsOnce(document.body, '.o_form_sheet_bg + .o_FormRenderer_chatterContainer',

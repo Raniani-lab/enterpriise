@@ -4,7 +4,6 @@
 import json
 
 from odoo import http
-from odoo.addons.http_routing.models.ir_http import url_for
 from odoo.http import request
 from odoo.tools import ustr
 
@@ -20,8 +19,8 @@ class WebManifest(http.Controller):
         web_app_name = request.env['ir.config_parameter'].sudo().get_param('web_enterprise.web_app_name', 'Odoo')
         manifest = {
             'name': web_app_name,
-            'scope': url_for('/web'),
-            'start_url': url_for('/web'),
+            'scope': '/web',
+            'start_url': '/web',
             'display': 'standalone',
             'background_color': '#714B67',
             'theme_color': '#714B67',
@@ -52,6 +51,6 @@ class WebManifest(http.Controller):
         """
         response = request.make_response(body, [
             ('Content-Type', 'text/javascript'),
-            ('Service-Worker-Allowed', url_for('/web')),
+            ('Service-Worker-Allowed', '/web'),
         ])
         return response

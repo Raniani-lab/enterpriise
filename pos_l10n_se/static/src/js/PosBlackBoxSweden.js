@@ -14,7 +14,7 @@ patch(PosGlobalState.prototype, "pos_l10n_se.PosGlobalState", {
         if (this.useBlackBoxSweden()) {
             return false;
         }
-        return this._super();
+        return this._super(...arguments);
     },
     disallowLineQuantityChange() {
         const result = this._super(...arguments);

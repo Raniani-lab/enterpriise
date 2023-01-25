@@ -19,7 +19,7 @@ const RATE_ID_MAPPING = {
 patch(PosGlobalState.prototype, "l10n_de_pos_cert.PosGlobalState", {
     // @Override
     setup() {
-        this._super();
+        this._super(...arguments);
         this.token = "";
         this.vatRateMapping = {};
     },
@@ -207,7 +207,7 @@ patch(PosGlobalState.prototype, "l10n_de_pos_cert.PosGlobalState", {
 patch(Order.prototype, "l10n_de_pos_cert.Order", {
     // @Override
     setup() {
-        this._super();
+        this._super(...arguments);
         if (this.pos.isCountryGermanyAndFiskaly()) {
             this.fiskalyUuid = this.fiskalyUuid || null;
             this.transactionState = this.transactionState || "inactive"; // Used to know when we need to create the fiskaly transaction

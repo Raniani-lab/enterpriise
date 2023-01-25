@@ -7,7 +7,7 @@ import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
 
 patch(ProductScreen.prototype, "pos_iot.ProductScreen", {
     get isScaleAvailable() {
-        return this._super() && Boolean(this.env.proxy.iot_device_proxies.scale);
+        return this._super(...arguments) && Boolean(this.env.proxy.iot_device_proxies.scale);
     },
     async _onScaleNotAvailable() {
         await Gui.showPopup(ErrorPopup, {

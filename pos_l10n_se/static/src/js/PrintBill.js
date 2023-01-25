@@ -15,7 +15,7 @@ patch(PrintBillButton.prototype, "pos_l10n_se.PrintBillButton", {
             await this.env.pos.push_single_order(order);
             order.receipt_type = false;
         }
-        await _super();
+        await _super(...arguments);
         order.isProfo = false;
     },
 });

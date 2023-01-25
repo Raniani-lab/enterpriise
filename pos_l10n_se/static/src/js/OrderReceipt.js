@@ -6,7 +6,7 @@ import { patch } from "@web/core/utils/patch";
 patch(OrderReceipt.prototype, "pos_l10n_se.OrderReceipt", {
     get receiptEnv() {
         if (this.env.pos.useBlackBoxSweden()) {
-            const receipt_render_env = this._super();
+            const receipt_render_env = this._super(...arguments);
             receipt_render_env.receipt.useBlackBoxSweden = true;
             receipt_render_env.receipt.company.street = this.env.pos.company.street;
             receipt_render_env.receipt.posID = this.env.pos.config.id;
@@ -22,7 +22,7 @@ patch(OrderReceipt.prototype, "pos_l10n_se.OrderReceipt", {
 
             return receipt_render_env;
         }
-        return this._super();
+        return this._super(...arguments);
     },
     getProductlines() {
         return _.filter(this.receiptEnv.receipt.orderlines, function (orderline) {

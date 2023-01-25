@@ -43,13 +43,13 @@ patch(ScaleScreen.prototype, "pos_iot.ScaleScreen", {
         if (!this.isManualMeasurement) {
             this.env.proxy_queue.schedule(() => this.scale.action({ action: "start_reading" }));
         }
-        this._super();
+        this._super(...arguments);
     },
     /**
      * @override
      */
     onWillUnmount() {
-        this._super();
+        this._super(...arguments);
         this.env.proxy_queue.schedule(() => this.scale.action({ action: "stop_reading" }));
         if (this.scale) {
             this.scale.remove_listener();

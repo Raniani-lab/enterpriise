@@ -97,7 +97,7 @@ patch(PosGlobalState.prototype, "l10n_de_pos_res_cert.PosGlobalState", {
 patch(Order.prototype, "l10n_de_pos_res_cert.Order", {
     // @Override
     setup() {
-        this._super();
+        this._super(...arguments);
         if (this.pos.isRestaurantCountryGermanyAndFiskaly()) {
             this.fiskalyLinesSent = false; // this is mainly used for offline scenario
             this.save_to_db();

@@ -13,6 +13,7 @@
                 <field name="create_uid" string="Created by"/>
                 <filter string="My Documents" name="my_documents_filter" domain="[('owner_id', '=', uid)]"/>
                 <filter string="My Favorites" name="my_favorites_filter" domain="[('favorited_ids', 'in', uid)]"/>
+                <filter string="My Activities" name="my_activities_filter" domain="[('activity_user_id','=',uid)]"/>
                 <separator/>
                 <filter string="PDF/Document" name="pdf_doc" domain="['|', ('mimetype', 'ilike', 'pdf'), ('name', 'ilike', '.doc')]"/>
                 <filter string="Image/Video" name="img_video" domain="['|', ('mimetype', 'ilike', 'image'), ('mimetype', 'ilike', 'video')]"/>

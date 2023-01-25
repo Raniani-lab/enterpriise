@@ -1,6 +1,9 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+# mixin
+from . import documents_mixin
+
 # documents
 from . import documents_document
 from . import documents_facet
@@ -19,6 +22,3 @@ from . import mail_activity
 from . import mail_activity_type
 from . import res_partner
 from . import res_users
-
-# mixin
-from . import documents_mixin

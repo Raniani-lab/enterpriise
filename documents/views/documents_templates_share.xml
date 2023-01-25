@@ -120,7 +120,7 @@
                                 <form t-if="request_upload and document_request" class="o_hidden" enctype="multipart/form-data" t-attf-action="/document/upload/#{share_id}/#{token}/#{document.id}" method="POST">
                                     <input name="requestFile" class="o_request_upload" type="file" onchange="form.submit()"/>
                                 </form>
-                                <div t-if="document_request" onclick="$('.o_request_upload', $(this).parent()).trigger('click')" t-attf-class="d-flex align-items-center justify-content-center o_request_icon #{request_upload and 'o_request_allowed' or ''}">
+                                <div t-if="document_request" onclick="document.querySelector('.o_request_upload').click()" t-attf-class="d-flex align-items-center justify-content-center o_request_icon #{request_upload and 'o_request_allowed' or ''}">
                                     <i class="fa fa-upload fa-2x"/>
                                 </div>
                                 <div t-else="" class="o_image" t-att-data-mimetype="document.mimetype" t-attf-style="#{document.mimetype and 'image/' in document.mimetype and 'background-image:None;' ''}"/>
@@ -179,7 +179,7 @@
 
             <h3 t-if="request_upload and document_request" class="text-white text-center mb16">
                 This document has been requested.
-                <b onclick="$('.o_request_upload').trigger('click')" style="cursor:pointer;">Upload it</b>.
+                <b onclick="document.querySelector('.o_request_upload').click()" style="cursor:pointer;">Upload it</b>.
             </h3>
 
             <div class="o_docs_single_container">
@@ -191,7 +191,7 @@
                         <form class="o_hidden" enctype="multipart/form-data" t-attf-action="/document/upload/#{share_id}/#{token}/#{document.id}" method="POST">
                             <input name="requestFile" class="o_request_upload" type="file" onchange="form.submit()"/>
                         </form>
-                        <div onclick="$('.o_request_upload', $(this).parent()).trigger('click')" t-attf-class="d-flex align-items-center justify-content-center o_request_icon #{request_upload and 'o_request_allowed' or ''}">
+                        <div onclick="document.querySelector('.o_request_upload').click()" t-attf-class="d-flex align-items-center justify-content-center o_request_icon #{request_upload and 'o_request_allowed' or ''}">
                             <i class="fa fa-upload fa-2x"/>
                         </div>
                     </figure>

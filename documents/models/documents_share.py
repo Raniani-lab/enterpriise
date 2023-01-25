@@ -223,7 +223,7 @@ class DocumentShare(models.Model):
         self.ensure_one()
         request_template = self.env.ref(template_xmlid, raise_if_not_found=False)
         if request_template:
-            request_template.send_mail(self.id)
+            self.message_mail_with_source(request_template)
 
     @api.model
     def open_share_popup(self, vals):

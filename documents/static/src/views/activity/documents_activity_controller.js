@@ -34,5 +34,16 @@ export class DocumentsActivityController extends ActivityController {
     isRecordPreviewable(record) {
         return this.model.activityData.activity_res_ids.includes(record.resId);
     }
+
+    /**
+     * @override
+     * @param {number} [templateID]
+     * @param {number} [activityTypeID]
+     */
+    sendMailTemplate(templateID, activityTypeID) {
+        super.sendMailTemplate(templateID, activityTypeID);
+        this.env.services.notification.add(this.env._t("Reminder emails have been sent."), {type: "success"});
+    }
+
 }
 DocumentsActivityController.template = "documents.DocumentsActivityController";

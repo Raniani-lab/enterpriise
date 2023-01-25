@@ -331,7 +331,7 @@ class Document(models.Model):
         """
         m2m_commands = msg_vals['attachment_ids']
         share = self.create_share_id
-        if share:
+        if share and not self.env.context.get("no_document") or message.message_type == 'email':
             attachments = self.env['ir.attachment'].browse([x[1] for x in m2m_commands])
             partner = share.partner_id.id or self.env['res.partner'].find_or_create(msg_vals['email_from']).id
             documents = self.env['documents.document'].create([{
@@ -487,7 +487,7 @@ class Document(models.Model):
 
             if record.type == 'empty' and ('datas' in vals or 'url' in vals):
                 body = _("Document Request: %s Uploaded by: %s") % (record.name, self.env.user.name)
-                record.message_post(body=body)
+                record.with_context(no_document=True).message_post(body=body)
 
             if record.attachment_id:
                 # versioning
@@ -515,7 +515,7 @@ class Document(models.Model):
                     'res_id': res_id
                 })
                 record.attachment_id = attachment.id
-                record._process_activities(attachment.id)
+                record.with_context(no_document=True)._process_activities(attachment.id)
 
         # pops the datas and/or the mimetype key(s) to explicitly write them in batch on the ir.attachment
         # so the mimetype is properly set. The reason was because the related keys are not written in batch

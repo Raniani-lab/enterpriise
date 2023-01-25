@@ -57,13 +57,6 @@ class RequestWizard(models.TransientModel):
             'res_id': self.res_id,
         })
 
-        # Setting the document owner is done as sudo as the user may lose access to that record
-        # depending on the workspace's (folder) settings.
-        # Subsequent actions on the document will also have to be done as sudo.
-        if document.owner_id != self.owner_id:
-            document = document.sudo()
-            document.owner_id = self.owner_id
-
         activity_vals = {
             'user_id': self.owner_id.id if self.owner_id else self.env.user.id,
             'note': self.activity_note,
@@ -91,6 +84,7 @@ class RequestWizard(models.TransientModel):
                 share_vals['date_deadline'] = deadline
             share = self.env['documents.share'].create(share_vals)
             share.send_share_by_mail('documents.mail_template_document_request')
+            document.create_share_id = share
 
         activity = document.with_context(mail_activity_quick_update=request_by_mail).activity_schedule(**activity_vals)
         document.request_activity_id = activity

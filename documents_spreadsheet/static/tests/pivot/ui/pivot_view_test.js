@@ -176,6 +176,73 @@ QUnit.module("spreadsheet pivot view", {}, () => {
         assert.ok(target.querySelector("button.o_pivot_add_spreadsheet").disabled);
     });
 
+    QUnit.test(
+        "Insert in spreadsheet is disabled when same groupby occurs in both columns and rows",
+        async (assert) => {
+            setupControlPanelServiceRegistry();
+            const serviceRegistry = registry.category("services");
+            serviceRegistry.add("dialog", dialogService);
+            const serverData = {
+                models: getBasicData(),
+            };
+            await makeView({
+                type: "pivot",
+                resModel: "partner",
+                serverData,
+                arch: /*xml*/ `
+            <pivot>
+                <field name="id" type="col"/>
+                <field name="id" type="row"/>
+                <field name="foo" type="measure"/>
+            </pivot>`,
+                mockRPC: function (route, args) {
+                    if (args.method === "has_group") {
+                        return Promise.resolve(true);
+                    }
+                },
+            });
+
+            const target = getFixture();
+            await toggleMenu(target, "Measures");
+            await toggleMenuItem(target, "Foo");
+            assert.ok(target.querySelector("button.o_pivot_add_spreadsheet").disabled);
+        }
+    );
+
+    QUnit.test(
+        "Insert in spreadsheet is disabled when columns or rows contain duplicate groupbys",
+        async (assert) => {
+            setupControlPanelServiceRegistry();
+            const serviceRegistry = registry.category("services");
+            serviceRegistry.add("dialog", dialogService);
+            const serverData = {
+                models: getBasicData(),
+            };
+            await makeView({
+                type: "pivot",
+                resModel: "partner",
+                serverData,
+                arch: /*xml*/ `
+                <pivot>
+                    <field name="id" type="col"/>
+                    <field name="bar" type="row"/>
+                    <field name="product_id" type="row"/>
+                    <field name="probability" type="measure"/>
+                </pivot>`,
+                mockRPC: function (route, args) {
+                    if (args.method === "has_group") {
+                        return Promise.resolve(true);
+                    }
+                },
+            });
+
+            const target = getFixture();
+            await toggleMenu(target, "Measures");
+            await toggleMenuItem(target, "Probability");
+            assert.ok(target.querySelector("button.o_pivot_add_spreadsheet").disabled);
+        }
+    );
+
     QUnit.test("groupby date field without interval defaults to month", async (assert) => {
         const { model } = await createSpreadsheetFromPivotView({
             serverData: {

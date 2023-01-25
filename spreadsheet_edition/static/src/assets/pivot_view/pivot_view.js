@@ -2,6 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { PivotController } from "@web/views/pivot/pivot_controller";
+import { unique } from "@web/core/utils/arrays";
 import { patch } from "@web/core/utils/patch";
 import { useService } from "@web/core/utils/hooks";
 import { PERIODS } from "@spreadsheet_edition/assets/helpers";
@@ -60,5 +61,32 @@ patch(PivotController.prototype, "pivot_spreadsheet", {
             actionOptions,
         };
         this.env.services.dialog.add(SpreadsheetSelectorDialog, params);
+    },
+
+    hasDuplicatedGroupbys() {
+        const fullColGroupBys = this.model.metaData.fullColGroupBys;
+        const fullRowGroupBys = this.model.metaData.fullRowGroupBys;
+        if (
+            unique(fullColGroupBys).length < fullColGroupBys.length ||
+            unique(fullRowGroupBys).length < fullRowGroupBys.length ||
+            unique([...fullColGroupBys, ...fullRowGroupBys]).length <
+                fullColGroupBys.length + fullRowGroupBys.length
+        ) {
+            return true;
+        }
+        return false;
+    },
+
+    isInsertButtonDisabled() {
+        return (
+            !this.model.hasData() ||
+            this.model.metaData.activeMeasures.length === 0 ||
+            this.model.useSampleModel ||
+            this.hasDuplicatedGroupbys()
+        );
+    },
+
+    getTooltipTextForDuplicatedGroupbys() {
+        return _t("Pivot contains duplicate groupbys");
     },
 });

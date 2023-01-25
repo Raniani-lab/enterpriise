@@ -27,10 +27,6 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
                 break
         options['order_column'] = (previous_options or {}).get('order_column') or default_order_column
 
-        # 'Unfold All' is not automatic when printing those reports if not line is unfolded ; it can only be explicitly enabled from the UI.
-        # This is done to prevent performance issues when printing large data.
-        options['unfold_all'] = previous_options.get('unfold_all', False)
-
     def _custom_line_postprocessor(self, report, options, lines):
         partner_lines_map = {}
 
@@ -108,6 +104,9 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
                     'expected_date': expected_date or None,
                     'total': None,
                     'has_sublines': query_res['aml_count'] > 0,
+
+                    # Needed by the custom_unfold_all_batch_data_generator, to speed-up unfold_all
+                    'partner_id': query_res['partner_id'][0] if query_res['partner_id'] else None,
                 })
             else:
                 rslt.update({
@@ -257,6 +256,63 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
         action.get('context', {}).update({'search_default_group_by_account': 0, 'search_default_group_by_partner': 1})
         return action
 
+    def _common_custom_unfold_all_batch_data_generator(self, internal_type, report, options, lines_to_expand_by_function):
+        rslt = {} # In the form {full_sub_groupby_key: all_column_group_expression_totals for this groupby computation}
+        report_periods = 6 # The report has 6 periods
+
+        for expand_function_name, lines_to_expand in lines_to_expand_by_function.items():
+            for line_to_expand in lines_to_expand: # In standard, this loop will execute only once
+                if expand_function_name == '_report_expand_unfoldable_line_with_groupby':
+                    report_line_id = report._get_res_id_from_line_id(line_to_expand['id'], 'account.report.line')
+                    expressions_to_evaluate = report.line_ids.expression_ids.filtered(lambda x: x.report_line_id.id == report_line_id and x.engine == 'custom')
+
+                    if not expressions_to_evaluate:
+                        continue
+
+                    for column_group_key, column_group_options in report._split_options_per_column_group(options).items():
+                        # Get all aml results by partner
+                        aml_data_by_partner = {}
+                        for aml_id, aml_result in self._aged_partner_report_custom_engine_common(column_group_options, internal_type, 'id', None):
+                            aml_result['aml_id'] = aml_id
+                            aml_data_by_partner.setdefault(aml_result['partner_id'], []).append(aml_result)
+
+                        # Iterate on results by partner to generate the content of the column group
+                        partner_expression_totals = rslt.setdefault(f"[{report_line_id}]=>partner_id", {})\
+                                                        .setdefault(column_group_key, {expression: {'value': []} for expression in expressions_to_evaluate})
+                        for partner_id, aml_data_list in aml_data_by_partner.items():
+                            partner_values = {
+                                'invoice_date': None,
+                                'due_date': None,
+                                'amount_currency': None,
+                                'currency': None,
+                                'account_name': None,
+                                'expected_date': None,
+                                'total': 0,
+                            }
+                            for i in range(report_periods):
+                                partner_values[f'period{i}'] = 0
+
+                            # Build expression totals under the right key
+                            partner_aml_expression_totals = rslt.setdefault(f"[{report_line_id}]partner_id:{partner_id}=>id", {})\
+                                                                .setdefault(column_group_key, {expression: {'value': []} for expression in expressions_to_evaluate})
+                            for aml_data in aml_data_list:
+                                for i in range(report_periods):
+                                    period_value = aml_data[f'period{i}']
+                                    partner_values[f'period{i}'] += period_value
+                                    partner_values['total'] += period_value
+
+                                for expression in expressions_to_evaluate:
+                                    partner_aml_expression_totals[expression]['value'].append(
+                                        (aml_data['aml_id'], aml_data[expression.label])
+                                    )
+
+                            for expression in expressions_to_evaluate:
+                                partner_expression_totals[expression]['value'].append(
+                                    (partner_id, partner_values[expression.label])
+                                )
+
+        return rslt
+
 
 class AgedPayableCustomHandler(models.AbstractModel):
     _name = 'account.aged.payable.report.handler'
@@ -273,6 +329,12 @@ class AgedPayableCustomHandler(models.AbstractModel):
 
         return super().open_journal_items(options, params)
 
+    def _custom_unfold_all_batch_data_generator(self, report, options, lines_to_expand_by_function):
+        # We only optimize the unfold all if the groupby value of the report has not been customized. Else, we'll just run the full computation
+        if self.env.ref('account_reports.aged_payable_line').groupby.replace(' ', '') == 'partner_id,id':
+            return self._common_custom_unfold_all_batch_data_generator('liability_payable', report, options, lines_to_expand_by_function)
+        return {}
+
 
 class AgedReceivableCustomHandler(models.AbstractModel):
     _name = 'account.aged.receivable.report.handler'
@@ -288,3 +350,9 @@ class AgedReceivableCustomHandler(models.AbstractModel):
             options['account_type'] = [receivable_account_type]
 
         return super().open_journal_items(options, params)
+
+    def _custom_unfold_all_batch_data_generator(self, report, options, lines_to_expand_by_function):
+        # We only optimize the unfold all if the groupby value of the report has not been customized. Else, we'll just run the full computation
+        if self.env.ref('account_reports.aged_receivable_line').groupby.replace(' ', '') == 'partner_id,id':
+            return self._common_custom_unfold_all_batch_data_generator('asset_receivable', report, options, lines_to_expand_by_function)
+        return {}

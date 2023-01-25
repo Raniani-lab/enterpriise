@@ -1560,6 +1560,17 @@ class AccountReport(models.Model):
             if line['id'].startswith(parent_line_id)
         ]
 
+    @api.model
+    def _get_res_id_from_line_id(self, line_id, target_model_name):
+        """ Parses the provided generic line id and returns the most local (i.e. the furthest on the right) record id it contains which
+        corresponds to the provided model name. If line_id does not contain anything related to target_model_name, None will be returned.
+
+        For example, parsing ~account.move~1|~res.partner~2|~account.move~3 with target_model_name='account.move' will return 3.
+        """
+        for dummy, model, value in reversed(self._parse_line_id(line_id)):
+            if target_model_name == model:
+                return value
+
     ####################################################
     # CARET OPTIONS MANAGEMENT
     ####################################################
@@ -2178,20 +2189,19 @@ class AccountReport(models.Model):
             :param limit: The SQL limit to apply when computing these expressions' result. Used if self.load_more_limit is set, to handle
                           the load more feature.
 
-            :return: A dict(expression, value), where:
+            :return: A dict(expression, {'value': value, 'has_sublines': has_sublines}), where:
                      - expression is one of the account.report.expressions that got evaluated
+
                      - value is the result of that evaluation. Two cases are possible:
-                        - if we're evaluating a groupby: value will then be a in the form [(groupby_key, groupby_val)], where
+                        - if we're evaluating a groupby: value will then be a in the form [(groupby_key, group_val)], where
                             - groupby_key is the key used in the SQL GROUP BY clause to generate this result
-                            - groupby_res: is the result of this group by element, as a res dict (see below)
+                            - group_val: The result computed by the engine for this group. Typically a float.
 
-                        - else: value will directly be the value computed for this expressions, as res dict (see below)
+                        - else: value will directly be the result computed for this expression
 
-                        => res dict are dictionaries consisting of two keys:
-                            - 'value': The value computed by the engine. Typically a float.
-                            - 'has_sublines': [optional key, will default to False if absent]
-                                              Whether or not this result corresponds to 1 or more subelements in the database (typically move lines).
-                                              This is used to know whether an unfoldable line has results to unfold in the UI.
+                     - has_sublines: [optional key, will default to False if absent]
+                                       Whether or not this result corresponds to 1 or more subelements in the database (typically move lines).
+                                       This is used to know whether an unfoldable line has results to unfold in the UI.
         """
         def inject_formula_results(formula_results, column_group_expression_totals):
             for (_formula, expressions), result in formula_results.items():
@@ -3764,7 +3774,7 @@ class AccountReport(models.Model):
             limit_to_load = None
             offset = 0
 
-        rslt_lines = line._expand_groupby(line_dict_id, groupby, options, offset=offset, limit=limit_to_load)
+        rslt_lines = line._expand_groupby(line_dict_id, groupby, options, offset=offset, limit=limit_to_load, unfold_all_batch_data=unfold_all_batch_data)
         lines_to_load = rslt_lines[:self.load_more_limit] if limit_to_load else rslt_lines
 
         return {
@@ -4466,7 +4476,7 @@ class AccountReport(models.Model):
 class AccountReportLine(models.Model):
     _inherit = 'account.report.line'
 
-    def _expand_groupby(self, line_dict_id, groupby, options, offset=0, limit=None):
+    def _expand_groupby(self, line_dict_id, groupby, options, offset=0, limit=None, unfold_all_batch_data=None):
         """ Expand function used to get the sublines of a groupby.
         groupby param is a string consisting of one or more coma-separated field names. Only the first one
         will be used for the expansion; if there are subsequent ones, the generated lines will themselves used them as
@@ -4480,10 +4490,12 @@ class AccountReportLine(models.Model):
         # If this line is a sub-groupby of groupby line (for example, when grouping by partner, id; the id line is a subgroup of partner),
         # we need to add the domain of the parent groupby criteria to the options
         sub_groupby_domain = []
+        full_sub_groupby_key_elements = []
         for markup, model, value in line_id_list:
             if markup.startswith('groupby:'):
                 field_name = markup.split(':')[1]
                 sub_groupby_domain.append((field_name, '=', value))
+                full_sub_groupby_key_elements.append(f"{field_name}:{value}")
             if model == 'account.group':
                 group_indent += 1
 
@@ -4491,30 +4503,27 @@ class AccountReportLine(models.Model):
             forced_domain = options.get('forced_domain', []) + sub_groupby_domain
             options = {**options, 'forced_domain': forced_domain}
 
-        # When expanding subgroup lines, we need to keep track of the parent groupby lines, and build a domain from their grouping keys. This is
-        # done by parsing the generic id of the current line.
-        parent_groupby_domain = []
-        for markup, dummy, value in reversed(line_id_list):
-            if not markup.startswith('groupby:'):
-                break
+        # Parse groupby
+        groupby_data = self._parse_groupby(groupby_to_expand=groupby)
+        groupby_model = groupby_data['current_groupby_model']
+        next_groupby = groupby_data['next_groupby']
+        current_groupby = groupby_data['current_groupby']
 
-            field_name = markup.split(':')[1]
-            parent_groupby_domain.append((field_name, '=', value))
+        # If the report transmitted custom_unfold_all_batch_data dictionary, use it
+        full_sub_groupby_key = f"[{self.id}]{','.join(full_sub_groupby_key_elements)}=>{current_groupby}"
 
-        if parent_groupby_domain:
-            options = {**options, 'forced_domain': options.get('forced_domain', []) + parent_groupby_domain}
+        cached_result = (unfold_all_batch_data or {}).get(full_sub_groupby_key)
 
-
-        all_column_groups_expression_totals = self.report_id._compute_expression_totals_for_each_column_group(
-            self.expression_ids,
-            options,
-            groupby_to_expand=groupby,
-            offset=offset,
-            limit=limit
-        )
-
-        # all_period_line_totals is a in the form [{report_line: {total_name: [(grouping_key, value)]}}]
-        # Each element of the list corresponds to the values of a period (in sequence)
+        if cached_result is not None:
+            all_column_groups_expression_totals = cached_result
+        else:
+            all_column_groups_expression_totals = self.report_id._compute_expression_totals_for_each_column_group(
+                self.expression_ids,
+                options,
+                groupby_to_expand=groupby,
+                offset=offset,
+                limit=limit
+            )
 
         # Put similar grouping keys from different totals/periods together, so that we don't display multiple
         # lines for the same grouping key
@@ -4544,10 +4553,6 @@ class AccountReportLine(models.Model):
                     aggregated_group_totals[grouping_key][column_group_key][expression] = {'value': result}
 
         # Generate groupby lines
-        groupby_data = self._parse_groupby(groupby_to_expand=groupby)
-        groupby_model = groupby_data['current_groupby_model']
-        next_groupby = groupby_data['next_groupby']
-        current_groupby = groupby_data['current_groupby']
         group_lines_by_keys = {}
         for grouping_key, group_totals in aggregated_group_totals.items():
             # For this, we emulate a dict formatted like the result of _compute_expression_totals_for_each_column_group, so that we can call

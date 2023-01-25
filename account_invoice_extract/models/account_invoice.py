@@ -116,7 +116,8 @@ class AccountMove(models.Model):
         return self.is_purchase_document()
 
     def _ocr_create_document_from_attachment(self, attachment, journal=None):
-        invoice = self.env['account.move'].create({})
+        invoice_vals = {'journal_id': journal.id} if journal else {}
+        invoice = self.env['account.move'].create(invoice_vals)
         invoice.message_main_attachment_id = attachment
         invoice.action_manual_send_for_digitization()
         return invoice

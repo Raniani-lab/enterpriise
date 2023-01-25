@@ -2,6 +2,8 @@
 
 import base64
 
+from odoo.tests import Form
+
 from odoo.exceptions import RedirectWarning
 from odoo.tests.common import tagged, TransactionCase
 
@@ -215,3 +217,17 @@ class TestCaseDocumentsBridgeAccount(TransactionCase):
     def test_workflow_create_bank_statement_raise(self):
         with self.assertRaises(RedirectWarning): # Could not make sense of the given file.
             self.env.ref('documents_account.bank_statement_rule').apply_actions([self.document_txt.id, self.document_gif.id])
+
+    def test_workflow_rule_form_journal(self):
+        with Form(self.env.ref('documents_account.vendor_bill_rule_financial')) as rule:
+            # our accounting action has a journal_id
+            self.assertTrue(rule.journal_id)
+
+            # switching it to non-accouting action resets its journal_id
+            rule.create_model = 'link.to.record'
+            self.assertFalse(rule.journal_id)
+
+            # switching back gives us the rigth journal_id
+            rule.create_model = 'account.move.out_invoice'
+            self.assertTrue(rule.journal_id.type == 'sale')
+            self.assertTrue(rule.journal_id in rule.suitable_journal_ids)

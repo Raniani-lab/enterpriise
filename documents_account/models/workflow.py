@@ -1,5 +1,5 @@
 # -*- coding: utf-8 -*-
-from odoo import models, fields
+from odoo import models, fields, api
 
 
 class WorkflowActionRuleAccount(models.Model):
@@ -12,25 +12,53 @@ class WorkflowActionRuleAccount(models.Model):
                                                    ('account.move.entry', "Miscellaneous Operations"),
                                                    ('account.bank.statement', "Bank Statement")])
 
+    journal_id = fields.Many2one(
+        comodel_name='account.journal',
+        compute='_compute_journal_id', store=True, readonly=False,
+        domain="[('id', 'in', suitable_journal_ids)]",
+    )
+    suitable_journal_ids = fields.Many2many('account.journal', compute='_compute_suitable_journal_ids')
+    display_journal_id = fields.Boolean(compute='_compute_suitable_journal_ids')
+    move_type = fields.Char(compute='_compute_move_type')
+
+    @api.depends('create_model')
+    def _compute_move_type(self):
+        for rule in self:
+            move_type = False
+            if rule.create_model and rule.create_model.startswith('account.move'):
+                move_type = rule.create_model.split('.')[2]
+            rule.move_type = move_type
+
+    @api.depends('move_type')
+    def _compute_suitable_journal_ids(self):
+        for rule in self:
+            move = self.env["account.move"].new({'move_type': rule.move_type})
+            rule.suitable_journal_ids = move.suitable_journal_ids
+            rule.display_journal_id = bool(rule.move_type)
+
+    @api.depends('move_type')
+    def _compute_journal_id(self):
+        for rule in self:
+            move = self.env["account.move"].new({'move_type': rule.move_type})
+            rule.journal_id = rule.move_type and move.journal_id
+
     def create_record(self, documents=None):
         rv = super(WorkflowActionRuleAccount, self).create_record(documents=documents)
         if self.create_model.startswith('account.move'):
-            invoice_type = self.create_model.split('.')[2]
             move = None
             invoice_ids = []
 
             # 'entry' are outside of document loop because the actions
             #  returned could be differents (cfr. l10n_be_soda)
-            if invoice_type == 'entry':
-                journal = self.env.company._get_default_misc_journal()
-                return journal.create_document_from_attachment(attachment_ids=documents.attachment_id.ids)
+            if self.move_type == 'entry':
+                return self.journal_id.create_document_from_attachment(attachment_ids=documents.attachment_id.ids)
 
             for document in documents:
                 if document.res_model == 'account.move' and document.res_id:
                     move = self.env['account.move'].browse(document.res_id)
                 else:
-                    move = self.env['account.journal']\
-                        .with_context(default_move_type=invoice_type)\
+                    move = self.journal_id\
+                        .with_context(default_move_type=self.move_type)\
                         ._create_document_from_attachment(attachment_ids=document.attachment_id.id)
                 partner = self.partner_id or document.partner_id
                 if partner:
@@ -40,7 +68,7 @@ class WorkflowActionRuleAccount(models.Model):
 
                 invoice_ids.append(move.id)
 
-            context = dict(self._context, default_move_type=invoice_type)
+            context = dict(self._context, default_move_type=self.move_type)
             action = {
                 'type': 'ir.actions.act_window',
                 'res_model': 'account.move',

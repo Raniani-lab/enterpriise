@@ -21,6 +21,7 @@ Documents app in the desired format(s).
         'data/mail_activity_type_data.xml',
         'views/documents_views.xml',
         'views/account_move_views.xml',
+        'views/documents_workflow_rule_views.xml',
         'wizard/report_export_wizard.xml',
     ],
     'demo': [

@@ -7,7 +7,7 @@
         t-on-do-action.stop="onDoAction"
         class="o_web_studio_editor">
         <EditorMenu switchView.bind="switchView" switchTab.bind="switchTab" />
-        <StudioActionContainer initialAction="initialAction"/>
+        <StudioActionContainer reloadId="state.actionContainerId"/>
     </div>
 </t>
 

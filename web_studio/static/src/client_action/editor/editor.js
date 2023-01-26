@@ -3,17 +3,13 @@
 import { StudioActionContainer } from "../studio_action_container";
 import { actionService } from "@web/webclient/actions/action_service";
 import { useBus, useService } from "@web/core/utils/hooks";
-import { registry } from "@web/core/registry";
 
 import { EditorMenu } from "./editor_menu/editor_menu";
 
 import { mapDoActionOptionAPI } from "@web/legacy/backend_utils";
 
-import { Component, EventBus, markup, onWillStart, useSubEnv, reactive } from "@odoo/owl";
+import { Component, EventBus, useSubEnv, reactive } from "@odoo/owl";
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
-import { KeepLast } from "@web/core/utils/concurrency";
-
-const editorTabRegistry = registry.category("web_studio.editor_tabs");
 
 const actionServiceStudio = {
     dependencies: ["studio"],
@@ -107,19 +103,10 @@ export class Editor extends Component {
         this.actionService = useService("action");
         this.rpc = useService("rpc");
 
-        const keepLastStudio = new KeepLast();
+        this.state = owl.useState({ actionContainerId: 1 });
         useBus(this.studio.bus, "UPDATE", async () => {
-            const action = await keepLastStudio.add(this.getStudioAction());
-            this.actionService.doAction(action, {
-                clearBreadcrumbs: true,
-            });
+            this.state.actionContainerId++;
         });
-
-        onWillStart(this.onWillStart);
-    }
-
-    async onWillStart() {
-        this.initialAction = await this.getStudioAction();
     }
 
     switchView({ viewType }) {
@@ -131,30 +118,6 @@ export class Editor extends Component {
 
     switchTab({ tab }) {
         this.studio.setParams({ editorTab: tab });
-    }
-
-    async getStudioAction() {
-        const { editorTab, editedAction, editedReport, editedViewType } = this.studio;
-        const tab = editorTabRegistry.get(editorTab);
-        if (editorTab === "views") {
-            if (editedViewType) {
-                return "web_studio.view_editor";
-            }
-            return tab.action;
-        }
-        if (tab.action) {
-            return tab.action;
-        } else if (editorTab === "reports" && editedReport) {
-            return "web_studio.report_editor";
-        } else {
-            const action = await this.rpc("/web_studio/get_studio_action", {
-                action_name: editorTab,
-                model: editedAction.res_model,
-                view_id: editedAction.view_id && editedAction.view_id[0], // Not sure it is correct or desirable
-            });
-            action.help = action.help && markup(action.help);
-            return action;
-        }
     }
 
     onDoAction(ev) {

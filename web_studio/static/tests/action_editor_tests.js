@@ -10,6 +10,9 @@ import {
     click,
     legacyExtraNextTick,
     selectDropdownItem,
+    makeDeferred,
+    editInput,
+    nextTick,
 } from "@web/../tests/helpers/utils";
 import { createEnterpriseWebClient } from "@web_enterprise/../tests/helpers";
 
@@ -224,5 +227,63 @@ QUnit.module("ActionEditor", (hooks) => {
         await openStudio(target, { noEdit: true });
 
         await selectDropdownItem(target, "groups_id", "Admin");
+    });
+
+    QUnit.test("concurrency: keep user's input when editing action", async (assert) => {
+        const actions = {
+            1: {
+                id: 1,
+                name: "",
+                help: "",
+                xml_id: "some.xml_id",
+                type: "ir.actions.act_window",
+                res_model: "kikou",
+                view_mode: "list",
+                views: [
+                    [1, "list"],
+                    [2, "form"],
+                ],
+            },
+        };
+        Object.assign(serverData, { actions });
+
+        const def = makeDeferred();
+        const mockRPC = async (route, args) => {
+            if (route === "/web_studio/edit_action") {
+                assert.step("edit_action");
+                assert.deepEqual(
+                    args.args,
+                    { name: "testInput" },
+                    "The call to edit_action must be correct"
+                );
+                await def;
+                return Promise.resolve(true);
+            }
+            if (route === "/web/action/load") {
+                assert.step("action_load");
+            }
+        };
+        const webClient = await createEnterpriseWebClient({ serverData, mockRPC });
+        await doAction(webClient, 1, { clearBreadcrumbs: true });
+        assert.verifySteps(["action_load"]);
+
+        await openStudio(target, { noEdit: true });
+
+        editInput(target, ".o_web_studio_sidebar_content input#name", "testInput");
+        const textarea = target.querySelector(".o_web_studio_sidebar_content textarea#help");
+        textarea.value = "<p>test help</p>";
+        textarea.dispatchEvent(new Event("input"));
+        def.resolve();
+        await def;
+        await nextTick();
+        assert.verifySteps(["edit_action", "action_load"]);
+        assert.strictEqual(
+            target.querySelector(".o_web_studio_sidebar_content input#name").value,
+            "testInput"
+        );
+        assert.strictEqual(
+            target.querySelector(".o_web_studio_sidebar_content textarea#help").value,
+            "<p>test help</p>"
+        );
     });
 });

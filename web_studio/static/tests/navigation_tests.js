@@ -6,6 +6,7 @@ import {
     makeDeferred,
     nextTick,
     patchWithCleanup,
+    editInput,
 } from "@web/../tests/helpers/utils";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
 
@@ -525,6 +526,60 @@ QUnit.module("Studio", (hooks) => {
         // FIXME : due to https://github.com/odoo/owl/issues/1298,
         // the visual result is not asserted here, ideally we'd want to be in the studio
         // action, with a blank editor
+    });
+
+    QUnit.test("error when new app's view is invalid", async (assert) => {
+        registry.category("services").add("error", { start() {} });
+
+        serverData.menus.root.children.push(99);
+        serverData.menus[99] = {
+            id: 99,
+            children: [],
+            actionID: 99,
+            xmlid: "testMenu",
+            name: "test",
+            appID: 99,
+        };
+        serverData.actions[99] = {
+            xmlid: "testAction",
+            id: 99,
+            type: "ir.actions.act_window",
+            res_model: "partner",
+            views: [[false, "list"]],
+            help: "",
+            name: "test action",
+        };
+
+        const handler = (ev) => {
+            assert.strictEqual(ev.reason.cause.message, "Boom");
+            assert.step("error");
+            ev.preventDefault();
+        };
+        window.addEventListener("unhandledrejection", handler);
+        registerCleanup(() => window.removeEventListener("unhandledrejection", handler));
+
+        await createEnterpriseWebClient({
+            serverData,
+            mockRPC: async (route, args) => {
+                if (route === "/web_studio/create_new_app") {
+                    return { menu_id: 99, action_id: 99 };
+                }
+                if (route === "/web_studio/get_studio_view_arch") {
+                    return Promise.reject(new Error("Boom"));
+                }
+            },
+        });
+
+        await click(target, ".o_web_studio_navbar_item a");
+        await click(target, ".o_web_studio_new_app");
+        await click(target, ".o_web_studio_app_creator_next");
+        await editInput(target, ".o_web_studio_app_creator_name input", "testApp");
+        await click(target, ".o_web_studio_app_creator_next");
+        await editInput(target, ".o_web_studio_app_creator_menu input", "testMenu");
+        await click(target, ".o_web_studio_app_creator_next");
+        await click(target, ".o_web_studio_model_configurator_next");
+        assert.verifySteps(["error"]);
+        assert.containsOnce(target, ".o_web_studio_action_editor");
     });
 
     QUnit.test("open same record when leaving form", async function (assert) {

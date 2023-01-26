@@ -6,19 +6,9 @@ import { NotEditableActionError } from "../../studio_service";
 import { HomeMenuCustomizer } from "./home_menu_customizer/home_menu_customizer";
 import { EditMenuItem } from "../../legacy/edit_menu_adapter";
 import { NewModelItem } from "@web_studio/legacy/new_model_adapter";
+import { useStudioServiceAsReactive } from "@web_studio/studio_service";
 
-import { onMounted, useState, onWillUnmount } from "@odoo/owl";
-
-function useStudioServiceAsReactive() {
-    const studio = useService("studio");
-    const state = useState({ ...studio });
-    function onUpdate() {
-        Object.assign(state, studio);
-    }
-    studio.bus.addEventListener("UPDATE", onUpdate);
-    onWillUnmount(() => studio.bus.removeEventListener("UPDATE", onUpdate));
-    return state;
-}
+import { onMounted } from "@odoo/owl";
 
 export class StudioNavbar extends EnterpriseNavBar {
     setup() {

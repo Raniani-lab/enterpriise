@@ -5,7 +5,8 @@ import legacyBus from "web_studio.bus";
 import { resetViewCompilerCache } from "@web/views/view_compiler";
 import { _lt } from "@web/core/l10n/translation";
 
-import { EventBus } from "@odoo/owl";
+import { EventBus, onWillUnmount, useState } from "@odoo/owl";
+import { useService } from "@web/core/utils/hooks";
 
 const URL_VIEW_KEY = "_view_type";
 const URL_ACTION_KEY = "_action";
@@ -233,11 +234,11 @@ export const studioService = {
             state.x2mEditorPath = [];
         }
 
-        async function reload(params = {}) {
+        async function reload(params = {}, reset = true) {
             resetViewCompilerCache();
             env.bus.trigger("CLEAR-CACHES");
             const action = await env.services.action.loadAction(state.editedAction.id);
-            setParams({ action, ...params });
+            setParams({ action, ...params }, reset);
         }
 
         function toggleHomeMenu() {
@@ -279,7 +280,7 @@ export const studioService = {
             env.services.router.pushState(hash, { replace: true });
         }
 
-        function setParams(params = {}) {
+        function setParams(params = {}, reset = true) {
             if ("mode" in params) {
                 state.studioMode = params.mode;
             }
@@ -310,7 +311,7 @@ export const studioService = {
             if (state.editorTab !== "reports") {
                 state.editedReport = null;
             }
-            bus.trigger("UPDATE");
+            bus.trigger("UPDATE", { reset });
         }
         legacyBus.on("STUDIO_ENTER_X2M", null, (newX2mPath) => {
             const x2mEditorPath = state.x2mEditorPath.slice();
@@ -397,3 +398,16 @@ export const studioService = {
 };
 
 registry.category("services").add("studio", studioService);
+
+export function useStudioServiceAsReactive() {
+    const studio = useService("studio");
+    const state = useState({ ...studio });
+
+    function onUpdate({ detail }) {
+        Object.assign(state, studio);
+        state.reset = detail.reset;
+    }
+    studio.bus.addEventListener("UPDATE", onUpdate);
+    onWillUnmount(() => studio.bus.removeEventListener("UPDATE", onUpdate));
+    return state;
+}

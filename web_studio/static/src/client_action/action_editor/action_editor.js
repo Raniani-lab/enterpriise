@@ -14,7 +14,7 @@ import { Many2ManyTagsField } from "@web/views/fields/many2many_tags/many2many_t
 import { CharField } from "@web/views/fields/char/char_field";
 import { TextField } from "@web/views/fields/text/text_field";
 
-import { viewTypeToString } from "@web_studio/studio_service";
+import { viewTypeToString, useStudioServiceAsReactive } from "@web_studio/studio_service";
 import { Sidebar } from "../components/sidebar";
 import { NewViewDialog } from "../editor/new_view_dialogs/new_view_dialog";
 import { MapNewViewDialog } from "../editor/new_view_dialogs/map_new_view_dialog";
@@ -66,7 +66,7 @@ function getActionValues(action) {
 
 class ActionEditor extends Component {
     setup() {
-        this.studio = useService("studio");
+        this.studio = useStudioServiceAsReactive();
         this.action = useService("action");
         this.dialog = useService("dialog");
         this.notification = useService("notification");
@@ -235,7 +235,7 @@ class ActionEditor extends Component {
             action_type: "ir.actions.act_window",
             args: changes,
         });
-        return this.studio.reload();
+        return this.studio.reload({}, false);
     }
 }
 ActionEditor.template = "web_studio.ActionEditor";

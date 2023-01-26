@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
     <record id="account_income_statement_report_l10n_dk_resultatopgørelse" model="account.report">
-        <field name="name">Resultatopgørelse</field>
+        <field name="name">Income statement</field>
         <field name="root_report_id" ref="account_reports.profit_and_loss"/>
         <field name="filter_date_range" eval="1"/>
         <field name="filter_unfold_all" eval="True"/>
@@ -18,7 +18,7 @@
         </field>
         <field name="line_ids">
             <record id="account_income_statement_report_l10n_dk_Årets_resultat" model="account.report.line">
-                <field name="name">Årets resultat</field>
+                <field name="name">Result for the year</field>
                 <field name="code">RES</field>
                 <field name="expression_ids">
                     <record id="account_income_statement_report_l10n_dk_Årets_resultat_balance" model="account.report.expression">
@@ -30,7 +30,7 @@
                 </field>
                 <field name="children_ids">
                     <record id="account_income_statement_report_l10n_dk_omsaetning" model="account.report.line">
-                        <field name="name">Omsætning</field>
+                        <field name="name">Turnover</field>
                         <field name="code">OMS</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
@@ -44,7 +44,7 @@
                         </field>
                     </record>
                     <record id="account_income_statement_report_l10n_dk_direkteomkostninger" model="account.report.line">
-                        <field name="name">Direkte omkostninger</field>
+                        <field name="name">Direct costs</field>
                         <field name="code">DO</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
@@ -58,7 +58,7 @@
                         </field>
                     </record>
                     <record id="account_income_statement_report_l10n_dk_Dækningsbidrag" model="account.report.line">
-                        <field name="name">Dækningsbidrag</field>
+                        <field name="name">Contribution margin</field>
                         <field name="code">DKNB</field>
                         <field name="expression_ids">
                             <record id="account_income_statement_report_l10n_dk_Dækningsbidrag_balance" model="account.report.expression">
@@ -70,7 +70,7 @@
                         </field>
                     </record>
                     <record id="account_income_statement_report_l10n_dk_Personaleomkostninger" model="account.report.line">
-                        <field name="name">Personaleomkostninger</field>
+                        <field name="name">Personnel costs</field>
                         <field name="code">PERSO</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
@@ -84,7 +84,7 @@
                         </field>
                     </record>
                     <record id="account_income_statement_report_l10n_dk_Salgsfremmende_omkostninger" model="account.report.line">
-                        <field name="name">Salgsfremmende omkostninger</field>
+                        <field name="name">Promotional costs</field>
                         <field name="code">SAOM</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
@@ -98,7 +98,7 @@
                         </field>
                     </record>
                     <record id="account_income_statement_report_l10n_dk_Biler_og_driftmidler" model="account.report.line">
-                        <field name="name">Biler og driftmidler</field>
+                        <field name="name">Vehicles and means of transport</field>
                         <field name="code">BILDM</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
@@ -112,7 +112,7 @@
                         </field>
                     </record>
                     <record id="account_income_statement_report_l10n_dk_Lokaleomkostninger" model="account.report.line">
-                        <field name="name">Lokaleomkostninger</field>
+                        <field name="name">Local costs</field>
                         <field name="code">LOKOM</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
@@ -126,7 +126,7 @@
                         </field>
                     </record>
                     <record id="account_income_statement_report_l10n_dk_Administrationsomkostninger" model="account.report.line">
-                        <field name="name">Administrationsomkostninger</field>
+                        <field name="name">Administrative costs</field>
                         <field name="code">ADMOM</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
@@ -140,7 +140,7 @@
                         </field>
                     </record>
                     <record id="account_income_statement_report_l10n_Faste_omkostninger" model="account.report.line">
-                        <field name="name">Faste omkostninger ialt</field>
+                        <field name="name">Total fixed costs</field>
                         <field name="code">FASTO</field>
                         <field name="expression_ids">
                             <record id="account_income_statement_report_l10n_Faste_omkostninger_balance" model="account.report.expression">
@@ -152,7 +152,7 @@
                         </field>
                     </record>
                     <record id="account_income_statement_report_l10n_dk_Resultat_før_afskrivninger" model="account.report.line">
-                        <field name="name">Resultat før afskrivninger</field>
+                        <field name="name">Result before depreciation</field>
                         <field name="code">RESFA</field>
                         <field name="expression_ids">
                             <record id="account_income_statement_report_l10n_dk_Resultat_før_afskrivninger_balance" model="account.report.expression">
@@ -164,7 +164,7 @@
                         </field>
                     </record>
                     <record id="account_income_statement_report_l10n_dk_nedskrivninger" model="account.report.line">
-                        <field name="name">Af- og nedskrivninger</field>
+                        <field name="name">Depreciation and amortisation</field>
                         <field name="code">AFNED</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
@@ -178,7 +178,7 @@
                         </field>
                     </record>
                     <record id="account_income_statement_report_l10n_dk_Finansielle_indtægter" model="account.report.line">
-                        <field name="name">Resultat før finansielle indt./udg.</field>
+                        <field name="name">Result before financial income/expense</field>
                         <field name="code">RESFF</field>
                         <field name="expression_ids">
                             <record id="account_income_statement_report_l10n_dk_Finansielle_indtægter_balance" model="account.report.expression">
@@ -190,7 +190,7 @@
                         </field>
                     </record>
                     <record id="account_income_statement_report_l10n_dk_Finansielle_indægter" model="account.report.line">
-                        <field name="name">Finansielle indægter</field>
+                        <field name="name">Financial income</field>
                         <field name="code">FININ</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
@@ -204,7 +204,7 @@
                         </field>
                     </record>
                     <record id="account_income_statement_report_l10n_dk_Finansielle_udgifter" model="account.report.line">
-                        <field name="name">Finansielle udgifter</field>
+                        <field name="name">Financial expenses</field>
                         <field name="code">FINUD</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
@@ -218,7 +218,7 @@
                         </field>
                     </record>
                     <record id="account_income_statement_report_l10n_dk_Resultat_før_ekstraordinære_indt" model="account.report.line">
-                        <field name="name">Resultat før ekstraordinære indt./udg.</field>
+                        <field name="name">Result before extraordinary income/expenses</field>
                         <field name="code">RESFE</field>
                         <field name="expression_ids">
                             <record id="account_income_statement_report_l10n_dk_Resultat_før_ekstraordinære_indt_balance" model="account.report.expression">
@@ -230,7 +230,7 @@
                         </field>
                     </record>
                     <record id="account_income_statement_report_l10n_dk_Ekstraordinære_indtægter" model="account.report.line">
-                        <field name="name">Ekstraordinære indtægter</field>
+                        <field name="name">Extraordinary revenue</field>
                         <field name="code">EKSI</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
@@ -244,7 +244,7 @@
                         </field>
                     </record>
                     <record id="account_income_statement_report_l10n_dk_Ekstraordinære_udgifter" model="account.report.line">
-                        <field name="name">Ekstraordinære udgifter</field>
+                        <field name="name">Extraordinary expenditure</field>
                         <field name="code">EKSU</field>
                         <field name="groupby">account_id</field>
                         <field name="foldable" eval="True"/>
@@ -258,7 +258,7 @@
                         </field>
                     </record>
                     <record id="account_income_statement_report_l10n_dk_Årets_resultat_før_skat" model="account.report.line">
-                        <field name="name">Årets resultat før skat</field>
+                        <field name="name">Profit before tax for the year</field>
                         <field name="code">RESFS</field>
                         <field name="expression_ids">
                             <record id="account_income_statement_report_l10n_dk_Årets_resultat_før_skat_balance" model="account.report.expression">
@@ -274,7 +274,7 @@
         </field>
     </record>
     <record id="account_financial_report_l10n_lu_dk_action" model="ir.actions.client">
-        <field name="name">Resultatopgørelse</field>
+        <field name="name">Income statement</field>
         <field name="context" eval="{'model': 'account.report', 'report_id': ref('account_income_statement_report_l10n_dk_resultatopgørelse')}"/>
         <field name="tag">account_report</field>
     </record>

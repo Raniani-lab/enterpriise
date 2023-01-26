@@ -1,0 +1,274 @@
+# Translation of Odoo Server.
+# This file contains the translation of the following modules:
+# 	* l10n_dk_reports
+#
+msgid ""
+msgstr ""
+"Project-Id-Version: Odoo Server 16.2alpha1+e\n"
+"Report-Msgid-Bugs-To: \n"
+"POT-Creation-Date: 2023-01-26 10:17+0000\n"
+"PO-Revision-Date: 2023-01-26 10:17+0000\n"
+"Last-Translator: \n"
+"Language-Team: \n"
+"MIME-Version: 1.0\n"
+"Content-Type: text/plain; charset=UTF-8\n"
+"Content-Transfer-Encoding: \n"
+"Plural-Forms: \n"
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_dk_aktiver
+msgid "Active"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_income_statement_report_l10n_dk_Administrationsomkostninger
+msgid "Administrative costs"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report,name:l10n_dk_reports.account_balance_report_l10n_dk_balance
+#: model:account.report.column,name:l10n_dk_reports.account_balance_report_l10n_dk_balance_column
+#: model:account.report.column,name:l10n_dk_reports.account_income_statement_report_l10n_dk_resultatopgørelse_column
+msgid "Balance"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_bankgæld
+msgid "Bank debt"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_dk_likvide_beholdninger
+msgid "Cash and cash equivalents"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_income_statement_report_l10n_dk_Dækningsbidrag
+msgid "Contribution margin"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_kreditinstitutter
+msgid "Credit institutions"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_omsætningsaktiver
+msgid "Current assets"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_dk_current_year_allocated_earnings
+msgid "Current year allocated earnings"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_dk_current_year_earnings
+msgid "Current year earnings"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_income_statement_report_l10n_dk_nedskrivninger
+msgid "Depreciation and amortisation"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_income_statement_report_l10n_dk_direkteomkostninger
+msgid "Direct costs"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_egenkapital
+msgid "EQUITY"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_egenkapital2
+msgid "Equity"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_income_statement_report_l10n_dk_Ekstraordinære_udgifter
+msgid "Extraordinary expenditure"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_income_statement_report_l10n_dk_Ekstraordinære_indtægter
+msgid "Extraordinary revenue"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_income_statement_report_l10n_dk_Finansielle_udgifter
+msgid "Financial expenses"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_income_statement_report_l10n_dk_Finansielle_indægter
+msgid "Financial income"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_anlægsaktiver
+msgid "Fixed assets"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_dk_goodwill_licenser
+msgid "Goodwill, licenses, etc."
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report,name:l10n_dk_reports.account_income_statement_report_l10n_dk_resultatopgørelse
+#: model:ir.actions.client,name:l10n_dk_reports.account_financial_report_l10n_lu_dk_action
+msgid "Income statement"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_immaterielle_aktiver
+msgid "Intangible assets"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_dk_varebeholdninger
+msgid "Inventories"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_dk_grunde_og_bygninger
+msgid "Land and buildings"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_dk_passiver
+msgid "Liabilities"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_income_statement_report_l10n_dk_Lokaleomkostninger
+msgid "Local costs"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_langfristet_gæld
+msgid "Long-term debt"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_dk_andre_anlæg
+msgid "Other equipment, furniture and fixtures"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_dk_andre_tilgodehavender
+msgid "Other receivables"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_anden_kortfristet_gæld
+msgid "Other short-term liabilities"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_lønrelateret_gæld
+msgid "Payroll-related debt"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_income_statement_report_l10n_dk_Personaleomkostninger
+msgid "Personnel costs"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_dk_earnings
+msgid "Preliminary result for the year"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_dk_forudbetaling
+msgid "Prepayment to suppliers"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_forudbet_kunder
+msgid "Prepayments from customers"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_dk_previous_year_earnings
+msgid "Previous year's result"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_income_statement_report_l10n_dk_Årets_resultat_før_skat
+msgid "Profit before tax for the year"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_income_statement_report_l10n_dk_Salgsfremmende_omkostninger
+msgid "Promotional costs"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_dk_tilgodehavender
+msgid "Receivables"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_income_statement_report_l10n_dk_Resultat_før_afskrivninger
+msgid "Result before depreciation"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_income_statement_report_l10n_dk_Resultat_før_ekstraordinære_indt
+msgid "Result before extraordinary income/expenses"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_income_statement_report_l10n_dk_Finansielle_indtægter
+msgid "Result before financial income/expense"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_income_statement_report_l10n_dk_Årets_resultat
+msgid "Result for the year"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_kortfristet_gæld
+msgid "Short-term debt"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_leverandørgæld
+msgid "Supplier debt"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_income_statement_report_l10n_Faste_omkostninger
+msgid "Total fixed costs"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_income_statement_report_l10n_dk_omsaetning
+msgid "Turnover"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_moms_og_afgifter
+msgid "VAT and taxes"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_income_statement_report_l10n_dk_Biler_og_driftmidler
+msgid "Vehicles and means of transport"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_dk_igangværende_arbejder
+msgid "Work in progress"
+msgstr ""
+
+#. module: l10n_dk_reports
+#: model:account.report.line,name:l10n_dk_reports.account_balance_report_l10n_nulkontrol
+msgid "Zero check"
+msgstr ""

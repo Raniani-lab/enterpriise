@@ -10,7 +10,10 @@
                 <field name="is_taxcloud_configured" invisible="1"/>
             </form>
             <xpath expr="//tree/field[@name='tax_id']" position="attributes">
-                <attribute name="attrs">{'column_invisible': [('parent.is_taxcloud', '=', True)]}</attribute>
+                <attribute name="attrs">{
+                    'readonly': ['|', ('qty_invoiced', '&gt;', 0), ('is_downpayment', '==', True)],
+                    'column_invisible': [('parent.is_taxcloud', '=', True)]
+                }</attribute>
             </xpath>
             <xpath expr="//tree/field[@name='price_tax']" position="replace"/>
             <xpath expr="//tree/field[@name='tax_id']" position="after">

@@ -58,10 +58,6 @@ class BankRecWidget(models.Model):
             st_line = wizard.st_line_id
 
             context = {
-                # Number of batch payments to be displayed by default.
-                'limit': 10,
-
-                # Views.
                 'search_view_ref': 'account_accountant_batch_payment.view_account_batch_payment_search_bank_rec_widget',
                 'tree_view_ref': 'account_accountant_batch_payment.view_account_batch_payment_list_bank_rec_widget',
             }

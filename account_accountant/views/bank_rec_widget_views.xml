@@ -543,6 +543,8 @@
                 <tree string="Suggestions"
                       create="false"
                       edit="false"
+                      limit="40"
+                      count_limit="40"
                       js_class="bank_rec_widget_form_amls_list">
                     <!-- Invisible fields -->
                     <field name="company_id" invisible="1"/>

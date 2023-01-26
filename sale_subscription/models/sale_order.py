@@ -1798,17 +1798,7 @@ class SaleOrder(models.Model):
         if tx.renewal_allowed:  # The payment is confirmed, it can be reconciled
             # avoid to create an invoice when one is already linked
             if not tx.invoice_ids:
-                # Create the invoice that was either deleted in a controller or failed to be created by the _create_recurring_invoice method
-                invoice = self._create_invoices()
-                invoice.write({'ref': tx.reference, 'payment_reference': tx.reference})
-                # Only update the invoice date if there is already one invoice for the lines and when the so is not done
-                # locked contract are finished or renewed
-                invoice.message_post_with_source(
-                    'mail.message_origin_link',
-                    render_values={'self': invoice, 'origin': self},
-                    subtype_xmlid='mail.mt_note',
-                )
-                tx.invoice_ids = invoice.ids
+                tx._create_or_link_to_invoice()
             self.set_open()
             return True
         return False

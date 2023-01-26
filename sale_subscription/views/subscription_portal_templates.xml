@@ -292,8 +292,7 @@
                                         <h5 class="mb-1">Pay now to renew</h5>
                                         <hr class="my-0"/>
                                         <t t-call="payment.checkout">
-                                            <t t-set="landing_route"
-                                               t-value="subscription.get_portal_url()"/>
+                                            <t t-set="landing_route" t-value="subscription.get_portal_url()"/>
                                         </t>
                                     </div>
                                 </div>

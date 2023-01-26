@@ -14,9 +14,9 @@ class SaleOrderCloseReason(models.Model):
     sequence = fields.Integer(default=10)
 
     visible_in_portal = fields.Boolean(default=True, required=True)
-    retention_message = fields.Html('Message', help="Try to prevent customers from leaving and closing their subscriptions, thanks to a catchy message and a call to action.")
-    retention_button_text = fields.Char('Button Text')
-    retention_button_link = fields.Char('Button Link')
+    retention_message = fields.Html('Message', translate=True, help="Try to prevent customers from leaving and closing their subscriptions, thanks to a catchy message and a call to action.")
+    retention_button_text = fields.Char('Button Text', translate=True)
+    retention_button_link = fields.Char('Button Link', translate=True)
     empty_retention_message = fields.Boolean(compute='_compute_empty_retention_message')
 
     @api.depends('retention_message')

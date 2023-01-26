@@ -2273,10 +2273,9 @@ class TestSubscription(TestSubscriptionCommon):
                                    'Downpayment should not be deducted from the price anymore')
 
     def test_upsell_with_different_currency_throws_error(self):
-        euro_currency = self.env['res.currency'].search([('name', '=', 'EUR')], limit=1)
         pricelist_eur = self.env['product.pricelist'].create({
             'name': 'Euro pricelist',
-            'currency_id': euro_currency.id,
+            'currency_id': self.env.ref('base.EUR').id,
         })
         action = self.subscription.prepare_upsell_order()
         upsell_so = self.env['sale.order'].browse(action['res_id'])

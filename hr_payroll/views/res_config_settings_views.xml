@@ -35,6 +35,11 @@
                                 <field name="module_hr_payroll_account_sepa"/>
                             </setting>
                         </block>
+                        <block title="Payroll" id="hr_payroll_settings">
+                            <setting string="Payslip PDF Display" help="Display Payslip PDF File on a payslip form" id="display_payslip">
+                                <field name="group_payslip_display"/>
+                            </setting>
+                        </block>
                     </app>
                 </xpath>
             </field>

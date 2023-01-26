@@ -76,19 +76,15 @@
         }
     }
 }
-.o_gantt_cell:last-child {
+
+.o_gantt_row_total,.o_gantt_cells {
     .o_project_milestone {
-        right: 0;
+        pointer-events: none;
+        position: relative;
+        @include o-gantt-zindex(interact);
+        border-right: 2px #00a09d solid;
+        &.o_unreached_milestones {
+            border-right: 2px #d3413b solid;
+        }
     }
-}
-.o_project_milestone {
-    @include o_project_milestone;
-    background-color: #00a09d;
-    &.o_unreached_milestones {
-        background-color: #d3413b;
-    }
-    height: 100%;
-    right: -1px;
-    top: 0;
-    width: 1px;
 }

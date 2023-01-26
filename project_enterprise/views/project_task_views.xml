@@ -89,14 +89,14 @@
                             <t t-else=""><span class="fst-italic text-muted"><i class="fa fa-lock"></i> Private</span></t>
                         </div>
                         <div t-if="allow_milestones and milestone_id" groups="project.group_project_milestone">
-                            <strong>Milestone — </strong> <t t-out="milestone_id[1]"/>
+                            <strong>Milestone — </strong> <t t-esc="milestone_id[1]"/>
                         </div>
-                        <div t-if="user_names"><strong>Assignees — </strong> <t t-out="user_names"/></div>
+                        <div t-if="user_names"><strong>Assignees — </strong> <t t-esc="user_names"/></div>
                         <div t-if="partner_id"><strong>Customer — </strong> <t t-esc="partner_id[1]"/></div>
                         <div>
-                            <t t-esc="userTimezoneStartDate.format('l LT ')"/>
+                            <t t-esc="planned_date_begin.toFormat('f ')"/>
                             <i class="fa fa-long-arrow-right" title="Arrow"/>
-                            <t t-esc="userTimezoneStopDate.format(' l LT')"/>
+                            <t t-esc="planned_date_end.toFormat(' f')"/>
                         </div>
                         <div class="text-danger mt-2" t-if="planning_overlap">
                             <t t-out="planningOverlapHtml"/>

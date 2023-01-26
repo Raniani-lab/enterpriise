@@ -24,7 +24,7 @@ Bridge module for project and enterprise
     'license': 'OEEL-1',
     'assets': {
         'web.assets_backend': [
-            'project_enterprise/static/src/js/**/*',
+            'project_enterprise/static/src/*',
             'project_enterprise/static/src/scss/**/*',
             'project_enterprise/static/src/components/**/*',
             'project_enterprise/static/src/**/*.xml',

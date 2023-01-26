@@ -140,7 +140,7 @@ class HmrcVatObligation(models.Model):
 
         values = {}
         for line in lines:
-            line_id = self.env['account.generic.tax.report']._parse_line_id(line['id'])[-1][-1]
+            line_id = self.env['account.report']._parse_line_id(line['id'])[-1][-1]
             if reverse_table.get(line_id):
                 # Do a get for the no_format as for the totals you have twice the line, without and with amount
                 # We cannot pass a negative netVatDue to the API and the amounts of sales/purchases/goodssupplied/ ... must be rounded
@@ -154,8 +154,8 @@ class HmrcVatObligation(models.Model):
 
     def action_submit_vat_return(self):
         self.ensure_one()
-        report = self.env['account.generic.tax.report']
-        options = report._get_options(previous_options={'tax_report':self.env.ref('l10n_uk.tax_report').id})
+        report = self.env.ref('l10n_uk.tax_report')
+        options = report._get_options()
         options['date'].update({'date_from': fields.Date.to_string(self.date_start),
                         'date_to': fields.Date.to_string(self.date_end),
                         'filter': 'custom',

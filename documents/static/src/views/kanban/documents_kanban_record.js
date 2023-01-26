@@ -28,6 +28,7 @@ export class DocumentsKanbanRecord extends KanbanRecord {
 
         onNewPdfThumbnail(async ({ detail }) => {
             if (detail.record.resId === this.props.record.resId) {
+                this.createRecordAndWidget(this.props);
                 this.render(true);
             }
         });

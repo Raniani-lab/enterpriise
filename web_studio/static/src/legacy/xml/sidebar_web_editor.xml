@@ -5,7 +5,6 @@
     <t t-jquery="div#style" t-operation="replace"/>
     <t t-jquery="div#justify" t-operation="replace"/>
     <t t-jquery="div#list" t-operation="replace"/>
-    <t t-jquery="div#table" t-operation="replace"/>
     <t t-jquery="div#link" t-operation="replace"/>
     <t t-jquery="div#image-shape" t-operation="replace"/>
     <t t-jquery="div#image-padding" t-operation="replace"/>

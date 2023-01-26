@@ -3,18 +3,18 @@ odoo.define('social.tour', function (require) {
 
 var core = require('web.core');
 const {Markup} = require('web.utils');
-var tour = require('web_tour.tour');
+const { registry } = require("@web/core/registry");
+const { stepUtils } = require('@web_tour/js/tour_step_utils');
 
 var _t = core._t;
 const { markup } = owl;
 
-tour.register('social_tour', {
+registry.category("web_tour.tours").add('social_tour', {
         url: "/web",
         rainbowManMessage: markup(_t(`<strong>Congrats! Come back in a few minutes to check your statistics.</strong>`)),
         sequence: 190,
-    },
-    [
-        tour.stepUtils.showAppsMenuItem(),
+        steps: [
+        stepUtils.showAppsMenuItem(),
         {
             trigger: '.o_app[data-menu-xmlid="social.menu_social_global"]',
             content: Markup(_t("Let's create your own <b>social media</b> dashboard.")),
@@ -48,6 +48,6 @@ tour.register('social_tour', {
             edition: 'enterprise',
         },
     ]
-);
+});
 
 });

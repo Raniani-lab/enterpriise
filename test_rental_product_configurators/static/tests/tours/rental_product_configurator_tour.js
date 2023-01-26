@@ -1,11 +1,12 @@
 /** @odoo-module **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
+import { stepUtils } from "@web_tour/js/tour_step_utils";
 
-tour.register('rental_product_configurator_tour', {
+registry.category("web_tour.tours").add('rental_product_configurator_tour', {
     url: '/web',
     test: true,
-}, [tour.stepUtils.showAppsMenuItem(), {
+    steps: [stepUtils.showAppsMenuItem(), {
     trigger: '.o_app[data-menu-xmlid="sale_renting.rental_menu_root"]',
     edition: 'enterprise'
 }, {
@@ -109,5 +110,5 @@ tour.register('rental_product_configurator_tour', {
     content: "verify that the rental has been confirmed",
     trigger: '.o_statusbar_status button.o_arrow_button_current:contains("Sales Order")',
     run() {},
-}, ...tour.stepUtils.discardForm(),
-]);
+}, ...stepUtils.discardForm(),
+]});

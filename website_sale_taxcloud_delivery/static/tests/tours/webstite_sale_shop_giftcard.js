@@ -1,13 +1,12 @@
 /** @odoo-module **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 import tourUtils from 'website_sale.tour_utils';
 
-tour.register('shop_sale_giftcard', {
+registry.category("web_tour.tours").add('shop_sale_giftcard', {
     test: true,
     url: '/shop?search=Accoustic',
-},
-    [
+    steps: [
         {
             content: "select Small Cabinet",
             trigger: '.oe_product a:contains("Acoustic Bloc Screens")',
@@ -48,4 +47,4 @@ tour.register('shop_sale_giftcard', {
             trigger: "#order_total .oe_currency_value:contains(0.00)",
         },
     ]
-);
+});

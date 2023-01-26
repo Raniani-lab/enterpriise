@@ -1,11 +1,11 @@
 /** @odoo-module */
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 
-tour.register('timesheet_record_time', {
+registry.category("web_tour.tours").add('timesheet_record_time', {
     test: true,
     url: "/web",
-}, [
+    steps: [
     {
         trigger: ".o_app[data-menu-xmlid='hr_timesheet.timesheet_menu_root']",
         content: "Open Timesheet app.",
@@ -37,4 +37,4 @@ tour.register('timesheet_record_time', {
         content: "Stop the timer when you are done.",
         run: "click"
     }
-]);
+]});

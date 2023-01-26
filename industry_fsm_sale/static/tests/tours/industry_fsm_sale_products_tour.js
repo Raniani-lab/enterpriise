@@ -1,11 +1,11 @@
 /** @odoo-module **/
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 
 
-tour.register('industry_fsm_sale_products_tour', {
+registry.category("web_tour.tours").add('industry_fsm_sale_products_tour', {
     test: true,
     url: "/web",
-}, [{
+    steps: [{
     trigger: '.o_app[data-menu-xmlid="industry_fsm.fsm_menu_root"]',
     content: 'Go to industry FSM',
     position: 'bottom',
@@ -31,4 +31,4 @@ tour.register('industry_fsm_sale_products_tour', {
 }, {
     trigger: '.o_fsm_material_kanban .o_kanban_record:contains("500.00") div[name="fsm_quantity"] span:contains("2")',
     content: 'Price is 500',
-}]);
+}]});

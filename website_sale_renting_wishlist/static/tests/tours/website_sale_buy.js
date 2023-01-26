@@ -1,13 +1,12 @@
 /** @odoo-module **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 import tourUtils from 'website_sale.tour_utils';
 
-tour.register('shop_buy_rental_product_wishlist', {
+registry.category("web_tour.tours").add('shop_buy_rental_product_wishlist', {
     test: true,
     url: '/shop?search=Computer',
-},
-    [
+    steps: [
         {
             content: "click on add to wishlist",
             trigger: '.o_add_wishlist',
@@ -56,4 +55,4 @@ tour.register('shop_buy_rental_product_wishlist', {
             trigger: 'a[href*="/shop/checkout"]',
         },
     ]
-);
+});

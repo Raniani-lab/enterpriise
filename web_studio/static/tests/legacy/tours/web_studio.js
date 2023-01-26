@@ -2,17 +2,17 @@ odoo.define('web_studio.tests.tour', function (require) {
 "use strict";
 
 const localStorage = require('web.local_storage');
-const tour = require('web_tour.tour');
+const { registry } = require("@web/core/registry");
 
 const { randomString } = require('web_studio.utils');
 
 let createdAppString = null;
 let createdMenuString = null;
 
-tour.register('web_studio_tests_tour', {
+registry.category("web_tour.tours").add('web_studio_tests_tour', {
     url: "/web",
     test: true,
-}, [{
+    steps: [{
     // open studio
     trigger: '.o_main_navbar .o_web_studio_navbar_item',
     extra_trigger: ".o_home_menu_background",
@@ -442,12 +442,12 @@ tour.register('web_studio_tests_tour', {
     // checks that the field doesn't exist anymore
     extra_trigger: 'label.o_form_label:not(:contains("COUCOU"))',
     trigger: '.o_web_studio_leave > a.btn'
-}]);
+}]});
 
-tour.register('web_studio_hide_fields_tour', {
+registry.category("web_tour.tours").add('web_studio_hide_fields_tour', {
     url: "/web#action=studio&mode=home_menu",
     test: true,
-}, [{
+    steps: [{
     trigger: '.o_web_studio_new_app',
 }, {
     trigger: '.o_web_studio_app_creator_next',
@@ -522,12 +522,12 @@ tour.register('web_studio_hide_fields_tour', {
         .o_list_table
         th[data-name="display_name"].o_web_studio_show_invisible`,
     trigger: '.o_web_studio_leave > a.btn',
-}]);
+}]});
 
-tour.register('web_studio_model_option_value_tour', {
+registry.category("web_tour.tours").add('web_studio_model_option_value_tour', {
     url: "/web?debug=tests#action=studio&mode=home_menu",
     test: true,
-}, [{
+    steps: [{
     trigger: '.o_web_studio_new_app',
 }, {
     trigger: '.o_web_studio_app_creator_next',
@@ -568,12 +568,12 @@ tour.register('web_studio_model_option_value_tour', {
     // wait for the pivot editor to be rendered and also check for sample data
     extra_trigger: '.o_pivot_view .o_view_sample_data .o_view_nocontent_empty_folder',
     trigger: '.o_web_studio_leave > a.btn',
-}]);
+}]});
 
-tour.register('web_studio_new_report_tour', {
+registry.category("web_tour.tours").add('web_studio_new_report_tour', {
     url: "/web",
     test: true,
-}, [{
+    steps: [{
     // open studio
     trigger: '.o_main_navbar .o_web_studio_navbar_item',
     extra_trigger: ".o_home_menu_background",
@@ -713,12 +713,12 @@ tour.register('web_studio_new_report_tour', {
     extra_trigger: '.o_web_studio_sidebar input[name="name"][value="My Awesome Report copy(1)"]',
     // leave Studio
     trigger: '.o_web_studio_leave > a.btn',
-}]);
+}]});
 
-tour.register('web_studio_new_report_basic_layout_tour', {
+registry.category("web_tour.tours").add('web_studio_new_report_basic_layout_tour', {
     url: "/web",
     test: true,
-}, [{
+    steps: [{
     // open studio
     trigger: '.o_main_navbar .o_web_studio_navbar_item',
     extra_trigger: ".o_home_menu_background",
@@ -857,12 +857,12 @@ tour.register('web_studio_new_report_basic_layout_tour', {
     extra_trigger: '.o_web_studio_sidebar input[name="name"][value="My Awesome basic layout Report copy(1)"]',
     // leave Studio
     trigger: '.o_web_studio_leave > a.btn',
-}]);
+}]});
 
-tour.register('web_studio_approval_tour', {
+registry.category("web_tour.tours").add('web_studio_approval_tour', {
     url: "/web",
     test: true,
-}, [{
+    steps: [{
     // go to Apps menu
     trigger: '.o_app[data-menu-xmlid="base.menu_management"]',
 }, {
@@ -930,12 +930,12 @@ tour.register('web_studio_approval_tour', {
     trigger: '.o_notification.border-warning'
 }, {
     trigger: '.breadcrumb .o_back_button'
-}]);
+}]});
 
-tour.register('web_studio_custom_field_tour', {
+registry.category("web_tour.tours").add('web_studio_custom_field_tour', {
     url: "/web",
     test: true,
-}, [{
+    steps: [{
     // go to Apps menu
     trigger: '.o_app[data-menu-xmlid="base.menu_management"]',
 }, {
@@ -958,12 +958,12 @@ tour.register('web_studio_custom_field_tour', {
     // studio left.
     trigger: '.o_app[data-menu-xmlid="base.menu_management"]',
     extra_trigger: '.o_web_client:not(.o_in_studio)',
-}]);
+}]});
 
-tour.register('web_studio_local_storage_tour', {
+registry.category("web_tour.tours").add('web_studio_local_storage_tour', {
     url: "/web",
     test: true,
-}, [{
+    steps: [{
     trigger: '.o_app[data-menu-xmlid="base.menu_management"]',
     run: function () {
         localStorage.setItem('openStudioOnReload', "main");
@@ -988,12 +988,12 @@ tour.register('web_studio_local_storage_tour', {
     // studio left after refresh.
     trigger: '.o_app[data-menu-xmlid="base.menu_management"]',
     extra_trigger: '.o_web_client:not(.o_in_studio)'
-}]);
+}]});
 
-tour.register('web_studio_custom_background_tour', {
+registry.category("web_tour.tours").add('web_studio_custom_background_tour', {
     url: "/web",
     test: true,
-}, [{
+    steps: [{
     content: 'class for custom background must be enabled (outside studio)',
     trigger: '.o_home_menu_background_custom.o_home_menu_background:not(.o_in_studio)',
     run: () => null,
@@ -1024,11 +1024,11 @@ tour.register('web_studio_custom_background_tour', {
     content: 'class for custom background must be disabled (outside studio)',
     trigger: '.o_home_menu_background:not(.o_in_studio.o_home_menu_background_custom)',
     run: () => null,
-}]);
+}]});
 
-tour.register("web_studio_create_app_with_pipeline_and_user_assignment", {
+registry.category("web_tour.tours").add("web_studio_create_app_with_pipeline_and_user_assignment", {
     test: true,
-}, [{
+    steps: [{
     // open studio
     trigger: '.o_main_navbar .o_web_studio_navbar_item',
     extra_trigger: ".o_home_menu_background",
@@ -1066,11 +1066,11 @@ tour.register("web_studio_create_app_with_pipeline_and_user_assignment", {
             throw new Error("The title of the new avatar should be set, even if there are no record");
         }
     }
-}]);
+}]});
 
-tour.register('web_studio_alter_field_existing_in_multiple_views_tour', {
+registry.category("web_tour.tours").add('web_studio_alter_field_existing_in_multiple_views_tour', {
     test: true,
-}, [{
+    steps: [{
     // open studio
     trigger: '.o_main_navbar .o_web_studio_navbar_item a',
     extra_trigger: ".o_home_menu_background",
@@ -1147,5 +1147,5 @@ tour.register('web_studio_alter_field_existing_in_multiple_views_tour', {
     extra_trigger: ".o_web_studio_snackbar_icon.show.fa.fa-check",
     // check if the invisible option is checked
     trigger: "#invisible:checked",
-}]);
+}]});
 });

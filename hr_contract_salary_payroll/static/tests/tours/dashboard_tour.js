@@ -1,9 +1,9 @@
 /** @odoo-module **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 import '@hr_payroll/../tests/tours/dashboard_tour';
 
-const DashboardTour = tour.tours.payroll_dashboard_ui_tour;
+const DashboardTour = registry.category("web_tour.tours").get("payroll_dashboard_ui_tour");
 const setHrReponsibleStepIndex = _.findIndex(DashboardTour.steps, function (step) {
     return (step.id === 'set_hr_responsible');
 });

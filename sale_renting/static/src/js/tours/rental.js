@@ -3,14 +3,15 @@ odoo.define('sale_renting.tour', function (require) {
 
 var core = require('web.core');
 const {Markup} = require('web.utils');
-var tour = require('web_tour.tour');
+const { registry } = require("@web/core/registry");
+const { stepUtils } = require('@web_tour/js/tour_step_utils');
 
 var _t = core._t;
 
-tour.register('rental_tour', {
+registry.category("web_tour.tours").add('rental_tour', {
     url: "/web",
     sequence: 240,
-}, [tour.stepUtils.showAppsMenuItem(), {
+    steps: [stepUtils.showAppsMenuItem(), {
     trigger: '.o_app[data-menu-xmlid="sale_renting.rental_menu_root"]',
     content: Markup(_t("Want to <b>rent products</b>? \n Let's discover Odoo Rental App.")),
     position: 'bottom',
@@ -107,6 +108,6 @@ tour.register('rental_tour', {
     trigger: '.text-bg-default:contains("Returned")',
     content: _t("You're done with your fist rental. Congratulations !"),
     run() {},
-}]);
+}]});
 
 });

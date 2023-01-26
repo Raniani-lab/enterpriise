@@ -1,12 +1,11 @@
 /** @odoo-module **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 
-tour.register('shop_buy_subscription_product', {
+registry.category("web_tour.tours").add('shop_buy_subscription_product', {
     test: true,
     url: '/shop',
-},
-    [
+    steps: [
         {
             content: "Search streaming write text",
             trigger: 'form input[name="search"]',
@@ -61,4 +60,4 @@ tour.register('shop_buy_subscription_product', {
             },
         },
     ]
-);
+});

@@ -1,9 +1,10 @@
 /** @odoo-module */
 
 import helper from 'stock_barcode.tourHelper';
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
+import { stepUtils } from "./tour_step_utils";
 
-tour.register('test_inventory_adjustment', {test: true}, [
+registry.category("web_tour.tours").add('test_inventory_adjustment', {test: true, steps: [
 
     {
         trigger: '.button_inventory',
@@ -101,9 +102,9 @@ tour.register('test_inventory_adjustment', {test: true}, [
             helper.assertErrorMessage('The inventory adjustment has been validated');
         },
     },
-]);
+]});
 
-tour.register('test_inventory_adjustment_multi_location', {test: true}, [
+registry.category("web_tour.tours").add('test_inventory_adjustment_multi_location', {test: true, steps: [
 
     {
         trigger: '.button_inventory',
@@ -182,9 +183,9 @@ tour.register('test_inventory_adjustment_multi_location', {test: true}, [
             helper.assertErrorMessage('The inventory adjustment has been validated');
         },
     },
-]);
+]});
 
-tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
+registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_product', {test: true, steps: [
 
     {
         trigger: '.button_inventory',
@@ -312,7 +313,7 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
             helper.assertSublinesCount(3);
         }
     },
-    ...tour.stepUtils.validateBarcodeOperation(),
+    ...stepUtils.validateBarcodeOperation(),
 
     {
         trigger: '.o_stock_barcode_main_menu',
@@ -320,9 +321,9 @@ tour.register('test_inventory_adjustment_tracked_product', {test: true}, [
             helper.assertErrorMessage('The inventory adjustment has been validated');
         },
     },
-]);
+]});
 
-tour.register('test_inventory_adjustment_tracked_product_multilocation', {test: true}, [
+registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_product_multilocation', {test: true, steps: [
     { trigger: '.button_inventory' },
     {
         trigger: '.o_barcode_line',
@@ -348,9 +349,9 @@ tour.register('test_inventory_adjustment_tracked_product_multilocation', {test: 
             helper.assertLineQty(1, "0 / 5");
         }
     },
-]);
+]});
 
-tour.register('test_inventory_adjustment_tracked_product_permissive_quants', {test: true}, [
+registry.category("web_tour.tours").add('test_inventory_adjustment_tracked_product_permissive_quants', {test: true, steps: [
 
     {
         trigger: '.button_inventory',
@@ -387,7 +388,7 @@ tour.register('test_inventory_adjustment_tracked_product_permissive_quants', {te
         trigger: '.o_sublines .o_barcode_line:not(:contains("lot1")) .o_line_button.o_set:not(.o_difference)'
     },
 
-    ...tour.stepUtils.validateBarcodeOperation('.o_sublines .o_barcode_line:not(:contains("lot1")) .o_line_button.o_set .fa-check'),
+    ...stepUtils.validateBarcodeOperation('.o_sublines .o_barcode_line:not(:contains("lot1")) .o_line_button.o_set .fa-check'),
 
     {
         trigger: '.o_stock_barcode_main_menu',
@@ -395,9 +396,9 @@ tour.register('test_inventory_adjustment_tracked_product_permissive_quants', {te
             helper.assertErrorMessage('The inventory adjustment has been validated');
         },
     },
-]);
+]});
 
-tour.register('test_inventory_create_quant', {test: true}, [
+registry.category("web_tour.tours").add('test_inventory_create_quant', {test: true, steps: [
     { trigger: '.button_inventory' },
     {
         trigger: '.o_barcode_client_action',
@@ -441,9 +442,9 @@ tour.register('test_inventory_create_quant', {test: true}, [
             helper.assertLineQty(line, "0");
         }
     },
-]);
+]});
 
-tour.register('test_inventory_nomenclature', {test: true}, [
+registry.category("web_tour.tours").add('test_inventory_nomenclature', {test: true, steps: [
 
     {
         trigger: '.button_inventory',
@@ -464,16 +465,16 @@ tour.register('test_inventory_nomenclature', {test: true}, [
     {
         trigger: '.product-label:contains("product_weight")'
     },
-    ...tour.stepUtils.validateBarcodeOperation(),
+    ...stepUtils.validateBarcodeOperation(),
     {
         trigger: '.o_stock_barcode_main_menu',
         run: function () {
             helper.assertErrorMessage('The inventory adjustment has been validated');
         },
     },
-]);
+]});
 
-tour.register('test_inventory_package', {test: true}, [
+registry.category("web_tour.tours").add('test_inventory_package', {test: true, steps: [
 
     {
         trigger: '.button_inventory',
@@ -511,9 +512,9 @@ tour.register('test_inventory_package', {test: true}, [
     {
         trigger: '.o_stock_barcode_main_menu',
     },
-]);
+]});
 
-tour.register('test_inventory_packaging', {test: true}, [
+registry.category("web_tour.tours").add('test_inventory_packaging', {test: true, steps: [
     { trigger: '.button_inventory' },
     // Scans a packaging when there is no existing quant for its product.
     { trigger: '.o_barcode_client_action', run: 'scan pack007' },
@@ -538,9 +539,9 @@ tour.register('test_inventory_packaging', {test: true}, [
         trigger: '.o_apply_page',
     },
     { trigger: '.o_notification.border-success' },
-]);
+]});
 
-tour.register('test_inventory_owner_scan_package', {test: true}, [
+registry.category("web_tour.tours").add('test_inventory_owner_scan_package', {test: true, steps: [
     {
         trigger: '.button_inventory',
     },
@@ -554,10 +555,10 @@ tour.register('test_inventory_owner_scan_package', {test: true}, [
     {
         trigger: '.o_barcode_client_action:contains("Azure Interior")',
     },
-    ...tour.stepUtils.validateBarcodeOperation(),
-]);
+    ...stepUtils.validateBarcodeOperation(),
+]});
 
-tour.register('test_inventory_using_buttons', {test: true}, [
+registry.category("web_tour.tours").add('test_inventory_using_buttons', {test: true, steps: [
     { trigger: '.button_inventory' },
 
     // Scans product 1: must have 1 quantity and buttons +1/-1 must be visible.
@@ -806,4 +807,4 @@ tour.register('test_inventory_using_buttons', {test: true}, [
     // Validates the inventory.
     { trigger: '.o_apply_page' },
     { trigger: '.o_notification.border-success' }
-]);
+]});

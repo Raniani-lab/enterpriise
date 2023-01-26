@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 import '@hr_payroll/js/tours/hr_payroll';
 
-delete tour.tours['payroll_tours'];
+registry.category("web_tour.tours").remove("payroll_tours");

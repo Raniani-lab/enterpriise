@@ -1,15 +1,14 @@
 /** @odoo-module */
 
 import "web.dom_ready";
-import tour from "web_tour.tour";
+import { registry } from "@web/core/registry";
 
-tour.register(
+registry.category("web_tour.tours").add(
     "insert_crm_pivot_in_spreadsheet",
     {
         test: true,
         url: "/web",
-    },
-    [
+        steps: [
         {
             trigger: '.o_app[data-menu-xmlid="crm.crm_menu_root"]',
             content: "Open CRM app",
@@ -35,4 +34,4 @@ tour.register(
             content: "Redirected to spreadsheet",
         },
     ]
-);
+});

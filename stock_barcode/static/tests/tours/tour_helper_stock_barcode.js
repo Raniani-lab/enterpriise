@@ -1,6 +1,6 @@
 /** @odoo-module alias=stock_barcode.tourHelper **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 
 
 const helper = {};
@@ -46,6 +46,7 @@ helper._prepareSelector = (selector, description) => {
 };
 
 helper.fail = (errorMessage) => {
+    const tour = registry.get("tourManager");
     tour._consume_tour(tour.running_tour, errorMessage);
 };
 

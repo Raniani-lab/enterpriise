@@ -1,13 +1,14 @@
 odoo.define('website_appointment.website_appointment_tour', function(require) {
 "use strict";
 
-var tour = require('web_tour.tour');
+const { registry } = require("@web/core/registry");
+const { stepUtils } = require('@web_tour/js/tour_step_utils');
 
-tour.register('website_appointment_tour', {
+registry.category("web_tour.tours").add('website_appointment_tour', {
     test: true,
     url: '/web',
-}, [
-    tour.stepUtils.showAppsMenuItem(),
+    steps: [
+    stepUtils.showAppsMenuItem(),
     {
         trigger: '.o_app[data-menu-xmlid="calendar.mail_menu_calendar"]',
         content: 'click on calendar app',
@@ -81,5 +82,5 @@ tour.register('website_appointment_tour', {
         content: 'confirm delete',
         run: 'click',
     }
-]);
+]});
 });

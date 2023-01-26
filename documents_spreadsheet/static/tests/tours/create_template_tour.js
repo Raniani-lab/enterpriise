@@ -1,18 +1,18 @@
 /** @odoo-module */
 
-import tour from "web_tour.tour";
+import { registry } from "@web/core/registry";
+import { stepUtils } from "@web_tour/js/tour_step_utils";
 
 const SHEET_NAME = "Partner Spreadsheet Test";
 const TEMPLATE_NAME = `${SHEET_NAME} - Template`;
 
-tour.register(
+registry.category("web_tour.tours").add(
     "documents_spreadsheet_create_template_tour",
     {
         test: true,
         url: "/web",
-    },
-    [
-        ...tour.stepUtils.goToAppSteps("documents.menu_root", "Open Document app"),
+        steps: [
+        ...stepUtils.goToAppSteps("documents.menu_root", "Open Document app"),
         {
             trigger: `div[title="${SHEET_NAME}"]`,
             content: "Select Test Sheet",
@@ -83,4 +83,4 @@ tour.register(
             content: "Redirected to spreadsheet",
         },
     ]
-);
+});

@@ -1,13 +1,12 @@
 /** @odoo-module **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 import tourUtils from 'website_sale.tour_utils';
 
-tour.register('shop_buy_rental_stock_product', {
+registry.category("web_tour.tours").add('shop_buy_rental_stock_product', {
     test: true,
     url: '/shop',
-},
-    [
+    steps: [
         {
             content: "Search computer write text",
             trigger: 'form input[name="search"]',
@@ -103,4 +102,4 @@ tour.register('shop_buy_rental_stock_product', {
             run: function () {}, // it's a check
         },
     ]
-);
+});

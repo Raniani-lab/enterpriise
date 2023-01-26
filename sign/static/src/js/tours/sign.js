@@ -3,16 +3,17 @@
 "use strict";
 
 import { _t } from "web.core";
-import tour from "web_tour.tour";
+import { registry } from "@web/core/registry";
+import { stepUtils } from "@web_tour/js/tour_step_utils";
 
 import { Markup } from "web.utils";
 
 
-tour.register('sign_tour', {
+registry.category("web_tour.tours").add('sign_tour', {
     url: "/web",
     rainbowManMessage: _t("Congratulations, you signed your first document!"),
     sequence: 150,
-},  [tour.stepUtils.showAppsMenuItem(), {
+    steps: [stepUtils.showAppsMenuItem(), {
     trigger: '.o_app[data-menu-xmlid="sign.menu_document"]',
     content: Markup(_t("Let's <b>prepare & sign</b> our first document.")),
     position: 'bottom',
@@ -71,4 +72,4 @@ tour.register('sign_tour', {
     content: Markup(_t("That's it, all done!<br>The document is signed, and a copy has been sent by email to all participants, along with a traceability report.")),
     position: "bottom",
 },
-]);
+]});

@@ -3,14 +3,14 @@ odoo.define('industry_fsm.tour', function (require) {
 
 var core = require('web.core');
 const {Markup} = require('web.utils');
-var tour = require('web_tour.tour');
+const { registry } = require("@web/core/registry");
 
 var _t = core._t;
 
-tour.register('industry_fsm_tour', {
+registry.category("web_tour.tours").add('industry_fsm_tour', {
     sequence: 90,
     url: "/web",
-}, [{
+    steps: [{
     trigger: '.o_app[data-menu-xmlid="industry_fsm.fsm_menu_root"]',
     content: Markup(_t('Ready to <b>manage your onsite interventions</b>? <i>Click Field Service to start.</i>')),
     position: 'bottom',
@@ -116,6 +116,6 @@ tour.register('industry_fsm_tour', {
     content: _t('Let\'s <b>mark your task as done!</b> <i>Tip: when doing so, your stock will automatically be updated, and your task will be closed.</i>'),
     position: 'bottom',
     id: 'fsm_invoice_create',
-}]);
+}]});
 
 });

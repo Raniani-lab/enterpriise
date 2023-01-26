@@ -1,8 +1,9 @@
 /** @odoo-module */
 /* global posmodel */
 
-import Tour from "web_tour.tour";
+import { registry } from "@web/core/registry";
 import DeviceProxy from "iot.DeviceProxy";
+import { stepUtils } from "@web_tour/js/tour_step_utils";
 
 var PosScaleDummy = DeviceProxy.extend({
     action: function () { },
@@ -16,10 +17,10 @@ var PosScaleDummy = DeviceProxy.extend({
     }
 });
 
-Tour.register('pos_iot_scale_tour', {
+registry.category("web_tour.tours").add('pos_iot_scale_tour', {
     url: '/web',
-    test: true
-    }, [Tour.stepUtils.showAppsMenuItem(),
+    test: true,
+    steps: [stepUtils.showAppsMenuItem(),
     {
         trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
     }, {
@@ -42,4 +43,4 @@ Tour.register('pos_iot_scale_tour', {
     }, {
         trigger: ".header-button",
         run: function () { }, //it's a check,
-    }]);
+    }]});

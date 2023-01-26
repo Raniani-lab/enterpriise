@@ -1,10 +1,11 @@
 odoo.define('account_accountant.dashboard.setup.tour', function (require) {
 "use strict";
 
+require('account.dashboard.setup.tour');
 const { _t } = require('web.core');
-const tour = require('web_tour.tour');
+const { registry } = require("@web/core/registry");
 
-const { steps } = tour.tours.account_render_report;
+const { steps } = registry.category("web_tour.tours").get("account_render_report");
 const accountMenuClickIndex = steps.findIndex(step => step.id === 'account_menu_click');
 
 steps.splice(accountMenuClickIndex, 1, {

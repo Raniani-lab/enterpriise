@@ -1,12 +1,13 @@
 /** @odoo-module */
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 import { openCommandBar } from '../knowledge_tour_utils.js';
+import { stepUtils } from "@web_tour/js/tour_step_utils";
 
-tour.register('knowledge_template_paste_elements_tour', {
+registry.category("web_tour.tours").add('knowledge_template_paste_elements_tour', {
     url: '/web',
     test: true,
-}, [tour.stepUtils.showAppsMenuItem(), {
+    steps: [stepUtils.showAppsMenuItem(), {
     trigger: '.o_app[data-menu-xmlid="crm.crm_menu_root"]',
 }, {
     trigger: '.o-kanban-button-new',
@@ -44,4 +45,4 @@ tour.register('knowledge_template_paste_elements_tour', {
     run: 'click'
 }, {
     trigger: '.note-editable > p:contains("Hello world")',
-}]);
+}]});

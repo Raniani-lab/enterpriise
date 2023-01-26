@@ -1,12 +1,12 @@
 /** @odoo-module */
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 
 
-tour.register('helpdesk_pick_file_as_attachment_from_knowledge', {
+registry.category("web_tour.tours").add('helpdesk_pick_file_as_attachment_from_knowledge', {
     url: '/web#action=helpdesk.helpdesk_ticket_action_main_tree',
     test: true,
-}, [{ // click on the first record of the list
+    steps: [{ // click on the first record of the list
     trigger: 'tr.o_data_row:first-child .o_data_cell[name="name"]',
     run: 'click',
 }, { // open an article
@@ -22,12 +22,12 @@ tour.register('helpdesk_pick_file_as_attachment_from_knowledge', {
     run: 'click',
 }, { // check that the file is added to the attachments
     trigger: '.o_AttachmentBoxView .o_AttachmentCard:contains("Onboarding")',
-}]);
+}]});
 
-tour.register('helpdesk_pick_file_as_message_attachment_from_knowledge', {
+registry.category("web_tour.tours").add('helpdesk_pick_file_as_message_attachment_from_knowledge', {
     url: '/web#action=helpdesk.helpdesk_ticket_action_main_tree',
     test: true,
-}, [{ // click on the first record of the list
+    steps: [{ // click on the first record of the list
     trigger: 'tr.o_data_row:first-child .o_data_cell[name="name"]',
     run: 'click',
 }, { // open an article
@@ -46,4 +46,4 @@ tour.register('helpdesk_pick_file_as_message_attachment_from_knowledge', {
     run: () => {},
 }, { // check that the file is added to the attachment of the message
     trigger: '.o_Chatter_composer .o_AttachmentList .o_AttachmentCard:contains("Onboarding")',
-}]);
+}]});

@@ -2,15 +2,14 @@
 
 import { _t } from "web.core";
 import utils from "web_studio.utils";
-import tour from "web_tour.tour";
+import { registry } from "@web/core/registry";
 
-tour.register(
+registry.category("web_tour.tours").add(
     "web_studio_home_menu_background_tour",
     {
         url: "/web",
         sequence: 260,
-    },
-    [
+        steps: [
         {
             trigger: ".o_web_studio_navbar_item",
             content: _t("Want to customize the background? Let’s activate <b>Odoo Studio</b>."),
@@ -29,15 +28,14 @@ tour.register(
             position: "bottom",
         },
     ]
-);
+});
 
-tour.register(
+registry.category("web_tour.tours").add(
     "web_studio_new_app_tour",
     {
         url: "/web#action=studio&mode=home_menu",
         sequence: 270,
-    },
-    [
+        steps: [
         {
             trigger: ".o_web_studio_new_app",
             auto: true,
@@ -216,4 +214,4 @@ tour.register(
             position: "bottom",
         },
     ]
-);
+});

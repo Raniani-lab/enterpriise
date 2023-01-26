@@ -4,12 +4,12 @@
  * Adapt the step that is specific to the work details when the `worksheet` module is not installed.
  */
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 import 'industry_fsm.tour';
 
-const signReportStepIndex = tour.tours.industry_fsm_tour.steps.findIndex(step => step.id === 'sign_report');
+const signReportStepIndex = registry.category("web_tour.tours").get("industry_fsm_tour").steps.findIndex(step => step.id === 'sign_report');
 
-tour.tours.industry_fsm_tour.steps.splice(signReportStepIndex, 0, {
+registry.category("web_tour.tours").get("industry_fsm_tour").steps.splice(signReportStepIndex, 0, {
     trigger: 'div[name="worksheet_map"] h5#task_worksheet',
     extra_trigger: '.o_project_portal_sidebar',
     content: ('"Worksheet" section is rendered'),

@@ -1,11 +1,12 @@
 /** @odoo-module */
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
+import { stepUtils } from "@web_tour/js/tour_step_utils";
 
-tour.register('knowledge_pick_emoji_tour', {
+registry.category("web_tour.tours").add('knowledge_pick_emoji_tour', {
     test: true,
     url: '/web',
-}, [tour.stepUtils.showAppsMenuItem(), {
+    steps: [stepUtils.showAppsMenuItem(), {
     // open Knowledge App
     trigger: '.o_app[data-menu-xmlid="knowledge.knowledge_menu_root"]',
 }, {
@@ -45,4 +46,4 @@ tour.register('knowledge_pick_emoji_tour', {
     // check that the emoji has been properly changed in the aside block
     trigger: '.o_knowledge_aside .o_article_emoji_active:contains(😃)',
     run: () => {}
-}]);
+}]});

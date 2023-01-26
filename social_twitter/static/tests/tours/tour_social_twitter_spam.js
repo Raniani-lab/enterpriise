@@ -3,7 +3,7 @@
 import { StreamPostCommentsReplyTwitter } from '@social_twitter/js/stream_post_comments_reply';
 
 import { patch } from '@web/core/utils/patch';
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 
 let uniqueSeed = 0;
 
@@ -80,13 +80,12 @@ function createReplies(textareaSelector) {
   *
   * The spam detection is set to maximum 3 comments.
   **/
-tour.register(
+registry.category("web_tour.tours").add(
     'social_twitter/static/tests/tours/tour_social_twitter_spam.js',
     {
         url: '/web',
         test: true,
-    },
-    [
+        steps: [
         {
             trigger: '.o_app[data-menu-xmlid="social.menu_social_global"]',
             content: 'Open the Social App',
@@ -103,4 +102,4 @@ tour.register(
         // TODO awa: not sure how this one worked, as we have no textarea to reply already opened
         // ...createReplies('.o_social_comment:first textarea[name="message"]'),
     ]
-);
+});

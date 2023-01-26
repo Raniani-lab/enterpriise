@@ -2,15 +2,15 @@ odoo.define("documents_spreadsheet.create_empty_sheet_tour", function (require) 
     "use strict";
 
     require("web.dom_ready");
-    const tour = require("web_tour.tour");
+    const { registry } = require("@web/core/registry");
+    const { stepUtils } = require('@web_tour/js/tour_step_utils');
 
-    tour.register(
+    registry.category("web_tour.tours").add(
         "spreadsheet_create_empty_sheet",
         {
             test: true,
-        },
-        [
-            tour.stepUtils.showAppsMenuItem(),
+            steps: [
+            stepUtils.showAppsMenuItem(),
             {
                 trigger: '.o_app[data-menu-xmlid="documents.menu_root"]',
                 content: "Open document app",
@@ -47,14 +47,13 @@ odoo.define("documents_spreadsheet.create_empty_sheet_tour", function (require) 
                 run: "click",
             },
         ]
-    );
-    tour.register(
+    });
+    registry.category("web_tour.tours").add(
         "spreadsheet_create_list_view",
         {
             test: true,
-        },
-        [
-            tour.stepUtils.showAppsMenuItem(),
+            steps: [
+            stepUtils.showAppsMenuItem(),
             {
                 trigger: '.o_app[data-menu-xmlid="documents.menu_root"]',
                 content: "Open document app",
@@ -97,5 +96,5 @@ odoo.define("documents_spreadsheet.create_empty_sheet_tour", function (require) 
                 run: "click",
             },
         ]
-    );
+    });
 });

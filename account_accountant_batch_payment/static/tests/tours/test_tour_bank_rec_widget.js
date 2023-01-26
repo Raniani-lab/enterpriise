@@ -1,16 +1,16 @@
 /** @odoo-module **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
+import { stepUtils } from "@web_tour/js/tour_step_utils";
 
 
-tour.register('account_accountant_batch_payment_bank_rec_widget',
+registry.category("web_tour.tours").add('account_accountant_batch_payment_bank_rec_widget',
     {
         test: true,
         url: '/web',
-    },
-    [
-        tour.stepUtils.showAppsMenuItem(),
-        ...tour.stepUtils.goToAppSteps('account_accountant.menu_accounting', "Open the accounting module"),
+        steps: [
+        stepUtils.showAppsMenuItem(),
+        ...stepUtils.goToAppSteps('account_accountant.menu_accounting', "Open the accounting module"),
 
         // Open the widget. The first line should be selected by default.
         {
@@ -87,8 +87,8 @@ tour.register('account_accountant_batch_payment_bank_rec_widget',
             trigger: "div[name='lines_widget'] td[field='name']:contains('line3')",
             run: function() {},
         },
-        tour.stepUtils.toggleHomeMenu(),
-        ...tour.stepUtils.goToAppSteps(
+        stepUtils.toggleHomeMenu(),
+        ...stepUtils.goToAppSteps(
             'account_accountant.menu_accounting',
             "Reset back to accounting module"
         ),
@@ -98,4 +98,4 @@ tour.register('account_accountant_batch_payment_bank_rec_widget',
             run() {}
         }
     ]
-);
+});

@@ -1,10 +1,11 @@
 /** @odoo-module **/
 
 import helper from 'stock_barcode.tourHelper';
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
+import { stepUtils } from '@stock_barcode/../tests/tours/tour_step_utils';
 
 
-tour.register('test_gs1_receipt_expiration_date', {test: true}, [
+registry.category("web_tour.tours").add('test_gs1_receipt_expiration_date', {test: true, steps: [
     {
         trigger: '.o_barcode_client_action',
         run: function () {
@@ -100,5 +101,5 @@ tour.register('test_gs1_receipt_expiration_date', {test: true}, [
             helper.assert(lot_with_date_3, `b1-b003 (${date3})`, 'lot line');
         }
     },
-    ...tour.stepUtils.validateBarcodeOperation(".o_validate_page"),
-]);
+    ...stepUtils.validateBarcodeOperation(".o_validate_page"),
+]});

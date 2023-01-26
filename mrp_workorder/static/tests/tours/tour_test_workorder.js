@@ -1,9 +1,9 @@
 /** @odoo-module **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 import helper from 'mrp_workorder.tourHelper';
 
-tour.register('test_add_component', {test: true}, [
+registry.category("web_tour.tours").add('test_add_component', {test: true, steps: [
     {
         trigger: '.o_tablet_client_action',
         run: function () {
@@ -206,9 +206,9 @@ tour.register('test_add_component', {test: true}, [
     },
     {trigger: '.btn[name=do_finish]'},
     {trigger: '.o_searchview_input'},
-]);
+]});
 
-tour.register('test_add_step', {test: true}, [
+registry.category("web_tour.tours").add('test_add_step', {test: true, steps: [
     { trigger: '.o_tablet_client_action' },
     {
         trigger: 'input[id="qty_producing"]',
@@ -299,9 +299,9 @@ tour.register('test_add_step', {test: true}, [
     { trigger: 'button[name=action_next]' },
     { trigger: 'button[name=do_finish]' },
     { trigger: '.o_searchview_input' },
-]);
+]});
 
-tour.register('test_remove_step', {test: true}, [
+registry.category("web_tour.tours").add('test_remove_step', {test: true, steps: [
     { trigger: '.o_tablet_client_action' },
     {
         trigger: 'input[id="qty_producing"]',
@@ -440,9 +440,9 @@ tour.register('test_remove_step', {test: true}, [
     // should automatically go to summary page
     { trigger: 'button[name=do_finish]' },
     { trigger: '.o_searchview_input' },
-]);
+]});
 
-tour.register('test_update_step', {test: true}, [
+registry.category("web_tour.tours").add('test_update_step', {test: true, steps: [
     { trigger: '.o_tablet_client_action' },
     {
         trigger: 'input[id="qty_producing"]',
@@ -550,4 +550,4 @@ tour.register('test_update_step', {test: true}, [
     { trigger: '.btn-primary[name="action_next"]' },
     { trigger: 'button[name=do_finish]' },
     { trigger: '.o_searchview_input' },
-]);
+]});

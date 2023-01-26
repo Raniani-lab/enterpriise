@@ -1,13 +1,12 @@
 odoo.define('project_timesheet_synchro.test_screen_navigation', function (require) {
 'use strict';
 
-var tour = require('web_tour.tour');
+const { registry } = require("@web/core/registry");
 
-tour.register('activity_creation', {
+registry.category("web_tour.tours").add('activity_creation', {
     test: true,
     url: '/project_timesheet_synchro/timesheet_app',
-},
-    [
+    steps: [
         {
             content: "Open the menu",
             trigger: '.pt_toggle',
@@ -60,13 +59,12 @@ tour.register('activity_creation', {
             run: () => {},
         },
     ]
-);
+});
 
-tour.register('test_screen_navigation', {
+registry.category("web_tour.tours").add('test_screen_navigation', {
     test: true,
     url: '/project_timesheet_synchro/timesheet_app',
-},
-    [
+    steps: [
         {
             content: "Open the menu",
             trigger: '.pt_toggle',
@@ -131,6 +129,6 @@ tour.register('test_screen_navigation', {
             run: () => {},
         },
     ]
-);
+});
 
 });

@@ -1,14 +1,13 @@
 odoo.define('account_avatax_sale.tour_account_avatax_sale_optional_products', function (require) {
 'use strict';
 
-var tour = require('web_tour.tour');
+const { registry } = require("@web/core/registry");
 
 // This tour relies on data created on the Python test.
-tour.register('account_avatax_sale_optional_products', {
+registry.category("web_tour.tours").add('account_avatax_sale_optional_products', {
     test: true,
     url: '/my/quotes',
-},
-[
+    steps: [
     {
         content: "open the test SO",
         trigger: 'a:containsExact("avatax test")',
@@ -29,5 +28,5 @@ tour.register('account_avatax_sale_optional_products', {
         content: "wait for line to be deleted and show up again in optional products",
         trigger: '.js_add_optional_products',
     },
-]);
+]});
 });

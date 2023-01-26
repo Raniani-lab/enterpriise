@@ -2,7 +2,7 @@ odoo.define("documents_spreadsheet.open_pivot_sheet_tour", function (require) {
     "use strict";
 
     require("web.dom_ready");
-    const tour = require("web_tour.tour");
+    const { registry } = require("@web/core/registry");
 
     function assert(current, expected, info) {
         if (current !== expected) {
@@ -11,16 +11,16 @@ odoo.define("documents_spreadsheet.open_pivot_sheet_tour", function (require) {
     }
 
     function fail(errorMessage) {
+        const tour = registry.get("tourManager");
         tour._consume_tour(tour.running_tour, errorMessage);
     }
 
     const SHEETNAME = "Partner Spreadsheet Test";
-    tour.register(
+    registry.category("web_tour.tours").add(
         "spreadsheet_open_pivot_sheet",
         {
             test: true,
-        },
-        [
+            steps: [
             {
                 trigger: '.o_app[data-menu-xmlid="documents.menu_root"]',
                 content: "Open document app",
@@ -104,5 +104,5 @@ odoo.define("documents_spreadsheet.open_pivot_sheet_tour", function (require) {
                 content: "Sheet is visible in Documents",
             },
         ]
-    );
+    });
 });

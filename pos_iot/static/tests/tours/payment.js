@@ -1,7 +1,8 @@
 /** @odoo-module */
 /* global posmodel */
 
-import tour from "web_tour.tour";
+import { registry } from "@web/core/registry";
+import { stepUtils } from "@web_tour/js/tour_step_utils";
 
 import DeviceProxy from "iot.DeviceProxy";
 
@@ -63,10 +64,10 @@ var TerminalProxy = DeviceProxy.extend({
     },
 });
 
-tour.register('payment_terminals_tour', {
+registry.category("web_tour.tours").add('payment_terminals_tour', {
     test: true,
     url: '/web',
-}, [tour.stepUtils.showAppsMenuItem(),
+    steps: [stepUtils.showAppsMenuItem(),
     {
         content: 'Select PoS app',
         trigger: '.o_app[data-menu-xmlid="point_of_sale.menu_point_root"]',
@@ -156,4 +157,4 @@ tour.register('payment_terminals_tour', {
         trigger: '.receipt-screen .button.next.highlight:contains("New Order")',
         run: function() {}
     },
-]);
+]});

@@ -1,9 +1,9 @@
 /** @odoo-module **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 import helper from 'mrp_workorder.tourHelper';
 
-tour.register('test_production_with_employee', {test: true}, [
+registry.category("web_tour.tours").add('test_production_with_employee', {test: true, steps: [
     {trigger: 'div.popup'},
     {trigger: 'h3:contains("Change Worker")'},
     {trigger: 'div.selection-item:contains("Arthur")'},
@@ -91,4 +91,4 @@ tour.register('test_production_with_employee', {test: true}, [
     {trigger: '.btn-primary[name="action_next"]'},
     {trigger: '.btn[name=do_finish]'},
     {trigger: '.o_searchview_input'},
-]);
+]});

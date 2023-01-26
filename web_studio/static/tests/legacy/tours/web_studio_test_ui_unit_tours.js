@@ -1,14 +1,13 @@
 /** @odoo-module */
-import tour from "web_tour.tour";
+import { registry } from "@web/core/registry";
 
-tour.register(
+registry.category("web_tour.tours").add(
     "web_studio_test_form_view_not_altered_by_studio_xml_edition",
     {
         test: true,
         url: "/web",
-        sequence: 260
-    },
-    [
+        sequence: 260,
+        steps: [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']"
         },
@@ -32,17 +31,16 @@ tour.register(
             trigger: ".o_form_view .o_form_editable"
         }
     ]
-);
+});
 
 /* global ace */
-tour.register(
+registry.category("web_tour.tours").add(
     "web_studio_test_edit_with_xml_editor",
     {
         test: true,
         url: "/web",
-        sequence: 260
-    },
-    [
+        sequence: 260,
+        steps: [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']"
         },
@@ -96,15 +94,14 @@ tour.register(
             }
         }
     ]
-);
+});
 
-tour.register(
+registry.category("web_tour.tours").add(
     "web_studio_enter_x2many_edition_and_add_field",
     {
         test: true,
-        sequence: 260
-    },
-    [
+        sequence: 260,
+        steps: [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']"
         },
@@ -146,15 +143,14 @@ tour.register(
             }
         }
     ]
-);
+});
 
-tour.register(
+registry.category("web_tour.tours").add(
     "web_studio_enter_x2many_auto_inlined_subview",
     {
         test: true,
-        sequence: 260
-    },
-    [
+        sequence: 260,
+        steps: [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']"
         },
@@ -196,15 +192,14 @@ tour.register(
             }
         }
     ]
-);
+});
 
-tour.register(
+registry.category("web_tour.tours").add(
     "web_studio_field_with_group",
     {
         test: true,
-        sequence: 260
-    },
-    [
+        sequence: 260,
+        steps: [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']"
         },
@@ -243,15 +238,14 @@ tour.register(
             }
         }
     ]
-);
+});
 
-tour.register(
+registry.category("web_tour.tours").add(
     "web_studio_elements_with_groups_form",
     {
         test: true,
-        sequence: 260
-    },
-    [
+        sequence: 260,
+        steps: [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']"
         },
@@ -290,15 +284,14 @@ tour.register(
             }
         }
     ]
-);
+});
 
-tour.register(
+registry.category("web_tour.tours").add(
     "test_element_group_in_sidebar",
     {
         test: true,
         sequence: 260,
-    },
-    [
+        steps: [
         {
             trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
         },
@@ -322,4 +315,4 @@ tour.register(
             },
         },
     ]
-);
+});

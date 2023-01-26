@@ -1,6 +1,7 @@
 /** @odoo-module **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
+import { stepUtils } from "@web_tour/js/tour_step_utils";
 
 function openProjectUpdateAndReturnToTasks(view, viewClass) {
     return [{
@@ -25,11 +26,11 @@ function openProjectUpdateAndReturnToTasks(view, viewClass) {
     ];
 }
 
-tour.register('project_enterprise_tour', {
+registry.category("web_tour.tours").add('project_enterprise_tour', {
     test: true,
     url: '/web',
-}, [
-    tour.stepUtils.showAppsMenuItem(), {
+    steps: [
+    stepUtils.showAppsMenuItem(), {
         trigger: '.o_app[data-menu-xmlid="project.menu_main_pm"]',
     }, {
         trigger: '.o-kanban-button-new',
@@ -107,4 +108,4 @@ tour.register('project_enterprise_tour', {
         trigger: '.o_switch_view.o_map',
         content: 'Open Map View',
     }, ...openProjectUpdateAndReturnToTasks("Map", "o_map_view"),
-]);
+]});

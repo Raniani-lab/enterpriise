@@ -1,13 +1,13 @@
 /** @odoo-module **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 
-tour.register('translate_sign_instructions', {
+registry.category("web_tour.tours").add('translate_sign_instructions', {
     test: true,
-}, [
+    steps: [
     {
         content: 'Translations must be loaded',
         trigger: 'iframe .o_sign_sign_item_navigator:contains("Cliquez pour commencer")',
         run: () => null, // it's a check
     }
-]);
+]});

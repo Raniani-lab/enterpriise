@@ -2,14 +2,14 @@
 /**
  * Add custom steps to take products and sales order into account
  */
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 import 'industry_fsm.tour';
 import { _t } from 'web.core';
 import { Markup } from 'web.utils';
 
-const fsmStartStepIndex = tour.tours.industry_fsm_tour.steps.findIndex(step => step.id === 'fsm_start');
+const fsmStartStepIndex = registry.category("web_tour.tours").get("industry_fsm_tour").steps.findIndex(step => step.id === 'fsm_start');
 
-tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
+registry.category("web_tour.tours").get("industry_fsm_tour").steps.splice(fsmStartStepIndex + 1, 0, {
     trigger: 'button[name="action_fsm_view_material"]',
     extra_trigger: 'button[name="action_timer_stop"]',
     content: _t('Let\'s <b>track the material</b> you use for your task.'),
@@ -39,9 +39,9 @@ tour.tours.industry_fsm_tour.steps.splice(fsmStartStepIndex + 1, 0, {
     position: "bottom"
 });
 
-const fsmCreateInvoiceStepIndex = tour.tours.industry_fsm_tour.steps.findIndex(step => step.id === 'fsm_invoice_create');
+const fsmCreateInvoiceStepIndex = registry.category("web_tour.tours").get("industry_fsm_tour").steps.findIndex(step => step.id === 'fsm_invoice_create');
 
-tour.tours.industry_fsm_tour.steps.splice(fsmCreateInvoiceStepIndex + 1, 0, {
+registry.category("web_tour.tours").get("industry_fsm_tour").steps.splice(fsmCreateInvoiceStepIndex + 1, 0, {
     trigger: ".o_statusbar_buttons > button:contains('Create Invoice')",
     content: _t("<b>Invoice your time and material</b> to your customer."),
     position: "bottom"

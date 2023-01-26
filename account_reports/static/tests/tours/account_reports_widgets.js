@@ -1,13 +1,12 @@
 odoo.define('account_reports_widgets.tour', function (require) {
 "use strict";
 
-var tour = require('web_tour.tour');
+const { registry } = require("@web/core/registry");
 
-tour.register('account_reports_widgets', {
+registry.category("web_tour.tours").add('account_reports_widgets', {
     test: true,
     url: '/web?#action=account_reports.action_account_report_pl',
-},
-    [
+    steps: [
         {
             content: "wait web client",
             trigger: ".o_account_reports_body",
@@ -97,6 +96,6 @@ tour.register('account_reports_widgets', {
             run: 'click'
         },
     ]
-);
+});
 
 });

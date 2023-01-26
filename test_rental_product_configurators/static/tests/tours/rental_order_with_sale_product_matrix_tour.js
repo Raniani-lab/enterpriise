@@ -1,11 +1,12 @@
 /** @odoo-module **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
+import { stepUtils } from "@web_tour/js/tour_step_utils";
 
-tour.register('rental_order_with_sale_product_matrix_tour', {
+registry.category("web_tour.tours").add('rental_order_with_sale_product_matrix_tour', {
     url: '/web',
     test: true,
-}, [tour.stepUtils.showAppsMenuItem(), {
+    steps: [stepUtils.showAppsMenuItem(), {
     trigger: '.o_app[data-menu-xmlid="sale_renting.rental_menu_root"]',
     edition: 'enterprise'
 }, {
@@ -57,5 +58,5 @@ tour.register('rental_order_with_sale_product_matrix_tour', {
 }, {
     trigger: 'button:contains("Confirm")',
 },
-    ...tour.stepUtils.saveForm({ extra_trigger: '.o_field_cell.o_data_cell.o_list_number:contains("26")' }),
-]);
+    ...stepUtils.saveForm({ extra_trigger: '.o_field_cell.o_data_cell.o_list_number:contains("26")' }),
+]});

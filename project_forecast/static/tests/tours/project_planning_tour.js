@@ -1,8 +1,8 @@
 /** @odoo-module **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 
-const planningTestTour = tour.tours.planning_test_tour
+const planningTestTour = registry.category("web_tour.tours").get("planning_test_tour")
 const projectPlanningStartStepIndex = planningTestTour.steps.findIndex((step) => step.id && step.id === 'project_planning_start');
 
 planningTestTour.steps.splice(projectPlanningStartStepIndex + 1, 0, {

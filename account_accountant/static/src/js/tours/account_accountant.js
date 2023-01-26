@@ -3,14 +3,15 @@ odoo.define('account_accountant.tour', function (require) {
 
     const core = require('web.core');
     const {Markup} = require('web.utils');
-    const tour = require('web_tour.tour');
+    const { registry } = require("@web/core/registry");
+    const { stepUtils } = require('@web_tour/js/tour_step_utils');
 
     const _t = core._t;
     const { markup } = owl;
 
     // Update the invoicing tour as the menu items have changed, but we want the test to still work
-    tour.tours.account_tour.steps.splice(0, 3,
-        ..._.map(tour.stepUtils.goToAppSteps('account_accountant.menu_accounting', _t('Go to invoicing')), step => _.extend(step, {auto: true})),
+    registry.category("web_tour.tours").get("account_tour").steps.splice(0, 3,
+        ..._.map(stepUtils.goToAppSteps('account_accountant.menu_accounting', _t('Go to invoicing')), step => _.extend(step, {auto: true})),
         {
             trigger: 'button[data-menu-xmlid="account.menu_finance_receivables"]',
             content: _t('Go to invoicing'),
@@ -22,19 +23,18 @@ odoo.define('account_accountant.tour', function (require) {
         }
     )
 
-    tour.register('account_accountant_tour', {
-            rainbowManMessage: function() {
+    registry.category("web_tour.tours").add('account_accountant_tour', {
+            rainbowManMessage: function(tourManager) {
                 var message = _t('<strong><b>Good job!</b> You went through all steps of this tour.</strong>');
-                if (!tour._isTourConsumed('account_tour')) {
+                if (!tourManager._isTourConsumed('account_tour')) {
                     message += _t('<br>See how to manage your customer invoices in the <b>Customers/Invoices</b> menu');
                 }
                 return markup(message);
             },
             url: "/web",
             sequence: 50,
-        },
-        [
-            ...tour.stepUtils.goToAppSteps('account_accountant.menu_accounting', _t('Let’s automate your bills, bank transactions and accounting processes.')),
+            steps: [
+            ...stepUtils.goToAppSteps('account_accountant.menu_accounting', _t('Let’s automate your bills, bank transactions and accounting processes.')),
             // The tour will stop here if there is at least 1 vendor bill in the database.
             // While not ideal, it is ok, since that means the user obviously knows how to create a vendor bill...
             {
@@ -66,7 +66,7 @@ odoo.define('account_accountant.tour', function (require) {
                 run: function () {
                     // Close the modal
                     // We can't test bank sync in the tour
-                    tour.tours.account_accountant_tour.current_step += 3
+                    registry.category("web_tour.tours").get("account_accountant_tour").current_step += 3
                     $('.js_cancel').click();
                 }
             }, {
@@ -81,18 +81,17 @@ odoo.define('account_accountant.tour', function (require) {
                 position: 'bottom',
             }
         ]
-    );
+    });
 
-    tour.register('account_accountant_tour_upload_ocr_step', {
-            rainbowMan: false,
-            sequence: 70,
-        },
-        [
+    registry.category("web_tour.tours").add('account_accountant_tour_upload_ocr_step', {
+        rainbowMan: false,
+        sequence: 70,
+        steps: [
             {
                 trigger: 'button.btn-primary[name="check_status"]',
                 content: Markup(_t('Let’s use AI to fill in the form<br/><br/><i>Tip: If the OCR is not done yet, wait a few more seconds and try again.</i>')),
                 position: 'bottom',
             }
         ]
-    )
+    })
 });

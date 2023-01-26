@@ -1,16 +1,16 @@
 /** @odoo-module **/
 
 import { _t } from "web.core";
-import tour from "web_tour.tour";
+import { registry } from "@web/core/registry";
 
 const { markup } = owl;
 
-tour.register('planning_tour', {
+registry.category("web_tour.tours").add('planning_tour', {
     sequence: 120,
     'skip_enabled': false,
     url: '/web',
     rainbowManMessage: markup(_t("<b>Congratulations!</b></br> You are now a master of planning.")),
-}, [
+    steps: [
     {
         trigger: '.o_app[data-menu-xmlid="planning.planning_menu_root"]',
         content: _t("Let's start managing your employees' schedule!"),
@@ -53,4 +53,4 @@ tour.register('planning_tour', {
         content: _t("Plan all of your shifts in one click by <b>copying the previous week's schedule</b>."),
         position: "bottom",
     },
-]);
+]});

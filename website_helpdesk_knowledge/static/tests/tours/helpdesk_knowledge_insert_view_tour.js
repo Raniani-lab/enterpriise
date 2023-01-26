@@ -1,12 +1,12 @@
 /** @odoo-module */
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 
 
-tour.register('helpdesk_insert_graph_view_in_knowledge', {
+registry.category("web_tour.tours").add('helpdesk_insert_graph_view_in_knowledge', {
     url: '/web#action=helpdesk.helpdesk_ticket_analysis_action',
     test: true,
-}, [{ // open the filter menu
+    steps: [{ // open the filter menu
     trigger: '.o_filter_menu .dropdown-toggle',
 }, { // pick a filter
     trigger: '.o_filter_menu .dropdown-item:contains("Urgent")',
@@ -35,4 +35,4 @@ tour.register('helpdesk_insert_graph_view_in_knowledge', {
     trigger: '.o_knowledge_behavior_type_embedded_view .o_searchview .o_facet_value:contains("Urgent")',
 }, {
     trigger: '.o_knowledge_behavior_type_embedded_view .o_searchview .o_facet_value:contains("Team")',
-}]);
+}]});

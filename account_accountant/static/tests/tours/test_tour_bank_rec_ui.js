@@ -1,14 +1,14 @@
 /** @odoo-module **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
+import { stepUtils } from "@web_tour/js/tour_step_utils";
 
-tour.register('account_accountant_bank_rec_widget_ui',
+registry.category("web_tour.tours").add('account_accountant_bank_rec_widget_ui',
     {
         url: '/web',
-    },
-    [
-        tour.stepUtils.showAppsMenuItem(),
-        ...tour.stepUtils.goToAppSteps('account_accountant.menu_accounting', "Open the accounting module"),
+        steps: [
+        stepUtils.showAppsMenuItem(),
+        ...stepUtils.goToAppSteps('account_accountant.menu_accounting', "Open the accounting module"),
 
         // Open the widget. The first line should be selected by default.
         {
@@ -503,8 +503,8 @@ tour.register('account_accountant_bank_rec_widget_ui',
             run: () => {},
         },
         // Test the Balance when changing journal and liquidity line
-        tour.stepUtils.toggleHomeMenu(),
-        ...tour.stepUtils.goToAppSteps(
+        stepUtils.toggleHomeMenu(),
+        ...stepUtils.goToAppSteps(
             'account_accountant.menu_accounting',
             "Reset back to accounting module"
         ),
@@ -572,8 +572,8 @@ tour.register('account_accountant_bank_rec_widget_ui',
             run: () => {},
         },
         // End
-        tour.stepUtils.toggleHomeMenu(),
-        ...tour.stepUtils.goToAppSteps(
+        stepUtils.toggleHomeMenu(),
+        ...stepUtils.goToAppSteps(
             'account_accountant.menu_accounting',
             "Reset back to accounting module"
         ),
@@ -583,4 +583,4 @@ tour.register('account_accountant_bank_rec_widget_ui',
             run() {},
         }
     ]
-);
+});

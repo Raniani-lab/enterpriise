@@ -3,15 +3,15 @@ odoo.define('helpdesk.tour', function(require) {
 
 var core = require('web.core');
 const {Markup} = require('web.utils');
-var tour = require('web_tour.tour');
+const { registry } = require("@web/core/registry");
 
 var _t = core._t;
 
-tour.register('helpdesk_tour', {
+registry.category("web_tour.tours").add('helpdesk_tour', {
     url: "/web",
     rainbowManMessage: Markup(_t('<center><strong><b>Good job!</b> You walked through all steps of this tour.</strong></center>')),
     sequence: 220,
-}, [{
+    steps: [{
     trigger: '.o_app[data-menu-xmlid="helpdesk.menu_helpdesk_root"]',
     content: Markup(_t('Want to <b>boost your customer satisfaction</b>?<br/><i>Click Helpdesk to start.</i>')),
     position: 'bottom',
@@ -87,6 +87,6 @@ tour.register('helpdesk_tour', {
     content: Markup(_t("Add your stage and place it at the right step of your workflow by dragging & dropping it.")),
     position: 'right',
 }
-]);
+]});
 
 });

@@ -3,16 +3,17 @@ odoo.define('timesheet.tour', function(require) {
 
 var core = require('web.core');
 const {Markup} = require('web.utils');
-var tour = require('web_tour.tour');
+const { registry } = require("@web/core/registry");
+const { stepUtils } = require('@web_tour/js/tour_step_utils');
 
 var _t = core._t;
 const { markup } = owl;
 
-tour.register('timesheet_tour', {
+registry.category("web_tour.tours").add('timesheet_tour', {
     sequence: 100,
     rainbowManMessage: markup(_t("Congratulations, you are now a master of Timesheets.")),
     url: "/web",
-}, [tour.stepUtils.showAppsMenuItem(), {
+    steps: [stepUtils.showAppsMenuItem(), {
     trigger: '.o_app[data-menu-xmlid="hr_timesheet.timesheet_menu_root"]',
     content: Markup(_t('Track the <b>time spent</b> on your projects. <i>It starts here.</i>')),
     position: 'bottom',
@@ -41,6 +42,6 @@ tour.register('timesheet_tour', {
     content: Markup(_t('Set the number of hours you spent on this project (e.g. 1:30 or 1.5). <i>Tip: use the tab keys to easily navigate from one cell to another.</i>')),
     position: 'bottom',
     consumeEvent: 'change',
-}]);
+}]});
 
 });

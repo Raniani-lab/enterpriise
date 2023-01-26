@@ -1,11 +1,12 @@
 /** @odoo-module */
 
 import "web.dom_ready";
-import tour from "web_tour.tour";
+import { registry } from "@web/core/registry";
 
 let startingNumberOfSheetsInGroup = 0;
 
 function assertNSheetsInGroup(number) {
+    const tour = registry.get("tourManager");
     const actualNumber = document.querySelectorAll(".o_list_table tr.o_data_row").length;
     if (actualNumber !== number) {
         tour._consume_tour(
@@ -20,13 +21,12 @@ function focusFirstSheetInModal() {
     sheetImg.dispatchEvent(new MouseEvent("focus"));
 }
 
-tour.register(
+registry.category("web_tour.tours").add(
     "spreadsheet_dashboard_document_add_document_to_dashboard_group",
     {
         test: true,
         url: "/web",
-    },
-    [
+        steps: [
         {
             trigger:
                 '.o_app[data-menu-xmlid="spreadsheet_dashboard.spreadsheet_dashboard_menu_root"]',
@@ -99,4 +99,4 @@ tour.register(
             run: () => assertNSheetsInGroup(startingNumberOfSheetsInGroup + 2),
         },
     ]
-);
+});

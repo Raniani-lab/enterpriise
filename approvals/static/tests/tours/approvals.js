@@ -1,12 +1,12 @@
 odoo.define('approvals_tour', function(require) {
     "use strict";
 
-    var tour = require('web_tour.tour');
+    const { registry } = require("@web/core/registry");
 
-    tour.register('approvals_tour', {
+    registry.category("web_tour.tours").add('approvals_tour', {
         test: true,
         url: "/web",
-    },[
+        steps: [
         {
             trigger: '.o_app[data-menu-xmlid="approvals.approvals_menu_root"]',
             content: 'open approvals app',
@@ -118,6 +118,6 @@ odoo.define('approvals_tour', function(require) {
             content: 'wait the the request to be approved',
             run: function(){},
         }
-    ]);
+    ]});
 
 });

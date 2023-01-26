@@ -1,12 +1,12 @@
 /** @odoo-module */
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 
 
-tour.register('helpdesk_pick_template_as_message_from_knowledge', {
+registry.category("web_tour.tours").add('helpdesk_pick_template_as_message_from_knowledge', {
     url: '/web#action=helpdesk.helpdesk_ticket_action_main_tree',
     test: true,
-}, [{ // click on the first record of the list
+    steps: [{ // click on the first record of the list
     trigger: 'tr.o_data_row:first-child .o_data_cell[name="name"]',
     run: 'click',
 }, { // open an article
@@ -27,12 +27,12 @@ tour.register('helpdesk_pick_template_as_message_from_knowledge', {
     run: 'click'
 }, { // check that the chatter contains the content of the template block
     trigger: '.oe_chatter .o_MessageView_content p:contains("Hello world")',
-}]);
+}]});
 
-tour.register('helpdesk_pick_template_as_description_from_knowledge', {
+registry.category("web_tour.tours").add('helpdesk_pick_template_as_description_from_knowledge', {
     url: '/web#action=helpdesk.helpdesk_ticket_action_main_tree',
     test: true,
-}, [{ // click on the first record of the list
+    steps: [{ // click on the first record of the list
     trigger: 'tr.o_data_row:first-child .o_data_cell[name="name"]',
     run: 'click',
 }, { // open an article
@@ -48,4 +48,4 @@ tour.register('helpdesk_pick_template_as_description_from_knowledge', {
     run: 'click',
 }, { // check that the description contains content of the template block
     trigger: '.o_form_sheet .o_field_html p:contains("Hello world")',
-}]);
+}]});

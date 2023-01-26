@@ -10,7 +10,8 @@
  * - Favorite 2 different articles and invert their order in the favorite section
  */
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
+import { stepUtils } from "@web_tour/js/tour_step_utils";
 
 export const moveArticle = ($element, $target) => {
     const elementCenter = $element.offset();
@@ -56,10 +57,10 @@ export const moveArticle = ($element, $target) => {
     }, 151);
 };
 
-tour.register('knowledge_main_flow_tour', {
+registry.category("web_tour.tours").add('knowledge_main_flow_tour', {
     test: true,
     url: '/web',
-}, [tour.stepUtils.showAppsMenuItem(), {
+    steps: [stepUtils.showAppsMenuItem(), {
     // open Knowledge App
     trigger: '.o_app[data-menu-xmlid="knowledge.knowledge_menu_root"]',
 }, {
@@ -214,4 +215,4 @@ tour.register('knowledge_main_flow_tour', {
     trigger: '.o_data_row:first .o_data_cell[name="display_name"]:contains("Article 2")',
     extra_trigger: '.breadcrumb-item.active:contains("Trash")',
     run: () => {},
-}]);
+}]});

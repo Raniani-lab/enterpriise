@@ -1,12 +1,13 @@
 /** @odoo-module **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
+import { stepUtils } from "@web_tour/js/tour_step_utils";
 
-tour.register('payroll_dashboard_ui_tour', {
+registry.category("web_tour.tours").add('payroll_dashboard_ui_tour', {
     test: true,
     url: '/web',
-}, [
-    tour.stepUtils.showAppsMenuItem(),
+    steps: [
+    stepUtils.showAppsMenuItem(),
     {
         content: "Open payroll app",
         trigger: '.o_app[data-menu-xmlid="hr_work_entry_contract_enterprise.menu_hr_payroll_root"]',
@@ -89,4 +90,4 @@ tour.register('payroll_dashboard_ui_tour', {
         trigger: ".note-editable.odoo-editor-editable",
         run: "text Todo List"
     }
-]);
+]});

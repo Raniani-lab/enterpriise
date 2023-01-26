@@ -1,13 +1,12 @@
 /** @odoo-module **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 import tourUtils from 'website_sale.tour_utils';
 
-tour.register('shop_buy_rental_product_comparison', {
+registry.category("web_tour.tours").add('shop_buy_rental_product_comparison', {
     test: true,
     url: '/shop?search=Computer',
-},
-    [
+    steps: [
         {
             content: "click on add to comparison",
             trigger: '.o_add_compare',
@@ -74,4 +73,4 @@ tour.register('shop_buy_rental_product_comparison', {
             trigger: 'a[href*="/shop/checkout"]',
         },
     ]
-);
+});

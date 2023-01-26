@@ -1,8 +1,9 @@
 odoo.define('test_barcode_batch_flows.tour', function(require) {
 'use strict';
 
-const tour = require('web_tour.tour');
+const { registry } = require("@web/core/registry");
 const helper = require('stock_barcode_picking_batch.tourHelper');
+const { stepUtils } = require('@stock_barcode/../tests/tours/tour_step_utils');
 
 function checkState(state) {
     helper.assertLinesCount(state.linesCount);
@@ -32,7 +33,7 @@ let currentViewState;
 // ----------------------------------------------------------------------------
 // Tours
 // ----------------------------------------------------------------------------
-tour.register('test_barcode_batch_receipt_1', {test: true}, [
+registry.category("web_tour.tours").add('test_barcode_batch_receipt_1', {test: true, steps: [
     {
         trigger: '.o_barcode_client_action',
         run: function () {
@@ -363,9 +364,9 @@ tour.register('test_barcode_batch_receipt_1', {test: true}, [
             helper.assertLineIsHighlighted(sublines[1]);
         }
     },
-]);
+]});
 
-tour.register('test_barcode_batch_delivery_1', {test: true}, [
+registry.category("web_tour.tours").add('test_barcode_batch_delivery_1', {test: true, steps: [
     {
         trigger: '.o_barcode_client_action',
         run: function () {
@@ -538,9 +539,9 @@ tour.register('test_barcode_batch_delivery_1', {test: true}, [
     { trigger: '.o_validate_page' },
     { trigger: '.btn-primary[name="process_cancel_backorder"]' },
     { trigger: '.o_notification.border-success' },
-]);
+]});
 
-tour.register('test_barcode_batch_delivery_2_move_entire_package', {test: true}, [
+registry.category("web_tour.tours").add('test_barcode_batch_delivery_2_move_entire_package', {test: true, steps: [
     // Should have 3 lines: 2 for product2 (one by picking) and 1 for the package pack1.
     {
         trigger: '.o_barcode_client_action',
@@ -580,9 +581,9 @@ tour.register('test_barcode_batch_delivery_2_move_entire_package', {test: true},
             helper.assertLineQty(1, '5 / 5');
         }
     },
-])
+]});
 
-tour.register('test_batch_create', {test: true}, [
+registry.category("web_tour.tours").add('test_batch_create', {test: true, steps: [
     {
         trigger: '.o_stock_barcode_main_menu:contains("Barcode Scanning")',
     },
@@ -667,9 +668,9 @@ tour.register('test_batch_create', {test: true}, [
             helper.assertLinesBelongTo([lines[1], lines[2], lines[5], lines[6]], "picking_delivery_2");
         },
     },
-]);
+]});
 
-tour.register('test_put_in_pack_scan_suggested_package', {test: true}, [
+registry.category("web_tour.tours").add('test_put_in_pack_scan_suggested_package', {test: true, steps: [
     {
         trigger: '.o_barcode_client_action',
         run: function () {
@@ -806,10 +807,10 @@ tour.register('test_put_in_pack_scan_suggested_package', {test: true}, [
             helper.assert(line5.querySelector('[name=package]').innerText, 'PACK0000002');
         }
     },
-    ...tour.stepUtils.validateBarcodeOperation(),
-]);
+    ...stepUtils.validateBarcodeOperation(),
+]});
 
-tour.register('test_pack_and_same_product_several_sml', {test: true}, [
+registry.category("web_tour.tours").add('test_pack_and_same_product_several_sml', {test: true, steps: [
     {
         trigger: '.o_barcode_client_action',
         run: 'scan P00001',
@@ -847,7 +848,7 @@ tour.register('test_pack_and_same_product_several_sml', {test: true}, [
             helper.assertLineQty(lines[2], "45");
         },
     },
-    ...tour.stepUtils.validateBarcodeOperation(),
-]);
+    ...stepUtils.validateBarcodeOperation(),
+]});
 
 });

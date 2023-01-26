@@ -1,12 +1,12 @@
 /** @odoo-module */
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 
 
-tour.register('helpdesk_insert_kanban_view_link_in_knowledge', {
+registry.category("web_tour.tours").add('helpdesk_insert_kanban_view_link_in_knowledge', {
     url: '/web#action=helpdesk.helpdesk_ticket_action_main_tree',
     test: true,
-}, [{ // switch to the kanban view
+    steps: [{ // switch to the kanban view
     trigger: 'button.o_switch_view.oi-view-kanban',
     run: 'click',
 }, { // wait for the kanban view to load
@@ -36,4 +36,4 @@ tour.register('helpdesk_insert_kanban_view_link_in_knowledge', {
     trigger: '.o_searchview .o_facet_value:contains("My Tickets")',
 }, { // check the title of the view
     trigger: '.o_control_panel .breadcrumb-item.active:contains("Tickets")',
-}]);
+}]});

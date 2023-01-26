@@ -1,13 +1,14 @@
 /** @odoo-module */
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 import { openCommandBar } from '../knowledge_tour_utils.js';
+import { stepUtils } from "@web_tour/js/tour_step_utils";
 
 
-tour.register('knowledge_article_command_tour', {
+registry.category("web_tour.tours").add('knowledge_article_command_tour', {
     url: '/web',
     test: true,
-}, [tour.stepUtils.showAppsMenuItem(), {
+    steps: [stepUtils.showAppsMenuItem(), {
     // open the Knowledge App
     trigger: '.o_app[data-menu-xmlid="knowledge.knowledge_menu_root"]',
 }, { // open the command bar
@@ -33,4 +34,4 @@ tour.register('knowledge_article_command_tour', {
     run: 'click',
 }, { // check that the view switched to the corresponding article while keeping the breadcrumbs history
     trigger: '.o_knowledge_header:has(.o_breadcrumb_article_name_container:contains("EditorCommandsArticle")):has(.breadcrumb-item > a:contains("EditorCommandsArticle"))'
-}]);
+}]});

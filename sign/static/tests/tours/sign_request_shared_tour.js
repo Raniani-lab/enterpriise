@@ -1,12 +1,12 @@
 odoo.define('shared_sign_request_tour', function (require) {
     'use strict';
 
-    const tour = require('web_tour.tour');
+    const { registry } = require("@web/core/registry");
 
-    tour.register('shared_sign_request_tour', {
+    registry.category("web_tour.tours").add('shared_sign_request_tour', {
         test: true,
         url: '/web',
-    }, [
+        steps: [
         {
             content: 'Open Sign APP',
             trigger: '.o_app[data-menu-xmlid="sign.menu_document"]',
@@ -78,5 +78,5 @@ odoo.define('shared_sign_request_tour', function (require) {
             extra_trigger: '.modal-title:contains("Thank You !")',
             run(){},
         },
-    ])
+    ]})
 })

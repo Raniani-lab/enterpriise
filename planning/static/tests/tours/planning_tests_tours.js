@@ -1,11 +1,11 @@
 /** @odoo-module **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 
-tour.register('planning_test_tour', {
+registry.category("web_tour.tours").add('planning_test_tour', {
     url: '/web',
     test: true,
-}, [{
+    steps: [{
     trigger: '.o_app[data-menu-xmlid="planning.planning_menu_root"]',
     content: "Let's start managing your employees' schedule!",
     position: 'bottom',
@@ -110,12 +110,12 @@ tour.register('planning_test_tour', {
     content: "Check naming format of resource and role when grouped",
     auto: true,
     run: function () {}
-}]);
+}]});
 
-tour.register('planning_shift_switching_backend', {
+registry.category("web_tour.tours").add('planning_shift_switching_backend', {
     url: '/web',
     test: true,
-}, [{
+    steps: [{
     trigger: '.o_app[data-menu-xmlid="planning.planning_menu_root"]',
     content: "Get in the planning app",
 }, {
@@ -140,12 +140,12 @@ tour.register('planning_shift_switching_backend', {
 }, {
     trigger: '.btn-close',
     content: "Click on the close button to hide the shift form modal",
-}]);
+}]});
 
-tour.register('planning_assigning_unwanted_shift_backend', {
+registry.category("web_tour.tours").add('planning_assigning_unwanted_shift_backend', {
     url: '/web',
     test: true,
-}, [{
+    steps: [{
     trigger: '.o_app[data-menu-xmlid="planning.planning_menu_root"]',
     content: "Get in the planning app",
 }, {
@@ -165,4 +165,4 @@ tour.register('planning_assigning_unwanted_shift_backend', {
 }, {
     trigger: '.o_gantt_pill :contains("joseph")',
     content: "Click again on the newly assigned shift",
-}]);
+}]});

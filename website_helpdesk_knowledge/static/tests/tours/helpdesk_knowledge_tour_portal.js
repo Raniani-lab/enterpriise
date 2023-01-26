@@ -1,10 +1,10 @@
 /** @odoo-module */
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 
-tour.register('access_helpdesk_article_portal_tour', {
+registry.category("web_tour.tours").add('access_helpdesk_article_portal_tour', {
     test: true,
-}, [{
+    steps: [{
     content: "clik on 'Help'",
     trigger: 'a[role="menuitem"]:contains("Help")',
 }, {
@@ -34,4 +34,4 @@ tour.register('access_helpdesk_article_portal_tour', {
     content: "Check that the 'Helpdesk Article' is unfolded",
     trigger: '.o_article_name:contains("Child Article")',
     run() {},
-}]);
+}]});

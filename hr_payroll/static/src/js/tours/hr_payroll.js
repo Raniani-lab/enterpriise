@@ -1,13 +1,13 @@
 /** @odoo-module **/
 
 import { _t } from 'web.core';
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 
-tour.register('payroll_tours', {
+registry.category("web_tour.tours").add('payroll_tours', {
     url: "/web",
     rainbowManMessage: _t('Congratulations! You created your first contract and generated your first payslip!'),
     sequence: 80,
-}, [
+    steps: [
     {
         trigger: `.o_app[data-menu-xmlid='hr_work_entry_contract_enterprise.menu_hr_payroll_root']`,
     content: _t("Click on Payroll to manage your employee's <strong>Work Entries</strong>, <strong>Contracts</strong> and <strong>Payslips</strong>."),
@@ -142,4 +142,4 @@ tour.register('payroll_tours', {
         content: _t("You can access the Payslips from the Employee's Profile."),
         position: 'bottom',
     },
-]);
+]});

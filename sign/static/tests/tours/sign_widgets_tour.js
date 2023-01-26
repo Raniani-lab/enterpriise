@@ -2,15 +2,15 @@ odoo.define('sign_widgets_tour', function (require) {
     "use strict";
 
     var core = require('web.core');
-    var tour = require('web_tour.tour');
+    const { registry } = require("@web/core/registry");
+    const { stepUtils } = require('@web_tour/js/tour_step_utils');
 
     var _t = core._t;
 
-    tour.register('sign_widgets_tour', {
+    registry.category("web_tour.tours").add('sign_widgets_tour', {
         test: true,
         url: "/web",
-        },
-         [tour.stepUtils.showAppsMenuItem(),
+        steps: [stepUtils.showAppsMenuItem(),
             {
                 content: "Settings",
                 trigger: 'a[data-menu-xmlid="base.menu_administration"]',
@@ -76,7 +76,7 @@ odoo.define('sign_widgets_tour', function (require) {
                     }, 1000);
                 },
             },
-            ...tour.stepUtils.saveForm(),
+            ...stepUtils.saveForm(),
         ]
-    );
+    });
 });

@@ -1,11 +1,12 @@
 /** @odoo-module **/
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
+import { stepUtils } from "@web_tour/js/tour_step_utils";
 
-tour.register("test_sign_flow_tour",{
+registry.category("web_tour.tours").add("test_sign_flow_tour",{
     test: true,
     url: "/web",
-}, [tour.stepUtils.showAppsMenuItem(), {
+    steps: [stepUtils.showAppsMenuItem(), {
     content: "Open Sign APP",
     trigger: '.o_app[data-menu-xmlid="sign.menu_document"]',
     run: "click",
@@ -75,4 +76,4 @@ tour.register("test_sign_flow_tour",{
     trigger: ".modal-footer button.btn-primary",
     alt_trigger: ".modal-footer button.btn-secondary",
     run: "click",
-}]);
+}]});

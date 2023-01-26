@@ -2,8 +2,9 @@ odoo.define('test_barcode_subcontract_flows.tour', function (require) {
 'use strict';
 
 var core = require('web.core');
-var tour = require('web_tour.tour');
+const { registry } = require("@web/core/registry");
 var helper = require('stock_barcode.tourHelper');
+const { stepUtils } = require('@stock_barcode/../tests/tours/tour_step_utils');
 
 
 var _t = core._t;
@@ -12,7 +13,7 @@ var _t = core._t;
 // Tours
 // ----------------------------------------------------------------------------
 
-tour.register('test_receipt_classic_subcontracted_product', {test: true}, [
+registry.category("web_tour.tours").add('test_receipt_classic_subcontracted_product', {test: true, steps: [
     {
         trigger: '.o_barcode_client_action',
         run: function () {
@@ -46,11 +47,11 @@ tour.register('test_receipt_classic_subcontracted_product', {test: true}, [
         trigger: '.o_barcode_line',
         run: 'scan LOC-01-02-00',
     },
-    ...tour.stepUtils.validateBarcodeOperation(),
+    ...stepUtils.validateBarcodeOperation(),
 
-]);
+]});
 
-tour.register('test_receipt_tracked_subcontracted_product', {test: true}, [
+registry.category("web_tour.tours").add('test_receipt_tracked_subcontracted_product', {test: true, steps: [
     {
         trigger: '.o_barcode_client_action',
         run: 'scan product_subcontracted',
@@ -97,10 +98,10 @@ tour.register('test_receipt_tracked_subcontracted_product', {test: true}, [
         content: _t('Record production'),
         position: "bottom",
     },
-    ...tour.stepUtils.validateBarcodeOperation(),
-]);
+    ...stepUtils.validateBarcodeOperation(),
+]});
 
-tour.register('test_receipt_flexible_subcontracted_product', {test: true}, [
+registry.category("web_tour.tours").add('test_receipt_flexible_subcontracted_product', {test: true, steps: [
     {
         trigger: 'button.btn-secondary.o_mrp_subcontracting',
     },
@@ -123,7 +124,7 @@ tour.register('test_receipt_flexible_subcontracted_product', {test: true}, [
         content: _t('Record production'),
         position: "bottom",
     },
-    ...tour.stepUtils.validateBarcodeOperation(),
-]);
+    ...stepUtils.validateBarcodeOperation(),
+]});
 
 });

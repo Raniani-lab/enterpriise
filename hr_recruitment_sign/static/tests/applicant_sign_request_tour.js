@@ -1,12 +1,12 @@
 odoo.define('hr_recruitment_sign.tour', function (require) {
     'use strict';
 
-    var Tour = require('web_tour.tour');
+    const { registry } = require("@web/core/registry");
 
-    Tour.register('applicant_sign_request_tour', {
+    registry.category("web_tour.tours").add('applicant_sign_request_tour', {
             test: true,
             url: '/web',
-        },[
+            steps: [
             {
                 content: "Access on the recruitment app",
                 trigger: '.o_app[data-menu-xmlid="hr_recruitment.menu_hr_recruitment_root"]',
@@ -45,5 +45,5 @@ odoo.define('hr_recruitment_sign.tour', function (require) {
                 run: 'click',
             },
         ]
-    );
+    });
 });

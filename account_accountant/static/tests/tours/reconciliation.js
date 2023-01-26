@@ -1,12 +1,12 @@
 odoo.define('account.tour_bank_statement_reconciliation', function(require) {
 'use strict';
 
-var Tour = require('web_tour.tour');
+const { registry } = require("@web/core/registry");
 
-Tour.register('bank_statement_reconciliation', {
+registry.category("web_tour.tours").add('bank_statement_reconciliation', {
         test: true,
         // Go to the reconciliation page of the statement: "BNK/2014/001"
-    }, [
+        steps: [
         // The first line, 'line1' (350.0) should automatically have been
         // reconciled with with 'out_invoice_1' (100.0) and 'out_invoice_2' (250.0).
 
@@ -89,6 +89,6 @@ Tour.register('bank_statement_reconciliation', {
             trigger: '.o_reconciliation_line:nth-child(1) .o_reconcile:visible',
         },
     ]
-);
+});
 
 });

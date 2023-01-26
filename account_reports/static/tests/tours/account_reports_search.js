@@ -1,12 +1,11 @@
 /** @odoo-module **/
 
-import tour from "web_tour.tour";
+import { registry } from "@web/core/registry";
 
-tour.register('account_reports_search', {
+registry.category("web_tour.tours").add('account_reports_search', {
     test: false,
     url: '/web?#action=account_reports.action_account_report_general_ledger',
-},
-    [
+    steps: [
         {
             content: "click search",
             trigger: '.o_searchview_input',
@@ -40,4 +39,4 @@ tour.register('account_reports_search', {
             trigger: '.account_report_line_name:not(:contains("400000 Product Sales"))',
         },
     ]
-);
+});

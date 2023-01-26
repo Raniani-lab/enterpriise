@@ -1,13 +1,14 @@
 /** @odoo-module */
 
-import tour from 'web_tour.tour';
+import { registry } from "@web/core/registry";
 import { openCommandBar } from '../knowledge_tour_utils.js';
+import { stepUtils } from "@web_tour/js/tour_step_utils";
 
 
-tour.register('knowledge_template_command_tour', {
+registry.category("web_tour.tours").add('knowledge_template_command_tour', {
     url: '/web',
     test: true,
-}, [tour.stepUtils.showAppsMenuItem(), {
+    steps: [stepUtils.showAppsMenuItem(), {
     // open the Knowledge App
     trigger: '.o_app[data-menu-xmlid="knowledge.knowledge_menu_root"]',
 }, { // go to the custom article
@@ -57,4 +58,4 @@ tour.register('knowledge_template_command_tour', {
 }, { // check that the content of the template was inserted as description
     trigger: '.o_form_sheet .o_field_html .odoo-editor-editable p:first-child:contains("Hello world")',
     run: () => {},
-}]);
+}]});

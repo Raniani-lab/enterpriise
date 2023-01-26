@@ -3,15 +3,15 @@ odoo.define('documents_account.tour', function(require) {
 
 const { _t } = require('web.core');
 const {Markup} = require('web.utils');
-const tour = require('web_tour.tour');
+const { registry } = require("@web/core/registry");
 
 const { markup } = owl;
 
-tour.register('documents_account_tour', {
+registry.category("web_tour.tours").add('documents_account_tour', {
     url: "/web",
     rainbowManMessage: markup(_t("Wow... 6 documents processed in a few seconds, You're good.<br/>The tour is complete. Try uploading your own documents now.")),
     sequence: 170,
-}, [{
+    steps: [{
     trigger: '.o_app[data-menu-xmlid="documents.menu_root"]',
     content: Markup(_t("Want to become a <b>paperless company</b>? Let's discover Odoo Documents.")),
     position: 'bottom',
@@ -71,5 +71,5 @@ tour.register('documents_account_tour', {
     extra_trigger: '.o_pdf_rule_buttons:not(:disabled)',
     content: _t("Send this letter to the legal department, by assigning the right tags."),
     position: 'bottom',
-}]);
+}]});
 });

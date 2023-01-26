@@ -18,6 +18,21 @@ class AccountBankStatement(models.Model):
             extra_domain=[('statement_id', '=', self.id)]
         )
 
+    def action_generate_attachment(self):
+        ir_actions_report_sudo = self.env['ir.actions.report'].sudo()
+        statement_report_action = self.env.ref('account.action_report_account_statement')
+        for statement in self:
+            statement_report = statement_report_action.sudo()
+            content, _content_type = ir_actions_report_sudo._render_qweb_pdf(statement_report, res_ids=statement.ids)
+            statement.attachment_ids |= self.env['ir.attachment'].create({
+                'name': _("Bank Statement %s.pdf", statement.name) if statement.name else _("Bank Statement.pdf"),
+                'type': 'binary',
+                'mimetype': 'application/pdf',
+                'raw': content,
+                'res_model': statement._name,
+                'res_id': statement.id,
+            })
+        return statement_report_action.report_action(docids=self)
 
 class AccountBankStatementLine(models.Model):
     _inherit = 'account.bank.statement.line'

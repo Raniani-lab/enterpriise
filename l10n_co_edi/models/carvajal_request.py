@@ -57,11 +57,11 @@ class CarvajalUsernameToken(UsernameToken):
 
 class CarvajalRequest():
     def __init__(self, move_type, company):
-        l10n_co_edi_account = company.l10n_co_edi_account or ''
+        l10n_co_edi_account = company.sudo().l10n_co_edi_account or ''
         if move_type in ('in_refund', 'in_invoice') and len(l10n_co_edi_account.split('_')) == 2:
             l10n_co_edi_account = l10n_co_edi_account.split('_')[0] + "_DS" + l10n_co_edi_account.split('_')[1]
-        self.username = company.l10n_co_edi_username or ''
-        self.password = company.l10n_co_edi_password or ''
+        self.username = company.sudo().l10n_co_edi_username or ''
+        self.password = company.sudo().l10n_co_edi_password or ''
         self.co_id_company = company.l10n_co_edi_company or ''
         self.account = l10n_co_edi_account
         self.test_mode = company.l10n_co_edi_test_mode

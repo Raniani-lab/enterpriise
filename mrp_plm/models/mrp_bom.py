@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from odoo import api, fields, models
+from odoo.osv import expression
 
 
 class MrpBom(models.Model):
@@ -85,9 +86,12 @@ class MrpBom(models.Model):
 
     def _get_active_version(self):
         self.ensure_one()
-        boms = self.with_context(active_test=False).search([
-            ('product_id', '=', self.product_id.id),
-            ('version', '>', self.version)], order='version')
+        domain = [('version', '>', self.version)]
+        if self.product_id:
+            domain = expression.AND([domain, [('product_id', '=', self.product_id.id)]])
+        else:
+            domain = expression.AND([domain, [('product_tmpl_id', '=', self.product_tmpl_id.id)]])
+        boms = self.with_context(active_test=False).search(domain, order='version')
         previous_boms = self
         for bom in boms:
             if bom.previous_bom_id not in previous_boms:

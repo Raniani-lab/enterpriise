@@ -11,16 +11,24 @@ class MrpProduction(models.Model):
     @api.depends('bom_id', 'bom_id.active')
     def _compute_latest_bom_id(self):
         self.latest_bom_id = False
+        mo_ids_without_latest_bom = []
         # check if the bom has a new version
         for mo in self:
-            if mo.bom_id and not mo.bom_id.active:
+            if not mo.bom_id or not mo.id:  # Avoid MO who wasn't saved yet.
+                continue
+            if not mo.bom_id.active:
                 mo.latest_bom_id = mo.bom_id._get_active_version()
-        # check if the components have a new version
-        mo_to_update = self.search([
-            ('id', 'in', self.filtered(lambda p: not p.latest_bom_id).ids),
+            if not mo.latest_bom_id:
+                mo_ids_without_latest_bom.append(mo.id)
+        # Checks if the MO has some component move from an outdated BoM (can happen with exploded kit).
+        mos_with_component_from_outdated_kit = self.search([
+            ('id', 'in', mo_ids_without_latest_bom),
             ('move_raw_ids.bom_line_id.bom_id.active', '=', False)
         ])
-        for mo in mo_to_update:
+        # For these MOs, we assign their current BoM as the latest one in the purpose to enable the
+        # "Update BoM" action on these MOs, that way, the raw moves from a kit will be recreated
+        # from the active version of their BoM.
+        for mo in mos_with_component_from_outdated_kit:
             mo.latest_bom_id = mo.bom_id
 
     def action_update_bom(self):

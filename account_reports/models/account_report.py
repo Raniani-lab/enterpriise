@@ -4599,7 +4599,6 @@ class AccountReport(models.Model):
                 duplicate_codes[candidate_duplicate_code] |= candidate_duplicate_lines
 
         # Check that all codes in CoA are correctly reported
-        accounts_in_coa = []
         if self.root_report_id and self.root_report_id == self.env.ref('account_reports.profit_and_loss'):
             accounts_in_coa = self.env["account.account"].search([
                 *common_account_domain,
@@ -4663,6 +4662,8 @@ class AccountReport(models.Model):
             elif reported_code in non_existing_codes:
                 lines |= non_existing_codes[reported_code]
                 errors.add("NON_EXISTING")
+            else:
+                errors.add("NONE")
             for j in range(1, len(reported_code) + 1):
                 current_trie = current_trie["children"].setdefault(reported_code[:j], {
                     "children": {},
@@ -4721,7 +4722,7 @@ class AccountReport(models.Model):
                 self._get_accounts_coverage_report_coverage_lines(child, trie["children"][child], coverage_lines)
         else:
             error = list(trie["errors"])[0] if trie["errors"] else False
-            if error:
+            if error and error != "NONE":
                 coverage_lines.append([
                     subcode,
                     ERRORS[error]["msg"],

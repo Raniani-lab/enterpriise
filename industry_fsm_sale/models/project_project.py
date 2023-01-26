@@ -31,6 +31,9 @@ class Project(models.Model):
             )""", 'The timesheet product is required when the fsm project can be billed and timesheets are allowed.'),
     ]
 
+    def _get_hide_partner(self):
+        return super()._get_hide_partner() and not self.is_fsm
+
     @api.model
     def default_get(self, fields_list):
         defaults = super().default_get(fields_list)

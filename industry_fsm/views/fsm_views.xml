@@ -22,6 +22,12 @@
             <field name="planned_date_end" position="attributes">
                 <attribute name="optional">show</attribute>
             </field>
+            <field name="partner_id" position="after">
+                <field name="is_fsm" invisible="1"/>
+            </field>
+            <field name="partner_id" position="attributes">
+                <attribute name="attrs">{'required': [('is_fsm', '=', True)]}</attribute>
+            </field>
         </field>
     </record>
 
@@ -89,6 +95,18 @@
                 <field name="partner_phone" widget="phone" attrs="{'invisible': [('partner_phone', '=', False)]}"/>
                 <field name="tag_ids" widget="many2many_tags" options="{'color_field': 'color'}" attrs="{'invisible': [('tag_ids', '=', [])]}"/>
             </calendar>
+        </field>
+    </record>
+
+    <record id="project_task_map_view_fsm" model="ir.ui.view">
+        <field name="name">project.task.view.map.fsm</field>
+        <field name="model">project.task</field>
+        <field name="inherit_id" ref="project_enterprise.project_task_map_view"/>
+        <field name="mode">primary</field>
+        <field name="arch" type="xml">
+            <field name="partner_id" position="after">
+                <field name="partner_phone" string="Phone"/>
+            </field>
         </field>
     </record>
 
@@ -260,7 +278,7 @@
     <record id="project_task_action_fsm_view_map" model="ir.actions.act_window.view">
         <field name="sequence" eval="10"/>
         <field name="view_mode">map</field>
-        <field name="view_id" ref="project_enterprise.project_task_map_view"/>
+        <field name="view_id" ref="project_task_map_view_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm"/>
     </record>
 
@@ -332,7 +350,7 @@
     <record id="project_task_action_fsm_map_view_map" model="ir.actions.act_window.view">
         <field name="sequence" eval="5"/>
         <field name="view_mode">map</field>
-        <field name="view_id" ref="project_enterprise.project_task_map_view"/>
+        <field name="view_id" ref="project_task_map_view_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm_map"/>
     </record>
 
@@ -444,7 +462,7 @@
     <record id="project_task_action_all_fsm_view_map" model="ir.actions.act_window.view">
         <field name="sequence" eval="10"/>
         <field name="view_mode">map</field>
-        <field name="view_id" ref="project_enterprise.project_task_map_view"/>
+        <field name="view_id" ref="project_task_map_view_fsm"/>
         <field name="act_window_id" ref="project_task_action_all_fsm"/>
     </record>
 
@@ -506,7 +524,7 @@
     <record id="project_task_action_to_schedule_fsm_view_map" model="ir.actions.act_window.view">
         <field name="sequence" eval="15"/>
         <field name="view_mode">map</field>
-        <field name="view_id" ref="project_enterprise.project_task_map_view"/>
+        <field name="view_id" ref="project_task_map_view_fsm"/>
         <field name="act_window_id" ref="project_task_action_to_schedule_fsm"/>
     </record>
 
@@ -622,7 +640,7 @@
     <record id="project_task_action_planning_groupby_user_fsm_view_map" model="ir.actions.act_window.view">
         <field name="sequence" eval="15"/>
         <field name="view_mode">map</field>
-        <field name="view_id" ref="project_enterprise.project_task_map_view"/>
+        <field name="view_id" ref="project_task_map_view_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_user"/>
     </record>
 
@@ -688,7 +706,7 @@
     <record id="project_task_action_planning_groupby_project_fsm_view_map" model="ir.actions.act_window.view">
         <field name="sequence" eval="15"/>
         <field name="view_mode">map</field>
-        <field name="view_id" ref="project_enterprise.project_task_map_view"/>
+        <field name="view_id" ref="project_task_map_view_fsm"/>
         <field name="act_window_id" ref="project_task_action_fsm_planning_groupby_project"/>
     </record>
 

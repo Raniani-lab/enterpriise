@@ -40,6 +40,9 @@
             <xpath expr="//page[@name='billing_employee_rate']" position="attributes">
                 <attribute name="attrs">{'invisible': ['|', '|', '&amp;', ('allow_timesheets', '=', False), ('is_fsm', '=', True), ('allow_billable', '=', False), '&amp;', ('partner_id', '=', False), ('is_fsm', '=', False)]}</attribute>
             </xpath>
+             <xpath expr="//field[@name='partner_id']" position="attributes">
+                <attribute name="attrs">{'invisible': [('allow_billable', '=', False), ('is_fsm', '=', False)]}</attribute>
+            </xpath>
         </field>
     </record>
 
@@ -72,6 +75,12 @@
         <field name="arch" type="xml">
             <field name="sale_line_id" position="attributes">
                 <attribute name="invisible">context.get('fsm_mode')</attribute>
+            </field>
+            <field name="partner_id" position="after">
+                <field name="is_fsm" invisible="1"/>
+            </field>
+            <field name="partner_id" position="attributes">
+                <attribute name="attrs">{'invisible': [('allow_billable', '=', False), ('is_fsm', '=', False)]}</attribute>
             </field>
         </field>
     </record>

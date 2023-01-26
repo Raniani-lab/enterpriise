@@ -85,6 +85,10 @@ class Task(models.Model):
     worksheet_signed_by = fields.Char('Signed By', copy=False)
     fsm_is_sent = fields.Boolean('Is Worksheet sent', readonly=True, copy=False)
     comment = fields.Html(string='Comments', copy=False)
+    partner_phone = fields.Char(
+        compute='_compute_partner_phone', inverse='_inverse_partner_phone',
+        string="Phone", readonly=False, store=True, copy=False)
+    partner_city = fields.Char(related='partner_id.city', readonly=False)
     is_task_phone_update = fields.Boolean(compute='_compute_is_task_phone_update')
 
     @property
@@ -114,6 +118,17 @@ class Task(models.Model):
                 'display_mark_as_done_primary': primary,
                 'display_mark_as_done_secondary': secondary,
             })
+
+    @api.depends('partner_id.phone')
+    def _compute_partner_phone(self):
+        for task in self:
+            if task.partner_phone != task.partner_id.phone:
+                task.partner_phone = task.partner_id.phone
+
+    def _inverse_partner_phone(self):
+        for task in self:
+            if task.partner_id and task.partner_phone != task.partner_id.phone:
+                task.partner_id.phone = task.partner_phone
 
     @api.depends('partner_phone', 'partner_id.phone')
     def _compute_is_task_phone_update(self):

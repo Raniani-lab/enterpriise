@@ -51,6 +51,12 @@
             <field name="partner_id" position="attributes">
                 <attribute name="attrs">{'required': [('is_fsm', '=', True)]}</attribute>
             </field>
+            <xpath expr="//field[@name='child_ids']/tree/field[@name='partner_id']" position="after">
+                <field name="is_fsm" invisible="1"/>
+            </xpath>
+            <xpath expr="//field[@name='child_ids']/tree/field[@name='partner_id']" position="attributes">
+                <attribute name="attrs">{'required': [('is_fsm', '=', True)]}</attribute>
+            </xpath>
         </field>
     </record>
 

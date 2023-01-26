@@ -183,26 +183,12 @@
     <record id="project_task_map_view_inherit_fsm_report" model="ir.ui.view">
         <field name="name">project.task.view.fsm.report.map</field>
         <field name="model">project.task</field>
-        <field name="inherit_id" ref="project_enterprise.project_task_map_view"/>
-        <field name="mode">primary</field>
+        <field name="inherit_id" ref="industry_fsm.project_task_map_view_fsm"/>
         <field name="arch" type="xml">
             <field name="partner_phone" position="after">
                 <field name="worksheet_template_id" string="Worksheet Template"/>
             </field>
         </field>
-    </record>
-
-    <record id="industry_fsm.project_task_action_fsm_view_map" model="ir.actions.act_window.view">
-        <field name="view_id" ref="project_task_map_view_inherit_fsm_report"/>
-    </record>
-    <record id="industry_fsm.project_task_action_fsm_map_view_map" model="ir.actions.act_window.view">
-        <field name="view_id" ref="project_task_map_view_inherit_fsm_report"/>
-    </record>
-    <record id="industry_fsm.project_task_action_planning_groupby_user_fsm_view_map" model="ir.actions.act_window.view">
-        <field name="view_id" ref="project_task_map_view_inherit_fsm_report"/>
-    </record>
-    <record id="industry_fsm.project_task_action_planning_groupby_project_fsm_view_map" model="ir.actions.act_window.view">
-        <field name="view_id" ref="project_task_map_view_inherit_fsm_report"/>
     </record>
 
     <record id="action_fsm_task_send_report" model="ir.actions.server">

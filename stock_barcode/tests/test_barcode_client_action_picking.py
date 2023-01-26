@@ -2102,6 +2102,8 @@ class TestPickingBarcodeClientAction(TestBarcodeClientAction):
         """ Creates a receipt for a product tracked by lot, then process it in the Barcode App.
         """
         self.clean_access_rights()
+        grp_lot = self.env.ref('stock.group_production_lot')
+        self.env.user.write({'groups_id': [(4, grp_lot.id, 0)]})
         self.env.company.nomenclature_id = self.env.ref('barcodes_gs1_nomenclature.default_gs1_nomenclature')
 
         picking_form = Form(self.env['stock.picking'])

@@ -59,7 +59,7 @@ class ResPartner(models.Model):
     followup_responsible_id = fields.Many2one(
         comodel_name='res.users',
         string='Responsible',
-        help="Optionally you can assign a user to this field, which will make him responsible for the activities. If empty, we will find someone responsible.",
+        help="The responsible assigned to manual followup activities, if defined in the level.",
         tracking=True,
         copy=False,
         company_dependent=True,

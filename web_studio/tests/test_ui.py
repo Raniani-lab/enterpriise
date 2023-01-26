@@ -264,6 +264,53 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
              </data>
             """)
 
+    def test_enter_x2many_auto_inlined_subview_with_multiple_field_matching(self):
+        user_view = self.env["ir.ui.view"].create({
+            "name": "simple user",
+            "model": "res.users",
+            "type": "tree",
+            "arch": '''
+                <tree>
+                    <field name="display_name" />
+                </tree>
+            '''
+        })
+
+        user_view_xml_id = self.env["ir.model.data"].create({
+            "name": "studio_test_user_view",
+            "model": "ir.ui.view",
+            "module": "web_studio",
+            "res_id": user_view.id,
+        })
+
+        self.testView.arch = '''<form>
+            <field name="user_ids"/>
+            <sheet>
+                <notebook>
+                    <page>
+                        <field name="user_ids" context="{'tree_view_ref': '%s'}" />
+                    </page>
+                </notebook> 
+            </sheet>
+        </form>''' % user_view_xml_id.complete_name
+        studio_view = _get_studio_view(self.testView)
+        self.assertFalse(studio_view.exists())
+
+        self.start_tour("/web?debug=tests", 'web_studio_enter_x2many_auto_inlined_subview_with_multiple_field_matching',
+                        login="admin", timeout=200)
+        studio_view = _get_studio_view(self.testView)
+
+        assertViewArchEqual(self, studio_view.arch, """
+            <data>
+               <xpath expr="//form[1]/sheet[1]/notebook[1]/page[1]/field[@name='user_ids']" position="inside">
+                 <tree>
+                   <field name="display_name" />
+                   <field name="log_ids" optional="show" />
+                 </tree>
+               </xpath>
+             </data>
+            """)
+
     def test_field_with_group(self):
         operations = []
         def edit_view_mocked(*args, **kwargs):

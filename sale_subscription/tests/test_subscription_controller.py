@@ -82,8 +82,8 @@ class TestSubscriptionController(PaymentHttpCommon, PaymentCommon, TestSubscript
             res = self.url_open(url, allow_redirects=False)
             self.assertEqual(res.status_code, 303, "Response should redirection")
             self.env.invalidate_all()
-            self.assertEqual(self.subscription.end_date, date(2025, 11, 17),
-                             'The end date of the subscription should be updated according to the template')
+            self.assertEqual(self.subscription.end_date, date(2023, 11, 17),
+                             'The end date of the subscription should not be updated by the user.')
 
     def test_close_contract(self):
         """ Test subscription close """

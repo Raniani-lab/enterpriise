@@ -843,11 +843,12 @@ class SaleOrder(models.Model):
         return self.write({'to_renew': True})
 
     def set_open(self):
-        search = self.env['sale.order.stage'].search
+        progress_stage = self.env['sale.order.stage'].search([('category', '=', 'progress')]).sorted('sequence')
         for sub in self:
-            stage = search([('category', '=', 'progress'), ('sequence', '>=', sub.stage_id.sequence)], limit=1)
-            if not stage:
-                stage = search([('category', '=', 'progress')], limit=1)
+            if sub.stage_category == 'progress':
+                stage = sub.stage_id
+            else:
+                stage = progress_stage.filtered(lambda s: s.sequence > sub.stage_id.sequence)[:1] or progress_stage[:1]
             sub.write({'stage_id': stage.id, 'to_renew': False})
 
     @api.model
@@ -1617,7 +1618,7 @@ class SaleOrder(models.Model):
             invoice = tx.invoice_ids[0]
             self.send_success_mail(tx, invoice)
             msg_body = _(
-                "Manual payment succeeded. Payment reference: %s; Amount: %(amount)s. Invoice %(invoice)s",
+                "Manual payment succeeded. Payment reference: %(tx_model)s; Amount: %(amount)s. Invoice %(invoice)s",
                 tx_model=tx._get_html_link(), amount=tx.amount,
                 invoice=invoice._get_html_link(),
             )
@@ -1631,21 +1632,11 @@ class SaleOrder(models.Model):
         :return: Whether the transaction was successfully reconciled
         """
         self.ensure_one()
-        recurring_automatic = self.env.context.get('recurring_automatic') or True
+        recurring_automatic = self.env.context.get('recurring_automatic', True)
         if tx.renewal_allowed:  # The payment is confirmed, it can be reconciled
             # avoid to create an invoice when one is already linked
             if not tx.invoice_ids:
-                # Create the invoice that was either deleted in a controller or failed to be created by the _create_recurring_invoice method
-                invoice = self.with_context(recurring_automatic=recurring_automatic)._create_invoices()
-                invoice.write({'ref': tx.reference, 'payment_reference': tx.reference})
-                # Only update the invoice date if there is already one invoice for the lines and when the so is not done
-                # locked contract are finished or renewed
-                invoice.message_post_with_view(
-                    'mail.message_origin_link',
-                    values={'self': invoice, 'origin': self},
-                    subtype_id=self.env.ref('mail.mt_note').id
-                )
-                tx.invoice_ids = invoice.id,
+                tx.with_context(recurring_automatic=recurring_automatic)._create_or_link_to_invoice()
             self.set_open()
             return True
         return False

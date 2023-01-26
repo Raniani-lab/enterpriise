@@ -1770,6 +1770,7 @@ class BankRecWidget(models.Model):
         # Update the move.
         move_ctx = move.with_context(
             skip_invoice_sync=True,
+            skip_invoice_line_sync=True,
             skip_account_move_synchronization=True,
             force_delete=True,
         )
@@ -1780,7 +1781,7 @@ class BankRecWidget(models.Model):
         # Perform the reconciliation.
         for index, counterpart_aml_id in params['to_reconcile']:
             counterpart_aml = self.env['account.move.line'].browse(counterpart_aml_id)
-            (move.line_ids.filtered(lambda x: x.sequence == index) + counterpart_aml).reconcile()
+            (move_ctx.line_ids.filtered(lambda x: x.sequence == index) + counterpart_aml).reconcile()
 
         # Fill missing partner.
         st_line.with_context(skip_account_move_synchronization=True).partner_id = params['partner_id']

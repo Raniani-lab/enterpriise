@@ -107,7 +107,11 @@ export function useDocumentView(helpers) {
                     default_tag_ids: [x2ManyCommands.replaceWith(env.searchModel.getSelectedTagIds())],
                 },
                 fullscreen: env.isSmall,
-                onClose: async () => env.model.load(),
+                onClose: async () => {
+                    await env.model.load();
+                    env.model.useSampleModel = env.model.root.records.length === 0;
+                    env.model.notify();
+                },
             });
         },
         onClickDocumentsAddUrl: () => {
@@ -120,7 +124,11 @@ export function useDocumentView(helpers) {
                     default_res_model: props.context.default_res_model || false,
                 },
                 fullscreen: env.isSmall,
-                onClose: async () => env.model.load(),
+                onClose: async () => {
+                    await env.model.load();
+                    env.model.useSampleModel = env.model.root.records.length === 0;
+                    env.model.notify();
+                },
             });
         },
         onClickShareDomain: async () => {

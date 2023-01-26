@@ -1,0 +1,101 @@
+<templates>
+
+<t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Button" owl="1">
+    <div class="o_web_studio_sidebar_approval">
+        <h3>Approvals</h3>
+        <Property
+            name="'studio_approval'"
+            type="'boolean'"
+            value="this.props.node.attrs.studio_approval"
+            onChange.bind="onChangeAttribute"
+        >
+            Set approval rules
+        </Property>
+        <t t-if="state.approvalSpec">
+            <t t-foreach="state.approvalSpec.rules" t-as="rule" t-key="rule.id">
+                <t t-call="web_studio.ViewEditorSidebar.ApprovalRule"/>
+            </t>
+            <div>
+                <a href="#" role="button" class="o_web_studio_sidebar_btn_link" name="create_approval_rule" t-on-click="createApprovalRule">Add an approval rule</a>
+            </div>
+            <hr/>
+        </t>
+    </div>
+    <t t-if="showRainbowMan">
+        <h3>Rainbow Man</h3>
+        <Property
+            name="'effect'"
+            type="'boolean'"
+            value="this.props.node.attrs.effect and this.props.node.attrs.effect !== 'False'"
+            onChange.bind="onChangeAttribute"
+        >
+            Rainbow Effect
+        </Property>
+        <RainbowEffect effect="this.props.node.attrs.effect" onChange.bind="onChangeAttribute" />
+    </t>
+    <LimitGroupVisibility node="props.node" />
+    <SidebarPropertiesToolbox />
+</t>
+
+<div t-name="web_studio.ViewEditorSidebar.ApprovalRule" class="o_studio_sidebar_approval_rule" owl="1">
+    <div class="o_studio_sidebar_approval_rule">
+        <label t-attf-for="rule_group_{{rule.id}}" data-tooltip="Only members of this group will be able to approve or reject the rule.">Approval Group</label>
+        <div class="o_approval_group">
+            <div class="o_field_widget o_field_many2many_tags" name="groups_id">
+                 <Many2XAutocomplete
+                    value="rule.group_id[1]"
+                    resModel="'res.groups'"
+                    fieldString="'rule_group_' + rule.id"
+                    update.bind="(selection) => this.onApprovalSelectRule('group_id', selection, rule.id)"
+                    activeActions="{
+                        create: true,
+                        createEdit: true,
+                    }"
+                    getDomain.bind="() => []"
+                    isToMany="false"
+                />
+            </div>
+            <button
+                t-attf-class="btn btn-sm btn-dark o_approval_domain {{rule.domain ? '' : 'inactive'}}"
+                t-att-data-tooltip="rule.domain ? 'Edit rule condition' : 'Set condition on rule'"
+                t-on-click="() => this.onApprovalSelectDomain(rule.id)">
+                <i class="fa fa-fw fa-filter"/>
+            </button>
+            <button
+                class="btn btn-sm btn-dark inactive o_approval_archive"
+                data-tooltip="Remove rule"
+                t-on-click="() => this.onApprovalArchive(rule.id)">
+                <i class="fa fa-fw fa-trash"/>
+            </button>
+        </div>
+    </div>
+    <div>
+        <label t-attf-for="rule_responsible_{{rule.id}}" data-tooltip="This user will be assigned a next activity when approval is requested.">Responsible</label>
+        <Many2XAutocomplete
+            value="rule.responsible_id[1]"
+            resModel="'res.users'"
+            fieldString="'rule_responsible_' + rule.id"
+            update.bind="(selection) => this.onApprovalSelectRule('responsible_id', selection, rule.id)"
+            activeActions="{
+                create: true,
+                createEdit: true,
+            }"
+            getDomain.bind="() => [['share', '=', false]]"
+            isToMany="false"
+        />
+    </div>
+    <div class="o_web_studio_sidebar_text">
+        <label t-attf-for="approval_message_{{rule.id}}" data-tooltip="The description will be shown to users to understand why they must ask for approval.">Description</label>
+        <input t-attf-id="approval_message_{{rule.id}}" t-attf-name="approval_message_{{rule.id}}" type="text"
+            t-att-value="rule.message || null" placeholder="Add a description..." t-on-change="(ev) => this.onApprovalEdit('operation_approval_message', rule.id, ev.target.value)"/>
+    </div>
+    <div class="o_web_studio_sidebar_checkbox mt4" name="">
+        <div data-tooltip="The user who approves this rule will not be able to approve other rules for the same record.">
+            <CheckBox value="rule.exclusive_user" onChange="(value) => this.onApprovalEdit('operation_different_users', rule.id, value)" id="'exclusive_user_' + rule.id">
+                Limit approver to this rule
+            </CheckBox>
+        </div>
+    </div>
+</div>
+
+</templates>

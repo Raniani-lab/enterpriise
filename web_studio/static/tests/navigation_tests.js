@@ -23,9 +23,9 @@ import {
 import { registry } from "@web/core/registry";
 import { session } from "@web/session";
 import { patch, unpatch } from "@web/core/utils/patch";
-import { StudioView } from "@web_studio/client_action/studio_view";
+import { StudioView } from "@web_studio/client_action/view_editor/studio_view";
 import { StudioClientAction } from "@web_studio/client_action/studio_client_action";
-import { ListEditorRenderer } from "@web_studio/client_action/view_editors/list/list_editor_renderer";
+import { ListEditorRenderer } from "@web_studio/client_action/view_editor/editors/list/list_editor_renderer";
 
 // -----------------------------------------------------------------------------
 // Tests
@@ -131,7 +131,7 @@ QUnit.module("Studio", (hooks) => {
     });
 
     QUnit.test("open Studio with act_window", async function (assert) {
-        assert.expect(22);
+        assert.expect(21);
 
         const mockRPC = async (route) => {
             assert.step(route);
@@ -159,9 +159,9 @@ QUnit.module("Studio", (hooks) => {
 
         assert.verifySteps(
             [
-                "/web_studio/activity_allowed",
-                "/web_studio/get_studio_view_arch",
                 "/web/dataset/call_kw/partner/get_views",
+
+                "/web_studio/get_studio_view_arch",
                 "/web/dataset/call_kw/partner/web_search_read",
             ],
             "should have opened the action in Studio"
@@ -169,7 +169,7 @@ QUnit.module("Studio", (hooks) => {
 
         assert.containsOnce(
             target,
-            ".o_web_studio_client_action .o_web_studio_kanban_view_editor",
+            ".o_web_studio_editor_manager .o_web_studio_kanban_view_editor",
             "the kanban view should be opened"
         );
         assert.containsOnce(
@@ -190,7 +190,7 @@ QUnit.module("Studio", (hooks) => {
             "should have reloaded the previous action edited by Studio"
         );
 
-        assert.containsNone(target, ".o_web_studio_client_action", "Studio should be closed");
+        assert.containsNone(target, ".o_web_studio_editor_manager", "Studio should be closed");
         assert.containsOnce(
             target,
             ".o_kanban_view .o_kanban_record:contains(yop)",
@@ -214,7 +214,7 @@ QUnit.module("Studio", (hooks) => {
         await openStudio(target);
         assert.containsOnce(
             target,
-            ".o_web_studio_client_action .o_web_studio_form_view_editor",
+            ".o_web_studio_editor_manager .o_web_studio_form_view_editor",
             "the form view should be opened"
         );
         assert.strictEqual(
@@ -265,7 +265,7 @@ QUnit.module("Studio", (hooks) => {
 
         assert.containsOnce(
             target,
-            ".o_web_studio_client_action .o_web_studio_form_view_editor",
+            ".o_web_studio_editor_manager .o_web_studio_form_view_editor",
             "the studio view should be opened after reloading"
         );
         assert.strictEqual(
@@ -285,7 +285,10 @@ QUnit.module("Studio", (hooks) => {
         assert.containsOnce(target, ".o_kanban_view");
 
         await openStudio(target);
-        assert.containsOnce(target, ".o_web_studio_client_action .o_web_studio_kanban_view_editor");
+        assert.containsOnce(
+            target,
+            ".o_web_studio_editor_manager .o_web_studio_kanban_view_editor"
+        );
 
         // click on tab "Views"
         await click(target.querySelector(".o_web_studio_menu .o_web_studio_menu_item a"));
@@ -299,16 +302,16 @@ QUnit.module("Studio", (hooks) => {
         );
         await legacyExtraNextTick();
 
-        assert.containsOnce(target, ".o_web_studio_client_action .o_web_studio_list_view_editor");
+        assert.containsOnce(target, ".o_web_studio_editor_manager .o_web_studio_list_view_editor");
 
         await leaveStudio(target);
 
-        assert.containsNone(target, ".o_web_studio_client_action", "Studio should be closed");
+        assert.containsNone(target, ".o_web_studio_editor_manager", "Studio should be closed");
         assert.containsOnce(target, ".o_list_view", "the list view should be opened");
     });
 
     QUnit.test("navigation in Studio with act_window", async function (assert) {
-        assert.expect(28);
+        assert.expect(26);
 
         const mockRPC = async (route) => {
             assert.step(route);
@@ -333,9 +336,9 @@ QUnit.module("Studio", (hooks) => {
 
         assert.verifySteps(
             [
-                "/web_studio/activity_allowed",
-                "/web_studio/get_studio_view_arch",
                 "/web/dataset/call_kw/partner/get_views",
+
+                "/web_studio/get_studio_view_arch",
                 "/web/dataset/call_kw/partner/web_search_read",
             ],
             "should have opened the action in Studio"
@@ -343,7 +346,7 @@ QUnit.module("Studio", (hooks) => {
 
         assert.containsOnce(
             target,
-            ".o_web_studio_client_action .o_web_studio_kanban_view_editor",
+            ".o_web_studio_editor_manager .o_web_studio_kanban_view_editor",
             "the kanban view should be opened"
         );
         assert.strictEqual(
@@ -363,9 +366,9 @@ QUnit.module("Studio", (hooks) => {
         assert.verifySteps(
             [
                 "/web/action/load",
-                "/web_studio/activity_allowed",
-                "/web_studio/get_studio_view_arch",
                 "/web/dataset/call_kw/pony/get_views",
+
+                "/web_studio/get_studio_view_arch",
                 "/web/dataset/call_kw/pony/web_search_read",
             ],
             "should have opened the navigated action in Studio"
@@ -373,7 +376,7 @@ QUnit.module("Studio", (hooks) => {
 
         assert.containsOnce(
             target,
-            ".o_web_studio_client_action .o_web_studio_list_view_editor",
+            ".o_web_studio_editor_manager .o_web_studio_list_view_editor",
             "the list view should be opened"
         );
         assert.strictEqual(
@@ -393,7 +396,7 @@ QUnit.module("Studio", (hooks) => {
             "should have reloaded the previous action edited by Studio"
         );
 
-        assert.containsNone(target, ".o_web_studio_client_action", "Studio should be closed");
+        assert.containsNone(target, ".o_web_studio_editor_manager", "Studio should be closed");
         assert.containsOnce(target, ".o_list_view", "the list view should be opened");
         assert.strictEqual(
             $(target).find(".o_list_view .o_data_cell").text(),
@@ -502,7 +505,7 @@ QUnit.module("Studio", (hooks) => {
         registry.category("services").add("error", { start() {} });
 
         const handler = (ev) => {
-            assert.strictEqual(ev.reason.cause.cause.message, "Boom");
+            assert.strictEqual(ev.reason.cause.message, "Boom");
             assert.step("error");
             ev.preventDefault();
         };
@@ -519,10 +522,7 @@ QUnit.module("Studio", (hooks) => {
         assert.containsOnce(target, ".o_list_view");
 
         await openStudio(target);
-        assert.verifySteps([
-            "[Owl] Unhandled error. Destroying the root component", // (legacy) owl_compatibility-specific
-            "error",
-        ]);
+        assert.verifySteps(["error"]);
         // FIXME : due to https://github.com/odoo/owl/issues/1298,
         // the visual result is not asserted here, ideally we'd want to be in the studio
         // action, with a blank editor
@@ -603,7 +603,7 @@ QUnit.module("Studio", (hooks) => {
             ).textContent,
             "Applejack"
         );
-        assert.containsOnce(target, ".o_web_studio_client_action .o_web_studio_form_view_editor");
+        assert.containsOnce(target, ".o_web_studio_editor_manager .o_web_studio_form_view_editor");
 
         await leaveStudio(target);
         assert.containsOnce(target, ".o_form_view");
@@ -864,7 +864,7 @@ QUnit.module("Studio", (hooks) => {
 
             assert.containsOnce(
                 target,
-                ".o_web_studio_client_action .o_web_studio_form_view_editor",
+                ".o_web_studio_editor_manager .o_web_studio_form_view_editor",
                 "the form view should be opened"
             );
 
@@ -877,7 +877,7 @@ QUnit.module("Studio", (hooks) => {
 
             assert.containsOnce(
                 target,
-                ".o_web_studio_client_action .o_web_studio_form_view_editor",
+                ".o_web_studio_editor_manager .o_web_studio_form_view_editor",
                 "the form view should be opened"
             );
         }

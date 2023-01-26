@@ -5,6 +5,9 @@ import { MockServer } from "@web/../tests/helpers/mock_server";
 
 patch(MockServer.prototype, "web_studio.MockServer", {
     performRPC(route, args) {
+        if (route === "/web/dataset/call_kw/res.users/has_group") {
+            return true;
+        }
         if (route === "/web_studio/activity_allowed") {
             return Promise.resolve(this.mockActivityAllowed());
         }
@@ -23,6 +26,13 @@ patch(MockServer.prototype, "web_studio.MockServer", {
         if (route === "/web_studio/edit_view") {
             return Promise.resolve(this.mockEditView(args));
         }
+        if (route === "/web_studio/edit_view_arch") {
+            return Promise.resolve(this.mockEditView(args));
+        }
+        if (route === "/web_studio/get_studio_view_arch") {
+            return Promise.resolve(this.mockGetStudioViewArch(args));
+        }
+
         return this._super(...arguments);
     },
 
@@ -36,7 +46,7 @@ patch(MockServer.prototype, "web_studio.MockServer", {
 
     mockGetStudioViewArch() {
         return {
-            studio_view_id: false,
+            studio_view_id: "__test_studio_view_arch__",
             studio_view_arch: "<data/>",
         };
     },
@@ -71,13 +81,7 @@ patch(MockServer.prototype, "web_studio.MockServer", {
         }
     },
 
-    mockEditView(args) {
-        const viewId = args.view_id;
-        if (!viewId) {
-            throw new Error(
-                "To use the 'edit_view' mocked controller, you should specify a unique id on the view you are editing"
-            );
-        }
+    _getViewFromId(viewId) {
         const uniqueViewKey = Object.keys(this.archs)
             .map((k) => k.split(","))
             .filter(([model, vid, vtype]) => vid === `${viewId}`);
@@ -91,14 +95,28 @@ patch(MockServer.prototype, "web_studio.MockServer", {
             );
         }
         const [modelName, , viewType] = uniqueViewKey[0];
+        return {
+            resModel: modelName,
+            viewType,
+            key: uniqueViewKey[0],
+        };
+    },
 
-        const view = this.getView(modelName, [viewId, viewType], {
+    mockEditView(args) {
+        const viewId = args.view_id;
+        if (!viewId) {
+            throw new Error(
+                "To use the 'edit_view' mocked controller, you should specify a unique id on the view you are editing"
+            );
+        }
+        const { resModel, viewType } = this._getViewFromId(viewId);
+        const view = this.getView(resModel, [viewId, viewType], {
             context: args.context,
             options: {},
         });
         const models = {};
-        for (const modelName of Object.keys(view.models)) {
-            models[modelName] = this.mockFieldsGet(modelName);
+        for (const resModel of Object.keys(view.models)) {
+            models[resModel] = this.mockFieldsGet(resModel);
         }
         return {
             views: {

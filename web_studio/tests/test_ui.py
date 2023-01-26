@@ -26,7 +26,7 @@ class TestUi(odoo.tests.HttpCase):
         self.start_tour("/web?debug=tests", 'web_studio_model_option_value_tour', login="admin")
 
     def test_rename(self):
-        self.start_tour("/web?debug=tests", 'web_studio_tests_tour', login="admin", timeout=200)
+        self.start_tour("/web?debug=tests", 'web_studio_main_and_rename', login="admin", timeout=200)
 
     def test_approval(self):
         self.start_tour("/web?debug=tests", 'web_studio_approval_tour', login="admin")
@@ -630,7 +630,7 @@ class TestStudioUIUnit(odoo.tests.HttpCase):
                         'indice': 1
                     },
                 ],
-                'subview_xpath': "//field[@name='child_ids']/tree[2]",
+                'subview_xpath': "/form[1]/field[2]/tree[2]",
             },
             'position': 'before',
             'node': {

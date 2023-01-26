@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <templates>
 
-<div t-name="web_studio.ReportEditorSidebar" class="o_web_studio_sidebar o_web_studio_report_sidebar">
+<div t-name="web_studio.ReportEditorSidebar" class="o_web_studio_sidebar_legacy o_web_studio_report_sidebar">
     <!-- Header -->
     <div class="o_web_studio_sidebar_header">
         <div name="new" t-attf-class="o_web_studio_new #{widget.state.mode === 'new' ? 'active' : ''}">

@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <templates id="template" xml:space="preserve">
 
-<div t-name="web_studio.NewFieldDialog" class="o_web_studio_field_dialog_form">
+<div t-name="web_studio.NewFieldDialogLegacy" class="o_web_studio_field_dialog_form">
     <t t-if="widget.type === 'selection'">
         <t t-call="web_studio.SelectionValues"/>
     </t>
@@ -17,7 +17,7 @@
     </t>
 </div>
 
-<t t-name="web_studio.SelectionValues">
+<t t-name="web_studio.SelectionValuesLegacy">
     <h5>Specify all possible values</h5>
     <ul class="o_web_studio_selection_editor list-unstyled mb0" t-if="widget.selection.length">
         <li t-foreach="widget.selection" t-as="selectionValue" t-key="selectionValue_index" t-att-data-value="selectionValue[0]">
@@ -44,7 +44,7 @@
     </ul>
 </t>
 
-<t t-name="web_studio.SelectionValues.edit">
+<t t-name="web_studio.SelectionValues.edit.legacy">
     <div class="mb-3">
         <label class="col-form-label col-md-3" for="o_selection_label">Label</label>
         <div class="col-md-9">
@@ -58,4 +58,5 @@
         </div>
     </div>
 </t>
+
 </templates>

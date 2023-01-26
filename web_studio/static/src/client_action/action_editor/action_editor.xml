@@ -9,8 +9,8 @@
 </t>
 
 <t t-name="web_studio.ActionEditor.Sidebar" owl="1">
-    <Sidebar>
-      <t t-set-slot="content">
+  <div class="o_web_studio_sidebar flex-grow-0 flex-shrink-0 overflow-auto h-100">
+      <div class="o_web_studio_sidebar_content d-flex flex-column" style="gap: 2px;">
         <Record t-props="actionRecordProps" t-slot-scope="data" >
           <t t-set="record" t-value="data.record" />
           <div class="w-100">
@@ -33,8 +33,8 @@
         <div t-if="env.debug" class="o_web_studio_sidebar_toolbox w-100">
           <button class="btn btn-secondary btn-lg o_web_studio_parameters" t-on-click="openFormAction"><i class="fa fa-cog me-1"/>More</button>
         </div>
-      </t>
-    </Sidebar>
+      </div>
+    </div>
 </t>
 
 <t t-name="web_studio.ActionEditor.ViewsDashboard" owl="1">

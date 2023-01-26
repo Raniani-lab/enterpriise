@@ -1,6 +1,6 @@
 /** @odoo-module */
 import { Component } from "@odoo/owl";
-import { useService } from "@web/core/utils/hooks";
+import { useOwnedDialogs, useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { _lt } from "@web/core/l10n/translation";
 import { sortBy } from "@web/core/utils/arrays";
@@ -18,7 +18,6 @@ import { CharField } from "@web/views/fields/char/char_field";
 import { TextField } from "@web/views/fields/text/text_field";
 
 import { viewTypeToString, useStudioServiceAsReactive } from "@web_studio/studio_service";
-import { Sidebar } from "../components/sidebar";
 import { NewViewDialog } from "../editor/new_view_dialogs/new_view_dialog";
 import { MapNewViewDialog } from "../editor/new_view_dialogs/map_new_view_dialog";
 
@@ -73,11 +72,11 @@ class ActionEditor extends Component {
     setup() {
         this.studio = useStudioServiceAsReactive();
         this.action = useService("action");
-        this.dialog = useService("dialog");
         this.notification = useService("notification");
         this.rpc = useService("rpc");
         this.user = useService("user");
         this.viewCategories = getViewCategories();
+        this.addDialog = useOwnedDialogs();
 
         this.actionFieldsGet = { ...actionFieldsGet };
     }
@@ -138,7 +137,7 @@ class ActionEditor extends Component {
             .filter((m) => m !== viewType);
 
         if (!viewMode.length) {
-            this.dialog.add(AlertDialog, {
+            this.addDialog(AlertDialog, {
                 body: this.env._t("You cannot deactivate this view as it is the last one active."),
             });
         } else {
@@ -178,14 +177,14 @@ class ActionEditor extends Component {
                 } else if (viewType === "map") {
                     DialogClass = MapNewViewDialog;
                 } else {
-                    this.dialog.add(AlertDialog, {
+                    this.addDialog(AlertDialog, {
                         body: this.env._t(
                             "Creating this type of view is not currently supported in Studio."
                         ),
                     });
                     resolve(false);
                 }
-                this.dialog.add(DialogClass, dialogProps);
+                this.addDialog(DialogClass, dialogProps);
             });
         }
         if (viewAdded) {
@@ -245,7 +244,6 @@ class ActionEditor extends Component {
 }
 ActionEditor.template = "web_studio.ActionEditor";
 ActionEditor.components = {
-    Sidebar,
     Dropdown,
     DropdownItem,
     Record,

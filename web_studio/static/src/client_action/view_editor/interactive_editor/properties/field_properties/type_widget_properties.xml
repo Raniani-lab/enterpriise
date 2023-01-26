@@ -1,0 +1,58 @@
+<templates>
+
+<t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Field.TypeWidgetProperties" owl="1" >
+    <Property
+        name="'widget'"
+        type="'selection'"
+        value="props.node.attrs.widget || props.node.field.type"
+        onChange.bind="onChangeWidget"
+        childProps="widgetChoices"
+    >
+        Widget
+    </Property>
+
+    <t t-foreach="attributesOfTypeSelection" t-as="attribute" t-key="attribute.name">
+        <Property
+            name="attribute.name"
+            type="attribute.type"
+            value="attribute.value"
+            childProps="{choices:getSelectionChoices(attribute)}"
+            onChange.bind="onChangeProperty"
+        >
+            <t t-esc="attribute.string"/>
+        </Property>
+    </t>
+    <t t-foreach="attributesOfTypeBoolean" t-as="attribute" t-key="attribute.name">
+        <Property
+            name="attribute.name"
+            type="attribute.type"
+            value="attribute.value"
+            onChange.bind="onChangeProperty"
+        >
+            <t t-esc="attribute.string"/>
+        </Property>
+    </t>
+    <t t-foreach="attributesOfTypeDomain" t-as="attribute" t-key="attribute.name">
+        <Property
+            name="attribute.name"
+            type="attribute.type"
+            value="attribute.value.domain"
+            onChange.bind="onChangeProperty"
+            childProps="{relation: attribute.value.relation}"
+        >
+            <t t-esc="attribute.string"/>
+        </Property>
+    </t>
+    <t t-foreach="attributesOfTypeString" t-as="attribute" t-key="attribute.name">
+        <Property
+            name="attribute.name"
+            type="attribute.type"
+            value="attribute.value"
+            onChange.bind="onChangeProperty"
+        >
+            <t t-esc="attribute.string"/>
+        </Property>
+    </t>
+</t>
+
+</templates>

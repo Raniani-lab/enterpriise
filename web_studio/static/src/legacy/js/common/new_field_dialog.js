@@ -15,7 +15,7 @@ var Many2one = relational_fields.FieldMany2One;
 // TODO: refactor this file
 
 var NewFieldDialog = Dialog.extend(StandaloneFieldManagerMixin, {
-    template: 'web_studio.NewFieldDialog',
+    template: 'web_studio.NewFieldDialogLegacy',
     events: {
         'keyup .o_web_studio_selection_new_value > input': '_onAddSelectionValue',
         'click .o_web_studio_edit_selection_value': '_onEditSelectionValue',

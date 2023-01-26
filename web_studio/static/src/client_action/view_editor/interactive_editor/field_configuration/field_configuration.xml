@@ -1,0 +1,48 @@
+<templates>
+
+<t t-name="web_studio.SelectionValuesEditor" owl="1">
+    <SelectionContentDialog
+        defaultChoices="selection"
+        onConfirm.bind="onConfirm"
+        close="this.props.cancel"
+    />
+</t>
+
+<t t-name="web_studio.ModelFieldSelectorPopover" t-inherit="web.ModelFieldSelectorPopover" >
+    <xpath expr="//div[contains(@class, 'o_field_selector_popover_body')]//t[@t-if]" position="attributes">
+        <attribute name="t-if">true</attribute>
+    </xpath>
+</t>
+
+<t t-name="web_studio.RelationalFieldConfigurator" owl="1" >
+    <span t-if="fieldType === 'one2many'" >Select the reciprocal ManyToOne field</span>
+    <span t-else="">Select the model in relation to this one</span>
+    <div name="relation_id">
+        <Record t-props="recordProps" t-slot-scope="scope">
+            <Many2OneField record="scope.record" name="'relationId'" canCreate="false" />
+        </Record>
+    </div>
+</t>
+
+
+<t t-name="web_studio.FieldConfigurationDialog" owl="1">
+    <t t-if="props.isDialog">
+        <t t-component="Component" t-props="props.componentProps" configurationModel="configurationModel" confirm="confirm" cancel="cancel" />
+    </t>
+    <Dialog t-else="" size="props.size or 'sm'" title="title">
+        <t t-component="Component" t-props="props.componentProps" configurationModel="configurationModel" />
+        <t t-set-slot="footer">
+            <button type="button" class="btn btn-primary" t-att-class="{ disabled: !canConfirm }" t-on-click="confirm">Confirm</button>
+            <button type="button" class="btn btn-secondary" t-on-click="cancel">Cancel</button>
+        </t>
+    </Dialog>
+</t>
+
+<t t-name="web_studio.FilterConfiguration" owl="1">
+    <label class="mb-4">Filter label
+        <input type="text" id="domain_label" class="o_input" t-model="state.filterLabel" />
+    </label>
+    <DomainSelector t-props="domainSelectorProps" />
+</t>
+
+</templates>

@@ -1,4 +1,7 @@
-.o_web_studio_sidebar.o_web_studio_report_sidebar {
+.o_web_studio_sidebar_legacy.o_web_studio_report_sidebar {
+    height: 100%;
+    overflow: auto;
+
     .o_web_studio_sidebar_content {
         &.o_web_studio_sidebar_content_properties {
             padding-top: 0px;

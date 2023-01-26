@@ -1,8 +1,6 @@
 /** @odoo-module */
-
-import { useBus, useService } from "@web/core/utils/hooks";
+import { useService } from "@web/core/utils/hooks";
 import { _lt } from "@web/core/l10n/translation";
-import { sprintf } from "@web/core/utils/strings";
 import { localization } from "@web/core/l10n/localization";
 import { registry } from "@web/core/registry";
 
@@ -12,37 +10,10 @@ const editorTabRegistry = registry.category("web_studio.editor_tabs");
 export class EditorMenu extends Component {
     setup() {
         this.l10n = localization;
+        this.editionFlow = useState(this.env.editionFlow);
         this.studio = useService("studio");
         this.rpc = useService("rpc");
-        this.state = useState({
-            redo_available: false,
-            undo_available: false,
-            snackbar: undefined,
-        });
-
         this.nextCrumbId = 1;
-
-        useBus(this.studio.bus, "UPDATE", async () => {
-            await this.render(true);
-            this.state.snackbar = "off";
-        });
-
-        useBus(this.studio.bus, "undo_available", () => {
-            this.state.undo_available = true;
-        });
-        useBus(this.studio.bus, "undo_not_available", () => {
-            this.state.undo_available = false;
-        });
-        useBus(this.studio.bus, "redo_available", () => {
-            this.state.redo_available = true;
-        });
-        useBus(this.studio.bus, "redo_not_available", () => {
-            this.state.redo_available = false;
-        });
-
-        useBus(this.studio.bus, "toggle_snack_bar", (e) => {
-            this.state.snackbar = e.detail;
-        });
     }
 
     get breadcrumbs() {
@@ -54,39 +25,17 @@ export class EditorMenu extends Component {
                 handler: () => this.openTab(currentTab.id),
             },
         ];
-        if (currentTab.id === "views") {
-            const { editedViewType, x2mEditorPath } = this.studio;
-            if (editedViewType) {
-                const currentViewType = this.constructor.viewTypes.find(
-                    (vt) => vt.type === editedViewType
-                );
-                crumbs.push({
-                    name: currentViewType.title,
-                    handler: () =>
-                        this.studio.setParams({
-                            x2mEditorPath: [],
-                        }),
-                });
-            }
-            x2mEditorPath.forEach(({ x2mViewType }, index) => {
-                const viewType = this.constructor.viewTypes.find((vt) => vt.type === x2mViewType);
-                crumbs.push({
-                    name: sprintf(
-                        this.env._t("Subview %s"),
-                        (viewType && viewType.title) || this.env._t("Other")
-                    ),
-                    handler: () =>
-                        this.studio.setParams({
-                            x2mEditorPath: x2mEditorPath.slice(0, index + 1),
-                        }),
-                });
-            });
-        } else if (currentTab.id === "reports" && this.studio.editedReport) {
+        if (currentTab.id === "reports" && this.studio.editedReport) {
             crumbs.push({
                 name: this.studio.editedReport.data.name,
                 handler: () => this.studio.setParams({}),
             });
         }
+
+        const breadcrumbs = this.editionFlow.breadcrumbs;
+        breadcrumbs.forEach((data) => {
+            crumbs.push({ ...data });
+        });
         for (const crumb of crumbs) {
             crumb.id = this.nextCrumbId++;
         }

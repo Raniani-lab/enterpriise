@@ -29,7 +29,7 @@ export class StudioClientAction extends Component {
             this.homeMenuProps = {
                 apps: computeAppsAndMenuItems(this.menus.getMenuAsTree("root")).apps,
             };
-            this.render(true);
+            this.render();
         });
 
         onWillStart(this.onWillStart);
@@ -59,11 +59,17 @@ export class StudioClientAction extends Component {
         await this.menus.reload();
         this.menus.setCurrentMenu(menu_id);
         const action = await this.actionService.loadAction(action_id);
+
+        let initViewType = "form";
+        if (!action.views.some((vTuple) => vTuple[1] === initViewType)) {
+            initViewType = action.views[0][1];
+        }
+
         this.studio.setParams({
             mode: this.studio.MODES.EDITOR,
             editorTab: "views",
             action,
-            viewType: "form",
+            viewType: initViewType,
         });
     }
 }

@@ -1,0 +1,659 @@
+/** @odoo-module */
+import { registry } from "@web/core/registry";
+import { stepNotInStudio } from "@web_studio/../tests/tours/tour_helpers";
+
+registry
+    .category("web_tour.tours")
+    .add("web_studio_test_form_view_not_altered_by_studio_xml_edition", {
+        test: true,
+        url: "/web",
+        sequence: 260,
+        steps: [
+            {
+                trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+            },
+            {
+                trigger: ".o_form_view .o_form_editable",
+            },
+            {
+                trigger: ".o_web_studio_navbar_item a",
+            },
+            {
+                trigger: ".o_web_studio_sidebar .o_web_studio_view",
+            },
+            {
+                trigger: ".o_web_studio_open_xml_editor",
+            },
+            {
+                extra_trigger: ".o_web_studio_code_editor_info",
+                trigger: ".o_web_studio_leave",
+            },
+            stepNotInStudio(".o_form_view .o_form_editable"),
+        ],
+    });
+
+/* global ace */
+registry.category("web_tour.tours").add("web_studio_test_edit_with_xml_editor", {
+    test: true,
+    url: "/web",
+    sequence: 260,
+    steps: [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            extra_trigger: ".someDiv",
+            trigger: ".o_web_studio_navbar_item a",
+        },
+        {
+            trigger: ".o_web_studio_sidebar .o_web_studio_view",
+        },
+        {
+            trigger: ".o_web_studio_open_xml_editor",
+        },
+        {
+            extra_trigger: ".o_web_studio_xml_editor",
+            trigger: ".o_web_studio_xml_resource_selector .o_select_menu_toggler",
+        },
+        {
+            trigger:
+                ".o_web_studio_xml_resource_selector .o-dropdown--menu .o_select_menu_item:contains(Odoo Studio)",
+        },
+        {
+            trigger: ".ace_content",
+            run() {
+                ace.edit("ace-editor").setValue("<data/>");
+            },
+        },
+        {
+            trigger: ".o_web_studio_xml_editor .o_web_studio_xml_resource_selector .btn-primary",
+        },
+        {
+            trigger: ".o_web_studio_snackbar_icon:not('.fa-spin')",
+        },
+        {
+            trigger: ".o_form_view",
+            run() {
+                if (document.querySelector(".someDiv")) {
+                    throw new Error("The edition of the view's arch via the xml editor failed");
+                }
+            },
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("web_studio_enter_x2many_edition_and_add_field", {
+    test: true,
+    sequence: 260,
+    steps: [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            trigger: ".o_form_view .o_form_editable",
+        },
+        {
+            trigger: ".o_web_studio_navbar_item a",
+        },
+        {
+            trigger: ".o_web_studio_form_view_editor .o_field_widget[name='user_ids']",
+        },
+        {
+            extra_trigger: ".o-web-studio-edit-x2manys-buttons",
+            trigger: ".o_web_studio_editX2Many[data-type='form']",
+        },
+        {
+            extra_trigger: ".o_web_studio_breadcrumb .breadcrumb-item:contains('Subview Form')",
+            trigger: ".o_web_studio_sidebar .o_web_studio_existing_fields_header",
+        },
+        {
+            extra_trigger: ".o_web_studio_existing_fields_section:not(.d-none)",
+            trigger:
+                ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component:contains(User log entries)",
+            run() {
+                $(
+                    ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component:contains(User log entries)"
+                )[0].scrollIntoView();
+            },
+        },
+        {
+            trigger:
+                ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component:contains(User log entries)",
+            run: "drag_and_drop_native (.o_web_studio_form_view_editor .o_web_studio_hook:eq(1))",
+        },
+        {
+            trigger: ".o_web_studio_form_view_editor .o_field_widget[name='log_ids']",
+            run() {
+                const countFields = document.querySelectorAll(
+                    ".o_web_studio_form_view_editor .o_field_widget"
+                ).length;
+                if (!countFields === 2) {
+                    throw new Error("There should be 2 fields in the form view");
+                }
+            },
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("web_studio_enter_x2many_auto_inlined_subview", {
+    test: true,
+    sequence: 260,
+    steps: [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            trigger: ".o_form_view .o_form_editable",
+        },
+        {
+            trigger: ".o_web_studio_navbar_item a",
+        },
+        {
+            trigger:
+                ".o_web_studio_form_view_editor .o_field_widget[name='user_ids'] .o_field_x2many_list",
+        },
+        {
+            extra_trigger: ".o-web-studio-edit-x2manys-buttons",
+            trigger: ".o_web_studio_editX2Many[data-type='list']",
+        },
+        {
+            extra_trigger: ".o_web_studio_breadcrumb .breadcrumb-item:contains('Subview List')",
+            trigger: ".o_web_studio_sidebar .o_web_studio_existing_fields_header",
+        },
+        {
+            extra_trigger: ".o_web_studio_existing_fields_section:not(.d-none)",
+            trigger:
+                ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component:contains(User log entries)",
+            run() {
+                $(
+                    ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component:contains(User log entries)"
+                )[0].scrollIntoView();
+            },
+        },
+        {
+            trigger:
+                ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component:contains(User log entries)",
+            run: "drag_and_drop_native (.o_web_studio_list_view_editor .o_web_studio_hook:eq(1))",
+        },
+        {
+            trigger: ".o_web_studio_list_view_editor th[data-name='log_ids']",
+            run() {
+                const countFields = document.querySelectorAll(
+                    ".o_web_studio_form_view_editor th[data-name]"
+                ).length;
+                if (!countFields === 2) {
+                    throw new Error("There should be 2 fields in the form view");
+                }
+            },
+        },
+    ],
+});
+
+registry
+    .category("web_tour.tours")
+    .add("web_studio_enter_x2many_auto_inlined_subview_with_multiple_field_matching", {
+        test: true,
+        sequence: 260,
+        steps: [
+            {
+                trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+            },
+            {
+                trigger: ".o_form_view .o_form_editable",
+            },
+            {
+                trigger: ".o_web_studio_navbar_item a",
+            },
+            {
+                trigger:
+                    ".o_web_studio_form_view_editor .o_field_widget[name='user_ids']:eq(1) .o_field_x2many_list",
+            },
+            {
+                extra_trigger: ".o-web-studio-edit-x2manys-buttons",
+                trigger: ".o_web_studio_editX2Many[data-type='list']",
+            },
+            {
+                extra_trigger: ".o_web_studio_breadcrumb .breadcrumb-item:contains('Subview List')",
+                trigger: ".o_web_studio_sidebar .o_web_studio_existing_fields_header",
+            },
+            {
+                extra_trigger: ".o_web_studio_existing_fields_section:not(.d-none)",
+                trigger:
+                    ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component:contains(User log entries)",
+                run() {
+                    $(
+                        ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component:contains(User log entries)"
+                    )[0].scrollIntoView();
+                },
+            },
+            {
+                trigger:
+                    ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component:contains(User log entries)",
+                run: "drag_and_drop_native (.o_web_studio_list_view_editor .o_web_studio_hook:eq(1))",
+            },
+            {
+                trigger: ".o_web_studio_list_view_editor th[data-name='log_ids']",
+                run() {
+                    const countFields = document.querySelectorAll(
+                        ".o_web_studio_form_view_editor th[data-name]"
+                    ).length;
+                    if (!countFields === 2) {
+                        throw new Error("There should be 2 fields in the form view");
+                    }
+                },
+            },
+        ],
+    });
+
+registry.category("web_tour.tours").add("web_studio_field_with_group", {
+    test: true,
+    sequence: 260,
+    steps: [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            trigger: ".o_list_view",
+        },
+        {
+            trigger: ".o_web_studio_navbar_item a",
+        },
+        {
+            trigger: ".o_web_studio_list_view_editor th[data-name='function']",
+            run() {},
+        },
+        {
+            trigger: ".o_web_studio_sidebar .o_web_studio_existing_fields_header",
+        },
+        {
+            extra_trigger: ".o_web_studio_existing_fields_section:not(.d-none)",
+            trigger:
+                ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component:contains(Website Link)",
+            run() {
+                $(
+                    ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component:contains(Website Link)"
+                )[0].scrollIntoView();
+            },
+        },
+        {
+            trigger:
+                ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component:contains(Website Link)",
+            run: "drag_and_drop_native (.o_web_studio_list_view_editor th.o_web_studio_hook:eq(2))",
+        },
+        {
+            extra_trigger:
+                ".o_web_studio_list_view_editor th.o_web_studio_hook:not(.o_web_studio_nearest_hook)",
+            trigger: ".o_web_studio_list_view_editor th[data-name='website']",
+            run() {
+                const countFields = document.querySelectorAll(
+                    ".o_web_studio_list_view_editor th[data-name]"
+                ).length;
+                if (!countFields === 3) {
+                    throw new Error("There should be 3 fields in the form view");
+                }
+            },
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("web_studio_elements_with_groups_form", {
+    test: true,
+    sequence: 260,
+    steps: [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            trigger: ".o_form_view",
+        },
+        {
+            trigger: ".o_web_studio_navbar_item a",
+        },
+        {
+            trigger: ".o_web_studio_form_view_editor",
+            run() {},
+        },
+        {
+            trigger: ".o_web_studio_sidebar .o_web_studio_existing_fields_header",
+        },
+        {
+            extra_trigger: ".o_web_studio_existing_fields_section:not(.d-none)",
+            trigger:
+                ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component:contains(Website Link)",
+            run() {
+                $(
+                    ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component:contains(Website Link)"
+                )[0].scrollIntoView();
+            },
+        },
+        {
+            trigger:
+                ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component:contains(Website Link)",
+            run: "drag_and_drop_native (.o_web_studio_form_view_editor .o_inner_group .o_web_studio_hook:eq(1))",
+        },
+        {
+            extra_trigger:
+                ".o_web_studio_form_view_editor .o_web_studio_hook:not(.o_web_studio_nearest_hook)",
+            trigger: ".o_web_studio_form_view_editor .o_field_widget[name='website']",
+            allowInvisible: true,
+            run() {
+                const countFields = document.querySelectorAll(
+                    ".o_web_studio_form_view_editor .o_field_widget[name]"
+                ).length;
+                if (!countFields === 2) {
+                    throw new Error("There should be 2 fields in the form view");
+                }
+            },
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("test_element_group_in_sidebar", {
+    test: true,
+    sequence: 260,
+    steps: [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            trigger: ".o_form_view .o_form_editable",
+        },
+        {
+            trigger: ".o_web_studio_navbar_item a",
+        },
+        {
+            extra_trigger: ".o_web_studio_form_view_editor .o_field_widget[name='display_name']",
+            trigger: ".o_web_studio_form_view_editor .o_field_widget[name='display_name']",
+        },
+        {
+            trigger: ".o_field_many2many_tags[name='groups_id'] .badge",
+            run() {
+                const tag = document.querySelector(
+                    ".o_field_many2many_tags[name='groups_id'] .badge"
+                );
+                if (!tag || !tag.textContent.includes("Test Group")) {
+                    throw new Error("The groups should be displayed in the sidebar");
+                }
+            },
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("web_studio_custom_selection_field_edit_values", {
+    test: true,
+    sequence: 260,
+    steps: [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            extra_trigger: ".o_form_view",
+            trigger: ".o_web_studio_navbar_item a",
+        },
+        {
+            trigger: ".o_web_studio_sidebar .o_web_studio_new_fields .o_web_studio_field_selection",
+            run: "drag_and_drop_native (.o_web_studio_hook:eq(0))",
+        },
+        {
+            trigger: ".o_web_studio_add_selection .o-web-studio-interactive-list-item-input",
+            run: "text some value",
+        },
+        {
+            trigger: ".modal-footer .btn-primary",
+        },
+        {
+            trigger: ".o_web_studio_leave",
+        },
+        {
+            extra_trigger: ".o_form_view",
+            trigger: ".o_web_studio_navbar_item a",
+        },
+        {
+            trigger: ".o_web_studio_form_view_editor .o_wrap_input:has(.o_field_selection)",
+        },
+        {
+            trigger: ".o_web_studio_sidebar .o_web_studio_edit_selection_values",
+        },
+        {
+            in_modal: true,
+            trigger: ".o_web_studio_add_selection .o-web-studio-interactive-list-item-input",
+            run: "text another value",
+        },
+        {
+            trigger: ".modal-footer .btn-primary",
+        },
+        {
+            trigger: ".o_web_studio_leave",
+        },
+        stepNotInStudio(),
+    ],
+});
+
+registry.category("web_tour.tours").add("web_studio_test_create_one2many_lines_then_edit_name", {
+    test: true,
+    sequence: 260,
+    steps: [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            extra_trigger: ".o_form_view",
+            trigger: ".o_web_studio_navbar_item a",
+        },
+        {
+            trigger: ".o_web_studio_sidebar .o_web_studio_new_fields .o_web_studio_field_lines",
+            run: "drag_and_drop_native (.o_web_studio_hook:eq(0))",
+        },
+        {
+            trigger: ".o_form_label",
+            extra_trigger: ".o_field_x2many_list",
+        },
+        {
+            extra_trigger: ".o_web_studio_sidebar .o_web_studio_properties.active",
+            trigger: "input[name='string']",
+            run: "text new name",
+        },
+        {
+            trigger: ".o_web_studio_leave",
+        },
+        stepNotInStudio(".o_form_view"),
+    ],
+});
+
+registry.category("web_tour.tours").add("web_studio_test_address_view_id_no_edit", {
+    test: true,
+    sequence: 260,
+    steps: [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            extra_trigger: ".o_form_view",
+            trigger: ".o_address_format",
+            run: function () {
+                if (
+                    this.$anchor.find("[name=lang]").length ||
+                    !this.$anchor.find("[name=street]").length
+                ) {
+                    throw new Error(
+                        "The address view id set on the company country should be displayed"
+                    );
+                }
+            },
+        },
+        {
+            trigger: ".o_web_studio_navbar_item a",
+        },
+        {
+            extra_trigger: ".o_web_studio_view_renderer",
+            trigger: ".o_address_format",
+            run: function () {
+                if (
+                    this.$anchor.find("[name=street]").length ||
+                    !this.$anchor.find("[name=lang]").length
+                ) {
+                    throw new Error(
+                        "The address view id set on the company country shouldn't be editable"
+                    );
+                }
+            },
+        },
+        {
+            trigger: ".o_web_studio_leave",
+        },
+        stepNotInStudio(".o_form_view"),
+    ],
+});
+
+registry.category("web_tour.tours").add("web_studio_test_create_new_model_from_existing_view", {
+    test: true,
+    sequence: 260,
+    steps: [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            extra_trigger: ".o_kanban_view",
+            trigger: ".o_web_studio_navbar_item a",
+        },
+        {
+            trigger: ".o_web_create_new_model",
+        },
+        {
+            extra_trigger: ".modal-dialog",
+            trigger: "input[name='model_name']",
+            run: "text new model",
+        },
+        {
+            trigger: ".confirm_button",
+        },
+        {
+            trigger: ".o_web_studio_model_configurator_next",
+        },
+        {
+            trigger: ".o_form_view",
+        },
+    ],
+});
+
+registry.category("web_tour.tours").add("web_studio_test_create_model_with_clickable_stages", {
+    test: true,
+    sequence: 260,
+    steps: [
+        {
+            trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+        },
+        {
+            extra_trigger: ".o_form_view",
+            trigger: ".o_web_studio_navbar_item a",
+        },
+        {
+            trigger: ".o_web_create_new_model",
+        },
+        {
+            extra_trigger: ".modal-dialog",
+            trigger: "input[name='model_name']",
+            run: "text new model",
+        },
+        {
+            trigger: ".confirm_button",
+        },
+        {
+            trigger: "#use_stages",
+        },
+        {
+            trigger: ".o_web_studio_model_configurator_next",
+        },
+        {
+            trigger: ".o_web_studio_leave",
+        },
+        {
+            extra_trigger: ".o_form_view",
+            trigger: "input#x_name",
+            run: "text new record",
+        },
+        {
+            trigger: ".o_arrow_button:contains(In Progress)",
+        },
+        {
+            trigger: ".o_arrow_button_current:contains(In Progress)",
+        },
+        {
+            trigger: ".o_form_button_save",
+        },
+        {
+            trigger: ".o_back_button",
+        },
+        {
+            trigger:
+                ".o_kanban_group:contains(In Progress) .o_kanban_record_details:contains(new record)",
+        },
+    ],
+});
+
+registry
+    .category("web_tour.tours")
+    .add("web_studio_test_enter_x2many_edition_with_multiple_subviews", {
+        test: true,
+        sequence: 260,
+        steps: [
+            {
+                trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+            },
+            {
+                extra_trigger: ".o_form_view span:contains('Address Type')",
+                trigger: ".o_web_studio_navbar_item a",
+            },
+            {
+                trigger:
+                    ".o_web_studio_form_view_editor .o_field_widget[name='child_ids'] .o_field_x2many_list",
+                extra_trigger: ".o_list_renderer span:contains('Address Type')",
+            },
+            {
+                extra_trigger: ".o-web-studio-edit-x2manys-buttons",
+                trigger: ".o_web_studio_editX2Many[data-type='list']",
+            },
+            {
+                trigger: ".o_content > .o_list_renderer span:contains('Address Type')",
+            },
+        ],
+    });
+
+registry
+    .category("web_tour.tours")
+    .add("web_studio_test_enter_x2many_edition_with_multiple_subviews_correct_xpath", {
+        test: true,
+        sequence: 260,
+        steps: [
+            {
+                trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']",
+            },
+            {
+                extra_trigger: ".o_form_view",
+                trigger: ".o_web_studio_navbar_item a",
+            },
+            {
+                trigger:
+                    ".o_web_studio_form_view_editor .o_field_widget[name='child_ids'] .o_field_x2many_list",
+            },
+            {
+                extra_trigger: ".o-web-studio-edit-x2manys-buttons",
+                trigger: ".o_web_studio_editX2Many[data-type='list']",
+            },
+            {
+                extra_trigger: ".o_web_studio_breadcrumb .breadcrumb-item:contains('Subview List')",
+                trigger: ".o_web_studio_sidebar .o_web_studio_existing_fields_header",
+            },
+            {
+                extra_trigger: ".o_web_studio_sidebar .o_web_studio_existing_fields_section",
+                trigger: `.o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component[data-drop='${JSON.stringify(
+                    { fieldName: "active" }
+                )}']`,
+                run: "drag_and_drop_native (.o_web_studio_hook:eq(0))",
+            },
+            {
+                content: "Check that the active field has been added",
+                trigger: ".o_web_studio_view_renderer .o_list_view thead th[data-name='active']",
+            },
+        ],
+    });

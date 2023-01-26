@@ -1,7 +1,5 @@
 /** @odoo-module **/
 import { registry } from "@web/core/registry";
-import { delay } from "web.concurrency";
-import legacyBus from "web_studio.bus";
 import { resetViewCompilerCache } from "@web/views/view_compiler";
 import { _lt } from "@web/core/l10n/translation";
 
@@ -94,7 +92,6 @@ export const studioService = {
             editedAction: null,
             editedControllerState: null,
             editorTab: "views",
-            x2mEditorPath: [],
             editedReport: null,
         };
 
@@ -185,7 +182,7 @@ export const studioService = {
             // force color_scheme light
             if (cookie.current.color_scheme === "dark") {
                 // ensure studio is fully loaded
-                await delay(0);
+                await new Promise((resolve) => setTimeout(resolve));
                 color_scheme.switchToColorScheme("light");
             }
             return res;
@@ -221,7 +218,7 @@ export const studioService = {
                 options.additionalContext = state.editedAction.context;
                 options.viewType = state.editedViewType;
                 if (state.editedControllerState) {
-                    options.props = { resId: state.editedControllerState.currentId };
+                    options.props = { resId: state.editedControllerState.resId };
                 }
             } else {
                 actionId = "menu";
@@ -231,7 +228,6 @@ export const studioService = {
             // force rendering of the main navbar to allow adaptation of the size
             env.bus.trigger("MENUS:APP-CHANGED");
             state.studioMode = null;
-            state.x2mEditorPath = [];
         }
 
         async function reload(params = {}, reset = true) {
@@ -286,7 +282,6 @@ export const studioService = {
             }
             if ("viewType" in params) {
                 state.editedViewType = params.viewType || null;
-                state.x2mEditorPath = [];
             }
             if ("action" in params) {
                 if ((state.editedAction && state.editedAction.id) !== params.action.id) {
@@ -296,7 +291,6 @@ export const studioService = {
             }
             if ("editorTab" in params) {
                 state.editorTab = params.editorTab;
-                state.x2mEditorPath = [];
                 if (!("viewType" in params)) {
                     // clean me
                     state.editedViewType = null;
@@ -308,19 +302,14 @@ export const studioService = {
             if ("editedReport" in params) {
                 state.editedReport = params.editedReport;
             }
-            if ("x2mEditorPath" in params) {
-                state.x2mEditorPath = params.x2mEditorPath;
+            if ("controllerState" in params) {
+                state.editedControllerState = params.controllerState;
             }
             if (state.editorTab !== "reports") {
                 state.editedReport = null;
             }
             bus.trigger("UPDATE", { reset });
         }
-        legacyBus.on("STUDIO_ENTER_X2M", null, (newX2mPath) => {
-            const x2mEditorPath = state.x2mEditorPath.slice();
-            x2mEditorPath.push(newX2mPath);
-            setParams({ x2mEditorPath });
-        });
 
         env.bus.on("ACTION_MANAGER:UI-UPDATED", null, (mode) => {
             if (mode === "new") {
@@ -329,15 +318,6 @@ export const studioService = {
             const action = _getCurrentAction();
             inStudio = action.tag === "studio";
         });
-
-        const legacyBusTrigger = legacyBus.trigger.bind(legacyBus);
-        const busTrigger = bus.trigger.bind(bus);
-        function mappedTrigger(...args) {
-            legacyBusTrigger(...args);
-            busTrigger(...args);
-        }
-        legacyBus.trigger = mappedTrigger;
-        bus.trigger = mappedTrigger;
 
         const isAllowedCache = {
             activity: {},
@@ -392,9 +372,6 @@ export const studioService = {
             get editorTab() {
                 return state.editorTab;
             },
-            get x2mEditorPath() {
-                return state.x2mEditorPath;
-            },
             isAllowed,
         };
     },
@@ -405,10 +382,13 @@ registry.category("services").add("studio", studioService);
 export function useStudioServiceAsReactive() {
     const studio = useService("studio");
     const state = useState({ ...studio });
+    state.requestId = 1;
 
     function onUpdate({ detail }) {
         Object.assign(state, studio);
-        state.reset = detail.reset;
+        if (detail.reset) {
+            state.requestId++;
+        }
     }
     studio.bus.addEventListener("UPDATE", onUpdate);
     onWillUnmount(() => studio.bus.removeEventListener("UPDATE", onUpdate));

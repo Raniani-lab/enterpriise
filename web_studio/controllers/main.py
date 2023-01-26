@@ -448,6 +448,7 @@ class WebStudioController(http.Controller):
         return {
             'studio_view_id': studio_view and studio_view.id or False,
             'studio_view_arch': studio_view and studio_view.arch_db or "<data/>",
+            'main_view_id': view.id,
         }
 
     def _return_view(self, view, studio_view):
@@ -671,16 +672,16 @@ Are you sure you want to remove the selection values of those records?""") % len
 
     @http.route('/web_studio/edit_view_arch', type='json', auth='user')
     def edit_view_arch(self, view_id, view_arch):
+        # view is really the view on which we are writing the new arch verbatim (in most cases, the studio view)
+        # the _return_view API calls get_views, that will eventually return the whole arch
+        # meaning that even if we pass the studio view, we'll get the full arch with
+        # the studio view applied on it.
         view = request.env['ir.ui.view'].browse(view_id)
-
         if view:
             view.write({'arch': view_arch})
             ViewModel = request.env[view.model]
-            try:
-                studio_view = self._get_studio_view(view)
-                return self._return_view(view, studio_view)
-            except Exception:
-                return False
+            studio_view = self._get_studio_view(view)
+            return self._return_view(view, studio_view)
 
     @http.route('/web_studio/export', type='http', auth='user')
     def export(self, **kw):

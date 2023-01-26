@@ -1,0 +1,36 @@
+<templates>
+    <t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Modifiers" owl="1">
+        <Property
+            t-if="this.isAttributeSupported('invisible')"
+            isConditional="true"
+            name="'invisible'"
+            type="'boolean'"
+            value="props.node.attrs.modifiers?.invisible || props.node.attrs.modifiers?.column_invisible"
+            onChange.bind="onChangeModifier"
+        >
+            Invisible
+        </Property>
+
+        <Property
+            t-if="this.isAttributeSupported('required')"
+            isConditional="true"
+            name="'required'"
+            type="'boolean'"
+            value="props.node.attrs.modifiers?.required"
+            onChange.bind="onChangeModifier"
+        >
+            Required
+        </Property>
+
+        <Property
+            t-if="this.isAttributeSupported('readonly')"
+            isConditional="true"
+            name="'readonly'"
+            type="'boolean'"
+            value="props.node.attrs.modifiers?.readonly"
+            onChange.bind="onChangeModifier"
+        >
+            Readonly
+        </Property>
+    </t>
+</templates>

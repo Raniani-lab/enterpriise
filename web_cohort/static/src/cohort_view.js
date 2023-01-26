@@ -6,7 +6,7 @@ import { CohortRenderer } from "./cohort_renderer";
 import { CohortArchParser } from "./cohort_arch_parser";
 import { CohortModel } from "./cohort_model";
 
-const cohortView = {
+export const cohortView = {
     type: "cohort",
     display_name: "Cohort",
     icon: "oi oi-view-cohort",

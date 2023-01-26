@@ -1,0 +1,20 @@
+<templates>
+
+    <t t-name="web_studio.ViewEditor.InteractiveEditorProperties.Group" owl="1">
+
+        <ModifiersProperties node="props.node" availableOptions="['invisible']"/>
+
+        <Property
+            name="'string'"
+            type="'string'"
+            value="props.node.attrs.string"
+            onChange.bind="onChangeAttribute"
+            isConditional="true">
+                Label
+        </Property>
+
+        <LimitGroupVisibility node="props.node"/>
+        <SidebarPropertiesToolbox />
+    </t>
+
+</templates>

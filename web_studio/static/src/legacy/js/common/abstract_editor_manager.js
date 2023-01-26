@@ -13,7 +13,7 @@ var _lt = core._lt;
 var _t = core._t;
 
 var AbstractEditorManager = Widget.extend({
-    className: 'o_web_studio_editor_manager',
+    className: 'o_web_studio_editor_manager_legacy',
     custom_events: {
         close_xml_editor: '_onCloseXMLEditor',
         drag_component: '_onDragComponent',

@@ -1,5 +1,5 @@
 /** @odoo-module */
-import { useComponent, useEnv } from "@odoo/owl";
+import { reactive, useComponent, useEnv } from "@odoo/owl";
 
 export function useDialogConfirmation({ confirm, cancel, before, close }) {
     before = before || (() => {});
@@ -52,4 +52,17 @@ export function useDialogConfirmation({ confirm, cancel, before, close }) {
     env.dialogData.close = () => _cancel();
 
     return { confirm: _confirm, cancel: _cancel };
+}
+
+export class Reactive {
+    constructor() {
+        const raw = this;
+        // A function not bound to this returning the original not reactive object
+        // This is usefull to be able to read stuff without subscribing the caller
+        // eg: when reading internals just for checking
+        this.raw = () => {
+            return raw;
+        };
+        return reactive(this);
+    }
 }

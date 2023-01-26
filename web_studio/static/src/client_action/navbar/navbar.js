@@ -4,9 +4,8 @@ import { onMounted, onWillUnmount } from "@odoo/owl";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { EnterpriseNavBar } from "@web_enterprise/webclient/navbar/navbar";
-import { NotEditableActionError } from "../../studio_service";
 import { HomeMenuCustomizer } from "./home_menu_customizer/home_menu_customizer";
-import { useStudioServiceAsReactive } from "@web_studio/studio_service";
+import { useStudioServiceAsReactive, NotEditableActionError } from "@web_studio/studio_service";
 
 const menuButtonsRegistry = registry.category("studio_navbar_menubuttons");
 export class StudioNavbar extends EnterpriseNavBar {

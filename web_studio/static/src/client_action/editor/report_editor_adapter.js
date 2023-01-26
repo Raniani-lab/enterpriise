@@ -5,7 +5,16 @@ import { useService } from "@web/core/utils/hooks";
 import { registry } from "@web/core/registry";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 
-import { Component, xml } from "@odoo/owl";
+import studioBus from "web_studio.bus";
+
+import { Component, onMounted, onWillUnmount, reactive, xml } from "@odoo/owl";
+import { useEditorFlowFeatures } from "@web_studio/client_action/editor/edition_flow";
+
+function useLegacyBus(bus, evName, callback) {
+    const obj = {};
+    onMounted(() => bus.on(evName, obj, callback));
+    onWillUnmount(() => bus.off(evName, obj, callback));
+}
 
 class ReportEditorAdapter extends ComponentAdapter {
     constructor(props) {
@@ -21,6 +30,41 @@ class ReportEditorAdapter extends ComponentAdapter {
         this.orm = useService("orm");
         this.studio = useService("studio");
         this.reportEnv = {};
+
+        const snackBarIndicator = reactive({
+            state: "",
+        });
+        useLegacyBus(studioBus, "toggle_snack_bar", (detail) => {
+            let state;
+            if (detail === "saving") {
+                state = "loading";
+            } else if (detail === "saved") {
+                state = "loaded";
+            }
+            snackBarIndicator.state = state;
+        });
+
+        const editorOperations = reactive({
+            undo: () => studioBus.trigger("undo_clicked"),
+            redo: () => studioBus.trigger("redo_clicked"),
+            canUndo: false,
+            canRedo: false,
+        });
+
+        useLegacyBus(studioBus, "undo_available", () => {
+            editorOperations.canUndo = true;
+        });
+        useLegacyBus(studioBus, "undo_not_available", () => {
+            editorOperations.canUndo = false;
+        });
+        useLegacyBus(studioBus, "redo_available", () => {
+            editorOperations.canRedo = true;
+        });
+        useLegacyBus(studioBus, "redo_not_available", () => {
+            editorOperations.canRedo = false;
+        });
+        useEditorFlowFeatures({ snackBarIndicator, editorOperations });
+
         this.env = Component.env;
     }
 

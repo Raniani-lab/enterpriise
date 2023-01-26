@@ -5,7 +5,7 @@ import { useAutofocus, useService } from "@web/core/utils/hooks";
 import { BG_COLORS, COLORS, ICONS } from "@web_studio/utils";
 import { ModelConfigurator } from "@web_studio/client_action/model_configurator/model_configurator";
 import { IconCreator } from "../icon_creator/icon_creator";
-import { MenuCreator, MenuCreatorModel } from "@web_studio/client_action/components/menu_creator";
+import { MenuCreator, MenuCreatorModel } from "@web_studio/client_action/menu_creator/menu_creator";
 
 class AppCreatorState {
     /**

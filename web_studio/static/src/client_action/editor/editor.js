@@ -1,16 +1,18 @@
 /** @odoo-module **/
-import { Component, EventBus, onWillDestroy, useSubEnv, reactive } from "@odoo/owl";
+import { Component, EventBus, onWillDestroy, useSubEnv } from "@odoo/owl";
 
 import { registry } from "@web/core/registry";
+import { actionService } from "@web/webclient/actions/action_service";
 import { useBus, useService } from "@web/core/utils/hooks";
 
-import { StudioActionContainer } from "../studio_action_container";
-import { actionService } from "@web/webclient/actions/action_service";
+import { StudioActionContainer } from "./studio_action_container";
 import { EditorMenu } from "./editor_menu/editor_menu";
 import { mapDoActionOptionAPI } from "@web/legacy/backend_utils";
-import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
+
 import { AppMenuEditor } from "./app_menu_editor/app_menu_editor";
 import { NewModelItem } from "./new_model_item/new_model_item";
+import { EditionFlow } from "./edition_flow";
+import { useStudioServiceAsReactive } from "@web_studio/studio_service";
 
 const actionServiceStudio = {
     dependencies: ["studio"],
@@ -30,44 +32,6 @@ const actionServiceStudio = {
         return Object.assign(action, { doAction });
     },
 };
-
-class EditionFlow {
-    constructor(env, services) {
-        this.env = env;
-        for (const [servName, serv] of Object.entries(services)) {
-            this[servName] = serv;
-        }
-    }
-    loadViews() {
-        const { context, views, res_model, id } = this.studio.editedAction;
-        const newContext = { ...context, studio: true, lang: false };
-        const options = { loadIrFilters: true, loadActionMenus: false, id };
-        return this.view.loadViews({ resModel: res_model, views, context: newContext }, options);
-    }
-    restoreDefaultView(viewId, viewType) {
-        return new Promise((resolve) => {
-            const confirm = async () => {
-                if (!viewId && viewType) {
-                    // To restore the default view from an inherited one, we need first to retrieve the default view id
-                    const result = await this.loadViews();
-                    viewId = result.views[viewType].id;
-                }
-                const res = await this.rpc("/web_studio/restore_default_view", {
-                    view_id: viewId,
-                });
-                this.env.bus.trigger("CLEAR-CACHES");
-                resolve(res);
-            };
-            this.dialog.add(ConfirmationDialog, {
-                body: this.env._t(
-                    "Are you sure you want to restore the default view?\r\nAll customization done with studio on this view will be lost."
-                ),
-                confirm,
-                cancel: () => resolve(false),
-            });
-        });
-    }
-}
 
 const menuButtonsRegistry = registry.category("studio_navbar_menubuttons");
 export class Editor extends Component {
@@ -96,11 +60,11 @@ export class Editor extends Component {
         const editionFlow = new EditionFlow(this.env, {
             rpc: useService("rpc"),
             dialog: useService("dialog"),
-            studio: this.studio,
+            studio: useStudioServiceAsReactive(),
             view: useService("view"),
         });
         useSubEnv({
-            editionFlow: reactive(editionFlow),
+            editionFlow,
         });
 
         this.actionService = useService("action");

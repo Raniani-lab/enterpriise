@@ -11,7 +11,7 @@ class SaleOrderRecurrence(models.Model):
     _order = 'unit,duration'
 
     active = fields.Boolean(default=True)
-    name = fields.Char(compute='_compute_name', store=True, readonly=False)
+    name = fields.Char(compute='_compute_name', store=True, readonly=False, translate=True)
     duration = fields.Integer(string="Duration", required=True, default=1,
                               help="Minimum duration before this rule is applied. If set to 0, it represents a fixed temporal price.")
     unit = fields.Selection([('day', 'Days'), ("week", "Weeks"), ("month", "Months"), ('year', 'Years')],

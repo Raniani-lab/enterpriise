@@ -453,8 +453,8 @@ class AccountEdiFormat(models.Model):
         now = fields.Datetime.now()
         oldest_date = now - timedelta(days=5)
         newest_date = now + timedelta(days=10)
-        if not company.l10n_co_edi_username or not company.l10n_co_edi_password or not company.l10n_co_edi_company or \
-           not company.l10n_co_edi_account:
+        if not company.sudo().l10n_co_edi_username or not company.sudo().l10n_co_edi_password or not company.l10n_co_edi_company or \
+           not company.sudo().l10n_co_edi_account:
             edi_result.append(_("Carvajal credentials are not set on the company, please go to Accounting Settings and set the credentials."))
         if (move.move_type != 'out_refund' and not move.debit_origin_id) and \
            (not journal.l10n_co_edi_dian_authorization_number or not journal.l10n_co_edi_dian_authorization_date or not journal.l10n_co_edi_dian_authorization_end_date):

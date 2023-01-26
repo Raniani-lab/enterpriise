@@ -607,5 +607,17 @@
                 </field>
             </field>
         </record>
+
+        <record model="ir.actions.server" id="action_bank_statement_attachment">
+            <field name="name">Statement</field>
+            <field name="model_id" ref="model_account_bank_statement"/>
+            <field name="binding_model_id" ref="model_account_bank_statement" />
+            <field name="binding_type">report</field>
+            <field name="state">code</field>
+            <field name="code">
+if records:
+    action = records.action_generate_attachment()
+            </field>
+        </record>
     </data>
 </odoo>

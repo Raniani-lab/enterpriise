@@ -1511,14 +1511,11 @@ Are you sure you want to remove the selection values of those records?""") % len
             studio_view = self._create_studio_view(view, '<data/>')
         parser = etree.XMLParser(remove_blank_text=True)
         arch = etree.fromstring(studio_view.arch_db, parser=parser)
-        expr = "//field[@name='%s']" % field_name
-        if subview_xpath:
-            expr = subview_xpath + expr
         position = 'inside'
-        xpath_node = arch.find('xpath[@expr="%s"][@position="%s"]' % (expr, position))
+        xpath_node = arch.find('xpath[@expr="%s"][@position="%s"]' % (subview_xpath, position))
         if xpath_node is None:  # bool(node) == False if node has no children
             xpath_node = etree.SubElement(arch, 'xpath', {
-                'expr': expr,
+                'expr': subview_xpath,
                 'position': position
             })
         view_arch, _ = request.env[model]._get_view(view_type=subview_type)

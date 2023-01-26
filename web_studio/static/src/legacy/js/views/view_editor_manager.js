@@ -1076,7 +1076,7 @@ var ViewEditorManager = AbstractEditorManager.extend(WidgetAdapterMixin, {
             const { viewType, fieldName, resModel, fieldContext } = x2ManyInfo;
             const viewId = viewDescriptions.views[mainViewType].id;
             const subViewRef = fieldContext[`${nextViewType === "list" ? "tree" : nextViewType}_view_ref`] || null;;
-            const xpathToCurrentSubView = getX2MFullXpath(x2ManyFullPath.slice(0, -1));
+            const xpathToCurrentSubView = getX2MFullXpath(x2ManyFullPath);
             const studioArch = await wowlCreateInlineView(this.wowlEnv, { subViewType: viewType, viewId, fullXpath: xpathToCurrentSubView, subViewRef, resModel, fieldName })
             this.studio_view_arch = studioArch;
             this.operations = [];

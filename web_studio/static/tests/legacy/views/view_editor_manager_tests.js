@@ -5895,7 +5895,7 @@ QUnit.module('ViewEditorManager', {
                 assert.strictEqual(model, "product");
                 assert.strictEqual(field_name, "product_ids");
                 assert.strictEqual(subview_type, "tree");
-                assert.strictEqual(subview_xpath, "");
+                assert.strictEqual(subview_xpath, "/form[1]/sheet[1]/field[2]");
                 assert.strictEqual(view_id, 1);
 
                 // hardcode inheritance mechanisme
@@ -6159,7 +6159,7 @@ QUnit.module('ViewEditorManager', {
                 assert.strictEqual(model, "product");
                 assert.strictEqual(field_name, "product_ids");
                 assert.strictEqual(subview_type, "tree");
-                assert.strictEqual(subview_xpath, "");
+                assert.strictEqual(subview_xpath, "/form[1]/sheet[1]/field[2]");
                 assert.strictEqual(view_id, 1);
 
                 // hardcode inheritance mechanisme

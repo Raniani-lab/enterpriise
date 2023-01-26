@@ -195,6 +195,56 @@ registry.category("web_tour.tours").add(
 });
 
 registry.category("web_tour.tours").add(
+    "web_studio_enter_x2many_auto_inlined_subview_with_multiple_field_matching",
+    {
+        test: true,
+        sequence: 260,
+        steps: [
+            {
+                trigger: "a[data-menu-xmlid='web_studio.studio_test_partner_menu']"
+            },
+            {
+                trigger: ".o_form_view .o_form_editable"
+            },
+            {
+                trigger: ".o_web_studio_navbar_item a"
+            },
+            {
+                trigger: ".o_web_studio_form_view_editor .o_field_widget[name='user_ids']:eq(1) .o_field_x2many_list",
+            },
+            {
+                extra_trigger: ".o-web-studio-edit-x2manys-buttons",
+                trigger: ".o_web_studio_editX2Many[data-type='list']"
+            },
+            {
+                extra_trigger: ".o_web_studio_breadcrumb .breadcrumb-item:contains('Subview List')",
+                trigger: ".o_web_studio_sidebar .o_web_studio_existing_fields_header"
+            },
+            {
+                extra_trigger: ".o_web_studio_existing_fields_section:not(.d-none)",
+                trigger: ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component[title='User log entries']",
+                run() {
+                    $(".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component[title='User log entries']")[0].scrollIntoView();
+                }
+            },
+            {
+                trigger: ".o_web_studio_sidebar .o_web_studio_existing_fields_section .o_web_studio_component[title='User log entries']",
+                run: "drag_and_drop (.o_web_studio_list_view_editor .o_web_studio_hook:eq(1))",
+            },
+            {
+                trigger: ".o_web_studio_list_view_editor th[data-name='log_ids']",
+                run() {
+                    const countFields = document.querySelectorAll(".o_web_studio_form_view_editor th[data-name]").length;
+                    if (!countFields === 2) {
+                        throw new Error("There should be 2 fields in the form view");
+                    }
+                }
+            }
+        ]
+    }
+);
+
+registry.category("web_tour.tours").add(
     "web_studio_field_with_group",
     {
         test: true,

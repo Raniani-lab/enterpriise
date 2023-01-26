@@ -84,8 +84,8 @@ class AppointmentController(http.Controller):
     # Tools / Data preparation
     # ------------------------------------------------------------
 
-    @staticmethod
-    def _fetch_available_appointments(appointment_types, staff_users, invite_token, search=None):
+    @classmethod
+    def _fetch_available_appointments(cls, appointment_types, staff_users, invite_token, search=None):
         """Fetch the available appointment types
 
         :param recordset appointment_types: Record set of appointment types for
@@ -95,9 +95,9 @@ class AppointmentController(http.Controller):
         :param str invite_token: token of the appointment invite
         :param str search: search bar value used to compute the search domain
         """
-        return AppointmentController._fetch_and_check_private_appointment_types(
+        return cls._fetch_and_check_private_appointment_types(
             appointment_types, staff_users, invite_token,
-            domain=AppointmentController._appointments_base_domain(
+            domain=cls._appointments_base_domain(
                 appointment_types, search, invite_token
             )
         )
@@ -120,15 +120,15 @@ class AppointmentController(http.Controller):
             'filter_staff_user_ids': kwargs.get('filter_staff_user_ids'),
         }
 
-    @staticmethod
-    def _appointments_base_domain(filter_appointment_type_ids, search=False, invite_token=False):
+    @classmethod
+    def _appointments_base_domain(cls, filter_appointment_type_ids, search=False, invite_token=False):
         domain = [('category', '=', 'website')]
 
         if filter_appointment_type_ids:
             domain = expression.AND([domain, [('id', 'in', json.loads(filter_appointment_type_ids))]])
 
         if not invite_token:
-            country = AppointmentController._get_customer_country()
+            country = cls._get_customer_country()
             if country:
                 country_domain = ['|', ('country_ids', '=', False), ('country_ids', 'in', [country.id])]
                 domain = expression.AND([domain, country_domain])
@@ -443,7 +443,7 @@ class AppointmentController(http.Controller):
         else:
             Partner = Partner.create({
                 'name': name,
-                'mobile': Partner._phone_format(phone, country=AppointmentController._get_customer_country()),
+                'mobile': Partner._phone_format(phone, country=self._get_customer_country()),
                 'email': email,
                 'lang': request.lang.code,
             })

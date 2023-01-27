@@ -17,6 +17,7 @@ Hong Kong Payroll Rules.
 ========================
     """,
     'data': [
+        "security/ir.model.access.csv",
         "data/hr_payroll_structure_type_data.xml",
         "data/hr_payroll_structure_data.xml",
         "data/hr_payslip_input_type_data.xml",
@@ -32,7 +33,11 @@ Hong Kong Payroll Rules.
         "views/hr_payslip_views.xml",
         "views/hr_contract_views.xml",
         "views/hr_employee_views.xml",
+        "views/hr_payslip_run_views.xml",
         "views/hr_work_entry_views.xml",
+        "views/res_bank_views.xml",
+        "views/res_config_settings_views.xml",
+        "wizards/hr_payroll_hsbc_autopay_wizard_views.xml",
     ],
     'demo': [
         'data/l10n_hk_hr_payroll_demo.xml',

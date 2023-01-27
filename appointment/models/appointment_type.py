@@ -168,9 +168,9 @@ class AppointmentType(models.Model):
             if invalid_restricted_users:
                 raise ValidationError(_("The following users are in restricted slots but they are not part of the available staff: %s", ", ".join(invalid_restricted_users.mapped('name'))))
             if appointment_type.category == 'anytime':
-                duplicate = anytime_appointments.filtered(lambda apt_type: apt_type.staff_user_ids.ids in appointment_type.staff_user_ids.ids)
+                duplicate = anytime_appointments.filtered(lambda apt_type: bool(apt_type.staff_user_ids & appointment_type.staff_user_ids))
                 if appointment_type.ids:
-                    duplicate = anytime_appointments.filtered(lambda apt_type: apt_type.id not in appointment_type.ids)
+                    duplicate = duplicate.filtered(lambda apt_type: apt_type.id not in appointment_type.ids)
                 if duplicate:
                     raise ValidationError(_("Only one anytime appointment type is allowed for a specific user."))
 

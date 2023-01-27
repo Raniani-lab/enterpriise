@@ -204,7 +204,7 @@ class DataCleaningModel(models.Model):
         if records_count:
             partner_ids = self.notify_user_ids.partner_id.ids
             menu_id = self.env.ref('data_recycle.menu_data_cleaning_root').id
-            self.env['mail.thread'].with_context(mail_notify_author=True).message_notify(
+            self.env['mail.thread'].message_notify(
                 body=self.env['ir.qweb']._render(
                     'data_cleaning.notification',
                     dict(
@@ -215,6 +215,7 @@ class DataCleaningModel(models.Model):
                     )
                 ),
                 model=self._name,
+                notify_author=True,
                 partner_ids=partner_ids,
                 res_id=self.id,
                 subject=_('Data to Clean'),

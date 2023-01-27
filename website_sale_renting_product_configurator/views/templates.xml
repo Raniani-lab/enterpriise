@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <odoo>
 
-    <template id="configure_optional_products" inherit_id="sale_product_configurator.configure_optional_products">
+    <template id="configure_optional_products" inherit_id="website_sale_product_configurator.configure_optional_products">
         <xpath expr="//td[hasclass('td-price')]/div[1]" position="attributes">
             <attribute name="t-if">not combination_info['is_rental']</attribute>
         </xpath>
@@ -24,7 +24,7 @@
     </template>
 
     <!-- modal: optional products -->
-    <template id="optional_product_items" inherit_id="sale_product_configurator.optional_product_items">
+    <template id="optional_product_items" inherit_id="website_sale_product_configurator.optional_product_items">
         <xpath expr="//td[hasclass('td-price')]/div[1]" position="attributes">
             <attribute name="t-if">not combination_info['is_rental']</attribute>
         </xpath>

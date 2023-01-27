@@ -1,6 +1,6 @@
 /** @odoo-module **/
 
-import VariantMixin from 'sale.VariantMixin';
+import VariantMixin from 'website_sale.SaleVariantMixin';
 import { patch } from "@web/core/utils/patch";
 
 /**

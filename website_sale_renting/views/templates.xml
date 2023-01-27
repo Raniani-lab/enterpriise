@@ -96,15 +96,15 @@
         </xpath>
     </template>
 
-    <template id="variants" inherit_id="sale.variants">
-        <xpath expr="//option/t[@t-call='sale.badge_extra_price']" position="attributes">
+    <template id="variants" inherit_id="website_sale.variants">
+        <xpath expr="//option/t[@t-call='website_sale.badge_extra_price']" position="attributes">
             <attribute name="t-if">not product.rent_ok</attribute>
         </xpath>
-        <xpath expr="//label/div/div[hasclass('radio_input_value')]/t[@t-call='sale.badge_extra_price']"
+        <xpath expr="//label/div/div[hasclass('radio_input_value')]/t[@t-call='website_sale.badge_extra_price']"
                position="attributes">
             <attribute name="t-if">not product.rent_ok</attribute>
         </xpath>
-        <xpath expr="//div[hasclass('o_variant_pills_input_value')]/t[@t-call='sale.badge_extra_price']"
+        <xpath expr="//div[hasclass('o_variant_pills_input_value')]/t[@t-call='website_sale.badge_extra_price']"
                position="attributes">
             <attribute name="t-if">not product.rent_ok</attribute>
         </xpath>

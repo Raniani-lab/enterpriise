@@ -27,29 +27,27 @@ registry.category("web_tour.tours").add('rental_product_configurator_tour', {
 },
 // Product Configurator Wizard
 {
-    trigger: '.main_product span:contains("Steel")',
+    trigger: 'tr:has(.o_sale_product_configurator_name:contains("Customizable Desk")) label:contains("Steel")',
 }, {
-    trigger: '.main_product span:contains("Aluminium")',
+    trigger: 'tr:has(.o_sale_product_configurator_name:contains("Customizable Desk")) label:contains("Aluminium")',
 }, {
-    trigger: 'input[data-value_name="Black"]'
+    // Check on the style to ensure that the color is the one set in backend.
+    trigger: 'label[style="background-color:#000000"] input'
 }, {
-    trigger: '.btn-primary.disabled',
-    extra_trigger: '.show .modal-footer',
-    isCheck: true,
+    trigger: '.btn-primary:disabled:contains("Confirm")',
+    isCheck: true, // check confirm button is disabled
 }, {
-    trigger: 'input[data-value_name="White"]'
+    // Check on the style to ensure that the color is the one set in backend.
+    trigger: 'label[style="background-color:#FFFFFF"] input'
 }, {
-    trigger: '.o_sale_product_configurator_edit:not(.disabled)',
-    run() {},
+    trigger: '.btn-primary:not(:disabled):contains("Confirm")',
+    isCheck: true, // check confirm is available
 }, {
-    trigger: '.js_product:has(strong:contains(Conference Chair)) .js_add',
-    extra_trigger: '.show .modal-footer',
+    trigger: 'tr:has(.o_sale_product_configurator_name:contains("Conference Chair")) button:has(i.fa-shopping-cart)',
 }, {
-    trigger: '.js_product:has(strong:contains(Chair floor protection)) .js_add',
-    extra_trigger: '.oe_advanced_configurator_modal',
+    trigger: 'tr:has(.o_sale_product_configurator_name:contains("Chair floor protection")) button:has(i.fa-shopping-cart)',
 }, {
-    trigger: 'button span:contains(Confirm)',
-    extra_trigger: '.oe_advanced_configurator_modal',
+    trigger: 'button:contains(Confirm)',
     id: 'quotation_product_selected',
 },
 // Rental Wizard
@@ -92,15 +90,15 @@ registry.category("web_tour.tours").add('rental_product_configurator_tour', {
 },
 // Product Configurator Wizard
 {
-    trigger: '.main_product span:contains("Steel")',
+    trigger: 'tr:has(.o_sale_product_configurator_name:contains("Customizable Desk")) label:contains("Steel")',
 }, {
-    trigger: 'input[data-value_name="White"]'
+    // Check on the style to ensure that the color is the one set in backend.
+    trigger: 'label[style="background-color:#FFFFFF"] input'
 }, {
-    trigger: '.btn-primary:not(.disabled)',
-    extra_trigger: '.show .modal-footer'
+    trigger: '.btn-primary:not(:disabled):contains("Confirm")',
+    isCheck: true, // check confirm is available
 }, {
-    trigger: 'button span:contains(Confirm)',
-    extra_trigger: '.oe_advanced_configurator_modal',
+    trigger: 'button:contains(Confirm)',
     id: 'quotation_product_selected',
 },
 // Rental Wizard

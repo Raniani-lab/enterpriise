@@ -38,7 +38,8 @@ class SaleOrderLine(models.Model):
             # For every confirmed SO service lines with slot generation, the allocated hours on planned slots are summed
             group_data = PlanningSlot.with_context(sale_planning_prevent_recompute=True)._read_group([
                 ('sale_line_id', 'in', sol_planning.ids),
-                ('start_datetime', '!=', False)
+                ('start_datetime', '!=', False),
+                ('resource_type', '!=', 'material'),
             ], ['sale_line_id', 'allocated_hours:sum'], ['sale_line_id'])
             mapped_data = {data['sale_line_id'][0]: data['allocated_hours'] for data in group_data}
             for line in sol_planning:

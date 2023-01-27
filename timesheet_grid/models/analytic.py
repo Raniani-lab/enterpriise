@@ -144,7 +144,7 @@ class AnalyticLine(models.Model):
 
         grid_anchor, last_week = self._get_last_week()
         domain_search = [
-            ('project_id', '!=', False),
+            ('project_id.allow_timesheets', '=', True),
             '|',
                 ('task_id.active', '=', True),
                 ('task_id', '=', False),
@@ -234,7 +234,7 @@ class AnalyticLine(models.Model):
                 return False
 
         if 'project_id' in domain_project_task:
-            project_ids = self.env['project.project'].search(domain_project_task['project_id'])
+            project_ids = self.env['project.project'].search(expression.AND([domain_project_task['project_id'], [('allow_timesheets', '=', True)]]))
             for project_id in project_ids:
                 record = {
                     row_field: read_row_fake_value(row_field, project_id, False)
@@ -252,7 +252,7 @@ class AnalyticLine(models.Model):
                         add_record(False, key, {'values': record, 'domain': domain})
 
         if 'task_id' in domain_project_task:
-            task_ids = self.env['project.task'].search(domain_project_task['task_id'] + [('project_id', '!=', False)])
+            task_ids = self.env['project.task'].search(domain_project_task['task_id'] + [('allow_timesheets', '=', True)])
             for task_id in task_ids:
                 record = {
                     row_field: read_row_fake_value(row_field, False, task_id)

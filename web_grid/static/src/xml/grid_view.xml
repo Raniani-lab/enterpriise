@@ -16,7 +16,7 @@
     <t t-name="web_grid.AddLineRow" owl="1">
         <tr class="o_grid_add_line_row">
             <th t-if="showTimerButton" class="o_grid_timer_header">
-                \u00A0
+                <div t-esc="'\u00A0'"/>
             </th>
             <th>
                 <div class="ms-3">

@@ -289,7 +289,11 @@ export class TimesheetGridDataPoint extends GridDataPoint {
 
         if (isProjectIdInDomainFields) {
             if (this.sectionField && this.sectionField.name === "project_id") {
-                projectDomain = Domain.and([projectDomain, [["id", "in", domainIds]]]);
+                projectDomain = Domain.and([
+                    projectDomain,
+                    [["id", "in", domainIds]],
+                    [["allow_timesheets", "=", true]],
+                ]);
             }
             additionalGroups.push(
                 this.orm
@@ -310,7 +314,7 @@ export class TimesheetGridDataPoint extends GridDataPoint {
                 taskDomain = Domain.and([
                     taskDomain,
                     [["id", "in", domainIds]],
-                    [["project_id", "!=", false]],
+                    [["allow_timesheets", "=", true]],
                 ]);
             }
             additionalGroups.push(

@@ -421,7 +421,7 @@ class AnalyticLine(models.Model):
         """
         grid_anchor, last_week = self._get_last_week()
         domain_search = expression.AND([
-            [('project_id', '!=', False),
+            [('project_id.allow_timesheets', '=', True),
              ('date', '>=', last_week),
              ('date', '<=', grid_anchor)
             ], filter_domain_leaf(domain, lambda field: field != 'date')

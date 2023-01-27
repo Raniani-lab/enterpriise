@@ -555,14 +555,20 @@ tour.register('account_accountant_bank_rec_widget_ui',
             run: "text -333.33",
         },
         {
+            content: "balance displays $-333.33",
+            extra_trigger: ".btn-secondary:contains('$ -333.33')",
+            trigger: ".btn-secondary:contains('$ -333.33')",
+            run: () => {},
+        },
+        {
             content: "Modify the label",
             trigger: "div.tab-pane.active input[id='form_name']",
             run: "text Spontaneous Combustion",
         },
         {
-            content: "balance and statement line display $-333.333 ",
+            content: "statement line displays combustion and $-333.33",
             extra_trigger: ".o_bank_rec_selected_st_line:contains('Combustion'):contains('$ -333.33')",
-            trigger: ".btn-secondary:contains('$ -333.33')",
+            trigger: ".o_bank_rec_selected_st_line:contains('Combustion'):contains('$ -333.33')",
             run: () => {},
         },
         // End

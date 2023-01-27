@@ -47,6 +47,13 @@ class AppointmentTest(AppointmentCommon):
         })
         self.assertEqual(apt_type.staff_user_ids, self.apt_manager)
 
+        # should be able to create 2 'anytime' appointment types at once on different users
+        self.env['appointment.type'].create([{
+            'category': 'anytime',
+            'name': 'Any on staff user',
+            'staff_user_ids': [(4, staff_user.id)],
+        } for staff_user in self.staff_users])
+
         with self.assertRaises(ValidationError):
             self.env['appointment.type'].create({
                 'category': 'anytime',
@@ -55,9 +62,16 @@ class AppointmentTest(AppointmentCommon):
 
         with self.assertRaises(ValidationError):
             self.env['appointment.type'].create({
-                'name': 'Any time without employee',
+                'name': 'Any time without employees',
                 'category': 'anytime',
-                'staff_user_ids': [self.staff_users.ids]
+                'staff_user_ids': False
+            })
+
+        with self.assertRaises(ValidationError):
+            self.env['appointment.type'].create({
+                'name': 'Any time with multiple employees',
+                'category': 'anytime',
+                'staff_user_ids': [(6, 0, self.staff_users.ids)]
             })
 
     @mute_logger('odoo.sql_db')

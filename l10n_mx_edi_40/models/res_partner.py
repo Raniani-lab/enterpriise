@@ -9,12 +9,24 @@ class ResPartner(models.Model):
     l10n_mx_edi_fiscal_regime = fields.Selection(
         selection=FISCAL_REGIMES_SELECTION,
         string="Fiscal Regime",
-        default="601",
+        compute="_compute_l10n_mx_edi_fiscal_regime",
+        readonly=False,
+        store=True,
         help="Fiscal Regime is required for all partners (used in CFDI)")
     l10n_mx_edi_no_tax_breakdown = fields.Boolean(
         string="No Tax Breakdown",
         help="Includes taxes in the price and does not add tax information to the CFDI. Particularly in handy for IEPS. ")
     country_code = fields.Char(related='country_id.code', string='Country Code')
+
+    @api.depends('country_code')
+    def _compute_l10n_mx_edi_fiscal_regime(self):
+        for partner in self:
+            if not partner.country_code:
+                partner.l10n_mx_edi_fiscal_regime = None
+            elif partner.country_code != 'MX':
+                partner.l10n_mx_edi_fiscal_regime = '616'
+            elif not partner.l10n_mx_edi_fiscal_regime:
+                partner.l10n_mx_edi_fiscal_regime = '601'
 
     @api.model
     def get_partner_localisation_fields_required_to_invoice(self, country_id):

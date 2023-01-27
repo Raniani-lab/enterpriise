@@ -161,6 +161,21 @@ class BelgiumPartnerVatListingTest(TestAccountReportsCommon):
             self.get_xml_tree_from_string(expected_xml)
         )
 
+    def test_no_vat(self):
+        """
+        Test whether when there is partner's vat starting with "be", the report does not crash
+        """
+        self.env['res.partner'].search([]).write({'vat': False})
+        options = self.report._get_options(None)
+        self.assertLinesValues(
+            self.report._get_lines(options),
+            #   Name                        VAT number          Turnover            VAT amount
+            [   0,                          1,                  2,                  3],
+            [
+                ('Partner VAT Listing',     '',                 0,                  0),
+            ],
+        )
+
     @freeze_time('2019-12-31')
     def test_generate_xml_minimal_with_representative(self):
         company = self.env.company

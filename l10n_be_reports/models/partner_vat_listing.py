@@ -86,7 +86,7 @@ class PartnerVATListingCustomHandler(models.AbstractModel):
         partner_ids = self.env['res.partner'].with_context(active_test=False).search([('vat', 'ilike', 'BE%')]).ids
 
         if not partner_ids:
-            return []
+            return [] if current_groupby else {'vat_number': None, 'turnover': 0, 'vat_amount': 0, 'has_sublines': False}
 
         tables, where_clause, where_params = report._query_get(options, 'strict_range')
 

@@ -59,7 +59,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Accept"
-msgstr ""
+msgstr "സ്വീകരിക്കുക"
 
 #. module: voip
 #. openerp-web
@@ -189,7 +189,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/phone_call_details.xml:0
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "റദ്ദാക്കുക"
 
 #. module: voip
 #. openerp-web
@@ -717,7 +717,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:voip.field_voip_phonecall__phone
 #, python-format
 msgid "Phone"
-msgstr ""
+msgstr "ഫോൺ"
 
 #. module: voip
 #: model:ir.model.fields,field_description:voip.field_res_partner__sanitized_phone
@@ -888,7 +888,7 @@ msgstr ""
 #: code:addons/voip/static/src/xml/dialing_panel.xml:0
 #, python-format
 msgid "Search"
-msgstr ""
+msgstr "സെർച്ച് "
 
 #. module: voip
 #: model_terms:ir.ui.view,arch_db:voip.view_voip_case_phonecalls_filter

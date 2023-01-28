@@ -33,7 +33,7 @@ msgstr ""
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__action_id
 msgid "Action"
-msgstr ""
+msgstr "ആക്ഷൻ"
 
 #. module: worksheet
 #: model:ir.model.fields,field_description:worksheet.field_worksheet_template__active

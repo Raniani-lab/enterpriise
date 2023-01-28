@@ -33,7 +33,7 @@ msgstr "Produit"
 #. module: industry_fsm_sale_report
 #: model:ir.model,name:industry_fsm_sale_report.model_sale_order_line
 msgid "Sales Order Line"
-msgstr "Ligne de bons de commande"
+msgstr "Ligne de bon de commande"
 
 #. module: industry_fsm_sale_report
 #: model:ir.model,name:industry_fsm_sale_report.model_project_task
@@ -49,7 +49,7 @@ msgstr "Temps &amp; Matériel"
 #: model:ir.model.fields,field_description:industry_fsm_sale_report.field_product_product__worksheet_template_id
 #: model:ir.model.fields,field_description:industry_fsm_sale_report.field_product_template__worksheet_template_id
 msgid "Worksheet Template"
-msgstr "Modèle de Feuille de Travail"
+msgstr "Modèle de feuille de travail"
 
 #. module: industry_fsm_sale_report
 #: model:ir.model.fields,field_description:industry_fsm_sale_report.field_product_product__allow_worksheets

@@ -10,6 +10,7 @@
 # Rivo Zängov <eraser@eraser.ee>, 2022
 # Egon Raamat <egon@avalah.ee>, 2022
 # Anna, 2023
+# Leaanika Randmets, 2023
 # 
 msgid ""
 msgstr ""
@@ -17,7 +18,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-10 13:29+0000\n"
 "PO-Revision-Date: 2022-09-22 05:49+0000\n"
-"Last-Translator: Anna, 2023\n"
+"Last-Translator: Leaanika Randmets, 2023\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -399,6 +400,8 @@ msgid ""
 "The url that this service requested returned an error. Please contact the "
 "author of the app."
 msgstr ""
+"Selle teenuse taotletud url tagastas vea. Palun võtke ühendust rakenduse "
+"loojaga. "
 
 #. module: social_twitter
 #: model:social.stream.type,name:social_twitter.stream_type_twitter_follow
@@ -570,6 +573,8 @@ msgid ""
 "Used to make comparisons when we need to restrict some features to a "
 "specific media ('facebook', 'twitter', ...)."
 msgstr ""
+"Kasutatakse võrdluste tegemiseks, kui meil on vaja piirata mõningaid "
+"funktsioone konkreetsele meediale (\"facebook\", \"twitter\", ...)."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_account.py:0
@@ -578,6 +583,8 @@ msgid ""
 "We could not upload your image, try reducing its size and posting it again "
 "(error: %s)."
 msgstr ""
+"Me ei saanud teie pilti üles laadida. Proovige vähendada pildi suurust ja "
+"postitada uuesti. (viga: %s)."
 
 #. module: social_twitter
 #: code:addons/social_twitter/models/social_stream_post.py:0

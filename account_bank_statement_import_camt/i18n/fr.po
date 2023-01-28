@@ -909,7 +909,7 @@ msgstr "Prêts à terme fixe"
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0
 #, python-format
 msgid "Float adjustment"
-msgstr "Ajustement au flottant"
+msgstr "Ajustement au nombre flottant"
 
 #. module: account_bank_statement_import_camt
 #: code:addons/account_bank_statement_import_camt/lib/camt.py:0

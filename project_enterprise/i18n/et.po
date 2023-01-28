@@ -3,7 +3,6 @@
 # 	* project_enterprise
 # 
 # Translators:
-# Algo Kärp <algokarp@gmail.com>, 2022
 # Andre Roomet <andreroomet@gmail.com>, 2022
 # Triine Aavik <triine@avalah.ee>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
@@ -160,7 +159,7 @@ msgstr "Klient"
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_map_view
 msgid "Date"
-msgstr "Date"
+msgstr "Kuupäev"
 
 #. module: project_enterprise
 #: model_terms:ir.ui.view,arch_db:project_enterprise.project_task_view_form_in_gantt

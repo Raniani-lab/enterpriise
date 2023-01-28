@@ -12,8 +12,8 @@
 # Triine Aavik <triine@avalah.ee>, 2022
 # Algo Kärp <algokarp@gmail.com>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
-# Jana Jaakson, 2022
 # Leaanika Randmets, 2022
+# Jana Jaakson, 2023
 # 
 msgid ""
 msgstr ""
@@ -21,7 +21,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-10-04 09:41+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Leaanika Randmets, 2022\n"
+"Last-Translator: Jana Jaakson, 2023\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -78,6 +78,41 @@ msgid ""
 "                </div>\n"
 "            "
 msgstr ""
+"<div style=\"margin: 0px; padding: 0px;\">\n"
+"                    <p style=\"margin: 0px; padding: 0px; font-size: 13px;\">\n"
+"                        Hea <t t-out=\"object.partner_id.name or ''\">Brandon Freeman</t>,\n"
+"                        <br/><br/>\n"
+"                        Hinnangulist tagasisidet küsiti umbes <t t-out=\"object.appraisal_id.employee_id.name or 'this'\">see</t>.\n"
+"                        <br/>\n"
+"                        Palun leidke aega küsimustiku täitmiseks.\n"
+"                        <br/><br/>\n"
+"                        Tänan!\n"
+"                        <br/><br/>\n"
+"                        <t t-if=\"ctx.get('recipient_users')\">\n"
+"                            <p style=\"margin: 16px 0px 16px 0px;\">\n"
+"                                <a t-att-href=\"ctx.get('url')\" style=\"background-color:#875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px;\">\n"
+"                                    Vaata hinnanguid\n"
+"                                </a>\n"
+"                            </p>\n"
+"                        </t>\n"
+"                        <t t-if=\"ctx.get('user_body')\">\n"
+"                            <div style=\"background-color:#F8F8F8;\">\n"
+"                                <t t-out=\"ctx.get('user_body')\">Igaastane hinnang.</t>\n"
+"                            </div>\n"
+"                        </t>\n"
+"                        <div style=\"margin: 16px 0px 16px 0px; text-align: center;\">\n"
+"                            <a t-att-href=\"object.get_start_url()\" style=\"background-color: #875A7B; padding: 8px 16px 8px 16px; text-decoration: none; color: #fff; border-radius: 5px; font-size:13px;\">\n"
+"                                <t t-if=\"object.survey_id.certification\">\n"
+"                                    Alusta sertifikaadiga\n"
+"                                </t>\n"
+"                                <t t-else=\"\">\n"
+"                                    Alusta küsitlusega\n"
+"                                </t>\n"
+"                            </a>\n"
+"                        </div>\n"
+"                    </p>\n"
+"                </div>\n"
+"            "
 
 #. module: hr_appraisal_survey
 #: model:survey.question,description:hr_appraisal_survey.appraisal_1
@@ -103,6 +138,25 @@ msgid ""
 "            </ul>\n"
 "        "
 msgstr ""
+"<h2>Töötajate hindamise üldeesmärk</h2>\n"
+"             <ul>\n"
+"                 <li>Et alustada selget ja avatud suhtlust tulemuslikkuse ootustest</li>\n"
+"                 <li>Toetada töötajate erialast kasvu, tuvastades nende tugevad küljed ja arenguvõimalused</li>\n"
+"             </ul>\n"
+"\n"
+"             <h2>Hindamisperioodi alguses</h2>\n"
+"             <ul>\n"
+"                 <li>Töötaja ja juhendaja (hindaja) ühiselt vastutavad järgmise aasta teostatava tööplaani koostamise eest, mis sisaldab töötaja põhikohustusi ja vastavaid võrdlusaluseid, mille alusel tulemusi hinnatakse.</li>\n"
+"                 <li>Praegu tuleks märkida ka tulemuslikkuse ja professionaalse arengu vajaduste kriitilised või põhielemendid (kui neid on olemas).</li>\n"
+"             </ul>\n"
+"\n"
+"             <h2>Hindamisperioodi lõppedes</h2>\n"
+"             <ul>\n"
+"                 <li>Töötaja vastutab hindamisvormi mustandi täitmise eest, mis on enesehindamise tööriist ja juhendaja hinnangu lähtepunkt. Töötaja saab lisada näiteid saavutustest iga kriteeriumi kohta. Kui vorm on täidetud, saadab töötaja selle oma juhendajale.</li>\n"
+"                 <li>Juhendaja esmane kohustus on koguda vajalikku sisendit sobivatest tagasiside allikatest (sise- ja/või väliskliendid, kolleegid).</li>\n"
+"                 <li>Juhendaja sünteesib ja integreerib kogu sisendi lõpetatud hindamisse. Hindamise motivatsiooni selgitatakse ad hoc väljadel.</li>\n"
+"                 <li>Töötaja võib lõpetatud ülevaate kohta kommentaare või selgitusi pakkuda.</li>\n"
+"             </ul>"
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_button_form_view
@@ -125,6 +179,8 @@ msgid ""
 "            This typically includes the employee's manager, peers, and direct reports.</p>\n"
 "        "
 msgstr ""
+"<p>360 kraadi tagasiside on süsteem või protsess, mille käigus juhid küsivad tagasisidet inimestelt, kes töötaja ümber töötavad.\n"
+"             See hõlmab tavaliselt töötaja juhti, kolleege ja otseseid aruandeid.</p>"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,description:hr_appraisal_survey.appraisal_4
@@ -132,6 +188,8 @@ msgid ""
 "<p>Identify professional, performance, or project objectives you recommend "
 "for employee’s continued career development over the coming year.</p>"
 msgstr ""
+"<p>Tuvastage ametialased, tulemuslikkuse või projekti eesmärgid, mida "
+"soovitate töötaja karjääri jätkamiseks järgmisel aastal.</p>"
 
 #. module: hr_appraisal_survey
 #: model:survey.question,description:hr_appraisal_survey.appraisal_3
@@ -146,6 +204,14 @@ msgid ""
 "            </ol>\n"
 "        "
 msgstr ""
+"<p>Hindaja peaks hindama töötaja suuremaid töösaavutusi ja tulemuslikkust vastavalt allolevale mõõdikule.</p>\n"
+"             <ol>\n"
+"                 <li> Ületab märkimisväärselt positsioonilt nõutavaid standardeid ja ootusi</li>\n"
+"                 <li> Ületab standardeid ja ootusi</li>\n"
+"                 <li> Vastake standarditele ja ootustele</li>\n"
+"                 <li> Ei vastanud standarditele ja ootustele</li>\n"
+"                 <li> Oluliselt alla standardite ja ootuste</li>\n"
+"             </ol>"
 
 #. module: hr_appraisal_survey
 #: model:survey.survey,description:hr_appraisal_survey.appraisal_feedback_template
@@ -153,6 +219,8 @@ msgid ""
 "<p>This survey allows you to give a feedback about your collaboration with an employee. Filling it helps us improving the appraisal process.</p>\n"
 "        "
 msgstr ""
+"<p>See küsitlus võimaldab teil anda tagasisidet oma koostöö kohta seoses "
+"töötajaga. Selle täitmine aitab meil hindamisprotsessi täiustada.</p>"
 
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_view_form
@@ -277,7 +345,7 @@ msgstr "Perioodi hindamine"
 #. module: hr_appraisal_survey
 #: model_terms:ir.ui.view,arch_db:hr_appraisal_survey.hr_appraisal_survey_page_statistics_header
 msgid "Appraisal of"
-msgstr ""
+msgstr "Hinnang"
 
 #. module: hr_appraisal_survey
 #: model:mail.template,name:hr_appraisal_survey.mail_template_appraisal_ask_feedback
@@ -758,7 +826,7 @@ msgstr "Küsitlused"
 #. module: hr_appraisal_survey
 #: model:mail.template,subject:hr_appraisal_survey.mail_template_appraisal_ask_feedback
 msgid "Take part in {{ object.employee_id.name or 'this' }} appraisal"
-msgstr ""
+msgstr "Võtke osa {{ object.employee_id.name or 'this' }} hindamisest"
 
 #. module: hr_appraisal_survey
 #: model:survey.question.answer,value:hr_appraisal_survey.arow_3_1_4

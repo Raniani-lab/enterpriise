@@ -9,7 +9,7 @@
 # Martin Aavastik <martin@avalah.ee>, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Algo Kärp <algokarp@gmail.com>, 2022
-# Leaanika Randmets, 2022
+# Leaanika Randmets, 2023
 # Anna, 2023
 # 
 msgid ""
@@ -325,7 +325,7 @@ msgstr "bpack 24h äri"
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_domestic_deliver_type__bpack_bus
 msgid "bpack Bus"
-msgstr ""
+msgstr "bpack Bus"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_international_deliver_type__bpack_europe_business
@@ -340,7 +340,7 @@ msgstr "bpack Rahvusvaheline äri"
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__bpost_international_deliver_type__bpack_world_express_pro
 msgid "bpack World Express Pro"
-msgstr ""
+msgstr "bpack World Express Pro"
 
 #. module: delivery_bpost
 #: model:ir.model.fields.selection,name:delivery_bpost.selection__delivery_carrier__delivery_type__bpost
@@ -384,4 +384,4 @@ msgstr "Bpost tarneviis"
 #: code:addons/delivery_bpost/models/bpost_request.py:0
 #, python-format
 msgid "bpost did not return prices for this destination country."
-msgstr ""
+msgstr "bpost ei tagastanud selle sihtriigi hindu."

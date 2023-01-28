@@ -18,8 +18,8 @@
 # Patrick-Jordan Kiudorv, 2022
 # Eneli Õigus <enelioigus@gmail.com>, 2022
 # Leaanika Randmets, 2022
-# Jana Jaakson, 2023
 # Anna, 2023
+# Jana Jaakson, 2023
 # 
 msgid ""
 msgstr ""
@@ -27,7 +27,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-12-15 13:27+0000\n"
 "PO-Revision-Date: 2022-09-22 05:46+0000\n"
-"Last-Translator: Anna, 2023\n"
+"Last-Translator: Jana Jaakson, 2023\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -75,6 +75,9 @@ msgid ""
 "your documents in bulk with the split tool: launch user defined actions, "
 "request a signature, convert to vendor bills with AI, etc."
 msgstr ""
+". Skaneeritud failid ilmuvad automaatselt teie tööaknasse. Seejärel töödelge"
+" töödelge oma dokumente erinevate tööriistaga: käivitage kasutaja määratud "
+"toimingud, küsige allkirja, konverteerige tarnija arveid koos AI-ga jne."
 
 #. module: documents
 #: model:documents.tag,name:documents.documents_finance_fiscal_year_2017
@@ -1141,6 +1144,7 @@ msgstr "Dokumendipäring"
 msgid ""
 "Document Request {{ object.name != False and ': '+ object.name or '' }}"
 msgstr ""
+"Dokumenditaotlus {{ object.name != False ja ': '+ object.name or '' }}"
 
 #. module: documents
 #. odoo-python
@@ -1195,12 +1199,12 @@ msgstr "Dokumendid"
 #. module: documents
 #: model:ir.model,name:documents.model_documents_folder_deletion_wizard
 msgid "Documents Folder Deletion Wizard"
-msgstr ""
+msgstr "Dokumentide kausta kustutamise viisard"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_link_to_record_wizard
 msgid "Documents Link to Record"
-msgstr ""
+msgstr "Documents Link to Record"
 
 #. module: documents
 #: model:ir.model,name:documents.model_documents_share
@@ -1284,7 +1288,7 @@ msgstr "Muuda"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "Edit the linked record"
-msgstr ""
+msgstr "Muuda seotud andmeid"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form_popup
@@ -1539,6 +1543,9 @@ msgid ""
 "Incoming letters sent to <span class=\"o_folder_description_alias\">inbox "
 "email alias</span> will be added to your inbox automatically."
 msgstr ""
+"Saabuvad kirjad, mis on saadetud <span "
+"class=\"o_folder_description_alias\">e-maili aliasele</span> , lisatakse "
+"automaatselt Teie postkasti."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__index_content
@@ -1684,7 +1691,7 @@ msgstr "Link"
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_workflow_rule__create_model__link_to_record
 msgid "Link to record"
-msgstr ""
+msgstr "Link to record"
 
 #. module: documents
 #: model:ir.model.fields.selection,name:documents.selection__documents_share__state__live
@@ -2017,7 +2024,7 @@ msgstr "Ainult enda dokumendid"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_folder__user_specific_write
 msgid "Own Documents Only (Write)"
-msgstr ""
+msgstr "Ainult oma dokumendid (kirjutamine)"
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_folder_check_user_specific
@@ -2025,6 +2032,8 @@ msgid ""
 "Own Documents Only may not be enabled for write groups if it is not enabled "
 "for read groups."
 msgstr ""
+"Ainult oma dokumendid ei tohi olla lubatud kirjutusrühmadele, kui see ei ole"
+" lubatud lugemisrühmadele."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__owner_id
@@ -2437,7 +2446,7 @@ msgstr "Suurus"
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_workflow_rule__link_model
 msgid "Specific Model Linked"
-msgstr ""
+msgstr "Konkreetne seotud mudel"
 
 #. module: documents
 #. odoo-javascript
@@ -2592,7 +2601,7 @@ msgstr ""
 #: code:addons/documents/static/src/views/inspector/documents_inspector.js:0
 #, python-format
 msgid "The share url has been copied to your clipboard."
-msgstr ""
+msgstr "Jagamise URL on kopeeritud lõikelauale."
 
 #. module: documents
 #: model:ir.model.constraint,message:documents.constraint_documents_share_share_unique
@@ -2645,6 +2654,8 @@ msgstr "Pisipildi staatus"
 #, python-format
 msgid "Tip: configure your scanner to send all documents to this address."
 msgstr ""
+"Vihje: konfigureerige oma skanner nii, et kõik dokumendid saadetakse sellele"
+" aadressile."
 
 #. module: documents
 #: model:digest.tip,name:documents.digest_tip_documents_0
@@ -2677,7 +2688,7 @@ msgstr "Vihje"
 #. module: documents
 #: model:ir.model.fields,help:documents.field_documents_document__is_editable_attachment
 msgid "True if we can edit the link attachment."
-msgstr ""
+msgstr "Tõene, kui saame muuta lingi manust."
 
 #. module: documents
 #: model:ir.model.fields,field_description:documents.field_documents_document__type
@@ -2734,6 +2745,8 @@ msgid ""
 "Upload <span class=\"fw-normal\">a file or</span> drag <span class=\"fw-"
 "normal\">it here.</span>"
 msgstr ""
+"Laadige <span class=\"fw-normal\">fail või</span> lohistage <span "
+"class=\"fw-normal\">see siia.</span>"
 
 #. module: documents
 #. odoo-javascript
@@ -2961,7 +2974,7 @@ msgstr "laadi alla"
 #: code:addons/documents/static/src/views/documents_controller_mixin.xml:0
 #, python-format
 msgid "dropdown-item"
-msgstr ""
+msgstr "dropdown-item"
 
 #. module: documents
 #: model_terms:ir.ui.view,arch_db:documents.share_view_form
@@ -3005,7 +3018,7 @@ msgstr "nt: https://www.youtube.com/watch?v=CP96yVnXNrY"
 #: code:addons/documents/static/src/views/inspector/documents_inspector.xml:0
 #, python-format
 msgid "fa fa-folder text-odoo"
-msgstr ""
+msgstr "fa fa-folder text-odoo"
 
 #. module: documents
 #. odoo-javascript

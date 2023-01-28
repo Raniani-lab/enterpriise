@@ -184,7 +184,7 @@ msgstr "Loodud"
 #. module: mrp_mps
 #: model:ir.model.fields.selection,name:mrp_mps.selection__res_company__manufacturing_period__day
 msgid "Daily"
-msgstr "Igapäevaselt"
+msgstr "Igapäevane"
 
 #. module: mrp_mps
 #: model:ir.model.fields,field_description:mrp_mps.field_mrp_product_forecast__date

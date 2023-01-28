@@ -1476,7 +1476,7 @@ msgstr "遅れた活動"
 #. module: documents
 #: model:documents.tag,name:documents.documents_internal_knowledge_legal
 msgid "Legal"
-msgstr ""
+msgstr "法務"
 
 #. module: documents
 #. odoo-javascript

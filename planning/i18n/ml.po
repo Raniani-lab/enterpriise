@@ -1446,7 +1446,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:planning.field_planning_send__start_datetime
 #: model_terms:ir.ui.view,arch_db:planning.planning_send_view_form
 msgid "Period"
-msgstr ""
+msgstr "പീരീഡ്"
 
 #. module: planning
 #. odoo-javascript

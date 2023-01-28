@@ -24,7 +24,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Category"
-msgstr ""
+msgstr "കാറ്റഗറി"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web
@@ -85,7 +85,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_sale_renting/data/files/rental_dashboard.json:0
 #, python-format
 msgid "Period"
-msgstr ""
+msgstr "പീരീഡ്"
 
 #. module: spreadsheet_dashboard_sale_renting
 #. openerp-web

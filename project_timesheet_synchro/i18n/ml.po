@@ -47,7 +47,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Action"
-msgstr ""
+msgstr "ആക്ഷൻ"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -62,12 +62,12 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Add"
-msgstr ""
+msgstr "ചേർക്കുക"
 
 #. module: project_timesheet_synchro
 #: model:ir.model,name:project_timesheet_synchro.model_account_analytic_line
 msgid "Analytic Account"
-msgstr ""
+msgstr "അനലിറ്റിക് അക്കൗണ്ട്"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -90,7 +90,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "റദ്ദാക്കുക"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -291,7 +291,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "അടുത്തത്"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -367,7 +367,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Password"
-msgstr ""
+msgstr "പാസ്സ്‌വേർഡ്"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -418,7 +418,7 @@ msgstr ""
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Project"
-msgstr ""
+msgstr "പ്രൊജക്റ്റ് "
 
 #. module: project_timesheet_synchro
 #. openerp-web

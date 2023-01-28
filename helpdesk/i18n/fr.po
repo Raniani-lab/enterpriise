@@ -1327,8 +1327,7 @@ msgstr "Tableau de bord"
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_sla_status__reached_datetime
 msgid "Datetime at which the SLA stage was reached for the first time"
-msgstr ""
-"Date et heure auxquelles l'étape de SLA a été atteinte pour la première fois"
+msgstr "Datetime auquel l'étape de SLA a été atteinte pour la première fois"
 
 #. module: helpdesk
 #: model:ir.model.fields,help:helpdesk.field_helpdesk_sla_report_analysis__sla_exceeded_hours

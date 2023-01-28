@@ -395,7 +395,7 @@ msgstr ""
 #: code:addons/web_enterprise/static/src/webclient/home_menu/expiration_panel.js:0
 #, python-format
 msgid "This demo database will expire in %s. "
-msgstr ""
+msgstr "このデモ用データベースの有効期限は、残り%sです。 "
 
 #. module: web_enterprise
 #. odoo-javascript

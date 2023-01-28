@@ -23,7 +23,7 @@ msgstr ""
 #. module: stock_barcode_mrp_subcontracting
 #: model:ir.model.fields,field_description:stock_barcode_mrp_subcontracting.field_stock_move_line__is_subcontract_stock_barcode
 msgid "Is Subcontract Stock Barcode"
-msgstr "Is Subcontract Stock Barcode"
+msgstr "Est code-barres stock sous-traitance"
 
 #. module: stock_barcode_mrp_subcontracting
 #. openerp-web
@@ -49,14 +49,14 @@ msgstr "Mouvements de produit (Ligne de mouvement de stock)"
 #: code:addons/stock_barcode_mrp_subcontracting/static/src/components/main.xml:0
 #, python-format
 msgid "Record Components"
-msgstr "Renseignez les composants "
+msgstr "Enregistrer les composants "
 
 #. module: stock_barcode_mrp_subcontracting
 #. openerp-web
 #: code:addons/stock_barcode_mrp_subcontracting/static/src/components/line.xml:0
 #, python-format
 msgid "Show subcontract Details"
-msgstr "Montrez détails sous-tratance"
+msgstr "Afficher les détails de sous-traitance"
 
 #. module: stock_barcode_mrp_subcontracting
 #: model:ir.model,name:stock_barcode_mrp_subcontracting.model_stock_picking

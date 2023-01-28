@@ -41,7 +41,7 @@ msgstr "0 – Logistikateenused"
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__1
 msgid "1 - Domestic Express 12:00"
-msgstr ""
+msgstr "1 -  siseriiklik ekspress 12:00"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__2
@@ -176,7 +176,7 @@ msgstr ""
 #. module: delivery_dhl
 #: model_terms:ir.ui.view,arch_db:delivery_dhl.view_delivery_carrier_form_with_provider_dhl
 msgid "Custom Data"
-msgstr ""
+msgstr "Kohandatud andmed"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_custom_data_request
@@ -186,7 +186,7 @@ msgstr ""
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__d
 msgid "D - Express Worldwide"
-msgstr ""
+msgstr "D - ekspress ülemaailmne"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__delivery_type__dhl
@@ -223,7 +223,7 @@ msgstr ""
 #: model:product.product,name:delivery_dhl.product_product_delivery_dhl_eu_intl
 #: model:product.template,name:delivery_dhl.product_product_delivery_dhl_eu_intl_product_template
 msgid "DHL EU -> International"
-msgstr ""
+msgstr "DHL EU -> Rahvusvaheline"
 
 #. module: delivery_dhl
 #: model:ir.model.fields,field_description:delivery_dhl.field_delivery_carrier__dhl_default_package_type_id
@@ -269,7 +269,7 @@ msgstr ""
 #: model:product.product,name:delivery_dhl.product_product_delivery_dhl_us_intl
 #: model:product.template,name:delivery_dhl.product_product_delivery_dhl_us_intl_product_template
 msgid "DHL US -> International"
-msgstr ""
+msgstr "DHL US -> Rahvusvaheline"
 
 #. module: delivery_dhl
 #: code:addons/delivery_dhl/models/dhl_request.py:0
@@ -464,7 +464,7 @@ msgstr ""
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__r
 msgid "R - GlobalMail Business"
-msgstr ""
+msgstr "R - GlobalMail äri"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_duty_payment__r
@@ -491,7 +491,7 @@ msgstr "Saatja"
 #: code:addons/delivery_dhl/models/delivery_dhl.py:0
 #, python-format
 msgid "Shipment created into DHL <br/> <b>Tracking Number : </b>%s"
-msgstr ""
+msgstr "Saadetis on loodud DHL'is <br/> <b>Jälgimisnumber: </b>%s"
 
 #. module: delivery_dhl
 #: model:ir.model,name:delivery_dhl.model_delivery_carrier
@@ -575,7 +575,7 @@ msgstr ""
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__w
 msgid "W - Economy Select"
-msgstr ""
+msgstr "W - Soodne valik"
 
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_product_code__x
@@ -607,4 +607,4 @@ msgstr ""
 #. module: delivery_dhl
 #: model:ir.model.fields.selection,name:delivery_dhl.selection__delivery_carrier__dhl_label_image_format__zpl2
 msgid "ZPL2"
-msgstr ""
+msgstr "ZPL2"

@@ -25,7 +25,7 @@ msgstr ""
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 msgid "<span class=\"o_form_label\">Initial Setup</span>"
-msgstr ""
+msgstr "<span class=\"o_form_label\">الإعداد المبدأي</span> "
 
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
@@ -47,7 +47,7 @@ msgstr "حساب"
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Account Winbooks Import module"
-msgstr ""
+msgstr "تطبيق استيراد حساب Winbooks "
 
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
@@ -85,7 +85,7 @@ msgstr "شجرة الحسابات "
 #. module: account_base_import
 #: model_terms:ir.ui.view,arch_db:account_base_import.res_config_settings_import_view_form
 msgid "Choose how you want to setup your CoA"
-msgstr ""
+msgstr "اختر الطريقة التي تود إعداد شجرة حساباتك بها "
 
 #. module: account_base_import
 #. odoo-javascript
@@ -118,14 +118,14 @@ msgstr "اكسل استيراد"
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "FEC"
-msgstr ""
+msgstr "ملف القيد المحاسبي "
 
 #. module: account_base_import
 #. odoo-javascript
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "FEC Import module"
-msgstr ""
+msgstr "تطبيق استيراد ملف القيد المحاسبي "
 
 #. module: account_base_import
 #. odoo-javascript
@@ -148,7 +148,7 @@ msgstr "يستورد الدليل المحاسبي"
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Import CoA"
-msgstr ""
+msgstr "استيراد شجرة الحسابات "
 
 #. module: account_base_import
 #. odoo-javascript
@@ -183,14 +183,14 @@ msgstr "استيراد جهات الاتصال"
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Import customers or suppliers (partners) and their contacts using a"
-msgstr ""
+msgstr "استيراد العملاء أو المورّدين (الشركاء) وجهات اتصالهم باستخدام "
 
 #. module: account_base_import
 #. odoo-javascript
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Import the Chart of Accounts and initial balances using a"
-msgstr ""
+msgstr "استيراد شجرة الحسابات والأرصدة المبدئية باستخدام "
 
 #. module: account_base_import
 #. odoo-javascript
@@ -219,6 +219,8 @@ msgid ""
 "Most accounting software in France support exporting FEC file for audit purposes.\n"
 "                            Use the"
 msgstr ""
+"Most accounting software in France support exporting FEC file for audit purposes.\n"
+"                            Use the"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -240,7 +242,7 @@ msgstr "مراجعة يدويا"
 #: code:addons/account_base_import/models/account_account.py:0
 #, python-format
 msgid "The import file must contain the 'code' column"
-msgstr ""
+msgstr "يجب أن يحتوي ملف الاستيراد على عمود 'الكود' "
 
 #. module: account_base_import
 #. odoo-javascript
@@ -251,13 +253,16 @@ msgid ""
 " import. Only use the Journal Items import for unreconciled entries in your "
 "Payable and Receivable Accounts."
 msgstr ""
+"نصيحة: نوصي باستيراد رصيدك الابتدائي باستخدام استيراد شجرة الحسابات. استخدم "
+"خاصية استيراد عناصر اليومية فقط للقيود غير المسواة في حساباتك الدائنة "
+"والمدينة. "
 
 #. module: account_base_import
 #. odoo-javascript
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Use predefined format to import your data faster."
-msgstr ""
+msgstr "استخدم الصيغة المحددة مسبقاً لاستيراد بياناتك بشكل أسرع. "
 
 #. module: account_base_import
 #. odoo-javascript
@@ -265,13 +270,14 @@ msgstr ""
 #, python-format
 msgid "Use templates to import CSV or Excel for your accounting setup."
 msgstr ""
+"استخدم القوالب لاستيراد ملفات CSV أو Excel لإعدادات المحاسبة الخاصة بك. "
 
 #. module: account_base_import
 #. odoo-javascript
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "Winbooks"
-msgstr ""
+msgstr "Winbooks"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -281,6 +287,8 @@ msgid ""
 "Winbooks is an old school Belgian accounting software acquired by Exact.\n"
 "                            Use the"
 msgstr ""
+"Winbooks is an old school Belgian accounting software acquired by Exact.\n"
+"                            Use the"
 
 #. module: account_base_import
 #. odoo-javascript
@@ -296,7 +304,7 @@ msgstr "أو"
 #: code:addons/account_base_import/static/src/xml/account_import.xml:0
 #, python-format
 msgid "template."
-msgstr ""
+msgstr "قالب. "
 
 #. module: account_base_import
 #. odoo-javascript
@@ -306,6 +314,8 @@ msgid ""
 "to import a Winbooks full back-up (Maintenance > Backup) to get the chart of accounts, contacts, taxes, history of journal entries, and documents.\n"
 "                            Support versions: Winbooks Desktop 5.50, 6, 7, 8."
 msgstr ""
+"to import a Winbooks full back-up (Maintenance > Backup) to get the chart of accounts, contacts, taxes, history of journal entries, and documents.\n"
+"                            Support versions: Winbooks Desktop 5.50, 6, 7, 8."
 
 #. module: account_base_import
 #. odoo-javascript
@@ -315,3 +325,4 @@ msgid ""
 "to import the FEC file. We will setup your charts of accounts and the "
 "history of journal entries."
 msgstr ""
+"لاستيراد ملف FEC. سنقوم بإعداد شجرة الحسابات الخاصة بك وسجل قيود يوميتك. "

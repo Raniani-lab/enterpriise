@@ -159,6 +159,8 @@ msgid ""
 "Week %(weeknumber)s\n"
 "%(week_start)s - %(week_end)s"
 msgstr ""
+"Nädal %(weeknumber)s\n"
+"%(week_start)s - %(week_end)s"
 
 #. module: web_grid
 #. openerp-web

@@ -102,7 +102,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model_terms:ir.ui.view,arch_db:industry_fsm_sale.worksheet_time_and_material
 msgid "Amount"
-msgstr ""
+msgstr "തുക"
 
 #. module: industry_fsm_sale
 #: model:ir.model.constraint,message:industry_fsm_sale.constraint_project_project_fsm_imply_task_rate
@@ -118,7 +118,7 @@ msgstr ""
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_account_analytic_line
 msgid "Analytic Account"
-msgstr ""
+msgstr "അനലിറ്റിക് അക്കൗണ്ട്"
 
 #. module: industry_fsm_sale
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_project_project__allow_billable
@@ -452,7 +452,7 @@ msgstr ""
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_product__project_id
 #: model:ir.model.fields,field_description:industry_fsm_sale.field_product_template__project_id
 msgid "Project"
-msgstr ""
+msgstr "പ്രൊജക്റ്റ് "
 
 #. module: industry_fsm_sale
 #: model:ir.model,name:industry_fsm_sale.model_project_sale_line_employee_map

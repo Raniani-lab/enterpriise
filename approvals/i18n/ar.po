@@ -206,6 +206,8 @@ msgstr "مُعتَمِد "
 msgid ""
 "Approver Sequence can only be activated with at least 1 minimum approver."
 msgstr ""
+"يمكن تفعيل تسلسل مانح الموافقات فقط عندما يكون هناك مانح موافقات 1 على "
+"الأقل. "
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__user_ids
@@ -270,7 +272,7 @@ msgstr "رحلة عمل "
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_request__change_request_owner
 msgid "Can Change Request Owner"
-msgstr ""
+msgstr "يمكن تغيير صاحب الطلب "
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_approver__can_edit
@@ -609,6 +611,7 @@ msgstr ""
 msgid ""
 "If checked, the approvers have to approve in sequence (one after the other)."
 msgstr ""
+"إذا كان محدداً، على مانحي الموافقات الموافقة ضمن تسلسل (واحداً تلو الآخر). "
 
 #. module: approvals
 #: model:ir.model.fields,field_description:approvals.field_approval_category__image
@@ -855,7 +858,7 @@ msgstr "عدد الطلبات بانتظار التصديق "
 #. module: approvals
 #: model:res.groups,name:approvals.group_approval_user
 msgid "Officer : Approve all requests"
-msgstr ""
+msgstr "المسؤول: الموافقة على كافة الطلبات "
 
 #. module: approvals
 #: model:ir.model.fields.selection,name:approvals.selection__approval_category__has_amount__optional
@@ -1048,6 +1051,7 @@ msgstr "تم الإرسال"
 #: model:res.groups,comment:approvals.group_approval_user
 msgid "The user will be able to access all requests and approve/refuse them."
 msgstr ""
+"سيكون المستخدم قادراً على الوصول إلى كافة الطلبات والموافقة عليها أو رفضها. "
 
 #. module: approvals
 #: model:res.groups,comment:approvals.group_approval_manager
@@ -1155,7 +1159,7 @@ msgstr "سحب "
 #: code:addons/approvals/models/approval_request.py:0
 #, python-format
 msgid "You cannot approve before the previous approver."
-msgstr ""
+msgstr "لا يمكنك منح الموافقة قبل مانح الموافقة السابق. "
 
 #. module: approvals
 #: code:addons/approvals/models/approval_request.py:0

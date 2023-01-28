@@ -17,7 +17,7 @@
 # Martin Trigaux, 2022
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Leaanika Randmets, 2022
-# Jana Jaakson, 2022
+# Jana Jaakson, 2023
 # Anna, 2023
 # 
 msgid ""
@@ -59,7 +59,7 @@ msgstr "<strong>Palun võtke esmalt arvesse järgnevaid hoiatusi</strong>"
 #. module: account_batch_payment
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.batch_error_wizard_form
 msgid "<strong>The following errors occurred</strong>"
-msgstr ""
+msgstr "<strong>Ilmnesid järgnevad vead</strong>"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__message_needaction
@@ -286,7 +286,7 @@ msgstr "Klientide koondmaksed"
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_payment__date
 #: model_terms:ir.ui.view,arch_db:account_batch_payment.print_batch_payment
 msgid "Date"
-msgstr "Date"
+msgstr "Kuupäev"
 
 #. module: account_batch_payment
 #: model:ir.model.fields,field_description:account_batch_payment.field_account_batch_error_wizard_line__description

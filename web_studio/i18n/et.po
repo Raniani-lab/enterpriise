@@ -3065,7 +3065,7 @@ msgstr "Müügitoru etapid"
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Pivot"
-msgstr "Pivoo"
+msgstr "Pivot "
 
 #. module: web_studio
 #. odoo-javascript

@@ -49,7 +49,7 @@ msgstr ""
 #: code:addons/mrp_workorder_hr/static/src/components/popup.xml:0
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "റദ്ദാക്കുക"
 
 #. module: mrp_workorder_hr
 #. odoo-javascript

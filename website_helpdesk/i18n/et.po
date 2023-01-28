@@ -14,6 +14,7 @@
 # Arma Gedonsky <armagedonsky@hot.ee>, 2022
 # Triine Aavik <triine@avalah.ee>, 2022
 # Anna, 2023
+# Jana Jaakson, 2023
 # 
 msgid ""
 msgstr ""
@@ -21,7 +22,7 @@ msgstr ""
 "Report-Msgid-Bugs-To: \n"
 "POT-Creation-Date: 2022-09-20 09:48+0000\n"
 "PO-Revision-Date: 2022-09-22 05:50+0000\n"
-"Last-Translator: Anna, 2023\n"
+"Last-Translator: Jana Jaakson, 2023\n"
 "Language-Team: Estonian (https://www.transifex.com/odoo/teams/41243/et/)\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
@@ -41,11 +42,13 @@ msgid ""
 "<i class=\"fa fa-check-circle fa-1x text-success me-2\" role=\"img\" aria-"
 "label=\"Success\" title=\"Success\"/>"
 msgstr ""
+"<i class=\"fa fa-check-circle fa-1x text-success me-2\" role=\"img\" aria-"
+"label=\"Success\" title=\"Success\"/>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar
 msgid "<span class=\"navbar-brand h4 my-0 me-auto\">Help Center</span>"
-msgstr ""
+msgstr "<span class=\"navbar-brand h4 my-0 me-auto\">Abikeskus</span>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
@@ -92,7 +95,7 @@ msgstr ""
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.search_results
 msgid "<span class=\"text-600\">Search results for</span>"
-msgstr ""
+msgstr "<span class=\"text-600\">Otsi tulemusi</span>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.footer
@@ -100,6 +103,8 @@ msgid ""
 "<span style=\"font-size: 24px;\">Can't find your answer? Our support team is"
 " here to help.</span>"
 msgstr ""
+"<span style=\"font-size: 24px;\">Kas Te ei leidnud vastust? Meie "
+"Kasutajatugi on siin, et Teid aidata.</span>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.knowledge_base
@@ -107,6 +112,8 @@ msgid ""
 "<span style=\"font-size: 48px; font-weight: bolder;\">How can we help "
 "you?</span>"
 msgstr ""
+"<span style=\"font-size: 48px; font-weight: bolder;\">Kuidas saame teid "
+"aidata?</span>"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_date
@@ -121,7 +128,7 @@ msgstr "Kõik sildid"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_type
 msgid "All Types"
-msgstr ""
+msgstr "Kõik tüübid"
 
 #. module: website_helpdesk
 #. openerp-web
@@ -140,17 +147,17 @@ msgstr "Manus"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_date
 msgid "By Date"
-msgstr ""
+msgstr "Kuupäeva järgi"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_tag
 msgid "By Tags"
-msgstr ""
+msgstr "Siltide järgi"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.navbar_search_type
 msgid "By Type"
-msgstr ""
+msgstr "Tüübi järgi"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__can_publish
@@ -171,7 +178,7 @@ msgstr "Klienditeenindus"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Date Filter"
-msgstr ""
+msgstr "Kuupäeva filter"
 
 #. module: website_helpdesk
 #. openerp-web
@@ -195,7 +202,7 @@ msgstr "Abi"
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Help Center Page"
-msgstr ""
+msgstr "Abikeskuse leht"
 
 #. module: website_helpdesk
 #: code:addons/website_helpdesk/models/website.py:0
@@ -247,12 +254,12 @@ msgstr "Tuelmusi ei leitud. Palun proovige teist otsingut."
 #: code:addons/website_helpdesk/models/helpdesk.py:0
 #, python-format
 msgid "Redirect to the Website Helpdesk Rating Page"
-msgstr ""
+msgstr "Ümbersuunamine Kasutajatoe hindamislehele"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.knowledge_base
 msgid "Search for articles, best practices and more..."
-msgstr ""
+msgstr "Otsi artikleid, parimaid praktikaid ja muud..."
 
 #. module: website_helpdesk
 #. openerp-web
@@ -271,7 +278,7 @@ msgstr "Esita"
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.team_form_1
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submit_form
 msgid "Submit a Ticket"
-msgstr ""
+msgstr "Saada pilet"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
@@ -283,6 +290,8 @@ msgstr "Siltide filter"
 #: model_terms:website.page,arch_db:website_helpdesk.aboutus_page
 msgid "Thank you for submitting your issue, our team will get right on it!"
 msgstr ""
+"Täname, et saatsite meile oma probleemi, meie meeskond asub seda kohe "
+"lahendama!"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,help:website_helpdesk.field_helpdesk_team__website_url
@@ -293,17 +302,17 @@ msgstr "Dokumendile veebisaidi kaudu juurdepääsuks täielik URL."
 #: code:addons/website_helpdesk/models/helpdesk.py:0
 #, python-format
 msgid "The team company and the website company should match"
-msgstr ""
+msgstr "Meeskonna ettevõte ja veebisaidi ettevõte peaksid olema üks ja sama"
 
 #. module: website_helpdesk
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.snippet_options
 msgid "Type Filter"
-msgstr ""
+msgstr "Type Filter"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__feature_form_url
 msgid "URL to Submit Issue"
-msgstr ""
+msgstr "URL probleemi esitamiseks"
 
 #. module: website_helpdesk
 #: model:ir.model.fields,field_description:website_helpdesk.field_helpdesk_team__website_published
@@ -344,4 +353,4 @@ msgstr "Sinu nimi"
 #: model_terms:ir.ui.view,arch_db:website_helpdesk.ticket_submited
 #: model_terms:website.page,arch_db:website_helpdesk.aboutus_page
 msgid "Your Ticket Number is"
-msgstr ""
+msgstr "Teie pileti number on"

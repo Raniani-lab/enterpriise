@@ -98,7 +98,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Add"
-msgstr ""
+msgstr "ചേർക്കുക"
 
 #. module: social
 #: model_terms:ir.ui.view,arch_db:social.utm_campaign_view_form
@@ -247,7 +247,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:social.social_post_view_form
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "റദ്ദാക്കുക"
 
 #. module: social
 #. odoo-javascript
@@ -975,7 +975,7 @@ msgstr ""
 #: code:addons/social/static/src/xml/social_templates.xml:0
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "അടുത്തത്"
 
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__activity_calendar_event_id
@@ -1319,7 +1319,7 @@ msgstr ""
 #. module: social
 #: model:ir.model.fields,field_description:social.field_social_post__scheduled_date
 msgid "Scheduled Date"
-msgstr ""
+msgstr "സ്‌ചെടുൾഡ് തീയതി"
 
 #. module: social
 #. odoo-python

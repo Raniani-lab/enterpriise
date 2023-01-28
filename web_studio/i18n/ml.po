@@ -186,7 +186,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_entry_search_view
 #: model_terms:ir.ui.view,arch_db:web_studio.studio_approval_rule_search_view
 msgid "Action"
-msgstr ""
+msgstr "ആക്ഷൻ"
 
 #. module: web_studio
 #: model:ir.model,name:web_studio.model_ir_actions_act_window
@@ -264,7 +264,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/legacy/xml/view_editor_sidebar.xml:0
 #, python-format
 msgid "Add"
-msgstr ""
+msgstr "ചേർക്കുക"
 
 #. module: web_studio
 #. odoo-javascript
@@ -765,7 +765,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:web_studio.simplified_form_view_import_module
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "റദ്ദാക്കുക"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2758,7 +2758,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/model_configurator/model_configurator.xml:0
 #, python-format
 msgid "Next"
-msgstr ""
+msgstr "അടുത്തത്"
 
 #. module: web_studio
 #. odoo-javascript
@@ -2956,7 +2956,7 @@ msgstr ""
 #: code:addons/web_studio/models/ir_model.py:0
 #, python-format
 msgid "Phone"
-msgstr ""
+msgstr "ഫോൺ"
 
 #. module: web_studio
 #. odoo-javascript
@@ -3383,7 +3383,7 @@ msgstr ""
 #: code:addons/web_studio/static/src/client_action/editor/editor_menu/editor_menu.js:0
 #, python-format
 msgid "Search"
-msgstr ""
+msgstr "സെർച്ച് "
 
 #. module: web_studio
 #. odoo-javascript

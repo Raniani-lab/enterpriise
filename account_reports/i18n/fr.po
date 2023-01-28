@@ -2626,7 +2626,7 @@ msgstr "Posté et écritures brouillon"
 #. module: account_reports
 #: model:account.report.line,name:account_reports.account_financial_report_prepayements0
 msgid "Prepayments"
-msgstr "Prépaiements"
+msgstr "Acomptes"
 
 #. module: account_reports
 #: model:ir.model.fields,field_description:account_reports.field_account_multicurrency_revaluation_wizard__preview_data

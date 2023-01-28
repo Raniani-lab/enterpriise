@@ -38,28 +38,28 @@ msgstr "päev(a)"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Average Cycle Time"
-msgstr ""
+msgstr "Keskmine tsükli aeg"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Average Delay"
-msgstr ""
+msgstr "Keskmine viivitus"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Avg cycle time"
-msgstr ""
+msgstr "Keskmine tsükli aeg"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Avg delay"
-msgstr ""
+msgstr "Keskmine viivitus"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -137,7 +137,7 @@ msgstr "Toode"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Product quantity"
-msgstr ""
+msgstr "Toote kogus"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -154,28 +154,28 @@ msgstr "Tehtud kogused"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Destination Address "
-msgstr ""
+msgstr "Laosiirete analüüs sihtkoha aadressi lõikes"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Destination Location"
-msgstr ""
+msgstr "Laosiirete analüüs sihtkoha lõikes"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Product"
-msgstr ""
+msgstr "Laosiirete analüüs toote lõikes"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Stock Moves Analysis by Warehouse"
-msgstr ""
+msgstr "Laosiirete analüüs lao lõikes"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -189,7 +189,7 @@ msgstr "Populaarsed asukohad"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Partners"
-msgstr ""
+msgstr "Parimad partnerid "
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -203,7 +203,7 @@ msgstr "Parimad tooted"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Top Warehouses"
-msgstr ""
+msgstr "Parimad laod"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -218,7 +218,7 @@ msgstr "Ladu"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Weekly Stock Moves"
-msgstr ""
+msgstr "Iganädalased laoliikumised"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web

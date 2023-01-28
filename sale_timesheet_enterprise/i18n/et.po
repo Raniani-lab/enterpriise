@@ -11,6 +11,7 @@
 # Piia Paurson <piia@avalah.ee>, 2022
 # Martin Trigaux, 2022
 # Leaanika Randmets, 2022
+# Anna, 2023
 # Jana Jaakson, 2023
 # 
 msgid ""
@@ -35,12 +36,12 @@ msgstr "<span class=\"o_form_label\">Arvelduse meetod</span>"
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_form_so_line_inherit
 msgid "<span class=\"o_stat_text\">Invoice</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Arve</span>"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_form_so_line_inherit
 msgid "<span class=\"o_stat_text\">Sales Order</span>"
-msgstr ""
+msgstr "<span class=\"o_stat_text\">Müügitellimus</span>"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields.selection,name:sale_timesheet_enterprise.selection__res_config_settings__invoiced_timesheet__all
@@ -55,7 +56,7 @@ msgstr "Analüütiline konto"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_account_analytic_line__has_so_access
 msgid "Check that user has a sales access right or not."
-msgstr ""
+msgstr "Kontrollige, kas kasutajal on müügi õigused või mitte."
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model,name:sale_timesheet_enterprise.model_res_config_settings
@@ -70,6 +71,7 @@ msgid ""
 "Difference between the number of %s ordered on the sales order item and the "
 "number of %s delivered."
 msgstr ""
+"Erinevus müügitellimuse artiklil tellitud %s ja tarnitud %s arvu vahel."
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_progress
@@ -84,7 +86,7 @@ msgstr "Efektiivsed tunnid"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_account_analytic_line__has_so_access
 msgid "Has So Access"
-msgstr ""
+msgstr "On SO juurdepääs"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_form
@@ -111,27 +113,27 @@ msgstr "Kuu"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_effective_hours
 msgid "Portal Effective Hours"
-msgstr ""
+msgstr "Portaali efektiivsed tunnid"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_progress
 msgid "Portal Progress"
-msgstr ""
+msgstr "Portaali progress"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_remaining_hours
 msgid "Portal Remaining Hours"
-msgstr ""
+msgstr "Portaali järelejäänud tunnid"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_subtask_effective_hours
 msgid "Portal Subtask Effective Hours"
-msgstr ""
+msgstr "Portaali alamülesande efektiivsed tunnid"
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_project_task__portal_total_hours_spent
 msgid "Portal Total Hours Spent"
-msgstr ""
+msgstr "Portaali kulutatud kogutunnid"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_form
@@ -186,12 +188,12 @@ msgstr ""
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_effective_hours
 msgid "Time spent on this task, excluding its sub-tasks."
-msgstr ""
+msgstr "Aega kulutatatud sellel ülesandel, sh alamülesannetel."
 
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,help:sale_timesheet_enterprise.field_project_task__portal_total_hours_spent
 msgid "Time spent on this task, including its sub-tasks."
-msgstr ""
+msgstr "Aega kulutatatud sellel ülesandel, sh alamülesannetel."
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_grid_by_billing_rate
@@ -201,12 +203,12 @@ msgstr "Tööaja arvestusleht"
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields,field_description:sale_timesheet_enterprise.field_res_config_settings__invoiced_timesheet
 msgid "Timesheets Invoicing"
-msgstr ""
+msgstr "Tööajatabelite arveldamine"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.res_config_settings_view_form
 msgid "Timesheets taken into account when invoicing your time"
-msgstr ""
+msgstr "Tööajatabeleid võetakse arvete esitamisel arvesse"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.project_sharing_inherit_project_task_view_tree
@@ -225,7 +227,7 @@ msgstr ""
 #. module: sale_timesheet_enterprise
 #: model:ir.model.fields.selection,name:sale_timesheet_enterprise.selection__res_config_settings__invoiced_timesheet__approved
 msgid "Validated timesheets only"
-msgstr ""
+msgstr "Ainult kinnitatud tööajatabelid"
 
 #. module: sale_timesheet_enterprise
 #: model_terms:ir.ui.view,arch_db:sale_timesheet_enterprise.timesheet_view_grid_by_billing_rate
@@ -238,3 +240,5 @@ msgid ""
 "With the 'all recorded timesheets' option, all timesheets will be invoiced without distinction, even if they haven't been validated. Additionally, all timesheets will be accessible in your customers' portal. \n"
 "When you choose the 'validated timesheets only' option, only the validated timesheets will be invoiced and appear in your customers' portal."
 msgstr ""
+"Valiku „Kõik salvestatud töötunnitabelid” korral esitatakse kõikidele tööajalehtedele arveldamine, isegi kui neid pole kinnitatud. Lisaks on kõik ajatabelid kättesaadavad teie klientide portaalis.\n"
+"Kui valite valiku „Ainult kinnitatud ajatabelid”, esitatakse arve ainult kinnitatud ajatabelitele ja need kuvatakse teie klientide portaalis."

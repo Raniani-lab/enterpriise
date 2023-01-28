@@ -33,7 +33,7 @@ msgstr "&emsp;Démarrer"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "&emsp;Stop"
-msgstr "&emsp;Arrêt"
+msgstr "&emsp;Arrêter"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -214,8 +214,8 @@ msgid ""
 "Either you or the Odoo server is offline at the moment. Make sure you do "
 "have a connection or try again later."
 msgstr ""
-"Soit vous ou le serveur Odoo est hors-ligne pour le moment. Assurez-vous "
-"d'être connecté ou réessayez plus tard. "
+"Soit vous, soit le serveur Odoo est hors ligne en ce moment. Assurez-vous "
+"que vous disposez d'une connexion ou réessayez plus tard. "
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -254,7 +254,7 @@ msgstr "Connecté en tant que"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Login"
-msgstr "Identifiant"
+msgstr "Connexion"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -262,14 +262,14 @@ msgstr "Identifiant"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Login to an on premise Odoo instance"
-msgstr "Connecté à une instance d'une version locale d'Odoo"
+msgstr "Connexion à une instance d'une version locale d'Odoo"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Login with Odoo"
-msgstr "Connecté avec Odoo"
+msgstr "Connexion avec Odoo"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -392,7 +392,7 @@ msgstr "Mot de passe"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Please enter a database name:"
-msgstr "Entrez un nom de base de données :"
+msgstr "Veuillez entrer un nom de base de données :"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -406,7 +406,7 @@ msgstr "Veuillez entrer une durée valide"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Please select a project first"
-msgstr "Veuillez sélectionner d'abord un projet"
+msgstr "Veuillez d'abord sélectionner un projet"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -443,7 +443,7 @@ msgstr "Projet"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "RESET"
-msgstr "Réinitialiser"
+msgstr "REINITIALISER"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -494,7 +494,7 @@ msgstr "Montrer le mot de passe"
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Sign In"
-msgstr "Pointer l'entrée"
+msgstr "Se connecter"
 
 #. module: project_timesheet_synchro
 #. openerp-web
@@ -725,14 +725,14 @@ msgid ""
 "guest user to be synchronized as well?"
 msgstr ""
 "Souhaitez-vous que les activités, projets et tâches que vous avez créés en "
-"tant qu'utilisateur invité, soient synchronisés également ?"
+"tant qu'utilisateur invité soient synchronisés également ?"
 
 #. module: project_timesheet_synchro
 #. openerp-web
 #: code:addons/project_timesheet_synchro/static/src/xml/project_timesheet.xml:0
 #, python-format
 msgid "Would you like to delete this activity?"
-msgstr "Souhaitez-vous supprimer cette activité ?"
+msgstr "Êtes-vous sûr de vouloir supprimer cette activité ?"
 
 #. module: project_timesheet_synchro
 #. openerp-web

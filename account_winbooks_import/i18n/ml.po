@@ -42,7 +42,7 @@ msgstr ""
 #. module: account_winbooks_import
 #: model_terms:ir.ui.view,arch_db:account_winbooks_import.winbooks_import_form
 msgid "Cancel"
-msgstr ""
+msgstr "റദ്ദാക്കുക"
 
 #. module: account_winbooks_import
 #: model:ir.model,name:account_winbooks_import.model_res_company

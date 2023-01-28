@@ -12,7 +12,7 @@
 # Andre Roomet <andreroomet@gmail.com>, 2022
 # Egon Raamat <egon@avalah.ee>, 2022
 # Martin Aavastik <martin@avalah.ee>, 2022
-# Leaanika Randmets, 2022
+# Leaanika Randmets, 2023
 # Anna, 2023
 # 
 msgid ""
@@ -35,6 +35,8 @@ msgid ""
 "<b>Copy your API keys in Odoo</b>\n"
 "                <br/>"
 msgstr ""
+"<b>Kopeeri oma API võtmed Odoosse</b>\n"
+"                   <br/> "
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
@@ -43,6 +45,9 @@ msgid ""
 "                <b>You can add new carrier accounts on the right side of the same page.</b>\n"
 "                <br/>"
 msgstr ""
+"<b>Kui teie konto on loodud, minge oma töölauale ja klõpsake oma kasutajanime kõrval oleval noolel, et konfigureerida oma operaatorite kontod. </b> \n"
+"                   <b>Uute operaatorite kontode lisamine on võimalik sama lehe paremal pool. </b>\n"
+"                    <br/> "
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_stock_package_type_form_inherit_easypost
@@ -190,7 +195,7 @@ msgstr ""
 #. module: delivery_easypost
 #: model:ir.model,name:delivery_easypost.model_easypost_service
 msgid "Easypost Service"
-msgstr ""
+msgstr "Easypost teenus"
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.res_config_settings_view_form_sale
@@ -201,7 +206,7 @@ msgstr "EasyPost tarneviis"
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "Easypost Tutorial"
-msgstr ""
+msgstr "Easypost juhendmaterjal"
 
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
@@ -328,7 +333,7 @@ msgstr "Teenusepakkuja"
 #: code:addons/delivery_easypost/models/delivery_carrier.py:0
 #, python-format
 msgid "Return Label<br/>"
-msgstr ""
+msgstr "Tagastussilt<br/>"
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:0
@@ -344,7 +349,7 @@ msgstr "Vali"
 #. module: delivery_easypost
 #: model:ir.actions.act_window,name:delivery_easypost.act_delivery_easypost_carrier_type
 msgid "Select a carrier"
-msgstr ""
+msgstr "Vali transpordifirma"
 
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_easypost_service__name
@@ -375,7 +380,7 @@ msgstr "Ladusta pakendi tüüp"
 #. module: delivery_easypost
 #: model:ir.model.fields,field_description:delivery_easypost.field_delivery_carrier__easypost_test_api_key
 msgid "Test API Key"
-msgstr ""
+msgstr "Testi API võtit"
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:0
@@ -458,13 +463,13 @@ msgstr "Tundmatu viga"
 #: code:addons/delivery_easypost/models/easypost_request.py:0
 #, python-format
 msgid "Unspecified field"
-msgstr ""
+msgstr "Määratlemata väli"
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/delivery_carrier.py:0
 #, python-format
 msgid "You can't cancel Easypost shipping."
-msgstr ""
+msgstr "Easyposti saatmist ei saa tühistada."
 
 #. module: delivery_easypost
 #: code:addons/delivery_easypost/models/easypost_request.py:0
@@ -482,4 +487,4 @@ msgstr "ZPL"
 #. module: delivery_easypost
 #: model_terms:ir.ui.view,arch_db:delivery_easypost.view_delivery_carrier_form_inherit_delivery_easypost
 msgid "to create a new account:"
-msgstr ""
+msgstr "uue konto loomsieks:"

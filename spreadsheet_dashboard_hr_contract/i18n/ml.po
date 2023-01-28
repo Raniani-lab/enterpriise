@@ -90,7 +90,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_hr_contract/data/files/employees_dashboard.json:0
 #, python-format
 msgid "Period"
-msgstr ""
+msgstr "പീരീഡ്"
 
 #. module: spreadsheet_dashboard_hr_contract
 #. openerp-web

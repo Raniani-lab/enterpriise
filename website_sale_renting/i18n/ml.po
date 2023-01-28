@@ -174,7 +174,7 @@ msgstr ""
 #: code:addons/website_sale_renting/static/src/js/website_sale_renting_daterangepicker.js:0
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "റദ്ദാക്കുക"
 
 #. module: website_sale_renting
 #: model:ir.model,name:website_sale_renting.model_res_company
@@ -310,7 +310,7 @@ msgstr ""
 #: code:addons/website_sale_renting/static/src/js/website_sale_renting_daterangepicker.js:0
 #, python-format
 msgid "Search"
-msgstr ""
+msgstr "സെർച്ച് "
 
 #. module: website_sale_renting
 #: model:ir.model.fields,field_description:website_sale_renting.field_res_company__renting_forbidden_sun

@@ -1875,8 +1875,7 @@ msgid ""
 "You can define here labels that will be displayed for the state instead\n"
 "                            of the default labels."
 msgstr ""
-"You can define here labels that will be displayed for the state instead\n"
-"                            of the default labels."
+"Siin saate määratleda sildid, mida kuvatakse etappildel vaikesiltide asemel."
 
 #. module: mrp_plm
 #: code:addons/mrp_plm/models/mrp_eco.py:0

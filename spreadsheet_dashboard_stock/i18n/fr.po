@@ -78,7 +78,7 @@ msgstr "KPI"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "Location"
-msgstr "Lieu"
+msgstr "Emplacement"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web
@@ -222,7 +222,7 @@ msgstr "Mouvements de stock hebdomadaires"
 #: code:addons/spreadsheet_dashboard_stock/data/files/inventory_flow_dashboard.json:0
 #, python-format
 msgid "last period"
-msgstr "dernière période"
+msgstr "période précédente"
 
 #. module: spreadsheet_dashboard_stock
 #. openerp-web

@@ -31,7 +31,7 @@ msgstr ""
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Agent"
-msgstr ""
+msgstr "Kasutajatoe spetsialist"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -54,21 +54,21 @@ msgstr "Klient"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to assign"
-msgstr ""
+msgstr "Tundi määramiseks"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to close"
-msgstr ""
+msgstr "Tundi sulgemiseni"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Hours to respond"
-msgstr ""
+msgstr "Tundi vastamiseks"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -113,28 +113,28 @@ msgstr "Meeskond"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Assigned To"
-msgstr ""
+msgstr "Kasutajatoe piletite analüüs \"Kellele määratud\" lõikes"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Customer"
-msgstr ""
+msgstr "Kasutajatoe piletite analüüs kliendi lõikes"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Team"
-msgstr ""
+msgstr "Kasutajatoe piletite analüüs tiimi lõikes"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Ticket Analysis by Ticket Type"
-msgstr ""
+msgstr "Kasutajatoe piletite analüüs pileti tüübi lõikes"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -161,14 +161,14 @@ msgstr "Kasutajatoe piletid"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Tickets by Stage"
-msgstr ""
+msgstr "Piletid etappide järgi"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Tickets by Type"
-msgstr ""
+msgstr "Piletid tüübi järgi"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -182,21 +182,21 @@ msgstr "Määramise aeg"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Close"
-msgstr ""
+msgstr "Aeg sulgeda"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Time to Respond"
-msgstr ""
+msgstr "Aeg vastata"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Agents"
-msgstr ""
+msgstr "Parimad agendid"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
@@ -210,14 +210,14 @@ msgstr "Parimad kliendid"
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Teams"
-msgstr ""
+msgstr "Parimad meeskonnad"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web
 #: code:addons/spreadsheet_dashboard_helpdesk/data/files/helpdesk_dashboard.json:0
 #, python-format
 msgid "Top Ticket Types"
-msgstr ""
+msgstr "Parimad piletitüübid"
 
 #. module: spreadsheet_dashboard_helpdesk
 #. openerp-web

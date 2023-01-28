@@ -1012,7 +1012,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_invite_view_form
 #, python-format
 msgid "Cancel"
-msgstr ""
+msgstr "റദ്ദാക്കുക"
 
 #. module: knowledge
 #: code:addons/knowledge/models/knowledge_article.py:0
@@ -2052,7 +2052,7 @@ msgstr ""
 #. module: knowledge
 #: model:ir.ui.menu,name:knowledge.knowledge_menu_article
 msgid "Search"
-msgstr ""
+msgstr "സെർച്ച് "
 
 #. module: knowledge
 #: model_terms:ir.ui.view,arch_db:knowledge.knowledge_article_favorite_view_search

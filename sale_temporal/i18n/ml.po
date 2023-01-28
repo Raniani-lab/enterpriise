@@ -199,7 +199,7 @@ msgstr ""
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_pricelist_view
 #: model_terms:ir.ui.view,arch_db:sale_temporal.product_template_form_view_pricing
 msgid "Period"
-msgstr ""
+msgstr "പീരീഡ്"
 
 #. module: sale_temporal
 #: model_terms:ir.ui.view,arch_db:sale_temporal.sale_temporal_recurrence_view_form

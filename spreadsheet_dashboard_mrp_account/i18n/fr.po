@@ -137,7 +137,7 @@ msgstr "Période"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Previous"
-msgstr "Précedent"
+msgstr "Précédent"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web
@@ -161,7 +161,7 @@ msgstr "Temps de production (min)t"
 #: code:addons/spreadsheet_dashboard_mrp_account/data/files/manufacturing_dashboard.json:0
 #, python-format
 msgid "Qty Produced"
-msgstr "Quantité produite"
+msgstr "Qté produite"
 
 #. module: spreadsheet_dashboard_mrp_account
 #. openerp-web

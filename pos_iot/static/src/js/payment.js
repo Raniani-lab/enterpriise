@@ -4,6 +4,7 @@ odoo.define('pos_iot.payment', function (require) {
 var core = require('web.core');
 var PaymentInterface = require('point_of_sale.PaymentInterface');
 const { Gui } = require('point_of_sale.Gui');
+const { escape } = require("@web/core/utils/strings");
 
 var _t = core._t;
 
@@ -132,7 +133,8 @@ var PaymentIOT = PaymentInterface.extend({
         if (line && terminal_proxy && (!data.owner || data.owner === this.pos.env.services.iot_longpolling._session_id)) {
             this._waitingResponse(resolve, data, line);
             if (data.Ticket) {
-                line.set_receipt_info(data.Ticket.replace(/\n/g, "<br />"));
+                let ticket = escape(data.Ticket);
+                line.set_receipt_info(ticket.replace(/\n/g, "<br />"));
             }
             if (data.Card) {
                 line.card_type = data.Card;

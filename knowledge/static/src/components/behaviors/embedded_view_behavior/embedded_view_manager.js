@@ -122,6 +122,11 @@ export class EmbeddedViewManager extends Component {
         if (action.search_view_id) {
             ViewProps.searchViewId = action.search_view_id[0];
         }
+        if (context.orderBy) {
+            try {
+                ViewProps.orderBy = JSON.parse(context.orderBy);
+            } catch {};
+        }
         if (this.props.viewType in EMBEDDED_VIEW_LIMITS) {
             ViewProps.limit = EMBEDDED_VIEW_LIMITS[this.props.viewType];
         }
@@ -152,9 +157,16 @@ export class EmbeddedViewManager extends Component {
         if (this.action.type !== "ir.actions.act_window") {
             throw new Error('Can not open the view: The action is not an "ir.actions.act_window"');
         }
+        const props = {};
+        if (this.action.context.orderBy) {
+            try {
+                props.orderBy = JSON.parse(this.action.context.orderBy);
+            } catch {};
+        }
         this.action.globalState = this.getEmbeddedViewGlobalState();
         this.actionService.doAction(this.action, {
             viewType: this.props.viewType,
+            props
         });
     }
 }

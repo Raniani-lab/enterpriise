@@ -8,8 +8,8 @@ import { useService } from '@web/core/utils/hooks';
 import { Component, onWillStart, useState } from "@odoo/owl";
 
 const permissionLevel = {'none': 0, 'read': 1, 'write': 2}
-const restrictMessage = _lt("Are you sure you want to restrict this role and restrict access ? "
-+ "This article will no longer inherit access settings from the parent page.");
+const restrictMessage = _lt("Are you sure you want to restrict access to this article ? "
++ "This means it will no longer inherit access rights from its parents.");
 const loseWriteMessage = _lt('Are you sure you want to remove your own "Write" access ?');
 
 class PermissionPanel extends Component {
@@ -113,7 +113,9 @@ class PermissionPanel extends Component {
             this.loadPanel();
         };
         const loseAccessMessage = _t('Are you sure you want to set the internal permission to "none" ? If you do, you will no longer have access to the article.');
-        this._showConfirmDialog(willLoseAccess ? loseAccessMessage : restrictMessage, false, confirm, discard);
+        const confirmLabel = willLoseAccess ? _t('Lose Access') : _t('Restrict Access');
+        const confirmTitle = willLoseAccess ? false : _t('Restrict Access');
+        this._showConfirmDialog(willLoseAccess ? loseAccessMessage : restrictMessage, confirmTitle, { confirmLabel, confirm, cancel: discard });
     }
 
     /**
@@ -164,7 +166,8 @@ class PermissionPanel extends Component {
         const loseAccessMessage = _t('Are you sure you want to set your permission to "none"? If you do, you will no longer have access to the article.');
         const message = willLoseAccess ? loseAccessMessage : willLoseWrite ? loseWriteMessage : restrictMessage ;
         const title = willLoseAccess ? _t('Leave Article') : _t('Change Permission');
-        this._showConfirmDialog(message, title, confirm, discard);
+        const confirmLabel = willLoseAccess ? _t('Lose Access') : _t('Restrict own access');
+        this._showConfirmDialog(message, title, { confirmLabel, confirm, cancel: discard } );
     }
 
     /**
@@ -212,15 +215,18 @@ class PermissionPanel extends Component {
 
         let message = restrictMessage;
         let title = _t('Restrict Access');
+        let confirmLabel = title;
         if (this.isLoggedUser(member) && this.state.category === 'private') {
-            message = _t('Are you sure you want to leave this private article? By doing so, the article and all its descendants will be archived.');
-            title = _t('Archive Article');
+            message = _t('Are you sure you want to leave your private Article? As you are its last member, it will be moved to the Trash.');
+            title = _t('Leave Private Article');
+            confirmLabel = _t('Move to Trash');
         } else if (willLoseAccess) {
             message = _t('Are you sure you want to remove your member? By leaving an article, you may lose access to it.');
             title = _t('Leave Article');
+            confirmLabel = _t('Leave');
         }
 
-        this._showConfirmDialog(message, title, confirm, discard);
+        this._showConfirmDialog(message, title, { confirmLabel, confirm, cancel: discard });
     }
 
     /**
@@ -244,7 +250,8 @@ class PermissionPanel extends Component {
 
         const message = _t('Are you sure you want to restore access? This means this article will now inherit any access set on its parent articles.');
         const title = _t('Restore Access');
-        this._showConfirmDialog(message, title, confirm);
+        const confirmLabel = _t('Restore Access');
+        this._showConfirmDialog(message, title, { confirmLabel, confirm });
     }
 
     /**
@@ -276,16 +283,17 @@ class PermissionPanel extends Component {
     * @param {str} message
     * @param {function} confirm
     * @param {function} discard
+    * @param {str} confirmLabel
     */
-    _showConfirmDialog (message, title, confirm, discard) {
-        if (discard === undefined) {
-            discard = this.loadPanel.bind(this);
+    _showConfirmDialog (message, title, options) {
+        options = options || {};
+        if (!options.cancel) {
+            options.cancel = this.loadPanel.bind(this);
         }
         this.dialog.add(ConfirmationDialog, {
             title: title || _t("Confirmation"),
             body: message,
-            confirm: confirm,
-            cancel: discard
+            ...options
         });
     }
 

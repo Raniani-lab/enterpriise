@@ -105,6 +105,13 @@
                         icon="fa-arrow-right" string="Navigate To" colspan="2"
                         attrs="{'invisible': [('is_fsm', '=', False)]}"/>
                 </div>
+                <field name="is_task_phone_update" invisible="1"/>
+                <label for="partner_phone" attrs="{'invisible': [('is_fsm', '=', False)]}"/>
+                <div class="o_row o_row_readonly" attrs="{'invisible': [('is_fsm', '=', False)]}">
+                    <field name="partner_phone" widget="phone"/>
+                    <span class="fa fa-exclamation-triangle text-warning oe_edit_only"
+                        title="By saving this change, the customer phone number will also be updated." attrs="{'invisible': ['|', ('partner_id', '=', False), ('is_task_phone_update', '=', False)]}"/>
+                </div>
             </field>
             <field name="project_id" position="attributes">
                 <attribute name="context">{

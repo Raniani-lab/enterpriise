@@ -85,6 +85,7 @@ class Task(models.Model):
     worksheet_signed_by = fields.Char('Signed By', copy=False)
     fsm_is_sent = fields.Boolean('Is Worksheet sent', readonly=True, copy=False)
     comment = fields.Html(string='Comments', copy=False)
+    is_task_phone_update = fields.Boolean(compute='_compute_is_task_phone_update')
 
     @property
     def SELF_READABLE_FIELDS(self):
@@ -113,6 +114,11 @@ class Task(models.Model):
                 'display_mark_as_done_primary': primary,
                 'display_mark_as_done_secondary': secondary,
             })
+
+    @api.depends('partner_phone', 'partner_id.phone')
+    def _compute_is_task_phone_update(self):
+        for task in self:
+            task.is_task_phone_update = task.partner_phone != task.partner_id.phone
 
     @api.depends('allow_worksheets', 'project_id.allow_timesheets', 'total_hours_spent', 'comment')
     def _compute_display_conditions_count(self):

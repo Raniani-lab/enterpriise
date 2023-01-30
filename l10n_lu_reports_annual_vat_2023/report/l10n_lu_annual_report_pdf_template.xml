@@ -37,6 +37,7 @@
         </template>
 
         <template id="l10n_lu_annual_tax_report_template">
+            <t t-set="field_values" t-value="field_values or {}"/>
             <t t-call="web.html_container">
                 <t t-call="web.internal_layout">
                     <div class="pt-0">
@@ -83,8 +84,8 @@
                                     <tr>
                                         <td>Annual accounts submitted to the Trade and Companies Register (RCS)</td>
                                         <td class="text-end">
-                                            <t t-if="int(field_values['998']['value'])">Yes</t>
-                                            <t t-if="int(field_values['999']['value'])">No</t>
+                                            <t t-if="field_values.get('998') and int(field_values['998']['value'])">Yes</t>
+                                            <t t-if="field_values.get('999') and int(field_values['999']['value'])">No</t>
                                         </td>
                                     </tr>
                                 </tbody>

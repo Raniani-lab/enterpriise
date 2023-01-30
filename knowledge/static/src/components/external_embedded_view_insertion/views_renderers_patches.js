@@ -126,11 +126,26 @@ const EmbeddedViewRendererPatch = {
     },
 };
 
+const EmbeddedViewListRendererPatch = {
+    ...EmbeddedViewRendererPatch,
+    /**
+     * @override
+     * @returns {Object}
+     */
+    _getViewContext: function () {
+        const context = EmbeddedViewRendererPatch._getViewContext.call(this);
+        Object.assign(context, {
+            orderBy: JSON.stringify(this.props.list.orderBy)
+        });
+        return context;
+    }
+};
+
 patch(CalendarRenderer.prototype, 'knowledge_calendar_embeddable', EmbeddedViewRendererPatch);
 patch(CohortRenderer.prototype, 'knowledge_cohort_embeddable', EmbeddedViewRendererPatch);
 patch(GraphRenderer.prototype, 'knowledge_graph_embeddable', EmbeddedViewRendererPatch);
 patch(KanbanRenderer.prototype, 'knowledge_kanban_embeddable', EmbeddedViewRendererPatch);
-patch(ListRenderer.prototype, 'knowledge_list_embeddable', EmbeddedViewRendererPatch);
+patch(ListRenderer.prototype, 'knowledge_list_embeddable', EmbeddedViewListRendererPatch);
 patch(MapRenderer.prototype, 'knowledge_map_embeddable', EmbeddedViewRendererPatch);
 patch(PivotRenderer.prototype, 'knowledge_pivot_embeddable', EmbeddedViewRendererPatch);
 

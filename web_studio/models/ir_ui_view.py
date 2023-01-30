@@ -92,6 +92,15 @@ class View(models.Model):
                     else:
                         node.attrib.pop('groups')
                         set_invisible_nodes.add(node)
+                elif node.tag == 't' and not node.get('postprocess_added'):
+                    # Special case
+                    # `<t groups="..."/></t>` block. In the super call, if the user has the group, the content
+                    # of the node is moved out and the <t> is removed.
+                    # In the case of Studio, we want this node to remain, so the arch of the view sent to the web client
+                    # represents the actual view in the database
+                    # So, we just pop the `groups` attribute temporary, before the call to super, so the super call
+                    # doesn't remove the node. The `groups` attribute is set back after the call to super.
+                    node.attrib.pop('groups')
 
                 if node.tag == 'field':
                     # fields with `groups` in the Python model cannot be read at all by users not part of the group.

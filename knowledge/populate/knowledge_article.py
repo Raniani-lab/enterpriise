@@ -76,8 +76,71 @@ class KnowledgeArticle(models.Model):
             ('is_locked', populate.randomize([True, False], [0.02, 0.98])),
             ('full_width', populate.randomize([True, False], [0.2, 0.8])),
             # TODO add article items / fill some properties fields
-            # TODO add some favorites
+            ('favorite_ids', populate.compute(lambda values, *args, **kwargs: self._prepare_favorites(values, internal_partner_ids, shared_partner_ids))),
         }
+
+    def _prepare_favorites(self, values, internal_partner_ids, shared_partner_ids):
+        """In Knowledge we offer the possibility for a user to set articles as favorites.
+        To handle this in the model we have a table `knowledge.article.favorite` that stores every
+        favorited article for each user.
+
+        Every article has a chance to be the favorite of a user but it is more likely that user will add
+        a root as a favorite than a child.
+        Thus to prepare the favorites we will need some information:
+         * Will the article be favorited by a user ?
+         * Which user wants to add the article to its favorite ?
+
+        Of course we do not want a lot of articles being favorited so the initial check will reject many of the attempts,
+        but if we want to add some favorite_ids to an article then we will check how many users will add the article as
+        favorite.
+        This is how we will populate the table."""
+
+        article_member_ids = values.get('article_member_ids', False)
+        internal_permission = values.get('internal_permission', False)
+        # 2% of the articles can be set as favorites
+        can_be_favorite = random.choices([True, False], weights=[0.02, 0.98], k=1)[0] and (
+            internal_permission or article_member_ids)
+        if not can_be_favorite:
+            return []
+
+        admin_partner_id = self.env.ref('base.user_admin').partner_id.id
+
+        # sampling some partners
+        internals = random.sample(internal_partner_ids, k=min(random.randint(2, 10), len(internal_partner_ids)))
+        externals = random.sample(shared_partner_ids, k=min(random.randint(2, 10), len(shared_partner_ids)))
+        # 50% chance to force admin into the mix (easier for testing)
+        if admin_partner_id not in internals and random.choices([True, False], weights=[0.5, 0.5], k=1)[0]:
+            internals.append(admin_partner_id)
+
+        favorite_partner_ids = []
+        for partner_id in internals + externals:
+            member_access = next(
+                (
+                    member[2]['permission']
+                    for member in article_member_ids
+                    if member[2]['partner_id'] == partner_id
+                ),
+                False
+            )
+
+            if member_access and member_access == 'none':
+                continue  # specified no access for this partner -> pass
+
+            if internal_permission == 'none' and not member_access:
+                continue  # internal permission denies access -> pass
+
+            favorite_partner_ids.append(partner_id)
+
+        # sadly the knowledge.article.favorite model needs user_id, so we have to fetch them
+        linked_users = self.env['res.users'].search([('partner_id', 'in', favorite_partner_ids)])
+        user_per_partner = {
+            user.partner_id.id: user
+            for user in linked_users
+        }
+
+        return [(0, 0, {
+            'user_id': user_per_partner[partner_id].id
+        }) for partner_id in favorite_partner_ids]
 
     def _prepare_children_articles(self, depth, internal_partner_ids, shared_partner_ids):
         """ As knowledge.article is a bit meaningless without a parent / children configuration,

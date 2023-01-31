@@ -2,7 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { shallowEqual } from "@web/core/utils/arrays";
+
 import { listView } from "@web/views/list/list_view";
 import { ListRenderer } from "@web/views/list/list_renderer";
 
@@ -45,7 +45,6 @@ export class BankRecWidgetFormEmbeddedListModel extends listView.Model {
     setup(params, { action, dialog, notification, rpc, user, view, company }) {
         super.setup(...arguments);
         this.storedDomainString = null;
-        this.storedPreferredAMLs = [];
     }
 
     /**
@@ -55,11 +54,8 @@ export class BankRecWidgetFormEmbeddedListModel extends listView.Model {
     */
     async load(params = {}) {
         const currentDomain = params.domain.toString();
-        const currentPreferredAMLs = params.context.matching_amount_aml_ids || this.storedPreferredAMLs;
-        // reload only if the domain has changed, or we prefer a new set of AML's
-        if (currentDomain !== this.storedDomainString || !shallowEqual(currentPreferredAMLs, this.storedPreferredAMLs)) {
+        if (currentDomain !== this.storedDomainString) {
             this.storedDomainString = currentDomain;
-            this.storedPreferredAMLs = currentPreferredAMLs;
             return super.load(params);
         }
     }

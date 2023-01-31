@@ -36,8 +36,6 @@ class AccountMove(models.Model):
         )
 
     def action_open_business_doc(self):
-        # Don't propagate this key further.
-        self = self.with_context(matching_amount_aml_ids=None)
         if self.statement_line_id:
             return self.action_open_bank_reconciliation_widget()
         else:
@@ -58,30 +56,6 @@ class AccountMoveLine(models.Model):
     def _compute_attachment(self):
         for record in self:
             record.move_attachment_ids = self.env['ir.attachment'].search(expression.OR(record._get_attachment_domains()))
-
-    @api.model
-    def search_read(self, domain=None, fields=None, offset=0, limit=None, order=None, **read_kwargs):
-        # EXTENDS 'base'
-        preferred_aml_ids = self._context.get('matching_amount_aml_ids')
-        if preferred_aml_ids and fields and not order:
-            query = super()._search(domain, offset=offset, limit=limit, order=order)
-            placeholder_ids = ', '.join(str(x) for x in preferred_aml_ids)
-            query.order = f""" "account_move_line".id IN ({placeholder_ids}) DESC,{query.order}"""
-            records = self.browse(query)
-
-            # Note: copy pasted from models.search_read
-            result = []
-            if records:
-                result = records.read(fields, **read_kwargs)
-
-            if len(result) <= 1:
-                return result
-
-            # reorder read
-            index = {vals['id']: vals for vals in result}
-            return [index[record.id] for record in records if record.id in index]
-
-        return super().search_read(domain=domain, fields=fields, offset=offset, limit=limit, order=order)
 
     def action_reconcile(self):
         """ This function is called by the 'Reconcile' action of account.move.line's

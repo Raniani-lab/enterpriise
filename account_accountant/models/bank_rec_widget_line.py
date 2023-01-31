@@ -199,8 +199,6 @@ class BankRecWidgetLine(models.Model):
         for line in self:
             line.debit = line.balance if line.balance > 0.0 else 0.0
             line.credit = -line.balance if line.balance < 0.0 else 0.0
-            if line.flag == 'liquidity':
-                line.wizard_id.invalidate_model(fnames=['amls_widget'])
 
     @api.depends('source_balance')
     def _compute_from_source_balance(self):

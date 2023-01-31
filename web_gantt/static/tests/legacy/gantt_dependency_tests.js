@@ -3,9 +3,9 @@
 import testUtils, { createView } from "web.test_utils";
 import { Domain } from "@web/core/domain";
 import { registerCleanup } from "@web/../tests/helpers/cleanup";
-import GanttView from "@web_gantt/js/gantt_view";
-import GanttRenderer from "@web_gantt/js/gantt_renderer";
-import GanttController from "@web_gantt/js/gantt_controller";
+import GanttView from "@web_gantt/legacy/js/gantt_view";
+import GanttRenderer from "@web_gantt/legacy/js/gantt_renderer";
+import GanttController from "@web_gantt/legacy/js/gantt_controller";
 
 /**
  * As the rendering of the connectors is made after the gantt rendering is injected in the dom and as the connectors

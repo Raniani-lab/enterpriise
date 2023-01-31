@@ -18,7 +18,6 @@
     'data': [
         'security/ir.model.access.csv',
         'security/sale_planning_security.xml',
-        'views/planning_report_views.xml',
         'views/planning_role_views.xml',
         'views/planning_slot_views.xml',
         'views/planning_templates.xml',

@@ -37,6 +37,12 @@ class PlanningAnalysisReport(models.Model):
     ], string="Status", readonly=True)
     user_id = fields.Many2one("res.users", string="User", readonly=True)
     working_days_count = fields.Float("Working Days", readonly=True)
+    slot_id = fields.Many2one("planning.slot", string="Planning Slot", readonly=True)
+    request_to_switch = fields.Boolean('Has there been a request to switch on this shift slot?', readonly=True)
+    overlap_slot_count = fields.Integer('Overlapping Slots', search='_search_overlap_slot_count', store=False, readonly=True)
+
+    def _search_overlap_slot_count(self, operator, value):
+        return [('slot_id.overlap_slot_count', operator, value)]
 
     @property
     def _table_query(self):
@@ -47,6 +53,7 @@ class PlanningAnalysisReport(models.Model):
         return """
             SELECT
                 S.id AS id,
+                S.id AS slot_id,
                 S.allocated_hours AS allocated_hours,
                 S.allocated_percentage AS allocated_percentage,
                 S.company_id AS company_id,
@@ -57,6 +64,7 @@ class PlanningAnalysisReport(models.Model):
                 S.manager_id AS manager_id,
                 S.name AS name,
                 S.publication_warning AS publication_warning,
+                S.request_to_switch AS request_to_switch,
                 S.resource_id AS resource_id,
                 R.resource_type AS resource_type,
                 S.role_id AS role_id,

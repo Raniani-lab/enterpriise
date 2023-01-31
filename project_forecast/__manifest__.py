@@ -14,7 +14,6 @@
         'data/planning_demo.xml',
     ],
     'data': [
-        'views/planning_report_views.xml',
         'views/planning_template_views.xml',
         'views/planning_templates.xml',
         'views/planning_views.xml',

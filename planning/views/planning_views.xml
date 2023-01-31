@@ -275,9 +275,11 @@
         </field>
     </record>
 
-    <record id="planning_view_search" model="ir.ui.view">
-        <field name="name">planning.slot.search</field>
+    <!-- Base search view, contains the fields and filters common to planning slot and planning analysis report-->
+    <record id="planning_view_search_base" model="ir.ui.view">
+        <field name="name">planning.slot.search.base</field>
         <field name="model">planning.slot</field>
+        <field name="priority">999</field>
         <field name="arch" type="xml">
             <search>
                 <field name="resource_id" groups="planning.group_planning_user"/>
@@ -346,6 +348,17 @@
                     <filter name="group_by_end_datetime" string="End Date" context="{'group_by':'end_datetime:day'}"/>
                 </group>
             </search>
+        </field>
+    </record>
+
+    <record id="planning_view_search" model="ir.ui.view">
+        <field name="name">planning.slot.search</field>
+        <field name="model">planning.slot</field>
+        <field name="mode">primary</field>
+        <field name="priority">20</field>
+        <field name="inherit_id" ref="planning_view_search_base"/>
+        <field name="arch" type="xml">
+            <search position="attributes"/>
         </field>
     </record>
 

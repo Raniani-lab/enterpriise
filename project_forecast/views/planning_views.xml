@@ -60,7 +60,7 @@
     <record id="planning_slot_view_search" model="ir.ui.view">
         <field name="name">planning.slot.search</field>
         <field name="model">planning.slot</field>
-        <field name="inherit_id" ref="planning.planning_view_search"/>
+        <field name="inherit_id" ref="planning.planning_view_search_base"/>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='role_id']" position="after">
                 <field name="project_id"/>

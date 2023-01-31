@@ -4,7 +4,7 @@
     <record id="planning_slot_view_search_inherit_sale_planning" model="ir.ui.view">
         <field name="name">planning.slot.search.inherit.sale.planning</field>
         <field name="model">planning.slot</field>
-        <field name="inherit_id" ref="planning.planning_view_search"/>
+        <field name="inherit_id" ref="planning.planning_view_search_base"/>
         <field name="priority">20</field>
         <field name="arch" type="xml">
             <xpath expr="//field[@name='company_id']" position="before">

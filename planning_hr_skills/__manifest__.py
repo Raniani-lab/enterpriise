@@ -13,7 +13,6 @@ Search planning slots by skill
     'auto_install': True,
     'data': [
         'views/planning_slot_views.xml',
-        'views/planning_report_views.xml',
     ],
     'license': 'OEEL-1',
 }

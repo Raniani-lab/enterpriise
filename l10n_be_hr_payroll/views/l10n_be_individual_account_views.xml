@@ -9,7 +9,7 @@
                     <button name="action_generate_pdf" string="Create PDFs" type="object" class="btn-primary"/>
                 </header>
                 <sheet>
-                    <group>
+                    <group name="first_group">
                         <group>
                             <field name="year" class="o_hr_narrow_field"/>
                             <field name="name"/>
@@ -18,8 +18,9 @@
                     </group>
                     <p name="save_warning">The files won't be posted in the employee portal if you don't have the Documents app.</p>
                     <field name="line_ids">
-                        <tree>
-                            <field name="employee_id" widget="many2one_avatar_user"/>
+                        <tree editable="bottom">
+                            <field name="employee_id" options="{'no_create': True, 'no_create_edit': True}" widget="many2one_avatar_user"/>
+                            <field name="existing_employee_ids" invisible="1"/>
                             <field name="pdf_filename" invisible="1"/>
                             <field name="pdf_file" readonly="1" filename="pdf_filename" widget="binary"/>
                             <field name="pdf_to_generate" groups="base.group_no_one"/>

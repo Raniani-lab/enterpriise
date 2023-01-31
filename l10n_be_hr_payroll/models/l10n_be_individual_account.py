@@ -35,6 +35,12 @@ class L10nBeIndividualAccount(models.Model):
     company_id = fields.Many2one('res.company', default=lambda self: self.env.company)
     line_ids = fields.One2many(
         'l10n_be.individual.account.line', 'sheet_id', compute='_compute_line_ids', store=True, readonly=False)
+    pdfs_generated = fields.Boolean(compute="_compute_pdfs_generated")
+
+    @api.depends("line_ids.pdf_file")
+    def _compute_pdfs_generated(self):
+        for sheet in self:
+            sheet.pdfs_generated = any(l.pdf_file for l in sheet.line_ids)
 
     @api.depends('year')
     def _compute_name(self):
@@ -124,8 +130,18 @@ class L10nBeIndividualAccount(models.Model):
         return result
 
     def action_generate_pdf(self):
-        self.line_ids.write({'pdf_to_generate': True})
-        self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
+        if self.line_ids:
+            self.line_ids.write({'pdf_to_generate': True})
+            self.env.ref('hr_payroll.ir_cron_generate_payslip_pdfs')._trigger()
+
+            return {
+                'type': 'ir.actions.client',
+                'tag': 'display_notification',
+                'params': {
+                    'type': 'success',
+                    'message': _("PDF generation started, reload this page after a few moments."),
+                }
+            }
 
     def _process_files(self, files):
         self.ensure_one()
@@ -141,11 +157,17 @@ class L10nBeIndividualAccountLine(models.Model):
     _name = 'l10n_be.individual.account.line'
     _description = 'HR Individual Account Report By Employee Line'
 
-    employee_id = fields.Many2one('hr.employee')
+    existing_employee_ids = fields.Many2many('hr.employee', compute='_compute_existing_employee_ids')
+    employee_id = fields.Many2one('hr.employee', domain="[('id', 'not in', existing_employee_ids)]")
     pdf_file = fields.Binary('PDF File', readonly=True, attachment=False)
     pdf_filename = fields.Char()
     sheet_id = fields.Many2one('l10n_be.individual.account')
     pdf_to_generate = fields.Boolean()
+
+    @api.depends("sheet_id.line_ids.employee_id")
+    def _compute_existing_employee_ids(self):
+        for line in self:
+            line.existing_employee_ids = line.sheet_id.line_ids.employee_id
 
     def _generate_pdf(self):
         report_sudo = self.env["ir.actions.report"].sudo()

@@ -95,6 +95,9 @@ QUnit.module("spreadsheet > menu link ui", { beforeEach }, () => {
                     assert.deepEqual(
                         args.kwargs.args,
                         [
+                            "|",
+                            ["id", "in", [1, 2]],
+                            "&",
                             ["action", "!=", false],
                             ["id", "in", [1, 2]],
                         ],

@@ -38,6 +38,9 @@ export class IrMenuSelector extends Component {
 
     getDomain() {
         return [
+            "|",
+            ["id", "in", this.availableAppMenuIds],
+            "&",
             ["action", "!=", false],
             ["id", "in", this.availableMenuIds],
         ];
@@ -46,6 +49,14 @@ export class IrMenuSelector extends Component {
     get availableMenuIds() {
         return this.menus
             .getAll()
+            .map((menu) => menu.id)
+            .filter((menuId) => menuId !== "root");
+    }
+
+    get availableAppMenuIds() {
+        return this.menus
+            .getAll()
+            .filter((menu) => menu.id === menu.appID)
             .map((menu) => menu.id)
             .filter((menuId) => menuId !== "root");
     }
@@ -60,6 +71,10 @@ export class IrMenuSelector extends Component {
         }
         const menuTree = this.menus.getMenuAsTree("root");
         const computedTree = computeAppsAndMenuItems(menuTree);
+        const app = computedTree.apps.find((app) => app.id === menuId);
+        if (app) {
+            return app.label;
+        }
         const menu = computedTree.menuItems.find((menu) => menu.id === menuId);
         if (!menu) {
             return "";
@@ -88,7 +103,10 @@ export class IrMenuSelectorDialog extends Component {
         // However, the autocomplete dropdown of the Many2OneField widget is *not*
         // a child of this component. It's actually a direct child of "body" ¯\_(ツ)_/¯
         // The following external listener handles this.
-        useExternalListener(document.body, "click", (ev) => ev.stopPropagation());
+        useExternalListener(document.body, "click", (ev) => {
+            ev.stopPropagation();
+            ev.preventDefault(); // stop jumping to odoo home page
+        });
     }
     _onConfirm() {
         this.props.onMenuSelected(this.selectedMenu.id);

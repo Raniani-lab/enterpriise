@@ -623,7 +623,7 @@
                                     <ul class="oe_kanban_colorpicker" data-field="color"/>
                                 </div>
                             </div>
-                            <div class="oe_kanban_content">
+                            <div class="oe_kanban_content text-break">
                                 <div>
                                     <strong class="o_kanban_record_title"><field name="name"/> (#<field name="ticket_ref"/>)</strong>
                                 </div>

@@ -4,13 +4,8 @@ import { localization } from "@web/core/l10n/localization";
 import { formatMonetary, formatFloat } from "@web/views/fields/formatters";
 const { DateTime } = luxon;
 
-const FORMAT_OPTIONS = {
-    humanReadable: true,
-    digits: 2,
-};
-
 export function formatValue(value) {
-    return formatFloat(Number(value), FORMAT_OPTIONS);
+    return formatFloat(Number(value), { humanReadable: true });
 }
 
 export function getValue(d) { return d[1]; }
@@ -129,7 +124,7 @@ export function formatMonetaryNumber(value, currencyId) {
 export function formatNumber(value) {
     return this.isMonetary ?
         formatMonetary(Number(value), {
-            ...FORMAT_OPTIONS,
+            humanReadable: true,
             currencyId: this.state.currency_id,
         }) :
         formatValue(Number(value));

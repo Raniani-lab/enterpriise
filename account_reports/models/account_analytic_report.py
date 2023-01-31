@@ -170,7 +170,7 @@ class AccountReport(models.AbstractModel):
 
         # We add the domain filter for analytic_distribution here, as the search is not available
         tables, where_clause, where_params = super(AccountReport, context_self)._query_get(options, date_scope, domain)
-        if options.get('analytic_accounts'):
+        if options.get('analytic_accounts') and not any(x in options.get('analytic_accounts_list', []) for x in options['analytic_accounts']):
             analytic_account_ids = [[str(account_id) for account_id in options['analytic_accounts']]]
             where_params.append(analytic_account_ids)
             where_clause = f'{where_clause} AND "account_move_line".analytic_distribution ?| array[%s]'

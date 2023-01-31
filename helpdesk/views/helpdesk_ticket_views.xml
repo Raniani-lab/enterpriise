@@ -250,7 +250,7 @@
                     <t t-name="kanban-box">
                         <div t-attf-class="#{!selection_mode ? kanban_color(record.color.raw_value) : ''} oe_kanban_global_click">
                             <span class="oe_kanban_color_help" t-attf-title="In #{kanban_getcolorname(record.color.raw_value)}" role="img" t-attf-aria-label="In #{kanban_getcolorname(record.color.raw_value)}"/>
-                            <div class="oe_kanban_content">
+                            <div class="oe_kanban_content text-break">
                                 <div>
                                     <strong class="o_kanban_record_title"><field name="name"/> (#<field name="ticket_ref"/>)</strong>
                                 </div>

@@ -824,7 +824,7 @@ class Article(models.Model):
             })],
             "body": self.body,
             "cover_image_id": self.cover_image_id.id,
-            "full_width": False,
+            "full_width": self.full_width,
             "name": _("%s (copy)", self.name),
             "icon": self.icon,
             "internal_permission": "none",

@@ -148,6 +148,8 @@ class TrialBalanceCustomHandler(models.AbstractModel):
         options['columns'] = initial_columns + options['columns'] + end_columns
         options['ignore_totals_below_sections'] = True # So that GL does not compute them
 
+        report._init_options_order_column(options, previous_options)
+
     def _custom_line_postprocessor(self, report, options, lines):
         # If the hierarchy is enabled, ensure to add the o_account_coa_column_contrast class to the hierarchy lines
         if options.get('hierarchy'):

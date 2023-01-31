@@ -833,7 +833,7 @@ class Article(models.Model):
             "body": self.body,
             "cover_image_id": self.cover_image_id.id,
             "cover_image_position": self.cover_image_position,
-            "full_width": False,
+            "full_width": self.full_width,
             "icon": self.icon,
             "internal_permission": "none",
             "is_desynchronized": False,

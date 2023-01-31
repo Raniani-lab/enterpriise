@@ -151,7 +151,7 @@ class AccountMove(models.Model):
 
     def _get_l10n_mx_edi_signed_edi_document(self):
         self.ensure_one()
-        return self.edi_document_ids.filtered(lambda document: document.edi_format_id.code == 'cfdi_3_3' and document.attachment_id)
+        return self.edi_document_ids.filtered(lambda document: document.edi_format_id.code == 'cfdi_3_3' and document.sudo().attachment_id)
 
     def _get_l10n_mx_edi_issued_address(self):
         self.ensure_one()
@@ -188,7 +188,7 @@ class AccountMove(models.Model):
         if not cfdi_data:
             signed_edi = self._get_l10n_mx_edi_signed_edi_document()
             if signed_edi:
-                cfdi_data = base64.decodebytes(signed_edi.attachment_id.with_context(bin_size=False).datas)
+                cfdi_data = base64.decodebytes(signed_edi.sudo().attachment_id.with_context(bin_size=False).datas)
 
             # For vendor bills, the CFDI XML must be posted in the chatter as an attachment.
             elif is_purchase_move(self) and self.country_code == 'MX' and not self.l10n_mx_edi_cfdi_request:
@@ -453,7 +453,7 @@ class AccountMove(models.Model):
             # the l10n_mx_edi_cfdi_uuid, ... fields will have been set to False.
             # However, the attachment might still be there, so try to retrieve it.
             cfdi_doc = move.edi_document_ids.filtered(lambda document: document.edi_format_id == self.env.ref('l10n_mx_edi.edi_cfdi_3_3'))
-            if cfdi_doc and not cfdi_doc.attachment_id:
+            if cfdi_doc and not cfdi_doc.sudo().attachment_id:
                 attachment = self.env['ir.attachment'].search([('name', 'like', '%-MX-Invoice-3.3.xml'), ('res_model', '=', 'account.move'), ('res_id', '=', move.id)], limit=1, order='create_date desc')
                 if attachment:
                     cfdi_data = base64.decodebytes(attachment.with_context(bin_size=False).datas)

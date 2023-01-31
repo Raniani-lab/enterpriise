@@ -107,7 +107,7 @@
                          ('to_renew', '=', True),
                          ('is_upselling', '=', True),
                          ('renew_state', '!=', False),
-                         ('subscription_management', '!=', False)
+                         ('subscription_management', '!=', 'create')
                      ]}"
                 >Recurring
                 </div>

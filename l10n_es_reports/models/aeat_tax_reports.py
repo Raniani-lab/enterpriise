@@ -157,11 +157,6 @@ class SpanishTaxReportCustomHandler(models.AbstractModel):
         date_from = datetime.strptime(options['date']['date_from'], "%Y-%m-%d")
         date_to = datetime.strptime(options['date']['date_to'], "%Y-%m-%d")
 
-        if 'original_date_to' in options:
-            # This means `date_to` was modified, which will interfere with the period calculation here. Use the original
-            # value instead.
-            date_to = datetime.strptime(options['original_date_to'], "%Y-%m-%d")
-
         if not date_from.year == date_to.year:
             raise UserError(_("Cannot generate a BOE file for two different years"))
 
@@ -1219,11 +1214,10 @@ class SpanishMod349TaxReportCustomHandler(models.AbstractModel):
 
         return rslt
 
-    def _write_type2_refund_records(self, options, report_data, current_company, mod_349_type, invoice_report_line_xml_id):
+    def _write_type2_refund_records(self, options, report_data, current_company, mod_349_type, invoice_report_line_xml_id, report_period, report_year):
         line_partner = self.env['res.partner'].browse(self.env['account.report']._get_model_info_from_id(report_data['line_data']['id'])[1])
         report_date_from = options['date']['date_from']
         report_date_to = options['date']['date_to']
-        report_period, report_year = self._get_mod_period_and_year(options)
 
         rslt = self._l10n_es_boe_format_string('')
         for refund_invoice in self.env['account.move'].search([('date', '<=', report_date_to), ('date', '>=', report_date_from), ('move_type', 'in', ['in_refund', 'out_refund']), ('l10n_es_reports_mod349_invoice_type', '=', mod_349_type), ('partner_id', '=', line_partner.id)]):
@@ -1282,8 +1276,6 @@ class SpanishMod349TaxReportCustomHandler(models.AbstractModel):
             if period[-1] == 'T':
                 options = options.copy()
                 end_date = datetime.strptime(options['date']['date_to'], '%Y-%m-%d')
-                # Note the original value so we can still check it later (like in _get_mod_period_and_year)
-                options['original_date_to'] = options['date']['date_to']
                 options['date']['date_to'] = (end_date + relativedelta(day=31, months=-1)).strftime('%Y-%m-%d')
             else:
                 raise UserError(_("You cannot generate a BOE file for the first two months of a trimester if only one month is selected!"))
@@ -1301,13 +1293,13 @@ class SpanishMod349TaxReportCustomHandler(models.AbstractModel):
         rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies_without_taxes_legal_representative', lambda report_data: self._write_type2_invoice_record(options, report_data, year, 'H', current_company))
 
         # Refunds lines
-        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'E', 'l10n_es_reports.mod_349_supplies'))
-        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_acquisitions_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'A', 'l10n_es_reports.mod_349_acquisitions'))
-        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_triangular_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'T', 'l10n_es_reports.mod_349_triangular'))
-        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_services_sold_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'S', 'l10n_es_reports.mod_349_services_sold'))
-        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_services_acquired_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'I', 'l10n_es_reports.mod_349_services_acquired'))
-        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies_without_taxes_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'M', 'l10n_es_reports.mod_349_supplies_without_taxes'))
-        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies_without_taxes_legal_representative_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'H', 'l10n_es_reports.mod_349_supplies_without_taxes_legal_representative'))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'E', 'l10n_es_reports.mod_349_supplies', period, year))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_acquisitions_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'A', 'l10n_es_reports.mod_349_acquisitions', period, year))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_triangular_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'T', 'l10n_es_reports.mod_349_triangular', period, year))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_services_sold_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'S', 'l10n_es_reports.mod_349_services_sold', period, year))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_services_acquired_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'I', 'l10n_es_reports.mod_349_services_acquired', period, year))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies_without_taxes_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'M', 'l10n_es_reports.mod_349_supplies_without_taxes', period, year))
+        rslt += self._call_on_partner_sublines(options, 'l10n_es_reports.mod_349_supplies_without_taxes_legal_representative_refunds', lambda report_data: self._write_type2_refund_records(options, report_data, current_company, 'H', 'l10n_es_reports.mod_349_supplies_without_taxes_legal_representative', period, year))
 
         return {
             'file_name': self.env['account.report'].browse(options['report_id']).get_default_report_filename('txt'),

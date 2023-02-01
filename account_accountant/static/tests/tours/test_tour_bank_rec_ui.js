@@ -262,6 +262,30 @@ tour.register('account_accountant_bank_rec_widget_ui',
             run: () => {},
         },
         {
+            content: "Activate Manual Operations to add manual entries",
+            trigger: "a[name='manual_operations_tab']",
+        },
+        {
+            content: "add manual entry 1",
+            trigger: "input#form_balance",
+            run: "text -600.0"
+        },
+        {
+            content: "mount the remaining opening balance line",
+            trigger: ".o_field_bank_rec_widget_form_lines_widget tr.o_data_row:last() td[field='credit']:contains('$ 400.00')",
+        },
+        {
+            content: "Remove the manual entry",
+            extra_trigger: "input#form_balance:text('-400.00'):focus",
+            trigger: ".o_list_record_remove .fa-trash-o",
+        },
+        {
+            content: "amls_tab is activated and auto balancing line is 1000",
+            extra_trigger: ".o_field_bank_rec_widget_form_lines_widget tr.o_data_row:last() td[field='credit']:contains('$ 1,000.00')",
+            trigger: "a.active[name='amls_tab']",
+            run: () => {},
+        },
+        {
             content: "Mount another invoice",
             trigger: "div.bank_rec_widget_form_amls_list_anchor table.o_list_table td[name='move_id']:contains('INV/2019/00001')",
         },

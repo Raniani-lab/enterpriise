@@ -808,13 +808,13 @@ class AccountReport(models.Model):
 
     @api.model
     def _init_options_order_column(self, options, previous_options=None):
-        # options['order_column'] is the index of a column (starting at 1, not 0), with + or - sign to represent the order in which we want to sort
+        # options['order_column'] is in the form {'expression_label': expression label of the column to order, 'direction': the direction order ('ASC' or 'DESC')}
         options['order_column'] = None
 
         previous_value = previous_options and previous_options.get('order_column')
         if previous_value:
-            for index, col in enumerate(options['columns'], start=1):
-                if col['sortable'] and index == abs(previous_value):
+            for col in options['columns']:
+                if col['sortable'] and col['expression_label'] == previous_value['expression_label']:
                     options['order_column'] = previous_value
                     break
 
@@ -3503,8 +3503,12 @@ class AccountReport(models.Model):
             for tree_subelem in sorted(tree[tree_elem['id']], key=comp_key, reverse=descending):
                 merge_tree(tree_subelem, ls)
 
-        descending = options['order_column'] < 0 # To keep total lines at the end, used in compare_values & merge_tree scopes
-        column_index = abs(options['order_column']) - 1 # To know from which column to sort, used in merge_tree scope
+        descending = options['order_column']['direction'] == 'DESC' # To keep total lines at the end, used in compare_values & merge_tree scopes
+
+        for index, col in enumerate(options['columns']):
+            if (options['order_column']['expression_label'] == col['expression_label']):
+                column_index = index # To know from which column to sort, used in merge_tree scope
+                break
 
         comp_key = cmp_to_key(compare_values)
         sorted_list = []

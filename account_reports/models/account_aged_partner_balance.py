@@ -20,11 +20,11 @@ class AgedPartnerBalanceCustomHandler(models.AbstractModel):
                 if column['expression_label'] not in {'amount_currency', 'currency'}
             ]
 
-        default_order_column = 0
-        for index, column in enumerate(options.get('columns')):
-            if column.get('expression_label') == 'invoice_date':
-                default_order_column = index + 1
-                break
+        default_order_column = {
+            'expression_label': 'invoice_date',
+            'direction': 'ASC',
+        }
+
         options['order_column'] = (previous_options or {}).get('order_column') or default_order_column
 
     def _custom_line_postprocessor(self, report, options, lines):

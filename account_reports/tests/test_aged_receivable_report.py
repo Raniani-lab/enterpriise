@@ -134,8 +134,14 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
         partner_a_line_id = self.env['account.report']._get_generic_line_id('res.partner', self.partner_a.id, markup=f'{self.prefix_line_id}groupby:partner_id')
         options['unfolded_lines'] = [partner_a_line_id]
 
+        # Sort by Expected Date (usually the same as the due date)
+        options['order_column'] = {
+            'expression_label': 'expected_date',
+            'direction': 'ASC',
+        }
+
         report_lines = self.report._get_lines(options)
-        options['order_column'] = 3 # Sort by Expected Date (usually the same as the due date)
+
         sorted_report_lines = self.report._sort_lines(report_lines, options)
         self.assertLinesValues(
             # pylint: disable=C0326
@@ -161,7 +167,11 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
         )
 
         # Sort 61 - 90 decreasing.
-        options['order_column'] = -7
+        options['order_column'] = {
+            'expression_label': 'period3',
+            'direction': 'DESC',
+        }
+
         self.assertLinesValues(
             # pylint: disable=C0326
             self.report._sort_lines(sorted_report_lines, options),
@@ -186,7 +196,11 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
         )
 
         # Sort 61 - 90 increasing.
-        options['order_column'] = 7
+        options['order_column'] = {
+            'expression_label': 'period3',
+            'direction': 'ASC',
+        }
+
         self.assertLinesValues(
             # pylint: disable=C0326
             self.report._sort_lines(sorted_report_lines, options),
@@ -211,9 +225,17 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
         )
 
     def test_aged_receivable_unfold_all(self):
-        options = self._generate_options(self.report, '2017-02-01', '2017-02-01', default_options={'unfold_all': True, 'order_column': 3})
+        default_options = {
+            'unfold_all': True,
+            'order_column': {
+                'expression_label': 'expected_date',
+                'direction': 'ASC',
+            }
+        }
+        options = self._generate_options(self.report, '2017-02-01', '2017-02-01', default_options=default_options)
 
         report_lines = self.report._get_lines(options)
+
         self.assertLinesValues(
             # pylint: disable=C0326
             self.report._sort_lines(report_lines, options),
@@ -338,8 +360,14 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
         partner_b_line_id = self.env['account.report']._get_generic_line_id('res.partner', self.partner_b.id, markup=f'{self.prefix_line_id}groupby:partner_id')
         options['unfolded_lines'] = [partner_a_line_id, partner_b_line_id]
 
+        # Sort by Expected Date increasing
+        options['order_column'] = {
+            'expression_label': 'expected_date',
+            'direction': 'ASC',
+        }
+
         report_lines = self.report._get_lines(options)
-        options['order_column'] = 3 # Sort by Expected Date increasing
+
         self.assertLinesValues(
             # pylint: disable=C0326
             self.report._sort_lines(report_lines, options),
@@ -372,7 +400,12 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
             options,
         )
 
-        options['order_column'] = -3 # Sort by Expected Date decreasing
+        # Sort by Expected Date decreasing
+        options['order_column'] = {
+            'expression_label': 'expected_date',
+            'direction': 'DESC',
+        }
+
         self.assertLinesValues(
             # pylint: disable=C0326
             self.report._sort_lines(report_lines, options),
@@ -412,8 +445,14 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
         partner_b_line_id = self.env['account.report']._get_generic_line_id('res.partner', self.partner_b.id, markup=f'{self.prefix_line_id}groupby:partner_id')
         options['unfolded_lines'] = [partner_a_line_id, partner_b_line_id]
 
+        # Sort by Not Due On increasing
+        options['order_column'] = {
+            'expression_label': 'period0',
+            'direction': 'ASC',
+        }
+
         report_lines = self.report._get_lines(options)
-        options['order_column'] = 4 # Sort by Not Due On increasing
+
         self.assertLinesValues(
             # pylint: disable=C0326
             self.report._sort_lines(report_lines, options),
@@ -446,7 +485,12 @@ class TestAgedReceivableReport(TestAccountReportsCommon):
             options,
         )
 
-        options['order_column'] = -4 # Sort by Not Due On decreasing
+        # Sort by Not Due On decreasing
+        options['order_column'] = {
+            'expression_label': 'period0',
+            'direction': 'DESC',
+        }
+
         self.assertLinesValues(
             # pylint: disable=C0326
             self.report._sort_lines(report_lines, options),

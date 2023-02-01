@@ -481,13 +481,25 @@ var accountReportsWidget = AbstractAction.extend({
     order_selected_column: function(e) {
         let self = this;
         if (self.report_options.order_column !== undefined) {
-            let colNumber = Array.prototype.indexOf.call(e.currentTarget.parentElement.children, e.currentTarget);
-            if (self.report_options.order_column && self.report_options.order_column == colNumber) {
-                self.report_options.order_column = -colNumber;
-            } else if (self.report_options.order_column && self.report_options.order_column == -colNumber) {
+            const colNumber = Array.prototype.indexOf.call(e.currentTarget.parentElement.children, e.currentTarget);
+
+            const columnExpressionLabel = self.report_options.columns[colNumber-1].expression_label;
+            const orderColumn = self.report_options.order_column;
+            const orderExpressionLabel = orderColumn ? orderColumn.expression_label : null;
+            const orderDirection = orderColumn ? orderColumn.direction : null;
+
+            if (orderColumn && orderExpressionLabel === columnExpressionLabel && orderDirection === 'ASC') {
+                self.report_options.order_column = {
+                    expression_label: columnExpressionLabel,
+                    direction: 'DESC',
+                };
+            } else if (orderColumn && orderExpressionLabel === columnExpressionLabel && orderDirection === 'DESC') {
                 self.report_options.order_column = null;
             } else {
-                self.report_options.order_column = colNumber;
+                self.report_options.order_column = {
+                    expression_label: columnExpressionLabel,
+                    direction: 'ASC',
+                };
             }
             self.reload();
         }

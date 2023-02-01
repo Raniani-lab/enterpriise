@@ -268,7 +268,7 @@ class AccountEdiFormat(models.Model):
             for tax, detail in tax_detail.get('tax_details').items():
                 if not detail.get('tax_amount'):
                     for grouped_tax in detail.get('group_tax_details'):
-                        tax = grouped_tax.get('tax_id')
+                        tax = tax.get('tax')
                         zero_tax_details[tax.l10n_co_edi_type.code] += abs(grouped_tax.get('base_amount'))
         retention_taxes_new = self._l10n_co_edi_prepare_tim_sections(retention_lines_listdict, invoice.currency_id, True)
         regular_taxes_new = self._l10n_co_edi_prepare_tim_sections(regular_lines_listdict, invoice.currency_id, False, zero_tax_details)

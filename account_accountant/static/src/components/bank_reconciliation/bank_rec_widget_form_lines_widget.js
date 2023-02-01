@@ -80,12 +80,8 @@ export class BankRecWidgetFormLinesWidget extends Component {
         }
 
         // Remove the line.
-        const formIndex = this.record.data.form_index;
         await this.record.update({todo_command: `remove_line,${lineIndex}`});
-
-        if(lineIndex == formIndex){
-            this.bankRecService.trigger("form-notebook-exist-manual-op-if-active");
-        }
+        this.bankRecService.trigger("form-notebook-exit-manual-op-if-active");
     }
 
     /** The user clicked on the link to see the journal entry details **/

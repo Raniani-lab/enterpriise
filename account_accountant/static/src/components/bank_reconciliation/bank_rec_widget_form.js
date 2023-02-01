@@ -200,7 +200,7 @@ export class BankRecNotebook extends Notebook {
         });
 
         // Focus the first available page if the manual operation page is active.
-        this.bankRecService.useTodoCommand("form-notebook-exist-manual-op-if-active", () => {
+        this.bankRecService.useTodoCommand("form-notebook-exit-manual-op-if-active", () => {
             if(this.manualOperationPage == this.state.currentPage){
                 super.activatePage(this.firstPage);
             }

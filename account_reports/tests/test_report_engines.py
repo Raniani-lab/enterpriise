@@ -685,6 +685,7 @@ class TestReportEngines(TestAccountReportsCommon):
             self._prepare_test_expression_domain([('account_id.code', '=', '101002')], 'sum', label='domain'),
             self._prepare_test_expression_external('sum', [self._prepare_test_external_values(100.0, '2020-01-01')], label='external'),
             self._prepare_test_expression_aggregation('test1.tax_tags / 0'),
+            self._prepare_test_expression_external('sum', [self._prepare_test_external_values(100.47, '2020-01-01')], label='external_decimal'),
             name='test1', code='test1',
         )
 
@@ -761,8 +762,25 @@ class TestReportEngines(TestAccountReportsCommon):
             name='test9', code='test9',
         )
 
+        # Test 'round' subformula
+        test10_1 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation('test1.external_decimal', subformula='round(0)'),
+            name='test10_1', code='test10_1',
+        )
+        test10_2 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation('test1.external_decimal', subformula='round(1)'),
+            name='test10_2', code='test10_2',
+        )
+        test10_3 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation('test1.external_decimal', subformula='round(3)'),
+            name='test10_3', code='test10_3',
+        )
+
         report = self._create_report(
-            [test1, test2_1, test2_2, test2_3, test2_4, test3_1, test3_2, test3_3, test4_1, test4_2, test5, test6, test7, test9],
+            [
+                test1, test2_1, test2_2, test2_3, test2_4, test3_1, test3_2, test3_3, test4_1, test4_2,
+                test5, test6, test7, test9, test10_1, test10_2, test10_3,
+            ],
             country_id=self.fake_country.id,
         )
 
@@ -796,6 +814,9 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('test6',                 1.0),
                 ('test7',            100000.0),
                 ('test9',                 1.0),
+                ('test10_1',            100.0),
+                ('test10_2',            100.5),
+                ('test10_3',            100.47),
             ],
             options,
         )

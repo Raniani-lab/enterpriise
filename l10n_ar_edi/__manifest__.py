@@ -87,7 +87,6 @@ For Development information go to http://www.afip.gob.ar/fe/documentos/WSBFEv1%2
         'views/res_config_settings_view.xml',
         'views/account_move_view.xml',
         'views/account_journal_view.xml',
-        'views/uom_uom_view.xml',
         'views/res_currency_view.xml',
         'views/product_template_view.xml',
         'views/report_invoice.xml',

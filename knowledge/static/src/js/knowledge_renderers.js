@@ -10,7 +10,7 @@ import PermissionPanel from '@knowledge/components/permission_panel/permission_p
 import { sprintf } from '@web/core/utils/strings';
 import { useService } from "@web/core/utils/hooks";
 
-const { onMounted, onPatched, useEffect, useRef, useState} = owl;
+const { onMounted, onPatched, onWillDestroy, useEffect, useRef, useState } = owl;
 
 export class KnowledgeArticleFormRenderer extends FormRenderer {
 
@@ -35,13 +35,17 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
 
         this.root = useRef('root');
         this.tree = useRef('tree');
-        
-        this.messagingService.get().then(messaging => {
+
+        this.loadEmoji = this.messagingService.get().then(messaging => {
             this.messaging = messaging;
+            this.messaging.messagingBus.addEventListener('knowledge_add_emoji', this._onAddEmoji);
+            this.messaging.messagingBus.addEventListener('knowledge_remove_emoji', this._onRemoveEmoji);
             if (this.messaging.emojiRegistry.isLoaded || this.messaging.emojiRegistry.isLoading) {
-                return;
+                return messaging;
+            } else {
+                this.messaging.emojiRegistry.loadEmojiData();
+                return messaging;
             }
-            this.messaging.emojiRegistry.loadEmojiData();
         });
         this._onAddEmoji = this._onAddEmoji.bind(this);
         this._onRemoveEmoji = this._onRemoveEmoji.bind(this);
@@ -87,8 +91,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                 }
             };
             this.tree.el.addEventListener('click', listener);
-            this.messaging.messagingBus.addEventListener('knowledge_add_emoji', this._onAddEmoji);
-            this.messaging.messagingBus.addEventListener('knowledge_remove_emoji', this._onRemoveEmoji);
 
             /**
              * Show/hide the Share Panel (invite, update members permissions, ...)
@@ -119,8 +121,6 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
 
             return () => {
                 this.tree.el.removeEventListener('click', listener);
-                this.messaging.messagingBus.removeEventListener('knowledge_add_emoji', this._onAddEmoji);
-                this.messaging.messagingBus.removeEventListener('knowledge_remove_emoji', this._onRemoveEmoji);
             };
         }, () => []);
 
@@ -138,6 +138,12 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
                 this.toggleProperties();
                 this.state.displayPropertyToggle = true;
             }
+        });
+
+        onWillDestroy(async () => {
+            const messaging = await this.loadEmoji;
+            messaging.messagingBus.removeEventListener('knowledge_add_emoji', this._onAddEmoji);
+            messaging.messagingBus.removeEventListener('knowledge_remove_emoji', this._onRemoveEmoji);
         });
     }
 
@@ -179,6 +185,9 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * Add a random icon to the article.
      */
     addIcon() {
+        if (!this.messaging || !this.messaging.knowledge) {
+            return;
+        }
         const icon = this.messaging.knowledge.randomEmojis[Math.floor(Math.random() * this.messaging.knowledge.randomEmojis.length)].codepoints;
         this._renderEmoji(icon, this.resId);
     }
@@ -876,6 +885,9 @@ export class KnowledgeArticleFormRenderer extends FormRenderer {
      * @private
      */
     _showEmojiPicker(ev) {
+        if (!this.messaging || !this.messaging.knowledge) {
+            return;
+        }
         const articleId = Number(ev.target.closest('.o_article_emoji_dropdown').dataset.articleId) || this.resId;
         this.messaging.knowledge.update({
             currentArticle: { id: articleId },

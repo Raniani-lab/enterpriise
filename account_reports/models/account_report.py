@@ -2301,7 +2301,7 @@ class AccountReport(models.Model):
                 if expression.report_line_id.code:
                     aggregations_terms_to_evaluate.add(f"{expression.report_line_id.code}.{expression.label}")
                     evaluation_dict.setdefault(expression.report_line_id.code, {})
-                    if not expression.subformula or not re.match(r"if_(above|below|between)\(.*\)", expression.subformula):
+                    if not expression.subformula or not re.match(r"(if_(above|below|between)|round)\(.*\)", expression.subformula):
                         # Expressions with bounds cannot be replaced by their formula in formulas calling them (otherwize, bounds would be ignored).
                         evaluation_dict[expression.report_line_id.code][expression.label] = formula
 
@@ -2362,11 +2362,18 @@ class AccountReport(models.Model):
                                     => Result will be unbound_value if it's strictly between the provided bounds. Else, it will
                                        be brought back to the closest bound.
 
+            - round(decimal_places):
+                                    => Result will be round(unbound_value, decimal_places)
+
             (where CUR is a currency code, and bound_value* are float amounts in CUR currency)
         """
+        # So an expression can't have bounds and be cross_reports, for simplicity.
+        # To do that, just split the expression in two parts.
+        if aggregation_expr.subformula and aggregation_expr.subformula.startswith('round'):
+            precision_string = re.match(r"round\((?P<precision>\d+)\)", aggregation_expr.subformula)['precision']
+            return round(unbound_value, int(precision_string))
+
         if aggregation_expr.subformula and aggregation_expr.subformula != 'cross_report':
-            # So an expression can't have bounds and be cross_reports, for simplicity.
-            # To do that, just split the expression in two parts.
             company_currency = self.env.company.currency_id
             date_to = column_group_options['date']['date_to']
 

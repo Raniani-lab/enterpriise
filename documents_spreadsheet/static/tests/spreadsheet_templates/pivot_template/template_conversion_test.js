@@ -26,7 +26,14 @@ async function convertFormula(params) {
         proms.push(model.getters.getPivotDataSource(pivotId).prepareForTemplateGeneration());
     }
     await Promise.all(proms);
-    setCellContent(model, "A1", `=${params.formula}`);
+    setCellContent(
+        model,
+        "A1",
+        `=${params.formula
+            .split("\n")
+            .map((s) => s.trim())
+            .join("")}`
+    );
     model.dispatch(params.convert);
     // Remove the equal sign
     return getCellContent(model, "A1").slice(1);

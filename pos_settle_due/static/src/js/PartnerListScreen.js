@@ -3,8 +3,13 @@
 import { PartnerListScreen } from "@point_of_sale/js/Screens/PartnerListScreen/PartnerListScreen";
 import { patch } from "@web/core/utils/patch";
 import { SelectionPopup } from "@point_of_sale/js/Popups/SelectionPopup";
+import { useService } from "@web/core/utils/hooks";
 
 patch(PartnerListScreen.prototype, "pos_settle_due.PartnerListScreen", {
+    setup() {
+        this._super(...arguments);
+        this.popup = useService("popup");
+    },
     get isBalanceDisplayed() {
         return true;
     },
@@ -28,7 +33,7 @@ patch(PartnerListScreen.prototype, "pos_settle_due.PartnerListScreen", {
             label: paymentMethod.name,
             item: paymentMethod,
         }));
-        const { confirmed, payload: selectedPaymentMethod } = await this.showPopup(SelectionPopup, {
+        const { confirmed, payload: selectedPaymentMethod } = await this.popup.add(SelectionPopup, {
             title: this.env._t("Select the payment method to settle the due"),
             list: selectionList,
         });
@@ -56,6 +61,6 @@ patch(PartnerListScreen.prototype, "pos_settle_due.PartnerListScreen", {
         const payment = newOrder.add_paymentline(selectedPaymentMethod);
         payment.set_amount(totalDue);
         newOrder.set_partner(this.state.selectedPartner);
-        this.showScreen("PaymentScreen");
+        this.pos.showScreen("PaymentScreen");
     },
 });

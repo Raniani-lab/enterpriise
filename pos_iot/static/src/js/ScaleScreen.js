@@ -1,12 +1,16 @@
 /** @odoo-module */
 
-import { Gui } from "@point_of_sale/js/Gui";
 import { ScaleScreen } from "@point_of_sale/js/Screens/ScaleScreen/ScaleScreen";
 import { patch } from "@web/core/utils/patch";
 import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
 import { ErrorTracebackPopup } from "@point_of_sale/js/Popups/ErrorTracebackPopup";
+import { useService } from "@web/core/utils/hooks";
 
 patch(ScaleScreen.prototype, "pos_iot.ScaleScreen", {
+    setup() {
+        this._super(...arguments);
+        this.popup = useService("popup");
+    },
     get scale() {
         return this.env.proxy.iot_device_proxies.scale;
     },
@@ -29,7 +33,7 @@ patch(ScaleScreen.prototype, "pos_iot.ScaleScreen", {
             ) {
                 if (!this._error) {
                     this._error = true;
-                    await Gui.showPopup(ErrorPopup, {
+                    await this.popup.add(ErrorPopup, {
                         title: this.env._t("Could not connect to IoT scale"),
                         body: this.env._t(
                             "The IoT scale is not responding. You should check your connection."
@@ -70,7 +74,7 @@ patch(ScaleScreen.prototype, "pos_iot.ScaleScreen", {
     },
     async _onValueChange(data) {
         if (data.status.status === "error") {
-            await Gui.showPopup(ErrorTracebackPopup, {
+            await this.popup.add(ErrorTracebackPopup, {
                 title: data.status.message_title,
                 body: data.status.message_body,
             });

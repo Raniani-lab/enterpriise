@@ -33,7 +33,7 @@ patch(Chrome.prototype, "l10n_de_pos_cert.Chrome", {
         if (error.status === 0) {
             const title = this.env._t("No internet");
             const body = event.detail.message.noInternet;
-            await this.showPopup(OfflineErrorPopup, { title, body });
+            await this.popup.add(OfflineErrorPopup, { title, body });
         } else if (error.status === 401 && error.source === "authenticate") {
             await this._showUnauthorizedPopup();
         } else if (
@@ -50,7 +50,7 @@ patch(Chrome.prototype, "l10n_de_pos_cert.Chrome", {
         } else {
             const title = this.env._t("Unknown error");
             const body = event.detail.message.unknown;
-            await this.showPopup(ErrorPopup, { title, body });
+            await this.popup.add(ErrorPopup, { title, body });
         }
     },
     async _showUnauthorizedPopup() {
@@ -58,7 +58,7 @@ patch(Chrome.prototype, "l10n_de_pos_cert.Chrome", {
         const body = this.env._t(
             "It seems that your Fiskaly API key and/or secret are incorrect. Update them in your company settings."
         );
-        await this.showPopup(ErrorPopup, { title, body });
+        await this.popup.add(ErrorPopup, { title, body });
     },
     async _showBadRequestPopup(data) {
         const title = this.env._t("Bad request");
@@ -66,10 +66,10 @@ patch(Chrome.prototype, "l10n_de_pos_cert.Chrome", {
             this.env._t("Your %s is incorrect. Update it in your PoS settings"),
             data
         );
-        await this.showPopup(ErrorPopup, { title, body });
+        await this.popup.add(ErrorPopup, { title, body });
     },
     async _showFiskalyNoInternetConfirmPopup(event) {
-        const { confirmed } = await this.showPopup(ConfirmPopup, {
+        const { confirmed } = await this.popup.add(ConfirmPopup, {
             title: this.env._t("Problem with internet"),
             body: this.env._t(
                 "You can either wait for the connection issue to be resolved or continue with a non-compliant receipt (the order will still be sent to Fiskaly once the connection issue is resolved).\n" +

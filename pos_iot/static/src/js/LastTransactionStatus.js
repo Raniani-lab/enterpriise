@@ -2,8 +2,8 @@
 import core from "web.core";
 import { AbstractAwaitablePopup } from "@point_of_sale/js/Popups/AbstractAwaitablePopup";
 import { PosComponent } from "@point_of_sale/js/PosComponent";
-import { Gui } from "@point_of_sale/js/Gui";
 import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
+import { useService } from "@web/core/utils/hooks";
 
 const { useState } = owl;
 const _t = core._t;
@@ -18,6 +18,8 @@ export class LastTransactionStatusButton extends PosComponent {
     static template = "LastTransactionStatusButton";
 
     setup() {
+        this._super(...arguments);
+        this.popup = useService("popup");
         this.state = useState({ pending: false });
     }
 
@@ -33,7 +35,7 @@ export class LastTransactionStatusButton extends PosComponent {
                 this.env.pos.get_order().selected_paymentline.payment_status
             )
         ) {
-            Gui.showPopup(ErrorPopup, {
+            this.popup.add(ErrorPopup, {
                 title: _t("Electronic payment in progress"),
                 body: _t(
                     "You cannot check the status of the last transaction when a payment in in progress."
@@ -56,7 +58,7 @@ export class LastTransactionStatusButton extends PosComponent {
 
     _onLastTransactionStatus(data) {
         this.state.pending = false;
-        Gui.showPopup(LastTransactionPopup, data.value);
+        this.popup.add(LastTransactionPopup, data.value);
     }
 }
 

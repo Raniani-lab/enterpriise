@@ -27,7 +27,7 @@ patch(PaymentScreen.prototype, "pos_settle_due.PaymentScreen", {
         ) {
             const partner = order.get_partner();
             if (partner) {
-                const { confirmed } = await this.showPopup(ConfirmPopup, {
+                const { confirmed } = await this.popup.add(ConfirmPopup, {
                     title: this.env._t("The order is empty"),
                     body: _.str.sprintf(
                         this.env._t("Do you want to deposit %s to %s?"),
@@ -42,7 +42,7 @@ patch(PaymentScreen.prototype, "pos_settle_due.PaymentScreen", {
                     return _super(...arguments);
                 }
             } else {
-                const { confirmed } = await this.showPopup(ConfirmPopup, {
+                const { confirmed } = await this.popup.add(ConfirmPopup, {
                     title: this.env._t("The order is empty"),
                     body: _.str.sprintf(
                         this.env._t(
@@ -54,7 +54,7 @@ patch(PaymentScreen.prototype, "pos_settle_due.PaymentScreen", {
                 });
                 if (confirmed) {
                     const { confirmed: confirmedPartner, payload: newPartner } =
-                        await this.showTempScreen("PartnerListScreen");
+                        await this.pos.showTempScreen("PartnerListScreen");
                     if (confirmedPartner) {
                         order.set_partner(newPartner);
                     }

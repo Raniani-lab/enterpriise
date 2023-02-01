@@ -1,6 +1,5 @@
 /** @odoo-module */
 import { PosGlobalState, Order, Orderline } from "@point_of_sale/js/models";
-import { Gui } from "@point_of_sale/js/Gui";
 import core from "web.core";
 var _t = core._t;
 import { patch } from "@web/core/utils/patch";
@@ -80,7 +79,7 @@ patch(PosGlobalState.prototype, "pos_l10n_se.PosGlobalState", {
                 high_level_message: data,
             }).then((action_result) => {
                 if (action_result.result === false) {
-                    Gui.showPopup(ErrorPopup, {
+                    this.env.services.popup(ErrorPopup, {
                         title: _t("Fiscal Data Module error"),
                         body: _t("The fiscal data module is disconnected."),
                     });
@@ -119,7 +118,7 @@ patch(Order.prototype, "pos_l10n_se.Order", {
     async add_product(product, options) {
         const _super = this._super;
         if (this.pos.useBlackBoxSweden() && product.taxes_id.length === 0) {
-            await Gui.showPopup(ErrorPopup, {
+            await this.pos.env.services.popup(ErrorPopup, {
                 title: _t("POS error"),
                 body: _t("Product has no tax associated with it."),
             });
@@ -127,19 +126,19 @@ patch(Order.prototype, "pos_l10n_se.Order", {
             this.pos.useBlackBoxSweden() &&
             !this.pos.taxes_by_id[product.taxes_id[0]].identification_letter
         ) {
-            await Gui.showPopup(ErrorPopup, {
+            await this.pos.env.services.popup(ErrorPopup, {
                 title: _t("POS error"),
                 body: _t(
                     "Product has an invalid tax amount. Only 25%, 12%, 6% and 0% are allowed."
                 ),
             });
         } else if (this.pos.useBlackBoxSweden() && this.pos.get_order().is_refund) {
-            await Gui.showPopup(ErrorPopup, {
+            await this.pos.env.services.popup(ErrorPopup, {
                 title: _t("POS error"),
                 body: _t("Cannot modify a refund order."),
             });
         } else if (this.pos.useBlackBoxSweden() && this.hasNegativeAndPositiveProducts(product)) {
-            await Gui.showPopup(ErrorPopup, {
+            await this.pos.env.services.popup(ErrorPopup, {
                 title: _t("POS error"),
                 body: _t("You can only make positive or negative order. You cannot mix both."),
             });

@@ -1,13 +1,17 @@
 /** @odoo-module */
 
 import { ReprintReceiptButton } from "@point_of_sale/js/Screens/TicketScreen/ControlButtons/ReprintReceiptButton";
-import { Gui } from "@point_of_sale/js/Gui";
 import { patch } from "@web/core/utils/patch";
 import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
 import core from "web.core";
+import { useService } from "@web/core/utils/hooks";
 var _t = core._t;
 
 patch(ReprintReceiptButton.prototype, "pos_l10n_se.ReprintReceiptButton", {
+    setup() {
+        this._super(...arguments);
+        this.popup = useService("popup");
+    },
     async _onClick() {
         const _super = this._super;
         if (this.env.pos.useBlackBoxSweden()) {
@@ -20,7 +24,7 @@ patch(ReprintReceiptButton.prototype, "pos_l10n_se.ReprintReceiptButton", {
                     args: [[this.env.pos.validated_orders_name_server_id_map[order.name]]],
                 });
                 if (isReprint) {
-                    await Gui.showPopup(ErrorPopup, {
+                    await this.popup.add(ErrorPopup, {
                         title: _t("POS error"),
                         body: _t("A duplicate has already been printed once."),
                     });

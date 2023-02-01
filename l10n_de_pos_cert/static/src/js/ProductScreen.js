@@ -47,6 +47,6 @@ patch(ProductScreen.prototype, "l10n_de_pos_cert.ProductScreen", {
                 "There was an error while loading the Germany taxes. Try again later or your Fiskaly API key and secret might have been corrupted, request new ones"
             );
         }
-        await this.showPopup(ErrorPopup, { title, body });
+        await this.popup.add(ErrorPopup, { title, body });
     },
 });

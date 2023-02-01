@@ -4,7 +4,12 @@ import { registry } from '@web/core/registry';
 import { IoTConnectionErrorDialog } from './iot_connection_error_dialog';
 
 export class IoTLongpolling {
-    constructor(dialogService) {
+    static servicesDependencies = ["dialog"];
+    constructor() {
+        this.setup(...arguments);
+    }
+    // setup to allow patching
+    setup({ dialog }) {
         // CONSTANTS
         this.POLL_TIMEOUT = 60000;
         this.POLL_ROUTE = '/hw_drivers/event';
@@ -20,7 +25,7 @@ export class IoTLongpolling {
         this._session_id = this._createUUID();
         this._listeners = {};
         this._delayedStartPolling(this.RPC_DELAY);
-        this.dialogService = dialogService;
+        this.dialogService = dialog;
     }
 
     //--------------------------------------------------------------------------
@@ -243,11 +248,10 @@ export class IoTLongpolling {
 }
 
 export const iotLongpollingService = {
-    dependencies: ['dialog'],
-    start(_, { dialog }) {
-        return new IoTLongpolling(dialog);
-    }
+    dependencies: IoTLongpolling.servicesDependencies,
+    start(_, deps) {
+        return new IoTLongpolling(deps);
+    },
 };
-
 
 registry.category('services').add('iot_longpolling', iotLongpollingService);

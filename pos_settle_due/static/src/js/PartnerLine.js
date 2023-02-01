@@ -3,8 +3,15 @@
 import { PartnerLine } from "@point_of_sale/js/Screens/PartnerListScreen/PartnerLine";
 import { patch } from "@web/core/utils/patch";
 import { SelectionPopup } from "@point_of_sale/js/Popups/SelectionPopup";
+import { usePos } from "@point_of_sale/app/pos_hook";
+import { useService } from "@web/core/utils/hooks";
 
 patch(PartnerLine.prototype, "pos_settle_due.PartnerLine", {
+    setup() {
+        this._super(...arguments);
+        this.pos = usePos();
+        this.popup = useService("popup");
+    },
     getPartnerLink() {
         return `/web#model=res.partner&id=${this.props.partner.id}`;
     },
@@ -23,7 +30,7 @@ patch(PartnerLine.prototype, "pos_settle_due.PartnerLine", {
             label: paymentMethod.name,
             item: paymentMethod,
         }));
-        const { confirmed, payload: selectedPaymentMethod } = await this.showPopup(SelectionPopup, {
+        const { confirmed, payload: selectedPaymentMethod } = await this.popup.add(SelectionPopup, {
             title: this.env._t("Select the payment method to settle the due"),
             list: selectionList,
         });
@@ -35,6 +42,6 @@ patch(PartnerLine.prototype, "pos_settle_due.PartnerLine", {
         const payment = newOrder.add_paymentline(selectedPaymentMethod);
         payment.set_amount(totalDue);
         newOrder.set_partner(this.props.partner);
-        this.showScreen("PaymentScreen");
+        this.pos.showScreen("PaymentScreen");
     },
 });

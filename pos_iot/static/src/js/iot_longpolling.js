@@ -4,14 +4,20 @@
 import core from "web.core";
 import { IoTLongpolling } from "@iot/iot_longpolling";
 import { patch } from "@web/core/utils/patch";
-import { Gui } from "@point_of_sale/js/Gui";
 import { IoTErrorPopup } from "./IoTErrorPopup";
 
 var _t = core._t;
 
+patch(IoTLongpolling, "pos_iot.IoTLongpolling static", {
+    servicesDependencies: ["popup", ...IoTLongpolling.servicesDependencies],
+});
 patch(IoTLongpolling.prototype, "pos_iot.IotLongpolling", {
+    setup({ popup }) {
+        this._super(...arguments);
+        this.popup = popup;
+    },
     _doWarnFail: function (url) {
-        Gui.showPopup(IoTErrorPopup, {
+        this.popup.add(IoTErrorPopup, {
             title: _t("Connection to IoT Box failed"),
             url: url,
         });

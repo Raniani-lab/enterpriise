@@ -1,7 +1,6 @@
 /** @odoo-module */
 import core from "web.core";
 import { PaymentInterface } from "@point_of_sale/js/payment";
-import { Gui } from "@point_of_sale/js/Gui";
 import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
 
 var _t = core._t;
@@ -68,7 +67,7 @@ export const PaymentIngenico = PaymentInterface.extend({
     },
     _onActionResult: function (data) {
         if (data.result === false) {
-            Gui.showPopup(ErrorPopup, {
+            this.pos.env.services.popup.add(ErrorPopup, {
                 title: _t("Connection to terminal failed"),
                 body: _t("Please check if the terminal is still connected."),
             });
@@ -78,7 +77,7 @@ export const PaymentIngenico = PaymentInterface.extend({
         }
     },
     _onActionFail: function () {
-        Gui.showPopup(ErrorPopup, {
+        this.pos.env.services.popup.add(ErrorPopup, {
             title: _t("Connection to IoT Box failed"),
             body: _t("Please check if the IoT Box is still connected."),
         });
@@ -87,7 +86,7 @@ export const PaymentIngenico = PaymentInterface.extend({
         }
     },
     _showErrorConfig: function () {
-        Gui.showPopup(ErrorPopup, {
+        this.pos.env.services.popup.add(ErrorPopup, {
             title: _t("Configuration of payment terminal failed"),
             body: _t("You must select a payment terminal in your POS config."),
         });
@@ -95,7 +94,7 @@ export const PaymentIngenico = PaymentInterface.extend({
 
     _waitingPayment: function (resolve, data, line) {
         if (data.Error) {
-            Gui.showPopup(ErrorPopup, {
+            this.pos.env.services.popup.add(ErrorPopup, {
                 title: _t("Payment terminal error"),
                 body: _t(data.Error),
             });
@@ -177,7 +176,7 @@ export const PaymentWorldline = PaymentIngenico.extend({
                 // Cancel failed, wait for transaction response
                 this.cancel_resolve(false);
                 line.set_payment_status("waitingCard");
-                Gui.showPopup(ErrorPopup, {
+                this.pos.env.services.popup.add(ErrorPopup, {
                     title: _t("Transaction could not be cancelled"),
                     body: data.Error,
                 });
@@ -189,7 +188,7 @@ export const PaymentWorldline = PaymentIngenico.extend({
         } else if (data.Disconnected) {
             // Terminal disconnected
             line.set_payment_status("force_done");
-            Gui.showPopup(ErrorPopup, {
+            this.pos.env.services.popup.add(ErrorPopup, {
                 title: _t("Terminal Disconnected"),
                 body: _t(
                     "Please check the network connection and then check the status of the last transaction manually."

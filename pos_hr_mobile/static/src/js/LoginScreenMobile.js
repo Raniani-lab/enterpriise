@@ -4,11 +4,13 @@ import { LoginScreen } from "@pos_hr/js/LoginScreen";
 import { patch } from "@web/core/utils/patch";
 import { isBarcodeScannerSupported, scanBarcode } from "@web/webclient/barcode/barcode_scanner";
 import { ErrorPopup } from "@point_of_sale/js/Popups/ErrorPopup";
+import { useService } from "@web/core/utils/hooks";
 
 patch(LoginScreen.prototype, "pos_hr_mobile.LoginScreen", {
     setup() {
         this._super(...arguments);
         this.hasMobileScanner = isBarcodeScannerSupported();
+        this.popup = useService("popup");
     },
     async open_mobile_scanner() {
         let data;
@@ -17,7 +19,7 @@ patch(LoginScreen.prototype, "pos_hr_mobile.LoginScreen", {
         } catch (error) {
             if (error.error && error.error.message) {
                 // Here, we know the structure of the error raised by BarcodeScanner.
-                this.showPopup(ErrorPopup, {
+                this.popup.add(ErrorPopup, {
                     title: this.env._t("Unable to scan"),
                     body: error.error.message,
                 });

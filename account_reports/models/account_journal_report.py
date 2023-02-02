@@ -228,6 +228,7 @@ class JournalReportCustomHandler(models.AbstractModel):
                     'columns': [],
                     'colspan': len(options['columns']) + 1,
                     'level': 3,
+                    'class': 'o_account_reports_ja_subtable',
                 })
 
         return lines, after_load_more_lines, has_more_lines, treated_results_count, next_progress, current_balances
@@ -470,6 +471,7 @@ class JournalReportCustomHandler(models.AbstractModel):
             'columns': columns,
             'parent_id': parent_key,
             'move_id': values['move_id'],
+            'class': 'o_account_reports_ja_move_line',
         }
 
     def _get_aml_line(self, options, parent_key, eval_dict, line_index, journal, is_unreconciled_payment):
@@ -529,7 +531,9 @@ class JournalReportCustomHandler(models.AbstractModel):
             else:
                 amount_currency_name = _('Amount in currency: %s', self.env['account.report'].format_value(values[column_group_key]['amount_currency_total'], currency=self.env['res.currency'].browse(values[column_group_key]['move_currency']), blank_if_zero=False, figure_type='monetary'))
             if line_index == 0:
-                return values[column_group_key]['reference'] or amount_currency_name
+                res = values[column_group_key]['reference'] or amount_currency_name
+                # if the invoice ref equals the payment ref then let's not repeat the information
+                return res if res != values[column_group_key]['move_name'] else ''
             elif line_index == 1:
                 return values[column_group_key]['reference'] and amount_currency_name or ''
             elif line_index == -1:  # Only when we create a line just for the amount currency. It's the only time we always want the amount.

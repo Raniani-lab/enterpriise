@@ -14,9 +14,17 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
         results = self._get_query_results(options, primary_fields=['category_id'])
         lines = []
 
+        totals = {
+            column_group_key: {key: 0.0 for key in ['total_amount', 'disallowed_amount']}
+            for column_group_key in options['column_groups']
+        }
+
         for group_key, result in results.items():
             current = self._parse_hierarchy_group_key(group_key)
             lines.append((0, self._get_category_line(options, result, current, len(current))))
+            self._update_total_values(totals, options, result)
+
+        lines.append((0, self._get_total_line(options, totals)))
 
         return lines
 
@@ -230,26 +238,41 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
 
         return {'lines': lines}
 
-    def _get_column_values(self, options, values):
+    def _get_column_values(self, options, values, update_vals=True):
         column_values = []
 
         for column in options['columns']:
             vals = values.get(column['column_group_key'], {})
-            if vals:
+            if vals and update_vals:
                 vals['rate'] = self._get_current_rate(vals)
                 vals['disallowed_amount'] = self._get_current_disallowed_amount(vals)
             col_val = vals.get(column['expression_label'])
+            blank_totals = column.get('blank_if_zero', False) and update_vals
 
-            if not col_val:
+            if not col_val and blank_totals:
                 column_values.append({})
             else:
                 column_values.append({
-                    'name': self.env['account.report'].format_value(col_val, figure_type=column['figure_type']),
+                    'name': self.env['account.report'].format_value(col_val, figure_type=column['figure_type'], blank_if_zero=blank_totals),
                     'no_format': col_val,
                     'class': 'number',
                 })
 
         return column_values
+
+    def _update_total_values(self, total, options, values):
+        for column_group_key in options['column_groups']:
+            for key in total[column_group_key]:
+                total[column_group_key][key] += values.get(column_group_key, {}).get(key) or 0.0
+
+    def _get_total_line(self, options, totals):
+        return {
+            'id': self.env['account.report']._get_generic_line_id(None, None, markup='total'),
+            'name': _('Total'),
+            'class': 'total',
+            'level': 1,
+            'columns': self._get_column_values(options, totals, update_vals=False),
+        }
 
     def _get_category_line(self, options, values, current, level):
         base_line_values = list(values.values())[0]

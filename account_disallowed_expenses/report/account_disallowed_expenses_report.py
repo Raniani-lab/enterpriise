@@ -184,13 +184,13 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
             params['column_group_key'] = column_group_key
             self.env.cr.execute(select + from_ + where + group_by + order_by + order_by_rate, params)
 
-            for index, results in enumerate(self.env.cr.dictfetchall()):
-                key = self._get_group_key(results, primary_fields, secondary_fields, selector, index)
+            for results in self.env.cr.dictfetchall():
+                key = self._get_group_key(results, primary_fields, secondary_fields, selector)
                 grouped_results.setdefault(key, {})[column_group_key] = results
 
         return grouped_results
 
-    def _get_group_key(self, results, primary_fields, secondary_fields, selector, index):
+    def _get_group_key(self, results, primary_fields, secondary_fields, selector):
         fields = []
         if selector is None or self._get_single_value(results, selector):
             fields = primary_fields
@@ -203,7 +203,7 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
             if group_key_id:
                 group_key_list.append(group_key + '~' + (group_key_id and str(group_key_id) or ''))
 
-        return '|'.join(group_key_list) + '|' + str(index)
+        return '|'.join(group_key_list)
 
     def _parse_hierarchy_group_key(self, group_key):
         return {
@@ -212,7 +212,7 @@ class DisallowedExpensesCustomHandler(models.AbstractModel):
             in [
                 full_id.split('~')
                 for full_id
-                in (group_key.split('|')[:-1])
+                in (group_key.split('|'))
             ]
         }
 

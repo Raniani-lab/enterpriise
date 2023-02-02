@@ -1058,8 +1058,13 @@ class SaleOrder(models.Model):
                 pending_section = line
                 continue
 
-            time_condition = line.order_id.next_invoice_date and line.order_id.next_invoice_date <= date_from and line.order_id.start_date and line.order_id.start_date <= date_from
-            line_condition = time_condition or not automatic_invoice # automatic mode force the invoice when line are not null
+            if automatic_invoice:
+                # We don't invoice line before their SO's next_invoice_date
+                line_condition = line.order_id.next_invoice_date and line.order_id.next_invoice_date <= date_from and line.order_id.start_date and line.order_id.start_date <= date_from
+            else:
+                # We don't invoice line past their SO's end_date
+                line_condition = not line.order_id.end_date or line.order_id.next_invoice_date < line.order_id.end_date
+
             line_to_invoice = False
             if line in res:
                 # Line was already marked as to be invoice
@@ -1550,8 +1555,8 @@ class SaleOrder(models.Model):
         error_message = super()._nothing_to_invoice_error_message()
         if any(self.mapped('is_subscription')):
             error_message += _(
-                "\n- You should wait for the current subscription period to pass. New quantities to invoice will be ready "
-                "at the end of the current period. \n  Negative recurring lines are considered free."
+                "\n- You are trying to invoice recurring orders that are past their end date. Please change their end date or renew them "
+                "before creating new invoices."
             )
         return error_message
 

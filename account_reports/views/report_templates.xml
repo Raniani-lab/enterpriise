@@ -314,11 +314,11 @@
                         t-foreach="[{'style': 'width: 100%;', 'colspan': 1}]
                                    + header_level * column_headers_render_data['level_repetitions'][header_level_index]"
                         t-as="header">
-
+                        <t t-set="header_name" t-value="header.get('name') if len(options['column_headers'][0]) > 1 else ''"/>
                         <th t-att-class="o_account_report_column_header"
                             t-att-colspan="header.get('colspan', column_headers_render_data['level_colspan'][header_level_index])"
                             t-att-style="header.get('style', 'text-align: center;')">
-                            <t t-out="header.get('name')"/>
+                            <t t-out="header_name"/>
                         </th>
                     </t>
 

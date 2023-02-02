@@ -16,7 +16,7 @@ class MrpProduction(models.Model):
         for mo in self:
             mo.eco_count = len(mo.eco_ids)
 
-    @api.depends('bom_id', 'bom_id.active')
+    @api.depends('bom_id', 'bom_id.active', 'bom_id.bom_line_ids')
     def _compute_latest_bom_id(self):
         self.latest_bom_id = False
         mo_ids_without_latest_bom = []
@@ -71,13 +71,13 @@ class MrpProduction(models.Model):
         return action
 
     def action_update_bom(self):
+        productions_without_latest_bom = self.env['mrp.production']
         for production in self:
-            if production.state != 'draft' or not production.latest_bom_id:
-                continue
-            latest_bom = production.latest_bom_id
-            (production.move_finished_ids | production.move_raw_ids).unlink()
-            production.workorder_ids.unlink()
-            production.write({'bom_id': latest_bom.id})
+            if not production.latest_bom_id:
+                productions_without_latest_bom |= production
+            elif production.state in ['draft', 'confirmed']:
+                production._link_bom(production.latest_bom_id)
+        super(MrpProduction, productions_without_latest_bom).action_update_bom()
 
     def _create_revision_bom(self):
         """ Compares the MO's components, by-products and workorders with its BoM's lines,

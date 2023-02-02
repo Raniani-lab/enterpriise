@@ -15,11 +15,6 @@
         <field name="model">mrp.production</field>
         <field name="inherit_id" ref="mrp.mrp_production_form_view"/>
         <field name="arch" type="xml">
-            <field name="bom_id" position='after'>
-                <field name='latest_bom_id' invisible='1'/>
-                <button name="action_update_bom" string="Update BoM" type="object" attrs="{'invisible': ['|', ('latest_bom_id', '=', False), ('state', '!=', 'draft')]}" class="text-danger"/>
-                <widget name='plm_toaster_button' attrs="{'invisible': ['|', ('latest_bom_id', '=', False), ('state', '!=', 'confirmed')]}"/>
-            </field>
             <xpath expr="//div[hasclass('oe_button_box')]" position="inside">
                 <button class="oe_stat_button" name="action_open_eco" type="object" icon="fa-cogs"
                     groups="mrp_plm.group_plm_user" attrs="{'invisible': [('eco_count', '&lt;', 1)]}"
@@ -29,6 +24,18 @@
                         <span class="o_stat_text">ECO(S)</span>
                     </div>
                 </button>
+            </xpath>
+            <xpath expr="//field[@name='is_outdated_bom']" position="after">
+                <field name="latest_bom_id" invisible="1"/>
+            </xpath>
+            <xpath expr="//button[@name='action_update_bom']" position="attributes">
+                <attribute name="attrs">{'invisible': [
+                    '|',
+                        '&amp;',
+                            ('is_outdated_bom', '=', False),
+                            ('latest_bom_id', '=', False),
+                        ('state', 'not in', ['draft', 'confirmed'])
+                ]}</attribute>
             </xpath>
         </field>
     </record>

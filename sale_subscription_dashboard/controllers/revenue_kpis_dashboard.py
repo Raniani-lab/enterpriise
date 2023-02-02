@@ -107,7 +107,8 @@ class RevenueKPIsDashboard(http.Controller):
                 stat_type,
                 start_date - relativedelta(months=+delta),
                 end_date - relativedelta(months=+delta),
-                filters=filters)
+                points_limit=2,
+                filters=filters)[-1][1]
 
         return results
 
@@ -131,9 +132,8 @@ class RevenueKPIsDashboard(http.Controller):
             if filters.get('company_ids'):
                 lines_domain.append(('company_id', 'in', filters.get('company_ids')))
             recurring_invoice_line_ids = request.env['account.move.line'].search(lines_domain)
-            specific_filters = dict(filters)  # create a copy to modify it
-            specific_filters.update({'template_ids': [template.id]})
-            value = self.compute_stat(stat_type, start_date, end_date, filters=specific_filters)
+            specific_filters = {**filters, 'template_ids': [template.id]}
+            value = self.compute_stat(stat_type, start_date, end_date, points_limit=2, filters=specific_filters)[-1][1]
             results.append({
                 'name': template.name,
                 'recurrence': template.recurrence_id.name,
@@ -206,6 +206,8 @@ class RevenueKPIsDashboard(http.Controller):
     @http.route('/sale_subscription_dashboard/compute_stat', type='json', auth='user')
     def compute_stat(self, stat_type, start_date=None, end_date=None, points_limit=0, dates=None, filters=None):
         # We add a day at the beginning with similar timedelta to have similar sized buckets
+        if not request.env.user.has_group('sales_team.group_sale_manager'):
+            return []
         if not dates:
             start_date = fields.Date.from_string(start_date)
             end_date = end_date and fields.Date.from_string(end_date) or fields.Date.today()

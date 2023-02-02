@@ -85,11 +85,8 @@ def _build_sql_query(fields, tables, conditions, query_args, filters, groupby=No
 
 def compute_mrr_growth_values(start_date, end_date, filters):
     # TODO Improve this
-    new_mrr = 0
     expansion_mrr = 0
     down_mrr = 0
-    churned_mrr = 0
-    net_new_mrr = 0
 
     # 1. NEW
     fields = ['account_move_line.subscription_mrr,account_move_line.currency_id,account_move_line.company_currency_id',

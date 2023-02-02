@@ -13,7 +13,7 @@ class TestSubscriptionDashboard(HttpCase):
     def setUp(self):
         super().setUp()
         TestSubscriptionDashboard._create_test_objects(self)
-        mail_new_test_user(self.env, "test_user_1", email="test_user_1@nowhere.com", password="P@ssw0rd!")
+        mail_new_test_user(self.env, "test_user_1", email="test_user_1@nowhere.com", password="P@ssw0rd!", groups='sales_team.group_sale_manager')
 
     @staticmethod
     def _create_test_objects(container):

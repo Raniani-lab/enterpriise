@@ -25,7 +25,7 @@ class SaleOrder(models.Model):
                                     ON account_move_line (company_id, subscription_start_date, subscription_end_date)
                                  WHERE subscription_id IS NOT NULL;
         """)
-        return super(SaleOrder, self).init()
+        super().init()
 
     @api.model
     def _get_subscription_dates_ranges(self):

@@ -2,31 +2,27 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from dateutil.relativedelta import relativedelta
-from datetime import date
 
 from odoo.http import request
 
 
-def currency_rate_table(date):
-    return f"""
+def currency_rate_table():
+    return """
     SELECT DISTINCT ON (currency_id)
         currency_id, rate
     FROM res_currency_rate curr_rate
-    WHERE create_date < DATE '{date}'
+    WHERE create_date < DATE %(currency_date)s
     ORDER BY currency_id, create_date DESC
     """
 
 
 def get_dates_datapoints(dates):
-    assert all(isinstance(d, date) for d in dates)
-    query = 'VALUES %s' % ','.join(f"(DATE '{date}')" for date in dates)
-    return request.cr.mogrify(query).decode(request.env.cr.connection.encoding)
+    return "VALUES " + ','.join(f"(DATE %(date_{n})s)" for n in range(len(dates))), {f'date_{n}': date for n, date in enumerate(dates)}
 
 
 def get_churn_dates_datapoints(dates):
-    assert all(isinstance(d, date) for d in dates)
-    query = 'VALUES %s' % ','.join(f"(DATE '{date + relativedelta(months=-1)}', DATE '{date}')" for date in dates)
-    return request.cr.mogrify(query).decode(request.env.cr.connection.encoding)
+    return "VALUES " + ','.join(f"(DATE %(date_churnA_{n})s, DATE %(date_churnB_{n})s)" for n in range(len(dates))), \
+           {**{f'date_churnA_{n}': date + relativedelta(months=-1) for n, date in enumerate(dates)}, **{f'date_churnB_{n}': date for n, date in enumerate(dates)}}
 
 
 def make_filters_query(filters):
@@ -36,24 +32,25 @@ def make_filters_query(filters):
     if filters.get('template_ids'):
         join += "\nJOIN sale_order so ON aml.subscription_id = so.id"
         where += "\nAND so.sale_order_template_id IN %(template_ids)s"
-        args['template_ids'] = tuple(filters.get('template_ids'))
+        args['template_ids'] = tuple(filters['template_ids'])
 
     if filters.get('sale_team_ids'):
         join += "\nJOIN crm_team crm ON am.team_id = crm.id"
         where += "\nAND crm.id IN %(team_ids)s"
-        args['team_ids'] = tuple(filters.get('sale_team_ids'))
+        args['team_ids'] = tuple(filters['sale_team_ids'])
 
     if filters.get('company_ids'):
         where += """\nAND am.company_id IN %(company_ids)s
                  AND aml.company_id IN %(company_ids)s"""
-        args['company_ids'] = tuple(filters.get('company_ids'))
+        args['company_ids'] = tuple(filters['company_ids'])
 
     return join, where, args
 
 
 def compute_nb_contracts_batch(dates, filters):
-    dates_datapoints = get_dates_datapoints(dates)
     join, where, query_args = make_filters_query(filters)
+    dates_datapoints, date_args = get_dates_datapoints(dates)
+    query_args = {**query_args, **date_args}
 
     query = f"""
     WITH 
@@ -97,11 +94,10 @@ def compute_nb_contracts_batch(dates, filters):
     ) b    
     WHERE value = 0  
     """
-
-    query_args.update({
-        'start_date': dates[0],
-        'end_date': dates[-1],
-    })
+    query_args.update(
+        start_date=dates[0],
+        end_date=dates[-1],
+    )
 
     request.cr.execute(query, query_args)
     return request.cr.dictfetchall()
@@ -110,10 +106,10 @@ def compute_nb_contracts_batch(dates, filters):
 def compute_logo_churn_batch(dates, filters):
     """ Logo churn represent percentage of customer that were present one month ago and that are still present now
     """
-
-    dates_datapoints = get_dates_datapoints(dates)
-    churn_dates_datapoints = get_churn_dates_datapoints(dates)
     join, where, query_args = make_filters_query(filters)
+    dates_datapoints, date_args = get_dates_datapoints(dates)
+    churn_dates_datapoints, churn_date_args = get_churn_dates_datapoints(dates)
+    query_args = {**query_args, **date_args, **churn_date_args}
 
     query = f"""
     WITH 
@@ -178,22 +174,23 @@ def compute_logo_churn_batch(dates, filters):
     AND     new_running.exp_value = 0
     """
 
-    query_args.update({
-        'start_date': dates[0],
-        'end_date': dates[-1],
-    })
+    query_args.update(
+        start_date=dates[0],
+        end_date=dates[-1],
+    )
 
     request.cr.execute(query, query_args)
     return request.cr.dictfetchall()
 
 def compute_net_revenue_batch(dates, filters):
-    dates_datapoints = get_dates_datapoints(dates)
     join, where, query_args = make_filters_query(filters)
+    dates_datapoints, date_args = get_dates_datapoints(dates)
+    query_args = {**query_args, **date_args}
 
     query = f"""
         WITH 
             dates(date) AS ({dates_datapoints}),
-            currency_rate AS ({currency_rate_table(dates[-1])}),
+            currency_rate AS ({currency_rate_table()}),
             subscription AS (
                 SELECT 
                     aml.subscription_id, 
@@ -236,22 +233,24 @@ def compute_net_revenue_batch(dates, filters):
         WHERE value = 0  
         """
 
-    query_args.update({
-        'start_date': dates[0],
-        'end_date': dates[-1],
-    })
+    query_args.update(
+        start_date=dates[0],
+        end_date=dates[-1],
+        currency_date=dates[-1],
+    )
 
     request.cr.execute(query, query_args)
     return request.cr.dictfetchall()
 
 
 def compute_nrr_batch(dates, filters):
-    dates_datapoints = get_dates_datapoints(dates)
     join, where, query_args = make_filters_query(filters)
+    dates_datapoints, date_args = get_dates_datapoints(dates)
+    query_args = {**query_args, **date_args}
 
     query = f"""
         WITH 
-            currency_rate AS ({currency_rate_table(dates[-1])}),
+            currency_rate AS ({currency_rate_table()}),
             dates(date) AS ({dates_datapoints}),
             subscription AS (
                 SELECT 
@@ -293,21 +292,23 @@ def compute_nrr_batch(dates, filters):
         WHERE value = 0  
         """
 
-    query_args.update({
-        'start_date': dates[0],
-        'end_date': dates[-1],
-    })
+    query_args.update(
+        start_date=dates[0],
+        end_date=dates[-1],
+        currency_date=dates[-1],
+    )
 
     request.cr.execute(query, query_args)
     return request.cr.dictfetchall()
 
 def compute_mrr_batch(dates, filters):
-    dates_datapoints = get_dates_datapoints(dates)
     join, where, query_args = make_filters_query(filters)
+    dates_datapoints, date_args = get_dates_datapoints(dates)
+    query_args = {**query_args, **date_args}
 
     query = f"""
         WITH 
-            currency_rate AS ({currency_rate_table(dates[-1])}),
+            currency_rate AS ({currency_rate_table()}),
             dates(date) AS ({dates_datapoints}),
             subscription AS (
                 SELECT 
@@ -356,10 +357,11 @@ def compute_mrr_batch(dates, filters):
         WHERE value = 0  
         """
 
-    query_args.update({
-        'start_date': dates[0],
-        'end_date': dates[-1],
-    })
+    query_args.update(
+        start_date=dates[0],
+        end_date=dates[-1],
+        currency_date=dates[-1],
+    )
 
     request.cr.execute(query, query_args)
     return request.cr.dictfetchall()
@@ -389,14 +391,14 @@ def compute_ltv_batch(dates, filters):
 def compute_revenue_churn_batch(dates, filters):
     """ revenue churn represent percentage of revenue that was present one month ago and that is still present now
     """
-
-    dates_datapoints = get_dates_datapoints(dates)
-    churn_dates_datapoints = get_churn_dates_datapoints(dates)
     join, where, query_args = make_filters_query(filters)
+    dates_datapoints, date_args = get_dates_datapoints(dates)
+    churn_dates_datapoints, churn_date_args = get_churn_dates_datapoints(dates)
+    query_args = {**query_args, **date_args, **churn_date_args}
 
     query = f"""
             WITH 
-                currency_rate AS ({currency_rate_table(dates[-1])}),
+                currency_rate AS ({currency_rate_table()}),
                 dates(date) AS ({dates_datapoints}),
                 churn_dates(date_start, date_end) AS ({churn_dates_datapoints}),
                 subscription AS (
@@ -465,10 +467,11 @@ def compute_revenue_churn_batch(dates, filters):
             AND     new_running.exp_value = 0
     """
 
-    query_args.update({
-        'start_date': dates[0],
-        'end_date': dates[-1],
-    })
+    query_args.update(
+        start_date=dates[0],
+        end_date=dates[-1],
+        currency_date=dates[-1],
+    )
 
     request.cr.execute(query, query_args)
     return request.cr.dictfetchall()

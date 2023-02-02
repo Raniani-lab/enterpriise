@@ -221,7 +221,8 @@ class AppointmentController(http.Controller):
             - filter_appointment_type_ids, filter_staff_user_ids and invite_token parameters.
             - user_default: the first of possible staff users. It will be selected by default (in the user select dropdown)
             if no user_selected. Otherwise, the latter will be preselected instead. It is only set if there is at least one
-            possible user and if the choice is activated in appointment_type.
+            possible user and the choice is activated in appointment_type, or used for having the user name in title if there
+            is a single possible user, for random selection.
             - user_selected: the user corresponding to staff_user_id in the url and to the selected one. It can be selected
             upstream, from the operator_select screen (see WebsiteAppointment controller), or coming back from an error.
             It is only set if among the possible users.
@@ -237,6 +238,8 @@ class AppointmentController(http.Controller):
         if appointment_type.assign_method == 'chosen' and users_possible:
             if staff_user_id and staff_user_id in users_possible.ids:
                 user_selected = next(user for user in users_possible if user.id == staff_user_id)
+            user_default = users_possible[0]
+        elif appointment_type.assign_method == 'random' and len(users_possible) == 1:
             user_default = users_possible[0]
 
         return {

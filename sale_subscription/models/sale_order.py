@@ -125,8 +125,6 @@ class SaleOrder(models.Model):
     archived_product_ids = fields.Many2many('product.product', string='Archived Products', compute='_compute_archived')
     archived_product_count = fields.Integer("Archived Product", compute='_compute_archived')
     history_count = fields.Integer(compute='_compute_history_count')
-    # TODO REMOVE MASTER
-    show_rec_invoice_button = fields.Boolean(compute='_compute_show_rec_invoice_button')
     has_recurring_line = fields.Boolean(compute='_compute_has_recurring_line')
 
     starred_user_ids = fields.Many2many('res.users', 'sale_order_starred_user_rel', 'order_id', 'user_id',
@@ -405,13 +403,6 @@ class SaleOrder(models.Model):
         if 'stage_id' in init_values:
             return self.env.ref('sale_subscription.subtype_stage_change')
         return super()._track_subtype(init_values)
-
-    def _compute_show_rec_invoice_button(self):
-        self.show_rec_invoice_button = False
-        for order in self:
-            if not order.is_subscription or order.stage_category != 'progress' or order.state not in ['sale', 'done']:
-                continue
-            order.show_rec_invoice_button = True
 
     @api.depends('sale_order_template_id')
     def _compute_recurrence_id(self):

@@ -6,8 +6,8 @@ msgid ""
 msgstr ""
 "Project-Id-Version: Odoo Server 16.0+e\n"
 "Report-Msgid-Bugs-To: \n"
-"POT-Creation-Date: 2022-11-25 09:15+0000\n"
-"PO-Revision-Date: 2022-11-25 09:15+0000\n"
+"POT-Creation-Date: 2023-02-02 11:00+0000\n"
+"PO-Revision-Date: 2023-02-02 11:00+0000\n"
 "Last-Translator: \n"
 "Language-Team: \n"
 "MIME-Version: 1.0\n"
@@ -354,8 +354,8 @@ msgid "Bank & Cash Moves"
 msgstr ""
 
 #. module: account_accountant
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/account_accountant/models/account_bank_statement.py:0
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_form.js:0
 #, python-format
@@ -369,8 +369,22 @@ msgid "Bank Statement"
 msgstr ""
 
 #. module: account_accountant
+#. odoo-python
+#: code:addons/account_accountant/models/account_bank_statement.py:0
+#, python-format
+msgid "Bank Statement %s.pdf"
+msgstr ""
+
+#. module: account_accountant
 #: model:ir.model,name:account_accountant.model_account_bank_statement_line
 msgid "Bank Statement Line"
+msgstr ""
+
+#. module: account_accountant
+#. odoo-python
+#: code:addons/account_accountant/models/account_bank_statement.py:0
+#, python-format
+msgid "Bank Statement.pdf"
 msgstr ""
 
 #. module: account_accountant
@@ -1382,8 +1396,8 @@ msgid "Pay your"
 msgstr ""
 
 #. module: account_accountant
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/account_accountant/models/bank_rec_widget.py:0
 #: code:addons/account_accountant/static/src/components/bank_reconciliation/bank_rec_widget_tutorial.xml:0
 #, python-format
@@ -1501,8 +1515,8 @@ msgid "Reco Models Widget"
 msgstr ""
 
 #. module: account_accountant
-#. odoo-python
 #. odoo-javascript
+#. odoo-python
 #: code:addons/account_accountant/models/account_move.py:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
 #: code:addons/account_accountant/static/src/xml/account_reconciliation.xml:0
@@ -1686,6 +1700,7 @@ msgid "State"
 msgstr ""
 
 #. module: account_accountant
+#: model:ir.actions.server,name:account_accountant.action_bank_statement_attachment
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_kanban_bank_rec_widget
 #: model_terms:ir.ui.view,arch_db:account_accountant.view_bank_statement_line_search_bank_rec_widget
 msgid "Statement"

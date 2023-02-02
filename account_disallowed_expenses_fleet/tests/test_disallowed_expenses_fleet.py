@@ -181,6 +181,7 @@ class TestAccountDisallowedExpensesFleetReport(TestAccountReportsCommon):
                     ('600000 Expenses',                        100.0,          '60.0%',       60.0,               3),
                   ('600020 Expenses (copy)',                   500.0,          '23.0%',      115.0,               2),
                     ('600020 Expenses (copy)',                 500.0,          '23.0%',      115.0,               3),
+                ('Total',                                     2800.0,          '',           864.0,               1),
             ],
         )
 
@@ -207,5 +208,79 @@ class TestAccountDisallowedExpensesFleetReport(TestAccountReportsCommon):
                     ('600000 Expenses',                        700.0,          '23.0%',      161.0,               3),
                     ('600000 Expenses',                        400.0,          '40.0%',      160.0,               3),
                     ('600000 Expenses',                        100.0,          '60.0%',       60.0,               3),
+                ('Total',                                     2800.0,          '',           864.0,               1),
+            ],
+        )
+
+    def test_disallowed_expenses_report_comparison(self):
+        report, options = self._setup_base_report(unfold=True)
+        report.filter_period_comparison = True
+        options = self._update_comparison_filter(options, report, comparison_type='previous_period', number_period=1)
+
+        self.mr_freeze_account = self.env['account.account'].create({
+            'code': '611011',
+            'name': 'Frozen Account',
+        })
+
+        self.robins_dna = self.env['account.disallowed.expenses.category'].create({
+            'code': '1235',
+            'name': 'Robins DNA',
+            'account_ids': [Command.set(self.mr_freeze_account.id)],
+            'rate_ids': [
+                Command.create({
+                    'date_from': fields.Date.from_string('2022-08-01'),
+                    'rate': 50.0,
+                    'company_id': self.company_data['company'].id,
+                }),
+            ],
+        })
+
+        # Create journal entries, using a DNA category without a rate to test totals with blank 'Disallowed Amount'
+        entry_data = [
+            ('2022-08-15', 21.0),
+            ('2022-07-15', 25.0),
+            ('2021-08-15', 79.0),
+        ]
+        self.env['account.move'].create([{
+            'move_type': 'entry',
+            'date': fields.Date.from_string(entry_date),
+            'line_ids': [
+                Command.create({
+                    'account_id': self.mr_freeze_account.id,
+                    'name': 'robin vs mr freeze',
+                    'debit': entry_amount,
+                }),
+                Command.create({
+                    'account_id': self.company_data['default_account_revenue'].id,
+                    'name': 'robin vs mr freeze',
+                    'credit': entry_amount,
+                }),
+            ]
+        } for entry_date, entry_amount in entry_data]).action_post()
+
+        lines = report._get_lines(options)
+        self._prepare_column_values(lines)
+        self.assertLinesValues(
+            # pylint: disable=C0326
+            lines,
+            #                                    [                    2022                      ]    [                           2021               ]
+            #   Name                             Total Amount     Rate          Disallowed Amount    Total Amount     Rate          Disallowed Amount    Level
+            [   0,                               1,               2,            3,                   4,               5,            6,                   7],
+            [
+                ('1234 DNA category',            2800.0,          '',           864.0,               '',              '',           '',                  1),
+                  ('600000 Expenses',            2300.0,          '',           749.0,               '',              '',           '',                  2),
+                    ('600000 Expenses',           700.0,          '23.0%',      161.0,               '',              '',           '',                  3),
+                    ('600000 Expenses',           600.0,          '23.0%',      138.0,               '',              '',           '',                  3),
+                    ('600000 Expenses',           400.0,          '40.0%',      160.0,               '',              '',           '',                  3),
+                    ('600000 Expenses',           200.0,          '31.0%',       62.0,               '',              '',           '',                  3),
+                    ('600000 Expenses',           300.0,          '56.0%',      168.0,               '',              '',           '',                  3),
+                    ('600000 Expenses',           100.0,          '60.0%',       60.0,               '',              '',           '',                  3),
+                  ('600020 Expenses (copy)',      500.0,          '23.0%',      115.0,               '',              '',           '',                  2),
+                    ('600020 Expenses (copy)',    500.0,          '23.0%',      115.0,               '',              '',           '',                  3),
+                ('1235 Robins DNA',                46.0,          '',            10.5,               79.0,            '',           '',                  1),
+                  ('611011 Frozen Account',        46.0,          '',            10.5,               79.0,            '',           '',                  2),
+                    ('611011 Frozen Account',      21.0,          '50.0%',       10.5,               '',              '',           '',                  3),
+                    ('611011 Frozen Account',      25.0,          '',              '',               79.0,            '',           '',                  3),
+                ('Total',                        2846.0,          '',           874.5,               79.0,            '',           0.0,                 1),
             ],
         )

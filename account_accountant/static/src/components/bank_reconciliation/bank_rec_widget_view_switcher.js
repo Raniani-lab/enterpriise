@@ -34,4 +34,8 @@ export class BankRecWidgetViewSwitcher extends Component {
 }
 BankRecWidgetViewSwitcher.template = "account_accountant.BankRecWidgetViewSwitcher";
 
-registry.category("fields").add('bank_rec_widget_view_switcher', BankRecWidgetViewSwitcher);
+export const bankRecWidgetViewSwitcher = {
+    component: BankRecWidgetViewSwitcher,
+};
+
+registry.category("fields").add('bank_rec_widget_view_switcher', bankRecWidgetViewSwitcher);

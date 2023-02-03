@@ -478,24 +478,30 @@ QUnit.module('ViewEditorManager', {
         odoo.debug = false;
 
         const wowlFieldRegistry = registry.category("fields");
-        const CharField = wowlFieldRegistry.get("char");
+        const charField = wowlFieldRegistry.get("char");
         // Clean registry to avoid having noise from all the other widgets
         wowlFieldRegistry.getEntries().forEach(([key]) => {
             wowlFieldRegistry.remove(key);
         })
 
-        class SafeWidget extends CharField {}
-        SafeWidget.displayName = "Test Widget";
-        wowlFieldRegistry.add("safeWidget", SafeWidget);
+        class SafeWidget extends charField.component {}
+        wowlFieldRegistry.add("safeWidget", {
+            ...charField,
+            component: SafeWidget,
+            displayName: "Test Widget",
+        });
         setFieldAvailableInSidebar("safeWidget");
 
-        class safeWidgetNoDisplayName extends CharField {}
-        safeWidgetNoDisplayName.displayName = null;
-        wowlFieldRegistry.add("safeWidgetNoDisplayName", safeWidgetNoDisplayName);
+        class safeWidgetNoDisplayName extends charField.component {}
+        wowlFieldRegistry.add("safeWidgetNoDisplayName", {
+            ...charField,
+            component: safeWidgetNoDisplayName,
+            displayName: null,
+        });
         setFieldAvailableInSidebar("safeWidgetNoDisplayName");
 
-        class UnsafeWidget extends CharField {}
-        wowlFieldRegistry.add("unsafeWidget", UnsafeWidget);
+        class UnsafeWidget extends charField.component {}
+        wowlFieldRegistry.add("unsafeWidget", { ...charField, component: UnsafeWidget });
 
         const vem = await studioTestUtils.createViewEditorManager({
             model: 'coucou',
@@ -620,10 +626,13 @@ QUnit.module('ViewEditorManager', {
         patchWithCleanup(odoo, { debug: false });
 
         const wowlFieldRegistry = registry.category("fields");
-        const CharField = wowlFieldRegistry.get("char");
-        class widgetWithoutDescription extends CharField {}
-        widgetWithoutDescription.displayName = null;
-        wowlFieldRegistry.add("widgetWithoutDescription", widgetWithoutDescription);
+        const charField = wowlFieldRegistry.get("char");
+        class widgetWithoutDescription extends charField.component {}
+        wowlFieldRegistry.add("widgetWithoutDescription", {
+            ...charField,
+            component: widgetWithoutDescription,
+            displayName: null,
+        });
 
         const vem = await studioTestUtils.createViewEditorManager({
             model: 'coucou',
@@ -641,11 +650,14 @@ QUnit.module('ViewEditorManager', {
         patchWithCleanup(odoo, { debug: false });
 
         const wowlFieldRegistry = registry.category("fields");
-        const CharField = wowlFieldRegistry.get("char");
-        class widgetWithoutTypes extends CharField {}
-        widgetWithoutTypes.supportedTypes = null;
-        widgetWithoutTypes.displayName = null;
-        wowlFieldRegistry.add("widgetWithoutTypes", widgetWithoutTypes);
+        const charField = wowlFieldRegistry.get("char");
+        class widgetWithoutTypes extends charField.component {}
+        wowlFieldRegistry.add("widgetWithoutTypes", {
+            ...charField,
+            component: widgetWithoutTypes,
+            supportedTypes: null,
+            displayName: null,
+        });
 
         const vem = await studioTestUtils.createViewEditorManager({
             model: 'coucou',
@@ -6037,8 +6049,8 @@ QUnit.module('ViewEditorManager', {
             display_name: "people say",
         };
 
-        const CharField = registry.category("fields").get("char");
-        class CharWithDependencies extends CharField {
+        const charField = registry.category("fields").get("char");
+        class CharWithDependencies extends charField.component {
             setup() {
                 super.setup();
                 const record = this.props.record;
@@ -6047,10 +6059,13 @@ QUnit.module('ViewEditorManager', {
                 })
             }
         }
-        CharWithDependencies.fieldDependencies = {
-            is_dep: { type: "char"},
-        }
-        registry.category("fields").add("list.withDependencies", CharWithDependencies);
+        registry.category("fields").add("list.withDependencies", {
+            ...charField,
+            component: CharWithDependencies,
+            fieldDependencies: {
+                is_dep: { type: "char"},
+            },
+        });
 
         const action = serverData.actions["studio.coucou_action"];
         action.res_id = 1;

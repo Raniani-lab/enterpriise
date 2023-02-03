@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from '@web/core/registry';
-import { FloatField } from '@web/views/fields/float/float_field';
+import { FloatField, floatField } from '@web/views/fields/float/float_field';
 import { useIotDevice } from '@iot/iot_device_hook';
 
 class IoTMeasureRealTimeValue extends FloatField {
@@ -32,12 +32,13 @@ IoTMeasureRealTimeValue.props = {
     ip_field: { type: String },
     identifier_field: { type: String },
 };
-IoTMeasureRealTimeValue.extractProps = ({ field, attrs }) => {
-    return {
-        ...FloatField.extractProps({ field, attrs }),
-        ip_field: attrs.options.ip_field,
-        identifier_field: attrs.options.identifier,
-    };
-};
 
-registry.category('fields').add('iot_measure', IoTMeasureRealTimeValue);
+registry.category("fields").add("iot_measure", {
+    ...floatField,
+    component: IoTMeasureRealTimeValue,
+    extractProps: (params) => ({
+        ...floatField.extractProps(params),
+        ip_field: params.attrs.options.ip_field,
+        identifier_field: params.attrs.options.identifier,
+    }),
+});

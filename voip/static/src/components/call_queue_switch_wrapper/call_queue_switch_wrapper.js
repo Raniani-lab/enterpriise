@@ -70,4 +70,8 @@ Object.assign(CallQueueSwitchWrapper, {
     template: "voip.CallQueueSwitchWrapper",
 });
 
-fieldRegistry.add("call_queue_switch", CallQueueSwitchWrapper);
+export const callQueueSwitchWrapper = {
+    component: CallQueueSwitchWrapper,
+};
+
+fieldRegistry.add("call_queue_switch", callQueueSwitchWrapper);

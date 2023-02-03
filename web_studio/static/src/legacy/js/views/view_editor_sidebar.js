@@ -218,7 +218,7 @@ export const ViewEditorSidebar = Widget.extend(StandaloneFieldManagerMixin, {
         let propsFromAttrs;
         if (hasWowlFieldWidgets) {
             propsFromAttrs = this.state.attrs.propsFromAttrs;
-            this.widgetKey = this.state.attrs.widget || fieldComponentToRegistryKey(this.state.attrs.FieldComponent);
+            this.widgetKey = this.state.attrs.widget || fieldComponentToRegistryKey(this.state.attrs.field);
         } else {
             this.widgetKey = this._getWidgetKey(Widget);
         }

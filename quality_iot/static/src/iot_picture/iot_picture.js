@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from '@web/core/registry';
-import { TabletImageField } from '@quality/tablet_image_field/tablet_image_field';
+import { TabletImageField, tabletImageField } from "@quality/tablet_image_field/tablet_image_field";
 import { useIotDevice } from '@iot/iot_device_hook';
 import { useService } from '@web/core/utils/hooks';
 import { WarningDialog } from '@web/core/errors/error_dialogs';
@@ -59,13 +59,16 @@ TabletImageIoTField.props = {
     ip_field: { type: String },
     identifier_field: { type: String },
 };
-TabletImageIoTField.extractProps = ({ field, attrs }) => {
-    return {
-        ...TabletImageField.extractProps({ field, attrs }),
-        ip_field: attrs.options.ip_field,
-        identifier_field: attrs.options.identifier,
-    };
-};
 TabletImageIoTField.template = 'quality_iot.TabletImageIoTField';
 
-registry.category('fields').add('iot_picture', TabletImageIoTField);
+export const tabletImageIoTField = {
+    ...tabletImageField,
+    component: TabletImageIoTField,
+    extractProps: (params) => ({
+        ...tabletImageField.extractProps(params),
+        ip_field: params.attrs.options.ip_field,
+        identifier_field: params.attrs.options.identifier,
+    }),
+};
+
+registry.category("fields").add("iot_picture", tabletImageIoTField);

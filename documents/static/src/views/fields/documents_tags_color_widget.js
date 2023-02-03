@@ -2,8 +2,14 @@
 
 import { registry } from "@web/core/registry";
 import { TagsList } from "@web/views/fields/many2many_tags/tags_list";
-import { KanbanMany2ManyTagsField } from "@web/views/fields/many2many_tags/kanban_many2many_tags_field";
-import { Many2ManyTagsField } from "@web/views/fields/many2many_tags/many2many_tags_field";
+import {
+    KanbanMany2ManyTagsField,
+    kanbanMany2ManyTagsField,
+} from "@web/views/fields/many2many_tags/kanban_many2many_tags_field";
+import {
+    Many2ManyTagsField,
+    many2ManyTagsField,
+} from "@web/views/fields/many2many_tags/many2many_tags_field";
 
 // Add support for hexadecimal colors
 export class DocumentsTagsList extends TagsList {}
@@ -46,7 +52,11 @@ DocumentsKanbanMany2ManyTagsField.components = {
     ...DocumentsKanbanMany2ManyTagsField.components,
     TagsList: DocumentsTagsList,
 };
-registry.category("fields").add("kanban.documents_many2many_tags", DocumentsKanbanMany2ManyTagsField);
+export const documentsKanbanMany2ManyTagsField = {
+    ...kanbanMany2ManyTagsField,
+    component: DocumentsKanbanMany2ManyTagsField,
+};
+registry.category("fields").add("kanban.documents_many2many_tags", documentsKanbanMany2ManyTagsField);
 
 export class DocumentsMany2ManyTagsField extends Many2ManyTagsField {
     get tags() {
@@ -57,4 +67,8 @@ DocumentsMany2ManyTagsField.components = {
     ...DocumentsMany2ManyTagsField.components,
     TagsList: DocumentsTagsList,
 };
-registry.category("fields").add("documents_many2many_tags", DocumentsMany2ManyTagsField);
+export const documentsMany2ManyTagsField = {
+    ...many2ManyTagsField,
+    component: DocumentsMany2ManyTagsField,
+};
+registry.category("fields").add("documents_many2many_tags", documentsMany2ManyTagsField);

@@ -140,4 +140,8 @@ export class MarketingActivityGraph extends Component {
 
 MarketingActivityGraph.template = "marketing_automation.MarketingActivityGraph";
 
-fieldRegistry.add('marketing_activity_graph', MarketingActivityGraph);
+export const marketingActivityGraph = {
+    component: MarketingActivityGraph,
+};
+
+fieldRegistry.add('marketing_activity_graph', marketingActivityGraph);

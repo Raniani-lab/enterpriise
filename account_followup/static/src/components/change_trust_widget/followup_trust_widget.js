@@ -55,4 +55,6 @@ class FollowupTrustWidget extends Component {
 }
 
 FollowupTrustWidget.template = "account_followup.FollowupTrustWidget";
-registry.category("fields").add("followup_trust_widget", FollowupTrustWidget);
+registry.category("fields").add("followup_trust_widget", {
+    component: FollowupTrustWidget,
+});

@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { HtmlField } from "@web_editor/js/backend/html_field";
+import { HtmlField, htmlField } from "@web_editor/js/backend/html_field";
 import { KnowledgePlugin } from "@knowledge/js/knowledge_plugin";
 import { patch } from "@web/core/utils/patch";
 import { templates } from "@web/core/assets";
@@ -239,13 +239,13 @@ const HtmlFieldPatch = {
     },
 };
 
-const extractProps = HtmlField.extractProps;
-
-HtmlField.extractProps = ({ attrs, field }) => {
-    const props = extractProps({ attrs, field });
-    props.wysiwygOptions.knowledgeCommands = attrs.options.knowledge_commands;
-    props.wysiwygOptions.editorPlugins.push(KnowledgePlugin);
-    return props;
-};
-
 patch(HtmlField.prototype, 'knowledge_html_field', HtmlFieldPatch);
+
+patch(htmlField, "knowledge_html_field", {
+    extractProps(params) {
+        const props = this._super(params);
+        props.wysiwygOptions.knowledgeCommands = params.attrs.options.knowledge_commands;
+        props.wysiwygOptions.editorPlugins.push(KnowledgePlugin);
+        return props;
+    },
+});

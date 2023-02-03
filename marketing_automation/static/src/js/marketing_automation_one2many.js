@@ -5,7 +5,7 @@ import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 import { append, createElement, XMLParser } from "@web/core/utils/xml";
 import { useX2ManyCrud, useOpenX2ManyRecord } from "@web/views/fields/relational_utils";
-import { X2ManyField } from "@web/views/fields/x2many/x2many_field";
+import { X2ManyField, x2ManyField } from "@web/views/fields/x2many/x2many_field";
 import { KanbanRecord } from "@web/views/kanban/kanban_record";
 import { KanbanRenderer } from "@web/views/kanban/kanban_renderer";
 
@@ -369,7 +369,12 @@ export class HierarchyKanban extends X2ManyField {
 
 }
 
-fieldRegistry.add("hierarchy_kanban", HierarchyKanban);
+export const hierarchyKanban = {
+    ...x2ManyField,
+    component: HierarchyKanban,
+};
+
+fieldRegistry.add("hierarchy_kanban", hierarchyKanban);
 
 HierarchyKanban.components = {
     ...X2ManyField.components,

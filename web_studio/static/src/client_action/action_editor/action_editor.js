@@ -10,7 +10,10 @@ import { AlertDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import { standardActionServiceProps } from "@web/webclient/actions/action_service";
 
 import { Record } from "@web/views/record";
-import { Many2ManyTagsField } from "@web/views/fields/many2many_tags/many2many_tags_field";
+import {
+    Many2ManyTagsField,
+    many2ManyTagsField,
+} from "@web/views/fields/many2many_tags/many2many_tags_field";
 import { CharField } from "@web/views/fields/char/char_field";
 import { TextField } from "@web/views/fields/text/text_field";
 
@@ -53,7 +56,7 @@ function getActionActiveFields() {
         activeFields[fName] = {};
     }
     activeFields.groups_id.fieldsToFetch = Object.fromEntries(
-        Many2ManyTagsField.fieldsToFetch({ options: {} }).map((f) => [f.name, f])
+        many2ManyTagsField.fieldsToFetch({ options: {} }).map((f) => [f.name, f])
     );
     return activeFields;
 }

@@ -23,4 +23,6 @@ class MatchingLink extends Component {
 }
 
 MatchingLink.template = "account_accountant.MatchingLink";
-registry.category("fields").add("matching_link_widget", MatchingLink);
+registry.category("fields").add("matching_link_widget", {
+    component: MatchingLink,
+});

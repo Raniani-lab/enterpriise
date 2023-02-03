@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { X2ManyField } from "@web/views/fields/x2many/x2many_field";
+import { X2ManyField, x2ManyField } from "@web/views/fields/x2many/x2many_field";
 import { ListRenderer } from "@web/views/list/list_renderer";
 import { Field } from "@web/views/fields/field";
 
@@ -55,6 +55,11 @@ WorkedDaysLineOne2Many.components = {
     ListRenderer: WorkedDaysRenderer
 };
 
+export const workedDaysLineOne2Many = {
+    ...x2ManyField,
+    component: WorkedDaysLineOne2Many,
+};
+
 export class PayslipLineField extends Field {
     get fieldComponentProps() {
         const props = super.fieldComponentProps;
@@ -105,5 +110,10 @@ PayslipLineOne2Many.components = {
     ListRenderer: PayslipLineRenderer
 };
 
-registry.category('fields').add('payslip_line_one2many', PayslipLineOne2Many);
-registry.category('fields').add('worked_days_line_one2many', WorkedDaysLineOne2Many);
+export const payslipLineOne2Many = {
+    ...x2ManyField,
+    component: PayslipLineOne2Many,
+};
+
+registry.category("fields").add("payslip_line_one2many", payslipLineOne2Many);
+registry.category("fields").add("worked_days_line_one2many", workedDaysLineOne2Many);

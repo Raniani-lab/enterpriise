@@ -1,6 +1,6 @@
 /** @odoo-module */
 
-import { CharField } from "@web/views/fields/char/char_field";
+import { CharField, charField } from "@web/views/fields/char/char_field";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
 
@@ -61,4 +61,9 @@ export class TwitterUsersAutocompleteField extends CharField {
     }
 }
 
-registry.category("fields").add("twitter_users_autocomplete", TwitterUsersAutocompleteField);
+export const twitterUsersAutocompleteField = {
+    ...charField,
+    component: TwitterUsersAutocompleteField,
+};
+
+registry.category("fields").add("twitter_users_autocomplete", twitterUsersAutocompleteField);

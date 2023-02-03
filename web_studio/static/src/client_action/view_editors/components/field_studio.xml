@@ -17,7 +17,7 @@
 
     <xpath expr="//t[@t-component]" position="after">
       <FieldContentOverlay t-if="isX2ManyEditable" displayOverlay="state.displayOverlay" onEditViewType.bind="onEditViewType">
-        <t t-component="FieldComponent" t-props="fieldComponentProps"/>
+        <t t-component="field.component" t-props="fieldComponentProps"/>
       </FieldContentOverlay>
       <span t-if="emptyPlaceholder" t-esc="emptyPlaceholder" />
     </xpath>

@@ -28,11 +28,16 @@ SetReservedQuantityButton.props = {
     ...standardFieldProps,
     fieldToSet: { type: String },
 };
-SetReservedQuantityButton.extractProps = ({ attrs }) => {
-    if (attrs.field_to_set) {
-        return { fieldToSet: attrs.field_to_set };
-    }
-};
 SetReservedQuantityButton.template = 'stock_barcode.SetReservedQuantityButtonTemplate';
 
-registry.category('fields').add('set_reserved_qty_button', SetReservedQuantityButton);
+export const setReservedQuantityButton = {
+    component: SetReservedQuantityButton,
+    extractProps: ({ attrs }) => {
+        if (attrs.field_to_set) {
+            return { fieldToSet: attrs.field_to_set };
+        }
+        return {};
+    },
+};
+
+registry.category("fields").add("set_reserved_qty_button", setReservedQuantityButton);

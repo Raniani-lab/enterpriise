@@ -43,7 +43,7 @@ export class FieldStudio extends Field {
         if (hasLabel || !hasEmptyPlaceholder) {
             return false;
         }
-        const { empty } = fieldVisualFeedback(this.FieldComponent, record, name, fieldInfo);
+        const { empty } = fieldVisualFeedback(this.field, record, name, fieldInfo);
         return empty ? record.activeFields[name].string : false;
     }
 

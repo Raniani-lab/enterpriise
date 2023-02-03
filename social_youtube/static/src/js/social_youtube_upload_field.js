@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from "@web/core/registry";
-import { CharField } from '@web/views/fields/char/char_field';
+import { CharField, charField } from '@web/views/fields/char/char_field';
 import { ConfirmationDialog } from "@web/core/confirmation_dialog/confirmation_dialog";
 import {
     useService,
@@ -327,4 +327,9 @@ export class YoutubeUploadField extends CharField {
 }
 YoutubeUploadField.template = 'social_youtube.YoutubeUploadField';
 
-registry.category("fields").add("youtube_upload", YoutubeUploadField);
+export const youtubeUploadField = {
+    ...charField,
+    component: YoutubeUploadField,
+};
+
+registry.category("fields").add("youtube_upload", youtubeUploadField);

@@ -1,7 +1,7 @@
 /** @odoo-module **/
 
 import { registry } from '@web/core/registry';
-import { Many2OneField } from '@web/views/fields/many2one/many2one_field';
+import { Many2OneField, many2OneField } from '@web/views/fields/many2one/many2one_field';
 import { useIotDevice } from '@iot/iot_device_hook';
 
 export class FieldMany2OneIoTScale extends Many2OneField {
@@ -41,14 +41,17 @@ FieldMany2OneIoTScale.props = {
     identifier_field: { type: String },
     value_field: { type: String },
 };
-FieldMany2OneIoTScale.extractProps = ({ field, attrs }) => {
-    return {
-        ...Many2OneField.extractProps({ field, attrs }),
-        manual_measurement_field: attrs.options.manual_measurement_field,
-        ip_field: attrs.options.ip_field,
-        identifier_field: attrs.options.identifier,
-        value_field: attrs.options.value_field,
-    };
+
+export const fieldMany2OneIoTScale = {
+    ...many2OneField,
+    component: FieldMany2OneIoTScale,
+    extractProps: (params) => ({
+        ...many2OneField.extractProps(params),
+        manual_measurement_field: params.attrs.options.manual_measurement_field,
+        ip_field: params.attrs.options.ip_field,
+        identifier_field: params.attrs.options.identifier,
+        value_field: params.attrs.options.value_field,
+    }),
 };
 
-registry.category('fields').add('field_many2one_iot_scale', FieldMany2OneIoTScale);
+registry.category("fields").add("field_many2one_iot_scale", fieldMany2OneIoTScale);

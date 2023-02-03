@@ -2,7 +2,7 @@
 
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { BinaryField } from "@web/views/fields/binary/binary_field";
+import { BinaryField, binaryField } from "@web/views/fields/binary/binary_field";
 
 export class BinaryFieldComission extends BinaryField {
     setup() {
@@ -23,4 +23,9 @@ export class BinaryFieldComission extends BinaryField {
     }
 }
 
-registry.category("fields").add('binary_commission', BinaryFieldComission);
+export const binaryFieldComission = {
+    ...binaryField,
+    component: BinaryFieldComission,
+};
+
+registry.category("fields").add('binary_commission', binaryFieldComission);

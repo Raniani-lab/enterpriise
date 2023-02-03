@@ -45,13 +45,16 @@ FieldTimesheetHourToggle.template = "timesheet_grid.TimesheetUOMHoursToggle";
 
 FieldTimesheetHourToggle.components = { TimesheetDisplayTimer, TimerToggleButton };
 
-FieldTimesheetHourToggle.fieldDependencies = {
-    duration_unit_amount: { type: "float" },
-    is_timer_running: { type: "boolean" },
-};
-
 FieldTimesheetHourToggle.props = {
     ...standardFieldProps,
 };
 
-registry.category("fields").add("timesheet_uom_hour_toggle", FieldTimesheetHourToggle);
+export const fieldTimesheetHourToggle = {
+    component: FieldTimesheetHourToggle,
+    fieldDependencies: {
+        duration_unit_amount: { type: "float" },
+        is_timer_running: { type: "boolean" },
+    },
+};
+
+registry.category("fields").add("timesheet_uom_hour_toggle", fieldTimesheetHourToggle);

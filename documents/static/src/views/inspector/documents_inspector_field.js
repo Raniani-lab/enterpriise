@@ -13,7 +13,7 @@ export class DocumentsInspectorField extends Field {
         // Set "Multiple Values" instead of the actual value in case multiple values are selected for
         //  Many2one Fields.
         if (
-            this.FieldComponent === Many2OneField &&
+            this.field.component === Many2OneField &&
             new Set(
                 this.props.selection.map((rec) => (rec.data[this.props.name] ? rec.data[this.props.name][0] : false))
             ).size > 1

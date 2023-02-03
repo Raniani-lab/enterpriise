@@ -42,4 +42,8 @@ export class BankRecWidgetGlobalInfo extends Component {
 }
 BankRecWidgetGlobalInfo.template = "account_accountant.BankRecWidgetGlobalInfo";
 
-registry.category("fields").add("bank_rec_widget_global_info", BankRecWidgetGlobalInfo);
+export const bankRecWidgetGlobalInfo = {
+    component: BankRecWidgetGlobalInfo,
+};
+
+registry.category("fields").add("bank_rec_widget_global_info", bankRecWidgetGlobalInfo);

@@ -1,6 +1,10 @@
 /** @odoo-module */
 
-import { SkillsListRenderer, SkillsX2ManyField } from '@hr_skills/fields/skills_one2many';
+import {
+    SkillsListRenderer,
+    SkillsX2ManyField,
+    skillsX2ManyField,
+} from "@hr_skills/fields/skills_one2many";
 
 import { registry } from "@web/core/registry";
 
@@ -78,5 +82,9 @@ AppraisalSkillsX2ManyField.components = {
     ListRenderer: AppraisalSkillsListRenderer,
 };
 
-registry.category("fields")
-    .add("appraisal_skills_one2many", AppraisalSkillsX2ManyField);
+export const appraisalSkillsX2ManyField = {
+    ...skillsX2ManyField,
+    component: AppraisalSkillsX2ManyField,
+};
+
+registry.category("fields").add("appraisal_skills_one2many", appraisalSkillsX2ManyField);

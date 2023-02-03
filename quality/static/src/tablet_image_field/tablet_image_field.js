@@ -3,7 +3,7 @@
 import { Dialog } from "@web/core/dialog/dialog";
 import { registry } from "@web/core/registry";
 import { useService } from "@web/core/utils/hooks";
-import { ImageField } from '@web/views/fields/image/image_field';
+import { ImageField, imageField } from '@web/views/fields/image/image_field';
 
 const { Component } = owl;
 
@@ -26,4 +26,9 @@ export class TabletImageField extends ImageField {
 
 TabletImageField.template = "quality.TabletImageField";
 
-registry.category("fields").add("tablet_image", TabletImageField);
+export const tabletImageField = {
+    ...imageField,
+    component: TabletImageField,
+};
+
+registry.category("fields").add("tablet_image", tabletImageField);

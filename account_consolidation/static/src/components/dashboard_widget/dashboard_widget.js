@@ -23,6 +23,8 @@ class ConsolidationDashboard extends Component {
     }    
 }
 ConsolidationDashboard.template = "account_consolidation.ConsolidatedDashboardTemplate";
-ConsolidationDashboard.supportedTypes = ["char"];
 
-registry.category("fields").add("consolidation_dashboard_field", ConsolidationDashboard);
+registry.category("fields").add("consolidation_dashboard_field", {
+    component: ConsolidationDashboard,
+    supportedTypes: ["char"],
+});

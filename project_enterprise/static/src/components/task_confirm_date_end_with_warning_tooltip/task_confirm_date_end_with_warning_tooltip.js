@@ -1,7 +1,7 @@
 /** @odoo-module */
 
 import { registry } from "@web/core/registry";
-import { DateTimeField } from '@web/views/fields/datetime/datetime_field';
+import { DateTimeField, dateTimeField } from '@web/views/fields/datetime/datetime_field';
 
 const { Component } = owl;
 
@@ -20,5 +20,9 @@ export class DateTimeWithWarning extends DateTimeField {
 DateTimeWithWarning.components.WarningTooltip = WarningTooltip;
 DateTimeWithWarning.template = 'industry_fsm.DateTimeWithWarning';
 
+export const dateTimeWithWarning = {
+    ...dateTimeField,
+    component: DateTimeWithWarning,
+};
 
-registry.category('fields').add('task_confirm_date_end_with_warning', DateTimeWithWarning);
+registry.category("fields").add("task_confirm_date_end_with_warning", dateTimeWithWarning);

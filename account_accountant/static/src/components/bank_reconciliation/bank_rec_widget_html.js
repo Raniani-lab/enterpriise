@@ -28,4 +28,8 @@ export class BankRecWidgetHTML extends Component {
 }
 BankRecWidgetHTML.template = "account_accountant.BankRecWidgetHTML";
 
-registry.category("fields").add("bank_rec_html", BankRecWidgetHTML);
+export const bankRecWidgetHTML = {
+    component: BankRecWidgetHTML,
+};
+
+registry.category("fields").add("bank_rec_html", bankRecWidgetHTML);

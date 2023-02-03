@@ -54,10 +54,13 @@ TimesheetUOMHourTimer.components = { TimesheetDisplayTimer };
 
 TimesheetUOMHourTimer.template = "timesheet_grid.TimesheetUOMHourTimer";
 
-TimesheetUOMHourTimer.fieldDependencies = {
-    duration_unit_amount: { type: "float" },
-    display_timer: { type: "boolean" },
-    is_timer_running: { type: "boolean" },
+export const timesheetUOMHourTimer = {
+    component: TimesheetUOMHourTimer,
+    fieldDependencies: {
+        duration_unit_amount: { type: "float" },
+        display_timer: { type: "boolean" },
+        is_timer_running: { type: "boolean" },
+    },
 };
 
-registry.category("fields").add("timesheet_uom_hour_timer", TimesheetUOMHourTimer);
+registry.category("fields").add("timesheet_uom_hour_timer", timesheetUOMHourTimer);

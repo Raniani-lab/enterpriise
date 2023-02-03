@@ -19,4 +19,8 @@ PostFormatterField.props = {
     ...standardFieldProps,
 };
 
-registry.category('fields').add('social_post_formatter', PostFormatterField);
+export const postFormatterField = {
+    component: PostFormatterField,
+};
+
+registry.category("fields").add("social_post_formatter", postFormatterField);

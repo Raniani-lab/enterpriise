@@ -68,9 +68,13 @@ export class TimerStartField extends Component {
 TimerStartField.props = {
     ...standardFieldProps,
 };
-TimerStartField.fieldDependencies = {
-    timer_pause: { type: "datetime" },
-};
 TimerStartField.template = "timer.TimerStartField";
 
-registry.category("fields").add("timer_start_field", TimerStartField);
+export const timerStartField = {
+    component: TimerStartField,
+    fieldDependencies: {
+        timer_pause: { type: "datetime" },
+    },
+};
+
+registry.category("fields").add("timer_start_field", timerStartField);

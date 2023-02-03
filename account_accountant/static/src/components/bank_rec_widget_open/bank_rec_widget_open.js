@@ -18,4 +18,6 @@ class OpenBankRecWidget extends Component {
 }
 
 OpenBankRecWidget.template = "account.OpenBankRecWidget";
-registry.category("fields").add("bank_rec_widget_open", OpenBankRecWidget);
+registry.category("fields").add("bank_rec_widget_open", {
+    component: OpenBankRecWidget,
+});

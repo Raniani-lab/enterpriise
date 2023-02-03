@@ -2,7 +2,7 @@
 
 import { SocialPostFormatterMixin } from "./social_post_formatter_mixin";
 
-import { HtmlField } from "@web_editor/js/backend/html_field";
+import { HtmlField, htmlField } from "@web_editor/js/backend/html_field";
 import { patch } from '@web/core/utils/patch';
 import { registry } from "@web/core/registry";
 const { markup } = owl;
@@ -23,14 +23,15 @@ FieldPostPreview.props = {
     mediaType: { type: String, optional: true },
 };
 
-FieldPostPreview.extractProps = ({ attrs, field }) => {
-    return {
-        ...HtmlField.extractProps({ attrs, field }),
-        mediaType: attrs.media_type || '',
-    }
-};
-
-
 patch(FieldPostPreview.prototype, 'social_preview_formatter_mixin', SocialPostFormatterMixin);
 
-registry.category("fields").add("social_post_preview", FieldPostPreview);
+export const fieldPostPreview = {
+    ...htmlField,
+    component: FieldPostPreview,
+    extractProps: (params) => ({
+        ...htmlField.extractProps(params),
+        mediaType: params.attrs.media_type || '',
+    }),
+};
+
+registry.category("fields").add("social_post_preview", fieldPostPreview);

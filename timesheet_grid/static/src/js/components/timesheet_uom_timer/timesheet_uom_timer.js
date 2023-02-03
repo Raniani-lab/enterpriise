@@ -4,7 +4,7 @@ import { registry } from "@web/core/registry";
 import { FloatFactorField } from "@web/views/fields/float_factor/float_factor_field";
 import { FloatToggleField } from "@web/views/fields/float_toggle/float_toggle_field";
 
-import { TimesheetUOM } from "@hr_timesheet/components/timesheet_uom/timesheet_uom";
+import { TimesheetUOM, timesheetUOM } from "@hr_timesheet/components/timesheet_uom/timesheet_uom";
 import { TimesheetUOMHourTimer } from "../timesheet_uom_hour_timer/timesheet_uom_hour_timer";
 
 
@@ -25,4 +25,7 @@ TimesheetUOMTimer.components = {
 // As we replace FloatTimeField by TimesheetUOMHourTimer, we remove it from the components that we get from TimesheetUOM.
 delete TimesheetUOMTimer.components.FloatTimeField;
 
-registry.category("fields").add("timesheet_uom_timer", TimesheetUOMTimer);
+registry.category("fields").add("timesheet_uom_timer", {
+    ...timesheetUOM,
+    component: TimesheetUOMTimer,
+});

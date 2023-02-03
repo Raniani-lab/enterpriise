@@ -97,4 +97,8 @@ BankRecWidgetFormLinesWidget.props = {
 }
 BankRecWidgetFormLinesWidget.components = { TagsList };
 
-registry.category("fields").add("bank_rec_widget_form_lines_widget", BankRecWidgetFormLinesWidget);
+export const bankRecWidgetFormLinesWidget = {
+    component: BankRecWidgetFormLinesWidget,
+};
+
+registry.category("fields").add("bank_rec_widget_form_lines_widget", bankRecWidgetFormLinesWidget);

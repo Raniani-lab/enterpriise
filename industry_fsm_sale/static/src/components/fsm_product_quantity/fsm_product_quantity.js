@@ -4,7 +4,7 @@ import { registry } from "@web/core/registry";
 import { useAutofocus } from "@web/core/utils/hooks";
 import { archParseBoolean } from '@web/views/utils';
 import { formatFloat } from "@web/views/fields/formatters";
-import { FloatField } from '@web/views/fields/float/float_field';
+import { FloatField, floatField } from '@web/views/fields/float/float_field';
 
 const { useState, useRef, useEffect } = owl;
 
@@ -83,11 +83,14 @@ FsmProductQuantity.defaultProps = {
 };
 
 FsmProductQuantity.template = 'industry_fsm_sale.FsmProductQuantity';
-FsmProductQuantity.extractProps = (props) => {
-    return {
-        ...FloatField.extractProps(props),
-        hideButtons: archParseBoolean(props.attrs.hide_buttons),
-    };
+
+export const fsmProductQuantity = {
+    ...floatField,
+    component: FsmProductQuantity,
+    extractProps: (params) => ({
+        ...floatField.extractProps(params),
+        hideButtons: archParseBoolean(params.attrs.hide_buttons),
+    }),
 };
 
-registry.category('fields').add('fsm_product_quantity', FsmProductQuantity);
+registry.category("fields").add("fsm_product_quantity", fsmProductQuantity);

@@ -52,4 +52,10 @@ export class BankRecWidgetFormRecoModelsWidget extends Component {
 BankRecWidgetFormRecoModelsWidget.template = "account_accountant.bank_rec_widget_form_reco_models_widget";
 BankRecWidgetFormRecoModelsWidget.components = { Dropdown, DropdownItem };
 
-registry.category("fields").add("bank_rec_widget_form_reco_models_widget", BankRecWidgetFormRecoModelsWidget);
+export const bankRecWidgetFormRecoModelsWidget = {
+    component: BankRecWidgetFormRecoModelsWidget,
+};
+
+registry
+    .category("fields")
+    .add("bank_rec_widget_form_reco_models_widget", bankRecWidgetFormRecoModelsWidget);

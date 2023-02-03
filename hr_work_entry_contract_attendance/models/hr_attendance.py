@@ -75,7 +75,7 @@ class HrAttendance(models.Model):
         start_dates = [v.get('check_in') for v in vals_list if v.get('check_in')]
         stop_dates = [v.get('check_out') for v in vals_list if v.get('check_out')]
         res = super().create(vals_list)
-        with self.env['hr.work.entry']._error_checking(start=min(start_dates, default=False), stop=max(stop_dates, default=False)):
+        with self.env['hr.work.entry']._error_checking(start=min(start_dates, default=False), stop=max(stop_dates, default=False), employee_ids=res.employee_id.ids):
             res._create_work_entries()
         return res
 
@@ -88,7 +88,7 @@ class HrAttendance(models.Model):
         skip_check = not bool({'check_in', 'check_out', 'employee_id'} & vals.keys())
         start = min(self.mapped('check_in') + [Datetime.from_string(vals.get('check_in', False)) or datetime.max])
         stop = max(self.mapped('check_out') + [Datetime.from_string(vals.get('check_out', False)) or datetime.min])
-        with self.env['hr.work.entry']._error_checking(start=start, stop=stop, skip=skip_check):
+        with self.env['hr.work.entry']._error_checking(start=start, stop=stop, skip=skip_check, employee_ids=self.employee_id.ids):
             open_attendances._create_work_entries()
         return res
 
@@ -97,6 +97,6 @@ class HrAttendance(models.Model):
         self.env['hr.work.entry'].sudo().search([('attendance_id', 'in', self.ids)]).write({'active': False})
         start_dates = [a.check_in for a in self if a.check_in]
         stop_dates = [a.check_out for a in self if a.check_out]
-        with self.env['hr.work.entry']._error_checking(start=min(start_dates, default=False), stop=max(stop_dates, default=False)):
+        with self.env['hr.work.entry']._error_checking(start=min(start_dates, default=False), stop=max(stop_dates, default=False), employee_ids=self.employee_id.ids):
             res = super().unlink()
         return res

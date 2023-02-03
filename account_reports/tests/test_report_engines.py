@@ -781,10 +781,28 @@ class TestReportEngines(TestAccountReportsCommon):
             name='test10_3', code='test10_3',
         )
 
+        # Test if_other_expr_above / if_other_expr_below
+        test11_1 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation('test1.external', subformula='if_other_expr_above(test1.tax_tags, USD(3000.0))'),
+            name='test11_1', code='test11_1',
+        )
+        test11_2 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation('test1.external', subformula='if_other_expr_below(test1.tax_tags, USD(3000.0))'),
+            name='test11_2', code='test11_2',
+        )
+        test11_3 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation('test1.external', subformula='if_other_expr_above(test1.tax_tags, USD(1000.0))'),
+            name='test11_3', code='test11_3',
+        )
+        test11_4 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation('test1.external', subformula='if_other_expr_below(test1.tax_tags, USD(1000.0))'),
+            name='test11_4', code='test11_4',
+        )
+
         report = self._create_report(
             [
                 test1, test2_1, test2_2, test2_3, test2_4, test3_1, test3_2, test3_3, test4_1, test4_2,
-                test5, test6, test7, test9, test10_1, test10_2, test10_3
+                test5, test6, test7, test9, test10_1, test10_2, test10_3, test11_1, test11_2, test11_3, test11_4,
             ],
             country_id=self.fake_country.id,
         )
@@ -822,6 +840,10 @@ class TestReportEngines(TestAccountReportsCommon):
                 ('test10_1',            100.0),
                 ('test10_2',            100.5),
                 ('test10_3',            100.47),
+                ('test11_1',               ''),
+                ('test11_2',            100.0),
+                ('test11_3',            100.0),
+                ('test11_4',               ''),
             ],
             options,
         )

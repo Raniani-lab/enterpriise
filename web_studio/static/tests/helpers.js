@@ -45,7 +45,7 @@ export async function openStudio(target, params = {}) {
         if (!controlElm) {
             throw new Error("We should be in the Tab 'Report' but we are not");
         }
-        await click(controlElm.querySelector(`.o_kanban_record[data-id="${params.report}"`));
+        await click(controlElm.querySelector(`.o_kanban_record [data-id="${params.report}"`));
         await legacyExtraNextTick();
         controlElm = target.querySelector(
             ".o_action_manager .o_web_studio_editor .o_web_studio_report_editor_manager"

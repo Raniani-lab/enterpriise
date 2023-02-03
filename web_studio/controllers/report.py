@@ -84,6 +84,8 @@ class WebStudioReportController(main.WebStudioController):
 
         return {
             'id': report.id,
+            'display_name': report.display_name,
+            'report_name': report.name,
         }
 
     @http.route('/web_studio/print_report', type='json', auth='user')

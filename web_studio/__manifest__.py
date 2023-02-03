@@ -61,6 +61,7 @@ Note: Only the admin user is allowed to make those customizations.
             'web_studio/static/src/legacy/studio_legacy_service.js',
             'web_studio/static/src/home_menu/**/*.js',
             'web_studio/static/src/views/**/*.js',
+            ('remove', 'web_studio/static/src/views/kanban_report/**/*'),
             'web_studio/static/src/approval/**/*',
             'web_studio/static/src/**/*.xml',
             ('remove', 'web_studio/static/src/legacy/xml/sidebar_web_editor.xml'),
@@ -75,6 +76,7 @@ Note: Only the admin user is allowed to make those customizations.
         # This bundle is lazy loaded: it is loaded when studio is opened for the first time
         'web_studio.studio_assets': [
             'web_studio/static/src/client_action/**/*.js',
+            'web_studio/static/src/views/kanban_report/**/*.js',
             ('remove', 'web_studio/static/src/client_action/studio_action_loader.js'),
             ('remove', 'web_studio/static/src/client_action/app_creator/app_creator_shortcut.js'),
             'web_studio/static/src/legacy/action_editor_main.js',
@@ -103,14 +105,13 @@ Note: Only the admin user is allowed to make those customizations.
             'web_studio/static/src/client_action/variables.scss',
             'web_studio/static/src/client_action/mixins.scss',
             'web_studio/static/src/client_action/**/*.scss',
+            'web_studio/static/src/views/kanban_report/**/*.scss',
 
             'web_studio/static/src/legacy/scss/icons.scss',
-            'web_studio/static/src/legacy/scss/kanban_view.scss',
             'web_studio/static/src/legacy/scss/new_field_dialog.scss',
             'web_studio/static/src/legacy/scss/report_editor.scss',
             'web_studio/static/src/legacy/scss/report_editor_manager.scss',
             'web_studio/static/src/legacy/scss/report_editor_sidebar.scss',
-            'web_studio/static/src/legacy/scss/report_kanban_view.scss',
             'web_studio/static/src/legacy/scss/search_editor.scss',
             'web_studio/static/src/legacy/scss/sidebar.scss',
             'web_studio/static/src/legacy/scss/view_editor_manager.scss',

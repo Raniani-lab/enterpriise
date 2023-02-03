@@ -695,7 +695,7 @@ registry.category("web_tour.tours").add('web_studio_new_report_tour', {
     run: function () {
         $('.o_kanban_record:contains(My Awesome Report) .dropdown-toggle').css('visibility', 'visible');
     },
-    trigger: '.o_legacy_kanban_view',
+    trigger: '.o_kanban_view',
 }, {
     // open the dropdown
     trigger: '.o_kanban_record:contains(My Awesome Report) .dropdown-toggle',
@@ -733,7 +733,7 @@ registry.category("web_tour.tours").add('web_studio_new_report_basic_layout_tour
     // create a new report
     trigger: '.o_control_panel .o-kanban-button-new',
 }, {
-    // select external layout
+    // select basic layout
     trigger: '.o_web_studio_report_layout_dialog div[data-layout="web.basic_layout"]',
 }, {
     // sidebar should display add tab
@@ -839,7 +839,7 @@ registry.category("web_tour.tours").add('web_studio_new_report_basic_layout_tour
     run: function () {
         $('.o_kanban_record:contains(My Awesome basic layout Report) .dropdown-toggle').css('visibility', 'visible');
     },
-    trigger: '.o_legacy_kanban_view',
+    trigger: '.o_kanban_view',
 }, {
     // open the dropdown
     trigger: '.o_kanban_record:contains(My Awesome basic layout Report) .dropdown-toggle',

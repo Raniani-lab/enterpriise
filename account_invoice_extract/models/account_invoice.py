@@ -678,7 +678,7 @@ class AccountMove(models.Model):
         self.ensure_one()
 
         invoice_lines = ocr_results['invoice_lines'] if 'invoice_lines' in ocr_results else []
-        subtotal_ocr = ocr_results['subtotal']['selected_value']['content'] if 'subtotal' in ocr_results else ""
+        subtotal_ocr = ocr_results['subtotal']['selected_value']['content'] if 'subtotal' in ocr_results else 0.0
         supplier_ocr = ocr_results['supplier']['selected_value']['content'] if 'supplier' in ocr_results else ""
         date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
 
@@ -831,7 +831,7 @@ class AccountMove(models.Model):
     def _save_form(self, ocr_results, force_write=False):
         date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
         due_date_ocr = ocr_results['due_date']['selected_value']['content'] if 'due_date' in ocr_results else ""
-        total_ocr = ocr_results['total']['selected_value']['content'] if 'total' in ocr_results else ""
+        total_ocr = ocr_results['total']['selected_value']['content'] if 'total' in ocr_results else 0.0
         invoice_id_ocr = ocr_results['invoice_id']['selected_value']['content'] if 'invoice_id' in ocr_results else ""
         currency_ocr = ocr_results['currency']['selected_value']['content'] if 'currency' in ocr_results else ""
         payment_ref_ocr = ocr_results['payment_ref']['selected_value']['content'] if 'payment_ref' in ocr_results else ""

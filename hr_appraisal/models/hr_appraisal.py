@@ -6,6 +6,7 @@ import logging
 import pytz
 
 from dateutil.relativedelta import relativedelta
+from markupsafe import escape
 
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
@@ -245,10 +246,8 @@ class HrAppraisal(models.Model):
                     appraisal.activity_schedule(
                         'mail.mail_activity_data_todo', appraisal.date_close,
                         summary=_('Appraisal Form to Fill'),
-                        note=_(
-                            'Fill appraisal for %s',
-                            appraisal.employee_id._get_html_link(),
-                        ),
+                        note=escape(_('Fill appraisal for %s')) % \
+                                appraisal.employee_id._get_html_link(),
                         user_id=employee.user_id.id)
 
     def action_cancel(self):

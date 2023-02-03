@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from markupsafe import Markup
+
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
@@ -52,8 +54,7 @@ class RentalProcessing(models.TransientModel):
                         translated_status = value
                         break
 
-                header = "<b>" + translated_status + "</b>:<ul>"
-                msg = header + msg + "</ul>"
+                msg = Markup("<b>%s</b>:<ul>%s</ul>") % (translated_status, msg)
                 wizard.order_id.message_post(body=msg)
         return  # {'type': 'ir.actions.act_window_close'}
 
@@ -140,12 +141,12 @@ class RentalProcessingLine(models.TransientModel):
             diff, old_qty, new_qty = line._get_diff()
             if diff:  # i.e. diff>0
 
-                msg += "<li> %s" % (order_line.product_id.display_name)
+                msg += Markup("<li> %s") % (order_line.product_id.display_name)
 
                 if old_qty > 0:
-                    msg += ": %s -> <b> %s </b> %s <br/>" % (old_qty, new_qty, order_line.product_uom.name)
+                    msg += Markup(": %s -> <b> %s </b> %s <br/>") % (old_qty, new_qty, order_line.product_uom.name)
                 elif new_qty != 1 or order_line.product_uom_qty > 1.0:
-                    msg += ": %s %s <br/>" % (new_qty, order_line.product_uom.name)
+                    msg += Markup(": %s %s <br/>") % (new_qty, order_line.product_uom.name)
                 # If qty = 1, product has been picked up, no need to specify quantity
                 # But if ordered_qty > 1.0: we need to still specify pickedup/returned qty
         return msg

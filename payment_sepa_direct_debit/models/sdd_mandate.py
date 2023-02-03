@@ -2,6 +2,7 @@
 
 import logging
 import re
+from markupsafe import Markup
 from random import randint
 
 from odoo import SUPERUSER_ID, _, fields, models
@@ -80,7 +81,7 @@ class SDDMandate(models.Model):
         if phone and code:
             message_list.append(_("The mandate was verified with phone number %s.", phone))
         if message_list:
-            self._message_log(body='<br/>'.join(message_list))
+            self._message_log(body=Markup('<br/>').join(message_list))
 
     def _sign(self, signer, signature):
         vals = {

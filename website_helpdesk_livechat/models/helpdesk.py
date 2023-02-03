@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import re
+from markupsafe import Markup, escape
 
 from odoo import Command, fields, models, _
 from odoo.tools import html_escape, is_html_empty, plaintext2html
@@ -83,7 +84,7 @@ class MailChannel(models.Model):
                     'partner_id': customer.id if customer else False,
                     'team_id': team_id,
                 })
-                msg = _("Created a new ticket: %s", helpdesk_ticket._get_html_link())
+                msg = escape(_("Created a new ticket: %s")) % helpdesk_ticket._get_html_link()
         return self._send_transient_message(self.env.user.partner_id, msg)
 
     def execute_command_helpdesk_search(self, **kwargs):
@@ -114,8 +115,8 @@ class MailChannel(models.Model):
                         if len(tickets) > 10:
                             break
                 if tickets:
-                    link_tickets = [f'<br/>{ticket.with_context(with_partner=True)._get_html_link()}' for ticket in tickets]
-                    msg = _('Tickets search results for <b>%s</b>: %s', ' '.join(list_value), ''.join(link_tickets))
+                    msg = escape(_('Tickets search results for %s: ')) % Markup("<b>%s</b>") % ' '.join(list_value)
+                    msg += Markup('<br/>') + Markup('<br/>').join(ticket.with_context(with_partner=True)._get_html_link() for ticket in tickets)
                 else:
                     msg = _('No tickets found for <b>%s</b>. <br> Make sure you are using the right format:<br> <b>/search_tickets <i>keyword</i></b>', ''.join(list_value))
         return self._send_transient_message(partner, msg)

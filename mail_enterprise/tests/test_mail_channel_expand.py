@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from markupsafe import Markup
+
 from odoo.tests.common import tagged, HttpCase
 
 
@@ -20,7 +22,7 @@ class TestMailChannelExpand(HttpCase):
         channel = MailChannelAsUser.browse(channel_info['id'])
         channel.channel_fold('folded')
         channel.message_post(
-            body="<p>test-message-mail-channel-expand-tour</p>",
+            body=Markup("<p>test-message-mail-channel-expand-tour</p>"),
             message_type='comment',
             subtype_xmlid='mail.mt_comment'
         )

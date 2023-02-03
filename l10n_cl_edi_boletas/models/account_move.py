@@ -2,6 +2,7 @@
 import base64
 
 from psycopg2 import OperationalError
+from markupsafe import Markup
 
 from odoo import _, _lt, models, fields
 from odoo.exceptions import UserError
@@ -91,14 +92,14 @@ class AccountMove(models.Model):
         if self.l10n_cl_dte_status in ['rejected', 'objected']:
             detail = data['detalle_rep_rech']
             if detail:
-                msg += '<br/><li><b>ESTADO</b>: %s</li>' % html_escape(detail[0]['estado'])
+                msg += Markup('<br/><li><b>ESTADO</b>: %s</li>') % detail[0]['estado']
                 errors = detail[0].get('error', [])
                 for error in errors:
-                    msg += '<br/><li><b>ERROR</b>: %s %s</li>' % (
-                        html_escape(error['descripcion']), html_escape(error['detalle']) or "")
+                    msg += Markup('<br/><li><b>ERROR</b>: %s %s</li>') % (
+                        error['descripcion'], error['detalle'] or "")
                 return msg
 
-        return msg + '<br/><li><b>ESTADO</b>: %s</li>' % html_escape(data['estado'])
+        return msg + Markup('<br/><li><b>ESTADO</b>: %s</li>') % data['estado']
 
     def _l10n_cl_get_sii_reception_status_message_rest(self, sii_response_status):
         return {

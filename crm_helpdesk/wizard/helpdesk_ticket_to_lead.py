@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from markupsafe import escape
 from odoo import api, fields, models, _
 from odoo.exceptions import ValidationError
 
@@ -92,7 +93,7 @@ class HelpdeskTicketConvert2Lead(models.TransientModel):
         })
         ticket_link = self.ticket_id._get_html_link(title=self.ticket_id.name +' #({})'.format(self.ticket_id.id))
         lead_sudo.message_post(
-            body=_('This lead has been created from ticket: %s', ticket_link),
+            body=escape(_('This lead has been created from ticket: %s')) % ticket_link,
             message_type='comment',
             subtype_xmlid='mail.mt_note',
         )

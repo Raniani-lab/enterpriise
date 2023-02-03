@@ -8,6 +8,7 @@ import random
 from collections import defaultdict, Counter
 from datetime import date, datetime, time
 from dateutil.relativedelta import relativedelta
+from markupsafe import escape
 
 from odoo import api, Command, fields, models, _
 from odoo.addons.hr_payroll.models.browsable_object import BrowsableObject, InputLine, WorkedDays, Payslips, ResultRules
@@ -238,9 +239,8 @@ class HrPayslip(models.Model):
                     payslip.activity_schedule(
                         'hr_payroll.mail_activity_data_hr_payslip_negative_net',
                         summary=_('Previous Negative Payslip to Report'),
-                        note=_(
-                            'At least one previous negative net could be reported on this payslip for %s',
-                            payslip.employee_id._get_html_link()),
+                        note=escape(_('At least one previous negative net could be reported on this payslip for %s')) % \
+                                payslip.employee_id._get_html_link(),
                         user_id=payslip.contract_id.hr_responsible_id.id or self.env.ref('base.user_admin').id)
             else:
                 payslip.negative_net_to_report_display = False

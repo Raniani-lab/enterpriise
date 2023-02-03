@@ -5,8 +5,9 @@ from odoo import api, fields, models, _, _lt, Command
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare
 from odoo.tools.misc import formatLang
-from dateutil.relativedelta import relativedelta
 from collections import defaultdict, namedtuple
+from dateutil.relativedelta import relativedelta
+from markupsafe import escape
 
 
 class AccountMove(models.Model):
@@ -234,7 +235,7 @@ class AccountMove(models.Model):
                     'sale': _lt('Deferred revenue'),
                     'expense': _lt('Deferred expense'),
                 }[asset.asset_type]
-                asset.message_post(body=_('%s created from invoice: %s', asset_name, invoice._get_html_link()))
+                asset.message_post(body=escape(_('%s created from invoice: %s') % (asset_name, invoice._get_html_link())))
                 asset._post_non_deductible_tax_value()
         return assets
 

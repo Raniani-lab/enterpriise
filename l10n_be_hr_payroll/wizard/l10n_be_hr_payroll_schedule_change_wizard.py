@@ -6,7 +6,7 @@ from odoo.exceptions import ValidationError
 from odoo.tools import float_round
 
 from datetime import timedelta
-
+from markupsafe import Markup
 
 class L10nBeHrPayrollScheduleChange(models.TransientModel):
     _name = 'l10n_be.hr.payroll.schedule.change.wizard'
@@ -184,8 +184,8 @@ class L10nBeHrPayrollScheduleChange(models.TransientModel):
             self.leave_allocation_id.write({
                 'number_of_days': new_total,
             })
-            self.leave_allocation_id._message_log(body=_('New working schedule on %(contract_name)s.<br/>'
-            'New total: %(days)s') % {'contract_name': contract.name, 'days': new_total})
+            self.leave_allocation_id._message_log(body=Markup(_('New working schedule on %(contract_name)s.<br/>'
+            'New total: %(days)s')) % {'contract_name': contract.name, 'days': new_total})
 
     def action_validate(self):
         self.ensure_one()

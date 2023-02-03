@@ -122,7 +122,7 @@ class Picking(models.Model):
         if not self.l10n_latam_document_number:
             self.l10n_latam_document_number = self._get_next_document_number()
         self.l10n_cl_dte_status = 'not_sent'
-        msg_demo = _(' in DEMO mode.') if self.company_id.l10n_cl_dte_service_provider == 'SIIDEMO' else '.'
+        msg_demo = _('DTE has been created in DEMO mode.') if self.company_id.l10n_cl_dte_service_provider == 'SIIDEMO' else _('DTE has been created.')
         self._l10n_cl_create_dte()
         dte_signed, file_name = self._l10n_cl_get_dte_envelope()
         attachment = self.env['ir.attachment'].create({
@@ -133,7 +133,7 @@ class Picking(models.Model):
             'type': 'binary',
         })
         self.l10n_cl_sii_send_file = attachment.id
-        self.message_post(body=_('DTE has been created%s', msg_demo), attachment_ids=attachment.ids)
+        self.message_post(body=msg_demo, attachment_ids=attachment.ids)
         return self.print_delivery_guide_pdf()
 
     def print_delivery_guide_pdf(self):
@@ -548,8 +548,8 @@ class Picking(models.Model):
             # a new send
         else:
             self.l10n_cl_dte_status = 'ask_for_status' if sii_response_status == '0' else 'rejected'
-        self.message_post(body=html_escape(_('DTE has been sent to SII with response: %s.',
-                               self._l10n_cl_get_sii_reception_status_message(sii_response_status))))
+        self.message_post(body=_('DTE has been sent to SII with response: %s.',
+                               self._l10n_cl_get_sii_reception_status_message(sii_response_status)))
 
     def _l10n_cl_verify_dte_status(self, send_dte_to_partner=True):
         digital_signature = self.company_id._get_digital_signature(user_id=self.env.user.id)
@@ -586,7 +586,7 @@ class Picking(models.Model):
 
         self.message_post(
             body=_('Asking for DTE status with response:') +
-                 '<br /><li><b>ESTADO</b>: %s</li><li><b>GLOSA</b>: %s</li><li><b>NUM_ATENCION</b>: %s</li>' % (
-                     html_escape(response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/ESTADO')),
-                     html_escape(response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/GLOSA')),
-                     html_escape(response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/NUM_ATENCION'))))
+                 Markup('<br /><li><b>ESTADO</b>: %s</li><li><b>GLOSA</b>: %s</li><li><b>NUM_ATENCION</b>: %s</li>') % (
+                     response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/ESTADO'),
+                     response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/GLOSA'),
+                     response_parsed.findtext('{http://www.sii.cl/XMLSchema}RESP_HDR/NUM_ATENCION')))

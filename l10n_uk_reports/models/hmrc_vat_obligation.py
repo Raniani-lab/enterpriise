@@ -9,6 +9,7 @@ import logging
 import datetime
 from re import match
 from dateutil.relativedelta import relativedelta
+from markupsafe import Markup
 
 _logger = logging.getLogger(__name__)
 
@@ -178,17 +179,17 @@ class HmrcVatObligation(models.Model):
         # Need to do something with the result?
         if r.status_code == 201: #Successful post
             response = json.loads(r.content.decode())
-            msg = _('Tax return successfully posted:') + ' <br/>'
-            msg += '<b>' + _('Date Processed') + ': </b>' + response['processingDate'] + '<br/>'
+            msg = _('Tax return successfully posted:') + Markup(' <br/>')
+            msg += Markup('<b>%s : </b>%s<br/>') % (_('Date Processed'), response['processingDate'])
             if response.get('paymentIndicator'):
-                msg += '<b>' + _('Payment Indicator') + ': </b>' + response['paymentIndicator'] + '<br/>'
-            msg += '<b>' + _('Form Bundle Number') + ': </b>' + response['formBundleNumber'] + '<br/>'
+                msg += Markup('<b>%s : </b>%s<br/>') % (_('Payment Indicator'), response['paymentIndicator'])
+            msg += Markup('<b>%s : </b>%s<br/>') % (_('Form Bundle Number'), response['formBundleNumber'])
             if response.get('chargeRefNumber'):
-                msg += '<b>' + _('Charge Ref Number') + ': </b>' + response['chargeRefNumber'] + '<br/>'
-            msg += '<br/>' + _('Sent Values:') + '<br/>'
+                msg += Markup('<b>%s : </b>%s<br/>') % (_('Charge Ref Number'), response['chargeRefNumber'])
+            msg += Markup('<br/>%s<br/>') % _('Sent Values:')
             for sent_key in data:
                 if sent_key != 'periodKey':
-                    msg += '<b>' + sent_key + '</b>: ' + str(data[sent_key]) + '<br/>'
+                    msg += Markup('<b>%s</b>: %s</br>') % (sent_key, data[sent_key])
             self.sudo().message_post(body=msg)
             self.sudo().write({'status': "fulfilled"})
         elif r.status_code == 401:  # auth issue

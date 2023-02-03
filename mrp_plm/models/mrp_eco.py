@@ -2,7 +2,6 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 from collections import defaultdict
-from markupsafe import escape
 from random import randint
 
 import ast
@@ -620,11 +619,11 @@ class MrpEco(models.Model):
                         'approval_date': fields.Datetime.now(),
                     })
 
-                message = escape(_("%(approval_name)s %(approver_name)s %(approval_status)s this ECO")) % {
-                    'approval_name': approval.name,
-                    'approver_name': approval.user_id.name,
-                    'approval_status': approval.status,
-                }
+                message = _("%(approval_name)s %(approver_name)s %(approval_status)s this ECO",
+                    approval_name=approval.name,
+                    approver_name=approval.user_id.name,
+                    approval_status=approval.status,
+                )
                 eco.message_post(body=message, subtype_xmlid='mail.mt_comment')
 
     def approve(self):

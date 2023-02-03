@@ -8,6 +8,7 @@ import uuid
 import odoo
 import odoo.release
 from dateutil.relativedelta import relativedelta
+from markupsafe import Markup, escape
 
 from requests.exceptions import RequestException, Timeout, ConnectionError
 from odoo import api, fields, models, _
@@ -356,7 +357,7 @@ class AccountOnlineLink(models.Model):
             if state == 'error' and self.state == 'disconnected':
                 state = 'disconnected'
             if subject and message:
-                self.message_post(body='<b>%s</b> <br> %s' % (subject, message.replace('\n', '<br>')), subject=subject)
+                self.message_post(body=Markup('<b>%s</b> <br> %s') % (subject, escape(message).replace('\n', Markup('<br/>'))), subject=subject)
             if state and self.state != state:
                 self.write({'state': state})
             if reset_tx:

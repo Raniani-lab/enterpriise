@@ -3,6 +3,7 @@
 
 from collections import defaultdict
 from dateutil.relativedelta import relativedelta
+from markupsafe import escape
 
 from odoo import _, fields, models
 from odoo.tools import formatLang, format_date
@@ -134,12 +135,12 @@ class AccountMove(models.Model):
             if move.move_type in ['out_invoice', 'in_invoice']:
                 # link the purchase order line to the invoice
                 move.commission_po_line_id = line
-                msg_body = 'New commission. Invoice: %s. Amount: %s.' % (
+                msg_body = escape(_('New commission. Invoice: %s. Amount: %s.')) % (
                     move._get_html_link(),
                     formatLang(self.env, total, currency_obj=move.currency_id),
                 )
             else:
-                msg_body = 'Commission refunded. Invoice: %s. Amount: %s.' % (
+                msg_body = escape(_('Commission refunded. Invoice: %s. Amount: %s.')) % (
                     move._get_html_link(),
                     formatLang(self.env, total, currency_obj=move.currency_id))
             purchase.message_post(body=msg_body)

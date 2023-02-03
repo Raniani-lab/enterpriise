@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from markupsafe import Markup
 from odoo import models
 
 class StockPicking(models.Model):
@@ -25,8 +26,8 @@ class StockPicking(models.Model):
                 subtype = self.env.ref('helpdesk.mt_ticket_return_' + pickings[0].state, raise_if_not_found=False)
                 if not subtype:
                     continue
-                body = '</br>'.join(
-                    (f"{picking._get_html_link()} {subtype.name}")
+                body = Markup('<br/>').join(
+                    (picking._get_html_link() + f" {subtype.name}")
                     for picking in pickings
                 )
                 ticket.message_post(subtype_id=subtype.id, body=body)

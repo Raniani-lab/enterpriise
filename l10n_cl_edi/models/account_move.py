@@ -326,11 +326,11 @@ class AccountMove(models.Model):
         except Exception as error:
             _logger.error(error)
             if not self.env.context.get('cron_skip_connection_errs'):
-                self.message_post(body=_('Asking for claim status with response:') + '<br/>: %s <br/>' % response +
-                                       _('failed due to:') + '<br/> %s' % error)
+                self.message_post(body=_('Asking for claim status with response:') + Markup('<br/>: %s <br/>') % response +
+                                       _('failed due to:') + Markup('<br/> %s') % error)
         else:
             self.l10n_cl_claim = response_code
-            self.message_post(body=_('Asking for claim status with response:') + '<br/> %s' % response)
+            self.message_post(body=_('Asking for claim status with response:') + Markup('<br/> %s') % response)
 
     # SII Vendor Bills Buttons
 
@@ -417,9 +417,9 @@ class AccountMove(models.Model):
         if cod_response in [0, 1]:
             self.l10n_cl_dte_acceptation_status = 'accepted'
             self._l10n_cl_send_dte_reception_status('accepted')
-            msg = _('Document acceptance was accepted with response:') + '<br/> %s' % response
+            msg = _('Document acceptance was accepted with response:') + Markup('<br/> %s') % response
         else:
-            msg = _('Document acceptance failed with response:') + '<br/> %s' % response
+            msg = _('Document acceptance failed with response:') + Markup('<br/> %s') % response
         self.message_post(body=msg)
 
     def l10n_cl_claim_document(self):
@@ -462,9 +462,9 @@ class AccountMove(models.Model):
                     'state': 'cancel',
                 })
                 self._l10n_cl_send_dte_reception_status('claimed')
-                msg = _('Document was claimed with response:') + '<br/> %s' % response
+                msg = _('Document was claimed with response:') + Markup('<br/> %s') % response
             else:
-                msg = _('Document claim failed with response:') + '<br/> %s' % response
+                msg = _('Document claim failed with response:') + Markup('<br/> %s') % response
             self.message_post(body=msg)
 
     # DTE creation

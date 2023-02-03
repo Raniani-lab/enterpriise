@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from markupsafe import Markup, escape
+
 from odoo import api, fields, models, _
 
 class HelpdeskTicketConvertWizard(models.TransientModel):
@@ -37,9 +39,12 @@ class HelpdeskTicketConvertWizard(models.TransientModel):
         for ticket, task in zip(tickets_to_convert, created_tasks):
             ticket.active = False
 
-            ticket.sudo().message_post(body=_("Ticket converted into task %s", f"<a href='#' data-oe-model='project.task' data-oe-id='{task.id}'>{task.name}</a>"))
+            ticket.sudo().message_post(
+                body=escape(_("Ticket converted into task %s")) %
+                    Markup("<a href='#' data-oe-model='project.task' data-oe-id='%s'>%s</a>") % (task.id, task.name))
             task.sudo().message_post(
-                body=_("Task created from ticket %s", f"<a href='#' data-oe-model='helpdesk.ticket' data-oe-id='{ticket.id}'>{ticket.name}</a>"),
+                body=escape(_("Task created from ticket %s")) %
+                    Markup("<a href='#' data-oe-model='helpdesk.ticket' data-oe-id='%s'>%s</a>") % (ticket.id, ticket.name),
                 is_internal=True,
                 subtype_id=subtype_id,
             )

@@ -21,7 +21,7 @@ class Repair(models.Model):
                 subtype = self.env.ref('helpdesk.mt_ticket_repair_' + repair.state, raise_if_not_found=False)
                 if not subtype:
                     continue
-                body = f"{repair._get_html_link()} {subtype.name}"
+                body = repair._get_html_link() + f" {subtype.name}"
                 repair.ticket_id.sudo().message_post(subtype_id=subtype.id, body=body)
         return res
 

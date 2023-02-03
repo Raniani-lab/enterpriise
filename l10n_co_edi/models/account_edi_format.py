@@ -13,6 +13,7 @@ import re
 from collections import defaultdict
 from datetime import timedelta
 from functools import lru_cache
+from markupsafe import Markup
 
 
 class AccountEdiFormat(models.Model):
@@ -360,7 +361,7 @@ class AccountEdiFormat(models.Model):
 
             # == Chatter ==
             invoice.with_context(no_new_invoice=True).message_post(
-                body=_('Electronic invoice submission succeeded. Message from Carvajal:<br/>%s', response['message']),
+                body=_('Electronic invoice submission succeeded. Message from Carvajal:') + Markup('<br/>)' + response['message']),
                 attachment_ids=attachment.ids,
             )
             # Do not return the attachment because it is not signed yet.

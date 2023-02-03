@@ -4,7 +4,9 @@
 import psycopg2
 import datetime
 from dateutil.relativedelta import relativedelta
+from markupsafe import Markup
 from math import copysign
+from markupsafe import escape
 
 from odoo import api, Command, fields, models, _
 from odoo.exceptions import UserError, ValidationError
@@ -459,16 +461,13 @@ class AccountAsset(models.Model):
         for asset in self:
             for line in asset.original_move_line_ids:
                 if line.name:
-                    body = _(
-                        'A document linked to %s has been deleted: %s',
+                    body = escape(_('A document linked to %s has been deleted: %s')) % (
                         line.name,
                         asset._get_html_link(),
                     )
                 else:
-                    body = _(
-                        'A document linked to this move has been deleted: %s',
+                    body = escape(_('A document linked to this move has been deleted: %s')) % \
                         asset._get_html_link(),
-                    )
                 line.move_id.message_post(body=body)
         return super(AccountAsset, self).unlink()
 
@@ -781,7 +780,7 @@ class AccountAsset(models.Model):
                 'sale': (_('Deferred revenue created'), _('A deferred revenue has been created for this move:')),
                 'expense': (_('Deferred expense created'), _('A deferred expense has been created for this move:')),
             }[asset.asset_type]
-            msg = asset_name[1] + f' {asset._get_html_link()}'
+            msg = asset_name[1] + ' ' + asset._get_html_link()
             asset.message_post(body=asset_name[0], tracking_value_ids=tracking_value_ids)
             for move_id in asset.original_move_line_ids.mapped('move_id'):
                 move_id.message_post(body=msg)
@@ -846,9 +845,8 @@ class AccountAsset(models.Model):
                     f'{m.name}'
                 ))
                 asset._cancel_future_moves(datetime.date.min)
-                msg = _(
-                        'Asset Cancelled <br>'
-                        'The account %(exp_acc)s has been credited by %(exp_delta)s, '
+                msg = _('Asset Cancelled') + Markup('<br>') + \
+                      _('The account %(exp_acc)s has been credited by %(exp_delta)s, '
                         'while the account %(dep_acc)s has been debited by %(dep_delta)s. '
                         'This corresponds to %(move_count)s cancelled %(word)s:<br>%(entries)s',
                         exp_acc=asset.account_depreciation_expense_id.display_name,

@@ -2,10 +2,11 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
 import json
+from babel.dates import get_quarter_names
 from datetime import datetime, timedelta
 from dateutil import relativedelta
 from itertools import groupby
-from babel.dates import get_quarter_names
+from markupsafe import Markup
 
 from odoo import api, fields, models, _
 from odoo.addons.iap import jsonrpc
@@ -1465,7 +1466,7 @@ class L10nInGSTReturnPeriod(models.Model):
                     else:
                         for bill in matched_bills:
                             _create_attachment(bill, gstr2b_bill.get('bill_value_json'))
-                            other_bills = "<br/>".join("<a href='#' data-oe-model='account.move' data-oe-id='%s'>%s</a>"%(
+                            other_bills = Markup("<br/>").join(Markup("<a href='#' data-oe-model='account.move' data-oe-id='%s'>%s</a>") % (
                                     other_bill.id, other_bill.name) for other_bill in matched_bills - bill)
                             bill.message_post(
                             subject=_("GSTR-2B Reconciliation"),

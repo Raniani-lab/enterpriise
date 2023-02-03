@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
+
+from markupsafe import Markup
 from odoo import api, models, fields, _
 from odoo.exceptions import UserError
 from odoo.tools import pdf
@@ -195,9 +197,10 @@ class ProviderUPS(models.Model):
                 package_labels = package_labels + [(track_number, label_binary_data)]
 
             carrier_tracking_ref = "+".join([pl[0] for pl in package_labels])
-            logmessage = _("Shipment created into UPS<br/>"
-                           "<b>Tracking Numbers:</b> %s<br/>"
-                           "<b>Packages:</b> %s") % (carrier_tracking_ref, ','.join([p.name for p in packages if p.name]))
+            logmessage = _("Shipment created into UPS") + Markup("<br/><b>") + \
+                         _("Tracking Numbers:") + Markup("</b> ") + carrier_tracking_ref + \
+                         Markup("<br/><b>") + _("Packages:") + Markup("</b> ") + \
+                         ','.join([p.name for p in packages if p.name])
             if self.ups_label_file_type != 'GIF':
                 attachments = [('LabelUPS-%s.%s' % (pl[0], self.ups_label_file_type), pl[1]) for pl in package_labels]
             if self.ups_label_file_type == 'GIF':
@@ -286,9 +289,10 @@ class ProviderUPS(models.Model):
             package_labels = package_labels + [(track_number, label_binary_data)]
 
         carrier_tracking_ref = "+".join([pl[0] for pl in package_labels])
-        logmessage = _("Return label generated<br/>"
-                       "<b>Tracking Numbers:</b> %s<br/>"
-                       "<b>Packages:</b> %s") % (carrier_tracking_ref, ','.join([p.name for p in packages if p.name]))
+        logmessage = _("Return label generated") + Markup("<br/><b>") + \
+                     _("Tracking Numbers:") + Markup("</b> ") + carrier_tracking_ref + \
+                     Markup("<br/><b>") + _("Packages:") + Markup("</b> ") + \
+                     ','.join([p.name for p in packages if p.name])
         if self.ups_label_file_type != 'GIF':
             attachments = [('%s-%s-%s.%s' % (self.get_return_label_prefix(), pl[0], index, self.ups_label_file_type), pl[1]) for index, pl in enumerate(package_labels)]
         if self.ups_label_file_type == 'GIF':

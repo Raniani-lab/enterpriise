@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from markupsafe import Markup
 from odoo import api, models, fields, _
 
 
@@ -44,8 +45,8 @@ class L10nBeScheduleChangeAllocation(models.Model):
                 record.leave_allocation_id.write({
                     'number_of_days': number_of_days,
                 })
-                record.leave_allocation_id._message_log(body=_('New working schedule on %(contract_name)s.<br/>'
-                'New total: %(days)s') % {'contract_name': record.contract_id.name, 'days': number_of_days})
+                record.leave_allocation_id._message_log(body=Markup(_('New working schedule on %(contract_name)s.<br/>'
+                'New total: %(days)s')) % {'contract_name': record.contract_id.name, 'days': number_of_days})
 
     @api.model
     def _cron_update_allocation_from_new_schedule(self, date=None):

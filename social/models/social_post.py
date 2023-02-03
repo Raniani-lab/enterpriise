@@ -5,6 +5,7 @@ import json
 import threading
 
 from collections import defaultdict
+from markupsafe import Markup
 
 from odoo import _, api, fields, models
 from odoo.exceptions import AccessError, UserError, ValidationError
@@ -411,14 +412,14 @@ class SocialPost(models.Model):
         )
 
         for post in posts_to_complete:
-            posts_failed = '<br>'.join([
+            posts_failed = Markup('<br>').join([
                 '  - ' + live_post.display_name
                 for live_post in post.live_post_ids
                 if live_post.state == 'failed'
             ])
 
             if posts_failed:
-                post._message_log(body=_("Message posted partially. These are the ones that couldn't be posted: <br>%s", posts_failed))
+                post._message_log(body=_("Message posted partially. These are the ones that couldn't be posted:%s") + Markup("<br/>") + posts_failed)
             else:
                 post._message_log(body=_("Message posted"))
 

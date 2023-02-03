@@ -2,6 +2,7 @@
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 import json
 import requests
+from markupsafe import Markup
 from werkzeug.urls import url_join
 
 from odoo import api, fields, models, _
@@ -121,7 +122,7 @@ class DeliverCarrier(models.Model):
             # return tracking information
             carrier_tracking_link = ""
             for track_number, tracker_url in result.get('track_shipments_url').items():
-                carrier_tracking_link += '<a href=' + tracker_url + '>' + track_number + '</a><br/>'
+                carrier_tracking_link += Markup("<a href='%s'>%s</a><br/>") % (tracker_url, track_number)
 
             carrier_tracking_ref = ' + '.join(result.get('track_shipments_url').keys())
 
@@ -129,8 +130,8 @@ class DeliverCarrier(models.Model):
             lognote_pickings = picking.sale_id.picking_ids if picking.sale_id else picking
             requests_session = requests.Session()
 
-            logmessage = _("Shipment created into Easypost<br/>"
-                           "<b>Tracking Numbers:</b> %s<br/>") % (carrier_tracking_link)
+            logmessage = Markup(_("Shipment created into Easypost<br/>"
+                                  "<b>Tracking Numbers:</b> %s<br/>")) % (carrier_tracking_link)
 
             labels = []
             for track_number, label_url in result.get('track_label_data').items():
@@ -139,12 +140,12 @@ class DeliverCarrier(models.Model):
                     response.raise_for_status()
                     labels.append(('LabelEasypost-%s.%s' % (track_number, self.easypost_label_file_type), response.content))
                 except Exception:
-                    logmessage += '<li><a href="%s">%s</a></li>' % (label_url, label_url)
+                    logmessage += Markup('<li><a href="%s">%s</a></li>') % (label_url, label_url)
 
             for pick in lognote_pickings:
                 pick.message_post(body=logmessage, attachments=labels)
 
-            logmessage = _('Easypost Documents:<br/>')
+            logmessage = _('Easypost Documents:') + Markup("<br/>")
 
             forms = []
             for form_type, form_url in result.get('forms', {}).items():
@@ -153,7 +154,7 @@ class DeliverCarrier(models.Model):
                     response.raise_for_status()
                     forms.append(('%s-%s' % (form_type, form_url.split('/')[-1]), response.content))
                 except Exception:
-                    logmessage += '<li><a href="%s">%s</a></li>' % (form_url, form_url)
+                    logmessage += Markup('<li><a href="%s">%s</a></li>') % (form_url, form_url)
 
             if result.get('forms'):
                 for pick in lognote_pickings:
@@ -183,7 +184,7 @@ class DeliverCarrier(models.Model):
                 response.raise_for_status()
                 labels.append(('%s-%s.%s' % (self.get_return_label_prefix(), track_number, self.easypost_label_file_type), response.content))
             except Exception:
-                logmessage += '<li><a href="%s">%s</a></li>' % (label_url, label_url)
+                logmessage += Markup('<li><a href="%s">%s</a></li>') % (label_url, label_url)
 
         pickings.message_post(body=logmessage, attachments=labels)
 

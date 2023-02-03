@@ -280,7 +280,7 @@ class AssetModify(models.TransientModel):
             })
             asset_increase.validate()
 
-            subject = _('A gross increase has been created: %s', asset_increase._get_html_link())
+            subject = _('A gross increase has been created: ') + asset_increase._get_html_link()
             self.asset_id.message_post(body=subject)
 
         if not self.env.context.get('resume_after_pause'):

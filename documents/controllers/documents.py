@@ -7,6 +7,7 @@ import json
 import logging
 import os
 from contextlib import ExitStack
+from markupsafe import Markup
 
 from odoo import Command, http
 from odoo.exceptions import AccessError
@@ -361,13 +362,15 @@ class ShareRoute(http.Controller):
         folder = share.folder_id
         folder_id = folder.id or False
         button_text = share.name or _('Share link')
-        chatter_message = _('''<b> File uploaded by: </b> %s <br/>
-                               <b> Link created by: </b> %s <br/>
+        chatter_message = Markup("""<b>%s</b> %s <br/>
+                               <b>%s</b> %s <br/>
                                <a class="btn btn-primary" href="/web#id=%s&model=documents.share&view_type=form" target="_blank">
                                   <b>%s</b>
                                </a>
-                             ''') % (
+                             """) % (
+                _("File uploaded by:"),
                 http.request.env.user.name,
+                _("Link created by:"),
                 share.create_uid.name,
                 share_id,
                 button_text,

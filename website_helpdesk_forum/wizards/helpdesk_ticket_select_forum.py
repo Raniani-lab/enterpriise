@@ -1,6 +1,8 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from markupsafe import Markup
+
 from odoo import api, fields, models, _
 from odoo.exceptions import UserError
 
@@ -55,7 +57,8 @@ class HelpdeskTicketSelectForumWizard(models.TransientModel):
             'ticket_id': self.ticket_id.id,
             'tag_ids': [(6, 0, self.tag_ids.ids)]
         })
-        body = f"<a href='/forum/{self.forum_id.id}/question/{forum_post.id}'>{forum_post.name}</a> {_('Forum Post created')}"
+        body = Markup("<a href='/forum/%s/question/%s'>%s</a>%s") % (
+            self.forum_id.id, forum_post.id, forum_post.name, _('Forum Post created'))
         self.ticket_id.message_post(body=body)
         self.ticket_id.write({
             'forum_post_ids': [(4, forum_post.id, 0)]

@@ -193,8 +193,8 @@ class HrContractSignDocumentWizard(models.TransientModel):
                 signatories_text = _('Only %s has to sign.', employee.display_name)
             record_to_post = self.contract_id if self.contract_id.employee_id == employee else employee
             record_to_post.message_post(
-                body=Markup(
-                    _('%(user_name)s requested a new signature on the following documents:<br/><ul>%(documents)s</ul>%(signatories_text)s')
+                body=(
+                    _('%(user_name)s requested a new signature on the following documents:') + Markup('<br/><ul>%(documents)s</ul>%(signatories_text)s')
                 ) % {
                     'user_name': self.env.user.display_name,
                     'documents': Markup('\n').join(Markup('<li>%s</li>') % name for name in self.sign_template_ids.mapped('name')),

@@ -1,4 +1,6 @@
 # -*- coding: utf-8 -*-
+
+from markupsafe import Markup, escape
 from odoo import Command, fields, models, _
 
 
@@ -11,7 +13,6 @@ class WorkflowActionRuleTask(models.Model):
         rv = super(WorkflowActionRuleTask, self).create_record(documents=documents)
         if self.create_model == 'project.task':
             project = documents.folder_id._get_project_from_closest_ancestor() if len(documents.folder_id) == 1 else self.env['project.project']
-            document_msg = _('Task created from document')
             new_obj = self.env[self.create_model].create({
                 'name': " / ".join(documents.mapped('name')) or _("New task from Documents"),
                 'user_ids': [Command.set(self.env.user.ids)],
@@ -28,9 +29,12 @@ class WorkflowActionRuleTask(models.Model):
                 'context': self._context,
             }
             if len(documents) == 1:
-                document_msg += f' {documents._get_html_link()}'
+                document_msg = escape(_('Task created from document %s')) % documents._get_html_link()
             else:
-                document_msg += f's <ul>{"".join(f"<li>{document._get_html_link()}</li>" for document in documents)}</ul>'
+                document_msg = escape(_('Task created from documents %s')) % documents._get_html_link()
+                document_msg += Markup("<ul>%s</ul>") % Markup().join(
+                    Markup("<li>%s</li>") % document._get_html_link()
+                    for document in documents)
 
             for document in documents:
                 this_document = document

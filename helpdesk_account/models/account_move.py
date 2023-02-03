@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 # Part of Odoo. See LICENSE file for full copyright and licensing details.
 
+from markupsafe import Markup
 from odoo import models
 
 class AccountMove(models.Model):
@@ -25,8 +26,8 @@ class AccountMove(models.Model):
                     subtype_id = self.env.ref('helpdesk.mt_ticket_refund_' + invoices[0].state, raise_if_not_found=False)
                     if not subtype_id:
                         continue
-                    body = '</br>'.join(
-                        (f"{invoice._get_html_link()} {subtype_id.name}")
+                    body = Markup('<br/>').join(
+                        (invoice._get_html_link() + f" {subtype_id.name}")
                         for invoice in invoices
                     )
                     ticket.message_post(subtype_id=subtype_id.id, body=body)

@@ -3,6 +3,7 @@
 
 from datetime import datetime
 from dateutil.relativedelta import relativedelta
+from markupsafe import escape
 import calendar
 
 from odoo import api, fields, models, _
@@ -99,9 +100,8 @@ class HrLeave(models.Model):
             leave.activity_schedule(
                 'hr_payroll_holidays.mail_activity_data_hr_leave_to_defer',
                 summary=_('Validated Time Off to Defer'),
-                note=_(
-                    'Please create manually the work entry for %s',
-                    leave.employee_id._get_html_link()),
+                note=escape(_('Please create manually the work entry for %s')) % \
+                        leave.employee_id._get_html_link(),
                 user_id=leave.employee_id.company_id.deferred_time_off_manager.id or self.env.ref('base.user_admin').id)
         return super(HrLeave, self - leaves_to_defer)._cancel_work_entry_conflict()
 

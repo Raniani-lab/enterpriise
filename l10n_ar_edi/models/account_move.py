@@ -9,6 +9,7 @@ import re
 import logging
 import base64
 import json
+from markupsafe import Markup
 
 
 _logger = logging.getLogger(__name__)
@@ -361,7 +362,7 @@ class AccountMove(models.Model):
             values.update(l10n_ar_afip_xml_request=xml_request, l10n_ar_afip_xml_response=xml_response)
             inv.sudo().write(values)
             if return_info:
-                inv.message_post(body='<p><b>' + _('AFIP Messages') + '</b></p>' + (plaintext2html(return_info, 'em')))
+                inv.message_post(body=Markup('<p><b>%s%s</b></p>') % (_('AFIP Messages'), plaintext2html(return_info, 'em')))
 
     # Helpers
 

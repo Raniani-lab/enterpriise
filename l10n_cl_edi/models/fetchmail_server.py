@@ -7,6 +7,7 @@ import os
 
 from lxml import etree
 
+from markupsafe import Markup
 from xmlrpc import client as xmlrpclib
 
 from odoo import api, fields, models, _, Command
@@ -285,21 +286,22 @@ class FetchmailServer(models.Model):
             for msg in msgs:
                 move.with_context(no_new_invoice=True).message_post(body=msg)
 
-            msg = _('Vendor Bill DTE has been generated for the following vendor: </br>') if partner else \
-                  _('Vendor not found: You can generate this vendor manually with the following information: </br>')
+            msg = _('Vendor Bill DTE has been generated for the following vendor:') if partner else \
+                  _('Vendor not found: You can generate this vendor manually with the following information:')
+            msg += Markup('<br/>')
             move.with_context(no_new_invoice=True).message_post(
-                body=msg + _(
+                body=msg + Markup(_(
                     '<li><b>Name</b>: %(name)s</li><li><b>RUT</b>: %(vat)s</li><li>'
-                    '<b>Address</b>: %(address)s</li>') % {
+                    '<b>Address</b>: %(address)s</li>')) % {
                     'vat': self._get_dte_issuer_vat(xml_content) or '',
                     'name': self._get_dte_partner_name(xml_content) or '',
                     'address': self._get_dte_issuer_address(xml_content) or ''}, attachment_ids=[dte_attachment.id])
 
             if float_compare(move.amount_total, xml_total_amount, precision_digits=move.currency_id.decimal_places) != 0:
                 move.message_post(
-                    body=_('<strong>Warning:</strong> The total amount of the DTE\'s XML is %s and the total amount '
+                    body=Markup(_('<strong>Warning:</strong> The total amount of the DTE\'s XML is %s and the total amount '
                            'calculated by Odoo is %s. Typically this is caused by additional lines in the detail or '
-                           'by unidentified taxes, please check if a manual correction is needed.')
+                           'by unidentified taxes, please check if a manual correction is needed.'))
                     % (formatLang(self.env, xml_total_amount, currency_obj=move.currency_id),
                        formatLang(self.env, move.amount_total, currency_obj=move.currency_id)))
             move.l10n_cl_dte_acceptation_status = 'received'

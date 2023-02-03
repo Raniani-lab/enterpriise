@@ -34,6 +34,17 @@ class GenerateSimulationLink(models.TransientModel):
     url = fields.Char('Offer link', compute='_compute_url')
     display_warning_message = fields.Boolean(compute='_compute_warning_message', compute_sudo=True)
 
+    @api.model
+    def default_get(self, fields):
+        result = super(GenerateSimulationLink, self).default_get(fields)
+        applicant_id = result.get('applicant_id')
+        if applicant_id:
+            applicant = self.env['hr.applicant'].sudo().browse(applicant_id)
+            if not applicant.access_token or applicant.access_token_end_date < fields.Date.today():
+                applicant.access_token = uuid.uuid4().hex
+                applicant.access_token_end_date = self.env['hr.applicant']._get_access_token_end_date()
+        return result
+
     @api.depends('employee_id.address_home_id.email', 'applicant_id.email_from')
     def _compute_email_to(self):
         for wizard in self:
@@ -95,9 +106,6 @@ class GenerateSimulationLink(models.TransientModel):
         return [(w.id, w.employee_id.name or w.applicant_id.partner_name) for w in self]
 
     def send_offer(self):
-        if self.applicant_id and (not self.applicant_id.access_token or self.applicant_id.access_token_end_date < fields.Date.today()):
-            self.applicant_id.access_token = uuid.uuid4().hex
-            self.applicant_id.access_token_end_date = self.env['hr.applicant']._get_access_token_end_date()
         try:
             template_id = self.env.ref('hr_contract_salary.mail_template_send_offer').id
         except ValueError:

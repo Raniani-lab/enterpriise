@@ -67,7 +67,7 @@ class HrExpense(models.Model):
         ocr_results = super()._check_ocr_status()
         if ocr_results is not None:
             description_ocr = ocr_results['description']['selected_value']['content'] if 'description' in ocr_results else ""
-            total_ocr = ocr_results['total']['selected_value']['content'] if 'total' in ocr_results else ""
+            total_ocr = ocr_results['total']['selected_value']['content'] if 'total' in ocr_results else 0.0
             date_ocr = ocr_results['date']['selected_value']['content'] if 'date' in ocr_results else ""
             currency_ocr = ocr_results['currency']['selected_value']['content'] if 'currency' in ocr_results else ""
             bill_reference_ocr = ocr_results['bill_reference']['selected_value']['content'] if 'bill_reference' in ocr_results else ""

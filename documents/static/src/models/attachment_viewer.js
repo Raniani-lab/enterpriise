@@ -63,6 +63,11 @@ registerPatch({
         hasPdfSplit: attr({
             default: false,
         }),
+        withDownload: attr({
+            compute() {
+                return this.attachmentViewerViewable.isUrlYoutube;
+            },
+        }),
         withPdfSplit: attr({
             /**
              * If the initial record selection is a single record, and the current record is a pdf, return true.

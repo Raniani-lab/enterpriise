@@ -6,6 +6,14 @@ import { attr, one } from "@mail/model/model_field";
 
 registerModel({
     name: "Document",
+    recordMethods: {
+        /**
+         * Send the attachment for the browser to download.
+         */
+        download() {
+            this.attachment.download();
+        },
+    },
     fields: {
         attachment: one("Attachment", {
             compute() {

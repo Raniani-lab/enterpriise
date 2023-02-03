@@ -30,6 +30,7 @@
         <field name="name">Public Holiday</field>
         <field name="code">LEAVE500</field>
         <field name="is_leave">True</field>
+        <field name="color">3</field>
         <field name="representation_fees">True</field>
         <field name="dmfa_code">1</field>
     </record>

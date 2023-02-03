@@ -10,7 +10,7 @@ class ResourceCalendar(models.Model):
 
     @api.model
     def default_get(self, fields):
-        res = super(ResourceCalendar, self).default_get(fields)
+        res = super().default_get(fields)
         if 'full_time_required_hours' in fields and not res.get('full_time_required_hours'):
             company_id = res.get('company_id', self.env.company.id)
             company = self.env['res.company'].browse(company_id)
@@ -26,7 +26,7 @@ class ResourceCalendar(models.Model):
     def _compute_hours_per_week(self):
         for calendar in self:
             sum_hours = sum(
-                (attendance.hour_to - attendance.hour_from) for attendance in calendar.attendance_ids if not attendance.work_entry_type_id.is_leave)
+                (a.hour_to - a.hour_from) for a in calendar.attendance_ids if a.day_period != 'lunch' and not a.work_entry_type_id.is_leave)
             calendar.hours_per_week = sum_hours / 2 if calendar.two_weeks_calendar else sum_hours
 
     def _get_days_per_week(self):
@@ -38,7 +38,8 @@ class ResourceCalendar(models.Model):
         self.ensure_one()
         if self.two_weeks_calendar:
             return 5 * self.work_time_rate / 100
-        return len(set(self.attendance_ids.filtered(lambda a: not a.work_entry_type_id.is_leave).mapped('dayofweek')))
+        return len(set(self.attendance_ids.filtered(
+            lambda a: a.day_period != 'lunch' and not a.work_entry_type_id.is_leave).mapped('dayofweek')))
 
     def _compute_is_fulltime(self):
         for calendar in self:

@@ -45,7 +45,7 @@ class HrContractSalary(main.HrContractSalary):
             )[new_contract.employee_id.id]
             payslip.worked_days_line_ids = request.env['hr.payslip.worked_days'].with_context(salary_simulation=True).sudo().create({
                 'payslip_id': payslip.id,
-                'work_entry_type_id': new_contract._get_default_work_entry_type().id,
+                'work_entry_type_id': new_contract._get_default_work_entry_type_id(),
                 'number_of_days': work_days_data.get('days', 0),
                 'number_of_hours': work_days_data.get('hours', 0),
             })

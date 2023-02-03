@@ -100,6 +100,8 @@ class L10nBeExportSDWorxLeavesWizard(models.TransientModel):
             employee = contract.employee_id
 
             for attendance in contract.resource_calendar_id.attendance_ids:
+                if attendance.day_period == "lunch":
+                    continue
                 start = max(first_day, contract.date_start)
                 until = min(last_day, contract.date_end) if contract.date_end else last_day
                 if attendance.date_from:

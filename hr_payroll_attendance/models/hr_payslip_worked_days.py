@@ -8,7 +8,7 @@ class HrPayslipWorkedDays(models.Model):
 
     def _compute_amount(self):
         # Try to deduce the amount from the salary rules bound to the payslip
-        overtime_work_entry_type = self.env.ref('hr_payroll_attendance.overtime_work_entry_type', False)
+        overtime_work_entry_type = self.env.ref('hr_work_entry.overtime_work_entry_type', False)
         overtime_pay_percent = self.env['hr.rule.parameter'].sudo()._get_parameter_from_code('overtime_pay_percent', raise_if_not_found=False)
         if not overtime_work_entry_type or overtime_pay_percent is None or overtime_pay_percent == 100:
             super()._compute_amount()
@@ -22,3 +22,10 @@ class HrPayslipWorkedDays(models.Model):
             amount = worked_day.payslip_id.contract_id.hourly_wage * worked_day.number_of_hours if worked_day.is_paid else 0
             worked_day.amount = amount * overtime_pay_percent
         super(HrPayslipWorkedDays, self - overtime_worked_days)._compute_amount()
+
+    def _is_half_day(self):
+        self.ensure_one()
+        overtime_work_entry_type = self.env.ref('hr_work_entry.overtime_work_entry_type')
+        if self.work_entry_type_id == overtime_work_entry_type:
+            return False
+        return super()._is_half_day()

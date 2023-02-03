@@ -3,7 +3,7 @@
 import pytz
 
 from odoo import api, models
-from odoo.addons.resource.models.resource import Intervals
+from odoo.addons.resource.models.utils import Intervals
 
 
 class HelpdeskTeam(models.Model):

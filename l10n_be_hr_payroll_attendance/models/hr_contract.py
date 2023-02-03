@@ -4,6 +4,9 @@
 from datetime import datetime
 
 from odoo import models
+from odoo.addons.resource.models.utils import HOURS_PER_DAY
+from odoo.tools import float_round
+
 
 class HrContract(models.Model):
     _inherit = 'hr.contract'
@@ -17,7 +20,7 @@ class HrContract(models.Model):
         default_work_entry_type = self.structure_type_id.default_work_entry_type_id
         if not attendance_contracts or len(default_work_entry_type) != 1:
             return
-        overtime_work_entry_type = self.env.ref('hr_payroll_work_entry_attendance.overtime_work_entry_type', False)
+        overtime_work_entry_type = self.env.ref('hr_work_entry.overtime_work_entry_type', False)
         if not overtime_work_entry_type:
             return
         overtimes = self.env['hr.attendance.overtime'].sudo().search(
@@ -43,3 +46,20 @@ class HrContract(models.Model):
             'hours': sum(overtime.duration),
             'work_entry_type_id': [overtime_work_entry_type.id],
         })
+
+    def _get_work_hours_split_half(self, date_from, date_to, domain=None):
+        res = super()._get_work_hours_split_half(date_from, date_to, domain=domain)
+        overtime_work_entry_type = self.env.ref('hr_work_entry.overtime_work_entry_type', False)
+        if not overtime_work_entry_type:
+            return res
+        overtime_hours = 0
+        new_res = res.copy()
+        for work_type, dummy in res.items():
+            if work_type[1] == overtime_work_entry_type.id:
+                dummy, hours = new_res.pop(work_type)
+                overtime_hours += hours
+        hours_per_day = self.resource_calendar_id.hours_per_day or self.company_id.resource_calendar_id.hours_per_day or HOURS_PER_DAY
+        overtime_days = float_round(overtime_hours / hours_per_day, precision_rounding=1, rounding_method='UP')
+        if overtime_hours:
+            new_res[('full', overtime_work_entry_type.id)] = [overtime_days, overtime_hours]
+        return new_res

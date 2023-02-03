@@ -6,7 +6,7 @@ from pytz import UTC
 
 from odoo import api, fields, models
 from odoo.tools import float_round
-from odoo.addons.resource.models.resource import sum_intervals
+from odoo.addons.resource.models.utils import sum_intervals
 
 
 class Employee(models.Model):

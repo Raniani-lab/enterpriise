@@ -10,7 +10,7 @@ from odoo import api, fields, models, _
 from odoo.addons.web.controllers.utils import clean_action
 from odoo.exceptions import UserError, ValidationError
 from odoo.tools import float_compare, float_is_zero, relativedelta
-from odoo.addons.resource.models.resource import Intervals, sum_intervals, string_to_datetime
+from odoo.addons.resource.models.utils import Intervals, sum_intervals, string_to_datetime
 
 
 class MrpWorkcenter(models.Model):

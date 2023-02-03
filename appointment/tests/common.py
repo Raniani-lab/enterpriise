@@ -7,7 +7,7 @@ from unittest.mock import patch
 
 from odoo.addons.appointment.models.res_partner import Partner
 from odoo.addons.calendar.models.calendar_event import Meeting
-from odoo.addons.resource.models.resource import ResourceCalendar
+from odoo.addons.resource.models.resource_calendar import ResourceCalendar
 from odoo.addons.mail.tests.common import mail_new_test_user, MailCommon
 from odoo.tests import common
 

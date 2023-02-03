@@ -79,14 +79,19 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
 
             }) for dayofweek, hour_from, hour_to, day_period in [
                 ("0", 8.0, 12.0, "morning"),
+                ("0", 12.0, 13.0, "lunch"),
                 ("0", 13.0, 16.6, "afternoon"),
                 ("1", 8.0, 12.0, "morning"),
+                ("1", 12.0, 13.0, "lunch"),
                 ("1", 13.0, 16.6, "afternoon"),
                 ("2", 8.0, 12.0, "morning"),
+                ("2", 12.0, 13.0, "lunch"),
                 ("2", 13.0, 16.6, "afternoon"),
                 ("3", 8.0, 12.0, "morning"),
+                ("3", 12.0, 13.0, "lunch"),
                 ("3", 13.0, 16.6, "afternoon"),
                 ("4", 8.0, 12.0, "morning"),
+                ("4", 12.0, 13.0, "lunch"),
                 ("4", 13.0, 16.6, "afternoon"),
 
             ]],
@@ -222,7 +227,7 @@ class TestPayslipValidation(AccountTestInvoicingCommon):
         } for i in range(self.EMPLOYEES_COUNT)]
 
         # Payslip Creation
-        with self.assertQueryCount(admin=430):  # randomness
+        with self.assertQueryCount(admin=735):  # randomness
             start_time = time.time()
             payslips = self.env['hr.payslip'].with_context(allowed_company_ids=self.company.ids).create(payslips_values)
             # --- 0.3016078472137451 seconds ---

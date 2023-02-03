@@ -10,7 +10,7 @@ from odoo import Command, fields, models, api, _, _lt
 from odoo.exceptions import UserError
 from odoo.tools import topological_sort
 
-from odoo.addons.resource.models.resource import Intervals, sum_intervals, string_to_datetime
+from odoo.addons.resource.models.utils import Intervals, sum_intervals, string_to_datetime
 
 PROJECT_TASK_READABLE_FIELDS = {
     'allocated_hours',

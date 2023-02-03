@@ -6,7 +6,7 @@ import pytz
 from datetime import datetime, timedelta, time, date
 from odoo import api, fields, models, _
 from odoo.tools import format_time
-from odoo.addons.resource.models.resource import float_to_time
+from odoo.addons.resource.models.utils import float_to_time
 from odoo.exceptions import ValidationError
 
 

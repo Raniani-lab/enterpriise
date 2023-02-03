@@ -4,6 +4,7 @@ from odoo import api, fields, models, tools, _
 from odoo.exceptions import ValidationError, UserError
 from odoo.tools.float_utils import float_repr
 from odoo.tools.sql import column_exists, create_column
+from .extra_timezones import TIEMPO_DEL_CENTRO_ZIPCODES, TIEMPO_DEL_NOROESTE_ZIPCODES, TIEMPO_DEL_CENTRO_EN_FRONTIERA_ZIPCODES
 
 import base64
 import requests
@@ -304,6 +305,7 @@ class AccountMove(models.Model):
     @api.model
     def _l10n_mx_edi_get_cfdi_partner_timezone(self, partner):
         code = partner.state_id.code
+        zipcode = partner.zip
 
         # northwest area
         if code == 'BCN':
@@ -311,6 +313,15 @@ class AccountMove(models.Model):
         # Southeast area
         elif code == 'ROO':
             return timezone('America/Cancun')
+        # Tiempo del noroeste areas
+        elif code == 'CHH' and zipcode in TIEMPO_DEL_NOROESTE_ZIPCODES:
+            return timezone('America/Ojinaga')
+        # Tiempo del centro areas
+        elif code == 'NAY' and zipcode in TIEMPO_DEL_CENTRO_ZIPCODES:
+            return timezone('America/Bahia_Banderas')
+        # Tiempo del centro en frontiera areas
+        elif code in ('TAM', 'NLE', 'COA') and zipcode in TIEMPO_DEL_CENTRO_EN_FRONTIERA_ZIPCODES:
+            return timezone('America/Matamoros')
         # Pacific area
         elif code in ('SON', 'BCS', 'SIN', 'NAY'):
             return timezone('America/Mazatlan')

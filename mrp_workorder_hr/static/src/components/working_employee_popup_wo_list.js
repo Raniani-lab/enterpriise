@@ -9,13 +9,13 @@ const { Component, useState, onWillStart} = owl;
 export class WorkingEmployeePopupWOList extends Component {
     setup() {
         const { origin } = browser.location;
-        this.imageBaseURL = `${origin}/web/image?model=hr.employee&field=avatar_128&id=`
-        this.employeesData= useState({employees : []})
+        this.imageBaseURL = `${origin}/web/image?model=hr.employee&field=avatar_128&id=`;
+        this.employeesData = useState({employees : []});
         this.orm = useService("orm");
-        this.firstTime=true;
+        this.firstTime = true;
 
-        onWillStart(async () => {
-            await this.onWillStart();
+        onWillStart(() => {
+            this.onWillStart();
         });
     }
 
@@ -28,17 +28,18 @@ export class WorkingEmployeePopupWOList extends Component {
         this.close();
     }
 
-    lockEmployee(employeeId,pin) {
+    lockEmployee(employeeId, pin) {
         this.props.disconnectEmployee(employeeId,pin);
         this.close();
     }
 
-    onWillStart(){
+    onWillStart() {
         this.data = [];
-        if(!this.props.popupData.employeesConnected)
+        if (!this.props.popupData.employees){
             return this.employeesData.employees = this.data;
+        }
 
-        this.props.popupData.employeesConnected.forEach(emp => {
+        this.props.popupData.employees.forEach(emp => {
             this.workorders = [];
             emp.workorder.forEach(wo => {
                 this.workorders.push({
@@ -50,57 +51,60 @@ export class WorkingEmployeePopupWOList extends Component {
             });
             this.data.push({
                 id: emp.id,
-                name: emp.name, 
+                name: emp.name,
                 // Compute the image src bc t-attf has a latency to load images ?
                 src: this.imageBaseURL + `${emp.id}`,
                 workorder : this.workorders
             });
         });
-        this.employeesData.employees=this.data
-        this.firstTime=false;
+        this.employeesData.employees = this.data;
+        this.firstTime = false;
     }
 
-    get employeesList(){
-        return this.props.popupData.list
+    get employeesList() {
+        return this.props.popupData.list;
     }
-    get connectedEmployeesList(){
+    get connectedEmployeesList() {
         return this.employeesData.employees;
     }
 
-    async startEmployee(empId, woId){
+    async startEmployee(empId, woId) {
         // reupdate the time from the ORM
         // useful because of timer onsleep change
         // if not done, bug for now
         // this should be done in the timer??
         const time = await this.orm.call(
-            "hr.employee", "get_wo_time_by_employees_ids",[empId,woId],
+            "hr.employee", "get_wo_time_by_employees_ids", [empId,woId]
         );
-        this.data.some(emp=>{
-            emp.workorder.forEach(wo=>{
-                if(wo.id == woId){
+        this.data.some(emp => {
+            emp.workorder.forEach(wo => {
+                if (wo.id == woId) {
                     wo.ongoing = true;
                     wo.duration = time;
-                    return true
+                    return true;
                 }
             })
         })
         this.employeesData.employees = this.data;
-        this.props.onStartEmployee(empId,woId)
+        this.props.onStartEmployee(empId, woId);
     }
 
-    stopEmployee(empId, woId){
-        this.data.forEach(emp=>{
-            emp.workorder.forEach(wo=>{
-                if(wo.id == woId)
-                    wo.ongoing = false;
-            })
+    stopEmployee(empId, woId) {
+        this.data.forEach(emp => {
+            if(emp.id == empId) {
+                emp.workorder.forEach(wo => {
+                    if (wo.id == woId) {
+                        wo.ongoing = false;
+                    }
+                })
+            }
         })
         this.employeesData.employees = this.data;
-        this.props.onStopEmployee(empId, woId)
+        this.props.onStopEmployee(empId, woId);
     }
 
-    async becomeAdmin(employee_id,pin){
-        await this.props.becomeAdmin(employee_id,pin)
+    async becomeAdmin(employee_id, pin) {
+        await this.props.becomeAdmin(employee_id, pin);
         this.close();
     }
 }

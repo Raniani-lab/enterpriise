@@ -2,55 +2,71 @@
 <templates xml:space="preserve">
     <t t-inherit="mrp_workorder.overviewButtonsKanban" t-inherit-mode="extension">
         <xpath expr="//button[hasclass('o_back_button')]" position="after">
-            <button t-if="workcenter.allow_employee" t-on-click="openEmployeeSelection" class="btn btn-secondary o_lock_employee">
-                <span t-if="employees_connected.logged.length==0">Log In</span>
-                <AvatarList employees="employees_connected" visibleAvatarCount="3"/>
+            <button t-on-click="useEmployee.openEmployeeSelection" class="btn btn-secondary o_lock_employee">
+                <span t-if="useEmployee.employees.connected.length>1 or (!useEmployee.employees.admin.path and useEmployee.employees.connected.length!=0)" class="o_workorder_icon_btn fa fa-bars" style="padding:5px" ></span>
+                <t t-if="!(useEmployee.employees.admin.path and useEmployee.employees.connected.length!=0)">
+                    <span style="padding-left:5px">Log In</span>
+                </t>
+                <t t-else="">
+                    <img t-attf-src="{{useEmployee.employees.admin.path}}" class="rounded-circle o_avatar_connected" style="margin-left:5px" />
+                    <span t-esc="useEmployee.employees.admin.name" style="padding-left:5px; vertical-align:middle" readonly="1"></span>
+                </t>
             </button>
-            <button class="btn-secondary btn-link o_unblock" type="workorder_event" name="popupEmployeeManagementg">
-                <field name="employees_ids" widget="kanban.many2many_avatar_employee"/>
+            <button t-on-click="useEmployee.disconnectSessionAdmin" t-if="useEmployee.employees.admin.path and useEmployee.employees.connected.length!=0" class="btn btn-outline-primary o_lock_employee">
+                <span >LOG OUT</span>
             </button>
         </xpath>
         <xpath expr="//div[last()]" position="after">
-            <div t-if="popup['SelectionPopup'].isShown" class="o_tablet_popups">
-                <SelectionPopup popupData="popup['SelectionPopup'].data" onClosePopup.bind="closePopup" onSelectEmployee.bind="selectEmployee"/>
+            <div t-if="useEmployee.popup['SelectionPopup'].isShown" class="o_tablet_popups">
+                <SelectionPopup popupData="useEmployee.popup['SelectionPopup'].data" onClosePopup.bind="useEmployee.closePopup" onSelectEmployee.bind="useEmployee.selectEmployee"/>
             </div>
-            <div t-if="popup['PinPopup'].isShown" class="o_tablet_popups">
-                <PinPopup popupData="popup['PinPopup'].data" onClosePopup.bind="closePopup" onPinValidate.bind="selectEmployee"/>
+            <div t-if="useEmployee.popup['PinPopup'].isShown" class="o_tablet_popups">
+                <PinPopup popupData="useEmployee.popup['PinPopup'].data" onClosePopup.bind="useEmployee.closePopup" onPinValidate.bind="useEmployee.checkPin"/>
+            </div>
+            <div t-if="useEmployee.popup['WorkingEmployeePopupWOList'].isShown" class="o_tablet_popups">
+                <WorkingEmployeePopupWOList
+                    popupData="useEmployee.popup['WorkingEmployeePopupWOList'].data"
+                    onClosePopup.bind="useEmployee.closePopup"
+                    onAddEmployee.bind="useEmployee.popupAddEmployee"
+                    onStopEmployee.bind="useEmployee.stopEmployee"
+                    onStartEmployee.bind="useEmployee.startEmployee"
+                    becomeAdmin.bind="useEmployee.setSessionOwner"
+                />
             </div>
         </xpath>
     </t>
 
     <t t-inherit="mrp_workorder.overviewButtonsList" t-inherit-mode="extension" owl="1">
         <xpath expr="//div/*" position="after">
-            <button t-on-click="openEmployeeSelection" class="btn btn-secondary o_lock_employee">
-                <span t-if="employees_connected.logged.length>1 or (!sessionAdmin.path and employees_connected.logged.length!=0)" class="o_workorder_icon_btn fa fa-bars" style="padding:5px" ></span>
-                <t t-if="!(sessionAdmin.path and employees_connected.logged.length!=0)">
+            <button t-on-click="useEmployee.openEmployeeSelection" class="btn btn-secondary o_lock_employee">
+                <span t-if="useEmployee.employees.connected.length>1 or (!useEmployee.employees.admin.path and useEmployee.employees.connected.length!=0)" class="o_workorder_icon_btn fa fa-bars" style="padding:5px" ></span>
+                <t t-if="!(useEmployee.employees.admin.path and useEmployee.employees.connected.length!=0)">
                     <span style="padding-left:5px">Log In</span>
                 </t>
                 <t t-else="">
-                    <img t-attf-src="{{sessionAdmin.path}}" class="rounded-circle o_avatar_connected" style="margin-left:5px" />
-                    <span t-esc="sessionAdmin.name" style="padding-left:5px; vertical-align:middle" readonly="1"></span>
+                    <img t-attf-src="{{useEmployee.employees.admin.path}}" class="rounded-circle o_avatar_connected" style="margin-left:5px" />
+                    <span t-esc="useEmployee.employees.admin.name" style="padding-left:5px; vertical-align:middle" readonly="1"></span>
                 </t>
             </button>
-            <button t-on-click="disconnectAdmin" t-if="sessionAdmin.path and employees_connected.logged.length!=0" class="btn btn-outline-primary o_lock_employee">
+            <button t-on-click="useEmployee.disconnectSessionAdmin" t-if="useEmployee.employees.admin.path and useEmployee.employees.connected.length!=0" class="btn btn-outline-primary o_lock_employee">
                 <span >LOG OUT</span>
             </button>
         </xpath>
         <xpath expr="//div[last()]" position="after">
-            <div t-if="popup['SelectionPopup'].isShown" class="o_tablet_popups">
-                <SelectionPopup popupData="popup['SelectionPopup'].data" onClosePopup.bind="closePopup" onSelectEmployee.bind="selectEmployee"/>
+            <div t-if="useEmployee.popup['SelectionPopup'].isShown" class="o_tablet_popups">
+                <SelectionPopup popupData="useEmployee.popup['SelectionPopup'].data" onClosePopup.bind="useEmployee.closePopup" onSelectEmployee.bind="useEmployee.selectEmployee"/>
             </div>
-            <div t-if="popup['PinPopup'].isShown" class="o_tablet_popups">
-                <PinPopup popupData="popup['PinPopup'].data" onClosePopup.bind="closePopup" onPinValidate.bind="selectEmployee"/>
+            <div t-if="useEmployee.popup['PinPopup'].isShown" class="o_tablet_popups">
+                <PinPopup popupData="useEmployee.popup['PinPopup'].data" onClosePopup.bind="useEmployee.closePopup" onPinValidate.bind="useEmployee.checkPin"/>
             </div>
-            <div t-if="popup['WorkingEmployeePopupWOList'].isShown" class="o_tablet_popups">
-                <WorkingEmployeePopupWOList 
-                    popupData="popup['WorkingEmployeePopupWOList'].data"
-                    onClosePopup.bind="closePopup"
-                    onAddEmployee.bind="popupAddEmployee"
-                    onStopEmployee.bind="stopEmployee"
-                    onStartEmployee.bind="startEmployee"
-                    becomeAdmin.bind="setSessionOwner"
+            <div t-if="useEmployee.popup['WorkingEmployeePopupWOList'].isShown" class="o_tablet_popups">
+                <WorkingEmployeePopupWOList
+                    popupData="useEmployee.popup['WorkingEmployeePopupWOList'].data"
+                    onClosePopup.bind="useEmployee.closePopup"
+                    onAddEmployee.bind="useEmployee.popupAddEmployee"
+                    onStopEmployee.bind="useEmployee.stopEmployee"
+                    onStartEmployee.bind="useEmployee.startEmployee"
+                    becomeAdmin.bind="useEmployee.setSessionOwner"
                 />
             </div>
         </xpath>

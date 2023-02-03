@@ -4,6 +4,7 @@ from datetime import datetime
 
 from odoo import Command, models, fields, api, _
 from odoo.addons.resource.models.utils import Intervals
+from odoo.addons.web.controllers.utils import clean_action
 from odoo.exceptions import UserError
 from odoo.http import request
 
@@ -16,7 +17,6 @@ class MrpWorkorder(models.Model):
     employee_name = fields.Char(compute='_compute_employee_id')
 
     # employees that started working on the wo
-    # only used in start_employee
     employee_ids = fields.Many2many('hr.employee', string='Working employees', copy=False)
     # employees assigned to the wo
     employee_assigned_ids = fields.Many2many('hr.employee', 'mrp_workorder_employee_assigned',
@@ -117,7 +117,6 @@ class MrpWorkorder(models.Model):
             ('workorder_id', '=', self.id),
             ('date_end', '=', False)
         ])._close()
-        self.employee_ids = [Command.unlink(employee_ids)]
 
     def get_workorder_data(self):
         # Avoid to get the products full name because code and name are separate in the barcode app.
@@ -145,11 +144,37 @@ class MrpWorkorder(models.Model):
         return action
 
     def action_back(self):
-        action = super().action_back()
+        self.ensure_one()
+        if self.is_user_working and self.working_state != 'blocked' and len(self.employee_ids.ids) == 0:
+            self.button_pending()
+        domain = [('state', 'not in', ['done', 'cancel', 'pending'])]
+        if self.env.context.get('from_production_order'):
+            action = self.env["ir.actions.actions"]._for_xml_id("mrp.action_mrp_workorder_production_specific")
+            action['domain'] = domain
+            action['target'] = 'main'
+            action['view_id'] = 'mrp.mrp_production_workorder_tree_editable_view'
+            action['context'] = {
+                'no_breadcrumbs': True,
+            }
+            if self.env.context.get('from_manufacturing_order'):
+                action['context'].update({
+                    'search_default_production_id': self.production_id.id
+                })
+        else:
+            # workorder tablet view action should redirect to the same tablet view with same workcenter when WO mark as done.
+            action = self.env["ir.actions.actions"]._for_xml_id("mrp_workorder.mrp_workorder_action_tablet")
+            action['domain'] = domain
+            action['context'] = {
+                'no_breadcrumbs': True,
+                'search_default_workcenter_id': self.workcenter_id.id
+            }
         if self.employee_id:
             action['context']['employee_id'] = self.employee_id.id
             action['context']['employee_name'] = self.employee_id.name
-        return action
+        if self.employee_ids:
+            action['context']['employee_ids'] = self.employee_ids
+
+        return clean_action(action, self.env)
 
     def _should_start_timer(self):
         """ Return True if the timer should start once the workorder is opened."""
@@ -190,15 +215,19 @@ class MrpWorkorder(models.Model):
         for wo in self:
             if not wo.workcenter_id.allow_employee or not request:
                 return super().button_start()
-            if 'employees_connected' not in request.session.data.keys() or len(request.session['employees_connected']) == 0:
+            if 'employees_connected' not in request.session.keys() or len(request.session['employees_connected']) == 0:
                 raise UserError(_("You need to log in to process this work order."))
-            if 'session_owner' not in request.session.data.keys() or not request.session['session_owner'] or request.session['session_owner'] == {}:
+            if 'session_owner' not in request.session.keys() or not request.session['session_owner']:
                 raise UserError(_("There is no session chief. Please log in."))
+            if request.session['session_owner'] not in [emp.id for emp in wo.allowed_employees] and not self.all_employees_allowed:
+                raise UserError(_("You are not allowed to work on the workorder"))
             if len(wo.allowed_employees) == 0 or request.session['session_owner'] in [emp.id for emp in wo.allowed_employees]:
                 self.start_employee(self.env['hr.employee'].browse(request.session['session_owner']).id)
                 wo.employee_ids |= self.env['hr.employee'].browse(request.session['session_owner'])
-            else:
-                raise UserError(_("You are not allowed to work on a work order."))
+                if self.product_tracking == 'serial':
+                    self.qty_producing = 1.0
+                elif self.qty_producing == 0:
+                    self.qty_producing = self.qty_remaining
 
     # there is no points keep the employees in working state if they are not working
     def button_pending(self):
@@ -206,14 +235,35 @@ class MrpWorkorder(models.Model):
             self.stop_employee(emp.id)
         super().button_pending()
 
+    def open_tablet_view(self):
+        #we need to check if the person is allow to work on the workorder
+        self.ensure_one()
+        if (not self.is_user_working or self.allow_employee) and self.working_state != 'blocked' and self.state in ('ready', 'waiting', 'progress', 'pending'):
+            if self.allow_employee:
+                main_employee_connected = None
+                if 'session_owner' in request.session.data.keys():
+                    main_employee_connected = request.session.data['session_owner']
+                if main_employee_connected:
+                    self.button_start()
+            else:
+                self.button_start()
+        action = self.env["ir.actions.actions"]._for_xml_id("mrp_workorder.tablet_client_action")
+        action['target'] = 'fullscreen'
+        action['res_id'] = self.id
+        action['context'] = {
+            'active_id': self.id,
+            'from_production_order': self.env.context.get('from_production_order'),
+            'from_manufacturing_order': self.env.context.get('from_manufacturing_order')
+        }
+        return action
+
     # TODO : productivity_loss duplicata?
     def action_mark_as_done(self):
         # checking first the main user even if we don't need it.
         # taking here a small amount of time will save us a lot of time when marking many WO as done
         main_employee_connected = None
-        if 'employees_connected' in request.session.data.keys() and len(request.session['employees_connected']) > 0:
-            employee_connected = request.session.data['employees_connected']
-            main_employee_connected = employee_connected[len(employee_connected) - 1]
+        if 'session_owner' in request.session.data.keys():
+            main_employee_connected = request.session.data['session_owner']
 
         # we should first check if we can go on before even modifying the workorders
         # start modifying ONLY if all checks are successfull
@@ -224,6 +274,7 @@ class MrpWorkorder(models.Model):
                 raise UserError(_('You are not allow to work on some of these work orders.'))
             if wo.working_state == 'blocked':
                 raise UserError(_('Some workorders require another workorder to be completed first'))
+        self.button_finish()
 
         loss_id = self.env['mrp.workcenter.productivity.loss'].search([('loss_type', '=', 'performance')], limit=1)
         if len(loss_id) < 1:

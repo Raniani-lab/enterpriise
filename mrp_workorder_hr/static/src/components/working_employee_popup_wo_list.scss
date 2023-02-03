@@ -11,13 +11,17 @@
     margin-bottom: 50px;
 }
 
+.img_employee{
+    height: 35px;
+}
+
 .o_employee_selection {
     margin: 5px;
     border: 1px solid rgba(0, 0, 0, 0.150);
     line-height: 50px;
     display: flex;
     flex-direction: row;
-    justify-content: space-between;  
+    justify-content: space-between;
 }
 
 .o_workorder_list {
@@ -43,4 +47,8 @@
 
 .o_button_timer{
     width: 35%;
+}
+
+.o_btn_start_stop{
+    line-height: 20px !important;
 }

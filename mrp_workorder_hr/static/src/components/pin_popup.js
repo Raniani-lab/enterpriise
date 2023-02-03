@@ -34,8 +34,11 @@ export class PinPopup extends Component {
     }
 
     async confirm() {
-        await this.props.onPinValidate(this.employee.id, this.state.buffer);
-        this.props.onClosePopup('PinPopup');
+        const valid = await this.props.onPinValidate(this.employee.id, this.state.buffer);
+        this.state.buffer = '';
+        if (valid) {
+            this.props.onClosePopup('PinPopup');
+        }
     }
 
     _onKeyUp(ev) {

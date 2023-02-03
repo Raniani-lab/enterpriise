@@ -14,7 +14,8 @@
                             </button>
                         </div>
                         <div class="text-end">
-                            <span t-esc="formatMinutes(line.duration)"/>
+                            <!-- <span t-esc="formatMinutes(line.duration)"/> -->
+                            <MrpTimer ongoing="line.ongoing" value="line.duration" readonly="true" record="line"/>
                         </div>
                         <div class="text-end">
 
@@ -25,6 +26,7 @@
                 </t>
                 <footer class="footer">
                     <button class="btn btn-link " t-on-click="addEmployee">+ New Operator</button>
+                    <button class="btn btn-link" t-on-click="close">Close</button>
                 </footer>
             </div>
         </div>

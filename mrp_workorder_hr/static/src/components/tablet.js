@@ -6,11 +6,8 @@ import { SelectionPopup } from '@mrp_workorder_hr/components/popup';
 import { WorkingEmployeePopup } from '@mrp_workorder_hr/components/working_employee_popup';
 import { patch } from 'web.utils';
 import { PinPopup } from '@mrp_workorder_hr/components/pin_popup';
-import { AvatarList } from "@mrp_workorder_hr/components/avatar_list";
 
 const { onMounted, useState } = owl;
-
-Tablet.components.AvatarList = AvatarList;
 
 patch(Tablet.prototype, 'mrp_workorder_hr', {
     setup() {
@@ -78,8 +75,9 @@ patch(Tablet.prototype, 'mrp_workorder_hr', {
     async startEmployee(employeeId, pin) {
         const pinValid = await this._checkPin(employeeId, pin);
         if (! pinValid) {
+            this.popup["WorkingEmployeePopup"].isShown = false;
             this.actionRedirect = this.startEmployee;
-            return;
+            return false;
         }
         this.state.tabletEmployeeIds.push(employeeId);
         await this.orm.call(
@@ -90,14 +88,10 @@ patch(Tablet.prototype, 'mrp_workorder_hr', {
         await this.getState();
         this.render();
         this.popup["SelectionPopup"].isShown = false;
+        return true;
     },
 
     async stopEmployee(employeeId, pin) {
-        const pinValid = await this._checkPin(employeeId, pin, false);
-        if (! pinValid) {
-            this.actionRedirect = this.stopEmployee;
-            return;
-        }
         const index = this.state.tabletEmployeeIds.indexOf(employeeId);
         this.state.tabletEmployeeIds.slice(index, 1);
         await this.orm.call(
@@ -107,11 +101,14 @@ patch(Tablet.prototype, 'mrp_workorder_hr', {
         );
         await this.getState();
         this.render();
+        this.popup["SelectionPopup"].isShown = false;
+        return true;
     },
 
     redirectToAction(employeeId, pin) {
-        this.actionRedirect(employeeId, pin);
+        let returnValue = this.actionRedirect(employeeId, pin);
         this.actionRedirect = false;
+        return returnValue;
     },
 
     get isBlocked() {
@@ -124,8 +121,9 @@ patch(Tablet.prototype, 'mrp_workorder_hr', {
 
     // Private
 
-    async _checkPin(employeeId, pin, sessionSave = true) {
-        const pinValid = await this.orm.call('hr.employee', 'login', [employeeId, pin, sessionSave]);
+    async _checkPin(employeeId, pin, logout=false, sessionSave = true) {
+        let method = logout ? 'logout' : 'login';
+        const pinValid = await this.orm.call('hr.employee', method, [employeeId, pin, sessionSave]);
         if (!pinValid) {
             this.popupEmployeePin(employeeId);
             return;
@@ -149,7 +147,6 @@ patch(Tablet.prototype, 'mrp_workorder_hr', {
             await this.employees_connected.logged.forEach(async (emp)=>{
                 if(emp && emp.id) await this.startEmployee(emp.id);
             })
-            
         }
         await superMethod();
         if (this.employees_connected.logged) {

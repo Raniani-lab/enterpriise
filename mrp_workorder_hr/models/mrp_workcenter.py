@@ -1,6 +1,7 @@
 from ast import literal_eval
 
 from odoo import api, models, fields
+from datetime import timedelta
 from odoo.http import request
 
 
@@ -49,7 +50,8 @@ class MrpWorkcenterProductivity(models.Model):
 
     employee_id = fields.Many2one(
         'hr.employee', string="Employee",
-        help='employee that record this working time')
+        help='employee that record this working time',
+        default=lambda self: self._get_current_session_admin())
     employee_cost = fields.Monetary('employee_cost', compute='_compute_cost', default=0, store=True)
     total_cost = fields.Float('Cost', compute='_compute_cost', compute_sudo=True)
     currency_id = fields.Many2one(related='company_id.currency_id')
@@ -68,3 +70,31 @@ class MrpWorkcenterProductivity(models.Model):
             ('employee_id', '!=', False),
         ], ['employee_id', 'workorder_id'], ['employee_id', 'workorder_id'], lazy=False)
         # TODO make check on employees
+
+    def _get_current_session_admin(self):
+        main_employee_connected = None
+        if request and 'session_owner' in request.session.data.keys():
+            main_employee_connected = request.session.data['session_owner']
+        return main_employee_connected
+
+    @api.onchange('duration')
+    def _duration_changed(self):
+        self.date_end = self.date_start + timedelta(minutes=self.duration)
+        self._loss_type_change()
+
+    @api.onchange('date_start')
+    def _date_start_changed(self):
+        self.date_end = self.date_start + timedelta(minutes=self.duration)
+        self._loss_type_change()
+
+    @api.onchange('date_end')
+    def _date_end_changed(self):
+        self.date_start = self.date_end - timedelta(minutes=self.duration)
+        self._loss_type_change()
+
+    def _loss_type_change(self):
+        self.ensure_one()
+        if self.workorder_id.duration > self.workorder_id.duration_expected:
+            self.loss_id = self.env.ref("mrp.block_reason4").id
+        else:
+            self.loss_id = self.env.ref("mrp.block_reason7").id

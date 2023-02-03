@@ -2,7 +2,7 @@
 <templates id="template" xml:space="preserve">
     <t t-name="mrp_workorder_hr.WorkingEmployeePopupWOList" owl="1">
         <div role="dialog">
-            <div class="popup popup-selection" style="text-align:center">
+            <div class="popup popup-selection text-center">
                 <div class="o_popup_title">
                     <div>
                         Connected Employees
@@ -19,16 +19,15 @@
                         <div class="o_employee_selection">
                             <div>
                                 <button class="btn_employee" t-on-click="()=> this.becomeAdmin(employee.id,pin)">
-                                    <img t-att-src="employee.src" style="height:35px;" class="ml8 rounded-circle" />
-                                    <span style="padding-left:10px">
+                                    <img t-att-src="employee.src" class="ml8 rounded-circle img_employee" />
+                                    <span class="ml8">
                                         <t t-esc="employee.name"/>
                                     </span>
                                 </button>
                             </div>
-                            
                             <div class="o_workorder_list">
                                 <t t-if="!employee.workorder[0]" >
-                                    <div style="text-align:left">
+                                    <div class="text-start">
                                         No workorders
                                     </div>
                                 </t>
@@ -38,11 +37,11 @@
                                             <t t-esc="wo.name"/>
                                         </div>
                                         <div class="o_workorder_timer">
-                                            <MrpTimer ongoing="wo.ongoing" value="wo.duration" readonly="true"/>
+                                            <MrpTimer ongoing="wo.ongoing" value="wo.duration" readonly="true" record="wo"/>
                                         </div>
                                         <div class="o_button_timer">
-                                            <button t-if="wo.ongoing" class="btn btn-danger text-uppercase" t-on-click="() => this.stopEmployee(employee.id,wo.id)" style="line-height:20px;">Pause</button>
-                                            <button t-if="!wo.ongoing" class="btn btn-warning text-uppercase" t-on-click="() => this.startEmployee(employee.id,wo.id)" style="line-height:20px;">Continue</button>
+                                            <button t-if="wo.ongoing" class="btn btn-danger text-uppercase o_btn_start_stop" t-on-click="() => this.stopEmployee(employee.id,wo.id)">Pause</button>
+                                            <button t-if="!wo.ongoing" class="btn btn-warning text-uppercase o_btn_start_stop" t-on-click="() => this.startEmployee(employee.id,wo.id)">Continue</button>
                                         </div>
                                     </div>
                                 </t>
@@ -52,7 +51,7 @@
                 </div>
                 <footer class="footer">
                     <button class="btn btn-link " t-on-click="addEmployee">+ NEW OPERATOR</button>
-                    <button class="btn btn-link" style="color:black" t-on-click="close">CANCEL</button>
+                    <button class="btn btn-link text-dark" t-on-click="close">CLOSE</button>
                 </footer>
             </div>
         </div>

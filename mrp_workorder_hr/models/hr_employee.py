@@ -34,7 +34,6 @@ class HrEmployee(models.Model):
         # TODO: is this still usefull?
         # elif not pin and self.id not in request.session.get('employees_connected', []):
         #     return True
-
         return False
 
     def logout(self, pin=False, unchecked=False):
@@ -86,7 +85,6 @@ class HrEmployee(models.Model):
         for employee in employees:
             employee["workorder"] = []
             for workorder in workorders:
-                # if employee['id'] in [emp.id for emp in workorder.working_employee_ids]:
                 if employee['id'] in [emp.id for emp in workorder.employee_ids]:
                     time_ids = self.env['mrp.workcenter.productivity'].search([('employee_id', '=', employee['id']), ('workorder_id', '=', workorder.id)])
                     # TODO: better way to do it?
@@ -103,7 +101,7 @@ class HrEmployee(models.Model):
                             'work_order_name': workorder.production_id.name,
                             'duration': (sum_time_seconds / 60),
                             'operation_name': workorder.operation_id.name,
-                            'ongoing': True  # obviously always True as they are in progress
+                            'ongoing': True
                         })
         return employees
 

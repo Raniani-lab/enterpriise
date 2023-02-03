@@ -11,7 +11,6 @@
                     <button class="btn-secondary btn-link o_unblock" type="workorder_event" attrs="{'invisible': [('allow_employee', '=', False)]}" name="popupEmployeeManagement">
                         <span attrs="{'invisible': [('employee_name', '!=', False)]}">Log In </span>
                         <field name="employee_name" attrs="{'invisible': [('employee_name', '=', False)]}" readonly="1" class="me-2"/>
-                        <!-- <field name="working_employee_ids" widget="kanban.many2one_avatar_employee" readonly="1" options="{'no_create': True}"/> -->
                         <field name="employee_ids" widget="kanban.many2many_avatar_employee" readonly="1" options="{'no_create': True}"/>
                     </button>
                 </span>
@@ -32,9 +31,11 @@
         <field name="arch" type="xml">
             <field name="production_state" position="after">
                 <field name="allow_employee" invisible="1"/>
+                <field name="allowed_employees" invisible="1"/>
+                <field name="all_employees_allowed" invisible="1"/>
             </field>
             <xpath expr="//field[@name='time_ids']/tree/field[@name='user_id']" position="after">
-                <field name="employee_id" attrs="{'column_invisible': [('parent.allow_employee', '=', False)]}"/>
+                <field name="employee_id" attrs="{'column_invisible': [('parent.allow_employee', '=', False)]}" domain="['|',(parent.all_employees_allowed , '=', True),('id', 'in', parent.allowed_employees)]"/>
             </xpath>
             <xpath expr="//field[@name='time_ids']/tree/field[@name='user_id']" position="attributes">
                 <attribute name="attrs">{'column_invisible': [('parent.allow_employee', '!=', False)]}</attribute>
@@ -88,7 +89,7 @@
         <field name="inherit_id" ref="mrp.view_mrp_production_workorder_form_view_filter"/>
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='progress']" position="before">
-                <field name="connected_employee_ids"/> 
+                <field name="connected_employee_ids"/>
                 <filter string="My Work Orders" name="my_work_order" domain="[('connected_employee_ids','in',[1])]"/>
                 <separator/>
             </xpath>
@@ -101,12 +102,12 @@
         <field name="inherit_id" ref="mrp.view_mrp_production_work_order_search"/>
         <field name="arch" type="xml">
             <xpath expr="//filter[@name='progress']" position="after">
-                <field name="connected_employee_ids"/> 
+                <field name="connected_employee_ids"/>
                 <filter string="My Work Orders" name="my_work_order" domain="[('connected_employee_ids','in',[1])]"/>
             </xpath>
         </field>
     </record>
-    
+
     <record id="mrp_production_workorder_tree_editable_view_connect" model="ir.ui.view">
         <field name="model">mrp.workorder</field>
         <field name="inherit_id" ref="mrp.mrp_production_workorder_tree_editable_view"/>

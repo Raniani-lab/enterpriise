@@ -2372,7 +2372,33 @@ class AccountReport(models.Model):
 
                 for expression in formulas_dict[(unexpanded_formula, forced_date_scope)]:
                     # Apply subformula
-                    expression_result = self._aggregation_apply_bounds(column_group_options, expression.subformula, formula_result)
+                    if expression.subformula and expression.subformula.startswith('if_other_expr_'):
+                        other_expr_criterium_match = re.match(
+                            r"^(?P<criterium>\w+)\("
+                            r"(?P<line_code>\w+)[.](?P<expr_label>\w+),[ ]*"
+                            r"(?P<bound_params>.*)\)$",
+                            expression.subformula
+                        )
+                        if not other_expr_criterium_match:
+                            raise UserError(_("Wrong format for if_other_expr_above/if_other_expr_below formula: %s", expression.subformula))
+
+                        criterium_code = other_expr_criterium_match['line_code']
+                        criterium_label = other_expr_criterium_match['expr_label']
+                        criterium_val = current_report_eval_dict.get(criterium_code, {}).get(criterium_label)
+                        if criterium_val is None:
+                            # The criterium expression has not be evaluated yet. Postpone the evaluation of this formula, and skip this expression
+                            # for now. We still try to evaluate other expressions using this formula if any; this means those expressions will
+                            # be processed a second time later, giving the same result. This is a rare corner case, and not so costly anyway.
+                            to_treat.append((formula, unexpanded_formula, forced_date_scope))
+                            continue
+
+                        bound_subformula = other_expr_criterium_match['criterium'].replace('other_expr_', '') # e.g. 'if_other_expr_above' => 'if_above'
+                        bound_params = other_expr_criterium_match['bound_params']
+                        bound_value = self._aggregation_apply_bounds(column_group_options, f"{bound_subformula}({bound_params})", criterium_val)
+                        expression_result = formula_result * int(bool(bound_value))
+
+                    else:
+                        expression_result = self._aggregation_apply_bounds(column_group_options, expression.subformula, formula_result)
 
                     # Store result
                     if (forced_date_scope == expression.date_scope or not forced_date_scope) and expression.report_line_id.report_id == self:

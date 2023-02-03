@@ -142,14 +142,19 @@ class TestReportEngines(TestAccountReportsCommon):
     def _prepare_test_expression_custom(self, formula, **kwargs):
         return self._prepare_test_expression(engine='custom', formula=formula, **kwargs)
 
-    def _prepare_test_expression_aggregation(self, formula, subformula=None, column='balance'):
+    def _prepare_test_expression_aggregation(self, formula, subformula=None, column='balance', date_scope=None):
+        expression_values = {
+            'label': column,
+            'engine': 'aggregation',
+            'formula': formula,
+            'subformula': subformula,
+        }
+
+        if date_scope:
+            expression_values['date_scope'] = date_scope
+
         return {
-            'expression_values': {
-                'label': column,
-                'engine': 'aggregation',
-                'formula': formula,
-                'subformula': subformula,
-            },
+            'expression_values': expression_values,
         }
 
     def _prepare_test_report_line(self, *expression_generators, **kwargs):
@@ -769,7 +774,7 @@ class TestReportEngines(TestAccountReportsCommon):
         report = self._create_report(
             [
                 test1, test2_1, test2_2, test2_3, test2_4, test3_1, test3_2, test3_3, test4_1, test4_2,
-                test5, test6, test7, test9, test10_1, test10_2, test10_3,
+                test5, test6, test7, test9, test10_1, test10_2, test10_3
             ],
             country_id=self.fake_country.id,
         )
@@ -821,3 +826,100 @@ class TestReportEngines(TestAccountReportsCommon):
             with self.subTest(report_line=report_line.name):
                 action_dict = report.action_audit_cell(options, self._get_audit_params_from_report_line(options, report_line, report_line_dict))
                 self.assertEqual(moves.line_ids.filtered_domain(action_dict['domain']), expected_amls)
+
+    def test_engine_aggregation_cross_report(self):
+        self._create_test_account_moves([
+            self._prepare_test_account_move_line(1.0, account_code='100000', date='2020-01-01'),
+            self._prepare_test_account_move_line(2.0, account_code='100000', date='2021-01-01'),
+            self._prepare_test_account_move_line(3.0, account_code='200000', date='2020-01-01'),
+            self._prepare_test_account_move_line(4.0, account_code='200000', date='2021-01-01'),
+            self._prepare_test_account_move_line(5.0, account_code='300000', date='2021-01-01'),
+        ])
+
+        # Other report
+        other_report_line_1 = self._prepare_test_report_line(
+            self._prepare_test_expression_account_codes('1'),
+            name='other_report_line_1', code='other_report_line_1',
+        )
+
+        other_report_line_2 = self._prepare_test_report_line(
+            self._prepare_test_expression_account_codes('2'),
+            name='other_report_line_2', code='other_report_line_2',
+        )
+
+        other_report_line_3 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation('other_report_line_1.balance + other_report_line_2.balance'),
+            name='other_report_line_3', code='other_report_line_3',
+        )
+
+        other_report_line_4 = self._prepare_test_report_line(
+            self._prepare_test_expression_account_codes('3'),
+            name='other_report_line_4', code='other_report_line_4',
+        )
+
+        other_report = self._create_report([other_report_line_1, other_report_line_2, other_report_line_3, other_report_line_4])
+
+        # Main report
+        main_report_line_1 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation('other_report_line_2.balance', subformula='cross_report', date_scope='strict_range'),
+            name='main_report_line_1', code='main_report_line_1',
+        )
+
+        main_report_line_2 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation('other_report_line_2.balance', subformula='cross_report', date_scope='from_beginning'),
+            name='main_report_line_2', code='main_report_line_2',
+        )
+
+        main_report_line_3 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation('other_report_line_3.balance', subformula='cross_report', date_scope='strict_range'),
+            name='main_report_line_3', code='main_report_line_3',
+        )
+
+        main_report_line_4 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation('other_report_line_3.balance', subformula='cross_report', date_scope='from_beginning'),
+            name='main_report_line_4', code='main_report_line_4',
+        )
+
+        main_report_line_5 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation(
+                'main_report_line_1.balance + main_report_line_2.balance + main_report_line_3.balance + main_report_line_4.balance',
+            ),
+            name='main_report_line_5', code='main_report_line_5',
+        )
+
+        main_report_line_6 = self._prepare_test_report_line(
+            self._prepare_test_expression_aggregation(
+                'main_report_line_1.balance + main_report_line_2.balance + main_report_line_3.balance + main_report_line_4.balance',
+            ),
+            name='main_report_line_6', code='main_report_line_6',
+        )
+
+        main_report = self._create_report([main_report_line_1, main_report_line_2, main_report_line_3, main_report_line_4, main_report_line_5, main_report_line_6])
+
+        # First check other_report
+        self.assertLinesValues(
+            # pylint: disable=bad-whitespace
+            other_report._get_lines(self._generate_options(other_report, '2021-01-01', '2021-01-01')),
+            [   0,                                      1],
+            [
+                ('other_report_line_1',               2.0),
+                ('other_report_line_2',               4.0),
+                ('other_report_line_3',               6.0),
+                ('other_report_line_4',               5.0),
+            ],
+        )
+
+        # Check main_report
+        self.assertLinesValues(
+            # pylint: disable=bad-whitespace
+            main_report._get_lines(self._generate_options(main_report, '2021-01-01', '2021-01-01')),
+            [   0,                                      1],
+            [
+                ('main_report_line_1',                4.0),
+                ('main_report_line_2',                7.0),
+                ('main_report_line_3',                6.0),
+                ('main_report_line_4',               10.0),
+                ('main_report_line_5',               27.0),
+                ('main_report_line_6',               27.0),
+            ],
+        )

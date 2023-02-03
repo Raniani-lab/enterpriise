@@ -436,7 +436,11 @@ class BankRecWidget(models.Model):
                 reconcile_models = self.env['account.reconcile.model'].search([
                     ('rule_type', '=', 'writeoff_button'),
                     ('company_id', '=', self.company_id.id),
+                    '|',
+                    ('match_journal_ids', '=', False),
+                    ('match_journal_ids', '=', wizard.st_line_id.journal_id.id),
                 ])
+
                 available_reconcile_model_ids = [{
                     'id': x.id,
                     'display_name': x.display_name,

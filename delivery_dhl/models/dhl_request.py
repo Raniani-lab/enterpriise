@@ -81,7 +81,8 @@ class DHLProvider():
         contact = self.factory.Contact()
         contact.PersonName = partner_id.name
         contact.PhoneNumber = partner_id.phone
-        contact.Email = partner_id.email
+        if partner_id.email:
+            contact.Email = partner_id.email
         consignee.Contact = contact
         return consignee
 
@@ -108,7 +109,8 @@ class DHLProvider():
         contact = self.factory.Contact()
         contact.PersonName = warehouse_partner_id.name
         contact.PhoneNumber = warehouse_partner_id.phone
-        contact.Email = warehouse_partner_id.email
+        if warehouse_partner_id.email:
+            contact.Email = warehouse_partner_id.email
         shipper.Contact = contact
         return shipper
 
